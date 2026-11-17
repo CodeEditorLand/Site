@@ -1,0 +1,119 @@
+---
+/**
+ * PlatformCard - one platform entry in the release manifest: the record frame,
+ * the platform stamp, the channel route, the four provenance fields, the status
+ * line and the one action that platform offers today.
+ *
+ * The card is the baseline render's own anatomy, in the baseline's order:
+ *
+ *   # RELEASE_01                     the record index, with the seal beside it
+ *   〈MACOS〉                         the platform, in the containment stamp
+ *   /CHANNEL:PUBLIC                  the channel, as a route line
+ *   ARCH:  AARCH64 / X86_64          the four fields, label then value
+ *   SIGNING:  IN PREPARATION
+ *   SIZE:  -
+ *   CHECKSUM:  -
+ *   STATUS: ACTIVE                   green on the one platform that builds today
+ *   VIEW SOURCE BUILDS               the action, where there is one
+ *
+ * Three decisions worth knowing before you compose it:
+ *
+ * - The frame is `FieldRecordDataCard`, the same one every field record on the
+ *   site is printed in, so the corner marks, the white surface and the card's
+ *   inset come from the frame rather than from this file.
+ * - The fields are a `dl`, not a ledger block: the baseline printed them as
+ *   label/value pairs inside the card, and a definition list is the element for
+ *   a term and its value.
+ * - The action is absent on two of the three platforms. That is a fact about
+ *   them - there is nowhere to send the reader yet - so the card closes on its
+ *   status line instead, exactly as the baseline did.
+ *
+ * No `<script>` and no `client:*`: the card is static.
+ */
+import FieldRecordAction from "../../Brand/FieldRecordAction.astro";
+import FieldRecordDataCard from "../../Brand/FieldRecordDataCard.astro";
+import FieldRecordIndex from "../../Brand/FieldRecordIndex.astro";
+import { FieldRecordSeal } from "../../Brand/FieldRecordSeal.js";
+import { FieldRecordStatus } from "../../Brand/FieldRecordStatus.js";
+import { RouteText, StampText } from "../../Brand/SemanticLedger.js";
+
+import type { ManifestPlatform } from "./Type.js";
+
+interface Props {
+	/** The platform, already resolved to its copy. */
+	platform: ManifestPlatform;
+
+	/** The record's marker without its `#` - every card carries the same one. */
+	index: string;
+
+	/** The four field labels, with their colons, in the order they print. */
+	labels: {
+		readonly arch: string;
+		readonly signing: string;
+		readonly size: string;
+		readonly checksum: string;
+	};
+}
+
+const { platform, index, labels } = Astro.props;
+
+/**
+ * The four field rows, in the baseline's order. `arch` leads because the stamp
+ * above it names only the platform; the value carries the architectures.
+ */
+const Fields = [
+	{ label: labels.arch, value: platform.arch },
+	{ label: labels.signing, value: platform.signing },
+	{ label: labels.size, value: platform.size },
+	{ label: labels.checksum, value: platform.checksum },
+];
+---
+
+<FieldRecordDataCard class="download-platform">
+	<div class="download-platform__body">
+		<div class="download-platform__head">
+			<FieldRecordIndex index={index} className="download-platform__index" />
+			<FieldRecordSeal element="Land" size={48} />
+		</div>
+
+		<div class="download-platform__identity">
+			<p class="download-platform__stamp">
+				<StampText Line={platform.name.toUpperCase()} />
+			</p>
+			<p class="download-platform__channel">
+				<RouteText Line={`/CHANNEL:${platform.channel}`} />
+			</p>
+		</div>
+
+		<dl class="download-platform__fields">
+			{
+				Fields.map((Field) => (
+					<div class="download-platform__field">
+						<dt class="download-platform__label">{Field.label}</dt>
+						<dd class="download-platform__value">{Field.value}</dd>
+					</div>
+				))
+			}
+		</dl>
+
+		<p class="download-platform__state">
+			<FieldRecordStatus
+				status={platform.state.status}
+				tone={platform.state.tone}
+				copy={platform.state.copy}
+			/>
+		</p>
+
+		{
+			platform.action && (
+				<p class="download-platform__action">
+					<FieldRecordAction
+						variant="button"
+						label={platform.action.label}
+						href={platform.action.href}
+					/>
+				</p>
+			)
+		}
+	</div>
+</FieldRecordDataCard>

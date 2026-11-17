@@ -6,11 +6,11 @@ import { useTranslation } from "react-i18next";
 
 import { AuthAPI as AuthAPIClass } from "../../Library/API/Authentication";
 
+import { AuthReport } from "../Auth/Report";
+
 import { DynamicButton } from "./DynamicButton";
 
 import { DynamicEmailVerification } from "./DynamicEmailVerification";
-
-import { DynamicStateReport, StateLabel } from "./DynamicStateReport";
 
 import type Property from "./Interface/Property/Page/Verify.js";
 
@@ -26,14 +26,14 @@ const NavigateToPath = (Path: string): void => {
  * Three entry modes: `verify` (a token is in the URL), `pending` (no token,
  * no reason - the email is still waiting to be clicked) and `failure` (the
  * provider sent a reason). Each mode renders a report inside the route's
- * AuthShell: what the state is, what happened, and the action available.
+ * card (`AuthReport`): what the state is, what happened, and the action
+ * available. The pending mode is the baseline's own card.
  */
 const VerifyPage = ({
 	Content,
 	Route,
 	Token,
 	Reason,
-	ClassName,
 	OnVerify,
 	OnResend,
 	OnNavigate,
@@ -99,16 +99,8 @@ const VerifyPage = ({
 		}
 	};
 
-	const VerifiedStatus = T("auth.verifiedStatus", {
-		defaultValue: StateLabel.Verified,
-	});
-
-	const ExpiredStatus = T("auth.expiredStatus", {
-		defaultValue: StateLabel.Unavailable,
-	});
-
 	return (
-		<div className={`auth-shell__form ${ClassName || ""}`}>
+		<>
 			{(Route === "verify" || Route === "pending") && (
 				<DynamicEmailVerification
 					Content={Verification}
@@ -126,64 +118,62 @@ const VerifyPage = ({
 			)}
 
 			{Route === "success" && (
-				<DynamicStateReport
-					Label={VerifiedStatus}
-					Tone="specimen"
+				<AuthReport
+					Title={T("success.title", { defaultValue: "Email verified!" })}
 					Sentence={
 						"Your email has been successfully verified. You can now sign in to your account and start using Code Editor Land."
 					}
-					Action={
-						<DynamicButton
-							Content={{
-								Text: "Continue to Homepage",
-								Variant: "default",
-								ClassName: "auth-shell__primary",
-							}}
-							OnAction={() => Navigate("/")}
-						/>
-					}
-				/>
+					Glyph="check"
+				>
+					<DynamicButton
+						Content={{
+							Text: "Continue to Homepage",
+							Variant: "default",
+							ClassName: "auth-shell__primary",
+						}}
+						OnAction={() => Navigate("/")}
+					/>
+				</AuthReport>
 			)}
 
 			{Route === "failure" && (
-				<DynamicStateReport
-					Role="alert"
-					Label={ExpiredStatus}
-					Tone="ink"
+				<AuthReport
+					Title={T("error.title", {
+						defaultValue: "Verification failed",
+					})}
 					Sentence={
 						<>
-							{
-								"This verification link is invalid or has expired."
-							}
+							{"This verification link is invalid or has expired."}
 							{Reason ? ` Reason: ${Reason}` : null}{" "}
 							{
 								"Please request a new verification email or contact support if the problem persists."
 							}
 						</>
 					}
-					Action={
-						<div className="auth-shell__actions">
-							<DynamicButton
-								Content={{
-									Text: "Send New Verification Email",
-									Variant: "default",
-									ClassName: "auth-shell__primary",
-								}}
-								OnAction={() => Navigate("/Verify")}
-							/>
+					Glyph="alert"
+					Role="alert"
+				>
+					<div className="auth-shell__actions">
+						<DynamicButton
+							Content={{
+								Text: "Send New Verification Email",
+								Variant: "default",
+								ClassName: "auth-shell__primary",
+							}}
+							OnAction={() => Navigate("/Verify")}
+						/>
 
-							<button
-								type="button"
-								className="auth-shell__alternate"
-								onClick={() => Navigate("/Account/SignIn")}
-							>
-								{"Sign In"}
-							</button>
-						</div>
-					}
-				/>
+						<button
+							type="button"
+							className="auth-shell__alternate"
+							onClick={() => Navigate("/Account/SignIn")}
+						>
+							{"Sign In"}
+						</button>
+					</div>
+				</AuthReport>
 			)}
-		</div>
+		</>
 	);
 };
 

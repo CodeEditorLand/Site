@@ -19,18 +19,15 @@
 // flat lines are components whose surface publishes no loader.
 @use "Dynamic/Hero";
 @use "Home/Index" as HomeRules;
-@use "Download/Page";
 @use "Download/Masthead";
-@use "Download/Requirements";
 @use "Download/Manifest";
-@use "Download/Region";
-@use "Download/Releases";
 @use "Doc/Layout";
 @use "Doc/Sidebar";
 @use "Doc/Article";
 @use "Doc/Index" as DocIndexRules;
 @use "Doc/Rust";
 @use "Reading/Document";
+@use "Reading/Steps";
 @use "Blog/Index" as BlogRules;
 @use "Contact/Index" as ContactRules;
 @use "Auth/Shell" as AuthShell;

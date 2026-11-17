@@ -10,8 +10,8 @@ import type { ReadingIndexItem } from "../../../Component/Reading/Type.js";
 import type { LedgerRow } from "../../../Component/Record/Type.js";
 
 export const Ledger: readonly LedgerRow[] = [
-	{ key: "EFFECTIVE", value: "March 26, 2026", note: "effective date" },
-	{ key: "VERSION", value: "May 29, 2026", note: "last updated" },
+	{ key: "Effective Date:", value: "March 26, 2026" },
+	{ key: "Last Updated:", value: "May 29, 2026" },
 	{
 		key: "APPLIES TO",
 		value: "Code Editor Land, operated by PlayForm in Sofia, Bulgaria",
@@ -39,25 +39,26 @@ export const Index: readonly ReadingIndexItem[] = [
 	{ number: "09", label: "Security of Data", href: "#security-of-data" },
 	{
 		number: "10",
-		label:
-			"Your Data Protection Rights Under General Data Protection Regulation (GDPR)",
+		label: "Your Data Protection Rights Under General Data Protection Regulation (GDPR)",
 		href: "#your-data-protection-rights-under-general-data-protection-regulation-gdpr",
 	},
 	{
 		number: "11",
-		label:
-			"Your Data Protection Rights under the California Privacy Protection Act (CalOPPA)",
+		label: "Your Data Protection Rights under the California Privacy Protection Act (CalOPPA)",
 		href: "#your-data-protection-rights-under-the-california-privacy-protection-act-caloppa",
 	},
 	{
 		number: "12",
-		label:
-			"Your Data Protection Rights under the California Consumer Privacy Act (CCPA)",
+		label: "Your Data Protection Rights under the California Consumer Privacy Act (CCPA)",
 		href: "#your-data-protection-rights-under-the-california-consumer-privacy-act-ccpa",
 	},
 	{ number: "13", label: "Service Providers", href: "#service-providers" },
 	{ number: "14", label: "Payments", href: "#payments" },
-	{ number: "15", label: "Links to Other Sites", href: "#links-to-other-sites" },
+	{
+		number: "15",
+		label: "Links to Other Sites",
+		href: "#links-to-other-sites",
+	},
 	{ number: "16", label: "Children's Privacy", href: "#childrens-privacy" },
 	{
 		number: "17",

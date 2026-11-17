@@ -14,6 +14,8 @@ import Auth0Provider from "../Provider/Auth0Provider";
 
 import { Button } from "../UI/Button";
 
+import { Skeleton } from "../UI/Skeleton";
+
 import { DynamicStateReport, StateLabel } from "./DynamicStateReport";
 
 // ── PII blur wrapper ────────────────────────────────────────────────────────

@@ -102,10 +102,12 @@ const Surface = {
  *
  * Every handler, the Auth0 context, the field types, the validation rules, the
  * mailto/copy payloads and the pair reference are exactly as they were. What
- * changed is the surface: the request's title and subtitle moved up to
- * `ContactPage` (the page owns its only `h1`), and every Tailwind string inside
- * the form was replaced by a class from `Contact/_Form.scss`, so the form's
- * anatomy is in one partial instead of in the markup.
+ * changed is the surface: the request's title, its sentence and the handler
+ * address are printed by the form itself, inside the chip row the baseline
+ * opens with - the page's only `h1` is the request title, and it sits at the
+ * mono label scale rather than the display scale - and every Tailwind string
+ * inside the form was replaced by a class from `Contact/_Form.scss`, so the
+ * form's anatomy is in one partial instead of in the markup.
  */
 const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 	const { user: User } = useAuth0();
@@ -217,23 +219,41 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 	return (
 		<div className="contact-form">
 			<div className="contact-form__inner">
-				{/* Income code, legal basis, response window and handler */}
-				<div className="contact-form__meta">
-					<span
-						className="contact-form__pair"
-						title="Pair reference - income code + instance ID. Quote this in all replies."
-					>
-						{Config.Code}-{PairId}
-					</span>
-					{Config.Article && (
-						<span className="contact-form__tag">{Config.Article}</span>
-					)}
-					<span className="contact-form__tag">{Config.ResponseDays}d SLA</span>
-				</div>
+				{/* The request's own opening: the pair reference, the legal basis and
+				    the response window as chips; then the page's only `h1` - the
+				    request title, at the mono label scale rather than the display
+				    scale; then its sentence; then the address it is sent to. */}
+				<div className="contact-form__open">
+					<div className="contact-form__meta">
+						<span
+							className="contact-form__pair"
+							title="Pair reference - income code + instance ID. Quote this in all replies."
+						>
+							{Config.Code}-{PairId}
+						</span>
+						{Config.Article && (
+							<span className="contact-form__tag">
+								{Config.Article}
+							</span>
+						)}
+						<span className="contact-form__tag">
+							{Config.ResponseDays}d SLA
+						</span>
+					</div>
 
-				<p className="contact-form__handler">
-					Sends to: <span className="contact-form__handler-value">{Config.To}</span>
-				</p>
+					<h1 className="contact-form__title">{Config.Title}</h1>
+
+					<p className="contact-form__standfirst">
+						{Config.Subtitle}
+					</p>
+
+					<p className="contact-form__handler">
+						Sends to:{" "}
+						<span className="contact-form__handler-value">
+							{Config.To}
+						</span>
+					</p>
+				</div>
 
 				{/* Form - the field block, on the form's one Jelly surface */}
 				<jelly-card style={Surface}>
@@ -245,7 +265,10 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 
 							if (Field.type === "checkbox") {
 								return (
-									<div key={Field.id} className="contact-form__field">
+									<div
+										key={Field.id}
+										className="contact-form__field"
+									>
 										<label className="contact-form__check">
 											<input
 												type="checkbox"
@@ -266,7 +289,9 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 											</span>
 										</label>
 										{Error && (
-											<p className="contact-form__error">{Error}</p>
+											<p className="contact-form__error">
+												{Error}
+											</p>
 										)}
 									</div>
 								);
@@ -276,37 +301,46 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 								const Selected = (Value as string[]) || [];
 
 								return (
-									<div key={Field.id} className="contact-form__field">
+									<div
+										key={Field.id}
+										className="contact-form__field"
+									>
 										<label className="contact-form__label">
 											{Field.label}
 											{Field.required && <RequiredMark />}
 										</label>
 										<div className="contact-form__options">
-											{(Field.options || []).map((Opt) => (
-												<label
-													key={Opt}
+											{(Field.options || []).map(
+												(Opt) => (
+													<label
+														key={Opt}
 
-													className="contact-form__option"
-												>
-													<input
-														type="checkbox"
-														className="contact-form__checkbox"
-														checked={Selected.includes(Opt)}
-
-														onChange={() =>
-															HandleCheckboxGroup(
-																Field.id,
-
+														className="contact-form__option"
+													>
+														<input
+															type="checkbox"
+															className="contact-form__checkbox"
+															checked={Selected.includes(
 																Opt,
-															)
-														}
-													/>
-													{Opt}
-												</label>
-											))}
+															)}
+
+															onChange={() =>
+																HandleCheckboxGroup(
+																	Field.id,
+
+																	Opt,
+																)
+															}
+														/>
+														{Opt}
+													</label>
+												),
+											)}
 										</div>
 										{Error && (
-											<p className="contact-form__error">{Error}</p>
+											<p className="contact-form__error">
+												{Error}
+											</p>
 										)}
 									</div>
 								);
@@ -314,7 +348,10 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 
 							if (Field.type === "select") {
 								return (
-									<div key={Field.id} className="contact-form__field">
+									<div
+										key={Field.id}
+										className="contact-form__field"
+									>
 										<label
 											htmlFor={Field.id}
 											className="contact-form__label"
@@ -327,18 +364,28 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 											className="contact-form__input"
 											value={(Value as string) || ""}
 											onChange={(E) =>
-												HandleChange(Field.id, E.target.value)
+												HandleChange(
+													Field.id,
+													E.target.value,
+												)
 											}
 										>
 											<option value="">Select...</option>
-											{(Field.options || []).map((Opt) => (
-												<option key={Opt} value={Opt}>
-													{Opt}
-												</option>
-											))}
+											{(Field.options || []).map(
+												(Opt) => (
+													<option
+														key={Opt}
+														value={Opt}
+													>
+														{Opt}
+													</option>
+												),
+											)}
 										</select>
 										{Error && (
-											<p className="contact-form__error">{Error}</p>
+											<p className="contact-form__error">
+												{Error}
+											</p>
 										)}
 									</div>
 								);
@@ -346,7 +393,10 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 
 							if (Field.type === "textarea") {
 								return (
-									<div key={Field.id} className="contact-form__field">
+									<div
+										key={Field.id}
+										className="contact-form__field"
+									>
 										<label
 											htmlFor={Field.id}
 											className="contact-form__label"
@@ -361,14 +411,21 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 											placeholder={Field.placeholder}
 											value={(Value as string) || ""}
 											onChange={(E) =>
-												HandleChange(Field.id, E.target.value)
+												HandleChange(
+													Field.id,
+													E.target.value,
+												)
 											}
 										/>
 										{Field.hint && (
-											<p className="contact-form__hint">{Field.hint}</p>
+											<p className="contact-form__hint">
+												{Field.hint}
+											</p>
 										)}
 										{Error && (
-											<p className="contact-form__error">{Error}</p>
+											<p className="contact-form__error">
+												{Error}
+											</p>
 										)}
 									</div>
 								);
@@ -376,7 +433,10 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 
 							// text / email
 							return (
-								<div key={Field.id} className="contact-form__field">
+								<div
+									key={Field.id}
+									className="contact-form__field"
+								>
 									<label
 										htmlFor={Field.id}
 										className="contact-form__label"
@@ -391,13 +451,22 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 										placeholder={Field.placeholder}
 										value={(Value as string) || ""}
 										onChange={(E) =>
-											HandleChange(Field.id, E.target.value)
+											HandleChange(
+												Field.id,
+												E.target.value,
+											)
 										}
 									/>
 									{Field.hint && (
-										<p className="contact-form__hint">{Field.hint}</p>
+										<p className="contact-form__hint">
+											{Field.hint}
+										</p>
 									)}
-									{Error && <p className="contact-form__error">{Error}</p>}
+									{Error && (
+										<p className="contact-form__error">
+											{Error}
+										</p>
+									)}
 								</div>
 							);
 						})}
@@ -415,11 +484,13 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 					<a
 						href={MailtoHref}
 						onClick={Validate}
-						className={`contact-form__action emphasis-expressive${
-							Config.Destructive
-								? " contact-form__action--destructive"
-								: ""
-						}`}
+						className={[
+							"contact-form__action",
+							"emphasis-expressive",
+							...(Config.Destructive
+								? ["contact-form__action--destructive"]
+								: []),
+						].join(" ")}
 					>
 						<Mail aria-hidden="true" />
 						<span className="contact-form__action-text">
@@ -427,8 +498,9 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 								Open in email client
 							</span>
 							<span className="contact-form__action-note">
-								Opens your default mail app with the form pre-filled
-								as plain text - ready to review and send.
+								Opens your default mail app with the form
+								pre-filled as plain text - ready to review and
+								send.
 							</span>
 						</span>
 					</a>
@@ -486,9 +558,10 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 						{Config.Code}-{PairId}
 					</span>{" "}
 					is your unique pair reference for this submission -{" "}
-					<span className="contact-form__mono">{Config.Code}</span> identifies the
-					request type, <span className="contact-form__mono">{PairId}</span> is
-					the instance ID. Quote{" "}
+					<span className="contact-form__mono">{Config.Code}</span>{" "}
+					identifies the request type,{" "}
+					<span className="contact-form__mono">{PairId}</span> is the
+					instance ID. Quote{" "}
 					<span className="contact-form__mono contact-form__mono--strong">
 						{Config.Code}-{PairId}
 					</span>{" "}

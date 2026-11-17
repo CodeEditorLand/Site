@@ -12,9 +12,9 @@
  */
 
 /**
- * One article as the index lists it: the five things a reader needs to choose
- * without opening anything - when it was published, what it is called, what it
- * claims, how long it takes, and what it is about.
+ * One article as the index lists it: what a reader needs to choose without
+ * opening anything - what it is called, what it claims, what it is about, who
+ * wrote it, when it was published, and how long it takes.
  *
  * `date` is the schema's `publishedAt` verbatim (`YYYY-MM-DD`), not a formatted
  * date: it is printed inside a `<time datetime>` and it sorts lexicographically,
@@ -26,18 +26,6 @@ export interface BlogRow {
 	/** The article's route, e.g. `/Blog/BuildSystemDesign`. */
 	readonly href: string;
 
-	/**
-	 * The row's position in the archive, `01`-prefixed: `01`, `02`, ... `08`.
-	 *
-	 * The archive index is a filed list (`DesignSystem-Artifacts.md` §2 prints
-	 * `01  MOUNTAIN  FOUNDATION / ACTIVE`), so the position is part of the row
-	 * rather than a CSS counter: a number a screen reader cannot read is not a
-	 * fact, and the order the index claims in its strip must be checkable
-	 * against the numbers under it. Derived from the sorted list in `Data.ts`,
-	 * never from the frontmatter.
-	 */
-	readonly ordinal: string;
-
 	/** `publishedAt` verbatim, `YYYY-MM-DD`. */
 	readonly date: string;
 
@@ -46,6 +34,9 @@ export interface BlogRow {
 
 	/** The article's `summary`, verbatim. */
 	readonly summary: string;
+
+	/** The article's `author`, verbatim. */
+	readonly author: string;
 
 	/** The finished reading-time label, e.g. `5 min read`. */
 	readonly readTime: string;
@@ -90,28 +81,4 @@ export interface BlogTrailItem {
 
 	/** Where the crumb leads. Absent on the current page. */
 	readonly href?: string;
-}
-
-/**
- * One field of the archive's metadata strip: `LABEL:` and its value, printed
- * as one fragment and separated from the next field by U+2001 EM QUAD.
- *
- * The pair is data rather than a finished string because the state field
- * carries a tone: `STATUS: ACTIVE` is specimen green on its value while the
- * label stays ink (`DesignSystem-Grammar.md` §2 - "explicit words carry the
- * meaning and colour supports it"), and a single pre-joined string could not
- * colour half of itself.
- */
-export interface BlogStripItem {
-	/** The field label, with its colon, e.g. `STATUS:`, `RECORDS:`. */
-	readonly label: string;
-
-	/** The field's value, e.g. `ACTIVE`, `8`, `NEWEST FIRST`. */
-	readonly value: string;
-
-	/**
-	 * Render the value in the specimen ink. Only a state field sets it, and at
-	 * most one field per strip does - green authenticates, it does not decorate.
-	 */
-	readonly specimen?: boolean;
 }

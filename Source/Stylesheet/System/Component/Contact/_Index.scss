@@ -3,10 +3,10 @@
 // Every route in `Source/pages/Contact/` is built from these five components:
 //
 //   Page        ContactPage.astro       the document, header, trail and h1
-//   Breadcrumb  ContactBreadcrumb.astro the trail in the mono nav grammar
-//   Hub         index.astro             the decision surface's own three rules
+//   Breadcrumb  ContactBreadcrumb.astro the trail, in the baseline's own shape
+//   Hub         index.astro             the fourteen-card grid and its close
 //   Form        DynamicContactForm.tsx  the request form's anatomy
-//   Sale        Sale.astro              the enterprise page's own rules
+//   Sale        Sale.astro              the two-thirds / one-third enterprise page
 //
 // `Shell` has no partial: `ContactShell.astro` composes `Page` and `Form` and
 // publishes no class of its own.
@@ -15,8 +15,7 @@
 //
 //   @use "Contact/Index";
 //
-// It is not added there by this card - that file is shared and V1 wires every
-// page partial into it in one pass before the build.
+// It is wired there as `Contact/Index` - the shared file's page-surface block.
 @use "Breadcrumb";
 @use "Page";
 @use "Hub";

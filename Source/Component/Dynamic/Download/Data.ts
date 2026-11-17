@@ -2,27 +2,25 @@
  * Data - every row, label and ordering the Download page renders.
  *
  * The template composes; this module decides. Nothing here reads the DOM, holds
- * React or imports the i18n client: the record's copy is a function that takes
- * the resolver, and every other table is a constant lifted verbatim out of the
- * files it came from. Each value below names its source in the comment above
- * it, so a figure on the page can be traced back to the file that states it.
+ * React or imports the i18n client: the page's copy arrives through a resolver
+ * the caller passes in, and every other table is a constant lifted verbatim out
+ * of the files it came from. Each value below names its source in the comment
+ * above it, so a figure on the page can be traced back to the file that states
+ * it.
  *
- * The manifest is ordered by `DesignSystem-Pages.md` §2, not by the order the
- * page happened to carry: the record index, the platform and architecture as
- * one stamp, the channel as a route line, then VERSION, SIGNATURE, CHECKSUM,
- * SIZE, BUILD, then the action, then the platform's status line. LICENSE joins
- * that block from `Artifacts.md` §4, and INSTALLER from §2's own list of the
- * provenance fields a platform card keeps.
+ * Three tables, in page order: the masthead's eight marks, the release
+ * manifest's three platform entries, and the disclosure section's content. The
+ * manifest is ordered by the baseline render - index, platform stamp, channel
+ * route, `ARCH:`, `SIGNING:`, `SIZE:`, `CHECKSUM:`, status, action - and not by
+ * the design document's longer field list, because a field the tree cannot fill
+ * is a field this page would have to invent a value for.
  */
-import type { LedgerRow, MatrixColumn } from "../../Record/Type.js";
+import type TransparencyContent from "../Interface/Content/Transparency.js";
 
 import type {
+	ManifestCopy,
 	ManifestPlatform,
-	ManifestRecord,
 	Mark,
-	PlatformRequirements,
-	Regions,
-	Release,
 	Translate,
 } from "./Type.js";
 
@@ -87,41 +85,51 @@ export const Marks: readonly Mark[] = [
 	},
 ];
 
-// ─── The record: `# RELEASE_01` ───────────────────────────────────────────
-// One record, three platform entries and one verification entry. The heading is
-// the page's own sentence about the record and is carried verbatim; the state
-// line is §7's `NO PUBLIC ARTIFACTS`, because that is the true thing - the
-// release exists as a record, and nothing has been published from it.
+// ─── The release manifest band's opening ──────────────────────────────────
+// The baseline's band header: the eyebrow and the heading carry the same two
+// words, and the sentence under them states the release's condition without
+// promising a download that does not exist.
 
-export function Manifest(T: Translate): ManifestRecord {
+export function Manifest(T: Translate): ManifestCopy {
 	return {
-		index: "RELEASE_01",
-
-		heading: T("download:manifest.headline", {
-			defaultValue:
-				"RELEASE_01 lists three platforms and publishes no artifact.",
+		eyebrow: T("download:manifest.title", {
+			defaultValue: "Release Manifest",
 		}),
 
-		state: {
-			copy: T("download:state.noArtifacts", {
-				defaultValue: "STATUS: NO PUBLIC ARTIFACTS",
-			}),
-			status: "unavailable",
-			tone: "ink",
-			note: T("download:state.noArtifactsNote", {
-				defaultValue:
-					"Source builds are active for all three platforms. No installer, checksum or signature has been published yet, so building from source is the only way to run Land right now.",
-			}),
-		},
-
-		footnote: T("download:manifest.footnote", {
-			defaultValue:
-				"The manifest carries a release index, a channel and a per-platform status. It carries no version, no release date and no artifact size - those fields print UNAVAILABLE until a public installer publishes them.",
+		heading: T("download:manifest.heading", {
+			defaultValue: "Release Manifest",
 		}),
 
-		source: T("download:status.footnote", {
+		sentence: T("download:manifest.subtitle", {
 			defaultValue:
-				"Source build: the two-step build in the Land repository's Documentation/GitHub/Building.md. Installer, signing and checksum status is quoted from this page's release manifest.",
+				"Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
+		}),
+	};
+}
+
+/**
+ * The four field labels a platform card prints, with their colons.
+ *
+ * They are labels rather than values, so they live here once and every card
+ * reads the same four - a field renamed on one platform and not another is the
+ * kind of drift a shared label table makes impossible. The colon is part of the
+ * label because the site's grammar writes a field as `KEY:` and a label without
+ * one is a word the reader has to interpret.
+ */
+export function FieldLabels(T: Translate): {
+	readonly arch: string;
+	readonly signing: string;
+	readonly size: string;
+	readonly checksum: string;
+} {
+	return {
+		arch: T("download:platform.field.arch", { defaultValue: "ARCH:" }),
+		signing: T("download:platform.field.signing", {
+			defaultValue: "SIGNING:",
+		}),
+		size: T("download:platform.field.size", { defaultValue: "SIZE:" }),
+		checksum: T("download:platform.field.checksum", {
+			defaultValue: "CHECKSUM:",
 		}),
 	};
 }
@@ -129,325 +137,288 @@ export function Manifest(T: Translate): ManifestRecord {
 /**
  * The three platforms, in the order the manifest lists them.
  *
- * Every field `DesignSystem-Pages.md` §2 names is present on every platform.
- * The values the tree cannot supply - version, checksum, size, build - print
- * §7's `UNAVAILABLE` rather than a dash, so the record says which fact is
- * missing instead of looking like a cell somebody forgot to fill.
+ * Every value is the baseline's own: `AARCH64 / X86_64` for macOS and `X86_64`
+ * for the other two, `IN PREPARATION` for every signing row, and the baseline's
+ * `-` for a size and a checksum that have not been published. The `-` is this
+ * page's word for "there is no artifact yet", and it is deliberately not a
+ * figure: no version, no checksum and no release date is invented here.
  *
- * The state line follows §2's own division: the platform with a published
- * source-build path is `ACTIVE`, the two without one are `RELEASE PREPARATION`.
- * Both read on the record, not against it: `INSTALLER` and `SIGNATURE` say
- * `PREPARING` and `IN PREPARATION` on all three.
+ * The state line follows the baseline's own division: the platform with a
+ * published source-build path is `ACTIVE` and prints its value in the accent
+ * green; the two without one are `RELEASE PREPARATION` and print in ink.
  */
 export function ManifestPlatforms(T: Translate): readonly ManifestPlatform[] {
-	/** §7's word for a field whose value has not been published. */
-	const Unavailable = T("download:state.unavailable", {
-		defaultValue: "UNAVAILABLE",
-	});
+	/** The baseline's word for a field with no published value. */
+	const Pending = "-";
 
 	return [
 		{
 			name: "macOS",
 			arch: "AARCH64 / X86_64",
+			signing: "IN PREPARATION",
+			size: Pending,
+			checksum: Pending,
 			channel: "PUBLIC",
-			version: Unavailable,
-			signature: "IN PREPARATION",
-			checksum: Unavailable,
-			size: Unavailable,
-			build: Unavailable,
-			license: "CC0",
-			installer: "PREPARING",
 			state: {
-				copy: T("download:state.active", {
-					defaultValue: "STATUS: SOURCE ACTIVE",
+				copy: T("download:platform.status.active", {
+					defaultValue: "STATUS: ACTIVE",
 				}),
 				status: "active",
 				tone: "specimen",
-				note: T("download:state.activeNote", {
-					defaultValue:
-						"Builds from source today. The public installer, signature and checksum for this platform are in preparation.",
-				}),
 			},
-			downloadUrl: "https://github.com/CodeEditorLand/Land/releases",
-			downloadLabel: "VIEW SOURCE BUILDS",
+			action: {
+				label: "VIEW SOURCE BUILDS",
+				href: "https://github.com/CodeEditorLand/Land/releases",
+			},
 		},
 		{
 			name: "Windows",
 			arch: "X86_64",
+			signing: "IN PREPARATION",
+			size: Pending,
+			checksum: Pending,
 			channel: "PUBLIC",
-			version: Unavailable,
-			signature: "IN PREPARATION",
-			checksum: Unavailable,
-			size: Unavailable,
-			build: Unavailable,
-			license: "CC0",
-			installer: "PREPARING",
 			state: {
-				copy: T("download:state.preparing", {
+				copy: T("download:platform.status.preparing", {
 					defaultValue: "STATUS: RELEASE PREPARATION",
 				}),
 				status: "preparing",
-				tone: "quiet",
-				note: T("download:state.preparingNote", {
-					defaultValue:
-						"Builds from source today. The public installer, signature and checksum for this platform are in preparation.",
-				}),
+				tone: "ink",
 			},
 		},
 		{
 			name: "Linux",
 			arch: "X86_64",
+			signing: "IN PREPARATION",
+			size: Pending,
+			checksum: Pending,
 			channel: "PUBLIC",
-			version: Unavailable,
-			signature: "IN PREPARATION",
-			checksum: Unavailable,
-			size: Unavailable,
-			build: Unavailable,
-			license: "CC0",
-			installer: "PREPARING",
 			state: {
-				copy: T("download:state.preparing", {
+				copy: T("download:platform.status.preparing", {
 					defaultValue: "STATUS: RELEASE PREPARATION",
 				}),
 				status: "preparing",
-				tone: "quiet",
-				note: T("download:state.preparingNote", {
-					defaultValue:
-						"Builds from source today. The public installer, signature and checksum for this platform are in preparation.",
-				}),
+				tone: "ink",
 			},
 		},
 	];
 }
 
 /**
- * One platform's manifest as ledger rows, in the document's own field order.
+ * The disclosure section's content: six telemetry policy items, nine named build
+ * profiles, sixteen test permutations, four deployment strategies with their
+ * commands, and the source URL.
  *
- * ARCH is not a row: §2 folds platform and architecture into one stamp, and the
- * stamp is printed above the ledger. CHANNEL is not a row either - it is a
- * route line, `/CHANNEL: PUBLIC`, and the record prints it as one.
+ * It lives here rather than in the page because it is data: the island that
+ * renders it (`DynamicTransparency`) is a `.tsx` component this page does not
+ * own, and every string below is the copy the page has always carried -
+ * unchanged, including the inline code terms the island's `RichText` turns into
+ * chips.
  */
-export function ManifestRows(platform: ManifestPlatform): readonly LedgerRow[] {
-	return [
-		{ key: "VERSION", value: platform.version },
-		{ key: "SIGNATURE", value: platform.signature },
-		{ key: "CHECKSUM", value: platform.checksum },
-		{ key: "SIZE", value: platform.size },
-		{ key: "BUILD", value: platform.build },
-		{ key: "LICENSE", value: platform.license },
-		{ key: "INSTALLER", value: platform.installer },
-	];
-}
-
-/**
- * The build, line for line from `Documentation/GitHub/Building.md` in the Land
- * repository: the Step 1 block, the Step 2 block and the launch line, in the
- * order that file gives them. A trailing `#` is an annotation the well prints
- * and strips from the copy payload, exactly as the document writes it.
- *
- * This is the one action that exists today, so it sits inside the record
- * instead of in a section of its own: §2's `[DOWNLOAD ACTION]` slot holds the
- * source build until there is an installer to put in it.
- */
-export const BuildLines: readonly string[] = [
-	"cd Dependency/Microsoft/Dependency/Editor",
-	"nvm use 24",
-	"export NODE_ENV=development",
-	"npm install",
-	"npm run compile",
-	"npm run compile-extensions-build",
-	"cd Land # back to repository root",
-	"export Trace=all Record=1 Disable=false",
-	"./Maintain/Debug/Build.sh --profile debug-electron-bundled",
-	"./Element/Mountain/Target/debug/Mountain",
-];
-
-// ─── Requirements: what a build needs ─────────────────────────────────────
-// OS values are the ones the requirements component declares; ARCH is the
-// manifest's; INSTALLER is `card.platform.*` from
-// `Source/Library/I18n/Locale/En/Download.json`. The component declares one
-// processor / memory / disk set for all three platforms, so those three rows are
-// the same in every ledger and the recommended value travels as the row's note.
-
-const Shared: readonly LedgerRow[] = [
-	{
-		key: "PROCESSOR",
-		value: "64-bit processor (x86_64 or Apple Silicon)",
-		note: "Recommended: Multi-core 64-bit processor (x86_64 or Apple Silicon)",
-	},
-	{ key: "MEMORY", value: "4 GB RAM", note: "Recommended: 8 GB RAM" },
-	{ key: "DISK", value: "500 MB", note: "Recommended: 1 GB SSD" },
-];
-
-export function Requirements(T: Translate): readonly PlatformRequirements[] {
-	return [
-		{
-			platform: "macOS",
-			rows: [
-				{ key: "OS", value: "macOS 10.15+" },
-				{ key: "ARCH", value: "AARCH64 / X86_64" },
-				{
-					key: "INSTALLER",
-					value: T("download:card.platform.macos.universalBadge", {
-						defaultValue:
-							"Universal Binary: Apple Silicon and Intel",
-					}),
-				},
-				...Shared,
-			],
-		},
-		{
-			platform: "Windows",
-			rows: [
-				{ key: "OS", value: "Windows 10+" },
-				{ key: "ARCH", value: "X86_64" },
-				{
-					key: "INSTALLER",
-					value: T("download:card.platform.windows.description", {
-						defaultValue: "64-bit (x64)",
-					}),
-				},
-				...Shared,
-			],
-		},
-		{
-			platform: "Linux",
-			rows: [
-				{ key: "OS", value: "Ubuntu / Debian (deb) / Fedora (rpm)" },
-				{ key: "ARCH", value: "X86_64" },
-				{
-					key: "INSTALLER",
-					value: T("download:card.platform.linux.description", {
-						defaultValue: "DEB, RPM, AppImage",
-					}),
-				},
-				...Shared,
-			],
-		},
-	];
-}
-
-/**
- * The toolchain a source build needs, from the Prerequisites section of the
- * Land repository's `Documentation/GitHub/Building.md`. This is not a runtime
- * requirement - it is what the reader has to install before the commands in the
- * record can run.
- */
-export const Toolchain: readonly LedgerRow[] = [
-	{
-		key: "RUST",
-		value: "1.95.0+",
-		note: "Workspace MSRV for all Rust elements",
-	},
-	{
-		key: "NODE.JS",
-		value: "24",
-		note: "Pinned 24.22.1 in Dependency/Microsoft/Dependency/Editor/.nvmrc",
-	},
-	{ key: "PNPM", value: "npm install -g pnpm" },
-	{ key: "GIT", value: "Git with LFS support" },
-	{
-		key: "PROTOBUF",
-		value: "optional",
-		note: "Only if modifying .proto files",
-	},
-];
-
-// ─── The record's verification entry ──────────────────────────────────────
-// The verification material the page promises, verbatim from the
-// `VerificationInfo` defaults the download composition carried. Every one of
-// the three artifacts answers "Available at first public release" - the honest
-// state today, not an empty cell.
-
-export function Verification(T: Translate): readonly LedgerRow[] {
-	return [
-		{ key: "SHA-256", value: "Available at first public release" },
-		{ key: "PGP SIGNATURE", value: "Available at first public release" },
-		{ key: "SIGNING KEY ID", value: "Available at first public release" },
-		{
-			key: "PUBLISHED WITH",
-			value: T("download:verification.description", {
-				defaultValue:
-					"Release downloads will publish checksum and signature material when public installers are available.",
-			}),
-		},
-		{
-			key: "INSTRUCTIONS",
-			value: "Verification instructions will be published beside the installer, checksum, and signature artifacts.",
-		},
-		{
-			key: "INTEGRITY CHECK",
-			value: "Available at first public release",
-			note: "Air contains checksum and integrity code. Public release verification material will be published with the installers.",
-		},
-	];
-}
-
-// ─── Previous releases: what has shipped before ───────────────────────────
-// Empty, and that is the fact. The section says so with §7's `RECORD: EMPTY`
-// and one sentence; the columns below are what the matrix becomes the day there
-// is a row to put in it.
-
-export const PreviousReleases: readonly Release[] = [];
-
-export const ReleaseColumns: readonly MatrixColumn[] = [
-	{ label: "PUBLISHED" },
-	{ label: "PLATFORM" },
-	{ label: "CHANGE" },
-];
-
-// ─── The record's regions ─────────────────────────────────────────────────
-// The `# RELEASE_01` artifact continues past the manifest's own fields into
-// these three regions: what a build needs, what shipped before this release,
-// and what the build discloses about itself. Each one is a region of the record
-// - a `/LABEL`, an `h3` and a body - not a chapter of the page: the page has one
-// artifact, and five chapters around it restated a single subject (DESIGN.md
-// §1.8, §7 DR-9). All three sit on the creme field and put their information in
-// white cards, so no two regions alternate a surface to make a rhythm out of it:
-// the surface follows the artifact, never the position on the page (§5 A5).
-
-export function Regions(T: Translate): Regions {
+export function Transparency(T: Translate): TransparencyContent {
 	return {
-		Requirements: {
-			id: "release-requirements",
-			kicker: T("download:requirements.kicker", {
-				defaultValue: "/REQUIREMENTS",
-			}),
-			heading: T("download:requirements.heading", {
-				defaultValue: "What each platform needs before it builds.",
-			}),
-			standfirst: T("download:systemRequirements.subtitle", {
-				defaultValue:
-					"A quick check before you download saves a reinstall later.",
-			}),
-			footnote: T("download:requirements.footnote", {
-				defaultValue:
-					"Minimum requirements, with the recommended figure noted under each value. The component's two cards were Minimum Requirements and Recommended for the Best Experience. Processor notes: your code runs at native CPU speed (minimum) and span your work across every monitor (recommended).",
-			}),
-		},
+		Title: T("download:transparency.title", {
+			defaultValue: "Telemetry Is Compile-Gated in Land.",
+		}),
 
-		Previous: {
-			id: "release-previous",
-			kicker: T("download:previousReleases.kicker", {
-				defaultValue: "/PREVIOUS RELEASES",
-			}),
-			heading: T("download:previousReleases.heading", {
-				defaultValue: "There is nothing to go back to yet.",
-			}),
-		},
+		Subtitle: T("download:transparency.subtitle", {
+			defaultValue:
+				"Telemetry and tracing are behind named Rust feature gates in the native layer. Nothing is emitted by default. Each build profile explicitly lists which paths are compiled in.",
+		}),
 
-		Transparency: {
-			id: "release-transparency",
-			kicker: T("download:transparency.kicker", {
-				defaultValue: "/TRANSPARENCY",
-			}),
-			heading: T("download:transparency.title", {
-				defaultValue: "Telemetry Is Compile-Gated in Land.",
-			}),
-			standfirst: T("download:transparency.subtitle", {
-				defaultValue:
-					"Telemetry and tracing are behind named Rust feature gates in the native layer. Nothing is emitted by default. Each build profile explicitly lists which paths are compiled in.",
-			}),
-		},
+		Policy: [
+			{
+				Identifier: "no-telemetry-default",
+				Title: "Compile-gated by default.",
+				Description:
+					"Telemetry and tracing code lives behind `cfg(feature)` gates. In a standard build those paths are not compiled in - no collection, no emission, no runtime cost.",
+				Icon: "EyeOff",
+				Status: "Disabled",
+				Detail: "Telemetry feature paths are excluded from the default build profile.",
+			},
+			{
+				Identifier: "no-crash-reporter",
+				Title: "No Microsoft endpoint dependency.",
+				Description:
+					"Land is built from a CC0 Code-OSS base with Microsoft service dependencies removed or replaced. The crash reporter, update service, and marketplace endpoints are all replaced with Land-owned wiring or left unconnected.",
+				Icon: "Shield",
+				Status: "Disabled",
+				Detail: "CC0-licensed Code-OSS base with Land-owned service wiring.",
+			},
+			{
+				Identifier: "no-phone-home",
+				Title: "Three separate systems, three separate controls.",
+				Description:
+					"Website analytics, account authentication, and editor telemetry are independent systems. Each is controlled by its own feature flag or environment configuration - none of the three implies the others are active.",
+				Icon: "Lock",
+				Status: "Disabled",
+			},
+			{
+				Identifier: "zero-cost-noop",
+				Title: "Disabled feature paths stay out of the runtime.",
+				Description:
+					"Rust `cfg(feature)` gates eliminate disabled code paths at compile time, not just at runtime. A published build profile is a verifiable record of exactly which features were included.",
+				Icon: "Zap",
+				Status: "Active",
+				Detail: "Rust cfg(feature) gates eliminate dead code at compile time.",
+			},
+			{
+				Identifier: "opt-in-otel",
+				Title: "Need traces? Opt in. Your infrastructure only.",
+				Description:
+					"OpenTelemetry tracing is available in source and activates only when a deployment explicitly enables it with a named feature flag and a configured endpoint. Trace data goes to your infrastructure.",
+				Icon: "Eye",
+				Status: "Optional",
+				Detail: "cargo build --features Telemetry\nSub-features: MetricsCollection, DistributedTracing.",
+			},
+			{
+				Identifier: "effect-ts-local",
+				Title: "Extension host timing stays in the process.",
+				Description:
+					"Cocoon has internal timing and service diagnostics for extension-host work. Unless a transport is configured, that data is local process instrumentation rather than an external product-analytics claim.",
+				Icon: "Layers",
+				Status: "Active",
+				Detail: "Effect-TS TelemetryService with TelemetryMock layer for zero-overhead testing.",
+			},
+		],
+
+		Variant: [
+			{
+				Identifier: "debug",
+				Name: "debug",
+				Tier: "Debug",
+				Workbench: "Browser",
+				Feature: "Browser UI",
+				Status: "Available",
+			},
+			{
+				Identifier: "debug-mountain",
+				Name: "debug-mountain",
+				Tier: "Debug",
+				Workbench: "Mountain",
+				Feature: "Mountain UI",
+				Status: "Recommended",
+			},
+			{
+				Identifier: "debug-electron",
+				Name: "debug-electron",
+				Tier: "Debug",
+				Workbench: "Electron",
+				Feature: "Legacy Check",
+				Status: "Legacy",
+			},
+			{
+				Identifier: "production",
+				Name: "production",
+				Tier: "Release",
+				Workbench: "Mountain",
+				Feature: "Release Path",
+				Status: "Recommended",
+			},
+			{
+				Identifier: "release",
+				Name: "release",
+				Tier: "Release",
+				Workbench: "Mountain",
+				Feature: "Bundle Path",
+				Status: "Available",
+			},
+			{
+				Identifier: "web-browser",
+				Name: "web-browser",
+				Tier: "Release",
+				Workbench: "Browser",
+				Feature: "Web Path",
+				Status: "Available",
+			},
+			{
+				Identifier: "bundler-preparation",
+				Name: "bundler-preparation",
+				Tier: "Build",
+				Workbench: "-",
+				Feature: "-",
+				Status: "Available",
+			},
+			{
+				Identifier: "swc-bundle",
+				Name: "swc-bundle",
+				Tier: "Build",
+				Workbench: "-",
+				Feature: "-",
+				Status: "Experimental",
+			},
+			{
+				Identifier: "oxc-bundle",
+				Name: "oxc-bundle",
+				Tier: "Build",
+				Workbench: "-",
+				Feature: "-",
+				Status: "Experimental",
+			},
+		],
+
+		Strategy: [
+			{
+				Identifier: "dev-hot-reload",
+				Name: "Development",
+				Description:
+					"Change a file, see it instantly. Hot-reload in Tauri with the Sky dev server. No manual rebuilds needed.",
+				Icon: "Zap",
+				Command: "bash Maintain/Dev-Mountain.sh",
+				Feature: [
+					"Hot Reload",
+					"Instant Preview",
+					"Development Server",
+					"No Bundling",
+				],
+			},
+			{
+				Identifier: "debug-build",
+				Name: "Debug Build",
+				Description:
+					"Full debug symbols for stepping through code. Three profiles: Browser, Mountain, and Electron.",
+				Icon: "Code",
+				Command:
+					"bash Maintain/Debug/Build.sh --profile debug-mountain",
+				Feature: [
+					"Debug Symbols",
+					"3 Profiles",
+					"Source Maps",
+					"File Watch",
+				],
+			},
+			{
+				Identifier: "production-release",
+				Name: "Release Build",
+				Description:
+					"Optimized release packaging path. Public signing and verification artifacts are still being prepared.",
+				Icon: "Server",
+				Command: "bash Maintain/Release/Build.sh --profile production",
+				Feature: [
+					"Optimized",
+					"Signing Planned",
+					"Clean Build",
+					"Packaged",
+				],
+			},
+			{
+				Identifier: "web-only",
+				Name: "Web Deployment",
+				Description:
+					"Run Land in the browser without installing anything. No native shell needed.",
+				Icon: "Layers",
+				Command: "bash Maintain/Release.sh --profile web-browser",
+				Feature: [
+					"No Install",
+					"Browser Only",
+					"Web Deploy",
+					"OXC Bundled",
+				],
+			},
+		],
+
+		MatrixPermutation: 16,
+
+		SourceURL: "https://github.com/CodeEditorLand/Land",
 	};
 }

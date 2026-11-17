@@ -1,0 +1,58 @@
+---
+/**
+ * SurfaceBadge - one state word on a Jelly badge.
+ *
+ * The badge is the house surface (`<jelly-badge>`), tinted from the semantic
+ * token of the thing the word describes and shaped square so it sits in a run
+ * with its neighbours. The word is printed verbatim: this block re-words
+ * nothing, it only tints.
+ *
+ * A badge that reports a live state also carries a 6px dot in the state's own
+ * colour, separated from the word by U+2001 (EM QUAD) - the site's field
+ * separator, never a middle dot. A badge that reports a plan or a licence has
+ * no dot, because nothing is running yet.
+ *
+ * No `<script>` and no `client:*`: this block ships zero JavaScript. Jelly
+ * paints the soft body from CSS.
+ */
+import { BadgeInk } from "./Badge.js";
+
+import type { BadgeTone } from "./Badge.js";
+
+interface Props {
+	/** The word to print: `Active`, `Coming Soon`, `16 Permutations`. */
+	label: string;
+
+	/** The tint it carries. Defaults to the neutral `mute` tone. */
+	tone?: BadgeTone;
+
+	/** Whether the badge reports a live state and so carries its dot. */
+	dot?: boolean;
+}
+
+const { label, tone = "mute", dot = false } = Astro.props;
+
+const Ink = BadgeInk[tone];
+
+const Style = [
+	`--jelly-fill:var(--${Ink.fill})`,
+	`--jelly-label:var(--${Ink.label})`,
+	"--jelly-badge-radius:0",
+	"--jelly-badge-font-size:13px",
+].join(";");
+---
+
+<jelly-badge shape="square" variant={Ink.variant} style={Style}
+	>{label}{
+		dot ? (
+			<>
+				{"\u2001"}
+				<span
+					class="flat h-1.5 w-1.5"
+					aria-hidden="true"
+					style={`background-color:var(--${Ink.dot})`}
+				/>
+			</>
+		) : null
+	}</jelly-badge
+>

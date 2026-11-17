@@ -1,6 +1,4 @@
 ---
-import AuthShell from "../../Component/Auth/AuthShell.astro";
-import { AuthFrameFor } from "../../Component/Auth/Data";
 import Auth0Account from "../../Component/Dynamic/Auth0Account";
 import { Header } from "../../Component/Layout/Header";
 import Base from "../../Layout/Base.astro";
@@ -20,19 +18,16 @@ const { Auth0Domain, Auth0ClientIdentifier } =
 	await import("../../Function/Configuration/Auth.js");
 
 /* Registration is closed, so this page's honest state is a report, not a
-   form. The island decides that (RegistrationEnabled) and renders the report;
-   the shell supplies the same frame the sign-in page uses. */
-const Frame = AuthFrameFor("signUp", T);
+   form. The island decides that (RegistrationEnabled) and renders the report
+   with its own heading, sentence and action - the page adds none above it. */
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription}>
 	<Header client:load Mode="functional" slot="Header" />
-	<AuthShell frame={Frame}>
-		<Auth0Account
-			client:only="react"
-			Route="signup"
-			Domain={Auth0Domain}
-			ClientIdentifier={Auth0ClientIdentifier}
-		/>
-	</AuthShell>
+	<Auth0Account
+		client:only="react"
+		Route="signup"
+		Domain={Auth0Domain}
+		ClientIdentifier={Auth0ClientIdentifier}
+	/>
 </Base>

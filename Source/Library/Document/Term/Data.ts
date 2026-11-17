@@ -20,12 +20,11 @@ import type { ReadingIndexItem } from "../../../Component/Reading/Type.js";
 import type { LedgerRow } from "../../../Component/Record/Type.js";
 
 export const Ledger: readonly LedgerRow[] = [
-	{ key: "EFFECTIVE", value: "March 26, 2026", note: "effective date" },
-	{ key: "VERSION", value: "May 29, 2026", note: "last updated" },
+	{ key: "Effective Date:", value: "March 26, 2026" },
+	{ key: "Last Updated:", value: "May 29, 2026" },
 	{
 		key: "APPLIES TO",
-		value:
-			"editor.land, the desktop application, APIs, Cloudflare Workers, documentation, downloads, account services, synchronization features, and any related services",
+		value: "editor.land, the desktop application, APIs, Cloudflare Workers, documentation, downloads, account services, synchronization features, and any related services",
 		note: "operated by PlayForm, based in Sofia, Bulgaria",
 	},
 	{
@@ -86,7 +85,11 @@ export const Index: readonly ReadingIndexItem[] = [
 	{ number: "20", label: "Termination", href: "#termination" },
 	{ number: "21", label: "Governing Law", href: "#governing-law" },
 	{ number: "22", label: "Changes To Service", href: "#changes-to-service" },
-	{ number: "23", label: "Amendments To Terms", href: "#amendments-to-terms" },
+	{
+		number: "23",
+		label: "Amendments To Terms",
+		href: "#amendments-to-terms",
+	},
 	{
 		number: "24",
 		label: "Waiver And Severability",

@@ -2,11 +2,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
+import { AuthReport } from "../Auth/Report";
+
 import { DynamicButton } from "./DynamicButton";
 
 import { DynamicInput } from "./DynamicInput";
-
-import { DynamicStateReport, StateLabel } from "./DynamicStateReport";
 
 import type Property from "./Interface/Property/Verification/Email.js";
 
@@ -17,9 +17,11 @@ import type { default as VerificationState } from "./Type/State/Verification.js"
  * success, error. Auto-verifies if a token is present in the URL, otherwise
  * shows the pending state with resend.
  *
- * Each state is a report - a status line saying what the state is, one
- * sentence saying what happened, and the action that is available - rendered
- * inside the route's AuthShell, which owns the page frame.
+ * Every state is a report in the card's own anatomy (`AuthReport`): the
+ * state's title as an `h3`, one sentence saying what happened, and the action
+ * that is available. The pending state is the baseline's - the mail tile, the
+ * `Verify Your Email Address` heading, the four-sentence paragraph, the
+ * labelled email field and the full-width resend button.
  */
 const DynamicEmailVerification = ({
 	Content,
@@ -28,7 +30,6 @@ const DynamicEmailVerification = ({
 	OnVerify,
 	OnResend,
 	OnNavigate,
-	ClassName,
 }: Property) => {
 	const { t: T } = useTranslation("verify");
 
@@ -138,85 +139,69 @@ const DynamicEmailVerification = ({
 		}
 	};
 
-	const PendingStatus = T("auth.pendingStatus", {
-		defaultValue: StateLabel.Preparing,
-	});
-
-	const VerifyingStatus = T("auth.verifyingStatus", {
-		defaultValue: StateLabel.Loading,
-	});
-
-	const VerifiedStatus = T("auth.verifiedStatus", {
-		defaultValue: StateLabel.Verified,
-	});
-
-	const FailedStatus = T("auth.failedStatus", {
-		defaultValue: StateLabel.Interrupted,
-	});
-
 	const RenderPending = () => (
-		<DynamicStateReport
-			Label={PendingStatus}
-			Tone="quiet"
+		<AuthReport
+			Title={Content.Pending.Title}
 			Sentence={Content.Pending.Description}
-			Action={
-				<div className="auth-shell__field">
-					<DynamicInput
-						Content={{
-							Label: T("emailLabel", { defaultValue: "Email" }),
-							Placeholder: T("emailPlaceholder", {
-								defaultValue: "Enter your email address",
-							}),
-							Type: "email",
-							Value: Email,
-							OnChange: SetEmail,
-						}}
-						Id="email"
-					/>
+			Glyph="mail"
+		>
+			<div className="space-y-4">
+				<DynamicInput
+					Content={{
+						Label: T("emailLabel", { defaultValue: "Email" }),
+						Placeholder: T("emailPlaceholder", {
+							defaultValue: "Enter your email address",
+						}),
+						Type: "email",
+						Value: Email,
+						OnChange: SetEmail,
+					}}
+					Id="email"
+				/>
 
-					<DynamicButton
-						Content={{
-							...Content.Pending.ResendButton,
-							Text:
-								ResendCooldown > 0
-									? T("resendCooldown", {
-											defaultValue:
-												"Resend in {{seconds}}s",
-											seconds: ResendCooldown,
-										})
-									: (Content.Pending.ResendButton.Text ?? ""),
-							FullWidth: true,
-							Disabled: !Email || ResendCooldown > 0,
-							Variant: "default",
-							ClassName: "auth-shell__primary",
-						}}
-						OnAction={HandleResend}
-					/>
+				<DynamicButton
+					Content={{
+						...Content.Pending.ResendButton,
+						Text:
+							ResendCooldown > 0
+								? T("resendCooldown", {
+										defaultValue:
+											"Resend in {{seconds}}s",
+										seconds: ResendCooldown,
+									})
+								: (Content.Pending.ResendButton.Text ?? ""),
+						FullWidth: true,
+						Disabled: !Email || ResendCooldown > 0,
+						Variant: "default",
+						ClassName: "auth-shell__primary",
+					}}
+					OnAction={HandleResend}
+				/>
 
-					{ResendSuccess && (
-						<p className="auth-shell__note" role="status">
-							{Content.Pending.ResendSuccessMessage ||
-								T("resendSuccess", {
-									defaultValue: "Verification email resent!",
-								})}
-						</p>
-					)}
+				{ResendSuccess && (
+					<p className="auth-shell__note" role="status">
+						{Content.Pending.ResendSuccessMessage ||
+							T("resendSuccess", {
+								defaultValue: "Verification email resent!",
+							})}
+					</p>
+				)}
 
-					{Content.Pending.EmailSentMessage && (
-						<p className="auth-shell__note">
-							{Content.Pending.EmailSentMessage}
-						</p>
-					)}
-				</div>
-			}
-		/>
+				{Content.Pending.EmailSentMessage && (
+					<p className="auth-shell__note">
+						{Content.Pending.EmailSentMessage}
+					</p>
+				)}
+			</div>
+		</AuthReport>
 	);
 
 	const RenderVerifying = () => (
-		<DynamicStateReport
-			Label={VerifyingStatus}
-			Tone="ink"
-			Loading
+		<AuthReport
+			Title={
+				Content.Verifying?.Title ||
+				T("verifying.title", { defaultValue: "Verifying your email" })
+			}
 			Sentence={
 				Content.Verifying?.Description ||
 				T("verifying.description", {
@@ -224,60 +209,59 @@ const DynamicEmailVerification = ({
 						"Please wait while we verify your email address...",
 				})
 			}
-			Action={
-				<a href="/" className="auth-shell__alternate">
-					{T("backToEditor", { defaultValue: "Back to the editor" })}
-				</a>
-			}
-		/>
+			Glyph="loading"
+			Role="status"
+		>
+			<a href="/" className="auth-shell__alternate">
+				{T("backToEditor", { defaultValue: "Back to the editor" })}
+			</a>
+		</AuthReport>
 	);
 
 	const RenderSuccess = () => (
-		<DynamicStateReport
-			Label={VerifiedStatus}
-			Tone="specimen"
+		<AuthReport
+			Title={Content.Success.Title}
 			Sentence={Content.Success.Description}
-			Action={
-				<DynamicButton
-					Content={{
-						...Content.Success.ContinueButton,
-						FullWidth: true,
-						Variant: "default",
-						ClassName: "auth-shell__primary",
-					}}
-					OnAction={() => OnNavigate?.("/Dashboard")}
-				/>
-			}
-		/>
+			Glyph="check"
+		>
+			<DynamicButton
+				Content={{
+					...Content.Success.ContinueButton,
+					FullWidth: true,
+					Variant: "default",
+					ClassName: "auth-shell__primary",
+				}}
+				OnAction={() => OnNavigate?.("/Dashboard")}
+			/>
+		</AuthReport>
 	);
 
 	const RenderError = () => (
-		<DynamicStateReport
-			Role="alert"
-			Label={FailedStatus}
-			Tone="strong"
+		<AuthReport
+			Title={Content.Error.Title}
 			Sentence={ErrorMessage || Content.Error.Description}
-			Action={
-				<DynamicButton
-					Content={{
-						...Content.Error.BackToSignInButton,
-						FullWidth: true,
-						Variant: "default",
-						ClassName: "auth-shell__primary",
-					}}
-					OnAction={() => OnNavigate?.("/Account/SignIn")}
-				/>
-			}
-		/>
+			Glyph="alert"
+			Role="alert"
+		>
+			<DynamicButton
+				Content={{
+					...Content.Error.BackToSignInButton,
+					FullWidth: true,
+					Variant: "default",
+					ClassName: "auth-shell__primary",
+				}}
+				OnAction={() => OnNavigate?.("/Account/SignIn")}
+			/>
+		</AuthReport>
 	);
 
 	return (
-		<div className={`auth-shell__form ${ClassName || ""}`}>
+		<>
 			{State === "pending" && RenderPending()}
 			{State === "verifying" && RenderVerifying()}
 			{State === "success" && RenderSuccess()}
 			{State === "error" && RenderError()}
-		</div>
+		</>
 	);
 };
 

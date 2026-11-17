@@ -1,58 +1,73 @@
 ---
 /**
- * AuthShell - the one frame every account, OAuth and verify route renders.
+ * AuthShell - the one card the account and verify routes render.
  *
- * Anatomy: /KICKER, the surface name as the page's single `h1`, one
- * supporting sentence, the form or state report on an `.emphasis-standard`
- * surface, and one alternate action as a plain hairline link.
+ * The baseline's shape, restored: a `py-20` section, a centred `max-w-md`
+ * measure, and a single `jelly-card` on the canvas. The route supplies the
+ * card's interior - the heading block, the fields and the states - so the
+ * surfaces cannot disagree about the measure, the surface or the vertical
+ * rhythm.
  *
- * The frame is `.astro` (no JavaScript); each route's island renders inside
- * the slot and owns only its own fields, states and handlers. The shell never
- * knows what the island does - which is what makes all eight routes agree.
- *
- * The measure is narrow by default (28rem, the card's rule for a form). The
- * account index passes `measure="wide"` because it carries the profile field
- * table, not a form - reported on the card rather than silently widened.
+ * The heading is deliberately NOT the shell's. The baseline prints an `h3`
+ * inside the card on Verify and on both password routes, and the account
+ * index prints no heading at all, so a shell that owned an `h1` would print
+ * one the baseline never had. Each route names itself inside the card.
  *
  * The root is a `<div>`, not a `<main>`: `Base.astro` already renders the
  * document's single `<main id="main-content">`, and the skip link points at
  * it. A second `<main>` here would be a second landmark and a duplicate ID.
+ *
+ * `min-h-screen` reproduces the baseline's page-start treatment - the content
+ * column fills the viewport before the footer, even on the short states.
  */
-import type { AuthFrame } from "./Type.js";
-
 interface Props {
-	frame: AuthFrame;
-	measure?: "narrow" | "wide";
-	class?: string;
+	/** The section's accessible name - the route's own surface name. */
+	Label: string;
+
+	/** `md` is the card's 28rem measure; `2xl` is for a field table. */
+	Width?: "md" | "2xl";
+
+	/** Centre the card's own text block (the reset route's loading state). */
+	Center?: boolean;
+
+	/** Announce the interior's changes (the verify route's state machine). */
+	Live?: boolean;
 }
 
-const { frame, measure = "narrow", class: ClassName } = Astro.props;
+const { Label, Width = "md", Center = false, Live = false } = Astro.props;
 
-const { kicker, heading, sentence, action } = frame;
+/* The card paints itself from its own custom properties, so the interior
+   controls its own padding - the baseline's blocks carry their own `p-6`. */
+const Surface = {
+	"--jelly-fill": "var(--Card)",
+	"--jelly-radius": "0px",
+	"--jelly-card-color": "inherit",
+	"--jelly-card-padding-block": "0px",
+	"--jelly-card-padding-inline": "0px",
+	"--jelly-card-font-size": "inherit",
+};
 ---
 
-<div class:list={["auth-shell", `auth-shell--${measure}`, ClassName]}>
-	<div class="auth-shell__inner">
-		<header class="auth-shell__header">
-			<p class="auth-shell__kicker">{kicker}</p>
-			<h1 class="auth-shell__heading type-section">{heading}</h1>
-			{
-				sentence && (
-					<p class="auth-shell__sentence type-sub">{sentence}</p>
-				)
-			}
-		</header>
-		<div class="auth-shell__surface emphasis-standard">
-			<slot />
-		</div>
-		{
-			action && (
-				<a class="auth-shell__alternate" href={action.href}>
-					{action.label}
-					{"\u2001"}
-					<span aria-hidden="true">&rarr;</span>
-				</a>
-			)
-		}
+<div class="flex min-h-screen flex-col">
+	<div class="flex-1">
+		<section class="py-20" aria-label={Label}>
+			<div class="container mx-auto px-4">
+				<div
+					class:list={[
+						"mx-auto",
+						Width === "2xl" ? "max-w-2xl" : "max-w-md",
+						Center && "text-center",
+					]}
+					aria-live={Live ? "polite" : undefined}
+				>
+					<jelly-card
+						class="StaccatoBorderShimmer StaccatoCard StaccatoShadowLift text-card-fg"
+						style={Surface}
+					>
+						<slot />
+					</jelly-card>
+				</div>
+			</div>
+		</section>
 	</div>
 </div>

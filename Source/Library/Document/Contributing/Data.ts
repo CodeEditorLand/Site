@@ -1,25 +1,21 @@
 /**
  * Contributing - the Contributing page's own rows.
  *
- * Three lists, and the third is the reason this file exists: the page describes
- * a process in prose, and a process is data. A stage is a label and one line; a
- * well is a command and its label. The page maps them through `T` at render
- * time - this module holds the keys and the English defaults, never the i18n
- * client, so a locale change is a JSON change and nothing here moves.
+ * Two lists, and the second is the reason this file exists: the page describes a
+ * process, and a process is data. A step is a number, a title, one line and -
+ * where the step needs one - the command it runs. The page maps the rows through
+ * `T` at render time; this module holds the keys and the English defaults, never
+ * the i18n client, so a locale change is a JSON change and nothing here moves.
  *
- * The four stages are the page's own four steps, in the page's own order, with
- * the page's own titles. The command blocks are the two `<pre>` blocks the page
- * already carried, in the stages that own them.
- *
- * The test step is the page's own sentence, promoted to a step: `Ways to
- * Contribute` already tells a reader "Write tests, reproduce reported bugs, or
- * help triage open issues", and the sequence the page describes (fork, build,
- * change, submit) only reads as a sequence once the reader knows what to run
- * before opening the pull request. It carries no command block, because the page
- * carries no test command - inventing one would be inventing a procedure.
+ * The four steps are the baseline render's four steps, in its order, with its
+ * own titles and its own two command blocks: fork and clone, set up the
+ * environment, make the changes, open the pull request. A fifth step (Test) was
+ * added during the programme and is not restored - its sentence already renders
+ * in `Ways to Contribute` under Testing, so the sequence reads exactly as the
+ * page always read.
  */
 import type { ReadingIndexItem } from "../../../Component/Reading/Type.js";
-import type { LedgerRow, Stage } from "../../../Component/Record/Type.js";
+import type { LedgerRow } from "../../../Component/Record/Type.js";
 
 export const Ledger: readonly LedgerRow[] = [
 	{
@@ -47,54 +43,55 @@ export const Index: readonly ReadingIndexItem[] = [
 	{ number: "06", label: "Code of Conduct", href: "#code-of-conduct" },
 ];
 
-/** One stage row plus the i18n key pair the page resolves it from. */
+/** One step row plus the i18n key pair the page resolves it from. */
 export interface ProcessRow {
+	/** The step's number, printed as the baseline printed it: `1`-`4`. */
 	readonly index: string;
-	readonly titleKey: string;
-	readonly title: string;
-	readonly lineKey: string;
-	readonly line: string;
-}
 
-/** One command block plus the i18n key pair its bar label is resolved from. */
-export interface WellRow {
+	/** The i18n key for the step's title. */
 	readonly titleKey: string;
+
+	/** The English default for the step's title. */
 	readonly title: string;
-	readonly language: string;
-	readonly lines: readonly string[];
+
+	/** The i18n key for the step's one line. */
+	readonly lineKey: string;
+
+	/** The English default for the step's one line, already carrying its links. */
+	readonly line: string;
+
+	/** The command the step runs, where the step runs one. */
+	readonly command?: string;
 }
 
 export const Process: readonly ProcessRow[] = [
 	{
-		index: "01",
+		index: "1",
 		titleKey: "common.contributing.step1.title",
 		title: "Fork and Clone",
 		lineKey: "common.contributing.step1.description",
 		line: "Fork the Land repository on GitHub and clone it locally with submodules:",
+		command:
+			"git clone --recurse-submodules https://github.com/YOUR_USERNAME/Land.git",
 	},
 	{
-		index: "02",
+		index: "2",
 		titleKey: "common.contributing.step2.title",
 		title: "Set Up the Environment",
 		lineKey: "common.contributing.step2.description",
 		line: "Install Rust nightly and Node.js 24. Then compile the VS Code Editor submodule first (see Installation guide), then run:",
+		command:
+			"cd Land && pnpm install && ./Maintain/Debug/Build.sh --profile debug-electron-bundled",
 	},
 	{
-		index: "03",
+		index: "3",
 		titleKey: "common.contributing.step3.title",
 		title: "Make Your Changes",
 		lineKey: "common.contributing.step3.description",
 		line: "Create a branch, make your changes, and follow the PascalCase naming convention used throughout the project.",
 	},
 	{
-		index: "04",
-		titleKey: "common.contributing.stepTest.title",
-		title: "Test",
-		lineKey: "common.contributing.stepTest.description",
-		line: "Write tests, reproduce reported bugs, or help triage open issues.",
-	},
-	{
-		index: "05",
+		index: "4",
 		titleKey: "common.contributing.step4.title",
 		title: "Submit a Pull Request",
 		lineKey: "common.contributing.step4.description",
@@ -102,36 +99,33 @@ export const Process: readonly ProcessRow[] = [
 	},
 ];
 
-export const Wells: readonly WellRow[] = [
-	{
-		titleKey: "common.contributing.step1.title",
-		title: "Fork and Clone",
-		language: "sh",
-		lines: [
-			"git clone --recurse-submodules https://github.com/YOUR_USERNAME/Land.git",
-		],
-	},
-	{
-		titleKey: "common.contributing.step2.title",
-		title: "Set Up the Environment",
-		language: "sh",
-		lines: [
-			"cd Land && pnpm install && ./Maintain/Debug/Build.sh --profile debug-electron-bundled",
-		],
-	},
-];
+/** One step as the page renders it: the row's own fields, already translated. */
+export interface Step {
+	/** The step's number, printed verbatim. */
+	readonly index: string;
+
+	/** The step's title, printed as its `h3`. */
+	readonly title: string;
+
+	/** The step's one line, carrying the site's inline term links. */
+	readonly line: string;
+
+	/** The command the step runs, where the step runs one. */
+	readonly command?: string;
+}
 
 /**
- * Resolve the process rows into the block's own shape. The page passes its `T`;
- * this module never imports the i18n client, and the stage order is the array's
+ * Resolve the process rows into the page's own shape. The page passes its `T`;
+ * this module never imports the i18n client, and the step order is the array's
  * order, so nothing here sorts.
  */
-export const ResolveStages = (
+export const ResolveSteps = (
 	Rows: readonly ProcessRow[],
 	Translate: (Key: string, Default: string) => string,
-): readonly Stage[] =>
+): readonly Step[] =>
 	Rows.map((Row) => ({
 		index: Row.index,
-		label: Translate(Row.titleKey, Row.title),
+		title: Translate(Row.titleKey, Row.title),
 		line: Translate(Row.lineKey, Row.line),
+		command: Row.command,
 	}));

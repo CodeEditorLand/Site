@@ -1,51 +1,112 @@
 ---
-// PrivacyRequests - the dashboard's data-rights directory: three groups of
-// destinations, each entry stating what it does before the reader clicks it.
+// PrivacyRequests - the dashboard's data-rights directory: the six statutory
+// rights, the four support channels, and the one entry that ends the account.
 //
 // This was `Dynamic/DynamicPrivacyRequests.tsx`, a "use client" island with no
 // client state, no handler and no hook - it shipped React to the browser to
-// render fourteen static links. Nothing hydrates here, so nothing needs an
-// island: the same destinations, in the same order, with the same copy, at
-// zero JavaScript. No interaction was removed, because there was none to
-// remove.
+// render static links. Nothing hydrates here, so nothing needs an island: the
+// same destinations, in the same order, with the same copy, at zero
+// JavaScript. No interaction was removed, because there was none to remove.
 //
-// The entries are `RecordEntry` rather than hand-built cards: a destination is
-// an index, a name, a chip row, one line of what it opens and a link, which is
-// the block's whole anatomy. Building it inline again is how the old file
-// drifted into four different card shapes for one kind of thing.
-//
-// Every group prints a sentence when it has no destination, and the sentence
-// comes from the group itself (`Data.ts`), so a blank panel is not reachable
-// from this template.
+// The three blocks are three shapes and are rendered as three blocks, not as
+// one list with a `kind` branch: a right ends in `Open form`, a support
+// channel ends in the mailbox its request lands at, and the erasure entry is
+// one red card. Flattening them is how the old file drifted into a list of
+// twenty-three rows for ten destinations.
 //
 // No script tag, no client directive, no inline style.
-import RecordEntry from "../Record/RecordEntry.astro";
-import { RequestGroups } from "./Data.js";
+import { Erase, Rights, Support } from "./Data.js";
 ---
 
-<div class="requests">
-	{
-		RequestGroups.map((Group) => (
-			<div class="requests__group">
-				<p
-					class:list={[
-						"requests__label",
-						Group.danger ? "requests__label--danger" : null,
-					]}
+<div class="space-y-12">
+	<div>
+		<h3 class="font-medium text-sm font-mono mb-2">{Rights.label}</h3>
+		<p class="mb-6 text-muted-foreground">{Rights.intro}</p>
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-3">
+			{
+				Rights.cards.map((Card) => (
+					<a
+						class="flex StaccatoBorderShimmer StaccatoCard bg-card transition-all p-5 flex-col focus:outline-2 focus:outline-[var(--Primary)] focus:outline-offset-2 hover:bg-secondary"
+						href={Card.href}
+					>
+						<div class="flex justify-between gap-2 items-start mb-3">
+							<h4 class="text-card-foreground font-medium leading-snug">{Card.title}</h4>
+							<div class="flex flex-col gap-1 items-end shrink-0">
+								<span class="font-medium text-sm font-mono tracking-widest bg-blue-50 border border-blue-200 px-2 py-0.5 text-blue-700">{Card.code}</span>
+								<span class="text-card-foreground text-sm font-mono opacity-70">{Card.article}</span>
+							</div>
+						</div>
+						<p class="text-card-foreground text-sm flex-1 leading-relaxed mb-4">{Card.body}</p>
+						<span class="text-card-foreground font-medium text-sm inline-flex items-center mt-auto">Open form<span class="ml-1">→</span></span>
+					</a>
+				))
+			}
+		</div>
+	</div>
+
+	<div>
+		<h3 class="font-medium text-sm font-mono mb-2">{Support.label}</h3>
+		<p class="mb-6 text-muted-foreground">{Support.intro}</p>
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-4">
+			{
+				Support.cards.map((Card) => (
+					<a
+						class="flex StaccatoBorderShimmer StaccatoCard bg-card transition-all p-5 flex-col focus:outline-2 focus:outline-[var(--Primary)] focus:outline-offset-2 hover:bg-secondary"
+						href={Card.href}
+					>
+						<div class="flex items-center justify-between gap-2 mb-2">
+							<h4 class="text-card-foreground font-medium">{Card.title}</h4>
+							<span class="text-card-foreground font-medium text-sm font-mono shrink-0 tracking-widest">{Card.code}</span>
+						</div>
+						<p class="text-card-foreground text-sm flex-1 leading-relaxed mb-4">{Card.body}</p>
+						<span class="text-card-foreground text-sm font-mono mt-auto">{Card.address}</span>
+					</a>
+				))
+			}
+		</div>
+	</div>
+
+	<div>
+		<h3 class="font-medium text-sm font-mono mb-2">{Erase.label}</h3>
+		<p class="mb-6 text-muted-foreground">{Erase.intro}</p>
+		<a
+			class="bg-card StaccatoCard transition-all focus:outline-2 focus:outline-offset-2 block border border-red-200 focus:outline-red-400 hover:bg-red-50 p-6"
+			href={Erase.href}
+		>
+			<div class="flex items-start gap-4 mb-4">
+				<div
+					class="flex items-center justify-center shrink-0 border h-10 w-10 bg-red-50 border-red-200 text-red-600"
 				>
-					{Group.label}
-				</p>
-				<p class="requests__intro">{Group.intro}</p>
-				{Group.links.length > 0 ? (
-					<div class="requests__list">
-						{Group.links.map((Link) => (
-							<RecordEntry {...Link} />
-						))}
+					<svg
+						aria-hidden="true"
+						viewBox="0 0 24 24"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						height="20"
+						stroke="currentColor"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						width="20"
+					>
+						<path d="M3 6h18"></path>
+						<path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+						<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+						<line x1="10" x2="10" y1="11" y2="17"></line>
+						<line x1="14" x2="14" y1="11" y2="17"></line>
+					</svg>
+				</div>
+				<div class="flex-1">
+					<div class="flex items-center gap-2 mb-1">
+						<h4 class="font-medium text-red-700">{Erase.title}</h4>
+						<span class="font-medium text-sm font-mono tracking-widest text-red-700">
+							{Erase.code}
+						</span>
 					</div>
-				) : (
-					<p class="requests__state">{Group.empty}</p>
-				)}
+					<p class="text-card-foreground text-sm">{Erase.body}</p>
+				</div>
+				<span class="font-medium text-red-600 shrink-0">→</span>
 			</div>
-		))
-	}
+		</a>
+	</div>
 </div>

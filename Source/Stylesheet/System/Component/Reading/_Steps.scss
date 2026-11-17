@@ -1,0 +1,110 @@
+// Contributing - the contribution process: four numbered steps in one white
+// card, each a heading, a line and - where the step runs one - a command with
+// its copy control.
+//
+// Publishes:
+//   .contributing-steps            the white card the sequence sits in
+//   .contributing-steps__list      the ordered list
+//   .contributing-steps__step      one step: number chip, then its body
+//   .contributing-steps__index     the number chip
+//   .contributing-steps__body      the step's heading, line and command
+//   .contributing-steps__title     the step's `h3`
+//   .contributing-steps__line      the step's one line
+//   .contributing-steps__command   the command row: the pre and its button
+//   .contributing-steps__pre       the command itself
+//
+// The numbers are the baseline render's: a `p-6` card, `space-y-6` between the
+// steps, a `gap-4` between the chip and the body, a 2rem square chip on
+// `--secondary`, a body-weight heading, and a command block inset 8px below the
+// line with the copy control beside it. The card is deliberately not a
+// `StaccatoCard`: its seed-scatter transform rotates static content, and this is
+// a procedure rather than a specimen.
+
+@use "../../Mixin" as *;
+
+.contributing-steps {
+	padding: 1.5rem;
+	background: var(--Card);
+	color: var(--CardForeground);
+}
+
+.contributing-steps__list {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+
+	margin: 0;
+	padding: 0;
+
+	list-style: none;
+}
+
+.contributing-steps__step {
+	display: flex;
+	align-items: flex-start;
+	gap: 1rem;
+}
+
+// The number chip: a fixed 2rem square so four steps' headings start on one
+// line, filled with the secondary surface rather than an accent - it counts, it
+// does not decorate.
+.contributing-steps__index {
+	display: flex;
+	flex: 0 0 auto;
+	align-items: center;
+	justify-content: center;
+
+	inline-size: 2rem;
+	block-size: 2rem;
+
+	background: var(--Secondary);
+
+	font-weight: 500;
+	color: var(--SecondaryForeground);
+}
+
+.contributing-steps__body {
+	min-inline-size: 0;
+}
+
+.contributing-steps__title {
+	margin: 0;
+	font-size: var(--type-body);
+	font-weight: 500;
+	line-height: var(--type-body-line);
+	color: var(--CardForeground);
+}
+
+.contributing-steps__line {
+	margin: 0.25rem 0 0;
+	color: var(--CardForeground);
+	white-space: pre-line;
+}
+
+.contributing-steps__command {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.5rem;
+
+	margin-block-start: 0.5rem;
+}
+
+// The command scrolls on its own: a long line must not widen the page, and the
+// copy control stays outside the scroll box so it never scrolls away from the
+// reader's reach.
+.contributing-steps__pre {
+	flex: 1 1 auto;
+	min-inline-size: 0;
+
+	margin: 0;
+	padding: 0.75rem;
+
+	overflow-x: auto;
+
+	background: var(--Mute);
+	color: var(--Foreground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-code);
+	line-height: var(--type-code-line);
+}

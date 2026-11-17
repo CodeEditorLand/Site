@@ -1,248 +1,198 @@
-// DynamicReleaseManifest - the Download page's opening artifact: the
-// `# RELEASE_01` record, its platform entries, its verification entry and the
-// source build that stands in the manifest's action slot until an installer
-// exists.
+// ManifestBand - the Download page's release manifest band: its centred header
+// and the three platform entries under it.
 //
 // Publishes:
-//   .download-record                the record shell: chapter spacing, no top rule
-//   .download-record__inner         the one inner container, on the band gutters
-//   .download-record__head          the index and the seal
-//   .download-record__index         the `# RELEASE_01` marker
-//   .download-record__heading       the record's claim, the page's one h2 here
-//   .download-record__state-block   the record's state line and its reading
-//   .download-record__state         the record's own STATUS line
-//   .download-record__note          the plain-language reading of that state
-//   .download-record__platforms     the platform grid: one column, three from 1024px
-//   .download-record__empty         the sentence a manifest with no platforms says
-//   .download-record__build         the source build, in the action slot
-//   .download-record__footnote      what the record carries and what it does not
-//   .download-record__source        where every figure in the record comes from
-//   .download-platform              one platform entry, as a jelly-card
-//   .download-platform__stamp       `〈PLATFORM / ARCH〉`
-//   .download-platform__channel     `/CHANNEL: PUBLIC`
-//   .download-platform__ledger      the platform's field set
-//   .download-platform__blank       the record card's mandatory quiet area
+//   .download-manifest              the band: its own block padding
+//   .download-manifest__inner       the container every band shares
+//   .download-manifest__head        the centred opening block
+//   .download-manifest__eyebrow     the mono label above the heading
+//   .download-manifest__heading     the band's h2
+//   .download-manifest__sentence    the one sentence under the heading
+//   .download-manifest__platforms   the two-column grid of entries
+//   .download-platform              one entry, in the field-record frame
+//   .download-platform__body        the card's own column
+//   .download-platform__head        the index and the seal
+//   .download-platform__index       the `# RELEASE_01` marker
+//   .download-platform__identity    the stamp and the route line
+//   .download-platform__stamp       `〈MACOS〉`
+//   .download-platform__channel     `/CHANNEL:PUBLIC`
+//   .download-platform__fields      the four label/value rows
+//   .download-platform__field       one row
+//   .download-platform__label       the row's label, with its colon
+//   .download-platform__value       the row's value
 //   .download-platform__state       the platform's STATUS line
-//   .download-platform__note        the plain-language reading of that state
 //   .download-platform__action      the one action, where a platform has one
-//   .download-verification          the verification entry, as a jelly-card
-//   .download-verification__heading the verification entry's own h3
 //
-// Owned by P7. The ledger anatomy belongs to RecordLedger and the frame belongs
-// to the Jelly element: this partial places them, names their regions and gives
-// the record its own rhythm.
+// The numbers are the baseline render's, not the design system's: a band padded
+// `py-16 sm:py-20`, a header capped at `max-w-2xl` and dropped `mb-10` from the
+// grid, a `max-w-5xl` grid of two columns from `md` up, and a card whose stamp
+// is `text-xl` at `tracking-[0.1em]` over four `text-field-s` rows. The third
+// platform sits alone in the second row at half width, which is the composition
+// the page has always had - three entries in a two-column grid, not a tidy
+// three-across.
+//
+// The frame, the corner marks and the card's inset belong to
+// `FieldRecordDataCard`; the index, the seal, the stamp, the route, the status
+// and the action belong to the Brand primitives. This partial places them.
 
 @use "../../Mixin" as *;
 
-// ─── The shell ────────────────────────────────────────────────────────────
-// The record opens the page directly under the masthead, so it carries no top
-// rule: the masthead already ends with one, and two rules at one edge is the
-// defect the doc calls out (DESIGN.md §7 DR-8). It takes the page-level chapter
-// rhythm because the masthead and the record are two different artifacts at a
-// page boundary; the record's own regions separate inside `__inner` at
-// `--space-group` instead, because they are parts of one subject (DESIGN.md
-// §2.3, §5 A4, §7 DR-9).
+// ─── The band ─────────────────────────────────────────────────────────────
 
-.download-record {
-	padding-block: var(--space-chapter);
-	background: var(--Background);
-	color: var(--Foreground);
+.download-manifest {
+	inline-size: 100%;
+	padding-block: 4rem;
 }
 
-// The record's one column: head, claim, state, platform grid, verification,
-// build, provenance lines, then the regions the artifact continues into. The
-// gap is the group distance, so every part of the one artifact - the regions
-// included - is separated by the documented density and never by a chapter
-// (DESIGN.md §2.3, §7 DR-9).
-.download-record__inner {
+@include bp(640px) {
+	.download-manifest {
+		padding-block: 5rem;
+	}
+}
+
+.download-manifest__inner {
 	@include band-inner;
+}
+
+// The header is centred and narrow: the eyebrow, the heading and one sentence,
+// capped at 42rem so the sentence breaks where the heading does.
+.download-manifest__head {
+	max-inline-size: 42rem;
+	margin-inline: auto;
+	margin-block-end: 2.5rem;
+	text-align: center;
+}
+
+.download-manifest__eyebrow {
+	@include mono-meta;
+	@include track(0.25em);
+
+	margin: 0 0 1rem;
+	font-size: var(--TypeScaleS);
+	line-height: 1.2;
+}
+
+// The band's one heading: the same two words as the eyebrow, at display size.
+// The size is the baseline's `text-4xl` / `sm:text-5xl` pair.
+.download-manifest__heading {
+	margin: 0;
+	font-size: clamp(2.25rem, 4vw, 3rem);
+	line-height: 1.05;
+	font-weight: 400;
+	letter-spacing: -0.01em;
+	color: var(--Foreground);
+	text-wrap: balance;
+}
+
+.download-manifest__sentence {
+	margin: 0.75rem 0 0;
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+// Two columns from `md` up, and never three: the baseline put three entries in a
+// two-column grid, so the last one is half-width under the first two.
+.download-manifest__platforms {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 1.5rem;
+	max-inline-size: 64rem;
+	margin-inline: auto;
+}
+
+@include bp(768px) {
+	.download-manifest__platforms {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+// ─── One platform entry ───────────────────────────────────────────────────
+// The frame is the white card with the corner marks; this partial only says how
+// its content stacks. `block-size: 100%` keeps the three cards equal in their
+// grid row, so their status lines sit on one line.
+
+.download-platform {
+	block-size: 100%;
+}
+
+.download-platform__body {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-group);
+	justify-content: space-between;
+	block-size: 100%;
 }
 
-// ─── The head: index and seal ─────────────────────────────────────────────
-// The seal floats at the record's upper-right, independent of the text grid
-// (`DesignSystem-Components.md` §1). One seal per record, and this is the
-// record.
-
-.download-record__head {
+.download-platform__head {
 	display: flex;
 	align-items: flex-start;
 	justify-content: space-between;
 	gap: var(--space-group);
 }
 
-// The index is the record's first line, so it keeps the field weight the
-// `#`-marker always had and adds nothing: the heading below is the claim.
-.download-record__index {
+.download-platform__index {
 	letter-spacing: 0.18em;
 }
 
-// The state block closes the record's opening: the claim, then what state the
-// claim is in, then the sentence that says what that state means. The canonical
-// record puts STATUS after the title block, not before it (`DESIGN.md` §1.5).
-.download-record__state-block {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-tight);
+// The identity block: the stamp over the route line, 1.5rem under the index.
+.download-platform__identity {
+	margin-block-start: 1.5rem;
 }
 
-.download-record__state {
-	margin: 0;
-}
-
-// The state's explanation sits under it at caption weight and the opening
-// measure, so a coded label is never left to carry the meaning alone
-// (`DesignSystem-Components.md` §7).
-.download-record__note {
-	margin: 0;
-	max-inline-size: var(--MeasureOpening);
-	font-size: var(--type-caption);
-	line-height: var(--type-caption-line);
-	color: var(--MuteForeground);
-	text-wrap: pretty;
-}
-
-.download-record__heading {
-	margin: 0;
-	max-inline-size: var(--MeasureOpening);
-	font-size: var(--type-section);
-	line-height: var(--type-section-line);
-	font-weight: 500;
-	letter-spacing: -0.02em;
-	color: var(--Foreground);
-	text-wrap: balance;
-}
-
-// ─── The platform entries ─────────────────────────────────────────────────
-
-.download-record__platforms {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr);
-	gap: var(--space-group);
-	align-items: stretch;
-}
-
-@include bp(1024px) {
-	.download-record__platforms {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-	}
-}
-
-// The card is the Jelly element; this partial only says how its content stacks.
-// The hairline is the documented separation between a white box and the creme
-// field, and `box-sizing` keeps the border from widening the grid track.
-jelly-card.download-platform {
-	@include hairline;
-	@include flat;
-
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-tight);
-	box-sizing: border-box;
-	min-inline-size: 0;
-}
-
-// The stamp is the platform's identity inside the record, at S's ceiling with
-// medium weight: a card's own title is not the page's XL (`DESIGN.md` §2.4).
 .download-platform__stamp {
 	margin: 0;
 	font-family: var(--FontMono);
-	font-size: var(--type-sub);
-	line-height: var(--type-sub-line);
+	font-size: 1.25rem;
+	line-height: 1.1;
 	font-weight: 500;
-	letter-spacing: -0.01em;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
 	color: var(--CardForeground);
 }
 
 .download-platform__channel {
-	margin: 0;
-	font-size: var(--type-caption);
-	line-height: var(--type-caption-line);
-}
-
-// The field set is the card's body: it starts after the route line, so the two
-// identity lines read as one block before the facts begin.
-.download-platform__ledger {
-	margin-block-start: var(--space-reading);
-}
-
-// The record card's mandatory quiet area: 15-25% of the card, between the facts
-// and the state that closes them. It grows to fill an equal-height grid row, so
-// the state lines of three cards sit on one line. Delete, don't shrink
-// (`DESIGN.md` §2.7; `--space-blank` is the documented value).
-.download-platform__blank {
-	flex: 1 1 auto;
-	min-block-size: var(--space-blank);
-}
-
-.download-platform__state {
-	margin: 0;
-}
-
-.download-platform__note {
-	margin: 0;
-	font-size: var(--type-caption);
-	line-height: var(--type-caption-line);
-	color: var(--MuteForeground);
-	text-wrap: pretty;
-}
-
-// One action per platform, and only where the platform has somewhere to go: the
-// button is the record's single ink-filled element.
-.download-platform__action {
-	margin: 0;
-	margin-block-start: var(--space-tight);
-}
-
-// ─── The verification entry ───────────────────────────────────────────────
-// A full-width card under the platform grid: it is the same kind of entry (a
-// list of provenance facts) but it is not a platform, so it does not take a
-// platform's column.
-
-jelly-card.download-verification {
-	@include hairline;
-	@include flat;
-
-	display: block;
-	box-sizing: border-box;
-}
-
-.download-verification__heading {
-	margin: 0;
-	margin-block-end: var(--space-reading);
+	margin: 0.5rem 0 0;
 	font-family: var(--FontMono);
-	font-size: var(--type-sub);
-	line-height: var(--type-sub-line);
-	font-weight: 500;
+	font-size: var(--TypeScaleS);
+	line-height: 1.1;
+}
+
+// The four field rows: label then value, one row per field, 8px apart. The label
+// is the same mono at 70% ink so the value carries the reading.
+.download-platform__fields {
+	margin: 1.5rem 0 0;
+}
+
+.download-platform__field {
+	display: flex;
+	gap: 0.5rem;
+}
+
+.download-platform__field + .download-platform__field {
+	margin-block-start: 0.25rem;
+}
+
+.download-platform__label,
+.download-platform__value {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--TypeScaleS);
+	line-height: 1.2;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
 	color: var(--CardForeground);
-	text-wrap: balance;
 }
 
-// ─── The closing lines ────────────────────────────────────────────────────
-// Two provenance lines, both at caption weight and the opening measure: what the
-// record does not carry, then where its figures come from.
-
-.download-record__build {
-	margin: 0;
+.download-platform__label {
+	opacity: 0.7;
 }
 
-.download-record__footnote,
-.download-record__source {
-	margin: 0;
-	max-inline-size: var(--MeasureOpening);
-	font-size: var(--type-caption);
-	line-height: var(--type-caption-line);
-	color: var(--MuteForeground);
-	text-wrap: pretty;
+// The status line closes the fields at 1rem, and the action follows it at
+// 1.5rem. On the two platforms with nowhere to send the reader, the status line
+// is the card's last line - which is why the action is a branch, not a slot.
+.download-platform__state {
+	margin: 1rem 0 0;
 }
 
-// An empty manifest is a sentence, never a box.
-.download-record__empty {
-	margin: 0;
-	max-inline-size: var(--MeasureOpening);
-	font-size: var(--type-body);
-	line-height: var(--type-body-line);
-	color: var(--MuteForeground);
+.download-platform__action {
+	margin: 1.5rem 0 0;
 }

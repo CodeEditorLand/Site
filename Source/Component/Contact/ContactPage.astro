@@ -2,18 +2,31 @@
 // ContactPage - the page chrome every Contact route shares.
 //
 // Fifteen routes opened with the same eleven lines: the document layout, the
-// header, a container, a breadcrumb list and an `h1` with a standfirst. That is
-// one page opening, so it lives here once and the routes compose it.
+// header, a container, a breadcrumb and an `h1` with a standfirst. That is one
+// page opening, so it lives here once and the routes compose it.
 //
 // What the shell owns, in order: the document (`Base`), the site header, the
-// record header (`# CODE`, the `〈 〉` stamp, `/CONTACT`), the breadcrumb trail,
-// the page's only `h1` at `--type-section`, and the standfirst at `--type-sub`.
-// What it does not own is anything below that - a request route hands in its
-// form, the hub and the sale page hand in their records.
+// opening container, the breadcrumb trail, and - on the two pages that have one
+// - the page's `h1` and the sentence under it. What it does not own is anything
+// below that: a request route hands in its form, which prints its own `h1` (the
+// request title, inside the form's own chip row), the hub hands in its grid,
+// the sale page its two panels.
 //
-// `mode` is a pass-through to the site header, not a second layout: the hub
-// opens in the functional header it already used, and the request routes keep
-// the minimal one they already used.
+// The shell prints no record header. The baseline renders no `# CODE` /
+// `〈 〉` / `/CONTACT` line on any contact page, so the facts those three
+// symbols carried are printed by the form's own chip row instead - the pair
+// reference, the statutory basis and the response window, in the baseline's
+// shape.
+//
+// `opening` is the one difference between the two shapes: a page opens with the
+// breadcrumb and its heading at `py-16`; a request route opens with the
+// breadcrumb alone, at `pt-6`, and its body starts immediately.
+//
+// `width` is the opening's measure - the hub and the request routes are
+// `max-w-5xl`, the sale page `max-w-4xl` - and the body that follows repeats it
+// so the two line up on the same left edge.
+//
+// `mode` is a pass-through to the site header, not a second layout.
 //
 // No script of its own: the header is the only island here.
 import Base from "../../Layout/Base.astro";
@@ -31,32 +44,17 @@ interface Props {
 	/** The breadcrumb trail, last crumb being this page. */
 	trail: readonly ContactTrailItem[];
 
-	/** The page's only `h1`. */
-	heading: string;
+	/** The page's only `h1`, when the page opens with one. */
+	heading?: string;
 
 	/** The sentence under the `h1`, when the page has one. */
 	standfirst?: string;
 
-	/**
-	 * The record header - the grammar's opening line, above the trail.
-	 *
-	 * Three symbols, and each one is a different fact (`DesignSystem-Grammar.md`
-	 * §1): `#` is the series marker, `〈 〉` is the stamp that classifies the
-	 * record, `/` is the route it is filed on. A request route prints its income
-	 * code, its statutory basis and `/CONTACT`; the hub and the sale page print
-	 * their own. Optional, because a surface with no basis to print passes the
-	 * index and the route and nothing else - the block never invents a stamp.
-	 */
-	record?: {
-		/** The series marker, e.g. `# AMEND`. Printed exactly as given. */
-		readonly index: string;
+	/** The opening's measure. `wide` is the hub and the request routes. */
+	width?: "wide" | "narrow";
 
-		/** The classification, printed inside `〈 〉`, e.g. `GDPR Art. 16`. */
-		readonly stamp?: string;
-
-		/** The route, e.g. `/CONTACT`. Printed exactly as given. */
-		readonly route: string;
-	};
+	/** `page` opens with a heading; `trail` is the breadcrumb alone. */
+	opening?: "page" | "trail";
 
 	/** The site header's presentation, passed through unchanged. */
 	mode?: "minimal" | "functional";
@@ -68,7 +66,8 @@ const {
 	trail,
 	heading,
 	standfirst,
-	record,
+	width = "wide",
+	opening = "page",
 	mode,
 } = Astro.props;
 ---
@@ -82,24 +81,26 @@ const {
 	<Header client:load {...mode ? { Mode: mode } : {}} slot="Header" />
 
 	<div class="contact-page">
-		<header class="contact-page__header">
+		<div
+			class:list={[
+				"contact-page__open",
+				`contact-page__open--${width}`,
+				`contact-page__open--${opening}`,
+			]}
+		>
+			<ContactBreadcrumb trail={trail} />
+
 			{
-				record && (
-					<p class="contact-page__record">
-						<span class="contact-page__index">{record.index}</span>
-						{record.stamp && (
-							<span class="contact-page__stamp">
-								〈{record.stamp}〉
-							</span>
-						)}
-						<span class="contact-page__route">{record.route}</span>
-					</p>
+				heading && (
+					<header class="contact-page__header">
+						<h1 class="contact-page__heading">{heading}</h1>
+						{standfirst ? (
+							<p class="contact-page__standfirst">{standfirst}</p>
+						) : null}
+					</header>
 				)
 			}
-			<ContactBreadcrumb trail={trail} />
-			<h1 class="contact-page__heading">{heading}</h1>
-			{standfirst ? <p class="contact-page__standfirst">{standfirst}</p> : null}
-		</header>
+		</div>
 
 		<slot />
 	</div>

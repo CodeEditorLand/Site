@@ -4,20 +4,17 @@ import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 import { LinkMentions } from "../Library/CodeMentions";
 import ReadingDocument from "../Component/Reading/ReadingDocument.astro";
-import RecordStage from "../Component/Record/RecordStage.astro";
-import RecordWell from "../Component/Record/RecordWell.astro";
 import {
 	Index,
 	Ledger,
 	Process,
-	ResolveStages,
-	Wells,
+	ResolveSteps,
 } from "../Library/Document/Contributing/Data.js";
 
 const T = GetI18n();
 
-/** The process rail, resolved through the page's own translator. */
-const Stages = ResolveStages(Process, (Key, Default) =>
+/** The four steps of the contribution process, resolved through the page's `T`. */
+const Steps = ResolveSteps(Process, (Key, Default) =>
 	T(Key, { defaultValue: Default }),
 );
 
@@ -146,19 +143,60 @@ const Card =
 					defaultValue: "How to Contribute",
 				})}
 			</h2>
-			<div class="reading-document__process">
-				<RecordStage stages={Stages} />
-				{
-					Wells.map((Well) => (
-						<RecordWell
-							label={T(Well.titleKey, {
-								defaultValue: Well.title,
-							})}
-							language={Well.language}
-							lines={Well.lines}
-						/>
-					))
-				}
+			<div class="contributing-steps">
+				<ol class="contributing-steps__list">
+					{
+						Steps.map((Step) => (
+							<li class="contributing-steps__step">
+								<span class="contributing-steps__index">{Step.index}</span>
+								<div class="contributing-steps__body">
+									<h3 class="contributing-steps__title">{Step.title}</h3>
+									<p
+										class="contributing-steps__line"
+										set:html={LinkMentions(Step.line)}
+									/>
+									{Step.command ? (
+										<div class="contributing-steps__command">
+											<pre class="contributing-steps__pre">{Step.command}</pre>
+											<jelly-icon-button
+												data-copy
+												aria-label="Copy to clipboard"
+												label="Copy to clipboard"
+												title="Copy to clipboard"
+												shape="square"
+												size="small"
+												style="--jelly-fill: var(--Mute); --jelly-label: var(--Foreground); --jelly-icon-button-radius: 0px; --jelly-ring: var(--Accent);"
+											>
+												<svg
+													aria-hidden="true"
+													viewBox="0 0 24 24"
+													fill="none"
+													height="24"
+													stroke="currentColor"
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													stroke-width="2"
+													width="24"
+													style="color: var(--jelly-label)"
+												>
+													<rect
+														height="14"
+														rx="2"
+														ry="2"
+														width="14"
+														x="8"
+														y="8"
+													/>
+													<path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+												</svg>
+											</jelly-icon-button>
+										</div>
+									) : null}
+								</div>
+							</li>
+						))
+					}
+				</ol>
 			</div>
 		</section>
 

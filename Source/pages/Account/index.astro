@@ -1,6 +1,5 @@
 ---
-import AuthShell from "../../Component/Auth/AuthShell.astro";
-import { AccountCrumbs, AuthFrameFor } from "../../Component/Auth/Data";
+import { AccountCrumbs } from "../../Component/Auth/Data";
 import DynamicAccountProfile from "../../Component/Dynamic/DynamicAccountProfile";
 import DynamicAuthHeader from "../../Component/Dynamic/DynamicAuthHeader";
 import Base from "../../Layout/Base.astro";
@@ -19,10 +18,9 @@ const MetaDescription = T("meta.account.description", {
 	defaultValue: "Manage your Code Editor Land account and profile.",
 });
 
-/* The profile surface is a field table, not a form, so this is the one route
-   that asks the shell for the wide measure. Reported on the card. */
-const Frame = AuthFrameFor("account", T);
-
+/* The baseline's only visible copy on this route is the breadcrumb: the page
+   itself is a loading state until the profile island answers, and it carries
+   no heading, no card and no sentence of its own. */
 const Crumbs = AccountCrumbs(T);
 ---
 
@@ -39,42 +37,32 @@ const Crumbs = AccountCrumbs(T);
 		ClientIdentifier={Auth0ClientIdentifier}
 	/>
 
-	<AuthShell frame={Frame} measure="wide">
-		<nav class="auth-shell__crumbs" aria-label="Breadcrumb">
-			<ol class="auth-shell__crumb-list">
+	<div class="container mx-auto max-w-5xl px-4">
+		<nav aria-label="Breadcrumb" class="pt-6">
+			<ol class="flex flex-wrap items-center space-x-2 text-muted-foreground">
 				{
 					Crumbs.map(({ Label, Href }, Index) => (
-						<li class="auth-shell__crumb">
-							{Href ? (
-								<a class="auth-shell__crumb-link" href={Href}>
-									{Label}
-								</a>
-							) : (
-								<span
-									class="auth-shell__crumb-current"
-									aria-current="page"
-								>
-									{Label}
-								</span>
-							)}
-							{Index < Crumbs.length - 1 && (
-								<span
-									class="auth-shell__crumb-separator"
-									aria-hidden="true"
-								>
-									/
-								</span>
-							)}
-						</li>
+						<>
+							<li>
+								{Href ? (
+									<a class="transition-colors hover:text-foreground" href={Href}>
+										{Label}
+									</a>
+								) : (
+									<span class="font-medium text-foreground">{Label}</span>
+								)}
+							</li>
+							{Index < Crumbs.length - 1 && <li class="mx-2">/</li>}
+						</>
 					))
 				}
 			</ol>
 		</nav>
+	</div>
 
-		<DynamicAccountProfile
-			client:load
-			Domain={Auth0Domain}
-			ClientIdentifier={Auth0ClientIdentifier}
-		/>
-	</AuthShell>
+	<DynamicAccountProfile
+		client:load
+		Domain={Auth0Domain}
+		ClientIdentifier={Auth0ClientIdentifier}
+	/>
 </Base>

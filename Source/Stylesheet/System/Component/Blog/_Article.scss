@@ -3,11 +3,13 @@
 // Publishes:
 //   .blog-article                the shell: the page's one container
 //   .blog-article__trail         the breadcrumb
-//   .blog-article__head          kicker, h1, standfirst, ledger
-//   .blog-article__kicker        `/BLOG`, in the meta face and tracked
-//   .blog-article__title         the page's only h1, at --type-section
-//   .blog-article__standfirst    the summary, at --type-sub
-//   .blog-article__ledger        the metadata ledger's slot
+//   .blog-article__head          the opening: tags, h1, standfirst, metadata
+//   .blog-article__tags          the tag chips row
+//   .blog-article__tag           one chip
+//   .blog-article__title         the page's only h1, at the baseline's size
+//   .blog-article__standfirst    the summary, at body size
+//   .blog-article__meta          the author / date / reading-time row
+//   .blog-article__date          the row's `<time>` element
 //   .blog-article__toc           the in-page contents list
 //   .blog-article__toc-label     its label, in the meta face
 //   .blog-article__toc-list      the list, two columns above 768px
@@ -54,35 +56,36 @@
 
 /* ─── THE OPENING ───────────────────────────────────────────────────────── */
 
-/* One rhythm owner for the four parts of the opening: kicker, title,
-   standfirst and ledger stack at reading distance, and the ledger alone takes
-   the group gap, because the metadata is a new kind of thing rather than the
-   next line of the sentence above it. */
+/* The opening is the baseline's: a row of tag chips, the title, the standfirst
+   and one mono metadata row, stacked at the distances the baseline used - chips
+   16px above the title, title 12px above the standfirst, standfirst 16px above
+   the metadata, and the whole block 40px above the prose. */
 .blog-article__head {
-	display: grid;
-	grid-template-columns: 1fr;
-
-	gap: var(--space-reading);
+	margin-block-end: 2.5rem;
 }
 
-.blog-article__kicker {
-	margin: 0;
+.blog-article__tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
 
-	@include mono-meta;
+	margin: 0 0 var(--space-reading);
+	padding: 0;
 
-	@include track(0.08em);
+	list-style: none;
+}
+
+.blog-article__tag {
+	display: flex;
 }
 
 .blog-article__title {
-	margin: 0;
+	margin: 0 0 0.75rem;
 
-	max-width: var(--ContainerTwoExtraLarge);
-
-	font-family: var(--FontMono);
-	font-size: var(--type-section);
+	font-size: clamp(1.5rem, 2.5vw, 1.875rem);
 	font-weight: 500;
-	line-height: var(--type-section-line);
-	letter-spacing: -0.02em;
+	line-height: 1.15;
+	letter-spacing: -0.01em;
 
 	color: var(--Foreground);
 
@@ -90,22 +93,38 @@
 }
 
 .blog-article__standfirst {
-	margin: 0;
+	margin: 0 0 var(--space-reading);
 
 	max-width: var(--MeasureOpening);
 
-	font-size: var(--type-sub);
-	line-height: var(--type-sub-line);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
 
 	color: var(--MuteForeground);
 
 	text-wrap: pretty;
 }
 
-.blog-article__ledger {
-	margin-block-start: calc(var(--space-group) - var(--space-reading));
+/* The metadata row: author, date and reading time on one mono line. The
+   separators are U+2001 EM QUAD - the only visual separator the site permits -
+   so they are spacing, not punctuation, and they are hidden from a reader. */
+.blog-article__meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.75rem;
 
-	max-width: var(--Measure);
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--TypeScaleS);
+	line-height: 1.2;
+
+	color: var(--MuteForeground);
+}
+
+.blog-article__date {
+	font-variant-numeric: tabular-nums;
 }
 
 /* ─── THE CONTENTS LIST ─────────────────────────────────────────────────── */

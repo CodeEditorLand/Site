@@ -95,5 +95,17 @@
 		"title": "Telemetry Is Compile-Gated in Land.",
 		"subtitle": "Telemetry and tracing are behind named Rust feature gates in the native layer. Nothing is emitted by default. Each build profile explicitly lists which paths are compiled in.",
 		"kicker": "/TRANSPARENCY"
+	},
+	"platform": {
+		"field": {
+			"arch": "ARCH:",
+			"signing": "SIGNING:",
+			"size": "SIZE:",
+			"checksum": "CHECKSUM:"
+		},
+		"status": {
+			"active": "STATUS: ACTIVE",
+			"preparing": "STATUS: RELEASE PREPARATION"
+		}
 	}
 }

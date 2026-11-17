@@ -1,22 +1,32 @@
 // ContactPage - the page opening every Contact route shares.
 //
 // Publishes:
-//   .contact-page             the page shell (bands follow it, full width)
-//   .contact-page__header     the opening container, on the band gutters
-//   .contact-page__record     the record header: index, stamp, route
-//   .contact-page__index      the `# CODE` series marker
-//   .contact-page__stamp      the `〈 〉` classification
-//   .contact-page__route      the `/CONTACT` route
-//   .contact-page__heading    the page's only h1, at --type-section
-//   .contact-page__standfirst the sentence under it, at --type-sub
+//   .contact-page                    the page shell (the body follows it)
+//   .contact-page__open              the opening container, on the page gutters
+//   .contact-page__open--wide        the hub's and the request routes' measure
+//   .contact-page__open--narrow      the sale page's measure
+//   .contact-page__open--page        a page opening: `py-16`, trail at `mb-8`
+//   .contact-page__open--trail       a request route: the trail alone, at `pt-6`
+//   .contact-page__header            the page's `h1` and its sentence, at `mb-12`
+//   .contact-page__heading           the page's only `h1`
+//   .contact-page__standfirst        the sentence under it
 //
-// The header is a container, not a band: it has no surface and no rule, because
-// the first band below it opens the page's rhythm. Its gutters come from the
-// `band-inner` mixin, so the opening and every band under it line up on the same
-// left edge without either retyping the clamp.
+// The opening is a container, not a band: it has no surface and no rule, because
+// the body below it carries the page's own rhythm. Its gutters are the page's
+// (`--Gutter`), so the opening and the body under it line up on the same left
+// edge without either retyping the clamp.
 //
-// The heading is the page's one `h1`. A block never renders one - RecordBand
-// publishes an `h2` for exactly this reason.
+// The two measures are the baseline's: `max-w-5xl` (64rem) for the hub and the
+// request routes, `max-w-4xl` (56rem) for the sale page.
+//
+// The heading is the page's one `h1`, and it is set at the baseline's own scale
+// - `text-2xl` stepping to `text-3xl` at 640px - not at the design system's L
+// tier. The baseline wins that disagreement (`G5` §1); the L tier would set a
+// two-word index title at three times its recorded size.
+//
+// There is no record header here. The baseline renders no `# CODE` / `〈 〉` /
+// `/CONTACT` line on any contact page, so the shell prints none; the facts those
+// three symbols carried are the form's own chip row.
 
 @use "../../Mixin" as *;
 
@@ -24,70 +34,68 @@
 	display: block;
 }
 
+.contact-page__open {
+	margin-inline: auto;
+	padding-inline: var(--Gutter);
+}
+
+.contact-page__open--wide {
+	max-width: var(--ContainerFiveExtraLarge);
+}
+
+.contact-page__open--narrow {
+	max-width: var(--ContainerFourExtraLarge);
+}
+
+// `py-16`, top half: a page opens on 4rem above the trail, and the body below
+// the header carries the 4rem that closes it. The header's own `mb-12` is what
+// separates the two.
+.contact-page__open--page {
+	padding-block-start: 4rem;
+}
+
+// `pt-6`: a request route's opening is the trail, and the form below it carries
+// the vertical rhythm from there.
+.contact-page__open--trail {
+	padding-block-start: 1.5rem;
+}
+
+// `mb-8` on the trail, `mb-12` on the header: the baseline separates the trail
+// from the heading by 2rem and the heading from the body by 3rem.
+.contact-page__open--page .contact-breadcrumb {
+	margin-block-end: var(--space-group);
+}
+
 .contact-page__header {
-	@include band-inner;
-	padding-block: var(--space-chapter) 0;
+	margin-block-end: 3rem;
 }
 
-// ─── The record header ────────────────────────────────────────────────────
-// The grammar's opening line, and the only place on a contact route where the
-// three symbols appear together: the series marker, the classification inside
-// its brackets, and the route. One row, one reading, no surface - it is an
-// identifier, not a card (`DESIGN.md` §1.5).
-
-.contact-page__record {
-	@include mono-meta;
-	@include track;
-
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-	gap: var(--space-tight) var(--space-reading);
-
-	margin: 0;
-}
-
-.contact-page__index {
-	color: var(--Foreground);
-}
-
-// The stamp is the one part that is a classification rather than a location, so
-// it takes the muted ink: the eye reads index, then classification, then route.
-.contact-page__stamp {
-	color: var(--MuteForeground);
-}
-
-.contact-page__route {
-	color: var(--MuteForeground);
-}
-
+// `font-medium text-2xl sm:text-3xl tracking-tight`. The heading is not mono and
+// carries no display tracking: the page's loudest thing is the repetition of the
+// card slugs, never the title.
 .contact-page__heading {
 	margin: 0;
-	max-width: var(--ContainerTwoExtraLarge);
-	font-family: var(--FontMono);
-	font-size: var(--type-section);
+	font-size: 1.5rem;
 	font-weight: 500;
-	line-height: var(--type-section-line);
+	line-height: 1.25;
 	letter-spacing: -0.02em;
 	color: var(--Foreground);
 	text-wrap: balance;
 }
 
-.contact-page__standfirst {
-	margin: 0;
-	max-width: 62ch;
-	font-size: var(--type-sub);
-	line-height: var(--type-sub-line);
-	color: var(--MuteForeground);
-	text-wrap: pretty;
+@include bp(640px) {
+	.contact-page__heading {
+		font-size: 1.875rem;
+	}
 }
 
-// ─── The opening rhythm ───────────────────────────────────────────────────
-// Two tiers only: the trail sits at reading distance above the heading, and
-// the standfirst reads as the heading's own sentence. Both parts zero their
-// margins above, so this is the whole rhythm of the opening.
-
-.contact-page__heading,
+// One muted sentence at body size, flush under the heading - the baseline prints
+// the two as consecutive siblings with no spacing utility between them.
 .contact-page__standfirst {
-	margin-block-start: var(--space-reading);
+	margin: 0;
+	max-width: var(--MeasureOpening);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
 }

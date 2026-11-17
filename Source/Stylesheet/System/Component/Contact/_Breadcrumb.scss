@@ -1,18 +1,21 @@
-// ContactBreadcrumb - the trail in the site's mono nav grammar.
+// ContactBreadcrumb - the trail, in the baseline's own shape.
 //
 // Publishes:
-//   .contact-breadcrumb           the nav shell
-//   .contact-breadcrumb__list     the ordered list, laid out as a strip
-//   .contact-breadcrumb__item     one crumb
-//   .contact-breadcrumb__link     a crumb that leads somewhere
-//   .contact-breadcrumb__current  the page the reader is on
+//   .contact-breadcrumb            the nav shell
+//   .contact-breadcrumb__list      the ordered list, laid out as a strip
+//   .contact-breadcrumb__item      one crumb
+//   .contact-breadcrumb__separator the `/` between two crumbs
+//   .contact-breadcrumb__link      a crumb that leads somewhere
+//   .contact-breadcrumb__current   the page the reader is on
 //
-// The separators are the labels' own leading slash: every crumb is supplied as
-// `/LABEL`, so a second `/` element between them would print the grammar twice.
-// The gap between crumbs is the whole separator.
+// The trail is the baseline's: a sans strip at body size in muted ink, with a
+// `/` of its own between the crumbs and the current page at full ink and medium
+// weight. It is chrome - no fill, no rule, no second type size - and the heading
+// below it carries the weight.
 //
-// No fill, no rule, no second label size - the trail is chrome, and the page
-// heading below it carries the weight.
+// The separator is a list item, not an `::after` on the crumb: the baseline
+// prints it as its own `<li>`, so it is one here too and a reader that walks the
+// list sees the same parts on every route.
 
 @use "../../Mixin" as *;
 
@@ -23,29 +26,37 @@
 .contact-breadcrumb__list {
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--space-tight) var(--space-reading);
+	align-items: center;
+	gap: 0 var(--space-tight);
 	margin: 0;
 	padding: 0;
 	list-style: none;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--MuteForeground);
 }
 
-.contact-breadcrumb__item {
-	@include mono-meta;
-	@include track(0.08em);
+.contact-breadcrumb__item,
+.contact-breadcrumb__separator {
 	margin: 0;
+}
+
+.contact-breadcrumb__separator {
+	color: var(--MuteForeground);
 }
 
 .contact-breadcrumb__link {
 	color: var(--MuteForeground);
 	text-decoration: none;
+	transition: color 0.2s ease;
 }
 
 .contact-breadcrumb__link:hover,
 .contact-breadcrumb__link:focus-visible {
 	color: var(--Foreground);
-	text-decoration: underline;
 }
 
 .contact-breadcrumb__current {
+	font-weight: 500;
 	color: var(--Foreground);
 }

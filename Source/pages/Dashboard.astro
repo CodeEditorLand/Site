@@ -3,17 +3,11 @@ import DynamicAuthHeader from "../Component/Dynamic/DynamicAuthHeader";
 import DynamicDashboardUser from "../Component/Dynamic/DynamicDashboardUser";
 import DynamicLocalFirstScan from "../Component/Dynamic/DynamicLocalFirstScan";
 import PrivacyRequests from "../Component/Dashboard/PrivacyRequests.astro";
+import SurfaceBadge from "../Component/Surface/SurfaceBadge.astro";
+import { RichText } from "../Component/UI/RichText";
+import { DashboardPage } from "../Content/Surface/Dashboard.js";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
-import RecordBand from "../Component/Record/RecordBand.astro";
-import RecordEntry from "../Component/Record/RecordEntry.astro";
-import RecordLedger from "../Component/Record/RecordLedger.astro";
-import RecordStage from "../Component/Record/RecordStage.astro";
-import SurfaceShell from "../Component/Surface/SurfaceShell.astro";
-import SurfaceChips from "../Component/Surface/SurfaceChips.astro";
-import SurfaceState from "../Component/Surface/SurfaceState.astro";
-import { Split } from "../Component/Surface/State.js";
-import { DashboardPage } from "../Content/Surface/Dashboard.js";
 
 const T = GetI18n();
 
@@ -31,36 +25,23 @@ const MetaDescription = T("meta.dashboard.description", {
 		"Manage your account, downloads, and settings.\nYour Code Editor Land dashboard.",
 });
 
-// Every label, row and band this page states comes from this table. The two
+// Every label, row and section this page states comes from this table. The two
 // Auth0 islands stay islands: who is signed in is client-side state, so the
-// account band hosts the component rather than printing a value it cannot
+// account panel hosts the component rather than printing a value it cannot
 // know at render time.
 const Page = DashboardPage(T);
 
 /**
- * The page's status block, split into states and facts.
- *
- * `DesignSystem-Components.md` §7: ACTIVE and VERIFIED carry a specimen marker
- * beside the word, because a status that renders exactly like an ordinary fact
- * has lost its state. The dashboard states two of them - `EDITOR` when no
- * daemon answers and `TELEMETRY` when the build gates it - and they are lifted
- * out of the ledger into the shell's state register. Nothing is re-worded:
- * `Split` reads the values the content table already wrote and separates them
- * by the vocabulary in `Surface/State.ts`.
- */
-const Status = Split(Page.status);
-
-/** The editor band's own rows: the daemon and its transport, and its state. */
-const Editor = Split(Page.editorFacts);
-
-/**
- * The card the islands sit on. `jelly-card` is the design system's surface and
- * a `Record*` block may live inside one but never replace one
- * (`DESIGN.md` §1.7); an Auth0 island is functional UI, so it gets the surface
- * and the records keep theirs.
+ * The card the local-mode scan island sits on. `?mode=local` is not in the
+ * baseline render, so the island keeps the surface it already had: a
+ * `jelly-card` painted in the card token. An Auth0 island is functional UI, so
+ * it gets the surface and the page's own panels keep theirs.
  */
 const CardStyle =
 	"--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:var(--space-group);--jelly-card-padding-inline:var(--space-group)";
+
+/** The classes every card on this page wears. */
+const Panel = "bg-card StaccatoCard StaccatoBorderShimmer";
 ---
 
 <Base
@@ -76,60 +57,218 @@ const CardStyle =
 		ClientIdentifier={Auth0ClientIdentifier}
 	/>
 
-	<SurfaceShell
-		index={Page.index}
-		title={Page.title}
-		standfirst={Page.standfirst}
-		states={Status.states}
-		rows={Status.facts}
-	>
-		<RecordBand band={Page.account}>
-			<div class="surface__panel">
-				<jelly-card style={CardStyle}>
+	<div class="bg-background">
+		<div class="mx-auto container px-4 max-w-5xl py-16">
+			<nav class="mb-8" aria-label="Breadcrumb">
+				<ol class="flex items-center flex-wrap text-muted-foreground space-x-2">
+					<li>
+						<a class="transition-colors hover:text-foreground" href="/">Home</a>
+					</li>
+					<li class="mx-2">/</li>
+					<li>
+						<span class="font-medium text-foreground">Dashboard</span>
+					</li>
+				</ol>
+			</nav>
+
+			<header class="mb-12" aria-label="Dashboard page header">
+				<div class="flex items-center gap-4 mb-4">
+					<img
+						src="/Asset/Logo/Glyph/Land.svg"
+						alt="Code Editor Land logo"
+						title="Code Editor Land"
+						width="40"
+						height="40"
+					/>
+					<div class="flex flex-col">
+						<h1 class="font-medium text-4xl tracking-tight">{Page.title}</h1>
+						<p class="text-muted">{Page.standfirst}</p>
+					</div>
+				</div>
+				<div class="flex items-center gap-3 flex-wrap text-muted-foreground">
+					{
+						Page.badges.map((Badge) => (
+							<SurfaceBadge
+								label={Badge.label}
+								tone={Badge.tone}
+								dot={Badge.dot}
+							/>
+						))
+					}
+				</div>
+			</header>
+
+			<!-- The opening grid: the account island, the download, and the three
+			 links a reader needs before anything else. Three panels, three
+			 columns, one row. -->
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+				<div class={`${Panel} p-6`}>
+					<h2 class="text-card-foreground font-medium text-lg mb-4">Account</h2>
 					<DynamicDashboardUser
 						client:load
 						Domain={Auth0Domain}
 						ClientIdentifier={Auth0ClientIdentifier}
 					/>
-				</jelly-card>
+				</div>
+
+				<div class={`${Panel} p-6`}>
+					<h2 class="text-card-foreground font-medium text-lg mb-4">
+						Downloads
+					</h2>
+					<a
+						class="font-medium items-center inline-flex justify-center StaccatoButton px-4 transition-all focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)] bg-primary hover:opacity-90 mb-3 text-primary-fg"
+						href={Page.downloads.href}>{Page.downloads.label}</a
+					>
+					<p class="text-card-foreground">{Page.downloads.line}</p>
+				</div>
+
+				<div class={`${Panel} p-6`}>
+					<h2 class="text-card-foreground font-medium text-lg mb-4">
+						Quick Links
+					</h2>
+					<ul class="space-y-2">
+						{
+							Page.quickLinks.map((Link) => (
+								<li>
+									<a
+										class="text-card-foreground hover:underline"
+										href={Link.href}>
+										{Link.label}
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</div>
 			</div>
-		</RecordBand>
 
-		<RecordBand band={Page.access}>
-			<RecordStage stages={Page.accessStages} />
-		</RecordBand>
+			<!-- Telemetry: one wide card, three hairline rows. Each row states its
+			 state in badges, names the path in its h3, and then says what it does
+			 with its terms badged inline. -->
+			<section class="mt-12">
+				<h2 class="font-medium text-2xl mb-6">{Page.telemetry.heading}</h2>
+				<div class={Panel}>
+					{
+						Page.telemetry.paths.map((Path, Position) => (
+							<div
+								class:list={[
+									"pb-5 pt-8 px-5",
+									Position < Page.telemetry.paths.length - 1
+										? "flex items-center justify-between border-[var(--Border)] border-b"
+										: null,
+								]}
+							>
+								<div class="flex-1">
+									<div class="flex items-center gap-3">
+										{Path.badges.map((Badge) => (
+											<SurfaceBadge
+												label={Badge.label}
+												tone={Badge.tone}
+												dot={Badge.dot}
+											/>
+										))}
+									</div>
+									<h3 class="text-card-foreground font-medium mt-3">
+										{Path.heading}
+									</h3>
+									<RichText
+										client:load
+										Text={Path.text}
+										Terms
+										ClassName="mt-2 text-card-foreground"
+									/>
+								</div>
+							</div>
+						))
+					}
+				</div>
+			</section>
 
-		<RecordBand band={Page.data}>
-			<div class="surface__panel">
-				<jelly-card style={CardStyle}>
-					<PrivacyRequests />
-				</jelly-card>
-			</div>
-		</RecordBand>
+			<!-- Build configuration: one sentence, then three cards of four
+			 justified rows each. -->
+			<section class="mt-12">
+				<h2 class="font-medium mb-2 text-2xl">{Page.build.heading}</h2>
+				<p class="mb-6 text-muted-foreground">{Page.build.subtitle}</p>
+				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+					{
+						Page.build.cards.map((Card) => (
+							<div class={`${Panel} p-6`}>
+								<div class="flex items-center justify-between">
+									<h3 class="text-card-foreground font-medium text-lg">
+										{Card.title}
+									</h3>
+									<SurfaceBadge
+										label={Card.badge.label}
+										tone={Card.badge.tone}
+										dot={Card.badge.dot}
+									/>
+								</div>
+								<div class="space-y-2 mt-4">
+									{Card.rows.map((Row) => (
+										<div class="flex justify-between">
+											<span class="text-card-foreground">{Row.key}</span>
+											{Row.mono ? (
+												<code class="text-card-foreground">{Row.value}</code>
+											) : Row.strong ? (
+												<span class="font-medium">{Row.value}</span>
+											) : (
+												<span>{Row.value}</span>
+											)}
+										</div>
+									))}
+								</div>
+							</div>
+						))
+					}
+				</div>
+			</section>
 
-		<RecordBand band={Page.build}>
-			<RecordLedger rows={Page.buildFacts} columns={2} />
-		</RecordBand>
+			<!-- Authentication tiers: four link cards, each with its pastel icon
+			 tile, its name, its protocol line and its state badge. -->
+			<section class="mt-12">
+				<h2 class="font-medium mb-2 text-2xl">{Page.tiers.heading}</h2>
+				<p class="mb-6 text-muted-foreground">{Page.tiers.subtitle}</p>
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-4">
+					{
+						Page.tiers.cards.map((Card) => (
+							<a
+								class:list={[
+									"flex items-center StaccatoBorderShimmer StaccatoCard bg-card transition-all gap-4 p-5",
+									Card.hover,
+								]}
+								href="/Portal"
+							>
+								<div
+									class:list={[
+										"flex items-center justify-center shrink-0 border h-10 w-10 flat",
+										Card.tile,
+									]}
+								>
+									<span class:list={[Card.ink, "text-lg"]}>{Card.glyph}</span>
+								</div>
+								<div>
+									<h3 class="text-card-foreground font-medium">{Card.title}</h3>
+									<p class="text-card-foreground">{Card.protocol}</p>
+								</div>
+								<SurfaceBadge
+									label={Card.badge.label}
+									tone={Card.badge.tone}
+									dot={Card.badge.dot}
+								/>
+							</a>
+						))
+					}
+				</div>
+			</section>
 
-		<RecordBand band={Page.telemetry}>
-			<div class="surface__stack">
+			<!-- Editor connection: one card. `?mode=local` swaps the card body for
+			 the Air Daemon scan island; every other visitor sees the absent-daemon
+			 state and its two exits. -->
+			<section class="mt-12">
+				<h2 class="font-medium mb-2 text-2xl">{Page.editor.heading}</h2>
+				<p class="mb-6 text-muted-foreground">{Page.editor.subtitle}</p>
 				{
-					Page.telemetryPaths.map((Path) => (
-						<div>
-							{Path.chips?.length ? (
-								<SurfaceChips chips={Path.chips} />
-							) : null}
-							<RecordEntry {...Path} chips={undefined} />
-						</div>
-					))
-				}
-			</div>
-		</RecordBand>
-
-		<RecordBand band={Page.editor}>
-			{
-				IsLocalMode ? (
-					<div class="surface__panel">
+					IsLocalMode ? (
 						<jelly-card style={CardStyle}>
 							<DynamicLocalFirstScan
 								client:load
@@ -137,57 +276,117 @@ const CardStyle =
 								ClientIdentifier={Auth0ClientIdentifier}
 							/>
 						</jelly-card>
-					</div>
-				) : (
-					<>
-						<SurfaceState states={Editor.states} />
-						<RecordLedger rows={Editor.facts} />
-						<div class="surface__stack">
-							{Page.editorDescription.map((Line) => (
-								<p class="surface__prose">{Line}</p>
-							))}
-							{Page.editorActions.map((Action) => (
-								<RecordEntry {...Action} />
-							))}
+					) : (
+						<div class={`${Panel} p-6`}>
+							<div class="flex items-center gap-4">
+								<img src="/Asset/Logo/Glyph/Land.svg" alt="Land" />
+								<div class="flex-1">
+									<div class="flex items-center gap-3">
+										<h3 class="text-card-foreground font-medium">
+											{Page.editor.name}
+										</h3>
+										<span class="font-medium items-center inline-flex bg-mute px-2.5 py-0.5 text-muted-foreground">{Page.editor.status}<span class="flat h-1.5 w-1.5 bg-gray-400" /></span>
+									</div>
+									<RichText
+										client:load
+										Text={Page.editor.text}
+										Terms
+										ClassName="mt-1 text-card-foreground"
+									/>
+								</div>
+							</div>
+							<div class="flex items-center gap-3 flex-wrap mt-6">
+								<a
+									class="font-medium items-center inline-flex justify-center StaccatoButton px-4 transition-all focus:outline-2 focus:outline-offset-2 bg-orange-50 border border-orange-300 focus:outline-orange-400 hover:bg-orange-100 py-2 text-orange-700"
+									href={Page.editor.scan.href}
+								>
+									{Page.editor.scan.label}
+									<span class="InlineSeparator">→</span>
+								</a>
+								<a
+									class="font-medium items-center inline-flex justify-center StaccatoButton px-4 transition-all bg-card hover:bg-secondary border border-transparent py-2"
+									href={Page.editor.connect.href}
+								>
+									{Page.editor.connect.label}
+									<span class="InlineSeparator">→</span>
+								</a>
+								<span class="text-card-foreground">{Page.editor.note}</span>
+							</div>
 						</div>
-					</>
-				)
-			}
-		</RecordBand>
-
-		<RecordBand band={Page.settings}>
-			<div class="surface__stack">
-				{
-					Page.settingsEntries.map((Setting) => (
-						<div>
-							{Setting.chips?.length ? (
-								<SurfaceChips chips={Setting.chips} />
-							) : null}
-							<RecordEntry {...Setting} chips={undefined} />
-						</div>
-					))
+					)
 				}
-			</div>
-		</RecordBand>
+			</section>
 
-		<RecordBand band={Page.start}>
-			<div class="surface__stack">
-				{
-					Page.startEntries.map((Exit) => (
-						<RecordEntry {...Exit} />
-					))
-				}
-			</div>
-		</RecordBand>
+			<!-- Partners: three attributed organisations in a four-column grid. -->
+			<section class="mt-12">
+				<h2 class="font-medium text-2xl mb-6">{Page.partners.heading}</h2>
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-4">
+					{
+						Page.partners.cards.map((Card) => (
+							<a
+								class="flex items-center gap-3 StaccatoBorderShimmer StaccatoCard bg-card hover:border-[var(--Primary)] p-4 transition-all"
+								href={Card.href}
+							>
+								{Card.logo ? (
+									<img class="h-8 w-8" src={Card.logo} alt={Card.name} />
+								) : (
+									<div class="flex items-center justify-center shrink-0 flat bg-mute font-medium h-8 w-8">
+										{Card.tile}
+									</div>
+								)}
+								<div>
+									<span class="font-medium">{Card.name}</span>
+									<p class="text-card-foreground">{Card.line}</p>
+								</div>
+							</a>
+						))
+					}
+				</div>
+			</section>
 
-		<RecordBand band={Page.partners}>
-			<div class="surface__stack">
-				{
-					Page.partnersEntries.map((Partner) => (
-						<RecordEntry {...Partner} />
-					))
-				}
-			</div>
-		</RecordBand>
-	</SurfaceShell>
+			<!-- Privacy and data rights: the six statutory rights, the four support
+			 channels, and the one entry that ends the account. -->
+			<section class="mt-12">
+				<h2 class="font-medium mb-2 text-2xl">{Page.privacy.heading}</h2>
+				<p class="mb-6 text-muted-foreground">{Page.privacy.subtitle}</p>
+				<PrivacyRequests />
+			</section>
+
+			<!-- Settings: three rows in one card. The two planned settings state
+			 their state; the live one states its action. -->
+			<section class="mt-12">
+				<h2 class="font-medium text-2xl mb-6">{Page.settings.heading}</h2>
+				<div class={Panel}>
+					{
+						Page.settings.rows.map((Row, Position) => (
+							<div
+								class:list={[
+									"p-5",
+									Position < Page.settings.rows.length - 1
+										? "flex items-center justify-between border-[var(--Border)] border-b"
+										: null,
+								]}
+							>
+								<div>
+									{Row.action ? (
+										<a
+											class="font-medium items-center inline-flex justify-center StaccatoButton px-4 transition-all focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)] bg-card hover:bg-secondary"
+											href={Row.action.href}>{Row.action.label}</a
+										>
+									) : null}
+									{Row.badge ? (
+										<SurfaceBadge label={Row.badge.label} tone={Row.badge.tone} />
+									) : null}
+									<h3 class="text-card-foreground font-medium mt-2">
+										{Row.title}
+									</h3>
+									<p class="text-card-foreground mt-1">{Row.body}</p>
+								</div>
+							</div>
+						))
+					}
+				</div>
+			</section>
+		</div>
+	</div>
 </Base>

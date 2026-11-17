@@ -1,8 +1,11 @@
 // DynamicContactForm - the request form, in the site's own language.
 //
 // Publishes:
-//   .contact-form                   the form's page container, on the band gutters
-//   .contact-form__inner            the form measure and its vertical rhythm
+//   .contact-form                   the form's column: 42rem, centred, on gutters
+//   .contact-form__inner            the form's four parts and their rhythm
+//   .contact-form__open             the chip row, the h1, its sentence, the handler
+//   .contact-form__title            the page's only h1 - the request title
+//   .contact-form__standfirst       the registry's subtitle under it
 //   .contact-form__meta             the pair reference, legal basis and window
 //   .contact-form__pair             the CODE-XXXXX reference
 //   .contact-form__tag              one fact chip beside it
@@ -50,18 +53,55 @@
 
 // ─── The container ────────────────────────────────────────────────────────
 
+// `max-w-2xl py-12`: the form reads in one 42rem column, centred, on the page
+// gutters, with 3rem above and below it. A request route's opening is the trail
+// alone, so the form carries the page's vertical rhythm from there.
 .contact-form {
-	@include band-inner;
-	padding-block: var(--space-chapter);
+	max-width: var(--ContainerTwoExtraLarge);
+	margin-inline: auto;
+	padding-inline: var(--Gutter);
+	padding-block: calc(var(--space-group) + var(--space-reading));
 }
 
-// The measure: a form reads in a narrower column than a band, so the stack
-// stops at the two-extra-large container while the gutters stay the page's.
+// `space-y-8`: four parts - the opening, the field card, the ways to send, the
+// pair-reference explainer - on one 2rem rhythm.
 .contact-form__inner {
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-group);
-	max-width: var(--ContainerTwoExtraLarge);
+}
+
+// ─── The opening ──────────────────────────────────────────────────────────
+
+// `space-y-3`: the chip row, the page's only `h1`, its sentence, and the
+// address the request is sent to, at 0.75rem.
+.contact-form__open {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+// `font-medium font-mono text-lg tracking-tight`: the request title, at the mono
+// label scale - not the display scale. It is the page's one `h1`, and the
+// baseline sets it barely larger than the prose under it, because the page's
+// subject is the form rather than its own name.
+.contact-form__title {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	font-weight: 500;
+	letter-spacing: -0.02em;
+	color: var(--Foreground);
+}
+
+// The registry's subtitle, muted, at body size - the `h1`'s own sentence.
+.contact-form__standfirst {
+	margin: 0;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
 }
 
 // ─── The facts above the fields ───────────────────────────────────────────
@@ -73,21 +113,28 @@
 	gap: var(--space-tight) var(--space-reading);
 }
 
-.contact-form__pair,
-.contact-form__tag {
+// `px-3 py-1` on the pair chip; `px-2 py-0.5` on the two fact chips, which sit
+// on `bg-mute` because they are the registry's own values rather than the one
+// reference the reader is asked to quote.
+.contact-form__pair {
 	@include mono-meta;
 	@include hairline;
-	padding: var(--space-tight) var(--space-reading);
-}
-
-// The pair reference is the one fact the reader is asked to quote, so it keeps
-// full ink while the chips beside it stay muted.
-.contact-form__pair {
+	padding: 0.25rem 0.75rem;
 	color: var(--Foreground);
 }
 
+.contact-form__tag {
+	@include mono-meta;
+	@include hairline;
+	padding: 0.125rem 0.5rem;
+	background: var(--Mute);
+}
+
+// `text-sm font-mono text-muted-foreground`, with the address itself at full
+// ink: the sentence is a label, the mailbox is the fact.
 .contact-form__handler {
 	@include mono-meta;
+	font-size: var(--type-code);
 	margin: 0;
 }
 

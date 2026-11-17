@@ -2,18 +2,17 @@
 /**
  * The blog index: what exists, newest first.
  *
- * The page is an archive, not a card grid and not a band stack. Eight articles
- * in a three-across grid leave a hole in the last row and put each article
- * behind a tile the reader has to enter; a row per article gives all eight the
- * same facts on one line, so a reader chooses without opening anything
- * (`DesignSystem-Artifacts.md` §2, `DESIGN.md` §3.4).
+ * The page is the baseline render's composition: a breadcrumb, a centred header
+ * carrying the page's one `h1` and one line under it, then the articles in a
+ * three-column grid, then the way back to the top. Eight articles in a
+ * three-across grid leave a hole in the last row; the baseline had that hole and
+ * the page is restored with it, because the shape a reader recognises is the
+ * grid rather than the ledger that replaced it.
  *
  * The page composes, it does not lay out. `Component/Blog/Data.ts` orders the
- * collection, numbers it and derives the reading-time label; `BlogIndex` renders
- * the record header and the list; the partial under
- * `Stylesheet/System/Component/Blog/` styles both. What is left here is the
- * record's own facts - the marker, the route, the count and the order - and the
- * copy.
+ * collection and derives the reading-time label; `BlogIndex` renders the header
+ * and the grid; the partial under `Stylesheet/System/Component/Blog/` styles
+ * both. What is left here is the copy and the trail.
  */
 import { getCollection } from "astro:content";
 
@@ -41,22 +40,6 @@ const PageSubtitle = T("page.subtitle", {
 	defaultValue: "Architecture, releases, and the road ahead.",
 });
 
-/**
- * The record's marker and its route, as the grammar writes them: `#` for the
- * series index, `/` for the route (`DesignSystem-Grammar.md` §1). The marker is
- * a code, not a sentence - it names the record, so it is not translated; the
- * route is the surface's own label.
- */
-const ArchiveIndex = T("index.index", {
-	ns: "blog",
-	defaultValue: "ARCHIVE_01",
-});
-
-const ArchiveRoute = T("index.kicker", {
-	ns: "blog",
-	defaultValue: "/BLOG",
-});
-
 const EmptyTitle = T("empty.title", {
 	ns: "blog",
 	defaultValue: "No posts yet",
@@ -81,50 +64,11 @@ const Entries = await getCollection("blog");
 const Rows = BuildRows(Entries, MinRead);
 
 /**
- * The metadata strip above the list: the archive's state, its size and the order
- * it is printed in. `STATUS: ACTIVE` is the vocabulary's word for "running /
- * current" (`DesignSystem-Grammar.md` §2) and is the strip's one specimen value -
- * green authenticates a state, it does not decorate a fact. `RECORDS` is derived
- * from the collection, so it cannot drift from the rows under it, and `ORDER`
- * states the sort a reader can check against the printed ordinals.
+ * The trail above the header. Both crumbs print the surface's own name, without
+ * the `/` prefix the record grammar uses elsewhere: the baseline's breadcrumb
+ * read `Home / Blog`, and a crumb is a place, not a route.
  */
-const Strip = [
-	{
-		label: T("index.strip.status", { ns: "blog", defaultValue: "STATUS:" }),
-		value: T("index.strip.statusValue", {
-			ns: "blog",
-			defaultValue: "ACTIVE",
-		}),
-		specimen: true,
-	},
-	{
-		label: T("index.strip.records", { ns: "blog", defaultValue: "RECORDS:" }),
-		value: String(Rows.length),
-	},
-	{
-		label: T("index.strip.order", { ns: "blog", defaultValue: "ORDER:" }),
-		value: T("index.strip.orderValue", {
-			ns: "blog",
-			defaultValue: "NEWEST FIRST",
-		}),
-	},
-];
-
-/**
- * The list's accessible name. The count is derived from the collection, so the
- * name and the rows can never disagree; the visible strip carries the same two
- * facts, so nothing here is announced only to assistive technology.
- */
-const ArchiveHeading = T("index.heading", {
-	ns: "blog",
-	defaultValue: "{{total}} articles, newest first",
-	total: Rows.length,
-});
-
-const Trail = [
-	{ label: `/${Home}`, href: "/" },
-	{ label: `/${PageTitle}` },
-];
+const Trail = [{ label: Home, href: "/" }, { label: PageTitle }];
 ---
 
 <Base
@@ -136,14 +80,10 @@ const Trail = [
 	<Header client:load slot="Header" />
 
 	<BlogIndex
-		index={ArchiveIndex}
-		kicker={ArchiveRoute}
 		heading={PageTitle}
 		standfirst={PageSubtitle}
-		strip={Strip}
 		trail={Trail}
 		rows={Rows}
-		archiveHeading={ArchiveHeading}
 		emptyTitle={EmptyTitle}
 		emptyNote={EmptySubtitle}
 		backLabel={BackToTop}

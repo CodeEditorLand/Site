@@ -1,268 +1,83 @@
-// BlogIndex - the archive: a record header, then one row per article.
+// BlogIndex - the blog's archive page: a centred header and a three-column grid
+// of article cards.
 //
 // Publishes:
-//   .blog-index                  the page shell
-//   .blog-index__trail           the breadcrumb, on the page's gutters
-//   .blog-index__head            the record header: marker, route, h1, strip
-//   .blog-index__record          `# ARCHIVE_01` beside `/BLOG`
-//   .blog-index__route           the `/ROUTE` label
-//   .blog-index__heading         the page's only h1, at --type-section
-//   .blog-index__standfirst      the sentence under it, at --type-sub
-//   .blog-index__strip           the metadata strip: STATUS / RECORDS / ORDER
-//   .blog-index__field           one `LABEL: VALUE` fragment
-//   .blog-index__label           its label, in the meta face
-//   .blog-index__value           its value, in ink
-//   .blog-index__value--specimen its value in the specimen ink (a state)
-//   .blog-index__separator       the U+2001 between two fields
-//   .blog-index__list            the archive index: one row per article
-//   .blog-index__row             ordinal | date | article | reading time
-//   .blog-index__ordinal         `01`-`08`, from BuildRows
-//   .blog-index__date            the <time>, in the meta face
-//   .blog-index__body            title, summary and tags in one column
-//   .blog-index__title           the article's name, at --type-sub, and the
-//                                row's only anchor: the global link rule owns
-//                                the underline, so the name carries no class
-//   .blog-index__summary         the article's claim, one paragraph
-//   .blog-index__tags            the tag list
-//   .blog-index__tag             one tag: a `jelly-badge` the caller supplies
-//   .blog-index__read            the reading time, right-aligned on wide rows
-//   .blog-index__empty           the empty state
-//   .blog-index__empty-title     its headline
-//   .blog-index__empty-note      its second line
-//   .blog-index__back            back to top, at the foot
+//   .blog-index              the page: its container and its block padding
+//   .blog-index__trail       the breadcrumb above the header
+//   .blog-index__head        the centred opening block
+//   .blog-index__heading     the page's only h1
+//   .blog-index__standfirst  the one line under it
+//   .blog-index__archive     the section the grid sits in
+//   .blog-index__grid        the cards, one to three columns
+//   .blog-index__item        one grid cell
+//   .blog-index__link        the whole-card link
+//   .blog-index__card        the white card
+//   .blog-index__tags        the card's tag row
+//   .blog-index__tag         one chip
+//   .blog-index__title       the article's title, at `text-xl`
+//   .blog-index__summary     the article's summary
+//   .blog-index__foot        author / date / reading time, one row
+//   .blog-index__author      the author
+//   .blog-index__date        the publication date
+//   .blog-index__read        the reading-time label
+//   .blog-index__empty       the empty state, when the collection is bare
+//   .blog-index__back        the back-to-top row
 //
-// Four decisions this file makes:
-//
-// - **Creme, and nothing painted on it.** No card, no fill, no band: blog prose
-//   reads on the field itself (`DesignSystem-Pages.md` §4), so the only surface
-//   on this page is the hairline between two rows.
-// - **A row is a rule, not a card.** The row's separation is a hairline, so
-//   eight articles read as one archive rather than eight tiles. The last row
-//   carries the closing rule, so the list ends the way a table ends.
-// - **Four columns only above 768px.** Below it the row is the ordinal and the
-//   date on one line with the article under them, because four columns at phone
-//   width squeeze the summary into a two-word gutter. The grid never reflows
-//   into tiles, so a count that is not a multiple of three leaves no hole.
-// - **Two measures.** The opening reads at `--MeasureOpening` (62ch) and the
-//   row's summary at `--Measure` (72ch): a standfirst is one sentence and a line
-//   of it should be short, while a paragraph is a paragraph.
+// The measurements are the baseline render's: a `max-w-4xl` page with `py-16`,
+// a header capped at `max-w-2xl` and dropped `mb-24` - the largest single margin
+// in the baseline markup - so the heading floats well clear of the grid, and a
+// `1 / 2 / 3` column grid at `gap-6` whose cards are white on the creme field.
+// The card's seed scatter is the site's own: `.StaccatoCard` rotates and offsets
+// by the two custom properties the component sets per position, so the cards sit
+// very slightly out of square with the grid exactly as the baseline's did.
 
 @use "../../Mixin" as *;
 
+// ─── The page ─────────────────────────────────────────────────────────────
+
 .blog-index {
-	display: block;
+	max-inline-size: 56rem;
+	margin-inline: auto;
+	padding-inline: var(--Gutter);
+	padding-block: 4rem;
 }
 
 .blog-index__trail {
-	@include band-inner;
-
-	padding-block-start: var(--space-chapter);
+	margin-block-end: var(--space-group);
 }
 
-/* ─── THE RECORD HEADER ─────────────────────────────────────────────────── */
-
-/* One container for the five parts of the header, so the marker, the route, the
-   heading, the sentence and the strip share one left edge and one rhythm. The
-   gutters are `band-inner`, the same container every page on the site uses. */
+// The header is centred and narrow: the heading and one line, capped at 42rem.
+// The 6rem drop below it is the baseline's `mb-24`, and it is deliberate - the
+// first screen shows the heading and the top edge of the first row, not a card.
 .blog-index__head {
-	@include band-inner;
-
-	display: grid;
-	grid-template-columns: 1fr;
-
-	gap: var(--space-reading);
-
-	padding-block: var(--space-group) 0;
-}
-
-/* The index marker and the route are one line: `# ARCHIVE_01` identifies the
-   record, `/BLOG` names where it lives. Both are fragments, so they sit at
-   label weight and never compete with the h1 under them. */
-.blog-index__record {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-	gap: var(--space-tight) var(--space-reading);
-
-	margin: 0;
-}
-
-.blog-index__route {
-	@include mono-meta;
-
-	@include track(0.08em);
+	max-inline-size: 42rem;
+	margin-inline: auto;
+	margin-block-end: 6rem;
+	text-align: center;
 }
 
 .blog-index__heading {
 	margin: 0;
-
-	max-width: var(--ContainerTwoExtraLarge);
-
-	font-family: var(--FontMono);
-	font-size: var(--type-section);
+	font-size: clamp(1.5rem, 2.5vw, 1.875rem);
 	font-weight: 500;
-	line-height: var(--type-section-line);
-	letter-spacing: -0.02em;
-
+	line-height: 1.15;
+	letter-spacing: -0.01em;
 	color: var(--Foreground);
-
-	text-wrap: balance;
 }
 
 .blog-index__standfirst {
-	margin: 0;
-
-	max-width: var(--MeasureOpening);
-
-	font-size: var(--type-sub);
-	line-height: var(--type-sub-line);
-
+	margin: 0.75rem 0 0;
 	color: var(--MuteForeground);
-
+	white-space: pre-line;
 	text-wrap: pretty;
 }
 
-/* ─── THE METADATA STRIP ────────────────────────────────────────────────── */
+// ─── The grid ─────────────────────────────────────────────────────────────
 
-/* The strip is the record's operational line, so it sits one step below the
-   sentence: label weight, muted, with the one state value in the specimen ink.
-   The fields are separate spans and the U+2001 between them is its own element,
-   so a reader's assistive tech announces three fields rather than one run-on
-   string. */
-.blog-index__strip {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-
-	margin: 0;
-
-	@include mono-meta;
-
-	@include track(0.08em);
-}
-
-.blog-index__field {
-	white-space: nowrap;
-}
-
-.blog-index__label {
-	color: var(--MuteForeground);
-}
-
-.blog-index__value {
-	margin-inline-start: var(--space-tight);
-
-	color: var(--Foreground);
-}
-
-.blog-index__value--specimen {
-	color: var(--Accent);
-}
-
-.blog-index__separator {
-	color: var(--MuteForeground);
-}
-
-/* ─── THE ARCHIVE INDEX ─────────────────────────────────────────────────── */
-
-/* The list takes `band-inner` for its gutters and its centring, so this rule
-   resets only the block axis: `margin: 0` or `padding: 0` here would wipe the
-   include's `margin-inline: auto` and its gutter, and the rows would sit against
-   the left edge of the viewport on a wide screen. */
-.blog-index__list {
-	@include band-inner;
-
-	margin-block: var(--space-group) 0;
-
-	list-style: none;
-}
-
-.blog-index__row {
+.blog-index__grid {
 	display: grid;
-	grid-template-columns: 3ch minmax(0, 1fr);
-
-	gap: var(--space-tight) var(--space-reading);
-
-	padding-block: var(--space-reading);
-
-	@include hairline(top);
-}
-
-.blog-index__row:last-child {
-	@include hairline(bottom);
-}
-
-.blog-index__ordinal,
-.blog-index__date,
-.blog-index__read {
-	@include mono-meta;
-
-	margin: 0;
-}
-
-.blog-index__ordinal {
-	font-variant-numeric: tabular-nums;
-}
-
-.blog-index__date {
-	font-variant-numeric: tabular-nums;
-}
-
-/* Below 768px the article and its reading time both start under the date, so
-   the ordinal stays a margin mark in its own column. */
-.blog-index__body,
-.blog-index__read {
-	grid-column: 2;
-}
-
-.blog-index__body {
-	display: grid;
-	grid-template-columns: 1fr;
-
-	gap: var(--space-tight);
-
-	min-width: 0;
-}
-
-.blog-index__title {
-	margin: 0;
-
-	font-size: var(--type-sub);
-	font-weight: 500;
-	line-height: var(--type-sub-line);
-	letter-spacing: -0.01em;
-
-	color: var(--Foreground);
-
-	text-wrap: balance;
-}
-
-/* The underline is the global link rule's, at --Border, moving to --Primary on
-   hover - the rule's `:not()` chain outranks any single-class rule here, so
-   this partial does not restate it. The ink is another matter: no site-wide
-   rule sets an anchor's colour, so an unstyled one falls back to the browser's
-   own link blue. The name takes the title's ink. */
-.blog-index__title a {
-	color: inherit;
-}
-
-.blog-index__summary {
-	margin: 0;
-
-	max-width: var(--Measure);
-
-	font-size: var(--type-body);
-	line-height: var(--type-body-line);
-
-	color: var(--MuteForeground);
-
-	text-wrap: pretty;
-}
-
-.blog-index__tags {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--space-tight);
+	grid-template-columns: minmax(0, 1fr);
+	gap: 1.5rem;
 
 	margin: 0;
 	padding: 0;
@@ -270,92 +85,132 @@
 	list-style: none;
 }
 
-/* The badge is the Jelly element's; the list item only positions it, so this
-   rule sets no ink, no size and no radius of its own. */
+@include bp(768px) {
+	.blog-index__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@include bp(1024px) {
+	.blog-index__grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.blog-index__item {
+	display: flex;
+	min-inline-size: 0;
+}
+
+// The anchor wraps the card, so the whole card is one target and the title is
+// not a second nested link.
+.blog-index__link {
+	display: block;
+	inline-size: 100%;
+	color: inherit;
+	text-decoration: none;
+	transition: opacity 0.2s ease;
+}
+
+.blog-index__link:hover {
+	opacity: 0.8;
+}
+
+.blog-index__card {
+	display: flex;
+	flex-direction: column;
+	block-size: 100%;
+	box-sizing: border-box;
+	padding: 1.5rem;
+	background: var(--Card);
+	color: var(--CardForeground);
+}
+
+// ─── Inside the card ──────────────────────────────────────────────────────
+
+.blog-index__tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+
+	margin: 0 0 0.75rem;
+	padding: 0;
+
+	list-style: none;
+}
+
 .blog-index__tag {
 	display: flex;
 }
 
-/* The reading time is a label, so it takes the label voice - the string itself
-   stays exactly what the collection carries ("5 min read"), and only its
-   rendering is uppercase and tracked. */
+.blog-index__title {
+	margin: 0 0 0.5rem;
+	font-size: 1.25rem;
+	font-weight: 500;
+	line-height: 1.25;
+	color: var(--CardForeground);
+	text-wrap: balance;
+}
+
+.blog-index__summary {
+	margin: 0 0 1rem;
+	color: var(--CardForeground);
+	white-space: pre-line;
+	text-wrap: pretty;
+}
+
+// The footer row is pushed to the card's floor so three cards in one row close
+// on one line, and its three facts are spread across it: the author at the
+// start, the reading time at the end, the date between them.
+.blog-index__foot {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-tight);
+
+	margin: auto 0 0;
+
+	font-size: var(--TypeScaleS);
+	line-height: 1.2;
+	color: var(--CardForeground);
+}
+
+.blog-index__date {
+	font-family: var(--FontMono);
+	font-variant-numeric: tabular-nums;
+	opacity: 0.7;
+}
+
 .blog-index__read {
-	@include track(0.08em);
+	white-space: nowrap;
 }
 
-/* Above 768px the row is an archive line: the ordinal opens it, the date
-   follows, the article fills it, the reading time closes it on the right edge.
-   `baseline` keeps the four columns on one optical line instead of centring
-   short cells.
-
-   The two fixed columns are measured in `ch`, not in rem: `--FontSans` and
-   `--FontMono` are the same mono stack (Token.scss:781-787), so a character
-   width is exact here, and the ordinal (two characters) and the date (ten) size
-   their own columns. A column width is geometry, not spacing - the gaps around
-   it are the spacing tokens. */
-@include bp(768px) {
-	.blog-index__row {
-		grid-template-columns: 3ch 11ch minmax(0, 1fr) auto;
-
-		align-items: baseline;
-	}
-
-	.blog-index__body,
-	.blog-index__read {
-		grid-column: auto;
-	}
-
-	.blog-index__read {
-		text-align: end;
-	}
-}
-
-/* ─── THE EMPTY STATE ───────────────────────────────────────────────────── */
+// ─── The close and the empty state ────────────────────────────────────────
 
 .blog-index__empty {
-	@include band-inner;
-
-	padding-block: var(--space-group);
-
-	@include hairline(top);
+	margin-block: var(--space-group);
+	color: var(--MuteForeground);
 }
 
 .blog-index__empty-title {
 	margin: 0;
-
 	font-size: var(--type-sub);
 	font-weight: 500;
-	line-height: var(--type-sub-line);
-
 	color: var(--Foreground);
 }
 
 .blog-index__empty-note {
-	margin: 0;
-
-	font-size: var(--type-body);
-	line-height: var(--type-body-line);
-
-	color: var(--MuteForeground);
+	margin: 0.5rem 0 0;
 }
-
-.blog-index__empty-title + .blog-index__empty-note {
-	margin-block-start: var(--space-tight);
-}
-
-/* ─── THE FOOT ──────────────────────────────────────────────────────────── */
 
 .blog-index__back {
-	@include band-inner;
-
-	margin-block: 0;
-	padding-block: var(--space-group) var(--space-chapter);
-
-	@include mono-meta;
-
-	@include track(0.08em);
+	margin: var(--space-chapter) 0 0;
+	padding-block-start: var(--space-group);
+	@include hairline(top);
 }
 
 .blog-index__back a {
-	color: var(--Primary);
+	color: var(--Accent);
+	text-decoration: underline;
+	text-underline-offset: 4px;
 }

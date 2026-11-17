@@ -1,114 +1,131 @@
-// The Contact hub - one index, four family groups, one address.
+// The Contact hub - one grid of fourteen records, one address, one close.
 //
 // Publishes:
-//   .contact-hub              the index artifact, on the page gutters
-//   .contact-hub__family      one family group, opened by a hairline
-//   .contact-hub__family-head the group's kicker, heading and one line
-//   .contact-hub__kicker      the `/SECTION LABEL` the registry carries
-//   .contact-hub__heading     the group's `h2`, at the S tier
-//   .contact-hub__line        the handler and window the family shares
-//   .contact-hub__requests    the family's records, one column
-//   .contact-hub__direct      the closing group: the address that is not a form
-//   .contact-hub__address-row the address's own row
-//   .contact-hub__address     the one address that is not a form
-//   .contact-hub__top         the back-to-top row
+//   .contact-hub               the index body, on the page's measure and gutters
+//   .contact-hub__grid         the fourteen cards: one column, two, then three
+//   .contact-hub__card         one record: its slug, its name, its sentence
+//   .contact-hub__slug         the `/AMEND` address, mono uppercase at 70% ink
+//   .contact-hub__name         the record's `h2`
+//   .contact-hub__note         the one sentence under the name
+//   .contact-hub__direct       the address that is not a form, as one quiet line
+//   .contact-hub__direct-label its label, in muted ink
+//   .contact-hub__address      that address, in ink, underlined on hover only
+//   .contact-hub__top          the closing rule and the way back to the top
 //
-// Nothing here restates a block: the records are `RecordEntry`, and the family
-// head is a group heading inside one index, not a `RecordBand` - a band is a
-// page-level chapter separator, and one index is one artifact (`DESIGN.md` §5
-// A1, §3.7).
+// The grid is the page. Fourteen cards in three columns is the baseline's whole
+// density argument: a reader sees every route the site answers on at once, and
+// the last row is two-thirds empty because fourteen does not divide by three.
+//
+// The card is a link and nothing else - `bg-card` on the creme canvas, no
+// hairline, no radius, no shadow - so the repetition of the slash-codes down the
+// left edge is the loudest thing on the page. Its slug is the route it answers
+// on, in the mono face at 70% ink; its name is an `h2` at body size; its
+// sentence is the registry's subtitle at 70% opacity.
 //
 // The address is a link, not an action. It carried `.emphasis-expressive` when
 // it opened a band of its own; an ink-inverted postal address is a non-action
-// wearing the action style (`DESIGN.md` §5 A6, §7 DR-12), so it takes ink,
-// an underline on hover, and nothing else.
+// wearing the action style (`DESIGN.md` §5 A6, §7 DR-12), so it takes ink, an
+// underline on hover, and nothing else. It sits between the grid and the closing
+// rule as one line - never a heading, because the page's heading count is 1 `h1`
+// and 14 `h2`, and this block is neither.
 
 @use "../../Mixin" as *;
 
 .contact-hub {
-	@include band-inner;
-
-	padding-block: var(--space-chapter);
+	max-width: var(--ContainerFiveExtraLarge);
+	margin-inline: auto;
+	padding-inline: var(--Gutter);
+	padding-block-end: 4rem;
 }
 
-// A family is a group inside the index: one hairline above it, group rhythm
-// above the rule, reading rhythm below it. The first group has no rule - the
-// page opening already closes it.
-.contact-hub__family {
-	@include hairline(top);
+// ─── The grid ─────────────────────────────────────────────────────────────
+// `grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4`: one column on a phone, two
+// from 768px, three from 1024px, on the tight 1rem gap the baseline uses.
 
-	margin-block-start: var(--space-group);
-	padding-block-start: var(--space-group);
+.contact-hub__grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 1rem;
 }
 
-.contact-hub__family:first-child {
-	border-block-start: 0;
-
-	margin-block-start: 0;
-	padding-block-start: 0;
+@include bp(768px) {
+	.contact-hub__grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
 }
 
-.contact-hub__family-head {
-	max-width: 72ch;
-
-	margin-block-end: var(--space-group);
+@include bp(1024px) {
+	.contact-hub__grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
 }
 
-.contact-hub__kicker {
-	@include mono-meta;
-	@include track;
+// ─── One card ─────────────────────────────────────────────────────────────
+// `block bg-card hover:bg-secondary px-5 py-4 transition-colors`.
 
-	margin: 0 0 var(--space-tight);
+.contact-hub__card {
+	display: block;
+	padding: 1rem 1.25rem;
+	background: var(--Card);
+	color: var(--CardForeground);
+	text-decoration: none;
+	transition: background-color 0.2s ease;
 }
 
-// A group heading is not a page claim, so it takes the S tier at its ceiling
-// with tracking - never a fourth size between S and L (`DESIGN.md` §2.4).
-.contact-hub__heading {
-	margin: 0 0 var(--space-tight);
-
-	font-size: var(--type-sub);
-	font-weight: 500;
-	line-height: var(--type-sub-line);
-
-	color: var(--Foreground);
-
-	text-wrap: balance;
+.contact-hub__card:hover,
+.contact-hub__card:focus-visible {
+	background: var(--Secondary);
 }
 
-.contact-hub__line {
+// `font-medium font-mono text-sm uppercase tracking-widest` at
+// `color-mix(in srgb, var(--CardForeground) 70%, transparent)`.
+.contact-hub__slug {
 	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-code);
+	line-height: 1.25;
+	font-weight: 500;
+	@include track(0.1em);
+	color: color-mix(in srgb, var(--CardForeground) 70%, transparent);
+}
 
+// `font-medium mt-2`: the name sits one step under its slug, at body size.
+.contact-hub__name {
+	margin: var(--space-tight) 0 0;
 	font-size: var(--type-body);
-	line-height: var(--type-body-line);
+	line-height: 1.5;
+	font-weight: 500;
+	color: var(--CardForeground);
+}
 
-	color: var(--MuteForeground);
-
+// `mt-1 opacity-70`: the sentence is the registry's own subtitle.
+.contact-hub__note {
+	margin: 0.25rem 0 0;
+	font-size: var(--type-body);
+	line-height: 1.5;
+	color: var(--CardForeground);
+	opacity: 0.7;
 	text-wrap: pretty;
 }
 
-// One column of records. The stack is the index's own rhythm, so the gap here
-// is the reading one: records are read as a set, not as separate subjects.
-.contact-hub__requests {
+// ─── The address ──────────────────────────────────────────────────────────
+// One line under the grid: the label in muted ink, the mailbox in full ink.
+
+.contact-hub__direct {
 	display: flex;
-	flex-direction: column;
-	gap: var(--space-reading);
+	flex-wrap: wrap;
+	gap: 0 var(--space-tight);
+	margin: var(--space-group) 0 0;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
 }
 
-.contact-hub__address-row {
-	margin: 0;
+.contact-hub__direct-label {
+	color: var(--MuteForeground);
 }
 
-// The address at the S ceiling, in ink, underlined on hover: it is the one
-// destination on the page that is not a form, and it must read as a link rather
-// than as the page's action.
 .contact-hub__address {
-	display: inline-block;
-
-	font-size: var(--type-sub);
-	line-height: var(--type-sub-line);
-
 	color: var(--Foreground);
-
 	text-decoration: none;
 	text-wrap: nowrap;
 }
@@ -119,18 +136,20 @@
 	text-underline-offset: 0.25em;
 }
 
-// The way back to the top, at meta weight: an affordance, never a claim.
+// ─── The close ────────────────────────────────────────────────────────────
+// `border-t mt-12 pt-8`: one rule, then the way back to the top in `--Primary`.
+
 .contact-hub__top {
 	@include hairline(top);
-	@include mono-meta;
-	@include track(0.08em);
 
-	margin: var(--space-group) 0 0;
-	padding-block-start: var(--space-reading);
+	margin-block-start: 3rem;
+	padding-block-start: 2rem;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
 }
 
 .contact-hub__top a {
-	color: var(--Foreground);
+	color: var(--Primary);
 	text-decoration: none;
 }
 

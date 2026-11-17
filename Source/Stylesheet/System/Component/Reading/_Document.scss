@@ -57,9 +57,10 @@
 }
 
 .reading-document__heading {
-	font-size: var(--type-section);
-	line-height: var(--type-section-line);
-	letter-spacing: -0.02em;
+	font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+	line-height: 1.15;
+	letter-spacing: -0.01em;
+	font-weight: 500;
 	text-wrap: balance;
 
 	margin-block-end: var(--space-tight);
@@ -165,9 +166,16 @@
 	margin-block-start: var(--space-group);
 }
 
+/* The document's own title, opening the body: the baseline rendered it as the
+   prose body's first `h1`, larger than the page's own heading - the heading is
+   deliberately quiet and the card is the page. It is a `p` here, not an `h1`,
+   because the page already has one and a document that opens with a second
+   level-one heading is the defect this surface exists to remove. */
 .reading-document__title {
-	font-size: var(--type-sub);
-	line-height: var(--type-sub-line);
+	font-size: clamp(1.75rem, 3vw, 2.25rem);
+	line-height: 1.15;
+	font-weight: 500;
+	letter-spacing: -0.01em;
 
 	@include hairline(bottom);
 
@@ -212,8 +220,8 @@
 .reading-clause {
 	scroll-margin-block-start: var(--reading-anchor-offset);
 
-	font-size: var(--type-sub);
-	line-height: var(--type-sub-line);
+	font-size: 1.5rem;
+	line-height: 1.25;
 	font-weight: 500;
 
 	text-wrap: balance;

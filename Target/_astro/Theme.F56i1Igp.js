@@ -1,0 +1,1 @@
+import{et as t}from"./Vendor/React.WbZFbJRc.js";var a=t();function s({src:t,alt:s="",width:e,height:r,className:i,...c}){return(0,a.jsx)("img",{src:t,alt:s,width:e,height:r,className:i,...c})}export{s as t};

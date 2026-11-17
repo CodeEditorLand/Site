@@ -3,259 +3,46 @@
  * Download - the installation contract: can I install this today, and if not,
  * what can I do instead?
  *
- * The page is one artifact with four regions:
+ * The page is the baseline render's composition, band for band:
  *
- *   1. masthead    the page's one h1, its answer in one sentence, eight marks
- *   2. record      `# RELEASE_01` - the index, the claim, the state, three
- *                  platform entries, the verification entry, the one action that
- *                  exists today, and the record's two provenance lines
- *   3. requirements what each platform needs, and what a source build needs
- *   4. previous    the releases before this one - none, said with RECORD: EMPTY
- *   5. transparency the telemetry and build-profile disclosure this page carried
+ *   1. masthead      the page's one h1, its answer in one sentence, eight marks
+ *   2. manifest      `#release-manifest` - the centred header and the three
+ *                    platform entries
+ *   3. transparency  `#Transparency` - the disclosure band, with its own centred
+ *                    heading and its three sub-blocks
  *
- * Regions 3-5 are regions *inside* the record, not chapters after it. The record
- * is the page's one artifact, and a chapter per subject around one release
- * buried the record's own index a level down (DESIGN.md §1.8, §7 DR-9). They
- * arrive through the record's slot as `Download/Region.astro` blocks, and the
- * record's own flex column separates them at `--space-group` - the documented
- * distance between two parts of one subject - never at `--space-chapter`
- * (DESIGN.md §2.3, §5 A4).
+ * The middle band was briefly a single record with the other subjects as regions
+ * inside it; the baseline rendered two sections and this page renders two
+ * sections, because a reader who remembers the page remembers a manifest band
+ * under a manifest heading and a disclosure band under a sentence. The
+ * decomposition is what the programme keeps: every row, label and figure lives
+ * in `Component/Dynamic/Download/Data.ts`, every card is a component, and the
+ * page owns the band order and nothing else (BRIDGE §2.1).
  *
- * The page owns the artifact order and nothing else (BRIDGE §2.1): every row,
- * label and figure lives in `Component/Dynamic/Download/Data.ts`, every group is
- * a component, and every block is the Record layer's inside a Jelly surface.
- *
- * The transparency region's body is still built by a `.tsx` island
+ * The disclosure band's body is still built by a `.tsx` island
  * (`DynamicTransparency`). It is outside this card's ownership, so it keeps its
- * markup, its hydrating noise and its four strategy commands exactly as they
- * were; the region supplies its `/TRANSPARENCY` label, its `h3` and its
- * standfirst, and the island is asked for its body only.
+ * markup and its four strategy commands exactly as they were - including the
+ * `Verify in source code` link the baseline closed the page on. The page hands
+ * it the section's own title and standfirst, which are what the island prints
+ * above its three sub-blocks.
  */
 import DownloadMasthead from "../Component/Dynamic/DownloadMasthead.astro";
-import Region from "../Component/Dynamic/Download/Region.astro";
-import DynamicPreviousReleases from "../Component/Dynamic/DynamicPreviousReleases.astro";
-import DynamicReleaseManifest from "../Component/Dynamic/DynamicReleaseManifest.astro";
-import DynamicSystemRequirements from "../Component/Dynamic/DynamicSystemRequirements.astro";
+import ManifestBand from "../Component/Dynamic/Download/ManifestBand.astro";
 import { DynamicTransparency } from "../Component/Dynamic/DynamicTransparency";
-import { Header } from "../Component/Layout/Header";
 import {
-	BuildLines,
+	FieldLabels,
 	Manifest,
 	ManifestPlatforms,
 	Marks,
-	PreviousReleases,
-	Regions,
-	ReleaseColumns,
-	Requirements,
-	Toolchain,
-	Verification,
+	Transparency,
 } from "../Component/Dynamic/Download/Data";
+import { Header } from "../Component/Layout/Header";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
 const T = GetI18n();
 
-/** The three regions the record continues into, in page order. */
-const RegionCopy = Regions(T);
-
-/** The record's own copy: its index, its claim, its state and its two sources. */
-const Record = Manifest(T);
-
-/**
- * The disclosure section's body, carried over unchanged from this page's
- * previous version: six telemetry policy items, nine named build profiles,
- * sixteen test permutations, four deployment strategies with their commands, and
- * the source URL. `Title` and `Subtitle` are absent on purpose - they are the
- * section's heading and standfirst now, so the island renders its body without a
- * second h2.
- */
-const TransparencyContent = {
-	Policy: [
-		{
-			Identifier: "no-telemetry-default",
-			Title: "Compile-gated by default.",
-			Description:
-				"Telemetry and tracing code lives behind `cfg(feature)` gates. In a standard build those paths are not compiled in - no collection, no emission, no runtime cost.",
-			Icon: "EyeOff",
-			Status: "Disabled" as const,
-			Detail: "Telemetry feature paths are excluded from the default build profile.",
-		},
-		{
-			Identifier: "no-crash-reporter",
-			Title: "No Microsoft endpoint dependency.",
-			Description:
-				"Land is built from a CC0 Code-OSS base with Microsoft service dependencies removed or replaced. The crash reporter, update service, and marketplace endpoints are all replaced with Land-owned wiring or left unconnected.",
-			Icon: "Shield",
-			Status: "Disabled" as const,
-			Detail: "CC0-licensed Code-OSS base with Land-owned service wiring.",
-		},
-		{
-			Identifier: "no-phone-home",
-			Title: "Three separate systems, three separate controls.",
-			Description:
-				"Website analytics, account authentication, and editor telemetry are independent systems. Each is controlled by its own feature flag or environment configuration - none of the three implies the others are active.",
-			Icon: "Lock",
-			Status: "Disabled" as const,
-		},
-		{
-			Identifier: "zero-cost-noop",
-			Title: "Disabled feature paths stay out of the runtime.",
-			Description:
-				"Rust `cfg(feature)` gates eliminate disabled code paths at compile time, not just at runtime. A published build profile is a verifiable record of exactly which features were included.",
-			Icon: "Zap",
-			Status: "Active" as const,
-			Detail: "Rust cfg(feature) gates eliminate dead code at compile time.",
-		},
-		{
-			Identifier: "opt-in-otel",
-			Title: "Need traces? Opt in. Your infrastructure only.",
-			Description:
-				"OpenTelemetry tracing is available in source and activates only when a deployment explicitly enables it with a named feature flag and a configured endpoint. Trace data goes to your infrastructure.",
-			Icon: "Eye",
-			Status: "Optional" as const,
-			Detail: "cargo build --features Telemetry\nSub-features: MetricsCollection, DistributedTracing.",
-		},
-		{
-			Identifier: "effect-ts-local",
-			Title: "Extension host timing stays in the process.",
-			Description:
-				"Cocoon has internal timing and service diagnostics for extension-host work. Unless a transport is configured, that data is local process instrumentation rather than an external product-analytics claim.",
-			Icon: "Layers",
-			Status: "Active" as const,
-			Detail: "Effect-TS TelemetryService with TelemetryMock layer for zero-overhead testing.",
-		},
-	],
-	Variant: [
-		{
-			Identifier: "debug",
-			Name: "debug",
-			Tier: "Debug" as const,
-			Workbench: "Browser",
-			Feature: "Browser UI",
-			Status: "Available" as const,
-		},
-		{
-			Identifier: "debug-mountain",
-			Name: "debug-mountain",
-			Tier: "Debug" as const,
-			Workbench: "Mountain",
-			Feature: "Mountain UI",
-			Status: "Recommended" as const,
-		},
-		{
-			Identifier: "debug-electron",
-			Name: "debug-electron",
-			Tier: "Debug" as const,
-			Workbench: "Electron",
-			Feature: "Legacy Check",
-			Status: "Legacy" as const,
-		},
-		{
-			Identifier: "production",
-			Name: "production",
-			Tier: "Release" as const,
-			Workbench: "Mountain",
-			Feature: "Release Path",
-			Status: "Recommended" as const,
-		},
-		{
-			Identifier: "release",
-			Name: "release",
-			Tier: "Release" as const,
-			Workbench: "Mountain",
-			Feature: "Bundle Path",
-			Status: "Available" as const,
-		},
-		{
-			Identifier: "web-browser",
-			Name: "web-browser",
-			Tier: "Release" as const,
-			Workbench: "Browser",
-			Feature: "Web Path",
-			Status: "Available" as const,
-		},
-		{
-			Identifier: "bundler-preparation",
-			Name: "bundler-preparation",
-			Tier: "Build" as const,
-			Workbench: "-",
-			Feature: "-",
-			Status: "Available" as const,
-		},
-		{
-			Identifier: "swc-bundle",
-			Name: "swc-bundle",
-			Tier: "Build" as const,
-			Workbench: "-",
-			Feature: "-",
-			Status: "Experimental" as const,
-		},
-		{
-			Identifier: "oxc-bundle",
-			Name: "oxc-bundle",
-			Tier: "Build" as const,
-			Workbench: "-",
-			Feature: "-",
-			Status: "Experimental" as const,
-		},
-	],
-	Strategy: [
-		{
-			Identifier: "dev-hot-reload",
-			Name: "Development",
-			Description:
-				"Change a file, see it instantly. Hot-reload in Tauri with the Sky dev server. No manual rebuilds needed.",
-			Icon: "Zap",
-			Command: "bash Maintain/Dev-Mountain.sh",
-			Feature: [
-				"Hot Reload",
-				"Instant Preview",
-				"Development Server",
-				"No Bundling",
-			],
-		},
-		{
-			Identifier: "debug-build",
-			Name: "Debug Build",
-			Description:
-				"Full debug symbols for stepping through code. Three profiles: Browser, Mountain, and Electron.",
-			Icon: "Code",
-			Command: "bash Maintain/Debug/Build.sh --profile debug-mountain",
-			Feature: [
-				"Debug Symbols",
-				"3 Profiles",
-				"Source Maps",
-				"File Watch",
-			],
-		},
-		{
-			Identifier: "production-release",
-			Name: "Release Build",
-			Description:
-				"Optimized release packaging path. Public signing and verification artifacts are still being prepared.",
-			Icon: "Server",
-			Command: "bash Maintain/Release/Build.sh --profile production",
-			Feature: [
-				"Optimized",
-				"Signing Planned",
-				"Clean Build",
-				"Packaged",
-			],
-		},
-		{
-			Identifier: "web-only",
-			Name: "Web Deployment",
-			Description:
-				"Run Land in the browser without installing anything. No native shell needed.",
-			Icon: "Layers",
-			Command: "bash Maintain/Release.sh --profile web-browser",
-			Feature: ["No Install", "Browser Only", "Web Deploy", "OXC Bundled"],
-		},
-	],
-	MatrixPermutation: 16,
-	SourceURL: "https://github.com/CodeEditorLand/Land",
-} as const;
-
+/** The page's meta, from the site's own keys. */
 const MetaTitle = T("meta.downloads.title", {
 	defaultValue:
 		"Download Code Editor Land | Source Builds and Public Release Prep",
@@ -278,54 +65,12 @@ const MetaDescription = T("meta.downloads.description", {
 		marks={Marks}
 	/>
 
-	<DynamicReleaseManifest
-		record={Record}
+	<ManifestBand
+		head={Manifest(T)}
 		platforms={ManifestPlatforms(T)}
-		verification={Verification(T)}
-		verificationHeading={T("download:verification.title", {
-			defaultValue: "Verification Will Ship With Public Releases.",
-		})}
-		empty={T("download:manifest.empty", {
-			defaultValue: "No release published yet.",
-		})}
-		build={{
-			label: T("download:status.well", {
-				defaultValue: "BUILD FROM SOURCE",
-			}),
-			language: "sh",
-			lines: BuildLines,
-		}}
-	>
-		<Region region={RegionCopy.Requirements}>
-			<DynamicSystemRequirements
-				platforms={Requirements(T)}
-				toolchain={Toolchain}
-				toolchainLabel={T("download:requirements.toolchain", {
-					defaultValue: "BUILD TOOLCHAIN (SOURCE)",
-				})}
-			/>
-		</Region>
+		index="RELEASE_01"
+		labels={FieldLabels(T)}
+	/>
 
-		<Region region={RegionCopy.Previous}>
-			<DynamicPreviousReleases
-				releases={PreviousReleases}
-				columns={ReleaseColumns}
-				label={T("download:previousReleases.state", {
-					defaultValue: "RECORD: EMPTY",
-				})}
-				empty={T("download:previousReleases.description", {
-					defaultValue:
-						"No public releases yet. Older versions will appear here once public releases ship.",
-				})}
-			/>
-		</Region>
-
-		<Region region={RegionCopy.Transparency}>
-			<DynamicTransparency
-				Content={TransparencyContent}
-				ClassName="download-transparency"
-				client:load
-			/>
-		</Region>
-	</DynamicReleaseManifest>
+	<DynamicTransparency Content={Transparency(T)} client:load />
 </Base>

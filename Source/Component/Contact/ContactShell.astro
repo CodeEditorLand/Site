@@ -8,12 +8,18 @@
 // thirteen times.
 //
 // A route now names its code and nothing else. Everything the shell renders -
-// the trail, the document title and description, the `h1`, the standfirst and
-// the form - is read out of `Requests[code]`, so a route cannot disagree with
-// the registry and a title is written once.
+// the trail, the document title and description, the form and the form's own
+// `h1` - is read out of `Requests[code]`, so a route cannot disagree with the
+// registry and a title is written once.
 //
 // The trail keeps the three destinations the routes already had: `/`, then
 // `/Dashboard`, then this request's own title.
+//
+// The opening is the trail alone: a request route's `h1` is the request title,
+// and the baseline prints it inside the form's chip row rather than in a page
+// header above the form. `ContactPage` therefore gets no `heading`, and
+// `DynamicContactForm` prints the title, the standfirst and the handler address
+// itself.
 //
 // The Auth0 identifiers are read the same way the routes read them - a dynamic
 // import of `Function/Configuration/Auth.js`, which reads the environment at
@@ -41,31 +47,17 @@ const { Auth0Domain, Auth0ClientIdentifier } = await import(
 
 /** The trail: home, the dashboard the request is filed from, then the request. */
 const trail: readonly ContactTrailItem[] = [
-	{ label: "/HOME", href: "/" },
-	{ label: "/DASHBOARD", href: "/Dashboard" },
-	{ label: `/${Config.Title.toUpperCase()}` },
+	{ label: "Home", href: "/" },
+	{ label: "Dashboard", href: "/Dashboard" },
+	{ label: Config.Title },
 ];
-
-/**
- * The record header: the income code as the series marker, the statutory basis
- * the registry already carries as the `〈 〉` stamp, and the route the record is
- * filed on. Nothing is derived that the registry does not hold - a request with
- * no `Article` prints no stamp.
- */
-const record = {
-	index: `# ${Config.Code}`,
-	...(Config.Article ? { stamp: Config.Article } : {}),
-	route: "/CONTACT",
-};
 ---
 
 <ContactPage
 	metaTitle={`${Config.Title} | Code Editor Land`}
 	metaDescription={Config.Subtitle}
 	trail={trail}
-	heading={Config.Title}
-	standfirst={Config.Subtitle}
-	record={record}
+	opening="trail"
 >
 	<DynamicContactForm
 		client:load

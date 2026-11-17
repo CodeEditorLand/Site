@@ -11,16 +11,16 @@ import type Property from "./Interface/Property/Password/Forgot.js";
 /**
  * Dynamic ForgotPassword component for password reset request.
  *
- * Renders the email form, then the sent state. The page frame - the /KICKER,
- * the h1 and the supporting sentence - belongs to AuthShell; this component
- * owns the fields, the validation and the two states inside that frame.
+ * Renders the baseline's card: the `Reset Your Password` heading and its one
+ * supporting sentence over the email form, then the sent state in the same
+ * card. The card itself belongs to the route's `AuthShell`; this component
+ * owns the interior - the fields, the validation and the two states.
  */
 const DynamicForgotPassword = ({
 	Content,
 	OnSubmit,
 	OnResend,
 	OnNavigate,
-	ClassName,
 	IsLoading = false,
 	ErrorMessage,
 }: Property) => {
@@ -56,31 +56,37 @@ const DynamicForgotPassword = ({
 		SetInternalError("");
 	};
 
-	const SentStatus = T("auth.forgotPassword.sentStatus", {
-		defaultValue: "RESET LINK SENT",
-	});
-
 	const BackToSignIn = T("account.forgotPassword.backToSignIn", {
 		defaultValue: "Back to Sign In",
 	});
 
 	return (
 		<>
-			{!IsSubmitted ? (
-				<form
-					className={`auth-shell__form ${ClassName || ""}`}
-					onSubmit={HandleSubmit}
-					aria-label="Password reset request form"
-				>
-					<div aria-live="polite" aria-atomic="true">
-						{(ErrorMessage || InternalError) && (
-							<p className="auth-shell__error" role="alert">
-								{ErrorMessage || InternalError}
-							</p>
-						)}
-					</div>
+			<div className="flex flex-col space-y-1 p-6 text-center">
+				<h3 className="font-mono text-2xl font-medium tracking-tight">
+					{Content.Title}
+				</h3>
 
-					<div className="auth-shell__field">
+				<p className="text-card-foreground text-sm opacity-70">
+					{Content.Description}
+				</p>
+			</div>
+
+			{!IsSubmitted ? (
+				<div className="p-6 pt-0">
+					<form
+						className="space-y-4"
+						onSubmit={HandleSubmit}
+						aria-label="Password reset request form"
+					>
+						<div aria-live="polite" aria-atomic="true">
+							{(ErrorMessage || InternalError) && (
+								<p className="auth-shell__error" role="alert">
+									{ErrorMessage || InternalError}
+								</p>
+							)}
+						</div>
+
 						<DynamicInput
 							Content={{
 								...EmailField,
@@ -89,30 +95,26 @@ const DynamicForgotPassword = ({
 
 							Id="email"
 						/>
-					</div>
 
-					<DynamicButton
-						Content={{
-							...SubmitButton,
-							Type: "submit",
-							Variant: "default",
-							FullWidth: true,
-							ClassName: "auth-shell__primary",
-						}}
+						<DynamicButton
+							Content={{
+								...SubmitButton,
+								Type: "submit",
+								Variant: "default",
+								FullWidth: true,
+								ClassName: "auth-shell__primary",
+							}}
 
-						IsLoading={IsLoading}
-					/>
-				</form>
+							IsLoading={IsLoading}
+						/>
+					</form>
+				</div>
 			) : (
 				<div
-					className="auth-shell__report"
+					className="space-y-4 p-6 pt-0"
 					role="status"
 					aria-live="polite"
 				>
-					<p className="auth-shell__status auth-shell__status--success">
-						{SentStatus}
-					</p>
-
 					<p className="auth-shell__report-sentence">
 						{SuccessMessage ||
 							"We've sent a password reset link to your email address."}

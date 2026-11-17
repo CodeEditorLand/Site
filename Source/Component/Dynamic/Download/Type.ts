@@ -1,26 +1,22 @@
 /**
- * Type - the shapes the Download page hands to its record and its sections.
+ * Type - the shapes the Download page hands to its bands.
  *
- * The page has one job: a reader can tell whether they can install Land today,
- * and if not, exactly what they can do instead. Every shape here serves that
- * question - the release manifest (what RELEASE_01 publishes, per platform),
- * the requirements (what a build needs) and the previous releases (what has
- * already shipped).
+ * The page answers one question: can I install Land today, and if not, exactly
+ * what can I do instead. Two shapes serve it - the masthead's eight marks and
+ * the release manifest's three platform entries - and a third carries the
+ * disclosure island's own content.
  *
- * The manifest is the page's opening artifact, so its field set is the
- * document's, not the tree's: `DesignSystem-Pages.md` §2 resolves the two
- * source variants into one canonical record - `# RELEASE_01`, the
- * `〈PLATFORM / ARCH〉` stamp, `/CHANNEL`, then VERSION, SIGNATURE, CHECKSUM,
- * SIZE and BUILD, then the action, then the status line. `Artifacts.md` §4 adds
- * LICENSE to the same block. Every field is declared here even where the value
- * is unavailable, because a field the record omits cannot be told apart from a
- * field nobody thought of.
+ * The platform entry is the baseline render's field set, not the design
+ * document's: `ARCH:`, `SIGNING:`, `SIZE:` and `CHECKSUM:`, under a
+ * `〈 PLATFORM 〉` stamp and a `/ CHANNEL :PUBLIC` route line, closed by the
+ * status line and - where the platform has one - the single action. A field the
+ * tree cannot supply prints the baseline's own `-` rather than a word this page
+ * would have to invent.
  *
  * Field names are lower camel case and every array is `readonly`, matching the
  * Record layer's own contract (`../../Record/Type.js`): a component renders the
  * data it is handed and never sorts, splices or pushes it.
  */
-import type { LedgerRow } from "../../Record/Type.js";
 
 /**
  * The i18n resolver the page hands to `Data.ts`.
@@ -62,142 +58,68 @@ export interface Mark {
  * module does not depend on a Brand component's file layout; the literals are
  * the block's own closed sets, so they still type-check against it.
  */
-export type ManifestStatus = "active" | "preparing" | "unavailable";
+export type PlatformStatus = "active" | "preparing" | "unavailable";
 
-export type ManifestTone = "ink" | "specimen" | "quiet";
-
-/**
- * One status line: the words, the block's state arm, its tone, and the
- * plain-language explanation `DesignSystem-Components.md` §7 requires beside
- * every coded label.
- */
-export interface ManifestState {
-	/** The printed line, already in §7's vocabulary: `STATUS: SOURCE ACTIVE`. */
-	readonly copy: string;
-
-	/** The status block's state arm. */
-	readonly status: ManifestStatus;
-
-	/** The status block's tone: `specimen` for ACTIVE, `quiet` for PREPARING. */
-	readonly tone: ManifestTone;
-
-	/** What the state means in one sentence, for a reader who does not code. */
-	readonly note: string;
-}
+export type PlatformTone = "ink" | "specimen" | "quiet";
 
 /**
- * The record's own copy: its index, its claim, its state and its two closing
- * provenance lines.
+ * The release manifest band's opening block: the eyebrow, the heading and the
+ * one sentence that states the release's condition.
+ *
+ * The eyebrow and the heading carry the same words on purpose. The baseline
+ * rendered `Release Manifest` twice - once as a mono label, once as the band's
+ * `h2` - and the repetition is the band's identity, not an oversight.
  */
-export interface ManifestRecord {
-	/** The record's marker without its `#` - `FieldRecordIndex` prints that. */
-	readonly index: string;
+export interface ManifestCopy {
+	/** The mono eyebrow above the heading. */
+	readonly eyebrow: string;
 
-	/** The record's claim. The page's only `h2` inside the record. */
+	/** The band's `h2`, printed verbatim. */
 	readonly heading: string;
 
-	/** The record's own state line. */
-	readonly state: ManifestState;
-
-	/** What the record carries and what it does not. */
-	readonly footnote: string;
-
-	/** Where every figure in the record comes from. */
-	readonly source: string;
+	/** The one sentence under the heading. */
+	readonly sentence: string;
 }
 
-/** One platform as the release manifest records it. */
+/**
+ * One platform entry: its four provenance fields, its route line, its status
+ * line and the one action a platform can carry today.
+ *
+ * `action` is absent on the two platforms with nowhere to send the reader yet.
+ * The baseline closed those two on their status line instead, so an absent
+ * action is a fact about the platform rather than a row somebody dropped.
+ */
 export interface ManifestPlatform {
-	/** The platform name, printed verbatim - `macOS` keeps its case. */
+	/** The platform name, printed inside the containment stamp. */
 	readonly name: string;
 
-	/** The architectures the platform builds for, as the stamp prints them. */
+	/** `ARCH:` - the architectures the platform builds for. */
 	readonly arch: string;
 
-	/** The release channel: `PUBLIC`. */
-	readonly channel: string;
+	/** `SIGNING:` - the state of the signing material. */
+	readonly signing: string;
 
-	/** The published version, or §7's word for one that does not exist. */
-	readonly version: string;
-
-	/** The signing state: `IN PREPARATION` until a key publishes. */
-	readonly signature: string;
-
-	/** The published checksum, or §7's word for one that does not exist. */
-	readonly checksum: string;
-
-	/** The artifact size, or §7's word for one that does not exist. */
+	/** `SIZE:` - the artifact size, or the baseline's own `-`. */
 	readonly size: string;
 
-	/** The build date and commit, or §7's word for one that does not exist. */
-	readonly build: string;
+	/** `CHECKSUM:` - the artifact checksum, or the baseline's own `-`. */
+	readonly checksum: string;
 
-	/** The licence the artifact ships under. */
-	readonly license: string;
+	/** The channel the build publishes on, printed as `/CHANNEL:PUBLIC`. */
+	readonly channel: string;
 
-	/** The installer's own state: `PREPARING` until one publishes. */
-	readonly installer: string;
+	/** The status line, its state arm and the tone it is printed in. */
+	readonly state: {
+		/** The printed line, e.g. `STATUS: ACTIVE`. */
+		readonly copy: string;
 
-	/** The platform's state line, in §7's vocabulary. */
-	readonly state: ManifestState;
+		/** The status block's state arm. */
+		readonly status: PlatformStatus;
 
-	/** Where the platform's builds are found today, when anywhere. */
-	readonly downloadUrl?: string;
+		/** The status block's tone: `specimen` for ACTIVE, `ink` otherwise. */
+		readonly tone: PlatformTone;
+	};
 
-	/** The link's own words, printed verbatim. */
-	readonly downloadLabel?: string;
-}
-
-/** One platform's requirements: the platform name and its ledger rows. */
-export interface PlatformRequirements {
-	readonly platform: string;
-	readonly rows: readonly LedgerRow[];
-}
-
-/** One published release. The list is empty today; this is what will fill it. */
-export interface Release {
-	readonly version: string;
-	readonly published: string;
-	readonly platform: string;
-	readonly change: string;
-}
-
-/**
- * One region of the `# RELEASE_01` artifact, already resolved to copy.
- *
- * The page is one record, not a stack of chapters (DESIGN.md §7 DR-9). After the
- * manifest's own fields the artifact continues into the regions that answer the
- * rest of the page's question, and a region carries the artifact's internal
- * anatomy: a `/LABEL` kicker, its own `h3`, an optional standfirst and an
- * optional footnote. The regions paint no boundary and take no chapter
- * distance - they are parts of one subject, so they separate at `--space-group`
- * (DESIGN.md §2.3, §4.1).
- */
-export interface Region {
-	/** The region's anchor id, and the stem of its heading's id. */
-	readonly id: string;
-
-	/** The `/LABEL` opening the region, printed exactly as written. */
-	readonly kicker: string;
-
-	/** The region's own heading: the artifact's one `h3` per region. */
-	readonly heading: string;
-
-	/** One sentence under the heading, when the region needs one. */
-	readonly standfirst?: string;
-
-	/** Provenance, caveat or source line closing the region. */
-	readonly footnote?: string;
-}
-
-/**
- * The three regions the `# RELEASE_01` artifact continues into, in page order.
- *
- * The record opens the page and owns its own head, so nothing here is a band:
- * each entry is a region inside the record, rendered by `Download/Region.astro`.
- */
-export interface Regions {
-	readonly Requirements: Region;
-	readonly Previous: Region;
-	readonly Transparency: Region;
+	/** The one action, where the platform has one. */
+	readonly action?: { readonly label: string; readonly href: string };
 }

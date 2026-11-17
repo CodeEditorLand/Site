@@ -3,9 +3,10 @@
  * One article, on the reading surface.
  *
  * The markdown is the piece; this file is the apparatus around it. The shell
- * renders the page's only `h1` from the frontmatter `title`, the metadata as a
- * ledger, the `summary` as standfirst, a contents list built from the headings
- * `render()` actually emitted, and the body on one measure.
+ * renders the page's only `h1` from the frontmatter `title`, the tag chips from
+ * the frontmatter `tags`, the `summary` as standfirst, the baseline's mono
+ * metadata row (author, date, reading time), a contents list built from the
+ * headings `render()` actually emitted, and the body on one measure.
  *
  * Two rules the article files keep, and this page enforces:
  *
@@ -24,11 +25,7 @@
 import { getCollection, render } from "astro:content";
 
 import BlogArticle from "../../Component/Blog/BlogArticle.astro";
-import {
-	BuildLedger,
-	BuildToc,
-	HasDiagram,
-} from "../../Component/Blog/Data.js";
+import { BuildToc, HasDiagram, ReadTimeLabel } from "../../Component/Blog/Data.js";
 import MermaidFallback from "../../Component/Dynamic/MermaidFallback.astro";
 import { Header } from "../../Component/Layout/Header";
 import Base from "../../Layout/Base.astro";
@@ -51,39 +48,25 @@ const T = GetI18n();
 const MetaTitle = `${Entry.data.title} | Code Editor Land`;
 const MetaDescription = Entry.data.summary;
 
-const Kicker = T("article.kicker", { ns: "blog", defaultValue: "/BLOG" });
 const TocLabel = T("article.toc", { ns: "blog", defaultValue: "On this page" });
 const MinRead = T("card.minRead", { ns: "blog", defaultValue: "min read" });
 const Home = T("common.breadcrumb.home", { defaultValue: "Home" });
 const PageTitle = T("page.title", { ns: "blog", defaultValue: "Blog" });
 
-/** The metadata, as ledger rows: published, reading time, author, tags. */
-const Ledger = BuildLedger(
-	Entry,
-	{
-		published: T("article.ledger.published", {
-			ns: "blog",
-			defaultValue: "PUBLISHED",
-		}),
-		readTime: T("article.ledger.readTime", {
-			ns: "blog",
-			defaultValue: "READ TIME",
-		}),
-		author: T("article.ledger.author", {
-			ns: "blog",
-			defaultValue: "AUTHOR",
-		}),
-		tags: T("article.ledger.tags", { ns: "blog", defaultValue: "TAGS" }),
-	},
-	MinRead,
-);
+/** The reading time, as the schema's number plus the site's unit. */
+const ReadTime = ReadTimeLabel(Entry.data.readTime, MinRead);
 
 const Toc = BuildToc(headings, TocLabel);
 const Diagram = HasDiagram(Entry.body);
 
+/**
+ * The trail above the article: the two surfaces it sits under, then its own
+ * title. The crumbs print place names, not routes - the baseline's breadcrumb
+ * read `Home / Blog / <title>`.
+ */
 const Trail = [
-	{ label: `/${Home}`, href: "/" },
-	{ label: `/${PageTitle}`, href: "/Blog" },
+	{ label: Home, href: "/" },
+	{ label: PageTitle, href: "/Blog" },
 	{ label: Entry.data.title },
 ];
 ---
@@ -97,10 +80,12 @@ const Trail = [
 	<Header client:load slot="Header" />
 
 	<BlogArticle
-		kicker={Kicker}
 		title={Entry.data.title}
 		summary={Entry.data.summary}
-		rows={Ledger}
+		tags={Entry.data.tags}
+		author={Entry.data.author}
+		date={Entry.data.publishedAt}
+		readTime={ReadTime}
 		toc={Toc}
 		trail={Trail}
 		backLabel={PageTitle}

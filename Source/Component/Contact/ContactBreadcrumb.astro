@@ -1,13 +1,13 @@
 ---
-// ContactBreadcrumb - the site's breadcrumb in its mono nav grammar.
+// ContactBreadcrumb - the site's breadcrumb, in the baseline's own shape.
 //
 // A trail is `{ label, href }` per crumb, the last one without an `href`
-// because the current page is not a link. The label is printed exactly as the
-// caller wrote it: the `/LABEL` voice is the caller's to supply, the same rule
-// RecordBand's kicker follows, so this component never re-cases a title it did
-// not write.
+// because the current page is not a link. The labels are the plain names the
+// pages print (`Home`, `Dashboard`, `Contact`) and the separator between them
+// is a `/` of its own, so the trail reads `Home / Contact` exactly as the
+// baseline rendered it.
 //
-// It exists because fifteen Contact routes opened with the same Tailwind list of
+// It exists because fifteen Contact routes opened with the same list of
 // `<li>/</li>` separators. One component means one grammar, and a change to it
 // is one edit.
 //
@@ -28,18 +28,23 @@ const { trail, class: Class } = Astro.props;
 <nav class:list={["contact-breadcrumb", Class]} aria-label="Breadcrumb">
 	<ol class="contact-breadcrumb__list">
 		{
-			trail.map((item) => (
-				<li class="contact-breadcrumb__item">
-					{item.href ? (
-						<a class="contact-breadcrumb__link" href={item.href}>
-							{item.label}
-						</a>
-					) : (
-						<span class="contact-breadcrumb__current" aria-current="page">
-							{item.label}
-						</span>
-					)}
-				</li>
+			trail.map((item, index) => (
+				<>
+					{index > 0 ? (
+						<li class="contact-breadcrumb__separator">/</li>
+					) : null}
+					<li class="contact-breadcrumb__item">
+						{item.href ? (
+							<a class="contact-breadcrumb__link" href={item.href}>
+								{item.label}
+							</a>
+						) : (
+							<span class="contact-breadcrumb__current" aria-current="page">
+								{item.label}
+							</span>
+						)}
+					</li>
+				</>
 			))
 		}
 	</ol>

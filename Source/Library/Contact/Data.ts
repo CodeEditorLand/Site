@@ -1,54 +1,22 @@
 /**
- * Data - the Contact hub's decision surface, derived from the request registry.
+ * Data - the Contact hub's index, derived from the request registry.
  *
- * The hub used to hold its own copy of every request title and subtitle, which
- * meant the same sentence lived twice and could drift. Nothing here retypes a
- * fact: a family names the codes it carries, and every title, subtitle, handler
- * address, legal basis and response window is read out of `Request.ts`.
+ * The hub is one grid of fourteen records: thirteen income codes and the SALE
+ * page. Nothing here retypes a fact - a code's slug, title and subtitle are read
+ * out of `Request.ts`, and the route a code is published on is derived from the
+ * code itself, so the grid cannot disagree with the registry.
  *
- * The registry has no `Family` field, so the grouping is this module's one
- * decision. It groups by what the reader is trying to do, and each band's
- * standfirst states the handler inbox and response window that its codes share
- * - every number in it is a `To` or a `ResponseDays` in the registry.
+ * `SALE` is the one record that is a page rather than an income code, so it is
+ * the one record whose words are carried here: the registry has no entry to read
+ * them from, and both are the strings the card has always printed.
  *
- * `Ready` is the one fact the registry does not carry: what the reader needs in
- * hand before starting. Each string restates that request's own required fields
- * (`Requests[code].Fields`), which is why it is written per code rather than
- * derived from a label.
+ * The order is alphabetical by slug, which is the order the baseline grid
+ * printed: AMEND, CLAIM, DEALS, ERASE, GUARD, HAILS, LEAVE, LEGAL, LODGE, PAUSE,
+ * QUERY, REACH, SCOUT, SALE.
  */
-import type { Entry, Tone } from "../../Component/Record/Type.js";
-
 import { Requests, type IncomeCode } from "./Request.js";
 
-/** One band of the hub: a decision the reader is making, and the codes it carries. */
-export interface ContactFamily {
-	/** The `/SECTION LABEL` opening the band. Supplied in the site's nav grammar. */
-	readonly kicker: string;
-
-	/** The band's single `h2`. */
-	readonly heading: string;
-
-	/** One sentence: the handler inbox and response window the family shares. */
-	readonly standfirst: string;
-
-	/** Band surface. The hub alternates so no two bands share a surface. */
-	readonly tone: Tone;
-
-	/** The requests on this route, in the order the reader should consider them. */
-	readonly requests: readonly Entry[];
-
-	/**
-	 * Records in this family that are pages rather than request routes.
-	 *
-	 * The registry only knows request codes, but the hub has always listed the
-	 * SALE page beside them - it is the same decision ("I want this commercially")
-	 * asked in a longer form. Dropping it would make the family's own standfirst
-	 * ("the SALE page carries the deployment options") a dead end.
-	 */
-	readonly pages?: readonly Entry[];
-}
-
-/** One crumb: a label in the site's mono nav grammar, and where it leads. */
+/** One crumb: a label and where it leads. The last crumb is the current page. */
 export interface ContactTrailItem {
 	readonly label: string;
 
@@ -56,13 +24,28 @@ export interface ContactTrailItem {
 	readonly href?: string;
 }
 
+/** One record on the hub: its slug, its name, its sentence, and its route. */
+export interface ContactEntry {
+	/** The address the record answers on, slash-prefixed: `/AMEND`. */
+	readonly slug: string;
+
+	/** The record's `h2`. */
+	readonly title: string;
+
+	/** The one sentence under the title. */
+	readonly subtitle: string;
+
+	/** Where the card leads. */
+	readonly href: string;
+}
+
 /**
- * The hub's trail. Every destination the page had before is kept: `/` and
- * `/Contact`, the second one being this page.
+ * The hub's trail. Two crumbs, in the site's plain voice - a breadcrumb is a
+ * location, not a record marker, so it carries no slash prefix.
  */
 export const ContactHubTrail: readonly ContactTrailItem[] = [
-	{ label: "/HOME", href: "/" },
-	{ label: "/CONTACT" },
+	{ label: "Home", href: "/" },
+	{ label: "Contact" },
 ];
 
 /**
@@ -73,124 +56,65 @@ export const ContactHubTrail: readonly ContactTrailItem[] = [
 const RouteOf = (code: IncomeCode): string =>
 	`/Contact/${code.charAt(0)}${code.slice(1).toLowerCase()}`;
 
-/**
- * What the reader needs in hand, per code. Each entry restates that request's
- * own required fields and nothing else - a request that asks for a company size
- * says so here, and one that accepts anonymous reports says that too.
- */
-const Ready: Record<IncomeCode, string> = {
-	REACH: "your account email and the export format you want",
-	AMEND: "the field to correct, its current value and the value it should hold",
-	ERASE: "your account ID - deletion is permanent and cannot be undone",
-	PAUSE: "your grounds for restriction and which processing activities to limit",
-	QUERY: "the processing activities you object to and your grounds",
-	LEAVE: "which consent you are withdrawing",
-	LODGE: "the nature of the complaint, the outcome you want and whether you contacted us before",
-	SCOUT: "your platform, the category of failure and steps to reproduce",
-	HAILS: "a subject and your message",
-	GUARD: "the affected component, the vulnerability type and steps to reproduce; anonymous reports are accepted",
-	CLAIM: "the copyrighted work, where the infringing material sits and the two statutory statements",
-	LEGAL: "the nature of the enquiry, a subject line and the facts",
-	DEALS: "company name, team size, use case and evaluation timeline",
-};
-
-/**
- * One request as a record: the code as its marker, the title as its name, the
- * registry's subtitle verbatim followed by what to have ready, and the handler,
- * legal basis and window as chips.
- */
-const EntryOf = (code: IncomeCode): Entry => {
+/** One request as a card: the code's slug, the registry's title and subtitle. */
+const EntryOf = (code: IncomeCode): ContactEntry => {
 	const config = Requests[code];
 
 	return {
-		index: `# ${code}`,
-		name: config.Title,
-		chips: [
-			config.To,
-			...(config.Article ? [config.Article] : []),
-			`${config.ResponseDays}d SLA`,
-		],
-		body: `${config.Subtitle} Have ready: ${Ready[code]}.`,
+		slug: `/${config.Code}`,
+		title: config.Title,
+		subtitle: config.Subtitle,
 		href: RouteOf(code),
 	};
 };
 
 /**
- * The SALE page as a record.
+ * The SALE page as a card.
  *
  * It is not in the request registry - it is a page, not an income code - so
  * there is nothing to derive its title and subtitle from. They are carried here
- * verbatim, because the hub's old card grid printed both and losing them would
- * be losing copy, not removing duplication.
+ * verbatim, because the grid has always printed both and losing them would be
+ * losing copy, not removing duplication.
  */
-const ContactSale: Entry = {
-	index: "# SALE",
-	name: "Enterprise Inquiries",
-	chips: ["Deployment options"],
-	body: "Contact the Code Editor Land team for enterprise licensing, support, and deployment options.",
+const SaleEntry: ContactEntry = {
+	slug: "/SALE",
+	title: "Enterprise Inquiries",
+	subtitle:
+		"Contact the Code Editor Land team for enterprise licensing, support, and deployment options.",
 	href: "/Contact/Sale",
 };
 
-/**
- * The hub, in reading order: the seven GDPR rights first because they are the
- * largest family and the one with statutory deadlines, then support, then the
- * routes that carry obligations, then enterprise.
- */
-export const ContactFamilies: readonly ContactFamily[] = [
-	{
-		kicker: "/YOUR DATA",
-		heading: "Your data, and the rights you can exercise",
-		standfirst:
-			"Seven routes under the GDPR, all answered by privacy@editor.land within 30 days.",
-		tone: "flush",
-		requests: (
-			[
-				"REACH",
-				"AMEND",
-				"ERASE",
-				"PAUSE",
-				"QUERY",
-				"LEAVE",
-				"LODGE",
-			] as const
-		).map(EntryOf),
-	},
-	{
-		kicker: "/SUPPORT",
-		heading: "Technical support and general questions",
-		standfirst:
-			"support@editor.land answers build failures within 7 days and general questions within 14.",
-		tone: "paper",
-		requests: (["SCOUT", "HAILS"] as const).map(EntryOf),
-	},
-	{
-		kicker: "/SECURITY AND LEGAL",
-		heading: "Security reports, copyright claims and legal notices",
-		standfirst:
-			"Three routes with obligations attached: security@editor.land within 3 days, copyright@editor.land and legal@editor.land within 14.",
-		tone: "canvas",
-		requests: (["GUARD", "CLAIM", "LEGAL"] as const).map(EntryOf),
-	},
-	{
-		kicker: "/ENTERPRISE",
-		heading: "Enterprise deployment",
-		standfirst:
-			"Enterprise Sales answers within 3 days from enterprise@editor.land; the SALE page carries the deployment options.",
-		tone: "paper",
-		requests: (["DEALS"] as const).map(EntryOf),
-		pages: [ContactSale],
-	},
+/** The thirteen income codes, alphabetical by slug. */
+const Codes: readonly IncomeCode[] = [
+	"AMEND",
+	"CLAIM",
+	"DEALS",
+	"ERASE",
+	"GUARD",
+	"HAILS",
+	"LEAVE",
+	"LEGAL",
+	"LODGE",
+	"PAUSE",
+	"QUERY",
+	"REACH",
+	"SCOUT",
+];
+
+/** The hub, in reading order: one flat grid of fourteen records. */
+export const ContactEntries: readonly ContactEntry[] = [
+	...Codes.map(EntryOf),
+	SaleEntry,
 ];
 
 /**
- * The band that closes the hub: the address a reader writes to when no route
- * above fits. `Community@PlayForm.Cloud` is a working address, not a
- * placeholder - it is the one contact that does not go through a form.
+ * The address that closes the page: the one contact that does not go through a
+ * form. `Community@PlayForm.Cloud` is a working mailbox, not a placeholder.
+ *
+ * It is a link, not an action - an address is not something the page performs -
+ * so the hub prints it as one quiet line and spends its emphasis nowhere.
  */
 export const ContactDirect = {
-	kicker: "/DIRECT",
-	heading: "Prefer email",
-	standfirst:
-		"One address for anything the thirteen routes above do not cover.",
+	label: "Prefer email",
 	address: "Community@PlayForm.Cloud",
 } as const;

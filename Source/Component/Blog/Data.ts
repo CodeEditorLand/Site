@@ -12,7 +12,6 @@
  * missing data, because a missing field is the schema's job to reject, not this
  * module's.
  */
-import type { LedgerRow } from "../Record/Type.js";
 import type { BlogRow, BlogToc, BlogTocItem } from "./Type.js";
 
 /**
@@ -48,14 +47,6 @@ export interface BlogHeading {
 	readonly text: string;
 }
 
-/** The ledger's key column, supplied by the page from i18n. */
-export interface BlogLedgerLabels {
-	readonly published: string;
-	readonly readTime: string;
-	readonly author: string;
-	readonly tags: string;
-}
-
 /**
  * How many `##` headings an article needs before it is worth a contents list.
  *
@@ -75,15 +66,12 @@ export const ReadTimeLabel = (Minutes: number, Unit: string): string =>
 	`${Minutes} ${Unit}`;
 
 /**
- * The index rows: every entry, newest first, each carrying its archive
- * position.
+ * The index rows: every entry, newest first.
  *
  * `publishedAt` is `YYYY-MM-DD`, so a plain string comparison is a date
  * comparison and no `Date` object is constructed - a date is never re-parsed
  * into a timezone. Two articles published on the same day are ordered by title
  * so the list is stable between builds rather than dependent on readdir order.
- * The ordinal is assigned after the sort, so `01` is the newest article by
- * construction and cannot drift from the order the strip claims.
  */
 export const BuildRows = (
 	Entries: readonly BlogEntry[],
@@ -95,12 +83,12 @@ export const BuildRows = (
 				B.data.publishedAt.localeCompare(A.data.publishedAt) ||
 				A.data.title.localeCompare(B.data.title),
 		)
-		.map((Entry, Position) => ({
+		.map((Entry) => ({
 			href: `/Blog/${Entry.id}`,
-			ordinal: String(Position + 1).padStart(2, "0"),
 			date: Entry.data.publishedAt,
 			title: Entry.data.title,
 			summary: Entry.data.summary,
+			author: Entry.data.author,
 			readTime: ReadTimeLabel(Entry.data.readTime, MinRead),
 			tags: Entry.data.tags,
 		}));
@@ -127,34 +115,6 @@ export const BuildToc = (
 
 	return Second.length >= Minimum ? { label: Label, items: Second } : null;
 };
-
-/**
- * The article's metadata as ledger rows: published, reading time, author, tags.
- *
- * A row is a fact with a key, which is why the metadata is a ledger and not a
- * strip of pills - the reader can scan the key column. The tag row is omitted
- * entirely when the article carries no tags: an empty value under a key reads as
- * a missing fact.
- *
- * The tag row is one string joined by U+2001 EM QUAD, the only permitted visual
- * separator on the site (`DesignSystem-Grammar.md` §3). It was joined with
- * U+00B7 CENTER DOT, which that rule forbids in output.
- */
-export const BuildLedger = (
-	Entry: BlogEntry,
-	Labels: BlogLedgerLabels,
-	MinRead: string,
-): readonly LedgerRow[] => [
-	{ key: Labels.published, value: Entry.data.publishedAt },
-	{
-		key: Labels.readTime,
-		value: ReadTimeLabel(Entry.data.readTime, MinRead),
-	},
-	{ key: Labels.author, value: Entry.data.author },
-	...(Entry.data.tags.length > 0
-		? [{ key: Labels.tags, value: Entry.data.tags.join("\u2001") }]
-		: []),
-];
 
 /**
  * Does this article carry a Mermaid fence?

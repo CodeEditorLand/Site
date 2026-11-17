@@ -1,24 +1,30 @@
 ---
-// Enterprise inquiries - the sale route, in the same language as the request
-// routes.
+// Enterprise inquiries - the sale route.
 //
-// The page used to be a Tailwind two-column layout: a card with a shimmering
-// border, a sidebar of three more cards, and a breadcrumb list with `/`
-// separators. It carried the same facts in the same order, so nothing was cut -
-// each card became a band, and the sentence "Prefer email? Reach us directly:"
-// finally has the address it was asking the reader to use.
+// The page is a two-thirds / one-third split under one page opening. The left
+// two columns are a single card: a block with the site's one heavy left rule
+// carrying `How to Reach Us` and the sentence that explains why the route is a
+// GitHub issue, the issue action, the `h2` that names it, the prose under it,
+// and an inset listing what the issue should contain. The right column is a
+// stack of three cards: what an enterprise plan adds, the direct contact, and
+// the licence reminder.
 //
-// Two corrections since: the bands no longer alternate paper and canvas
-// (`DESIGN.md` §5 A5 - surface follows the artifact, not the position, so every
-// band but the opening one is the canvas), and the direct address is no longer
-// ink-inverted (§7 DR-13 - the GitHub issue is the page's one action, and an
-// address is not an action).
+// `How to Reach Us` is a label, not a heading: the baseline prints it as a
+// paragraph inside the rule block, and the page's heading count is `h1` 1,
+// `h2` 1, `h3` 3. Promoting it would invert the levels, which is exactly the
+// defect this restore removes.
+//
+// The page's one expressive element is the GitHub issue action. The
+// `Community@PlayForm.Cloud` address is a link, not an action, so it keeps ink
+// and an underline on hover only (`DESIGN.md` §5 A6, §7 DR-13).
+//
+// No record header: the baseline renders no `# SALE` / `〈 〉` / `/CONTACT`
+// line here.
 //
 // Every string still comes through `T` with its key, so the locale files keep
 // their copy. The GitHub issue URL, the DEALS route and the PlayForm line are
 // unchanged.
 import ContactPage from "../../Component/Contact/ContactPage.astro";
-import RecordBand from "../../Component/Record/RecordBand.astro";
 import { GetI18n } from "../../Library/I18n/Server";
 import type { ContactTrailItem } from "../../Library/Contact/Data.js";
 
@@ -42,20 +48,21 @@ const PageSubtitle = T("common.sales.pageSubtitle", {
 		"Deploying Land across your organization? Get in touch and we'll work out the details together.",
 });
 
+/**
+ * The locale strings carry their paragraph breaks as blank lines. The baseline
+ * prints each of them as one paragraph, so the blank line folds to a space -
+ * every word survives, the paragraph count is the baseline's.
+ */
+const OneLine = (Value: string): string => Value.replace(/\s*\n\s*/g, " ");
+
 const HomeLabel = T("common.breadcrumb.home", { defaultValue: "Home" });
 
 const Trail: readonly ContactTrailItem[] = [
-	{ label: `/${HomeLabel.toUpperCase()}`, href: "/" },
-	{ label: "/CONTACT", href: "/Contact" },
-	{ label: `/${PageTitle.toUpperCase()}` },
+	{ label: HomeLabel, href: "/" },
+	{ label: PageTitle },
 ];
 
-/**
- * The record header: the page's own series marker, the classification inside
- * `〈 〉`, and the route it is filed on - the same three symbols every contact
- * route opens with, so the fifteen routes read as one set.
- */
-const Record = { index: "# SALE", stamp: "ENTERPRISE", route: "/CONTACT" };
+const BackToTop = T("common.button.backToTop", { defaultValue: "Back to top" });
 
 /** The six things an enterprise plan adds, in the order the page lists them. */
 const Features: readonly string[] = [
@@ -82,15 +89,59 @@ const Features: readonly string[] = [
 /** The one address that is not a form. A working mailbox, not a placeholder. */
 const DirectAddress = "Community@PlayForm.Cloud";
 
-/**
- * The GitHub issue note is written as two paragraphs in the locale file. A
- * standfirst is one sentence-run, so the blank line is folded to a space rather
- * than dropped - both paragraphs survive.
- */
-const GithubNote = T("common.sales.contact.githubNote", {
+const HowToReachUs = T("common.sales.contact.heading", {
+	defaultValue: "How to Reach Us",
+});
+
+const GithubNote = OneLine(
+	T("common.sales.contact.githubNote", {
+		defaultValue:
+			"We handle enterprise inquiries through GitHub Issues.\n\nThis ensures your request is tracked, visible to the full team, and responded to.",
+	}),
+);
+
+const OpenIssueHeading = T("common.sales.contact.openIssueHeading", {
+	defaultValue: "Open a GitHub Issue",
+});
+
+const OpenIssueDescription = OneLine(
+	T("common.sales.contact.openIssueDescription", {
+		defaultValue:
+			"Create an issue on our GitHub repository describing your organization's needs.\n\nInclude your company name, team size, use case, and deployment requirements.\n\nWe review issues regularly.",
+	}),
+);
+
+const IssueIncludeLabel = T("common.sales.contact.issueIncludeLabel", {
+	defaultValue: "What to include in your issue:",
+});
+
+const IssueIncludeText = T("common.sales.contact.issueIncludeText", {
 	defaultValue:
-		"We handle enterprise inquiries through GitHub Issues.\n\nThis ensures your request is tracked, visible to the full team, and responded to.",
-}).replace(/\s*\n\s*/g, " ");
+		"Company name, team size, intended use case, deployment environment, timeline, and any specific support or compliance requirements.",
+});
+
+const DirectContactHeading = T("common.sales.contact.directHeading", {
+	defaultValue: "Direct Contact",
+});
+
+const DirectContactNote = T("common.sales.contact.description", {
+	defaultValue: "Prefer email? Reach us directly:",
+});
+
+const OperatedBy = T("common.sales.contact.operatedBy", {
+	defaultValue: "Operated by PlayForm, Sofia, Bulgaria",
+});
+
+const OpenSourceHeading = T("common.sales.openSource.heading", {
+	defaultValue: "Still Open Source",
+});
+
+const OpenSourceDescription = OneLine(
+	T("common.sales.openSource.description", {
+		defaultValue:
+			"Enterprise plans add support, SLA, and custom development.\n\nThe code itself remains CC0. Fork it, read it, ship it.",
+	}),
+);
 ---
 
 <ContactPage
@@ -99,141 +150,84 @@ const GithubNote = T("common.sales.contact.githubNote", {
 	trail={Trail}
 	heading={PageTitle}
 	standfirst={PageSubtitle}
-	record={Record}
+	width="narrow"
 >
-	<RecordBand
-		band={{
-			kicker: "/ENTERPRISE",
-			heading: T("common.sales.contact.heading", {
-				defaultValue: "How to Reach Us",
-			}),
-			standfirst: GithubNote,
-			tone: "flush",
-		}}
-	>
-		<a
-			class="contact-sale__action emphasis-expressive"
-			href="https://github.com/CodeEditorLand/Land/issues/new?title=Enterprise+Inquiry&labels=enterprise"
-			target="_blank"
-			rel="noopener noreferrer"
-			>{T("common.sales.contact.openIssueButton", {
-				defaultValue: "Open GitHub Issue",
-			})}<span class="InlineSeparator">→</span></a
-		>
+	<div class="contact-sale">
+		<div class="contact-sale__grid">
+			<div class="contact-sale__main">
+				<div class="contact-sale__panel StaccatoBorderShimmer StaccatoCard">
+					<div class="contact-sale__rule">
+						<p class="contact-sale__rule-label">{HowToReachUs}</p>
+						<p class="contact-sale__prose">{GithubNote}</p>
+					</div>
 
-		<h3 class="contact-sale__subheading">
-			{
-				T("common.sales.contact.openIssueHeading", {
-					defaultValue: "Open a GitHub Issue",
-				})
-			}
-		</h3>
+					<a
+						class="contact-sale__action emphasis-expressive"
+						href="https://github.com/CodeEditorLand/Land/issues/new?title=Enterprise+Inquiry&labels=enterprise"
+						target="_blank"
+						rel="noopener noreferrer"
+						>{T("common.sales.contact.openIssueButton", {
+							defaultValue: "Open GitHub Issue",
+						})}<span class="InlineSeparator">→</span></a
+					>
 
-		<p class="contact-sale__prose">
-			{
-				T("common.sales.contact.openIssueDescription", {
-					defaultValue:
-						"Create an issue on our GitHub repository describing your organization's needs.\n\nInclude your company name, team size, use case, and deployment requirements.\n\nWe review issues regularly.",
-				})
-			}
-		</p>
+					<h2 class="contact-sale__heading">{OpenIssueHeading}</h2>
 
-		<div class="contact-sale__panel emphasis-quiet">
-			<p class="contact-sale__prose">
-				<strong
-					>{
-						T("common.sales.contact.issueIncludeLabel", {
-							defaultValue: "What to include in your issue:",
-						})
-					}</strong
-				>
-				{
-					T("common.sales.contact.issueIncludeText", {
-						defaultValue:
-							"Company name, team size, intended use case, deployment environment, timeline, and any specific support or compliance requirements.",
-					})
-				}
-			</p>
+					<p class="contact-sale__prose">{OpenIssueDescription}</p>
+
+					<div class="contact-sale__inset">
+						<p class="contact-sale__inset-text">
+							<strong>{IssueIncludeLabel}</strong>{" "}{IssueIncludeText}
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="contact-sale__aside">
+				<div class="contact-sale__card StaccatoBorderShimmer StaccatoCard">
+					<h3 class="contact-sale__subheading">
+						{T("common.sales.features.heading", {
+							defaultValue: "What Enterprise Includes",
+						})}
+					</h3>
+
+					<ul class="contact-sale__features">
+						{Features.map((Feature) => <li>{Feature}</li>)}
+					</ul>
+				</div>
+
+				<div class="contact-sale__card StaccatoBorderShimmer StaccatoCard">
+					<a class="contact-sale__route" href="/Contact/Deals"
+						>{T("common.sales.contact.dealsButton", {
+							defaultValue: "Enterprise Sales form (DEALS)",
+						})}<span class="InlineSeparator">&#9993;</span></a
+					>
+
+					<h3 class="contact-sale__subheading">{DirectContactHeading}</h3>
+
+					<p class="contact-sale__prose">{DirectContactNote}</p>
+
+					<p class="contact-sale__prose">
+						<a class="contact-sale__address" href={`mailto:${DirectAddress}`}
+							>{DirectAddress}</a
+						>
+					</p>
+
+					<p class="contact-sale__prose">{OperatedBy}</p>
+				</div>
+
+				<div class="contact-sale__card StaccatoBorderShimmer StaccatoCard">
+					<h3 class="contact-sale__subheading">{OpenSourceHeading}</h3>
+
+					<p class="contact-sale__prose">{OpenSourceDescription}</p>
+				</div>
+			</div>
 		</div>
-	</RecordBand>
 
-	<RecordBand
-		band={{
-			kicker: "/WHAT ENTERPRISE ADDS",
-			heading: T("common.sales.features.heading", {
-				defaultValue: "What Enterprise Includes",
-			}),
-			tone: "canvas",
-		}}
-	>
-		<ul class="contact-sale__features">
-			{Features.map((feature) => <li>{feature}</li>)}
-		</ul>
-	</RecordBand>
-
-	<RecordBand
-		band={{
-			kicker: "/DIRECT CONTACT",
-			heading: T("common.sales.contact.directHeading", {
-				defaultValue: "Direct Contact",
-			}),
-			tone: "canvas",
-		}}
-	>
-		<p class="contact-sale__prose">
-			{
-				T("common.sales.contact.description", {
-					defaultValue: "Prefer email? Reach us directly:",
-				})
-			}
-		</p>
-
-		<a
-			class="contact-sale__address"
-			href={`mailto:${DirectAddress}`}>{DirectAddress}</a
-		>
-
-		<p class="contact-sale__prose">
-			{
-				T("common.sales.contact.operatedBy", {
-					defaultValue: "Operated by PlayForm, Sofia, Bulgaria",
-				})
-			}
-		</p>
-
-		<p>
-			<a class="contact-sale__route" href="/Contact/Deals"
-				>Enterprise Sales form (DEALS)<span class="InlineSeparator"
-					>&#9993;</span
-				></a
+		<div class="contact-sale__top">
+			<a class="StaccatoButton" href="#top"
+				>{BackToTop}<span class="InlineSeparator">↑</span></a
 			>
-		</p>
-	</RecordBand>
-
-	<RecordBand
-		band={{
-			kicker: "/LICENCE",
-			heading: T("common.sales.openSource.heading", {
-				defaultValue: "Still Open Source",
-			}),
-			tone: "canvas",
-		}}
-	>
-		<p class="contact-sale__prose">
-			{
-				T("common.sales.openSource.description", {
-					defaultValue:
-						"Enterprise plans add support, SLA, and custom development.\n\nThe code itself remains CC0. Fork it, read it, ship it.",
-				})
-			}
-		</p>
-
-		<p class="contact-sale__top">
-			<a href="#top"
-				>{T("common.button.backToTop", { defaultValue: "Back to top" })}<span
-					class="InlineSeparator">↑</span
-				></a
-			>
-		</p>
-	</RecordBand>
+		</div>
+	</div>
 </ContactPage>

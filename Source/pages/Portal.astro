@@ -1,17 +1,14 @@
 ---
+import FieldRecordAction from "../Component/Brand/FieldRecordAction.astro";
+import FieldRecordDataCard from "../Component/Brand/FieldRecordDataCard.astro";
+import FieldRecordIndex from "../Component/Brand/FieldRecordIndex.astro";
+import FieldRecordMetadata from "../Component/Brand/FieldRecordMetadata.astro";
+import { FieldRecordEvidence } from "../Component/Brand/FieldRecordEvidence";
+import { FieldRecordSeal } from "../Component/Brand/FieldRecordSeal";
 import { Header } from "../Component/Layout/Header";
+import { PortalPage } from "../Content/Surface/Portal.js";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
-import RecordBand from "../Component/Record/RecordBand.astro";
-import RecordEntry from "../Component/Record/RecordEntry.astro";
-import RecordFigure from "../Component/Record/RecordFigure.astro";
-import RecordLedger from "../Component/Record/RecordLedger.astro";
-import RecordMatrix from "../Component/Record/RecordMatrix.astro";
-import RecordStage from "../Component/Record/RecordStage.astro";
-import SurfaceShell from "../Component/Surface/SurfaceShell.astro";
-import SurfaceState from "../Component/Surface/SurfaceState.astro";
-import { Split } from "../Component/Surface/State.js";
-import { PortalPage } from "../Content/Surface/Portal.js";
 
 const T = GetI18n();
 
@@ -23,25 +20,11 @@ const MetaDescription = T("meta.portal.description", {
 		"CodeEditorLand account sign-in and planned portal modes for cloud, provider, local-first, and enterprise workflows.",
 });
 
-// Every fact on the page comes from this table: the four tiers, their
-// protocols, their feature and capability copy, and the four sign-in links.
-// The page owns the band order and nothing else.
+// Every fact on the page comes from this table: the hero record, the four
+// tiers with their protocols and their feature and capability copy, and the
+// two credit lines the page closes on. The page owns the three movements and
+// their order, nothing else.
 const Page = PortalPage(T);
-
-/**
- * The page's status block, split into states and facts.
- *
- * `DesignSystem-Components.md` §7: a status that renders exactly like an
- * ordinary fact has lost its state. `STATUS: PLANNED` is the page's one state at
- * the top, and each tier states the same word about itself, so both are lifted
- * into the register that carries the marker. Nothing is re-worded: `Split` reads
- * the values the content table already wrote and separates them by the
- * vocabulary in `Surface/State.ts`.
- */
-const Status = Split(Page.status);
-
-/** Each tier with its own facts split the same way, so a tier's state carries a marker too. */
-const Tiers = Page.tiers.map((Tier) => ({ ...Tier, parts: Split(Tier.facts) }));
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription}>
@@ -51,59 +34,196 @@ const Tiers = Page.tiers.map((Tier) => ({ ...Tier, parts: Split(Tier.facts) }));
 	 Auth0AccountGate (which auto-calls loginWithRedirect() on mount). -->
 	<Header client:load Mode="functional" slot="Header" />
 
-	<SurfaceShell
-		index={Page.index}
-		title={Page.title}
-		standfirst={Page.standfirst}
-		states={Status.states}
-		rows={Status.facts}
-	>
-		<RecordBand band={Page.roadmap}>
-			<RecordStage stages={Page.stages} />
-			<div class="surface__panel">
-				<RecordFigure
-					src="/Evidence/Land/NightGlass-01.png"
-					alt="Rain-speckled glass reflecting a green light at night"
-					caption="Rain-speckled glass reflecting a green light at night."
-					provenance={"PORTAL_01\u2001EVIDENCE"}
-				/>
+	<div class="bg-background">
+		<!-- Movement one: the hero record. The opening type is the page's h1,
+		 the metadata list carries the three facts the card always carried,
+		 and the evidence panel is the night-glass crop, hidden below md. -->
+		<section class="w-full overflow-hidden relative" aria-label="Portal Hero">
+			<div
+				class="absolute inset-0 pointer-events-none"
+				style="background-color: var(--Background);"
+			>
 			</div>
-		</RecordBand>
+			<div
+				class="flex flex-col md:flex-row min-h-[60dvh] mx-auto relative"
+				style="padding: clamp(2rem, 5vw, 5rem); gap: clamp(0.5rem, 1.5vw, 1.875rem);"
+			>
+				<div class="flex flex-col flex-1 justify-center">
+					<FieldRecordDataCard className="h-full">
+						<div class="flex flex-col h-full justify-between">
+							<div class="flex justify-between items-start">
+								<FieldRecordIndex index={Page.index} />
+								<FieldRecordSeal element="Land" size={64} />
+							</div>
 
-		{
-			Tiers.map((Tier) => (
-				<RecordBand band={Tier.band}>
-					{Tier.rest.map((Line) => (
-						<p class="surface__prose">{Line}</p>
-					))}
-					<div class="surface__panel">
-						<SurfaceState states={Tier.parts.states} />
-						<RecordLedger rows={Tier.parts.facts} />
-					</div>
-					<div class="surface__stack">
-						{Tier.features.map((Feature) => (
-							<RecordEntry {...Feature} />
-						))}
-					</div>
-					<div class="surface__panel">
-						<RecordMatrix
-							columns={Page.capabilityColumns}
-							rows={Tier.capabilities}
-							caption={`${Tier.title} capabilities`}
-						/>
-					</div>
-				</RecordBand>
-			))
-		}
+							<div class="mt-10">
+								<h1
+									class="font-mono text-card-foreground font-normal tracking-[-0.02em] leading-[0.95] text-field-xl"
+								>
+									<span style="color:var(--MuteForeground)">〈</span><span style={`color:var(--${Page.headingInk})`}>{Page.heading}</span><span style="color:var(--MuteForeground)">〉</span>
+								</h1>
+								<p
+									class="font-mono text-card-foreground font-normal text-field-l leading-[1.0] mt-2 tracking-[-0.02em]"
+								>
+									<span style="color:var(--MuteForeground)">〈</span><span style={`color:var(--${Page.subheadingInk})`}>{Page.subheading}</span><span style="color:var(--MuteForeground)">〉</span>
+								</p>
+							</div>
 
-		<RecordBand band={Page.actions}>
-			<div class="surface__stack">
-				{
-					Page.decisions.map((Decision) => (
-						<RecordEntry {...Decision} />
-					))
-				}
+							<div class="mt-10">
+								<p
+									class="font-mono text-card-foreground font-normal text-field-l leading-[1.05]"
+								>
+									<span style="color:var(--MuteForeground)">/</span><span style="color:var(--SemanticSky)">PROTOCOL</span><span style="color:var(--CardForeground)">:{Page.protocol}</span>
+								</p>
+								<p
+									class="font-mono text-card-foreground font-normal leading-[1.1] opacity-70 text-field-s mt-1"
+								>
+									{Page.program.join("\u2001")}
+								</p>
+							</div>
+
+							<p
+								class="font-mono text-card-foreground opacity-60 uppercase tracking-[0.25em] mt-6 text-field-s"
+							>
+								{Page.banner.join("\u2001")}
+							</p>
+
+							<div class="mt-3">
+								<span class="font-mono text-field-s uppercase tracking-wider"><span style="color:var(--CardForeground)">STATUS:</span><span style="color:var(--Accent)">{Page.status}</span></span>
+							</div>
+
+							<div class="flex-1 my-12" aria-hidden="true"></div>
+
+							<div>
+								<p
+									class="font-mono text-card-foreground font-normal text-field-l leading-[1.08]"
+								>
+									{Page.title}:
+								</p>
+								<p
+									class="font-mono text-card-foreground font-normal leading-[1.1] opacity-70 text-field-s mt-3"
+								>
+									↳{Page.relation}
+								</p>
+							</div>
+
+							<div class="mt-10">
+								<FieldRecordMetadata rows={Page.metadata} />
+							</div>
+						</div>
+					</FieldRecordDataCard>
+				</div>
+
+				<div
+					class="hidden md:block w-px"
+					style="background-color: var(--Background);"
+				>
+				</div>
+
+				<div class="flex items-center justify-center flex-1">
+					<FieldRecordEvidence
+						src={Page.evidence.src}
+						alt={Page.evidence.alt}
+						position={Page.evidence.position}
+						className="h-full w-full min-h-[40dvh]"
+					/>
+				</div>
 			</div>
-		</RecordBand>
-	</SurfaceShell>
+		</section>
+
+		<!-- Movement two: the four tiers. Outlined on the canvas, not white
+		 cards - the border is the surface. Each card states its marker, its
+		 seal, its bracketed title, its protocol, its status and badge, its
+		 feature rows with their descriptions, its capability run, and its one
+		 sign-in action. -->
+		<section class="w-full py-16 sm:py-20" aria-label="Authentication Tiers">
+			<div class="px-4 container mx-auto">
+				<div class="mx-auto gap-6 grid grid-cols-1 max-w-5xl md:grid-cols-2">
+					{
+						Page.tiers.map((Tier) => (
+							<div class="flex flex-col border-border border h-full p-5">
+								<div class="flex gap-3 items-start justify-between">
+									<span class="font-mono text-sm uppercase font-medium text-accent tracking-[0.2em]"># {Tier.index}</span>
+									<FieldRecordSeal element={Tier.seal} size={32} />
+								</div>
+
+								<div class="border-border border-t mt-3 pt-3">
+									<h2 class="font-mono text-card-foreground font-medium uppercase text-xl tracking-[0.1em]">
+										<span style="color:var(--MuteForeground)">〈</span><span style={`color:var(--${Tier.ink})`}>{Tier.title}</span><span style="color:var(--MuteForeground)">〉</span>
+									</h2>
+									<p class="font-mono text-card-foreground text-sm uppercase tracking-[0.15em] mt-1">
+										<span style="color:var(--MuteForeground)">/</span><span style="color:var(--SemanticSky)">PROTOCOL</span><span style="color:var(--CardForeground)">: {Tier.protocol}</span>
+									</p>
+								</div>
+
+								<div class="border-border border-t mt-3 pt-3">
+									<div class="flex gap-3 py-0.5">
+										<span class="font-mono text-card-foreground text-sm uppercase tracking-[0.15em] shrink-0 w-20">STATUS: </span>
+										<span
+											class="font-mono text-sm uppercase font-medium tracking-[0.15em]"
+											style="color:var(--CardForeground)">{Tier.status}</span
+										>
+									</div>
+									<div class="flex gap-3 py-0.5">
+										<span class="font-mono text-card-foreground text-sm uppercase tracking-[0.15em] shrink-0 w-20 opacity-60">BADGE: </span>
+										<span class="font-mono text-card-foreground text-sm uppercase font-medium tracking-[0.15em]">{Tier.badge}</span>
+									</div>
+								</div>
+
+								<div class="border-border border-t mt-3 pt-3">
+									<p class="font-mono text-card-foreground opacity-60 text-xs tracking-[0.25em] uppercase">FEATURES:</p>
+									<ul class="mt-2">
+										{Tier.features.map((Feature) => (
+											<li class="flex flex-col border-border border-b gap-0 py-2">
+												<span class="font-mono text-card-foreground text-sm uppercase font-medium tracking-wider">{Feature.name}</span>
+												<span class="font-mono text-card-foreground opacity-60 text-xs">{Feature.description}</span>
+											</li>
+										))}
+									</ul>
+								</div>
+
+								<div class="border-border border-t mt-3 pt-3">
+									<p class="font-mono text-card-foreground opacity-60 text-xs tracking-[0.25em] uppercase">CAPABILITIES:</p>
+									<div class="flex flex-wrap gap-x-4 gap-y-1 mt-2">
+										{Tier.capabilities.map((Capability) => (
+											<span class="font-mono text-card-foreground text-sm opacity-60">{Capability}</span>
+										))}
+									</div>
+								</div>
+
+								<div class="border-border border-t mt-3 pt-3">
+									<FieldRecordAction
+										label={Tier.action.label}
+										href={Tier.action.href}
+										variant="button"
+									/>
+								</div>
+							</div>
+						))
+					}
+				</div>
+			</div>
+		</section>
+
+		<!-- Movement three: the credits. The page's only centred block. -->
+		<section class="border-border border-t py-12 w-full" aria-label="Portal Credits">
+			<div class="px-4 container mx-auto">
+				<div class="mx-auto max-w-3xl">
+					<div class="flex flex-col gap-4 items-center text-center">
+						{
+							Page.credits.map((Line) => (
+								<p class="font-mono text-field-s uppercase tracking-wider text-muted-foreground">{Line}</p>
+							))
+						}
+						<div class="flex items-center gap-4 mt-4">
+							<a
+								class="font-mono text-field-s uppercase tracking-wider hover:underline text-accent underline-offset-4"
+								href={Page.returnHref}>{Page.returnLabel}</a
+							>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
 </Base>

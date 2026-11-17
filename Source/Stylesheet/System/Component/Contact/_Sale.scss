@@ -1,106 +1,191 @@
-// The enterprise page - the sale route, on the same bands as the hub.
+// The enterprise page - the sale route.
 //
 // Publishes:
-//   .contact-sale__prose      running prose, on the locale file's line breaks
-//   .contact-sale__subheading a sub-heading inside a band, at --type-sub
-//   .contact-sale__panel      the quiet panel that carries a labelled list
-//   .contact-sale__features   the six things an enterprise plan adds
-//   .contact-sale__action     the GitHub issue target
-//   .contact-sale__address    the direct address, a link and not the action
-//   .contact-sale__route      the link to the DEALS form
-//   .contact-sale__top        the back-to-top row
+//   .contact-sale              the body, on the page's measure and gutters
+//   .contact-sale__grid        the two-thirds / one-third split
+//   .contact-sale__main        the two-thirds column
+//   .contact-sale__panel       the one large card that fills it
+//   .contact-sale__rule        the 4px `--Primary` left rule and its label
+//   .contact-sale__rule-label  `How to Reach Us` - a label, not a heading
+//   .contact-sale__prose       running prose, on the locale file's line breaks
+//   .contact-sale__action      the GitHub issue target - the page's one action
+//   .contact-sale__heading     `Open a GitHub Issue`, the page's only `h2`
+//   .contact-sale__inset       the muted inset listing what to include
+//   .contact-sale__inset-text  that listing, at 70% ink
+//   .contact-sale__aside       the one-third column: three cards, stacked
+//   .contact-sale__card        one card in that stack
+//   .contact-sale__subheading  a card's `h3`
+//   .contact-sale__features    the six things an enterprise plan adds
+//   .contact-sale__route       the link to the DEALS form
+//   .contact-sale__address     the direct address, a link and not the action
+//   .contact-sale__top         the back-to-top row
+//
+// The page is one asymmetry: a two-thirds card beside a narrow stack, on a 3rem
+// gap, everything left-aligned and nothing centred. The loudest element is the
+// 4px `--Primary` rule that opens the big card - the only heavy left border on
+// the site - and it is a rule on a paragraph, never a heading.
 //
 // The prose keeps `white-space: pre-line` because the locale strings carry their
 // own paragraph breaks: the copy is written as paragraphs in the JSON, and a
 // stylesheet that reflowed them into one block would be rewriting the text.
 //
-// No fill, no elevation, no rounding: the page is prose on the canvas, and the
-// only surfaces are the published emphasis tiers.
+// The GitHub issue is the page's one action, so it keeps `.emphasis-expressive`.
+// The address is a link, not an action (`DESIGN.md` §5 A6, §7 DR-13): ink, no
+// fill, an underline on hover - an ink-inverted postal address is a non-action
+// wearing the action style, and it would spend the page's one expressive
+// element.
 
 @use "../../Mixin" as *;
 
-.contact-sale__prose {
-	margin: 0;
-	max-width: 62ch;
+.contact-sale {
+	max-width: var(--ContainerFourExtraLarge);
+	margin-inline: auto;
+	padding-inline: var(--Gutter);
+	padding-block-end: 4rem;
+}
+
+// `grid-cols-1 lg:grid-cols-3 gap-12`: one column until 1024px, then the
+// two-thirds / one-third split on a 3rem gap.
+.contact-sale__grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 3rem;
+}
+
+@include bp(1024px) {
+	.contact-sale__grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	.contact-sale__main {
+		grid-column: span 2;
+	}
+}
+
+// ─── The large card ───────────────────────────────────────────────────────
+
+// `bg-card p-8`: the one white panel on the page, on the card surface the
+// `StaccatoCard` class leaves to its caller.
+.contact-sale__panel {
+	padding: 2rem;
+	background: var(--Card);
+	color: var(--CardForeground);
+}
+
+// `border-l-4 border-[var(--Primary)] mb-6 pl-4`.
+.contact-sale__rule {
+	margin-block-end: 1.5rem;
+	padding-inline-start: 1rem;
+	border-inline-start: 4px solid var(--Primary);
+}
+
+// `font-medium mb-1`: a label over its paragraph. It is a `p`, not a heading -
+// promoting it inverts the page's levels, which is the defect this restores.
+.contact-sale__rule-label {
+	margin: 0 0 0.25rem;
 	font-size: var(--type-body);
 	line-height: var(--type-body-line);
-	color: var(--Foreground);
+	font-weight: 500;
+	color: var(--CardForeground);
+}
+
+.contact-sale__prose {
+	margin: 0;
+	max-width: var(--MeasureOpening);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--CardForeground);
 	white-space: pre-line;
 }
 
-.contact-sale__subheading {
-	margin: 0;
-	max-width: 62ch;
-	font-family: var(--FontMono);
-	font-size: var(--type-sub);
+// `inline-flex items-center px-8 py-2 mb-4`. Structure only - the fill, the ink
+// and the border belong to `.emphasis-expressive`, so this rule declares none of
+// them and cannot flatten the tier.
+.contact-sale__action {
+	display: inline-flex;
+	align-items: center;
+	margin-block-end: 1rem;
+	padding: 0.5rem 2rem;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
 	font-weight: 500;
-	line-height: var(--type-sub-line);
-	color: var(--Foreground);
+	text-decoration: none;
 }
 
-// The quiet panel adds the padding the `.emphasis-quiet` tier does not carry.
-// A tier publishes a surface; the component that uses it publishes its insides.
-.contact-sale__panel {
-	max-width: 62ch;
-	padding: var(--space-reading) var(--space-group);
+.contact-sale__action:hover,
+.contact-sale__action:focus-visible {
+	opacity: 0.9;
 }
 
-// The six features as a ruled list: one line each, separated by a hairline, so
-// the set reads as one list rather than as six paragraphs.
+// `text-xl font-medium mb-4`: the page's only `h2`, one step over the prose.
+.contact-sale__heading {
+	margin: 0 0 1rem;
+	font-size: 1.25rem;
+	line-height: 1.4;
+	font-weight: 500;
+	color: var(--CardForeground);
+}
+
+// `bg-secondary mt-8 p-4`, its paragraph at `opacity-70`.
+.contact-sale__inset {
+	margin-block-start: 2rem;
+	padding: 1rem;
+	background: var(--Secondary);
+	color: var(--SecondaryForeground);
+}
+
+.contact-sale__inset-text {
+	margin: 0;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	opacity: 0.7;
+}
+
+// ─── The stack ────────────────────────────────────────────────────────────
+
+// `space-y-6`: three cards, one 1.5rem rhythm.
+.contact-sale__aside {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+// `bg-card p-6`.
+.contact-sale__card {
+	padding: 1.5rem;
+	background: var(--Card);
+	color: var(--CardForeground);
+}
+
+// `font-medium mb-3`: a card's title at body size, one step over its own text.
+.contact-sale__subheading {
+	margin: 0 0 0.75rem;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	font-weight: 500;
+	color: var(--CardForeground);
+}
+
+// `space-y-2`: the six features, one line each.
 .contact-sale__features {
 	margin: 0;
 	padding: 0;
-	max-width: 62ch;
 	list-style: none;
 	font-size: var(--type-body);
 	line-height: var(--type-body-line);
-	color: var(--Foreground);
+	color: var(--CardForeground);
 }
 
 .contact-sale__features > li {
 	margin: 0;
-	padding-block: var(--space-tight);
+	padding-block: 0.25rem;
 }
 
-.contact-sale__features > li + li {
-	@include hairline(top);
-}
-
-// The two targets. The GitHub issue is the page's one action, so it keeps the
-// `.emphasis-expressive` tier and the padding that turns a link into a target.
-// The address is a link, not an action (`DESIGN.md` §5 A6, §7 DR-13): ink, no
-// fill, an underline on hover - an ink-inverted postal address is a non-action
-// wearing the action style, and it spent the page's one expressive element.
-.contact-sale__action {
-	display: inline-block;
-	align-self: flex-start;
-	padding: var(--space-reading) var(--space-group);
-	font-size: var(--type-body);
-	line-height: var(--type-body-line);
-	text-decoration: none;
-}
-
-.contact-sale__address {
-	display: inline-block;
-	font-size: var(--type-sub);
-	line-height: var(--type-sub-line);
-	color: var(--Foreground);
-	text-decoration: none;
-	text-wrap: nowrap;
-}
-
-.contact-sale__action:hover,
-.contact-sale__action:focus-visible,
-.contact-sale__address:hover,
-.contact-sale__address:focus-visible {
-	text-decoration: underline;
-	text-underline-offset: 0.25em;
-}
-
+// `StaccatoButton hover:underline`: the DEALS route is a link, not the action,
+// so it takes ink and no fill.
 .contact-sale__route {
-	@include mono-meta;
-	@include track(0.08em);
-	color: var(--Foreground);
+	color: var(--CardForeground);
+	font-weight: 500;
 	text-decoration: none;
 }
 
@@ -109,14 +194,34 @@
 	text-decoration: underline;
 }
 
+// The address: ink, no fill, underlined on hover only. No `user-select` and no
+// `pointer-events` suppression - it is a working `mailto:` and must stay one.
+.contact-sale__address {
+	color: var(--CardForeground);
+	text-decoration: none;
+	text-wrap: nowrap;
+}
+
+.contact-sale__address:hover,
+.contact-sale__address:focus-visible {
+	text-decoration: underline;
+	text-underline-offset: 0.25em;
+}
+
+// ─── The close ────────────────────────────────────────────────────────────
+// `border-t mt-12 pt-8`: one rule, then the way back to the top in `--Primary`.
+
 .contact-sale__top {
-	@include mono-meta;
-	@include track(0.08em);
-	margin: 0;
+	@include hairline(top);
+
+	margin-block-start: 3rem;
+	padding-block-start: 2rem;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
 }
 
 .contact-sale__top a {
-	color: var(--Foreground);
+	color: var(--Primary);
 	text-decoration: none;
 }
 

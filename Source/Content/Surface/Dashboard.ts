@@ -5,8 +5,8 @@
  * about the account is server-known: which tiers exist, what the editor
  * connection is called when it is absent, what the build configuration holds,
  * how long a data request takes. Those facts are rows here. The one thing the
- * page cannot know server-side is who is signed in, so the account band hosts
- * the Auth0 island and this table carries only its heading and its copy.
+ * page cannot know server-side is who is signed in, so the account panel hosts
+ * the Auth0 island and this table carries only its heading.
  *
  * Two rules this module keeps:
  *
@@ -16,97 +16,215 @@
  *   plan, a usage figure or an account field - a row that has no source in the
  *   page's own copy does not exist.
  *
- * Band order is the page's own order: account first (the reason the reader
- * came), then access, data rights, the tooling the page reports, the editor
- * connection, settings, the exits, and the attribution.
+ * Section order is the page's own order: the opening grid (account, downloads,
+ * quick links), then telemetry, the build configuration, the four tiers, the
+ * editor connection, the partners, the data-rights directory, and settings.
+ * The separators are U+2001 (EM QUAD), written as escapes so no editor can
+ * fold them into a middle dot, which `DESIGN.md` §1.5 forbids.
  */
 import type { TFunction } from "i18next";
 
-import type {
-	Band,
-	Entry,
-	LedgerRow,
-	Stage,
-} from "../../Component/Record/Type.js";
+import type { BadgeTone } from "../../Component/Surface/Badge.js";
 
-/** One labelled block of the page's copy: a heading, and the facts under it. */
+/** The field-record separator: U+2001, never U+00B7. */
+const Quad = "\u2001";
+
+/** A state word and the tint it carries. */
+export interface DashboardBadge {
+	/** `Disabled`, `Online`, `Coming Soon`. */
+	readonly label: string;
+
+	/** The semantic token the badge is tinted from. */
+	readonly tone: BadgeTone;
+
+	/** Whether the badge reports a live state and so carries its dot. */
+	readonly dot?: boolean;
+}
+
+/** One telemetry path: its badges, its sentence, and what it does. */
+export interface TelemetryPath {
+	/** `Disabled` + `Feature Gated`, or `Optional`, or `Active`. */
+	readonly badges: readonly DashboardBadge[];
+
+	/** `Feature-gated by build profile.` - the row's `h3`. */
+	readonly heading: string;
+
+	/** The sentence under it, with its terms badged. */
+	readonly text: string;
+}
+
+/** One key/value row inside a build-configuration card. */
+export interface BuildRow {
+	/** `Profile`, `Workbench`, `Permutations`. */
+	readonly key: string;
+
+	/** `production`, `Mountain`, `16 verified`. */
+	readonly value: string;
+
+	/** Print the value as a code token. */
+	readonly mono?: boolean;
+
+	/** Print the value at medium weight. */
+	readonly strong?: boolean;
+}
+
+/** One build-configuration card. */
+export interface BuildCard {
+	/** `Active Profile`, `Deployment Mode`, `Test Matrix`. */
+	readonly title: string;
+
+	/** `Recommended`, `Active`, `16 Permutations`. */
+	readonly badge: DashboardBadge;
+
+	/** The four rows the card justifies. */
+	readonly rows: readonly BuildRow[];
+}
+
+/** One authentication tier, as a link card. */
+export interface TierCard {
+	/** `Cloud`, `Provider`, `Local-First`, `Enterprise`. */
+	readonly title: string;
+
+	/** `Auth0 / HTTPS / TLS 1.3`, em-quad separated. */
+	readonly protocol: string;
+
+	/** `Online`, `OAuth`, `Local`, `SSO`. */
+	readonly badge: DashboardBadge;
+
+	/** The glyph in the pastel tile. */
+	readonly glyph: string;
+
+	/** The tile's pastel classes. */
+	readonly tile: string;
+
+	/** The glyph's ink. */
+	readonly ink: string;
+
+	/** The border the card takes on hover. */
+	readonly hover: string;
+}
+
+/** One partner card. */
+export interface PartnerCard {
+	/** `Code Editor Land`, `PlayForm`, `NLnet Foundation`. */
+	readonly name: string;
+
+	/** `Organization / GitHub`, em-quad separated. */
+	readonly line: string;
+
+	/** Where the card goes. */
+	readonly href: string;
+
+	/** The logo the card prints, when it has one. */
+	readonly logo?: string;
+
+	/** The two-letter tile the card prints instead of a logo. */
+	readonly tile?: string;
+}
+
+/** One row of the settings card. */
+export interface SettingsRow {
+	/** `Sync Settings`, `Extension Sync`, `Account`. */
+	readonly title: string;
+
+	/** One sentence: what the setting does. */
+	readonly body: string;
+
+	/** `Coming Soon`, when the row is not live. */
+	readonly badge?: DashboardBadge;
+
+	/** `Manage`, when the row is live. */
+	readonly action?: {
+		readonly label: string;
+		readonly href: string;
+	};
+}
+
+/** One quick link in the opening grid. */
+export interface QuickLink {
+	/** `Documentation`, `Report an Issue`, `Contribute`. */
+	readonly label: string;
+
+	/** Where it goes. */
+	readonly href: string;
+}
+
+/** The whole page, resolved. */
 export interface DashboardSurface {
 	/** The page's single `h1`. */
 	readonly title: string;
 
-	/** `# DASHBOARD_01` - the page's record marker. */
-	readonly index: string;
-
 	/** One sentence under the `h1`. */
 	readonly standfirst: string;
 
-	/**
-	 * The status ledger at the top of the page. Only fields the page actually
-	 * has: the account itself is client-side, so it is not a row here - it is
-	 * the first band.
-	 */
-	readonly status: readonly LedgerRow[];
+	/** The four badges in the header run. */
+	readonly badges: readonly DashboardBadge[];
 
-	/** The account band: heading and copy around the Auth0 island. */
-	readonly account: Band;
+	/** The downloads panel: one button and one line. */
+	readonly downloads: {
+		readonly label: string;
+		readonly href: string;
+		readonly line: string;
+	};
 
-	/** The access band: the four tiers, as an ordered rail. */
-	readonly access: Band;
+	/** The three quick links. */
+	readonly quickLinks: readonly QuickLink[];
 
-	/** The tier rail itself. */
-	readonly accessStages: readonly Stage[];
+	/** The telemetry section: three paths in one wide card. */
+	readonly telemetry: {
+		readonly heading: string;
+		readonly paths: readonly TelemetryPath[];
+	};
 
-	/** The data-rights band: heading and copy around the request island. */
-	readonly data: Band;
+	/** The build-configuration section: three cards in one grid. */
+	readonly build: {
+		readonly heading: string;
+		readonly subtitle: string;
+		readonly cards: readonly BuildCard[];
+	};
 
-	/** The build-configuration band. */
-	readonly build: Band;
+	/** The tier section: four link cards in one grid. */
+	readonly tiers: {
+		readonly heading: string;
+		readonly subtitle: string;
+		readonly cards: readonly TierCard[];
+	};
 
-	/** The build facts, twelve rows of them. */
-	readonly buildFacts: readonly LedgerRow[];
+	/** The editor-connection section: one card. */
+	readonly editor: {
+		readonly heading: string;
+		readonly subtitle: string;
+		readonly name: string;
+		readonly status: string;
+		readonly text: string;
+		readonly scan: {
+			readonly label: string;
+			readonly href: string;
+		};
+		readonly connect: {
+			readonly label: string;
+			readonly href: string;
+		};
+		readonly note: string;
+	};
 
-	/** The telemetry band. */
-	readonly telemetry: Band;
+	/** The partners section: three cards in one grid. */
+	readonly partners: {
+		readonly heading: string;
+		readonly cards: readonly PartnerCard[];
+	};
 
-	/** The three telemetry paths, one record each. */
-	readonly telemetryPaths: readonly Entry[];
+	/** The data-rights section: one heading and one sentence over the directory. */
+	readonly privacy: {
+		readonly heading: string;
+		readonly subtitle: string;
+	};
 
-	/** The editor-connection band. */
-	readonly editor: Band;
-
-	/** `Not Connected` - the state the page reports when no daemon answers. */
-	readonly editorStatus: string;
-
-	/** The connection's own facts: daemon, state, transport, cloud dependency. */
-	readonly editorFacts: readonly LedgerRow[];
-
-	/** What the connection does, and what it needs. */
-	readonly editorDescription: readonly string[];
-
-	/**
-	 * The two things the reader can do about an absent daemon. Each is a record,
-	 * not a bare button: a destination that does not say what it does is a link
-	 * the reader has to guess at.
-	 */
-	readonly editorActions: readonly Entry[];
-
-	/** The settings band. */
-	readonly settings: Band;
-
-	/** The three settings rows. */
-	readonly settingsEntries: readonly Entry[];
-
-	/** The exits band: downloads, docs, the issue tracker, contributing. */
-	readonly start: Band;
-
-	/** The four exits. */
-	readonly startEntries: readonly Entry[];
-
-	/** The attribution band. */
-	readonly partners: Band;
-
-	/** The three attributed organisations. */
-	readonly partnersEntries: readonly Entry[];
+	/** The settings section: three rows in one card. */
+	readonly settings: {
+		readonly heading: string;
+		readonly rows: readonly SettingsRow[];
+	};
 }
 
 /** The page's copy, resolved once. */
@@ -120,6 +238,8 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 		Account: T("common.dashboard.account.heading", {
 			defaultValue: "Account",
 		}),
+		Downloads: "Downloads",
+		QuickLinks: "Quick Links",
 		Access: T("common.dashboard.portal.heading", {
 			defaultValue: "Authentication Tiers",
 		}),
@@ -167,317 +287,262 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 		ComingSoon: T("common.comingSoon", { defaultValue: "Coming Soon" }),
 	};
 
-	/** One line of copy from the surface namespace, with its English default. */
-	const Surface = (Name: string, Fallback: string): string =>
-		T(`account:dashboardPage.surface.${Name}`, { defaultValue: Fallback });
-
 	return {
 		title: Copy.Title,
-		index: "# DASHBOARD_01",
 		standfirst: Copy.Subtitle,
-		status: [
-			{
-				key: "ACCOUNT",
-				value: "AUTH0 SESSION · READ IN THE BROWSER",
-				note: Surface(
-					"status.account",
-					"Who is signed in is client-side state; the account band asks the identity provider for it.",
-				),
-			},
-			{ key: "ACCESS", value: "AUTH0 UNIVERSAL LOGIN", note: Copy.AccessSubtitle },
-			{ key: "PLAN", value: "FREE / ENTERPRISE" },
-			{ key: "DATA REQUESTS", value: "GDPR · ANSWERED WITHIN 30 DAYS" },
-			{
-				key: "EDITOR",
-				value: Copy.EditorStatus.toUpperCase(),
-				note: "Air Daemon · WebSocket loopback",
-			},
-			{ key: "TELEMETRY", value: "FEATURE GATED" },
-			{ key: "BUILD", value: "PRODUCTION · MOUNTAIN · ESBUILD" },
-			{ key: "TEST MATRIX", value: "16 VERIFIED PERMUTATIONS" },
+		badges: [
+			{ label: "Telemetry Feature Gated", tone: "grpc", dot: true },
+			{ label: "CC0 Licensed", tone: "mute" },
+			{ label: "Signing Planned", tone: "mute" },
+			{ label: "Mountain Workbench", tone: "ipc", dot: true },
 		],
-		account: {
-			kicker: "/ACCOUNT",
-			heading: Copy.Account,
-			standfirst: Surface(
-				"account",
-				"Read from your Auth0 session in the browser. Signing in, signing out and data requests are unchanged.",
-			),
-			tone: "flush",
+		downloads: {
+			label: T("common.dashboard.downloads.goButton", {
+				defaultValue: "Go to Downloads",
+			}),
+			href: "/Download",
+			line: T("common.dashboard.downloads.description", {
+				defaultValue:
+					"Get the latest Land build for your platform. Native on macOS, Windows, and Linux.",
+			}),
 		},
-		access: {
-			kicker: "/ACCESS",
-			heading: Copy.Access,
-			standfirst: Copy.AccessSubtitle,
-			footnote: Surface(
-				"access.footnote",
-				"Every tier is described on the portal page; this rail only shows which route your session uses.",
-			),
-			tone: "paper",
-		},
-		accessStages: [
-			{ index: "01", label: "Cloud", line: "Auth0 · HTTPS / TLS 1.3", href: "/Portal" },
-			{ index: "02", label: "Provider", line: "OAuth 2.0 · PKCE", href: "/Portal" },
+		quickLinks: [
 			{
-				index: "03",
-				label: "Local-First",
-				line: "mTLS · CRDTs · WebSocket",
-				href: "/Portal",
-			},
-			{
-				index: "04",
-				label: "Enterprise",
-				line: "OIDC · SAML 2.0 · SCIM",
-				href: "/Portal",
-			},
-		],
-		data: {
-			kicker: "/DATA",
-			heading: Copy.Data,
-			standfirst: Copy.DataSubtitle,
-			tone: "canvas",
-		},
-		build: {
-			kicker: "/BUILD",
-			heading: Copy.Build,
-			standfirst: Copy.BuildSubtitle.split("\n\n").filter((Line) => Line.length > 0).join(" "),
-			tone: "paper",
-		},
-		buildFacts: [
-			{ key: "PROFILE", value: "production" },
-			{ key: "WORKBENCH", value: "Mountain" },
-			{ key: "FEATURES", value: "Active Source Path" },
-			{ key: "COMPILER", value: "esbuild" },
-			{ key: "MODE", value: "Production Release" },
-			{ key: "NODE_ENV", value: "production" },
-			{ key: "RUST_LOG", value: "info" },
-			{ key: "BUNDLE", value: "Full" },
-			{ key: "PROFILES", value: "9 named" },
-			{ key: "WORKBENCHES", value: "5 variants" },
-			{ key: "COMPILERS", value: "esbuild, OXC" },
-			{ key: "PERMUTATIONS", value: "16 verified" },
-		],
-		telemetry: {
-			kicker: "/TELEMETRY",
-			heading: Copy.Telemetry,
-			standfirst: Surface(
-				"telemetry",
-				"Three paths, one default: nothing leaves the process unless you build it in and point it somewhere.",
-			),
-			tone: "canvas",
-		},
-		telemetryPaths: [
-			{
-				index: "# 01",
-				name: T("common.dashboard.telemetry.production.title", {
-					defaultValue: "Feature-gated by build profile.",
-				}),
-				chips: ["Disabled", "Feature Gated"],
-				body: T("common.dashboard.telemetry.production.description", {
-					defaultValue:
-						"Telemetry and tracing are behind named Rust feature gates. The build profile determines what is compiled in - nothing is emitted unless a specific feature path is enabled.",
-				}),
-			},
-			{
-				index: "# 02",
-				name: T("common.dashboard.telemetry.otel.title", {
-					defaultValue:
-						"Opt-in OpenTelemetry. Your infrastructure only.",
-				}),
-				chips: ["Optional"],
-				body: T("common.dashboard.telemetry.otel.description", {
-					defaultValue:
-						"OpenTelemetry tracing is available in source. Activating it requires an explicit feature flag and a configured endpoint - trace data goes only to infrastructure you control.",
-				}),
-			},
-			{
-				index: "# 03",
-				name: T("common.dashboard.telemetry.effect.title", {
-					defaultValue:
-						"Extension host timing. Stays in the process.",
-				}),
-				chips: ["Active"],
-				body: T("common.dashboard.telemetry.effect.description", {
-					defaultValue:
-						"Cocoon has internal timing and service diagnostics for extension-host work. Unless a transport is configured, that data is local process instrumentation.",
-				}),
-			},
-		],
-		editor: {
-			kicker: "/EDITOR",
-			heading: Copy.Editor,
-			standfirst: Copy.EditorSubtitle,
-			tone: "paper",
-		},
-		editorStatus: Copy.EditorStatus,
-		editorFacts: [
-			{ key: "DAEMON", value: "Air Daemon" },
-			{ key: "STATUS", value: Copy.EditorStatus },
-			{ key: "TRANSPORT", value: "mTLS · CRDTs · WebSocket" },
-			{ key: "CLOUD DEPENDENCY", value: "Zero cloud dependency" },
-		],
-		editorActions: [
-			{
-				index: "# 01",
-				name: T("common.dashboard.editor.scanButton", {
-					defaultValue: "Scan for Daemon",
-				}),
-				body: T("account:dashboardPage.surface.editor.scan", {
-					defaultValue:
-						"Opens this page in local mode and probes the Air Daemon on ws://localhost:7979 and ws://localhost:7878, three seconds per port.",
-				}),
-				href: "/Dashboard?mode=local",
-			},
-			{
-				index: "# 02",
-				name: T("common.dashboard.editor.connect", {
-					defaultValue: "Connect via Portal",
-				}),
-				body: T("account:dashboardPage.surface.editor.connect", {
-					defaultValue:
-						"Opens the portal, where each authentication tier's sign-in route is listed.",
-				}),
-				href: "/Portal",
-			},
-		],
-		editorDescription: Copy.EditorDescription.split("\n\n").filter(
-			(Line) => Line.length > 0,
-		),
-		settings: {
-			kicker: "/SETTINGS",
-			heading: Copy.Settings,
-			standfirst: Surface(
-				"settings",
-				"Two settings are planned; the account page behind the third row is live.",
-			),
-			tone: "canvas",
-		},
-		settingsEntries: [
-			{
-				index: "# 01",
-				name: T("common.dashboard.settings.sync.title", {
-					defaultValue: "Sync Settings",
-				}),
-				chips: [Copy.ComingSoon],
-				body: T("common.dashboard.settings.sync.description", {
-					defaultValue:
-						"Your editor preferences follow you across every device automatically.",
-				}),
-			},
-			{
-				index: "# 02",
-				name: T("common.dashboard.settings.extensionSync.title", {
-					defaultValue: "Extension Sync",
-				}),
-				chips: [Copy.ComingSoon],
-				body: T("common.dashboard.settings.extensionSync.description", {
-					defaultValue:
-						"Your installed extensions stay in sync across all machines.",
-				}),
-			},
-			{
-				index: "# 03",
-				name: T("common.dashboard.settings.account.title", {
-					defaultValue: "Account",
-				}),
-				href: "/Account",
-				body: T("common.dashboard.settings.account.description", {
-					defaultValue: "Update your profile and manage your account.",
-				}),
-			},
-		],
-		start: {
-			kicker: "/START",
-			heading: Surface("start.heading", "Downloads & Quick Links"),
-			standfirst: Surface(
-				"start",
-				"Where the account ends and the rest of the site begins.",
-			),
-			tone: "paper",
-		},
-		startEntries: [
-			{
-				index: "# 01",
-				name: T("common.dashboard.downloads.goButton", {
-					defaultValue: "Go to Downloads",
-				}),
-				href: "/Download",
-				body: T("common.dashboard.downloads.description", {
-					defaultValue:
-						"Get the latest Land build for your platform. Native on macOS, Windows, and Linux.",
-				}),
-			},
-			{
-				index: "# 02",
-				name: T("common.dashboard.quickLinks.docs", {
+				label: T("common.dashboard.quickLinks.docs", {
 					defaultValue: "Documentation",
 				}),
 				href: "/Doc",
-				body: Surface(
-					"start.docs",
-					"The reference for every element, protocol and platform Land implements.",
-				),
 			},
 			{
-				index: "# 03",
-				name: T("common.dashboard.quickLinks.reportIssue", {
+				label: T("common.dashboard.quickLinks.reportIssue", {
 					defaultValue: "Report an Issue",
 				}),
 				href: "https://github.com/CodeEditorLand/Land/issues",
-				body: Surface(
-					"start.issue",
-					"Opens the Land issue tracker on GitHub in a new tab.",
-				),
 			},
 			{
-				index: "# 04",
-				name: T("common.dashboard.quickLinks.contribute", {
+				label: T("common.dashboard.quickLinks.contribute", {
 					defaultValue: "Contribute",
 				}),
 				href: "/Contributing",
-				body: Surface(
-					"start.contribute",
-					"How to build Land from source and send a change back.",
-				),
-			},
-			{
-				index: "# 05",
-				name: T("common.breadcrumb.home", { defaultValue: "Home" }),
-				href: "/",
-				body: Surface(
-					"start.home",
-					"Returns to the site's front page.",
-				),
 			},
 		],
-		partners: {
-			kicker: "/PARTNERS",
-			heading: Copy.Partners,
-			standfirst: Surface(
-				"partners",
-				"The organisations that host and fund the work.",
-			),
-			tone: "canvas",
+		telemetry: {
+			heading: Copy.Telemetry,
+			paths: [
+				{
+					badges: [
+						{ label: "Disabled", tone: "grpc", dot: true },
+						{ label: "Feature Gated", tone: "mute" },
+					],
+					heading: T("common.dashboard.telemetry.production.title", {
+						defaultValue: "Feature-gated by build profile.",
+					}),
+					text: T(
+						"common.dashboard.telemetry.production.description",
+						{
+							defaultValue:
+								"Telemetry and tracing are behind named Rust feature gates. The build profile determines what is compiled in - nothing is emitted unless a specific feature path is enabled.",
+						},
+					),
+				},
+				{
+					badges: [{ label: "Optional", tone: "tauri", dot: true }],
+					heading: T("common.dashboard.telemetry.otel.title", {
+						defaultValue:
+							"Opt-in OpenTelemetry. Your infrastructure only.",
+					}),
+					text: T("common.dashboard.telemetry.otel.description", {
+						defaultValue:
+							"OpenTelemetry tracing is available in source. Activating it requires an explicit feature flag and a configured endpoint - trace data goes only to infrastructure you control.",
+					}),
+				},
+				{
+					badges: [{ label: "Active", tone: "ipc", dot: true }],
+					heading: T("common.dashboard.telemetry.effect.title", {
+						defaultValue:
+							"Extension host timing. Stays in the process.",
+					}),
+					text: T("common.dashboard.telemetry.effect.description", {
+						defaultValue:
+							"Cocoon has internal timing and service diagnostics for extension-host work. Unless a transport is configured, that data is local process instrumentation.",
+					}),
+				},
+			],
 		},
-		partnersEntries: [
-			{
-				index: "# 01",
-				name: "Code Editor Land",
-				href: "https://github.com/CodeEditorLand",
-				body: "Organization · GitHub",
+		build: {
+			heading: Copy.Build,
+			subtitle: Copy.BuildSubtitle.split("\n\n")
+				.filter((Line) => Line.length > 0)
+				.join(" "),
+			cards: [
+				{
+					title: "Active Profile",
+					badge: { label: "Recommended", tone: "ipc", dot: true },
+					rows: [
+						{ key: "Profile", value: "production", mono: true },
+						{ key: "Workbench", value: "Mountain", strong: true },
+						{ key: "Features", value: "Active Source Path" },
+						{ key: "Compiler", value: "esbuild", mono: true },
+					],
+				},
+				{
+					title: "Deployment Mode",
+					badge: { label: "Active", tone: "grpc", dot: true },
+					rows: [
+						{
+							key: "Mode",
+							value: "Production Release",
+							strong: true,
+						},
+						{ key: "NODE_ENV", value: "production", mono: true },
+						{ key: "RUST_LOG", value: "info", mono: true },
+						{ key: "Bundle", value: "Full" },
+					],
+				},
+				{
+					title: "Test Matrix",
+					badge: { label: "16 Permutations", tone: "mute" },
+					rows: [
+						{ key: "Profiles", value: "9 named" },
+						{ key: "Workbenches", value: "5 variants" },
+						{ key: "Compilers", value: "esbuild, OXC" },
+						{
+							key: "Permutations",
+							value: "16 verified",
+							strong: true,
+						},
+					],
+				},
+			],
+		},
+		tiers: {
+			heading: Copy.Access,
+			subtitle: Copy.AccessSubtitle,
+			cards: [
+				{
+					title: "Cloud",
+					protocol: ["Auth0", "HTTPS / TLS 1.3"].join(` ${Quad} `),
+					badge: { label: "Online", tone: "ipc", dot: true },
+					glyph: "☁",
+					tile: "bg-blue-50 border-blue-200",
+					ink: "text-blue-600",
+					hover: "hover:border-blue-300",
+				},
+				{
+					title: "Provider",
+					protocol: ["OAuth 2.0", "PKCE"].join(` ${Quad} `),
+					badge: { label: "OAuth", tone: "wasm", dot: true },
+					glyph: "♧",
+					tile: "bg-purple-50 border-purple-200",
+					ink: "text-purple-600",
+					hover: "hover:border-purple-300",
+				},
+				{
+					title: "Local-First",
+					protocol: ["mTLS", "CRDTs", "WebSocket"].join(` ${Quad} `),
+					badge: { label: "Local", tone: "tcp", dot: true },
+					glyph: "⚙",
+					tile: "bg-orange-50 border-orange-200",
+					ink: "text-orange-600",
+					hover: "hover:border-orange-300",
+				},
+				{
+					title: "Enterprise",
+					protocol: ["OIDC", "SAML 2.0", "SCIM"].join(` ${Quad} `),
+					badge: { label: "SSO", tone: "grpc", dot: true },
+					glyph: "☋",
+					tile: "bg-green-50 border-green-200",
+					ink: "text-green-600",
+					hover: "hover:border-green-300",
+				},
+			],
+		},
+		editor: {
+			heading: Copy.Editor,
+			subtitle: Copy.EditorSubtitle,
+			name: "Air Daemon",
+			status: Copy.EditorStatus,
+			text: Copy.EditorDescription,
+			scan: {
+				label: T("common.dashboard.editor.scanButton", {
+					defaultValue: "Scan for Daemon",
+				}),
+				href: "/Dashboard?mode=local",
 			},
-			{
-				index: "# 02",
-				name: "PlayForm",
-				href: "https://PlayForm.Cloud",
-				body: "Platform · PlayForm.Cloud",
+			connect: {
+				label: T("common.dashboard.editor.connect", {
+					defaultValue: "Connect via Portal",
+				}),
+				href: "/Portal",
 			},
-			{
-				index: "# 03",
-				name: "NLnet Foundation",
-				href: "https://nlnet.nl/project/Land/",
-				body: "NGI0 Commons Fund",
-			},
-		],
+			note: ["mTLS", "CRDTs", "WebSocket", "Zero cloud dependency"].join(
+				` ${Quad} `,
+			),
+		},
+		partners: {
+			heading: Copy.Partners,
+			cards: [
+				{
+					name: "Code Editor Land",
+					line: ["Organization", "GitHub"].join(` ${Quad} `),
+					href: "https://github.com/CodeEditorLand",
+					logo: "/Asset/Logo/Glyph/Land.svg",
+				},
+				{
+					name: "PlayForm",
+					line: ["Platform", "PlayForm.Cloud"].join(` ${Quad} `),
+					href: "https://PlayForm.Cloud",
+					logo: "/Image/PlayForm.svg",
+				},
+				{
+					name: "NLnet Foundation",
+					line: "NGI0 Commons Fund",
+					href: "https://nlnet.nl/project/Land/",
+					tile: "NL",
+				},
+			],
+		},
+		privacy: {
+			heading: Copy.Data,
+			subtitle: Copy.DataSubtitle,
+		},
+		settings: {
+			heading: Copy.Settings,
+			rows: [
+				{
+					title: T("common.dashboard.settings.sync.title", {
+						defaultValue: "Sync Settings",
+					}),
+					body: T("common.dashboard.settings.sync.description", {
+						defaultValue:
+							"Your editor preferences follow you across every device automatically.",
+					}),
+					badge: { label: Copy.ComingSoon, tone: "mute" },
+				},
+				{
+					title: T("common.dashboard.settings.extensionSync.title", {
+						defaultValue: "Extension Sync",
+					}),
+					body: T(
+						"common.dashboard.settings.extensionSync.description",
+						{
+							defaultValue:
+								"Your installed extensions stay in sync across all machines.",
+						},
+					),
+					badge: { label: Copy.ComingSoon, tone: "mute" },
+				},
+				{
+					title: T("common.dashboard.settings.account.title", {
+						defaultValue: "Account",
+					}),
+					body: T("common.dashboard.settings.account.description", {
+						defaultValue:
+							"Update your profile and manage your account.",
+					}),
+					action: { label: "Manage", href: "/Account" },
+				},
+			],
+		},
 	};
 };

@@ -1,0 +1,73 @@
+---
+/**
+ * ManifestBand - the release manifest band: the page's opening section, its
+ * centred header and the three platform entries.
+ *
+ * The band is the baseline render's first section, and it is a band rather than
+ * a record with chapters inside it because that is what the baseline rendered:
+ * a centred header over a two-column grid of three cards. The header carries the
+ * eyebrow `Release Manifest`, the `h2` of the same two words and one sentence
+ * stating the release's condition; the grid is two columns wide from `md` up, so
+ * the third platform sits alone in the second row at half width and the grid
+ * stays visibly asymmetric - the baseline's own composition, not a tidy
+ * three-across that would read as a different page.
+ *
+ * The band owns no card, no field and no status line: `PlatformCard` is one
+ * entry, `Data.ts` supplies the entries, and this file decides only their order
+ * and their grid.
+ *
+ * No `<script>` and no `client:*`: the band is static.
+ */
+import PlatformCard from "./PlatformCard.astro";
+
+import type { ManifestCopy, ManifestPlatform } from "./Type.js";
+
+interface Props {
+	/** The band's opening: eyebrow, heading and sentence. */
+	head: ManifestCopy;
+
+	/** The three platform entries, in the order the manifest lists them. */
+	platforms: readonly ManifestPlatform[];
+
+	/** The record's marker without its `#` - every card carries the same one. */
+	index: string;
+
+	/** The four field labels, with their colons, in the order they print. */
+	labels: {
+		readonly arch: string;
+		readonly signing: string;
+		readonly size: string;
+		readonly checksum: string;
+	};
+}
+
+const { head, platforms, index, labels } = Astro.props;
+---
+
+<section
+	id="release-manifest"
+	aria-labelledby="release-manifest-heading"
+	class="download-manifest"
+>
+	<div class="download-manifest__inner">
+		<div class="download-manifest__head">
+			<p class="download-manifest__eyebrow">{head.eyebrow}</p>
+			<h2 class="download-manifest__heading" id="release-manifest-heading">
+				{head.heading}
+			</h2>
+			<p class="download-manifest__sentence">{head.sentence}</p>
+		</div>
+
+		<div class="download-manifest__platforms">
+			{
+				platforms.map((platform) => (
+					<PlatformCard
+						platform={platform}
+						index={index}
+						labels={labels}
+					/>
+				))
+			}
+		</div>
+	</div>
+</section>

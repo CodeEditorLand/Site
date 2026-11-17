@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
+import { AuthReport } from "../Auth/Report";
+
 import { DynamicButton } from "./DynamicButton";
 
 import { DynamicInput } from "./DynamicInput";
@@ -21,15 +23,16 @@ import {
  * validation. Supports 4 states: checking, valid (form), invalid (error),
  * success.
  *
- * The page frame belongs to AuthShell; this component owns the token check,
- * the two fields, the validation and the four states inside that frame.
+ * The card belongs to the route's `AuthShell`; this component owns the
+ * interior. The checking state is the baseline's - the spinner and the
+ * `Validating your reset link, please wait...` status line in the card's own
+ * padding - and the other three states land on the same card.
  */
 const DynamicResetPassword = ({
 	Content,
 	Token: PropToken,
 	OnReset,
 	OnNavigate,
-	ClassName,
 	IsLoading = false,
 	ErrorMessage,
 }: Property) => {
@@ -126,18 +129,6 @@ const DynamicResetPassword = ({
 
 	const Filled = StrengthFill[Tone];
 
-	const CheckingStatus = T("auth.resetPassword.checkingStatus", {
-		defaultValue: "CHECKING LINK",
-	});
-
-	const ExpiredStatus = T("auth.resetPassword.expiredStatus", {
-		defaultValue: "LINK EXPIRED",
-	});
-
-	const UpdatedStatus = T("auth.resetPassword.updatedStatus", {
-		defaultValue: "PASSWORD UPDATED",
-	});
-
 	const BackToSignIn = T("account.forgotPassword.backToSignIn", {
 		defaultValue: "Back to Sign In",
 	});
@@ -148,34 +139,35 @@ const DynamicResetPassword = ({
 
 	if (State === "checking") {
 		return (
-			<div
-				className={`auth-shell__report ${ClassName || ""}`}
-				aria-live="polite"
-			>
-				<p className="auth-shell__status">{CheckingStatus}</p>
+			<div className="p-6 pt-6">
+				<div className="space-y-4" aria-live="polite">
+					<div
+						className="mx-auto h-8 w-8 animate-spin rounded-none border-4 border-primary border-t-transparent"
+						aria-hidden="true"
+					></div>
 
-				<p className="auth-shell__report-sentence">
-					{CheckingMessage || "Validating reset token..."}
-				</p>
+					<p className="text-muted-foreground" role="status">
+						{CheckingMessage ||
+							"Validating your reset link, please wait..."}
+					</p>
+				</div>
 			</div>
 		);
 	}
 
 	if (State === "invalid") {
 		return (
-			<div
-				className={`auth-shell__report ${ClassName || ""}`}
-				role="alert"
+			<AuthReport
+				Title={T("account.resetPassword.invalidToken.title", {
+					defaultValue: "Link Expired or Invalid",
+				})}
+				Sentence={
+					InvalidTokenMessage ||
+					"This password reset link is invalid or has expired. Please request a new one."
+				}
+				Glyph="alert"
+				Role="alert"
 			>
-				<p className="auth-shell__status auth-shell__status--failure">
-					{ExpiredStatus}
-				</p>
-
-				<p className="auth-shell__report-sentence">
-					{InvalidTokenMessage ||
-						"This password reset link is invalid or has expired. Please request a new one."}
-				</p>
-
 				<DynamicButton
 					Content={{
 						Text: BackToSignIn,
@@ -184,26 +176,23 @@ const DynamicResetPassword = ({
 					}}
 					OnAction={() => OnNavigate?.("/Account/SignIn")}
 				/>
-			</div>
+			</AuthReport>
 		);
 	}
 
 	if (State === "success") {
 		return (
-			<div
-				className={`auth-shell__report ${ClassName || ""}`}
-				role="status"
-				aria-live="polite"
+			<AuthReport
+				Title={T("account.resetPassword.success.title", {
+					defaultValue: "Password updated",
+				})}
+				Sentence={
+					SuccessMessage ||
+					"Your password has been reset successfully. You can now sign in with your new password."
+				}
+				Glyph="check"
+				Role="status"
 			>
-				<p className="auth-shell__status auth-shell__status--success">
-					{UpdatedStatus}
-				</p>
-
-				<p className="auth-shell__report-sentence">
-					{SuccessMessage ||
-						"Your password has been reset successfully. You can now sign in with your new password."}
-				</p>
-
 				<DynamicButton
 					Content={{
 						Text: GoToSignIn,
@@ -212,17 +201,27 @@ const DynamicResetPassword = ({
 					}}
 					OnAction={() => OnNavigate?.("/Account/SignIn")}
 				/>
-			</div>
+			</AuthReport>
 		);
 	}
 
 	// Valid state - show form
 	return (
 		<form
-			className={`auth-shell__form ${ClassName || ""}`}
+			className="space-y-4 p-6"
 			onSubmit={HandleSubmit}
 			aria-label="Reset password form"
 		>
+			<div className="flex flex-col space-y-1 text-center">
+				<h3 className="font-mono text-2xl font-medium tracking-tight">
+					{Content.Title}
+				</h3>
+
+				<p className="text-card-foreground text-sm opacity-70">
+					{Content.Description}
+				</p>
+			</div>
+
 			<div aria-live="polite" aria-atomic="true">
 				{ErrorMessage && (
 					<p className="auth-shell__error" role="alert">

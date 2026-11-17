@@ -8,10 +8,12 @@
  *   markdown therefore opens at `##`: a file that carries its own `# ` line
  *   produces a second `h1` the moment the shell renders the title, and two
  *   level-one headings on one page is the defect this shell exists to prevent.
- * - **The metadata as a ledger.** Published, reading time, author and tags are
- *   facts with keys, so they render as `RecordLedger` rows rather than a strip
- *   of pills: a key column can be scanned, and a pill row cannot. The ledger is
- *   the block's own - this file derives no row and invents no value.
+ *   (The baseline rendered the title twice - once in the header, once as the
+ *   prose body's first line - and the duplicate is deliberately not restored.)
+ * - **The opening is the baseline's opening.** A row of tag chips, the title,
+ *   the summary as a standfirst, and one mono metadata row: the author, the
+ *   publication date and the reading time, separated by U+2001 EM QUAD. That
+ *   row is the baseline's own; a key/value ledger was the shape it replaced.
  * - **One measure.** The body is capped at `72ch` and the opening at `62ch`, so
  *   the standfirst ends before the prose does and neither runs the full width of
  *   the container. The container itself is `band-inner`, the same gutters every
@@ -19,7 +21,8 @@
  * - **The contents list.** `toc` is `null` for an article below the heading
  *   floor, and a `null` contents list renders no nav at all - never an empty one.
  *
- * The body is `.prose-flow`: the site's one paragraph rhythm. The markdown's own
+ * The body is `.prose-flow`: the site's one paragraph rhythm, opening on a
+ * hairline the way the baseline's `border-t pt-8` did. The markdown's own
  * elements are styled in this component's partial, except the code blocks, which
  * the markdown pipeline renders and this surface deliberately does not restyle.
  *
@@ -27,23 +30,27 @@
  * needs one, is the page's to mount.
  */
 import ContactBreadcrumb from "../Contact/ContactBreadcrumb.astro";
-import RecordLedger from "../Record/RecordLedger.astro";
 
-import type { LedgerRow } from "../Record/Type.js";
 import type { BlogToc, BlogTrailItem } from "./Type.js";
 
 interface Props {
-	/** `/BLOG` - the section this article belongs to, printed verbatim. */
-	kicker: string;
-
 	/** The article's `title`. The page's only `h1`. */
 	title: string;
 
 	/** The article's `summary`, at standfirst weight. */
 	summary: string;
 
-	/** Published, reading time, author, tags - in the order they are read. */
-	rows: readonly LedgerRow[];
+	/** The article's `tags`, in the order the frontmatter gives them. */
+	tags: readonly string[];
+
+	/** The article's `author`, verbatim. */
+	author: string;
+
+	/** `publishedAt` verbatim, `YYYY-MM-DD`. */
+	date: string;
+
+	/** The finished reading-time label, e.g. `5 min read`. */
+	readTime: string;
 
 	/** The article's `##` headings, or `null` below the floor. */
 	toc?: BlogToc | null;
@@ -58,20 +65,76 @@ interface Props {
 	backHref: string;
 }
 
-const { kicker, title, summary, rows, toc, trail, backLabel, backHref } =
-	Astro.props;
+const {
+	title,
+	summary,
+	tags,
+	author,
+	date,
+	readTime,
+	toc,
+	trail,
+	backLabel,
+	backHref,
+} = Astro.props;
+
+/**
+ * The three facts of the metadata row, in the order the baseline printed them.
+ * The date keeps its `<time>` element so the machine value and the printed value
+ * can never disagree; the two separators are the only visual separator the site
+ * permits (U+2001 EM QUAD).
+ */
+const Meta = [
+	{ kind: "text" as const, value: author },
+	{ kind: "separator" as const, value: "\u2001" },
+	{ kind: "date" as const, value: date },
+	{ kind: "separator" as const, value: "\u2001" },
+	{ kind: "text" as const, value: readTime },
+];
 ---
 
 <article class="blog-article">
 	<ContactBreadcrumb trail={trail} class="blog-article__trail" />
 
 	<header class="blog-article__head">
-		<p class="blog-article__kicker">{kicker}</p>
+		{
+			tags.length > 0 ? (
+				<ul class="blog-article__tags">
+					{tags.map((Tag) => (
+						<li class="blog-article__tag">
+							<jelly-badge
+								variant="platinum"
+								shape="square"
+								style="--jelly-fill:var(--Mute);--jelly-label:var(--MuteForeground);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
+							>
+								{Tag}
+							</jelly-badge>
+						</li>
+					))}
+				</ul>
+			) : null
+		}
+
 		<h1 class="blog-article__title">{title}</h1>
 		<p class="blog-article__standfirst">{summary}</p>
-		<div class="blog-article__ledger">
-			<RecordLedger rows={rows} />
-		</div>
+
+		<p class="blog-article__meta">
+			{
+				Meta.map((Part) =>
+					Part.kind === "date" ? (
+						<time class="blog-article__date" datetime={Part.value}>
+							{Part.value}
+						</time>
+					) : Part.kind === "separator" ? (
+						<span class="blog-article__separator" aria-hidden="true">
+							{Part.value}
+						</span>
+					) : (
+						<span class="blog-article__fact">{Part.value}</span>
+					),
+				)
+			}
+		</p>
 	</header>
 
 	{

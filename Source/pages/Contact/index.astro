@@ -1,33 +1,30 @@
 ---
 // The Contact hub - one index of request routes.
 //
-// The page used to print fourteen links in a three-column grid: a code, a title
-// and a subtitle per cell, with the titles and subtitles copied out of the
-// request registry. It answered "what exists" and left "which one is mine" to
-// the reader. The programme's first correction turned it into five bands - four
-// families and a closing address - which answered the second question but made
-// one index read as five chapters, with the borrowed paper/canvas alternation
-// carrying the structure instead of the records.
+// The page is a single three-column grid of fourteen link cards: a slug, a
+// title and one sentence per cell. It answers "which one is mine" by printing
+// every route the site answers on, in alphabetical order, and nothing else -
+// there is no family grouping, no second level of navigation and no display
+// type anywhere on it.
 //
-// It is one artifact again, and an index rather than a card wall
-// (`DesignSystem-Artifacts.md` §2, `DESIGN.md` §3.7): the page's opening, then
-// four family groups, each with the one line that says who answers it and how
-// fast, then that family's records as rows. Every title and subtitle still comes
-// from `Request.ts` - nothing is retyped here - and every record links to its
-// route, so a reader can still see all fourteen destinations on one page.
-//
-// The family order is the registry's order, not this file's: seven statutory
-// rights first because they carry deadlines, then support, then the routes with
-// obligations attached, then enterprise.
+// Every slug, title and subtitle comes from `Request.ts` through
+// `Library/Contact/Data.ts` - nothing is retyped here - so a card cannot
+// disagree with the route it links to. The one card that is a page rather than
+// an income code is `SALE`, and it is the one entry whose words the data module
+// carries itself.
 //
 // The address that closes the page is the one contact that does not go through a
-// form. It is a link, not an action: the page's only expressive element is the
-// record the reader picks (`DESIGN.md` §5 A6, §7 DR-12).
+// form. It is a link, not an action: an address is not something the page
+// performs, so it takes ink, no fill, and an underline on hover only
+// (`DESIGN.md` §5 A6, §7 DR-12). It is one quiet line between the grid and the
+// closing rule - never a heading, because the page's heading count is its own.
+//
+// No record header: the baseline renders no `# CONTACT` / `/INDEX` line here,
+// and the hub is an index rather than a record.
 import ContactPage from "../../Component/Contact/ContactPage.astro";
-import RecordEntry from "../../Component/Record/RecordEntry.astro";
 import {
 	ContactDirect,
-	ContactFamilies,
+	ContactEntries,
 	ContactHubTrail,
 } from "../../Library/Contact/Data.js";
 import { GetI18n } from "../../Library/I18n/Server";
@@ -50,12 +47,7 @@ const Standfirst = T("common.contact.pageSubtitle", {
 		"Data requests, technical support, legal, and enterprise inquiries - each contact carries a 5-letter income code.",
 });
 
-/**
- * The record header. The hub is the index the fourteen records are filed under,
- * so it prints its own series marker and the route it answers on, and no stamp -
- * no statute or platform classifies an index.
- */
-const Record = { index: "# CONTACT", route: "/INDEX" };
+const BackToTop = T("common.button.backToTop", { defaultValue: "Back to top" });
 ---
 
 <ContactPage
@@ -64,51 +56,32 @@ const Record = { index: "# CONTACT", route: "/INDEX" };
 	trail={ContactHubTrail}
 	heading={Heading}
 	standfirst={Standfirst}
-	record={Record}
 	mode="functional"
 >
-	<section class="contact-hub">
-		{
-			ContactFamilies.map((Family) => (
-				<div class="contact-hub__family">
-					<div class="contact-hub__family-head">
-						<p class="contact-hub__kicker">{Family.kicker}</p>
-						<h2 class="contact-hub__heading">{Family.heading}</h2>
-						<p class="contact-hub__line">{Family.standfirst}</p>
-					</div>
-
-					<div class="contact-hub__requests">
-						{Family.requests.map((Entry) => (
-							<RecordEntry {...Entry} />
-						))}
-						{Family.pages?.map((Entry) => (
-							<RecordEntry {...Entry} />
-						))}
-					</div>
-				</div>
-			))
-		}
-
-		<div class="contact-hub__family contact-hub__direct">
-			<div class="contact-hub__family-head">
-				<p class="contact-hub__kicker">{ContactDirect.kicker}</p>
-				<h2 class="contact-hub__heading">{ContactDirect.heading}</h2>
-				<p class="contact-hub__line">{ContactDirect.standfirst}</p>
-			</div>
-
-			<p class="contact-hub__address-row">
-				<a class="contact-hub__address" href={`mailto:${ContactDirect.address}`}
-					>{ContactDirect.address}</a
-				>
-			</p>
+	<div class="contact-hub">
+		<div class="contact-hub__grid">
+			{
+				ContactEntries.map((Entry) => (
+					<a class="contact-hub__card" href={Entry.href}>
+						<p class="contact-hub__slug">{Entry.slug}</p>
+						<h2 class="contact-hub__name">{Entry.title}</h2>
+						<p class="contact-hub__note">{Entry.subtitle}</p>
+					</a>
+				))
+			}
 		</div>
 
-		<p class="contact-hub__top">
-			<a href="#top"
-				>{T("common.button.backToTop", { defaultValue: "Back to top" })}<span
-					class="InlineSeparator">↑</span
-				></a
+		<p class="contact-hub__direct">
+			<span class="contact-hub__direct-label">{ContactDirect.label}</span>
+			<a class="contact-hub__address" href={`mailto:${ContactDirect.address}`}
+				>{ContactDirect.address}</a
 			>
 		</p>
-	</section>
+
+		<div class="contact-hub__top">
+			<a class="StaccatoButton" href="#top"
+				>{BackToTop}<span class="InlineSeparator">↑</span></a
+			>
+		</div>
+	</div>
 </ContactPage>
