@@ -1,37 +1,47 @@
+@use "Mixin" as *;
+
 /* ═══════════════════════════════════════════════════════════════════════════
- * COMPOSITION FOUNDATION - type roles, spacing roles, bands, emphasis tiers
+ * TYPE ROLES - three tiers, hard jumps, one weight ceiling
  *
- * THE CONTRACT. Every band on the site composes from these names, so a name
- * here is API: change a value if you must, never a name.
+ * THE CONTRACT. Every page and every component composes from these names, so a
+ * name here is API: change a value if you must, never a name.
  *
- * TYPE - one role per relationship a reader can actually perceive:
- *   .type-display   the one claim the page is about (at most once per page)
- *   .type-section   the heading of a band (exactly one per band)
- *   .type-sub       the standfirst: one sentence, at most two lines, muted
- *   .type-body      running prose and record bodies
- *   .type-caption   a figure caption or a provenance line
- *   .type-meta      /LABEL kickers, # markers, table heads
- *   .type-code      commands, config blocks, transcripts
+ * The documents define three usable tiers - S 13-18px, L 32-52px, XL 48-72px -
+ * with hard jumps between them, nothing below 13px, and no fourth size for a
+ * heading (DesignSystem.md §5). The seven names below are roles *inside* those
+ * tiers, not seven sizes:
+ *
+ *   .type-display   XL  the one claim the page is about (at most once a page)
+ *   .type-section   L   the heading of an artifact
+ *   .type-sub       S   the standfirst: one sentence, at most two lines
+ *   .type-body      S   running prose and record bodies
+ *   .type-caption   S   a figure caption or a provenance line
+ *   .type-meta      S   /LABEL kickers, # markers, table heads (13px floor)
+ *   .type-code      S   commands, config blocks, transcripts
+ *
+ * Weight never exceeds 500 anywhere: hierarchy comes from scale, spacing and
+ * tracking, never from weight (DesignSystem.md §5). The `-line` companions are
+ * unitless line-heights, so they inherit and scale with the role's size.
  *
  * SPACING - one role per relationship, never one per distance:
  *   --space-tight   label -> its value; a heading -> its own context
  *   --space-reading paragraph -> paragraph
  *   --space-group   explanation -> figure; figure -> caption
- *   --space-chapter a genuinely new subject, i.e. a band boundary
+ *   --space-blank   the card's mandatory blank band (15-25% of its area)
+ *   --space-chapter a genuinely new subject, i.e. a page-level boundary only
  *
- * BLOCKS - a page is a stack of .band elements. .band is one subject, opened by
- * a hairline rule and --space-chapter. .band-inner is the one inner container
- * every band uses, so no page re-invents the gutters. .prose-flow owns the
- * vertical rhythm of a prose block: it exists to replace the compounding of
- * `flex flex-col gap-*` PLUS `mb-*` on the same block.
+ * BLOCKS - .band is a page-level chapter separator, never the wrapper of every
+ * section. .band-inner is the one inner container, so no page re-invents the
+ * gutters. .prose-flow owns the vertical rhythm of a prose block: it exists to
+ * replace the compounding of `flex flex-col gap-*` PLUS `mb-*` on one block.
  *
  * EMPHASIS - three tiers, all flat (radius 0, no shadow):
  *   .emphasis-quiet       hairline rule only, no fill
- *   .emphasis-standard    card surface plus hairline
- *   .emphasis-expressive  ink-inverted (--Primary fill, --PrimaryForeground text)
- * RULE: ONE .emphasis-expressive PER BAND. It marks the claim, the headline
- * figure, or the seal - the single thing the band exists to say. Two in one
- * band means neither reads as the point of it.
+ *   .emphasis-standard    white information box plus hairline
+ *   .emphasis-expressive  ink-inverted action (--Primary fill, creme text)
+ * RULE: ONE .emphasis-expressive PER ARTIFACT, and only on the thing the user
+ * clicks. It is never a decoration, never an address block, and never a second
+ * one in the same region (DESIGN.md §4.3; §5 A6).
  * ═══════════════════════════════════════════════════════════════════════════ */
 
 /* ─── TYPE ROLE CLASSES ────────────────────────────────────────────────── */
@@ -39,6 +49,7 @@
 .type-display {
 	font-size: var(--type-display);
 	line-height: var(--type-display-line);
+	letter-spacing: -0.02em;
 }
 
 .type-section {
@@ -62,9 +73,12 @@
 	line-height: var(--type-caption-line);
 }
 
+/* .type-meta - the 13px floor plus micro tracking, so a label reads as a label
+   without a second class (DesignSystem.md §5: micro tracking 0em-0.04em). */
 .type-meta {
 	font-size: var(--type-meta);
 	line-height: var(--type-meta-line);
+	letter-spacing: 0.04em;
 }
 
 .type-code {
@@ -77,12 +91,10 @@
 /* .prose-flow, .prose-flow--group and .figure-caption from this group live in
    Space.scss, beside the bands they space. */
 
-/* .section-kicker - the /SECTION LABEL opening a band. Type and colour only:
-   no border, no fill, no shadow, so it never competes with the heading. */
+/* .section-kicker - the /SECTION LABEL opening a band: the meta role at wide
+   label tracking. Type and colour only - no border, no fill, no shadow - so it
+   never competes with the heading. */
 .section-kicker {
-	font-size: var(--type-meta);
-	line-height: var(--type-meta-line);
+	@include mono-meta;
 	letter-spacing: 0.18em;
-	text-transform: uppercase;
-	color: var(--MuteForeground);
 }

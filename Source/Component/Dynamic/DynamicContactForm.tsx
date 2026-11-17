@@ -6,6 +6,8 @@ import { Copy, Mail, MessageSquare } from "lucide-react";
 
 import { useState } from "react";
 
+import type { CSSProperties } from "react";
+
 import {
 	BuildEmailBody,
 	BuildMailtoHref,
@@ -70,6 +72,28 @@ const RequiredMark = () => (
 		*
 	</span>
 );
+
+// ── The form's surface ────────────────────────────────────────────────────
+
+/**
+ * The form's own surface: the white information box on the creme field, square,
+ * at the documented inset.
+ *
+ * HEAD wrapped the field block in a `StaccatoCard bg-card` div; the surface is
+ * the same, but it is a `jelly-card` now (`DESIGN.md` §1.7, §6.5 - a card is a
+ * Jelly element, not a `<div>` plus utilities). The five custom properties are
+ * the ones `Doc.astro` and the release manifest pass, so every white box on the
+ * site is one surface. `--jelly-card-font-size: inherit` keeps the card from
+ * resetting type to Jelly's own default, so every role inside it stays on the
+ * site's scale.
+ */
+const Surface = {
+	"--jelly-fill": "var(--Card)",
+	"--jelly-radius": "0",
+	"--jelly-card-font-size": "inherit",
+	"--jelly-card-padding-block": "var(--space-group)",
+	"--jelly-card-padding-inline": "var(--space-group)",
+} as CSSProperties;
 
 // ── Inner form component ──────────────────────────────────────────────────
 
@@ -211,83 +235,146 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 					Sends to: <span className="contact-form__handler-value">{Config.To}</span>
 				</p>
 
-				{/* Form */}
-				<div className="contact-form__fields">
-					{Config.Fields.map((Field) => {
-						const Value = Values[Field.id];
+				{/* Form - the field block, on the form's one Jelly surface */}
+				<jelly-card style={Surface}>
+					<div className="contact-form__fields">
+						{Config.Fields.map((Field) => {
+							const Value = Values[Field.id];
 
-						const Error = Errors[Field.id];
+							const Error = Errors[Field.id];
 
-						if (Field.type === "checkbox") {
-							return (
-								<div key={Field.id} className="contact-form__field">
-									<label className="contact-form__check">
-										<input
-											type="checkbox"
-											className="contact-form__checkbox"
-											checked={Value === "true"}
+							if (Field.type === "checkbox") {
+								return (
+									<div key={Field.id} className="contact-form__field">
+										<label className="contact-form__check">
+											<input
+												type="checkbox"
+												className="contact-form__checkbox"
+												checked={Value === "true"}
+												onChange={(E) =>
+													HandleChange(
+														Field.id,
+
+														E.target.checked
+															? "true"
+															: "false",
+													)
+												}
+											/>
+											<span className="contact-form__check-label">
+												{Field.label}
+											</span>
+										</label>
+										{Error && (
+											<p className="contact-form__error">{Error}</p>
+										)}
+									</div>
+								);
+							}
+
+							if (Field.type === "checkboxes") {
+								const Selected = (Value as string[]) || [];
+
+								return (
+									<div key={Field.id} className="contact-form__field">
+										<label className="contact-form__label">
+											{Field.label}
+											{Field.required && <RequiredMark />}
+										</label>
+										<div className="contact-form__options">
+											{(Field.options || []).map((Opt) => (
+												<label
+													key={Opt}
+
+													className="contact-form__option"
+												>
+													<input
+														type="checkbox"
+														className="contact-form__checkbox"
+														checked={Selected.includes(Opt)}
+
+														onChange={() =>
+															HandleCheckboxGroup(
+																Field.id,
+
+																Opt,
+															)
+														}
+													/>
+													{Opt}
+												</label>
+											))}
+										</div>
+										{Error && (
+											<p className="contact-form__error">{Error}</p>
+										)}
+									</div>
+								);
+							}
+
+							if (Field.type === "select") {
+								return (
+									<div key={Field.id} className="contact-form__field">
+										<label
+											htmlFor={Field.id}
+											className="contact-form__label"
+										>
+											{Field.label}
+											{Field.required && <RequiredMark />}
+										</label>
+										<select
+											id={Field.id}
+											className="contact-form__input"
+											value={(Value as string) || ""}
 											onChange={(E) =>
-												HandleChange(
-													Field.id,
+												HandleChange(Field.id, E.target.value)
+											}
+										>
+											<option value="">Select...</option>
+											{(Field.options || []).map((Opt) => (
+												<option key={Opt} value={Opt}>
+													{Opt}
+												</option>
+											))}
+										</select>
+										{Error && (
+											<p className="contact-form__error">{Error}</p>
+										)}
+									</div>
+								);
+							}
 
-													E.target.checked
-														? "true"
-														: "false",
-												)
+							if (Field.type === "textarea") {
+								return (
+									<div key={Field.id} className="contact-form__field">
+										<label
+											htmlFor={Field.id}
+											className="contact-form__label"
+										>
+											{Field.label}
+											{Field.required && <RequiredMark />}
+										</label>
+										<textarea
+											id={Field.id}
+											rows={4}
+											className="contact-form__input"
+											placeholder={Field.placeholder}
+											value={(Value as string) || ""}
+											onChange={(E) =>
+												HandleChange(Field.id, E.target.value)
 											}
 										/>
-										<span className="contact-form__check-label">
-											{Field.label}
-										</span>
-									</label>
-									{Error && (
-										<p className="contact-form__error">{Error}</p>
-									)}
-								</div>
-							);
-						}
-
-						if (Field.type === "checkboxes") {
-							const Selected = (Value as string[]) || [];
-
-							return (
-								<div key={Field.id} className="contact-form__field">
-									<label className="contact-form__label">
-										{Field.label}
-										{Field.required && <RequiredMark />}
-									</label>
-									<div className="contact-form__options">
-										{(Field.options || []).map((Opt) => (
-											<label
-												key={Opt}
-
-												className="contact-form__option"
-											>
-												<input
-													type="checkbox"
-													className="contact-form__checkbox"
-													checked={Selected.includes(Opt)}
-
-													onChange={() =>
-														HandleCheckboxGroup(
-															Field.id,
-
-															Opt,
-														)
-													}
-												/>
-												{Opt}
-											</label>
-										))}
+										{Field.hint && (
+											<p className="contact-form__hint">{Field.hint}</p>
+										)}
+										{Error && (
+											<p className="contact-form__error">{Error}</p>
+										)}
 									</div>
-									{Error && (
-										<p className="contact-form__error">{Error}</p>
-									)}
-								</div>
-							);
-						}
+								);
+							}
 
-						if (Field.type === "select") {
+							// text / email
 							return (
 								<div key={Field.id} className="contact-form__field">
 									<label
@@ -297,41 +384,9 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 										{Field.label}
 										{Field.required && <RequiredMark />}
 									</label>
-									<select
+									<input
 										id={Field.id}
-										className="contact-form__input"
-										value={(Value as string) || ""}
-										onChange={(E) =>
-											HandleChange(Field.id, E.target.value)
-										}
-									>
-										<option value="">Select...</option>
-										{(Field.options || []).map((Opt) => (
-											<option key={Opt} value={Opt}>
-												{Opt}
-											</option>
-										))}
-									</select>
-									{Error && (
-										<p className="contact-form__error">{Error}</p>
-									)}
-								</div>
-							);
-						}
-
-						if (Field.type === "textarea") {
-							return (
-								<div key={Field.id} className="contact-form__field">
-									<label
-										htmlFor={Field.id}
-										className="contact-form__label"
-									>
-										{Field.label}
-										{Field.required && <RequiredMark />}
-									</label>
-									<textarea
-										id={Field.id}
-										rows={4}
+										type={Field.type}
 										className="contact-form__input"
 										placeholder={Field.placeholder}
 										value={(Value as string) || ""}
@@ -342,41 +397,12 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 									{Field.hint && (
 										<p className="contact-form__hint">{Field.hint}</p>
 									)}
-									{Error && (
-										<p className="contact-form__error">{Error}</p>
-									)}
+									{Error && <p className="contact-form__error">{Error}</p>}
 								</div>
 							);
-						}
-
-						// text / email
-						return (
-							<div key={Field.id} className="contact-form__field">
-								<label
-									htmlFor={Field.id}
-									className="contact-form__label"
-								>
-									{Field.label}
-									{Field.required && <RequiredMark />}
-								</label>
-								<input
-									id={Field.id}
-									type={Field.type}
-									className="contact-form__input"
-									placeholder={Field.placeholder}
-									value={(Value as string) || ""}
-									onChange={(E) =>
-										HandleChange(Field.id, E.target.value)
-									}
-								/>
-								{Field.hint && (
-									<p className="contact-form__hint">{Field.hint}</p>
-								)}
-								{Error && <p className="contact-form__error">{Error}</p>}
-							</div>
-						);
-					})}
-				</div>
+						})}
+					</div>
+				</jelly-card>
 
 				{/* Three action options */}
 				<div className="contact-form__actions">
@@ -411,7 +437,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 					<button
 						type="button"
 						onClick={HandleCopy}
-						className="contact-form__action"
+						className="contact-form__action contact-form__action--plain"
 					>
 						<Copy aria-hidden="true" />
 						<span className="contact-form__action-text">
@@ -438,7 +464,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 
 							target="_blank"
 							rel="noopener noreferrer"
-							className="contact-form__action"
+							className="contact-form__action contact-form__action--plain"
 						>
 							<MessageSquare aria-hidden="true" />
 							<span className="contact-form__action-text">

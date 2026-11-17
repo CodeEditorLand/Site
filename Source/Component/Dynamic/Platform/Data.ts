@@ -21,8 +21,8 @@ import type PlatformInformation from "../Interface/Information/Platform.js";
 
 import type { PlatformRow } from "./Type.js";
 
-/** The band's marker. Structure, not copy: it names the section. */
-export const Kicker = "/PLATFORMS";
+/** The band's series marker and route. Structure, not copy. */
+export const Kicker = "# ACTION_01\u2001/PLATFORMS";
 
 /**
  * The three columns: what is published, in the order a reader asks.

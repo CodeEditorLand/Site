@@ -2,17 +2,24 @@
  * Data - every row, label and ordering the Download page renders.
  *
  * The template composes; this module decides. Nothing here reads the DOM, holds
- * React or imports the i18n client: the band copy is a function that takes the
- * resolver, and every other table is a constant lifted verbatim out of the files
- * it came from. Each value below names its source in the comment above it, so a
- * figure on the page can be traced back to the file that states it.
+ * React or imports the i18n client: the record's copy is a function that takes
+ * the resolver, and every other table is a constant lifted verbatim out of the
+ * files it came from. Each value below names its source in the comment above
+ * it, so a figure on the page can be traced back to the file that states it.
+ *
+ * The manifest is ordered by `DesignSystem-Pages.md` §2, not by the order the
+ * page happened to carry: the record index, the platform and architecture as
+ * one stamp, the channel as a route line, then VERSION, SIGNATURE, CHECKSUM,
+ * SIZE, BUILD, then the action, then the platform's status line. LICENSE joins
+ * that block from `Artifacts.md` §4, and INSTALLER from §2's own list of the
+ * provenance fields a platform card keeps.
  */
 import type { LedgerRow, MatrixColumn } from "../../Record/Type.js";
 
 import type {
-	AvailabilityRow,
 	Bands,
 	ManifestPlatform,
+	ManifestRecord,
 	Mark,
 	PlatformRequirements,
 	Release,
@@ -80,32 +87,167 @@ export const Marks: readonly Mark[] = [
 	},
 ];
 
-// ─── Band 1: what can be installed today ──────────────────────────────────
-// The three columns are the three questions a reader arrives with: can I build
-// it, is there an installer, and is anything signed. Every row answers "no" to
-// the last two, which is the page's whole point, and the caption says what
-// "yes" and "no" are being measured against.
+// ─── The record: `# RELEASE_01` ───────────────────────────────────────────
+// One record, three platform entries and one verification entry. The heading is
+// the page's own sentence about the record and is carried verbatim; the state
+// line is §7's `NO PUBLIC ARTIFACTS`, because that is the true thing - the
+// release exists as a record, and nothing has been published from it.
 
-export const AvailabilityColumns: readonly MatrixColumn[] = [
-	{ label: "SOURCE BUILD", ink: "SpinegRPCFore", align: "center" },
-	{ label: "INSTALLER", ink: "SpineTCPFore", align: "center" },
-	{ label: "SIGNED", ink: "SpineWASMFore", align: "center" },
-];
+export function Manifest(T: Translate): ManifestRecord {
+	return {
+		index: "RELEASE_01",
 
-export const Availability: readonly AvailabilityRow[] = [
-	{ label: "macOS", cells: ["yes", "no", "no"] },
-	{ label: "Windows", cells: ["yes", "no", "no"] },
-	{ label: "Linux", cells: ["yes", "no", "no"] },
-];
+		heading: T("download:manifest.headline", {
+			defaultValue:
+				"RELEASE_01 lists three platforms and publishes no artifact.",
+		}),
 
-export const AvailabilityCaption =
-	"Source build: the two-step build in the Land repository's Documentation/GitHub/Building.md. Installer and signing: the release manifest's own status for every platform.";
+		state: {
+			copy: T("download:state.noArtifacts", {
+				defaultValue: "STATUS: NO PUBLIC ARTIFACTS",
+			}),
+			status: "unavailable",
+			tone: "ink",
+			note: T("download:state.noArtifactsNote", {
+				defaultValue:
+					"Source builds are active for all three platforms. No installer, checksum or signature has been published yet, so building from source is the only way to run Land right now.",
+			}),
+		},
+
+		footnote: T("download:manifest.footnote", {
+			defaultValue:
+				"The manifest carries a release index, a channel and a per-platform status. It carries no version, no release date and no artifact size - those fields print UNAVAILABLE until a public installer publishes them.",
+		}),
+
+		source: T("download:status.footnote", {
+			defaultValue:
+				"Source build: the two-step build in the Land repository's Documentation/GitHub/Building.md. Installer, signing and checksum status is quoted from this page's release manifest.",
+		}),
+	};
+}
+
+/**
+ * The three platforms, in the order the manifest lists them.
+ *
+ * Every field `DesignSystem-Pages.md` §2 names is present on every platform.
+ * The values the tree cannot supply - version, checksum, size, build - print
+ * §7's `UNAVAILABLE` rather than a dash, so the record says which fact is
+ * missing instead of looking like a cell somebody forgot to fill.
+ *
+ * The state line follows §2's own division: the platform with a published
+ * source-build path is `ACTIVE`, the two without one are `RELEASE PREPARATION`.
+ * Both read on the record, not against it: `INSTALLER` and `SIGNATURE` say
+ * `PREPARING` and `IN PREPARATION` on all three.
+ */
+export function ManifestPlatforms(T: Translate): readonly ManifestPlatform[] {
+	/** §7's word for a field whose value has not been published. */
+	const Unavailable = T("download:state.unavailable", {
+		defaultValue: "UNAVAILABLE",
+	});
+
+	return [
+		{
+			name: "macOS",
+			arch: "AARCH64 / X86_64",
+			channel: "PUBLIC",
+			version: Unavailable,
+			signature: "IN PREPARATION",
+			checksum: Unavailable,
+			size: Unavailable,
+			build: Unavailable,
+			license: "CC0",
+			installer: "PREPARING",
+			state: {
+				copy: T("download:state.active", {
+					defaultValue: "STATUS: SOURCE ACTIVE",
+				}),
+				status: "active",
+				tone: "specimen",
+				note: T("download:state.activeNote", {
+					defaultValue:
+						"Builds from source today. The public installer, signature and checksum for this platform are in preparation.",
+				}),
+			},
+			downloadUrl: "https://github.com/CodeEditorLand/Land/releases",
+			downloadLabel: "VIEW SOURCE BUILDS",
+		},
+		{
+			name: "Windows",
+			arch: "X86_64",
+			channel: "PUBLIC",
+			version: Unavailable,
+			signature: "IN PREPARATION",
+			checksum: Unavailable,
+			size: Unavailable,
+			build: Unavailable,
+			license: "CC0",
+			installer: "PREPARING",
+			state: {
+				copy: T("download:state.preparing", {
+					defaultValue: "STATUS: RELEASE PREPARATION",
+				}),
+				status: "preparing",
+				tone: "quiet",
+				note: T("download:state.preparingNote", {
+					defaultValue:
+						"Builds from source today. The public installer, signature and checksum for this platform are in preparation.",
+				}),
+			},
+		},
+		{
+			name: "Linux",
+			arch: "X86_64",
+			channel: "PUBLIC",
+			version: Unavailable,
+			signature: "IN PREPARATION",
+			checksum: Unavailable,
+			size: Unavailable,
+			build: Unavailable,
+			license: "CC0",
+			installer: "PREPARING",
+			state: {
+				copy: T("download:state.preparing", {
+					defaultValue: "STATUS: RELEASE PREPARATION",
+				}),
+				status: "preparing",
+				tone: "quiet",
+				note: T("download:state.preparingNote", {
+					defaultValue:
+						"Builds from source today. The public installer, signature and checksum for this platform are in preparation.",
+				}),
+			},
+		},
+	];
+}
+
+/**
+ * One platform's manifest as ledger rows, in the document's own field order.
+ *
+ * ARCH is not a row: §2 folds platform and architecture into one stamp, and the
+ * stamp is printed above the ledger. CHANNEL is not a row either - it is a
+ * route line, `/CHANNEL: PUBLIC`, and the record prints it as one.
+ */
+export function ManifestRows(platform: ManifestPlatform): readonly LedgerRow[] {
+	return [
+		{ key: "VERSION", value: platform.version },
+		{ key: "SIGNATURE", value: platform.signature },
+		{ key: "CHECKSUM", value: platform.checksum },
+		{ key: "SIZE", value: platform.size },
+		{ key: "BUILD", value: platform.build },
+		{ key: "LICENSE", value: platform.license },
+		{ key: "INSTALLER", value: platform.installer },
+	];
+}
 
 /**
  * The build, line for line from `Documentation/GitHub/Building.md` in the Land
  * repository: the Step 1 block, the Step 2 block and the launch line, in the
  * order that file gives them. A trailing `#` is an annotation the well prints
  * and strips from the copy payload, exactly as the document writes it.
+ *
+ * This is the one action that exists today, so it sits inside the record
+ * instead of in a section of its own: §2's `[DOWNLOAD ACTION]` slot holds the
+ * source build until there is an installer to put in it.
  */
 export const BuildLines: readonly string[] = [
 	"cd Dependency/Microsoft/Dependency/Editor",
@@ -120,7 +262,7 @@ export const BuildLines: readonly string[] = [
 	"./Element/Mountain/Target/debug/Mountain",
 ];
 
-// ─── Band 2: what a build needs ───────────────────────────────────────────
+// ─── Requirements: what a build needs ─────────────────────────────────────
 // OS values are the ones the requirements component declares; ARCH is the
 // manifest's; INSTALLER is `card.platform.*` from
 // `Source/Library/I18n/Locale/En/Download.json`. The component declares one
@@ -188,8 +330,8 @@ export function Requirements(T: Translate): readonly PlatformRequirements[] {
 /**
  * The toolchain a source build needs, from the Prerequisites section of the
  * Land repository's `Documentation/GitHub/Building.md`. This is not a runtime
- * requirement - it is what the reader has to install before the commands in
- * band 1 can run.
+ * requirement - it is what the reader has to install before the commands in the
+ * record can run.
  */
 export const Toolchain: readonly LedgerRow[] = [
 	{
@@ -204,71 +346,19 @@ export const Toolchain: readonly LedgerRow[] = [
 	},
 	{ key: "PNPM", value: "npm install -g pnpm" },
 	{ key: "GIT", value: "Git with LFS support" },
-	{ key: "PROTOBUF", value: "optional", note: "Only if modifying .proto files" },
-];
-
-// ─── Band 3: what the manifest publishes ──────────────────────────────────
-// Every field is the release manifest object this page carried before the card:
-// the release index, then per platform the channel, the architecture, the
-// signing state, the size, the checksum and the status. Nothing is added and
-// nothing is inferred - the manifest has no version and no date, and the band's
-// footnote says so.
-
-export const ReleaseIndex = "RELEASE_01";
-
-export const ManifestPlatforms: readonly ManifestPlatform[] = [
 	{
-		name: "macOS",
-		channel: "PUBLIC",
-		arch: "AARCH64 / X86_64",
-		signing: "IN PREPARATION",
-		size: "-",
-		checksum: "-",
-		status: "active",
-		downloadUrl: "https://github.com/CodeEditorLand/Land/releases",
-		downloadLabel: "VIEW SOURCE BUILDS",
-	},
-	{
-		name: "Windows",
-		channel: "PUBLIC",
-		arch: "X86_64",
-		signing: "IN PREPARATION",
-		size: "-",
-		checksum: "-",
-		status: "preparing",
-	},
-	{
-		name: "Linux",
-		channel: "PUBLIC",
-		arch: "X86_64",
-		signing: "IN PREPARATION",
-		size: "-",
-		checksum: "-",
-		status: "preparing",
+		key: "PROTOBUF",
+		value: "optional",
+		note: "Only if modifying .proto files",
 	},
 ];
 
-/** One platform's manifest as ledger rows, in the manifest's own field order. */
-export function ManifestRows(
-	platform: ManifestPlatform,
-): readonly LedgerRow[] {
-	return [
-		{ key: "RELEASE", value: ReleaseIndex },
-		{ key: "CHANNEL", value: platform.channel },
-		{ key: "ARCH", value: platform.arch },
-		{ key: "SIGNING", value: platform.signing },
-		{ key: "SIZE", value: platform.size },
-		{ key: "CHECKSUM", value: platform.checksum },
-		{ key: "STATUS", value: platform.status },
-	];
-}
+// ─── The record's verification entry ──────────────────────────────────────
+// The verification material the page promises, verbatim from the
+// `VerificationInfo` defaults the download composition carried. Every one of
+// the three artifacts answers "Available at first public release" - the honest
+// state today, not an empty cell.
 
-/**
- * The verification material the page promises, verbatim from the
- * `VerificationInfo` defaults the download composition carried. Every one of the
- * three artifacts answers "Available at first public release" - the honest state
- * today, not an empty cell.
- */
 export function Verification(T: Translate): readonly LedgerRow[] {
 	return [
 		{ key: "SHA-256", value: "Available at first public release" },
@@ -293,9 +383,10 @@ export function Verification(T: Translate): readonly LedgerRow[] {
 	];
 }
 
-// ─── Band 4: what has shipped before ──────────────────────────────────────
-// Empty, and that is the fact. The band body says so in one line; the columns
-// below are what the ledger becomes the day there is a row to put in it.
+// ─── Previous releases: what has shipped before ───────────────────────────
+// Empty, and that is the fact. The section says so with §7's `RECORD: EMPTY`
+// and one sentence; the columns below are what the matrix becomes the day there
+// is a row to put in it.
 
 export const PreviousReleases: readonly Release[] = [];
 
@@ -305,33 +396,14 @@ export const ReleaseColumns: readonly MatrixColumn[] = [
 	{ label: "CHANGE" },
 ];
 
-// ─── The bands ────────────────────────────────────────────────────────────
-// Kicker, heading, standfirst and footnote for each band, in page order. The
-// tone alternates surfaces - flush (the first band after the header), canvas,
-// paper, canvas, paper - so no two paper bands touch and no three canvas bands
-// run together.
+// ─── The three sections below the record ──────────────────────────────────
+// Kicker, heading, standfirst and footnote for each, in page order. All three
+// sit on the creme field and put their information in white cards, so no two
+// sections alternate a surface to make a rhythm out of it: the surface follows
+// the artifact, never the position on the page (DESIGN.md §5 A5).
 
 export function Bands(T: Translate): Bands {
 	return {
-		Status: {
-			kicker: T("download:status.kicker", {
-				defaultValue: "SOURCE ACTIVE · INSTALLERS IN PROGRESS",
-			}),
-			heading: T("download:status.heading", {
-				defaultValue:
-					"Land builds from source today. There is no installer to download yet.",
-			}),
-			standfirst: T("download:status.standfirst", {
-				defaultValue:
-					"macOS, Windows and Linux all build from the repository. None of them has a published installer, a signature or a checksum, so building from source is the only way to run Land right now.",
-			}),
-			footnote: T("download:status.footnote", {
-				defaultValue:
-					"Build steps are quoted from the Land repository's Documentation/GitHub/Building.md. Installer, signing and checksum status is quoted from this page's release manifest.",
-			}),
-			tone: "flush",
-		},
-
 		Requirements: {
 			kicker: T("download:requirements.kicker", {
 				defaultValue: "/REQUIREMENTS",
@@ -347,26 +419,6 @@ export function Bands(T: Translate): Bands {
 				defaultValue:
 					"Minimum requirements, with the recommended figure noted under each value. The component's two cards were Minimum Requirements and Recommended for the Best Experience. Processor notes: your code runs at native CPU speed (minimum) and span your work across every monitor (recommended).",
 			}),
-			tone: "canvas",
-		},
-
-		Manifest: {
-			kicker: T("download:manifest.kicker", {
-				defaultValue: "/RELEASE MANIFEST",
-			}),
-			heading: T("download:manifest.headline", {
-				defaultValue:
-					"RELEASE_01 lists three platforms and publishes no artifact.",
-			}),
-			standfirst: T("download:page.subtitle", {
-				defaultValue:
-					"Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
-			}),
-			footnote: T("download:manifest.footnote", {
-				defaultValue:
-					"The manifest carries a release index, a channel and a per-platform status. It carries no version, no release date and no artifact size.",
-			}),
-			tone: "paper",
 		},
 
 		Previous: {
@@ -376,7 +428,6 @@ export function Bands(T: Translate): Bands {
 			heading: T("download:previousReleases.heading", {
 				defaultValue: "There is nothing to go back to yet.",
 			}),
-			tone: "canvas",
 		},
 
 		Transparency: {
@@ -390,7 +441,6 @@ export function Bands(T: Translate): Bands {
 				defaultValue:
 					"Telemetry and tracing are behind named Rust feature gates in the native layer. Nothing is emitted by default. Each build profile explicitly lists which paths are compiled in.",
 			}),
-			tone: "paper",
 		},
 	};
 }

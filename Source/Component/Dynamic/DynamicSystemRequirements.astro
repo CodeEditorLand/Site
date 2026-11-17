@@ -1,12 +1,18 @@
 ---
 /**
- * DynamicSystemRequirements - one ledger per platform, plus the toolchain a
- * source build needs before the commands in band 1 can run.
+ * DynamicSystemRequirements - one card per platform, plus the toolchain a
+ * source build needs before the commands in the record can run.
  *
  * This replaces the `.tsx` island of the same name. The interaction it drops is
  * the Staccato noise scatter it applied to its own cards and the two icon
- * tooltips it carried; the tooltips' sentences are kept, as the band's footnote,
- * because they were copy and not chrome.
+ * tooltips it carried; the tooltips' sentences are kept, as the section's
+ * footnote, because they were copy and not chrome.
+ *
+ * The groups are `jelly-card` surfaces. A platform's requirements are an
+ * information box on the creme field - the Jelly element is the card, and the
+ * ledger is the block that lives inside it (DESIGN.md §1.7, §4.2). Four bare
+ * sections in a grid read as four lists; four cards read as four records of the
+ * same kind, which is what they are.
  *
  * The rows arrive already resolved: `Download/Data.ts` owns the values, their
  * order and the recommended figure each row carries as a note. This file maps
@@ -22,27 +28,35 @@ interface Props {
 	/** One entry per platform, in the order the page prints them. */
 	platforms: readonly PlatformRequirements[];
 
-	/** The source-build toolchain, as one more ledger. */
+	/** The source-build toolchain, as one more card. */
 	toolchain: readonly LedgerRow[];
 
-	/** The toolchain ledger's own heading, printed above it. */
+	/** The toolchain card's own heading, printed above its ledger. */
 	toolchainLabel: string;
 }
 
 const { platforms, toolchain, toolchainLabel } = Astro.props;
+
+/**
+ * The card's Jelly custom properties, the same box the manifest's platform
+ * groups use: white on the creme field, square, the documented inset, and
+ * `font-size: inherit` so the card never resets type to Jelly's 15px default.
+ */
+const Card =
+	"--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:var(--space-group);--jelly-card-padding-inline:var(--space-group)";
 ---
 
 <div class="download-requirements">
 	{
 		platforms.map((entry) => (
-			<div class="download-requirements__group">
+			<jelly-card class="download-requirements__group" style={Card}>
 				<h3 class="download-requirements__platform">{entry.platform}</h3>
 				<RecordLedger rows={entry.rows} />
-			</div>
+			</jelly-card>
 		))
 	}
-	<div class="download-requirements__group">
+	<jelly-card class="download-requirements__group" style={Card}>
 		<h3 class="download-requirements__platform">{toolchainLabel}</h3>
 		<RecordLedger rows={toolchain} />
-	</div>
+	</jelly-card>
 </div>

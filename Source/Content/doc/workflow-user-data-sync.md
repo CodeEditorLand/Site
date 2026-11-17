@@ -47,15 +47,15 @@ The full flow involves six phases:
       rather than removing the key entirely. This means a `secrets.get(key)`
       after `secrets.delete(key)` returns `undefined` (the empty string is
       interpreted as a tombstone), but the storage record itself is not removed
-      - the key still exists in the backing store with an empty ciphertext
-      value.
+        - the key still exists in the backing store with an empty ciphertext
+          value.
 
     [Mountain](https://github.com/CodeEditorLand/Mountain) encrypts with AES-256-GCM using a SHA-256 hash of the machine UUID
     as the key, derived in `Encryption/Key.rs`. This makes the key machine-stable
     across sessions. The `onDidChange` event fires synchronously after every
     `store` or `delete` call, but only if the underlying value actually changed
     - calls setting the same value as the current state are silently coalesced.
-    Secrets are never written to disk in plaintext.
+      Secrets are never written to disk in plaintext.
 
 ### Extension storage via [Mountain](https://github.com/CodeEditorLand/Mountain)
 
@@ -65,20 +65,20 @@ implementation reads initial values via `storage:get` during activation and
 writes through `storage:set` on every `update()` call. Both directions of that
 path are the numbered steps above - `storage:get` at activation, `storage:set`
 on every `update()` - so there is no second storage mechanism for an extension
-to learn. This means extension
-state persists across [Cocoon](https://github.com/CodeEditorLand/Cocoon) restarts without the extension needing to manage
-its own storage file.
+to learn. This means extension state persists across
+[Cocoon](https://github.com/CodeEditorLand/Cocoon) restarts without the extension needing to manage its own storage
+file.
 
 ### Extension secrets via [Mountain](https://github.com/CodeEditorLand/Mountain) encryption
 
 `context.secrets` uses [Mountain](https://github.com/CodeEditorLand/Mountain)'s AES-256-GCM encryption layer rather than
 plaintext storage. Each call resolves to a fixed IPC pair:
 
-| `context.secrets` call      | IPC path                                                                             | Result                                                                                                     |
-| --------------------------- | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
-| `secrets.store(key, value)` | Mountain `encryption:encrypt` with the plaintext value, then `storage:set` with the ciphertext | ciphertext at rest                                                                                |
-| `secrets.get(key)`          | `storage:get` for the ciphertext, then `encryption:decrypt` to recover the plaintext | plaintext returned to the extension                                                                        |
-| `secrets.delete(key)`       | `storage:set` with an empty string - a tombstone marker rather than a key removal    | after a delete, `secrets.get(key)` returns `undefined`, but the backing store still holds the record       |
+| `context.secrets` call      | IPC path                                                                                       | Result                                                                                               |
+| --------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `secrets.store(key, value)` | Mountain `encryption:encrypt` with the plaintext value, then `storage:set` with the ciphertext | ciphertext at rest                                                                                   |
+| `secrets.get(key)`          | `storage:get` for the ciphertext, then `encryption:decrypt` to recover the plaintext           | plaintext returned to the extension                                                                  |
+| `secrets.delete(key)`       | `storage:set` with an empty string - a tombstone marker rather than a key removal              | after a delete, `secrets.get(key)` returns `undefined`, but the backing store still holds the record |
 
 The encryption key is derived from a SHA-256 hash of the machine UUID
 (`Encryption/Key.rs`), making it machine-stable across sessions. Secrets are
@@ -143,12 +143,12 @@ into the plaintext the extension sees.
     `vs/platform/userDataSync/common/settingsMerge.ts`) intelligently combines
     changes. It processes each setting key individually:
 
-    | Case                                                                                    | Merge result                                                                                                                                                                                                                     |
-    | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | **Key present only in Local**                                                           | the local value is carried forward - this is a setting added on the current machine since the last sync                                                                                                                          |
-    | **Key present only in Remote**                                                          | the remote value is adopted - this is a setting added on another machine that needs to arrive on this one                                                                                                                        |
-    | **Key present in both Local and Remote, same value**                                    | accepted as-is                                                                                                                                                                                                                   |
-    | **Key present in both Local and Remote, changed from Base in only one**                 | the changed value wins (fast-forward merge)                                                                                                                                                                                      |
+    | Case                                                                                    | Merge result                                                                                                                                                                                                                       |
+    | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | **Key present only in Local**                                                           | the local value is carried forward - this is a setting added on the current machine since the last sync                                                                                                                            |
+    | **Key present only in Remote**                                                          | the remote value is adopted - this is a setting added on another machine that needs to arrive on this one                                                                                                                          |
+    | **Key present in both Local and Remote, same value**                                    | accepted as-is                                                                                                                                                                                                                     |
+    | **Key present in both Local and Remote, changed from Base in only one**                 | the changed value wins (fast-forward merge)                                                                                                                                                                                        |
     | **Key present in both Local and Remote, changed from Base in both to different values** | a direct conflict. The merge produces a marker entry with both values, and the conflict is flagged for the user to resolve through the Settings UI. The synchroniser stores the conflicting state rather than silently overwriting |
 
     The same three-way merge strategy is applied independently for settings,

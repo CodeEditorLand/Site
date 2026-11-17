@@ -8,8 +8,6 @@ author: "CodeEditorLand"
 readTime: 8
 ---
 
-# Extension Host Deep Dive: [Cocoon](https://github.com/CodeEditorLand/Cocoon) Architecture
-
 VS Code's extension host runs on a single Node.js event loop. One hung Promise
 blocks every other extension. There is no way to cancel an in-flight operation,
 no back-pressure, and no preemption. [Cocoon](https://github.com/CodeEditorLand/Cocoon) solves this by running each
@@ -164,7 +162,21 @@ exceptions in one extension can cause cascading failures.
 
 [Cocoon](https://github.com/CodeEditorLand/Cocoon) maintains a dual gRPC presence:
 
-**[`Services/Mountain/gRPC/Client.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Mountain/gRPC/Client.ts)** provides Effect-wrapped methods for
+```mermaid
+flowchart LR
+    Extension[Extension code] --> Api[vscode API object from ApiFactory]
+    Api --> Provider["Provider services - Window, Workspace, Commands, Secrets"]
+    Provider --> Client["Cocoon gRPC client - Services/Mountain/gRPC/Client.ts"]
+    Client --> MountainServer["Mountain Vine server - port 50051"]
+    MountainServer --> Track[Mountain Track dispatcher]
+    Track --> Native[Native handler]
+    MountainServer -->|bidirectional streaming| CocoonServer["Cocoon gRPC server - port 50052"]
+    CocoonServer --> Handlers["ExtensionHostHandler, LanguageProviderHandler, NotificationHandler, RequestRoutingHandler"]
+```
+
+### [Services/Mountain/gRPC/Client.ts](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Mountain/gRPC/Client.ts)
+
+Provides Effect-wrapped methods for
 calling [Mountain](https://github.com/CodeEditorLand/Mountain) back. The interface groups operations into logical categories:
 
 - `window` operations (dialogs, notifications, status bar)
@@ -172,7 +184,9 @@ calling [Mountain](https://github.com/CodeEditorLand/Mountain) back. The interfa
 - `commands` operations (registration, execution, keybindings)
 - `secrets` operations (secure credential storage)
 
-**[`Services/gRPC/Server/Service.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/gRPC/Server/Service.ts)** implements [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s side of the [Vine](https://github.com/CodeEditorLand/Vine)
+### [Services/gRPC/Server/Service.ts](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/gRPC/Server/Service.ts)
+
+Implements [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s side of the [Vine](https://github.com/CodeEditorLand/Vine)
 protocol. It handles incoming requests from Mountain with bidirectional
 streaming for real-time event communication. Incoming requests are delegated to
 domain-specific handler modules: `ExtensionHostHandler`,

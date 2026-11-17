@@ -1,0 +1,56 @@
+---
+/**
+ * FieldRecordAction - the one action a record card offers, in the two arms a
+ * field record uses: a mono route line (`/LABEL`) or a squish jelly button.
+ *
+ * The two arms are the same call with different weight: the record arm is a
+ * text link that sits inside a ledger and reads as a route, the button arm is
+ * the card's single control. Both print the caller's label verbatim - the
+ * record arm prefixes `/`, the button arm does not - and both carry the
+ * caller's own classes after the block's.
+ *
+ * External targets open in a new tab with `rel="noopener noreferrer"`, decided
+ * by the href itself rather than by the caller: a link that leaves the site
+ * says so, and a link that stays does not open a tab. See
+ * `FieldRecordAction/Data.ts` for the ink and the pair rule.
+ *
+ * No `<script>` and no `client:*`: this block ships zero JavaScript. It has no
+ * state - the jelly element's motion is the element's own CSS.
+ */
+import { BUTTON_INK, ExternalLink } from "./FieldRecordAction/Data.js";
+
+import type { Props } from "./FieldRecordAction/Data.js";
+
+const { label, href, variant = "record", className } = Astro.props;
+
+/** The external-target attributes, or nothing at all. */
+const Link = ExternalLink(href);
+---
+
+{
+	variant === "button" ? (
+		<a
+			href={href}
+			{...Link}
+			class:list={["FieldRecordActionButton inline-block", className]}
+		>
+			<jelly-button squish style={BUTTON_INK}>
+				<span class="font-mono text-sm font-medium uppercase tracking-wider">
+					{label}
+				</span>
+			</jelly-button>
+		</a>
+	) : (
+		<a
+			href={href}
+			class:list={[
+				"text-field-s font-mono uppercase tracking-wider",
+				"underline-offset-4 hover:underline",
+				className,
+			]}
+			style="color:var(--Accent)"
+		>
+			/{label}
+		</a>
+	)
+}

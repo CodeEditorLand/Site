@@ -7,8 +7,6 @@ author: "CodeEditorLand"
 readTime: 3
 ---
 
-# Why We Chose CC0 1.0 Universal for a Code Editor
-
 Code Editor Land is released under
 [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) - a
 public domain dedication. This means the entire codebase, including every `Rust`
@@ -92,14 +90,12 @@ monetizing user data or restricting distribution.
 
 ## What This Means for You
 
-If you are an individual developer, CC0 means [Land](https://github.com/CodeEditorLand/Land) is yours. Fork it, ship it,
-break it apart, rebuild it.
-
-If you are a company, CC0 means there is no license compliance burden. Your
-legal team does not need to audit it. Your procurement process does not need to
-flag it.
-
-If you are a contributor, CC0 means your code reaches the widest possible
-audience without gatekeepers.
+- **If you are an individual developer** - CC0 means [Land](https://github.com/CodeEditorLand/Land) is yours. Fork it, ship it,
+  break it apart, rebuild it.
+- **If you are a company** - CC0 means there is no license compliance burden. Your
+  legal team does not need to audit it. Your procurement process does not need to
+  flag it.
+- **If you are a contributor** - CC0 means your code reaches the widest possible
+  audience without gatekeepers.
 
 That is the kind of freedom a code editor should provide.

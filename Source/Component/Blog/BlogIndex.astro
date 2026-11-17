@@ -1,0 +1,185 @@
+---
+/**
+ * BlogIndex - the archive: a record header, then one row per article.
+ *
+ * The shape is the design system's, not a band's
+ * (`DesignSystem-Pages.md` §4, `DESIGN.md` §3.4):
+ *
+ * - **Creme canvas, no card.** Blog prose reads on the field itself, so the
+ *   archive is rows on creme rather than a white information box: a card is for
+ *   information apparatus (the documentation index), not for reading.
+ * - **A record header, not a band.** The page opens with the grammar's own
+ *   identity - the `#` index marker, the `/ROUTE` label, the page's only `h1`,
+ *   one standfirst and the `STATUS:` metadata strip - and the archive list
+ *   follows it. There is no `RecordBand` here: a band's anatomy is kicker →
+ *   heading → standfirst, it publishes an `h2` for a chapter that has one
+ *   subject, and this page has exactly one subject (the archive) with a list
+ *   under it. The band therefore wrapped the list in a heading that only
+ *   restated the count, and every article's title sat one level down at `h3` to
+ *   make room for it.
+ * - **An Archive Index, not a card grid.** `DesignSystem-Artifacts.md` §2:
+ *   "Do NOT make architecture a wall of equal feature cards. Make it an index of
+ *   filed observations." Eight articles in a three-across grid leave a hole in
+ *   the last row and put four facts per article inside a tile the reader has to
+ *   enter; a row gives all eight the same facts on one line the eye can run
+ *   down, so choosing never requires opening anything.
+ *
+ * Four decisions inside the row:
+ *
+ * - **The anchor wraps the title, not the row.** The global link rule underlines
+ *   every plain anchor, and eight underlined summaries read as a wall. The title
+ *   is the link; the summary is a note.
+ * - **The date is a `<time datetime>`.** The schema's `publishedAt` is the
+ *   machine value and the printed value, so the two can never disagree.
+ * - **The ordinal is printed, not drawn.** `01`-`08` come from `BuildRows`, so
+ *   the strip's claim of "newest first" is checkable against the numbers under
+ *   it, and a screen reader reads the position a CSS counter would hide.
+ * - **The tags are `jelly-badge` elements, not text.** `DesignSystem-Grammar.md`
+ *   §5 and `DesignSystem-Components.md` §4.2 give a term badge one form on this
+ *   site: a Jelly badge on a light fill with the dark -700 label ink. These are
+ *   the only Jelly surfaces the blog has - HEAD rendered the same tags as bare
+ *   spans.
+ *
+ * No script and no hydration directive: the index is static.
+ */
+import FieldRecordIndex from "../Brand/FieldRecordIndex.astro";
+import ContactBreadcrumb from "../Contact/ContactBreadcrumb.astro";
+
+import type { BlogRow, BlogStripItem, BlogTrailItem } from "./Type.js";
+
+interface Props {
+	/** `ARCHIVE_01` - the record's own marker, printed as `# ARCHIVE_01`. */
+	index: string;
+
+	/** `/BLOG` - the surface's route, printed verbatim. */
+	kicker: string;
+
+	/** The page's only `h1`. */
+	heading: string;
+
+	/** One sentence under the `h1`. */
+	standfirst?: string;
+
+	/** `STATUS:` / `RECORDS:` / `ORDER:` - the facts that open the record. */
+	strip: readonly BlogStripItem[];
+
+	/** The trail above the opening. The last crumb is this page. */
+	trail: readonly BlogTrailItem[];
+
+	/** Every article, already ordered newest first and numbered. */
+	rows: readonly BlogRow[];
+
+	/** The list's accessible name - the count and the order, as a sentence. */
+	archiveHeading: string;
+
+	/** Shown instead of the list when the collection is empty. */
+	emptyTitle: string;
+
+	/** The second line of the empty state. */
+	emptyNote: string;
+
+	/** The back-to-top label at the foot of the page. */
+	backLabel: string;
+
+	/** Its target - the page's own top. */
+	backHref: string;
+}
+
+const {
+	index,
+	kicker,
+	heading,
+	standfirst,
+	strip,
+	trail,
+	rows,
+	archiveHeading,
+	emptyTitle,
+	emptyNote,
+	backLabel,
+	backHref,
+} = Astro.props;
+---
+
+<div class="blog-index">
+	<ContactBreadcrumb trail={trail} class="blog-index__trail" />
+
+	<header class="blog-index__head">
+		<p class="blog-index__record">
+			<FieldRecordIndex index={index} />
+			<span class="blog-index__route">{kicker}</span>
+		</p>
+		<h1 class="blog-index__heading">{heading}</h1>
+		{standfirst ? <p class="blog-index__standfirst">{standfirst}</p> : null}
+		<p class="blog-index__strip">
+			{
+				strip.map((Item, Position) => (
+					<>
+						{Position > 0 ? (
+							<span class="blog-index__separator" aria-hidden="true">
+								{"\u2001"}
+							</span>
+						) : null}
+						<span class="blog-index__field">
+							<span class="blog-index__label">{Item.label}</span>
+							<span
+								class:list={[
+									"blog-index__value",
+									Item.specimen ? "blog-index__value--specimen" : null,
+								]}
+							>
+								{Item.value}
+							</span>
+						</span>
+					</>
+				))
+			}
+		</p>
+	</header>
+
+	{
+		rows.length === 0 ? (
+			<div class="blog-index__empty">
+				<p class="blog-index__empty-title">{emptyTitle}</p>
+				<p class="blog-index__empty-note">{emptyNote}</p>
+			</div>
+		) : (
+			<ol class="blog-index__list" aria-label={archiveHeading}>
+				{rows.map((Row) => (
+					<li class="blog-index__row">
+						<p class="blog-index__ordinal">{Row.ordinal}</p>
+						<time class="blog-index__date" datetime={Row.date}>
+							{Row.date}
+						</time>
+						<div class="blog-index__body">
+							<h2 class="blog-index__title">
+								<a href={Row.href}>{Row.title}</a>
+							</h2>
+							<p class="blog-index__summary">{Row.summary}</p>
+							{Row.tags.length > 0 ? (
+								<ul class="blog-index__tags">
+									{Row.tags.map((Tag) => (
+										<li class="blog-index__tag">
+											<jelly-badge
+												variant="platinum"
+												shape="square"
+												style="--jelly-fill:var(--Mute);--jelly-label:var(--Foreground);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
+											>
+												{Tag}
+											</jelly-badge>
+										</li>
+									))}
+								</ul>
+							) : null}
+						</div>
+						<p class="blog-index__read">{Row.readTime}</p>
+					</li>
+				))}
+			</ol>
+		)
+	}
+
+	<p class="blog-index__back">
+		<a href={backHref}>{backLabel}<span aria-hidden="true"> ↑</span></a>
+	</p>
+</div>

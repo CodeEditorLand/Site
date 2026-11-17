@@ -5,8 +5,6 @@
 // translator and a path and returns values, so the component renders what it is
 // given and nothing here knows that a browser exists.
 
-import { Land } from "../../../Content/Record/Land.js";
-
 import type {
 	HeaderAction,
 	HeaderActionVariant,
@@ -35,7 +33,7 @@ export const HeaderLinkList: readonly HeaderLink[] = [
 
 	{ Key: "nav.download", Label: "Download", Href: "/Download" },
 
-	{ Key: "nav.docs", Label: "Documentation", Href: "/Doc" },
+	{ Key: "nav.docs", Label: "Docs", Href: "/Doc" },
 
 	{
 		Key: "nav.github",
@@ -79,12 +77,17 @@ export const HeaderSections = (
 	Links.flatMap((Link) => (Link.Section === undefined ? [] : [Link.Section]));
 
 /**
- * The status line is the homepage's own claim, not new copy: `SOURCE ACTIVE` is
- * the product record's status (`Source/Content/Record/Land.ts`, the same value
- * the homepage prints) and `PRE-RELEASE` is the homepage's `softwareVersion`.
- * A reader landing on any page learns here that this is not a shipped installer.
+ * The status line is the product's own state in the vocabulary the design
+ * system fixes (`DesignSystem-Components.md` §7: `STATUS:` plus one term from
+ * `READY`/`ACTIVE`/`LOADING`/`PREPARING`/`VERIFIED`/`UNAVAILABLE`/
+ * `INTERRUPTED`/`ARCHIVED`). `ACTIVE` is the record's tone as well
+ * (`Source/Content/Record/Land.ts` `Status.Tone` is `specimen`), and
+ * `PRE-RELEASE` is the homepage's `softwareVersion`, kept as the qualifier after
+ * the em quad so a reader landing on any page learns this is not a shipped
+ * installer. U+2001 is the only separator the grammar allows - never a middle
+ * dot.
  */
-export const HeaderStatus = `${Land.Status.Value} · PRE-RELEASE`;
+export const HeaderStatus = `STATUS: ACTIVE\u2001PRE-RELEASE`;
 
 /** Resolve the default labels: one translator in, the same rows out. */
 const ResolveLinks = (T: HeaderTranslate): readonly HeaderLink[] =>

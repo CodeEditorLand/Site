@@ -12,6 +12,22 @@ repository and just need the commands.
 
 ---
 
+## The Path 🧭
+
+Four actions, in this order.
+
+1. **Install the tools** - `rustup`, Node.js 24, pnpm, and the two skip flags.
+2. **Compile the VS Code Editor submodule** - npm inside the Editor directory.
+3. **Build the Land application** - one `Build.sh --profile <name>` call.
+4. **Run it** - launch the binary, or re-run the build with `--run`.
+
+**What you should see:** the build writes the binary and the `.app` bundle under
+`Element/Mountain/Target/`, and the launched editor opens with the workbench
+rendered. A blank workbench means the extension host did not connect - see
+[Installation](/Doc/installation) for the port checks.
+
+---
+
 ## Prerequisites
 
 ```sh
@@ -51,9 +67,13 @@ cd Land
 
 ```sh
 cd Land
-./Maintain/Debug/Build.sh --profile debug-mountain  # fast, 80–90% coverage
+./Maintain/Debug/Build.sh --profile debug-mountain  # fast, 80-90% coverage
 ./Maintain/Debug/Build.sh --profile debug-electron   # full feature set
 ```
+
+**What you should see:** `Build.sh` finishing and the artifacts landing under
+`Element/Mountain/Target/`. On macOS the debug bundle is re-signed as part of
+the same run, so a signing failure surfaces here rather than at launch.
 
 ### Common Profiles
 

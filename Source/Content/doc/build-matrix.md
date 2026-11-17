@@ -160,10 +160,12 @@ Variables exported by build scripts (not stored in `.env` files).
 
 ## File Mapping
 
-Which `.env.Land*` file each variable originates from. The values are file
-suffixes, so `PostHog` is `.env.Land.PostHog` and `Production.PostHog` is
-`.env.Land.Production.PostHog`. [Build Pipeline](/Doc/build-pipeline) carries
-the full per-domain file list (dev, sample, production).
+Which `.env.Land*` file each variable originates from. A value is a file
+suffix: `PostHog` is `.env.Land.PostHog`, and `Production.PostHog` is
+`.env.Land.Production.PostHog`. The one exception is `BundleLevel`, which no
+`.env.Land*` file sets - the build scripts export it.
+[Build Pipeline](/Doc/build-pipeline) carries the full per-domain file list
+(dev, sample, production).
 
 | Variable                       | Files                                                         |
 | :----------------------------- | :------------------------------------------------------------ |

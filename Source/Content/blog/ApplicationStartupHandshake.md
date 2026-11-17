@@ -10,12 +10,27 @@ author: "CodeEditorLand"
 readTime: 5
 ---
 
-# Application Startup Handshake
-
 When you double-click the [Land](https://github.com/CodeEditorLand/Land) editor, four components boot in a carefully
 ordered sequence. Each must finish its phase before the next can proceed. This
 document traces the exact path from process launch to a stable, interactive
 editor.
+
+```mermaid
+sequenceDiagram
+    participant M as Mountain
+    participant C as Cocoon
+    participant W as Wind and Sky
+    M->>M: Phase 1 - Builder.setup, AppState, MountainEnvironment, AppRuntime
+    M->>M: InitializeConfiguration, ExtensionManagement, vine server
+    M->>C: spawn bootstrap-fork.js
+    C->>C: PatchProcess hardening
+    C->>C: RPCServer binds port 50052
+    C->>M: MountainConnection connects over Vine gRPC
+    C->>M: $initialHandshake
+    M->>C: initExtensionHost with initialization payload
+    C->>C: Module interceptor installed, ExtensionHostProvider resolved
+    W->>W: Phase 4 - preload shims window.vscode, Workbench.startup()
+```
 
 ## Phase 1: Mountain Starts the Native Process
 
@@ -64,13 +79,17 @@ registers an uncaught exception handler.
 [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s bootstrap then runs its stages in a specific order that is critical to
 correct operation:
 
-**Stage 1 -- RPCServer binds first.** [Cocoon](https://github.com/CodeEditorLand/Cocoon) starts its own gRPC server on port
+### Stage 1: RPCServer binds first
+
+[Cocoon](https://github.com/CodeEditorLand/Cocoon) starts its own gRPC server on port
 `NetworkCocoonPort` (default 50052). This is the server that [Mountain](https://github.com/CodeEditorLand/Mountain) calls back
 into during and after the handshake. The server must be listening before any
 connection to Mountain is attempted, because Mountain will try to reach Cocoon
 immediately upon receiving the initial handshake signal.
 
-**Stage 2 -- MountainConnection connects second.** Only after the RPCServer is
+### Stage 2: MountainConnection connects second
+
+Only after the RPCServer is
 bound does [Cocoon](https://github.com/CodeEditorLand/Cocoon) start its gRPC client and connect to [Mountain](https://github.com/CodeEditorLand/Mountain)'s [Vine](https://github.com/CodeEditorLand/Vine) server.
 The connection uses a retry loop with reduced probe retries (3 attempts) and a
 maximum of 5 overall attempts. The gRPC channel budget for [Mountain](https://github.com/CodeEditorLand/Mountain) to reach

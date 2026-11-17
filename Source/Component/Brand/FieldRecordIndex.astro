@@ -1,0 +1,28 @@
+---
+/**
+ * FieldRecordIndex - the record's own marker, printed as `# MARKER` at field
+ * weight: mono, uppercase, wide-tracked, in the card's foreground ink.
+ *
+ * The marker is the record's identity inside the card - the first thing the
+ * eye lands on after the corner marks - so it is a `span` and not a heading:
+ * the card's heading is the record's title block, and a second heading above
+ * it would split the document outline for decoration.
+ *
+ * The caller passes the marker already stripped of its `#` (see
+ * `FieldRecord`, which owns that derivation); this block only prints.
+ *
+ * No `<script>` and no `client:*`: this block ships zero JavaScript.
+ */
+import type { Props } from "./FieldRecordIndex/Type.js";
+
+const { index, className, class: Class } = Astro.props;
+---
+
+<span
+	class:list={[
+		"text-field-s font-mono uppercase tracking-widest",
+		className,
+		Class,
+	]}
+	style="color:var(--CardForeground)"># {index}</span
+>

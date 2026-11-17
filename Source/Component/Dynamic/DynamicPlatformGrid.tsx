@@ -36,6 +36,14 @@ import type { PlatformRow } from "./Platform/Type.js";
  * `record-matrix`) rather than the `.astro` blocks: this component is a child
  * of the page's `ErrorBoundary` inside `HomePage.tsx`, and an `.astro`
  * component cannot be imported from a `.tsx` file (BRIDGE §2.1).
+ *
+ * The matrix sits on a `jelly-card`, which is the surface the three platform
+ * cards carried, and the custom properties are the ones those cards set. One
+ * of them changes owner: `--jelly-color-border-default` used to be each
+ * platform's accent (`PlatformColorMap[Platform.Name]`), and a single matrix
+ * has no single platform to take an accent from - so it carries the site
+ * hairline (`var(--Border)`), the value the shared `JellyCardStyle` gives every
+ * card that has no element of its own.
  */
 interface Props {
 	readonly Content: Content;
@@ -87,67 +95,86 @@ const PlatformGrid = ({ Content, ClassName }: Props) => {
 
 				{Rows.length > 0 ? (
 					<div className="record-band__body">
-						<div className="record-matrix platform-matrix">
-							<table className="record-matrix__table">
-								<caption className="record-matrix__caption">
-									{Caption}
-								</caption>
-								<thead>
-									<tr className="record-matrix__head">
-										<td />
-										{Columns.map((Column) => (
-											<th
-												key={Column.label}
-												scope="col"
-												className={ColumnClass(
-													Column.align,
-												)}
-												style={
-													Column.ink
-														? ({
-																"--col-ink": `var(--${Column.ink})`,
-															} as CSSProperties)
-														: undefined
-												}
-											>
-												{Column.label}
-											</th>
-										))}
-									</tr>
-								</thead>
-								<tbody>
-									{Rows.map((Row: PlatformRow) => (
-										<tr
-											className="record-matrix__row"
-											key={Row.label}
-										>
-											<th
-												scope="row"
-												className="record-matrix__label"
-											>
-												{Row.label}
-												{Row.note ? (
-													<span className="platform-matrix__note">
-														{Row.note}
-													</span>
-												) : null}
-											</th>
-											{Row.cells.map((Cell, Index) => (
-												<td
-													key={
-														Columns[Index]?.label ??
-														Index
+						<jelly-card
+							style={
+								{
+									"--jelly-color-border-default":
+										"var(--Border)",
+									"--jelly-fill": "var(--Card)",
+									"--jelly-radius": "0",
+									"--jelly-card-padding-block": "0",
+									"--jelly-card-padding-inline": "0",
+									"--jelly-card-font-size": "inherit",
+								} as CSSProperties
+							}
+						>
+							<div className="record-matrix platform-matrix">
+								<table className="record-matrix__table">
+									<caption className="record-matrix__caption">
+										{Caption}
+									</caption>
+									<thead>
+										<tr className="record-matrix__head">
+											<td />
+											{Columns.map((Column) => (
+												<th
+													key={Column.label}
+													scope="col"
+													className={ColumnClass(
+														Column.align,
+													)}
+													style={
+														Column.ink
+															? ({
+																	"--col-ink": `var(--${Column.ink})`,
+																} as CSSProperties)
+															: undefined
 													}
-													className={CellClass(Cell)}
 												>
-													{Cell}
-												</td>
+													{Column.label}
+												</th>
 											))}
 										</tr>
-									))}
-								</tbody>
-							</table>
-						</div>
+									</thead>
+									<tbody>
+										{Rows.map((Row: PlatformRow) => (
+											<tr
+												className="record-matrix__row"
+												key={Row.label}
+											>
+												<th
+													scope="row"
+													className="record-matrix__label"
+												>
+													{Row.label}
+													{Row.note ? (
+														<span className="platform-matrix__note">
+															{Row.note}
+														</span>
+													) : null}
+												</th>
+												{Row.cells.map(
+													(Cell, Index) => (
+														<td
+															key={
+																Columns[Index]
+																	?.label ??
+																Index
+															}
+															className={CellClass(
+																Cell,
+															)}
+														>
+															{Cell}
+														</td>
+													),
+												)}
+											</tr>
+										))}
+									</tbody>
+								</table>
+							</div>
+						</jelly-card>
 					</div>
 				) : null}
 

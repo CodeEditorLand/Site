@@ -7,8 +7,6 @@ order: 2
 description: "OS-specific resolution for every per-bundle, OS-managed, and temp-directory path Land touches on macOS, Linux, and Windows."
 ---
 
-# Platform Paths 🖥️
-
 OS-specific resolution for every per-bundle, OS-managed, and temp-directory path [Land](https://github.com/CodeEditorLand/Land) touches.
 
 ---
@@ -28,6 +26,10 @@ All per-bundle paths flow through Tauri's `PathResolver`, which delegates to the
 `<id>` is whichever per-profile Tauri bundle identifier the build emits.
 
 macOS folds `app_data_dir` and `app_config_dir` into the same location; Linux and Windows split them.
+
+`$HOME` (macOS, Linux) and `%USERPROFILE%` (Windows) are the per-user home
+roots the OS reports. Where a table below shows `$HOME` on both POSIX platforms,
+the resolved directory differs only in that root.
 
 ---
 
@@ -154,11 +156,11 @@ Status: 🔴 pending - `dirs` crate paths and Tauri PathResolver are documented 
 
 The `~/.fiddee/` tree resolves the same way on every OS. Summary:
 
-| OS         | Resolves to                |
-| :--------- | :------------------------- |
-| 🍎 macOS   | `/Users/<user>/.fiddee/`   |
-| 🐧 Linux   | `/home/<user>/.fiddee/`    |
-| 🪟 Windows | `C:\Users\<user>\.fiddee\` |
+| OS         | Resolves to                    |
+| :--------- | :----------------------------- |
+| 🍎 macOS   | `$HOME/.fiddee/`               |
+| 🐧 Linux   | `$HOME/.fiddee/`               |
+| 🪟 Windows | `%USERPROFILE%\.fiddee\`      |
 
 `~/.land/extensions/` (legacy fan-out) follows the same convention.
 
@@ -168,10 +170,10 @@ The `~/.fiddee/` tree resolves the same way on every OS. Summary:
 
 `Binary/Main/AppLifecycle.rs:393` pre-creates two directories that belong to other tools, so VS Code's startup `stat` probes don't log errors. Cross-OS:
 
-| Path                 | 🍎 macOS                         | 🐧 Linux                        | 🪟 Windows                         |
-| :------------------- | :------------------------------- | :------------------------------ | :--------------------------------- |
-| `~/.claude/agents/`  | `/Users/<user>/.claude/agents/`  | `/home/<user>/.claude/agents/`  | `C:\Users\<user>\.claude\agents\`  |
-| `~/.copilot/agents/` | `/Users/<user>/.copilot/agents/` | `/home/<user>/.copilot/agents/` | `C:\Users\<user>\.copilot\agents\` |
+| Path                 | POSIX (macOS / Linux)    | 🪟 Windows                         |
+| :------------------- | :----------------------- | :--------------------------------- |
+| `~/.claude/agents/`  | `$HOME/.claude/agents/`  | `C:\Users\<user>\.claude\agents\`  |
+| `~/.copilot/agents/` | `$HOME/.copilot/agents/` | `C:\Users\<user>\.copilot\agents\` |
 
 [Land](https://github.com/CodeEditorLand/Land) does not write to either path - only `mkdir -p`. If the user does not have those tools installed, these dirs nonetheless persist after [Land](https://github.com/CodeEditorLand/Land)'s first boot.
 

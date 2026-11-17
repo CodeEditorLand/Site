@@ -3,6 +3,10 @@
 // Publishes:
 //   .contact-page             the page shell (bands follow it, full width)
 //   .contact-page__header     the opening container, on the band gutters
+//   .contact-page__record     the record header: index, stamp, route
+//   .contact-page__index      the `# CODE` series marker
+//   .contact-page__stamp      the `〈 〉` classification
+//   .contact-page__route      the `/CONTACT` route
 //   .contact-page__heading    the page's only h1, at --type-section
 //   .contact-page__standfirst the sentence under it, at --type-sub
 //
@@ -23,6 +27,38 @@
 .contact-page__header {
 	@include band-inner;
 	padding-block: var(--space-chapter) 0;
+}
+
+// ─── The record header ────────────────────────────────────────────────────
+// The grammar's opening line, and the only place on a contact route where the
+// three symbols appear together: the series marker, the classification inside
+// its brackets, and the route. One row, one reading, no surface - it is an
+// identifier, not a card (`DESIGN.md` §1.5).
+
+.contact-page__record {
+	@include mono-meta;
+	@include track;
+
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight) var(--space-reading);
+
+	margin: 0;
+}
+
+.contact-page__index {
+	color: var(--Foreground);
+}
+
+// The stamp is the one part that is a classification rather than a location, so
+// it takes the muted ink: the eye reads index, then classification, then route.
+.contact-page__stamp {
+	color: var(--MuteForeground);
+}
+
+.contact-page__route {
+	color: var(--MuteForeground);
 }
 
 .contact-page__heading {

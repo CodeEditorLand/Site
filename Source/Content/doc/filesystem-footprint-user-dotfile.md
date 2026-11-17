@@ -7,8 +7,6 @@ order: 1
 description: "The ~/.fiddee/ tree - Land's primary product-owned filesystem domain, cross-OS resolution, sub-directory map, and Cocoon-side mirror."
 ---
 
-# User Dotfile 🏞️
-
 The `~/.fiddee/` tree - [Land](https://github.com/CodeEditorLand/Land)'s primary product-owned filesystem domain.
 
 See also: [Filesystem Footprint](/Doc/filesystem-footprint)
@@ -33,11 +31,15 @@ this atom so future renames touch a single file per Element.
 
 The dotfile root resolves to the user's home directory with `.fiddee` appended:
 
-| OS         | Resolves to                                                 |
-| :--------- | :---------------------------------------------------------- |
-| 🍎 macOS   | `$HOME/.fiddee/` → `/Users/<user>/.fiddee/`                 |
-| 🐧 Linux   | `$HOME/.fiddee/` → `/home/<user>/.fiddee/`                  |
-| 🪟 Windows | `%USERPROFILE%\\.fiddee\\` → `C:\\Users\\<user>\\.fiddee\\` |
+| OS         | Resolves to                    |
+| :--------- | :----------------------------- |
+| 🍎 macOS   | `$HOME/.fiddee/`               |
+| 🐧 Linux   | `$HOME/.fiddee/`               |
+| 🪟 Windows | `%USERPROFILE%\.fiddee\`      |
+
+`$HOME` (macOS, Linux) and `%USERPROFILE%` (Windows) carry the per-user home
+root; `.fiddee` is appended to it verbatim on every platform, so the three rows
+differ only in which variable holds that root.
 
 `dirs::home_dir()` is the primary resolver; if it returns `None`, the code falls
 back to `$HOME` then `$USERPROFILE` env vars (Windows uses the latter). A final
@@ -72,7 +74,7 @@ GB** depending on which language servers are installed.
 
 `Lodge` (the user-extensions override) and `Extend` (additional scan paths) do
 **not** apply to the storage sub-trees - only to the extensions root. See
-[`EnvironmentVariables.md`](/Doc/filesystem-footprint-environment-variables) for the full registry.
+[Environment Variables](/Doc/filesystem-footprint-environment-variables) for the full registry.
 
 ---
 
@@ -146,19 +148,19 @@ Retirement plan (deferred): one-shot migration that moves `~/.land/extensions/*`
   state - subtle, since the three sibling roots (`extensionStorage`,
   `globalStorage`, `logs`) live outside the bundle and survive lifecycle events.
   Encapsulation candidate: move to `.fiddee/extensionData/<id>/.storage/`
-  parallel to the existing siblings. See [`Encapsulation.md`](/Doc/filesystem-footprint-encapsulation)
+  parallel to the existing siblings. See [Encapsulation Directions](/Doc/filesystem-footprint-encapsulation)
   §H.
 - `.fiddee/data/` is reserved but not yet wired. The background-daemon flow may
   bypass it entirely ([Air](https://github.com/CodeEditorLand/Air) uses `<config_dir>/FIDDEE/` instead - see
-  [`PerElement.md`](/Doc/filesystem-footprint-per-element) §Air for the divergence).
+  [Per-Element Write Sites](/Doc/filesystem-footprint-per-element) §Air for the divergence).
 
 ---
 
 ## See Also 📚
 
-- [`PlatformPaths.md`](/Doc/filesystem-footprint-platform-paths) - per-OS Library / XDG / AppData paths
+- [Platform Paths](/Doc/filesystem-footprint-platform-paths) - per-OS Library / XDG / AppData paths
   that coexist with `~/.fiddee/`.
-- [`PerElement.md`](/Doc/filesystem-footprint-per-element) - which Element writes which sub-path.
-- [`EnvironmentVariables.md`](/Doc/filesystem-footprint-environment-variables) - `Lodge`, `Extend`,
+- [Per-Element Write Sites](/Doc/filesystem-footprint-per-element) - which Element writes which sub-path.
+- [Environment Variables](/Doc/filesystem-footprint-environment-variables) - `Lodge`, `Extend`,
   `VSCODE_COCOON_GLOBAL_STORAGE` references.
-- [`Cleanup.md`](/Doc/filesystem-footprint-cleanup) - per-OS recipes that include `~/.fiddee/`.
+- [Cleanup Recipes](/Doc/filesystem-footprint-cleanup) - per-OS recipes that include `~/.fiddee/`.

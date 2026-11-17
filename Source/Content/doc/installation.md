@@ -15,6 +15,28 @@ Land application with the chosen profile.
 
 ---
 
+## The Path 🧭
+
+Five actions, in this order. A later step does not work if an earlier one was
+skipped.
+
+1. **Install the toolchain** - Rust through `rustup`, Node.js 24 through `nvm`,
+   pnpm globally.
+2. **Clone Land and its elements** - the main repository first, then each
+   element individually on its `Current` branch.
+3. **Compile the VS Code Editor submodule** - with npm, not pnpm, inside
+   `Dependency/Microsoft/Dependency/Editor`.
+4. **Build the Land application** - one `Build.sh --profile <name>` invocation.
+5. **Launch the binary** - from `Element/Mountain/Target/`, or re-run the build
+   with `--run`.
+
+**What you should see:** after step 4 the build finishes and writes the binary,
+the `.app` bundle and the element artifacts described under Artifact Paths
+below. After step 5 the editor window opens; if the workbench stays blank
+instead of rendering, see [Troubleshooting](/Doc/troubleshooting).
+
+---
+
 ## System Requirements 💻
 
 | Requirement      | Minimum       | Notes                                                                                            |
@@ -123,6 +145,9 @@ npm run compile-extensions-build
 The compilation takes approximately 5-8 minutes on a modern machine. The output
 is consumed by the [`@codeeditorland/output`](https://github.com/CodeEditorLand/Output) package.
 
+**What you should see:** `npm run compile` and `npm run compile-extensions-build`
+finish without errors, and the Editor submodule stops being the blocking step.
+
 ---
 
 ## Step 2 - Build Land Application 🔧
@@ -152,6 +177,10 @@ The profile flag controls which workbench variant is compiled, which tier flags
 are active, and whether assets are pre-bundled. The `debug-mountain` profile is
 the fastest viable build for daily development; `debug-electron` provides the
 full feature set.
+
+**What you should see:** `Build.sh` finishing and the artifacts appearing under
+`Element/Mountain/Target/` - the exact tree is listed under Artifact Paths
+below. On macOS the debug bundle is re-signed as part of the same run.
 
 ---
 

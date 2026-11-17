@@ -1,0 +1,51 @@
+---
+// PrivacyRequests - the dashboard's data-rights directory: three groups of
+// destinations, each entry stating what it does before the reader clicks it.
+//
+// This was `Dynamic/DynamicPrivacyRequests.tsx`, a "use client" island with no
+// client state, no handler and no hook - it shipped React to the browser to
+// render fourteen static links. Nothing hydrates here, so nothing needs an
+// island: the same destinations, in the same order, with the same copy, at
+// zero JavaScript. No interaction was removed, because there was none to
+// remove.
+//
+// The entries are `RecordEntry` rather than hand-built cards: a destination is
+// an index, a name, a chip row, one line of what it opens and a link, which is
+// the block's whole anatomy. Building it inline again is how the old file
+// drifted into four different card shapes for one kind of thing.
+//
+// Every group prints a sentence when it has no destination, and the sentence
+// comes from the group itself (`Data.ts`), so a blank panel is not reachable
+// from this template.
+//
+// No script tag, no client directive, no inline style.
+import RecordEntry from "../Record/RecordEntry.astro";
+import { RequestGroups } from "./Data.js";
+---
+
+<div class="requests">
+	{
+		RequestGroups.map((Group) => (
+			<div class="requests__group">
+				<p
+					class:list={[
+						"requests__label",
+						Group.danger ? "requests__label--danger" : null,
+					]}
+				>
+					{Group.label}
+				</p>
+				<p class="requests__intro">{Group.intro}</p>
+				{Group.links.length > 0 ? (
+					<div class="requests__list">
+						{Group.links.map((Link) => (
+							<RecordEntry {...Link} />
+						))}
+					</div>
+				) : (
+					<p class="requests__state">{Group.empty}</p>
+				)}
+			</div>
+		))
+	}
+</div>

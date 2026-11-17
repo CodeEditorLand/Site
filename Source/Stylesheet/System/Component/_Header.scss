@@ -65,13 +65,22 @@ html {
 	@include hairline(bottom);
 }
 
+// ─── The two modes ────────────────────────────────────────────────────────
+// `minimal` sits on the creme field and is transparent until the page moves
+// under it, then turns opaque creme. `functional` is the white card surface
+// from the first pixel. Both publish `--HeaderFg` and `--HeaderMuted`, and
+// nothing in the bar may name a colour directly: that is what lets the same
+// markup sit on either surface (DesignSystem-Components.md §2).
+
 .HeaderMinimal {
 	--HeaderFg: var(--Foreground);
+	--HeaderMuted: var(--MuteForeground);
 	--HeaderSurface: var(--Background);
 }
 
 .HeaderFunctional {
 	--HeaderFg: var(--CardForeground);
+	--HeaderMuted: #3f3f46;
 	--HeaderSurface: var(--Card);
 
 	background: var(--HeaderSurface);
@@ -160,35 +169,79 @@ html {
 }
 
 .HeaderNavLink {
+	position: relative;
 	display: flex;
 	align-items: center;
 	padding-block: var(--space-tight);
 	color: var(--HeaderFg);
-	text-decoration: underline;
-	text-decoration-color: var(--Border);
-	text-underline-offset: 0.12em;
-	transition:
-		text-decoration-color 0.15s ease,
-		color 0.15s ease;
+	text-decoration: none;
 
 	@include hairline(bottom);
 }
 
-.HeaderNavLink:hover {
-	text-decoration-color: var(--HeaderFg);
+// The label carries the underline, at 20% of the mode's own ink - so the rule
+// reads on the creme field and on the white card without a second value
+// (DesignSystem-Components.md §2).
+.HeaderLinkLabel {
+	@include mono-meta;
+	@include track;
+	position: relative;
+	color: var(--HeaderFg);
+	text-decoration: underline;
+	text-decoration-color: color-mix(in srgb, var(--HeaderFg) 20%, transparent);
+	text-underline-offset: 0.12em;
+	transition:
+		text-decoration-color 0.15s ease,
+		color 0.15s ease;
+}
+
+// Hover is a measured state change: the label and its rule go to the accent,
+// and a 12% accent field sits behind the link. No glow, no emitted light.
+.HeaderNavLink::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: var(--Accent);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.12s ease;
+}
+
+.HeaderFunctional .HeaderNavLink::before {
+	background: var(--CardForeground);
+}
+
+.HeaderNavLink:hover .HeaderLinkLabel {
+	color: var(--Accent);
+	text-decoration-color: var(--Accent);
+}
+
+.HeaderNavLink:hover::before {
+	opacity: 0.12;
+}
+
+.HeaderNavLink:active::before {
+	opacity: 0.2;
 }
 
 // The destination the reader is on. `aria-current` is the state the data module
 // derives from the path and the section in view - not an href comparison, which
-// cannot tell an in-page anchor from a route.
-.HeaderNavLink[aria-current="page"] {
+// cannot tell an in-page anchor from a route. The marker is a 2px specimen rule
+// at the foot of the link plus the accent underline: a shape, so the state
+// survives greyscale and is never colour-only (DesignSystem-Components.md §2).
+.HeaderNavLink[aria-current="page"] .HeaderLinkLabel {
 	text-decoration-color: var(--Accent);
+	text-decoration-thickness: 2px;
 }
 
-.HeaderLinkLabel {
-	@include mono-meta;
-	@include track;
-	color: var(--HeaderFg);
+.HeaderNavLink[aria-current="page"]::after {
+	content: "";
+	position: absolute;
+	inset-inline: 0;
+	inset-block-end: 0;
+	block-size: 2px;
+	background: var(--Accent);
+	pointer-events: none;
 }
 
 .HeaderAux {
@@ -230,6 +283,7 @@ html {
 	align-items: center;
 	gap: var(--space-tight);
 	margin: 0;
+	color: var(--HeaderMuted);
 	white-space: nowrap;
 	overflow: hidden;
 }

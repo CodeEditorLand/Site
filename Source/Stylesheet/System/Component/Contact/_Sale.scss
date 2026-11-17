@@ -6,7 +6,7 @@
 //   .contact-sale__panel      the quiet panel that carries a labelled list
 //   .contact-sale__features   the six things an enterprise plan adds
 //   .contact-sale__action     the GitHub issue target
-//   .contact-sale__address    the direct address
+//   .contact-sale__address    the direct address, a link and not the action
 //   .contact-sale__route      the link to the DEALS form
 //   .contact-sale__top        the back-to-top row
 //
@@ -66,25 +66,26 @@
 	@include hairline(top);
 }
 
-// The two targets: the GitHub issue and the direct address. Both shrink to
-// their own text and carry their own padding, because a target is as wide as
-// what it says.
-.contact-sale__action,
-.contact-sale__address {
+// The two targets. The GitHub issue is the page's one action, so it keeps the
+// `.emphasis-expressive` tier and the padding that turns a link into a target.
+// The address is a link, not an action (`DESIGN.md` §5 A6, §7 DR-13): ink, no
+// fill, an underline on hover - an ink-inverted postal address is a non-action
+// wearing the action style, and it spent the page's one expressive element.
+.contact-sale__action {
 	display: inline-block;
 	align-self: flex-start;
 	padding: var(--space-reading) var(--space-group);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
 	text-decoration: none;
 }
 
-.contact-sale__action {
-	font-size: var(--type-body);
-	line-height: var(--type-body-line);
-}
-
 .contact-sale__address {
+	display: inline-block;
 	font-size: var(--type-sub);
 	line-height: var(--type-sub-line);
+	color: var(--Foreground);
+	text-decoration: none;
 	text-wrap: nowrap;
 }
 
@@ -93,6 +94,7 @@
 .contact-sale__address:hover,
 .contact-sale__address:focus-visible {
 	text-decoration: underline;
+	text-underline-offset: 0.25em;
 }
 
 .contact-sale__route {

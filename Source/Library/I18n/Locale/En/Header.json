@@ -5,7 +5,7 @@
 	"nav": {
 		"features": "Features",
 		"download": "Download",
-		"docs": "Documentation",
+		"docs": "Docs",
 		"blog": "Blog",
 		"contributing": "Contributing",
 		"dashboard": "Dashboard",
@@ -20,7 +20,7 @@
 		"loading": "Loading\u2026"
 	},
 	"status": {
-		"value": "SOURCE ACTIVE · PRE-RELEASE"
+		"value": "STATUS: ACTIVE\u2001PRE-RELEASE"
 	},
 	"user": {
 		"avatarAlt": "User menu",

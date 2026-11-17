@@ -2,8 +2,6 @@ import { cleanup, render, screen } from "@testing-library/react";
 
 import UserEvent from "@testing-library/user-event";
 
-import React from "react";
-
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import Auth0AccountGate from "../../Component/Dynamic/Auth0AccountGate";
@@ -44,40 +42,12 @@ vi.mock("react-i18next", () => ({
 	}),
 }));
 
-// ─── Layout/Header mock ───
-
-vi.mock("../../Component/Layout/Header", () => ({
-	Header: () => <header data-testid="header">Header</header>,
-}));
-
-// ─── UI/Button mock ───
-
-vi.mock("../../Component/UI/Button", () => ({
-	Button: ({
-		children,
-		onClick,
-		variant,
-		className,
-		asChild,
-		...Rest
-	}: {
-		children: React.ReactNode;
-
-		onClick?: () => void;
-
-		variant?: string;
-
-		className?: string;
-
-		asChild?: boolean;
-
-		[Key: string]: unknown;
-	}) => (
-		<button onClick={onClick} data-variant={variant} {...Rest}>
-			{children}
-		</button>
-	),
-}));
+// ─── Layout/Header and UI/Button are not mocked ───
+//
+// The gate owns no page chrome any more: the header, /KICKER, h1 and alternate
+// action belong to the route's AuthShell, and the one action inside a report is
+// a plain <button>. Mocking either module would hide a re-introduced dependency
+// rather than exercise it.
 
 beforeEach(() => {
 	Auth0State.IsLoading = false;
@@ -105,11 +75,20 @@ describe("Auth0AccountGate", () => {
 
 		render(<Auth0AccountGate Route="signin" />);
 
-		const LoadingText = screen.getByText("Loading...");
+		// The gate renders a report, not page chrome: a status line saying
+		// what this state is, one sentence saying what happened, and the one
+		// action actually available from it.
+		expect(screen.getByRole("status")).toBeInTheDocument();
 
-		expect(LoadingText).toBeInTheDocument();
+		// The label is a term from the state vocabulary, not a bespoke string
+		// (`DesignSystem-Components.md` §7).
+		expect(screen.getByText("STATUS: LOADING")).toBeInTheDocument();
 
-		expect(screen.getByTestId("header")).toBeInTheDocument();
+		expect(screen.getByText("Loading...")).toBeInTheDocument();
+
+		expect(
+			screen.getByRole("link", { name: "Back to the editor" }),
+		).toHaveAttribute("href", "/");
 	});
 
 	it("shows error state with retry button when error occurs", () => {
@@ -239,10 +218,10 @@ describe("Auth0AccountGate", () => {
 		);
 	});
 
-	it("shows the coming-soon gate instead of redirecting for signup route while registration is disabled", () => {
+	it("shows the registration-closed report instead of redirecting for signup while registration is disabled", () => {
 		// Auth0AccountGate.tsx hardcodes RegistrationEnabled = false - signup
 		// is feature-flagged off site-wide, so the component short-circuits
-		// to the "Coming Soon" panel instead of calling loginWithRedirect.
+		// to the closed report instead of calling loginWithRedirect.
 		Auth0State.IsLoading = false;
 
 		Auth0State.IsAuthenticated = false;
@@ -251,9 +230,16 @@ describe("Auth0AccountGate", () => {
 
 		expect(LoginWithRedirectMock).not.toHaveBeenCalled();
 
+		expect(screen.getByText("STATUS: UNAVAILABLE")).toBeInTheDocument();
+
 		expect(
-			screen.getByText("Registration is not open yet"),
+			screen.getByText(/Account creation is disabled/),
 		).toBeInTheDocument();
+
+		expect(screen.getByRole("link", { name: "Sign In" })).toHaveAttribute(
+			"href",
+			"/Account/SignIn",
+		);
 	});
 
 	it("does not redirect when isLoading is true", () => {

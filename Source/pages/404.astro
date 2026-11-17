@@ -1,11 +1,47 @@
 ---
+/**
+ * The 404: the canonical small record (`DesignSystem-Pages.md` §3).
+ *
+ * One artifact, in the shape the document prints:
+ *
+ *   # ROUTE_404
+ *   〈NOT FOUND〉
+ *   /TRACE: [REQUESTED PATH]
+ *   STATUS: INTERRUPTED
+ *   SIGNAL: ABSENT␁ROUTE: UNRESOLVED
+ *   [one plain-language sentence]
+ *   [major blank interval]
+ *   LAND:
+ *   ↳RETURN TO INDEX
+ *   [ BACK TO LAND ]
+ *
+ * Three decisions worth knowing before editing this file:
+ *
+ * - **The record is two panels, not a centred apology.** A data card beside an
+ *   evidence fragment, a hairline gutter between them, `min-h-[80dvh]`: the
+ *   composition HEAD rendered and the one `DESIGN.md` §3.5 names as the model
+ *   for what "restored" means.
+ * - **The stamp is the page's only `h1`.** It renders `〈NOT FOUND〉` at the XL
+ *   tier with the per-keyword ink the grammar gives a stamp's brackets and
+ *   keyword (`Function/Theme/SemanticColor`). HEAD printed the same string as a
+ *   `p`; a page with no `h1` has no document title, so the level-one heading is
+ *   the fix, not a decoration.
+ * - **`INTERRUPTED` is an ink state, not a quiet one.** `DesignSystem-Grammar.md`
+ *   §2 fixes the tone per term: `INTERRUPTED` is ink (error, plain explanation +
+ *   recovery), and `quiet` is reserved for `PREPARING` and `ARCHIVED`. The value
+ *   carried `quiet`, which muted the one word that tells a reader what happened.
+ *
+ * The blank interval between the state block and the title block is mandatory
+ * (`DesignSystem.md` INVARIANT 06, `DESIGN.md` §2.7): it is what gives `LAND:`
+ * the weight of a second headline. Delete it and the record loses its shape.
+ */
 import { Header } from "../Component/Layout/Header";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
-import { FieldRecordDataCard } from "../Component/Brand/FieldRecordDataCard";
-import { FieldRecordIndex } from "../Component/Brand/FieldRecordIndex";
+import FieldRecordDataCard from "../Component/Brand/FieldRecordDataCard.astro";
+import FieldRecordIndex from "../Component/Brand/FieldRecordIndex.astro";
 import { FieldRecordStatus } from "../Component/Brand/FieldRecordStatus";
-import { FieldRecordAction } from "../Component/Brand/FieldRecordAction";
+import FieldRecordAction from "../Component/Brand/FieldRecordAction.astro";
 import { FieldRecordEvidence } from "../Component/Brand/FieldRecordEvidence";
 
 import {
@@ -19,16 +55,33 @@ const T = GetI18n();
 const MetaTitle = T("common.error.404", {
 	defaultValue: "404 - Page Not Found",
 });
-const MetaDescription = T("common.error.pageNotFound", {
+
+/**
+ * The full error copy stays the document's description - all of it, including
+ * the two sentences about checking the URL and opening an issue.
+ */
+const NotFoundCopy = T("common.error.pageNotFound", {
 	defaultValue:
-		"The page you're looking for doesn't exist or has been moved.",
+		"The page you're looking for doesn't exist or has been moved.\n\nCheck the URL for typos, or return to the home page and start fresh.\n\nIf you believe this is an error, open a GitHub issue and we'll help you find what you need.",
 });
+
+const MetaDescription = NotFoundCopy;
+
+/**
+ * The record's one sentence in the DOM: the first paragraph of the same copy.
+ * The document requires the recovery to stay clear and plain-language in the
+ * markup (`DesignSystem-Pages.md` §3), and a coded state line alone is not a
+ * plain explanation - a reader who does not know the grammar still needs to be
+ * told what happened. The remaining sentences are not lost: they are the meta
+ * description, exactly as they were before.
+ */
+const PageSentence = NotFoundCopy.split("\n\n")[0];
 
 const RequestedPath = Astro.url.pathname;
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
-	<Header client:load />
+	<Header client:load slot="Header" />
 	<section
 		id="NotFoundContent"
 		class="flex min-h-[80dvh] w-full flex-col items-center justify-center py-20"
@@ -40,36 +93,31 @@ const RequestedPath = Astro.url.pathname;
 					<div class="min-w-0 flex-1">
 						<FieldRecordDataCard className="h-full">
 							<div class="flex h-full flex-col gap-4">
-								<FieldRecordIndex
-									index="ROUTE_404"
-									client:load
-								/>
+								<FieldRecordIndex index="ROUTE_404" />
+
+								<h1
+									class="text-field-xl mb-6 font-mono font-normal leading-[0.95] tracking-[-0.02em] text-card-foreground"
+								>
+									<span style={`color:${GLYPH_INK}`}>〈</span><span
+										style={`color:${KeywordInk("NOT FOUND") ?? "var(--CardForeground)"}`}
+										>NOT FOUND</span
+									><span style={`color:${GLYPH_INK}`}>〉</span>
+								</h1>
 
 								<p
-															class="text-field-xl font-mono font-normal leading-[0.95] tracking-[-0.02em] text-card-foreground"
-														>
-															<span style={`color:${GLYPH_INK}`}>〈</span
-															><span
-																style={`color:${KeywordInk("NOT FOUND") ?? "var(--CardForeground)"}`}
-																>NOT FOUND</span
-															><span style={`color:${GLYPH_INK}`}>〉</span>
-														</p>
-
-														<p
-															class="text-field-s font-mono font-normal leading-[1.1] text-card-foreground"
-														>
-															<span style={`color:${GLYPH_INK}`}>/</span
-															><span style={`color:${ROUTE_KEYWORD_INK}`}
-																>TRACE</span
-															><span style={`color:var(--CardForeground)`}
-																>: {RequestedPath}</span
-															>
-														</p>
+									class="text-field-s font-mono font-normal leading-[1.1] text-card-foreground"
+								>
+									<span style={`color:${GLYPH_INK}`}>/</span><span
+										style={`color:${ROUTE_KEYWORD_INK}`}>TRACE</span
+									><span style={`color:var(--CardForeground)`}
+										>: {RequestedPath}</span
+									>
+								</p>
 
 								<div class="mt-6">
 									<FieldRecordStatus
 										status="interrupted"
-										tone="quiet"
+										tone="ink"
 										client:load
 									/>
 								</div>
@@ -81,6 +129,12 @@ const RequestedPath = Astro.url.pathname;
 										SIGNAL: ABSENT{"\u2001"}ROUTE: UNRESOLVED
 									</p>
 								</div>
+
+								<p
+									class="text-field-s font-mono font-normal leading-[1.5] text-card-foreground opacity-80"
+								>
+									{PageSentence}
+								</p>
 
 								<div class="my-12 flex-1" aria-hidden="true">
 								</div>
@@ -103,7 +157,6 @@ const RequestedPath = Astro.url.pathname;
 										label="BACK TO LAND"
 										href="/"
 										variant="button"
-										client:load
 									/>
 								</div>
 							</div>

@@ -29,7 +29,7 @@ const Frame = AuthFrameFor("verify", T);
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
-	<Header client:load Mode="functional" />
+	<Header client:load Mode="functional" slot="Header" />
 	<AuthShell frame={Frame}>
 		<VerifyPage
 			Content={Verify}

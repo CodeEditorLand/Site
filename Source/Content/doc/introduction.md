@@ -25,6 +25,22 @@ identical while replacing the substrate underneath.
 
 ---
 
+## Start Here 🧭
+
+This page is the concept. The build path is three pages, in this order:
+
+1. **[Installation](/Doc/installation)** - system requirements, the element
+   clone, and the two build steps.
+2. **[Quickstart](/Doc/quickstart)** - the same flow as copyable commands.
+3. **[Project Structure](/Doc/project-structure)** - the element layout you
+   just built, and the naming rules that govern it.
+
+**What you should see:** by the end of step 2, `Build.sh` has written the binary
+and the `.app` bundle under `Element/Mountain/Target/` and the editor window
+opens. Every page after this one assumes that build exists.
+
+---
+
 ## What [Land](https://github.com/CodeEditorLand/Land) Is 🗺️
 
 | Aspect          | Detail                                    |

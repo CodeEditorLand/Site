@@ -1,136 +1,81 @@
-import { ThemeImage } from "@Library/Theme";
+"use client";
 
-import * as lucide from "lucide-react";
+import { Header } from "../Layout/Header";
 
-import React from "react";
+import type { HeaderContent } from "../Layout/Header";
 
-import { Button } from "../UI/Button";
-
-import { ThemeToggle } from "../UI/ThemeToggle";
+import type {
+	HeaderContentAction,
+	HeaderNavigationLink,
+} from "../Layout/Header/Type.js";
 
 import type Property from "./Interface/Property/Header.js";
 
 /**
- * Dynamic Header component that accepts navigation and action schemas
- * Renders sticky header with logo, nav links, and CTA buttons
+ * DynamicHeader - the legacy schema-driven header, reduced to an adapter.
+ *
+ * This file used to be a second header: its own bar markup, its own mobile
+ * panel, its own `ThemeToggle`, `bg-background` and `text-muted-foreground`
+ * utilities. That made it a third header variant beside the two the design
+ * system defines, and it carried a theme toggle on a site with exactly one
+ * theme (`DESIGN.md` §1.1, `DesignSystem.md` §6.9).
+ *
+ * It now renders `Layout/Header` and nothing else, so there is one bar, two
+ * modes and one nav on the whole site. The legacy schema is adapted here rather
+ * than in the bar, because the bar must not know that an old schema exists.
+ *
+ * `Sticky` and `ShowMobileMenu` are dropped, not lost: the bar is always sticky
+ * and always owns its own toggle - a caller could only ever turn those off by
+ * removing the chrome a page needs.
  */
-const DynamicHeader = ({ Content, ClassName }: Property) => {
-	const {
-		Logo,
 
-		Navigation,
+/** One legacy action row, in either schema shape, as the bar's own row. */
+const AdaptAction = (Action: unknown): readonly HeaderContentAction[] => {
+	const Row = Action as {
+		Type?: string;
+		Text?: string;
+		Href?: string;
+		Variant?: string;
+		Content?: { Text?: string; Href?: string; Variant?: string };
+	};
 
-		Actions,
+	// The mobile-menu entry was never an action: the bar draws its own toggle.
+	if (Row.Type === "mobile-menu") return [];
 
-		Sticky = true,
+	const Text = Row.Text ?? Row.Content?.Text ?? "";
 
-		ShowMobileMenu = true,
-	} = Content;
+	if (Text === "") return [];
 
-	const [MobileMenuOpen, SetMobileMenuOpen] = React.useState(false);
+	const Href = Row.Href ?? Row.Content?.Href;
 
-	return (
-		<header
-			className={` ${Sticky ? "sticky top-0 z-50" : ""} w-full border-b bg-background ${ClassName || ""} `}
-		>
-			<div className="container mx-auto flex h-16 items-center justify-between px-4">
-				{/* Logo */}
-				<div className="flex items-center space-x-3">
-					<div
-						className="relative flex h-8 w-8 items-center justify-center overflow-hidden"
-						aria-hidden="true"
-					>
-						<ThemeImage
-							src="/Asset/Logo/Glyph/Land.svg"
-							alt="Code Editor Land"
-							title="Code Editor Land"
-							width={32}
-							height={32}
-							className="h-full w-full"
-						/>
-					</div>
-					<span className="font-medium">{Logo.Text}</span>
-				</div>
+	const Variant = Row.Variant ?? Row.Content?.Variant;
 
-				{/* Desktop Navigation */}
-				<nav
-					className="hidden items-center space-x-6 md:flex"
-					aria-label="Main navigation"
-				>
-					{Navigation.map((Link, Index) => (
-						<a
-							key={Index}
+	return [
+		{
+			Text,
+			...(Href === undefined ? {} : { Href }),
+			...(Variant === undefined ? {} : { Variant }),
+		},
+	];
+};
 
-							href={Link.Href}
+/** One legacy nav row, as the bar's own row. A row with no href is dropped. */
+const AdaptLink = (Link: unknown): readonly HeaderNavigationLink[] => {
+	const Row = Link as { Label?: string; Href?: string };
 
-							className={`transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)] ${
-								Link.IsActive
-									? "font-medium text-foreground"
-									: "text-muted-foreground hover:text-foreground"
-							}`}
-							{...(Link.IsActive
-								? { "aria-current": "page" as const }
-								: {})}
-						>
-							{Link.Label}
-						</a>
-					))}
-				</nav>
+	if (Row.Label === undefined || Row.Href === undefined) return [];
 
-				{/* Actions */}
-				<div className="flex items-center space-x-4">
-					<ThemeToggle />
-					{Actions.map((Action, Index) => {
-						if (
-							"Type" in Action &&
-							Action.Type === "mobile-menu" &&
-							ShowMobileMenu
-						) {
-							return (
-								<Button
-									key={Index}
-									variant="ghost"
-									size="icon"
-									className="md:hidden"
-									onClick={() =>
-										SetMobileMenuOpen(!MobileMenuOpen)
-									}
-									aria-label="Toggle menu"
-									aria-expanded={MobileMenuOpen}
-								>
-									<lucide.Menu className="h-4 w-4" />
-								</Button>
-							);
-						}
+	return [{ Label: Row.Label, Href: Row.Href }];
+};
 
-						// Action is a button config
-						return (
-							<React.Fragment key={Index}>
-								{MobileMenuOpen && ShowMobileMenu && (
-									<div className="absolute left-0 right-0 top-16 z-50 flex flex-col space-y-2 border-b bg-background p-4 md:hidden">
-										{Navigation.map(
-											(Link, NavigationIndex) => (
-												<a
-													key={NavigationIndex}
-													href={Link.Href}
-													className="flat px-4 py-2 hover:bg-accent"
-													onClick={() =>
-														SetMobileMenuOpen(false)
-													}
-												>
-													{Link.Label}
-												</a>
-											),
-										)}
-									</div>
-								)}
-							</React.Fragment>
-						);
-					})}
-				</div>
-			</div>
-		</header>
-	);
+const DynamicHeader = ({ Content }: Property) => {
+	const Adapted: HeaderContent = {
+		Logo: { Text: Content.Logo.Text },
+		Navigation: Content.Navigation.flatMap(AdaptLink),
+		Actions: Content.Actions.flatMap(AdaptAction),
+	};
+
+	return <Header Content={Adapted} Mode="minimal" />;
 };
 
 export { DynamicHeader };

@@ -2,8 +2,6 @@ import { useTranslation } from "react-i18next";
 
 import { ErrorBoundary } from "../ErrorBoundary.js";
 
-import { Header } from "../Layout/Header";
-
 import {
 	SkeletonCard,
 	SkeletonFeatureCard,
@@ -30,11 +28,31 @@ import type Property from "./Interface/Property/Page/Home.js";
  * Dynamic HomePage composition - Daylight Field Record.
  * Creme canvas, white cards, mono type, green accent.
  *
- * Five bands, in the order a reader needs them: the hero states the claim and
- * shows what runs, the architecture band names the elements, the six properties
- * say what that buys, the roadmap says what is still coming, and the platform
- * grid says where it runs. Demonstration before explanation - the order is this
- * file's whole job.
+ * Five layers, in the escalation order `DesignSystem-Grammar.md` §8 names -
+ * `01 IDENTITY -> 02 EVIDENCE -> 03 SYSTEM -> 04 STATUS -> 05 ACTION`
+ * (`INDEX -> OBSERVATION -> CLASSIFICATION -> CONDITIONS -> ACTION`) - and each
+ * one is the artifact that order asks for:
+ *
+ * 1. `# LAND_01`         the hero: the canonical two-panel field record - the
+ *                        data card beside the evidence image. One record, one
+ *                        evidence image, one action.
+ * 2. `# OBSERVATION_01`  the proof: three source-backed claims, one
+ *                        architecture proof (the runtime path), the specimen
+ *                        observation, and the three claims the layer files.
+ * 3. `# CLASSIFICATION_01` the system: seven element records and the filed
+ *                        index of the other eight.
+ * 4. `# CONDITIONS_01`   the release state: one manifest, its two states.
+ * 5. `# ACTION_01`       the ecosystem: one compact platform ledger.
+ *
+ * That is the density budget exactly - hero, trust/proof, architecture, release
+ * state, ecosystem, footer - and it is why the page is not a stack of
+ * chapter-separated bands with a kicker, a heading and a standfirst each: a
+ * band is a block, and the page's grammar is the escalation order above.
+ *
+ * Demonstration before explanation, still: the hero states the claim and shows
+ * what runs, the proof says what backs it, the classification names the
+ * elements, the conditions say what is released, and the ledger says where it
+ * runs.
  */
 const HomePage = ({ Content, ClassName }: Property) => {
 	const { t: T } = useTranslation(["home", "common", "download", "footer"]);
@@ -246,7 +264,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Tooltip: TArr("home:hero.scene.cards.8.tooltip", [
-						"All 16 element repos are under CC0 1.0 Universal public domain.",
+						"All 16 repositories are under CC0 1.0 Universal public domain.",
 
 						"No attribution required, no compliance restrictions.",
 
@@ -1159,16 +1177,10 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		Testimonial: Testimonials,
 
 		Download,
-
-		Header: HeaderContent,
 	} = ResolvedContent;
 
 	return (
 		<div className={`flex min-h-screen flex-col ${ClassName || ""}`}>
-			{HeaderContent !== undefined && (
-				<Header Content={HeaderContent} Mode="minimal" />
-			)}
-
 			<div className="flex-1" role="region" aria-label="Page content">
 				{/* 1. THE HERO - the claim, its status, the evidence, the entry. */}
 				<ErrorBoundary
@@ -1178,8 +1190,26 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				>
 					<DynamicHeroSection Content={Hero} Band={Band} />
 				</ErrorBoundary>
-				{/* 2. WHAT RUNS - the elements themselves, before any explanation
-				    of them: demonstration before explanation. */}
+				{/* 2. THE PROOF - what backs the claim: three source-backed claims,
+				    one architecture proof, the specimen observation. Evidence
+				    before explanation. */}
+				<ErrorBoundary
+					FallbackComponent={() => (
+						<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-2 lg:grid-cols-3">
+							{[1, 2, 3].map((Index) => (
+								<SkeletonFeatureCard key={Index} />
+							))}
+						</div>
+					)}
+				>
+					<DynamicFeatures
+						Band={Band}
+						Content={Feature}
+						Explanation={Hero.Subtitle}
+					/>
+				</ErrorBoundary>
+				{/* 3. THE SYSTEM - the elements themselves: seven printed records
+				    and the filed index of the other eight. */}
 				<ErrorBoundary
 					FallbackComponent={() => (
 						<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-2 lg:grid-cols-3">
@@ -1191,31 +1221,20 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				>
 					<DynamicTestimonials Content={Testimonials} />
 				</ErrorBoundary>
-				{/* 3. THE SIX PROPERTIES. */}
+				{/* 4. THE STATUS - the release state, one manifest in its two
+				    states, carrying the qualifiers the hero no longer prints. */}
 				<ErrorBoundary
 					FallbackComponent={() => (
 						<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-2 lg:grid-cols-3">
-							{[1, 2, 3, 4, 5, 6].map((Index) => (
-								<SkeletonFeatureCard key={Index} />
-							))}
-						</div>
-					)}
-				>
-					<DynamicFeatures Content={Feature} />
-				</ErrorBoundary>
-				{/* 4. WHAT YOU GET - the roadmap, once the properties are known. */}
-				<ErrorBoundary
-					FallbackComponent={() => (
-						<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-2 lg:grid-cols-3">
-							{[1, 2, 3].map((Index) => (
+							{[1, 2].map((Index) => (
 								<SkeletonPricingTier key={Index} />
 							))}
 						</div>
 					)}
 				>
-					<DynamicPricing Content={Pricing} />
+					<DynamicPricing Band={Band} Content={Pricing} />
 				</ErrorBoundary>
-				{/* 5. THE PLATFORMS - where it runs, last. */}
+				{/* 5. THE ACTION - where it runs, last: one compact ledger. */}
 				<ErrorBoundary
 					FallbackComponent={() => (
 						<SkeletonCard className="min-h-[30dvh]" />

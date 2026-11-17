@@ -1,8 +1,22 @@
 /**
- * DynamicSignIn - email/password sign-in form for the Cloud tier.
+ * DynamicSignIn - the credential form for the Cloud tier.
  *
- * Handles form validation, password visibility toggle, error display,
- * and "forgot password" link. Submits to Auth0 via Auth0AccountGate.
+ * Renders inside the route's `AuthShell`: the page frame (the /KICKER, the
+ * `h1`, the supporting sentence and the one page-level alternate action)
+ * belongs to the shell, and this island owns only what is inside it - the two
+ * fields, the reveal control, the validation, the provider button and the two
+ * footer alternates.
+ *
+ * The vocabulary is the shell's (`auth-shell__form`, `auth-shell__field`,
+ * `auth-shell__error`, `auth-shell__primary emphasis-expressive`,
+ * `auth-shell__alternate`), so sign-in, sign-up, forgot-password and
+ * reset-password are one form language rather than four centred cards.
+ *
+ * Behaviour is unchanged: the same two fields, the same validation predicates
+ * and messages, the same submit gate, the same OAuth hand-off and the same
+ * footer destinations. What changed is that the validation result is now read
+ * (it used to be discarded) and that every error is a full sentence in the
+ * shell's error style.
  */
 import * as lucide from "lucide-react";
 
@@ -10,20 +24,20 @@ import React, { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "../UI/Card";
-
 import { DynamicButton } from "./DynamicButton";
 
 import { DynamicInput } from "./DynamicInput";
 
 import type Property from "./Interface/Property/SignIn.js";
+
+/** The one place this form's validation messages are written. */
+const Messages = {
+	emailRequired: "Email is required",
+
+	emailInvalid: "Please enter a valid email",
+
+	passwordRequired: "Password is required",
+} as const;
 
 /**
  * Dynamic SignIn component that accepts form schema
@@ -62,7 +76,9 @@ const DynamicSignIn = ({
 
 	const [ShowPassword, SetShowPassword] = useState(false);
 
-	const [, SetErrors] = useState<{ email?: string; password?: string }>({});
+	const [Errors, SetErrors] = useState<{ email?: string; password?: string }>(
+		{},
+	);
 
 	const { t: T } = useTranslation("account");
 
@@ -70,13 +86,13 @@ const DynamicSignIn = ({
 		const NewErrors: { email?: string; password?: string } = {};
 
 		if (!Email) {
-			NewErrors.email = "Email is required";
+			NewErrors.email = Messages.emailRequired;
 		} else if (!/\S+@\S+\.\S+/.test(Email)) {
-			NewErrors.email = "Please enter a valid email";
+			NewErrors.email = Messages.emailInvalid;
 		}
 
 		if (!Password) {
-			NewErrors.password = "Password is required";
+			NewErrors.password = Messages.passwordRequired;
 		}
 
 		SetErrors(NewErrors);
@@ -93,160 +109,135 @@ const DynamicSignIn = ({
 	};
 
 	return (
-		<section className="py-20" aria-label="Sign in">
-			<div className="container mx-auto px-4">
-				<div className={`mx-auto max-w-md ${ClassName}`}>
-					<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
-						<CardHeader className="space-y-1 text-center">
-							<CardTitle className="text-2xl">{Title}</CardTitle>
-							<CardDescription>{Description}</CardDescription>
-						</CardHeader>
-						<CardContent>
-							<form
-								className="space-y-4"
-								onSubmit={HandleSubmit}
-								aria-label="Sign in form"
-							>
-								<div aria-live="polite" aria-atomic="true">
-									{ErrorMessage && (
-										<div
-											className="flat bg-[color-mix(in_srgb,var(--Destruct)_10%,transparent)] p-3 text-destructive"
-											role="alert"
-										>
-											{ErrorMessage}
-										</div>
-									)}
-								</div>
+		<form
+			className={`auth-shell__form ${ClassName || ""}`}
+			onSubmit={HandleSubmit}
+			aria-label="Sign in form"
+		>
+			{Title && <p className="auth-shell__note">{Title}</p>}
 
-								<DynamicInput
-									Content={{
-										...EmailField,
-										OnChange: SetEmail,
-									}}
-									Id="email"
-								/>
+			{Description && (
+				<p className="auth-shell__report-sentence">{Description}</p>
+			)}
 
-								<div className="relative">
-									<DynamicInput
-										Content={{
-											...PasswordField,
-											Type: ShowPassword
-												? "text"
-												: "password",
-											OnChange: SetPassword,
-										}}
-										Id="password"
-									/>
-									<button
-										type="button"
-										className="absolute right-3 top-2 text-muted-foreground hover:text-foreground"
-										aria-label={
-											ShowPassword
-												? T("signIn.hidePassword", {
-														defaultValue:
-															"Hide password",
-													})
-												: T("signIn.showPassword", {
-														defaultValue:
-															"Show password",
-													})
-										}
-										onClick={() =>
-											SetShowPassword(!ShowPassword)
-										}
-									>
-										{ShowPassword ? (
-											<lucide.EyeOff
-												className="h-4 w-4"
-												aria-hidden="true"
-											/>
-										) : (
-											<lucide.Eye
-												className="h-4 w-4"
-												aria-hidden="true"
-											/>
-										)}
-									</button>
-								</div>
-
-								<DynamicButton
-									Content={{
-										...SubmitButton,
-										Type: "submit",
-										FullWidth: true,
-									}}
-									IsLoading={IsLoading}
-								/>
-							</form>
-
-							{ShowDivider && (
-								<div className="relative my-6">
-									<div className="absolute inset-0 flex items-center">
-										<span className="StaccatoSeparator w-full border-t" />
-									</div>
-									<div className="relative flex justify-center uppercase">
-										<span className="bg-background px-2 text-muted-foreground">
-											{"Or"}
-										</span>
-									</div>
-								</div>
-							)}
-
-							{OauthButton && (
-								<DynamicButton
-									Content={{
-										...OauthButton,
-										FullWidth: true,
-									}}
-
-									{...(OnOAuth ? { OnAction: OnOAuth } : {})}
-								/>
-							)}
-						</CardContent>
-						<CardFooter className="flex flex-col gap-3 text-center">
-							{FooterLinks?.SignUp && (
-								<div>
-									<button
-										type="button"
-										className="font-medium text-card-foreground hover:underline"
-										onClick={() =>
-											FooterLinks.SignUp &&
-											OnNavigate?.(
-												FooterLinks.SignUp.Href,
-											)
-										}
-									>
-										{FooterLinks.SignUp.Label}
-									</button>
-									<p className="mt-1 text-card-foreground">
-										Don't have an account?
-									</p>
-								</div>
-							)}
-							{FooterLinks?.ForgotPassword && (
-								<div>
-									<button
-										type="button"
-										className="font-medium text-card-foreground hover:underline"
-										onClick={() =>
-											FooterLinks.ForgotPassword &&
-											OnNavigate?.(
-												FooterLinks.ForgotPassword.Href,
-											)
-										}
-									>
-										{FooterLinks.ForgotPassword.Label}
-									</button>
-									<p className="mt-1 text-card-foreground">
-										Forgot your password?
-									</p>
-								</div>
-							)}
-						</CardFooter>
-					</Card>
-				</div>
+			<div aria-live="polite" aria-atomic="true">
+				{ErrorMessage && (
+					<p className="auth-shell__error" role="alert">
+						{ErrorMessage}
+					</p>
+				)}
 			</div>
-		</section>
+
+			<div className="auth-shell__field">
+				<DynamicInput
+					Content={{
+						...EmailField,
+						OnChange: SetEmail,
+						...(Errors.email ? { Error: Errors.email } : {}),
+					}}
+					Id="email"
+				/>
+			</div>
+
+			<div className="auth-shell__field">
+				<DynamicInput
+					Content={{
+						...PasswordField,
+						Type: ShowPassword ? "text" : "password",
+						OnChange: SetPassword,
+						...(Errors.password ? { Error: Errors.password } : {}),
+					}}
+					Id="password"
+				/>
+
+				<button
+					type="button"
+					className="auth-shell__reveal"
+					aria-label={
+						ShowPassword
+							? T("signIn.hidePassword", {
+									defaultValue: "Hide password",
+								})
+							: T("signIn.showPassword", {
+									defaultValue: "Show password",
+								})
+					}
+					onClick={() => SetShowPassword(!ShowPassword)}
+				>
+					{ShowPassword ? (
+						<lucide.EyeOff aria-hidden="true" />
+					) : (
+						<lucide.Eye aria-hidden="true" />
+					)}
+				</button>
+			</div>
+
+			<DynamicButton
+				Content={{
+					...SubmitButton,
+					Type: "submit",
+					FullWidth: true,
+					ClassName: "auth-shell__primary emphasis-expressive",
+				}}
+				IsLoading={IsLoading}
+			/>
+
+			{ShowDivider && <p className="auth-shell__divider">{"Or"}</p>}
+
+			{OauthButton && (
+				<DynamicButton
+					Content={{
+						...OauthButton,
+						FullWidth: true,
+					}}
+					{...(OnOAuth ? { OnAction: OnOAuth } : {})}
+				/>
+			)}
+
+			{(FooterLinks?.SignUp || FooterLinks?.ForgotPassword) && (
+				<div className="auth-shell__footer">
+					{FooterLinks?.SignUp && (
+						<div className="auth-shell__footer-row">
+							<button
+								type="button"
+								className="auth-shell__alternate"
+								onClick={() =>
+									FooterLinks.SignUp &&
+									OnNavigate?.(FooterLinks.SignUp.Href)
+								}
+							>
+								{FooterLinks.SignUp.Label}
+							</button>
+
+							<p className="auth-shell__note">
+								Don't have an account?
+							</p>
+						</div>
+					)}
+
+					{FooterLinks?.ForgotPassword && (
+						<div className="auth-shell__footer-row">
+							<button
+								type="button"
+								className="auth-shell__alternate"
+								onClick={() =>
+									FooterLinks.ForgotPassword &&
+									OnNavigate?.(
+										FooterLinks.ForgotPassword.Href,
+									)
+								}
+							>
+								{FooterLinks.ForgotPassword.Label}
+							</button>
+
+							<p className="auth-shell__note">
+								Forgot your password?
+							</p>
+						</div>
+					)}
+				</div>
+			)}
+		</form>
 	);
 };
 

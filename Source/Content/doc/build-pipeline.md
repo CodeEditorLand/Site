@@ -102,13 +102,13 @@ The build script invokes, in sequence:
 
 The build script resolves env files in this priority order:
 
-| Priority | Path                  | Role                         |
-| :------- | :-------------------- | :--------------------------- |
-| 1        | `$Land_Env_File`      | Explicitly exported override |
-| 2        | `.env.Land`           | Local gitignored overrides   |
-| 3        | `../.env.Land`        | One level up                 |
-| 4        | `.env.Land.Sample`    | Checked-in defaults          |
-| 5        | `../.env.Land.Sample` |                              |
+| Priority | Path                                            |
+| :------- | :---------------------------------------------- |
+| 1        | `$Land_Env_File` (if explicitly exported)       |
+| 2        | `.env.Land` (local gitignored overrides)        |
+| 3        | `../.env.Land` (one level up)                   |
+| 4        | `.env.Land.Sample` (checked-in defaults)        |
+| 5        | `../.env.Land.Sample`                           |
 
 The resolved file is sourced via `set -a; . "$EnvFile"; set +a`, exporting every
 key-value pair into the shell environment so every child tool inherits the same

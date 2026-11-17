@@ -6,6 +6,8 @@ import { useEffect } from "react";
 
 import { useTranslation } from "react-i18next";
 
+import { DynamicStateReport, StateLabel } from "./DynamicStateReport";
+
 /**
  * Auth0 redirect-based account gate.
  *
@@ -165,80 +167,75 @@ export default ({
 
 	if (Route === "signup" && !RegistrationEnabled) {
 		return (
-			<div className="auth-shell__report">
-				<p className="auth-shell__status">
-					{T("auth.signUp.closedStatus", {
-						defaultValue: "REGISTRATION CLOSED",
-					})}
-				</p>
-
-				<p className="auth-shell__report-sentence">
-					{T("registrationComingSoon.description", {
-						defaultValue:
-							"Account creation is disabled while the portal flow is being finished. Existing sign-in remains available for configured accounts.",
-					})}
-				</p>
-
-				<a
-					href="/Account/SignIn"
-					className="auth-shell__primary emphasis-expressive"
-				>
-					{T("registrationComingSoon.signIn", {
-						defaultValue: "Sign In",
-					})}
-				</a>
-			</div>
+			<DynamicStateReport
+				Label={T("auth.signUp.closedStatus", {
+					defaultValue: StateLabel.Unavailable,
+				})}
+				Tone="ink"
+				Sentence={T("registrationComingSoon.description", {
+					defaultValue:
+						"Account creation is disabled while the portal flow is being finished. Existing sign-in remains available for configured accounts.",
+				})}
+				Action={
+					<a
+						href="/Account/SignIn"
+						className="auth-shell__primary emphasis-expressive"
+					>
+						{T("registrationComingSoon.signIn", {
+							defaultValue: "Sign In",
+						})}
+					</a>
+				}
+			/>
 		);
 	}
 
 	if (IsLoading) {
 		return (
-			<div className="auth-shell__report" role="status">
-				<p className="auth-shell__status">
-					{T("auth.signIn.checkingStatus", {
-						defaultValue: "CHECKING SESSION",
-					})}
-				</p>
-
-				<p className="auth-shell__report-sentence">
-					{T("loading", { defaultValue: "Loading..." })}
-				</p>
-
-				<a href="/" className="auth-shell__alternate">
-					{T("auth.signIn.leave", {
-						defaultValue: "Back to the editor",
-					})}
-				</a>
-			</div>
+			<DynamicStateReport
+				Label={T("auth.signIn.checkingStatus", {
+					defaultValue: StateLabel.Loading,
+				})}
+				Tone="ink"
+				Loading
+				Sentence={T("loading", { defaultValue: "Loading..." })}
+				Action={
+					<a href="/" className="auth-shell__alternate">
+						{T("auth.signIn.leave", {
+							defaultValue: "Back to the editor",
+						})}
+					</a>
+				}
+			/>
 		);
 	}
 
 	if (Error) {
 		return (
-			<div className="auth-shell__report" role="alert">
-				<p className="auth-shell__status auth-shell__status--failure">
-					{T("auth.signIn.failedStatus", {
-						defaultValue: "SIGN-IN FAILED",
-					})}
-				</p>
-
-				<p className="auth-shell__report-sentence">
-					{T("error", {
-						defaultValue: "Authentication error",
-					})}
-					: {Error.message}
-				</p>
-
-				<button
-					type="button"
-					className="auth-shell__primary emphasis-expressive"
-					onClick={() => Login()}
-				>
-					{T("tryAgain", {
-						defaultValue: "Try again",
-					})}
-				</button>
-			</div>
+			<DynamicStateReport
+				Role="alert"
+				Label={T("auth.signIn.failedStatus", {
+					defaultValue: StateLabel.Interrupted,
+				})}
+				Tone="strong"
+				Sentence={
+					<>
+						{T("error", { defaultValue: "Authentication error" })}:{" "}
+						{Error.message}
+					</>
+				}
+				Action={
+					<button
+						type="button"
+						className="auth-shell__primary emphasis-expressive"
+						onClick={() => Login()}
+					>
+						{T("tryAgain", {
+							defaultValue: "Try again",
+						})}
+					</button>
+				}
+			/>
 		);
 	}
 
@@ -249,88 +246,85 @@ export default ({
 				: User.nickname || User.email?.split("@")[0] || "User";
 
 		return (
-			<div className="auth-shell__report" role="status">
-				<p className="auth-shell__status auth-shell__status--success">
-					{T("auth.signIn.signedInStatus", {
-						defaultValue: "SIGNED IN",
-					})}
-				</p>
+			<DynamicStateReport
+				Label={T("auth.signIn.signedInStatus", {
+					defaultValue: StateLabel.Active,
+				})}
+				Tone="specimen"
+				Sentence={T("auth.signIn.signedInSentence", {
+					defaultValue:
+						"You are signed in. This page continues to your dashboard.",
+				})}
+				Action={
+					<>
+						<div className="auth-shell__identity">
+							{User.picture && (
+								<img
+									src={User.picture}
+									alt={User.name || "User avatar"}
+									title={User.name || "User avatar"}
+									width="64"
+									height="64"
+									className="auth-shell__avatar"
+								/>
+							)}
 
-				<p className="auth-shell__report-sentence">
-					{T("auth.signIn.signedInSentence", {
-						defaultValue:
-							"You are signed in. This page continues to your dashboard.",
-					})}
-				</p>
+							<p className="auth-shell__note">{DisplayName}</p>
 
-				<div className="auth-shell__identity">
-					{User.picture && (
-						<img
-							src={User.picture}
-							alt={User.name || "User avatar"}
-							title={User.name || "User avatar"}
-							width="64"
-							height="64"
-							className="auth-shell__avatar"
-						/>
-					)}
+							<p className="auth-shell__note">{User.email}</p>
 
-					<p className="auth-shell__note">{DisplayName}</p>
+							{User.email_verified === false && (
+								<p className="auth-shell__note">
+									{T("emailNotVerified", {
+										defaultValue:
+											"Email not verified. Check your inbox.",
+									})}
+								</p>
+							)}
+						</div>
 
-					<p className="auth-shell__note">{User.email}</p>
-
-					{User.email_verified === false && (
-						<p className="auth-shell__note">
-							{T("emailNotVerified", {
-								defaultValue:
-									"Email not verified. Check your inbox.",
+						<a
+							href="/Dashboard"
+							className="auth-shell__primary emphasis-expressive"
+						>
+							{T("dashboard", {
+								defaultValue: "Go to Dashboard",
 							})}
-						</p>
-					)}
-				</div>
+						</a>
 
-				<a
-					href="/Dashboard"
-					className="auth-shell__primary emphasis-expressive"
-				>
-					{T("dashboard", {
-						defaultValue: "Go to Dashboard",
-					})}
-				</a>
-
-				<button
-					type="button"
-					className="auth-shell__alternate"
-					onClick={Logout}
-				>
-					{T("logout", {
-						defaultValue: "Sign Out",
-					})}
-				</button>
-			</div>
+						<button
+							type="button"
+							className="auth-shell__alternate"
+							onClick={Logout}
+						>
+							{T("logout", {
+								defaultValue: "Sign Out",
+							})}
+						</button>
+					</>
+				}
+			/>
 		);
 	}
 
 	// Not authenticated, not loading - redirect is in progress
 	return (
-		<div className="auth-shell__report" role="status">
-			<p className="auth-shell__status">
-				{T("auth.signIn.redirectingStatus", {
-					defaultValue: "REDIRECTING",
-				})}
-			</p>
-
-			<p className="auth-shell__report-sentence">
-				{T("redirecting", {
-					defaultValue: "Redirecting to sign in...",
-				})}
-			</p>
-
-			<a href="/" className="auth-shell__alternate">
-				{T("auth.signIn.leave", {
-					defaultValue: "Back to the editor",
-				})}
-			</a>
-		</div>
+		<DynamicStateReport
+			Label={T("auth.signIn.redirectingStatus", {
+				defaultValue: StateLabel.Loading,
+			})}
+			Tone="ink"
+			Loading
+			Sentence={T("redirecting", {
+				defaultValue: "Redirecting to sign in...",
+			})}
+			Action={
+				<a href="/" className="auth-shell__alternate">
+					{T("auth.signIn.leave", {
+						defaultValue: "Back to the editor",
+					})}
+				</a>
+			}
+		/>
 	);
 };

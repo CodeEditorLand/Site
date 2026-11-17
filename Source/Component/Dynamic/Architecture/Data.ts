@@ -1,17 +1,29 @@
 /**
  * Data - every label, family and derivation the architecture record prints.
  *
- * The band has one job: name the sixteen records and say, in each record's own
- * words, what it does. Nothing here paraphrases a description - the body of
- * every entry is the string `home:architecture.*` already carries, and the only
- * text this module authors is the lead record's line, which is assembled from
- * the fields of `Source/Content/Record/Land.ts` (see `Lead`).
+ * The band has one job: name the elements and say, in each one's own words,
+ * what it does. Nothing here paraphrases a description - the body of every
+ * printed entry is the string `home:architecture.*` already carries, and the
+ * only text this module authors is the lead line, which is assembled from the
+ * fields of `Source/Content/Record/Land.ts` (see `LeadLine`).
  *
- * Three tables live here rather than in the template:
+ * **The seven-element budget.** `DesignSystem-Grammar.md` §8 gives this layer
+ * "seven elements max, one short record each". The set is sixteen - Land plus
+ * fifteen elements - so the layer prints seven records and files the other
+ * eight: `Featured` names the seven, `FiledOf` returns the rest as an index
+ * strip of documentation and repository links (`DesignSystem-Pages.md` §1:
+ * "one Archive Index of element records, not a card wall"). Land is not one of
+ * the seven: it is the product, its record is the hero (`# LAND_01`), and its
+ * one-line statement is the band's lead line.
  *
- * - `Families` - the grouping. Every name in it is one of the sixteen records,
- *   and every record appears exactly once, so the grid cannot lose a record to
- *   an off-by-one and cannot print one twice.
+ * Five tables live here rather than in the template:
+ *
+ * - `Featured` - the seven records the layer prints, in the order it prints
+ *   them: the runtime path the hero's claim asserts, then the three services
+ *   that make that claim true.
+ * - `Families` - the stack grouping. Every name in it is one of the fifteen
+ *   records, and every record appears exactly once, so the grouping cannot lose
+ *   a record to an off-by-one and cannot print one twice.
  * - `ElementDocPath` - the documentation route per element. The fallback is the
  *   site's own naming rule (`/Doc/<lowercase name>`), which is why the map only
  *   lists the elements whose page is spelled differently.
@@ -20,6 +32,10 @@
  *   standard's emoji cell), corroborated by the per-element doc pages in
  *   `Source/Content/doc/*.md`. `◎` (U+25CE) is the spec's neutral functional
  *   symbol for a name with no emoji of its own.
+ * - `DocOf`/`SourceOf` - the two destinations a filed record keeps: its
+ *   documentation page and its repository (`EntryOf`'s `href` and `source`).
+ *   Both survive the move out of the printed set, so no element loses a link
+ *   when it stops being a record.
  */
 import { Air } from "../../../Content/Record/Air.js";
 import { Cocoon } from "../../../Content/Record/Cocoon.js";
@@ -43,8 +59,11 @@ import type Item from "../Interface/Item/Testimonial.js";
 
 import type { ElementEntry, Family } from "./Type.js";
 
-/** The band's own words. A kicker is structure, not copy: it names the section. */
-export const Kicker = "/WHAT RUNS";
+/** The band's series marker and route. Structure, not copy. */
+export const Kicker = "# CLASSIFICATION_01\u2001/WHAT RUNS";
+
+/** The strip that files the elements the layer does not print. */
+export const FiledLabel = "ALSO FILED";
 
 /**
  * The sixteen records, keyed by the name the content uses for them. The record
@@ -145,28 +164,84 @@ export const Families: readonly Family[] = [
 ];
 
 /**
- * The lead record: the product itself.
+ * The lead line: the product's own one-sentence statement.
  *
  * `Source/Content/Record/Land.ts` files Land under `Category: "Product"` rather
  * than `"Element"`, and it carries no `home:architecture.land.description` -
- * there is no `land` key in the content, and no `/Doc/land` page. So the body
+ * there is no `land` key in the content, and no `/Doc/land` page. So the line
  * below is assembled from the record's own fields and adds no claim of its own:
  * `Stamp` gives Rust + Tauri and no Electron, `Route` gives VS Code
  * compatibility with unmodified extensions, `Program` and `Metadata.TARGET`
- * give native and cross-platform, and `Metadata.LICENSE` gives CC0. The marker,
- * the chips and the repository link are read from the record verbatim.
+ * give native and cross-platform, and `Metadata.LICENSE` gives CC0.
+ *
+ * It is a line and not a record because Land is not one of the seven elements
+ * the layer prints: the product's record is the hero (`# LAND_01`), one layer
+ * up, and printing it again here would be the second record of the same
+ * subject on one page.
  */
-export const Lead: ElementEntry = {
-	index: Land.Index,
-	name: "Land",
-	glyph: GlyphOf("Land"),
-	chips: Land.Stamp ?? [],
-	body:
-		"The product the fifteen elements below compose: Rust and Tauri with no " +
-		"Electron, VS Code compatibility with unmodified extensions, native across " +
-		"macOS, Windows and Linux, under CC0.",
-	source: Land.Href,
+export const LeadLine =
+	"The product the elements compose: Rust and Tauri with no Electron, " +
+	"VS Code compatibility with unmodified extensions, native across macOS, " +
+	"Windows and Linux, under CC0.";
+
+/**
+ * The seven records the layer prints, in the order it prints them.
+ *
+ * The first four are the runtime path the hero's claim asserts - Mountain →
+ * Cocoon → Sky → Wind, the same four the proof band's rail names - and the last
+ * three are the services that make that claim true across the stack: Vine
+ * carries the typed contract between elements, Grove hosts Rust and WASM
+ * extensions in a Wasmtime sandbox, and Air runs the background work outside
+ * the main window. They are the seven the page's own release manifest calls the
+ * active path.
+ */
+export const Featured: readonly string[] = [
+	"Mountain",
+	"Cocoon",
+	"Sky",
+	"Wind",
+	"Vine",
+	"Grove",
+	"Air",
+];
+
+/**
+ * The seven records, in `Featured`'s order.
+ *
+ * A name the content does not carry is skipped rather than printed empty: the
+ * band renders what it is handed.
+ */
+export const FeaturedOf = (Items: readonly Item[]): readonly ElementEntry[] => {
+	const ByName = new Map(Items.map((Item) => [Item.Author, Item]));
+
+	return Featured.map((Name) => ByName.get(Name))
+		.filter((Found): Found is Item => Found !== undefined)
+		.map(EntryOf);
 };
+
+/**
+ * The elements the layer files instead of printing, grouped by stack family and
+ * in the content's own order inside each family.
+ *
+ * They are not dropped: the strip prints each one's name against its
+ * documentation page, and its `SOURCE` against its repository, so the eight
+ * keep both links they had as records. The grouping is the same reading of the
+ * descriptions `Families` already carries, and a family whose records are all
+ * printed is not returned at all - an empty heading is not an index.
+ */
+export const FiledGroupsOf = (
+	Items: readonly Item[],
+): readonly {
+	readonly label: string;
+	readonly records: readonly ElementEntry[];
+}[] =>
+	Families.map((Group) => ({
+		label: Group.label,
+
+		records: FamilyEntriesOf(Group, Items).filter(
+			(Record) => !Featured.includes(Record.name),
+		),
+	})).filter((Group) => Group.records.length > 0);
 
 /**
  * One content item as a record.

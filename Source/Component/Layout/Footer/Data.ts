@@ -53,9 +53,11 @@ export const FooterData = (T: FooterTranslate): FooterContent => ({
 
 		{
 			key: T("footer:record.support.key", { defaultValue: "SUPPORT" }),
+			// U+2001 em quad: the only separator the grammar allows between two
+			// values in one compact label (`DesignSystem-Grammar.md` §3).
 			value: `${T("footer:record.support.nlnet", {
 				defaultValue: "NLNET",
-			})} · ${T("footer:record.support.ngi", { defaultValue: "NGI0" })}`,
+			})}\u2001${T("footer:record.support.ngi", { defaultValue: "NGI0" })}`,
 		},
 
 		{

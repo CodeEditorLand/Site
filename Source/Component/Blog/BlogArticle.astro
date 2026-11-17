@@ -1,0 +1,101 @@
+---
+/**
+ * BlogArticle - the reading surface an article is read on.
+ *
+ * The shell owns four things an article must not re-decide in markdown:
+ *
+ * - **One `h1`.** The title is the page's only level-one heading. The article's
+ *   markdown therefore opens at `##`: a file that carries its own `# ` line
+ *   produces a second `h1` the moment the shell renders the title, and two
+ *   level-one headings on one page is the defect this shell exists to prevent.
+ * - **The metadata as a ledger.** Published, reading time, author and tags are
+ *   facts with keys, so they render as `RecordLedger` rows rather than a strip
+ *   of pills: a key column can be scanned, and a pill row cannot. The ledger is
+ *   the block's own - this file derives no row and invents no value.
+ * - **One measure.** The body is capped at `72ch` and the opening at `62ch`, so
+ *   the standfirst ends before the prose does and neither runs the full width of
+ *   the container. The container itself is `band-inner`, the same gutters every
+ *   band on the site uses, so an article lines up with the index that led to it.
+ * - **The contents list.** `toc` is `null` for an article below the heading
+ *   floor, and a `null` contents list renders no nav at all - never an empty one.
+ *
+ * The body is `.prose-flow`: the site's one paragraph rhythm. The markdown's own
+ * elements are styled in this component's partial, except the code blocks, which
+ * the markdown pipeline renders and this surface deliberately does not restyle.
+ *
+ * No script and no hydration directive. The diagram renderer, when an article
+ * needs one, is the page's to mount.
+ */
+import ContactBreadcrumb from "../Contact/ContactBreadcrumb.astro";
+import RecordLedger from "../Record/RecordLedger.astro";
+
+import type { LedgerRow } from "../Record/Type.js";
+import type { BlogToc, BlogTrailItem } from "./Type.js";
+
+interface Props {
+	/** `/BLOG` - the section this article belongs to, printed verbatim. */
+	kicker: string;
+
+	/** The article's `title`. The page's only `h1`. */
+	title: string;
+
+	/** The article's `summary`, at standfirst weight. */
+	summary: string;
+
+	/** Published, reading time, author, tags - in the order they are read. */
+	rows: readonly LedgerRow[];
+
+	/** The article's `##` headings, or `null` below the floor. */
+	toc?: BlogToc | null;
+
+	/** The trail above the article. The last crumb is this page. */
+	trail: readonly BlogTrailItem[];
+
+	/** The way back to the index, at the foot of the article. */
+	backLabel: string;
+
+	/** Its target. */
+	backHref: string;
+}
+
+const { kicker, title, summary, rows, toc, trail, backLabel, backHref } =
+	Astro.props;
+---
+
+<article class="blog-article">
+	<ContactBreadcrumb trail={trail} class="blog-article__trail" />
+
+	<header class="blog-article__head">
+		<p class="blog-article__kicker">{kicker}</p>
+		<h1 class="blog-article__title">{title}</h1>
+		<p class="blog-article__standfirst">{summary}</p>
+		<div class="blog-article__ledger">
+			<RecordLedger rows={rows} />
+		</div>
+	</header>
+
+	{
+		toc ? (
+			<nav class="blog-article__toc" aria-label={toc.label}>
+				<p class="blog-article__toc-label">{toc.label}</p>
+				<ol class="blog-article__toc-list">
+					{toc.items.map((Item) => (
+						<li class="blog-article__toc-item">
+							<a class="blog-article__toc-link" href={Item.href}>
+								{Item.label}
+							</a>
+						</li>
+					))}
+				</ol>
+			</nav>
+		) : null
+	}
+
+	<div class="blog-article__body prose-flow">
+		<slot />
+	</div>
+
+	<p class="blog-article__back">
+		<a href={backHref}>{backLabel}<span aria-hidden="true"> ←</span></a>
+	</p>
+</article>

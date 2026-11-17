@@ -28,8 +28,14 @@ import type Tier from "../Interface/Tier/Pricing.js";
 
 import type { Phase, PhaseRow } from "./Type.js";
 
-/** The band's marker. Structure, not copy: it names the section. */
-export const Kicker = "/ROADMAP";
+/** The band's series marker and route. Structure, not copy. */
+export const Kicker = "# CONDITIONS_01\u2001/RELEASE STATE";
+
+/** The manifest's own record label, printed in its header row. */
+export const ManifestLabel = "/LAND";
+
+/** The one-line legend under the manifest's status row. */
+export const ManifestNote = "/TWO STATES\u2001ONE OFFER";
 
 /**
  * The phase vocabulary, keyed by the tier identifier the content uses.

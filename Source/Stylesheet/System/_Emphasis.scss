@@ -1,25 +1,31 @@
+@use "Mixin" as *;
+
 /* ─── EMPHASIS TIERS ───────────────────────────────────────────────────── */
+
+/* Three tiers, and only three - the design system has no fourth (DESIGN.md
+   §4.3; §5 C8). All three are flat: radius 0, no shadow, no gradient
+   (DesignSystem.md §6.1). */
 
 /* .emphasis-quiet - hairline rule only, no fill. The default weight. */
 .emphasis-quiet {
-	border: 1px solid var(--Border);
-	border-radius: 0;
-	box-shadow: none;
+	@include hairline;
+	@include flat;
 }
 
-/* .emphasis-standard - card surface plus hairline. */
+/* .emphasis-standard - the white information box: card surface plus hairline. */
 .emphasis-standard {
 	background: var(--Card);
-	border: 1px solid var(--Border);
-	border-radius: 0;
-	box-shadow: none;
+	@include hairline;
+	@include flat;
 }
 
-/* .emphasis-expressive - ink-inverted. ONE PER BAND. */
+/* .emphasis-expressive - the ink-inverted ACTION, and nothing else. ONE PER
+   ARTIFACT, only on the thing the user clicks: never a decoration, never an
+   address block, never a second one in the region (DESIGN.md §5 A6; §7
+   DR-12/DR-13/DR-16). The seal and the evidence image are the other
+   expressive pair, and they are not this class. */
 .emphasis-expressive {
-	background: var(--Primary);
-	color: var(--PrimaryForeground);
+	@include ink-invert;
 	border: 1px solid var(--Primary);
-	border-radius: 0;
-	box-shadow: none;
+	@include flat;
 }

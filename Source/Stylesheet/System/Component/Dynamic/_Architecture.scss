@@ -79,3 +79,14 @@
 	outline: 1px solid var(--Primary);
 	outline-offset: 0.15em;
 }
+
+/* The record sits on a jelly-card: the canvas is the surface now, so the block
+   stops painting a second one - its own hairline and fill - and keeps its
+   anatomy, padding and ink. The inline-start edge is left alone because the
+   lead record's left rule is structure, not surface. */
+jelly-card > .record-entry.architecture-entry {
+	background: transparent;
+
+	border-block: 0;
+	border-inline-end: 0;
+}

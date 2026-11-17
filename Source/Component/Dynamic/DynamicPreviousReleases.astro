@@ -10,8 +10,12 @@
  *
  * Two states, both written out. With releases, one matrix row each: the version
  * as the row label, then when it shipped, on what, and what changed. Without
- * releases - the state today - one sentence, because an empty table is a blank
- * box and a blank box is a defect (BRIDGE §7).
+ * releases - the state today - §7's `RECORD: EMPTY` label followed by one
+ * sentence, because an empty table is a blank box and a blank box is a defect
+ * (DESIGN.md §3.3; `DesignSystem-Components.md` §7).
+ *
+ * The empty state is text, not a card: a box with no claim in it would be the
+ * defect it is meant to avoid, and there is nothing here to put in one.
  */
 import RecordMatrix from "../Record/RecordMatrix.astro";
 
@@ -26,11 +30,14 @@ interface Props {
 	/** The matrix columns after the version column. */
 	columns: readonly MatrixColumn[];
 
+	/** §7's label for a record with no rows: `RECORD: EMPTY`. */
+	label: string;
+
 	/** What an empty release list says instead of rendering nothing. */
 	empty: string;
 }
 
-const { releases, columns, empty } = Astro.props;
+const { releases, columns, label, empty } = Astro.props;
 
 /** One matrix row per release: the version labels the row. */
 const Rows = releases.map((release) => ({
@@ -41,7 +48,10 @@ const Rows = releases.map((release) => ({
 
 {
 	releases.length === 0 ? (
-		<p class="download-releases__empty">{empty}</p>
+		<div class="download-releases__empty">
+			<p class="download-releases__label">{label}</p>
+			<p class="download-releases__sentence">{empty}</p>
+		</div>
 	) : (
 		<RecordMatrix columns={columns} rows={Rows} />
 	)

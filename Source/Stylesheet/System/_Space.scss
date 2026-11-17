@@ -1,3 +1,5 @@
+@use "Mixin" as *;
+
 /* .prose-flow - one spacing mechanism for a prose block. Every child after the
    first is separated by --space-reading, and the block itself contributes no
    margin, so it cannot compound with a parent's gap or a child's mb-*. */
@@ -12,28 +14,32 @@
 	margin-block-start: var(--space-group);
 }
 
-/* .figure-caption - the caption under a figure. Measure-capped so a caption
-   never runs wider than a comfortable line. */
+/* .figure-caption - the caption under a figure. Measure-capped at the opening
+   measure, so a caption never runs wider than the prose it belongs to. */
 .figure-caption {
 	font-size: var(--type-caption);
 	line-height: var(--type-caption-line);
 	color: var(--MuteForeground);
-	max-width: 62ch;
+	max-width: var(--MeasureOpening);
 }
 
 /* ─── BANDS ────────────────────────────────────────────────────────────── */
 
-/* .band - one subject. Opened by a hairline rule and --space-chapter, so a
-   band boundary is never a spacer div. */
+/* .band - one subject, at page level only. A band is a chapter separator
+   between two different artifacts on a marketing surface: opened by a hairline
+   rule and --space-chapter, so a boundary is never a spacer div. It is never
+   the default wrapper of every section, and never the spacing between two
+   artifacts that belong to one page subject - those take --space-group
+   (DESIGN.md §2.3, §2.7; §5 A4). */
 .band {
 	width: 100%;
 	padding-block: var(--space-chapter);
 	border-top: 1px solid var(--Border);
 }
 
-/* .band--paper - white card surface. .band--canvas - the creme canvas.
-   Alternation carries the rhythm: never two paper bands in a row, never
-   three canvas bands in a row. */
+/* .band--paper - the white information box. .band--canvas - the creme field.
+   A surface follows the artifact, never a rhythm: these two classes never
+   alternate down a page (DESIGN.md §1.2; §5 A5). */
 .band--paper {
 	background: var(--Card);
 }
@@ -51,8 +57,6 @@
 /* .band-inner - the one inner container. Same max width and gutters on every
    page, so no band re-invents its own container. */
 .band-inner {
-	max-width: 72rem;
-	margin-inline: auto;
-	padding-inline: clamp(1rem, 4vw, 2.5rem);
+	@include band-inner;
 	width: 100%;
 }

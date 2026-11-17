@@ -80,21 +80,16 @@ const RouteOf = (code: IncomeCode): string =>
  */
 const Ready: Record<IncomeCode, string> = {
 	REACH: "your account email and the export format you want",
-	AMEND:
-		"the field to correct, its current value and the value it should hold",
+	AMEND: "the field to correct, its current value and the value it should hold",
 	ERASE: "your account ID - deletion is permanent and cannot be undone",
-	PAUSE:
-		"your grounds for restriction and which processing activities to limit",
+	PAUSE: "your grounds for restriction and which processing activities to limit",
 	QUERY: "the processing activities you object to and your grounds",
 	LEAVE: "which consent you are withdrawing",
-	LODGE:
-		"the nature of the complaint, the outcome you want and whether you contacted us before",
+	LODGE: "the nature of the complaint, the outcome you want and whether you contacted us before",
 	SCOUT: "your platform, the category of failure and steps to reproduce",
 	HAILS: "a subject and your message",
-	GUARD:
-		"the affected component, the vulnerability type and steps to reproduce; anonymous reports are accepted",
-	CLAIM:
-		"the copyrighted work, where the infringing material sits and the two statutory statements",
+	GUARD: "the affected component, the vulnerability type and steps to reproduce; anonymous reports are accepted",
+	CLAIM: "the copyrighted work, where the infringing material sits and the two statutory statements",
 	LEGAL: "the nature of the enquiry, a subject line and the facts",
 	DEALS: "company name, team size, use case and evaluation timeline",
 };
@@ -149,7 +144,15 @@ export const ContactFamilies: readonly ContactFamily[] = [
 			"Seven routes under the GDPR, all answered by privacy@editor.land within 30 days.",
 		tone: "flush",
 		requests: (
-			["REACH", "AMEND", "ERASE", "PAUSE", "QUERY", "LEAVE", "LODGE"] as const
+			[
+				"REACH",
+				"AMEND",
+				"ERASE",
+				"PAUSE",
+				"QUERY",
+				"LEAVE",
+				"LODGE",
+			] as const
 		).map(EntryOf),
 	},
 	{

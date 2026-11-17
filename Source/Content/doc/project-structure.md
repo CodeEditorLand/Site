@@ -12,6 +12,10 @@ element is an independent Git repository (submodule) on its own `Current`
 branch. The repository root holds build orchestration scripts, environment file
 templates, and workspace configuration files for Cargo and pnpm.
 
+**Where this sits in the path:** read this page after
+[Installation](/Doc/installation) and [Quickstart](/Doc/quickstart) - it is the
+map of the tree those pages build, and the naming rules that keep it navigable.
+
 ---
 
 ## Top-Level Layout 📂

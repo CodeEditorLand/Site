@@ -11,11 +11,11 @@
 			"heading": "Sign in",
 			"sentence": "Sign in to your Land workspace.",
 			"action": "Create an account",
-			"checkingStatus": "CHECKING SESSION",
-			"signedInStatus": "SIGNED IN",
+			"checkingStatus": "STATUS: LOADING",
+			"signedInStatus": "STATUS: ACTIVE",
 			"signedInSentence": "You are signed in. This page continues to your dashboard.",
-			"failedStatus": "SIGN-IN FAILED",
-			"redirectingStatus": "REDIRECTING",
+			"failedStatus": "STATUS: INTERRUPTED",
+			"redirectingStatus": "STATUS: LOADING",
 			"leave": "Back to the editor"
 		},
 		"signUp": {
@@ -23,30 +23,30 @@
 			"heading": "Create an account",
 			"sentence": "Account creation is not open yet while the portal flow is being finished.",
 			"action": "Sign in",
-			"closedStatus": "REGISTRATION CLOSED"
+			"closedStatus": "STATUS: UNAVAILABLE"
 		},
 		"forgotPassword": {
 			"kicker": "/FORGOT PASSWORD",
 			"heading": "Reset your password",
 			"sentence": "Enter your email and we'll send a secure reset link to your inbox.",
 			"action": "Back to sign in",
-			"sentStatus": "RESET LINK SENT"
+			"sentStatus": "STATUS: READY"
 		},
 		"resetPassword": {
 			"kicker": "/RESET PASSWORD",
 			"heading": "Set a new password",
 			"sentence": "Enter your new password below.",
 			"action": "Back to sign in",
-			"checkingStatus": "CHECKING LINK",
-			"expiredStatus": "LINK EXPIRED",
-			"updatedStatus": "PASSWORD UPDATED"
+			"checkingStatus": "STATUS: LOADING",
+			"expiredStatus": "STATUS: UNAVAILABLE",
+			"updatedStatus": "STATUS: READY"
 		},
 		"oauthSuccess": {
 			"kicker": "/OAUTH CALLBACK",
 			"heading": "Sign-in result",
 			"sentence": "This page reports what the identity provider returned for your sign-in attempt.",
 			"completingSentence": "Your identity provider has returned you to Land. This page continues once the session is written.",
-			"signedInStatus": "SIGNED IN"
+			"signedInStatus": "STATUS: ACTIVE"
 		},
 		"verify": {
 			"kicker": "/VERIFY",
@@ -331,6 +331,9 @@
 			"telemetry": "Three paths, one default: nothing leaves the process unless you build it in and point it somewhere.",
 			"settings": "Two settings are planned; the account page behind the third row is live.",
 			"partners": "The organisations that host and fund the work.",
+			"status": {
+				"account": "Who is signed in is client-side state; the account band asks the identity provider for it."
+			},
 			"access": {
 				"footnote": "Every tier is described on the portal page; this rail only shows which route your session uses."
 			},
@@ -348,6 +351,10 @@
 				"noEmail": "No email on this account. The provider did not return one.",
 				"noDate": "Not recorded. The provider returned no update date for this account.",
 				"actions": "Manage opens your account page. Sign Out ends the Auth0 session and clears the local token."
+			},
+			"editor": {
+				"scan": "Opens this page in local mode and probes the Air Daemon on ws://localhost:7979 and ws://localhost:7878, three seconds per port.",
+				"connect": "Opens the portal, where each authentication tier's sign-in route is listed."
 			}
 		}
 	},

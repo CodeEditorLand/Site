@@ -22,7 +22,8 @@
 //   .contact-form__checkbox         the checkbox itself
 //   .contact-form__actions          the three ways to send
 //   .contact-form__actions-label    the question above them
-//   .contact-form__action           one way to send
+//   .contact-form__action           one way to send (structure only)
+//   .contact-form__action--plain   a way to send with no emphasis tier
 //   .contact-form__action--destructive  the same, in --Destruct ink
 //   .contact-form__action-text      the action's title and note
 //   .contact-form__action-title     what the action does
@@ -34,8 +35,10 @@
 // Three decisions worth knowing:
 //
 // - A control sits on `--Card` with a hairline and square corners. The canvas is
-//   creme, so a white field is the one place the eye can type; the form has no
-//   card around it, because a card behind the fields would hide exactly that.
+//   creme, so a white field is the one place the eye can type. The field block
+//   sits on one `jelly-card` - HEAD's card around the fields, restored as a
+//   design-system surface (`DESIGN.md` §1.7, §6.5) - and a field is told apart
+//   from that card by its hairline, never by a second fill.
 // - The primary action is the published `.emphasis-expressive` tier, and it is
 //   the only expressive element in the form. A destructive request keeps the
 //   tier and swaps its ink to `--Destruct`, so ERASE still reads as the request
@@ -204,27 +207,36 @@
 	margin: 0;
 }
 
-// A target is as wide as the form, and carries its own padding: the tier
-// publishes a surface, this rule publishes the box around it.
+// A target is as wide as the form, and carries its own padding. This rule is
+// structure only - display, padding, type, cursor - and deliberately declares no
+// `background`, `color` or `border`, because the action's surface belongs to the
+// emphasis tier it carries. `.emphasis-expressive` is `@use`d before this
+// directory in `System.scss`, so any surface declared here would win the tie on
+// equal specificity and flatten the tier to a plain box.
 .contact-form__action {
 	display: flex;
 	align-items: flex-start;
 	gap: var(--space-reading);
 	width: 100%;
 	padding: var(--space-reading) var(--space-group);
-	background: transparent;
-	color: var(--Foreground);
 	font-family: var(--FontMono);
 	font-size: var(--type-body);
 	line-height: var(--type-body-line);
 	text-align: left;
 	text-decoration: none;
 	cursor: pointer;
+}
+
+// The two secondary ways to send carry no emphasis tier, so they take their
+// surface here: transparent fill, hairline, full ink.
+.contact-form__action--plain {
+	background: transparent;
+	color: var(--Foreground);
 	@include hairline;
 }
 
-.contact-form__action:hover,
-.contact-form__action:focus-visible {
+.contact-form__action--plain:hover,
+.contact-form__action--plain:focus-visible {
 	border-color: var(--Primary);
 }
 

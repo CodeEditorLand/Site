@@ -9,9 +9,14 @@
  *
  * The four stages are the page's own four steps, in the page's own order, with
  * the page's own titles. The command blocks are the two `<pre>` blocks the page
- * already carried, in the stages that own them. No stage is added to match a
- * generic "fork, build, test, ship" template: this page does not describe a
- * test step, and inventing one would be inventing a procedure.
+ * already carried, in the stages that own them.
+ *
+ * The test step is the page's own sentence, promoted to a step: `Ways to
+ * Contribute` already tells a reader "Write tests, reproduce reported bugs, or
+ * help triage open issues", and the sequence the page describes (fork, build,
+ * change, submit) only reads as a sequence once the reader knows what to run
+ * before opening the pull request. It carries no command block, because the page
+ * carries no test command - inventing one would be inventing a procedure.
  */
 import type { ReadingIndexItem } from "../../../Component/Reading/Type.js";
 import type { LedgerRow, Stage } from "../../../Component/Record/Type.js";
@@ -83,6 +88,13 @@ export const Process: readonly ProcessRow[] = [
 	},
 	{
 		index: "04",
+		titleKey: "common.contributing.stepTest.title",
+		title: "Test",
+		lineKey: "common.contributing.stepTest.description",
+		line: "Write tests, reproduce reported bugs, or help triage open issues.",
+	},
+	{
+		index: "05",
 		titleKey: "common.contributing.step4.title",
 		title: "Submit a Pull Request",
 		lineKey: "common.contributing.step4.description",

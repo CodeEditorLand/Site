@@ -38,6 +38,11 @@
 
 		--AccentForeground: #ffffff;
 
+		/* The seal's detail ink - the one permitted second accent, inside the
+		   seal only, never a text or chrome colour (design_system.md
+		   §Decorative accent, §Design tokens accent.detail_ink). */
+		--AccentDetail: #d6b947;
+
 		--Destruct: #dc2626;
 
 		--DestructForeground: #ffffff;
@@ -781,11 +786,14 @@
 			"IBM Plex Mono", "JetBrains Mono", "Fira Code", ui-monospace,
 			"SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
 
-		/* Daylight Field Record: dramatic 4-scale type system */
-		--TypeScaleXS: 0.75rem;
-		--TypeScaleS: 0.875rem;
-		--TypeScaleL: clamp(2rem, 5vw, 3.25rem);
-		--TypeScaleXL: clamp(3rem, 8vw, 4.5rem);
+		/* The documented tiers - three usable after the 2026-09-11 no-XS
+		   decision (DesignSystem.md §5). Nothing on the site renders below
+		   13px, so no --TypeScaleXS exists. These are HEAD's own tokens
+		   (Base.css) and stay the source of the two large tiers: the role
+		   layer below references them, so a tier cannot drift from a role. */
+		--TypeScaleS: 0.875rem; /* 14px - the S tier, 13-18px */
+		--TypeScaleL: clamp(2rem, 5vw, 3.25rem); /* 32-52px */
+		--TypeScaleXL: clamp(3rem, 8vw, 4.5rem); /* 48-72px */
 
 		/* Shim Color System */
 		--land-shim-low: #ff6b35;
@@ -832,27 +840,79 @@
 	}
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+ * ROLE LAYER - the design system's own scale, restated
+ *
+ * Every value below traces to a line in the design documents: DesignSystem.md
+ * §4 (spacing) and §5 (type scale + weight); design_system.md §Spacing tokens
+ * (4/8/12/20/32/52/84 px) and §Type measurements. The names are API - the
+ * Tailwind theme, every page class and every partial read them - so a name
+ * changes only together with every consumer.
+ *
+ * TYPE - three usable tiers, hard jumps between them, one weight ceiling of
+ * 500 and a 13px floor (DesignSystem.md §5; DESIGN.md §2.4):
+ *   XL 48-72px   the page's one claim, a runtime stamp, a date
+ *   L  32-52px   a route command, a record title, a functional `h1`
+ *   S  13-18px   labels, metadata, credits, prose, code, standfirsts
+ * There is no tier between S and L: a heading that is not XL or L is S with
+ * tracking. The programme's seven-role ladder is gone.
+ * ═══════════════════════════════════════════════════════════════════════════ */
 :root {
-	/* Type roles. The `-line` companions are unitless line-heights, so they
-	   inherit and scale with whatever size the role resolves to. */
-	--type-display: clamp(3.25rem, 7vw, 6rem);
+	/* XL - clamp(3rem, 8vw, 4.5rem) = 48-72px, line-height 0.95-1.02 and
+	   display tracking -0.02em (DesignSystem.md §5; HEAD --TypeScaleXL). */
+	--type-display: var(--TypeScaleXL);
 	--type-display-line: 0.95;
-	--type-section: clamp(1.875rem, 3.4vw, 2.75rem);
+
+	/* L - clamp(2rem, 5vw, 3.25rem) = 32-52px, line-height 1.05-1.15
+	   (DesignSystem.md §5; HEAD --TypeScaleL). */
+	--type-section: var(--TypeScaleL);
 	--type-section-line: 1.05;
-	--type-sub: clamp(1.25rem, 1.8vw, 1.5rem);
-	--type-sub-line: 1.25;
-	--type-body: clamp(1rem, 0.3vw + 0.95rem, 1.0625rem);
+
+	/* S at its ceiling, 18px: a standfirst, not a fourth tier. Its step under
+	   a claim is muted ink and the blank band, not size (DESIGN.md §9 Q4). */
+	--type-sub: 1.125rem;
+	--type-sub-line: 1.4;
+
+	/* S - running prose at 16px, line-height 1.25-1.65 (DESIGN.md §2.4). */
+	--type-body: 1rem;
 	--type-body-line: 1.65;
+
+	/* S at its floor, 13px: a figure caption or a provenance line. */
 	--type-caption: 0.8125rem;
 	--type-caption-line: 1.5;
-	--type-meta: 0.6875rem;
-	--type-meta-line: 1.4;
+
+	/* The 13px floor: /LABEL kickers, # markers, table heads. Metadata
+	   line-height is 1.1-1.25 (DesignSystem.md §5). This role rendered at 11px
+	   before the restatement, which the no-XS decision forbids. */
+	--type-meta: 0.8125rem;
+	--type-meta-line: 1.15;
+
+	/* S - commands, config blocks, transcripts at 14px. */
 	--type-code: 0.875rem;
 	--type-code-line: 1.55;
 
-	/* Spacing roles. */
-	--space-tight: 0.5rem;
-	--space-reading: 0.875rem;
-	--space-group: 2.5rem;
-	--space-chapter: clamp(4rem, 7vw, 7rem);
+	/* SPACING - one role per relationship, on the documented scale
+	   (design_system.md §Spacing tokens 4/8/12/20/32/52/84 px; the 4px grid of
+	   DesignSystem.md §4). A value that is on neither scale is residue. */
+	--space-tight: 0.5rem; /* 8px  - a label to its value */
+	--space-reading: 1rem; /* 16px - paragraph to paragraph */
+	--space-group: 2rem; /* 32px - an explanation to its figure */
+	--space-blank: 3.25rem; /* 52px - the card's mandatory blank band */
+	--space-chapter: 5.25rem; /* 84px - a page-level chapter boundary only */
+
+	/* GRID AND MEASURE - the container is HEAD's max-w-6xl (72rem), the gutter
+	   is HEAD's own clamp, and a prose surface caps its body at 72ch and its
+	   opening at 62ch (DESIGN.md §2.2, decision X10). */
+	--Gutter: clamp(1rem, 4vw, 2.5rem);
+	--Measure: 72ch;
+	--MeasureOpening: 62ch;
+
+	/* JELLY UI - the design system's surface family (DESIGN.md §1.7). The
+	   twenty-two radius properties are pinned to 0 in one place, _Global.scss,
+	   together with the element-level `!important` pins; these are the colour
+	   properties a bare element would otherwise take from the vendored :host
+	   defaults. A fill is per-instance, never sitewide: a bare jelly-button
+	   still carries its own --jelly-fill (DesignSystem-Components.md §2). */
+	--jelly-label: var(--Foreground);
+	--jelly-ring: var(--Ring);
 }

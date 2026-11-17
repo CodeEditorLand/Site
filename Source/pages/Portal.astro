@@ -32,7 +32,7 @@ const Page = PortalPage(T);
 	 Auth0-aware DynamicAuthHeader does not place a "Sign In" link on
 	 the auth-selection page, and more importantly does not instantiate
 	 Auth0AccountGate (which auto-calls loginWithRedirect() on mount). -->
-	<Header client:load Mode="functional" />
+	<Header client:load Mode="functional" slot="Header" />
 
 	<SurfaceShell
 		index={Page.index}
@@ -47,7 +47,7 @@ const Page = PortalPage(T);
 					src="/Evidence/Land/NightGlass-01.png"
 					alt="Rain-speckled glass reflecting a green light at night"
 					caption="Rain-speckled glass reflecting a green light at night."
-					provenance="PORTAL_01 · EVIDENCE"
+					provenance={"PORTAL_01\u2001EVIDENCE"}
 				/>
 			</div>
 		</RecordBand>

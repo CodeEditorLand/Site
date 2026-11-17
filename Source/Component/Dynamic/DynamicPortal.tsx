@@ -787,7 +787,7 @@ const PortalTierRow = ({
 				<Card className="PortalTierCard">
 					<CardHeader className="PortalTierCardHeader">
 						<div className="flex items-center justify-between">
-							<CardTitle className="text-xl">
+							<CardTitle className="type-sub">
 								{Content.Title}
 							</CardTitle>
 							{StatusLabel && (

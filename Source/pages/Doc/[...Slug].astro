@@ -11,17 +11,35 @@ import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
 
 /**
- * One documentation page: the reading shell, then the markdown.
+ * One documentation page: the reading shell, then the markdown on a white card.
  *
+ * `DesignSystem-Pages.md` §5 is the shape: **doc pages read on white cards**.
  * The shell (`DocArticle`) renders the page's single `h1`, the section as its
  * kicker, the frontmatter `description` as the standfirst, an in-page contents
- * list built from this page's own `##` headings, and the body on one measure.
- * The rail (`DocLayout`) is the collection's tree with this page marked.
+ * list built from this page's own `##` headings, and then the body - which sits
+ * on one `jelly-card` surface, the same card the prose carried at HEAD
+ * (`bg-card p-6`), now as the design system's own surface rather than a utility
+ * class. The five custom properties are the ones that card set: `--Card` fill,
+ * radius 0, inherited type, and no padding of its own - the inset belongs to
+ * `.doc-prose` in `System/Component/Doc/_Article.scss`, which is also where the
+ * 72ch measure lives, so the card's edge and the prose's edge are one decision.
+ *
+ * **The metadata strip** (§5: "compact index + `STATUS`/`LAYER`/`SOURCE`/
+ * `COMPAT`/`UPDATED` mono metadata strip above prose") opens the card. It is
+ * built from the collection's own fields - the section is the layer, the entry
+ * id is the source file, `order` is the position - so every value printed is a
+ * fact the build can read. `COMPAT` and `UPDATED` have no field in the `doc`
+ * schema (`Source/content.config.ts` declares title, section, order,
+ * description, navTitle, group), and printing a key with an invented value is
+ * worse than not printing it; they land here the day the schema carries them.
  *
  * The contents list is generated, never hand-written: `BuildDocToc` reads the
  * headings `render()` actually emitted, so an anchor can never disagree with its
  * heading. Pages that carry their own `## Table of Contents` get none from here -
  * two contents lists above one document is worse than one.
+ *
+ * The pager's two links sit on a `jelly-card` each, as at HEAD; the card is the
+ * pager's flex item and the anchor fills it (`_Article.scss`).
  */
 export async function getStaticPaths() {
 	const Entries = await getCollection("doc");
@@ -67,6 +85,25 @@ const Toc = BuildDocToc(
 	T("article.toc", { ns: "doc", defaultValue: "On this page" }),
 );
 
+/**
+ * The page's own provenance, in the mono record grammar: published state, the
+ * section as the layer, the markdown file that renders here, and the page's
+ * `order` - the same number the index sorts on, so a reader can place this page
+ * in the tree without the rail. `GROUP` prints only when the page declares one.
+ * U+2001 EM QUAD separates the items.
+ */
+const PageStrip = [
+	T("strip.published", { ns: "doc", defaultValue: "STATUS: PUBLISHED" }),
+	`${T("strip.layer", { ns: "doc", defaultValue: "LAYER:" })} ${Entry.data.section.toUpperCase()}`,
+	`${T("strip.source", { ns: "doc", defaultValue: "SOURCE:" })} ${Entry.id}.md`,
+	`${T("strip.order", { ns: "doc", defaultValue: "ORDER:" })} ${Entry.data.order}`,
+	...(Entry.data.group
+		? [
+				`${T("strip.group", { ns: "doc", defaultValue: "GROUP:" })} ${Entry.data.group}`,
+			]
+		: []),
+].join("\u2001");
+
 const Home = T("common.breadcrumb.home", { defaultValue: "Home" });
 const Documentation = T("sidebar.title", {
 	ns: "doc",
@@ -80,7 +117,7 @@ const Documentation = T("sidebar.title", {
 	Url={Astro.url.href}
 	lang="en"
 >
-	<Header client:load Mode="functional" />
+	<Header client:load Mode="functional" slot="Header" />
 
 	<DocLayout sections={SidebarSections} activeId={Entry.id}>
 		<DocArticle
@@ -93,8 +130,18 @@ const Documentation = T("sidebar.title", {
 				{ label: Documentation, href: "/Doc" },
 				{ label: Entry.data.title },
 			]}
+			measure={false}
 		>
-			<Content />
+			<jelly-card
+				class="doc-prose"
+				style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
+			>
+				<p class="doc-prose__strip">{PageStrip}</p>
+
+				<div class="doc-article__body doc-prose__body">
+					<Content />
+				</div>
+			</jelly-card>
 		</DocArticle>
 
 		<MermaidFallback />
@@ -103,30 +150,40 @@ const Documentation = T("sidebar.title", {
 			(PrevEntry || NextEntry) && (
 				<nav class="doc-pager" aria-label="Page navigation">
 					{PrevEntry ? (
-						<a
-							class="doc-pager__link doc-pager__link--prev"
-							href={`/Doc/${PrevEntry.id}`}
+						<jelly-card
+							class="doc-pager__card"
+							style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
 						>
-							<span class="doc-pager__label">
-								<span aria-hidden="true">←</span> Previous
-							</span>
-							<span class="doc-pager__title">
-								{PrevEntry.data.title}
-							</span>
-						</a>
+							<a
+								class="doc-pager__link doc-pager__link--prev"
+								href={`/Doc/${PrevEntry.id}`}
+							>
+								<span class="doc-pager__label">
+									<span aria-hidden="true">←</span> Previous
+								</span>
+								<span class="doc-pager__title">
+									{PrevEntry.data.title}
+								</span>
+							</a>
+						</jelly-card>
 					) : null}
 					{NextEntry ? (
-						<a
-							class="doc-pager__link doc-pager__link--next"
-							href={`/Doc/${NextEntry.id}`}
+						<jelly-card
+							class="doc-pager__card doc-pager__card--next"
+							style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
 						>
-							<span class="doc-pager__label">
-								Next <span aria-hidden="true">→</span>
-							</span>
-							<span class="doc-pager__title">
-								{NextEntry.data.title}
-							</span>
-						</a>
+							<a
+								class="doc-pager__link doc-pager__link--next"
+								href={`/Doc/${NextEntry.id}`}
+							>
+								<span class="doc-pager__label">
+									Next <span aria-hidden="true">→</span>
+								</span>
+								<span class="doc-pager__title">
+									{NextEntry.data.title}
+								</span>
+							</a>
+						</jelly-card>
 					) : null}
 				</nav>
 			)

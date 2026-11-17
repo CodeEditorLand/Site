@@ -1,0 +1,349 @@
+// BlogArticle - the reading surface one article is read on.
+//
+// Publishes:
+//   .blog-article                the shell: the page's one container
+//   .blog-article__trail         the breadcrumb
+//   .blog-article__head          kicker, h1, standfirst, ledger
+//   .blog-article__kicker        `/BLOG`, in the meta face and tracked
+//   .blog-article__title         the page's only h1, at --type-section
+//   .blog-article__standfirst    the summary, at --type-sub
+//   .blog-article__ledger        the metadata ledger's slot
+//   .blog-article__toc           the in-page contents list
+//   .blog-article__toc-label     its label, in the meta face
+//   .blog-article__toc-list      the list, two columns above 768px
+//   .blog-article__toc-item      one entry
+//   .blog-article__toc-link      the entry's anchor
+//   .blog-article__body          the prose, on the reading measure
+//   .blog-article__back          the way back to the index
+//
+// Four decisions this file makes:
+//
+// - **The shell owns the container.** `band-inner` gives the article the same
+//   gutters every band on the site uses, so an article lines up with the index
+//   that led to it and with the footer under it. Nothing inside adds a second
+//   gutter.
+// - **Two measures, on purpose.** The opening reads at `--MeasureOpening`
+//   (62ch) and the prose at `--Measure` (72ch): a standfirst is one sentence and
+//   a line of it should be short, while a paragraph is a paragraph. The contents
+//   list follows the prose measure. Both are tokens, so the article cannot drift
+//   from the reading surfaces beside it.
+// - **No bold.** Every heading in the body renders at `font-weight: 500`, the
+//   site's ceiling (`DESIGN.md` §1.4, §5 C1): hierarchy comes from scale,
+//   spacing and tracking, never from weight. `h3` and `h4` carried 600, which is
+//   the one weight the system forbids.
+// - **The body's own elements are styled here, not by a utility class.** The
+//   markdown arrives as bare `h2`/`p`/`ul`/`table`, and this partial is where
+//   they get the site's type roles. Code blocks are the exception and are
+//   deliberately not restyled: the markdown pipeline renders them, and a
+//   `pre` rule here would fight the highlighter's inline styles.
+// - **A rule separates the metadata from the prose.** The ledger ends the
+//   article's opening, and the body opens under a hairline, so the reader can
+//   see where the apparatus stops and the piece starts.
+
+@use "../../Mixin" as *;
+
+.blog-article {
+	@include band-inner;
+
+	padding-block: var(--space-chapter) 0;
+}
+
+.blog-article__trail {
+	margin-block-end: var(--space-group);
+}
+
+/* ─── THE OPENING ───────────────────────────────────────────────────────── */
+
+/* One rhythm owner for the four parts of the opening: kicker, title,
+   standfirst and ledger stack at reading distance, and the ledger alone takes
+   the group gap, because the metadata is a new kind of thing rather than the
+   next line of the sentence above it. */
+.blog-article__head {
+	display: grid;
+	grid-template-columns: 1fr;
+
+	gap: var(--space-reading);
+}
+
+.blog-article__kicker {
+	margin: 0;
+
+	@include mono-meta;
+
+	@include track(0.08em);
+}
+
+.blog-article__title {
+	margin: 0;
+
+	max-width: var(--ContainerTwoExtraLarge);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-section);
+	font-weight: 500;
+	line-height: var(--type-section-line);
+	letter-spacing: -0.02em;
+
+	color: var(--Foreground);
+
+	text-wrap: balance;
+}
+
+.blog-article__standfirst {
+	margin: 0;
+
+	max-width: var(--MeasureOpening);
+
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+
+	color: var(--MuteForeground);
+
+	text-wrap: pretty;
+}
+
+.blog-article__ledger {
+	margin-block-start: calc(var(--space-group) - var(--space-reading));
+
+	max-width: var(--Measure);
+}
+
+/* ─── THE CONTENTS LIST ─────────────────────────────────────────────────── */
+
+.blog-article__toc {
+	margin-block-start: var(--space-group);
+
+	max-width: var(--Measure);
+
+	padding-block: var(--space-reading);
+
+	@include hairline(top);
+
+	@include hairline(bottom);
+}
+
+.blog-article__toc-label {
+	margin: 0;
+
+	@include mono-meta;
+
+	@include track(0.08em);
+}
+
+.blog-article__toc-list {
+	margin: 0;
+	padding: 0;
+
+	list-style: none;
+}
+
+.blog-article__toc-label + .blog-article__toc-list {
+	margin-block-start: var(--space-tight);
+}
+
+.blog-article__toc-item {
+	@include mono-meta;
+
+	margin: 0;
+
+	line-height: var(--type-body-line);
+}
+
+/* The underline itself is the global link rule's. This names only the ink, at
+   muted weight so a contents list reads as apparatus rather than as eight
+   claims, and moves it to --Primary on hover. */
+.blog-article__toc-link {
+	color: var(--MuteForeground);
+}
+
+.blog-article__toc-link:hover {
+	color: var(--Primary);
+}
+
+/* Two columns above 768px: an eleven-heading article would otherwise push the
+   prose most of a screen down. The list flows in document order down the first
+   column and then the second, which is how an index reads. */
+@include bp(768px) {
+	.blog-article__toc-list {
+		columns: 2;
+		column-gap: var(--space-group);
+	}
+
+	.blog-article__toc-item {
+		break-inside: avoid;
+	}
+}
+
+/* ─── THE PROSE ─────────────────────────────────────────────────────────── */
+
+.blog-article__body {
+	margin-block-start: var(--space-group);
+
+	max-width: var(--Measure);
+
+	padding-block-start: var(--space-group);
+
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+
+	@include hairline(top);
+}
+
+/* The global sheet gives every paragraph and heading a bottom margin. Inside a
+   `.prose-flow` that margin is a second rhythm competing with the first, so this
+   surface owns the vertical space outright. */
+.blog-article__body > * {
+	margin-block-end: 0;
+}
+
+.blog-article__body > h2,
+.blog-article__body > h3,
+.blog-article__body > h4 {
+	scroll-margin-block-start: calc(var(--HeaderHeight) + var(--space-tight));
+
+	margin-block-start: var(--space-group);
+	margin-block-end: var(--space-tight);
+
+	text-wrap: balance;
+}
+
+/* The first heading opens the body, so it takes no group gap of its own: the
+   body's own top padding already separates it from the ledger's rule, and a
+   second gap there would double the space above the article's first heading. */
+.blog-article__body > :is(h2, h3, h4):first-child {
+	margin-block-start: 0;
+}
+
+.blog-article__body > h2 {
+	font-size: var(--type-sub);
+	font-weight: 500;
+	line-height: var(--type-sub-line);
+	letter-spacing: -0.01em;
+}
+
+.blog-article__body > h3 {
+	font-size: var(--type-body);
+	font-weight: 500;
+	line-height: var(--type-body-line);
+}
+
+.blog-article__body > h4 {
+	@include track(0.08em);
+
+	font-size: var(--type-caption);
+	font-weight: 500;
+	line-height: var(--type-caption-line);
+}
+
+.blog-article__body :is(ul, ol) {
+	padding-inline-start: var(--space-reading);
+}
+
+.blog-article__body li + li,
+.blog-article__body li > * + * {
+	margin-block-start: var(--space-tight);
+}
+
+.blog-article__body li > p {
+	margin-block: 0;
+}
+
+.blog-article__body li::marker {
+	color: var(--MuteForeground);
+}
+
+/* A markdown table is bare in the source, so the row rules are the table's own:
+   a hairline above, one between rows, one under the head. Wide tables scroll
+   inside their own box rather than widening the page - the measure stays 72ch. */
+.blog-article__body table {
+	display: block;
+
+	width: 100%;
+
+	overflow-x: auto;
+
+	border-collapse: collapse;
+
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+
+	@include hairline(top);
+}
+
+.blog-article__body th {
+	@include mono-meta;
+
+	padding-block: var(--space-tight);
+
+	padding-inline-end: var(--space-group);
+
+	text-align: start;
+
+	white-space: nowrap;
+
+	@include hairline(bottom);
+}
+
+.blog-article__body td {
+	padding-block: var(--space-tight);
+
+	padding-inline-end: var(--space-group);
+
+	vertical-align: top;
+
+	@include hairline(bottom);
+}
+
+.blog-article__body blockquote {
+	margin-inline: 0;
+
+	padding-inline-start: var(--space-reading);
+
+	color: var(--MuteForeground);
+
+	@include hairline(left);
+}
+
+.blog-article__body hr {
+	height: 0;
+
+	border: 0;
+
+	@include hairline(top);
+}
+
+/* An inline link in the article's prose: the site's accent ink, which is what
+   the markdown body carried before this surface existed. No site-wide rule sets
+   an anchor's colour, so without this every link in every article falls back to
+   the browser's own link blue. */
+.blog-article__body a {
+	color: var(--Accent);
+}
+
+/* The markdown pipeline renders the code block and its highlighter's inline
+   styles. The only thing this surface adds is the one thing the page needs: a
+   long line scrolls inside the block instead of widening the article. */
+.blog-article__body pre {
+	overflow-x: auto;
+}
+
+.blog-article__body img {
+	max-width: 100%;
+	height: auto;
+}
+
+/* ─── THE FOOT ──────────────────────────────────────────────────────────── */
+
+.blog-article__back {
+	margin: 0;
+	margin-block-start: var(--space-chapter);
+	padding-block-end: var(--space-chapter);
+
+	@include mono-meta;
+
+	@include track(0.08em);
+}
+
+.blog-article__back a {
+	color: var(--Primary);
+}

@@ -10,8 +10,6 @@ author: "CodeEditorLand"
 readTime: 9
 ---
 
-# Build System Design
-
 Deterministic builds require more than pinning dependency versions. They require
 that every tool, every feature flag, and every environment variable resolves
 identically on every machine, in CI, and across build profiles. [Land](https://github.com/CodeEditorLand/Land)'s build
@@ -24,7 +22,20 @@ shell simultaneously.
 Every [Land](https://github.com/CodeEditorLand/Land) build is a two-stage linear flow. The stages are strictly ordered:
 Stage 1 output is required before Stage 2 can proceed.
 
-**Stage 1: VS Code Platform Compilation**
+```mermaid
+flowchart TD
+    Editor["Dependency/Microsoft/Dependency/Editor - the VS Code source submodule"] --> Stage1["Stage 1 - nvm use 24, npm install, npm run compile, npm run compile-extensions-build"]
+    Stage1 --> Out["out-platform directories - compiled extension JavaScript"]
+    Out --> Stage2["Stage 2 - Maintain/Debug/Build.sh --profile debug-electron-bundled"]
+    Stage2 --> Rust["Rust workspace - Common, Echo, Mist, Mountain, Rest, SideCar, Vine, Grove"]
+    Stage2 --> Output["Output artifact bundling - esbuild primary, Rest OXC selectable"]
+    Stage2 --> Cocoon["Cocoon compilation via ESBuild"]
+    Stage2 --> Worker["Worker compilation"]
+    Stage2 --> Ui["Wind and Sky compilation via Vite and Astro"]
+    Ui --> Tauri["Tauri bundling - the .app bundle"]
+```
+
+### Stage 1: VS Code Platform Compilation
 
 The VS Code source is vendored as a Git submodule at
 [`Dependency/Microsoft/Dependency/Editor`](https://github.com/DependencyCodeEditorLand/Editor/tree/Current). This step produces the compiled
@@ -48,7 +59,7 @@ The `compile-extensions-build` step produces `out-<platform>` directories
 containing compiled extension JavaScript. Without it, [Cocoon](https://github.com/CodeEditorLand/Cocoon) cannot locate the
 VS Code platform code at runtime.
 
-**Stage 2: Land Application Assembly**
+### Stage 2: Land Application Assembly
 
 With Stage 1 complete, the [Land](https://github.com/CodeEditorLand/Land) application itself compiles:
 
@@ -57,12 +68,16 @@ cd Land
 ./Maintain/Debug/Build.sh --profile debug-electron-bundled
 ```
 
-The build script drives, in sequence: Rust workspace compilation for [`Common`](https://github.com/CodeEditorLand/Common),
-[`Echo`](https://github.com/CodeEditorLand/Echo), [`Mist`](https://github.com/CodeEditorLand/Mist), [`Mountain`](https://github.com/CodeEditorLand/Mountain), [`Rest`](https://github.com/CodeEditorLand/Rest), [`SideCar`](https://github.com/CodeEditorLand/SideCar), [`Vine`](https://github.com/CodeEditorLand/Vine), and [`Grove`](https://github.com/CodeEditorLand/Grove) (the [`Air`](https://github.com/CodeEditorLand/Air)
-daemon is a separate crate with its own target directory); [Output](https://github.com/CodeEditorLand/Output) artifact
-bundling (esbuild primary, Rest OXC selectable); [Cocoon](https://github.com/CodeEditorLand/Cocoon) compilation via
-ESBuild; [Worker](https://github.com/CodeEditorLand/Worker) compilation; [Wind](https://github.com/CodeEditorLand/Wind) and [Sky](https://github.com/CodeEditorLand/Sky) compilation via Vite and Astro; and
-finally Tauri bundling for the `.app` bundle.
+The build script drives, in sequence:
+
+1. Rust workspace compilation for [`Common`](https://github.com/CodeEditorLand/Common),
+   [`Echo`](https://github.com/CodeEditorLand/Echo), [`Mist`](https://github.com/CodeEditorLand/Mist), [`Mountain`](https://github.com/CodeEditorLand/Mountain), [`Rest`](https://github.com/CodeEditorLand/Rest), [`SideCar`](https://github.com/CodeEditorLand/SideCar), [`Vine`](https://github.com/CodeEditorLand/Vine), and [`Grove`](https://github.com/CodeEditorLand/Grove) (the [`Air`](https://github.com/CodeEditorLand/Air)
+   daemon is a separate crate with its own target directory).
+2. [Output](https://github.com/CodeEditorLand/Output) artifact bundling (esbuild primary, Rest OXC selectable).
+3. [Cocoon](https://github.com/CodeEditorLand/Cocoon) compilation via ESBuild.
+4. [Worker](https://github.com/CodeEditorLand/Worker) compilation.
+5. [Wind](https://github.com/CodeEditorLand/Wind) and [Sky](https://github.com/CodeEditorLand/Sky) compilation via Vite and Astro.
+6. And finally Tauri bundling for the `.app` bundle.
 
 ## [Maintain](https://github.com/CodeEditorLand/Maintain): Build Orchestrator
 
@@ -172,7 +187,7 @@ build time. No duplicated call sites, no preprocessor macros in source files.
 
 The cascade from env var to compiled binary works differently for each language:
 
-**Rust ([Mountain](https://github.com/CodeEditorLand/Mountain), [Common](https://github.com/CodeEditorLand/Common), [Echo](https://github.com/CodeEditorLand/Echo), [Mist](https://github.com/CodeEditorLand/Mist), [Rest](https://github.com/CodeEditorLand/Rest), [SideCar](https://github.com/CodeEditorLand/SideCar), [Air](https://github.com/CodeEditorLand/Air), [Grove](https://github.com/CodeEditorLand/Grove), [Vine](https://github.com/CodeEditorLand/Vine))**
+### Rust: [Mountain](https://github.com/CodeEditorLand/Mountain), [Common](https://github.com/CodeEditorLand/Common), [Echo](https://github.com/CodeEditorLand/Echo), [Mist](https://github.com/CodeEditorLand/Mist), [Rest](https://github.com/CodeEditorLand/Rest), [SideCar](https://github.com/CodeEditorLand/SideCar), [Air](https://github.com/CodeEditorLand/Air), [Grove](https://github.com/CodeEditorLand/Grove), [Vine](https://github.com/CodeEditorLand/Vine)
 
 Each Rust element with tier-gated features has a `build.rs` that calls
 `PropagateTierGating()`. This function scans the resolved env file and emits:
@@ -194,7 +209,7 @@ TierFileSystemLayer4 = []
 TierGlobNative = []
 ```
 
-**TypeScript ([Cocoon](https://github.com/CodeEditorLand/Cocoon))**
+### TypeScript: [Cocoon](https://github.com/CodeEditorLand/Cocoon)
 
 The build script serializes every `Tier*` variable into a `CocoonEsbuildDefine`
 JSON blob. [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s [`TargetConfig.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Configuration/ESBuild/Cocoon.ts) merges this blob into esbuild's define map.
@@ -203,14 +218,14 @@ with their resolved string values. At runtime, [`Cocoon/Source/Utility/Tier.ts`]
 reads the substituted globals, falls through to `process.env.Tier<Capability>`,
 and then to hard-coded defaults.
 
-**TypeScript ([Sky](https://github.com/CodeEditorLand/Sky), [Wind](https://github.com/CodeEditorLand/Wind))**
+### TypeScript: [Sky](https://github.com/CodeEditorLand/Sky), [Wind](https://github.com/CodeEditorLand/Wind)
 
 [Sky](https://github.com/CodeEditorLand/Sky)'s `astro.config.ts` forwards every `Tier*` env var into Vite's define map.
 At build time, `import.meta.env.TierFileSystem` and similar references are
 substituted. [`Wind/Source/Utility/Tier.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Utility/Tier.ts) reads these values and emits a boot
 banner.
 
-**Cross-element agreement check**
+### Cross-element agreement check
 
 All three runtime banners must report identical tier values:
 

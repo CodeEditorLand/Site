@@ -2,7 +2,7 @@
 import DynamicAuthHeader from "../Component/Dynamic/DynamicAuthHeader";
 import DynamicDashboardUser from "../Component/Dynamic/DynamicDashboardUser";
 import DynamicLocalFirstScan from "../Component/Dynamic/DynamicLocalFirstScan";
-import DynamicPrivacyRequests from "../Component/Dynamic/DynamicPrivacyRequests";
+import PrivacyRequests from "../Component/Dashboard/PrivacyRequests.astro";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 import RecordBand from "../Component/Record/RecordBand.astro";
@@ -33,6 +33,30 @@ const MetaDescription = T("meta.dashboard.description", {
 // account band hosts the component rather than printing a value it cannot
 // know at render time.
 const Page = DashboardPage(T);
+
+/**
+ * The dashboard's status chips, as Jelly badges again.
+ *
+ * `Page.*.chips` are the page's own labels - `Disabled`, `Feature Gated`,
+ * `Optional`, `Active`, `Coming Soon` - and the pre-programme dashboard printed
+ * exactly those labels as `jelly-badge`. The rebuild turned them into a plain
+ * `<li>` row; `jelly-badge` is a design-system element, so it comes back.
+ *
+ * One tone, not one ink per chip: these are state chips, not protocol chips, so
+ * they take the neutral mute fill and its muted ink rather than a spine ink
+ * (`DesignSystem.md` §3 - the protocol spine is for protocol chips).
+ */
+const ChipStyle =
+	"--jelly-fill:var(--Mute);--jelly-label:var(--MuteForeground);--jelly-badge-radius:0;--jelly-badge-font-size:13px";
+
+/**
+ * The card the islands sit on. `jelly-card` is the design system's surface and
+ * a `Record*` block may live inside one but never replace one
+ * (`DESIGN.md` §1.7); an Auth0 island is functional UI, so it gets the surface
+ * and the records keep theirs.
+ */
+const CardStyle =
+	"--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:var(--space-group);--jelly-card-padding-inline:var(--space-group)";
 ---
 
 <Base
@@ -43,6 +67,7 @@ const Page = DashboardPage(T);
 >
 	<DynamicAuthHeader
 		client:load
+		slot="Header"
 		Domain={Auth0Domain}
 		ClientIdentifier={Auth0ClientIdentifier}
 	/>
@@ -55,11 +80,13 @@ const Page = DashboardPage(T);
 	>
 		<RecordBand band={Page.account}>
 			<div class="surface__panel">
-				<DynamicDashboardUser
-					client:load
-					Domain={Auth0Domain}
-					ClientIdentifier={Auth0ClientIdentifier}
-				/>
+				<jelly-card style={CardStyle}>
+					<DynamicDashboardUser
+						client:load
+						Domain={Auth0Domain}
+						ClientIdentifier={Auth0ClientIdentifier}
+					/>
+				</jelly-card>
 			</div>
 		</RecordBand>
 
@@ -69,11 +96,9 @@ const Page = DashboardPage(T);
 
 		<RecordBand band={Page.data}>
 			<div class="surface__panel">
-				<DynamicPrivacyRequests
-					client:load
-					Domain={Auth0Domain}
-					ClientIdentifier={Auth0ClientIdentifier}
-				/>
+				<jelly-card style={CardStyle}>
+					<PrivacyRequests />
+				</jelly-card>
 			</div>
 		</RecordBand>
 
@@ -85,7 +110,24 @@ const Page = DashboardPage(T);
 			<div class="surface__stack">
 				{
 					Page.telemetryPaths.map((Path) => (
-						<RecordEntry {...Path} />
+						<div>
+							{Path.chips?.length ? (
+								<ul class="mb-3 flex list-none flex-wrap gap-2 p-0">
+									{Path.chips.map((Chip) => (
+										<li>
+											<jelly-badge
+												shape="square"
+												variant="platinum"
+												style={ChipStyle}
+											>
+												{Chip}
+											</jelly-badge>
+										</li>
+									))}
+								</ul>
+							) : null}
+							<RecordEntry {...Path} chips={undefined} />
+						</div>
 					))
 				}
 			</div>
@@ -95,11 +137,13 @@ const Page = DashboardPage(T);
 			{
 				IsLocalMode ? (
 					<div class="surface__panel">
-						<DynamicLocalFirstScan
-							client:load
-							Domain={Auth0Domain}
-							ClientIdentifier={Auth0ClientIdentifier}
-						/>
+						<jelly-card style={CardStyle}>
+							<DynamicLocalFirstScan
+								client:load
+								Domain={Auth0Domain}
+								ClientIdentifier={Auth0ClientIdentifier}
+							/>
+						</jelly-card>
 					</div>
 				) : (
 					<>
@@ -108,15 +152,9 @@ const Page = DashboardPage(T);
 							{Page.editorDescription.map((Line) => (
 								<p class="surface__prose">{Line}</p>
 							))}
-						</div>
-						<div class="surface__actions">
-							{
-								Page.editorActions.map((Action) => (
-									<a class="surface__action" href={Action.href}>
-										{Action.label} →
-									</a>
-								))
-							}
+							{Page.editorActions.map((Action) => (
+								<RecordEntry {...Action} />
+							))}
 						</div>
 					</>
 				)
@@ -127,7 +165,24 @@ const Page = DashboardPage(T);
 			<div class="surface__stack">
 				{
 					Page.settingsEntries.map((Setting) => (
-						<RecordEntry {...Setting} />
+						<div>
+							{Setting.chips?.length ? (
+								<ul class="mb-3 flex list-none flex-wrap gap-2 p-0">
+									{Setting.chips.map((Chip) => (
+										<li>
+											<jelly-badge
+												shape="square"
+												variant="platinum"
+												style={ChipStyle}
+											>
+												{Chip}
+											</jelly-badge>
+										</li>
+									))}
+								</ul>
+							) : null}
+							<RecordEntry {...Setting} chips={undefined} />
+						</div>
 					))
 				}
 			</div>

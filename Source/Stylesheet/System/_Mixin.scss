@@ -18,6 +18,14 @@
 	color: var(--PrimaryForeground);
 }
 
+/// flat - radius 0 and no shadow. The design system's one material rule
+/// (DesignSystem.md §6.1): rounded corners, drop shadows and gradients are
+/// rejected everywhere, so a surface declares flat once instead of retyping it.
+@mixin flat {
+	border-radius: 0;
+	box-shadow: none;
+}
+
 /// track - uppercase plus letter-spacing, the tracking a label needs to read as a label.
 @mixin track($space: 0.18em) {
 	text-transform: uppercase;
@@ -34,9 +42,9 @@
 
 /// band-inner - the one inner container every band uses, so no band re-invents its gutters.
 @mixin band-inner {
-	max-width: 72rem;
+	max-width: var(--ContainerSixExtraLarge);
 	margin-inline: auto;
-	padding-inline: clamp(1rem, 4vw, 2.5rem);
+	padding-inline: var(--Gutter);
 }
 
 /// bp - one breakpoint, taken as a value: 640px, 768px, 1024px and 1280px are the

@@ -92,9 +92,23 @@ const DynamicDocSidebar = ({
 		),
 	)?.Id;
 
+	// The index page has no current page to open, and a rail of ten closed
+	// headings beside a map of 81 rows is not a rail - so with no `ActiveId` every
+	// section opens and the tree is readable at a glance. On a page, the section
+	// and the group holding it open and everything else stays closed: the reader
+	// is already where they are going.
+	const OpenByDefault = ActiveId === undefined;
+
+	/** One rule for both levels: closed unless it is the one holding the page. */
+	const StartsCollapsed = (Id: string, Keep: string | undefined) =>
+		!OpenByDefault && Id !== Keep;
+
+	const Ids = (Items: readonly { Id: string }[]) =>
+		Items.map((Item) => Item.Id);
+
 	const [CollapsedSections, SetCollapsedSections] = useState<Set<string>>(
 		new Set(
-			Sections.filter((S) => S.Id !== ActiveSectionId).map((S) => S.Id),
+			Ids(Sections.filter((S) => StartsCollapsed(S.Id, ActiveSectionId))),
 		),
 	);
 
@@ -123,7 +137,7 @@ const DynamicDocSidebar = ({
 
 	const [CollapsedGroups, SetCollapsedGroups] = useState<Set<string>>(
 		new Set(
-			AllGroups.filter((G) => G.Id !== ActiveGroupId).map((G) => G.Id),
+			Ids(AllGroups.filter((G) => StartsCollapsed(G.Id, ActiveGroupId))),
 		),
 	);
 

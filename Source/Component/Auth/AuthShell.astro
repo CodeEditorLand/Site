@@ -13,6 +13,10 @@
  * The measure is narrow by default (28rem, the card's rule for a form). The
  * account index passes `measure="wide"` because it carries the profile field
  * table, not a form - reported on the card rather than silently widened.
+ *
+ * The root is a `<div>`, not a `<main>`: `Base.astro` already renders the
+ * document's single `<main id="main-content">`, and the skip link points at
+ * it. A second `<main>` here would be a second landmark and a duplicate ID.
  */
 import type { AuthFrame } from "./Type.js";
 
@@ -27,10 +31,7 @@ const { frame, measure = "narrow", class: ClassName } = Astro.props;
 const { kicker, heading, sentence, action } = frame;
 ---
 
-<main
-	id="main-content"
-	class:list={["auth-shell", `auth-shell--${measure}`, ClassName]}
->
+<div class:list={["auth-shell", `auth-shell--${measure}`, ClassName]}>
 	<div class="auth-shell__inner">
 		<header class="auth-shell__header">
 			<p class="auth-shell__kicker">{kicker}</p>
@@ -54,4 +55,4 @@ const { kicker, heading, sentence, action } = frame;
 			)
 		}
 	</div>
-</main>
+</div>

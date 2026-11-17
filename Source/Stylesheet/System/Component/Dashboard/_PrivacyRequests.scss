@@ -1,0 +1,68 @@
+// PrivacyRequests - the dashboard's data-rights directory.
+//
+// Three groups, each a label, one sentence, and a dense stack of record
+// entries. This is a reference surface, not a reading surface: the entries are
+// separated by `--space-tight`, the same rhythm the shell's own stacks use, so
+// the directory reads as one list rather than fourteen cards with air between
+// them.
+//
+// Publishes:
+//   .requests                  the directory's own stack of groups
+//   .requests__group           one labelled group
+//   .requests__label           that group's label, at meta weight
+//   .requests__label--danger   the same label, in --Destruct ink
+//   .requests__intro           one sentence: what the group is for
+//   .requests__list            the group's destinations, dense
+//   .requests__state           the sentence a group prints with no destination
+//
+// Owned by P11. Sits beside the Record layer and writes no `.record-*`
+// selector: the entries are the block's anatomy and the block's partial owns
+// it. The only thing this file decides about them is the gap between them.
+@use "../../Mixin" as *;
+
+.requests {
+	display: grid;
+	gap: var(--space-group);
+}
+
+.requests__group {
+	display: grid;
+	gap: var(--space-reading);
+}
+
+.requests__label {
+	@include mono-meta;
+	@include track(0.08em);
+
+	margin: 0;
+}
+
+// The act, not the words around it: only the label that names an irreversible
+// operation takes the destructive ink. The entry inside keeps record ink.
+.requests__label--danger {
+	color: var(--Destruct);
+}
+
+.requests__intro {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--MuteForeground);
+	margin: 0;
+	max-width: 62ch;
+	text-wrap: pretty;
+}
+
+.requests__list {
+	display: grid;
+	gap: var(--space-tight);
+}
+
+// A group with nothing to offer still says so, in the same role the shell uses
+// for its own state sentences.
+.requests__state {
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+	margin: 0;
+	max-width: 62ch;
+}

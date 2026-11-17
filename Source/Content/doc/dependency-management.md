@@ -20,7 +20,7 @@ Each graph has its own manifest, shared file, and command:
 | --- | --- | --- | --- | --- |
 | pnpm workspace | All TypeScript elements | `package.json` | `pnpm-lock.yaml` | `pnpm install` from the repo root |
 | Cargo workspace | All Rust elements | `Cargo.toml` | workspace root `Cargo.toml`, which carries the 51 active `[patch.crates-io]` entries | `cargo build -p <element-name>` |
-| npm | `Dependency/Microsoft/Dependency/Editor` only | `package.json` | `package-lock.json`, `.npmrc` | `npm install` inside that directory only |
+| npm submodule | `Dependency/Microsoft/Dependency/Editor` only | `package.json` | `package-lock.json`, `.npmrc` | `npm install` inside that directory only |
 
 ## JavaScript Dependencies (pnpm) 📦
 

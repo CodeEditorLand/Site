@@ -36,3 +36,12 @@
 		"body";
 	row-gap: var(--space-tight);
 }
+
+/* The record sits on a jelly-card: the canvas is the surface now, so the block
+   stops painting a second one - its own hairline and fill - and keeps its
+   anatomy, padding and ink. */
+jelly-card > .record-entry.properties-entry {
+	background: transparent;
+
+	border: 0;
+}

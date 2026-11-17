@@ -1,26 +1,47 @@
+import type { CSSProperties } from "react";
+
 import type Content from "../Interface/Content/Testimonial.js";
 
 import {
-	Families,
-	FamilyEntriesOf,
+	FeaturedOf,
+	FiledGroupsOf,
+	FiledLabel,
 	Kicker,
-	Lead,
+	LeadLine,
 } from "./Architecture/Data.js";
 
 import type { ElementEntry } from "./Architecture/Type.js";
 
 /**
- * The architecture record - what runs, in sixteen records.
+ * `# CLASSIFICATION_01` - the architecture record: what runs, as one archive
+ * index of seven records and one filed strip of eight.
  *
  * The band used to present each element as a quotation with an author byline:
  * an author name, a role and a quote. A reader promised endorsement and handed
  * documentation has been misled, and none of those three fields is an
  * endorsement - they are the element's name, its role and its description. The
  * byline grammar is gone. What is left is what the content actually holds, a set
- * of element records, and each one now reads as a record: its marker, its glyph,
- * its name, the role chips and the description, which is quoted whole.
+ * of element records, and each printed one reads as a record: its marker, its
+ * glyph, its name, the role chips and the description, quoted whole.
  * (`HomePage.tsx` imports this module by the band's old name, so the file keeps
  * it; nothing the band renders does.)
+ *
+ * **The seven-element budget.** `DesignSystem-Grammar.md` §8 gives this layer
+ * seven elements, one short record each, and the set is fifteen. So seven print
+ * (`Architecture/Data.ts` `Featured` - the runtime path the hero asserts plus
+ * the three services that make it true) and eight are filed: the strip prints
+ * each filed element's name against its documentation page and its `SOURCE`
+ * against its repository, grouped by the stack family the band always used. No
+ * element loses its name or either of its links; what changes is that a reader
+ * gets seven records to read instead of sixteen equal cards.
+ *
+ * That is also why the records are a **ledger and not a card wall**
+ * (`DesignSystem-Pages.md` §1: "one Archive Index of element records (Specimen
+ * Label form), not a card wall"). One `jelly-card` is the surface - creme, so
+ * the index is ink-on-creme and the white boxes are the page's cards, not this
+ * band's - and the `record-entry` blocks inside it drop their own surface paint
+ * to become hairline-ruled rows. The Jelly card is the surface; the Record block
+ * is the structure inside it, which is the rule this component is here to keep.
  *
  * The markup is the Record layer's published class API (`record-band`,
  * `record-entry`) rather than the `.astro` blocks themselves: this component is
@@ -41,6 +62,27 @@ interface Props {
 /** The one heading id the band's `aria-labelledby` points at. */
 const HeadingId = "ArchitectureHeading";
 
+/** The index surface: creme, flat, one inset - the ledger is ink on creme. */
+const IndexInk = {
+	"--jelly-fill": "var(--Mute)",
+	"--jelly-radius": "0",
+	"--jelly-color-border-default": "var(--Border)",
+	"--jelly-card-padding-block": "1.5rem",
+	"--jelly-card-padding-inline": "1.5rem",
+	"--jelly-card-font-size": "inherit",
+} as CSSProperties;
+
+/**
+ * One printed row: the block's own anatomy, with the block's surface paint
+ * removed so the row is a ruled line on the index rather than a card inside a
+ * card (`DESIGN.md` §1.3: no cards-within-cards).
+ */
+const RowInk = {
+	background: "transparent",
+	border: "none",
+	borderBlockEnd: "1px solid var(--Border)",
+} as CSSProperties;
+
 /**
  * One record, rendered with the published `RecordEntry` class API.
  *
@@ -51,11 +93,13 @@ const HeadingId = "ArchitectureHeading";
 const Entry = ({
 	Record,
 	ClassName,
+	Ink,
 }: {
 	readonly Record: ElementEntry;
 	readonly ClassName?: string;
+	readonly Ink?: CSSProperties;
 }) => (
-	<article className={`record-entry ${ClassName ?? ""}`.trim()}>
+	<article className={`record-entry ${ClassName ?? ""}`.trim()} style={Ink}>
 		<p className="record-entry__index">{Record.index}</p>
 		<span className="record-entry__glyph" aria-hidden="true">
 			{Record.glyph}
@@ -101,26 +145,25 @@ const Architecture = ({ Content, ClassName }: Props) => {
 
 	const Items = Elements ?? [];
 
-	// The grid is grouped by family, and every name in a family is one of the
-	// sixteen records. The groups are built once, so the footnote's count is the
-	// number of records the band actually printed rather than the number the
-	// content happens to carry - a family whose names all missed would otherwise
-	// inflate it.
-	const Groups = Families.map((Family) => ({
-		Family,
-		Records: FamilyEntriesOf(Family, Items),
-	})).filter((Group) => Group.Records.length > 0);
+	/**
+	 * The seven the layer prints, and the eight it files. Both are derived from
+	 * the content, so the band cannot print a record the content does not carry
+	 * and cannot file one it does.
+	 */
+	const Printed = FeaturedOf(Items);
 
-	const Count = Groups.reduce(
-		(Total, Group) => Total + Group.Records.length,
-		1,
+	const Filed = FiledGroupsOf(Items);
+
+	const FiledCount = Filed.reduce(
+		(Total, Group) => Total + Group.records.length,
+		0,
 	);
 
 	return (
 		<section
 			id="architecture"
 			aria-labelledby={HeadingId}
-			className={`record-band record-band--paper ${ClassName ?? ""}`.trim()}
+			className={`record-band record-band--canvas ${ClassName ?? ""}`.trim()}
 		>
 			<div className="record-band__inner">
 				<p className="record-band__kicker">{Kicker}</p>
@@ -131,33 +174,76 @@ const Architecture = ({ Content, ClassName }: Props) => {
 					<p className="record-band__standfirst">{Subtitle}</p>
 				) : null}
 
-				<div className="record-band__body">
-					<Entry
-						Record={Lead}
-						ClassName="architecture-entry architecture-entry--lead"
-					/>
+				{/* The product's own one-line statement, which the lead record
+				    used to carry above the families. */}
+				<p className="record-band__standfirst">{LeadLine}</p>
 
-					{Groups.map(({ Family, Records }) => (
-						<div className="architecture-family" key={Family.label}>
-							<p className="type-meta architecture-family__label">
-								{Family.label}
-							</p>
-							<div className="architecture-family__grid">
-								{Records.map((Record) => (
-									<Entry
-										key={Record.index}
-										Record={Record}
-										ClassName="architecture-entry"
-									/>
-								))}
-							</div>
+				<div className="record-band__body">
+					<jelly-card style={IndexInk}>
+						<div className="grid grid-cols-1">
+							{Printed.map((Record) => (
+								<Entry
+									ClassName="architecture-entry"
+									Ink={RowInk}
+									key={Record.index}
+									Record={Record}
+								/>
+							))}
 						</div>
-					))}
+					</jelly-card>
+
+					{/* ─── THE FILED INDEX ─────────────────────────────── */}
+					{FiledCount > 0 ? (
+						<nav
+							aria-label={FiledLabel}
+							className="record-band__index"
+						>
+							<p className="type-meta m-0 w-full">{FiledLabel}</p>
+
+							{Filed.map((Group) => (
+								<div
+									className="flex flex-wrap items-baseline gap-x-4 gap-y-2"
+									key={Group.label}
+								>
+									<span className="type-meta">
+										{Group.label}
+									</span>
+
+									{Group.records.map((Record) => (
+										<span
+											className="flex items-baseline gap-2"
+											key={Record.index}
+										>
+											<a
+												className="record-band__index-item"
+												href={Record.href}
+											>
+												{Record.name}
+											</a>
+
+											{Record.source ? (
+												<a
+													aria-label={`Open the ${Record.name} repository`}
+													className="type-meta"
+													href={Record.source}
+													rel="noopener noreferrer"
+													target="_blank"
+												>
+													SOURCE
+												</a>
+											) : null}
+										</span>
+									))}
+								</div>
+							))}
+						</nav>
+					) : null}
 				</div>
 
 				<p className="record-band__footnote">
-					{`${Count} records. Each name opens the element's documentation page; ` +
-						"each SOURCE chip opens the element's repository."}
+					{`${Printed.length} records printed, ${FiledCount} filed above. ` +
+						"Each name opens the element's documentation page; each " +
+						"SOURCE chip opens the element's repository."}
 				</p>
 			</div>
 		</section>

@@ -1,10 +1,10 @@
 {
 	"auth": {
-		"pendingStatus": "AWAITING CLICK",
-		"verifyingStatus": "VERIFYING",
-		"verifiedStatus": "EMAIL VERIFIED",
-		"failedStatus": "VERIFICATION FAILED",
-		"expiredStatus": "LINK EXPIRED"
+		"pendingStatus": "STATUS: PREPARING",
+		"verifyingStatus": "STATUS: LOADING",
+		"verifiedStatus": "STATUS: VERIFIED",
+		"failedStatus": "STATUS: INTERRUPTED",
+		"expiredStatus": "STATUS: UNAVAILABLE"
 	},
 	"error": {
 		"title": "Verification failed",

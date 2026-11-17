@@ -1,0 +1,82 @@
+---
+/**
+ * CornerMarks - picture-frame corner crosshairs for white card surfaces (C19).
+ *
+ * Renders 4 L-shaped corner marks (top-left / top-right / bottom-left /
+ * bottom-right), each made of two tiny rectangles:
+ *   - a horizontal tick spanning RIGHT, 2px tall (presence over 1px),
+ *   - a vertical tick spanning BOTTOM, 1px wide,
+ * forming the L crosshair of the old-school game-UI frame.
+ *
+ * Geometry is centralized in `CornerMarks/Data.ts` so every host shares the
+ * same inset / tick sizes (the sitewide frame look). The marks are INSET a few
+ * px off the panel edge and anchored to the shell corners (absolute against the
+ * host, which must be position:relative) - the top marks stay at the top even
+ * as the panel grows taller.
+ *
+ * Color: subtle ink - var(--CardForeground) at reduced opacity by default;
+ * they frame, they do not shout.
+ *
+ * Pure presentational: aria-hidden, pointer-events-none, no JS state, no
+ * `<script>` and no `client:*` - this block ships zero JavaScript.
+ *
+ * HOVER (implemented, CSS-only - the C19 "old-school game UI" intent):
+ * the host shell that keeps the marks adds the .CornerMarkShell class
+ * (see System/Component/_CornerMarks.scss). On shell hover the cursor becomes a
+ * pointer and each L arm slides PERPENDICULAR to itself (the horizontal
+ * mark moves up/down, the vertical mark moves left/right) so the arms
+ * separate at the corner and never cross - a rigid whole-line slide (no
+ * scaling), 200ms ease, scoped to prefers-reduced-motion:
+ * no-preference. The ticks carry data-corner (tl/tr/bl/br) + data-axis
+ * (h/v) attributes the stylesheet keys its direction rules on.
+ */
+import { CORNER_GEOMETRY, CornerTicks } from "./CornerMarks/Data.js";
+
+import type { Geometry } from "./CornerMarks/Data.js";
+
+/** The published geometry, every field optional, plus the host's own class. */
+type Props = Partial<Geometry> & {
+	/** Extra classes from the host, appended after the block's own. */
+	className?: string;
+};
+
+const {
+	Inset = CORNER_GEOMETRY.Inset,
+	Horizontal = CORNER_GEOMETRY.Horizontal,
+	Vertical = CORNER_GEOMETRY.Vertical,
+	Thickness = CORNER_GEOMETRY.Thickness,
+	StemWidth = CORNER_GEOMETRY.StemWidth,
+	Color = CORNER_GEOMETRY.Color,
+	Opacity = CORNER_GEOMETRY.Opacity,
+	className,
+	...Rest
+} = Astro.props;
+
+/** The eight ticks the frame is drawn from, in markup order. */
+const Ticks = CornerTicks({
+	Inset,
+	Horizontal,
+	Vertical,
+	Thickness,
+	StemWidth,
+	Color,
+	Opacity,
+});
+---
+
+<div
+	aria-hidden="true"
+	class:list={["CornerMarks pointer-events-none absolute inset-0", className]}
+	{...Rest}
+>
+	{
+		Ticks.map((Tick) => (
+			<span
+				class="CornerMarkTick"
+				data-corner={Tick.corner}
+				data-axis={Tick.axis}
+				style={Tick.style}
+			/>
+		))
+	}
+</div>

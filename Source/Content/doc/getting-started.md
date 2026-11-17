@@ -115,6 +115,11 @@ on artifacts produced by the previous one:
 - [`Wind`](https://github.com/CodeEditorLand/Wind) + [`Sky`](https://github.com/CodeEditorLand/Sky) → TypeScript frontend assets compiled and bundled into the
   Tauri app
 
+**What you should see:** both steps finish without errors, the binaries and the
+`.app` bundle land under `Element/Mountain/Target/`, and
+`./Element/Mountain/Target/debug/Mountain` opens the editor. The full artifact
+tree is enumerated under Build Artifacts below.
+
 ---
 
 ## Step 1: Compile VS Code Source
@@ -157,6 +162,12 @@ npm run compile-extensions-build
 > directories that [`Rest`](https://github.com/CodeEditorLand/Rest) bundles into [`@codeeditorland/output`](https://github.com/CodeEditorLand/Output). Without it,
 > [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) will fail to locate the VS Code platform code at runtime.
 
+**What you should see:** `npm install`, `npm run compile` and
+`npm run compile-extensions-build` all finish without errors, and the
+`out-<platform>` directories exist inside the Editor submodule. If
+`npm install` appears to hang, the skip flags under Shell Environment were not
+applied.
+
 ---
 
 ## Step 2: Build Land Application
@@ -175,6 +186,11 @@ export Trace=all Record=1 Disable=false
 export Trace= Record= Disable=
 ./Maintain/Debug/Build.sh --profile production-electron-bundled
 ```
+
+**What you should see:** `Build.sh` echoes the resolved tier set, then finishes
+and writes the artifacts under `Element/Mountain/Target/`. On macOS the debug
+bundle is re-signed during the same run; a signing failure appears here, not at
+launch.
 
 ### Build Profiles
 

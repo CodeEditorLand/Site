@@ -8,8 +8,6 @@ author: "CodeEditorLand"
 readTime: 4
 ---
 
-# Tauri Desktop Integration in [Land](https://github.com/CodeEditorLand/Land)
-
 Code Editor Land uses `Tauri` through the [`Mountain`](https://github.com/CodeEditorLand/Mountain) element. `Tauri` lets the
 editor use the operating system WebView instead of bundling Chromium, while
 [`Mountain`](https://github.com/CodeEditorLand/Mountain) keeps native services in `Rust`.
@@ -76,7 +74,7 @@ Key [`Mountain`](https://github.com/CodeEditorLand/Mountain) modules:
 
 The editor has two independent IPC paths:
 
-**[Sky](https://github.com/CodeEditorLand/Sky) and [Wind](https://github.com/CodeEditorLand/Wind) to [Mountain](https://github.com/CodeEditorLand/Mountain) - Tauri IPC**
+### [Sky](https://github.com/CodeEditorLand/Sky) and [Wind](https://github.com/CodeEditorLand/Wind) to [Mountain](https://github.com/CodeEditorLand/Mountain) - Tauri IPC
 
 [`Sky`](https://github.com/CodeEditorLand/Sky)'s UI and [`Wind`](https://github.com/CodeEditorLand/Wind) service layer call [`Mountain`](https://github.com/CodeEditorLand/Mountain) through Tauri IPC. The
 implementation lives in [`Source/IPC/TauriIPCServer.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/TauriIPCServer.rs), including the
@@ -84,7 +82,7 @@ implementation lives in [`Source/IPC/TauriIPCServer.rs`](https://github.com/Code
 path handles native work: files, terminals, clipboard, search, configuration,
 and workbench events.
 
-**[Mountain](https://github.com/CodeEditorLand/Mountain) to [Cocoon](https://github.com/CodeEditorLand/Cocoon) - [Vine](https://github.com/CodeEditorLand/Vine) gRPC**
+### [Mountain](https://github.com/CodeEditorLand/Mountain) to [Cocoon](https://github.com/CodeEditorLand/Cocoon) - [Vine](https://github.com/CodeEditorLand/Vine) gRPC
 
 [`Mountain`](https://github.com/CodeEditorLand/Mountain) and [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) communicate over a bidirectional gRPC channel described
 by [`Vine`](https://github.com/CodeEditorLand/Vine) proto files. [`Mountain`](https://github.com/CodeEditorLand/Mountain)'s gRPC server listens on port 50051; [`Cocoon`](https://github.com/CodeEditorLand/Cocoon)'s

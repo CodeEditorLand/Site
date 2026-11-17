@@ -3,6 +3,7 @@
 //
 // Publishes:
 //   .doc-index            the band's body, and the section's anchor id
+//   .doc-index__strip     the index page's metadata strip, above the card
 //   .doc-index__lede      the paragraph that opens an appendix band
 //   .doc-index__group     one run of rows sharing a sub-label
 //   .doc-index__label     that sub-label ("Filesystem Footprint")
@@ -12,6 +13,8 @@
 //   .doc-index__arrow     the direction marker (decorative)
 //   .doc-index__note      the page's description, at caption weight
 //   .doc-index__back      the index's back-to-top line
+//   .doc-appendix         the four appendix artifacts, after the index card
+//   .doc-appendix__card   one appendix artifact
 //
 // The row is the ledger's grammar without the ledger's block: a key on the left,
 // a muted note on the right, one hairline per row, `--space-tight` inside and
@@ -19,11 +22,49 @@
 // `href`, and a documentation index exists to be navigated - so the anatomy is
 // restated here and nowhere else.
 //
-// Two columns appear at 768px, and only there: below it the note stacks under
-// the name, because a description squeezed into a 12ch column is a column of
-// hyphens. The name column is capped so the eye scans ONE left edge, which is
-// the whole point of the band.
+// ─── ONE SURFACE PER OBJECT ────────────────────────────────────────────────
+//
+// `Doc.astro` puts one `jelly-card` around the ten section bands and one around
+// each appendix band. `RecordBand` paints a background, a top hairline and a
+// `--space-chapter` of padding of its own, and its tone alternates `flush` →
+// `paper` → `canvas` down the page. Inside a card that is three defects at once:
+// two boundaries at one edge (DESIGN.md §7 DR-8), a chapter gap inside a single
+// artifact, and a surface rhythm borrowed from another site (§7 DR-6). The card
+// is the surface and the card owns the inset, so inside these two cards the band
+// contributes no geometry at all - no border, no fill, no padding - and two
+// sections are separated by `--space-group`, which is the documented spacing
+// between two parts of one subject (§2.3).
+//
+// ─── THE ADAPTATION MATRIX (§6, and §2.8's four breakpoints) ───────────────
+//
+//   < 640px    one column; the note stacks under the name; the decorative `→`
+//              is the first thing to collapse (the name, the note, the kicker
+//              count and the sub-label all stay - nothing textual is dropped)
+//   640-767    one column; the arrow returns
+//   768-1023   two columns, name 30ch | note; the rail is the collapsed panel
+//   1024+      two columns, name 30ch | note; the rail is the sticky 26ch column
+//
+// No step is added at 1280: the row is already two columns and the measure
+// caps the note, so a wider viewport buys gutter, not a different index. The
+// appendix cards stack at every width - they are artifacts of different sizes,
+// and an equal-height grid is the card wall this artifact replaces (§1.8).
 @use "../../Mixin" as *;
+
+.doc-index__strip {
+	@include mono-meta;
+	@include track;
+
+	color: var(--MuteForeground);
+
+	margin: 0;
+}
+
+/* The strip and the card are two parts of one opening, so the gap between them
+   is `--space-group`, not the body's reading rhythm. Both selectors are scoped
+   past `.doc-article__body > *`, which zeroes a direct child's margins. */
+.doc-article__body > .doc-index__strip {
+	margin-block: 0 var(--space-group);
+}
 
 .doc-index__lede {
 	font-size: var(--type-sub);
@@ -81,11 +122,23 @@
 	line-height: var(--type-body-line);
 	font-weight: 500;
 
-	color: var(--Foreground);
+	color: var(--CardForeground);
+
+	&:hover {
+		color: var(--Accent);
+	}
 }
 
+/* The direction marker is decoration and the first thing a narrow viewport
+   drops: the row keeps its name, its note and its sub-label at every width. */
 .doc-index__arrow {
 	@include mono-meta;
+
+	display: none;
+
+	@include bp(640px) {
+		display: inline;
+	}
 }
 
 .doc-index__note {
@@ -103,6 +156,61 @@
 	@include mono-meta;
 	@include track;
 
-	margin-block-start: var(--space-chapter);
 	padding-block-start: var(--space-group);
+}
+
+.doc-article__body > .doc-index__back {
+	margin-block-start: var(--space-chapter);
+}
+
+/* ─── THE CARDS ─────────────────────────────────────────────────────────── */
+
+jelly-card.doc-index-card,
+jelly-card.doc-appendix__card {
+	display: block;
+}
+
+/* One surface: the band stops painting a boundary, a fill and a chapter gap
+   inside a card that already provides all three. */
+jelly-card.doc-index-card > .record-band,
+jelly-card.doc-appendix__card > .record-band {
+	border: 0;
+
+	background: none;
+	color: var(--CardForeground);
+
+	padding-block: 0;
+}
+
+/* One subject, many sections: the documented gap between two parts of it. */
+jelly-card.doc-index-card > .record-band + .record-band {
+	margin-block-start: var(--space-group);
+}
+
+/* The card owns the gutter, so the band's inner container adds none - the rows
+   inset from the card's edge, not from a second container inside it. */
+jelly-card.doc-index-card .record-band__inner,
+jelly-card.doc-appendix__card .record-band__inner {
+	max-width: none;
+	padding-inline: 0;
+}
+
+.doc-appendix {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-group);
+}
+
+/* Scoped past `.doc-article__body > *`, which zeroes a direct child's margins:
+   the appendices open a new subject after the index artifact, so they take the
+   one chapter gap this page is allowed. */
+.doc-article__body > .doc-appendix {
+	margin-block-start: var(--space-chapter);
+}
+
+/* A page that puts the two cards side by side in source order instead of in the
+   `.doc-appendix` wrapper (`Doc/Rust.astro`) gets the same gap: two artifacts on
+   one page are separated by `--space-group`, never by the body's reading rhythm. */
+jelly-card.doc-index-card + jelly-card.doc-appendix__card {
+	margin-block-start: var(--space-group);
 }

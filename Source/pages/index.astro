@@ -77,7 +77,7 @@ const SiteUrl = Astro.site?.href ?? "";
 			})}
 		/>
 	</Fragment>
-	<Header client:load />
+	<Header client:load slot="Header" />
 	<HomePage
 		client:load
 		MetaTitle={MetaTitle}

@@ -5,3 +5,36 @@
 @use "Header";
 @use "Noise";
 @use "DesignToken";
+
+// ─── Page surfaces ──────────────────────────────────────────────────────────
+//
+// One line per surface. Every lane wrote its own partials and was told not to
+// touch this file; this is the single pass that wires them, in the order the
+// surfaces appear in the document: chrome first (above), then the opening
+// surfaces, then the reading surfaces, then the app surfaces.
+//
+// A nested `_Index.scss` is a loader for that surface's own partials, so one
+// line covers all of them (`Blog/Index` pulls in `Listing` and `Article`;
+// `Contact/Index` pulls in `Breadcrumb`, `Page`, `Hub`, `Form`, `Sale`). The
+// flat lines are components whose surface publishes no loader.
+@use "Dynamic/Hero";
+@use "Dynamic/Architecture";
+@use "Dynamic/Properties";
+@use "Dynamic/Roadmap";
+@use "Dynamic/Platform";
+@use "Download/Page";
+@use "Download/Masthead";
+@use "Download/Requirements";
+@use "Download/Manifest";
+@use "Download/Releases";
+@use "Doc/Layout";
+@use "Doc/Sidebar";
+@use "Doc/Article";
+@use "Doc/Index" as DocIndexRules;
+@use "Doc/Rust";
+@use "Reading/Document";
+@use "Blog/Index" as BlogRules;
+@use "Contact/Index" as ContactRules;
+@use "Auth/Shell" as AuthShell;
+@use "Surface/Shell" as SurfaceShell;
+@use "Dashboard/Index" as DashboardRules;

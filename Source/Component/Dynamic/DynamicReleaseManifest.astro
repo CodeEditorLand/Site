@@ -1,65 +1,171 @@
 ---
 /**
- * DynamicReleaseManifest - what the release manifest publishes, per platform,
- * and what verification material ships with it.
+ * DynamicReleaseManifest - the Download page's opening artifact: one release
+ * record, `# RELEASE_01`, with a fixed field set per platform.
  *
- * This replaces the `.tsx` island of the same name. It rendered one field-record
- * card per platform behind a `client:load` hydration that carried no interaction
- * except a link, so the island is gone and the link is a plain anchor. The seal,
- * the index stamp and the status dot the card drew are not carried over: they
- * were ornament on a ledger, and the ledger is the denser reading of the same
- * seven facts.
+ * This replaces the `.tsx` island of the same name and the five-band stack that
+ * followed it. `DesignSystem-Pages.md` §2 resolves the record's shape - the
+ * index, the `〈PLATFORM / ARCH〉` stamp, `/CHANNEL`, then VERSION, SIGNATURE,
+ * CHECKSUM, SIZE and BUILD, then the action, then the status line - and
+ * `Artifacts.md` §4 adds LICENSE. The record opens the page instead of sitting
+ * inside a chapter, because a manifest that is one chapter among five is a
+ * stack of sections and not a record (DESIGN.md §7 DR-9).
  *
- * Two states, both written out. With platforms, one ledger per platform in the
- * manifest's own field order. Without platforms - a manifest that resolves to
- * nothing - one sentence saying so, because a box with no claim in it is a
- * defect (BRIDGE §7).
+ * Three things a caller must keep:
+ *
+ * - Every field is printed on every platform. A field whose value the tree
+ *   cannot supply prints §7's `UNAVAILABLE`, never a dash and never nothing: a
+ *   dash reads as a filled cell, an omitted row reads as a field nobody thought
+ *   of, and both hide the one fact this page exists to state.
+ * - The platform groups are `jelly-card` surfaces, not bare sections. The block
+ *   layer places a ledger; the Jelly element is the card it sits in, and a
+ *   `Record*` block may live inside one but never replace one (DESIGN.md §4.2).
+ * - Every state line is §7's vocabulary plus a plain-language sentence beside
+ *   it. Green is spent once, on the platform whose source builds are active.
+ *
+ * No `<script>` and no `client:*`: the record is static. The seal, the stamps
+ * and the status lines are server-rendered by the Brand primitives, exactly as
+ * `FieldRecord.astro` renders them.
  */
+import FieldRecordAction from "../Brand/FieldRecordAction.astro";
+import FieldRecordIndex from "../Brand/FieldRecordIndex.astro";
+import { FieldRecordSeal } from "../Brand/FieldRecordSeal.js";
+import { FieldRecordStatus } from "../Brand/FieldRecordStatus.js";
+import { RouteText, StampText } from "../Brand/SemanticLedger.js";
 import RecordLedger from "../Record/RecordLedger.astro";
+import RecordWell from "../Record/RecordWell.astro";
 
 import { ManifestRows } from "./Download/Data";
 
-import type { LedgerRow } from "../Record/Type.js";
+import type { LedgerRow, Well } from "../Record/Type.js";
 
-import type { ManifestPlatform } from "./Download/Type.js";
+import type { ManifestPlatform, ManifestRecord } from "./Download/Type.js";
 
 interface Props {
+	/** The record's own copy: index, heading, state, footnote and source. */
+	record: ManifestRecord;
+
 	/** One entry per platform, in the order the manifest lists them. */
 	platforms: readonly ManifestPlatform[];
 
 	/** The verification material the release promises, as ledger rows. */
 	verification: readonly LedgerRow[];
 
-	/** The verification ledger's heading, printed above it. */
+	/** The verification entry's heading, printed above its ledger. */
 	verificationHeading: string;
 
 	/** What a manifest with no platforms says instead of rendering nothing. */
 	empty: string;
+
+	/** The one action that exists today: the source build, as a well. */
+	build: Well;
 }
 
-const { platforms, verification, verificationHeading, empty } = Astro.props;
+const { record, platforms, verification, verificationHeading, empty, build } =
+	Astro.props;
+
+/**
+ * The card's Jelly custom properties: the white information box on the creme
+ * field, square, with the documented inset. `--jelly-card-font-size: inherit`
+ * keeps the card from resetting type to Jelly's own 15px default, so every role
+ * inside it stays on the site's scale.
+ */
+const Card =
+	"--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:var(--space-group);--jelly-card-padding-inline:var(--space-group)";
 ---
 
-<div class="download-manifest">
-	{
-		platforms.length === 0 ? (
-			<p class="download-manifest__empty">{empty}</p>
-		) : (
-			platforms.map((platform) => (
-				<div class="download-manifest__group">
-					<h3 class="download-manifest__platform">{platform.name}</h3>
-					<RecordLedger rows={ManifestRows(platform)} />
-					{platform.downloadUrl && platform.downloadLabel ? (
-						<p class="download-manifest__link">
-							<a href={platform.downloadUrl}>{platform.downloadLabel}</a>
-						</p>
-					) : null}
+<section
+	class="download-record"
+	id="release-manifest"
+	aria-labelledby="release-manifest-heading"
+>
+	<div class="download-record__inner">
+		<div class="download-record__head">
+			<FieldRecordIndex
+				index={record.index}
+				className="download-record__index"
+			/>
+			<FieldRecordSeal element="Land" size={40} />
+		</div>
+
+		<h2 class="download-record__heading" id="release-manifest-heading">
+			{record.heading}
+		</h2>
+
+		<div class="download-record__state-block">
+			<p class="download-record__state">
+				<FieldRecordStatus
+					status={record.state.status}
+					tone={record.state.tone}
+					copy={record.state.copy}
+				/>
+			</p>
+			<p class="download-record__note">{record.state.note}</p>
+		</div>
+
+		{
+			platforms.length === 0 ? (
+				<p class="download-record__empty">{empty}</p>
+			) : (
+				<div class="download-record__platforms">
+					{platforms.map((platform) => (
+						<jelly-card class="download-platform" style={Card}>
+							<p class="download-platform__stamp">
+								<StampText
+									Line={`${platform.name.toUpperCase()} / ${platform.arch}`}
+								/>
+							</p>
+							<p class="download-platform__channel">
+								<RouteText
+									Line={`/CHANNEL: ${platform.channel}`}
+								/>
+							</p>
+							<RecordLedger
+								rows={ManifestRows(platform)}
+								class="download-platform__ledger"
+							/>
+							<div
+								class="download-platform__blank"
+								aria-hidden="true"
+							></div>
+							<p class="download-platform__state">
+								<FieldRecordStatus
+									status={platform.state.status}
+									tone={platform.state.tone}
+									copy={platform.state.copy}
+								/>
+							</p>
+							<p class="download-platform__note">
+								{platform.state.note}
+							</p>
+							{platform.downloadUrl && platform.downloadLabel ? (
+								<p class="download-platform__action">
+									<FieldRecordAction
+										variant="button"
+										label={platform.downloadLabel}
+										href={platform.downloadUrl}
+									/>
+								</p>
+							) : null}
+						</jelly-card>
+					))}
 				</div>
-			))
-		)
-	}
-	<div class="download-manifest__group">
-		<h3 class="download-manifest__platform">{verificationHeading}</h3>
-		<RecordLedger rows={verification} />
+			)
+		}
+
+		<jelly-card class="download-verification" style={Card}>
+			<h3 class="download-verification__heading">{verificationHeading}</h3>
+			<RecordLedger rows={verification} />
+		</jelly-card>
+
+		<RecordWell
+			label={build.label}
+			language={build.language}
+			lines={build.lines}
+			class="download-record__build"
+		/>
+
+		<p class="download-record__footnote">{record.footnote}</p>
+		<p class="download-record__source">{record.source}</p>
 	</div>
-</div>
+</section>

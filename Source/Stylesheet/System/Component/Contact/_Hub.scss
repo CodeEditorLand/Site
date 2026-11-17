@@ -1,35 +1,114 @@
-// The Contact hub - four bands of records and one address.
+// The Contact hub - one index, four family groups, one address.
 //
 // Publishes:
-//   .contact-hub__requests  the record stack inside a band
-//   .contact-hub__address   the one address that is not a form
-//   .contact-hub__top       the back-to-top row
+//   .contact-hub              the index artifact, on the page gutters
+//   .contact-hub__family      one family group, opened by a hairline
+//   .contact-hub__family-head the group's kicker, heading and one line
+//   .contact-hub__kicker      the `/SECTION LABEL` the registry carries
+//   .contact-hub__heading     the group's `h2`, at the S tier
+//   .contact-hub__line        the handler and window the family shares
+//   .contact-hub__requests    the family's records, one column
+//   .contact-hub__direct      the closing group: the address that is not a form
+//   .contact-hub__address-row the address's own row
+//   .contact-hub__address     the one address that is not a form
+//   .contact-hub__top         the back-to-top row
 //
-// Nothing here restates a block: the bands are `RecordBand`, the records are
-// `RecordEntry`, and the address uses the published `.emphasis-expressive` tier
-// for its surface. This file only owns the three things the hub composes with -
-// how its records stack, how wide the address is, and where the way back to the
-// top sits.
+// Nothing here restates a block: the records are `RecordEntry`, and the family
+// head is a group heading inside one index, not a `RecordBand` - a band is a
+// page-level chapter separator, and one index is one artifact (`DESIGN.md` §5
+// A1, §3.7).
+//
+// The address is a link, not an action. It carried `.emphasis-expressive` when
+// it opened a band of its own; an ink-inverted postal address is a non-action
+// wearing the action style (`DESIGN.md` §5 A6, §7 DR-12), so it takes ink,
+// an underline on hover, and nothing else.
 
 @use "../../Mixin" as *;
 
-// One column of records. The stack is the band body's own rhythm, so the gap
-// here is the tight one: records are read as a set, not as separate subjects.
+.contact-hub {
+	@include band-inner;
+
+	padding-block: var(--space-chapter);
+}
+
+// A family is a group inside the index: one hairline above it, group rhythm
+// above the rule, reading rhythm below it. The first group has no rule - the
+// page opening already closes it.
+.contact-hub__family {
+	@include hairline(top);
+
+	margin-block-start: var(--space-group);
+	padding-block-start: var(--space-group);
+}
+
+.contact-hub__family:first-child {
+	border-block-start: 0;
+
+	margin-block-start: 0;
+	padding-block-start: 0;
+}
+
+.contact-hub__family-head {
+	max-width: 72ch;
+
+	margin-block-end: var(--space-group);
+}
+
+.contact-hub__kicker {
+	@include mono-meta;
+	@include track;
+
+	margin: 0 0 var(--space-tight);
+}
+
+// A group heading is not a page claim, so it takes the S tier at its ceiling
+// with tracking - never a fourth size between S and L (`DESIGN.md` §2.4).
+.contact-hub__heading {
+	margin: 0 0 var(--space-tight);
+
+	font-size: var(--type-sub);
+	font-weight: 500;
+	line-height: var(--type-sub-line);
+
+	color: var(--Foreground);
+
+	text-wrap: balance;
+}
+
+.contact-hub__line {
+	margin: 0;
+
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+
+	color: var(--MuteForeground);
+
+	text-wrap: pretty;
+}
+
+// One column of records. The stack is the index's own rhythm, so the gap here
+// is the reading one: records are read as a set, not as separate subjects.
 .contact-hub__requests {
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-reading);
 }
 
-// The address is the band's expressive element: `--Primary` fill from the tier,
-// and the padding that turns a link into a target. It shrinks to its own text
-// instead of spanning the band, because it is one address, not a banner.
+.contact-hub__address-row {
+	margin: 0;
+}
+
+// The address at the S ceiling, in ink, underlined on hover: it is the one
+// destination on the page that is not a form, and it must read as a link rather
+// than as the page's action.
 .contact-hub__address {
 	display: inline-block;
-	align-self: flex-start;
-	padding: var(--space-reading) var(--space-group);
+
 	font-size: var(--type-sub);
 	line-height: var(--type-sub-line);
+
+	color: var(--Foreground);
+
 	text-decoration: none;
 	text-wrap: nowrap;
 }
@@ -37,13 +116,17 @@
 .contact-hub__address:hover,
 .contact-hub__address:focus-visible {
 	text-decoration: underline;
+	text-underline-offset: 0.25em;
 }
 
 // The way back to the top, at meta weight: an affordance, never a claim.
 .contact-hub__top {
+	@include hairline(top);
 	@include mono-meta;
 	@include track(0.08em);
-	margin: 0;
+
+	margin: var(--space-group) 0 0;
+	padding-block-start: var(--space-reading);
 }
 
 .contact-hub__top a {

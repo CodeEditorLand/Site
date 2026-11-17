@@ -1,0 +1,149 @@
+---
+/**
+ * FieldRecord - canonical record-card template.
+ *
+ * Renders the Daylight Field Record series template from a single
+ * `FieldRecord` content object (Source/Content/Record/<Element>.ts):
+ *
+ *   # <INDEX>              (FieldRecordIndex)
+ *   〈<STAMP>〉              (runtime claims)
+ *   /<ROUTE>               (route block)
+ *   <PROGRAM>              (program line, em-quad separators)
+ *   [blank zone]           (flex-1, 15-25% of the card)
+ *   <TITLE>:               (title block)
+ *   ↳<RELATION>            (proposition, when present)
+ *   STATUS: <STATE>        (FieldRecordStatus)
+ *   <METADATA ROWS>        (FieldRecordMetadata - TARGET/LICENSE/SIGNAL etc.)
+ *   [ACTION]               (FieldRecordAction, when present)
+ *   [SEAL]                 (FieldRecordSeal, upper-right, max 12% width)
+ *
+ * Composes the FieldRecordDataCard/Index/Metadata/Seal/Action/Status set
+ * exactly like the hero (DynamicHeroSection). The hero renders its own
+ * two-panel composition directly and does not use this orchestrator; this
+ * template is the single-card surface for element records (F4 series).
+ *
+ * The seal, the status block and the semantic ledger stay React: the hero
+ * island imports them, and a `.tsx` cannot import an `.astro`. Astro renders
+ * them here without hydrating them - no `client:*` appears in this file, so
+ * the card ships no JavaScript of its own.
+ */
+import FieldRecordAction from "./FieldRecordAction.astro";
+
+import FieldRecordDataCard from "./FieldRecordDataCard.astro";
+
+import FieldRecordIndex from "./FieldRecordIndex.astro";
+
+import FieldRecordMetadata from "./FieldRecordMetadata.astro";
+
+import { FieldRecordSeal } from "./FieldRecordSeal.js";
+
+import { FieldRecordStatus } from "./FieldRecordStatus.js";
+
+import { RouteText, StampText } from "./SemanticLedger.js";
+
+import type { FieldRecordStatusState } from "./FieldRecordStatus.js";
+
+import type { Props } from "./FieldRecord/Type.js";
+
+const { record, className, class: Class } = Astro.props;
+
+/** The marker without its leading `#` - the index block prints its own. */
+const Index = record.Index.replace(/^#\s*/, "");
+
+/** The status value as the state the status block switches on. */
+const Status = record.Status.Value.toLowerCase() as FieldRecordStatusState;
+
+/**
+ * The frame's classes: the template's own height fill, then the host's. Joined
+ * here because a card is a component, not an element - `class:list` is an
+ * element directive, so the string is composed before it is handed over. The
+ * card takes it through `className`, the prop the 404 page and the hero
+ * already pass.
+ */
+const Frame = ["h-full", className, Class].filter(Boolean).join(" ");
+---
+
+<FieldRecordDataCard className={Frame}>
+	<div class="flex h-full flex-col justify-between">
+		<div class="flex items-start justify-between">
+			<FieldRecordIndex index={Index} />
+			<FieldRecordSeal element={record.Seal} />
+		</div>
+
+		{
+			record.Stamp?.length ? (
+				<div class="mt-8">
+					{record.Stamp.map((Line) => (
+						<p class="text-field-l font-mono font-normal leading-[1.0] tracking-[-0.02em] text-card-foreground">
+							<StampText Line={Line} />
+						</p>
+					))}
+				</div>
+			) : null
+		}
+
+		{
+			record.Route?.length ? (
+				<div class="mt-6">
+					{record.Route.map((Line) => (
+						<p class="text-field-s font-mono font-normal leading-[1.1]">
+							<RouteText Line={Line} />
+						</p>
+					))}
+				</div>
+			) : null
+		}
+
+		{
+			record.Program?.length ? (
+				<p class="text-field-s mt-6 font-mono uppercase tracking-[0.25em] text-card-foreground opacity-60">
+					{record.Program.join("\u2001")}
+				</p>
+			) : null
+		}
+
+		<div class="my-8 flex-1" aria-hidden="true"></div>
+
+		<div>
+			<p class="text-field-l font-mono font-normal leading-[1.08] text-card-foreground">
+				{record.Title}:
+			</p>
+
+			{
+				record.Relation ? (
+					<p class="text-field-s mt-3 font-mono font-normal leading-[1.1] text-card-foreground opacity-70">
+						↳{record.Relation}
+					</p>
+				) : null
+			}
+		</div>
+
+		<div class="mt-6">
+			<FieldRecordStatus status={Status} tone={record.Status.Tone} />
+		</div>
+
+		{
+			record.Metadata?.length ? (
+				<div class="mt-4">
+					<FieldRecordMetadata
+						rows={record.Metadata.map((Row) => ({
+							label: Row.Label,
+							value: Row.Value,
+						}))}
+					/>
+				</div>
+			) : null
+		}
+
+		{
+			record.Action ? (
+				<div class="mt-6">
+					<FieldRecordAction
+						label={record.Action.Label}
+						href={record.Action.Href}
+					/>
+				</div>
+			) : null
+		}
+	</div>
+</FieldRecordDataCard>

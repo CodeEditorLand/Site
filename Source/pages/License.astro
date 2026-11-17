@@ -136,6 +136,18 @@ legal effect of CC0 on those rights.
  and has no duty or obligation with respect to this CC0 or use of the
  Work.`;
 const Lines = CC0LicenseText.split("\n");
+
+/**
+ * The summary panel's Jelly custom properties.
+ *
+ * HEAD held this note in a `bg-mute` box with a hairline; the surface is the
+ * same, but it is a design-system surface now instead of a painted `<div>`
+ * (`DESIGN.md` §1.7, §6.5). Mute, because the reading body already sits on the
+ * white `LegalCard` and a white note on a white card would not read as held
+ * apart. The padding is the reading step the note already used.
+ */
+const Note =
+	"--jelly-fill:var(--Mute);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:var(--space-reading);--jelly-card-padding-inline:var(--space-reading)";
 ---
 
 <Base
@@ -143,7 +155,7 @@ const Lines = CC0LicenseText.split("\n");
 	Description={MetaDescription}
 	Url={Astro.url.href}
 	lang="en">
-	<Header client:load Mode="functional" />
+	<Header client:load Mode="functional" slot="Header" />
 	<div class="container mx-auto max-w-4xl px-4 py-16">
 		<!-- Breadcrumbs -->
 		<nav aria-label="Breadcrumb" class="LegalPrintHide mb-8">
@@ -170,19 +182,9 @@ const Lines = CC0LicenseText.split("\n");
 			index={Index}
 			indexLabel="Parts"
 			bodyClass="LegalCard">
-			<section class="reading-document__part">
-				<h2 class="reading-clause" id="cc0-1-0-universal">CC0 1.0 Universal</h2>
-				<p class="mb-4">
-					The Code Editor Land project, including all source code,
-					documentation, and related materials, is dedicated to the
-					public domain under the <a
-						href="https://creativecommons.org/publicdomain/zero/1.0/"
-						target="_blank"
-						rel="noopener noreferrer"
-						>Creative Commons CC0 1.0 Universal</a
-					> license.
-				</p>
-				<div class="reading-document__note">
+			{/* The first screen: what CC0 means for a reader, before the legal text. */}
+			<div class="reading-document__part">
+				<jelly-card style={Note}>
 					<p>
 						<strong>What this means:</strong> You are free to use, modify,
 						distribute, and use the code for any purpose, including commercial
@@ -195,7 +197,21 @@ const Lines = CC0LicenseText.split("\n");
 						dedication with a fallback license. See the full legal
 						text below.
 					</p>
-				</div>
+				</jelly-card>
+			</div>
+
+			<section class="reading-document__part">
+				<h2 class="reading-clause" id="cc0-1-0-universal">CC0 1.0 Universal</h2>
+				<p class="mb-4">
+					The Code Editor Land project, including all source code,
+					documentation, and related materials, is dedicated to the
+					public domain under the <a
+						href="https://creativecommons.org/publicdomain/zero/1.0/"
+						target="_blank"
+						rel="noopener noreferrer"
+						>Creative Commons CC0 1.0 Universal</a
+					> license.
+				</p>
 			</section>
 
 			<section class="reading-document__part">

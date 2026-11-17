@@ -45,6 +45,18 @@ const trail: readonly ContactTrailItem[] = [
 	{ label: "/DASHBOARD", href: "/Dashboard" },
 	{ label: `/${Config.Title.toUpperCase()}` },
 ];
+
+/**
+ * The record header: the income code as the series marker, the statutory basis
+ * the registry already carries as the `〈 〉` stamp, and the route the record is
+ * filed on. Nothing is derived that the registry does not hold - a request with
+ * no `Article` prints no stamp.
+ */
+const record = {
+	index: `# ${Config.Code}`,
+	...(Config.Article ? { stamp: Config.Article } : {}),
+	route: "/CONTACT",
+};
 ---
 
 <ContactPage
@@ -53,6 +65,7 @@ const trail: readonly ContactTrailItem[] = [
 	trail={trail}
 	heading={Config.Title}
 	standfirst={Config.Subtitle}
+	record={record}
 >
 	<DynamicContactForm
 		client:load

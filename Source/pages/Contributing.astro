@@ -29,6 +29,19 @@ const MetaDescription = T("meta.contributing.description", {
 	defaultValue:
 		"An open source code editor built with Rust and Tauri.\nLearn how to contribute to Code Editor Land.",
 });
+
+/**
+ * The card surfaces' Jelly custom properties.
+ *
+ * The white information box on the creme field, square, at the documented inset
+ * - the same five values `Doc.astro` and the release manifest pass, so every
+ * white box on the site is one surface. HEAD painted these boxes with `bg-card`
+ * on a `StaccatoCard`; a card is a `jelly-card`, not a `<div>` plus utilities
+ * (`DESIGN.md` §6.5), and `StaccatoCard`'s seed-scatter transform rotates and
+ * offsets static content, which §2.9 forbids.
+ */
+const Card =
+	"--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:var(--space-group);--jelly-card-padding-inline:var(--space-group)";
 ---
 
 <Base
@@ -37,7 +50,7 @@ const MetaDescription = T("meta.contributing.description", {
 	Url={Astro.url.href}
 	lang="en"
 >
-	<Header client:load />
+	<Header client:load slot="Header" />
 
 	<div class="container mx-auto max-w-4xl px-4 py-16">
 		<!-- Breadcrumbs -->
@@ -75,8 +88,7 @@ const MetaDescription = T("meta.contributing.description", {
 			rows={Ledger}
 			index={Index}
 			indexLabel="Parts"
-			measure="full"
-			bodyClass="LegalCard">
+			measure="full">
 		<!-- Quick Links -->
 		<section class="reading-document__part">
 			<h2 class="sr-only reading-clause" id="quick-links">
@@ -91,7 +103,7 @@ const MetaDescription = T("meta.contributing.description", {
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 				>
-					<h3 class="text-card-foreground mb-2 text-xl font-medium" id="contributing-guide">
+					<h3 class="text-card-foreground mb-2 type-sub font-medium" id="contributing-guide">
 						{T("common.contributing.guide.title", {
 							defaultValue: "Contributing Guide",
 						})}
@@ -111,7 +123,7 @@ const MetaDescription = T("meta.contributing.description", {
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 				>
-					<h3 class="text-card-foreground mb-2 text-xl font-medium" id="good-first-issues">
+					<h3 class="text-card-foreground mb-2 type-sub font-medium" id="good-first-issues">
 						{T("common.contributing.goodFirstIssues.title", {
 							defaultValue: "Good First Issues",
 						})}
@@ -356,7 +368,7 @@ const MetaDescription = T("meta.contributing.description", {
 				})}
 			</h2>
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-				<div class="StaccatoCard StaccatoBorderShimmer bg-card p-5">
+				<jelly-card style={Card}>
 					<h3 class="text-card-foreground mb-2 font-medium" id="code">
 						{T("common.contributing.ways.code.title", {
 							defaultValue: "Code",
@@ -372,8 +384,8 @@ const MetaDescription = T("meta.contributing.description", {
 							}),
 						)}
 					/>
-				</div>
-				<div class="StaccatoCard StaccatoBorderShimmer bg-card p-5">
+				</jelly-card>
+				<jelly-card style={Card}>
 					<h3 class="text-card-foreground mb-2 font-medium" id="documentation">
 						{T("common.contributing.ways.documentation.title", {
 							defaultValue: "Documentation",
@@ -392,8 +404,8 @@ const MetaDescription = T("meta.contributing.description", {
 							),
 						)}
 					/>
-				</div>
-				<div class="StaccatoCard StaccatoBorderShimmer bg-card p-5">
+				</jelly-card>
+				<jelly-card style={Card}>
 					<h3 class="text-card-foreground mb-2 font-medium" id="testing">
 						{T("common.contributing.ways.testing.title", {
 							defaultValue: "Testing",
@@ -409,8 +421,8 @@ const MetaDescription = T("meta.contributing.description", {
 							}),
 						)}
 					/>
-				</div>
-				<div class="StaccatoCard StaccatoBorderShimmer bg-card p-5">
+				</jelly-card>
+				<jelly-card style={Card}>
 					<h3 class="text-card-foreground mb-2 font-medium" id="design">
 						{T("common.contributing.ways.design.title", {
 							defaultValue: "Design",
@@ -426,7 +438,7 @@ const MetaDescription = T("meta.contributing.description", {
 							}),
 						)}
 					/>
-				</div>
+				</jelly-card>
 			</div>
 		</section>
 
@@ -437,7 +449,7 @@ const MetaDescription = T("meta.contributing.description", {
 					defaultValue: "Funding",
 				})}
 			</h2>
-			<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
+			<jelly-card style={Card}>
 				<div class="mb-4 flex flex-wrap gap-x-4 gap-y-1">
 					<a
 						href="https://nlnet.nl/project/Land/"
@@ -484,7 +496,7 @@ const MetaDescription = T("meta.contributing.description", {
 						}),
 					)}
 				/>
-			</div>
+			</jelly-card>
 		</section>
 
 		<!-- Code of Conduct -->
@@ -494,7 +506,7 @@ const MetaDescription = T("meta.contributing.description", {
 					defaultValue: "Code of Conduct",
 				})}
 			</h2>
-			<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
+			<jelly-card style={Card}>
 				<a
 					href="https://github.com/CodeEditorLand/Land/tree/Current/CODE_OF_CONDUCT.md"
 					target="_blank"
@@ -512,7 +524,7 @@ const MetaDescription = T("meta.contributing.description", {
 						}),
 					)}
 				/>
-			</div>
+			</jelly-card>
 		</section>
 		</ReadingDocument>
 

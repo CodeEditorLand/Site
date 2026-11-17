@@ -14,7 +14,7 @@ import Auth0Provider from "../Provider/Auth0Provider";
 
 import { Button } from "../UI/Button";
 
-import { Skeleton } from "../UI/Skeleton";
+import { DynamicStateReport, StateLabel } from "./DynamicStateReport";
 
 // ── PII blur wrapper ────────────────────────────────────────────────────────
 
@@ -412,69 +412,79 @@ const AccountProfileInner = ({
 
 	if (IsLoading) {
 		return (
-			<div className="mx-auto max-w-2xl space-y-6 px-4 py-16">
-				<div className="flex items-center gap-6">
-					<Skeleton className="h-20 w-20 shrink-0" />
-					<div className="flex-1 space-y-3">
-						<Skeleton className="h-6 w-48" />
-						<Skeleton className="h-4 w-64" />
-						<Skeleton className="h-4 w-32" />
-					</div>
-				</div>
-				<Skeleton className="h-48 w-full" />
-				<Skeleton className="h-32 w-full" />
-				<Skeleton className="h-24 w-full" />
-			</div>
+			<DynamicStateReport
+				Label={StateLabel.Loading}
+				Tone="ink"
+				Loading
+				Sentence={T("accountPage.loading", {
+					defaultValue:
+						"Reading your profile from the identity provider. The account fields appear as soon as it answers.",
+				})}
+				Action={
+					<button
+						type="button"
+						className="auth-shell__alternate"
+						onClick={() => window.location.reload()}
+					>
+						{T("reload", { defaultValue: "Reload" })}
+					</button>
+				}
+			/>
 		);
 	}
 
 	if (AuthError) {
 		return (
-			<div
-				className="mx-auto max-w-2xl space-y-4 px-4 py-16"
-				role="alert"
-				aria-live="polite"
-			>
-				<p className="text-destructive">
-					{T("error", { defaultValue: "Authentication error" })}:{" "}
-					{AuthError.message}
-				</p>
-				<Button
-					variant="outline"
-					onClick={() => window.location.reload()}
-				>
-					{T("tryAgain", { defaultValue: "Try again" })}
-				</Button>
-			</div>
+			<DynamicStateReport
+				Role="alert"
+				Label={StateLabel.Interrupted}
+				Tone="strong"
+				Sentence={
+					<>
+						{T("error", { defaultValue: "Authentication error" })}:{" "}
+						{AuthError.message}
+					</>
+				}
+				Action={
+					<Button
+						variant="outline"
+						onClick={() => window.location.reload()}
+					>
+						{T("tryAgain", { defaultValue: "Try again" })}
+					</Button>
+				}
+			/>
 		);
 	}
 
 	if (!IsAuthenticated || !User) {
 		return (
-			<div className="mx-auto max-w-2xl space-y-4 px-4 py-16 text-center">
-				<p className="text-muted-foreground">
-					{T("notSignedIn", {
-						defaultValue: "Sign in to manage your account.",
-					})}
-				</p>
-				<button
-					type="button"
-					onClick={() => {
-						try {
-							sessionStorage.setItem(
-								"auth0_return_to",
+			<DynamicStateReport
+				Label={StateLabel.SignInRequired}
+				Tone="ink"
+				Sentence={T("notSignedIn", {
+					defaultValue: "Sign in to manage your account.",
+				})}
+				Action={
+					<button
+						type="button"
+						onClick={() => {
+							try {
+								sessionStorage.setItem(
+									"auth0_return_to",
 
-								window.location.pathname,
-							);
-						} catch {}
+									window.location.pathname,
+								);
+							} catch {}
 
-						Login();
-					}}
-					className="StaccatoButton text-primary-fg inline-flex items-center justify-center bg-primary px-6 py-2 font-medium transition-all hover:opacity-90"
-				>
-					{T("signInButton", { defaultValue: "Sign In" })}
-				</button>
-			</div>
+							Login();
+						}}
+						className="auth-shell__primary emphasis-expressive"
+					>
+						{T("signInButton", { defaultValue: "Sign In" })}
+					</button>
+				}
+			/>
 		);
 	}
 
@@ -543,7 +553,7 @@ const AccountProfileInner = ({
 					)}
 				</div>
 				<div className="flex-1">
-					<h2 className="text-2xl font-medium">
+					<h2 className="type-sub font-medium">
 						<Pii visible={PIIVisible}>{DisplayName}</Pii>
 					</h2>
 					<div className="mt-1 flex flex-wrap items-center gap-2">
@@ -771,7 +781,7 @@ const AccountProfileInner = ({
 												.split("/")
 												.pop()
 												?.slice(0, 24)}
-											…
+											...
 										</span>
 									</Pii>
 								</span>
@@ -923,7 +933,7 @@ const AccountProfileInner = ({
 								)}
 								{PasswordResetState === "sending" && (
 									<span className="shrink-0 text-sm text-card-foreground opacity-70">
-										Sending…
+										Sending...
 									</span>
 								)}
 								{PasswordResetState === "sent" && (

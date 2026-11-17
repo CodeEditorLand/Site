@@ -8,6 +8,12 @@
 // each card became a band, and the sentence "Prefer email? Reach us directly:"
 // finally has the address it was asking the reader to use.
 //
+// Two corrections since: the bands no longer alternate paper and canvas
+// (`DESIGN.md` §5 A5 - surface follows the artifact, not the position, so every
+// band but the opening one is the canvas), and the direct address is no longer
+// ink-inverted (§7 DR-13 - the GitHub issue is the page's one action, and an
+// address is not an action).
+//
 // Every string still comes through `T` with its key, so the locale files keep
 // their copy. The GitHub issue URL, the DEALS route and the PlayForm line are
 // unchanged.
@@ -43,6 +49,13 @@ const Trail: readonly ContactTrailItem[] = [
 	{ label: "/CONTACT", href: "/Contact" },
 	{ label: `/${PageTitle.toUpperCase()}` },
 ];
+
+/**
+ * The record header: the page's own series marker, the classification inside
+ * `〈 〉`, and the route it is filed on - the same three symbols every contact
+ * route opens with, so the fifteen routes read as one set.
+ */
+const Record = { index: "# SALE", stamp: "ENTERPRISE", route: "/CONTACT" };
 
 /** The six things an enterprise plan adds, in the order the page lists them. */
 const Features: readonly string[] = [
@@ -86,6 +99,7 @@ const GithubNote = T("common.sales.contact.githubNote", {
 	trail={Trail}
 	heading={PageTitle}
 	standfirst={PageSubtitle}
+	record={Record}
 >
 	<RecordBand
 		band={{
@@ -149,7 +163,7 @@ const GithubNote = T("common.sales.contact.githubNote", {
 			heading: T("common.sales.features.heading", {
 				defaultValue: "What Enterprise Includes",
 			}),
-			tone: "paper",
+			tone: "canvas",
 		}}
 	>
 		<ul class="contact-sale__features">
@@ -175,7 +189,7 @@ const GithubNote = T("common.sales.contact.githubNote", {
 		</p>
 
 		<a
-			class="contact-sale__address emphasis-expressive"
+			class="contact-sale__address"
 			href={`mailto:${DirectAddress}`}>{DirectAddress}</a
 		>
 
@@ -202,7 +216,7 @@ const GithubNote = T("common.sales.contact.githubNote", {
 			heading: T("common.sales.openSource.heading", {
 				defaultValue: "Still Open Source",
 			}),
-			tone: "paper",
+			tone: "canvas",
 		}}
 	>
 		<p class="contact-sale__prose">

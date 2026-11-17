@@ -1,14 +1,16 @@
 {
 	"account": {
+		"description": "Manage your Code Editor Land account and profile.",
 		"forgotPassword": "Forgot Password - Code Editor Land",
 		"resetPassword": "Reset Password - Code Editor Land",
 		"signIn": "Sign In - Code Editor Land",
-		"signUp": "Sign Up - Code Editor Land"
+		"signUp": "Sign Up - Code Editor Land",
+		"title": "Account | Code Editor Land"
 	},
 	"description": "No Electron. No Chromium. VS Code extension compatible.",
 	"downloads": {
-		"description": "Download Code Editor Land for macOS, Windows, and Linux.\nAll releases are signed and verified for your security.",
-		"title": "Download Code Editor Land | No Electron. No Chromium. Every Extension Runs Unchanged."
+		"description": "Code Editor Land source builds target macOS, Windows, and Linux. Public installers, signing, and verification artifacts are still being prepared.",
+		"title": "Download Code Editor Land | Source Builds and Public Release Prep"
 	},
 	"home": {
 		"description": "Code Editor Land is an open-source editor stack built with Rust, Tauri, and a VS Code-compatible extension host. Source builds are active while public installers and full extension coverage are still in progress.",
@@ -34,7 +36,11 @@
 	},
 	"docs": {
 		"title": "Documentation | Code Editor Land",
-		"description": "Browse the Code Editor Land documentation, architecture guides, and developer resources."
+		"description": "Browse the Code Editor Land documentation, architecture guides, and developer resources.",
+		"rust": {
+			"title": "Rust API Documentation | Code Editor Land",
+			"description": "Browse the generated Rust API documentation for Land's core crates."
+		}
 	},
 	"blog": {
 		"title": "Blog | Code Editor Land",
@@ -49,6 +55,10 @@
 		"description": "Manage your account, downloads, and settings.\nYour Code Editor Land dashboard."
 	},
 	"contact": {
+		"hub": {
+			"title": "Contact | Code Editor Land",
+			"description": "Contact the Code Editor Land team: data requests, technical support, legal, and enterprise inquiries."
+		},
 		"sales": {
 			"title": "Enterprise Inquiries | Code Editor Land",
 			"description": "Contact the Code Editor Land team for enterprise licensing, support, and deployment options."

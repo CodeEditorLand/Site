@@ -9,8 +9,6 @@ author: "CodeEditorLand"
 readTime: 5
 ---
 
-# VS Code Extension Compatibility in [Land](https://github.com/CodeEditorLand/Land)
-
 [Land](https://github.com/CodeEditorLand/Land)'s active compatibility path is [`Cocoon`](https://github.com/CodeEditorLand/Cocoon). [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) loads existing `VS Code`
 extension entry points and provides the `vscode` API object those extensions
 expect. [`Mountain`](https://github.com/CodeEditorLand/Mountain) scans installed extensions, reads manifests, handles local

@@ -7,6 +7,8 @@
 		"tagline": "Rust and Tauri editor stack. VS Code API compatibility in progress. Free forever."
 	},
 	"breadcrumb": {
+		"account": "Account",
+		"dashboard": "Dashboard",
 		"home": "Home"
 	},
 	"button": {
@@ -46,6 +48,34 @@
 			"heading": "How Land Replaces VS Code's Electron Stack",
 			"intro": "VS Code runs on Electron: a Chromium browser, a Node.js runtime, and an extension-host model. Land replaces those pieces with independent elements while preserving the VS Code extension API as the compatibility target. Browse individual elements in the Element section above, or explore the workspace on GitHub."
 		},
+		"workers": {
+			"analytics": "Privacy-first usage telemetry routed through Cloudflare Analytics Engine",
+			"auth": "OAuth 2.0, JWT session tokens, and Auth0 integration",
+			"download": "Binary distribution, release metadata, and update checks",
+			"heading": "Backend Services",
+			"intro": "Four Cloudflare Workers power the Land backend infrastructure:",
+			"status": "Health checks and uptime monitoring"
+		},
+		"deployments": {
+			"heading": "Live Deployments",
+			"intro": "Public website and documentation surfaces are deployed separately from the local editor runtime:",
+			"knowledge": "Knowledge Base",
+			"rustAir": "Rust API: Air",
+			"rustCommon": "Rust API: Common",
+			"rustEcho": "Rust API: Echo",
+			"rustInteractive": "Rust API (Interactive)",
+			"rustLand": "Rust API: Land (Workspace)",
+			"rustMaintain": "Rust API: Maintain",
+			"rustMountain": "Rust API: Mountain",
+			"rustRest": "Rust API: Rest",
+			"rustSideCar": "Rust API: SideCar",
+			"status": "Status",
+			"website": "editor.land"
+		},
+		"rustApi": {
+			"title": "Rust API Reference",
+			"description": "Browse generated rustdoc output for Mountain, Echo, Air, and 7 more Rust crates."
+		},
 		"repositories": {
 			"viewAll": "View all repositories"
 		}
@@ -68,16 +98,22 @@
 		},
 		"upcomingTopicsHeading": "Upcoming Topics"
 	},
+	"contact": {
+		"pageSubtitle": "Data requests, technical support, legal, and enterprise inquiries - each contact carries a 5-letter income code.",
+		"pageTitle": "Contact"
+	},
 	"contributing": {
+		"indexLabel": "Parts",
+		"kicker": "/CONTRIBUTING",
 		"pageTitle": "Contributing",
-		"pageSubtitle": "Land is open source and built in public.\n\nEvery contribution (code, docs, tests, or design) and ships to real users.",
+		"pageSubtitle": "Land is open source and built in public.\n\nEvery contribution - code, docs, tests, or design - ships to real users.",
 		"guide": {
 			"title": "Contributing Guide",
 			"description": "Read CONTRIBUTING.md on GitHub for the full setup walkthrough: environment, branch conventions, and how to submit changes."
 		},
 		"goodFirstIssues": {
 			"title": "Good First Issues",
-			"description": "Browse issues labeled good-first-issue to find tasks sized for new contributors. The team triages and labels these weekly."
+			"description": "Browse issues labeled \"good first issue\" to find approachable tasks for new contributors. The team triages and labels these weekly."
 		},
 		"elements": {
 			"heading": "Fifteen Elements, One Editor",
@@ -99,9 +135,16 @@
 			"title": "Make Your Changes",
 			"description": "Create a branch, make your changes, and follow the PascalCase naming convention used throughout the project."
 		},
+		"quickLinks": {
+			"heading": "Quick Links"
+		},
+		"stepTest": {
+			"title": "Test",
+			"description": "Write tests, reproduce reported bugs, or help triage open issues."
+		},
 		"step4": {
 			"title": "Submit a Pull Request",
-			"description": "Push your branch and open a pull request against the Current branch.\n\nDescribe what changed and why. One sentence is enough.."
+			"description": "Push your branch and open a pull request against the Current branch.\n\nDescribe what changed and why. One sentence is enough."
 		},
 		"ways": {
 			"heading": "Ways to Contribute",

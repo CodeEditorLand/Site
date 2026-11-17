@@ -8,26 +8,10 @@ description:
     coordination protocol, and connection lifecycle management."
 ---
 
-# Inter-Component Protocol
-
 This document specifies the communication protocols used between **Land**
 components. It covers the `gRPC` service definitions (`Vine` protocol), the
 `Tauri` IPC mechanism, the `Spine` extension coordination protocol, and the
 connection lifecycle management.
-
----
-
-## Table of Contents
-
-1. [Protocol Overview](#protocol-overview)
-2. [Tauri IPC](#tauri-ipc)
-3. [Vine gRPC Protocol](#vine-grpc-protocol️)
-4. [Spine Extension Protocol](#spine-extension-protocol)
-5. [Connection Lifecycle](#connection-lifecycle)
-6. [Health Monitoring](#health-monitoring)
-7. [Protocol Buffer Definitions](#protocol-buffer-definitions)
-8. [Security](#security️)
-9. [Related Documentation](#related-documentation)
 
 ---
 
@@ -72,7 +56,7 @@ a rebuild. The active tier for each subsystem is logged at boot by
 `Wind` invokes `Mountain` handlers through `@tauri-apps/api` `invoke()`. Each
 command maps to a registered `Rust` handler in `Mountain`.
 
-**Wind-side invocation:**
+#### Wind-side invocation
 
 ```typescript
 import { invoke } from "@tauri-apps/api/core";
@@ -82,7 +66,7 @@ const content: Uint8Array = await invoke("read_file", {
 });
 ```
 
-**Mountain-side handler:**
+#### Mountain-side handler
 
 ```rust
 use tauri;

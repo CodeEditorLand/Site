@@ -10,17 +10,11 @@ import type Property from "./Interface/Property/Password/Reset.js";
 
 import type { default as ResetState } from "./Type/State/Reset.js";
 
-/** The three strength segments, and how many of them a level fills. */
-const StrengthFill = {
-	none: 0,
-	weak: 1,
-	medium: 2,
-	strong: 3,
-} as const;
-
-type StrengthTone = keyof typeof StrengthFill;
-
-const Segments = [0, 1, 2] as const;
+import {
+	StrengthFill,
+	StrengthOf,
+	StrengthSegments,
+} from "./Password/Strength.js";
 
 /**
  * Dynamic ResetPassword component for setting a new password with token
@@ -128,14 +122,7 @@ const DynamicResetPassword = ({
 		}
 	};
 
-	const Tone: StrengthTone =
-		Password.length >= 12 && /[^a-zA-Z0-9]/.test(Password)
-			? "strong"
-			: Password.length >= 8
-				? "medium"
-				: Password.length >= 6
-					? "weak"
-					: "none";
+	const Tone = StrengthOf(Password);
 
 	const Filled = StrengthFill[Tone];
 
@@ -273,7 +260,7 @@ const DynamicResetPassword = ({
 							: "Weak password"
 					}
 				>
-					{Segments.map((Segment) => (
+					{StrengthSegments.map((Segment) => (
 						<span
 							key={Segment}
 							className={[

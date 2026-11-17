@@ -5,8 +5,6 @@ section: "Low-Level Shim"
 order: 500
 ---
 
-# 🟠 Low-Level Shim - Engine-Level Interception
-
 > **🟠 LOW-LEVEL SHIM** - JavaScript engine prototype monkey-patches
 > **Tier gate**: `TierShim=Own` | `TierShim=Preempt`
 > **Color**: `#FF6B35` (Orange)

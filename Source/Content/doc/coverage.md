@@ -5,8 +5,6 @@ section: "Coverage"
 order: 510
 ---
 
-# 🔵 Coverage / Telemetry - Application-Level Shim
-
 > **🔵 COVERAGE SHIM** - Application-level service routing and telemetry
 > **Tier gate**: `TierShim=Proxy` | `TierShim=Replace`
 > **Color**: `#2563EB` (Blue)

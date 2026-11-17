@@ -35,6 +35,10 @@
 	flex-direction: column;
 	gap: var(--space-reading);
 	min-inline-size: 0;
+
+	/* The phase sits on a jelly-card whose own inline padding is 0, so the
+	   block carries the inset the tier card's header used to carry. */
+	padding-inline: var(--space-group);
 }
 
 .roadmap-phase__head {

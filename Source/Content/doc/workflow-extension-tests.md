@@ -27,8 +27,8 @@ rather than a headless stub.
 1. **Extension manifest.** The extension being developed includes a `"test"`
    script in its `package.json`, for example:
    `"test": "node ./test/runTest.js"`. The extension also contributes a command
-   - e.g. `"command": "my-extension.runTests"` - that acts as the test runner
-   entry point.
+    - e.g. `"command": "my-extension.runTests"` - that acts as the test runner
+      entry point.
 
 2. **Launch with dev path.** The developer launches [Mountain](https://github.com/CodeEditorLand/Mountain) with a special
    flag pointing to the extension under development:
@@ -52,11 +52,11 @@ rather than a headless stub.
 5. **Construct arguments.** The Test Runner Service constructs a specialised
    set of arguments and environment variables for the new instance:
 
-    | Argument / variable          | Kind                 | Purpose                                                                             |
-    | ---------------------------- | -------------------- | ----------------------------------------------------------------------------------- |
-    | `--extensionDevelopmentPath` | flag                 | path to the extension under test                                                    |
-    | `--extensionTestsPath`       | flag                 | path to the test runner entry script (e.g. `out/test/suite/index.js`)               |
-    | `VSCODE_IPC_HOOK_CLI`        | environment variable | signals CLI test runner mode to [Cocoon](https://github.com/CodeEditorLand/Cocoon)  |
+    | Argument / variable          | Kind                 | Purpose                                                                            |
+    | ---------------------------- | -------------------- | ---------------------------------------------------------------------------------- |
+    | `--extensionDevelopmentPath` | flag                 | path to the extension under test                                                   |
+    | `--extensionTestsPath`       | flag                 | path to the test runner entry script (e.g. `out/test/suite/index.js`)              |
+    | `VSCODE_IPC_HOOK_CLI`        | environment variable | signals CLI test runner mode to [Cocoon](https://github.com/CodeEditorLand/Cocoon) |
 
 6. **Spawn the test host.** The Test Runner Service spawns a new [Mountain](https://github.com/CodeEditorLand/Mountain)
    process with these arguments. This second instance is the **Extension

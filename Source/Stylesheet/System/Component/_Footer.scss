@@ -12,6 +12,10 @@
 //   .Footer              the band shell, on the page canvas
 //   .FooterRecord        the inner container, on the band gutters
 //   .FooterRule          the accent hairline that opens the record
+//   .FooterRecordHeader  the marker row: `# LAND / RECORD END` + locale switcher
+//   .FooterRecordEnd     the end-of-record label
+//   .FooterRecordMarker  its `#`
+//   .FooterRecordLocale  the locale switcher's cell in that row
 //   .FooterLedger        the facts, as RecordLedger
 //   .FooterSources       the /LABEL destinations behind the linked facts
 //   .FooterSourceLink    one of them
@@ -20,13 +24,10 @@
 //   .FooterQuickLink     one of them
 //   .FooterLegal         Privacy, Terms, License, Contributing, Issues, Blog, Enterprise
 //   .FooterLegalLink     one of them
-//   .FooterBottom        copyright, locale switcher, Tauri badge
+//   .FooterBottom        copyright and the runtime badge
 //   .FooterCopyright     the copyright line
-//   .FooterLocale        the locale switcher's cell
 //   .FooterTauri         the Tauri badge cell
 //   .FooterTauriLink     the badge link
-//   .FooterRecordEnd     the closing line
-//   .FooterRecordMarker  its `#`
 //
 // Owned by P1.
 
@@ -135,10 +136,6 @@
 	color: var(--MuteForeground);
 }
 
-.FooterLocale {
-	margin-inline-start: auto;
-}
-
 .FooterTauriLink {
 	display: inline-flex;
 	align-items: center;
@@ -154,23 +151,34 @@
 	opacity: 1;
 }
 
-// ─── Closing line ─────────────────────────────────────────────────────────
-// The record ends here: the marker and the end-of-record label, last in the band.
+// ─── The record header ────────────────────────────────────────────────────
+// The record opens on its own marker, with the locale switcher on the same row
+// - the order the pre-programme footer printed and the order the document's
+// block writes: `# LAND / RECORD END`, then the facts, then the routes.
+
+.FooterRecordHeader {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-reading);
+}
 
 .FooterRecordEnd {
 	@include mono-meta;
 	@include track(0.08em);
 	display: flex;
-	align-items: center;
+	align-items: baseline;
 	gap: var(--space-tight);
 	margin: 0;
-	padding-block-start: var(--space-reading);
-
-	@include hairline(top);
 }
 
 .FooterRecordMarker {
 	color: var(--Accent);
+}
+
+.FooterRecordLocale {
+	margin-inline-start: auto;
 }
 
 @include bp(768px) {

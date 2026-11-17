@@ -1,0 +1,17 @@
+// The Dashboard surface - one partial per component, wired in load order.
+//
+// The dashboard's own composites, beside the Record blocks it composes from:
+//
+//   Shell     SurfaceShell.astro     the shared opening: marker, h1, ledger
+//   Requests  PrivacyRequests.astro  the data-rights directory's three groups
+//
+// `Shell`'s partial lives at `System/Component/Surface/_Shell.scss`, because
+// the portal wears the same shell; it is not repeated here.
+//
+// This file is the one line the shared `System/Component/_Index.scss` needs:
+//
+//   @use "Dashboard/Index";
+//
+// It is not added there by this card - that file is shared and V1 wires every
+// page partial into it in one pass before the build.
+@use "PrivacyRequests";

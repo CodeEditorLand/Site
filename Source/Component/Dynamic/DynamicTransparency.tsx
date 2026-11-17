@@ -139,7 +139,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 
 				{/* Telemetry Policy */}
 				<div className="mb-16">
-					<h3 className="mb-2 text-2xl tracking-tight text-foreground">
+					<h3 className="type-sub mb-2 tracking-tight text-foreground">
 						Telemetry Policy
 					</h3>
 					<p className="mb-8 text-muted-foreground">
@@ -208,7 +208,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 
 				{/* Build Variants */}
 				<div className="mb-16">
-					<h3 className="mb-2 text-2xl tracking-tight text-foreground">
+					<h3 className="type-sub mb-2 tracking-tight text-foreground">
 						Build Variants
 					</h3>
 					<p className="mb-8 text-foreground opacity-70">
@@ -283,7 +283,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 
 				{/* Deployment Strategies */}
 				<div className="mb-16">
-					<h3 className="mb-2 text-2xl tracking-tight text-foreground">
+					<h3 className="type-sub mb-2 tracking-tight text-foreground">
 						Deployment Strategies
 					</h3>
 					<p className="mb-8 text-foreground opacity-70">

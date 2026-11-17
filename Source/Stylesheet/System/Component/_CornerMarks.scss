@@ -13,7 +13,7 @@
  * `no-preference` - reduced-motion users get the static frame only.
  *
  * Tick direction contract (matches the data-corner / data-axis attributes
- * emitted by CornerMarks.tsx): on hover each arm slides PERPENDICULAR to
+ * emitted by CornerMarks.astro): on hover each arm slides PERPENDICULAR to
  * itself so the L SEPARATES at the corner (the arms never cross):
  * tl-h moves up (-y) / tl-v moves left (-x), tr-h moves up (-y) / tr-v moves
  * right (+x), bl-h moves down (+y) / bl-v moves left (-x), br-h moves down

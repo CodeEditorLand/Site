@@ -1,0 +1,43 @@
+---
+/**
+ * FieldRecordDataCard - the frame every field record is printed in: a white
+ * card, picture-frame corner marks at the card level, and one padded body.
+ *
+ * The card owns nothing but the frame. Its children are the record's content,
+ * so it takes a slot rather than a body prop - a record that grows a new
+ * block does not touch this file.
+ *
+ * The padding is two custom properties on the frame (`--card-padding-block` /
+ * `--card-padding-inline`) that the body reads. A host that needs a tighter
+ * card sets them through its own class; the defaults here are the sitewide
+ * card measure.
+ *
+ * Every FieldRecord surface (hero / 404 / portal / manifest) inherits the
+ * corner marks through this one frame (C19), which is why the marks are not
+ * the host's job.
+ *
+ * No `<script>` and no `client:*`: this block ships zero JavaScript. The React
+ * card forwarded a ref; nothing in the tree passes one, so the Astro frame has
+ * no ref at all - an unreachable prop is not preserved, it is dropped.
+ */
+import CornerMarks from "./CornerMarks.astro";
+
+import type { Props } from "./FieldRecordDataCard/Type.js";
+
+const { className, class: Class, ...Rest } = Astro.props;
+---
+
+<div
+	class:list={[
+		"CornerMarkShell text-card-fg relative bg-card",
+		className,
+		Class,
+	]}
+	style="--card-padding-block:2.75rem;--card-padding-inline:1.5rem"
+	{...Rest}
+>
+	<CornerMarks />
+	<div style="padding:var(--card-padding-block) var(--card-padding-inline)">
+		<slot />
+	</div>
+</div>

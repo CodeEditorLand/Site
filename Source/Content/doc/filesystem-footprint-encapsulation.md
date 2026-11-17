@@ -7,9 +7,7 @@ order: 6
 description: "Potential refactors that would shrink Land's filesystem footprint, simplify cleanup, or unblock versioning."
 ---
 
-# Encapsulation Directions 🚧
-
-Potential refactors that would shrink Land's filesystem footprint, simplify cleanup, or unblock versioning. Each option is feasible because both Land and the bundled VS Code dependency are ours to modify. None are decided plans; all should be costed against the current [PerElement.md](/Doc/filesystem-footprint-per-element) and [PlatformPaths.md](/Doc/filesystem-footprint-platform-paths) before implementation.
+Potential refactors that would shrink Land's filesystem footprint, simplify cleanup, or unblock versioning. Each option is feasible because both Land and the bundled VS Code dependency are ours to modify. None are decided plans; all should be costed against the current [Per-Element Write Sites](/Doc/filesystem-footprint-per-element) and [Platform Paths](/Doc/filesystem-footprint-platform-paths) before implementation.
 
 ---
 
@@ -43,7 +41,7 @@ Webview-managed paths (`Library/WebKit/<bundle>/` and equivalents) stay where th
 
 **Risk:** Tauri's webview bridge expects `app_data_dir` to be the OS-blessed location for some sandboxing-related operations. Needs an experiment to confirm WKWebView still gets its keychain-equivalents when the userdata moves.
 
-**Touches:**
+### Touches
 
 - `Element/Mountain/Source/Binary/Main/AppLifecycle.rs` (userdata seeder).
 - `Element/Mountain/Source/IPC/WindServiceHandlers/Utilities/UserdataDir/*`.
@@ -60,7 +58,7 @@ Stop encoding the build matrix into the Tauri `identifier`. Use a single identif
 
 **Risk:** Existing-install migration is a one-shot Maintain script that walks all `land.editor.*mountain*` paths and moves contents into the new layout. Workbench userdata needs careful handling so settings don't reset.
 
-**Touches:**
+### Touches
 
 - `Element/Mountain/tauri.conf.json` (per-profile template).
 - `Element/Maintain/Source/Build/*` (identifier composer).
@@ -78,11 +76,11 @@ A single `~/.fiddee/<profile>/logs/<ts>/` tree (option A) opens the door to:
 
 Today `Record=1` + `Trace=all` debug sessions leave behind ~200 MB per run forever. The fix is mechanical once the log root is single-source.
 
-**Touches:**
+### Touches
 
 - `Element/Mountain/Source/IPC/DevLog/*`.
 - One new boot hook to prune-on-start.
-- New env vars: `LogRetention`, `LogMaxSize`, `LogPruneOnBoot` (registry entries in [EnvironmentVariables.md](/Doc/build-matrix)).
+- New env vars: `LogRetention`, `LogMaxSize`, `LogPruneOnBoot` (registry entries in [Environment Variables](/Doc/filesystem-footprint-environment-variables)).
 
 ---
 
@@ -94,7 +92,7 @@ Today the userdata directory has no version marker, so future format changes (e.
 
 **Per-document version fields** complement this: every JSON the editor writes should grow a top-level `_v` key. Cheap to add today (write the key, ignore on read for now), expensive to retrofit later.
 
-**Touches:**
+### Touches
 
 - `Element/Mountain/Source/Binary/Main/AppLifecycle.rs` (boot-time migration step).
 - New crate `Element/Mountain/Source/Migration/` for schema migrations.
@@ -116,17 +114,17 @@ Add equivalent overrides for every location:
 | -        | `Cache` - cache root                   |
 | -        | `Storage` - per-extension storage root |
 
-Pair each with a registry entry in [EnvironmentVariables.md](/Doc/build-matrix). Useful for **portable installs** (USB-stick FIDDEE) and for CI runners that should not accumulate state.
+Pair each with a registry entry in [Environment Variables](/Doc/filesystem-footprint-environment-variables). Useful for **portable installs** (USB-stick FIDDEE) and for CI runners that should not accumulate state.
 
 ---
 
 ## F. Self-Uninstall Command 🧼
 
-`fiddee --uninstall` (or a menu item) that walks the [PerElement.md](/Doc/filesystem-footprint-per-element) tables and removes every path it owns, optionally archiving to `~/.fiddee-archive-<ts>/` first. Matches the procedure in [Cleanup.md](/Doc/filesystem-footprint-cleanup) done by hand.
+`fiddee --uninstall` (or a menu item) that walks the [Per-Element Write Sites](/Doc/filesystem-footprint-per-element) tables and removes every path it owns, optionally archiving to `~/.fiddee-archive-<ts>/` first. Matches the procedure in [Cleanup Recipes](/Doc/filesystem-footprint-cleanup) done by hand.
 
 **Bonus:** integrate with option K (keychain enumeration) so the uninstall also clears OS-keychain entries.
 
-**Touches:**
+### Touches
 
 - New CLI flag handler in `Element/Mountain/Source/Binary/Initialize/CliParse.rs`.
 - Path enumeration via the centralised resolvers (FiddeeRoot, UserdataDir, PathResolver).
@@ -140,7 +138,7 @@ Pair each with a registry entry in [EnvironmentVariables.md](/Doc/build-matrix).
 
 Default tier value: `On` for backwards-compatible boot behaviour.
 
-**Touches:**
+### Touches
 
 - `Element/Mountain/Source/Binary/Main/AppLifecycle.rs:393`.
 - `Element/Mountain/build.rs` tier registry.
@@ -157,7 +155,7 @@ The current `~/.fiddee/extensions/<id>/.storage/` location ties per-extension st
 
 **Migration:** one-shot scan on boot; for every `~/.fiddee/extensions/<id>/.storage/`, move to the new location if the target doesn't already exist.
 
-**Touches:**
+### Touches
 
 - `Element/Cocoon/Source/Services/Extension/Context.ts:495`.
 - New boot-time migration in Cocoon.
@@ -168,7 +166,7 @@ The current `~/.fiddee/extensions/<id>/.storage/` location ties per-extension st
 
 Read `<app_data_dir>/<bundle>/machine-id.txt` and use it as the PostHog distinctId, so analytics see one identity per install. Avoid the divergence that today exists between Mountain's `machineId` (server-generated UUID, durable on disk) and Sky's distinctId (Sky-generated, lives in webview localStorage).
 
-**Touches:**
+### Touches
 
 - `Element/Sky/Source/Workbench/Electron/Post/Hog/Bridge.ts:60-70` (currently generates and stores a fresh distinctId in localStorage).
 - Add a `MountainIPCInvoke({method: "system:machineId"})` call that returns `machine-id.txt` content; cache in localStorage so the round-trip happens once.
@@ -183,7 +181,7 @@ Two products, two roots. Cleanup recipes that target `~/.fiddee/` miss Air's sta
 
 **Proposed:** Air migrates to `~/.fiddee/air/` (or `~/.fiddee/daemon/`) so both processes share one root. Alternatively - if there's a reason Air needs the OS config dir specifically (e.g. system-service installation) - have Mountain also write a pointer file under `<config_dir>/FIDDEE/` so cleanup tools find both roots from either entry point.
 
-**Touches:**
+### Touches
 
 - `Element/Air/Source/Updates/mod.rs` (configured paths).
 - `Element/Air/Source/Authentication/mod.rs` (credentials store path).
@@ -196,12 +194,12 @@ Two products, two roots. Cleanup recipes that target `~/.fiddee/` miss Air's sta
 
 `Mountain/Source/Environment/SecretsProvider.rs` writes through the `keyring` crate, but Land doesn't enumerate the entries it creates. A complete uninstall requires either user-side `security delete-generic-password` / `secret-tool clear` / `cmdkey /delete` commands, or per-OS API enumeration.
 
-**Proposed:**
+### Proposed
 
 - Maintain a per-extension keychain-service-name registry in `~/.fiddee/<profile>/data/secrets-index.json` (subject to option D versioning).
 - `fiddee --uninstall` (option F) walks the index and removes each entry via the platform keyring API.
 
-**Touches:**
+### Touches
 
 - `Element/Mountain/Source/Environment/SecretsProvider.rs` (record service name on every write).
 - Option F (self-uninstall) implementation.
@@ -241,7 +239,7 @@ The combination of A (single product root) + D (schema versions) makes the versi
 
 ## See Also 📚
 
-- [UserDotfile.md](/Doc/filesystem-footprint-user-dotfile) - the `~/.fiddee/` tree (option A's target shape).
-- [PerElement.md](/Doc/filesystem-footprint-per-element) - per-Element write-site inventory.
-- [Cleanup.md](/Doc/filesystem-footprint-cleanup) - the manual recipe option F would automate.
-- [EnvironmentVariables.md](/Doc/build-matrix) - where new env var registries land.
+- [User Dotfile](/Doc/filesystem-footprint-user-dotfile) - the `~/.fiddee/` tree (option A's target shape).
+- [Per-Element Write Sites](/Doc/filesystem-footprint-per-element) - per-Element write-site inventory.
+- [Cleanup Recipes](/Doc/filesystem-footprint-cleanup) - the manual recipe option F would automate.
+- [Environment Variables](/Doc/filesystem-footprint-environment-variables) - where new env var registries land.

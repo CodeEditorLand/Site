@@ -25,7 +25,7 @@ const Frame = AuthFrameFor("signIn", T);
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription}>
-	<Header client:load Mode="functional" />
+	<Header client:load Mode="functional" slot="Header" />
 	<AuthShell frame={Frame}>
 		<Auth0Account
 			client:only="react"

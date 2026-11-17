@@ -7,8 +7,6 @@ order: 4
 description: "Every env var that shapes a filesystem path, controls log volume, or affects the bundle identifier - grouped by role."
 ---
 
-# Environment Variables 🎛️
-
 Every env var that shapes a filesystem path, controls log volume, or affects the bundle identifier - grouped by role. Cross-references the canonical [`EnvironmentVariables.md`](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EnvironmentVariables.md) registry; this page describes them in filesystem-footprint terms.
 
 ---
@@ -146,6 +144,6 @@ export DisableUIFixes=true \
 ## See Also 📚
 
 - [`EnvironmentVariables.md`](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EnvironmentVariables.md) - canonical registry with full descriptions, tier-gating rules, and multi-file `.env` system docs.
-- [`UserDotfile.md`](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/UserDotfile.md) - what `Lodge`, `Extend`, `VSCODE_COCOON_GLOBAL_STORAGE` shape.
-- [`PlatformPaths.md`](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/PlatformPaths.md) - what `XDG_*`, `APPDATA`, `LOCALAPPDATA`, `TMPDIR` shape per-OS.
-- [`PerElement.md`](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/PerElement.md) - which Element reads each env var.
+- [User Dotfile](/Doc/filesystem-footprint-user-dotfile) - what `Lodge`, `Extend`, `VSCODE_COCOON_GLOBAL_STORAGE` shape.
+- [Platform Paths](/Doc/filesystem-footprint-platform-paths) - what `XDG_*`, `APPDATA`, `LOCALAPPDATA`, `TMPDIR` shape per-OS.
+- [Per-Element Write Sites](/Doc/filesystem-footprint-per-element) - which Element reads each env var.

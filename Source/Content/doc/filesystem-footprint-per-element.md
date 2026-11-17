@@ -7,8 +7,6 @@ order: 3
 description: "Every Land Element grouped by which filesystem location it touches - the reverse map of UserDotfile and PlatformPaths."
 ---
 
-# **Per-Element Write Sites** ✍🏻
-
 Every Element grouped by which filesystem location it touches. Reverse map of
 UserDotfile and PlatformPaths: those answer "which Element writes here?" - this
 one answers "where does this Element write?".
@@ -91,7 +89,7 @@ file-system gRPC).
 Sky writes via the OS-native webview storage APIs; the actual filesystem
 destination is the webview's per-bundle storage tree
 (`~/Library/WebKit/<bundle>/` on macOS, `~/.local/share/<bundle>/` on Linux,
-`%LOCALAPPDATA%\\<bundle>\\EBWebView\\` on Windows).
+`%LOCALAPPDATA%\<bundle>\EBWebView\` on Windows).
 
 | Producer                                                                                                                                                                     | localStorage key   | Purpose                                                                                                                            |
 | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------- | :--------------------------------------------------------------------------------------------------------------------------------- |
@@ -153,8 +151,8 @@ for details.
 `<config_dir>` and `<data_local_dir>` resolve per-OS via `dirs::config_dir()` /
 `dirs::data_local_dir()` (see PlatformPaths for the resolution table).
 
-[Air](https://github.com/CodeEditorLand/Air) is the only Element today that uses SCREAMING*SNAKE_CASE env vars
-(`AIR_LOG*`) - the project convention permits it for the daemon because Air
+[Air](https://github.com/CodeEditorLand/Air) is the only Element today that uses `SCREAMING_SNAKE_CASE` env vars
+(`AIR_LOG_*`) - the project convention permits it for the daemon because Air
 ships as an external tool with its own naming convention.
 
 ---
@@ -209,8 +207,8 @@ For completeness:
 
 ## See Also 📚
 
-- **UserDotfile** - target table for `~/.fiddee/` writes.
-- **PlatformPaths** - target tables for per-OS paths.
-- **EnvironmentVariables** - per-Element env-var registry.
-- **Cleanup** - per-OS cleanup recipes that pick up every destination in this
+- [User Dotfile](/Doc/filesystem-footprint-user-dotfile) - target table for `~/.fiddee/` writes.
+- [Platform Paths](/Doc/filesystem-footprint-platform-paths) - target tables for per-OS paths.
+- [Environment Variables](/Doc/filesystem-footprint-environment-variables) - per-Element env-var registry.
+- [Cleanup Recipes](/Doc/filesystem-footprint-cleanup) - per-OS cleanup recipes that pick up every destination in this
   document.

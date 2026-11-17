@@ -8,6 +8,8 @@ import { AuthAPI as AuthAPIClass } from "../../Library/API/Authentication";
 
 import { DynamicEmailVerification } from "./DynamicEmailVerification";
 
+import { DynamicStateReport, StateLabel } from "./DynamicStateReport";
+
 import type Property from "./Interface/Property/Page/Verify.js";
 
 const Authentication = new AuthAPIClass();
@@ -96,11 +98,11 @@ const VerifyPage = ({
 	};
 
 	const VerifiedStatus = T("auth.verifiedStatus", {
-		defaultValue: "EMAIL VERIFIED",
+		defaultValue: StateLabel.Verified,
 	});
 
 	const ExpiredStatus = T("auth.expiredStatus", {
-		defaultValue: "LINK EXPIRED",
+		defaultValue: StateLabel.Unavailable,
 	});
 
 	return (
@@ -122,63 +124,60 @@ const VerifyPage = ({
 			)}
 
 			{Route === "success" && (
-				<div className="auth-shell__report" role="status">
-					<p className="auth-shell__status auth-shell__status--success">
-						{VerifiedStatus}
-					</p>
-
-					<p className="auth-shell__report-sentence">
-						{
-							"Your email has been successfully verified. You can now sign in to your account and start using Code Editor Land."
-						}
-					</p>
-
-					<button
-						type="button"
-						className="auth-shell__primary emphasis-expressive"
-						onClick={() => Navigate("/")}
-					>
-						{"Continue to Homepage"}
-					</button>
-				</div>
-			)}
-
-			{Route === "failure" && (
-				<div className="auth-shell__report" role="alert">
-					<p className="auth-shell__status auth-shell__status--failure">
-						{ExpiredStatus}
-					</p>
-
-					<p className="auth-shell__report-sentence">
-						{Reason
-							? `Error: ${Reason}`
-							: "This verification link is invalid or has expired."}
-					</p>
-
-					<p className="auth-shell__report-sentence">
-						{
-							"Please request a new verification email or contact support if the problem persists."
-						}
-					</p>
-
-					<div className="auth-shell__actions">
+				<DynamicStateReport
+					Label={VerifiedStatus}
+					Tone="specimen"
+					Sentence={
+						"Your email has been successfully verified. You can now sign in to your account and start using Code Editor Land."
+					}
+					Action={
 						<button
 							type="button"
 							className="auth-shell__primary emphasis-expressive"
-							onClick={() => Navigate("/Verify")}
+							onClick={() => Navigate("/")}
 						>
-							{"Send New Verification Email"}
+							{"Continue to Homepage"}
 						</button>
+					}
+				/>
+			)}
 
-						<button
-							type="button"
-							className="auth-shell__alternate"
-							onClick={() => Navigate("/Account/SignIn")}
-						>
-							{"Sign In"}
-						</button>
-					</div>
-				</div>
+			{Route === "failure" && (
+				<DynamicStateReport
+					Role="alert"
+					Label={ExpiredStatus}
+					Tone="ink"
+					Sentence={
+						<>
+							{
+								"This verification link is invalid or has expired."
+							}
+							{Reason ? ` Reason: ${Reason}` : null}{" "}
+							{
+								"Please request a new verification email or contact support if the problem persists."
+							}
+						</>
+					}
+					Action={
+						<div className="auth-shell__actions">
+							<button
+								type="button"
+								className="auth-shell__primary emphasis-expressive"
+								onClick={() => Navigate("/Verify")}
+							>
+								{"Send New Verification Email"}
+							</button>
+
+							<button
+								type="button"
+								className="auth-shell__alternate"
+								onClick={() => Navigate("/Account/SignIn")}
+							>
+								{"Sign In"}
+							</button>
+						</div>
+					}
+				/>
 			)}
 		</div>
 	);

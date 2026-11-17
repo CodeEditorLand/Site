@@ -7,8 +7,6 @@ author: "CodeEditorLand"
 readTime: 4
 ---
 
-# [Effect-TS](https://effect.website) Architecture in the [Land](https://github.com/CodeEditorLand/Land) Editor
-
 Code Editor Land uses [`Effect-TS`](https://effect.website) as the foundational
 abstraction for typed error handling, structured concurrency, and dependency
 injection across the `TypeScript` layer of the editor. [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) and [`Wind`](https://github.com/CodeEditorLand/Wind) are
@@ -39,6 +37,19 @@ Each service in [`Wind`](https://github.com/CodeEditorLand/Wind) is modeled as a
 for dependency injection, a `TypeScript` interface the service implements, a
 concrete implementation built from Effect primitives, and a `Layer` that binds
 the interface to the implementation.
+
+```mermaid
+flowchart TD
+    Tag[Context.Tag - the service key] --> Interface[TypeScript interface]
+    Interface --> Implementation[Implementation from Effect primitives]
+    Implementation --> Layer[Layer - binds interface to implementation]
+    Layer --> Merge[Layer.mergeAll - one stack]
+    Merge --> Live["TauriLiveLayer, ElectronLiveLayer, TestLayer"]
+    Live --> Runtime[Layer.toRuntime - built once]
+    Runtime --> Global[__CEL_SERVICES__ module global]
+    Live --> Command[Tauri commands]
+    Command --> Handler[Mountain Rust handlers]
+```
 
 These compose into `TauriLiveLayer`, `ElectronLiveLayer`, and `TestLayer`
 stacks. In production, [`Wind`](https://github.com/CodeEditorLand/Wind) uses `TauriLiveLayer`, which routes service calls

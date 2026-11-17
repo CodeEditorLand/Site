@@ -2,15 +2,18 @@
 /**
  * Footer - the record's closing band.
  *
- * Three parts, in reading order: the facts as a `RecordLedger` (SOURCE, LICENSE,
- * MAINTAINED BY, SUPPORT, STATUS), the destinations those linked facts come from
- * in the footer's own `/LABEL` form, and the link rows the footer has always
- * carried. The band closes on `# LAND / RECORD END`, so the record ends where the
- * page ends.
+ * The band is the credits record (`DesignSystem-Components.md` §3) and it is
+ * read in one order, marker first: `# LAND / RECORD END` opens it with the
+ * locale switcher on the same row, then the five facts as a `RecordLedger`
+ * (SOURCE, LICENSE, MAINTAINED BY, SUPPORT, STATUS), then the destinations
+ * behind the linked facts, then the `/LABEL` route strip, then the partner and
+ * legal metadata, then the copyright and the runtime badge. The marker was
+ * printed last by the rebuild; it opens the record in the pre-programme footer
+ * and in the document's own block, so it opens it here.
  *
- * This was a `.tsx` island. It is now an `.astro` component because the ledger it
- * composes is an `.astro` block and an `.astro` component cannot be imported from
- * a `.tsx` file. What that removed: the footer's strings were re-translated
+ * This was a `.tsx` island. It is now an `.astro` component because the ledger
+ * it composes is an `.astro` block and an `.astro` component cannot be imported
+ * from a `.tsx` file. What that removed: the footer's strings were re-translated
  * client-side by react-i18next when the reader switched locale. They are now
  * rendered once, in English, by the server translator - which is what every other
  * prerendered surface on this site already does (`GetI18n` is English-only by
@@ -36,6 +39,17 @@ const Copyright = T("footer:bottomBar.copyright", {
 <footer class="Footer" role="contentinfo" aria-label="Site footer">
 	<div class="FooterRecord">
 		<div class="FooterRule" aria-hidden="true"></div>
+
+		<div class="FooterRecordHeader">
+			<p class="FooterRecordEnd">
+				<span class="FooterRecordMarker" aria-hidden="true">#</span>
+				{T("footer:record.end", { defaultValue: "LAND / RECORD END" })}
+			</p>
+
+			<div class="FooterRecordLocale">
+				<LocaleSwitcher client:idle />
+			</div>
+		</div>
 
 		<RecordLedger rows={Data.Ledger} class="FooterLedger" />
 
@@ -84,10 +98,6 @@ const Copyright = T("footer:bottomBar.copyright", {
 		<div class="FooterBottom">
 			<span class="FooterCopyright">{Copyright}</span>
 
-			<span class="FooterLocale">
-				<LocaleSwitcher client:idle />
-			</span>
-
 			<span class="FooterTauri">
 				<a
 					class="FooterTauriLink"
@@ -106,10 +116,5 @@ const Copyright = T("footer:bottomBar.copyright", {
 				</a>
 			</span>
 		</div>
-
-		<p class="FooterRecordEnd">
-			<span class="FooterRecordMarker" aria-hidden="true">#</span>
-			{T("footer:record.end", { defaultValue: "LAND / RECORD END" })}
-		</p>
 	</div>
 </footer>

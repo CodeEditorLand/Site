@@ -101,11 +101,11 @@ normal write path to [Mountain](https://github.com/CodeEditorLand/Mountain) exec
 The three document-level workspace APIs - save-all, single-document save, and
 save-as - each route to their own channel:
 
-| API                     | Routes to                                                                                            | Behaviour                                                                                                                                       |
-| ----------------------- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `workspace.saveAll()`   | `Workspace.SaveAll`, which routes to `sky://workspace/saveAll` and dispatches `workbench.action.files.saveAll` in the renderer | flushes every open dirty document through `IFileService.writeFile()`. It previously called `Document.Save` with no arguments (always an error)   |
-| `workspace.save(uri)`   | `sky://workspace/save`                                                                               | saves the specific document via `ITextFileService.save` (falling back to the workbench save command)                                            |
-| `workspace.saveAs(uri)` | `sky://workspace/saveAs`                                                                             | opens the native save-as dialog                                                                                                                 |
+| API                     | Routes to                                                                                                                      | Behaviour                                                                                                                                      |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `workspace.saveAll()`   | `Workspace.SaveAll`, which routes to `sky://workspace/saveAll` and dispatches `workbench.action.files.saveAll` in the renderer | flushes every open dirty document through `IFileService.writeFile()`. It previously called `Document.Save` with no arguments (always an error) |
+| `workspace.save(uri)`   | `sky://workspace/save`                                                                                                         | saves the specific document via `ITextFileService.save` (falling back to the workbench save command)                                           |
+| `workspace.saveAs(uri)` | `sky://workspace/saveAs`                                                                                                       | opens the native save-as dialog                                                                                                                |
 
 `save` and `saveAs` are round-trip request channels that resolve the extension's
 awaited promise.
@@ -124,11 +124,11 @@ The `WorkspaceEdit` payload is normalised inside the [Sky](https://github.com/Co
 multiple wire shapes, because the same edit can arrive either through
 `IBulkEditService` or through a direct Monaco model operation:
 
-| `_edits` entry          | Carries                                                                                                     |
-| ----------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `_type: 2`              | extHostTypes text edit - `_range` uses `_start._line` / `_end._line` (0-based, converted to Monaco 1-based) |
-| `_type: 1`              | file operations: create, rename, delete                                                                     |
-| serialised `vscode.Uri` | `_scheme` / `_path` fields                                                                                  |
+| Wire shape                 | Carries                                                                                                     |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `_edits` entry, `_type: 2` | extHostTypes text edit - `_range` uses `_start._line` / `_end._line` (0-based, converted to Monaco 1-based) |
+| `_edits` entry, `_type: 1` | file operations: create, rename, delete                                                                     |
+| serialised `vscode.Uri`    | `_scheme` / `_path` fields                                                                                  |
 
 `IBulkEditService` is tried first; if unavailable, the bridge falls back to
 direct Monaco model operations.

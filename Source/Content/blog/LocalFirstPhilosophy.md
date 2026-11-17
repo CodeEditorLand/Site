@@ -9,8 +9,6 @@ author: "CodeEditorLand"
 readTime: 3
 ---
 
-# Local-First Philosophy
-
 [Land](https://github.com/CodeEditorLand/Land)'s editor direction is local-first: the core editor should remain useful
 without a portal account or cloud sync. That is different from saying every
 planned sync feature is already shipped.
@@ -31,6 +29,17 @@ The editor opens a native window (`Tauri`), loads the workbench UI ([`Sky`](http
 OS WebView), starts the extension host ([`Cocoon`](https://github.com/CodeEditorLand/Cocoon) over [`Vine`](https://github.com/CodeEditorLand/Vine) gRPC), and is fully
 functional. No account, no network, no cloud round-trip required to open a file,
 run a terminal, or activate extensions.
+
+```mermaid
+flowchart TD
+    Window["Native window - Tauri"] --> Sky["Sky - workbench UI in the OS WebView"]
+    Sky --> Wind["Wind - workbench services"]
+    Wind -->|typed Tauri commands| Mountain["Mountain - native file, terminal, process, clipboard, IPC"]
+    Sky -->|extension host| Cocoon["Cocoon - runs installed extensions"]
+    Cocoon -->|Vine gRPC| Mountain
+    Air["Air - updates, downloads, auth, indexing, health"] -.->|optional layer| Mountain
+    Mist["Mist - loopback DNS for the editor.land zone"] -.->|optional layer| Mountain
+```
 
 ## The Network Boundary
 

@@ -148,7 +148,15 @@ const HeroBandFor = (T: Translate): HeroBand => ({
 				defaultValue: "LOCAL-FIRST",
 			}),
 		},
+	],
 
+	/**
+	 * The specimen observation. It is the second metadata block the hero has
+	 * always printed, and it is not a card row: `DESIGN.md` §3.1 gives the
+	 * hero card three rows, so the observation prints in the
+	 * `# OBSERVATION_01` band, under the claims it qualifies.
+	 */
+	observation: [
 		{
 			key: T("home:hero.fact.species.label", { defaultValue: "SPECIES" }),
 

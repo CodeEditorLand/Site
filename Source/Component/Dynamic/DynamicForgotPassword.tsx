@@ -80,14 +80,16 @@ const DynamicForgotPassword = ({
 						)}
 					</div>
 
-					<DynamicInput
-						Content={{
-							...EmailField,
-							OnChange: SetEmail,
-						}}
+					<div className="auth-shell__field">
+						<DynamicInput
+							Content={{
+								...EmailField,
+								OnChange: SetEmail,
+							}}
 
-						Id="email"
-					/>
+							Id="email"
+						/>
+					</div>
 
 					<DynamicButton
 						Content={{

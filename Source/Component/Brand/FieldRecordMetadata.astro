@@ -1,0 +1,43 @@
+---
+/**
+ * FieldRecordMetadata - the key/value run under a record's title block:
+ * `TARGET: Linux`, `LICENSE: CC0`, `SIGNAL: ABSENT`.
+ *
+ * A description list, not a table: the rows are one key and one value each,
+ * and `dt`/`dd` is what tells a reader (and a screen reader) which half is
+ * which. The key keeps its colon inside the `dt`, so the pair reads as one
+ * sentence when the list is flattened.
+ *
+ * The rows are printed in the order given. See `FieldRecordMetadata/Type.ts`
+ * for the two prop names that carry them.
+ *
+ * No `<script>` and no `client:*`: this block ships zero JavaScript.
+ */
+import type { Props } from "./FieldRecordMetadata/Type.js";
+
+const { pairs, rows, className, class: Class } = Astro.props;
+
+/** The rows to print: `pairs` first, then `rows`, then nothing at all. */
+const Items = pairs || rows || [];
+---
+
+<dl
+	class:list={["space-y-1", className, Class]}
+	style="color:var(--CardForeground)"
+>
+	{
+		Items.map((Pair) => (
+			<div class="flex gap-2">
+				<dt
+					class="text-field-s font-mono uppercase tracking-wider opacity-70"
+					style="color:var(--CardForeground)"
+				>
+					{Pair.label}:
+				</dt>
+				<dd class="text-field-s font-mono uppercase tracking-wider">
+					{Pair.value}
+				</dd>
+			</div>
+		))
+	}
+</dl>

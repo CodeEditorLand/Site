@@ -1,18 +1,40 @@
 // DynamicPreviousReleases - the releases before this one.
 //
 // Publishes:
-//   .download-releases__empty  the sentence an empty release list says
+//   .download-releases__empty    the empty state's stack: its label and its sentence
+//   .download-releases__label    §7's coded label for it, `RECORD: EMPTY`
+//   .download-releases__sentence the plain-language sentence under that label
 //
 // Owned by P7. The populated state renders RecordMatrix, whose anatomy is the
-// block's; this partial only gives the empty state a voice, so it publishes one
-// class and nothing else.
+// block's; this partial only gives the empty state a voice, so it publishes the
+// three classes that voice needs and nothing else.
+//
+// The empty state is text and not a card: `DesignSystem-Components.md` §7 asks
+// for a coded label followed by a plain-language explanation, and a box with no
+// claim inside it would be the blank panel the rule exists to prevent.
 
 @use "../../Mixin" as *;
 
 .download-releases__empty {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+}
+
+// The label is the meta role at wide tracking, in the muted ink: it classifies
+// the state, it does not compete with the sentence that explains it.
+.download-releases__label {
+	@include mono-meta;
+	@include track;
+
 	margin: 0;
-	max-width: 62ch;
+}
+
+.download-releases__sentence {
+	margin: 0;
+	max-inline-size: var(--MeasureOpening);
 	font-size: var(--type-body);
 	line-height: var(--type-body-line);
 	color: var(--MuteForeground);
+	text-wrap: pretty;
 }

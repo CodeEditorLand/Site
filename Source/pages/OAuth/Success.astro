@@ -25,16 +25,13 @@ const CompletingSentence = T("auth.oauthSuccess.completingSentence", {
 		"Your identity provider has returned you to Land. This page continues once the session is written.",
 });
 const SignedInStatus = T("auth.oauthSuccess.signedInStatus", {
-	defaultValue: "SIGNED IN",
+	defaultValue: "STATUS: ACTIVE",
 });
 const SuccessTitle = T("common.oauth.success.title", {
 	defaultValue: "You're signed in",
 });
 const SuccessRedirect = T("common.oauth.success.redirect", {
 	defaultValue: "Redirecting to your dashboard...",
-});
-const FailedText = T("common.oauth.failed", {
-	defaultValue: "Sign-In Failed",
 });
 const ErrorGenericText = T("common.oauth.errorGeneric", {
 	defaultValue: "Something went wrong during sign-in. Please try again.",
@@ -50,7 +47,7 @@ const Frame = AuthFrameFor("oauthSuccess", T);
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
-	<Header client:only="react" />
+	<Header client:load Mode="functional" slot="Header" />
 	<Auth0CallbackHandler
 		client:only="react"
 		Domain={Auth0Domain}
@@ -59,18 +56,38 @@ const Frame = AuthFrameFor("oauthSuccess", T);
 	<AuthShell frame={Frame}>
 		<!--
 			Three mutually exclusive states, toggled by the inline script below and
-			by Auth0CallbackHandler through these ids. Each states what it is, what
-			happened, and what the reader can do - never a bare "Success".
+			by Auth0CallbackHandler through these ids. Each carries one term from the
+			status vocabulary, one sentence saying what happened, and the action that
+			is available - never a bare "Success".
 		-->
 		<div id="LoadingState" class="auth-shell__report" role="status">
-			<p class="auth-shell__status">{CompletingText}</p>
-			<p class="auth-shell__report-sentence">{CompletingSentence}</p>
+			<div class="auth-shell__status">
+				<jelly-badge
+					shape="square"
+					variant="platinum"
+					style="--jelly-fill:var(--Mute);--jelly-label:var(--Foreground);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
+				>
+					STATUS: LOADING
+				</jelly-badge>
+			</div>
+			<p class="auth-shell__report-sentence">
+				{CompletingText} {CompletingSentence}
+			</p>
+			<a href="/" class="auth-shell__alternate">
+				Back to the editor
+			</a>
 		</div>
 
 		<div id="SuccessState" class="auth-shell__report hidden">
-			<p class="auth-shell__status auth-shell__status--success">
-				{SignedInStatus}
-			</p>
+			<div class="auth-shell__status">
+				<jelly-badge
+					shape="square"
+					variant="mint"
+					style="--jelly-fill:var(--SpinegRPCMute);--jelly-label:var(--SpinegRPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
+				>
+					{SignedInStatus}
+				</jelly-badge>
+			</div>
 			<p class="auth-shell__report-sentence">
 				{SuccessTitle}. {SuccessRedirect}
 			</p>
@@ -86,9 +103,15 @@ const Frame = AuthFrameFor("oauthSuccess", T);
 		</div>
 
 		<div id="ErrorState" class="auth-shell__report hidden">
-			<p class="auth-shell__status auth-shell__status--failure">
-				{FailedText}
-			</p>
+			<div class="auth-shell__status">
+				<jelly-badge
+					shape="square"
+					variant="graphite"
+					style="--jelly-fill:var(--Foreground);--jelly-label:var(--Background);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
+				>
+					STATUS: INTERRUPTED
+				</jelly-badge>
+			</div>
 			<p id="ErrorMessage" class="auth-shell__report-sentence">
 				{ErrorGenericText}
 			</p>

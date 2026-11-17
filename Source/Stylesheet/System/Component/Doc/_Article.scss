@@ -161,6 +161,84 @@
 	max-width: 72ch;
 }
 
+/* ─── THE READING CARD (DesignSystem-Pages.md §5) ───────────────────────── */
+
+/* Doc pages read on white cards. The card is the prose surface: it owns the
+   measure, the inset and the ink, and the body inside it keeps
+   `.doc-article__body` - so every element rule in this file applies to the
+   markdown unchanged and none of them is restated for the card.
+
+   The width is `72ch` PLUS the two insets: with `box-sizing: border-box` a bare
+   72ch would put the padding inside the measure and the prose would end short
+   of the header above it. This way the card's frame starts on the header's left
+   edge, the content box is exactly the 72ch the standfirst and the contents
+   list use, and the inset is the documented card padding (§2.2, 4-6%). */
+jelly-card.doc-prose {
+	display: block;
+
+	max-inline-size: calc(72ch + 2 * clamp(1rem, 4vw, 2.5rem));
+
+	padding-block: var(--space-group);
+	padding-inline: clamp(1rem, 4vw, 2.5rem);
+}
+
+/* §5's mono metadata strip: the page's own provenance, opened by a hairline at
+   the card's edge. U+2001 EM QUAD separates the items - it is a real character,
+   not collapsible ASCII space, so no `white-space` override is needed. */
+.doc-prose__strip {
+	@include mono-meta;
+	@include track;
+	@include hairline(bottom);
+
+	color: var(--MuteForeground);
+
+	margin: 0;
+	padding-block-end: var(--space-reading);
+
+	overflow-wrap: anywhere;
+}
+
+/* Ink is the card token, explicitly (§5: "every prose element uses
+   `text-card-foreground`"). The two inks are the same value in the daylight
+   theme, so this is the card's own token, not a different colour. */
+jelly-card.doc-prose .doc-article__body {
+	color: var(--CardForeground);
+}
+
+jelly-card.doc-prose .doc-article__body a {
+	color: var(--Accent);
+}
+
+/* A document that opens with its own `# Heading` renders a second level-one
+   heading next to the shell's. The markdown belongs to the content cards, so
+   this file cannot drop it - but it can stop it competing with the page title:
+   it reads at the h2 tier, as the document's own opening line. */
+.doc-article__body > h1 {
+	scroll-margin-block-start: calc(var(--HeaderHeight) + var(--space-tight));
+
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	font-weight: 500;
+	letter-spacing: -0.01em;
+
+	text-wrap: balance;
+
+	margin-block-start: var(--space-group);
+	margin-block-end: var(--space-tight);
+}
+
+.doc-article__body > h1:first-child {
+	margin-block-start: 0;
+}
+
+/* Components doc §5: a code block is FLAT - shiki's `github-light` surface,
+   radius 0 (Base.css), no rule inside it. The hairline the `pre` rule above
+   carries is for an indented block that has no theme; `.astro-code` brings its
+   own surface and gets none. */
+.doc-article__body > pre.astro-code {
+	border: 0;
+}
+
 /* The banded body: the bands bring their own inner container, so this article
    stops competing for the gutter. Scoped to the article, never to the band. */
 .doc-article--banded .record-band__inner {
@@ -358,6 +436,29 @@
 	margin-inline-start: auto;
 
 	text-align: end;
+}
+
+/* The link sits on a jelly-card: the card is the pager's flex item (it was at
+   HEAD too, with the 45% cap on the card), so the cap moves from the link to
+   the card, the "next" card takes the auto margin, and the link fills its card
+   and carries the inset the card's own padding does not. */
+.doc-pager__card {
+	flex: 0 1 auto;
+
+	max-width: 45%;
+
+	min-inline-size: 0;
+}
+
+.doc-pager__card--next {
+	margin-inline-start: auto;
+}
+
+.doc-pager__card .doc-pager__link {
+	max-width: none;
+
+	padding-block: var(--space-tight);
+	padding-inline: var(--space-reading);
 }
 
 .doc-pager__label {

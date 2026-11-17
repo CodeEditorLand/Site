@@ -1,0 +1,24 @@
+// The Contact surface - one partial per component, wired in load order.
+//
+// Every route in `Source/pages/Contact/` is built from these five components:
+//
+//   Page        ContactPage.astro       the document, header, trail and h1
+//   Breadcrumb  ContactBreadcrumb.astro the trail in the mono nav grammar
+//   Hub         index.astro             the decision surface's own three rules
+//   Form        DynamicContactForm.tsx  the request form's anatomy
+//   Sale        Sale.astro              the enterprise page's own rules
+//
+// `Shell` has no partial: `ContactShell.astro` composes `Page` and `Form` and
+// publishes no class of its own.
+//
+// This file is the one line the shared `System/Component/_Index.scss` needs:
+//
+//   @use "Contact/Index";
+//
+// It is not added there by this card - that file is shared and V1 wires every
+// page partial into it in one pass before the build.
+@use "Breadcrumb";
+@use "Page";
+@use "Hub";
+@use "Form";
+@use "Sale";

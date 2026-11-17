@@ -1,0 +1,19 @@
+// The Blog surface - one partial per component, wired in load order.
+//
+// Two components carry classes of their own:
+//
+//   Listing  BlogIndex.astro    the record header and the archive index
+//   Article  BlogArticle.astro  the reading surface one article is read on
+//
+// The trail above both is `Component/Contact/ContactBreadcrumb.astro`, which
+// publishes `.contact-breadcrumb` and is styled by the Contact surface's own
+// partial. Blog pages wrap it; they do not restate it.
+//
+// This file is the one line the shared `System/Component/_Index.scss` needs:
+//
+//   @use "Component/Blog/Index";
+//
+// It is not added there by this card - that file is shared and V1 wires every
+// page partial into it in one pass before the build.
+@use "Listing";
+@use "Article";

@@ -1,3 +1,7 @@
+import type { CSSProperties } from "react";
+
+import { CORNER_GEOMETRY } from "../Brand/CornerMarks/Data.js";
+
 import { FieldRecordEvidence } from "../Brand/FieldRecordEvidence.js";
 
 import { FieldRecordSeal } from "../Brand/FieldRecordSeal.js";
@@ -6,8 +10,6 @@ import { FieldRecordStatus } from "../Brand/FieldRecordStatus.js";
 
 import { RouteText, StampText } from "../Brand/SemanticLedger.js";
 
-import { Badge } from "../UI/Badge.js";
-
 import { cn } from "../UI/Utility";
 
 import { HeroBandDefault } from "./Hero/Data.js";
@@ -15,45 +17,212 @@ import { HeroBandDefault } from "./Hero/Data.js";
 import type Property from "./Interface/Property/Hero.js";
 
 /**
- * DynamicHeroSection - the homepage hero, as one band.
+ * DynamicHeroSection - the homepage hero: the canonical **two-panel artifact**.
  *
- * The band says four things, in this order, and nothing else:
+ * `DesignSystem-Pages.md` §1, `DesignSystem-Components.md` §1 "Two-panel
+ * composition rules" and `DESIGN.md` §3.1 describe one shape, and this file
+ * renders it:
  *
- *   1. THE CLAIM     `# LAND_01` and the runtime assertion - `〈RUST + TAURI〉`
- *                    and `〈NO ELECTRON〉` on one line at `--type-display`, then
- *                    the compatibility route and the record's own subject,
- *                    `LAND: EDITOR WITHOUT CHROMIUM`. The band's one expressive
- *                    moment, and the page's only `h1`.
- *   2. THE STATUS    `STATUS: SOURCE ACTIVE`, plus what is still missing:
- *                    installers and extension coverage. At `--type-meta`, on the
- *                    `.emphasis-standard` tier - a chip row, not a shout.
- *   3. THE EVIDENCE  What runs today: the four-element rail (Mountain → Cocoon →
- *                    Sky → Wind), the record's own facts as a ledger, and the
- *                    evidence plate with its caption and provenance.
- *   4. THE ENTRY     Two destinations that exist: `/Doc` and `/Download`.
+ *   ┌────────────────────────────┬──────────────────────────────┐
+ *   │ FIELD RECORD (warm-white)  │ EVIDENCE (full-bleed, text-  │
+ *   │  # LAND_01          [SEAL] │ free image, object-fit:cover) │
+ *   │  〈RUST + TAURI〉          │                              │
+ *   │  〈NO ELECTRON〉           │                              │
+ *   │  /COMPAT: VS CODE          │                              │
+ *   │  EXTENSIONS / UNMODIFIED   │                              │
+ *   │  NATIVE␁OPEN␁CROSS-PLATFORM │                              │
+ *   │  STATUS: SOURCE ACTIVE     │                              │
+ *   │  [MAJOR BLANK BAND 15-25%] │                              │
+ *   │  LAND:                     │                              │
+ *   │  ↳EDITOR WITHOUT CHROMIUM  │                              │
+ *   │  TARGET / LICENSE / SIGNAL │                              │
+ *   │  [BUILD FROM SOURCE] /READ │                              │
+ *   └────────────────────────────┴──────────────────────────────┘
  *
- * What the band does not do, and why:
+ * What each panel carries, and why the split is not decoration:
  *
- * - It reserves no blank zone. The area between the claim and the entry carries
- *   the evidence; air there is the defect this band replaces.
- * - It is not a click target. The old section was `role="button"` and sent the
- *   whole band - image included - to one destination, which hid the two real
- *   destinations behind a single guessed one. The two anchors are the only
- *   actions, and each says where it goes.
- * - It does not animate. The floating technology cards and their noise drift
- *   belonged to the blank zone they filled. Their subjects survive: four are the
- *   rail's steps, and the architecture band that now follows the hero carries
- *   every element at length.
+ * 1. **The record panel** is the engineering: the index, the runtime claim, the
+ *    compatibility route, the program line, the release status, the blank band,
+ *    the subject, and the three metadata rows that say what the record is. One
+ *    left alignment line, one seal, one action. It is the half a reader
+ *    *reads*.
+ * 2. **The evidence panel** is the living counterweight: one image, full height,
+ *    `object-fit: cover`, with no text on it - `FieldRecordEvidence` "rejects
+ *    text overlays" because a picture with a caption over it is a poster, not
+ *    evidence. The caption and the provenance sit *below* the frame, where the
+ *    `RecordFigure` contract puts them, so the image stays text-free and the
+ *    claim of what it is evidence *of* still survives.
  *
- * The evidence is rendered through the Record blocks' published class API
- * (`record-stage`, `record-ledger`, `record-figure`) rather than by mounting the
- * blocks: those are `.astro` components and an `.astro` component cannot be
- * imported from a `.tsx` island (BRIDGE §2.1) - and this band must stay a
- * `.tsx` island, because it is the child of the page's first `ErrorBoundary`
- * and a boundary cannot catch an error in a separate island root. The class
- * names, and therefore every declaration behind them, are the blocks' own; this
- * file adds none of them.
+ * The numbers are the documents', not this file's invention (`DESIGN.md` §2.2):
+ * a flex row, both panels `flex: 1`, `min-h-[80dvh]`, outer padding
+ * `clamp(2rem, 5vw, 5rem)`, gap `clamp(0.5rem, 1.5vw, 1.875rem)`, a `w-px`
+ * hairline gutter between them, and the card padded `2.75rem` block /
+ * `1.5rem` inline. The 15-25% blank band is `flex-1` over a floor of
+ * `--space-blank` - the token exists for exactly this band.
+ *
+ * On mobile the stack is card first, evidence second: the record arrives before
+ * the evidence (`DesignSystem-Components.md` §1).
+ *
+ * What left this band, and where it went - the density budget
+ * (`DesignSystem-Grammar.md` §8) allows the hero one field record, one evidence
+ * image and one primary action, and nothing else:
+ *
+ * - the standfirst paragraph  -> `DynamicFeatures`, the `# OBSERVATION_01`
+ *   band's opening (the plain-language explanation belongs to the document
+ *   structure, `DesignSystem-Pages.md` §1);
+ * - the three status chips    -> `DynamicPricing`, the `# CONDITIONS_01`
+ *   manifest's status strip;
+ * - the four-element rail     -> `DynamicFeatures`, as that band's one
+ *   architecture proof;
+ * - `SPECIES` / `TEMP` / `WIND` -> `DynamicFeatures`, as the specimen ledger
+ *   (`Hero/Type.ts` `Metadata.observation`).
+ *
+ * Every one of those is a move, not a deletion: the strings are the same
+ * strings, printed by the band whose layer owns them.
+ *
+ * This stays a `.tsx` island because it is the child of the page's first
+ * `ErrorBoundary` and a boundary cannot catch an error raised in a separate
+ * island root. That is also why the frame is drawn here from
+ * `CornerMarks/Data.ts`'s own exported geometry instead of by mounting the
+ * `.astro` block: an `.astro` component cannot be imported from a `.tsx` file.
  */
+
+/** The card's frame ink: the record panel is a warm-white Jelly surface. */
+const CardInk = {
+	"--jelly-fill": "var(--Card)",
+	"--jelly-radius": "0",
+	"--jelly-color-border-default": "var(--Border)",
+	"--jelly-card-padding-block": "0",
+	"--jelly-card-padding-inline": "0",
+	"--jelly-card-font-size": "inherit",
+	"--jelly-label": "var(--CardForeground)",
+} as CSSProperties;
+
+/**
+ * The action's Jelly ink.
+ *
+ * The same five properties `FieldRecordAction/Data.ts` hands the button arm.
+ * They are repeated as a mapping rather than imported because that constant is
+ * a *serialized CSS string* - the form an `.astro` element's `style` attribute
+ * takes - and React needs a property map.
+ */
+const ActionInk = {
+	"--jelly-button-radius": "var(--RadiusButton)",
+	"--jelly-button-height": "44px",
+	"--jelly-button-padding-inline": "2.6rem",
+	"--jelly-button-min-width": "0px",
+	"--jelly-color-background-accent": "var(--Foreground)",
+	"--jelly-color-foreground-on-accent": "var(--Background)",
+} as CSSProperties;
+
+/** The four corners, in the order `CornerMarks` prints them. */
+const CORNERS = ["tl", "tr", "bl", "br"] as const;
+
+type Corner = (typeof CORNERS)[number];
+
+/**
+ * Where a corner anchors its two arms. The values are `CornerMarks/Data.ts`'s
+ * own anchors, restated as the two style objects React needs; the *numbers*
+ * (inset, arm length, thickness, stem, ink, opacity) are read from that module,
+ * so the frame cannot drift from the block's.
+ */
+const ANCHOR: Record<
+	Corner,
+	{
+		readonly block: "top" | "bottom";
+		readonly inline: "left" | "right";
+		readonly originH: string;
+		readonly originV: string;
+	}
+> = {
+	tl: { block: "top", inline: "left", originH: "0 50%", originV: "50% 0" },
+
+	tr: {
+		block: "top",
+		inline: "right",
+		originH: "100% 50%",
+		originV: "50% 0",
+	},
+
+	bl: {
+		block: "bottom",
+		inline: "left",
+		originH: "0 50%",
+		originV: "50% 100%",
+	},
+
+	br: {
+		block: "bottom",
+		inline: "right",
+		originH: "100% 50%",
+		originV: "50% 100%",
+	},
+};
+
+/** One tick's box: its anchored edge, its arm span, and its slide origin. */
+const TickStyle = (Corner: Corner, Axis: "h" | "v"): CSSProperties => {
+	const Anchor = ANCHOR[Corner];
+
+	const Inset = `${CORNER_GEOMETRY.Inset}px`;
+
+	return {
+		position: "absolute",
+
+		backgroundColor: CORNER_GEOMETRY.Color,
+
+		opacity: CORNER_GEOMETRY.Opacity,
+
+		top: Anchor.block === "top" ? Inset : undefined,
+
+		bottom: Anchor.block === "bottom" ? Inset : undefined,
+
+		left: Anchor.inline === "left" ? Inset : undefined,
+
+		right: Anchor.inline === "right" ? Inset : undefined,
+
+		width:
+			Axis === "h"
+				? `${CORNER_GEOMETRY.Horizontal}px`
+				: `${CORNER_GEOMETRY.StemWidth}px`,
+
+		height:
+			Axis === "h"
+				? `${CORNER_GEOMETRY.Thickness}px`
+				: `${CORNER_GEOMETRY.Vertical}px`,
+
+		transformOrigin: Axis === "h" ? Anchor.originH : Anchor.originV,
+	};
+};
+
+/** The eight ticks: per corner the horizontal arm first, then the vertical. */
+const FRAME = CORNERS.flatMap((Corner) =>
+	(["h", "v"] as const).map((Axis) => ({
+		corner: Corner,
+
+		axis: Axis,
+
+		style: TickStyle(Corner, Axis),
+	})),
+);
+
+/** The record panel's picture-frame crosshairs (C19). */
+const CornerFrame = () => (
+	<div
+		aria-hidden="true"
+		className="CornerMarks pointer-events-none absolute inset-0"
+	>
+		{FRAME.map((Tick) => (
+			<span
+				className="CornerMarkTick"
+				data-corner={Tick.corner}
+				data-axis={Tick.axis}
+				key={`${Tick.corner}-${Tick.axis}`}
+				style={Tick.style}
+			/>
+		))}
+	</div>
+);
+
 const DynamicHeroSection = ({ Content, Band, ClassName }: Property) => {
 	const Hero = Band ?? HeroBandDefault();
 
@@ -66,152 +235,225 @@ const DynamicHeroSection = ({ Content, Band, ClassName }: Property) => {
 			: Destination,
 	);
 
+	/**
+	 * The record offers one primary action (`DesignSystem-Grammar.md` §8) and
+	 * any further destination as a route line. Exactly one entry is marked
+	 * primary; the rest keep the `/LABEL` voice and read as routes, which is
+	 * what the field-record grammar has for a secondary destination.
+	 *
+	 * `at(0)` rather than `[0]` so a band handed no entries at all renders no
+	 * action instead of throwing on an undefined one.
+	 */
+	const Action =
+		Entry.find((Destination) => Destination.primary) ?? Entry.at(0);
+
+	const Routes = Entry.filter((Destination) => Destination !== Action);
+
 	return (
 		<section
 			id="hero"
 			aria-labelledby="hero-marker hero-claim"
-			className={cn("band band--flush hero-band", ClassName)}
+			className={cn("relative w-full overflow-hidden", ClassName)}
+			style={{ backgroundColor: "var(--Background)" }}
 		>
-			<div className="band-inner hero-band__inner">
-				{/* ─── 1. THE CLAIM ─────────────────────────────────────────── */}
-				<header className="hero-band__claim">
-					<div className="hero-band__mark">
-						<p
-							id="hero-marker"
-							className="section-kicker hero-band__kicker"
+			<div
+				className="relative mx-auto flex min-h-[80dvh] flex-col md:flex-row"
+				style={{
+					padding: "clamp(2rem, 5vw, 5rem)",
+
+					gap: "clamp(0.5rem, 1.5vw, 1.875rem)",
+				}}
+			>
+				{/* ══ PANEL 1 - THE FIELD RECORD ═════════════════════════════ */}
+				<div className="flex flex-1 flex-col">
+					<jelly-card className="h-full" style={CardInk}>
+						<div
+							className="CornerMarkShell relative flex h-full flex-col"
+							style={{ padding: "2.75rem 1.5rem" }}
 						>
-							{Hero.claim.kicker}
-						</p>
+							<CornerFrame />
 
-						<FieldRecordSeal
-							element="Land"
-							size={48}
-							className="hero-band__seal"
-						/>
-					</div>
+							{/* 1. Index left, one seal upper-right. */}
+							<div className="relative flex items-start justify-between gap-4">
+								<p
+									id="hero-marker"
+									className="section-kicker m-0"
+								>
+									{Hero.claim.kicker}
+								</p>
 
-					<h1
-						id="hero-claim"
-						className="type-display hero-band__display"
-					>
-						<StampText Line={Hero.claim.runtime} />{" "}
-						<StampText Line={Hero.claim.engine} />
-					</h1>
+								<FieldRecordSeal element="Land" size={48} />
+							</div>
 
-					<p className="type-sub hero-band__route">
-						<RouteText Line={Hero.claim.route} />{" "}
-						<span className="hero-band__compat">
-							{Hero.claim.compat}
-						</span>
-					</p>
+							{/* 2-3. The oversized runtime claim, then what it is not. */}
+							<h1
+								id="hero-claim"
+								className="type-display m-0 mt-10"
+								style={{
+									fontFamily: "var(--FontMono)",
 
-					<p className="type-body hero-band__standfirst">
-						<span className="hero-band__relation">
-							{Hero.claim.project} {Hero.claim.relation}
-						</span>{" "}
-						{Content.Subtitle || Hero.claim.standfirst}
-					</p>
-				</header>
+									fontWeight: 500,
 
-				{/* ─── 2. THE STATUS ────────────────────────────────────────── */}
-				<div className="emphasis-standard hero-band__status">
-					<FieldRecordStatus
-						status="active"
-						copy={Hero.status.copy}
-						className="hero-band__status-line"
+									textWrap: "balance",
+								}}
+							>
+								<StampText Line={Hero.claim.runtime} />
+							</h1>
+
+							<p className="type-section m-0 mt-2">
+								<StampText Line={Hero.claim.engine} />
+							</p>
+
+							{/* 4-5. The compatibility route and what it means. */}
+							<div className="mt-10">
+								<p className="type-section m-0">
+									<RouteText Line={Hero.claim.route} />
+								</p>
+
+								<p className="type-meta m-0 mt-1">
+									{Hero.claim.compat}
+								</p>
+							</div>
+
+							{/* 6. The program line, em-quad separated. */}
+							<p
+								className="type-meta m-0 mt-6 uppercase"
+								style={{
+									letterSpacing: "0.25em",
+
+									color: "var(--MuteForeground)",
+								}}
+							>
+								{Hero.program}
+							</p>
+
+							{/* 7. The release state. */}
+							<div className="mt-3">
+								<FieldRecordStatus
+									status="active"
+									copy={Hero.status.copy}
+								/>
+							</div>
+
+							{/*
+							 * 8. THE MAJOR BLANK BAND. It grows to whatever height
+							 * the card has left and never shrinks below
+							 * `--space-blank`; the card's own height comes from the
+							 * evidence panel beside it. `DesignSystem.md` §4 wants
+							 * the band at 15-25% of the card area - flex-grow takes
+							 * it into the range, the token holds the floor.
+							 */}
+							<div
+								aria-hidden="true"
+								className="flex-1"
+								style={{ minHeight: "var(--space-blank)" }}
+							/>
+
+							{/* 9-10. The subject, and its one-line proposition. */}
+							<div>
+								<p className="type-section m-0">
+									{Hero.claim.project}
+								</p>
+
+								<p
+									className="type-meta m-0 mt-3"
+									style={{ color: "var(--MuteForeground)" }}
+								>
+									<span aria-hidden="true">↳</span>
+									{Hero.claim.relation}
+								</p>
+							</div>
+
+							{/* 11. The record's three metadata rows. */}
+							<dl className="record-ledger record-ledger--1 m-0 mt-10">
+								{Hero.facts.map((Fact) => (
+									<div
+										className="record-ledger__row"
+										key={Fact.key}
+									>
+										<dt className="record-ledger__key">
+											{Fact.key}
+										</dt>
+
+										<dd className="record-ledger__value">
+											{Fact.value}
+										</dd>
+									</div>
+								))}
+							</dl>
+
+							{/* 12. One action, and the routes beside it. */}
+							<div className="mt-10 flex flex-wrap items-center gap-6">
+								{Action ? (
+									<a
+										className="inline-block"
+										href={Action.href}
+										{...(Action.href.startsWith("http")
+											? {
+													target: "_blank",
+
+													rel: "noopener noreferrer",
+												}
+											: {})}
+									>
+										<jelly-button squish style={ActionInk}>
+											<span
+												className="font-mono text-sm font-medium uppercase tracking-wider"
+												style={{
+													fontFamily:
+														"var(--FontMono)",
+												}}
+											>
+												{Action.label}
+											</span>
+										</jelly-button>
+									</a>
+								) : null}
+
+								{Routes.map((Destination) => (
+									<a
+										className="type-meta"
+										href={Destination.href}
+										key={Destination.href}
+										style={{
+											color: "var(--Accent)",
+
+											textDecoration: "none",
+										}}
+									>
+										{Destination.label}
+									</a>
+								))}
+							</div>
+						</div>
+					</jelly-card>
+				</div>
+
+				{/* ══ THE HAIRLINE GUTTER ════════════════════════════════════ */}
+				<div
+					aria-hidden="true"
+					className="hidden w-px md:block"
+					style={{ backgroundColor: "var(--Border)" }}
+				/>
+
+				{/* ══ PANEL 2 - THE EVIDENCE ═════════════════════════════════ */}
+				<figure className="m-0 flex flex-1 flex-col">
+					<FieldRecordEvidence
+						alt={Hero.plate.alt}
+						className="min-h-[40dvh] w-full flex-1"
+						position="right"
+						src={Hero.plate.src}
 					/>
 
-					{Hero.status.chips.map((Chip) => (
-						<Badge
-							variant="outline"
-							className="hero-band__chip"
-							key={Chip}
-						>
-							{Chip}
-						</Badge>
-					))}
-				</div>
+					<figcaption
+						className="type-meta mt-3 flex flex-wrap justify-between gap-2"
+						style={{ color: "var(--MuteForeground)" }}
+					>
+						<span>{Hero.plate.caption}</span>
 
-				{/* ─── 3. THE EVIDENCE ──────────────────────────────────────── */}
-				<div className="hero-band__evidence">
-					<div className="hero-band__proof">
-						<ol className="record-stage record-stage--stack hero-band__stage">
-							{Hero.steps.map((Step) => (
-								<li
-									className="record-stage__item"
-									key={Step.index}
-								>
-									<span className="record-stage__index">
-										{Step.index}
-									</span>
-
-									<span className="record-stage__label">
-										{Step.label}
-									</span>
-
-									<span className="record-stage__line">
-										{Step.line}
-									</span>
-								</li>
-							))}
-						</ol>
-
-						<dl className="record-ledger record-ledger--1 hero-band__facts">
-							{Hero.facts.map((Fact) => (
-								<div
-									className="record-ledger__row"
-									key={Fact.key}
-								>
-									<dt className="record-ledger__key">
-										{Fact.key}
-									</dt>
-
-									<dd className="record-ledger__value">
-										{Fact.value}
-									</dd>
-								</div>
-							))}
-						</dl>
-					</div>
-
-					<figure className="record-figure hero-band__plate">
-						<div className="record-figure__media hero-band__plate-frame">
-							<FieldRecordEvidence
-								src={Hero.plate.src}
-								alt={Hero.plate.alt}
-								position="center"
-								className="hero-band__plate-image"
-							/>
-						</div>
-
-						<figcaption className="record-figure__caption">
-							<span className="record-figure__caption-text">
-								{Hero.plate.caption}
-							</span>
-
-							<span className="record-figure__provenance">
-								{Hero.plate.provenance}
-							</span>
-						</figcaption>
-					</figure>
-				</div>
-
-				{/* ─── 4. THE ENTRY ─────────────────────────────────────────── */}
-				<div className="hero-band__entry">
-					<p className="hero-band__program">{Hero.program}</p>
-
-					<div className="hero-band__destinations">
-						{Entry.map((Destination) => (
-							<a
-								className="hero-band__destination"
-								href={Destination.href}
-								key={Destination.href}
-							>
-								{Destination.label}
-							</a>
-						))}
-					</div>
-				</div>
+						<span>{Hero.plate.provenance}</span>
+					</figcaption>
+				</figure>
 			</div>
 		</section>
 	);

@@ -60,7 +60,7 @@ const Crumb = T("rust.crumb", { ns: "doc", defaultValue: "Rust API" });
 	Url={Astro.url.href}
 	lang="en"
 >
-	<Header client:load Mode="functional" />
+	<Header client:load Mode="functional" slot="Header" />
 
 	<div class="doc-rust">
 		<DocArticle
@@ -75,21 +75,31 @@ const Crumb = T("rust.crumb", { ns: "doc", defaultValue: "Rust API" });
 			measure={false}
 			banded
 		>
-			<DocIndex band={RustBand(T)} />
+			<jelly-card
+				class="doc-index-card"
+				style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:var(--space-group);--jelly-card-padding-inline:clamp(1rem,4vw,2.5rem)"
+			>
+				<DocIndex band={RustBand(T)} />
+			</jelly-card>
 
-			<RecordBand band={ViewerBand}>
-				<RustViewer
-					crates={RustCrates}
-					label={T("rust.viewer.label", {
-						ns: "doc",
-						defaultValue: "Rust crate group",
-					})}
-					title={T("rust.viewer.title", {
-						ns: "doc",
-						defaultValue: "Rust API Documentation",
-					})}
-				/>
-			</RecordBand>
+			<jelly-card
+				class="doc-appendix__card"
+				style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:var(--space-group);--jelly-card-padding-inline:clamp(1rem,4vw,2.5rem)"
+			>
+				<RecordBand band={ViewerBand}>
+					<RustViewer
+						crates={RustCrates}
+						label={T("rust.viewer.label", {
+							ns: "doc",
+							defaultValue: "Rust crate group",
+						})}
+						title={T("rust.viewer.title", {
+							ns: "doc",
+							defaultValue: "Rust API Documentation",
+						})}
+					/>
+				</RecordBand>
+			</jelly-card>
 
 			<p class="doc-rust__back">
 				<a href="/Doc">{Documentation}<span aria-hidden="true"> ←</span></a>

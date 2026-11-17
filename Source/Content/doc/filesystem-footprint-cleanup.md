@@ -138,7 +138,7 @@ rm -rf /tmp/land-zsh-integration-* 2> /dev/null
 rm -rf /tmp/land-editor-logs 2> /dev/null
 rm -f /tmp/vine_fallback.proto 2> /dev/null
 # Honour TMPDIR if set
-[ -n "$TMPDIR" ] && rm -rf "$TMPDIR/land-zsh-integration-*" "$TMPDIR/land-editor-logs" 2> /dev/null
+[ -n "$TMPDIR" ] && rm -rf "$TMPDIR"/land-zsh-integration-* "$TMPDIR"/land-editor-logs 2> /dev/null
 
 # Foreign-tool dirs (DELETE ONLY IF LAND WAS SOLE CREATOR)
 # rmdir "$HOME/.claude/agents" "$HOME/.copilot/agents" 2>/dev/null

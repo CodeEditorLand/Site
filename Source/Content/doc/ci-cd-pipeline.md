@@ -29,6 +29,11 @@ The Land build has six stages:
 
 <img src="/Mermaid/8aac22fc7883b886.svg" alt="Mermaid diagram" />
 
+**What you should see:** after stage 6 the pipeline has written the Mountain
+binary and the bundled `.app` under `Element/Mountain/Target/`; the full tree is
+enumerated under Artifact Layout below. The resolved tier table echoed at the
+start of the run is the record of which configuration that build used.
+
 ### Stage 1: VS Code Platform Compilation
 
 The VS Code source is vendored as a Git submodule at

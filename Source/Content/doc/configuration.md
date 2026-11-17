@@ -483,14 +483,14 @@ localStorage.removeItem("Disable");
 When bisecting a regression, you may need to run with all Land-specific shims,
 polyfills, and connections disabled:
 
-**Method 1: `.env.Land.Diagnostics` file**
+#### Method 1: `.env.Land.Diagnostics` file
 
 ```bash
 # In .env.Land.Diagnostics or .env.Land.Diagnostics.Sample:
 Disable=true
 ```
 
-**Method 2: localStorage (runtime only)**
+#### Method 2: localStorage (runtime only)
 
 ```javascript
 localStorage.setItem("Disable", "1");

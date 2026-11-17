@@ -83,11 +83,12 @@ export interface DashboardSurface {
 	/** What the connection does, and what it needs. */
 	readonly editorDescription: readonly string[];
 
-	/** The two things the reader can do about an absent daemon. */
-	readonly editorActions: readonly {
-		readonly label: string;
-		readonly href: string;
-	}[];
+	/**
+	 * The two things the reader can do about an absent daemon. Each is a record,
+	 * not a bare button: a destination that does not say what it does is a link
+	 * the reader has to guess at.
+	 */
+	readonly editorActions: readonly Entry[];
 
 	/** The settings band. */
 	readonly settings: Band;
@@ -175,6 +176,14 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 		index: "# DASHBOARD_01",
 		standfirst: Copy.Subtitle,
 		status: [
+			{
+				key: "ACCOUNT",
+				value: "AUTH0 SESSION · READ IN THE BROWSER",
+				note: Surface(
+					"status.account",
+					"Who is signed in is client-side state; the account band asks the identity provider for it.",
+				),
+			},
 			{ key: "ACCESS", value: "AUTH0 UNIVERSAL LOGIN", note: Copy.AccessSubtitle },
 			{ key: "PLAN", value: "FREE / ENTERPRISE" },
 			{ key: "DATA REQUESTS", value: "GDPR · ANSWERED WITHIN 30 DAYS" },
@@ -309,14 +318,24 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 		],
 		editorActions: [
 			{
-				label: T("common.dashboard.editor.scanButton", {
+				index: "# 01",
+				name: T("common.dashboard.editor.scanButton", {
 					defaultValue: "Scan for Daemon",
+				}),
+				body: T("account:dashboardPage.surface.editor.scan", {
+					defaultValue:
+						"Opens this page in local mode and probes the Air Daemon on ws://localhost:7979 and ws://localhost:7878, three seconds per port.",
 				}),
 				href: "/Dashboard?mode=local",
 			},
 			{
-				label: T("common.dashboard.editor.connect", {
+				index: "# 02",
+				name: T("common.dashboard.editor.connect", {
 					defaultValue: "Connect via Portal",
+				}),
+				body: T("account:dashboardPage.surface.editor.connect", {
+					defaultValue:
+						"Opens the portal, where each authentication tier's sign-in route is listed.",
 				}),
 				href: "/Portal",
 			},

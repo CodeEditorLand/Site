@@ -102,9 +102,13 @@
    does not own, so their own class names stay and the auth vocabulary reaches
    them through the field wrapper. Nothing here re-implements the primitive -
    it only sets the ink, the face and the hairline the card asks for. */
+/* The shared field primitive renders its label after its input; a form read
+   under stress wants the label first, and re-ordering inside the wrapper is a
+   layout decision this partial owns - no markup outside this card changes. */
 .auth-shell__field label {
 	@include mono-meta;
 	@include track(0.08em);
+	order: -1;
 }
 
 .auth-shell__field input {
@@ -205,6 +209,54 @@
 	gap: var(--space-reading);
 }
 
+/* "Or" between the credential form and the provider buttons: one hairline
+   drawn by the two pseudo-elements, with the label sitting in the gap. */
+.auth-shell__divider {
+	@include mono-meta;
+	display: flex;
+	align-items: center;
+	gap: var(--space-reading);
+	margin: 0;
+}
+
+.auth-shell__divider::before,
+.auth-shell__divider::after {
+	content: "";
+	flex: 1 1 auto;
+	@include hairline(top);
+}
+
+/* The provider buttons under the divider. */
+.auth-shell__oauth {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+}
+
+/* The island's own alternates, under the form. The page-level alternate
+   action belongs to the shell; these are the destinations the form itself
+   offers (create an account, forgot the password, already have one). */
+.auth-shell__footer {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-reading);
+}
+
+.auth-shell__footer-row {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--space-tight);
+}
+
+/* The terms checkbox and its own error: one field-like group, so a rejected
+   checkbox reads at the same distance as a rejected input. */
+.auth-shell__terms {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+}
+
 /* `.emphasis-expressive` supplies the ink-inverted fill; this adds the hit
    area, the tracked label and the square corners the tier already declares. */
 .auth-shell__primary {
@@ -235,6 +287,13 @@
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-reading);
+}
+
+/* The OAuth route's three states are toggled by its own script through the
+   `hidden` class, so the rule that hides them belongs here: `.hidden` alone
+   loses to the `display` above, and all three states would render at once. */
+.auth-shell__report.hidden {
+	display: none;
 }
 
 .auth-shell__status {

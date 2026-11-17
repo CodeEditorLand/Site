@@ -63,25 +63,25 @@ bridge between `Tauri`'s IPC system and the VS Code workbench's internal message
 channel system. It is composed of focused sub-modules in the `Bridge/`
 directory:
 
-| Module                            | Responsibility                                                                                                                  |
-| :-------------------------------- | :------------------------------------------------------------------------------------------------------------------------------ |
-| `InstallCommands.ts`              | `sky://command/*` handlers (execute, register, unregister)                                                                      |
-| `InstallDebug.ts`                 | debug breakpoint gutter sync (`sky://debug/addBreakpoints`)                                                                     |
-| `InstallDeadChannelListeners.ts`  | no-op stubs for deprecated channels                                                                                             |
-| `InstallDiagnostics.ts`           | language diagnostics relay to Monaco                                                                                            |
-| `InstallEditorAndOutput.ts`       | `sky://workspace/applyEdit`, save, saveAll, saveAs                                                                              |
-| `InstallEditorOperations.ts`      | Monaco content debounce (300 ms) → `sky:model:contentChanged` → `$acceptModelChanged` → [Cocoon](https://github.com/CodeEditorLand/Cocoon) `onDidChangeTextDocument` |
-| `InstallFanOut.ts`                | fan-out dispatcher for multi-subscriber channels                                                                                |
-| `InstallInlineCompletions.ts`     | `ILanguageFeaturesService.inlineCompletionsProvider.register()` relay                                                           |
-| `InstallProgressTerminalWorkspace.ts` | progress notifications and terminal events                                                                                  |
-| `InstallScm.ts`                   | SCM provider registration with 10 × 200 ms retry for `__CEL_SERVICES__.SCM` population race                                      |
-| `InstallSearch.ts`                | workspace search result forwarding                                                                                              |
-| `InstallSimpleRelays.ts`          | single-line DOM CustomEvent relays (language config, theme, etc.)                                                               |
-| `InstallStatusbar.ts`             | `sky://statusbar/*` status-bar entry lifecycle                                                                                  |
-| `InstallTasksAndDecorations.ts`   | task and file-decoration event relay                                                                                            |
-| `InstallTreeView.ts`              | tree-view selection, expand/collapse, reveal (`sky://tree-view/*`)                                                              |
-| `InstallUiRequests.ts`            | `sky://ui/show-message-request`, quick-pick, input-box                                                                          |
-| `InstallWebview.ts`               | webview message forwarding and disposal                                                                                         |
+| Module                                | Responsibility                                                                                                                                                       |
+| :------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `InstallCommands.ts`                  | `sky://command/*` handlers (execute, register, unregister)                                                                                                           |
+| `InstallDebug.ts`                     | debug breakpoint gutter sync (`sky://debug/addBreakpoints`)                                                                                                          |
+| `InstallDeadChannelListeners.ts`      | no-op stubs for deprecated channels                                                                                                                                  |
+| `InstallDiagnostics.ts`               | language diagnostics relay to Monaco                                                                                                                                 |
+| `InstallEditorAndOutput.ts`           | `sky://workspace/applyEdit`, save, saveAll, saveAs                                                                                                                   |
+| `InstallEditorOperations.ts`          | Monaco content debounce (300 ms) → `sky:model:contentChanged` → `$acceptModelChanged` → [Cocoon](https://github.com/CodeEditorLand/Cocoon) `onDidChangeTextDocument` |
+| `InstallFanOut.ts`                    | fan-out dispatcher for multi-subscriber channels                                                                                                                     |
+| `InstallInlineCompletions.ts`         | `ILanguageFeaturesService.inlineCompletionsProvider.register()` relay                                                                                                |
+| `InstallProgressTerminalWorkspace.ts` | progress notifications and terminal events                                                                                                                           |
+| `InstallScm.ts`                       | SCM provider registration with 10 × 200 ms retry for `__CEL_SERVICES__.SCM` population race                                                                          |
+| `InstallSearch.ts`                    | workspace search result forwarding                                                                                                                                   |
+| `InstallSimpleRelays.ts`              | single-line DOM CustomEvent relays (language config, theme, etc.)                                                                                                    |
+| `InstallStatusbar.ts`                 | `sky://statusbar/*` status-bar entry lifecycle                                                                                                                       |
+| `InstallTasksAndDecorations.ts`       | task and file-decoration event relay                                                                                                                                 |
+| `InstallTreeView.ts`                  | tree-view selection, expand/collapse, reveal (`sky://tree-view/*`)                                                                                                   |
+| `InstallUiRequests.ts`                | `sky://ui/show-message-request`, quick-pick, input-box                                                                                                               |
+| `InstallWebview.ts`                   | webview message forwarding and disposal                                                                                                                              |
 
 It translates between two event models:
 
@@ -392,12 +392,12 @@ The startup sequence coordinates all polyfill layers:
 The `Disable` environment variable can be set to `true` to bypass all polyfill
 layers, useful for diagnosing polyfill-related issues:
 
-| Value             | Effect                              |
-| :---------------- | :---------------------------------- |
-| `Disable=true`    | All polyfills skipped               |
+| Value             | Effect                                 |
+| :---------------- | :------------------------------------- |
+| `Disable=true`    | All polyfills skipped                  |
 | `Disable=false`   | Normal polyfill installation (default) |
-| `Disable=preload` | Skip only Preload shim              |
-| `Disable=bridge`  | Skip only `SkyBridge`               |
+| `Disable=preload` | Skip only Preload shim                 |
+| `Disable=bridge`  | Skip only `SkyBridge`                  |
 
 ---
 

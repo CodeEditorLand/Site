@@ -20,7 +20,7 @@ import Auth0Provider from "../Provider/Auth0Provider";
 
 import { Button } from "../UI/Button";
 
-import { Skeleton } from "../UI/Skeleton";
+import { DynamicStateReport, StateLabel } from "./DynamicStateReport";
 
 const Pii = ({
 	children,
@@ -154,73 +154,80 @@ const DashboardUserInner = () => {
 
 	if (IsLoading) {
 		return (
-			<div
-				className="space-y-3"
-				aria-label={T("dashboard.loading", {
-					defaultValue: "Loading account...",
+			<DynamicStateReport
+				Label={StateLabel.Loading}
+				Tone="ink"
+				Loading
+				Sentence={T("account:dashboardPage.surface.state.loading", {
+					defaultValue:
+						"Reading your session from the identity provider. The account rows appear as soon as it answers.",
 				})}
-			>
-				<p className="surface__state">
-					{T("account:dashboardPage.surface.state.loading", {
-						defaultValue:
-							"Reading your session from the identity provider. The account rows appear as soon as it answers.",
-					})}
-				</p>
-				<Skeleton className="mx-auto h-12 w-12" />
-				<Skeleton className="h-4 w-full" />
-				<Skeleton className="h-4 w-4/5" />
-				<Skeleton className="h-4 w-3/5" />
-				<Skeleton className="h-4 w-2/5" />
-			</div>
+				Action={
+					<button
+						type="button"
+						className="auth-shell__alternate"
+						onClick={() => window.location.reload()}
+					>
+						{T("dashboard.reload", { defaultValue: "Reload" })}
+					</button>
+				}
+			/>
 		);
 	}
 
 	if (AuthError) {
 		return (
-			<div className="space-y-3" role="alert" aria-live="polite">
-				<p className="text-destructive">
-					{T("dashboard.error", {
-						defaultValue:
-							"Could not load your account. Please refresh.",
-					})}
-				</p>
-				<p className="surface__state">
-					{T("account:dashboardPage.surface.state.error", {
-						defaultValue:
-							"The identity provider did not answer, so no account rows can be shown. Reloading asks it again.",
-					})}
-				</p>
-				<p className="text-card-foreground">{AuthError.message}</p>
-				<Button
-					variant="outline"
-					size="sm"
-					onClick={() => window.location.reload()}
-				>
-					{T("tryAgain", { defaultValue: "Try again" })}
-				</Button>
-			</div>
+			<DynamicStateReport
+				Role="alert"
+				Label={StateLabel.Interrupted}
+				Tone="strong"
+				Sentence={
+					<>
+						{T("account:dashboardPage.surface.state.error", {
+							defaultValue:
+								"The identity provider did not answer, so no account rows can be shown. Reloading asks it again.",
+						})}{" "}
+						{T("dashboard.error", {
+							defaultValue:
+								"Could not load your account. Please refresh.",
+						})}{" "}
+						{AuthError.message}
+					</>
+				}
+				Action={
+					<Button
+						variant="outline"
+						size="sm"
+						onClick={() => window.location.reload()}
+					>
+						{T("tryAgain", { defaultValue: "Try again" })}
+					</Button>
+				}
+			/>
 		);
 	}
 
 	if (!IsAuthenticated || !User) {
 		return (
-			<div className="space-y-3">
-				<p className="text-card-foreground">
-					{T("account:dashboardPage.surface.state.signedOut", {
-						defaultValue:
-							"You are not signed in. Sign in to see your account.",
-					})}
-				</p>
-				<button
-					type="button"
-					onClick={() => Login()}
-					className="StaccatoButton text-primary-fg inline-flex items-center justify-center bg-primary px-4 py-1.5 font-medium transition-all hover:opacity-90"
-				>
-					{T("dashboard.account.signInButton", {
-						defaultValue: "Sign In",
-					})}
-				</button>
-			</div>
+			<DynamicStateReport
+				Label={StateLabel.SignInRequired}
+				Tone="ink"
+				Sentence={T("account:dashboardPage.surface.state.signedOut", {
+					defaultValue:
+						"You are not signed in. Sign in to see your account.",
+				})}
+				Action={
+					<button
+						type="button"
+						onClick={() => Login()}
+						className="auth-shell__primary emphasis-expressive"
+					>
+						{T("dashboard.account.signInButton", {
+							defaultValue: "Sign In",
+						})}
+					</button>
+				}
+			/>
 		);
 	}
 
@@ -249,8 +256,33 @@ const DashboardUserInner = () => {
 		"org_id"
 	] as string | undefined;
 
+	// A session with no identifying field is an empty record, not an account
+	// row full of dashes: the ledger cannot say who this is, so the band says so
+	// and offers the one action that re-requests the profile.
+	const HasNoProfile = !User.email && !User.name && !User.nickname;
+
 	return (
 		<div className="space-y-3">
+			{HasNoProfile ? (
+				<DynamicStateReport
+					Label={StateLabel.Empty}
+					Tone="quiet"
+					Sentence={T("account:dashboardPage.surface.state.noEmail", {
+						defaultValue:
+							"No email on this account. The provider did not return one.",
+					})}
+					Action={
+						<button
+							type="button"
+							className="auth-shell__alternate"
+							onClick={HandleSignOut}
+						>
+							{T("logout", { defaultValue: "Sign Out" })}
+						</button>
+					}
+				/>
+			) : null}
+
 			{/* Privacy toggle */}
 			<div className="flex justify-end">
 				<button

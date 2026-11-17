@@ -160,6 +160,11 @@ the main window.
 > RPCServer-before-MountainConnection bootstrap ordering are the two changes
 > that keep first paint under 800 ms.
 
+**What you should see:** in the boot log, Mountain's `[LandFix:Tier]` lines before
+the Tokio runtime spins up, then Cocoon's `RPCServer bound on port 50052` line,
+then the handshake, and finally the workbench's first frame. A blank workbench
+means the handshake never completed - see [Troubleshooting](/Doc/troubleshooting).
+
 ---
 
 ## See Also
