@@ -92,16 +92,14 @@ const DynamicDocSidebar = ({
 		),
 	)?.Id;
 
-	// The index page has no current page to open, and a rail of ten closed
-	// headings beside a map of 81 rows is not a rail - so with no `ActiveId` every
-	// section opens and the tree is readable at a glance. On a page, the section
-	// and the group holding it open and everything else stays closed: the reader
-	// is already where they are going.
-	const OpenByDefault = ActiveId === undefined;
-
+	// The index page has no current page to open, and the baseline rail showed
+	// ten closed headings beside its card grid: every section starts collapsed
+	// there too, because the page's own cards are the navigation. On a page, the
+	// section and the group holding it open and everything else stays closed:
+	// the reader is already where they are going.
 	/** One rule for both levels: closed unless it is the one holding the page. */
 	const StartsCollapsed = (Id: string, Keep: string | undefined) =>
-		!OpenByDefault && Id !== Keep;
+		Id !== Keep;
 
 	const Ids = (Items: readonly { Id: string }[]) =>
 		Items.map((Item) => Item.Id);

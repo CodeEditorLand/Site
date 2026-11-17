@@ -69,12 +69,17 @@ const CanonicalList = [...CanonicalPath];
 			<meta http-equiv="refresh" content="3;url=/" />
 		</noscript>
 		<style>
-			/* Minimal no-flash shell - never visible longer than one frame */
+			/* Minimal no-flash shell - never visible longer than one frame.
+			   The canvas is the site's own paper (--Background, defined in
+			   Source/Stylesheet/System/_Token.scss), not white: this page is
+			   served for every unresolved path, so a white frame reads as a
+			   flash against the creme canvas. This page loads no stylesheet by
+			   design, so the token's value is inlined as the fallback. */
 			html,
 			body {
 				margin: 0;
 				padding: 0;
-				background: #fff;
+				background: var(--Background, #f2ede3);
 			}
 		</style>
 	</head>

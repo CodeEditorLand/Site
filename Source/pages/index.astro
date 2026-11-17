@@ -1,5 +1,35 @@
 ---
-import { HomePage } from "../Component/Dynamic/HomePage";
+/**
+ * The home page - five bands, in the order the site has always printed them.
+ *
+ *   hero        `# LAND_01`   the two-panel record: the card beside the evidence
+ *   #features                 the six element records that carry the claim
+ *   #pricing                  the two release records: what is out, what is next
+ *   #testimonials             all fifteen element records, as a wall
+ *   #download                 the three platform records
+ *   close                     the six badges the page stops on
+ *
+ * The order is the page's meaning and it is not free: the claim comes first, then
+ * what is released, then what the thing is made of, then where it runs. A page
+ * that prints the architecture before the release state answers a question the
+ * reader has not asked yet.
+ *
+ * The hero is the one band that hydrates: it is a React island
+ * (`DynamicHeroSection`) because it carries the record's seal, its status and its
+ * evidence as components. The four bands below it are static `.astro` - they are
+ * printed records with no state, so they ship no JavaScript at all.
+ *
+ * There is no `h1` on this page, and that is the baseline's own composition: the
+ * page's opening statement is the hero's record, not a heading, and the loudest
+ * type above the fold is the mono runtime claim inside the card. The first
+ * heading a reader meets is the features band's `h2`.
+ */
+import ArchitectureBand from "../Component/Home/ArchitectureBand.astro";
+import FeatureBand from "../Component/Home/FeatureBand.astro";
+import PlatformBand from "../Component/Home/PlatformBand.astro";
+import RoadmapBand from "../Component/Home/RoadmapBand.astro";
+import { DynamicHeroSection } from "../Component/Dynamic/DynamicHeroSection";
+import { HeroBandFor } from "../Component/Dynamic/Hero/Data.js";
 import { Header } from "../Component/Layout/Header";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
@@ -9,12 +39,23 @@ const T = GetI18n();
 const MetaTitle = T("meta.home.title", {
 	defaultValue: "Code Editor Land | Rust and Tauri Editor Stack",
 });
+
 const MetaDescription = T("meta.home.description", {
 	defaultValue:
 		"Code Editor Land is an open-source editor stack built with Rust, Tauri, and a VS Code-compatible extension host. Source builds are active while public installers and full extension coverage are still in progress.",
 });
 
-const SiteUrl = Astro.site?.href ?? "";
+const SiteURL = Astro.site?.href ?? "";
+
+/** The hero island's record band, resolved once from the locale files. */
+const HeroBand = HeroBandFor(T);
+
+/**
+ * The hero's content surface. The island reads one field from it - the page's
+ * primary destination - so the object is that field and nothing else; the band's
+ * own copy travels beside it as `HeroBand`.
+ */
+const HeroContent = { PrimaryCTA: { Href: "/Download" } };
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription} lang="en">
@@ -28,7 +69,7 @@ const SiteUrl = Astro.site?.href ?? "";
 				alternateName: "Land",
 				description:
 					"An open-source editor stack built with Rust, Tauri, and a VS Code-compatible extension host. Source builds are active while public installers and full extension coverage are still in progress.",
-				url: SiteUrl,
+				url: SiteURL,
 				applicationCategory: "DeveloperApplication",
 				operatingSystem: "macOS, Windows, Linux",
 				offers: {
@@ -38,8 +79,8 @@ const SiteUrl = Astro.site?.href ?? "";
 				},
 				license: "https://creativecommons.org/publicdomain/zero/1.0/",
 				softwareVersion: "Pre-release",
-				downloadUrl: `${SiteUrl}Download`,
-				screenshot: `${SiteUrl}Favicon/og-image.png`,
+				downloadUrl: `${SiteURL}Download`,
+				screenshot: `${SiteURL}Favicon/og-image.png`,
 				author: [
 					{
 						"@type": "Person",
@@ -49,7 +90,7 @@ const SiteUrl = Astro.site?.href ?? "";
 					{
 						"@type": "Organization",
 						name: "Code Editor Land",
-						url: SiteUrl,
+						url: SiteURL,
 					},
 					{
 						"@type": "Organization",
@@ -60,10 +101,10 @@ const SiteUrl = Astro.site?.href ?? "";
 				publisher: {
 					"@type": "Organization",
 					name: "Code Editor Land",
-					url: SiteUrl,
+					url: SiteURL,
 					logo: {
 						"@type": "ImageObject",
-						url: `${SiteUrl}Favicon/favicon.svg`,
+						url: `${SiteURL}Favicon/favicon.svg`,
 					},
 				},
 				featureList: [
@@ -77,15 +118,20 @@ const SiteUrl = Astro.site?.href ?? "";
 			})}
 		/>
 	</Fragment>
+
 	<Header client:load slot="Header" />
-	<HomePage
-		client:load
-		MetaTitle={MetaTitle}
-		MetaDescription={MetaDescription}
-	/>
-	<div
-		class="container mx-auto flex flex-wrap items-center justify-center gap-3 px-4 py-10 text-muted-foreground"
-	>
+
+	<DynamicHeroSection client:load Content={HeroContent} Band={HeroBand} />
+
+	<FeatureBand />
+
+	<RoadmapBand />
+
+	<ArchitectureBand />
+
+	<PlatformBand />
+
+	<div class="home-close">
 		<img
 			alt="Code Editor Land logo"
 			title="Code Editor Land"
@@ -93,77 +139,80 @@ const SiteUrl = Astro.site?.href ?? "";
 			width="20"
 			height="20"
 		/>
+
 		<jelly-badge
 			variant="mint"
 			shape="square"
-			style={`--jelly-fill:var(--SpinegRPCMute);--jelly-label:var(--SpinegRPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
+			style="--jelly-fill:var(--SpinegRPCMute);--jelly-label:var(--SpinegRPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
 		>
 			Telemetry Feature Gated&#x2001;<span
-				class="flat h-1.5 w-1.5"
+				class="home-close__dot"
 				style="background-color:var(--SpinegRPC)"
 				aria-hidden="true"></span>
 		</jelly-badge>
+
 		<jelly-badge
 			variant="mint"
 			shape="square"
-			style={`--jelly-fill:var(--SpinegRPCMute);--jelly-label:var(--SpinegRPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
+			style="--jelly-fill:var(--SpinegRPCMute);--jelly-label:var(--SpinegRPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
 		>
 			CC0 Licensed&#x2001;<img
 				src="/Image/CC0.svg"
 				alt=""
 				width="12"
 				height="12"
-				class="opacity-70"
 				aria-hidden="true"
 			/>
 		</jelly-badge>
+
 		<jelly-badge
 			variant="azure"
 			shape="square"
-			style={`--jelly-fill:var(--SpineIPCMute);--jelly-label:var(--SpineIPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
+			style="--jelly-fill:var(--SpineIPCMute);--jelly-label:var(--SpineIPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
 		>
 			Rust&#x2001;<img
 				src="/Image/Rust.svg"
 				alt=""
 				width="12"
 				height="12"
-				class="opacity-70"
 				aria-hidden="true"
 			/>&#x2001;+&#x2001;Tauri&#x2001;<img
 				src="/Image/Tauri.svg"
 				alt=""
 				width="12"
 				height="12"
-				class="opacity-70"
 				aria-hidden="true"
 			/>
 		</jelly-badge>
+
 		<jelly-badge
 			variant="platinum"
 			shape="square"
 			outline
-			style={`--jelly-label:var(--Foreground);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
+			style="--jelly-label:var(--Foreground);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
 		>
 			VS Code API In Progress
 		</jelly-badge>
+
 		<jelly-badge
 			variant="platinum"
 			shape="square"
 			outline
-			class="focus-ring"
+			class="home-close__action"
 			tabindex="0"
-			style={`--jelly-label:var(--Foreground);--jelly-badge-radius:0;--jelly-badge-font-size:13px;cursor:pointer`}
+			style="--jelly-label:var(--Foreground);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
 			onclick="window.open('https://PlayForm.Cloud','_blank','noopener noreferrer')"
 		>
 			PlayForm
 		</jelly-badge>
+
 		<jelly-badge
 			variant="platinum"
 			shape="square"
 			outline
-			class="focus-ring"
+			class="home-close__action"
 			tabindex="0"
-			style={`--jelly-label:var(--Foreground);--jelly-badge-radius:0;--jelly-badge-font-size:13px;cursor:pointer`}
+			style="--jelly-label:var(--Foreground);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
 			onclick="location.href='/'"
 		>
 			CodeEditorLand

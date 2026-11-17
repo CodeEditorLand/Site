@@ -1,0 +1,28 @@
+---
+/**
+ * ArchitectureBand - `#testimonials`: all fifteen element records, as a wall.
+ *
+ * Twelve columns from `lg`, two below it, one below `md`. Each card takes its
+ * own width out of the twelve (`--masonry-col`), so the band reads as a
+ * staggered wall with ragged edges - which is the one genuinely irregular layout
+ * on the page and the reason it is not a plain grid.
+ */
+import { ElementCards } from "../../Content/Home/Architecture.js";
+import { BandOf, HomeBands } from "../../Content/Home/Band.js";
+import { GetI18n } from "../../Library/I18n/Server";
+
+import Band from "./Band.astro";
+import ElementCard from "./ElementCard.astro";
+
+const T = GetI18n();
+
+const Head = BandOf(HomeBands(T), "testimonials");
+
+const Cards = ElementCards(T);
+---
+
+<Band head={Head}>
+	<div class="home-element__grid">
+		{Cards.map((Card) => <ElementCard card={Card} />)}
+	</div>
+</Band>

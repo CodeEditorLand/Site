@@ -1,0 +1,320 @@
+// RecordArchive - many records in one physical form: the archive index.
+//
+// One row per entry, the title as the link and the summary as its note, under a
+// record header that names the archive and counts its entries.
+// `DesignSystem-Artifacts.md` §2 asks for exactly this instead of a wall of
+// equal cards ("an index of filed observations"), and the two surfaces that
+// need it - the blog index and the doc index - had each been built by hand,
+// differently, twice.
+//
+// Publishes:
+//   .record-archive             the section shell
+//   .record-archive--marked     the block reserves a marker column (any entry carries one)
+//   .record-archive__head       the record header: the marker and the name, the count
+//   .record-archive__record     `# ARCHIVE_01` beside the archive's name
+//   .record-archive__heading    the archive's name, the block's one h2
+//   .record-archive__count      `52 ENTRIES` at the far end of the header
+//   .record-archive__body       the rows, closed by the list's last rule
+//   .record-archive__run        one run: a sub-label and the rows under it
+//   .record-archive__label      that sub-label, when the run carries one
+//   .record-archive__list       one row per entry
+//   .record-archive__row        the row's box - the rule between two rows
+//   .record-archive__link       THE ROW ITSELF: the anchor, and the hover target
+//   .record-archive__marker     the marker column: a date, a section, a reading time
+//   .record-archive__title      the entry's name, and the row's link text
+//   .record-archive__note       the entry's summary
+//
+// Five decisions:
+//
+// - **No gutter and no max-width of its own.** The block lays out to the width
+//   its container gives it, so a page can put it on the creme field inside the
+//   band container or inside a card, without the block adding a second inset
+//   and indenting the rows away from the header above them.
+// - **The row is a rule, not a card.** Each row carries the hairline above it
+//   and the body carries the closing one, so fifty entries read as one archive
+//   rather than fifty tiles, and a count that is not a multiple of three leaves
+//   no hole - the grid never reflows into tiles.
+// - **The whole row is the anchor.** The card's anatomy is one `<a>` per entry,
+//   so the row's three parts sit inside it. The global accessibility rule
+//   (`System/_Global.scss`) underlines every plain anchor, and on a row that
+//   would underline the summary and the marker as well as the title, so the
+//   anchor cancels the decoration - see THE ROW below for the specificity that
+//   takes, and why the row still reads as a link.
+// - **The disclosure is CSS-only.** No state class, no inline code, no client
+//   directive: `:hover`, `:focus-visible` and `:active` on the anchor are the
+//   whole interaction model (`DESIGN.md` Q8 leaves the layer unowned).
+// - **Ink is inherited, not named.** The shell sets no colour, so the block
+//   reads correctly on the creme field and inside a card; the one ink it names
+//   is the accent the title takes while it is disclosed.
+
+@use "../Mixin" as *;
+
+/* ─── THE SHELL ────────────────────────────────────────────────────────── */
+
+.record-archive {
+	display: block;
+	inline-size: 100%;
+	min-inline-size: 0;
+
+	color: inherit;
+}
+
+/* ─── THE RECORD HEADER ─────────────────────────────────────────────────── */
+
+/* The marker and the name on the left, the count on the right, one baseline.
+   `space-between` is what puts the count at the far end without a second
+   container; `flex-wrap` keeps a long name and its count apart on a phone. */
+.record-archive__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+
+	gap: var(--space-tight) var(--space-group);
+
+	padding-block-end: var(--space-reading);
+}
+
+.record-archive__record {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+
+	gap: var(--space-tight) var(--space-reading);
+
+	min-inline-size: 0;
+}
+
+/* The archive's name in the record header's nameplate voice: mono, uppercase,
+   tracked, at label size - the same voice the marker beside it prints in, so
+   `# ARCHIVE_01 DOCUMENTATION ARCHIVE` reads as one line of identity rather
+   than a marker with a heading stuck to it. The ink is inherited from the
+   shell, because the card this may sit in owns the surface. */
+.record-archive__heading {
+	@include mono-meta;
+	@include track(0.08em);
+
+	margin: 0;
+
+	color: inherit;
+}
+
+.record-archive__count {
+	@include mono-meta;
+	@include track(0.08em);
+
+	margin: 0;
+
+	font-variant-numeric: tabular-nums;
+}
+
+/* ─── THE ROWS ──────────────────────────────────────────────────────────── */
+
+/* The closing rule. Every row paints the one above it, so the body's bottom
+   border is the only other rule the archive needs - the list ends the way a
+   table ends, whether it carries one run or five. */
+.record-archive__body {
+	@include hairline(bottom);
+}
+
+/* A group opens at group distance and paints the rule above its label. The
+   first run's label is the rule under the header; a later run's label is the
+   separation between two subjects of one archive. */
+.record-archive__run + .record-archive__run {
+	margin-block-start: var(--space-group);
+}
+
+.record-archive__label {
+	@include mono-meta;
+	@include track(0.08em);
+	@include hairline(top);
+
+	margin: 0;
+
+	padding-block: var(--space-reading) var(--space-tight);
+
+	color: inherit;
+}
+
+.record-archive__list {
+	margin: 0;
+	padding: 0;
+
+	list-style: none;
+}
+
+.record-archive__row {
+	@include hairline(top);
+}
+
+/* THE ROW. One anchor, three parts, and the whole row is the target.
+
+   The resting inset is `--space-tight` so the stretch has somewhere to go; the
+   rule above each row belongs to the `li`, whose border box is the full width,
+   so the rules stay put while the text inside them moves.
+
+   `text-decoration: none` is not cosmetic housekeeping. The global rule in
+   `System/_Global.scss` matches `a:not([class*="Button"]):not(...)...` - ten
+   `:not()` arguments, so it scores (0,10,1) - and a single-class rule cannot
+   outrank it. Left alone, that rule would underline the title, the note and
+   the marker of every row, and would turn all three near-black on hover, which
+   is the opposite of the disclosure this block is for. The declaration below
+   is therefore the one place in this partial that has to state its weight;
+   the row replaces the underline with its own affordances: the pointer cursor,
+   the accent ink, the trace under the title, and the focus ring. */
+.record-archive__link {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	grid-template-areas:
+		"title"
+		"note";
+
+	gap: var(--space-tight) 0;
+
+	padding-block: var(--space-reading);
+	padding-inline: var(--space-tight);
+
+	color: inherit;
+	text-decoration: none !important;
+
+	cursor: pointer;
+
+	transition:
+		padding-inline-start 180ms ease,
+		padding-inline-end 180ms ease;
+}
+
+.record-archive__marker {
+	@include mono-meta;
+
+	grid-area: marker;
+
+	margin: 0;
+
+	font-variant-numeric: tabular-nums;
+}
+
+/* The marker's own row, on the phone as well as on the wide line: a span that
+   named an area the template does not carry would be auto-placed below the
+   note, and a date under a summary is not a marker column. */
+.record-archive--marked .record-archive__link {
+	grid-template-areas:
+		"marker"
+		"title"
+		"note";
+}
+
+/* The title hugs its own text - `justify-self: start` plus `max-content` - so
+   the trace under it measures the name and not the column. A name longer than
+   the column wraps at the column and the trace follows it. */
+.record-archive__title {
+	grid-area: title;
+
+	position: relative;
+
+	justify-self: start;
+
+	inline-size: max-content;
+	max-inline-size: 100%;
+
+	margin: 0;
+
+	font-size: var(--type-sub);
+	font-weight: 500;
+	line-height: var(--type-sub-line);
+	letter-spacing: -0.01em;
+
+	color: inherit;
+
+	text-wrap: balance;
+}
+
+/* THE TRACE. A hairline of the accent that runs the title's own width. It is
+   always in the box - `inline-size: 0` at rest, `100%` while the row is
+   disclosed - so the row's height never changes and nothing reflows. */
+.record-archive__title::after {
+	content: "";
+
+	position: absolute;
+	inset-block-end: -0.15em;
+	inset-inline-start: 0;
+
+	inline-size: 0;
+	block-size: 1px;
+
+	background-color: var(--Accent);
+
+	transition: inline-size 220ms ease;
+}
+
+.record-archive__note {
+	grid-area: note;
+
+	margin: 0;
+	max-inline-size: var(--Measure);
+
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+
+	color: var(--MuteForeground);
+
+	text-wrap: pretty;
+}
+
+/* ─── THE DISCLOSURE ────────────────────────────────────────────────────── */
+
+/* One selector list for the whole state, so hover, keyboard focus and press
+   cannot drift apart: the row stretches its inline padding, the title takes the
+   accent ink, the trace runs its width. Nothing here reads a state class the
+   block would have to set. */
+.record-archive__link:is(:hover, :focus-visible, :active) {
+	padding-inline: var(--space-reading);
+}
+
+.record-archive__link:is(:hover, :focus-visible, :active) .record-archive__title {
+	color: var(--Accent);
+}
+
+.record-archive__link:is(:hover, :focus-visible, :active)
+	.record-archive__title::after {
+	inline-size: 100%;
+}
+
+/* The ring sits inside the row's own box: the rows share hairlines, and a ring
+   offset outward would paint over the row above. */
+.record-archive__link:focus-visible {
+	outline: 1px solid var(--Primary);
+	outline-offset: -1px;
+}
+
+/* REDUCED MOTION. The transition goes and the state does not: a reader who
+   asked for less motion still gets the stretch, the accent and the trace - they
+   arrive in one frame instead of over 180ms. Nothing is dropped, only the
+   interval. */
+@media (prefers-reduced-motion: reduce) {
+	.record-archive__link,
+	.record-archive__title::after {
+		transition: none;
+	}
+}
+
+/* ─── THE WIDE ROW ──────────────────────────────────────────────────────── */
+
+/* From 768px the row is an archive line: the marker opens it, the title fills
+   the name column, the note fills the rest. The name column is measured in
+   `ch` rather than in rem because `--FontSans` and `--FontMono` are the same
+   mono stack (Token.scss), so a character width is exact and the notes of fifty
+   rows start on one left edge. */
+@include bp(768px) {
+	.record-archive__link {
+		grid-template-columns: minmax(0, 26ch) minmax(0, 1fr);
+		grid-template-areas: "title note";
+
+		align-items: baseline;
+	}
+
+	.record-archive--marked .record-archive__link {
+		grid-template-columns: minmax(0, 12ch) minmax(0, 26ch) minmax(0, 1fr);
+		grid-template-areas: "marker title note";
+	}
+}

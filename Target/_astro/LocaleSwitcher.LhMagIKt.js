@@ -1,1 +1,0 @@
-import{t}from"./LocaleSwitcher.B-O1P2T9.js";export{t as LocaleSwitcher,t as default};

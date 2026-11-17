@@ -1,54 +1,44 @@
 ---
 import { getCollection } from "astro:content";
 
+import DocAppendix from "../Component/Doc/DocAppendix.astro";
 import DocArticle from "../Component/Doc/DocArticle.astro";
+import DocCard from "../Component/Doc/DocCard.astro";
 import DocIndex from "../Component/Doc/DocIndex.astro";
 import DocLayout from "../Component/Doc/DocLayout.astro";
 import { Header } from "../Component/Layout/Header";
 import BuildDocIndex from "../Function/Doc/BuildDocIndex";
 import BuildDocSidebar from "../Function/Doc/BuildDocSidebar";
-import BuildDocStrip from "../Function/Doc/BuildDocStrip";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
 const T = GetI18n();
 
 /**
- * The documentation index - one Archive Index artifact, then its four
- * appendices.
+ * The documentation index - the page the baseline rendered, rebuilt out of
+ * components.
  *
- * `DesignSystem-Artifacts.md` §2 and `DESIGN.md` §1.8 give many records one
- * physical form: an **Archive Index**, "an index of filed observations", never
- * a wall of equal cards and never a stack of chapters. So the ten section bands
- * are rows inside ONE surface, and the four appendix bands are four artifacts
- * after it:
+ * The order below IS the page, and it is the baseline's:
  *
- * - **The index card** carries every section: its name as the band's heading,
- *   its page count in the kicker (`/ELEMENTS` U+2001 `16 PAGES`), then one
- *   dense row per page - `navTitle` (or `title`), the page's `description` as
- *   the row's note, in `order`. The rows are built in
- *   `Function/Doc/BuildDocIndex.ts`; this page only maps one component over one
- *   array.
- * - **The four appendices** (where to start, architecture, backend services,
- *   live deployments) are one artifact each: `start-here`, `architecture`,
- *   `backend`, `deployments` in `BuildDocIndex`. They are not sections of the
- *   index, so they do not live inside its card.
+ * 1. **The breadcrumb and the header** - `Home / Documentation`, the `h1` and
+ *    the one-sentence standfirst. No kicker: the index has no section above it.
+ * 2. **The three ways in** - a three-across card grid whose cards carry their
+ *    own `h2` (`DocCard level={2}`), because they are not filed under a section.
+ * 3. **The ten sections** - one `DocIndex` each: the section name as its `h2`,
+ *    then one card per page in a three-across grid at the wide breakpoint.
+ * 4. **The three closing artifacts** - one `DocAppendix` each: the element badge
+ *    strip, the four backend workers, the twelve live deployments.
+ * 5. **Back to top** - the baseline's last row.
  *
- * The card is the artifact's surface and the band is structure inside it. A
- * band renders `tone="bare"`: no fill, no border, no inset of its own
- * (`System/Record/_Band.scss`), so the card paints the one boundary and owns
- * the one inset, and two sections of the map separate at `--space-group` - the
- * documented distance between two parts of one subject (DESIGN.md §2.3, §3.2,
- * §4.1, §9 Q1). An alternation of `flush` → `paper` → `canvas` down the page
- * was the borrowed surface rhythm (§5 A5) and turned one artifact into a stack
- * of chapters (§7 DR-6).
- *
- * The five custom properties are the ones the page's cards set at HEAD:
- * `--Card` fill, radius 0, inherited type, and an inset the card owns because
- * the bands no longer bring one.
+ * Every card is built in `Function/Doc/BuildDocIndex.ts`; this page maps three
+ * components over three arrays and decides nothing about content. The card grid
+ * is what the baseline showed - `DESIGN.md` §3.2 argues for a row ledger
+ * instead, and the fidelity rule for this programme says the render wins over
+ * the document; the disagreement is recorded in the task report.
  *
  * The sidebar is the collection's own tree, unchanged: same entries, same
- * `group` nesting, same order.
+ * `group` nesting, same order, every section closed until the reader opens it -
+ * which is what the baseline rail did on this page.
  */
 const DocEntries = (await getCollection("doc")).sort(
 	(A, B) => A.data.order - B.data.order,
@@ -56,50 +46,9 @@ const DocEntries = (await getCollection("doc")).sort(
 
 const SidebarSections = BuildDocSidebar(DocEntries);
 
-const Bands = BuildDocIndex(DocEntries, T);
-
-/** The four appendix band ids, as `BuildDocIndex` names them. */
-const AppendixId = new Set([
-	"start-here",
-	"architecture",
-	"backend",
-	"deployments",
-]);
-
-const SectionBands = Bands.filter((Band) => !AppendixId.has(Band.Id));
-
-const AppendixBands = Bands.filter((Band) => AppendixId.has(Band.Id));
+const Index = BuildDocIndex(DocEntries, T);
 
 const PageTitle = T("common.docs.pageTitle", { defaultValue: "Documentation" });
-
-/**
- * The index's metadata strip, in the site's mono record grammar: the five
- * fields `DesignSystem-Pages.md` §5 requires (`STATUS`, `LAYER`, `SOURCE`,
- * `COMPAT`, `UPDATED`) plus the two counts a reader can check against the rows
- * below (`PAGES` is the collection, `SECTIONS` the bands that survived an
- * empty-section drop). `BuildDocStrip` owns the five and their order; U+2001
- * EM QUAD separates every item, as it does on every other record on the site.
- */
-const IndexStrip = BuildDocStrip(
-	{
-		Layer: PageTitle,
-		Source: "DOC COLLECTION",
-		Extras: [
-			{
-				Label: T("strip.pages", { ns: "doc", defaultValue: "PAGES:" }),
-				Value: String(DocEntries.length),
-			},
-			{
-				Label: T("strip.sections", {
-					ns: "doc",
-					defaultValue: "SECTIONS:",
-				}),
-				Value: String(SectionBands.length),
-			},
-		],
-	},
-	T,
-);
 
 const MetaTitle = T("meta.docs.title", {
 	defaultValue: "Documentation | Code Editor Land",
@@ -129,39 +78,32 @@ const BackToTop = T("common.button.backToTop", {
 >
 	<Header client:load Mode="functional" slot="Header" />
 
-	<DocLayout sections={SidebarSections}>
+	<DocLayout sections={SidebarSections} mobile={false}>
 		<DocArticle
-			kicker="/DOCUMENTATION"
 			title={PageTitle}
 			standfirst={PageStandfirst}
-			strip={IndexStrip}
 			crumbs={[{ label: Home, href: "/" }, { label: PageTitle }]}
 			measure={false}
-			banded
 		>
-			<jelly-card
-				class="doc-index-card"
-				style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:var(--space-group);--jelly-card-padding-inline:clamp(1rem,4vw,2.5rem)"
-			>
+			<ul class="doc-features">
 				{
-					SectionBands.map((Band) => (
-						<DocIndex band={Band} />
+					Index.Features.map((Card) => (
+						<DocCard card={Card} level={2} />
 					))
 				}
-			</jelly-card>
+			</ul>
 
-			<div class="doc-appendix">
-				{
-					AppendixBands.map((Band) => (
-						<jelly-card
-							class="doc-appendix__card"
-							style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:var(--space-group);--jelly-card-padding-inline:clamp(1rem,4vw,2.5rem)"
-						>
-							<DocIndex band={Band} />
-						</jelly-card>
-					))
-				}
-			</div>
+			{
+				Index.Sections.map((Section) => (
+					<DocIndex section={Section} />
+				))
+			}
+
+			{
+				Index.Appendices.map((Appendix) => (
+					<DocAppendix appendix={Appendix} />
+				))
+			}
 
 			<p class="doc-index__back">
 				<a href="#top">{BackToTop}<span aria-hidden="true"> ↑</span></a>

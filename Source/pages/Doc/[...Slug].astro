@@ -6,40 +6,31 @@ import DocLayout from "../../Component/Doc/DocLayout.astro";
 import MermaidFallback from "../../Component/Dynamic/MermaidFallback.astro";
 import { Header } from "../../Component/Layout/Header";
 import BuildDocSidebar from "../../Function/Doc/BuildDocSidebar";
-import BuildDocStrip from "../../Function/Doc/BuildDocStrip";
-import BuildDocToc from "../../Function/Doc/BuildDocToc";
 import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
 
 /**
- * One documentation page: the reading shell, then the markdown on a white card.
+ * One documentation page: the reading shell, then the markdown on a white card,
+ * then the pager.
  *
  * `DesignSystem-Pages.md` §5 is the shape: **doc pages read on white cards**.
  * The shell (`DocArticle`) renders the page's single `h1`, the section as its
- * kicker, the frontmatter `description` as the standfirst, an in-page contents
- * list built from this page's own `##` headings, and then the body - which sits
- * on one `jelly-card` surface, the same card the prose carried at HEAD
- * (`bg-card p-6`), now as the design system's own surface rather than a utility
- * class. The five custom properties are the ones that card set: `--Card` fill,
- * radius 0, inherited type, and no padding of its own - the inset belongs to
- * `.doc-prose` in `System/Component/Doc/_Article.scss`, which is also where the
- * 72ch measure lives, so the card's edge and the prose's edge are one decision.
+ * kicker, the frontmatter `description` as the standfirst, and then the body -
+ * which sits on one `jelly-card` surface, the same card the prose carried at
+ * HEAD (`bg-card p-6`), now as the design system's own surface rather than a
+ * utility class. The five custom properties are the ones that card set:
+ * `--Card` fill, radius 0, inherited type, and no padding of its own - the inset
+ * belongs to `.doc-prose` in `System/Component/Doc/_Article.scss`, which is also
+ * where the 72ch measure lives, so the card's edge and the prose's edge are one
+ * decision.
  *
- * **The metadata strip** (§5: "compact index + `STATUS`/`LAYER`/`SOURCE`/
- * `COMPAT`/`UPDATED` mono metadata strip above prose") is placed by the shell,
- * above the card and above the prose. It is built by `BuildDocStrip` from the
- * collection's own fields - the section is the layer, the entry id is the
- * source file, `order` is the position - so every value printed is a fact the
- * build can read. `COMPAT` and `UPDATED` have no field in the `doc` schema
- * (`Source/content.config.ts` declares title, section, order, description,
- * navTitle, group), so they render the grammar's documented empty state,
- * `UNAVAILABLE` (`DesignSystem-Grammar.md` §2), rather than being dropped from
- * a strip the design system fixes at five fields.
- *
- * The contents list is generated, never hand-written: `BuildDocToc` reads the
- * headings `render()` actually emitted, so an anchor can never disagree with its
- * heading. Pages that carry their own `## Table of Contents` get none from here -
- * two contents lists above one document is worse than one.
+ * **What this page does not render, because the baseline did not:** a metadata
+ * strip above the prose, and a contents list of its own. The baseline's only
+ * contents list was the document's own `## Table of Contents`, which the prose
+ * renders in place; a strip of `STATUS` / `LAYER` / `SOURCE` / `COMPAT` /
+ * `UPDATED` never appeared on a documentation article at all. Both were added
+ * by an earlier pass and both are gone, so the page's element sequence is the
+ * reference's: breadcrumb, kicker, `h1`, standfirst, prose, pager.
  *
  * The pager's two links sit on a `jelly-card` each, as at HEAD; the card is the
  * pager's flex item and the anchor fills it (`_Article.scss`).
@@ -53,7 +44,7 @@ export async function getStaticPaths() {
 }
 
 const { Entry } = Astro.props;
-const { Content, headings } = await render(Entry);
+const { Content } = await render(Entry);
 
 const AllEntries = (await getCollection("doc")).sort(
 	(A, B) => A.data.order - B.data.order,
@@ -83,45 +74,6 @@ const T = GetI18n();
 const MetaTitle = `${Entry.data.title} | Code Editor Land`;
 const MetaDescription = Entry.data.description;
 
-const Toc = BuildDocToc(
-	headings,
-	T("article.toc", { ns: "doc", defaultValue: "On this page" }),
-);
-
-/**
- * The page's own provenance, in the mono record grammar: `BuildDocStrip` writes
- * the five fields §5 fixes - published state, the section as the layer, the
- * markdown file that renders here, and `COMPAT`/`UPDATED` at their documented
- * empty state - and the page appends its `order`, the same number the index
- * sorts on, so a reader can place this page in the tree without the rail.
- * `GROUP` prints only when the page declares one. U+2001 EM QUAD separates the
- * items.
- */
-const PageStrip = BuildDocStrip(
-	{
-		Layer: Entry.data.section,
-		Source: `${Entry.id}.md`,
-		Extras: [
-			{
-				Label: T("strip.order", { ns: "doc", defaultValue: "ORDER:" }),
-				Value: String(Entry.data.order),
-			},
-			...(Entry.data.group
-				? [
-						{
-							Label: T("strip.group", {
-								ns: "doc",
-								defaultValue: "GROUP:",
-							}),
-							Value: Entry.data.group,
-						},
-					]
-				: []),
-		],
-	},
-	T,
-);
-
 const Home = T("common.breadcrumb.home", { defaultValue: "Home" });
 const Documentation = T("sidebar.title", {
 	ns: "doc",
@@ -139,11 +91,9 @@ const Documentation = T("sidebar.title", {
 
 	<DocLayout sections={SidebarSections} activeId={Entry.id}>
 		<DocArticle
-			kicker={`/${Entry.data.section.toUpperCase()}`}
+			kicker={Entry.data.section}
 			title={Entry.data.title}
 			standfirst={Entry.data.description}
-			strip={PageStrip}
-			toc={Toc}
 			crumbs={[
 				{ label: Home, href: "/" },
 				{ label: Documentation, href: "/Doc" },

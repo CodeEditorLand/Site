@@ -18,10 +18,7 @@
 // `Contact/Index` pulls in `Breadcrumb`, `Page`, `Hub`, `Form`, `Sale`). The
 // flat lines are components whose surface publishes no loader.
 @use "Dynamic/Hero";
-@use "Dynamic/Architecture";
-@use "Dynamic/Properties";
-@use "Dynamic/Roadmap";
-@use "Dynamic/Platform";
+@use "Home/Index" as HomeRules;
 @use "Download/Page";
 @use "Download/Masthead";
 @use "Download/Requirements";

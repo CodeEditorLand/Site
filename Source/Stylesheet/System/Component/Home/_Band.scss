@@ -1,0 +1,108 @@
+// Band - the homepage's four content bands.
+//
+// Publishes:
+//   .home-band            one band: its rhythm and its inner measure
+//   .home-band__inner     the container every band shares
+//   .home-band__head      the centred opening block
+//   .home-band__kicker    the eyebrow above the heading
+//   .home-band__heading   the band's h2
+//   .home-band__standfirst  the one line under the heading
+//   .home-band__stamp     the mono block that replaces the standfirst
+//   .home-band__stamp-line  one line of that block
+//   .home-band__body      the band's cards
+//
+// The four bands are equal-weight movements, not a hero plus subordinates: they
+// all carry the same block padding and the same heading size, and no band paints
+// a rule between itself and its neighbour. That is the baseline's rhythm and it
+// is why nothing here alternates a surface down the page.
+
+@use "../../Mixin" as *;
+
+.home-band {
+	inline-size: 100%;
+	padding-block: clamp(4rem, 5vw, 5rem);
+}
+
+.home-band__inner {
+	@include band-inner;
+}
+
+.home-band__head {
+	max-inline-size: 42rem;
+	margin-inline: auto;
+	margin-block-end: 2.5rem;
+	text-align: center;
+}
+
+.home-band__kicker {
+	@include mono-meta;
+	@include track(0.25em);
+	margin: 0 0 1rem;
+	font-size: var(--type-meta);
+}
+
+.home-band__heading {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-weight: 400;
+	font-size: clamp(2.25rem, 5vw, 3.25rem);
+	line-height: 1.05;
+	letter-spacing: -0.01em;
+	color: var(--Foreground);
+}
+
+.home-band__standfirst {
+	margin: 0.75rem 0 0;
+	color: var(--MuteForeground);
+}
+
+/* The stamp is the roadmap's opening: a mono block where every other band has a
+   sentence. It keeps the heading's centred measure and reads as telemetry under
+   the claim rather than as prose. */
+.home-band__stamp {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	margin-block-start: 0.75rem;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+	font-weight: 500;
+	color: var(--MuteForeground);
+}
+
+.home-band__stamp-line {
+	display: block;
+}
+
+.home-band__stamp-line + .home-band__stamp-line {
+	opacity: 1;
+}
+
+// The closing strip: the six badges the page stops on.
+//
+// It is not a band - no kicker, no heading, no measure of its own - so it does
+// not use `.home-band`. It is the page's last line, centred on the creme field,
+// and it is the only place on the page where the badges appear.
+.home-close {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 0.75rem;
+	padding-block: 2.5rem;
+	padding-inline: 1rem;
+	color: var(--MuteForeground);
+}
+
+.home-close__dot {
+	display: inline-block;
+	inline-size: 0.375rem;
+	block-size: 0.375rem;
+}
+
+.home-close__action {
+	cursor: pointer;
+}

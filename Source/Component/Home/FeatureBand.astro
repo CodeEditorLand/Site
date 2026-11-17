@@ -1,0 +1,25 @@
+---
+/**
+ * FeatureBand - `#features`: the six element records that carry the claim.
+ *
+ * One grid, three columns from `lg`, two from `md`, one below - the same
+ * distribution the baseline used, so the six cards read as two rows of three
+ * rather than as a stack.
+ */
+import { BandOf, HomeBands } from "../../Content/Home/Band.js";
+import { FeatureCards } from "../../Content/Home/Feature.js";
+import { GetI18n } from "../../Library/I18n/Server";
+
+import Band from "./Band.astro";
+import FeatureCard from "./FeatureCard.astro";
+
+const T = GetI18n();
+
+const Head = BandOf(HomeBands(T), "features");
+---
+
+<Band head={Head}>
+	<div class="home-feature__grid">
+		{FeatureCards.map((Card) => <FeatureCard card={Card} />)}
+	</div>
+</Band>

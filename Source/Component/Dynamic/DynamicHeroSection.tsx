@@ -12,6 +12,19 @@ import { RouteText, StampText } from "../Brand/SemanticLedger.js";
 
 import { cn } from "../UI/Utility";
 
+import {
+	Box,
+	Cpu,
+	Globe,
+	Layers3,
+	Network,
+	Puzzle,
+	Server,
+	Zap,
+} from "lucide-react";
+
+import { StackLabel, StackTiles } from "../../Content/Home/Stack.js";
+
 import { HeroBandDefault } from "./Hero/Data.js";
 
 import type Property from "./Interface/Property/Hero.js";
@@ -352,6 +365,24 @@ const DynamicHeroSection = ({ Content, Band, ClassName }: Property) => {
 								))}
 							</dl>
 
+							{/* 11b. The specimen observation: what was seen. */}
+							<dl className="record-ledger record-ledger--1 hero-band__facts">
+								{Hero.observation.map((Fact) => (
+									<div
+										className="record-ledger__row"
+										key={Fact.key}
+									>
+										<dt className="record-ledger__key">
+											{Fact.key}
+										</dt>
+
+										<dd className="record-ledger__value">
+											{Fact.value}
+										</dd>
+									</div>
+								))}
+							</dl>
+
 							{/* 12. One action, and the routes beside it. */}
 							<div className="hero-band__action">
 								{Action ? (
@@ -407,9 +438,55 @@ const DynamicHeroSection = ({ Content, Band, ClassName }: Property) => {
 					</figcaption>
 				</figure>
 			</div>
+
+			{/* ══ THE TECH-STACK STRIP ═══════════════════════════════════ */}
+			<div className="hero-band__stack">
+				<p className="hero-band__stack-label">{StackLabel}</p>
+
+				<div aria-hidden="true" className="hero-band__stack-grid">
+					{StackTiles.map((Tile) => {
+						const Glyph =
+							StackGlyphs[Tile.Icon as keyof typeof StackGlyphs] ??
+							Cpu;
+
+						return (
+							<div
+								className="hero-band__stack-tile"
+								key={Tile.Name}
+							>
+								<div className="hero-band__stack-inner">
+									<Glyph
+										aria-hidden="true"
+										className="hero-band__stack-icon"
+										size={20}
+										strokeWidth={1.5}
+										style={{ color: Tile.Ink }}
+									/>
+
+									<span className="hero-band__stack-name">
+										{Tile.Name}
+									</span>
+								</div>
+							</div>
+						);
+					})}
+				</div>
+			</div>
 		</section>
 	);
 };
+
+/** The eight tile glyphs, by the name the strip's data carries. */
+const StackGlyphs = {
+	Box,
+	Cpu,
+	Globe,
+	Layers3,
+	Network,
+	Puzzle,
+	Server,
+	Zap,
+} as const;
 
 export { DynamicHeroSection };
 

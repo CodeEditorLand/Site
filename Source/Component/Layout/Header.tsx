@@ -10,7 +10,6 @@ import {
 	HeaderLinkAttributes,
 	HeaderLinkState,
 	HeaderSections,
-	HeaderStatus,
 	HeaderView,
 } from "./Header/Data.js";
 
@@ -164,8 +163,6 @@ const Header = ({ Content, AuthSlot, Mode = "minimal" }: HeaderProps) => {
 					(Action) => Action.Href !== "/Account/SignIn",
 				);
 
-	const Status = T("status.value", { defaultValue: HeaderStatus });
-
 	const ModeClass =
 		Mode === "functional" ? "HeaderFunctional" : "HeaderMinimal";
 
@@ -201,11 +198,25 @@ const Header = ({ Content, AuthSlot, Mode = "minimal" }: HeaderProps) => {
 					className="HeaderToggle"
 					aria-controls="HeaderPanel"
 					aria-expanded={Open}
+					aria-label={T("menu", { defaultValue: "Menu" })}
 					onClick={() => SetOpen(!Open)}
 				>
-					{Open
-						? T("close", { defaultValue: "Close" })
-						: T("menu", { defaultValue: "Menu" })}
+					<svg
+						viewBox="0 0 24 24"
+						width={20}
+						height={20}
+						fill="none"
+						stroke="currentColor"
+						strokeWidth={2}
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						aria-hidden="true"
+						focusable="false"
+					>
+						<path d="M4 5h16" />
+						<path d="M4 12h16" />
+						<path d="M4 19h16" />
+					</svg>
 				</button>
 
 				<div className="HeaderPanel" id="HeaderPanel" data-open={Open}>
@@ -287,10 +298,6 @@ const Header = ({ Content, AuthSlot, Mode = "minimal" }: HeaderProps) => {
 						</div>
 					</div>
 				</div>
-			</div>
-
-			<div className="HeaderStrip">
-				<p className="HeaderStatus">{Status}</p>
 			</div>
 		</header>
 	);

@@ -1,0 +1,157 @@
+// Platform - the three-card download band.
+//
+// Publishes:
+//   .home-platform__grid          three columns from `md`
+//   .home-platform__head          the marker row: index and platform name
+//   .home-platform__index         `# RELEASE_01`
+//   .home-platform__name          the platform's name in its own ink
+//   .home-platform__icon          its glyph
+//   .home-platform__architecture  the architecture line, inside containment
+//   .home-platform__route         `/ CHANNEL : PUBLIC`
+//   .home-platform__ledger        version, size and signing
+//   .home-platform__row           one ledger row
+//   .home-platform__key           its label
+//   .home-platform__value         its value
+//   .home-platform__action        the platform's action row
+//   .home-platform__anchor        the anchor the Jelly button sits in
+//   .home-platform__button        the full-width filled button
+//   .home-platform__status        the closing status row
+//
+// The band is narrower than the bands above it (`max-w-5xl`): three cards of a
+// release record are the page's last content, so they sit at the closing width
+// rather than at the reading width.
+
+@use "../../Mixin" as *;
+
+.home-platform__grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 1.5rem;
+	max-inline-size: 64rem;
+	margin-inline: auto;
+
+	@include bp(768px) {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.home-platform {
+	--jelly-fill: var(--Card);
+}
+
+.home-platform__head {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	padding: 1.25rem;
+	padding-block-end: 0.75rem;
+}
+
+.home-platform__index {
+	@include mono-meta;
+	@include track(0.2em);
+	font-size: var(--type-meta);
+	color: var(--CardForeground);
+	font-weight: 500;
+}
+
+.home-platform__name {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+}
+
+.home-platform__icon {
+	flex-shrink: 0;
+}
+
+.home-platform__architecture,
+.home-platform__route {
+	margin: 0;
+	padding-inline: 1.25rem;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.4;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	color: var(--CardForeground);
+}
+
+.home-platform__architecture {
+	padding-block-end: 0.75rem;
+	border-block-end: 1px solid var(--Border);
+}
+
+.home-platform__route {
+	padding-block: 0.75rem;
+}
+
+.home-platform__ledger {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	padding-inline: 1.25rem;
+	padding-block-end: 0.75rem;
+}
+
+.home-platform__row {
+	display: flex;
+	justify-content: space-between;
+	gap: 0.75rem;
+	padding-block: 0.125rem;
+}
+
+.home-platform__key {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.4;
+	color: var(--CardForeground);
+	opacity: 0.6;
+}
+
+.home-platform__value {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.4;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	font-weight: 500;
+	color: var(--CardForeground);
+}
+
+.home-platform__action {
+	padding-inline: 1.25rem;
+	padding-block-end: 0.75rem;
+}
+
+.home-platform__anchor {
+	display: block;
+	text-decoration: none;
+}
+
+.home-platform__button {
+	inline-size: 100%;
+}
+
+.home-platform__status {
+	display: flex;
+	gap: 0.375rem;
+	margin: 0;
+	padding: 1.25rem;
+	padding-block-start: 0.75rem;
+	border-block-start: 1px solid var(--Border);
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1;
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+	font-weight: 500;
+}

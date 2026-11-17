@@ -1,0 +1,57 @@
+---
+/**
+ * FeatureCard - one of the six records in the features band.
+ *
+ * The card is a record and nothing else: its marker and its engraved seal, its
+ * two containment stamps, its route over the service line, its own name as the
+ * link out to the element's repository, its status, and its four-row ledger.
+ *
+ * The name row is `MOUNTAIN:` with a trailing colon because the baseline printed
+ * it as a label rather than as a title - the element is being addressed, not
+ * introduced - and the arrow is the link's own mark.
+ */
+import { FieldRecordSeal } from "../Brand/FieldRecordSeal";
+import type { FieldRecordElement } from "../Brand/FieldRecordSeal";
+
+import Arrow from "./Arrow.astro";
+import RecordAnatomy from "./RecordAnatomy.astro";
+
+import type { CardRecord } from "../../Content/Home/Type.js";
+
+interface Props {
+	card: CardRecord;
+}
+
+const { card } = Astro.props;
+
+const Seal = card.SealName as FieldRecordElement;
+---
+
+<jelly-card class="home-card home-feature">
+	<article class="home-record">
+		<div class="home-record__head">
+			<span class="home-record__index">{card.Index}</span>
+
+			<span class="home-record__seal" aria-hidden="true">
+				<FieldRecordSeal
+					element={Seal}
+					size={36}
+					className="home-record__figure"
+				/>
+			</span>
+		</div>
+
+		<RecordAnatomy card={card}>
+			<div class="home-record__link-row" slot="after-route">
+				<a
+					class="home-record__link"
+					href={card.Href}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					{card.Title}: <Arrow />
+				</a>
+			</div>
+		</RecordAnatomy>
+	</article>
+</jelly-card>

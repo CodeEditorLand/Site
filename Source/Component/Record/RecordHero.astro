@@ -1,0 +1,178 @@
+---
+/**
+ * RecordHero - the site's signature artifact as one block: the field record
+ * beside its evidence, one hairline between them, and the record's mandatory
+ * blank interval inside the card.
+ *
+ * The composition is the one `DESIGN.md` §3.1 and
+ * `DesignSystem-Components.md` §1 "Two-panel composition rules" describe, and
+ * it had been hand-assembled on every surface that shows it: the 404 renders
+ * it, the homepage rebuilt it inside its own island, and Portal lost it. This
+ * file is the one place it is written, so a surface that wants the artifact
+ * hands over a record instead of rebuilding a grid.
+ *
+ * What it renders, in order:
+ *
+ * 1. **The data card** - `FieldRecordDataCard` frames it, `FieldRecordIndex`
+ *    prints `# LAND_01`, the claim is the artifact's `h1` in the stamp grammar
+ *    (`StampText`), `FieldRecordStatus` prints the state line, and
+ *    `RecordLedger` prints the facts. No part is re-implemented here.
+ * 2. **The blank interval** - `aria-hidden`, 15-25 % of the card's height,
+ *    between the state line and the record's closing block. It is an element
+ *    with a floor rather than a margin, because "delete, don't shrink" is only
+ *    a rule about something that exists.
+ * 3. **The evidence panel** - `FieldRecordEvidence` at the documented ratio,
+ *    or the default slot for composed evidence (a `RecordFigure`, a chart, a
+ *    rendered element).
+ * 4. **The seal** - `FieldRecordSeal`, one per artifact, never two.
+ *
+ * Three things this file does NOT do, and why:
+ *
+ * - **No second evidence component and no second status line.** Both
+ *   primitives exist in `Brand/`; a copy here would drift from the one the
+ *   rest of the site renders.
+ * - **No JavaScript.** Every part is an `.astro` block or a React component
+ *   rendered on the server with no `client:*`, so the artifact ships as HTML
+ *   and CSS. Nothing in it is interactive - the action's motion is the Jelly
+ *   element's own CSS.
+ * - **No page conversion.** The surfaces that consume this block move in their
+ *   own cards, one at a time.
+ *
+ * The claim is the artifact's `h1`: the hero opens a page, so its claim is the
+ * document's level-one heading. A page that already carries an `h1` elsewhere
+ * is not a page with a hero on it.
+ */
+import FieldRecordAction from "../Brand/FieldRecordAction.astro";
+import FieldRecordDataCard from "../Brand/FieldRecordDataCard.astro";
+import FieldRecordIndex from "../Brand/FieldRecordIndex.astro";
+import { FieldRecordEvidence } from "../Brand/FieldRecordEvidence";
+import { FieldRecordSeal } from "../Brand/FieldRecordSeal";
+import { FieldRecordStatus } from "../Brand/FieldRecordStatus";
+import { StampText } from "../Brand/SemanticLedger";
+
+import RecordLedger from "./RecordLedger.astro";
+
+import type { Hero } from "./Type.js";
+
+type Props = Hero & {
+	/** Extra classes from the page, appended after the block's own. */
+	readonly class?: string;
+};
+
+const {
+	index,
+	claim,
+	status,
+	metadata,
+	evidence,
+	seal,
+	action,
+	class: Class,
+} = Astro.props;
+
+/**
+ * The marker without its `#`. `FieldRecordIndex` owns the glyph and prints it
+ * itself, so a page that writes `"# LAND_01"` and a page that writes
+ * `"LAND_01"` render the same marker.
+ */
+const Marker = index.replace(/^#\s*/, "");
+
+/**
+ * Composed evidence: a figure, a chart, a rendered element, instead of an
+ * image. The image wins when a page passes both - one artifact shows one
+ * thing.
+ */
+const Composed = Astro.slots.has("default");
+
+/**
+ * Whether the artifact has an evidence panel at all. Neither an image nor
+ * composed children means the record stands alone at the full width, rather
+ * than leaving a gap where a picture would be.
+ */
+const HasEvidence = evidence !== undefined || Composed;
+
+/**
+ * The seal's box, in pixels. The hero's seal is the artifact's own mark, so
+ * its size is the artifact's geometry rather than a page's choice.
+ */
+const SEAL = 48;
+---
+
+<section class:list={["record-hero", Class]}>
+	<div
+		class:list={[
+			"record-hero__pair",
+			HasEvidence ? null : "record-hero__pair--single",
+		]}
+	>
+		<div class="record-hero__record">
+			<FieldRecordDataCard className="record-hero__card">
+				<div class="record-hero__inset">
+					<div class="record-hero__mark">
+						<FieldRecordIndex index={Marker} />
+						{
+							seal && (
+								<FieldRecordSeal
+									element={seal}
+									size={SEAL}
+									className="record-hero__seal"
+								/>
+							)
+						}
+					</div>
+
+					<h1 class="type-display record-hero__claim">
+						<StampText Line={claim} />
+					</h1>
+
+					<div class="record-hero__status">
+						<FieldRecordStatus
+							status={status.state}
+							tone={status.tone}
+							copy={status.copy}
+						/>
+					</div>
+
+					<div class="record-hero__blank" aria-hidden="true"></div>
+
+					<RecordLedger rows={metadata} class="record-hero__facts" />
+
+					{
+						action && (
+							<div class="record-hero__action">
+								<FieldRecordAction
+									label={action.label}
+									href={action.href}
+									variant={action.variant ?? "button"}
+								/>
+							</div>
+						)
+					}
+				</div>
+			</FieldRecordDataCard>
+		</div>
+
+		{
+			HasEvidence && (
+				<div class="record-hero__gutter" aria-hidden="true" />
+			)
+		}
+
+		{
+			HasEvidence && (
+				<div class="record-hero__evidence">
+					{evidence ? (
+						<FieldRecordEvidence
+							src={evidence.src}
+							alt={evidence.alt}
+							position={evidence.position}
+							className="record-hero__plate"
+						/>
+					) : (
+						<slot />
+					)}
+				</div>
+			)
+		}
+	</div>
+</section>

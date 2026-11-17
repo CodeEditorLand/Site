@@ -1,0 +1,119 @@
+---
+/**
+ * ElementCard - one of the fifteen element records in the architecture band.
+ *
+ * The card is the features card plus the three things an element record carries
+ * and a feature record does not: its name row (the element's own name, its glyph
+ * and the mark that says the name leaves the page), its role chips, and the
+ * paragraph that says what it does.
+ *
+ * `span` is the card's width in the twelve-column masonry. It is a custom
+ * property rather than a class because the five widths the baseline uses are
+ * values, not styles - the band sets the span per card and the stylesheet reads
+ * it, so adding a width needs no new rule.
+ *
+ * The one element the record set draws as a symbol instead of an engraved seal
+ * prints `◎` in the same 36px box, so the band's markers line up whether or not
+ * the element has a figure.
+ */
+import { FieldRecordSeal } from "../Brand/FieldRecordSeal";
+import type { FieldRecordElement } from "../Brand/FieldRecordSeal";
+
+import Arrow from "./Arrow.astro";
+import RecordAnatomy from "./RecordAnatomy.astro";
+
+import type { ElementCard as ElementCardData } from "../../Content/Home/Type.js";
+
+interface Props {
+	card: ElementCardData;
+}
+
+const { card } = Astro.props;
+
+const Seal = card.SealName as FieldRecordElement;
+
+const Href = card.Source ?? card.Href;
+---
+
+<jelly-card
+	class="home-card home-element"
+	style={`--masonry-col:${card.Span}`}
+>
+	<article class="home-record">
+		<div class="home-record__head">
+			<span class="home-record__index">{card.Index}</span>
+
+			<span class="home-record__seal" aria-hidden="true">
+				{
+					card.Seal === "symbol" ? (
+						<span class="home-record__symbol">{card.Symbol}</span>
+					) : (
+						<FieldRecordSeal
+							element={Seal}
+							size={36}
+							className="home-record__figure"
+						/>
+					)
+				}
+			</span>
+		</div>
+
+		<div class="home-record__name-row">
+			<span class="home-record__name">
+				{
+					Href === undefined ? (
+						card.Title
+					) : (
+						<a
+							class="home-record__name-link"
+							href={Href}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							{card.Title}
+						</a>
+					)
+				}
+			</span>
+
+			<span class="home-record__glyph" aria-hidden="true">
+				{card.Glyph}
+			</span>
+
+			{
+				Href !== undefined && (
+					<a
+						class="home-record__source"
+						href={Href}
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label={`Open ${card.Title} source`}
+					>
+						<Arrow />
+					</a>
+				)
+			}
+		</div>
+
+		{
+			card.Chips.length > 0 && (
+				<ul class="home-record__chips">
+					{card.Chips.map((Chip) => (
+						<li class="home-record__chip">
+							<jelly-badge
+								shape="square"
+								style="--jelly-fill:var(--OSMacOSMute);--jelly-label:var(--CardForeground);--jelly-badge-radius:0;--jelly-badge-font-size:14px"
+							>
+								{Chip}
+							</jelly-badge>
+						</li>
+					))}
+				</ul>
+			)
+		}
+
+		<RecordAnatomy card={card}>
+			<p class="home-record__body">{card.Body}</p>
+		</RecordAnatomy>
+	</article>
+</jelly-card>

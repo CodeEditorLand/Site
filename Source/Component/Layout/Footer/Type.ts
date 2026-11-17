@@ -24,9 +24,6 @@ export interface FooterContent {
 	/** SOURCE, LICENSE, MAINTAINED BY, SUPPORT, STATUS - the record's facts. */
 	readonly Ledger: readonly LedgerRow[];
 
-	/** The destinations the linked facts come from. */
-	readonly Sources: readonly FooterLink[];
-
 	/** /DOCS, /DOWNLOAD, /GITHUB, /CONTACT, /BLOG. */
 	readonly Quick: readonly FooterLink[];
 

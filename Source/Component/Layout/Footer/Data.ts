@@ -40,6 +40,14 @@ export const FooterData = (T: FooterTranslate): FooterContent => ({
 		{
 			key: T("footer:record.license.key", { defaultValue: "LICENSE" }),
 			value: T("footer:record.license.value", { defaultValue: "CC0" }),
+			links: [
+				{
+					text: T("footer:record.license.value", {
+						defaultValue: "CC0",
+					}),
+					href: "/License",
+				},
+			],
 		},
 
 		{
@@ -49,15 +57,41 @@ export const FooterData = (T: FooterTranslate): FooterContent => ({
 			value: T("footer:record.maintained.value", {
 				defaultValue: "PLAYFORM",
 			}),
+			links: [
+				{
+					text: T("footer:record.maintained.value", {
+						defaultValue: "PLAYFORM",
+					}),
+					href: "https://PlayForm.Cloud",
+					target: "blank",
+				},
+			],
 		},
 
 		{
 			key: T("footer:record.support.key", { defaultValue: "SUPPORT" }),
-			// U+2001 em quad: the only separator the grammar allows between two
-			// values in one compact label (`DesignSystem-Grammar.md` §3).
+			// Two funders under one key: the row's value is the pair as it is
+			// read, and the two destinations are the two links the baseline
+			// printed either side of the separator.
 			value: `${T("footer:record.support.nlnet", {
 				defaultValue: "NLNET",
-			})}\u2001${T("footer:record.support.ngi", { defaultValue: "NGI0" })}`,
+			})} / ${T("footer:record.support.ngi", { defaultValue: "NGI0" })}`,
+			links: [
+				{
+					text: T("footer:record.support.nlnet", {
+						defaultValue: "NLNET",
+					}),
+					href: "https://nlnet.nl",
+					target: "blank",
+				},
+				{
+					text: T("footer:record.support.ngi", {
+						defaultValue: "NGI0",
+					}),
+					href: "https://nlnet.nl/commonsfund",
+					target: "blank",
+				},
+			],
 		},
 
 		{
@@ -66,31 +100,6 @@ export const FooterData = (T: FooterTranslate): FooterContent => ({
 				defaultValue: "PUBLIC SOURCE",
 			}),
 		},
-	],
-
-	// The ledger prints the linked facts as text (`LedgerRow.value` is a string),
-	// so the destinations the reader had before are kept here, in the /LABEL form
-	// the footer already uses for its quick links.
-	Sources: [
-		{
-			Label: T("footer:record.license.key", { defaultValue: "LICENSE" }),
-			Href: "/License",
-		},
-
-		Offsite(
-			T("footer:record.maintained.value", { defaultValue: "PLAYFORM" }),
-			"https://PlayForm.Cloud",
-		),
-
-		Offsite(
-			T("footer:record.support.nlnet", { defaultValue: "NLNET" }),
-			"https://nlnet.nl",
-		),
-
-		Offsite(
-			T("footer:record.support.ngi", { defaultValue: "NGI0" }),
-			"https://nlnet.nl/commonsfund",
-		),
 	],
 
 	Quick: [

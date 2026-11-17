@@ -1,0 +1,25 @@
+---
+/**
+ * PlatformBand - `#download`: the three platform records, side by side.
+ *
+ * Three columns from `md` and one below, on the narrower `max-w-5xl` measure the
+ * baseline gave this band: the three cards are the page's last content, so they
+ * sit at the closing width rather than at the reading width the bands above use.
+ */
+import { BandOf, HomeBands } from "../../Content/Home/Band.js";
+import { PlatformCards } from "../../Content/Home/Platform.js";
+import { GetI18n } from "../../Library/I18n/Server";
+
+import Band from "./Band.astro";
+import PlatformCard from "./PlatformCard.astro";
+
+const T = GetI18n();
+
+const Head = BandOf(HomeBands(T), "download");
+---
+
+<Band head={Head}>
+	<div class="home-platform__grid">
+		{PlatformCards.map((Card) => <PlatformCard card={Card} />)}
+	</div>
+</Band>

@@ -1,0 +1,55 @@
+---
+/**
+ * DocCard - one card of the documentation index: a title, the page's
+ * `description` under it, and the whole card as the way in.
+ *
+ * The baseline rendered each entry as a `jelly-card` carrying a click handler,
+ * a `tabindex` and an inline `onclick="location.href=..."`. The card is the
+ * same card; what changed is that the destination is an anchor now, so the
+ * entry is reachable from the keyboard, opens in a new tab with the platform's
+ * own gesture, and needs no script. That is an implementation difference on the
+ * same render, which is what this programme allows.
+ *
+ * `level` is the one thing a caller decides:
+ *
+ * - `3` - a page inside a section (`<h3>`), the section's `h2` above it.
+ * - `2` - one of the three ways in, which has no section above it, so the card's
+ *   own title is the level-two heading.
+ *
+ * No script and no hydration directive: the card is static.
+ */
+import type { DocLink } from "./Type.js";
+
+interface Props {
+	/** The card's content. */
+	card: DocLink;
+
+	/** The card's heading level: `2` above the sections, `3` inside one. */
+	level?: 2 | 3;
+}
+
+const { card, level = 3 } = Astro.props;
+---
+
+<li class:list={["doc-card", level === 2 ? "doc-card--feature" : null]}>
+	<jelly-card
+		class="doc-card__surface"
+		style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
+	>
+		<a
+			class="doc-card__link"
+			href={card.Href}
+			target={card.Blank ? "_blank" : undefined}
+			rel={card.Blank ? "noopener noreferrer" : undefined}
+		>
+			{
+				level === 2 ? (
+					<h2 class="doc-card__title">{card.Label}</h2>
+				) : (
+					<h3 class="doc-card__title">{card.Label}</h3>
+				)
+			}
+			{card.Note ? <p class="doc-card__note">{card.Note}</p> : null}
+		</a>
+	</jelly-card>
+</li>

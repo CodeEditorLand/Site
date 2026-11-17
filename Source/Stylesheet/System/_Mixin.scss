@@ -61,3 +61,128 @@
 	grid-template-columns: repeat(12, 1fr);
 	gap: var(--space-group);
 }
+
+// ─── MOTION ───────────────────────────────────────────────────────────────
+//
+// One mixin per relationship `DesignSystem-Motion.md` names. Each writes the
+// *interval only*: the state it animates is declared by the caller,
+// unconditionally, which is what makes reduced motion keep the end state and
+// lose nothing but the interval. The tokens are `System/_Motion.scss`.
+//
+// The two branches are repeated in all six instead of being factored into one
+// helper, on purpose: a mixin that carries the reduced-motion contract by
+// include is not auditable where it is used, and this is the contract the whole
+// layer is judged on. Six four-line copies are cheaper than one branch nobody
+// can see.
+//
+// `transform` and `opacity` are the only properties named. `motion-trace` is
+// transform-only because the line it draws is already at its full width and
+// only its scale changes; `motion-resolve` leads with opacity because a state
+// resolving is one printed thing giving way to another.
+
+/// motion-enter - the arrival of an affordance: hover, keyboard focus, or the
+/// reveal of a control the reader can use. `$duration` and `$easing` are
+/// arguments because the same relationship runs on two token pairs - the pull
+/// toward the reader, and the return - and a name that hid which one it was
+/// would make every caller guess.
+@mixin motion-enter(
+	$duration: var(--motion-enter-duration),
+	$easing: var(--motion-enter-easing)
+) {
+	@media (prefers-reduced-motion: no-preference) {
+		transition-property: transform, opacity;
+		transition-duration: $duration;
+		transition-timing-function: $easing;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
+}
+
+/// motion-press - input registration: the press that says the action was taken.
+@mixin motion-press(
+	$duration: var(--motion-press-duration),
+	$easing: var(--motion-press-easing)
+) {
+	@media (prefers-reduced-motion: no-preference) {
+		transition-property: transform;
+		transition-duration: $duration;
+		transition-timing-function: $easing;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
+}
+
+/// motion-trace - a hairline drawn across the thing it belongs to. The line is
+/// at its full width in both states, so only `transform` moves and the row it
+/// sits under cannot reflow.
+@mixin motion-trace(
+	$duration: var(--motion-trace-duration),
+	$easing: var(--motion-trace-easing)
+) {
+	@media (prefers-reduced-motion: no-preference) {
+		transition-property: transform;
+		transition-duration: $duration;
+		transition-timing-function: $easing;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
+}
+
+/// motion-settle - the return to rest, and completion itself: the second leg of
+/// every two-leg relationship, and the one interval a finished thing is allowed.
+@mixin motion-settle(
+	$duration: var(--motion-settle-duration),
+	$easing: var(--motion-settle-easing)
+) {
+	@media (prefers-reduced-motion: no-preference) {
+		transition-property: transform, opacity;
+		transition-duration: $duration;
+		transition-timing-function: $easing;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
+}
+
+/// motion-resolve - one printed state giving way to another. Opacity leads: the
+/// outgoing word fades before the incoming one is at full ink, so two states are
+/// never both fully legible in the same place.
+@mixin motion-resolve(
+	$duration: var(--motion-resolve-duration),
+	$easing: var(--motion-resolve-easing)
+) {
+	@media (prefers-reduced-motion: no-preference) {
+		transition-property: opacity, transform;
+		transition-duration: $duration;
+		transition-timing-function: $easing;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
+}
+
+/// motion-interrupt - the refused action: "a short interrupted offset - NOT a
+/// playful shake". Transform-only, because an interruption moves the thing away
+/// from where the reader aimed and puts it back; it never changes its shape.
+@mixin motion-interrupt(
+	$duration: var(--motion-interrupt-duration),
+	$easing: var(--motion-interrupt-easing)
+) {
+	@media (prefers-reduced-motion: no-preference) {
+		transition-property: transform;
+		transition-duration: $duration;
+		transition-timing-function: $easing;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
+}

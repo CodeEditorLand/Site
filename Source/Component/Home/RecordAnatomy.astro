@@ -1,0 +1,73 @@
+---
+/**
+ * RecordAnatomy - the middle of every record card on the homepage.
+ *
+ * The grammar, in the order the grammar prints it: the two containment stamps,
+ * the route over its service line, the status, and the four-row ledger. Both
+ * card families on the page - the six feature records and the fifteen element
+ * records - print exactly these, so they are one block rather than two copies
+ * that can drift apart.
+ *
+ * Two slots exist because the two families bracket that middle differently: the
+ * feature card prints the element's own link between its route and its status,
+ * and the element card prints its description after the ledger. Both are the
+ * caller's content, so the block does not grow a prop per difference.
+ *
+ * The brackets are `aria-hidden`: `〈 NATIVE BACKEND 〉` is read as "native
+ * backend" - the containment is drawn, not spoken.
+ */
+import type { CardRecord } from "../../Content/Home/Type.js";
+
+interface Props {
+	card: CardRecord;
+}
+
+const { card } = Astro.props;
+---
+
+{
+	card.Stamp.length > 0 && (
+		<div class="home-record__stamps">
+			{card.Stamp.map((Line) => (
+				<p class="home-record__stamp">
+					<span class="home-record__bracket" aria-hidden="true">
+						〈
+					</span>
+					<span class="home-record__stamp-text">{Line}</span>
+					<span class="home-record__bracket" aria-hidden="true">
+						〉
+					</span>
+				</p>
+			))}
+		</div>
+	)
+}
+
+<div class="home-record__route">
+	<p class="home-record__route-line">
+		<span class="home-record__slash" aria-hidden="true">/</span>
+		<span class="home-record__route-key">{card.Route.Key}</span>
+		<span class="home-record__route-value">:{card.Route.Value}</span>
+	</p>
+	<p class="home-record__service">{card.Service}</p>
+</div>
+
+<slot name="after-route" />
+
+<div class="home-record__status">
+	<span class="home-record__status-key">{card.Status.Label}:</span>
+	<span class="home-record__status-value">{card.Status.Value}</span>
+</div>
+
+<dl class="home-record__meta">
+	{
+		card.Metadata.map((Row) => (
+			<div class="home-record__row">
+				<dt class="home-record__key">{Row.Label}:</dt>
+				<dd class="home-record__value">{Row.Value}</dd>
+			</div>
+		))
+	}
+</dl>
+
+<slot />

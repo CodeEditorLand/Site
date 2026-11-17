@@ -1,0 +1,174 @@
+// Release - the two-card roadmap band.
+//
+// Publishes:
+//   .home-release__grid           two columns from `md`
+//   .home-release__head           the stamped header, divided from the body
+//   .home-release__stamp          the mono stamp block
+//   .home-release__index          `# RELEASE_01`
+//   .home-release__stamp-line     one stamped line
+//   .home-release__action         the release's own action row
+//   .home-release__anchor         the anchor the Jelly button sits in
+//   .home-release__button         the full-width filled button
+//   .home-release__title          the release's name
+//   .home-release__body           the two labelled lists
+//   .home-release__section        `Elements`, `Manifest`
+//   .home-release__list           the six element rows
+//   .home-release__item           one element row
+//   .home-release__element        the element's name badge, as a link
+//   .home-release__role           the element's role line
+//   .home-release__line           the replaces / uses line
+//   .home-release__manifest       the six manifest rows
+//   .home-release__manifest-row   one manifest row
+//
+// The card is a record with a body, so its two halves are divided by the one
+// hairline the header draws under itself - the same division the record grammar
+// uses between a record's stamp and its ledger.
+
+@use "../../Mixin" as *;
+
+.home-release__grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 3rem;
+	max-inline-size: 72rem;
+	margin-inline: auto;
+
+	@include bp(768px) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.home-release {
+	--jelly-fill: var(--Card);
+}
+
+.home-release__head {
+	padding-block-end: 1.5rem;
+	padding-inline: 2rem;
+	border-block-end: 1px solid
+		color-mix(in srgb, var(--CardForeground) 8%, transparent);
+}
+
+.home-release__stamp {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	margin-block-end: 1rem;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.3;
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+	font-weight: 500;
+	color: var(--CardForeground);
+}
+
+.home-release__index {
+	display: block;
+}
+
+.home-release__stamp-line {
+	display: block;
+	opacity: 0.7;
+}
+
+.home-release__action {
+	margin-block-end: 1rem;
+}
+
+.home-release__anchor {
+	display: block;
+	text-decoration: none;
+}
+
+.home-release__button {
+	inline-size: 100%;
+}
+
+.home-release__title {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: 1.125rem;
+	font-weight: 500;
+	color: var(--CardForeground);
+}
+
+.home-release__body {
+	display: flex;
+	flex-direction: column;
+	padding-block-start: 1.5rem;
+	padding-inline: 2rem;
+}
+
+.home-release__section {
+	margin: 0 0 0.75rem;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.3;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	font-weight: 500;
+	color: var(--CardForeground);
+	opacity: 0.7;
+}
+
+.home-release__list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.home-release__item {
+	display: flex;
+	flex-direction: column;
+	gap: 0.125rem;
+}
+
+.home-release__element {
+	align-self: flex-start;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	font-weight: 500;
+	text-decoration: none;
+}
+
+.home-release__element:hover {
+	text-decoration: underline;
+}
+
+.home-release__role {
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.3;
+	color: var(--CardForeground);
+}
+
+.home-release__line {
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.4;
+	color: var(--CardForeground);
+	opacity: 0.5;
+}
+
+.home-release__manifest {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.home-release__manifest-row {
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.3;
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+	font-weight: 500;
+	color: var(--CardForeground);
+}

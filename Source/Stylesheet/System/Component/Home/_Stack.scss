@@ -1,0 +1,88 @@
+// Stack - the hero's tech-stack strip.
+//
+// Publishes:
+//   .hero-band__stack        the strip under the two panels
+//   .hero-band__stack-label  `TECH STACK`
+//   .hero-band__stack-grid   two to four columns of tiles
+//   .hero-band__stack-tile   one bordered creme chip
+//   .hero-band__stack-inner  its icon and its name
+//   .hero-band__stack-icon   the tile's glyph, in the tile's own ink
+//   .hero-band__stack-name   the technology's name
+//
+// The strip sits inside `#hero` and after the pair, at the narrower `max-w-5xl`
+// measure: it is a caption under the artifact, not a second band, so it does not
+// get the band rhythm. It is `aria-hidden` in the markup - eight technology names
+// under a hero are decoration for a reader who is being shown what the thing is
+// made of, and every one of the eight is named again, in a record, further down.
+//
+// The tile is the one place on the homepage with a hover state: it is the only
+// element in the strip that a pointer can find, and the border is the whole of
+// the response - no fill, no shadow, no movement.
+
+@use "../../Mixin" as *;
+
+.hero-band__stack {
+	max-inline-size: 64rem;
+	margin-inline: auto;
+	margin-block-start: 5rem;
+	padding-block-end: 5rem;
+	padding-inline: var(--Gutter);
+}
+
+.hero-band__stack-label {
+	@include mono-meta;
+	@include track(0.25em);
+	margin: 0 0 0.75rem;
+}
+
+.hero-band__stack-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.75rem;
+
+	@include bp(640px) {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	@include bp(1024px) {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+.hero-band__stack-tile {
+	display: flex;
+	align-items: center;
+	block-size: 100%;
+	padding: 1rem;
+	background: var(--Background);
+	border: 1px solid var(--Border);
+	transition: border-color 160ms ease;
+}
+
+.hero-band__stack-tile:hover {
+	border-color: var(--Accent);
+}
+
+.hero-band__stack-inner {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	min-inline-size: 0;
+}
+
+.hero-band__stack-icon {
+	flex-shrink: 0;
+	inline-size: 1.25rem;
+	block-size: 1.25rem;
+}
+
+.hero-band__stack-name {
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--Foreground);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}

@@ -42,7 +42,7 @@
 // reader, and a second copy of the number is how the offset drifts.
 :root {
 	--HeaderBar: 3.5rem;
-	--HeaderStrip: 1.75rem;
+	--HeaderStrip: 0rem;
 	--HeaderGlyph: 1.75rem;
 	--HeaderHeight: calc(var(--HeaderBar) + var(--HeaderStrip));
 }
@@ -254,39 +254,6 @@ html {
 	inline-size: 100%;
 	justify-content: flex-start;
 	color: var(--HeaderFg);
-}
-
-// ─── The status strip ─────────────────────────────────────────────────────
-// One line, on every page, in the meta role: the accent square marks it as a
-// live status rather than a sentence.
-
-.HeaderStrip {
-	@include band-inner;
-	display: flex;
-	align-items: center;
-	min-block-size: var(--HeaderStrip);
-
-	@include hairline(top);
-}
-
-.HeaderStatus {
-	@include mono-meta;
-	@include track(0.08em);
-	display: flex;
-	align-items: center;
-	gap: var(--space-tight);
-	margin: 0;
-	color: var(--HeaderMuted);
-	white-space: nowrap;
-	overflow: hidden;
-}
-
-.HeaderStatus::before {
-	content: "";
-	flex: none;
-	inline-size: var(--space-tight);
-	block-size: var(--space-tight);
-	background: var(--Accent);
 }
 
 // ─── The bar at 1024px and up ─────────────────────────────────────────────

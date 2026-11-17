@@ -1,0 +1,124 @@
+---
+/**
+ * DocAppendix - one of the three artifacts that close the documentation index.
+ *
+ * They share a shape - an `h2`, then one panel holding a sentence and a set of
+ * destinations - and differ only in how the destinations print. The baseline
+ * rendered three different bodies, so this file has three branches and switches
+ * on `appendix.Kind` rather than on the heading:
+ *
+ * - **`architecture`** - the fifteen elements as a badge strip, then one link
+ *   out to the organisation. Each badge is an anchor, so the element a reader
+ *   taps is the element that opens.
+ * - **`backend`** - four workers, each a link and its own sentence. The sentence
+ *   is printed with the `-` the baseline printed in front of it, because that
+ *   hyphen is part of the row: the link names the service and the dash opens its
+ *   description.
+ * - **`deployments`** - twelve destinations as a two-column tile grid, each tile
+ *   a name, its arrow and one line of context.
+ *
+ * Every string is `appendix.Rows` (or `appendix.Index` for the badges) - this
+ * file prints data, it does not carry copy.
+ *
+ * No script and no hydration directive: the appendices are static.
+ */
+import type { DocAppendix } from "./Type.js";
+
+interface Props {
+	/** The artifact to render. */
+	appendix: DocAppendix;
+}
+
+const { appendix } = Astro.props;
+
+const Panel = appendix.Kind;
+---
+
+<section class="doc-appendix">
+	<h2 class="doc-section__heading">{appendix.Heading}</h2>
+	<div class="doc-appendix__panel">
+		<p class="doc-appendix__lede">{appendix.Lede}</p>
+
+		{
+			Panel === "architecture" ? (
+				<ul class="doc-badges">
+					{(appendix.Index ?? []).map((Entry) => (
+						<li class="doc-badges__item">
+							<a class="doc-badge" href={Entry.href}>
+								{Entry.label}
+							</a>
+						</li>
+					))}
+				</ul>
+			) : null
+		}
+
+		{
+			Panel === "backend" ? (
+				<ul class="doc-services">
+					{appendix.Rows.map((Row) => (
+						<li class="doc-services__item">
+							<a
+								class="doc-services__link"
+								href={Row.Href}
+								target={Row.Blank ? "_blank" : undefined}
+								rel={Row.Blank ? "noopener noreferrer" : undefined}
+							>
+								{Row.Label}
+								<span class="doc-appendix__arrow" aria-hidden="true">
+									↗
+								</span>
+							</a>{" "}
+							<span class="doc-services__note">- {Row.Note}</span>
+						</li>
+					))}
+				</ul>
+			) : null
+		}
+
+		{
+			Panel === "deployments" ? (
+				<ul class="doc-tiles">
+					{appendix.Rows.map((Row) => (
+						<li class="doc-tiles__item">
+							<a
+								class="doc-tile"
+								href={Row.Href}
+								target={Row.Blank ? "_blank" : undefined}
+								rel={Row.Blank ? "noopener noreferrer" : undefined}
+							>
+								<span class="doc-tile__label">
+									{Row.Label}
+									<span class="doc-appendix__arrow" aria-hidden="true">
+										↗
+									</span>
+								</span>
+								{Row.Note ? <span class="doc-tile__note">{Row.Note}</span> : null}
+							</a>
+						</li>
+					))}
+				</ul>
+			) : null
+		}
+
+		{
+			Panel === "architecture" ? (
+				<div class="doc-appendix__foot">
+					{appendix.Rows.map((Row) => (
+						<a
+							class="doc-appendix__link"
+							href={Row.Href}
+							target={Row.Blank ? "_blank" : undefined}
+							rel={Row.Blank ? "noopener noreferrer" : undefined}
+						>
+							{Row.Label}
+							<span class="doc-appendix__arrow" aria-hidden="true">
+								↗
+							</span>
+						</a>
+					))}
+				</div>
+			) : null
+		}
+	</div>
+</section>

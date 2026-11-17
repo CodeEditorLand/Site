@@ -1,0 +1,120 @@
+---
+/**
+ * ReleaseCard - one of the two release records in the roadmap band.
+ *
+ * The card is a record with a body: a mono stamp under its marker, its action,
+ * its title, and then the two labelled lists the release is read through.
+ *
+ * `Elements` is one row per element the release carries - its name as a badge
+ * that opens the element's documentation page, its role, and the line that says
+ * what it replaces or which technology it uses, with that technology lifted into
+ * a badge of its own. `Manifest` is six `KEY: VALUE` rows and prints as six.
+ *
+ * The action is a Jelly button inside its own anchor, the same two-body shape
+ * every record action on the site uses: the element is the control, the anchor
+ * is the destination, and a reader without JavaScript still follows the link.
+ */
+import type { ReleaseCard as ReleaseCardData } from "../../Content/Home/Type.js";
+
+interface Props {
+	card: ReleaseCardData;
+}
+
+const { card } = Astro.props;
+---
+
+<jelly-card class="home-card home-release">
+	<div class="home-release__head">
+		<div class="home-release__stamp">
+			<span class="home-release__index">{card.Index}</span>
+
+			{
+				card.Stamp.map((Line) => (
+					<span class="home-release__stamp-line">
+						{Line.map((Span) => (
+							<span
+								style={
+									Span.Ink === undefined
+										? undefined
+										: `color:${Span.Ink}`
+								}
+							>
+								{Span.Text}
+							</span>
+						))}
+					</span>
+				))
+			}
+		</div>
+
+		<div class="home-release__action">
+			<a
+				class="home-release__anchor"
+				href={card.Action.Href}
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<jelly-button block class="home-release__button">
+					{card.Action.Label}
+				</jelly-button>
+			</a>
+		</div>
+
+		<h3 class="home-release__title">{card.Title}</h3>
+	</div>
+
+	<div class="home-release__body">
+		<p class="home-release__section">Elements</p>
+
+		<ul class="home-release__list">
+			{
+				card.Elements.map((Element) => (
+					<li class="home-release__item">
+						<a
+							class="home-release__element"
+							href={Element.Href}
+							style={`color:${Element.Ink}`}
+						>
+							<jelly-badge
+								shape="square"
+								style="--jelly-fill:var(--SpineIPCMute);--jelly-label:currentColor;--jelly-badge-radius:0px;--jelly-badge-font-size:0.78em"
+							>
+								{Element.Name}
+							</jelly-badge>
+						</a>
+
+						<span class="home-release__role">{Element.Role}</span>
+
+						<span class="home-release__line">
+							{Element.Before}
+							{Element.Badge && (
+								<Fragment>
+									{" "}
+									<jelly-badge
+										shape="square"
+										style="--jelly-fill:var(--SpineIPCMute);--jelly-label:currentColor;--jelly-badge-radius:0px;--jelly-badge-font-size:0.78em"
+									>
+										{Element.Badge}
+									</jelly-badge>{" "}
+								</Fragment>
+							)}
+							{Element.After}
+						</span>
+					</li>
+				))
+			}
+		</ul>
+
+		<p class="home-release__section">Manifest</p>
+
+		<ul class="home-release__manifest">
+			{
+				card.Manifest.map((Line) => (
+					<li class="home-release__manifest-row">
+						<span>{Line}</span>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</jelly-card>

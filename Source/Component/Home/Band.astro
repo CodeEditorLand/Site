@@ -1,0 +1,73 @@
+---
+/**
+ * Band - one page band's shell: its id, its opening block, and the body below.
+ *
+ * The shell exists so no band re-invents its own gutters, its own heading level
+ * or its own kicker: every band on the homepage opens the same way, and the
+ * heading is an `h2` in every one of them because the baseline's page title is
+ * the hero's own record, not a heading.
+ *
+ * The stamp slot is for the bands whose opening carries a mono block instead of
+ * a standfirst (the roadmap prints `FUNDING:` and `PHASE:` there). A band has one
+ * or the other, never both, which is why they are two branches of one decision.
+ */
+import type { BandHead } from "../../Content/Home/Type.js";
+
+interface Props {
+	/** The band's own data, from `Content/Home/Band.ts`. */
+	head: BandHead;
+}
+
+const { head } = Astro.props;
+
+/** The one heading id the band's `aria-labelledby` points at. */
+const HeadingID = `${head.ID}Heading`;
+---
+
+<section id={head.ID} aria-labelledby={HeadingID} class="home-band">
+	<div class="home-band__inner">
+		<div class="home-band__head">
+			<p class="home-band__kicker">{head.Kicker}</p>
+
+			<h2 class="home-band__heading" id={HeadingID}>{head.Heading}</h2>
+
+			{
+				head.Standfirst && (
+					<p class="home-band__standfirst">{head.Standfirst}</p>
+				)
+			}
+
+			{
+				head.Stamp && (
+					<div class="home-band__stamp">
+						{head.Stamp.map((Line) => (
+							<span class="home-band__stamp-line">
+								{Line.Label && <Fragment>{Line.Label}: </Fragment>}
+								{Line.Terms
+									? Line.Terms.map((Term, Index) => (
+											<Fragment>
+												{Index > 0 && " / "}
+												<span
+													style={
+														Term.Ink === undefined
+															? undefined
+															: `color:${Term.Ink}`
+													}
+												>
+													{Term.Text}
+												</span>
+											</Fragment>
+										))
+									: Line.Text}
+							</span>
+						))}
+					</div>
+				)
+			}
+		</div>
+
+		<div class="home-band__body">
+			<slot />
+		</div>
+	</div>
+</section>

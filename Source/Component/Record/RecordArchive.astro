@@ -1,0 +1,164 @@
+---
+/**
+ * RecordArchive - many records in one physical form: the archive index.
+ *
+ * `DesignSystem-Artifacts.md` §2 gives a set of records one shape - "an index of
+ * filed observations", never a wall of equal cards and never a stack of
+ * chapters - and `DESIGN.md` §3.4 asks for that shape on the surfaces that list
+ * many records. The two of them (the blog index and the doc index) had each
+ * been hand-built, differently, twice; this file is the one place the shape is
+ * written, so a surface that lists records hands over an array instead of
+ * rebuilding a row grammar.
+ *
+ * What it renders, in order:
+ *
+ * 1. **The record header** - the record's marker (`# ARCHIVE_01`) beside the
+ *    archive's name, and the count at the far end of the same line.
+ * 2. **The rows** - one `<a>` per entry: the title (the link's own text), the
+ *    note (the entry's summary) and, when the entry carries one, a leading
+ *    marker column (a date, a section, a reading time). Entries that carry the
+ *    same `group` label and sit next to each other render under that label
+ *    once, so a grouped archive is still one list and not a second prop.
+ *
+ * Four decisions a caller should know:
+ *
+ * - **`entries` alone is a complete archive.** The header's count is derived
+ *   from the list when the page does not pass one, so the number and the rows
+ *   under it cannot disagree; `index`, `heading` and `count` are the header's
+ *   copy and belong to the page.
+ * - **The whole row is the anchor.** The card's anatomy is one `<a>` per entry,
+ *   so the row's parts live inside it and a reader clicks the row rather than a
+ *   word in it. The global link rule underlines every plain anchor, which on a
+ *   row would underline the summary as well as the title, so the anchor cancels
+ *   the decoration and the row carries its own affordances - the reasoning and
+ *   the rules are in `System/Record/_Archive.scss`.
+ * - **The disclosure is CSS-only.** Hover, keyboard focus and press stretch the
+ *   row's inline padding, take the title to the accent ink and run a hairline
+ *   trace under it. No hydration directive, no inline code and no state class:
+ *   the block ships HTML and CSS and nothing else (`DESIGN.md` Q8 leaves the
+ *   layer unowned).
+ * - **No page conversion.** The surfaces that consume this block move in their
+ *   own cards, one at a time.
+ *
+ * The heading is the block's `h2`, never an `h1`: a page owns the level-one
+ * heading, and an archive is a section of a page.
+ */
+import FieldRecordIndex from "../Brand/FieldRecordIndex.astro";
+
+import type { Archive, ArchiveEntry } from "./Type.js";
+
+type Props = Archive & {
+	/** Extra classes from the page, appended after the block's own. */
+	readonly class?: string;
+};
+
+const { entries, index, heading, count, class: Class } = Astro.props;
+
+/**
+ * One run of the list: the entries that share a `group` label, plus that label.
+ *
+ * `label` is `string | undefined` rather than optional so the fold below can
+ * compare it with an entry's `group` without distinguishing "no label" from "no
+ * property" - both are an unlabelled run.
+ */
+interface Run {
+	readonly label: string | undefined;
+	readonly entries: readonly ArchiveEntry[];
+}
+
+/**
+ * The runs, in the order the entries were given.
+ *
+ * Consecutive entries with the same label collapse into one run and the label
+ * prints once, above them; an entry with no label opens an unlabelled run. The
+ * fold only ever appends to the last run or starts a new one, so an archive
+ * whose entries are already ordered keeps that order and one whose entries
+ * carry no labels at all comes back as a single unlabelled run.
+ */
+const RunsOf = (Items: readonly ArchiveEntry[]): readonly Run[] =>
+	Items.reduce<readonly Run[]>((Runs, Entry) => {
+		const Last = Runs[Runs.length - 1];
+
+		return Last !== undefined && Last.label === Entry.group
+			? [
+					...Runs.slice(0, -1),
+					{ label: Last.label, entries: [...Last.entries, Entry] },
+				]
+			: [...Runs, { label: Entry.group, entries: [Entry] }];
+	}, []);
+
+const Runs = RunsOf(entries);
+
+/**
+ * Whether the archive has a marker column at all. It is a decision of the
+ * block, not of a row: a mixed archive - some entries with a date, some with
+ * nothing - still reserves the column, so the titles below a marker-less entry
+ * stay in the same column as the ones above it.
+ */
+const Marked = entries.some((Entry) => Entry.marker !== undefined);
+
+/**
+ * The header's count: the page's own string when it passes one (`52 ENTRIES`),
+ * else the list's length. The derived form cannot drift from the rows under it,
+ * which is the whole reason it is the default rather than a second prop.
+ */
+const Count = count ?? String(entries.length);
+
+/**
+ * The marker without its `#`. `FieldRecordIndex` owns the glyph and prints it
+ * itself, so a page that writes `"# ARCHIVE_01"` and a page that writes
+ * `"ARCHIVE_01"` render the same marker.
+ */
+const Marker = index?.replace(/^#\s*/, "");
+---
+
+<section
+	class:list={[
+		"record-archive",
+		Marked ? "record-archive--marked" : null,
+		Class,
+	]}
+>
+	<header class="record-archive__head">
+		<div class="record-archive__record">
+			{Marker ? <FieldRecordIndex index={Marker} /> : null}
+			{heading ? <h2 class="record-archive__heading">{heading}</h2> : null}
+		</div>
+		<p class="record-archive__count">{Count}</p>
+	</header>
+
+	{
+		entries.length > 0 ? (
+			<div class="record-archive__body">
+				{Runs.map((Run) => (
+					<div class="record-archive__run">
+						{Run.label ? (
+							<p class="record-archive__label">{Run.label}</p>
+						) : null}
+						<ul class="record-archive__list">
+							{Run.entries.map((Entry) => (
+								<li class="record-archive__row">
+									<a class="record-archive__link" href={Entry.href}>
+										{Entry.marker ? (
+											<span class="record-archive__marker">
+												{Entry.marker}
+											</span>
+										) : null}
+										<span class="record-archive__title">
+											{Entry.title}
+										</span>
+										{Entry.note ? (
+											<span class="record-archive__note">
+												{Entry.note}
+											</span>
+										) : null}
+									</a>
+								</li>
+							))}
+						</ul>
+					</div>
+				))}
+			</div>
+		) : null
+	}
+</section>

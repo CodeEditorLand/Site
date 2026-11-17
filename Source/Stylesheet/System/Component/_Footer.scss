@@ -17,9 +17,6 @@
 //   .FooterRecordMarker  its `#`
 //   .FooterRecordLocale  the locale switcher's cell in that row
 //   .FooterLedger        the facts, as RecordLedger
-//   .FooterSources       the /LABEL destinations behind the linked facts
-//   .FooterSourceLink    one of them
-//   .FooterSourceLabel   its label
 //   .FooterQuickLinks    /DOCS, /DOWNLOAD, /GITHUB, /CONTACT, /BLOG
 //   .FooterQuickLink     one of them
 //   .FooterLegal         Privacy, Terms, License, Contributing, Issues, Blog, Enterprise
@@ -54,28 +51,26 @@
 	opacity: 0.4;
 }
 
-// ─── Sources ──────────────────────────────────────────────────────────────
-// The ledger prints the linked facts as text; these are their destinations, in
-// the /LABEL form the footer's quick links already use.
+// ─── Linked facts ─────────────────────────────────────────────────────────
+// Three of the five facts are destinations, and the ledger prints them as
+// anchors inside the value. They keep the ledger's own ink and weight - a fact
+// does not become a different kind of thing because it can be followed - and
+// only the underline marks it, which is the one affordance the footer has.
 
-.FooterSources {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--space-reading);
+.FooterLedger .record-ledger__link {
+	color: inherit;
+	text-decoration: underline;
+	text-decoration-color: color-mix(in srgb, currentColor 30%, transparent);
+	text-underline-offset: 0.15em;
 }
 
-.FooterSourceLink {
-	text-decoration: none;
-}
-
-.FooterSourceLabel {
-	@include mono-meta;
-	@include track(0.08em);
-	transition: color 0.12s ease;
-}
-
-.FooterSourceLink:hover .FooterSourceLabel {
+.FooterLedger .record-ledger__link:hover {
 	color: var(--Accent);
+	text-decoration-color: currentColor;
+}
+
+.FooterLedger .record-ledger__separator {
+	opacity: 0.5;
 }
 
 // ─── Link rows ────────────────────────────────────────────────────────────

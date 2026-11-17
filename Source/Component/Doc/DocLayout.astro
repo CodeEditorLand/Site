@@ -37,9 +37,17 @@ interface Props {
 
 	/** The current page's collection id, so the rail can mark it. */
 	activeId?: string;
+
+	/**
+	 * Render the collapsed navigation panel above the content below the rail's
+	 * breakpoint. `true` on a page, where the rail is the only way around the
+	 * tree; `false` on the index, where the page's own card grid IS the
+	 * navigation and the baseline showed no panel at all.
+	 */
+	mobile?: boolean;
 }
 
-const { sections, activeId } = Astro.props;
+const { sections, activeId, mobile = true } = Astro.props;
 
 const T = GetI18n();
 
@@ -68,12 +76,16 @@ const SidebarTitle = T("sidebar.title", {
 		</aside>
 
 		<div class="doc-layout__main">
-			<DynamicDocSidebar
-				Sections={sections}
-				ActiveId={activeId}
-				Mobile={true}
-				client:load
-			/>
+			{
+				mobile ? (
+					<DynamicDocSidebar
+						Sections={sections}
+						ActiveId={activeId}
+						Mobile={true}
+						client:load
+					/>
+				) : null
+			}
 			<slot />
 		</div>
 	</div>

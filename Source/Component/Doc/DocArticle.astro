@@ -1,45 +1,47 @@
 ---
 /**
- * DocArticle - the reading shell every documentation surface shares: kicker,
- * the page's only `h1`, standfirst, the metadata strip, an optional in-page
- * contents list, then the body.
+ * DocArticle - the reading shell every documentation surface shares: the
+ * page-level breadcrumb, then kicker, the page's only `h1`, standfirst, then
+ * the body.
  *
- * The shell owns five things a page must not re-decide per file:
+ * That is the whole sequence, and it is the sequence the baseline rendered on
+ * every documentation page. Two things the shell deliberately does NOT render,
+ * because the baseline did not:
+ *
+ * - **No metadata strip.** The baseline article carried no `STATUS` / `LAYER` /
+ *   `SOURCE` / `COMPAT` / `UPDATED` row - the only `STATUS` and `SOURCE` on the
+ *   page belong to the footer's own record. A strip above the prose would be an
+ *   invented element on a page whose reference is readable from git, so the
+ *   shell has none.
+ * - **No generated contents list.** The one table of contents the baseline
+ *   rendered was the document's own (`## Table of Contents` in the markdown,
+ *   which the prose renders in place). A second list above it was the shell's,
+ *   and it is gone.
+ *
+ * What the shell still owns:
  *
  * - **One `h1`.** The title is the page's single level-one heading; the blocks
  *   inside the body never render one, so a page that composes from blocks can
  *   never produce two.
- * - **One measure.** The header, the metadata strip, the contents list and (by
- *   default) the body are capped at the same `72ch`, so the standfirst ends
- *   where the prose ends. `measure={false}` drops the body cap and nothing else
- *   - the index's band stack and the Rust page's viewer need the full column,
- *   the header still reads at one measure.
- * - **The metadata strip.** `DesignSystem-Pages.md` §5 requires a mono
- *   `STATUS` / `LAYER` / `SOURCE` / `COMPAT` / `UPDATED` strip above doc prose,
- *   and names it after the compact index: so the shell places it between the
- *   contents list and the body. A page cannot render a documentation surface
- *   without its own context, and the strip is never retyped per page. The page
- *   builds the fields (`Function/Doc/BuildDocStrip`) because only the page knows
- *   its section and its source; the shell owns where they sit.
- * - **The contents list.** `toc` is `null` when the markdown already carries its
- *   own list (see `BuildDocToc`); the shell renders no empty nav for it.
+ * - **One measure.** The header and (by default) the body are capped at the same
+ *   `72ch`, so the standfirst ends where the prose ends. `measure={false}` drops
+ *   the body cap and nothing else - the index's card grid and the Rust page's
+ *   viewer need the full column, the header still reads at one measure.
  * - **The container contract.** The shell adds no gutter and no max width of its
  *   own: the page owns the one container (`DocLayout` on the rail pages, the
- *   page's own class on a page without a rail). That is why a page whose body is
- *   a band stack passes `banded` - the bands bring their own inner container,
- *   and inside this article it would indent them away from the heading they
- *   sit under.
+ *   page's own class on a page without a rail).
  *
- * The kicker is printed exactly as the caller wrote it: the `/SECTION` voice is
- * the caller's to supply, and this shell never invents the leading slash.
+ * The kicker is the section's own name, printed as the caller wrote it and
+ * upper-cased by the type role - `Deep Dive` on the page, `DEEP DIVE` on screen.
+ * The baseline printed the section, not a `/SECTION` path, and this shell never
+ * invents a leading slash. A page with no section (the index itself) passes no
+ * kicker at all and renders no paragraph.
  *
  * No script and no hydration directive.
  */
-import type { DocStripItem, DocToc } from "./Type.js";
-
 interface Props {
-	/** `/DOCUMENTATION`, `/RUST API`, `/ELEMENTS` - printed verbatim. */
-	kicker: string;
+	/** The section's name, e.g. `Deep Dive`. Printed verbatim; upper-cased in CSS. */
+	kicker?: string;
 
 	/** The page's `title`. The page's only `h1`. */
 	title: string;
@@ -54,25 +56,8 @@ interface Props {
 	 */
 	standfirstHtml?: string;
 
-	/**
-	 * The mono metadata strip: one `DocStripItem` per field, rendered with U+2001
-	 * between them. Built by `Function/Doc/BuildDocStrip`, which supplies the five
-	 * documented fields in their documented order and appends whatever else the
-	 * page can prove.
-	 */
-	strip?: readonly DocStripItem[];
-
-	/** The in-page contents list, or `null` when the page needs none. */
-	toc?: DocToc | null;
-
 	/** Cap the body at the reading measure. Defaults to `true`. */
 	measure?: boolean;
-
-	/**
-	 * The body is a stack of bands, each with its own inner container. This
-	 * article then stops competing with them for the gutter.
-	 */
-	banded?: boolean;
 
 	/**
 	 * The page's position, as a page-level nav. Position is the kicker's job
@@ -91,18 +76,13 @@ const {
 	title,
 	standfirst,
 	standfirstHtml,
-	strip,
-	toc,
 	measure = true,
-	banded = false,
 	crumbs,
 	class: Class,
 } = Astro.props;
 ---
 
-<article
-	class:list={["doc-article", banded ? "doc-article--banded" : null, Class]}
->
+<article class:list={["doc-article", Class]}>
 	{
 		crumbs?.length ? (
 			<nav class="doc-article__crumbs" aria-label="Breadcrumb">
@@ -110,17 +90,11 @@ const {
 					{crumbs.map((Crumb) => (
 						<li class="doc-article__crumb">
 							{Crumb.href ? (
-								<a
-									class="doc-article__crumb-link"
-									href={Crumb.href}
-								>
+								<a class="doc-article__crumb-link" href={Crumb.href}>
 									{Crumb.label}
 								</a>
 							) : (
-								<span
-									class="doc-article__crumb-current"
-									aria-current="page"
-								>
+								<span class="doc-article__crumb-current" aria-current="page">
 									{Crumb.label}
 								</span>
 							)}
@@ -131,7 +105,7 @@ const {
 		) : null
 	}
 	<header class="doc-article__header">
-		<p class="doc-article__kicker">{kicker}</p>
+		{kicker ? <p class="doc-article__kicker">{kicker}</p> : null}
 		<h1 class="doc-article__title">{title}</h1>
 		{standfirst ? <p class="doc-article__standfirst">{standfirst}</p> : null}
 		{
@@ -140,52 +114,6 @@ const {
 			)
 		}
 	</header>
-
-	{
-		toc ? (
-			<nav class="doc-article__toc" aria-label={toc.Label}>
-				<p class="doc-article__toc-label">{toc.Label}</p>
-				<ol class="doc-article__toc-list">
-					{toc.Items.map((Item) => (
-						<li class="doc-article__toc-item">
-							<a class="doc-article__toc-link" href={Item.Href}>
-								{Item.Label}
-							</a>
-						</li>
-					))}
-				</ol>
-			</nav>
-		) : null
-	}
-
-	{
-		strip?.length ? (
-			<p class="doc-article__strip">
-				{strip.map((Item, Position) => (
-					<>
-						{Position > 0 ? (
-							<span class="doc-article__separator" aria-hidden="true">
-								{"\u2001"}
-							</span>
-						) : null}
-						<span class="doc-article__field">
-							<span class="doc-article__label">{Item.Label}</span>
-							<span
-								class:list={[
-									"doc-article__value",
-									Item.Tone
-										? `doc-article__value--${Item.Tone}`
-										: null,
-								]}
-							>
-								{Item.Value}
-							</span>
-						</span>
-					</>
-				))}
-			</p>
-		) : null
-	}
 
 	<div
 		class:list={[

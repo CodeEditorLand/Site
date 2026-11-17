@@ -1,0 +1,26 @@
+---
+/**
+ * RoadmapBand - `#pricing`: the two release records, side by side.
+ *
+ * Two columns from `md`, one below. The band sits between the features and the
+ * architecture bands, which is where the baseline printed it: the page states
+ * the claim, then what is released, then what the thing is made of, then where
+ * it runs.
+ */
+import { BandOf, HomeBands } from "../../Content/Home/Band.js";
+import { ReleaseCards } from "../../Content/Home/Roadmap.js";
+import { GetI18n } from "../../Library/I18n/Server";
+
+import Band from "./Band.astro";
+import ReleaseCard from "./ReleaseCard.astro";
+
+const T = GetI18n();
+
+const Head = BandOf(HomeBands(T), "pricing");
+---
+
+<Band head={Head}>
+	<div class="home-release__grid">
+		{ReleaseCards.map((Card) => <ReleaseCard card={Card} />)}
+	</div>
+</Band>

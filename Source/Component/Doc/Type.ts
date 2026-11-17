@@ -4,20 +4,20 @@
  * One exported type per concept, and no React: the doc pages compose from
  * these shapes, and a component declares its own props on top of them.
  *
- * Two decisions worth reading twice:
+ * Three decisions worth reading twice:
  *
- * - `DocBand` is the *one* shape both the ten section bands and the four
- *   appendix bands use. A section band and an appendix band differ only in
- *   where their rows come from, so a second shape would have forced a second
- *   component that renders the same list.
- * - `Groups` is always an array of runs, never a nested tree. A run is a
- *   consecutive stretch of rows sharing one sub-label (the sidebar's `group`,
- *   flattened), which is what a page can render as a heading followed by its
- *   rows. The tree lives in the sidebar, where it is collapsible; the index is
- *   flat because a reader scans it.
- * - `DocBand` carries no surface. The band's tone belongs to the artifact the
- *   band is a section of (DESIGN.md §5 A5, §9 Q1), so the page decides it once
- *   for the whole index instead of the data alternating per row.
+ * - `DocLink` is the one card shape. A page in a section grid, a way in above
+ *   it, a worker in the backend panel and a rustdoc tile are all "a label, a
+ *   note and somewhere to go", so a second shape would have forced a second
+ *   card that renders the same three fields.
+ * - `DocSection` is flat. The index the baseline rendered filed every page as
+ *   its own card - the seven `Filesystem Footprint` pages are seven cards, not
+ *   one card with seven rows - so a section carries a list of cards and no
+ *   nested runs. The tree lives in the sidebar, where it is collapsible; the
+ *   index is a wall of cards because a reader scans it.
+ * - No shape carries a surface. The card's tone belongs to the card component
+ *   (`System/Component/Doc/_Index.scss`), so the data can never alternate one
+ *   section against the next.
  */
 
 /** One page, crate or destination in a documentation list. */
@@ -28,59 +28,82 @@ export interface DocLink {
 	/** `navTitle` when the page has one, otherwise its `title`. */
 	Label: string;
 
-	/** The page's `description`, printed as the row's note. */
+	/** The page's `description`, printed under the label. */
 	Note?: string;
 
-	/** Where the row leads. */
+	/** Where the card leads. */
 	Href: string;
 
 	/**
-	 * The row opens in a new tab. The `↗` arrow and the `target`/`rel` pair
+	 * The card opens in a new tab. The `↗` arrow and the `target`/`rel` pair
 	 * follow from this one flag; an internal destination renders `→` instead.
 	 */
 	Blank?: boolean;
 }
 
-/**
- * A consecutive stretch of rows sharing one sub-label. `Label` is `null` for
- * an ungrouped run, and the page then renders no sub-heading at all.
- */
-export interface DocGroupRun {
-	readonly Label: string | null;
-
-	readonly Rows: readonly DocLink[];
-}
-
-/**
- * One documentation band: the section name as the heading, the page count in
- * the kicker, the rows underneath. Shared by the index's sections and by its
- * appendix bands, so the page maps one component over one array.
- */
-export interface DocBand {
+/** One section of the index: a heading, then the cards filed under it. */
+export interface DocSection {
 	/** Anchor id, slugified from the heading, so `/Doc#elements` keeps working. */
 	Id: string;
 
-	/** `/ELEMENTS` U+2001 `16 PAGES` - the count is the kicker's job, not the heading's. */
-	Kicker: string;
-
-	/** The band's single `h2`. */
+	/** The section's single `h2`. */
 	Heading: string;
 
-	/** One sentence under the heading. Absent for the section bands. */
-	Standfirst?: string;
+	/** The cards, in the collection's `order`. */
+	Rows: readonly DocLink[];
+}
 
-	/** The paragraph that opens the body, before the rows. */
-	Lede?: string;
+/**
+ * One of the three ways in, above the sections. Its `Label` is the card's
+ * `h2`: the baseline gave these three cards a level-two heading of their own
+ * because they are not filed under a section.
+ */
+export type DocFeature = DocLink;
+
+/**
+ * How an appendix renders its body. The three appendices are three different
+ * artifacts - a badge strip, a bulleted list, a two-column tile grid - and the
+ * component switches on this rather than on the heading, so a heading is free
+ * to change without changing the body.
+ */
+export type DocAppendixKind = "architecture" | "backend" | "deployments";
+
+/** One closing artifact of the index, after the sections. */
+export interface DocAppendix {
+	/** Anchor id, slugified from the heading. */
+	Id: string;
+
+	/** The artifact's `h2`. */
+	Heading: string;
+
+	/** The sentence that opens the panel. */
+	Lede: string;
+
+	/** Which body this appendix renders. */
+	Kind: DocAppendixKind;
+
+	/** The artifact's rows, in the order they print. */
+	Rows: readonly DocLink[];
 
 	/**
-	 * A strip of short links above the body: the fifteen elements, and nothing
-	 * else. Lower-case `label`/`href` on purpose - this array is handed straight
-	 * to `RecordBand`, whose `Band.index` is that shape, so no mapping layer
-	 * sits between the data and the block.
+	 * A strip of short links inside the panel: the fifteen elements, and
+	 * nothing else. Lower-case `label`/`href` on purpose - this array is handed
+	 * straight to the badge list, so no mapping layer sits between the data and
+	 * the markup.
 	 */
 	Index?: readonly { readonly label: string; readonly href: string }[];
+}
 
-	readonly Groups: readonly DocGroupRun[];
+/** The whole index, as the page receives it: ways in, sections, appendices. */
+export interface DocIndexData {
+	/** The three cards above the sections, in print order. */
+	Features: readonly DocFeature[];
+
+	/** The ten sections, in `SectionOrder`, empty sections dropped. */
+	Sections: readonly DocSection[];
+
+	/** The three closing artifacts, in print order. */
+	Appendices: readonly DocAppendix[];
 }
 
 /**

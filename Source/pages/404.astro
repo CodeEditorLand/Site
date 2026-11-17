@@ -68,15 +68,9 @@ const NotFoundCopy = T("common.error.pageNotFound", {
 const MetaDescription = NotFoundCopy;
 
 /**
- * The record's one sentence in the DOM: the first paragraph of the same copy.
- * The document requires the recovery to stay clear and plain-language in the
- * markup (`DesignSystem-Pages.md` §3), and a coded state line alone is not a
- * plain explanation - a reader who does not know the grammar still needs to be
- * told what happened. The remaining sentences are not lost: they are the meta
- * description, exactly as they were before.
+ * The requested path the record's `TRACE:` line prints. The baseline printed
+ * the route the reader asked for, so the line stays live rather than fixed.
  */
-const PageSentence = NotFoundCopy.split("\n\n")[0];
-
 const RequestedPath = Astro.url.pathname;
 ---
 
@@ -96,7 +90,7 @@ const RequestedPath = Astro.url.pathname;
 								<FieldRecordIndex index="ROUTE_404" />
 
 								<h1
-									class="text-field-xl mb-6 font-mono font-normal leading-[0.95] tracking-[-0.02em] text-card-foreground"
+									class="text-field-xl font-mono font-normal leading-[0.95] tracking-[-0.02em] text-card-foreground"
 								>
 									<span style={`color:${GLYPH_INK}`}>〈</span><span
 										style={`color:${KeywordInk("NOT FOUND") ?? "var(--CardForeground)"}`}
@@ -129,12 +123,6 @@ const RequestedPath = Astro.url.pathname;
 										SIGNAL: ABSENT{"\u2001"}ROUTE: UNRESOLVED
 									</p>
 								</div>
-
-								<p
-									class="text-field-s font-mono font-normal leading-[1.5] text-card-foreground opacity-80"
-								>
-									{PageSentence}
-								</p>
 
 								<div class="my-12 flex-1" aria-hidden="true">
 								</div>

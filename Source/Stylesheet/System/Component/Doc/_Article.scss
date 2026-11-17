@@ -1,44 +1,29 @@
 // DocArticle - the reading shell: position, the page's one h1, the standfirst,
-// the in-page contents list and the body on one measure.
+// and the body on one measure.
 //
 // Publishes:
 //   .doc-article                     the shell
-//   .doc-article--banded             the shell's body is a stack of bands
 //   .doc-article__crumbs             the page-level breadcrumb nav
 //   .doc-article__crumb-list         its inline list
 //   .doc-article__crumb              one crumb
 //   .doc-article__crumb-link         a crumb that leads somewhere
 //   .doc-article__crumb-current      the current page, as text
 //   .doc-article__header             kicker + h1 + standfirst
-//   .doc-article__kicker             the /SECTION label
+//   .doc-article__kicker             the section's name, upper-cased by `track`
 //   .doc-article__title              the page's single h1
 //   .doc-article__standfirst         one sentence under it
-//   .doc-article__strip              the mono metadata strip above the prose
-//   .doc-article__field              one field of it: label, then value
-//   .doc-article__label              the field's label (`STATUS:`), muted
-//   .doc-article__value              the field's value, in the surface ink
-//   .doc-article__value--quiet       a value that is a state, not a claim
-//   .doc-article__value--specimen    the one authenticated value (accent)
-//   .doc-article__separator          the U+2001 between two fields
-//   .doc-article__toc                the generated contents nav
-//   .doc-article__toc-label          its visible label
-//   .doc-article__toc-list           one row per ## heading
-//   .doc-article__toc-item           a row, closed by a hairline
-//   .doc-article__toc-link           the row's anchor
 //   .doc-article__body               the document
 //   .doc-article__body--measure      the 72ch cap
 //   .doc-pager / __link / __label / __title   prev/next, at the foot of a page
 //
 // Four decisions this file makes so no page has to:
 //
-// - **One measure, one number.** 72ch appears once, on the body; the header, the
-//   contents list and the pager inherit the same cap, so the standfirst, the
-//   prose and the contents list all end on the same right edge.
+// - **One measure, one number.** 72ch appears once, on the body; the header and
+//   the pager inherit the same cap, so the standfirst, the prose and the pager
+//   all end on the same right edge.
 // - **The container is the page's.** This partial adds no gutter and no max
 //   width: `DocLayout` owns the one container on a rail page, and a page without
-//   a rail owns its own. `.doc-article--banded` therefore drops a band's inner
-//   gutter - the bands inside this body would otherwise indent their own rows
-//   away from the heading above them, and the reader would see two left edges.
+//   a rail owns its own (`.doc-rust`).
 // - **The markdown's margins are cancelled once, then owned.** `_Global.scss`
 //   gives every `p` and heading a bottom margin; the body's rhythm is
 //   `--space-reading` between top-level elements and `--space-group` before a
@@ -118,97 +103,9 @@
 	margin: 0;
 }
 
-/* §5's mono metadata strip - `STATUS` / `LAYER` / `SOURCE` / `COMPAT` /
-   `UPDATED` - placed by the shell between the contents list and the body, which
-   is where §5 names it (after the compact index, above the prose). It reads at
-   the header's measure and at group distance, so it lands as the record's
-   metadata row and not as a second paragraph of the standfirst.
-
-   The fields are separate elements and the U+2001 between them is its own
-   element, so a reader's assistive tech announces five fields rather than one
-   run-on line - the grammar `BlogIndex` renders. The label carries the muted
-   ink and the value the surface's, and a value that is a state (`UNAVAILABLE`)
-   renders quiet so it never reads as a positive claim (DESIGN.md §1.5). */
-.doc-article__strip {
-	@include mono-meta;
-	@include track(0.08em);
-
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-
-	max-width: 72ch;
-
-	margin-block: var(--space-group);
-
-	overflow-wrap: anywhere;
-}
-
-.doc-article__field {
-	white-space: nowrap;
-}
-
-.doc-article__label {
-	color: var(--MuteForeground);
-}
-
-.doc-article__value {
-	margin-inline-start: var(--space-tight);
-
-	color: var(--Foreground);
-}
-
-.doc-article__value--quiet {
-	color: var(--MuteForeground);
-}
-
-.doc-article__value--specimen {
-	color: var(--Accent);
-}
-
-.doc-article__separator {
-	color: var(--MuteForeground);
-}
-
-/* The generated contents list. It is dense on purpose: a documentation page's
-   contents is a scan, not a chapter, so the rows sit at --space-tight and the
-   whole block is closed by a hairline rather than opened by a heading rule. */
-.doc-article__toc {
-	@include hairline(top);
-
-	max-width: 72ch;
-
-	margin-block-start: var(--space-group);
-	padding-block-start: var(--space-reading);
-}
-
-.doc-article__toc-label {
-	@include mono-meta;
-	@include track;
-
-	margin: 0 0 var(--space-tight);
-}
-
-.doc-article__toc-list {
-	list-style: none;
-
-	margin: 0;
-	padding: 0;
-}
-
-.doc-article__toc-item {
-	@include hairline(bottom);
-}
-
-.doc-article__toc-link {
-	display: block;
-
-	font-size: var(--type-body);
-	line-height: var(--type-body-line);
-
-	padding-block: var(--space-tight);
-}
-
+/* The document. The shell caps it at the reading measure by default; a page
+   whose body is a grid of cards passes `measure={false}` and the grid owns its
+   own columns. */
 .doc-article__body {
 	font-size: var(--type-body);
 	line-height: var(--type-body-line);
@@ -280,22 +177,6 @@ jelly-card.doc-prose .doc-article__body a {
    own surface and gets none. */
 .doc-article__body > pre.astro-code {
 	border: 0;
-}
-
-/* The banded body: the bands bring their own inner container, so this article
-   stops competing for the gutter. Scoped to the article, never to the band. */
-.doc-article--banded .record-band__inner {
-	max-width: none;
-	padding-inline: 0;
-}
-
-/* ...and the bands own the vertical space too. A band carries its own
-   `padding-block` - `--space-group` at rest, `--space-chapter` when it opts into
-   the chapter separator; adding this body's `--space-group` on top would double
-   the distance between the standfirst and the first section's own kicker. One
-   mechanism, not two. */
-.doc-article--banded .doc-article__body {
-	margin-block-start: 0;
 }
 
 /* ─── THE DOCUMENT'S OWN ELEMENTS ───────────────────────────────────────── */
@@ -503,6 +384,11 @@ jelly-card.doc-prose .doc-article__body a {
 
 	padding-block: var(--space-tight);
 	padding-inline: var(--space-reading);
+
+	/* The card is the destination; a rule under its two lines would say the
+	   text is the link instead of the card. The baseline's pager was the same
+	   card with a click handler, and carried no rule at all. */
+	text-decoration: none !important;
 }
 
 .doc-pager__label {

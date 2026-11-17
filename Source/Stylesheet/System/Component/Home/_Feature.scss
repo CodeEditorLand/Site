@@ -1,0 +1,33 @@
+// Feature - the six-card grid in the features band.
+//
+// Publishes:
+//   .home-feature__grid   one to three columns
+//
+// Three columns from `lg` is what makes the six records read as two rows of
+// three. Two columns from `md` leaves the last row two-thirds full, which is the
+// distribution the baseline chose for a six-item set; one column below that.
+//
+// The cards are white: they are the page's cards, and the band's canvas is the
+// creme field behind them.
+
+@use "../../Mixin" as *;
+
+.home-feature__grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 2rem;
+	max-inline-size: 72rem;
+	margin-inline: auto;
+
+	@include bp(768px) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	@include bp(1024px) {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.home-feature {
+	--jelly-fill: var(--Card);
+}

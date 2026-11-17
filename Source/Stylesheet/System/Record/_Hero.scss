@@ -1,0 +1,223 @@
+// RecordHero - the site's signature artifact: the field record beside its
+// evidence, one hairline between them, and the record's mandatory blank
+// interval inside the card.
+//
+// It is NOT a `.band`. A band follows another band and carries the chapter
+// rhythm; the hero opens a page and is a single artifact, so it owns its own
+// height, its own gutter and its own padding, and it takes no rule from
+// `.band` or `.record-band`.
+//
+// Publishes:
+//   .record-hero                the artifact's shell
+//   .record-hero__pair          the pair - record left, evidence right
+//   .record-hero__pair--single  the record alone, when the artifact carries no evidence
+//   .record-hero__record        the field record panel
+//   .record-hero__card          the data card's box
+//   .record-hero__inset         the card's own inset
+//   .record-hero__mark          the index, and the seal when the artifact has one
+//   .record-hero__seal          the artifact's one seal
+//   .record-hero__claim         the runtime claim - the page's only `h1`
+//   .record-hero__status        the state line
+//   .record-hero__blank         THE BLANK INTERVAL - `aria-hidden`, 15-25% of the card
+//   .record-hero__facts         the record's metadata rows
+//   .record-hero__action        the artifact's one action
+//   .record-hero__gutter        the 1px hairline between the panels
+//   .record-hero__evidence      the evidence panel
+//   .record-hero__plate         the image filling that panel
+//
+// THE RATIO. `design_system.md`'s ratio blueprint sizes the pair, and these are
+// the declarations that carry it:
+//
+//   grid-template-columns: minmax(0, 1fr);                      // stacked
+//   grid-template-columns: minmax(0, 49fr) 1px minmax(0, 51fr); // from 768px
+//
+// Three tracks: the record 49 parts, the hairline 1px, the evidence 51 parts.
+// The two panels therefore measure 48.97% and 50.97% of the pair at any
+// realistic width - inside the documented 48.5-49.5% for the data card and
+// 50.5-51.5% for the evidence. The blueprint's separate 1.8-2.3% panel gap is
+// NOT applied: its own panel ranges already sum past 100% with a gap between
+// them, so the ratio and the hairline win and the gap is the hairline's width.
+//
+// THE HEIGHT. `min-block-size: 80dvh` on the pair - the documented viewport
+// share - so the artifact fills the first screen and the evidence panel has a
+// height to be full-height of.
+//
+// THE BLANK INTERVAL. 15-25% of the card's height, between the state line and
+// the record's closing block, `aria-hidden` because it is a reserved region
+// rather than content. "Delete, don't shrink" (`DESIGN.md` §2.7): the band is
+// an element with a floor, not a margin that collapses.
+//
+// Tokens only: no literal colour, no box-shadow, no border-radius, no gradient.
+// The ink of the card, the seal, the status line, the ledger and the action
+// belongs to the Brand primitives that print them; this partial owns geometry.
+
+@use "../Mixin" as *;
+
+/* ─── THE SHELL ────────────────────────────────────────────────────────── */
+
+.record-hero {
+	position: relative;
+	overflow: hidden;
+	inline-size: 100%;
+	background-color: var(--Background);
+}
+
+// The pair. A column on a phone - record first, evidence second, because the
+// information arrives before the illustration - and three tracks from 768px,
+// where the artifact is actually a pair.
+.record-hero__pair {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-group);
+	min-block-size: 80dvh;
+	padding: clamp(2rem, 5vw, 5rem);
+	margin-inline: auto;
+}
+
+@include bp(768px) {
+	.record-hero__pair {
+		grid-template-columns: minmax(0, 49fr) 1px minmax(0, 51fr);
+		align-items: stretch;
+		gap: 0;
+	}
+
+	// Without an evidence panel there is no second track and no hairline to
+	// draw between them, so the record takes the whole width instead of 49% of
+	// it with a gutter down the middle of nothing.
+	.record-hero__pair--single {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+/* ─── PANEL 1 - THE FIELD RECORD ───────────────────────────────────────── */
+
+.record-hero__record {
+	display: flex;
+	flex-direction: column;
+	min-inline-size: 0;
+}
+
+// The card's ink arrives from the primitive as its own element properties; this
+// rule owns only its box.
+.record-hero__card {
+	block-size: 100%;
+}
+
+// The inset reads the card's own padding knobs rather than restating the
+// measure, so a host that tightens the card tightens its body with it.
+.record-hero__inset {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	block-size: 100%;
+	padding: var(--card-padding-block) var(--card-padding-inline);
+}
+
+// The record is a sequence of anchored bands, not an even distribution: the
+// index and seal, the claim, the state, the blank interval, the facts, the
+// action. Each band keeps its own interval; this is the default between two
+// that do not name one.
+.record-hero__inset > * + * {
+	margin-block-start: var(--space-reading);
+}
+
+.record-hero__mark {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: var(--space-reading);
+	margin-block-start: 0;
+}
+
+.record-hero__seal {
+	flex: 0 0 auto;
+}
+
+// The page's one expressive moment. `--type-display` arrives from the
+// `.type-display` role - the ceiling the tier sets, never above it.
+.record-hero__claim {
+	margin: var(--space-group) 0 0;
+	font-family: var(--FontMono);
+	font-weight: 500;
+	letter-spacing: -0.02em;
+	text-wrap: balance;
+}
+
+.record-hero__status {
+	margin-block-start: var(--space-reading);
+}
+
+/*
+ * THE BLANK INTERVAL. It grows to whatever height the card has left and never
+ * falls below `--space-blank`; the card's height comes from the evidence panel
+ * beside it. `design_system.md`'s vertical map puts the silent band at 51-67%
+ * of the card - a 16% interval, inside the 15-25% the system requires - and
+ * "delete, don't shrink": the band is not padding, it is a reserved region, so
+ * it is an element with a floor rather than a margin that collapses.
+ *
+ * The floor is the token here and a percentage of the card from 768px, where
+ * the card is a stretched grid item with a definite height for a percentage to
+ * resolve against. Below that the card is as tall as its own content, so a
+ * percentage would have nothing to resolve against and the interval would
+ * collapse to nothing on exactly the screen that has least room to spare.
+ */
+.record-hero__blank {
+	flex: 1 1 auto;
+	min-block-size: var(--space-blank);
+	// The interval is the free space itself, not free space plus a margin.
+	margin-block-start: 0;
+}
+
+@include bp(768px) {
+	.record-hero__blank {
+		// 15% of the card's own height - the low end of the documented range.
+		min-block-size: max(var(--space-blank), 15%);
+	}
+}
+
+.record-hero__facts {
+	margin: var(--space-group) 0 0;
+}
+
+.record-hero__action {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-reading) var(--space-group);
+	margin-block-start: var(--space-group);
+}
+
+/* ─── THE HAIRLINE GUTTER ──────────────────────────────────────────────── */
+
+// 1px, the pair's middle track. Hidden below 768px, where the panels stack and
+// a vertical rule would separate nothing.
+.record-hero__gutter {
+	display: none;
+	inline-size: 1px;
+	background-color: var(--Border);
+}
+
+@include bp(768px) {
+	.record-hero__gutter {
+		display: block;
+	}
+}
+
+/* ─── PANEL 2 - THE EVIDENCE ───────────────────────────────────────────── */
+
+// The counterweight: one image, full height, `object-fit: cover`, no text on
+// it. The primitive rejects text overlays because a picture with a caption
+// over it is a poster, not evidence; a hero that needs a caption puts it below
+// the frame through its own `RecordFigure` in the slot.
+.record-hero__evidence {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	min-inline-size: 0;
+}
+
+.record-hero__plate {
+	flex: 1 1 auto;
+	min-block-size: 40dvh;
+	inline-size: 100%;
+}

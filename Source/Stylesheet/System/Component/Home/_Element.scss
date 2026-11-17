@@ -1,0 +1,42 @@
+// Element - the fifteen-card masonry in the architecture band.
+//
+// Publishes:
+//   .home-element__grid   the twelve-column wall
+//
+// The wall is irregular on purpose. Every card carries `--masonry-col`, its own
+// width out of twelve, so a row of cards rarely sums to twelve and the right edge
+// stays ragged. That is the band's whole visual idea: fifteen records of unequal
+// weight rather than an even grid of equal tiles, and it is why the grid is
+// `grid-auto-flow: dense` - a narrow card fills a gap an earlier row left instead
+// of leaving it empty.
+//
+// Below `lg` the wall becomes two columns and then one, and the span is ignored:
+// an unequal width is a property of the wide reading, not of the narrow one.
+
+@use "../../Mixin" as *;
+
+.home-element__grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 1.5rem;
+	max-inline-size: 80rem;
+	margin-inline: auto;
+
+	@include bp(768px) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	@include bp(1024px) {
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+		grid-auto-flow: dense;
+	}
+}
+
+.home-element {
+	--jelly-fill: var(--Mute);
+	min-inline-size: 0;
+
+	@include bp(1024px) {
+		grid-column: span var(--masonry-col, 6);
+	}
+}

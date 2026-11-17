@@ -1,31 +1,32 @@
 ---
 import DocArticle from "../../Component/Doc/DocArticle.astro";
-import DocIndex from "../../Component/Doc/DocIndex.astro";
-import {
-	RustBand,
-	RustCrates,
-	RustViewerBand,
-} from "../../Component/Doc/Rust/Data";
+import { RustCrates } from "../../Component/Doc/Rust/Data";
 import RustViewer from "../../Component/Doc/RustViewer.astro";
 import { Header } from "../../Component/Layout/Header";
-import RecordBand from "../../Component/Record/RecordBand.astro";
-import BuildDocStrip from "../../Function/Doc/BuildDocStrip";
 import Base from "../../Layout/Base.astro";
 import { LinkMentions } from "../../Library/CodeMentions";
 import { GetI18n } from "../../Library/I18n/Server";
 
 /**
- * The Rust API surface: the crate list, then the frame that reads one.
+ * The Rust API surface: the crate grid, then the frame that reads one.
  *
- * The same shell as every other documentation page (`DocArticle`), so the Rust
- * documentation reads like the rest: a kicker, one `h1`, the standfirst, then
- * the body. What it does not have is the rail - this page is a viewer, and its
- * position is carried by the breadcrumb and the back link.
+ * The sequence is the baseline's, and the baseline is unusually specific here
+ * because this page has no rail:
  *
- * The crate list is `RustBand` (a `DocBand`, rendered by the same `DocIndex` the
- * index page uses) and the frame is `RustViewer`. Every rustdoc URL, label and
- * description is in `Component/Doc/Rust/Data.ts`, and every one of them is the
- * string this page printed before it was a composition.
+ * 1. **The breadcrumb** - `Home / Documentation / Rust API`.
+ * 2. **The header** - one `h1` and one standfirst. No kicker: the baseline gave
+ *    this page none, and the crumb already names where it sits.
+ * 3. **The crate grid** - nine tiles, two across on a narrow viewport and five
+ *    across from 768px, each tile a name with its `↗` and one line saying what
+ *    the crate is. The tiles are the only navigation this page needs.
+ * 4. **The viewer** - the tab bar and the rustdoc frame, one surface.
+ * 5. **The way back** - `Documentation ←`, closed by a hairline.
+ *
+ * What is NOT here, because the baseline had none: a metadata strip, a section
+ * kicker, and the two band headings (`Rust crates`, `Read it here`) an earlier
+ * pass wrapped the list and the frame in. Every crate URL, label and
+ * description is in `Component/Doc/Rust/Data.ts` and is the string the page has
+ * always printed.
  */
 const T = GetI18n();
 
@@ -46,34 +47,11 @@ const Heading = T("rust.heading", {
 const Standfirst =
 	"Generated <code>rustdoc</code> output for Land's Rust crates. Select a crate below, or open directly in a new tab.";
 
-const ViewerBand = RustViewerBand(T);
-
 const Home = T("common.breadcrumb.home", { defaultValue: "Home" });
 const Documentation = T("common.docs.pageTitle", {
 	defaultValue: "Documentation",
 });
 const Crumb = T("rust.crumb", { ns: "doc", defaultValue: "Rust API" });
-
-/**
- * The page's metadata strip, in the same five fields every documentation
- * surface carries (`DesignSystem-Pages.md` §5, built by `BuildDocStrip`). The
- * layer is the page's own subject, `RUST API`, exactly as its kicker and its
- * crumb name it; the source is the rustdoc output the viewer frames; and the
- * crate count is the one number a reader can check against the list below.
- */
-const PageStrip = BuildDocStrip(
-	{
-		Layer: Crumb,
-		Source: "RUSTDOC",
-		Extras: [
-			{
-				Label: T("strip.crates", { ns: "doc", defaultValue: "CRATES:" }),
-				Value: String(RustCrates.length),
-			},
-		],
-	},
-	T,
-);
 ---
 
 <Base
@@ -86,43 +64,49 @@ const PageStrip = BuildDocStrip(
 
 	<div class="doc-rust">
 		<DocArticle
-			kicker="/RUST API"
 			title={Heading}
 			standfirstHtml={LinkMentions(Standfirst)}
-			strip={PageStrip}
 			crumbs={[
 				{ label: Home, href: "/" },
 				{ label: Documentation, href: "/Doc" },
 				{ label: Crumb },
 			]}
 			measure={false}
-			banded
 		>
-			<jelly-card
-				class="doc-index-card"
-				style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:var(--space-group);--jelly-card-padding-inline:clamp(1rem,4vw,2.5rem)"
-			>
-				<DocIndex band={RustBand(T)} />
-			</jelly-card>
+			<ul class="doc-crates">
+				{
+					RustCrates.map((Crate) => (
+						<li class="doc-crates__item">
+							<a
+								class="doc-crate"
+								href={Crate.Url}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<span class="doc-crate__label">
+									{Crate.Label}
+									<span class="doc-crate__arrow" aria-hidden="true">
+										↗
+									</span>
+								</span>
+								<span class="doc-crate__note">{Crate.Description}</span>
+							</a>
+						</li>
+					))
+				}
+			</ul>
 
-			<jelly-card
-				class="doc-appendix__card"
-				style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:var(--space-group);--jelly-card-padding-inline:clamp(1rem,4vw,2.5rem)"
-			>
-				<RecordBand band={ViewerBand}>
-					<RustViewer
-						crates={RustCrates}
-						label={T("rust.viewer.label", {
-							ns: "doc",
-							defaultValue: "Rust crate group",
-						})}
-						title={T("rust.viewer.title", {
-							ns: "doc",
-							defaultValue: "Rust API Documentation",
-						})}
-					/>
-				</RecordBand>
-			</jelly-card>
+			<RustViewer
+				crates={RustCrates}
+				label={T("rust.viewer.label", {
+					ns: "doc",
+					defaultValue: "Rust crate group",
+				})}
+				title={T("rust.viewer.title", {
+					ns: "doc",
+					defaultValue: "Rust API Documentation",
+				})}
+			/>
 
 			<p class="doc-rust__back">
 				<a href="/Doc">{Documentation}<span aria-hidden="true"> ←</span></a>

@@ -3,6 +3,10 @@
 //
 // Publishes:
 //   .doc-rust            the page container (one gutter, one max width)
+//   .doc-crates          the nine crate tiles, five across from 768px
+//   .doc-crate           one tile: its name, its ↗ and one line about the crate
+//   .doc-crate__label    the crate's name
+//   .doc-crate__note     the crate's description
 //   .doc-rust__viewer    the switcher and its frame
 //   .doc-rust__bar       the tab list
 //   .doc-rust__tab       one crate
@@ -24,6 +28,64 @@
 	@include band-inner;
 
 	padding-block: var(--space-group);
+}
+
+/* The crate tiles: two across on a narrow viewport, five across from 768px -
+   the baseline's `grid-cols-2 md:grid-cols-5`, which is the one place on this
+   page that is not the documentation grid. Nine tiles in five columns leave a
+   hole in the last row on purpose: the list is a set, not a sequence. */
+.doc-crates {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--space-tight);
+
+	list-style: none;
+
+	margin: 0;
+	padding: 0;
+
+	@include bp(768px) {
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+	}
+}
+
+.doc-crate {
+	display: block;
+
+	block-size: 100%;
+
+	padding: var(--space-reading);
+
+	background: var(--Card);
+
+	@include hairline;
+
+	color: var(--CardForeground);
+
+	text-decoration: none !important;
+
+	&:hover {
+		color: var(--Accent);
+	}
+}
+
+.doc-crate__label {
+	display: block;
+
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	font-weight: 500;
+}
+
+.doc-crate__note {
+	display: block;
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+
+	margin-block-start: var(--space-tight);
 }
 
 .doc-rust__viewer {

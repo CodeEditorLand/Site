@@ -1,77 +1,245 @@
-// DocIndex - one documentation band: the section name as the heading, the page
-// count in the kicker, and one dense row per page underneath.
+// DocIndex - the documentation index: the three ways in, the ten section grids,
+// and the three artifacts that close the page.
 //
 // Publishes:
-//   .doc-index            the band's body, and the section's anchor id
-//   .doc-index__lede      the paragraph that opens an appendix band
-//   .doc-index__group     one run of rows sharing a sub-label
-//   .doc-index__label     that sub-label ("Filesystem Footprint")
-//   .doc-index__list      the rows
-//   .doc-index__row       one page: its name, then its description
-//   .doc-index__link      the name, which is the link
-//   .doc-index__arrow     the direction marker (decorative)
-//   .doc-index__note      the page's description, at caption weight
-//   .doc-index__back      the index's back-to-top line
-//   .doc-appendix         the four appendix artifacts, after the index card
-//   .doc-appendix__card   one appendix artifact
+//   .doc-features            the three ways in, above the sections
+//   .doc-section             one section: its heading and its cards
+//   .doc-section__heading    the section's h2 (and each appendix's)
+//   .doc-grid                one section's cards, three across when there is room
+//   .doc-card                one card's cell
+//   .doc-card--feature       one of the three ways in, which is larger
+//   .doc-card__surface       the jelly-card itself
+//   .doc-card__link          the anchor that fills the card
+//   .doc-card__title         the card's heading (h2 above the sections, h3 inside)
+//   .doc-card__note          the page's description
+//   .doc-appendix            one closing artifact
+//   .doc-appendix__panel     the one surface inside it
+//   .doc-appendix__lede      the sentence that opens the panel
+//   .doc-appendix__foot      the rule and the link that close the architecture panel
+//   .doc-appendix__link      that link
+//   .doc-appendix__arrow     the decorative ↗ every external destination carries
+//   .doc-badges              the fifteen elements, as a badge strip
+//   .doc-badge               one element
+//   .doc-services            the four backend workers
+//   .doc-services__item      one worker: its link, then its sentence
+//   .doc-services__link      the worker's name
+//   .doc-services__note      its sentence, printed after the baseline's `-`
+//   .doc-tiles               the twelve live deployments
+//   .doc-tile                one destination: name, arrow, one line of context
+//   .doc-index__back         the index's back-to-top line
 //
-// The row is the ledger's grammar without the ledger's block: a key on the left,
-// a muted note on the right, one hairline per row, `--space-tight` inside and
-// nothing between. `RecordLedger` could not carry it - its prop surface has no
-// `href`, and a documentation index exists to be navigated - so the anatomy is
-// restated here and nowhere else.
+// ─── WHY A CARD GRID ──────────────────────────────────────────────────────
 //
-// ─── ONE SURFACE PER OBJECT ────────────────────────────────────────────────
+// This is what the baseline rendered: ten `<section>`s, each a `h2` over a
+// three-across grid of `jelly-card`s, with a three-across masthead above them.
+// `DESIGN.md` §3.2 argues the opposite - a row ledger - and the fidelity rule
+// for this programme is explicit that the render wins and the disagreement is
+// reported. So the grid is back, and the ledger's row grammar lives on only in
+// the sidebar, where a tree is what a reader wants.
 //
-// The card is the surface of the ARTIFACT, not of a band (DESIGN.md §9 Q1):
-// `Doc.astro` puts one `jelly-card` around the ten section bands and one around
-// each appendix band, and every band inside renders `tone="bare"` - no fill, no
-// border, no padding, no ink of its own (DESIGN.md §4.1). So the card paints the
-// one boundary and owns the one inset, two sections of the map separate at
-// `--space-group` (the documented distance between two parts of one subject,
-// §2.3), and nothing here has to erase a block's geometry from a page partial:
-// the tone owns it at the block. The earlier version of this file did erase it
-// here, and that scoped patch was the symptom the tone fixes.
+// ─── ONE SURFACE PER OBJECT ───────────────────────────────────────────────
+//
+// The card is the surface of the ENTRY, not of the section (DESIGN.md §9 Q1):
+// one `jelly-card` per page, radius 0, `--Card` fill, and the anchor inside it
+// carries the inset. The section paints nothing, so two sections separate at
+// `--space-chapter` - the documented distance between two subjects - and the
+// page reads as one map rather than as ten panels.
 //
 // ─── THE ADAPTATION MATRIX (§6, and §2.8's four breakpoints) ───────────────
 //
-//   < 640px    one column; the note stacks under the name; the decorative `→`
-//              is the first thing to collapse (the name, the note, the kicker
-//              count and the sub-label all stay - nothing textual is dropped)
-//   640-767    one column; the arrow returns
-//   768-1023   two columns, name 30ch | note; the rail is the collapsed panel
-//   1024+      two columns, name 30ch | note; the rail is the sticky 26ch column
+//   < 768px    one column everywhere; the three ways in read as three stacked
+//              cards, the sections as one card per row
+//   768-1023   two columns of pages, three of ways in; the rail is the panel
+//   1024+      three columns of pages, three of ways in; the rail is sticky
 //
-// No step is added at 1280: the row is already two columns and the measure
-// caps the note, so a wider viewport buys gutter, not a different index. The
-// appendix cards stack at every width - they are artifacts of different sizes,
-// and an equal-height grid is the card wall this artifact replaces (§1.8).
+// No step is added at 1280: the grid is already at its widest and a wider
+// viewport buys gutter, not another column.
 @use "../../Mixin" as *;
 
-.doc-index__lede {
+/* ─── THE WAYS IN ───────────────────────────────────────────────────────── */
+
+.doc-features {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-reading);
+
+	list-style: none;
+
+	margin: 0;
+	padding: 0;
+
+	@include bp(768px) {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--space-group);
+	}
+}
+
+/* ─── A SECTION ─────────────────────────────────────────────────────────── */
+
+.doc-section {
+	margin-block-start: var(--space-chapter);
+}
+
+.doc-section__heading {
 	font-size: var(--type-sub);
 	line-height: var(--type-sub-line);
+	font-weight: 500;
+	letter-spacing: -0.01em;
+
+	text-wrap: balance;
+
+	color: var(--Foreground);
+
+	margin: 0 0 var(--space-group);
+}
+
+.doc-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-reading);
+
+	list-style: none;
+
+	margin: 0;
+	padding: 0;
+
+	@include bp(768px) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	@include bp(1024px) {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+/* ─── ONE CARD ──────────────────────────────────────────────────────────── */
+
+/* The cell stretches, the surface fills the cell, the anchor fills the surface:
+   one card per grid track, equal heights per row. */
+.doc-card {
+	display: flex;
+
+	min-inline-size: 0;
+}
+
+jelly-card.doc-card__surface {
+	display: block;
+
+	inline-size: 100%;
+}
+
+/* The card is the link, so nothing in it is underlined: the baseline's cards
+   were `jelly-card`s with a click handler and carried no rule at all. The
+   site's accessibility rule (`_Global.scss`) underlines every anchor through
+   ten `:not()` selectors, which no single class can outrank - hence the one
+   `!important` in this partial, on a property the card must not show. The
+   title and the note are one destination; a rule under either of them says
+   "this is a link inside a card", which is not what the card is. */
+.doc-card__link {
+	display: block;
+
+	block-size: 100%;
+
+	padding: var(--space-reading);
+
+	color: var(--CardForeground);
+
+	text-decoration: none !important;
+
+	&:hover {
+		color: var(--Accent);
+	}
+}
+
+.doc-card__title {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	font-weight: 500;
+
+	text-wrap: balance;
+
+	margin: 0;
+}
+
+.doc-card__note {
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
 
 	color: var(--MuteForeground);
+
+	margin: var(--space-tight) 0 0;
+}
+
+/* The three ways in are the page's one larger card: their title is the card's
+   `h2`, so it steps up to the sub tier and the card takes the group inset. */
+.doc-card--feature .doc-card__link {
+	padding: var(--space-group);
+}
+
+.doc-card--feature .doc-card__title {
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+}
+
+/* ─── THE CLOSING ARTIFACTS ─────────────────────────────────────────────── */
+
+.doc-appendix {
+	margin-block-start: var(--space-chapter);
+}
+
+.doc-appendix__panel {
+	@include hairline;
+
+	background: var(--Card);
+
+	padding: var(--space-group);
+}
+
+.doc-appendix__lede {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+
+	color: var(--CardForeground);
 
 	max-width: 62ch;
 
 	margin: 0 0 var(--space-group);
 }
 
-.doc-index__group + .doc-index__group {
-	margin-block-start: var(--space-group);
-}
-
-.doc-index__label {
-	@include mono-meta;
-	@include track;
-
-	margin: 0 0 var(--space-tight);
-}
-
-.doc-index__list {
+.doc-appendix__foot {
 	@include hairline(top);
+
+	margin-block-start: var(--space-reading);
+	padding-block-start: var(--space-reading);
+}
+
+.doc-appendix__link {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	font-weight: 500;
+
+	color: var(--CardForeground);
+
+	text-decoration: none !important;
+
+	&:hover {
+		color: var(--Accent);
+
+		text-decoration: underline !important;
+	}
+}
+
+.doc-appendix__arrow {
+	margin-inline-start: var(--space-tight);
+
+	color: var(--MuteForeground);
+}
+
+/* The fifteen elements, as a badge strip. */
+.doc-badges {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
 
 	list-style: none;
 
@@ -79,58 +247,115 @@
 	padding: 0;
 }
 
-.doc-index__row {
-	@include hairline(bottom);
+.doc-badge {
+	@include mono-meta;
 
-	display: grid;
-	grid-template-columns: minmax(0, 1fr);
-	row-gap: var(--space-tight);
+	display: inline-block;
 
-	padding-block: var(--space-reading);
+	padding: var(--space-tight) var(--space-reading);
 
-	@include bp(768px) {
-		grid-template-columns: minmax(0, 30ch) minmax(0, 1fr);
-		column-gap: var(--space-group);
-		align-items: baseline;
-	}
-}
-
-.doc-index__link {
-	display: inline-flex;
-	align-items: baseline;
-	gap: var(--space-tight);
-
-	font-size: var(--type-body);
-	line-height: var(--type-body-line);
-	font-weight: 500;
+	@include hairline;
 
 	color: var(--CardForeground);
+
+	text-decoration: none !important;
 
 	&:hover {
 		color: var(--Accent);
 	}
 }
 
-/* The direction marker is decoration and the first thing a narrow viewport
-   drops: the row keeps its name, its note and its sub-label at every width. */
-.doc-index__arrow {
-	@include mono-meta;
+/* The four workers: the link names the service, the dash opens its sentence. */
+.doc-services {
+	list-style: none;
 
-	display: none;
+	margin: 0;
+	padding: 0;
+}
 
-	@include bp(640px) {
-		display: inline;
+.doc-services__item + .doc-services__item {
+	margin-block-start: var(--space-reading);
+}
+
+.doc-services__link {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	font-weight: 500;
+
+	color: var(--CardForeground);
+
+	text-decoration: none !important;
+
+	&:hover {
+		color: var(--Accent);
+
+		text-decoration: underline !important;
 	}
 }
 
-.doc-index__note {
+.doc-services__note {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+
+	color: var(--CardForeground);
+}
+
+/* The twelve deployments: two across from 768px, one per row below it. */
+.doc-tiles {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-tight);
+
+	list-style: none;
+
+	margin: 0;
+	padding: 0;
+
+	@include bp(768px) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.doc-tile {
+	display: block;
+
+	block-size: 100%;
+
+	padding: var(--space-reading);
+
+	background: var(--Card);
+
+	@include hairline;
+
+	color: var(--CardForeground);
+
+	text-decoration: none !important;
+
+	&:hover {
+		color: var(--Accent);
+	}
+}
+
+.doc-tile__label {
+	display: block;
+
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	font-weight: 500;
+}
+
+.doc-tile__note {
+	display: block;
+
 	font-size: var(--type-caption);
 	line-height: var(--type-caption-line);
 
 	color: var(--MuteForeground);
 
-	max-width: 62ch;
+	margin-block-start: var(--space-tight);
 }
+
+/* ─── BACK TO TOP ───────────────────────────────────────────────────────── */
 
 .doc-index__back {
 	@include hairline(top);
@@ -138,43 +363,16 @@
 	@include mono-meta;
 	@include track;
 
+	margin-block-start: var(--space-chapter);
 	padding-block-start: var(--space-group);
 }
 
-.doc-article__body > .doc-index__back {
-	margin-block-start: var(--space-chapter);
-}
+.doc-index__back a {
+	color: var(--Foreground);
 
-/* ─── THE CARDS ─────────────────────────────────────────────────────────── */
+	text-decoration: none !important;
 
-jelly-card.doc-index-card,
-jelly-card.doc-appendix__card {
-	display: block;
-}
-
-/* Nothing here erases a band's fill, border or padding any more: the band
-   renders `tone="bare"` and the block owns that (System/Record/_Band.scss,
-   DESIGN.md §9 Q1). The band's inner container is flattened once, for every
-   banded article, by `.doc-article--banded .record-band__inner`
-   (System/Component/Doc/_Article.scss) - the card's edge and the rows' edge are
-   one decision, not two. */
-
-.doc-appendix {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-group);
-}
-
-/* Scoped past `.doc-article__body > *`, which zeroes a direct child's margins:
-   the appendices open a new subject after the index artifact, so they take the
-   one chapter gap this page is allowed. */
-.doc-article__body > .doc-appendix {
-	margin-block-start: var(--space-chapter);
-}
-
-/* A page that puts the two cards side by side in source order instead of in the
-   `.doc-appendix` wrapper (`Doc/Rust.astro`) gets the same gap: two artifacts on
-   one page are separated by `--space-group`, never by the body's reading rhythm. */
-jelly-card.doc-index-card + jelly-card.doc-appendix__card {
-	margin-block-start: var(--space-group);
+	&:hover {
+		text-decoration: underline !important;
+	}
 }

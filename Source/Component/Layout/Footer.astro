@@ -53,20 +53,6 @@ const Copyright = T("footer:bottomBar.copyright", {
 
 		<RecordLedger rows={Data.Ledger} class="FooterLedger" />
 
-		<nav class="FooterSources" aria-label="Sources">
-			{
-				Data.Sources.map((Link) => (
-					<a
-						class="FooterSourceLink"
-						href={Link.Href}
-						{...FooterLinkAttributes(Link.Target)}
-					>
-						<span class="FooterSourceLabel">/{Link.Label}</span>
-					</a>
-				))
-			}
-		</nav>
-
 		<nav class="FooterQuickLinks" aria-label="Quick links">
 			{
 				Data.Quick.map((Link) => (

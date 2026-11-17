@@ -33,7 +33,7 @@ export const HeaderLinkList: readonly HeaderLink[] = [
 
 	{ Key: "nav.download", Label: "Download", Href: "/Download" },
 
-	{ Key: "nav.docs", Label: "Docs", Href: "/Doc" },
+	{ Key: "nav.docs", Label: "Documentation", Href: "/Doc" },
 
 	{
 		Key: "nav.github",

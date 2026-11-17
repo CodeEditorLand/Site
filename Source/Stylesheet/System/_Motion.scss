@@ -1,0 +1,260 @@
+// MOTION - `DesignSystem-Motion.md`, implemented as CSS.
+//
+// The document's subject is transparency through motion: the interface reveals
+// what is interactive, what is processing, what has changed and what remains
+// unavailable, by letting the reader perceive the system's response. It states
+// the law as two lists - MOTION MUST REVEAL SOMETHING / MOTION MUST NOT
+// continue without a state change, decorate static content, randomize layout,
+// obscure the final status, substitute for text - and it names the
+// relationships rather than the values.
+//
+// So this file is two things and no more: the vocabulary (durations, easings
+// and distances as tokens named for the relationship they express) and the four
+// places on the site where a CSS-visible state change exists to carry it.
+//
+// ── WHERE THE VALUES COME FROM ────────────────────────────────────────────
+// The document gives no millisecond and no curve. It gives relationships -
+// "quick release", "slow, grounded return", "quick settlement", "a short
+// interrupted offset - NOT a playful shake" - and one number elsewhere in the
+// set: `further_design_system.md` §evidence asks for "a 1-2% crop shift" on an
+// evidence image. Two sources therefore, and neither is invented here:
+//
+//   1. Jelly's own engine, which is the interaction language the document is
+//      written about. `Vendor/JellyUI/dist/jelly.js` runs
+//      420ms cubic-bezier(.16,.82,.28,1) for a shape spring,
+//      320ms cubic-bezier(.4,0,.5,1) to settle, 150ms ease-in to press and
+//      340ms cubic-bezier(.3,1.7,.5,1) for its one overshoot. The site's
+//      motion is that physics at those numbers, so a record block and a Jelly
+//      button cannot drift apart.
+//   2. The intervals the record layer already chose - 180ms for the archive
+//      row's disclosure, 220ms for its trace - which are kept rather than
+//      re-tuned, because they are already in front of the reader.
+//
+// Jelly's 340ms overshoot is deliberately NOT adopted as a token: the
+// document's Land row asks for "precise press, elastic acknowledgement, quick
+// settlement", and an overshoot is not a settlement. The site's one elastic
+// frame is the corner marks (C19), which own it in their own partial.
+//
+// ── FIRST PAINT ───────────────────────────────────────────────────────────
+// Nothing here animates on load, and that is structural rather than a promise:
+// this file declares no `@keyframes` and no `animation` - only `transition`,
+// and only on properties whose value changes when a state selector matches. A
+// transition cannot fire at first paint: the element is created with the
+// computed value it will keep, so there is no change for an interval to run
+// between. "Motion must not decorate static content" and "do not animate
+// anything on page load" are the same rule, and both are satisfied by there
+// being no entrance animation to skip.
+//
+// ── REDUCED MOTION ────────────────────────────────────────────────────────
+// Every mixin in `System/_Mixin.scss` carries both branches. The interval lives
+// in `prefers-reduced-motion: no-preference`; `reduce` writes `transition:
+// none`. The *state* is declared below unconditionally, so a reader who asked
+// for less motion gets the end state in one frame - the offset, the trace, the
+// crop - never the reverse.
+//
+// ── WHAT THIS FILE MAY TOUCH ──────────────────────────────────────────────
+// `transform` and `opacity` only. A transition on `width`, `height`, `top` or
+// padding reflows the page it means to acknowledge, and the document forbids
+// layout motion as plainly as it forbids decoration. The one existing layout
+// animation the record layer carries - the archive row's `padding-inline` - is
+// left in `Record/_Archive.scss`, where its owner can decide; this file
+// converts only the trace, which is a width animation, and which had to become
+// a transform for the "trace" relationship to be expressible at all.
+//
+// What the document asks for that CSS cannot do is reported on the card rather
+// than simulated here: the four canonical state sequences (download, checksum,
+// copy, expand) are runtime state machines, and a transition needs a state to
+// transition between.
+
+@use "Mixin" as *;
+
+/* ─── THE VOCABULARY ─────────────────────────────────────────────────────── */
+
+/* One entry per relationship the document names, in the order a reader meets
+   them: the affordance arrives (enter), the press registers (press), the line
+   is drawn (trace), the surface returns (settle), the state resolves
+   (resolve), the action is refused (interrupt), and the evidence is inspected
+   (crop). The name is the relationship; the value is the evidence for it. */
+
+@layer theme {
+	:root {
+		/* ENTER - "Hover reveals affordance": the acknowledgement that a thing
+		   can be touched, and the pull toward it. 180ms is the interval the
+		   archive row already discloses on. */
+		--motion-enter-duration: 180ms;
+		--motion-enter-easing: cubic-bezier(0.16, 0.82, 0.28, 1);
+		--motion-enter-lift: 0.125rem; /* 2px - a pull, not a jump */
+
+		/* PRESS - "Press reveals input registration": compression on press, the
+		   smallest movement that survives a raster at any density. */
+		--motion-press-duration: 150ms;
+		--motion-press-easing: ease-in;
+		--motion-press-travel: 1px;
+
+		/* TRACE - "Expansion reveals hierarchy": a hairline drawn across the
+		   name it belongs to. 220ms is the interval the archive trace already
+		   uses; 1px is the weight of the rule it is. */
+		--motion-trace-duration: 220ms;
+		--motion-trace-easing: cubic-bezier(0.2, 0.7, 0.2, 1);
+		--motion-trace-weight: 1px;
+
+		/* SETTLE - "Success reveals completion", and the return to rest: Land's
+		   "quick settlement". 320ms, the interval Jelly settles on. */
+		--motion-settle-duration: 320ms;
+		--motion-settle-easing: cubic-bezier(0.4, 0, 0.5, 1);
+
+		/* RESOLVE - the largest state change the system has: one printed status
+		   word becoming another. The longest interval on purpose, so a status
+		   never arrives before the work it reports. 420ms, Jelly's shape-spring
+		   interval. */
+		--motion-resolve-duration: 420ms;
+		--motion-resolve-easing: cubic-bezier(0.16, 0.82, 0.28, 1);
+
+		/* INTERRUPT - "Error reveals interruption": "a short interrupted
+		   offset - NOT a playful shake". It takes the press interval, because
+		   an interruption must never be slower than the press it interrupts,
+		   and 2px, because that is the smallest offset that reads as an offset
+		   and the largest that reads as an accident. */
+		--motion-interrupt-duration: 150ms;
+		--motion-interrupt-easing: ease-in;
+		--motion-interrupt-offset: 0.125rem; /* 2px */
+
+		/* CROP - closer inspection of evidence: `further_design_system.md`
+		   asks for "a 1-2% crop shift"; 1.5% is the middle of that range. */
+		--motion-crop-scale: 1.015;
+	}
+}
+
+/* ─── THE RECORD BLOCK ───────────────────────────────────────────────────── */
+
+/* "Can I interact with this?" - the arrow in front of a linked record name is
+   the block's statement of direction ("Navigation reveals direction"), so it is
+   the part that moves: 2px inline on hover and on keyboard focus, and back to
+   its own place on the settle curve when the pointer leaves.
+
+   `display: inline-block` is what gives the arrow a box to transform. A span is
+   `inline`, and `transform` is ignored on an inline box, so without it the
+   declaration below would parse and do nothing.
+
+   Two legs, two mixins: the arrival runs on the enter tokens, the return on the
+   settle tokens. One `transition` cannot express both, which is why the
+   interval is declared in each state instead of once on the base rule. */
+
+.record-entry__arrow {
+	display: inline-block;
+
+	transform: none;
+
+	@include motion-settle;
+}
+
+.record-entry__link:is(:hover, :focus-visible) .record-entry__arrow {
+	transform: translateX(var(--motion-enter-lift));
+
+	@include motion-enter;
+}
+
+/* ─── THE ARCHIVE ROW ────────────────────────────────────────────────────── */
+
+/* The trace under an archive title, drawn rather than widened.
+   `Record/_Archive.scss` animates `inline-size` from 0 to 100%, which is a
+   width animation: it reflows the row on every frame of the disclosure, and
+   `width` is the first property the card forbids. The rule below keeps the same
+   picture - a hairline of the accent running the title's own width, from the
+   left - and paints it with `scaleX`, which runs without touching layout.
+
+   `inline-size: 100%` at rest is the whole trick: the line is always the full
+   width of the name, and the disclosure changes only its scale. Nothing about
+   the box moves, so nothing can reflow and the row's height is identical in
+   both states. */
+
+.record-archive__title::after {
+	inline-size: 100%;
+	block-size: var(--motion-trace-weight);
+
+	transform: scaleX(0);
+	transform-origin: left center;
+
+	@include motion-settle;
+}
+
+.record-archive__link:is(:hover, :focus-visible, :active)
+	.record-archive__title::after {
+	transform: scaleX(1);
+
+	@include motion-trace;
+}
+
+/* ─── THE INDEX STRIP ────────────────────────────────────────────────────── */
+
+/* The strip is the band's table of contents: one cell per marker. Its cells are
+   flex items of `.record-band__index`, so each is blockified and `transform`
+   has a box to act on.
+
+   The pull is the same 2px the record block uses - the strip answers "Can I
+   interact with this?" with the same word the record does - and the press adds
+   1px of travel under it. That is the strip's whole compression: a link in a
+   mono line has no shape to compress, only a position to register. */
+
+.record-band__index-item {
+	transform: none;
+
+	@include motion-settle;
+}
+
+.record-band__index-item:is(:hover, :focus-visible) {
+	transform: translateX(var(--motion-enter-lift));
+
+	@include motion-enter;
+}
+
+.record-band__index-item:active {
+	transform: translate(var(--motion-enter-lift), var(--motion-press-travel));
+
+	@include motion-press;
+}
+
+/* ─── THE EVIDENCE ───────────────────────────────────────────────────────── */
+
+/* "For an evidence image, a hover should feel like closer inspection, not
+   animation for its own sake: a 1-2% crop shift" (`further_design_system.md`).
+   The scale is applied to the image inside the plate, not to the plate: the
+   primitive already gives the plate `overflow: hidden`, so the image grows
+   inside a frame that stays exactly where it is and the page does not move. A
+   `transform` on the image is also the only way to crop without a `width`
+   change.
+
+   `RecordFigure`'s media frame is deliberately NOT treated the same way: it
+   carries `overflow-x: auto` so a composed diagram can be wider than its
+   column, and clipping it to a crop would take that scroll away. */
+
+.record-hero__plate img {
+	transform: scale(1);
+
+	@include motion-settle;
+}
+
+.record-hero__evidence:hover .record-hero__plate img {
+	transform: scale(var(--motion-crop-scale));
+
+	@include motion-enter;
+}
+
+/* ─── THE SEAL ───────────────────────────────────────────────────────────── */
+
+/* The seal is where motion stops, and that is its implementation.
+
+   `DesignSystem-Motion.md` gives it one row: "Is this finished?" - "Settled,
+   locked final state - not merely a color shift". A settlement is not an
+   interval, it is the absence of one, and the same document forbids what a
+   hover on the seal would be: "MOTION MUST NOT decorate static content",
+   "obscure the final status". The seal is static content and it is the final
+   status, so it takes no transition, no transform and no opacity. The record's
+   ink and the status line beside it carry the change; the seal is what the
+   change has arrived at.
+
+   The motion the document does ask of a seal - "SIGNATURE: CHECKING" then
+   "measured progress or scan motion" then "SIGNATURE: VERIFIED" - needs a
+   runtime state to exist first. Nothing in the markup sets one and this card
+   may not add one, so it is reported as out of scope rather than simulated with
+   a permanent offset. */
