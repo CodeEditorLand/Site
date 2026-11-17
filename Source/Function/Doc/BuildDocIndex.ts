@@ -2,9 +2,9 @@
  * BuildDocIndex - the documentation index's complete band stack.
  *
  * The index is a map, not a card wall: one band per section, the section name
- * as the heading and the page count in the kicker (`/ELEMENTS · 16 PAGES`),
- * then one dense row per page - `navTitle` (or `title`), the page's
- * `description` as the row's note, in `order`.
+ * as the heading and the page count in the kicker (`/ELEMENTS` U+2001
+ * `16 PAGES`), then one dense row per page - `navTitle` (or `title`), the
+ * page's `description` as the row's note, in `order`.
  *
  * Three things this module decides so the page does not have to:
  *
@@ -15,9 +15,11 @@
  * - **Group runs.** A page that carries `group` (only `Filesystem Footprint`
  *   does today) starts or extends a run, so the seven pages read under one
  *   sub-label instead of repeating it seven times.
- * - **Tone.** Bands alternate down the page - `flush`, then `paper`, then
- *   `canvas` - so the rhythm is one decision in one place and no two `paper`
- *   bands or three `canvas` bands can ever sit in a row.
+ * - **No surface.** A band is a section of one artifact, so it carries no
+ *   tone: the page paints one surface for the whole index and the bands render
+ *   `bare` inside it (DESIGN.md §5 A5, §9 Q1). An alternation chosen here was
+ *   a surface rhythm borrowed from another site, and it made one map read as a
+ *   stack of chapters.
  *
  * The four appendix bands (where to start, architecture, backend services,
  * live deployments) are built here too: they are the same `DocBand` shape as a
@@ -30,7 +32,6 @@
 import type { CollectionEntry } from "astro:content";
 
 import type { DocBand, DocGroupRun, DocLink, DocTranslate } from "../../Component/Doc/Type.js";
-import type { Tone } from "../../Component/Record/Type.js";
 
 import { SectionOrder, Slugify } from "./BuildDocSidebar.js";
 
@@ -64,9 +65,13 @@ const ToRuns = (Entries: CollectionEntry<"doc">[]): DocGroupRun[] => {
 };
 
 /**
- * `/ELEMENTS · 16 PAGES`. The count word is copy and comes from `T`; the
- * section name is data and is upper-cased here, because the kicker's voice is
- * the design's, not the collection's.
+ * `/${SECTION}` U+2001 `<count> PAGES`. The count word is copy and comes from
+ * `T`; the section name is data and is upper-cased here, because the kicker's
+ * voice is the design's, not the collection's.
+ *
+ * The separator is U+2001 EM QUAD, the only visual separator the grammar allows
+ * (`DesignSystem-Grammar.md` §3, DESIGN.md §1.5) - the centre dot this string
+ * used to carry is forbidden on a public surface.
  */
 const ToKicker = (Section: string, Count: number, T: DocTranslate): string => {
 	const Pages = T(Count === 1 ? "index.page" : "index.pages", {
@@ -74,12 +79,8 @@ const ToKicker = (Section: string, Count: number, T: DocTranslate): string => {
 		defaultValue: Count === 1 ? "PAGE" : "PAGES",
 	});
 
-	return `/${Section.toUpperCase()} · ${Count} ${Pages}`;
+	return `/${Section.toUpperCase()}\u2001${Count} ${Pages}`;
 };
-
-/** The first band after the header drops its top rule; the rest alternate. */
-const ToTone = (Position: number): Tone =>
-	Position === 0 ? "flush" : Position % 2 === 1 ? "paper" : "canvas";
 
 /** The fifteen elements, as the architecture band's index strip. */
 const Element = [
@@ -106,7 +107,7 @@ const Element = [
  * this module did - the hrefs, labels and descriptions are the page's own, moved
  * into data.
  */
-const BuildAppendix = (T: DocTranslate): Omit<DocBand, "Tone">[] => {
+const BuildAppendix = (T: DocTranslate): DocBand[] => {
 	const Row = (
 		Id: string,
 		Label: string,
@@ -396,7 +397,8 @@ const BuildAppendix = (T: DocTranslate): Omit<DocBand, "Tone">[] => {
 
 /**
  * The whole index: the ten section bands in `SectionOrder`, then the four
- * appendix bands, each with its tone assigned by position down the page.
+ * appendix bands. No band carries a surface - the page paints one card for the
+ * index and one per appendix, and every band renders `bare` inside it.
  *
  * A section that no entry declares is dropped rather than rendered empty -
  * `Telemetry` is in `SectionOrder` but the four telemetry pages carry
@@ -418,7 +420,7 @@ const BuildDocIndex = (
 	}
 
 	const Sections = SectionOrder.filter((Section) => BySection.has(Section)).map(
-		(Section): Omit<DocBand, "Tone"> => {
+		(Section): DocBand => {
 			const Group = BySection.get(Section)!;
 
 			return {
@@ -430,10 +432,7 @@ const BuildDocIndex = (
 		},
 	);
 
-	return [...Sections, ...BuildAppendix(T)].map((Band, Position) => ({
-		...Band,
-		Tone: ToTone(Position),
-	}));
+	return [...Sections, ...BuildAppendix(T)];
 };
 
 export default BuildDocIndex;

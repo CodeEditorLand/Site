@@ -7,7 +7,7 @@
 //   .record-well__bar           the title bar
 //   .record-well__label         the title-bar label, e.g. INSTALL, CONFIG, TRANSCRIPT
 //   .record-well__lang          the language tag (`bash`, `json`, `toml`) - a label, not a highlighter
-//   .record-well__copy          the copy control
+//   .record-well__copy          the copy control - a `jelly-icon-button`, placed; its skin is Jelly's
 //   .record-well__body          the recessed body
 //   .record-well__line          one verbatim line
 //
@@ -47,24 +47,26 @@
 	white-space: nowrap;
 }
 
+// The copy control is the design system's `jelly-icon-button`: the markup sets
+// the four `--jelly-*` properties every Jelly element on the site carries
+// (`--jelly-fill`, `--jelly-label`, `--jelly-ring`, `--jelly-icon-button-radius`
+// - all radius 0), so the skin, the ring, the press and the focus target are
+// Jelly's. The well contributes placement only, and the two size properties:
+// the bar is a mono strip, not a toolbar, so the control takes the bar's rhythm
+// instead of Jelly's 40px default.
 .record-well__copy {
-	@include hairline;
-	@include mono-meta;
-	@include track(0.1em);
-	appearance: none;
 	flex: 0 0 auto;
-	padding: 0 var(--space-tight);
-	background: transparent;
-	cursor: pointer;
+	--jelly-icon-button-size: var(--space-group);
+	--jelly-icon-button-icon-size: var(--space-reading);
 }
 
-.record-well__copy:hover {
-	border-color: var(--Primary);
-}
-
-.record-well__copy:focus-visible {
-	outline: var(--BorderWidth) solid var(--Ring);
-	outline-offset: var(--BorderWidth);
+// Revealed by the wiring, never by CSS: with JavaScript off - or with no
+// clipboard API - the attribute stays, so the control is absent from layout and
+// from the tab order rather than dead. Jelly's `:host` declares no display, so
+// `hidden` hides the host; this pins that against a future `:host { display }`
+// in the vendored element, which would outrank the user-agent rule.
+.record-well__copy[hidden] {
+	display: none;
 }
 
 .record-well__body {

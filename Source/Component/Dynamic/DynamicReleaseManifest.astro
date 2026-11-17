@@ -22,6 +22,11 @@
  *   `Record*` block may live inside one but never replace one (DESIGN.md §4.2).
  * - Every state line is §7's vocabulary plus a plain-language sentence beside
  *   it. Green is spent once, on the platform whose source builds are active.
+ * - The record is the page's one artifact, so the regions that answer the rest
+ *   of the page's question are its `slot`, not sections after it: requirements,
+ *   previous releases and transparency arrive as `Download/Region.astro` blocks
+ *   and the record's own flex column separates them at `--space-group`
+ *   (DESIGN.md §2.3, §7 DR-9).
  *
  * No `<script>` and no `client:*`: the record is static. The seal, the stamps
  * and the status lines are server-rendered by the Brand primitives, exactly as
@@ -167,5 +172,7 @@ const Card =
 
 		<p class="download-record__footnote">{record.footnote}</p>
 		<p class="download-record__source">{record.source}</p>
+
+		<slot />
 	</div>
 </section>

@@ -12,7 +12,13 @@
 //   .surface__index        the record marker, mono meta
 //   .surface__title        the page's only h1, with its `〈 〉` brackets
 //   .surface__standfirst   one sentence of context
-//   .surface__status       the status ledger's slot
+//   .surface__status       the status block: the state register above the ledger
+//   .surface__states       the state register - key/value rows, §7's markers
+//   .surface__state        one state row, on the ledger's own key column
+//   .surface__state-key    the mono key a state is stated under
+//   .surface__state-word   the state word, at its tone's ink
+//   .surface__mark         the 2px specimen rule a state carries
+//   .surface__chips        a row of state chips, each in a `jelly-badge`
 //   .surface__stack        a dense stack of records at --space-tight
 //   .surface__prose        a paragraph inside a band body
 //   .surface__panel        an island's frame inside a band body
@@ -84,6 +90,102 @@
 
 .surface__status {
 	margin-block-start: var(--space-reading);
+}
+
+// ─── THE STATE REGISTER ────────────────────────────────────────────────────
+// A state is not a fact (§7). ACTIVE and VERIFIED carry a specimen marker
+// beside the word, because a status that renders exactly like an ordinary fact
+// has lost its state. The marker is ONE 2px rule at the word's own ink - a
+// shape, so the state survives greyscale and is never colour-only, exactly like
+// the header's `aria-current` rule; the tone travels on the ink.
+//
+// The register sits above the ledger and borrows its geometry: same key column
+// from 640px up, same row rhythm, same interior hairline. A reader sees one
+// block of facts, in which the states are visibly states.
+.surface__states {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.surface__state {
+	@include hairline(top);
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	margin: 0;
+	padding-block: var(--space-tight);
+}
+
+.surface__state-key {
+	@include mono-meta;
+	@include track;
+
+	margin: 0;
+}
+
+.surface__state-word {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-body);
+	font-weight: 500;
+	line-height: var(--type-body-line);
+	overflow-wrap: break-word;
+}
+
+.surface__state-word--specimen {
+	color: var(--Accent);
+}
+
+.surface__state-word--ink {
+	color: var(--Foreground);
+}
+
+.surface__state-word--quiet {
+	color: var(--MuteForeground);
+}
+
+// The marker itself. `currentColor` is the whole trick: the rule takes the
+// word's ink, so `--specimen` paints it green and `--quiet` paints it muted
+// without a second declaration per tone. It is the same span inside a state
+// row and inside a `jelly-badge` chip, so a chip cannot lose its marker.
+.surface__mark {
+	display: inline-block;
+	inline-size: 2px;
+	block-size: 0.9em;
+	margin-inline-end: 0.45em;
+	vertical-align: -0.02em;
+	background: currentColor;
+}
+
+// Wide enough for the ledger's key column: the register takes the same
+// `min(14rem, 40%)` the ledger gives its key, so the two rows line up.
+@include bp(640px) {
+	.surface__state {
+		flex-direction: row;
+		align-items: baseline;
+		gap: var(--space-reading);
+	}
+
+	.surface__state-key {
+		flex: 0 0 auto;
+		inline-size: min(14rem, 40%);
+	}
+}
+
+// A row of state chips: each is a `jelly-badge` - the design system's surface -
+// with its marker inside the badge, so the chip reads as a state and not as a
+// tag that happens to sit next to one.
+.surface__chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
+	margin: 0 0 var(--space-tight);
+	padding: 0;
+	list-style: none;
 }
 
 .surface__stack {

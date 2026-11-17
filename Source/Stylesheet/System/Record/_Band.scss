@@ -1,13 +1,16 @@
 // RecordBand - the section grammar itself: one subject per band, opened by a
 // kicker and a heading, with an optional standfirst, index strip and footnote.
-// Surface alternation carries the rhythm: never two paper bands in a row, never
-// three canvas bands in a row.
+// A band at rest carries the group rhythm and no rule; a genuinely new subject
+// opts into the chapter separator (`--chapter`). Surface follows the artifact -
+// a white band is an information box, never an alternation down the page.
 //
 // Publishes:
-//   .record-band                the band shell: full width, chapter spacing, top hairline
+//   .record-band                the band shell: full width, the group rhythm, no rule of its own
+//   .record-band--chapter       the opt-in chapter separator: chapter spacing and a top hairline
 //   .record-band--paper         white card surface
 //   .record-band--canvas        the creme canvas (default)
-//   .record-band--flush         first band after the header - no top rule
+//   .record-band--flush         first band after the header - cancels the chapter's top rule
+//   .record-band--bare          a section of an artifact on a Jelly surface: no boundary, no fill, no inset
 //   .record-band__inner         the one inner container, on the band gutters
 //   .record-band__kicker        the /SECTION LABEL opening the band
 //   .record-band__heading       the band's single h2
@@ -23,19 +26,28 @@
 @use "../Mixin" as *;
 
 // ─── The shell ────────────────────────────────────────────────────────────
-// A band is separated from the one above it by a hairline rule and the chapter
-// rhythm, never by a spacer element.
+// A band at rest paints no boundary and takes the documented distance between
+// two artifacts of one page subject, --space-group. Chapter spacing and a
+// hairline rule are opt-in through `--chapter`: a band that is not a chapter
+// must not paint one (DESIGN.md §2.3, §2.7; §5 A4).
 
 .record-band {
-	@include hairline(top);
 	background: var(--Background);
 	color: var(--Foreground);
+	padding-block: var(--space-group);
+}
+
+// The chapter separator, opt-in: a genuinely new subject opens at the
+// page-boundary value, --space-chapter (84px, the poster scale's largest
+// step), under a hairline rule (DESIGN.md §2.3; §5 A4; §9 Q5).
+.record-band--chapter {
+	@include hairline(top);
 	padding-block: var(--space-chapter);
 }
 
-// The white card surface. A white band on the creme canvas needs a lower edge
-// as well as the shell's top rule, or it has no boundary against the band
-// below it.
+// The white card surface. The fill bounds it against the creme canvas; the
+// lower edge closes the box. It is a surface boundary, not a chapter rule, so
+// it stays on a band that is not a chapter.
 .record-band--paper {
 	@include hairline(bottom);
 	background: var(--Card);
@@ -46,10 +58,38 @@
 	background: var(--Background);
 }
 
-// The first band after the header. Same canvas surface, no top rule: the
-// header already ends the page, so a second rule there would be two.
+// The first band after the header. It cancels the top rule a `--chapter` band
+// would paint: the header already ends the page, so a second rule there would
+// be two. On its own it is a no-op - the shell paints no rule.
 .record-band--flush {
 	border-top: none;
+}
+
+// A section of an artifact that already sits on a Jelly surface: the card owns
+// the surface, the ink and the inset, and the band contributes structure only
+// (DESIGN.md §4.1, §9 Q1). No border, no fill, no padding, and no ink of its
+// own - `color: inherit` is what keeps the band's heading and kicker on the
+// card's ink instead of on the creme field's. Two consecutive bare bands are
+// two parts of one subject, so they separate at --space-group and at nothing
+// else (DESIGN.md §2.3, §3.2).
+.record-band--bare {
+	border: 0;
+
+	background: none;
+	color: inherit;
+
+	padding-block: 0;
+}
+
+.record-band--bare + .record-band--bare {
+	margin-block-start: var(--space-group);
+}
+
+// The heading is the loudest text in a band and it carries its own ink token
+// (--Foreground, the creme field's). On a bare band the surface is the card's,
+// so the heading inherits instead of naming a field it is not on.
+.record-band--bare .record-band__heading {
+	color: inherit;
 }
 
 // ─── The inner container ──────────────────────────────────────────────────

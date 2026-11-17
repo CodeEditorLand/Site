@@ -3,45 +3,48 @@
  * Download - the installation contract: can I install this today, and if not,
  * what can I do instead?
  *
- * The page is one release record, then three sections:
+ * The page is one artifact with four regions:
  *
  *   1. masthead    the page's one h1, its answer in one sentence, eight marks
- *   2. record      `# RELEASE_01` - the manifest: three platform entries, the
- *                  verification entry, and the one action that exists today
+ *   2. record      `# RELEASE_01` - the index, the claim, the state, three
+ *                  platform entries, the verification entry, the one action that
+ *                  exists today, and the record's two provenance lines
  *   3. requirements what each platform needs, and what a source build needs
  *   4. previous    the releases before this one - none, said with RECORD: EMPTY
  *   5. transparency the telemetry and build-profile disclosure this page carried
  *
- * The record opens the page. `DesignSystem-Pages.md` §2 specifies the download
- * surface as a release manifest, and a manifest that sits inside a chapter is a
- * stack of sections rather than a record: the five-band version buried the
- * record's own index one level down (DESIGN.md §7 DR-9). The manifest is now the
- * page's first artifact, with the record's index, stamp, route, field set,
- * action and status in the document's order.
+ * Regions 3-5 are regions *inside* the record, not chapters after it. The record
+ * is the page's one artifact, and a chapter per subject around one release
+ * buried the record's own index a level down (DESIGN.md §1.8, §7 DR-9). They
+ * arrive through the record's slot as `Download/Region.astro` blocks, and the
+ * record's own flex column separates them at `--space-group` - the documented
+ * distance between two parts of one subject - never at `--space-chapter`
+ * (DESIGN.md §2.3, §5 A4).
  *
  * The page owns the artifact order and nothing else (BRIDGE §2.1): every row,
  * label and figure lives in `Component/Dynamic/Download/Data.ts`, every group is
  * a component, and every block is the Record layer's inside a Jelly surface.
  *
- * The last section is still built by a `.tsx` island (`DynamicTransparency`). It
- * is outside this card's ownership, so it keeps its markup, its hydrating noise
- * and its four strategy commands exactly as they were; the section supplies its
- * h2 and standfirst, and the island is asked for its body only.
+ * The transparency region's body is still built by a `.tsx` island
+ * (`DynamicTransparency`). It is outside this card's ownership, so it keeps its
+ * markup, its hydrating noise and its four strategy commands exactly as they
+ * were; the region supplies its `/TRANSPARENCY` label, its `h3` and its
+ * standfirst, and the island is asked for its body only.
  */
 import DownloadMasthead from "../Component/Dynamic/DownloadMasthead.astro";
+import Region from "../Component/Dynamic/Download/Region.astro";
 import DynamicPreviousReleases from "../Component/Dynamic/DynamicPreviousReleases.astro";
 import DynamicReleaseManifest from "../Component/Dynamic/DynamicReleaseManifest.astro";
 import DynamicSystemRequirements from "../Component/Dynamic/DynamicSystemRequirements.astro";
 import { DynamicTransparency } from "../Component/Dynamic/DynamicTransparency";
 import { Header } from "../Component/Layout/Header";
-import RecordBand from "../Component/Record/RecordBand.astro";
 import {
-	Bands,
 	BuildLines,
 	Manifest,
 	ManifestPlatforms,
 	Marks,
 	PreviousReleases,
+	Regions,
 	ReleaseColumns,
 	Requirements,
 	Toolchain,
@@ -52,7 +55,8 @@ import { GetI18n } from "../Library/I18n/Server";
 
 const T = GetI18n();
 
-const Band = Bands(T);
+/** The three regions the record continues into, in page order. */
+const RegionCopy = Regions(T);
 
 /** The record's own copy: its index, its claim, its state and its two sources. */
 const Record = Manifest(T);
@@ -291,37 +295,37 @@ const MetaDescription = T("meta.downloads.description", {
 			language: "sh",
 			lines: BuildLines,
 		}}
-	/>
+	>
+		<Region region={RegionCopy.Requirements}>
+			<DynamicSystemRequirements
+				platforms={Requirements(T)}
+				toolchain={Toolchain}
+				toolchainLabel={T("download:requirements.toolchain", {
+					defaultValue: "BUILD TOOLCHAIN (SOURCE)",
+				})}
+			/>
+		</Region>
 
-	<RecordBand band={Band.Requirements}>
-		<DynamicSystemRequirements
-			platforms={Requirements(T)}
-			toolchain={Toolchain}
-			toolchainLabel={T("download:requirements.toolchain", {
-				defaultValue: "BUILD TOOLCHAIN (SOURCE)",
-			})}
-		/>
-	</RecordBand>
+		<Region region={RegionCopy.Previous}>
+			<DynamicPreviousReleases
+				releases={PreviousReleases}
+				columns={ReleaseColumns}
+				label={T("download:previousReleases.state", {
+					defaultValue: "RECORD: EMPTY",
+				})}
+				empty={T("download:previousReleases.description", {
+					defaultValue:
+						"No public releases yet. Older versions will appear here once public releases ship.",
+				})}
+			/>
+		</Region>
 
-	<RecordBand band={Band.Previous}>
-		<DynamicPreviousReleases
-			releases={PreviousReleases}
-			columns={ReleaseColumns}
-			label={T("download:previousReleases.state", {
-				defaultValue: "RECORD: EMPTY",
-			})}
-			empty={T("download:previousReleases.description", {
-				defaultValue:
-					"No public releases yet. Older versions will appear here once public releases ship.",
-			})}
-		/>
-	</RecordBand>
-
-	<RecordBand band={Band.Transparency}>
-		<DynamicTransparency
-			Content={TransparencyContent}
-			ClassName="download-transparency"
-			client:load
-		/>
-	</RecordBand>
+		<Region region={RegionCopy.Transparency}>
+			<DynamicTransparency
+				Content={TransparencyContent}
+				ClassName="download-transparency"
+				client:load
+			/>
+		</Region>
+	</DynamicReleaseManifest>
 </Base>

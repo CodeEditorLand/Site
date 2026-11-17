@@ -179,24 +179,21 @@ html {
 	@include hairline(bottom);
 }
 
-// The label carries the underline, at 20% of the mode's own ink - so the rule
-// reads on the creme field and on the white card without a second value
-// (DesignSystem-Components.md §2).
+// The label is ink and nothing else: a nav label is not body prose, so it
+// carries no decoration at rest. The sitewide prose underline in _Global.scss
+// already excludes `[class*="NavLink"]` for exactly this reason. The active
+// destination is marked by a shape at the foot of the link, never by an
+// underline - one indicator, and it is a shape (DesignSystem-Components.md §2).
 .HeaderLinkLabel {
 	@include mono-meta;
 	@include track;
 	position: relative;
 	color: var(--HeaderFg);
-	text-decoration: underline;
-	text-decoration-color: color-mix(in srgb, var(--HeaderFg) 20%, transparent);
-	text-underline-offset: 0.12em;
-	transition:
-		text-decoration-color 0.15s ease,
-		color 0.15s ease;
+	transition: color 0.15s ease;
 }
 
-// Hover is a measured state change: the label and its rule go to the accent,
-// and a 12% accent field sits behind the link. No glow, no emitted light.
+// Hover is a measured state change: the label goes to the accent, and a 12%
+// accent field sits behind the link. No decoration, no glow, no emitted light.
 .HeaderNavLink::before {
 	content: "";
 	position: absolute;
@@ -213,7 +210,6 @@ html {
 
 .HeaderNavLink:hover .HeaderLinkLabel {
 	color: var(--Accent);
-	text-decoration-color: var(--Accent);
 }
 
 .HeaderNavLink:hover::before {
@@ -226,14 +222,11 @@ html {
 
 // The destination the reader is on. `aria-current` is the state the data module
 // derives from the path and the section in view - not an href comparison, which
-// cannot tell an in-page anchor from a route. The marker is a 2px specimen rule
-// at the foot of the link plus the accent underline: a shape, so the state
-// survives greyscale and is never colour-only (DesignSystem-Components.md §2).
-.HeaderNavLink[aria-current="page"] .HeaderLinkLabel {
-	text-decoration-color: var(--Accent);
-	text-decoration-thickness: 2px;
-}
-
+// cannot tell an in-page anchor from a route. The marker is ONE 2px specimen
+// rule at the foot of the link: a shape, so the state survives greyscale and is
+// never colour-only (DesignSystem-Components.md §2). It is the only indicator -
+// the label carries no underline, so there is no second accent line to read as
+// a double rule.
 .HeaderNavLink[aria-current="page"]::after {
 	content: "";
 	position: absolute;

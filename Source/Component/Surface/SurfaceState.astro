@@ -1,0 +1,53 @@
+---
+/**
+ * SurfaceState - the state register of an app surface.
+ *
+ * A status is not a fact: `DesignSystem-Components.md` §7 requires ACTIVE and
+ * VERIFIED to carry a specimen marker beside the word, because a status that
+ * renders exactly like an ordinary fact has lost its state. This block is that
+ * marker's one home on the functional surfaces - the shell's head and each
+ * portal tier's band render it, so the shape cannot drift between them.
+ *
+ * The marker is ONE 2px rule standing before the word, at the word's own ink: a
+ * shape, so the state survives greyscale and is never colour-only, with the
+ * tone carried by the ink (`specimen` = the green accent, `ink` = the
+ * foreground, `quiet` = the muted foreground). It is the same marker the header
+ * draws at the foot of the current destination, turned to stand in a row.
+ *
+ * A state keeps its key: `EDITOR  ▍NOT CONNECTED` says what the state is *of*,
+ * which a bare pill never did. The key column is the ledger's own, so the
+ * register and the facts under it read as one block rather than two lists.
+ *
+ * No script and no hydration: a state register is static.
+ */
+import type { SurfaceState as State } from "./State.js";
+
+interface Props {
+	/** The states, in the order the page states them. */
+	states: readonly State[];
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const { states, class: ClassName } = Astro.props;
+---
+
+<ul class:list={["surface__states", ClassName]}>
+	{
+		states.map((State) => (
+			<li class="surface__state">
+				<span class="surface__state-key">{State.key}</span>
+				<span
+					class:list={[
+						"surface__state-word",
+						`surface__state-word--${State.tone}`,
+					]}
+				>
+					<span class="surface__mark" aria-hidden="true" />
+					{State.value}
+				</span>
+			</li>
+		))
+	}
+</ul>

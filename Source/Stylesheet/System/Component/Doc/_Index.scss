@@ -3,7 +3,6 @@
 //
 // Publishes:
 //   .doc-index            the band's body, and the section's anchor id
-//   .doc-index__strip     the index page's metadata strip, above the card
 //   .doc-index__lede      the paragraph that opens an appendix band
 //   .doc-index__group     one run of rows sharing a sub-label
 //   .doc-index__label     that sub-label ("Filesystem Footprint")
@@ -24,16 +23,15 @@
 //
 // ─── ONE SURFACE PER OBJECT ────────────────────────────────────────────────
 //
+// The card is the surface of the ARTIFACT, not of a band (DESIGN.md §9 Q1):
 // `Doc.astro` puts one `jelly-card` around the ten section bands and one around
-// each appendix band. `RecordBand` paints a background, a top hairline and a
-// `--space-chapter` of padding of its own, and its tone alternates `flush` →
-// `paper` → `canvas` down the page. Inside a card that is three defects at once:
-// two boundaries at one edge (DESIGN.md §7 DR-8), a chapter gap inside a single
-// artifact, and a surface rhythm borrowed from another site (§7 DR-6). The card
-// is the surface and the card owns the inset, so inside these two cards the band
-// contributes no geometry at all - no border, no fill, no padding - and two
-// sections are separated by `--space-group`, which is the documented spacing
-// between two parts of one subject (§2.3).
+// each appendix band, and every band inside renders `tone="bare"` - no fill, no
+// border, no padding, no ink of its own (DESIGN.md §4.1). So the card paints the
+// one boundary and owns the one inset, two sections of the map separate at
+// `--space-group` (the documented distance between two parts of one subject,
+// §2.3), and nothing here has to erase a block's geometry from a page partial:
+// the tone owns it at the block. The earlier version of this file did erase it
+// here, and that scoped patch was the symptom the tone fixes.
 //
 // ─── THE ADAPTATION MATRIX (§6, and §2.8's four breakpoints) ───────────────
 //
@@ -49,22 +47,6 @@
 // appendix cards stack at every width - they are artifacts of different sizes,
 // and an equal-height grid is the card wall this artifact replaces (§1.8).
 @use "../../Mixin" as *;
-
-.doc-index__strip {
-	@include mono-meta;
-	@include track;
-
-	color: var(--MuteForeground);
-
-	margin: 0;
-}
-
-/* The strip and the card are two parts of one opening, so the gap between them
-   is `--space-group`, not the body's reading rhythm. Both selectors are scoped
-   past `.doc-article__body > *`, which zeroes a direct child's margins. */
-.doc-article__body > .doc-index__strip {
-	margin-block: 0 var(--space-group);
-}
 
 .doc-index__lede {
 	font-size: var(--type-sub);
@@ -170,30 +152,12 @@ jelly-card.doc-appendix__card {
 	display: block;
 }
 
-/* One surface: the band stops painting a boundary, a fill and a chapter gap
-   inside a card that already provides all three. */
-jelly-card.doc-index-card > .record-band,
-jelly-card.doc-appendix__card > .record-band {
-	border: 0;
-
-	background: none;
-	color: var(--CardForeground);
-
-	padding-block: 0;
-}
-
-/* One subject, many sections: the documented gap between two parts of it. */
-jelly-card.doc-index-card > .record-band + .record-band {
-	margin-block-start: var(--space-group);
-}
-
-/* The card owns the gutter, so the band's inner container adds none - the rows
-   inset from the card's edge, not from a second container inside it. */
-jelly-card.doc-index-card .record-band__inner,
-jelly-card.doc-appendix__card .record-band__inner {
-	max-width: none;
-	padding-inline: 0;
-}
+/* Nothing here erases a band's fill, border or padding any more: the band
+   renders `tone="bare"` and the block owns that (System/Record/_Band.scss,
+   DESIGN.md §9 Q1). The band's inner container is flattened once, for every
+   banded article, by `.doc-article--banded .record-band__inner`
+   (System/Component/Doc/_Article.scss) - the card's edge and the rows' edge are
+   one decision, not two. */
 
 .doc-appendix {
 	display: flex;

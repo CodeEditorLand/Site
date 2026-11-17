@@ -53,12 +53,16 @@ import type Property from "./Interface/Property/Hero.js";
  *    `RecordFigure` contract puts them, so the image stays text-free and the
  *    claim of what it is evidence *of* still survives.
  *
- * The numbers are the documents', not this file's invention (`DESIGN.md` §2.2):
- * a flex row, both panels `flex: 1`, `min-h-[80dvh]`, outer padding
- * `clamp(2rem, 5vw, 5rem)`, gap `clamp(0.5rem, 1.5vw, 1.875rem)`, a `w-px`
- * hairline gutter between them, and the card padded `2.75rem` block /
- * `1.5rem` inline. The 15-25% blank band is `flex-1` over a floor of
- * `--space-blank` - the token exists for exactly this band.
+ * The geometry is the documents', not this file's invention, and it lives in
+ * `Stylesheet/System/Component/Dynamic/_Hero.scss` - this file names classes and
+ * writes no style. `design_system.md`'s ratio blueprint sizes the pair: a
+ * three-track grid, `49fr 1px 51fr`, so the record panel measures 48.95-48.97% and
+ * the evidence panel 50.94-50.97% of the pair with the 1px hairline between them;
+ * the pair is `80dvh` tall, padded `clamp(2rem, 5vw, 5rem)`, and the card is inset
+ * `2.75rem` block / `1.5rem` inline. The blueprint's separate 1.8-2.3% panel gap
+ * is not applied - its own panel ranges already sum past 100% with a gap between
+ * them, so the ratio and the hairline win. The 15-25% blank band is `flex-grow`
+ * over a floor of `--space-blank` - the token exists for exactly this band.
  *
  * On mobile the stack is card first, evidence second: the record arrives before
  * the evidence (`DesignSystem-Components.md` §1).
@@ -253,31 +257,20 @@ const DynamicHeroSection = ({ Content, Band, ClassName }: Property) => {
 		<section
 			id="hero"
 			aria-labelledby="hero-marker hero-claim"
-			className={cn("relative w-full overflow-hidden", ClassName)}
-			style={{ backgroundColor: "var(--Background)" }}
+			className={cn("hero-band", ClassName)}
 		>
-			<div
-				className="relative mx-auto flex min-h-[80dvh] flex-col md:flex-row"
-				style={{
-					padding: "clamp(2rem, 5vw, 5rem)",
-
-					gap: "clamp(0.5rem, 1.5vw, 1.875rem)",
-				}}
-			>
+			<div className="hero-band__pair">
 				{/* ══ PANEL 1 - THE FIELD RECORD ═════════════════════════════ */}
-				<div className="flex flex-1 flex-col">
-					<jelly-card className="h-full" style={CardInk}>
-						<div
-							className="CornerMarkShell relative flex h-full flex-col"
-							style={{ padding: "2.75rem 1.5rem" }}
-						>
+				<div className="hero-band__record">
+					<jelly-card className="hero-band__card" style={CardInk}>
+						<div className="CornerMarkShell hero-band__inset">
 							<CornerFrame />
 
 							{/* 1. Index left, one seal upper-right. */}
-							<div className="relative flex items-start justify-between gap-4">
+							<div className="hero-band__mark">
 								<p
 									id="hero-marker"
-									className="section-kicker m-0"
+									className="section-kicker hero-band__kicker"
 								>
 									{Hero.claim.kicker}
 								</p>
@@ -288,47 +281,31 @@ const DynamicHeroSection = ({ Content, Band, ClassName }: Property) => {
 							{/* 2-3. The oversized runtime claim, then what it is not. */}
 							<h1
 								id="hero-claim"
-								className="type-display m-0 mt-10"
-								style={{
-									fontFamily: "var(--FontMono)",
-
-									fontWeight: 500,
-
-									textWrap: "balance",
-								}}
+								className="type-display hero-band__claim"
 							>
 								<StampText Line={Hero.claim.runtime} />
 							</h1>
 
-							<p className="type-section m-0 mt-2">
+							<p className="type-section hero-band__engine">
 								<StampText Line={Hero.claim.engine} />
 							</p>
 
 							{/* 4-5. The compatibility route and what it means. */}
-							<div className="mt-10">
-								<p className="type-section m-0">
-									<RouteText Line={Hero.claim.route} />
-								</p>
+							<p className="type-section hero-band__route">
+								<RouteText Line={Hero.claim.route} />
+							</p>
 
-								<p className="type-meta m-0 mt-1">
-									{Hero.claim.compat}
-								</p>
-							</div>
+							<p className="type-meta hero-band__compat">
+								{Hero.claim.compat}
+							</p>
 
 							{/* 6. The program line, em-quad separated. */}
-							<p
-								className="type-meta m-0 mt-6 uppercase"
-								style={{
-									letterSpacing: "0.25em",
-
-									color: "var(--MuteForeground)",
-								}}
-							>
+							<p className="type-meta hero-band__program">
 								{Hero.program}
 							</p>
 
 							{/* 7. The release state. */}
-							<div className="mt-3">
+							<div className="hero-band__status">
 								<FieldRecordStatus
 									status="active"
 									copy={Hero.status.copy}
@@ -336,36 +313,29 @@ const DynamicHeroSection = ({ Content, Band, ClassName }: Property) => {
 							</div>
 
 							{/*
-							 * 8. THE MAJOR BLANK BAND. It grows to whatever height
-							 * the card has left and never shrinks below
-							 * `--space-blank`; the card's own height comes from the
-							 * evidence panel beside it. `DesignSystem.md` §4 wants
-							 * the band at 15-25% of the card area - flex-grow takes
-							 * it into the range, the token holds the floor.
+							 * 8. THE BLANK INTERVAL. `aria-hidden`, because it
+							 * is a reserved region rather than content: it
+							 * grows into the 15-25% of the card the system
+							 * requires and never shrinks below
+							 * `--space-blank` - "delete, don't shrink".
 							 */}
 							<div
 								aria-hidden="true"
-								className="flex-1"
-								style={{ minHeight: "var(--space-blank)" }}
+								className="hero-band__blank"
 							/>
 
 							{/* 9-10. The subject, and its one-line proposition. */}
-							<div>
-								<p className="type-section m-0">
-									{Hero.claim.project}
-								</p>
+							<p className="type-section hero-band__subject">
+								{Hero.claim.project}
+							</p>
 
-								<p
-									className="type-meta m-0 mt-3"
-									style={{ color: "var(--MuteForeground)" }}
-								>
-									<span aria-hidden="true">↳</span>
-									{Hero.claim.relation}
-								</p>
-							</div>
+							<p className="type-meta hero-band__relation">
+								<span aria-hidden="true">↳</span>
+								{Hero.claim.relation}
+							</p>
 
 							{/* 11. The record's three metadata rows. */}
-							<dl className="record-ledger record-ledger--1 m-0 mt-10">
+							<dl className="record-ledger record-ledger--1 hero-band__facts">
 								{Hero.facts.map((Fact) => (
 									<div
 										className="record-ledger__row"
@@ -383,7 +353,7 @@ const DynamicHeroSection = ({ Content, Band, ClassName }: Property) => {
 							</dl>
 
 							{/* 12. One action, and the routes beside it. */}
-							<div className="mt-10 flex flex-wrap items-center gap-6">
+							<div className="hero-band__action">
 								{Action ? (
 									<a
 										className="inline-block"
@@ -397,13 +367,7 @@ const DynamicHeroSection = ({ Content, Band, ClassName }: Property) => {
 											: {})}
 									>
 										<jelly-button squish style={ActionInk}>
-											<span
-												className="font-mono text-sm font-medium uppercase tracking-wider"
-												style={{
-													fontFamily:
-														"var(--FontMono)",
-												}}
-											>
+											<span className="hero-band__action-label">
 												{Action.label}
 											</span>
 										</jelly-button>
@@ -412,14 +376,9 @@ const DynamicHeroSection = ({ Content, Band, ClassName }: Property) => {
 
 								{Routes.map((Destination) => (
 									<a
-										className="type-meta"
+										className="type-meta hero-band__destination"
 										href={Destination.href}
 										key={Destination.href}
-										style={{
-											color: "var(--Accent)",
-
-											textDecoration: "none",
-										}}
 									>
 										{Destination.label}
 									</a>
@@ -430,25 +389,18 @@ const DynamicHeroSection = ({ Content, Band, ClassName }: Property) => {
 				</div>
 
 				{/* ══ THE HAIRLINE GUTTER ════════════════════════════════════ */}
-				<div
-					aria-hidden="true"
-					className="hidden w-px md:block"
-					style={{ backgroundColor: "var(--Border)" }}
-				/>
+				<div aria-hidden="true" className="hero-band__gutter" />
 
 				{/* ══ PANEL 2 - THE EVIDENCE ═════════════════════════════════ */}
-				<figure className="m-0 flex flex-1 flex-col">
+				<figure className="hero-band__evidence">
 					<FieldRecordEvidence
 						alt={Hero.plate.alt}
-						className="min-h-[40dvh] w-full flex-1"
+						className="hero-band__plate"
 						position="right"
 						src={Hero.plate.src}
 					/>
 
-					<figcaption
-						className="type-meta mt-3 flex flex-wrap justify-between gap-2"
-						style={{ color: "var(--MuteForeground)" }}
-					>
+					<figcaption className="type-meta hero-band__caption">
 						<span>{Hero.plate.caption}</span>
 
 						<span>{Hero.plate.provenance}</span>

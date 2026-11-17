@@ -1,19 +1,26 @@
 ---
 /**
  * DocArticle - the reading shell every documentation surface shares: kicker,
- * the page's only `h1`, standfirst, an optional in-page contents list, then the
- * body.
+ * the page's only `h1`, standfirst, the metadata strip, an optional in-page
+ * contents list, then the body.
  *
- * The shell owns four things a page must not re-decide per file:
+ * The shell owns five things a page must not re-decide per file:
  *
  * - **One `h1`.** The title is the page's single level-one heading; the blocks
  *   inside the body never render one, so a page that composes from blocks can
  *   never produce two.
- * - **One measure.** The header, the contents list and (by default) the body are
- *   capped at the same `72ch`, so the standfirst ends where the prose ends.
- *   `measure={false}` drops the body cap and nothing else - the index's band
- *   stack and the Rust page's viewer need the full column, the header still
- *   reads at one measure.
+ * - **One measure.** The header, the metadata strip, the contents list and (by
+ *   default) the body are capped at the same `72ch`, so the standfirst ends
+ *   where the prose ends. `measure={false}` drops the body cap and nothing else
+ *   - the index's band stack and the Rust page's viewer need the full column,
+ *   the header still reads at one measure.
+ * - **The metadata strip.** `DesignSystem-Pages.md` §5 requires a mono
+ *   `STATUS` / `LAYER` / `SOURCE` / `COMPAT` / `UPDATED` strip above doc prose,
+ *   and names it after the compact index: so the shell places it between the
+ *   contents list and the body. A page cannot render a documentation surface
+ *   without its own context, and the strip is never retyped per page. The page
+ *   builds the fields (`Function/Doc/BuildDocStrip`) because only the page knows
+ *   its section and its source; the shell owns where they sit.
  * - **The contents list.** `toc` is `null` when the markdown already carries its
  *   own list (see `BuildDocToc`); the shell renders no empty nav for it.
  * - **The container contract.** The shell adds no gutter and no max width of its
@@ -28,7 +35,7 @@
  *
  * No script and no hydration directive.
  */
-import type { DocToc } from "./Type.js";
+import type { DocStripItem, DocToc } from "./Type.js";
 
 interface Props {
 	/** `/DOCUMENTATION`, `/RUST API`, `/ELEMENTS` - printed verbatim. */
@@ -46,6 +53,14 @@ interface Props {
 	 * of `standfirst`, so the anchors in the opening sentence survive.
 	 */
 	standfirstHtml?: string;
+
+	/**
+	 * The mono metadata strip: one `DocStripItem` per field, rendered with U+2001
+	 * between them. Built by `Function/Doc/BuildDocStrip`, which supplies the five
+	 * documented fields in their documented order and appends whatever else the
+	 * page can prove.
+	 */
+	strip?: readonly DocStripItem[];
 
 	/** The in-page contents list, or `null` when the page needs none. */
 	toc?: DocToc | null;
@@ -76,6 +91,7 @@ const {
 	title,
 	standfirst,
 	standfirstHtml,
+	strip,
 	toc,
 	measure = true,
 	banded = false,
@@ -139,6 +155,35 @@ const {
 					))}
 				</ol>
 			</nav>
+		) : null
+	}
+
+	{
+		strip?.length ? (
+			<p class="doc-article__strip">
+				{strip.map((Item, Position) => (
+					<>
+						{Position > 0 ? (
+							<span class="doc-article__separator" aria-hidden="true">
+								{"\u2001"}
+							</span>
+						) : null}
+						<span class="doc-article__field">
+							<span class="doc-article__label">{Item.Label}</span>
+							<span
+								class:list={[
+									"doc-article__value",
+									Item.Tone
+										? `doc-article__value--${Item.Tone}`
+										: null,
+								]}
+							>
+								{Item.Value}
+							</span>
+						</span>
+					</>
+				))}
+			</p>
 		) : null
 	}
 

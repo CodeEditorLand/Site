@@ -11,7 +11,7 @@
  * Three decisions a caller should know:
  *
  * - **The anchor wraps the NAME, not the row.** The global link rule underlines
- *   every plain anchor, and a 78-row list of underlined descriptions is
+ *   every plain anchor, and an 81-row list of underlined descriptions is
  *   unreadable. The name is the link; the note is a note.
  * - **`RecordLedger` was not used for the rows.** Its prop surface is
  *   `{ key, value, note, lead }` - no `href` - so a ledger cannot link to the
@@ -20,6 +20,11 @@
  *   what the block could not carry.
  * - **Group runs, not a tree.** A run renders its sub-label once and its rows
  *   under it; an ungrouped run renders no sub-label at all.
+ *
+ * The tone is fixed here, not passed in: the band is a *section of one
+ * artifact*, so it renders `bare` and the page's `jelly-card` owns the surface,
+ * the ink and the inset (DESIGN.md §4.1, §9 Q1). A tone that alternated down
+ * the page made one map read as a stack of chapters.
  *
  * No script and no hydration directive: the band is static.
  */
@@ -40,7 +45,7 @@ const { band } = Astro.props;
 		heading: band.Heading,
 		...(band.Standfirst ? { standfirst: band.Standfirst } : {}),
 		...(band.Index ? { index: band.Index } : {}),
-		tone: band.Tone,
+		tone: "bare",
 	}}
 >
 	<div class="doc-index" id={band.Id}>

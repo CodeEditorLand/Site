@@ -27,12 +27,18 @@
  */
 
 /**
- * The surface a band sits on. Alternation carries the rhythm: never two
- * `paper` bands in a row, never three `canvas` bands in a row. `flush` is the
- * first band after the header - the header already ends the page, so that band
- * drops its top rule.
+ * The surface a band sits on. Surface follows the artifact (DESIGN.md §5 A5):
+ * there is no alternation down a page, so `paper` is the white information box
+ * and `canvas` the creme field, each chosen because the subject is one or the
+ * other. `flush` is the first band after the header - the header already ends
+ * the page, so that band drops a top rule it would otherwise paint.
+ *
+ * `bare` is the tone of a band that is a *section of an artifact already on a
+ * Jelly surface* (DESIGN.md §4.1, §9 Q1): no border, no fill, no padding of
+ * its own and no ink of its own. The surface and the inset belong to the card,
+ * and the band is structure inside it.
  */
-export type Tone = "paper" | "canvas" | "flush";
+export type Tone = "paper" | "canvas" | "flush" | "bare";
 
 /**
  * RecordBand - the section grammar itself. One subject per band: a kicker and

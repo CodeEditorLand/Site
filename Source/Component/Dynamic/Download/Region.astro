@@ -1,0 +1,49 @@
+---
+/**
+ * Region - one region of the Download page's `# RELEASE_01` artifact.
+ *
+ * The page is one record, not a stack of chapters (DESIGN.md §7 DR-9). After the
+ * manifest's own fields the artifact continues into its remaining regions, and
+ * this component is their anatomy: a `/LABEL` kicker, an `h3`, an optional
+ * standfirst, the region's body and an optional footnote.
+ *
+ * Three things a caller must keep:
+ *
+ * - The heading is an `h3`. The record publishes the artifact's `h2`
+ *   (`DynamicReleaseManifest.astro`), so a region's own heading sits one level
+ *   under it; a region that printed an `h2` would restate the record's claim and
+ *   read as the chapter this page no longer has.
+ * - The kicker is printed exactly as the caller wrote it, like `RecordBand`'s:
+ *   the `/LABEL` voice is the caller's, never invented and never re-cased.
+ * - No fill, no border and no chapter distance. The regions are parts of one
+ *   subject, so the record's own flex column separates them at `--space-group`,
+ *   never at `--space-chapter` (DESIGN.md §2.3, §5 A4).
+ *
+ * No client-side script and no hydration directive: the region is static.
+ */
+import type { Region } from "./Type.js";
+
+interface Props {
+	/** The region's copy, its anchor id and its heading's id stem. */
+	region: Region;
+}
+
+const { region } = Astro.props;
+
+/** The heading's id, so the region's `aria-labelledby` names a real element. */
+const HeadingId = `${region.id}-heading`;
+---
+
+<section class="download-region" id={region.id} aria-labelledby={HeadingId}>
+	<p class="download-region__kicker">{region.kicker}</p>
+	<h3 class="download-region__heading" id={HeadingId}>{region.heading}</h3>
+	{
+		region.standfirst ? (
+			<p class="download-region__standfirst">{region.standfirst}</p>
+		) : null
+	}
+	<div class="download-region__body">
+		<slot />
+	</div>
+	{region.footnote ? <p class="download-region__footnote">{region.footnote}</p> : null}
+</section>

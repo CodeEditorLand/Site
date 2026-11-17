@@ -6,6 +6,7 @@ import DocLayout from "../../Component/Doc/DocLayout.astro";
 import MermaidFallback from "../../Component/Dynamic/MermaidFallback.astro";
 import { Header } from "../../Component/Layout/Header";
 import BuildDocSidebar from "../../Function/Doc/BuildDocSidebar";
+import BuildDocStrip from "../../Function/Doc/BuildDocStrip";
 import BuildDocToc from "../../Function/Doc/BuildDocToc";
 import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
@@ -25,13 +26,15 @@ import { GetI18n } from "../../Library/I18n/Server";
  * 72ch measure lives, so the card's edge and the prose's edge are one decision.
  *
  * **The metadata strip** (§5: "compact index + `STATUS`/`LAYER`/`SOURCE`/
- * `COMPAT`/`UPDATED` mono metadata strip above prose") opens the card. It is
- * built from the collection's own fields - the section is the layer, the entry
- * id is the source file, `order` is the position - so every value printed is a
- * fact the build can read. `COMPAT` and `UPDATED` have no field in the `doc`
- * schema (`Source/content.config.ts` declares title, section, order,
- * description, navTitle, group), and printing a key with an invented value is
- * worse than not printing it; they land here the day the schema carries them.
+ * `COMPAT`/`UPDATED` mono metadata strip above prose") is placed by the shell,
+ * above the card and above the prose. It is built by `BuildDocStrip` from the
+ * collection's own fields - the section is the layer, the entry id is the
+ * source file, `order` is the position - so every value printed is a fact the
+ * build can read. `COMPAT` and `UPDATED` have no field in the `doc` schema
+ * (`Source/content.config.ts` declares title, section, order, description,
+ * navTitle, group), so they render the grammar's documented empty state,
+ * `UNAVAILABLE` (`DesignSystem-Grammar.md` §2), rather than being dropped from
+ * a strip the design system fixes at five fields.
  *
  * The contents list is generated, never hand-written: `BuildDocToc` reads the
  * headings `render()` actually emitted, so an anchor can never disagree with its
@@ -86,23 +89,38 @@ const Toc = BuildDocToc(
 );
 
 /**
- * The page's own provenance, in the mono record grammar: published state, the
- * section as the layer, the markdown file that renders here, and the page's
- * `order` - the same number the index sorts on, so a reader can place this page
- * in the tree without the rail. `GROUP` prints only when the page declares one.
- * U+2001 EM QUAD separates the items.
+ * The page's own provenance, in the mono record grammar: `BuildDocStrip` writes
+ * the five fields §5 fixes - published state, the section as the layer, the
+ * markdown file that renders here, and `COMPAT`/`UPDATED` at their documented
+ * empty state - and the page appends its `order`, the same number the index
+ * sorts on, so a reader can place this page in the tree without the rail.
+ * `GROUP` prints only when the page declares one. U+2001 EM QUAD separates the
+ * items.
  */
-const PageStrip = [
-	T("strip.published", { ns: "doc", defaultValue: "STATUS: PUBLISHED" }),
-	`${T("strip.layer", { ns: "doc", defaultValue: "LAYER:" })} ${Entry.data.section.toUpperCase()}`,
-	`${T("strip.source", { ns: "doc", defaultValue: "SOURCE:" })} ${Entry.id}.md`,
-	`${T("strip.order", { ns: "doc", defaultValue: "ORDER:" })} ${Entry.data.order}`,
-	...(Entry.data.group
-		? [
-				`${T("strip.group", { ns: "doc", defaultValue: "GROUP:" })} ${Entry.data.group}`,
-			]
-		: []),
-].join("\u2001");
+const PageStrip = BuildDocStrip(
+	{
+		Layer: Entry.data.section,
+		Source: `${Entry.id}.md`,
+		Extras: [
+			{
+				Label: T("strip.order", { ns: "doc", defaultValue: "ORDER:" }),
+				Value: String(Entry.data.order),
+			},
+			...(Entry.data.group
+				? [
+						{
+							Label: T("strip.group", {
+								ns: "doc",
+								defaultValue: "GROUP:",
+							}),
+							Value: Entry.data.group,
+						},
+					]
+				: []),
+		],
+	},
+	T,
+);
 
 const Home = T("common.breadcrumb.home", { defaultValue: "Home" });
 const Documentation = T("sidebar.title", {
@@ -124,6 +142,7 @@ const Documentation = T("sidebar.title", {
 			kicker={`/${Entry.data.section.toUpperCase()}`}
 			title={Entry.data.title}
 			standfirst={Entry.data.description}
+			strip={PageStrip}
 			toc={Toc}
 			crumbs={[
 				{ label: Home, href: "/" },
@@ -136,8 +155,6 @@ const Documentation = T("sidebar.title", {
 				class="doc-prose"
 				style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
 			>
-				<p class="doc-prose__strip">{PageStrip}</p>
-
 				<div class="doc-article__body doc-prose__body">
 					<Content />
 				</div>

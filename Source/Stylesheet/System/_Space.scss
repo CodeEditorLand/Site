@@ -25,14 +25,21 @@
 
 /* ─── BANDS ────────────────────────────────────────────────────────────── */
 
-/* .band - one subject, at page level only. A band is a chapter separator
-   between two different artifacts on a marketing surface: opened by a hairline
-   rule and --space-chapter, so a boundary is never a spacer div. It is never
-   the default wrapper of every section, and never the spacing between two
-   artifacts that belong to one page subject - those take --space-group
+/* .band - the page-level wrapper at its resting rhythm. It paints no rule and
+   takes no chapter spacing of its own: two artifacts that belong to one page
+   subject are separated by --space-group, the documented distance between them
    (DESIGN.md §2.3, §2.7; §5 A4). */
 .band {
 	width: 100%;
+	padding-block: var(--space-group);
+}
+
+/* .band--chapter - the chapter separator, opt-in. A genuinely new subject on a
+   marketing surface opens at the page-boundary value, --space-chapter (84px,
+   the poster scale's largest step), under a hairline rule, so a boundary is
+   never a spacer div. A band that merely groups content does not paint one
+   (DESIGN.md §2.3; §5 A4; §9 Q5). */
+.band--chapter {
 	padding-block: var(--space-chapter);
 	border-top: 1px solid var(--Border);
 }
@@ -48,8 +55,9 @@
 	background: var(--Background);
 }
 
-/* .band--flush - the first band after the header: no rule above it, because
-   the header already ends the page. */
+/* .band--flush - the first band after the header: it cancels the rule a
+   .band--chapter band would paint, because the header already ends the page.
+   On its own it is a no-op - the shell paints no rule by default. */
 .band--flush {
 	border-top: 0;
 }

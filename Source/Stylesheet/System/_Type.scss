@@ -30,10 +30,12 @@
  *   --space-blank   the card's mandatory blank band (15-25% of its area)
  *   --space-chapter a genuinely new subject, i.e. a page-level boundary only
  *
- * BLOCKS - .band is a page-level chapter separator, never the wrapper of every
- * section. .band-inner is the one inner container, so no page re-invents the
- * gutters. .prose-flow owns the vertical rhythm of a prose block: it exists to
- * replace the compounding of `flex flex-col gap-*` PLUS `mb-*` on one block.
+ * BLOCKS - .band is the page-level wrapper at the group rhythm, never a chapter
+ * by default: a genuinely new subject opts into .band--chapter, and a section
+ * that merely groups content paints no boundary. .band-inner is the one inner
+ * container, so no page re-invents the gutters. .prose-flow owns the vertical
+ * rhythm of a prose block: it exists to replace the compounding of
+ * `flex flex-col gap-*` PLUS `mb-*` on one block.
  *
  * EMPHASIS - three tiers, all flat (radius 0, no shadow):
  *   .emphasis-quiet       hairline rule only, no fill

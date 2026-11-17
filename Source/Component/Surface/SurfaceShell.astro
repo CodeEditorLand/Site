@@ -3,12 +3,13 @@
  * SurfaceShell - the one shell both app surfaces wear: portal and dashboard.
  *
  * Both pages are tools, not marketing pages, so they open the same way: a
- * record marker, the page's only `h1` at `--type-section`, one sentence of
- * context, and a status ledger that states the page's own facts before any
- * band explains them. Everything after the shell is a stack of bands, and the
- * page supplies those through the slot.
+ * record marker, the page's only `h1` at `--type-section` (the L tier, so it
+ * can never render under L), one sentence of context, the page's states with
+ * their §7 markers, and a status ledger that states the page's own facts before
+ * any band explains them. Everything after the shell is a stack of bands, and
+ * the page supplies those through the slot.
  *
- * Four decisions this file makes, so a page cannot get them wrong:
+ * Five decisions this file makes, so a page cannot get them wrong:
  *
  * - It renders a `<div>`, not a `<main>`. `Layout/Base.astro` already owns
  *   `<main id="main-content">`, and a second one nested inside it was a
@@ -19,14 +20,20 @@
  *   `--MuteForeground` in the partial. They were inline-styled spans before;
  *   the keyword ink they asked for resolved to the card foreground anyway, so
  *   nothing is lost and the markup stops carrying colour.
- * - The ledger is `RecordLedger`, never a second `<dl>`: the status block on
- *   both pages is key/value facts, which is the ledger's job.
+ * - States are lifted out of the ledger into `SurfaceState`, because a state
+ *   that renders exactly like an ordinary fact has lost its state
+ *   (`DesignSystem-Components.md` §7). The page hands the two lists separately;
+ *   the shell never guesses which of its facts is a state.
+ * - The ledger is `RecordLedger`, never a second `<dl>`: the remaining status
+ *   facts on both pages are key/value facts, which is the ledger's job.
  *
  * No script and no hydration directive: the shell is static.
  */
 import RecordLedger from "../Record/RecordLedger.astro";
+import SurfaceState from "./SurfaceState.astro";
 
 import type { LedgerRow } from "../Record/Type.js";
+import type { SurfaceState as State } from "./State.js";
 
 interface Props {
 	/** `# PORTAL_01` - the surface's record marker, printed verbatim. */
@@ -37,6 +44,13 @@ interface Props {
 
 	/** One sentence of context under the title. */
 	standfirst?: string;
+
+	/**
+	 * The page's states, in the order they are read. Each carries its §7 tone
+	 * and renders with its specimen marker; a page that has none omits the
+	 * prop rather than passing an empty string.
+	 */
+	states?: readonly State[];
 
 	/** The status facts, in the order they are read. */
 	rows: readonly LedgerRow[];
@@ -49,6 +63,7 @@ const {
 	index,
 	title,
 	standfirst,
+	states = [],
 	rows,
 	class: ClassName,
 } = Astro.props;
@@ -61,6 +76,7 @@ const {
 			<h1 class="surface__title">{title}</h1>
 			{standfirst ? <p class="surface__standfirst">{standfirst}</p> : null}
 			<div class="surface__status">
+				{states.length ? <SurfaceState states={states} /> : null}
 				<RecordLedger rows={rows} columns={2} />
 			</div>
 		</div>

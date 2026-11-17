@@ -9,6 +9,7 @@ import {
 import RustViewer from "../../Component/Doc/RustViewer.astro";
 import { Header } from "../../Component/Layout/Header";
 import RecordBand from "../../Component/Record/RecordBand.astro";
+import BuildDocStrip from "../../Function/Doc/BuildDocStrip";
 import Base from "../../Layout/Base.astro";
 import { LinkMentions } from "../../Library/CodeMentions";
 import { GetI18n } from "../../Library/I18n/Server";
@@ -52,6 +53,27 @@ const Documentation = T("common.docs.pageTitle", {
 	defaultValue: "Documentation",
 });
 const Crumb = T("rust.crumb", { ns: "doc", defaultValue: "Rust API" });
+
+/**
+ * The page's metadata strip, in the same five fields every documentation
+ * surface carries (`DesignSystem-Pages.md` §5, built by `BuildDocStrip`). The
+ * layer is the page's own subject, `RUST API`, exactly as its kicker and its
+ * crumb name it; the source is the rustdoc output the viewer frames; and the
+ * crate count is the one number a reader can check against the list below.
+ */
+const PageStrip = BuildDocStrip(
+	{
+		Layer: Crumb,
+		Source: "RUSTDOC",
+		Extras: [
+			{
+				Label: T("strip.crates", { ns: "doc", defaultValue: "CRATES:" }),
+				Value: String(RustCrates.length),
+			},
+		],
+	},
+	T,
+);
 ---
 
 <Base
@@ -67,6 +89,7 @@ const Crumb = T("rust.crumb", { ns: "doc", defaultValue: "Rust API" });
 			kicker="/RUST API"
 			title={Heading}
 			standfirstHtml={LinkMentions(Standfirst)}
+			strip={PageStrip}
 			crumbs={[
 				{ label: Home, href: "/" },
 				{ label: Documentation, href: "/Doc" },

@@ -15,8 +15,10 @@
  *   flattened), which is what a page can render as a heading followed by its
  *   rows. The tree lives in the sidebar, where it is collapsible; the index is
  *   flat because a reader scans it.
+ * - `DocBand` carries no surface. The band's tone belongs to the artifact the
+ *   band is a section of (DESIGN.md §5 A5, §9 Q1), so the page decides it once
+ *   for the whole index instead of the data alternating per row.
  */
-import type { Tone } from "../Record/Type.js";
 
 /** One page, crate or destination in a documentation list. */
 export interface DocLink {
@@ -58,7 +60,7 @@ export interface DocBand {
 	/** Anchor id, slugified from the heading, so `/Doc#elements` keeps working. */
 	Id: string;
 
-	/** `/ELEMENTS · 16 PAGES` - the count is the kicker's job, not the heading's. */
+	/** `/ELEMENTS` U+2001 `16 PAGES` - the count is the kicker's job, not the heading's. */
 	Kicker: string;
 
 	/** The band's single `h2`. */
@@ -79,9 +81,31 @@ export interface DocBand {
 	Index?: readonly { readonly label: string; readonly href: string }[];
 
 	readonly Groups: readonly DocGroupRun[];
+}
 
-	/** Band surface, alternating down the page. */
-	Tone: Tone;
+/**
+ * One field of a documentation page's metadata strip: `STATUS:` `PUBLISHED`,
+ * `LAYER:` `ELEMENTS`, `COMPAT:` `UNAVAILABLE`.
+ *
+ * The label and the value are separate strings, and the shell renders them as
+ * separate elements with U+2001 between the fields - the grammar `BlogIndex`
+ * already renders, so a reader's assistive tech announces distinct fields
+ * instead of one run-on line (`DesignSystem-Pages.md` §5).
+ */
+export interface DocStripItem {
+	/** The field label with its colon, e.g. `STATUS:`, `COMPAT:`. */
+	readonly Label: string;
+
+	/** The field's value, e.g. `PUBLISHED`, `ELEMENTS`, `UNAVAILABLE`. */
+	readonly Value: string;
+
+	/**
+	 * The value's ink. Absent means the surface's ink; `quiet` is a state that
+	 * must not read as a positive claim (`UNAVAILABLE` - no false-positive
+	 * green, DESIGN.md §1.5), `specimen` the one authenticated state. One tone
+	 * per field, and at most one specimen in a strip.
+	 */
+	readonly Tone?: "quiet" | "specimen";
 }
 
 /** One heading, as the markdown pipeline that wrote its id reports it. */

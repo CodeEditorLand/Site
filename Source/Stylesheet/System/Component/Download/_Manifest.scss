@@ -37,8 +37,11 @@
 // ─── The shell ────────────────────────────────────────────────────────────
 // The record opens the page directly under the masthead, so it carries no top
 // rule: the masthead already ends with one, and two rules at one edge is the
-// defect the doc calls out (DESIGN.md §7 DR-8). It takes the chapter rhythm
-// because the record and the sections below it are different subjects.
+// defect the doc calls out (DESIGN.md §7 DR-8). It takes the page-level chapter
+// rhythm because the masthead and the record are two different artifacts at a
+// page boundary; the record's own regions separate inside `__inner` at
+// `--space-group` instead, because they are parts of one subject (DESIGN.md
+// §2.3, §5 A4, §7 DR-9).
 
 .download-record {
 	padding-block: var(--space-chapter);
@@ -46,6 +49,11 @@
 	color: var(--Foreground);
 }
 
+// The record's one column: head, claim, state, platform grid, verification,
+// build, provenance lines, then the regions the artifact continues into. The
+// gap is the group distance, so every part of the one artifact - the regions
+// included - is separated by the documented density and never by a chapter
+// (DESIGN.md §2.3, §7 DR-9).
 .download-record__inner {
 	@include band-inner;
 	display: flex;

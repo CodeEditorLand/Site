@@ -10,6 +10,9 @@ import RecordEntry from "../Component/Record/RecordEntry.astro";
 import RecordLedger from "../Component/Record/RecordLedger.astro";
 import RecordStage from "../Component/Record/RecordStage.astro";
 import SurfaceShell from "../Component/Surface/SurfaceShell.astro";
+import SurfaceChips from "../Component/Surface/SurfaceChips.astro";
+import SurfaceState from "../Component/Surface/SurfaceState.astro";
+import { Split } from "../Component/Surface/State.js";
 import { DashboardPage } from "../Content/Surface/Dashboard.js";
 
 const T = GetI18n();
@@ -35,19 +38,20 @@ const MetaDescription = T("meta.dashboard.description", {
 const Page = DashboardPage(T);
 
 /**
- * The dashboard's status chips, as Jelly badges again.
+ * The page's status block, split into states and facts.
  *
- * `Page.*.chips` are the page's own labels - `Disabled`, `Feature Gated`,
- * `Optional`, `Active`, `Coming Soon` - and the pre-programme dashboard printed
- * exactly those labels as `jelly-badge`. The rebuild turned them into a plain
- * `<li>` row; `jelly-badge` is a design-system element, so it comes back.
- *
- * One tone, not one ink per chip: these are state chips, not protocol chips, so
- * they take the neutral mute fill and its muted ink rather than a spine ink
- * (`DesignSystem.md` §3 - the protocol spine is for protocol chips).
+ * `DesignSystem-Components.md` §7: ACTIVE and VERIFIED carry a specimen marker
+ * beside the word, because a status that renders exactly like an ordinary fact
+ * has lost its state. The dashboard states two of them - `EDITOR` when no
+ * daemon answers and `TELEMETRY` when the build gates it - and they are lifted
+ * out of the ledger into the shell's state register. Nothing is re-worded:
+ * `Split` reads the values the content table already wrote and separates them
+ * by the vocabulary in `Surface/State.ts`.
  */
-const ChipStyle =
-	"--jelly-fill:var(--Mute);--jelly-label:var(--MuteForeground);--jelly-badge-radius:0;--jelly-badge-font-size:13px";
+const Status = Split(Page.status);
+
+/** The editor band's own rows: the daemon and its transport, and its state. */
+const Editor = Split(Page.editorFacts);
 
 /**
  * The card the islands sit on. `jelly-card` is the design system's surface and
@@ -76,7 +80,8 @@ const CardStyle =
 		index={Page.index}
 		title={Page.title}
 		standfirst={Page.standfirst}
-		rows={Page.status}
+		states={Status.states}
+		rows={Status.facts}
 	>
 		<RecordBand band={Page.account}>
 			<div class="surface__panel">
@@ -112,19 +117,7 @@ const CardStyle =
 					Page.telemetryPaths.map((Path) => (
 						<div>
 							{Path.chips?.length ? (
-								<ul class="mb-3 flex list-none flex-wrap gap-2 p-0">
-									{Path.chips.map((Chip) => (
-										<li>
-											<jelly-badge
-												shape="square"
-												variant="platinum"
-												style={ChipStyle}
-											>
-												{Chip}
-											</jelly-badge>
-										</li>
-									))}
-								</ul>
+								<SurfaceChips chips={Path.chips} />
 							) : null}
 							<RecordEntry {...Path} chips={undefined} />
 						</div>
@@ -167,19 +160,7 @@ const CardStyle =
 					Page.settingsEntries.map((Setting) => (
 						<div>
 							{Setting.chips?.length ? (
-								<ul class="mb-3 flex list-none flex-wrap gap-2 p-0">
-									{Setting.chips.map((Chip) => (
-										<li>
-											<jelly-badge
-												shape="square"
-												variant="platinum"
-												style={ChipStyle}
-											>
-												{Chip}
-											</jelly-badge>
-										</li>
-									))}
-								</ul>
+								<SurfaceChips chips={Setting.chips} />
 							) : null}
 							<RecordEntry {...Setting} chips={undefined} />
 						</div>

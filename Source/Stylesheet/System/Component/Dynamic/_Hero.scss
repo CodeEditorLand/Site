@@ -1,245 +1,254 @@
-// Hero band - the homepage's first band: the claim, the status, the evidence
-// and the entry, in that order.
+// Hero - the homepage's first artifact: the canonical two-panel composition.
+//
+// It is NOT a `.band`. A band follows another band and carries the chapter
+// rhythm; the hero opens the page and is a single artifact, so it owns its
+// padding (`clamp(2rem, 5vw, 5rem)`), its own height (`80dvh`) and its own
+// hairline gutter, and it takes no top rule from `.band` or `.record-band`.
 //
 // Publishes:
-//   .hero-band                  the band's own anatomy (the shell is `.band`)
-//   .hero-band__inner           the band's four parts and their rhythm
-//   .hero-band__claim           the claim group: marker, display, route, sentence
-//   .hero-band__mark            the marker row - kicker left, seal right
+//   .hero-band                  the artifact's shell
+//   .hero-band__pair            the pair - record left, evidence right
+//   .hero-band__record          the field record panel (49 of the pair's 100)
+//   .hero-band__card            the Jelly surface the record prints on
+//   .hero-band__inset           the card's own inset
+//   .hero-band__mark            index left, seal right
 //   .hero-band__kicker          `# LAND_01`
-//   .hero-band__seal            the specimen seal beside the marker
-//   .hero-band__display         the band's one display line
+//   .hero-band__claim           the runtime claim - the page's only `h1`
+//   .hero-band__engine          `NO ELECTRON`
 //   .hero-band__route           the compatibility route
 //   .hero-band__compat          what that compatibility means
-//   .hero-band__standfirst      the record's relation over one sentence
-//   .hero-band__relation        `EDITOR WITHOUT CHROMIUM`, as a meta label
-//   .hero-band__status          the `.emphasis-standard` status row
-//   .hero-band__status-line     `STATUS: SOURCE ACTIVE`
-//   .hero-band__chip            one honest qualifier beside it
-//   .hero-band__evidence        the evidence region: proof left, plate right
-//   .hero-band__proof           the rail above the ledger
-//   .hero-band__stage           the four-element rail
-//   .hero-band__facts           the record's own facts
-//   .hero-band__plate           the evidence plate
-//   .hero-band__plate-frame     the plate's aspect box
-//   .hero-band__plate-image     the image filling that box
-//   .hero-band__entry           the two destinations
-//   .hero-band__program         the program line above them
-//   .hero-band__destinations    the destination row
-//   .hero-band__destination     one destination
+//   .hero-band__program         the program line, em-quad separated
+//   .hero-band__status          the release state
+//   .hero-band__blank           THE BLANK INTERVAL - `aria-hidden`, 15-25%
+//   .hero-band__subject         `LAND:`
+//   .hero-band__relation        `↳EDITOR WITHOUT CHROMIUM`
+//   .hero-band__facts           the record's three metadata rows
+//   .hero-band__action          one action, and the routes beside it
+//   .hero-band__action-label    the action's label
+//   .hero-band__destination     a secondary destination, `/LABEL` at the accent
+//   .hero-band__gutter          the 1px hairline between the panels
+//   .hero-band__evidence        the evidence panel (51 of the pair's 100)
+//   .hero-band__plate           the image filling that panel
+//   .hero-band__caption         the caption and the provenance below it
 //
-// Tokens only: no literal colour, no box-shadow, no border-radius, no inline
-// style. Four things are borrowed rather than restated - the band shell and the
-// inner container (`.band`, `.band-inner`), the kicker (`.section-kicker`), the
-// type roles (`.type-*`) and the status tier (`.emphasis-standard`) come from
-// the foundation; the rail, the ledger and the figure come from the Record
-// layer's own partials. This file adds the hero's layout and the three places
-// where a hero differs from a generic band: the display line, the aspect box,
-// and the tighter opening padding.
+// The ratio is `design_system.md`'s ratio blueprint: data card 48.5-49.5% of
+// the pair, evidence image 50.5-51.5%, and a hairline between them. The pair is
+// a three-track grid - `49fr 1px 51fr` - so the two panels take 49:51 of
+// everything except the hairline itself, which measures 48.97% / 50.97% of the
+// pair at any realistic width. The blueprint's separate 1.8-2.3% panel gap is
+// NOT applied: its own panel ranges already sum past 100% with a gap between
+// them, so the ratio and the hairline win and the gap is the hairline's width.
 //
-// Owned by P2.
+// Tokens only: no literal colour, no box-shadow, no border-radius, no
+// gradient. Four things are borrowed rather than restated - the kicker
+// (`.section-kicker`), the type roles (`.type-*`), the status element
+// (`FieldRecordStatus`) and the ledger (`.record-ledger`) come from the
+// foundation and the Record layer.
 
 @use "../../Mixin" as *;
 
-/* ─── THE BAND ─────────────────────────────────────────────────────────── */
+/* ─── THE SHELL ────────────────────────────────────────────────────────── */
 
-// A hero opens the page rather than following another band, so it opens at
-// group distance instead of the chapter distance `.band` reserves. `.band`
-// arrives from `System/_Space.scss`, which `System.scss` loads before the
-// component index, so this single-class rule is the one that wins.
 .hero-band {
-	padding-block-start: var(--space-group);
+	position: relative;
+	overflow: hidden;
+	inline-size: 100%;
+	background-color: var(--Background);
 }
 
-.hero-band__inner {
+// The pair. A column on mobile - record first, evidence second, because the
+// information arrives before the illustration - and three tracks from `md`,
+// where the artifact is actually a pair.
+.hero-band__pair {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-group);
+	min-block-size: 80dvh;
+	padding: clamp(2rem, 5vw, 5rem);
+	margin-inline: auto;
+}
+
+@include bp(768px) {
+	.hero-band__pair {
+		grid-template-columns: minmax(0, 49fr) 1px minmax(0, 51fr);
+		align-items: stretch;
+		gap: 0;
+	}
+}
+
+/* ─── PANEL 1 - THE FIELD RECORD ───────────────────────────────────────── */
+
+.hero-band__record {
 	display: flex;
 	flex-direction: column;
+	min-inline-size: 0;
 }
 
-// The band's rhythm, in one place: the claim and its status are one thought and
-// sit at reading distance; the evidence and the entry each open a new group.
-// The status rule below re-declares its own margin after this one so it wins at
-// equal specificity.
-.hero-band__inner > * + * {
-	margin-block-start: var(--space-group);
+// The Jelly card's own ink arrives as custom properties from the component
+// (they are element properties, not stylesheet declarations); this rule owns
+// only its box.
+.hero-band__card {
+	block-size: 100%;
 }
 
-/* ─── 1. THE CLAIM ─────────────────────────────────────────────────────── */
-
-.hero-band__claim {
+.hero-band__inset {
+	position: relative;
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-reading);
+	block-size: 100%;
+	padding: 2.75rem 1.5rem;
+}
+
+// The record is a sequence of anchored bands, not an even distribution: the
+// index and seal, the claim, what it is not, the route, the program, the
+// status, the blank interval, the subject, the metadata, the action.
+.hero-band__inset > * + * {
+	margin-block-start: var(--space-reading);
 }
 
 .hero-band__mark {
+	position: relative;
 	display: flex;
 	align-items: flex-start;
 	justify-content: space-between;
 	gap: var(--space-reading);
+	// The corner frame is the inset's first child and is out of flow, so the
+	// mark row is the record's first band and takes no interval above it.
+	margin-block-start: 0;
 }
 
 .hero-band__kicker {
 	margin: 0;
 }
 
-.hero-band__seal {
-	flex: 0 0 auto;
-}
-
-// The one expressive moment of the band. `--type-display` arrives from the
-// `.type-display` role on the element; the two stamps sit on one line and wrap
-// as a pair, so the assertion reads as one sentence rather than as two
-// competing headlines.
-.hero-band__display {
-	margin: 0;
+// The page's one expressive moment. `--type-display` arrives from the
+// `.type-display` role (XL, 48-72px) - the ceiling the tier sets, never above
+// it. The two stamps are one assertion, so they sit at display size and the
+// engine line follows at the section tier rather than competing with it.
+.hero-band__claim {
+	margin: var(--space-group) 0 0;
 	font-family: var(--FontMono);
 	font-weight: 500;
 	letter-spacing: -0.02em;
 	text-wrap: balance;
 }
 
+.hero-band__engine {
+	margin: var(--space-tight) 0 0;
+}
+
 .hero-band__route {
-	margin: 0;
-	color: var(--MuteForeground);
+	margin: var(--space-group) 0 0;
 }
 
 .hero-band__compat {
-	margin-inline-start: var(--space-tight);
+	margin: var(--space-tight) 0 0;
 	color: var(--MuteForeground);
-}
-
-.hero-band__standfirst {
-	margin: 0;
-	max-width: 62ch;
-	color: var(--MuteForeground);
-	text-wrap: pretty;
-}
-
-// The relation is a label, so it takes the meta role and sits above the
-// sentence that explains it - one weight, and no third paragraph.
-.hero-band__relation {
-	@include mono-meta;
-	@include track(0.1em);
-	display: block;
-	margin-block-end: var(--space-tight);
-}
-
-/* ─── 2. THE STATUS ────────────────────────────────────────────────────── */
-
-// The tier supplies the white surface and the hairline; this supplies the room
-// inside them and the row. The row is dense on purpose - a status is read, not
-// admired.
-.hero-band__status {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: var(--space-tight) var(--space-reading);
-	margin-block-start: var(--space-reading);
-	padding: var(--space-reading);
-}
-
-.hero-band__status-line {
-	font-family: var(--FontMono);
-	font-size: var(--type-meta);
-	line-height: var(--type-meta-line);
-}
-
-// A chip is a `jelly-badge`, whose label is drawn inside a shadow root. The
-// Badge sets `--jelly-badge-font-size: inherit` inline, so the size travels
-// from the host: an inline custom property beats any class rule, which is why
-// this rule sets `font-size` rather than the badge's own variable.
-//
-// Two classes, not one: `_Global.scss` sizes an undefined `jelly-badge` at
-// 0.875rem through `jelly-badge:not(:defined)`, which outranks a single class -
-// without this the chip would shrink the moment the element upgrades.
-.hero-band__status .hero-band__chip {
-	font-family: var(--FontMono);
-	font-size: var(--type-meta);
-	line-height: var(--type-meta-line);
-}
-
-/* ─── 3. THE EVIDENCE ──────────────────────────────────────────────────── */
-
-.hero-band__evidence {
-	display: grid;
-	gap: var(--space-group);
-}
-
-.hero-band__proof {
-	display: grid;
-	gap: var(--space-group);
-	min-inline-size: 0;
-}
-
-// The rail is a stack at every width: inside a seven-column proof region a row
-// of four steps would squeeze each line to a few words. The block's own
-// `--stack` is exactly that case, so the hero only has to name it.
-.hero-band__stage {
-	min-inline-size: 0;
-}
-
-.hero-band__facts {
-	min-inline-size: 0;
-}
-
-// The plate is a portrait file (1792 x 2400). The aspect box keeps its height
-// proportional to the column instead of letting a 3:4 image set the band's
-// height, and the image fills the box rather than letterboxing inside it.
-//
-// The image rule carries two classes on purpose: `_Figure.scss` sets
-// `height: auto` on `.record-figure__media img`, and `System.scss` loads the
-// Record layer after the component layer, so a single-class rule here would
-// lose the cascade to it.
-.hero-band__plate-frame {
-	aspect-ratio: 4 / 5;
-}
-
-.hero-band__plate-image {
-	block-size: 100%;
-}
-
-.hero-band__plate-frame .hero-band__plate-image img {
-	block-size: 100%;
-}
-
-// Seven and five: the proof is the wider half because it carries rows, and the
-// plate is the narrower one because an image needs a column, not a page. Below
-// this the two stack, proof first.
-@include bp(1024px) {
-	.hero-band__evidence {
-		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-		align-items: start;
-	}
-}
-
-/* ─── 4. THE ENTRY ─────────────────────────────────────────────────────── */
-
-.hero-band__entry {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-reading);
 }
 
 .hero-band__program {
-	@include mono-meta;
-	@include track(0.1em);
+	margin: var(--space-group) 0 0;
+	text-transform: uppercase;
+	letter-spacing: 0.25em;
+	color: var(--MuteForeground);
+}
+
+.hero-band__status {
+	margin-block-start: var(--space-reading);
+}
+
+/*
+ * THE BLANK INTERVAL. It grows to whatever height the card has left and never
+ * falls below `--space-blank`; the card's height comes from the evidence panel
+ * beside it. `design_system.md`'s vertical map puts the silent band at
+ * 51-67% of the card - a 16% interval, inside the 15-25% the system requires -
+ * and "delete, don't shrink": the band is not padding, it is a reserved
+ * region, so it is an element with a floor rather than a margin that collapses.
+ */
+.hero-band__blank {
+	flex: 1 1 auto;
+	min-block-size: var(--space-blank);
+	// The interval is the free space itself, not free space plus a margin.
+	margin-block-start: 0;
+}
+
+.hero-band__subject {
 	margin: 0;
 }
 
-.hero-band__destinations {
+.hero-band__relation {
+	margin: var(--space-tight) 0 0;
+	color: var(--MuteForeground);
+}
+
+.hero-band__facts {
+	margin: var(--space-group) 0 0;
+}
+
+.hero-band__action {
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--space-tight) var(--space-group);
+	align-items: center;
+	gap: var(--space-reading) var(--space-group);
+	margin-block-start: var(--space-group);
+}
+
+.hero-band__action-label {
+	font-family: var(--FontMono);
+	font-size: var(--type-code);
+	line-height: var(--type-code-line);
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
 }
 
 // The site's action grammar is `/LABEL` at the accent ink, and the global link
 // rule already draws the hairline underline in `var(--Border)` - so this rule
 // sets the role and the ink and leaves the underline alone.
 .hero-band__destination {
-	@include mono-meta;
-	@include track(0.08em);
-	font-size: var(--type-sub);
-	line-height: var(--type-sub-line);
-	color: var(--Foreground);
+	color: var(--Accent);
+	text-decoration: none;
+}
+
+/* ─── THE HAIRLINE GUTTER ──────────────────────────────────────────────── */
+
+// 1px, the pair's middle track. Hidden below `md`, where the panels stack and
+// a vertical rule would separate nothing.
+.hero-band__gutter {
+	display: none;
+	inline-size: 1px;
+	background-color: var(--Border);
+}
+
+@include bp(768px) {
+	.hero-band__gutter {
+		display: block;
+	}
+}
+
+/* ─── PANEL 2 - THE EVIDENCE ───────────────────────────────────────────── */
+
+// The counterweight: one image, full height, `object-fit: cover`, no text on
+// it. The caption and the provenance sit below the frame, so the image stays
+// text-free and the claim of what it is evidence *of* still survives.
+.hero-band__evidence {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	min-inline-size: 0;
+}
+
+.hero-band__plate {
+	flex: 1 1 auto;
+	min-block-size: 40dvh;
+	inline-size: 100%;
+}
+
+.hero-band__caption {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: var(--space-tight);
+	margin-block-start: var(--space-reading);
+	color: var(--MuteForeground);
 }

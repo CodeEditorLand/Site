@@ -7,6 +7,7 @@ import DocLayout from "../Component/Doc/DocLayout.astro";
 import { Header } from "../Component/Layout/Header";
 import BuildDocIndex from "../Function/Doc/BuildDocIndex";
 import BuildDocSidebar from "../Function/Doc/BuildDocSidebar";
+import BuildDocStrip from "../Function/Doc/BuildDocStrip";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
@@ -23,22 +24,24 @@ const T = GetI18n();
  * after it:
  *
  * - **The index card** carries every section: its name as the band's heading,
- *   its page count in the kicker (`/ELEMENTS · 16 PAGES`), then one dense row
- *   per page - `navTitle` (or `title`), the page's `description` as the row's
- *   note, in `order`. The rows are built in `Function/Doc/BuildDocIndex.ts`;
- *   this page only maps one component over one array.
+ *   its page count in the kicker (`/ELEMENTS` U+2001 `16 PAGES`), then one
+ *   dense row per page - `navTitle` (or `title`), the page's `description` as
+ *   the row's note, in `order`. The rows are built in
+ *   `Function/Doc/BuildDocIndex.ts`; this page only maps one component over one
+ *   array.
  * - **The four appendices** (where to start, architecture, backend services,
  *   live deployments) are one artifact each: `start-here`, `architecture`,
  *   `backend`, `deployments` in `BuildDocIndex`. They are not sections of the
  *   index, so they do not live inside its card.
  *
- * Every band is a `jelly-card` surface and nothing else. `RecordBand` paints a
- * background, a top hairline and a `--space-chapter` of padding of its own; a
- * card around that band paints a second boundary at the same edge, and the
- * alternating `flush` → `paper` → `canvas` tone turns one artifact into a stack
- * of chapters (DESIGN.md §7 DR-6, DR-8). Both are neutralised inside these
- * cards by `System/Component/Doc/_Index.scss`: one surface, one inset, one
- * `--space-group` between sections.
+ * The card is the artifact's surface and the band is structure inside it. A
+ * band renders `tone="bare"`: no fill, no border, no inset of its own
+ * (`System/Record/_Band.scss`), so the card paints the one boundary and owns
+ * the one inset, and two sections of the map separate at `--space-group` - the
+ * documented distance between two parts of one subject (DESIGN.md §2.3, §3.2,
+ * §4.1, §9 Q1). An alternation of `flush` → `paper` → `canvas` down the page
+ * was the borrowed surface rhythm (§5 A5) and turned one artifact into a stack
+ * of chapters (§7 DR-6).
  *
  * The five custom properties are the ones the page's cards set at HEAD:
  * `--Card` fill, radius 0, inherited type, and an inset the card owns because
@@ -70,18 +73,33 @@ const AppendixBands = Bands.filter((Band) => AppendixId.has(Band.Id));
 const PageTitle = T("common.docs.pageTitle", { defaultValue: "Documentation" });
 
 /**
- * The index's metadata strip, in the site's mono record grammar: the state of
- * this artifact, its layer, and the two counts a reader can check against the
- * rows below (`PAGES` is the collection, `SECTIONS` the bands that survived an
- * empty-section drop). U+2001 EM QUAD separates the items, as it does on every
- * other record on the site.
+ * The index's metadata strip, in the site's mono record grammar: the five
+ * fields `DesignSystem-Pages.md` §5 requires (`STATUS`, `LAYER`, `SOURCE`,
+ * `COMPAT`, `UPDATED`) plus the two counts a reader can check against the rows
+ * below (`PAGES` is the collection, `SECTIONS` the bands that survived an
+ * empty-section drop). `BuildDocStrip` owns the five and their order; U+2001
+ * EM QUAD separates every item, as it does on every other record on the site.
  */
-const IndexStrip = [
-	T("strip.published", { ns: "doc", defaultValue: "STATUS: PUBLISHED" }),
-	`${T("strip.layer", { ns: "doc", defaultValue: "LAYER:" })} ${PageTitle.toUpperCase()}`,
-	`${T("strip.pages", { ns: "doc", defaultValue: "PAGES:" })} ${DocEntries.length}`,
-	`${T("strip.sections", { ns: "doc", defaultValue: "SECTIONS:" })} ${SectionBands.length}`,
-].join("\u2001");
+const IndexStrip = BuildDocStrip(
+	{
+		Layer: PageTitle,
+		Source: "DOC COLLECTION",
+		Extras: [
+			{
+				Label: T("strip.pages", { ns: "doc", defaultValue: "PAGES:" }),
+				Value: String(DocEntries.length),
+			},
+			{
+				Label: T("strip.sections", {
+					ns: "doc",
+					defaultValue: "SECTIONS:",
+				}),
+				Value: String(SectionBands.length),
+			},
+		],
+	},
+	T,
+);
 
 const MetaTitle = T("meta.docs.title", {
 	defaultValue: "Documentation | Code Editor Land",
@@ -116,12 +134,11 @@ const BackToTop = T("common.button.backToTop", {
 			kicker="/DOCUMENTATION"
 			title={PageTitle}
 			standfirst={PageStandfirst}
+			strip={IndexStrip}
 			crumbs={[{ label: Home, href: "/" }, { label: PageTitle }]}
 			measure={false}
 			banded
 		>
-			<p class="doc-index__strip">{IndexStrip}</p>
-
 			<jelly-card
 				class="doc-index-card"
 				style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:var(--space-group);--jelly-card-padding-inline:clamp(1rem,4vw,2.5rem)"

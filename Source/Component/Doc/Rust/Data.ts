@@ -97,7 +97,7 @@ const ToRow = (Crate: RustCrate): DocLink => ({
  */
 export const RustBand = (T: DocTranslate): DocBand => ({
 	Id: "crates",
-	Kicker: `/CRATES · ${RustCrates.length} ${T("rust.sets", {
+	Kicker: `/CRATES\u2001${RustCrates.length} ${T("rust.sets", {
 		ns: "doc",
 		defaultValue: "SETS",
 	})}`,
@@ -106,10 +106,15 @@ export const RustBand = (T: DocTranslate): DocBand => ({
 		defaultValue: "Rust crates",
 	}),
 	Groups: [{ Label: null, Rows: RustCrates.map(ToRow) }],
-	Tone: "flush",
 });
 
-/** The viewer band's heading, which the page passes to `RecordBand`. */
+/**
+ * The viewer band's heading, which the page passes to `RecordBand`. It renders
+ * `bare`: the band is the only section of the appendix card the page wraps it
+ * in, so the card owns the surface, the ink and the inset and the band
+ * contributes structure only (DESIGN.md §4.1, §9 Q1) - a second fill inside the
+ * card would paint two boundaries at one edge (§7 DR-8).
+ */
 export const RustViewerBand = (T: DocTranslate) => ({
 	kicker: "/VIEWER",
 	heading: T("rust.viewer.heading", {
@@ -121,4 +126,5 @@ export const RustViewerBand = (T: DocTranslate) => ({
 		defaultValue:
 			"Each crate's rustdoc site is served separately and loads in the frame below. Source builds are active; the generated output tracks the Current branch.",
 	}),
+	tone: "bare" as const,
 });

@@ -13,6 +13,13 @@
 //   .doc-article__kicker             the /SECTION label
 //   .doc-article__title              the page's single h1
 //   .doc-article__standfirst         one sentence under it
+//   .doc-article__strip              the mono metadata strip above the prose
+//   .doc-article__field              one field of it: label, then value
+//   .doc-article__label              the field's label (`STATUS:`), muted
+//   .doc-article__value              the field's value, in the surface ink
+//   .doc-article__value--quiet       a value that is a state, not a claim
+//   .doc-article__value--specimen    the one authenticated value (accent)
+//   .doc-article__separator          the U+2001 between two fields
 //   .doc-article__toc                the generated contents nav
 //   .doc-article__toc-label          its visible label
 //   .doc-article__toc-list           one row per ## heading
@@ -111,6 +118,58 @@
 	margin: 0;
 }
 
+/* §5's mono metadata strip - `STATUS` / `LAYER` / `SOURCE` / `COMPAT` /
+   `UPDATED` - placed by the shell between the contents list and the body, which
+   is where §5 names it (after the compact index, above the prose). It reads at
+   the header's measure and at group distance, so it lands as the record's
+   metadata row and not as a second paragraph of the standfirst.
+
+   The fields are separate elements and the U+2001 between them is its own
+   element, so a reader's assistive tech announces five fields rather than one
+   run-on line - the grammar `BlogIndex` renders. The label carries the muted
+   ink and the value the surface's, and a value that is a state (`UNAVAILABLE`)
+   renders quiet so it never reads as a positive claim (DESIGN.md §1.5). */
+.doc-article__strip {
+	@include mono-meta;
+	@include track(0.08em);
+
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+
+	max-width: 72ch;
+
+	margin-block: var(--space-group);
+
+	overflow-wrap: anywhere;
+}
+
+.doc-article__field {
+	white-space: nowrap;
+}
+
+.doc-article__label {
+	color: var(--MuteForeground);
+}
+
+.doc-article__value {
+	margin-inline-start: var(--space-tight);
+
+	color: var(--Foreground);
+}
+
+.doc-article__value--quiet {
+	color: var(--MuteForeground);
+}
+
+.doc-article__value--specimen {
+	color: var(--Accent);
+}
+
+.doc-article__separator {
+	color: var(--MuteForeground);
+}
+
 /* The generated contents list. It is dense on purpose: a documentation page's
    contents is a scan, not a chapter, so the rows sit at --space-tight and the
    whole block is closed by a hairline rather than opened by a heading rule. */
@@ -182,22 +241,6 @@ jelly-card.doc-prose {
 	padding-inline: clamp(1rem, 4vw, 2.5rem);
 }
 
-/* §5's mono metadata strip: the page's own provenance, opened by a hairline at
-   the card's edge. U+2001 EM QUAD separates the items - it is a real character,
-   not collapsible ASCII space, so no `white-space` override is needed. */
-.doc-prose__strip {
-	@include mono-meta;
-	@include track;
-	@include hairline(bottom);
-
-	color: var(--MuteForeground);
-
-	margin: 0;
-	padding-block-end: var(--space-reading);
-
-	overflow-wrap: anywhere;
-}
-
 /* Ink is the card token, explicitly (§5: "every prose element uses
    `text-card-foreground`"). The two inks are the same value in the daylight
    theme, so this is the card's own token, not a different colour. */
@@ -246,10 +289,11 @@ jelly-card.doc-prose .doc-article__body a {
 	padding-inline: 0;
 }
 
-/* ...and the bands own the vertical space too. A band is already separated by
-   its own `padding-block: --space-chapter`; adding this body's `--space-group`
-   on top would put 7.5rem between the standfirst and the first section's own
-   kicker. One mechanism, not two. */
+/* ...and the bands own the vertical space too. A band carries its own
+   `padding-block` - `--space-group` at rest, `--space-chapter` when it opts into
+   the chapter separator; adding this body's `--space-group` on top would double
+   the distance between the standfirst and the first section's own kicker. One
+   mechanism, not two. */
 .doc-article--banded .doc-article__body {
 	margin-block-start: 0;
 }
@@ -287,13 +331,13 @@ jelly-card.doc-prose .doc-article__body a {
 .doc-article__body > h3 {
 	font-size: var(--type-body);
 	line-height: var(--type-body-line);
-	font-weight: 600;
+	font-weight: 500;
 }
 
 .doc-article__body > h4 {
 	font-size: var(--type-caption);
 	line-height: var(--type-caption-line);
-	font-weight: 600;
+	font-weight: 500;
 
 	@include track(0.08em);
 }

@@ -1,0 +1,65 @@
+---
+/**
+ * SurfaceChips - a record's state chips, as Jelly badges.
+ *
+ * The chips a surface prints - `Disabled`, `Feature Gated`, `Optional`,
+ * `Active`, `Coming Soon` - are states, not tags, so each one carries the §7
+ * marker beside its word: a status that renders exactly like an ordinary fact
+ * has lost its state. `jelly-badge` stays the surface the chip sits on; the
+ * badge only loses its one-neutral-ink habit, which is what made five different
+ * states look like five copies of the same fact.
+ *
+ * The fill stays the neutral mute for every tone - these are state chips, not
+ * protocol chips, so they take no spine ink - and the ink carries the tone.
+ * The marker inside the badge draws itself in `currentColor`, so the label ink
+ * below is the single declaration that paints both the green rule and the green
+ * word on a `specimen` chip.
+ *
+ * A chip the vocabulary does not know is `ink`: a label the page chose to print
+ * is still a state of the record it sits on, and an unmarked one would be the
+ * drift this block exists to remove.
+ *
+ * No script and no hydration: the chips are static.
+ */
+import { Tone } from "./State.js";
+
+import type { StatusTone } from "../../Content/Record/FieldRecord.js";
+
+interface Props {
+	/** The chip labels, verbatim - never re-cased, never re-ordered. */
+	chips: readonly string[];
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const { chips, class: ClassName } = Astro.props;
+
+/** The badge's label ink per §7 tone. The fill is the neutral mute for all three. */
+const Ink: Readonly<Record<StatusTone, string>> = {
+	ink: "var(--Foreground)",
+	quiet: "var(--MuteForeground)",
+	specimen: "var(--Accent)",
+};
+
+/** One chip's two Jelly properties, plus the two shape properties the site pins. */
+const Style = (ChipTone: StatusTone): string =>
+	`--jelly-fill:var(--Mute);--jelly-label:${Ink[ChipTone]};--jelly-badge-radius:0;--jelly-badge-font-size:13px`;
+---
+
+<ul class:list={["surface__chips", ClassName]}>
+	{
+		chips.map((Chip) => (
+			<li>
+				<jelly-badge
+					shape="square"
+					variant="platinum"
+					style={Style(Tone(Chip) ?? "ink")}
+				>
+					<span class="surface__mark" aria-hidden="true" />
+					{Chip}
+				</jelly-badge>
+			</li>
+		))
+	}
+</ul>

@@ -3,19 +3,27 @@
  * RecordWell - a command, config block or transcript: a recessed mono body in a
  * hairline frame, under a title bar carrying the label and the copy control.
  *
- * Two rules this file keeps, and a caller must not break:
+ * The copy control is the design system's `jelly-icon-button`, not a hand-rolled
+ * `<button>`: Jelly owns its fill, ring, label ink and radius (radius 0), and the
+ * block only places it in the bar. Three rules a caller must not break:
  *
- * - Renders props only: no hydration directive, no script element. The block
- *   ships zero JavaScript. A page that wants the copy control to work hydrates
- *   it from its own island: select `[data-record-well-copy]` inside the well and
- *   read the raw command from that element's `data-copy`.
- * - The command text is in the DOM whether or not the control renders. The
- *   `<pre>` always carries every line, so `copy: false` removes the affordance,
- *   never the content.
+ * - The behaviour is wired by `Library/Document/WireWells` from the module
+ *   script at the foot of this file, so every consumer gets a working control -
+ *   including a static record that ships no script of its own. A page never
+ *   wires a well a second time.
+ * - The control is rendered `hidden` and revealed by that wiring once the
+ *   listener is attached. With JavaScript off, or with no clipboard API, the
+ *   well prints its command and nothing else: no inert button, no empty focus
+ *   stop, and every line of the `<pre>` still selectable.
+ * - The command text is in the DOM whether or not the control renders, so
+ *   `copy: false` removes the affordance, never the content.
  *
  * The copy payload is the raw command: no `$` prompt, no trailing `#` or `//`
  * annotation, no line numbers. The body prints the prompt-free line, so the two
- * differ only on a line the caller annotated.
+ * differ only on a line the caller annotated. The payload rides
+ * `data-copy-payload` rather than `data-copy`: `WireCopyButtons()` claims every
+ * `jelly-icon-button[data-copy]` sitewide and would resolve its source as this
+ * button's previous sibling - the title bar's label, not the command.
  */
 import type { Well } from "./Type.js";
 
@@ -49,6 +57,9 @@ const Printed = lines.map((Line, Index) =>
 const Payload = lines
 	.map((Line) => Line.replace(Prompt, "").replace(Annotation, "").trimEnd())
 	.join("\n");
+
+/** The control's accessible name; the wiring swaps it for "Copied" on copy. */
+const CopyLabel = `Copy ${label} to the clipboard`;
 ---
 
 <figure class:list={["record-well", Class]}>
@@ -57,17 +68,43 @@ const Payload = lines
 		{language && <span class="record-well__lang">{language}</span>}
 		{
 			copy && (
-				<button
-					type="button"
+				<jelly-icon-button
 					class="record-well__copy"
 					data-record-well-copy
-					data-copy={Payload}
-					aria-label={`Copy ${label} to the clipboard`}
+					data-copy-payload={Payload}
+					size="small"
+					shape="square"
+					label={CopyLabel}
+					aria-label={CopyLabel}
+					title={CopyLabel}
+					style="--jelly-fill: var(--Mute); --jelly-label: var(--Foreground); --jelly-icon-button-radius: 0px; --jelly-ring: var(--Accent);"
+					hidden
 				>
-					<span aria-hidden="true">⧉</span> copy
-				</button>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						style="color: var(--jelly-label)"
+						aria-hidden="true"
+					>
+						<rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+						<path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+					</svg>
+				</jelly-icon-button>
 			)
 		}
 	</figcaption>
 	<pre class="record-well__body"><code>{Printed.map((Line) => <span class="record-well__line">{Line}</span>)}</code></pre>
 </figure>
+
+<script>
+	import { WireWells } from "../../Library/Document/WireWells";
+
+	WireWells();
+</script>

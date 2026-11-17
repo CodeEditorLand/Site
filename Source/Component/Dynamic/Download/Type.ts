@@ -20,7 +20,7 @@
  * Record layer's own contract (`../../Record/Type.js`): a component renders the
  * data it is handed and never sorts, splices or pushes it.
  */
-import type { Band, LedgerRow } from "../../Record/Type.js";
+import type { LedgerRow } from "../../Record/Type.js";
 
 /**
  * The i18n resolver the page hands to `Data.ts`.
@@ -163,14 +163,41 @@ export interface Release {
 }
 
 /**
- * The three sections below the record, already resolved to copy.
+ * One region of the `# RELEASE_01` artifact, already resolved to copy.
  *
- * The record is not a band - it opens the page and owns its own head - so the
- * page's band data starts here, with the sections that are genuinely different
- * subjects from it.
+ * The page is one record, not a stack of chapters (DESIGN.md §7 DR-9). After the
+ * manifest's own fields the artifact continues into the regions that answer the
+ * rest of the page's question, and a region carries the artifact's internal
+ * anatomy: a `/LABEL` kicker, its own `h3`, an optional standfirst and an
+ * optional footnote. The regions paint no boundary and take no chapter
+ * distance - they are parts of one subject, so they separate at `--space-group`
+ * (DESIGN.md §2.3, §4.1).
  */
-export interface Bands {
-	readonly Requirements: Band;
-	readonly Previous: Band;
-	readonly Transparency: Band;
+export interface Region {
+	/** The region's anchor id, and the stem of its heading's id. */
+	readonly id: string;
+
+	/** The `/LABEL` opening the region, printed exactly as written. */
+	readonly kicker: string;
+
+	/** The region's own heading: the artifact's one `h3` per region. */
+	readonly heading: string;
+
+	/** One sentence under the heading, when the region needs one. */
+	readonly standfirst?: string;
+
+	/** Provenance, caveat or source line closing the region. */
+	readonly footnote?: string;
+}
+
+/**
+ * The three regions the `# RELEASE_01` artifact continues into, in page order.
+ *
+ * The record opens the page and owns its own head, so nothing here is a band:
+ * each entry is a region inside the record, rendered by `Download/Region.astro`.
+ */
+export interface Regions {
+	readonly Requirements: Region;
+	readonly Previous: Region;
+	readonly Transparency: Region;
 }

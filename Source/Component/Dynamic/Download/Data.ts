@@ -17,11 +17,11 @@
 import type { LedgerRow, MatrixColumn } from "../../Record/Type.js";
 
 import type {
-	Bands,
 	ManifestPlatform,
 	ManifestRecord,
 	Mark,
 	PlatformRequirements,
+	Regions,
 	Release,
 	Translate,
 } from "./Type.js";
@@ -396,15 +396,20 @@ export const ReleaseColumns: readonly MatrixColumn[] = [
 	{ label: "CHANGE" },
 ];
 
-// ─── The three sections below the record ──────────────────────────────────
-// Kicker, heading, standfirst and footnote for each, in page order. All three
-// sit on the creme field and put their information in white cards, so no two
-// sections alternate a surface to make a rhythm out of it: the surface follows
-// the artifact, never the position on the page (DESIGN.md §5 A5).
+// ─── The record's regions ─────────────────────────────────────────────────
+// The `# RELEASE_01` artifact continues past the manifest's own fields into
+// these three regions: what a build needs, what shipped before this release,
+// and what the build discloses about itself. Each one is a region of the record
+// - a `/LABEL`, an `h3` and a body - not a chapter of the page: the page has one
+// artifact, and five chapters around it restated a single subject (DESIGN.md
+// §1.8, §7 DR-9). All three sit on the creme field and put their information in
+// white cards, so no two regions alternate a surface to make a rhythm out of it:
+// the surface follows the artifact, never the position on the page (§5 A5).
 
-export function Bands(T: Translate): Bands {
+export function Regions(T: Translate): Regions {
 	return {
 		Requirements: {
+			id: "release-requirements",
 			kicker: T("download:requirements.kicker", {
 				defaultValue: "/REQUIREMENTS",
 			}),
@@ -422,6 +427,7 @@ export function Bands(T: Translate): Bands {
 		},
 
 		Previous: {
+			id: "release-previous",
 			kicker: T("download:previousReleases.kicker", {
 				defaultValue: "/PREVIOUS RELEASES",
 			}),
@@ -431,6 +437,7 @@ export function Bands(T: Translate): Bands {
 		},
 
 		Transparency: {
+			id: "release-transparency",
 			kicker: T("download:transparency.kicker", {
 				defaultValue: "/TRANSPARENCY",
 			}),
