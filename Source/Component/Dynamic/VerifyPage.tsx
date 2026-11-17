@@ -6,6 +6,8 @@ import { useTranslation } from "react-i18next";
 
 import { AuthAPI as AuthAPIClass } from "../../Library/API/Authentication";
 
+import { DynamicButton } from "./DynamicButton";
+
 import { DynamicEmailVerification } from "./DynamicEmailVerification";
 
 import { DynamicStateReport, StateLabel } from "./DynamicStateReport";
@@ -131,13 +133,14 @@ const VerifyPage = ({
 						"Your email has been successfully verified. You can now sign in to your account and start using Code Editor Land."
 					}
 					Action={
-						<button
-							type="button"
-							className="auth-shell__primary emphasis-expressive"
-							onClick={() => Navigate("/")}
-						>
-							{"Continue to Homepage"}
-						</button>
+						<DynamicButton
+							Content={{
+								Text: "Continue to Homepage",
+								Variant: "default",
+								ClassName: "auth-shell__primary",
+							}}
+							OnAction={() => Navigate("/")}
+						/>
 					}
 				/>
 			)}
@@ -160,13 +163,14 @@ const VerifyPage = ({
 					}
 					Action={
 						<div className="auth-shell__actions">
-							<button
-								type="button"
-								className="auth-shell__primary emphasis-expressive"
-								onClick={() => Navigate("/Verify")}
-							>
-								{"Send New Verification Email"}
-							</button>
+							<DynamicButton
+								Content={{
+									Text: "Send New Verification Email",
+									Variant: "default",
+									ClassName: "auth-shell__primary",
+								}}
+								OnAction={() => Navigate("/Verify")}
+							/>
 
 							<button
 								type="button"

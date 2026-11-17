@@ -35,17 +35,17 @@ const { states, class: ClassName } = Astro.props;
 
 <ul class:list={["surface__states", ClassName]}>
 	{
-		states.map((State) => (
-			<li class="surface__state">
-				<span class="surface__state-key">{State.key}</span>
+		states.map((Row) => (
+			<li class="surface__state-row">
+				<span class="surface__state-key">{Row.key}</span>
 				<span
 					class:list={[
 						"surface__state-word",
-						`surface__state-word--${State.tone}`,
+						`surface__state-word--${Row.tone}`,
 					]}
 				>
-					<span class="surface__mark" aria-hidden="true" />
-					{State.value}
+					<span class="surface__mark" aria-hidden="true"></span>
+					{Row.value}
 				</span>
 			</li>
 		))

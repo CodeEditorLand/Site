@@ -77,7 +77,7 @@ const {
 			{standfirst ? <p class="surface__standfirst">{standfirst}</p> : null}
 			<div class="surface__status">
 				{states.length ? <SurfaceState states={states} /> : null}
-				<RecordLedger rows={rows} columns={2} />
+				{rows.length ? <RecordLedger rows={rows} columns={2} /> : null}
 			</div>
 		</div>
 	</header>

@@ -6,6 +6,8 @@ import { useEffect } from "react";
 
 import { useTranslation } from "react-i18next";
 
+import { DynamicButton } from "./DynamicButton";
+
 import { DynamicStateReport, StateLabel } from "./DynamicStateReport";
 
 /**
@@ -177,13 +179,12 @@ export default ({
 						"Account creation is disabled while the portal flow is being finished. Existing sign-in remains available for configured accounts.",
 				})}
 				Action={
-					<a
-						href="/Account/SignIn"
-						className="auth-shell__primary emphasis-expressive"
-					>
-						{T("registrationComingSoon.signIn", {
-							defaultValue: "Sign In",
-						})}
+					<a className="inline-block" href="/Account/SignIn">
+						<jelly-button className="auth-shell__primary">
+							{T("registrationComingSoon.signIn", {
+								defaultValue: "Sign In",
+							})}
+						</jelly-button>
 					</a>
 				}
 			/>
@@ -225,15 +226,16 @@ export default ({
 					</>
 				}
 				Action={
-					<button
-						type="button"
-						className="auth-shell__primary emphasis-expressive"
-						onClick={() => Login()}
-					>
-						{T("tryAgain", {
-							defaultValue: "Try again",
-						})}
-					</button>
+					<DynamicButton
+						Content={{
+							Text: T("tryAgain", {
+								defaultValue: "Try again",
+							}),
+							Variant: "default",
+							ClassName: "auth-shell__primary",
+						}}
+						OnAction={() => Login()}
+					/>
 				}
 			/>
 		);
@@ -283,13 +285,12 @@ export default ({
 							)}
 						</div>
 
-						<a
-							href="/Dashboard"
-							className="auth-shell__primary emphasis-expressive"
-						>
-							{T("dashboard", {
-								defaultValue: "Go to Dashboard",
-							})}
+						<a className="inline-block" href="/Dashboard">
+							<jelly-button className="auth-shell__primary">
+								{T("dashboard", {
+									defaultValue: "Go to Dashboard",
+								})}
+							</jelly-button>
 						</a>
 
 						<button

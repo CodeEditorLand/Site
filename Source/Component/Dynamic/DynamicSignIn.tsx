@@ -8,9 +8,16 @@
  * footer alternates.
  *
  * The vocabulary is the shell's (`auth-shell__form`, `auth-shell__field`,
- * `auth-shell__error`, `auth-shell__primary emphasis-expressive`,
- * `auth-shell__alternate`), so sign-in, sign-up, forgot-password and
- * reset-password are one form language rather than four centred cards.
+ * `auth-shell__error`, `auth-shell__primary`, `auth-shell__alternate`), so
+ * sign-in, sign-up, forgot-password and reset-password are one form language
+ * rather than four centred cards.
+ *
+ * This submit stays a native `<button type="submit">`, so it carries the
+ * published `.emphasis-expressive` tier rather than the Jelly `--jelly-*`
+ * properties the other auth actions set (DESIGN.md §7 DR-16): it is the form's
+ * default button, and a form with two blocking fields and no native submit
+ * button does not submit on Enter - measured in Chromium 157 - so a Jelly
+ * submit here would cost the keyboard path.
  *
  * Behaviour is unchanged: the same two fields, the same validation predicates
  * and messages, the same submit gate, the same OAuth hand-off and the same

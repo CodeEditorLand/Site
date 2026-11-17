@@ -6,9 +6,10 @@
 // Rules this partial obeys, from BRIDGE 2.3 and the P12 card:
 //   - tokens only: no literal colour, no elevation, no corner rounding, and no
 //     px outside the hairline mixin;
-//   - the surface is the published `.emphasis-standard` tier, the primary
-//     action is the published `.emphasis-expressive` tier - this file adds
-//     layout and type to those tiers, it never restates them;
+//   - the surface is the published `.emphasis-standard` tier; the primary
+//     action is a Jelly button, and this file SETS its `--jelly-fill`,
+//     `--jelly-label` and `--jelly-ring` rather than painting a fill over the
+//     element (DESIGN.md §1.7, §7 DR-16);
 //   - the narrow measure is the card's 28rem, which is `--ContainerMedium`.
 
 @use "../../Mixin" as *;
@@ -257,20 +258,47 @@
 	gap: var(--space-tight);
 }
 
-/* `.emphasis-expressive` supplies the ink-inverted fill; this adds the hit
-   area, the tracked label and the square corners the tier already declares. */
+/* The primary action, as the Jelly button's OWN custom properties (§1.7;
+   `DesignSystem-Components.md` §2 and §9). Fill, label and focus ring are SET
+   on the element and the element paints its own body from them, so nothing
+   here draws a background or a border - a class that painted them would
+   override the properties instead of setting them (DESIGN.md §7 DR-16).
+   The four geometry properties are the same values the shared `UI/Button`
+   primitive hands its own Jelly buttons, so a `DynamicButton` and a bare
+   `jelly-button` render one control. The label's own type rides on the class
+   because `button { font: inherit }` in the element's shadow tree picks it up;
+   the 500 is stated because Jelly's `:host` default is 640 and §1.4 / §5 C1
+   allow nothing above 500. */
 .auth-shell__primary {
+	--jelly-fill: var(--Primary);
+	--jelly-label: var(--PrimaryForeground);
+	--jelly-ring: var(--Ring);
+	--jelly-button-radius: var(--RadiusButton);
+	--jelly-button-height: calc(var(--space-group) + var(--space-tight));
+	--jelly-button-min-width: 0;
+	--jelly-button-padding-inline: var(--space-group);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	font-weight: 500;
+	line-height: var(--type-meta-line);
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+/* Anything that is not a Jelly element - the native submit buttons the two
+   credential forms need as their default button, the two account surfaces, and
+   the OAuth result page's links - has no Jelly body to read the properties
+   above, so it keeps the hit area that used to sit on the block. `:where()`
+   holds the selector's specificity at the block's own, so the cascade against
+   `.StaccatoButton` is the one this rule had before the split. */
+.auth-shell__primary:where(:not(jelly-button)) {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	gap: var(--space-tight);
 	padding: var(--space-reading) var(--space-group);
-	font-family: var(--FontMono);
-	font-size: var(--type-meta);
-	line-height: var(--type-meta-line);
-	letter-spacing: 0.18em;
-	text-transform: uppercase;
-	cursor: pointer;
 }
 
 .auth-shell__primary:disabled {

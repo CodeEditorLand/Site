@@ -187,8 +187,8 @@ const DynamicEmailVerification = ({
 									: (Content.Pending.ResendButton.Text ?? ""),
 							FullWidth: true,
 							Disabled: !Email || ResendCooldown > 0,
-							ClassName:
-								"auth-shell__primary emphasis-expressive",
+							Variant: "default",
+							ClassName: "auth-shell__primary",
 						}}
 						OnAction={HandleResend}
 					/>
@@ -242,7 +242,8 @@ const DynamicEmailVerification = ({
 					Content={{
 						...Content.Success.ContinueButton,
 						FullWidth: true,
-						ClassName: "auth-shell__primary emphasis-expressive",
+						Variant: "default",
+						ClassName: "auth-shell__primary",
 					}}
 					OnAction={() => OnNavigate?.("/Dashboard")}
 				/>
@@ -261,7 +262,8 @@ const DynamicEmailVerification = ({
 					Content={{
 						...Content.Error.BackToSignInButton,
 						FullWidth: true,
-						ClassName: "auth-shell__primary emphasis-expressive",
+						Variant: "default",
+						ClassName: "auth-shell__primary",
 					}}
 					OnAction={() => OnNavigate?.("/Account/SignIn")}
 				/>

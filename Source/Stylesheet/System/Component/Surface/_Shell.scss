@@ -14,7 +14,7 @@
 //   .surface__standfirst   one sentence of context
 //   .surface__status       the status block: the state register above the ledger
 //   .surface__states       the state register - key/value rows, §7's markers
-//   .surface__state        one state row, on the ledger's own key column
+//   .surface__state-row    one state row, on the ledger's own key column
 //   .surface__state-key    the mono key a state is stated under
 //   .surface__state-word   the state word, at its tone's ink
 //   .surface__mark         the 2px specimen rule a state carries
@@ -56,6 +56,11 @@
 	margin: 0;
 }
 
+// The page's only `h1`. `--type-section` IS the L tier (`--TypeScaleL`,
+// clamp(2rem, 5vw, 3.25rem) = 32-52px), so the floor is L's 32px at every
+// width: a functional surface's `h1` can never render under L, and this
+// declaration is the one place that decides it. Do not restate a size here -
+// a literal would be the fourth place a tier is spelled.
 .surface__title {
 	font-size: var(--type-section);
 	line-height: var(--type-section-line);
@@ -102,6 +107,9 @@
 // The register sits above the ledger and borrows its geometry: same key column
 // from 640px up, same row rhythm, same interior hairline. A reader sees one
 // block of facts, in which the states are visibly states.
+//
+// `--row`, not `.surface__state`: that class is the state's own *sentence*
+// further down this file, and a register row is a key/value pair, not prose.
 .surface__states {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
@@ -110,7 +118,7 @@
 	list-style: none;
 }
 
-.surface__state {
+.surface__state-row {
 	@include hairline(top);
 
 	display: flex;
@@ -164,7 +172,7 @@
 // Wide enough for the ledger's key column: the register takes the same
 // `min(14rem, 40%)` the ledger gives its key, so the two rows line up.
 @include bp(640px) {
-	.surface__state {
+	.surface__state-row {
 		flex-direction: row;
 		align-items: baseline;
 		gap: var(--space-reading);

@@ -176,13 +176,14 @@ const DynamicResetPassword = ({
 						"This password reset link is invalid or has expired. Please request a new one."}
 				</p>
 
-				<button
-					type="button"
-					className="auth-shell__primary emphasis-expressive"
-					onClick={() => OnNavigate?.("/Account/SignIn")}
-				>
-					{BackToSignIn}
-				</button>
+				<DynamicButton
+					Content={{
+						Text: BackToSignIn,
+						Variant: "default",
+						ClassName: "auth-shell__primary",
+					}}
+					OnAction={() => OnNavigate?.("/Account/SignIn")}
+				/>
 			</div>
 		);
 	}
@@ -203,13 +204,14 @@ const DynamicResetPassword = ({
 						"Your password has been reset successfully. You can now sign in with your new password."}
 				</p>
 
-				<button
-					type="button"
-					className="auth-shell__primary emphasis-expressive"
-					onClick={() => OnNavigate?.("/Account/SignIn")}
-				>
-					{GoToSignIn}
-				</button>
+				<DynamicButton
+					Content={{
+						Text: GoToSignIn,
+						Variant: "default",
+						ClassName: "auth-shell__primary",
+					}}
+					OnAction={() => OnNavigate?.("/Account/SignIn")}
+				/>
 			</div>
 		);
 	}
@@ -303,8 +305,9 @@ const DynamicResetPassword = ({
 				Content={{
 					...SubmitButton,
 					Type: "submit",
+					Variant: "default",
 					FullWidth: true,
-					ClassName: "auth-shell__primary emphasis-expressive",
+					ClassName: "auth-shell__primary",
 				}}
 				IsLoading={IsLoading}
 			/>

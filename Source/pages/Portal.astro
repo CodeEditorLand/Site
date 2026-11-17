@@ -9,6 +9,8 @@ import RecordLedger from "../Component/Record/RecordLedger.astro";
 import RecordMatrix from "../Component/Record/RecordMatrix.astro";
 import RecordStage from "../Component/Record/RecordStage.astro";
 import SurfaceShell from "../Component/Surface/SurfaceShell.astro";
+import SurfaceState from "../Component/Surface/SurfaceState.astro";
+import { Split } from "../Component/Surface/State.js";
 import { PortalPage } from "../Content/Surface/Portal.js";
 
 const T = GetI18n();
@@ -25,6 +27,21 @@ const MetaDescription = T("meta.portal.description", {
 // protocols, their feature and capability copy, and the four sign-in links.
 // The page owns the band order and nothing else.
 const Page = PortalPage(T);
+
+/**
+ * The page's status block, split into states and facts.
+ *
+ * `DesignSystem-Components.md` §7: a status that renders exactly like an
+ * ordinary fact has lost its state. `STATUS: PLANNED` is the page's one state at
+ * the top, and each tier states the same word about itself, so both are lifted
+ * into the register that carries the marker. Nothing is re-worded: `Split` reads
+ * the values the content table already wrote and separates them by the
+ * vocabulary in `Surface/State.ts`.
+ */
+const Status = Split(Page.status);
+
+/** Each tier with its own facts split the same way, so a tier's state carries a marker too. */
+const Tiers = Page.tiers.map((Tier) => ({ ...Tier, parts: Split(Tier.facts) }));
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription}>
@@ -38,7 +55,8 @@ const Page = PortalPage(T);
 		index={Page.index}
 		title={Page.title}
 		standfirst={Page.standfirst}
-		rows={Page.status}
+		states={Status.states}
+		rows={Status.facts}
 	>
 		<RecordBand band={Page.roadmap}>
 			<RecordStage stages={Page.stages} />
@@ -53,13 +71,14 @@ const Page = PortalPage(T);
 		</RecordBand>
 
 		{
-			Page.tiers.map((Tier) => (
+			Tiers.map((Tier) => (
 				<RecordBand band={Tier.band}>
 					{Tier.rest.map((Line) => (
 						<p class="surface__prose">{Line}</p>
 					))}
 					<div class="surface__panel">
-						<RecordLedger rows={Tier.facts} />
+						<SurfaceState states={Tier.parts.states} />
+						<RecordLedger rows={Tier.parts.facts} />
 					</div>
 					<div class="surface__stack">
 						{Tier.features.map((Feature) => (

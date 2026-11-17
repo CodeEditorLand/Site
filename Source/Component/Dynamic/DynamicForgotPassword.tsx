@@ -95,9 +95,9 @@ const DynamicForgotPassword = ({
 						Content={{
 							...SubmitButton,
 							Type: "submit",
+							Variant: "default",
 							FullWidth: true,
-							ClassName:
-								"auth-shell__primary emphasis-expressive",
+							ClassName: "auth-shell__primary",
 						}}
 
 						IsLoading={IsLoading}
@@ -124,13 +124,14 @@ const DynamicForgotPassword = ({
 								Didn't receive the email?
 							</p>
 
-							<button
-								type="button"
-								className="auth-shell__primary emphasis-expressive"
-								onClick={() => OnResend?.()}
-							>
-								{ResendButton.Text}
-							</button>
+							<DynamicButton
+								Content={{
+									Text: ResendButton.Text,
+									Variant: "default",
+									ClassName: "auth-shell__primary",
+								}}
+								OnAction={() => OnResend?.()}
+							/>
 						</>
 					)}
 

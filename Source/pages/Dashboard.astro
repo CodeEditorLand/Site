@@ -140,7 +140,8 @@ const CardStyle =
 					</div>
 				) : (
 					<>
-						<RecordLedger rows={Page.editorFacts} />
+						<SurfaceState states={Editor.states} />
+						<RecordLedger rows={Editor.facts} />
 						<div class="surface__stack">
 							{Page.editorDescription.map((Line) => (
 								<p class="surface__prose">{Line}</p>
