@@ -91,8 +91,11 @@ import type Property from "./Interface/Property/Hero.js";
  *   manifest's status strip;
  * - the four-element rail     -> `DynamicFeatures`, as that band's one
  *   architecture proof;
- * - `SPECIES` / `TEMP` / `WIND` -> `DynamicFeatures`, as the specimen ledger
- *   (`Hero/Type.ts` `Metadata.observation`).
+ * - `SPECIES` / `TEMP` / `WIND` -> `FeatureBand`, the `#features` band that
+ *   succeeded the `# OBSERVATION_01` layer, as its filed specimen ledger
+ *   (`Hero/Type.ts` `Metadata.observation`). The card keeps three rows; a
+ *   fourth block in it would break `DesignSystem-Components.md` §1's
+ *   `TARGET / LICENSE / SIGNAL` template and its four-row cap.
  *
  * Every one of those is a move, not a deletion: the strings are the same
  * strings, printed by the band whose layer owns them.
@@ -350,24 +353,6 @@ const DynamicHeroSection = ({ Content, Band, ClassName }: Property) => {
 							{/* 11. The record's three metadata rows. */}
 							<dl className="record-ledger record-ledger--1 hero-band__facts">
 								{Hero.facts.map((Fact) => (
-									<div
-										className="record-ledger__row"
-										key={Fact.key}
-									>
-										<dt className="record-ledger__key">
-											{Fact.key}
-										</dt>
-
-										<dd className="record-ledger__value">
-											{Fact.value}
-										</dd>
-									</div>
-								))}
-							</dl>
-
-							{/* 11b. The specimen observation: what was seen. */}
-							<dl className="record-ledger record-ledger--1 hero-band__facts">
-								{Hero.observation.map((Fact) => (
 									<div
 										className="record-ledger__row"
 										key={Fact.key}

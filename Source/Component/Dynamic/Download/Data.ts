@@ -145,11 +145,39 @@ export function FieldLabels(T: Translate): {
  *
  * The state line follows the baseline's own division: the platform with a
  * published source-build path is `ACTIVE` and prints its value in the accent
- * green; the two without one are `RELEASE PREPARATION` and print in ink.
+ * green; the two without one are `PREPARING` and print in ink. Those two then
+ * close on a second line, the baseline's plain `STATUS: RELEASE PREPARATION`
+ * sentence - the record states its state, and the sentence under it says what
+ * that state means for a reader looking for an installer.
  */
 export function ManifestPlatforms(T: Translate): readonly ManifestPlatform[] {
 	/** The baseline's word for a field with no published value. */
 	const Pending = "-";
+
+	/**
+	 * A platform with no published build path. Windows and Linux differ only in
+	 * their name, so the entry is a function of it: the same `X86_64` target, the
+	 * same unsigned state, the same channel, the same two-line close, and no
+	 * action - because there is nowhere yet to send the reader.
+	 */
+	const Preparing = (name: string): ManifestPlatform => ({
+		name,
+		arch: "X86_64",
+		signing: "IN PREPARATION",
+		size: Pending,
+		checksum: Pending,
+		channel: "PUBLIC",
+		state: {
+			copy: T("download:platform.status.preparing", {
+				defaultValue: "STATUS: PREPARING",
+			}),
+			status: "preparing",
+			tone: "ink",
+		},
+		note: T("download:platform.note.preparation", {
+			defaultValue: "STATUS: RELEASE PREPARATION",
+		}),
+	});
 
 	return [
 		{
@@ -171,36 +199,8 @@ export function ManifestPlatforms(T: Translate): readonly ManifestPlatform[] {
 				href: "https://github.com/CodeEditorLand/Land/releases",
 			},
 		},
-		{
-			name: "Windows",
-			arch: "X86_64",
-			signing: "IN PREPARATION",
-			size: Pending,
-			checksum: Pending,
-			channel: "PUBLIC",
-			state: {
-				copy: T("download:platform.status.preparing", {
-					defaultValue: "STATUS: RELEASE PREPARATION",
-				}),
-				status: "preparing",
-				tone: "ink",
-			},
-		},
-		{
-			name: "Linux",
-			arch: "X86_64",
-			signing: "IN PREPARATION",
-			size: Pending,
-			checksum: Pending,
-			channel: "PUBLIC",
-			state: {
-				copy: T("download:platform.status.preparing", {
-					defaultValue: "STATUS: RELEASE PREPARATION",
-				}),
-				status: "preparing",
-				tone: "ink",
-			},
-		},
+		Preparing("Windows"),
+		Preparing("Linux"),
 	];
 }
 

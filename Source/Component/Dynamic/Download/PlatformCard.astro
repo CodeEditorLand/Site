@@ -14,6 +14,7 @@
  *   SIZE:  -
  *   CHECKSUM:  -
  *   STATUS: ACTIVE                   green on the one platform that builds today
+ *   STATUS: RELEASE PREPARATION      the sentence the two preparing cards close on
  *   VIEW SOURCE BUILDS               the action, where there is one
  *
  * Three decisions worth knowing before you compose it:
@@ -103,6 +104,12 @@ const Fields = [
 				copy={platform.state.copy}
 			/>
 		</p>
+
+		{
+			platform.note && (
+				<p class="download-platform__note">{platform.note}</p>
+			)
+		}
 
 		{
 			platform.action && (

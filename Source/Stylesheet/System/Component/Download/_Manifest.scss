@@ -21,6 +21,7 @@
 //   .download-platform__label       the row's label, with its colon
 //   .download-platform__value       the row's value
 //   .download-platform__state       the platform's STATUS line
+//   .download-platform__note        the closing sentence two cards print
 //   .download-platform__action      the one action, where a platform has one
 //
 // The numbers are the baseline render's, not the design system's: a band padded
@@ -188,9 +189,22 @@
 
 // The status line closes the fields at 1rem, and the action follows it at
 // 1.5rem. On the two platforms with nowhere to send the reader, the status line
-// is the card's last line - which is why the action is a branch, not a slot.
+// is followed by the closing sentence at 1.5rem and that sentence is the card's
+// last line - which is why both the note and the action are branches, not slots.
 .download-platform__state {
 	margin: 1rem 0 0;
+}
+
+// The baseline's closing line: the same mono at the card's own ink, not the
+// muted ink of a footnote, because it is a state and not a comment.
+.download-platform__note {
+	margin: 1.5rem 0 0;
+	font-family: var(--FontMono);
+	font-size: var(--TypeScaleS);
+	line-height: 1.2;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	color: var(--CardForeground);
 }
 
 .download-platform__action {

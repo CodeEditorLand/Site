@@ -212,12 +212,24 @@
 
 /* ─── THE HAIRLINE GUTTER ──────────────────────────────────────────────── */
 
-// 1px, the pair's middle track. Hidden below `md`, where the panels stack and
-// a vertical rule would separate nothing.
+// 1px, the pair's middle track, spanning the pair's full height, hidden below
+// `md` where the panels stack and a vertical rule would separate nothing.
+//
+// The ink is the system's divider strength, not the surface hairline: the
+// gutter sits between a warm-white card and a photograph, and `var(--Border)`
+// (8% ink) dissolves on the card side at that contrast. `--CardForeground` at
+// 20% is the same mix the site's other dividers draw (the markdown-alert rule
+// in `_Base.scss`), so this is the record grammar's divider ink, restated for
+// a track that has no card behind it.
 .hero-band__gutter {
 	display: none;
 	inline-size: 1px;
-	background-color: var(--Border);
+	align-self: stretch;
+	background-color: color-mix(
+		in srgb,
+		var(--CardForeground) 20%,
+		transparent
+	);
 }
 
 @include bp(768px) {

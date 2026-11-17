@@ -103,12 +103,12 @@ export interface Fact {
  * `facts` is the record card's `<dl>`: `TARGET`, `LICENSE`, `SIGNAL` - what the
  * record is. `observation` is the specimen observation that has always been
  * printed beside it (`SPECIES`, `TEMP`, `WIND`) - what was seen. The card holds
- * the first block and only the first block: `DesignSystem-Pages.md` §1 and
- * `DESIGN.md` §3.1 give the hero card three metadata rows, and
- * `DesignSystem-Components.md` §1 caps a hero record at four. The observation
- * block therefore travels to the band that is an observation
- * (`DynamicFeatures`, the `# OBSERVATION_01` layer), where it is printed as the
- * specimen ledger it always was.
+ * the first block and only the first block: `DesignSystem-Components.md` §1
+ * gives a hero record `TARGET / LICENSE / SIGNAL` and caps it at four metadata
+ * rows. The observation block therefore travels to the band that is an
+ * observation (`FeatureBand.astro`, the `#features` layer that succeeded the
+ * `# OBSERVATION_01` band), where it is printed as the specimen ledger it
+ * always was.
  */
 export interface Metadata {
 	/** The record card's three rows: what the record is. */
@@ -158,13 +158,13 @@ export interface HeroBand {
 	/**
 	 * The record card's own metadata: `TARGET`, `LICENSE`, `SIGNAL`. Three
 	 * rows, because that is what the canonical hero card carries
-	 * (`DESIGN.md` §3.1).
+	 * (`DesignSystem-Components.md` §1: `TARGET / LICENSE / SIGNAL`).
 	 */
 	readonly facts: readonly Fact[];
 
 	/**
 	 * The specimen observation, `SPECIES` / `TEMP` / `WIND`. Not a card row -
-	 * it is the observation the `# OBSERVATION_01` band prints.
+	 * it is the observation `FeatureBand` prints in the `#features` layer.
 	 */
 	readonly observation: readonly Fact[];
 

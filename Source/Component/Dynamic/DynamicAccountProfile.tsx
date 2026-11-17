@@ -413,25 +413,70 @@ const AccountProfileInner = ({
 	};
 
 	if (IsLoading) {
+		/* The baseline's loading shell: a pulsing avatar beside three bars,
+		   then three full-width blocks, in the page's own column. The state's
+		   sentence and its Reload action sit under it, so the skeleton is what
+		   the route shows and the report is what says why. */
 		return (
-			<DynamicStateReport
-				Label={StateLabel.Loading}
-				Tone="ink"
-				Loading
-				Sentence={T("accountPage.loading", {
-					defaultValue:
-						"Reading your profile from the identity provider. The account fields appear as soon as it answers.",
-				})}
-				Action={
-					<button
-						type="button"
-						className="auth-shell__alternate"
-						onClick={() => window.location.reload()}
-					>
-						{T("reload", { defaultValue: "Reload" })}
-					</button>
-				}
-			/>
+			<div className="mx-auto max-w-2xl space-y-6 px-4 py-16">
+				<div className="flex items-center gap-6">
+					<div
+						className="flat h-20 w-20 shrink-0 animate-pulse bg-accent"
+						data-slot="skeleton"
+					/>
+
+					<div className="flex-1 space-y-3">
+						<div
+							className="flat h-6 w-48 animate-pulse bg-accent"
+							data-slot="skeleton"
+						/>
+
+						<div
+							className="flat h-4 w-64 animate-pulse bg-accent"
+							data-slot="skeleton"
+						/>
+
+						<div
+							className="flat h-4 w-32 animate-pulse bg-accent"
+							data-slot="skeleton"
+						/>
+					</div>
+				</div>
+
+				<div
+					className="flat h-48 w-full animate-pulse bg-accent"
+					data-slot="skeleton"
+				/>
+
+				<div
+					className="flat h-32 w-full animate-pulse bg-accent"
+					data-slot="skeleton"
+				/>
+
+				<div
+					className="flat h-24 w-full animate-pulse bg-accent"
+					data-slot="skeleton"
+				/>
+
+				<DynamicStateReport
+					Label={StateLabel.Loading}
+					Tone="ink"
+					Loading
+					Sentence={T("accountPage.loading", {
+						defaultValue:
+							"Reading your profile from the identity provider. The account fields appear as soon as it answers.",
+					})}
+					Action={
+						<button
+							type="button"
+							className="auth-shell__alternate"
+							onClick={() => window.location.reload()}
+						>
+							{T("reload", { defaultValue: "Reload" })}
+						</button>
+					}
+				/>
+			</div>
 		);
 	}
 

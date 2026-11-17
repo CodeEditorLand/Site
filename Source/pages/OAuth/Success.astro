@@ -36,7 +36,10 @@ const GoToDashboardText = T("common.oauth.goToDashboard", {
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
-	<Header client:load Mode="functional" slot="Header" />
+	<!-- The baseline mounts the header with no `Mode`, so it renders on the
+	     creme field rather than as a white bar (`Header` defaults to `minimal`);
+	     the island stays `client:load` so the bar is in the first paint. -->
+	<Header client:load slot="Header" />
 	<Auth0CallbackHandler
 		client:only="react"
 		Domain={Auth0Domain}

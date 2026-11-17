@@ -120,6 +120,17 @@ export interface ManifestPlatform {
 		readonly tone: PlatformTone;
 	};
 
+	/**
+	 * The closing note under the status line, where a platform prints one.
+	 *
+	 * The baseline closed its two preparing platforms on two lines: the record's
+	 * own `STATUS: PREPARING`, and under it the plain sentence `STATUS: RELEASE
+	 * PREPARATION`. The note is that second line. The platform with a published
+	 * build path carries none, because its card closes on its action instead -
+	 * which is why the note is a branch beside the action and not a slot.
+	 */
+	readonly note?: string;
+
 	/** The one action, where the platform has one. */
 	readonly action?: { readonly label: string; readonly href: string };
 }

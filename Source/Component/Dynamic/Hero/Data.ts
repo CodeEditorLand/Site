@@ -152,9 +152,11 @@ const HeroBandFor = (T: Translate): HeroBand => ({
 
 	/**
 	 * The specimen observation. It is the second metadata block the hero has
-	 * always printed, and it is not a card row: `DESIGN.md` §3.1 gives the
-	 * hero card three rows, so the observation prints in the
-	 * `# OBSERVATION_01` band, under the claims it qualifies.
+	 * always carried, and it is not a card row:
+	 * `DesignSystem-Components.md` §1 gives the hero record `TARGET / LICENSE /
+	 * SIGNAL` and caps it at four rows, so the observation prints in
+	 * `FeatureBand` (the `#features` layer), as the filed specimen ledger under
+	 * the claims it qualifies.
 	 */
 	observation: [
 		{

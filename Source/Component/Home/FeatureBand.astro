@@ -5,10 +5,26 @@
  * One grid, three columns from `lg`, two from `md`, one below - the same
  * distribution the baseline used, so the six cards read as two rows of three
  * rather than as a stack.
+ *
+ * This band is also the observation layer. The hero record's specimen
+ * observation - `SPECIES` / `TEMP` / `WIND`, what was seen - is printed here,
+ * under its own `SPECIMEN` label, and never inside the hero card:
+ * `DesignSystem-Components.md` §1 gives a hero record `TARGET / LICENSE /
+ * SIGNAL` and caps it at four metadata rows, so a fourth block in the card
+ * would both break the template and read as a card row it is not. The strings
+ * are the same strings the hero's data layer resolves (`HeroBandFor(T)
+ * .observation`), so the observation is a move, not a deletion.
+ *
+ * The strip is a filed ledger, not a card: it sits below the grid, takes the
+ * grid's measure, and borrows the record layer's `.record-ledger` shell so its
+ * rows keep the field-record hairline.
  */
 import { BandOf, HomeBands } from "../../Content/Home/Band.js";
 import { FeatureCards } from "../../Content/Home/Feature.js";
 import { GetI18n } from "../../Library/I18n/Server";
+
+import { HeroBandFor } from "../Dynamic/Hero/Data.js";
+import { ObservationLabel } from "../Dynamic/Properties/Data.js";
 
 import Band from "./Band.astro";
 import FeatureCard from "./FeatureCard.astro";
@@ -16,10 +32,29 @@ import FeatureCard from "./FeatureCard.astro";
 const T = GetI18n();
 
 const Head = BandOf(HomeBands(T), "features");
+
+/** The hero record's specimen observation: `SPECIES` / `TEMP` / `WIND`. */
+const Observation = HeroBandFor(T).observation;
 ---
 
 <Band head={Head}>
 	<div class="home-feature__grid">
 		{FeatureCards.map((Card) => <FeatureCard card={Card} />)}
+	</div>
+
+	<div class="home-feature__specimen">
+		<p class="home-feature__specimen-label">{ObservationLabel}</p>
+
+		<dl class="record-ledger record-ledger--1 home-feature__specimen-ledger">
+			{
+				Observation.map((Fact) => (
+					<div class="record-ledger__row">
+						<dt class="record-ledger__key">{Fact.key}</dt>
+
+						<dd class="record-ledger__value">{Fact.value}</dd>
+					</div>
+				))
+			}
+		</dl>
 	</div>
 </Band>

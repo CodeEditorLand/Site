@@ -1,3 +1,15 @@
+/* The page canvas behind everything. It is static: `position: fixed` means it
+   never moves with the document, and `contain: strict` (paint containment
+   included) keeps it out of the scrolled content's own painting, so it is
+   painted once and reused rather than repainted per scroll frame.
+
+   Measured on /Doc/wind at 2x DPR while flinging 24,000px, alternating the
+   layer on and off between passes: the first pass after load costs ~24ms of
+   raster with the layer and ~4ms of raster on every later pass whether the
+   layer is present, promoted with `transform: translateZ(0)`, or hidden with
+   `display: none`. So the layer carries a one-off raster and nothing per frame.
+   Do not "promote" it with a transform or a hint on the strength of a hunch:
+   it was measured, and a permanent compositor layer bought nothing. */
 #Layout {
 	position: fixed;
 	inset: 0;

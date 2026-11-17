@@ -1,0 +1,1 @@
+import{t as a}from"./Header.CoHDYtEc.js";export{a as Header,a as default};

@@ -153,25 +153,58 @@ const DashboardUserInner = () => {
 	};
 
 	if (IsLoading) {
+		/* The baseline's panel-sized loading state: a centred avatar block over
+		   four bars of descending width, inside the panel the account lands in.
+		   The state's sentence and its Reload action stay under the skeleton so
+		   the branch still says what it is waiting for. */
 		return (
-			<DynamicStateReport
-				Label={StateLabel.Loading}
-				Tone="ink"
-				Loading
-				Sentence={T("account:dashboardPage.surface.state.loading", {
-					defaultValue:
-						"Reading your session from the identity provider. The account rows appear as soon as it answers.",
-				})}
-				Action={
-					<button
-						type="button"
-						className="auth-shell__alternate"
-						onClick={() => window.location.reload()}
-					>
-						{T("dashboard.reload", { defaultValue: "Reload" })}
-					</button>
-				}
-			/>
+			<>
+				<div className="space-y-3" aria-label="Loading account...">
+					<div
+						className="flat mx-auto h-12 w-12 animate-pulse bg-accent"
+						data-slot="skeleton"
+					/>
+
+					<div
+						className="flat h-4 w-full animate-pulse bg-accent"
+						data-slot="skeleton"
+					/>
+
+					<div
+						className="flat h-4 w-4/5 animate-pulse bg-accent"
+						data-slot="skeleton"
+					/>
+
+					<div
+						className="flat h-4 w-3/5 animate-pulse bg-accent"
+						data-slot="skeleton"
+					/>
+
+					<div
+						className="flat h-4 w-2/5 animate-pulse bg-accent"
+						data-slot="skeleton"
+					/>
+				</div>
+
+				<DynamicStateReport
+					Label={StateLabel.Loading}
+					Tone="ink"
+					Loading
+					Sentence={T("account:dashboardPage.surface.state.loading", {
+						defaultValue:
+							"Reading your session from the identity provider. The account rows appear as soon as it answers.",
+					})}
+					Action={
+						<button
+							type="button"
+							className="auth-shell__alternate"
+							onClick={() => window.location.reload()}
+						>
+							{T("dashboard.reload", { defaultValue: "Reload" })}
+						</button>
+					}
+				/>
+			</>
 		);
 	}
 

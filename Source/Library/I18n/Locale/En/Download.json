@@ -105,7 +105,10 @@
 		},
 		"status": {
 			"active": "STATUS: ACTIVE",
-			"preparing": "STATUS: RELEASE PREPARATION"
+			"preparing": "STATUS: PREPARING"
+		},
+		"note": {
+			"preparation": "STATUS: RELEASE PREPARATION"
 		}
 	}
 }

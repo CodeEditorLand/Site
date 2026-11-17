@@ -572,9 +572,16 @@
 	transform-origin: center center;
 }
 
-[style*="--StaccatoIsOrdered: 1"] {
-	will-change: transform, opacity, z-index;
-}
+/* No compositor hint here, deliberately. The rule that used to sit at this
+   point matched `[style*="--StaccatoIsOrdered: 1"]` - a document-wide substring
+   selector - and `--StaccatoIsOrdered` is only ever written by
+   `Function/Noise/Attention.ts` `OrderOnHover`, which nothing calls: the
+   selector could never match, and had it ever matched it would have promoted an
+   arbitrary number of nodes for as long as the inline style lived. The hover
+   motion is a plain `transition` on transform and opacity, which the compositor
+   handles without a permanent hint. When the ordering effect is wired up, the
+   hint belongs on the interaction itself (the element that is animating), never
+   on a selector that can match the whole document. */
 
 .StaccatoHover {
 	cursor: pointer;

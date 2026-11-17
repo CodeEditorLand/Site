@@ -56,6 +56,16 @@ export const ContactHubTrail: readonly ContactTrailItem[] = [
 const RouteOf = (code: IncomeCode): string =>
 	`/Contact/${code.charAt(0)}${code.slice(1).toLowerCase()}`;
 
+/**
+ * The hub prints one sentence per card. A code whose route page carries a
+ * longer standfirst keeps that longer copy on its own page; the baseline's hub
+ * printed the shorter sentence, so it is carried here rather than inherited -
+ * the grid stays even and nothing the route prints is lost.
+ */
+const HubSubtitle: Partial<Record<IncomeCode, string>> = {
+	LODGE: "Lodge a formal complaint about how we have handled your personal data under GDPR Article 77.",
+};
+
 /** One request as a card: the code's slug, the registry's title and subtitle. */
 const EntryOf = (code: IncomeCode): ContactEntry => {
 	const config = Requests[code];
@@ -63,7 +73,7 @@ const EntryOf = (code: IncomeCode): ContactEntry => {
 	return {
 		slug: `/${config.Code}`,
 		title: config.Title,
-		subtitle: config.Subtitle,
+		subtitle: HubSubtitle[code] ?? config.Subtitle,
 		href: RouteOf(code),
 	};
 };

@@ -1,7 +1,9 @@
 // Feature - the six-card grid in the features band.
 //
 // Publishes:
-//   .home-feature__grid   one to three columns
+//   .home-feature__grid            one to three columns
+//   .home-feature__specimen        the filed observation strip below the grid
+//   .home-feature__specimen-label  the strip's `SPECIMEN` label
 //
 // Three columns from `lg` is what makes the six records read as two rows of
 // three. Two columns from `md` leaves the last row two-thirds full, which is the
@@ -9,6 +11,11 @@
 //
 // The cards are white: they are the page's cards, and the band's canvas is the
 // creme field behind them.
+//
+// The specimen strip is the observation layer's own block, so it is not a card:
+// it takes the grid's measure, opens on the record layer's hairline and keeps
+// the ledger's rows - the same `.record-ledger` shell the hero card uses for
+// its three metadata rows.
 
 @use "../../Mixin" as *;
 
@@ -30,4 +37,24 @@
 
 .home-feature {
 	--jelly-fill: var(--Card);
+}
+
+// The observation layer's filed strip: the record's `SPECIES` / `TEMP` / `WIND`,
+// below the six cards rather than inside the hero card. It takes the grid's
+// measure so it lines up with the records above it, and opens on the record
+// layer's own hairline so it reads as filed rather than as a seventh card.
+.home-feature__specimen {
+	@include hairline(top);
+	max-inline-size: 72rem;
+	margin-block-start: var(--space-group);
+	margin-inline: auto;
+	padding-block-start: var(--space-tight);
+}
+
+// The label is a ledger key, so it takes the same mono treatment the ledger's
+// own `.record-ledger__key` takes - one strip, one voice.
+.home-feature__specimen-label {
+	@include mono-meta;
+	@include track;
+	margin-block-end: var(--space-tight);
 }

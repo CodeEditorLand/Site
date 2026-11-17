@@ -101,8 +101,43 @@ const Header = ({ Content, AuthSlot, Mode = "minimal" }: HeaderProps) => {
 	/** The ids to watch, as a stable dependency rather than a fresh array. */
 	const SectionKey = HeaderSections(View.Links).join(",");
 
+	/**
+	 * The scroll path.
+	 *
+	 * `scroll` fires several times per frame on a long document, and a state
+	 * update per event is a setState per event. The value the header renders
+	 * only changes when the reader crosses the 8px line, so the event itself
+	 * does nothing but ask for a frame: the frame reads `scrollY` once, and the
+	 * state is written only when the boolean differs from the one already
+	 * committed - which is also the only case that can repaint the header.
+	 *
+	 * That is one layout read and at most one write per frame, and the write
+	 * never happens on the frames where the answer is the same as the last one.
+	 * `Committed` is the effect's own record of what it last wrote, so the read
+	 * is not compared against React state (which lags a commit behind).
+	 */
 	useEffect(() => {
-		const OnScroll = () => SetScrolled(window.scrollY > 8);
+		let Frame = 0;
+
+		let Committed = false;
+
+		const Read = () => {
+			Frame = 0;
+
+			const Next = window.scrollY > 8;
+
+			if (Next === Committed) return;
+
+			Committed = Next;
+
+			SetScrolled(Next);
+		};
+
+		const OnScroll = () => {
+			if (Frame !== 0) return;
+
+			Frame = requestAnimationFrame(Read);
+		};
 
 		const OnHash = () => SetSection(window.location.hash.replace(/^#/, ""));
 
@@ -110,13 +145,16 @@ const Header = ({ Content, AuthSlot, Mode = "minimal" }: HeaderProps) => {
 
 		SetSection(window.location.hash.replace(/^#/, ""));
 
-		OnScroll();
+		/* The mount is not a scroll frame: read once, directly. */
+		Read();
 
 		window.addEventListener("scroll", OnScroll, { passive: true });
 
 		window.addEventListener("hashchange", OnHash);
 
 		return () => {
+			if (Frame !== 0) cancelAnimationFrame(Frame);
+
 			window.removeEventListener("scroll", OnScroll);
 
 			window.removeEventListener("hashchange", OnHash);
