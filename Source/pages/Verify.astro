@@ -1,4 +1,7 @@
 ---
+import AuthShell from "../Component/Auth/AuthShell.astro";
+import { AuthFrameFor } from "../Component/Auth/Data";
+import { VerifyContent } from "../Component/Auth/Content";
 import { VerifyPage } from "../Component/Dynamic/VerifyPage";
 import { Header } from "../Component/Layout/Header";
 import Base from "../Layout/Base.astro";
@@ -6,57 +9,9 @@ import { GetI18n } from "../Library/I18n/Server";
 
 const T = GetI18n();
 
-const VerifyContent = {
-	Verification: {
-		Pending: {
-			Title: T("verify.pending.title", {
-				defaultValue: "Verify Your Email Address",
-			}),
-			Description: T("verify.pending.description", {
-				defaultValue:
-					"A verification link has been sent to your email address.\nPlease check your inbox and click the link to activate your account.\nThe link is valid for 24 hours.\nIf the email is not received within a few minutes, check the spam or promotions folder.\nFor security, do not share the verification link with anyone.",
-			}),
-			ResendButton: {
-				Text: T("verify.pending.resendButton", {
-					defaultValue: "Resend Verification Email",
-				}),
-				Variant: "default",
-				FullWidth: true,
-			},
-		},
-		Success: {
-			Title: T("verify.success.title", {
-				defaultValue: "Email verified!",
-			}),
-			Description: T("verify.success.description", {
-				defaultValue: "Your email has been successfully verified.",
-			}),
-			ContinueButton: {
-				Text: T("verify.success.continueButton", {
-					defaultValue: "Continue to Homepage",
-				}),
-				Variant: "default",
-				FullWidth: true,
-			},
-		},
-		Error: {
-			Title: T("verify.error.title", {
-				defaultValue: "Verification failed",
-			}),
-			Description: T("verify.error.description", {
-				defaultValue:
-					"This verification link is invalid or has expired.",
-			}),
-			BackToSignInButton: {
-				Text: T("verify.error.backToSignInButton", {
-					defaultValue: "Back to Sign In",
-				}),
-				Variant: "default",
-				FullWidth: true,
-			},
-		},
-	},
-};
+/* The three verify states live in Component/Auth/Content.ts, so the pending,
+   verified and expired copies cannot drift from each other. */
+const Verify = VerifyContent(T);
 
 const Token = Astro.url.searchParams.get("token");
 const Reason = Astro.url.searchParams.get("reason");
@@ -69,18 +24,20 @@ const MetaDescription = T("verify.pending.description", {
 	defaultValue:
 		"A verification link has been sent to your email address.\nPlease check your inbox and click the link to activate your account.\nThe link is valid for 24 hours.\nIf the email is not received within a few minutes, check the spam or promotions folder.\nFor security, do not share the verification link with anyone.",
 });
+
+const Frame = AuthFrameFor("verify", T);
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
 	<Header client:load Mode="functional" />
-	<main id="main-content">
+	<AuthShell frame={Frame}>
 		<VerifyPage
-			Content={VerifyContent}
+			Content={Verify}
 			Route={Route}
 			Token={Token || undefined}
 			Reason={Reason || undefined}
 			MetaTitle={MetaTitle}
 			MetaDescription={MetaDescription}
 		/>
-	</main>
+	</AuthShell>
 </Base>

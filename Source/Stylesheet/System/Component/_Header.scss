@@ -1,146 +1,296 @@
-/* Header - Daylight Field Record. Flat, no glass, no shadow. Two modes. */
+// Header - the site chrome: one bar, one nav, one status strip.
+//
+// The bar is the record's masthead: the logo, the four /LABEL destinations, the
+// locale switcher and the three action buttons the site has always carried. The
+// nav is ONE element at every width - below 1024px the panel it lives in
+// collapses behind the toggle, above it the panel is the bar's second half - so
+// no label markup is typed twice.
+//
+// Below the bar a hairline strip states the product status. It is on every page
+// because a reader who lands anywhere needs the same fact the homepage prints.
+//
+// Flat, always: hairline rules, radius 0, no shadow, no glass.
+//
+// Publishes:
+//   .Header                 the sticky shell
+//   .HeaderMinimal          page-canvas surface (default)
+//   .HeaderFunctional       card surface (docs and app routes)
+//   .HeaderScrolled         the surface once the page has moved under the bar
+//   .HeaderBar              the bar's inner container, on the band gutters
+//   .HeaderLogo             the glyph plus the record name, home link
+//   .HeaderLogoGlyph        the glyph box
+//   .HeaderLogoText         the record name
+//   .HeaderToggle           the panel toggle, below 1024px only
+//   .HeaderPanel            the nav and the aux row: panel below, bar above
+//   .HeaderNav              the single nav landmark
+//   .HeaderNavLink          one /LABEL destination
+//   .HeaderLinkLabel        the label itself
+//   .HeaderAux              locale switcher plus action row
+//   .HeaderActions          the action row
+//   .HeaderActionButton     one action
+//   .HeaderStrip            the status strip
+//   .HeaderStatus           the status line
+//
+// Owned by P1.
 
-/* ─── MODE: MINIMAL (homepage/hero) ─── */
+@use "../Mixin" as *;
+
+// The header's own heights. `scroll-padding` is read by the scrolling element, so
+// the sticky header's height has to be published on :root: that is what keeps an
+// anchored heading from landing under the bar. These four belong in _Token.scss
+// the day a card owns that file - they live here because the header is their only
+// reader, and a second copy of the number is how the offset drifts.
+:root {
+	--HeaderBar: 3.5rem;
+	--HeaderStrip: 1.75rem;
+	--HeaderGlyph: 1.75rem;
+	--HeaderHeight: calc(var(--HeaderBar) + var(--HeaderStrip));
+}
+
+html {
+	scroll-padding-block-start: calc(var(--HeaderHeight) + var(--space-tight));
+}
+
+// ─── Shell ────────────────────────────────────────────────────────────────
+// The bar is sticky and the page starts under it. The header's closing hairline
+// is the boundary between the chrome and the first band.
+
+.Header {
+	position: sticky;
+	inset-block-start: 0;
+	z-index: 50;
+	inline-size: 100%;
+	background: transparent;
+
+	@include hairline(bottom);
+}
+
 .HeaderMinimal {
-	--HeaderBg: transparent;
-	--HeaderBorder: rgba(7, 7, 7, 0.08);
 	--HeaderFg: var(--Foreground);
-	--HeaderMuted: var(--MuteForeground);
-	--HeaderHoverColor: var(--Accent);
-	--HeaderScrolledBg: #f2ede3;
-	--HeaderScrolledBorder: rgba(7, 7, 7, 0.12);
-	--HeaderLogoText: var(--Foreground);
-
-	background: var(--HeaderBg);
-	border-bottom: 1px solid var(--HeaderBorder);
-	border-radius: 0;
+	--HeaderSurface: var(--Background);
 }
 
-.HeaderMinimal .LogoBox {
-	background-color: transparent;
-}
-
-.HeaderMinimal .HeaderLogoText {
-	color: var(--HeaderLogoText);
-}
-
-/* ─── MODE: FUNCTIONAL (docs/account/downloads) ─── */
 .HeaderFunctional {
-	--HeaderBg: var(--Card);
-	--HeaderBorder: var(--CardForeground);
 	--HeaderFg: var(--CardForeground);
-	--HeaderMuted: #3f3f46;
-	--HeaderHoverColor: var(--CardForeground);
-	--HeaderScrolledBg: var(--Card);
-	--HeaderScrolledBorder: var(--CardForeground);
-	--HeaderLogoText: var(--CardForeground);
+	--HeaderSurface: var(--Card);
 
-	background: var(--HeaderBg);
-	border-bottom: 1px solid
-		color-mix(in srgb, var(--HeaderBorder) 25%, transparent);
-	border-radius: 0;
+	background: var(--HeaderSurface);
 }
 
-.HeaderFunctional .LogoBox {
-	background-color: transparent;
-}
-
-.HeaderFunctional .HeaderLogoText {
-	color: var(--HeaderLogoText);
-}
-
-/* ─── SCROLLED STATE (both modes) ─── */
 .HeaderScrolled {
-	background: var(--HeaderScrolledBg);
-	border-bottom: 1px solid var(--HeaderScrolledBorder);
-	box-shadow: none;
-	backdrop-filter: none;
-	-webkit-backdrop-filter: none;
+	background: var(--HeaderSurface);
 }
 
-/* ─── ACTION BUTTONS (both modes) ─── */
-.Header .HeaderActionButton {
+// ─── The bar ──────────────────────────────────────────────────────────────
+
+.HeaderBar {
+	@include band-inner;
+	display: flex;
+	align-items: center;
+	gap: var(--space-reading);
+	min-block-size: var(--HeaderBar);
+}
+
+.HeaderLogo {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-tight);
+	flex: none;
 	color: var(--HeaderFg);
+	text-decoration: none;
 }
 
-.HeaderFunctional .HeaderActionButton:hover {
-	background-color: color-mix(in srgb, var(--CardForeground) 8%, transparent);
+.HeaderLogoGlyph {
+	display: block;
+	inline-size: var(--HeaderGlyph);
+	block-size: var(--HeaderGlyph);
+
+	img {
+		display: block;
+		inline-size: 100%;
+		block-size: 100%;
+	}
 }
 
-/* ─── ACTIVE-ROUTE STATE (both modes) ─── */
-.HeaderNavActive .HeaderLinkLabel {
-	text-decoration-color: var(--Accent);
+.HeaderLogoText {
+	@include mono-meta;
+	@include track;
+	color: var(--HeaderFg);
+	font-size: var(--type-code);
+	line-height: var(--type-code-line);
 }
 
-.HeaderFunctional .HeaderNavActive .HeaderLinkLabel {
-	text-decoration-color: var(--CardForeground);
+.HeaderToggle {
+	@include mono-meta;
+	@include track;
+	margin-inline-start: auto;
+	padding: var(--space-tight);
+	background: none;
+	border: 0;
+	color: var(--HeaderFg);
+	cursor: pointer;
 }
 
-/* ─── NAV LINKS (both modes) ─── */
-.HeaderSubLink .HeaderLinkLabel {
+// ─── The panel ────────────────────────────────────────────────────────────
+// Below 1024px the panel is the mobile menu: absolute against the header (the
+// sticky shell is the positioned ancestor), stacked, hairline-separated. It is
+// the same element the desktop bar shows, not a second copy of the nav.
+
+.HeaderPanel {
+	@include band-inner;
+	display: none;
+	position: absolute;
+	inset-inline: 0;
+	inset-block-start: 100%;
+	flex-direction: column;
+	gap: var(--space-tight);
+	padding-block: var(--space-tight);
+	background: var(--HeaderSurface);
+
+	@include hairline(bottom);
+}
+
+.HeaderPanel[data-open="true"] {
+	display: flex;
+}
+
+.HeaderNav {
+	display: flex;
+	flex-direction: column;
+}
+
+.HeaderNavLink {
+	display: flex;
+	align-items: center;
+	padding-block: var(--space-tight);
 	color: var(--HeaderFg);
 	text-decoration: underline;
-	text-decoration-color: color-mix(in srgb, var(--HeaderFg) 20%, transparent);
-	text-underline-offset: 2px;
+	text-decoration-color: var(--Border);
+	text-underline-offset: 0.12em;
 	transition:
 		text-decoration-color 0.15s ease,
 		color 0.15s ease;
+
+	@include hairline(bottom);
 }
 
-.HeaderSubLink:hover .HeaderLinkLabel {
-	color: var(--HeaderHoverColor);
-	text-decoration-color: var(--HeaderHoverColor);
+.HeaderNavLink:hover {
+	text-decoration-color: var(--HeaderFg);
 }
 
-/* ─── HOVER OVERLAY ─── */
-.HeaderSubLink {
-	position: relative;
-	z-index: 1;
+// The destination the reader is on. `aria-current` is the state the data module
+// derives from the path and the section in view - not an href comparison, which
+// cannot tell an in-page anchor from a route.
+.HeaderNavLink[aria-current="page"] {
+	text-decoration-color: var(--Accent);
 }
 
-.HeaderSubLink::before {
+.HeaderLinkLabel {
+	@include mono-meta;
+	@include track;
+	color: var(--HeaderFg);
+}
+
+.HeaderAux {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	padding-block: var(--space-tight);
+}
+
+.HeaderActions {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+}
+
+.Header .HeaderActionButton {
+	inline-size: 100%;
+	justify-content: flex-start;
+	color: var(--HeaderFg);
+}
+
+// ─── The status strip ─────────────────────────────────────────────────────
+// One line, on every page, in the meta role: the accent square marks it as a
+// live status rather than a sentence.
+
+.HeaderStrip {
+	@include band-inner;
+	display: flex;
+	align-items: center;
+	min-block-size: var(--HeaderStrip);
+
+	@include hairline(top);
+}
+
+.HeaderStatus {
+	@include mono-meta;
+	@include track(0.08em);
+	display: flex;
+	align-items: center;
+	gap: var(--space-tight);
+	margin: 0;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.HeaderStatus::before {
 	content: "";
-	position: absolute;
-	inset: 0;
-	z-index: -1;
+	flex: none;
+	inline-size: var(--space-tight);
+	block-size: var(--space-tight);
 	background: var(--Accent);
-	opacity: 0;
-	transition: opacity 0.12s ease;
 }
 
-.HeaderSubLink:hover::before {
-	opacity: 0.12;
-}
+// ─── The bar at 1024px and up ─────────────────────────────────────────────
+// The panel stops being a menu and becomes the bar's second half: the nav is a
+// row on the left, the aux row is pushed to the right edge.
 
-.HeaderSubLink:active::before {
-	opacity: 0.2;
-}
+@include bp(1024px) {
+	.HeaderToggle {
+		display: none;
+	}
 
-.HeaderFunctional .HeaderSubLink::before {
-	background: var(--CardForeground);
-}
+	.HeaderPanel {
+		position: static;
+		display: flex;
+		flex: 1;
+		flex-direction: row;
+		align-items: center;
+		gap: var(--space-reading);
+		min-inline-size: 0;
+		max-width: none;
+		margin-inline: 0;
+		padding-inline: 0;
+		padding-block: 0;
+		background: transparent;
+		border-bottom: 0;
+	}
 
-/* ─── NAV DROPDOWN ─── */
-.NavDropdown {
-	background: var(--HeaderScrolledBg, var(--HeaderBg));
-	border-bottom: 1px solid var(--HeaderScrolledBorder, var(--HeaderBorder));
-}
+	.HeaderNav {
+		flex-direction: row;
+		align-items: center;
+	}
 
-/* ─── MOBILE MENU ─── */
-.HeaderMobileMenu {
-	background: var(--HeaderScrolledBg, var(--HeaderBg));
-	border-bottom: 1px solid var(--HeaderScrolledBorder, var(--HeaderBorder));
-}
+	.HeaderNavLink {
+		padding-block: var(--space-tight);
+		padding-inline: var(--space-reading);
+		border-bottom: 0;
+	}
 
-/* ─── REMOVE GLASS/FROST EVERYWHERE ─── */
-.Header {
-	backdrop-filter: none;
-	-webkit-backdrop-filter: none;
-	box-shadow: none;
-	border-radius: 0;
-}
+	.HeaderAux {
+		flex-direction: row;
+		align-items: center;
+		margin-inline-start: auto;
+		padding-block: 0;
+	}
 
-.Header::before,
-.Header::after {
-	content: none;
+	.HeaderActions {
+		flex-direction: row;
+	}
+
+	.Header .HeaderActionButton {
+		inline-size: auto;
+		justify-content: center;
+	}
 }

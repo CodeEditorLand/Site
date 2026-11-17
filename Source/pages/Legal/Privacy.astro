@@ -2,6 +2,8 @@
 import { Header } from "../../Component/Layout/Header";
 import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
+import ReadingDocument from "../../Component/Reading/ReadingDocument.astro";
+import { Index, Ledger } from "../../Library/Document/Privacy/Data.js";
 
 const T = GetI18n();
 
@@ -42,90 +44,17 @@ const LastUpdated = "May 29, 2026";
 			</ol>
 		</nav>
 
-		<header class="mb-12">
-			<h1 class="text-2xl font-medium tracking-tight sm:text-3xl">
-				Privacy Policy
-			</h1>
-			<div class="space-y-1 text-muted-foreground">
-				<p><strong>Effective Date:</strong> {EffectiveDate}</p>
-				<p><strong>Last Updated:</strong> {LastUpdated}</p>
-			</div>
-		</header>
-
-		<article class="LegalCard prose prose-slate max-w-none">
-			<ul class="LegalPrintHide">
-				<li>
-					<a href="#privacy-policy">PRIVACY POLICY</a>
-					<ul>
-						<li><a href="#introduction">Introduction</a></li>
-						<li><a href="#definitions">Definitions</a></li>
-						<li>
-							<a href="#information-collection-and-use"
-								>Information Collection and Use</a
-							>
-						</li>
-						<li>
-							<a href="#types-of-data-collected"
-								>Types of Data Collected</a
-							>
-						</li>
-						<li><a href="#use-of-data">Use of Data</a></li>
-						<li>
-							<a href="#retention-of-data">Retention of Data</a>
-						</li>
-						<li>
-							<a href="#transfer-of-data">Transfer of Data</a>
-						</li>
-						<li>
-							<a href="#disclosure-of-data">Disclosure of Data</a>
-						</li>
-						<li>
-							<a href="#security-of-data">Security of Data</a>
-						</li>
-						<li>
-							<a
-								href="#your-data-protection-rights-under-general-data-protection-regulation-gdpr"
-								>Your Data Protection Rights Under General Data
-								Protection Regulation (GDPR)</a
-							>
-						</li>
-						<li>
-							<a
-								href="#your-data-protection-rights-under-the-california-privacy-protection-act-caloppa"
-								>Your Data Protection Rights under the
-								California Privacy Protection Act (CalOPPA)</a
-							>
-						</li>
-						<li>
-							<a
-								href="#your-data-protection-rights-under-the-california-consumer-privacy-act-ccpa"
-								>Your Data Protection Rights under the
-								California Consumer Privacy Act (CCPA)</a
-							>
-						</li>
-						<li>
-							<a href="#service-providers">Service Providers</a>
-						</li>
-						<li><a href="#payments">Payments</a></li>
-						<li>
-							<a href="#links-to-other-sites"
-								>Links to Other Sites</a
-							>
-						</li>
-						<li>
-							<a href="#childrens-privacy">Children's Privacy</a>
-						</li>
-						<li>
-							<a href="#changes-to-this-privacy-policy"
-								>Changes to This Privacy Policy</a
-							>
-						</li>
-						<li><a href="#contact-us">Contact Us</a></li>
-					</ul>
-				</li>
-			</ul>
-
-			<h1 id="privacy-policy">PRIVACY POLICY</h1>
+		<ReadingDocument
+			kicker="/LEGAL"
+			heading="Privacy Policy"
+			standfirst="How we collect, use, and protect your personal data in connection with our website, editor, and related services."
+			rows={Ledger}
+			index={Index}
+			indexLabel="Clauses"
+			bodyClass="LegalCard">
+			<h2 class="reading-document__title" id="privacy-policy"
+				>PRIVACY POLICY</h2
+			>
 
 			<p>
 				<strong>Effective date:</strong>
@@ -134,7 +63,7 @@ const LastUpdated = "May 29, 2026";
 				{LastUpdated}
 			</p>
 
-			<h2 id="introduction">Introduction</h2>
+			<h3 class="reading-clause" id="introduction">Introduction</h3>
 
 			<p>Welcome to Code Editor Land.</p>
 
@@ -169,7 +98,7 @@ const LastUpdated = "May 29, 2026";
 				with this Privacy Policy constitute your agreement with us.
 			</p>
 
-			<h2 id="definitions">Definitions</h2>
+			<h3 class="reading-clause" id="definitions">Definitions</h3>
 
 			<p>
 				<strong>SERVICE</strong> means the <a
@@ -224,9 +153,9 @@ const LastUpdated = "May 29, 2026";
 				Data.
 			</p>
 
-			<h2 id="information-collection-and-use">
+			<h3 class="reading-clause" id="information-collection-and-use">
 				Information Collection and Use
-			</h2>
+			</h3>
 
 			<p>
 				We collect several different types of information for various
@@ -234,7 +163,7 @@ const LastUpdated = "May 29, 2026";
 				to you.
 			</p>
 
-			<h2 id="types-of-data-collected">Types of Data Collected</h2>
+			<h3 class="reading-clause" id="types-of-data-collected">Types of Data Collected</h3>
 
 			<p><strong>Personal Data</strong></p>
 
@@ -347,7 +276,7 @@ const LastUpdated = "May 29, 2026";
 				our Service.
 			</p>
 
-			<h2 id="use-of-data">Use of Data</h2>
+			<h3 class="reading-clause" id="use-of-data">Use of Data</h3>
 
 			<p>
 				Code Editor Land uses the collected data for various purposes:
@@ -402,7 +331,7 @@ const LastUpdated = "May 29, 2026";
 				<li>for any other purpose with your consent.</li>
 			</ol>
 
-			<h2 id="retention-of-data">Retention of Data</h2>
+			<h3 class="reading-clause" id="retention-of-data">Retention of Data</h3>
 
 			<p>
 				We will retain your Personal Data only for as long as is
@@ -427,7 +356,7 @@ const LastUpdated = "May 29, 2026";
 				processing purposes.
 			</p>
 
-			<h2 id="transfer-of-data">Transfer of Data</h2>
+			<h3 class="reading-clause" id="transfer-of-data">Transfer of Data</h3>
 
 			<p>
 				Your information, including Personal Data, may be transferred to
@@ -463,7 +392,7 @@ const LastUpdated = "May 29, 2026";
 				information.
 			</p>
 
-			<h2 id="disclosure-of-data">Disclosure of Data</h2>
+			<h3 class="reading-clause" id="disclosure-of-data">Disclosure of Data</h3>
 
 			<p>
 				We may disclose personal information that we collect, or you
@@ -517,7 +446,7 @@ const LastUpdated = "May 29, 2026";
 				monetary consideration in this policy.
 			</p>
 
-			<h2 id="security-of-data">Security of Data</h2>
+			<h3 class="reading-clause" id="security-of-data">Security of Data</h3>
 
 			<p>
 				The security of your data is important to us, but remember that
@@ -534,11 +463,11 @@ const LastUpdated = "May 29, 2026";
 				to reduce security risk.
 			</p>
 
-			<h2
+			<h3 class="reading-clause"
 				id="your-data-protection-rights-under-general-data-protection-regulation-gdpr">
 				Your Data Protection Rights Under General Data Protection
 				Regulation (GDPR)
-			</h2>
+			</h3>
 
 			<p>
 				If you are a resident of the European Union or European Economic
@@ -605,11 +534,11 @@ const LastUpdated = "May 29, 2026";
 				authority.
 			</p>
 
-			<h2
+			<h3 class="reading-clause"
 				id="your-data-protection-rights-under-the-california-privacy-protection-act-caloppa">
 				Your Data Protection Rights under the California Privacy
 				Protection Act (CalOPPA)
-			</h2>
+			</h3>
 
 			<p>
 				CalOPPA requires commercial websites and online services that
@@ -655,11 +584,11 @@ const LastUpdated = "May 29, 2026";
 				Service may not respond uniformly to all such signals.
 			</p>
 
-			<h2
+			<h3 class="reading-clause"
 				id="your-data-protection-rights-under-the-california-consumer-privacy-act-ccpa">
 				Your Data Protection Rights under the California Consumer
 				Privacy Act (CCPA)
-			</h2>
+			</h3>
 
 			<p>
 				If you are a California resident, you may be entitled to learn
@@ -722,7 +651,7 @@ const LastUpdated = "May 29, 2026";
 				>.
 			</p>
 
-			<h2 id="service-providers">Service Providers</h2>
+			<h3 class="reading-clause" id="service-providers">Service Providers</h3>
 
 			<p>
 				We may employ third-party companies and individuals to
@@ -807,7 +736,7 @@ const LastUpdated = "May 29, 2026";
 									>.
 								</p>
 
-								<h2 id="payments">Payments</h2>
+								<h3 class="reading-clause" id="payments">Payments</h3>
 
 				<p>
 					We may provide paid products and/or services within Service.
@@ -829,7 +758,7 @@ const LastUpdated = "May 29, 2026";
 					time of payment.
 				</p>
 
-				<h2 id="links-to-other-sites">Links to Other Sites</h2>
+				<h3 class="reading-clause" id="links-to-other-sites">Links to Other Sites</h3>
 
 				<p>
 					Our Service may contain links to other sites that are not
@@ -844,7 +773,7 @@ const LastUpdated = "May 29, 2026";
 					sites or services.
 				</p>
 
-				<h2 id="childrens-privacy">Children's Privacy</h2>
+				<h3 class="reading-clause" id="childrens-privacy">Children's Privacy</h3>
 
 				<p>
 					Our Service is not directed to children under the age of 13,
@@ -861,9 +790,9 @@ const LastUpdated = "May 29, 2026";
 					information from our systems.
 				</p>
 
-				<h2 id="changes-to-this-privacy-policy">
+				<h3 class="reading-clause" id="changes-to-this-privacy-policy">
 					Changes to This Privacy Policy
-				</h2>
+				</h3>
 
 				<p>
 					We may update our Privacy Policy from time to time. We will
@@ -884,7 +813,7 @@ const LastUpdated = "May 29, 2026";
 					effective when they are posted on this page.
 				</p>
 
-				<h2 id="contact-us">Contact Us</h2>
+				<h3 class="reading-clause" id="contact-us">Contact Us</h3>
 
 				<p>
 					If you have any questions about this Privacy Policy, please
@@ -950,6 +879,6 @@ const LastUpdated = "May 29, 2026";
 					}
 				}
 			</script>
-		</article>
+		</ReadingDocument>
 	</div>
 </Base>

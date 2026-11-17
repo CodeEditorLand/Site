@@ -1,0 +1,145 @@
+// SurfaceShell - the shared shell of the two app surfaces (portal, dashboard).
+//
+// Both pages are tools: they open with a record marker, one h1 at section
+// weight, one sentence, and a status ledger, then stack bands. The shell owns
+// the opening only - every band below it is a RecordBand, so nothing here
+// touches band rhythm, surfaces or headings.
+//
+// Publishes:
+//   .surface               the shell, on the page canvas
+//   .surface__head         the opening block
+//   .surface__head-inner   the one inner container, on the band gutters
+//   .surface__index        the record marker, mono meta
+//   .surface__title        the page's only h1, with its `〈 〉` brackets
+//   .surface__standfirst   one sentence of context
+//   .surface__status       the status ledger's slot
+//   .surface__stack        a dense stack of records at --space-tight
+//   .surface__prose        a paragraph inside a band body
+//   .surface__panel        an island's frame inside a band body
+//   .surface__actions      the action row inside a band body
+//   .surface__action       one action link
+//
+// Owned by P11. Sits beside the Record layer, never inside it: a block's
+// anatomy belongs to the block, and this file writes no `.record-*` selector.
+@use "../../Mixin" as *;
+
+.surface {
+	display: block;
+	background: var(--Background);
+	color: var(--Foreground);
+}
+
+.surface__head {
+	@include hairline(bottom);
+
+	padding-block: var(--space-chapter);
+}
+
+.surface__head-inner {
+	@include band-inner;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+}
+
+.surface__index {
+	@include mono-meta;
+	@include track(0.08em);
+
+	margin: 0;
+}
+
+.surface__title {
+	font-size: var(--type-section);
+	line-height: var(--type-section-line);
+	font-family: var(--FontMono);
+	font-weight: 400;
+	letter-spacing: -0.02em;
+	margin: 0;
+	text-wrap: balance;
+}
+
+// The field-record brackets: identity, not decoration, so they are the shell's
+// own rather than a caller's markup - and they carry no colour of their own
+// beyond the muted ink they always had.
+.surface__title::before {
+	content: "〈";
+	color: var(--MuteForeground);
+}
+
+.surface__title::after {
+	content: "〉";
+	color: var(--MuteForeground);
+}
+
+.surface__standfirst {
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	color: var(--MuteForeground);
+	margin: 0;
+	max-width: 62ch;
+	text-wrap: pretty;
+}
+
+.surface__status {
+	margin-block-start: var(--space-reading);
+}
+
+.surface__stack {
+	display: grid;
+	gap: var(--space-tight);
+	margin-block-start: var(--space-group);
+}
+
+.surface__prose {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	margin: 0;
+	max-width: 62ch;
+}
+
+// A state's own sentence. Loading, empty and error branches print one of these
+// instead of a bare box: a surface that says nothing is a defect, so the copy
+// and the state share one role.
+.surface__state {
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+	margin: 0;
+	max-width: 62ch;
+}
+
+.surface__prose + .surface__prose {
+	margin-block-start: var(--space-reading);
+}
+
+.surface__panel {
+	display: block;
+	margin-block-start: var(--space-group);
+}
+
+.surface__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-reading);
+	margin-block-start: var(--space-group);
+}
+
+.surface__action {
+	@include mono-meta;
+	@include track(0.08em);
+
+	text-decoration: none;
+	color: var(--Foreground);
+}
+
+.surface__action:hover {
+	color: var(--Accent);
+}
+
+@include bp(640px) {
+	.surface__head-inner {
+		gap: var(--space-reading);
+	}
+}

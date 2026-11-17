@@ -1,0 +1,89 @@
+---
+/**
+ * DocArticle - the reading shell every documentation surface shares: kicker,
+ * the page's only `h1`, standfirst, an optional in-page contents list, then the
+ * body.
+ *
+ * The shell owns three things a page must not re-decide per file:
+ *
+ * - **One `h1`.** The title is the page's single level-one heading; the blocks
+ *   inside the body never render one, so a page that composes from blocks can
+ *   never produce two.
+ * - **One measure.** The header and (by default) the body are capped at the
+ *   same `72ch`, so the standfirst ends where the prose ends. `measure={false}`
+ *   drops the body cap and nothing else - the index's band stack and the Rust
+ *   page's iframe viewer need the full column, the header still reads at one
+ *   measure.
+ * - **The contents list.** `toc` is `null` when the markdown already carries its
+ *   own list (see `BuildDocToc`); the shell renders no empty nav for it.
+ *
+ * The kicker is printed exactly as the caller wrote it: the `/SECTION` voice is
+ * the caller's to supply, and this shell never invents the leading slash.
+ *
+ * No script and no hydration directive.
+ */
+import type { DocToc } from "./Type.js";
+
+interface Props {
+	/** `/DOCUMENTATION`, `/RUST API`, `/ELEMENTS` - printed verbatim. */
+	kicker: string;
+
+	/** The page's `title`. The page's only `h1`. */
+	title: string;
+
+	/** The page's `description`, at standfirst weight. */
+	standfirst?: string;
+
+	/** The in-page contents list, or `null` when the page needs none. */
+	toc?: DocToc | null;
+
+	/** Cap the body at the reading measure. Defaults to `true`. */
+	measure?: boolean;
+
+	/** Extra classes from the page, appended after the shell's own. */
+	class?: string;
+}
+
+const {
+	kicker,
+	title,
+	standfirst,
+	toc,
+	measure = true,
+	class: Class,
+} = Astro.props;
+---
+
+<article class:list={["doc-article", Class]}>
+	<header class="doc-article__header">
+		<p class="doc-article__kicker">{kicker}</p>
+		<h1 class="doc-article__title">{title}</h1>
+		{standfirst ? <p class="doc-article__standfirst">{standfirst}</p> : null}
+	</header>
+
+	{
+		toc ? (
+			<nav class="doc-article__toc" aria-label={toc.Label}>
+				<p class="doc-article__toc-label">{toc.Label}</p>
+				<ol class="doc-article__toc-list">
+					{toc.Items.map((Item) => (
+						<li class="doc-article__toc-item">
+							<a class="doc-article__toc-link" href={Item.Href}>
+								{Item.Label}
+							</a>
+						</li>
+					))}
+				</ol>
+			</nav>
+		) : null
+	}
+
+	<div
+		class:list={[
+			"doc-article__body",
+			measure ? "doc-article__body--measure" : null,
+		]}
+	>
+		<slot />
+	</div>
+</article>

@@ -160,6 +160,12 @@ const DashboardUserInner = () => {
 					defaultValue: "Loading account...",
 				})}
 			>
+				<p className="surface__state">
+					{T("account:dashboardPage.surface.state.loading", {
+						defaultValue:
+							"Reading your session from the identity provider. The account rows appear as soon as it answers.",
+					})}
+				</p>
 				<Skeleton className="mx-auto h-12 w-12" />
 				<Skeleton className="h-4 w-full" />
 				<Skeleton className="h-4 w-4/5" />
@@ -178,6 +184,12 @@ const DashboardUserInner = () => {
 							"Could not load your account. Please refresh.",
 					})}
 				</p>
+				<p className="surface__state">
+					{T("account:dashboardPage.surface.state.error", {
+						defaultValue:
+							"The identity provider did not answer, so no account rows can be shown. Reloading asks it again.",
+					})}
+				</p>
 				<p className="text-card-foreground">{AuthError.message}</p>
 				<Button
 					variant="outline"
@@ -194,8 +206,9 @@ const DashboardUserInner = () => {
 		return (
 			<div className="space-y-3">
 				<p className="text-card-foreground">
-					{T("dashboard.account.notSignedIn", {
-						defaultValue: "Sign in to see your account details.",
+					{T("account:dashboardPage.surface.state.signedOut", {
+						defaultValue:
+							"You are not signed in. Sign in to see your account.",
 					})}
 				</p>
 				<button
@@ -293,114 +306,129 @@ const DashboardUserInner = () => {
 				</div>
 			</div>
 
-			{/* Display Name */}
-			<div className="flex justify-between">
-				<span className="text-card-foreground">
-					{T("dashboard.account.nameLabel", { defaultValue: "Name" })}
-				</span>
-				<span className="font-medium">
-					<Pii visible={PIIVisible}>{DisplayName}</Pii>
-				</span>
-			</div>
-
-			{/* Email + Verified Badge */}
-			<div className="flex justify-between">
-				<span className="text-card-foreground">
-					{T("dashboard.account.emailLabel", {
-						defaultValue: "Email",
-					})}
-				</span>
-				<span className="flex items-center gap-1.5">
-					<span className="text-card-foreground">
-						<Pii visible={PIIVisible}>{User.email || "--"}</Pii>
-					</span>
-					{User.email_verified === true && (
-						<span
-							className="inline-flex items-center border border-green-200 bg-green-50 px-1.5 py-0 text-sm font-medium text-green-700"
-							title={T("dashboard.account.emailVerifiedTitle", {
-								defaultValue: "Email verified",
-							})}
-						>
-							{T("dashboard.account.emailVerifiedBadge", {
-								defaultValue: "Verified",
-							})}{" "}
-							<CircleCheck
-								aria-hidden="true"
-								className="text-grpc inline h-4 w-4 align-[-3px]"
-							/>
-						</span>
-					)}
-				</span>
-			</div>
-
-			{/* Plan */}
-			<div className="flex justify-between">
-				<span className="text-card-foreground">
-					{T("dashboard.account.planLabel", { defaultValue: "Plan" })}
-				</span>
-				<span className="font-medium">
-					{IsEnterprise
-						? T("dashboard.account.planEnterprise", {
-								defaultValue: "Enterprise",
-							})
-						: T("dashboard.account.planFree", {
-								defaultValue: "Free",
-							})}
-				</span>
-			</div>
-
-			{/* Auth Provider */}
-			<div className="flex justify-between">
-				<span className="text-card-foreground">
-					{T("dashboard.account.providerLabel", {
-						defaultValue: "Provider",
-					})}
-				</span>
-				<span className="flex items-center gap-1.5 text-card-foreground">
-					{ProviderIcon && (
-						<ThemeImage
-							src={ProviderIcon}
-
-							alt={ProviderLabel}
-
-							width={14}
-
-							height={14}
-
-							className="h-3.5 w-3.5"
-						/>
-					)}
-					<Pii visible={PIIVisible}>{ProviderLabel}</Pii>
-				</span>
-			</div>
-
-			{/* Organization (Enterprise only) */}
-			{IsEnterprise && (OrganizationName || OrganizationIdentifier) && (
-				<div className="flex justify-between">
-					<span className="text-card-foreground">
-						{T("dashboard.account.organizationLabel", {
-							defaultValue: "Organization",
-						})}
-					</span>
-					<span className="font-medium">
-						<Pii visible={PIIVisible}>
-							{OrganizationName || OrganizationIdentifier}
-						</Pii>
-					</span>
+			{/* The account's own facts: a ledger, not a second list of rows.
+			    `record-ledger` is the published key/value surface, so the
+			    island reuses it instead of retyping a definition list. */}
+			<dl className="record-ledger record-ledger--1">
+				<div className="record-ledger__row">
+					<dt className="record-ledger__key">
+						{T("dashboard.account.nameLabel", { defaultValue: "Name" })}
+					</dt>
+					<dd className="record-ledger__value">
+						<Pii visible={PIIVisible}>{DisplayName}</Pii>
+					</dd>
 				</div>
-			)}
 
-			{/* Member Since */}
-			<div className="flex justify-between">
-				<span className="text-card-foreground">
-					{T("dashboard.account.memberSinceLabel", {
-						defaultValue: "Member Since",
-					})}
-				</span>
-				<span className="text-card-foreground">
-					<Pii visible={PIIVisible}>{MemberSince}</Pii>
-				</span>
-			</div>
+				<div className="record-ledger__row">
+					<dt className="record-ledger__key">
+						{T("dashboard.account.emailLabel", {
+							defaultValue: "Email",
+						})}
+					</dt>
+					<dd className="record-ledger__value">
+						<span className="flex flex-wrap items-center gap-1.5">
+							{User.email ? (
+								<Pii visible={PIIVisible}>{User.email}</Pii>
+							) : (
+								<span className="surface__state">
+									{T("account:dashboardPage.surface.state.noEmail", {
+										defaultValue:
+											"No email on this account. The provider did not return one.",
+									})}
+								</span>
+							)}
+							{User.email_verified === true && (
+								<span
+									className="inline-flex items-center border border-green-200 bg-green-50 px-1.5 py-0 text-sm font-medium text-green-700"
+									title={T("dashboard.account.emailVerifiedTitle", {
+										defaultValue: "Email verified",
+									})}
+								>
+									{T("dashboard.account.emailVerifiedBadge", {
+										defaultValue: "Verified",
+									})}{" "}
+									<CircleCheck
+										aria-hidden="true"
+										className="text-grpc inline h-4 w-4 align-[-3px]"
+									/>
+								</span>
+							)}
+						</span>
+					</dd>
+				</div>
+
+				<div className="record-ledger__row">
+					<dt className="record-ledger__key">
+						{T("dashboard.account.planLabel", { defaultValue: "Plan" })}
+					</dt>
+					<dd className="record-ledger__value">
+						{IsEnterprise
+							? T("dashboard.account.planEnterprise", {
+									defaultValue: "Enterprise",
+								})
+							: T("dashboard.account.planFree", {
+									defaultValue: "Free",
+								})}
+					</dd>
+				</div>
+
+				<div className="record-ledger__row">
+					<dt className="record-ledger__key">
+						{T("dashboard.account.providerLabel", {
+							defaultValue: "Provider",
+						})}
+					</dt>
+					<dd className="record-ledger__value">
+						<span className="flex items-center gap-1.5">
+							{ProviderIcon && (
+								<ThemeImage
+									src={ProviderIcon}
+									alt={ProviderLabel}
+									width={14}
+									height={14}
+									className="h-3.5 w-3.5"
+								/>
+							)}
+							<Pii visible={PIIVisible}>{ProviderLabel}</Pii>
+						</span>
+					</dd>
+				</div>
+
+				{IsEnterprise && (OrganizationName || OrganizationIdentifier) && (
+					<div className="record-ledger__row">
+						<dt className="record-ledger__key">
+							{T("dashboard.account.organizationLabel", {
+								defaultValue: "Organization",
+							})}
+						</dt>
+						<dd className="record-ledger__value">
+							<Pii visible={PIIVisible}>
+								{OrganizationName || OrganizationIdentifier}
+							</Pii>
+						</dd>
+					</div>
+				)}
+
+				<div className="record-ledger__row">
+					<dt className="record-ledger__key">
+						{T("dashboard.account.memberSinceLabel", {
+							defaultValue: "Member Since",
+						})}
+					</dt>
+					<dd className="record-ledger__value">
+						{User.updated_at ? (
+							<Pii visible={PIIVisible}>{MemberSince}</Pii>
+						) : (
+							<span className="surface__state">
+								{T("account:dashboardPage.surface.state.noDate", {
+									defaultValue:
+										"Not recorded. The provider returned no update date for this account.",
+								})}
+							</span>
+						)}
+					</dd>
+				</div>
+			</dl>
 
 			{/* Enterprise SSO Banner */}
 			{IsEnterprise && (
@@ -429,6 +457,12 @@ const DashboardUserInner = () => {
 			)}
 
 			{/* Sign Out Button */}
+			<p className="surface__state mt-3">
+				{T("account:dashboardPage.surface.state.actions", {
+					defaultValue:
+						"Manage opens your account page. Sign Out ends the Auth0 session and clears the local token.",
+				})}
+			</p>
 			<div className="mt-3 flex gap-2">
 				<a
 					href="/Account"

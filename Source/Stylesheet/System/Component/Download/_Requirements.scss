@@ -1,0 +1,44 @@
+// DynamicSystemRequirements - one ledger per platform, plus the source-build
+// toolchain as a fourth.
+//
+// Publishes:
+//   .download-requirements           the group grid: one column, two from 1024px
+//   .download-requirements__group    one platform's label and its ledger
+//   .download-requirements__platform the group's own h3
+//
+// Owned by P7. The ledger anatomy belongs to RecordLedger; this partial only
+// places the ledgers and names their groups.
+
+@use "../Mixin" as *;
+
+.download-requirements {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-group);
+}
+
+@include bp(1024px) {
+	.download-requirements {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.download-requirements__group {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+}
+
+// A platform name is data, so it is printed in the case it was written in:
+// `mono-meta` for the face and the size, then the ink and weight a group label
+// needs, and no `track()` - that mixin uppercases, and uppercasing `macOS`
+// would re-case a value.
+.download-requirements__platform {
+	@include mono-meta;
+	margin: 0;
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	font-weight: 500;
+	color: var(--Foreground);
+}

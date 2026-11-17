@@ -1,4 +1,11 @@
 {
+	"auth": {
+		"pendingStatus": "AWAITING CLICK",
+		"verifyingStatus": "VERIFYING",
+		"verifiedStatus": "EMAIL VERIFIED",
+		"failedStatus": "VERIFICATION FAILED",
+		"expiredStatus": "LINK EXPIRED"
+	},
 	"error": {
 		"title": "Verification failed",
 		"description": "This verification link is invalid or has expired.",

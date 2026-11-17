@@ -1,0 +1,89 @@
+---
+/**
+ * DocIndex - one documentation band: the section name as the heading, the page
+ * count in the kicker, and one dense row per page underneath.
+ *
+ * The band is `RecordBand`, so the kicker/heading/standfirst/index-strip
+ * grammar is the site's and not this file's. What this file adds is the body:
+ * a single-column list of rows, each one a linked page name plus the page's
+ * `description` as its note.
+ *
+ * Three decisions a caller should know:
+ *
+ * - **The anchor wraps the NAME, not the row.** The global link rule underlines
+ *   every plain anchor, and a 78-row list of underlined descriptions is
+ *   unreadable. The name is the link; the note is a note.
+ * - **`RecordLedger` was not used for the rows.** Its prop surface is
+ *   `{ key, value, note, lead }` - no `href` - so a ledger cannot link to the
+ *   page it describes, and this index exists to be navigated. The row grammar
+ *   is the ledger's (mono marker column, ink name, muted note); the anchor is
+ *   what the block could not carry.
+ * - **Group runs, not a tree.** A run renders its sub-label once and its rows
+ *   under it; an ungrouped run renders no sub-label at all.
+ *
+ * No script and no hydration directive: the band is static.
+ */
+import RecordBand from "../Record/RecordBand.astro";
+
+import type { DocBand } from "./Type.js";
+
+interface Props {
+	band: DocBand;
+}
+
+const { band } = Astro.props;
+---
+
+<RecordBand
+	band={{
+		kicker: band.Kicker,
+		heading: band.Heading,
+		...(band.Standfirst ? { standfirst: band.Standfirst } : {}),
+		...(band.Index ? { index: band.Index } : {}),
+		tone: band.Tone,
+	}}
+>
+	<div class="doc-index" id={band.Id}>
+		{band.Lede ? <p class="doc-index__lede">{band.Lede}</p> : null}
+		{
+			band.Groups.map((Group) => (
+				<div class="doc-index__group">
+					{Group.Label ? (
+						<p class="doc-index__label">{Group.Label}</p>
+					) : null}
+					<ol class="doc-index__list">
+						{Group.Rows.map((Row) => (
+							<li class="doc-index__row">
+								<a
+									class="doc-index__link"
+									href={Row.Href}
+									target={Row.Blank ? "_blank" : undefined}
+									rel={
+										Row.Blank
+											? "noopener noreferrer"
+											: undefined
+									}
+								>
+									<span class="doc-index__name">
+										{Row.Label}
+									</span>
+									<span
+										class="doc-index__arrow"
+										aria-hidden="true"
+									>
+										{Row.Blank ? "↗" : "→"}
+									</span>
+								</a>
+								{Row.Note ? (
+									<span class="doc-index__note">
+										{Row.Note}
+									</span>
+								) : null}
+							</li>
+						))}
+					</ol>
+				</div>
+			))
+		}
+	</div>
+</RecordBand>

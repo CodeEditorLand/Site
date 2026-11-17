@@ -3,9 +3,14 @@ import DynamicAuthHeader from "../Component/Dynamic/DynamicAuthHeader";
 import DynamicDashboardUser from "../Component/Dynamic/DynamicDashboardUser";
 import DynamicLocalFirstScan from "../Component/Dynamic/DynamicLocalFirstScan";
 import DynamicPrivacyRequests from "../Component/Dynamic/DynamicPrivacyRequests";
-import DynamicRichText from "../Component/Dynamic/DynamicRichText";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
+import RecordBand from "../Component/Record/RecordBand.astro";
+import RecordEntry from "../Component/Record/RecordEntry.astro";
+import RecordLedger from "../Component/Record/RecordLedger.astro";
+import RecordStage from "../Component/Record/RecordStage.astro";
+import SurfaceShell from "../Component/Surface/SurfaceShell.astro";
+import { DashboardPage } from "../Content/Surface/Dashboard.js";
 
 const T = GetI18n();
 
@@ -22,6 +27,12 @@ const MetaDescription = T("meta.dashboard.description", {
 	defaultValue:
 		"Manage your account, downloads, and settings.\nYour Code Editor Land dashboard.",
 });
+
+// Every label, row and band this page states comes from this table. The two
+// Auth0 islands stay islands: who is signed in is client-side state, so the
+// account band hosts the component rather than printing a value it cannot
+// know at render time.
+const Page = DashboardPage(T);
 ---
 
 <Base
@@ -36,957 +47,110 @@ const MetaDescription = T("meta.dashboard.description", {
 		ClientIdentifier={Auth0ClientIdentifier}
 	/>
 
-	<main id="main-content">
-		<div class="container mx-auto max-w-5xl px-4 py-16">
-			<!-- Breadcrumbs -->
-			<nav aria-label="Breadcrumb" class="mb-8">
-				<ol
-					class="flex flex-wrap items-center space-x-2 text-muted-foreground"
-				>
-					<li>
-						<a
-							href="/"
-							class="transition-colors hover:text-foreground"
-							>{
-								T("common.breadcrumb.home", {
-									defaultValue: "Home",
-								})
-							}</a
-						>
-					</li>
-					<li class="mx-2">/</li>
-					<li>
-						<span class="font-medium text-foreground"
-							>{
-								T("common.dashboard.breadcrumbLabel", {
-									defaultValue: "Dashboard",
-								})
-							}</span
-						>
-					</li>
-				</ol>
-			</nav>
-
-			<!-- Page Header -->
-			<header class="mb-12" aria-label="Dashboard page header">
-				<div class="mb-4 flex items-center gap-4">
-					<img
-						alt="Code Editor Land logo"
-						title="Code Editor Land"
-						src="/Asset/Logo/Glyph/Land.svg"
-						width="40"
-						height="40"
-					/>
-					<div class="flex flex-col">
-						<h1 class="text-4xl font-medium tracking-tight">
-							{
-								T("common.dashboard.pageTitle", {
-									defaultValue: "Dashboard",
-								})
-							}
-						</h1>
-						<p class="text-muted">
-							{
-								T("common.dashboard.pageSubtitle", {
-									defaultValue:
-										"Your Land account, downloads, and editor connection.",
-								})
-							}
-						</p>
-					</div>
-				</div>
-				<div
-					class="flex flex-wrap items-center gap-3 text-muted-foreground"
-				>
-					<jelly-badge
-						variant="mint"
-						shape="square"
-						style={`--jelly-fill:var(--SpinegRPCMute);--jelly-label:var(--SpinegRPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-					>
-						Telemetry Feature Gated{"\u2001"}<span
-							class="flat h-1.5 w-1.5"
-							style="background-color:var(--SpinegRPC)"
-							aria-hidden="true"></span>
-					</jelly-badge>
-					<jelly-badge
-						variant="platinum"
-						shape="square"
-						style={`--jelly-fill:var(--Mute);--jelly-label:var(--MuteForeground);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-					>
-						CC0 Licensed
-					</jelly-badge>
-					<jelly-badge
-						variant="platinum"
-						shape="square"
-						style={`--jelly-fill:var(--Mute);--jelly-label:var(--MuteForeground);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-					>
-						Signing Planned
-					</jelly-badge>
-					<jelly-badge
-						variant="azure"
-						shape="square"
-						style={`--jelly-fill:var(--SpineIPCMute);--jelly-label:var(--SpineIPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-					>
-						Mountain Workbench{"\u2001"}<span
-							class="flat h-1.5 w-1.5"
-							style="background-color:var(--SpineIPC)"
-							aria-hidden="true"></span>
-					</jelly-badge>
-				</div>
-			</header>
-
-			<!-- Dashboard Grid -->
-			<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-				<!-- Account Info Card -->
-				<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
-					<h2 class="mb-4 text-lg font-medium text-card-foreground">
-						{
-							T("common.dashboard.account.heading", {
-								defaultValue: "Account",
-							})
-						}
-					</h2>
-					<DynamicDashboardUser
-						client:load
-						Domain={Auth0Domain}
-						ClientIdentifier={Auth0ClientIdentifier}
-					/>
-				</div>
-
-				<!-- Downloads Card -->
-				<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
-					<h2 class="mb-4 text-lg font-medium text-card-foreground">
-						{
-							T("common.dashboard.downloads.heading", {
-								defaultValue: "Downloads",
-							})
-						}
-					</h2>
-					<a
-						href="/Download"
-						class="StaccatoButton h- text-primary-fg mb-3 inline-flex items-center justify-center bg-primary px-4 font-medium transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-					>
-						{
-							T("common.dashboard.downloads.goButton", {
-								defaultValue: "Go to Downloads",
-							})
-						}
-					</a>
-					<p class="text-card-foreground">
-						{
-							T("common.dashboard.downloads.description", {
-								defaultValue:
-									"Get the latest Land build for your platform. Native on macOS, Windows, and Linux.",
-							})
-						}
-					</p>
-				</div>
-
-				<!-- Quick Links Card -->
-				<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
-					<h2 class="mb-4 text-lg font-medium text-card-foreground">
-						{
-							T("common.dashboard.quickLinks.heading", {
-								defaultValue: "Quick Links",
-							})
-						}
-					</h2>
-					<ul class="space-y-2">
-						<li>
-							<a href="/Doc" class="text-card-foreground hover:underline">
-								{
-									T("common.dashboard.quickLinks.docs", {
-										defaultValue: "Documentation",
-									})
-								}
-							</a>
-						</li>
-						<li>
-							<a
-								href="https://github.com/CodeEditorLand/Land/issues"
-								target="_blank"
-								rel="noopener noreferrer"
-								class="text-card-foreground hover:underline"
-							>
-								{
-									T(
-										"common.dashboard.quickLinks.reportIssue",
-										{
-											defaultValue: "Report an Issue",
-										},
-									)
-								}
-							</a>
-						</li>
-						<li>
-							<a
-								href="/Contributing"
-								class="text-card-foreground hover:underline"
-							>
-								{
-									T(
-										"common.dashboard.quickLinks.contribute",
-										{
-											defaultValue: "Contribute",
-										},
-									)
-								}
-							</a>
-						</li>
-					</ul>
-				</div>
+	<SurfaceShell
+		index={Page.index}
+		title={Page.title}
+		standfirst={Page.standfirst}
+		rows={Page.status}
+	>
+		<RecordBand band={Page.account}>
+			<div class="surface__panel">
+				<DynamicDashboardUser
+					client:load
+					Domain={Auth0Domain}
+					ClientIdentifier={Auth0ClientIdentifier}
+				/>
 			</div>
+		</RecordBand>
 
-			<!-- Telemetry Status Panel -->
-			<section class="mt-12">
-				<h2 class="mb-6 text-2xl font-medium">
-					{
-						T("common.dashboard.telemetry.heading", {
-							defaultValue: "Telemetry Architecture",
-						})
-					}
-				</h2>
-				<div class="StaccatoCard StaccatoBorderShimmer bg-card">
-					<div
-						class="flex items-center justify-between border-b border-[var(--Border)] px-5 pb-5 pt-8"
-					>
-						<div class="flex-1">
-							<div class="flex items-center gap-3">
-								<jelly-badge
-									variant="mint"
-									shape="square"
-									style={`--jelly-fill:var(--SpinegRPCMute);--jelly-label:var(--SpinegRPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-								>
-									Disabled{"\u2001"}<span
-										class="flat h-2 w-2"
-										style="background-color:var(--SpinegRPC)"
-										aria-hidden="true"></span>
-								</jelly-badge>
-								<jelly-badge
-									variant="platinum"
-									shape="square"
-									style={`--jelly-fill:var(--Mute);--jelly-label:var(--MuteForeground);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-								>
-									Feature Gated
-								</jelly-badge>
-							</div>
-							<h3 class="mt-3 font-medium text-card-foreground">
-								{
-									T(
-										"common.dashboard.telemetry.production.title",
-										{
-											defaultValue:
-												"Feature-gated by build profile.",
-										},
-									)
-								}
-							</h3>
-							<DynamicRichText
-								client:load
-								Text={T(
-									"common.dashboard.telemetry.production.description",
-									{
-										defaultValue:
-											"Telemetry and tracing are behind named Rust feature gates. The build profile determines what is compiled in - nothing is emitted unless a specific feature path is enabled.",
-									},
-								)}
-								Terms
-								ClassName="mt-2 text-card-foreground"
-							/>
-						</div>
-					</div>
-					<div
-						class="flex items-center justify-between border-b border-[var(--Border)] px-5 pb-5 pt-8"
-					>
-						<div class="flex-1">
-							<div class="flex items-center gap-3">
-								<jelly-badge
-									variant="amber"
-									shape="square"
-									style={`--jelly-fill:var(--ExtensionTauriMute);--jelly-label:var(--ExtensionTauriFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-								>
-									Optional{"\u2001"}<span
-										class="flat h-2 w-2"
-										style="background-color:var(--ExtensionTauri)"
-										aria-hidden="true"></span>
-								</jelly-badge>
-							</div>
-							<h3 class="mt-3 font-medium text-card-foreground">
-								{
-									T("common.dashboard.telemetry.otel.title", {
-										defaultValue:
-											"Opt-in OpenTelemetry. Your infrastructure only.",
-									})
-								}
-							</h3>
-							<DynamicRichText
-								client:load
-								Text={T(
-									"common.dashboard.telemetry.otel.description",
-									{
-										defaultValue:
-											"OpenTelemetry tracing is available in source. Activating it requires an explicit feature flag and a configured endpoint - trace data goes only to infrastructure you control.",
-									},
-								)}
-								Terms
-								ClassName="mt-2 text-card-foreground"
-							/>
-						</div>
-					</div>
-					<div class="px-5 pb-5 pt-8">
-						<div class="flex items-center gap-3">
-							<jelly-badge
-								variant="azure"
-								shape="square"
-								style={`--jelly-fill:var(--SpineIPCMute);--jelly-label:var(--SpineIPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-							>
-								Active{"\u2001"}<span
-									class="flat h-2 w-2"
-									style="background-color:var(--SpineIPC)"
-									aria-hidden="true"></span>
-							</jelly-badge>
-						</div>
-						<h3 class="mt-3 font-medium text-card-foreground">
-							{
-								T("common.dashboard.telemetry.effect.title", {
-									defaultValue:
-										"Extension host timing. Stays in the process.",
-								})
-							}
-						</h3>
-						<DynamicRichText
-							client:load
-							Text={T(
-								"common.dashboard.telemetry.effect.description",
-								{
-									defaultValue:
-										"Cocoon has internal timing and service diagnostics for extension-host work. Unless a transport is configured, that data is local process instrumentation.",
-								},
-							)}
-							Terms
-							ClassName="mt-2 text-card-foreground"
-						/>
-					</div>
-				</div>
-			</section>
+		<RecordBand band={Page.access}>
+			<RecordStage stages={Page.accessStages} />
+		</RecordBand>
 
-			<!-- Build Log Panel (Local-First Only) -->
-			<section class="mt-12">
-				<h2 class="mb-2 text-2xl font-medium">
-					{
-						T("common.dashboard.buildLog.heading", {
-							defaultValue: "Build Configuration",
-						})
-					}
-				</h2>
-				<p class="mb-6 text-muted-foreground">
-					{
-						T("common.dashboard.buildLog.subtitle", {
-							defaultValue:
-								"Active build variant and deployment mode.\n\nAvailable via Local-First Air Daemon connection.",
-						})
-					}
-				</p>
-				<div
-					class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
-				>
-					<!-- Active Profile -->
-					<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
-						<div class="flex items-center justify-between">
-							<h3 class="text-card-foreground text-lg font-medium">
-								{
-									T(
-										"common.dashboard.buildLog.profile.heading",
-										{
-											defaultValue: "Active Profile",
-										},
-									)
-								}
-							</h3>
-							<jelly-badge
-								variant="azure"
-								shape="square"
-								style={`--jelly-fill:var(--SpineIPCMute);--jelly-label:var(--SpineIPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-							>
-								Recommended{"\u2001"}<span
-									class="flat h-2 w-2"
-									style="background-color:var(--SpineIPC)"
-									aria-hidden="true"></span>
-							</jelly-badge>
-						</div>
-						<div class="mt-4 space-y-2">
-							<div class="flex justify-between">
-								<span class="text-card-foreground">Profile</span
-								>
-								<code class="text-card-foreground">production</code>
-							</div>
-							<div class="flex justify-between">
-								<span class="text-card-foreground"
-									>Workbench</span
-								>
-								<span class="font-medium">Mountain</span>
-							</div>
-							<div class="flex justify-between">
-								<span class="text-card-foreground"
-									>Features</span
-								>
-								<span>Active Source Path</span>
-							</div>
-							<div class="flex justify-between">
-								<span class="text-card-foreground"
-									>Compiler</span
-								>
-								<code class="text-card-foreground">esbuild</code>
-							</div>
-						</div>
-					</div>
-
-					<!-- Deployment Mode -->
-					<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
-						<div class="flex items-center justify-between">
-							<h3 class="text-card-foreground text-lg font-medium">
-								{
-									T(
-										"common.dashboard.buildLog.deployment.heading",
-										{
-											defaultValue: "Deployment Mode",
-										},
-									)
-								}
-							</h3>
-							<jelly-badge
-								variant="mint"
-								shape="square"
-								style={`--jelly-fill:var(--SpinegRPCMute);--jelly-label:var(--SpinegRPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-							>
-								Active{"\u2001"}<span
-									class="flat h-2 w-2"
-									style="background-color:var(--SpinegRPC)"
-									aria-hidden="true"></span>
-							</jelly-badge>
-						</div>
-						<div class="mt-4 space-y-2">
-							<div class="flex justify-between">
-								<span class="text-card-foreground">Mode</span>
-								<span class="font-medium"
-									>Production Release</span
-								>
-							</div>
-							<div class="flex justify-between">
-								<span class="text-card-foreground"
-									>NODE_ENV</span
-								>
-								<code class="text-card-foreground">production</code>
-							</div>
-							<div class="flex justify-between">
-								<span class="text-card-foreground"
-									>RUST_LOG</span
-								>
-								<code class="text-card-foreground">info</code>
-							</div>
-							<div class="flex justify-between">
-								<span class="text-card-foreground">Bundle</span>
-								<span>Full</span>
-							</div>
-						</div>
-					</div>
-
-					<!-- Test Matrix -->
-					<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
-						<div class="flex items-center justify-between">
-							<h3 class="text-card-foreground text-lg font-medium">
-								{
-									T(
-										"common.dashboard.buildLog.matrix.heading",
-										{
-											defaultValue: "Test Matrix",
-										},
-									)
-								}
-							</h3>
-							<jelly-badge
-								variant="platinum"
-								shape="square"
-								style={`--jelly-fill:var(--Mute);--jelly-label:var(--MuteForeground);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-							>
-								16 Permutations
-							</jelly-badge>
-						</div>
-						<div class="mt-4 space-y-2">
-							<div class="flex justify-between">
-								<span class="text-card-foreground"
-									>Profiles</span
-								>
-								<span>9 named</span>
-							</div>
-							<div class="flex justify-between">
-								<span class="text-card-foreground"
-									>Workbenches</span
-								>
-								<span>5 variants</span>
-							</div>
-							<div class="flex justify-between">
-								<span class="text-card-foreground"
-									>Compilers</span
-								>
-								<span>esbuild, OXC</span>
-							</div>
-							<div class="flex justify-between">
-								<span class="text-card-foreground"
-									>Permutations</span
-								>
-								<span class="font-medium">16 verified</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-
-			<!-- Portal Tier Access -->
-			<section class="mt-12">
-				<h2 class="mb-2 text-2xl font-medium">
-					{
-						T("common.dashboard.portal.heading", {
-							defaultValue: "Authentication Tiers",
-						})
-					}
-				</h2>
-				<p class="mb-6 text-muted-foreground">
-					{
-						T("common.dashboard.portal.subtitle", {
-							defaultValue:
-								"Your current authentication method and available tiers.",
-						})
-					}
-				</p>
-				<div
-					class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"
-				>
-					<a
-						href="/Portal"
-						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-4 bg-card p-5 transition-all hover:border-blue-300"
-					>
-						<div
-							class="flat flex h-10 w-10 shrink-0 items-center justify-center border border-blue-200 bg-blue-50"
-						>
-							<span
-								class="text-lg text-blue-600"
-								aria-hidden="true">&#9729;</span
-							>
-						</div>
-						<div>
-							<h3 class="text-card-foreground font-medium">Cloud</h3>
-							<p class="text-card-foreground">
-								Auth0 &#x2001; HTTPS / TLS 1.3
-							</p>
-						</div>
-						<jelly-badge
-							variant="azure"
-							shape="square"
-							style={`--jelly-fill:var(--SpineIPCMute);--jelly-label:var(--SpineIPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-						>
-							Online{"\u2001"}<span
-								class="flat h-1.5 w-1.5"
-								style="background-color:var(--SpineIPC)"
-								aria-hidden="true"></span>
-						</jelly-badge>
-					</a>
-					<a
-						href="/Portal"
-						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-4 bg-card p-5 transition-all hover:border-purple-300"
-					>
-						<div
-							class="flat flex h-10 w-10 shrink-0 items-center justify-center border border-purple-200 bg-purple-50"
-						>
-							<span
-								class="text-lg text-purple-600"
-								aria-hidden="true">&#9831;</span
-							>
-						</div>
-						<div>
-							<h3 class="text-card-foreground font-medium">Provider</h3>
-							<p class="text-card-foreground">
-								OAuth 2.0 &#x2001; PKCE
-							</p>
-						</div>
-						<jelly-badge
-							variant="platinum"
-							shape="square"
-							style={`--jelly-fill:var(--SpineWASMMute);--jelly-label:var(--SpineWASMFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-						>
-							OAuth{"\u2001"}<span
-								class="flat h-1.5 w-1.5"
-								style="background-color:var(--SpineWASM)"
-								aria-hidden="true"></span>
-						</jelly-badge>
-					</a>
-					<a
-						href="/Portal"
-						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-4 bg-card p-5 transition-all hover:border-orange-300"
-					>
-						<div
-							class="flat flex h-10 w-10 shrink-0 items-center justify-center border border-orange-200 bg-orange-50"
-						>
-							<span
-								class="text-lg text-orange-600"
-								aria-hidden="true">&#9881;</span
-							>
-						</div>
-						<div>
-							<h3 class="text-card-foreground font-medium">Local-First</h3>
-							<p class="text-card-foreground">
-								mTLS &#x2001; CRDTs &#x2001; WebSocket
-							</p>
-						</div>
-						<jelly-badge
-							variant="platinum"
-							shape="square"
-							style={`--jelly-fill:var(--SpineTCPMute);--jelly-label:var(--SpineTCPFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-						>
-							Local{"\u2001"}<span
-								class="flat h-1.5 w-1.5"
-								style="background-color:var(--SpineTCP)"
-								aria-hidden="true"></span>
-						</jelly-badge>
-					</a>
-					<a
-						href="/Portal"
-						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-4 bg-card p-5 transition-all hover:border-green-300"
-					>
-						<div
-							class="flat flex h-10 w-10 shrink-0 items-center justify-center border border-green-200 bg-green-50"
-						>
-							<span
-								class="text-lg text-green-600"
-								aria-hidden="true">&#9739;</span
-							>
-						</div>
-						<div>
-							<h3 class="text-card-foreground font-medium">Enterprise</h3>
-							<p class="text-card-foreground">
-								OIDC &#x2001; SAML 2.0 &#x2001; SCIM
-							</p>
-						</div>
-						<jelly-badge
-							variant="mint"
-							shape="square"
-							style={`--jelly-fill:var(--SpinegRPCMute);--jelly-label:var(--SpinegRPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-						>
-							SSO{"\u2001"}<span
-								class="flat h-1.5 w-1.5"
-								style="background-color:var(--SpinegRPC)"
-								aria-hidden="true"></span>
-						</jelly-badge>
-					</a>
-				</div>
-			</section>
-
-			<!-- Editor Connection (Local-First) -->
-			<section class="mt-12">
-				<h2 class="mb-2 text-2xl font-medium">
-					{
-						T("common.dashboard.editor.heading", {
-							defaultValue: "Editor Connection",
-						})
-					}
-				</h2>
-				<p class="mb-6 text-muted-foreground">
-					{
-						T("common.dashboard.editor.subtitle", {
-							defaultValue:
-								"Connect the website to your running Land editor instance.",
-						})
-					}
-				</p>
-
-				{
-					IsLocalMode ? (
-						<DynamicLocalFirstScan
-							client:load
-							Domain={Auth0Domain}
-							ClientIdentifier={Auth0ClientIdentifier}
-						/>
-					) : (
-						<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
-							<div class="flex items-center gap-4">
-								<img
-									alt="Land"
-									src="/Asset/Logo/Glyph/Land.svg"
-									width="48"
-									height="48"
-								/>
-								<div class="flex-1">
-									<div class="flex items-center gap-3">
-										<h3 class="text-card-foreground font-medium">Air Daemon</h3>
-										<span class="bg-mute inline-flex items-center px-2.5 py-0.5 font-medium text-muted-foreground">
-											{T(
-												"common.dashboard.editor.status",
-												{
-													defaultValue:
-														"Not Connected",
-												},
-											)}
-											{"\u2001"}
-											<span
-												class="flat h-1.5 w-1.5 bg-gray-400"
-												aria-hidden="true"
-											/>
-										</span>
-									</div>
-									<DynamicRichText
-										client:load
-										Text={T(
-											"common.dashboard.editor.description",
-											{
-												defaultValue:
-													"The Air Daemon connects this dashboard to a running Land editor via WebSocket.\n\nLaunch Land to enable real-time build logs, telemetry, and configuration management.",
-											},
-										)}
-										Terms
-										ClassName="mt-1 text-card-foreground"
-									/>
-								</div>
-							</div>
-							<div class="mt-6 flex flex-wrap items-center gap-3">
-								<a
-									href="/Dashboard?mode=local"
-									class="StaccatoButton inline-flex items-center justify-center border border-orange-300 bg-orange-50 px-4 py-2 font-medium text-orange-700 transition-all hover:bg-orange-100 focus:outline-2 focus:outline-offset-2 focus:outline-orange-400"
-								>
-									{T("common.dashboard.editor.scanButton", {
-										defaultValue: "Scan for Daemon",
-									})}
-									<span class="InlineSeparator">&rarr;</span>
-								</a>
-								<a
-									href="/Portal"
-									class="StaccatoButton inline-flex items-center justify-center border border-transparent bg-card px-4 py-2 font-medium transition-all hover:bg-secondary"
-								>
-									{T("common.dashboard.editor.connect", {
-										defaultValue: "Connect via Portal",
-									})}
-									<span class="InlineSeparator">&rarr;</span>
-								</a>
-								<span class="text-card-foreground">
-									mTLS &#x2001; CRDTs &#x2001; WebSocket
-									&#x2001; Zero cloud dependency
-								</span>
-							</div>
-						</div>
-					)
-				}
-			</section>
-
-			<!-- Partners & Attribution -->
-			<section class="mt-12">
-				<h2 class="mb-6 text-2xl font-medium">
-					{
-						T("common.dashboard.partners.heading", {
-							defaultValue: "Partners & Attribution",
-						})
-					}
-				</h2>
-				<div
-					class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"
-				>
-					<a
-						href="https://github.com/CodeEditorLand"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-3 bg-card p-4 transition-all hover:border-[var(--Primary)]"
-					>
-						<img
-							alt="Code Editor Land"
-							src="/Asset/Logo/Glyph/Land.svg"
-							width="32"
-							height="32"
-							class="h-8 w-8"
-						/>
-						<div>
-							<span class="font-medium">Code Editor Land</span>
-							<p class="text-card-foreground">
-								Organization &#x2001; GitHub
-							</p>
-						</div>
-					</a>
-					<a
-						href="https://PlayForm.Cloud"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-3 bg-card p-4 transition-all hover:border-[var(--Primary)]"
-					>
-						<img
-							alt="PlayForm"
-							src="/Image/PlayForm.svg"
-							width="32"
-							height="32"
-							class="h-8 w-8"
-						/>
-						<div>
-							<span class="font-medium">PlayForm</span>
-							<p class="text-card-foreground">
-								Platform &#x2001; PlayForm.Cloud
-							</p>
-						</div>
-					</a>
-					<a
-						href="https://nlnet.nl/project/Land/"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-3 bg-card p-4 transition-all hover:border-[var(--Primary)]"
-					>
-						<div
-							class="flat bg-mute flex h-8 w-8 shrink-0 items-center justify-center font-medium"
-						>
-							NL
-						</div>
-						<div>
-							<span class="font-medium">NLnet Foundation</span>
-							<p class="text-card-foreground">
-								NGI0 Commons Fund
-							</p>
-						</div>
-					</a>
-				</div>
-			</section>
-
-			<!-- Privacy & Data Rights Section -->
-			<section class="mt-12">
-				<h2 class="mb-2 text-2xl font-medium">
-					{
-						T("common.dashboard.privacy.heading", {
-							defaultValue: "Privacy & Data Rights",
-						})
-					}
-				</h2>
-				<p class="mb-6 text-muted-foreground">
-					{
-						T("common.dashboard.privacy.subtitle", {
-							defaultValue:
-								"Exercise your GDPR rights, request data exports, or delete your account. All requests are sent directly to our privacy team and handled within 30 days.",
-						})
-					}
-				</p>
+		<RecordBand band={Page.data}>
+			<div class="surface__panel">
 				<DynamicPrivacyRequests
 					client:load
 					Domain={Auth0Domain}
 					ClientIdentifier={Auth0ClientIdentifier}
 				/>
-			</section>
+			</div>
+		</RecordBand>
 
-			<!-- Settings Section -->
-			<section class="mt-12">
-				<h2 class="mb-6 text-2xl font-medium">
-					{
-						T("common.dashboard.settings.heading", {
-							defaultValue: "Settings",
-						})
-					}
-				</h2>
-				<div class="StaccatoCard StaccatoBorderShimmer bg-card">
-					<div
-						class="flex items-center justify-between border-b border-[var(--Border)] p-5"
-					>
-						<div>
-							<jelly-badge
-								variant="platinum"
-								shape="square"
-								style={`--jelly-fill:var(--Mute);--jelly-label:var(--MuteForeground);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-							>
-								{
-									T("common.comingSoon", {
-										defaultValue: "Coming Soon",
-									})
-								}
-							</jelly-badge>
-							<h3 class="mt-2 font-medium text-card-foreground">
-								{
-									T("common.dashboard.settings.sync.title", {
-										defaultValue: "Sync Settings",
-									})
-								}
-							</h3>
-							<p class="mt-1 text-card-foreground">
-								{
-									T(
-										"common.dashboard.settings.sync.description",
-										{
-											defaultValue:
-												"Your editor preferences follow you across every device automatically.",
-										},
-									)
-								}
-							</p>
+		<RecordBand band={Page.build}>
+			<RecordLedger rows={Page.buildFacts} columns={2} />
+		</RecordBand>
+
+		<RecordBand band={Page.telemetry}>
+			<div class="surface__stack">
+				{
+					Page.telemetryPaths.map((Path) => (
+						<RecordEntry {...Path} />
+					))
+				}
+			</div>
+		</RecordBand>
+
+		<RecordBand band={Page.editor}>
+			{
+				IsLocalMode ? (
+					<div class="surface__panel">
+						<DynamicLocalFirstScan
+							client:load
+							Domain={Auth0Domain}
+							ClientIdentifier={Auth0ClientIdentifier}
+						/>
+					</div>
+				) : (
+					<>
+						<RecordLedger rows={Page.editorFacts} />
+						<div class="surface__stack">
+							{Page.editorDescription.map((Line) => (
+								<p class="surface__prose">{Line}</p>
+							))}
 						</div>
-					</div>
-					<div
-						class="flex items-center justify-between border-b border-[var(--Border)] p-5"
-					>
-						<div>
-							<jelly-badge
-								variant="platinum"
-								shape="square"
-								style={`--jelly-fill:var(--Mute);--jelly-label:var(--MuteForeground);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-							>
-								{
-									T("common.comingSoon", {
-										defaultValue: "Coming Soon",
-									})
-								}
-							</jelly-badge>
-							<h3 class="mt-2 font-medium text-card-foreground">
-								{
-									T(
-										"common.dashboard.settings.extensionSync.title",
-										{ defaultValue: "Extension Sync" },
-									)
-								}
-							</h3>
-							<p class="mt-1 text-card-foreground">
-								{
-									T(
-										"common.dashboard.settings.extensionSync.description",
-										{
-											defaultValue:
-												"Your installed extensions stay in sync across all machines.",
-										},
-									)
-								}
-							</p>
+						<div class="surface__actions">
+							{
+								Page.editorActions.map((Action) => (
+									<a class="surface__action" href={Action.href}>
+										{Action.label} →
+									</a>
+								))
+							}
 						</div>
-					</div>
-					<div class="p-5">
-						<a
-							href="/Account"
-							class="StaccatoButton h- inline-flex items-center justify-center bg-card px-4 font-medium transition-all hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-						>
-							{
-								T(
-									"common.dashboard.settings.account.manageButton",
-									{ defaultValue: "Manage" },
-								)
-							}
-						</a>
-						<h3 class="mt-2 font-medium text-card-foreground">
-							{
-								T("common.dashboard.settings.account.title", {
-									defaultValue: "Account",
-								})
-							}
-						</h3>
-						<p class="mt-1 text-card-foreground">
-							{
-								T(
-									"common.dashboard.settings.account.description",
-									{
-										defaultValue:
-											"Update your profile and manage your account.",
-									},
-								)
-							}
-						</p>
-					</div>
-				</div>
-			</section>
-		</div>
-	</main>
+					</>
+				)
+			}
+		</RecordBand>
+
+		<RecordBand band={Page.settings}>
+			<div class="surface__stack">
+				{
+					Page.settingsEntries.map((Setting) => (
+						<RecordEntry {...Setting} />
+					))
+				}
+			</div>
+		</RecordBand>
+
+		<RecordBand band={Page.start}>
+			<div class="surface__stack">
+				{
+					Page.startEntries.map((Exit) => (
+						<RecordEntry {...Exit} />
+					))
+				}
+			</div>
+		</RecordBand>
+
+		<RecordBand band={Page.partners}>
+			<div class="surface__stack">
+				{
+					Page.partnersEntries.map((Partner) => (
+						<RecordEntry {...Partner} />
+					))
+				}
+			</div>
+		</RecordBand>
+	</SurfaceShell>
 </Base>

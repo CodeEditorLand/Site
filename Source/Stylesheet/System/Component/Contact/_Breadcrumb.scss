@@ -1,0 +1,51 @@
+// ContactBreadcrumb - the trail in the site's mono nav grammar.
+//
+// Publishes:
+//   .contact-breadcrumb           the nav shell
+//   .contact-breadcrumb__list     the ordered list, laid out as a strip
+//   .contact-breadcrumb__item     one crumb
+//   .contact-breadcrumb__link     a crumb that leads somewhere
+//   .contact-breadcrumb__current  the page the reader is on
+//
+// The separators are the labels' own leading slash: every crumb is supplied as
+// `/LABEL`, so a second `/` element between them would print the grammar twice.
+// The gap between crumbs is the whole separator.
+//
+// No fill, no rule, no second label size - the trail is chrome, and the page
+// heading below it carries the weight.
+
+@use "../../Mixin" as *;
+
+.contact-breadcrumb {
+	display: block;
+}
+
+.contact-breadcrumb__list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight) var(--space-reading);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.contact-breadcrumb__item {
+	@include mono-meta;
+	@include track(0.08em);
+	margin: 0;
+}
+
+.contact-breadcrumb__link {
+	color: var(--MuteForeground);
+	text-decoration: none;
+}
+
+.contact-breadcrumb__link:hover,
+.contact-breadcrumb__link:focus-visible {
+	color: var(--Foreground);
+	text-decoration: underline;
+}
+
+.contact-breadcrumb__current {
+	color: var(--Foreground);
+}

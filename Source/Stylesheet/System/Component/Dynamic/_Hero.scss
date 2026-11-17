@@ -1,0 +1,245 @@
+// Hero band - the homepage's first band: the claim, the status, the evidence
+// and the entry, in that order.
+//
+// Publishes:
+//   .hero-band                  the band's own anatomy (the shell is `.band`)
+//   .hero-band__inner           the band's four parts and their rhythm
+//   .hero-band__claim           the claim group: marker, display, route, sentence
+//   .hero-band__mark            the marker row - kicker left, seal right
+//   .hero-band__kicker          `# LAND_01`
+//   .hero-band__seal            the specimen seal beside the marker
+//   .hero-band__display         the band's one display line
+//   .hero-band__route           the compatibility route
+//   .hero-band__compat          what that compatibility means
+//   .hero-band__standfirst      the record's relation over one sentence
+//   .hero-band__relation        `EDITOR WITHOUT CHROMIUM`, as a meta label
+//   .hero-band__status          the `.emphasis-standard` status row
+//   .hero-band__status-line     `STATUS: SOURCE ACTIVE`
+//   .hero-band__chip            one honest qualifier beside it
+//   .hero-band__evidence        the evidence region: proof left, plate right
+//   .hero-band__proof           the rail above the ledger
+//   .hero-band__stage           the four-element rail
+//   .hero-band__facts           the record's own facts
+//   .hero-band__plate           the evidence plate
+//   .hero-band__plate-frame     the plate's aspect box
+//   .hero-band__plate-image     the image filling that box
+//   .hero-band__entry           the two destinations
+//   .hero-band__program         the program line above them
+//   .hero-band__destinations    the destination row
+//   .hero-band__destination     one destination
+//
+// Tokens only: no literal colour, no box-shadow, no border-radius, no inline
+// style. Four things are borrowed rather than restated - the band shell and the
+// inner container (`.band`, `.band-inner`), the kicker (`.section-kicker`), the
+// type roles (`.type-*`) and the status tier (`.emphasis-standard`) come from
+// the foundation; the rail, the ledger and the figure come from the Record
+// layer's own partials. This file adds the hero's layout and the three places
+// where a hero differs from a generic band: the display line, the aspect box,
+// and the tighter opening padding.
+//
+// Owned by P2.
+
+@use "../../Mixin" as *;
+
+/* ─── THE BAND ─────────────────────────────────────────────────────────── */
+
+// A hero opens the page rather than following another band, so it opens at
+// group distance instead of the chapter distance `.band` reserves. `.band`
+// arrives from `System/_Space.scss`, which `System.scss` loads before the
+// component index, so this single-class rule is the one that wins.
+.hero-band {
+	padding-block-start: var(--space-group);
+}
+
+.hero-band__inner {
+	display: flex;
+	flex-direction: column;
+}
+
+// The band's rhythm, in one place: the claim and its status are one thought and
+// sit at reading distance; the evidence and the entry each open a new group.
+// The status rule below re-declares its own margin after this one so it wins at
+// equal specificity.
+.hero-band__inner > * + * {
+	margin-block-start: var(--space-group);
+}
+
+/* ─── 1. THE CLAIM ─────────────────────────────────────────────────────── */
+
+.hero-band__claim {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-reading);
+}
+
+.hero-band__mark {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: var(--space-reading);
+}
+
+.hero-band__kicker {
+	margin: 0;
+}
+
+.hero-band__seal {
+	flex: 0 0 auto;
+}
+
+// The one expressive moment of the band. `--type-display` arrives from the
+// `.type-display` role on the element; the two stamps sit on one line and wrap
+// as a pair, so the assertion reads as one sentence rather than as two
+// competing headlines.
+.hero-band__display {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-weight: 500;
+	letter-spacing: -0.02em;
+	text-wrap: balance;
+}
+
+.hero-band__route {
+	margin: 0;
+	color: var(--MuteForeground);
+}
+
+.hero-band__compat {
+	margin-inline-start: var(--space-tight);
+	color: var(--MuteForeground);
+}
+
+.hero-band__standfirst {
+	margin: 0;
+	max-width: 62ch;
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+// The relation is a label, so it takes the meta role and sits above the
+// sentence that explains it - one weight, and no third paragraph.
+.hero-band__relation {
+	@include mono-meta;
+	@include track(0.1em);
+	display: block;
+	margin-block-end: var(--space-tight);
+}
+
+/* ─── 2. THE STATUS ────────────────────────────────────────────────────── */
+
+// The tier supplies the white surface and the hairline; this supplies the room
+// inside them and the row. The row is dense on purpose - a status is read, not
+// admired.
+.hero-band__status {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-tight) var(--space-reading);
+	margin-block-start: var(--space-reading);
+	padding: var(--space-reading);
+}
+
+.hero-band__status-line {
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+}
+
+// A chip is a `jelly-badge`, whose label is drawn inside a shadow root. The
+// Badge sets `--jelly-badge-font-size: inherit` inline, so the size travels
+// from the host: an inline custom property beats any class rule, which is why
+// this rule sets `font-size` rather than the badge's own variable.
+//
+// Two classes, not one: `_Global.scss` sizes an undefined `jelly-badge` at
+// 0.875rem through `jelly-badge:not(:defined)`, which outranks a single class -
+// without this the chip would shrink the moment the element upgrades.
+.hero-band__status .hero-band__chip {
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+}
+
+/* ─── 3. THE EVIDENCE ──────────────────────────────────────────────────── */
+
+.hero-band__evidence {
+	display: grid;
+	gap: var(--space-group);
+}
+
+.hero-band__proof {
+	display: grid;
+	gap: var(--space-group);
+	min-inline-size: 0;
+}
+
+// The rail is a stack at every width: inside a seven-column proof region a row
+// of four steps would squeeze each line to a few words. The block's own
+// `--stack` is exactly that case, so the hero only has to name it.
+.hero-band__stage {
+	min-inline-size: 0;
+}
+
+.hero-band__facts {
+	min-inline-size: 0;
+}
+
+// The plate is a portrait file (1792 x 2400). The aspect box keeps its height
+// proportional to the column instead of letting a 3:4 image set the band's
+// height, and the image fills the box rather than letterboxing inside it.
+//
+// The image rule carries two classes on purpose: `_Figure.scss` sets
+// `height: auto` on `.record-figure__media img`, and `System.scss` loads the
+// Record layer after the component layer, so a single-class rule here would
+// lose the cascade to it.
+.hero-band__plate-frame {
+	aspect-ratio: 4 / 5;
+}
+
+.hero-band__plate-image {
+	block-size: 100%;
+}
+
+.hero-band__plate-frame .hero-band__plate-image img {
+	block-size: 100%;
+}
+
+// Seven and five: the proof is the wider half because it carries rows, and the
+// plate is the narrower one because an image needs a column, not a page. Below
+// this the two stack, proof first.
+@include bp(1024px) {
+	.hero-band__evidence {
+		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+		align-items: start;
+	}
+}
+
+/* ─── 4. THE ENTRY ─────────────────────────────────────────────────────── */
+
+.hero-band__entry {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-reading);
+}
+
+.hero-band__program {
+	@include mono-meta;
+	@include track(0.1em);
+	margin: 0;
+}
+
+.hero-band__destinations {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight) var(--space-group);
+}
+
+// The site's action grammar is `/LABEL` at the accent ink, and the global link
+// rule already draws the hairline underline in `var(--Border)` - so this rule
+// sets the role and the ink and leaves the underline alone.
+.hero-band__destination {
+	@include mono-meta;
+	@include track(0.08em);
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	color: var(--Foreground);
+}

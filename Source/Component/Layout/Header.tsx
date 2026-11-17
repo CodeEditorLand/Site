@@ -1,73 +1,45 @@
 "use client";
 
-import * as lucide from "lucide-react";
-
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
 import { Button } from "../UI/Button";
 
-import { IconTooltip } from "../UI/IconTooltip.js";
+import {
+	HeaderLinkAttributes,
+	HeaderLinkState,
+	HeaderSections,
+	HeaderStatus,
+	HeaderView,
+} from "./Header/Data.js";
+
+import type { HeaderContent } from "./Header/Type.js";
 
 import { LocaleSwitcher } from "./LocaleSwitcher";
 
-const IconRegistry: Record<string, lucide.LucideIcon> = {
-	Sparkles: lucide.Sparkles,
+export type { HeaderContent };
 
-	Download: lucide.Download,
-
-	BookOpen: lucide.BookOpen,
-
-	GitFork: lucide.GitFork,
-
-	ExternalLink: lucide.ExternalLink,
-
-	Newspaper: lucide.Newspaper,
-
-	Users: lucide.Users,
-
-	LayoutDashboard: lucide.LayoutDashboard,
-
-	HelpCircle: lucide.HelpCircle,
-
-	LogIn: lucide.LogIn,
-
-	Monitor: lucide.Monitor,
-};
-
-interface NavigationLink {
-	Label: string;
-
-	Href: string;
-
-	Icon?: string;
-
-	Tooltip?: string | string[];
-}
-
-export interface HeaderContent {
-	Logo?: { Text: string };
-
-	Navigation?: NavigationLink[];
-
-	Actions?: Array<{
-		Type?: string;
-
-		Text: string;
-
-		Variant?: string;
-
-		Size?: string;
-
-		Href?: string;
-
-		Icon?: string;
-
-		Tooltip?: string | string[];
-	}>;
-}
-
+/**
+ * Header - the site chrome.
+ *
+ * One nav definition, rendered once: the same four `/LABEL` destinations are the
+ * desktop bar and the mobile panel, because the panel is the nav. Below 1024px
+ * the panel collapses behind the toggle; above it the panel is the bar's own
+ * second half. Nothing about the labels is typed twice.
+ *
+ * The status strip under the bar states the product status on every page, so a
+ * reader who lands anywhere learns the same fact the homepage prints.
+ *
+ * `Mode` picks the surface only: `minimal` sits on the page canvas (the
+ * default), `functional` is the card surface. It does not change the anatomy.
+ *
+ * `Content` is the caller's own rows - the homepage and the auth header hand
+ * their navigation and actions in through it. `HeaderView` resolves either arm
+ * into the same shapes, so the markup below has one nav and one action row and
+ * never branches on where they came from. `AuthSlot` is the auth island: when it
+ * is mounted the Sign In action is dropped, because the island is that action.
+ */
 interface HeaderProps {
 	Content?: HeaderContent;
 
@@ -79,410 +51,187 @@ interface HeaderProps {
 const Header = ({ Content, AuthSlot, Mode = "minimal" }: HeaderProps) => {
 	const { t: T } = useTranslation("header");
 
-	const [NavMenuOpen, SetNavMenuOpen] = useState(false);
+	const [Path, SetPath] = useState("/");
 
-	const [MobileMenuOpen, SetMobileMenuOpen] = useState(false);
+	const [Section, SetSection] = useState("");
+
+	const [Open, SetOpen] = useState(false);
 
 	const [Scrolled, SetScrolled] = useState(false);
 
-	const [CurrentPath, SetCurrentPath] = useState("");
+	/** The in-page sections currently inside the reading band. */
+	const Visible = useRef<Set<string>>(new Set());
+
+	const View = HeaderView(Content, T);
+
+	/** The ids to watch, as a stable dependency rather than a fresh array. */
+	const SectionKey = HeaderSections(View.Links).join(",");
 
 	useEffect(() => {
-		SetCurrentPath(window.location.pathname);
+		const OnScroll = () => SetScrolled(window.scrollY > 8);
 
-		const onScroll = () => SetScrolled(window.scrollY > 8);
+		const OnHash = () => SetSection(window.location.hash.replace(/^#/, ""));
 
-		window.addEventListener("scroll", onScroll, { passive: true });
+		SetPath(window.location.pathname);
 
-		return () => window.removeEventListener("scroll", onScroll);
+		SetSection(window.location.hash.replace(/^#/, ""));
+
+		OnScroll();
+
+		window.addEventListener("scroll", OnScroll, { passive: true });
+
+		window.addEventListener("hashchange", OnHash);
+
+		return () => {
+			window.removeEventListener("scroll", OnScroll);
+
+			window.removeEventListener("hashchange", OnHash);
+		};
 	}, []);
 
-	const IsActive = (Href: string) => {
-		if (Href.startsWith("http")) return false;
+	useEffect(() => {
+		Visible.current.clear();
 
-		const base = Href.split("#")[0];
+		const Ids = SectionKey === "" ? [] : SectionKey.split(",");
 
-		if (base === "/") return CurrentPath === "/";
-
-		return CurrentPath === base || CurrentPath.startsWith(base + "/");
-	};
-
-	const HeaderData: HeaderContent = Content || {
-		Logo: { Text: T("logo", "Land") },
-
-		Navigation: [
-			{ Label: T("nav.features", "Features"), Href: "/#features" },
-
-			{ Label: T("nav.download", "Download"), Href: "/Download" },
-
-			{ Label: T("nav.docs", "Documentation"), Href: "/Doc" },
-
-			{
-				Label: T("nav.github", "GitHub"),
-
-				Href: "https://github.com/CodeEditorLand/Land",
-			},
-		],
-
-		Actions: [
-			{
-				Text: T("actions.signIn", "Sign In"),
-
-				Variant: "ghost",
-
-				Size: "default",
-
-				Href: "/Account/SignIn",
-			},
-
-			{
-				Text: T("actions.editorPortal", "Editor Portal"),
-
-				Variant: "ghost",
-
-				Size: "default",
-
-				Href: "/Portal",
-			},
-
-			{
-				Text: T("actions.getStarted", "Get Land"),
-
-				Variant: "default",
-
-				Size: "default",
-
-				Href: "/Download",
-
-				Icon: "Download",
-			},
-		],
-	};
-
-	const RenderActionIcon = (
-		IconName?: string,
-
-		Label?: string,
-
-		Tooltip?: string | string[],
-	) => {
-		if (!IconName) return null;
-
-		const Icon = IconRegistry[IconName];
-
-		if (!Icon) return null;
-
-		return (
-			<>
-				{" "}
-				<IconTooltip
-					Label={Tooltip || Label || IconName}
-					Icon={Icon}
-					SizeClass="h-4 w-4"
-				/>
-			</>
+		const Sections = Ids.map((Id) => document.getElementById(Id)).filter(
+			(Element): Element is HTMLElement => Element !== null,
 		);
-	};
 
-	const NavLinks = ({ OnClick }: { OnClick?: () => void }) => (
-		<>
-			{HeaderData.Navigation?.map((Link, Index) => (
-				<a
-					key={Index}
+		if (
+			Sections.length === 0 ||
+			typeof IntersectionObserver === "undefined"
+		)
+			return;
 
-					href={Link.Href}
+		const Observer = new IntersectionObserver(
+			(Entries) => {
+				Entries.forEach((Entry) =>
+					Entry.isIntersecting
+						? Visible.current.add(Entry.target.id)
+						: Visible.current.delete(Entry.target.id),
+				);
 
-					className={`StaccatoNavLink HeaderSubLink relative flex items-center px-4 py-3 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]${IsActive(Link.Href) ? "HeaderNavActive" : ""}`}
+				SetSection(Ids.find((Id) => Visible.current.has(Id)) ?? "");
+			},
+			{ rootMargin: "-25% 0px -60% 0px" },
+		);
 
-					onClick={OnClick}
+		Sections.forEach((Element) => Observer.observe(Element));
 
-					aria-label={Link.Label}
+		return () => Observer.disconnect();
+	}, [Path, SectionKey]);
 
-					aria-current={IsActive(Link.Href) ? "page" : undefined}
+	const Actions =
+		AuthSlot === undefined
+			? View.Actions
+			: View.Actions.filter(
+					(Action) => Action.Href !== "/Account/SignIn",
+				);
 
-					{...(Link.Href.startsWith("http")
-						? { target: "_blank", rel: "noopener noreferrer" }
-						: {})}
-				>
-					<span className="HeaderLinkLabel font-mono text-sm font-medium uppercase tracking-widest">
-						/{Link.Label.toUpperCase()}
-					</span>
-				</a>
-			))}
-		</>
-	);
-
-	const ActionButtons = ({
-		OnClick,
-		FullWidth,
-	}: {
-		OnClick?: () => void;
-
-		FullWidth?: boolean;
-	}) => (
-		<>
-			{AuthSlot ? (
-				<>
-					{AuthSlot}
-
-					{HeaderData.Actions?.filter(
-						(A) => A.Href !== "/Account/SignIn",
-					).map((Action, Index) => {
-						const variant =
-							(Action.Variant as
-								"ghost" | "default" | "outline") || "default";
-
-						const size =
-							(Action.Size as "default" | "sm" | "lg") ||
-							"default";
-
-						const cls = FullWidth
-							? "StaccatoButton w-full justify-start"
-							: "StaccatoButton";
-
-						if (variant === "ghost" || variant === "link") {
-							return (
-								<Button
-									key={Index}
-									variant={variant}
-									size={size}
-									className={`${cls} HeaderActionButton`}
-									asChild
-								>
-									<a href={Action.Href} onClick={OnClick}>
-										{Action.Text}
-										{RenderActionIcon(
-											Action.Icon,
-											Action.Text,
-											Action.Tooltip,
-										)}
-									</a>
-								</Button>
-							);
-						}
-
-						return (
-							<Button
-								key={Index}
-								variant={variant}
-								size={size}
-								className={cls}
-								onClick={() => {
-									window.location.href = Action.Href;
-								}}
-							>
-								{Action.Text}
-								{RenderActionIcon(
-									Action.Icon,
-									Action.Text,
-									Action.Tooltip,
-								)}
-							</Button>
-						);
-					})}
-				</>
-			) : (
-				HeaderData.Actions?.map((Action, Index) => {
-					const variant =
-						(Action.Variant as "ghost" | "default" | "outline") ||
-						"default";
-
-					const size =
-						(Action.Size as "default" | "sm" | "lg") || "default";
-
-					const cls = FullWidth
-						? "StaccatoButton w-full justify-start"
-						: "StaccatoButton";
-
-					if (variant === "ghost" || variant === "link") {
-						return (
-							<Button
-								key={Index}
-								variant={variant}
-								size={size}
-								className={`${cls} HeaderActionButton`}
-								asChild
-							>
-								<a href={Action.Href} onClick={OnClick}>
-									{Action.Text}
-									{RenderActionIcon(
-										Action.Icon,
-										Action.Text,
-										Action.Tooltip,
-									)}
-								</a>
-							</Button>
-						);
-					}
-
-					return (
-						<Button
-							key={Index}
-							variant={variant}
-							size={size}
-							className={cls}
-							onClick={() => {
-								window.location.href = Action.Href;
-							}}
-						>
-							{Action.Text}
-							{RenderActionIcon(
-								Action.Icon,
-								Action.Text,
-								Action.Tooltip,
-							)}
-						</Button>
-					);
-				})
-			)}
-		</>
-	);
+	const Status = T("status.value", { defaultValue: HeaderStatus });
 
 	const ModeClass =
 		Mode === "functional" ? "HeaderFunctional" : "HeaderMinimal";
 
-	const ScrolledClass = Scrolled ? "HeaderScrolled" : "";
+	/** The shell's classes: the base, the surface, and the scrolled state. */
+	const Shell = [
+		"Header",
+		ModeClass,
+		Scrolled ? "HeaderScrolled" : null,
+	].filter((Name): Name is string => Name !== null);
 
 	return (
-		<header
-			className={`Header ${ModeClass} ${ScrolledClass} sticky top-0 z-50 w-full`}
-			role="banner"
-		>
-			<div className="container mx-auto flex h-14 items-center justify-between px-4">
-				<div className="flex items-center gap-3">
-					<a
-						href="/"
-						className="StaccatoLogo HeaderLogo flex items-center space-x-3 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-						aria-label={`${HeaderData.Logo?.Text || "Land"} - Go to homepage`}
-					>
-						<div
-							className="LogoBox relative flex h-7 w-7 items-center justify-center overflow-hidden"
-							aria-hidden="true"
-						>
-							<img
-								src="/Asset/Logo/Glyph/Land.svg"
-								alt="Code Editor Land"
-								title="Code Editor Land"
-								width={28}
-								height={28}
-								className="h-full w-full"
-							/>
-						</div>
-						<span className="HeaderLogoText font-mono text-sm font-medium uppercase tracking-widest">
-							{HeaderData.Logo?.Text || "LAND"}
-						</span>
-					</a>
+		<header className={Shell.join(" ")} role="banner">
+			<div className="HeaderBar">
+				<a
+					className="HeaderLogo"
+					href="/"
+					aria-label={`${View.Logo} - Go to homepage`}
+				>
+					<span className="HeaderLogoGlyph" aria-hidden="true">
+						<img
+							src="/Asset/Logo/Glyph/Land.svg"
+							alt="Code Editor Land"
+							title="Code Editor Land"
+							width={28}
+							height={28}
+						/>
+					</span>
+					<span className="HeaderLogoText">{View.Logo}</span>
+				</a>
 
+				<button
+					type="button"
+					className="HeaderToggle"
+					aria-controls="HeaderPanel"
+					aria-expanded={Open}
+					onClick={() => SetOpen(!Open)}
+				>
+					{Open
+						? T("close", { defaultValue: "Close" })
+						: T("menu", { defaultValue: "Menu" })}
+				</button>
+
+				<div className="HeaderPanel" id="HeaderPanel" data-open={Open}>
 					<nav
-						className="ml-2 hidden items-center lg:flex"
+						className="HeaderNav"
+						id="HeaderNav"
 						aria-label="Main navigation"
 					>
-						{HeaderData.Navigation?.map((Link, Index) => (
-							<a
-								key={Index}
+						{View.Links.map((Link) => {
+							const State = HeaderLinkState(Link, Path, Section);
 
-								href={Link.Href}
-
-								className={`StaccatoNavLink HeaderSubLink relative flex items-center px-4 py-2 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]${IsActive(Link.Href) ? "HeaderNavActive" : ""}`}
-
-								aria-label={Link.Label}
-
-								aria-current={
-									IsActive(Link.Href) ? "page" : undefined
-								}
-
-								{...(Link.Href.startsWith("http")
-									? {
-											target: "_blank",
-											rel: "noopener noreferrer",
-										}
-									: {})}
-							>
-								<span className="HeaderLinkLabel font-mono text-sm font-medium uppercase tracking-widest">
-									/{Link.Label.toUpperCase()}
-								</span>
-							</a>
-						))}
+							return (
+								<a
+									key={Link.Href}
+									className="HeaderNavLink"
+									href={Link.Href}
+									aria-current={
+										State === "active" ? "page" : undefined
+									}
+									{...HeaderLinkAttributes(Link.Target)}
+									onClick={() => SetOpen(false)}
+								>
+									<span className="HeaderLinkLabel">
+										/{Link.Label.toUpperCase()}
+									</span>
+								</a>
+							);
+						})}
 					</nav>
 
-					<Button
-						variant="ghost"
-						size="icon"
-						className="hidden md:flex lg:hidden"
-						onClick={() => SetNavMenuOpen(!NavMenuOpen)}
-						aria-label="Toggle navigation"
-						aria-expanded={NavMenuOpen}
-					>
-						{NavMenuOpen ? (
-							<lucide.X className="h-5 w-5" />
-						) : (
-							<lucide.Menu className="h-5 w-5" />
-						)}
-					</Button>
-				</div>
-
-				<div className="flex items-center gap-3">
-					<div className="hidden items-center gap-3 md:flex">
+					<div className="HeaderAux">
 						<LocaleSwitcher />
-						<ActionButtons />
-					</div>
 
-					<Button
-						variant="ghost"
-						size="icon"
-						className="md:hidden"
-						onClick={() => SetMobileMenuOpen(!MobileMenuOpen)}
-						aria-label="Toggle menu"
-						aria-expanded={MobileMenuOpen}
-					>
-						{MobileMenuOpen ? (
-							<lucide.X className="h-5 w-5" />
-						) : (
-							<lucide.Menu className="h-5 w-5" />
-						)}
-					</Button>
+						<div className="HeaderActions">
+							{AuthSlot}
+
+							{Actions.map((Action) => (
+								<Button
+									key={Action.Href}
+									variant={Action.Variant}
+									size="default"
+									className="HeaderActionButton"
+									asChild
+								>
+									<a
+										href={Action.Href}
+										{...HeaderLinkAttributes(Action.Target)}
+										onClick={() => SetOpen(false)}
+									>
+										{Action.Label}
+									</a>
+								</Button>
+							))}
+						</div>
+					</div>
 				</div>
 			</div>
 
-			{NavMenuOpen && (
-				<div
-					className="NavDropdown hidden md:block lg:hidden"
-					role="dialog"
-					aria-label="Navigation menu"
-				>
-					<nav
-						className="container mx-auto flex flex-col gap-1 px-4 py-4"
-						aria-label="Site navigation"
-					>
-						<NavLinks OnClick={() => SetNavMenuOpen(false)} />
-					</nav>
-				</div>
-			)}
-
-			{MobileMenuOpen && (
-				<div
-					className="HeaderMobileMenu md:hidden"
-					role="dialog"
-					aria-label="Mobile navigation menu"
-				>
-					<nav
-						className="container mx-auto flex flex-col gap-1 px-4 py-4"
-						aria-label="Mobile navigation"
-					>
-						<NavLinks OnClick={() => SetMobileMenuOpen(false)} />
-						<div className="my-1.5 border-t border-[var(--HeaderBorder)]" />
-						<div className="px-4 py-3">
-							<LocaleSwitcher />
-						</div>
-						<div className="my-1.5 border-t border-[var(--HeaderBorder)]" />
-						<ActionButtons
-							OnClick={() => SetMobileMenuOpen(false)}
-
-							FullWidth
-						/>
-					</nav>
-				</div>
-			)}
+			<div className="HeaderStrip">
+				<p className="HeaderStatus">{Status}</p>
+			</div>
 		</header>
 	);
 };

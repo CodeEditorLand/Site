@@ -3,8 +3,23 @@ import { Header } from "../Component/Layout/Header";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 import { LinkMentions } from "../Library/CodeMentions";
+import ReadingDocument from "../Component/Reading/ReadingDocument.astro";
+import RecordStage from "../Component/Record/RecordStage.astro";
+import RecordWell from "../Component/Record/RecordWell.astro";
+import {
+	Index,
+	Ledger,
+	Process,
+	ResolveStages,
+	Wells,
+} from "../Library/Document/Contributing/Data.js";
 
 const T = GetI18n();
+
+/** The process rail, resolved through the page's own translator. */
+const Stages = ResolveStages(Process, (Key, Default) =>
+	T(Key, { defaultValue: Default }),
+);
 
 const MetaTitle = T("meta.contributing.title", {
 	defaultValue: "Contributing | Code Editor Land",
@@ -46,27 +61,25 @@ const MetaDescription = T("meta.contributing.description", {
 			</ol>
 		</nav>
 
-		<!-- Page Header -->
-		<header class="mb-12">
-			<h1 class="text-2xl font-medium tracking-tight sm:text-3xl">
-				{T("common.contributing.pageTitle", {
-					defaultValue: "Contributing",
-				})}
-			</h1>
-			<p
-				class="whitespace-pre-line text-muted"
-				set:html={LinkMentions(
-					T("common.contributing.pageSubtitle", {
-						defaultValue:
-							"Land is open source and built in public.\n\nEvery contribution - code, docs, tests, or design - ships to real users.",
-					}),
-				)}
-			/>
-		</header>
-
+				<ReadingDocument
+			kicker="/CONTRIBUTING"
+			heading={T("common.contributing.pageTitle", {
+				defaultValue: "Contributing",
+			})}
+			standfirstHtml={LinkMentions(
+				T("common.contributing.pageSubtitle", {
+					defaultValue:
+						"Land is open source and built in public.\n\nEvery contribution - code, docs, tests, or design - ships to real users.",
+				}),
+			)}
+			rows={Ledger}
+			index={Index}
+			indexLabel="Parts"
+			measure="full"
+			bodyClass="LegalCard">
 		<!-- Quick Links -->
-		<section class="mb-12">
-			<h2 class="sr-only">
+		<section class="reading-document__part">
+			<h2 class="sr-only reading-clause" id="quick-links">
 				{T("common.contributing.quickLinks.heading", {
 					defaultValue: "Quick Links",
 				})}
@@ -78,7 +91,7 @@ const MetaDescription = T("meta.contributing.description", {
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 				>
-					<h3 class="text-card-foreground mb-2 text-xl font-medium">
+					<h3 class="text-card-foreground mb-2 text-xl font-medium" id="contributing-guide">
 						{T("common.contributing.guide.title", {
 							defaultValue: "Contributing Guide",
 						})}
@@ -98,7 +111,7 @@ const MetaDescription = T("meta.contributing.description", {
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 				>
-					<h3 class="text-card-foreground mb-2 text-xl font-medium">
+					<h3 class="text-card-foreground mb-2 text-xl font-medium" id="good-first-issues">
 						{T("common.contributing.goodFirstIssues.title", {
 							defaultValue: "Good First Issues",
 						})}
@@ -115,177 +128,31 @@ const MetaDescription = T("meta.contributing.description", {
 		</section>
 
 		<!-- How to Contribute -->
-		<section class="mb-12">
-			<h2 class="mb-6 text-2xl font-medium">
+		<section class="reading-document__part">
+			<h2 class="reading-clause" id="how-to-contribute">
 				{T("common.contributing.howToContribute.heading", {
 					defaultValue: "How to Contribute",
 				})}
 			</h2>
-			<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
-				<ol class="space-y-6">
-					<li class="flex items-start gap-4">
-						<span class="flex h-8 w-8 shrink-0 items-center justify-center bg-secondary font-medium text-secondary-fg">
-							1
-						</span>
-						<div>
-							<h3 class="font-medium text-card-foreground">
-								{T("common.contributing.step1.title", {
-									defaultValue: "Fork and Clone",
-								})}
-							</h3>
-							<p
-								class="mt-1 whitespace-pre-line text-card-foreground"
-								set:html={LinkMentions(
-									T("common.contributing.step1.description", {
-										defaultValue:
-											"Fork the Land repository on GitHub and clone it locally with submodules:",
-									}),
-								)}
-							/>
-							<div class="mt-2 flex items-start gap-2">
-								<pre class="bg-mute min-w-0 flex-1 overflow-x-auto p-3 font-mono text-foreground">git clone --recurse-submodules https://github.com/YOUR_USERNAME/Land.git</pre>
-								<jelly-icon-button
-									data-copy
-									size="small"
-									shape="square"
-									label="Copy to clipboard"
-									aria-label="Copy to clipboard"
-									title="Copy to clipboard"
-									style="--jelly-fill: var(--Mute); --jelly-label: var(--Foreground); --jelly-icon-button-radius: 0px; --jelly-ring: var(--Accent);"
-								>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										width="24"
-										height="24"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										stroke-width="2"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										style="color: var(--jelly-label)"
-										aria-hidden="true"
-									>
-										<rect
-											width="14"
-											height="14"
-											x="8"
-											y="8"
-											rx="2"
-											ry="2"
-										/>
-										<path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-									</svg>
-								</jelly-icon-button>
-							</div>
-						</div>
-					</li>
-					<li class="flex items-start gap-4">
-						<span class="flex h-8 w-8 shrink-0 items-center justify-center bg-secondary font-medium text-secondary-fg">
-							2
-						</span>
-						<div>
-							<h3 class="font-medium text-card-foreground">
-								{T("common.contributing.step2.title", {
-									defaultValue: "Set Up the Environment",
-								})}
-							</h3>
-							<p
-								class="mt-1 whitespace-pre-line text-card-foreground"
-								set:html={LinkMentions(
-									T("common.contributing.step2.description", {
-										defaultValue:
-											"Install Rust nightly and Node.js 24. Then compile the VS Code Editor submodule first (see Installation guide), then run:",
-									}),
-								)}
-							/>
-							<div class="mt-2 flex items-start gap-2">
-								<pre class="bg-mute min-w-0 flex-1 overflow-x-auto p-3 font-mono text-foreground">cd Land && pnpm install && ./Maintain/Debug/Build.sh --profile debug-electron-bundled</pre>
-								<jelly-icon-button
-									data-copy
-									size="small"
-									shape="square"
-									label="Copy to clipboard"
-									aria-label="Copy to clipboard"
-									title="Copy to clipboard"
-									style="--jelly-fill: var(--Mute); --jelly-label: var(--Foreground); --jelly-icon-button-radius: 0px; --jelly-ring: var(--Accent);"
-								>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										width="24"
-										height="24"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										stroke-width="2"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										style="color: var(--jelly-label)"
-										aria-hidden="true"
-									>
-										<rect
-											width="14"
-											height="14"
-											x="8"
-											y="8"
-											rx="2"
-											ry="2"
-										/>
-										<path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-									</svg>
-								</jelly-icon-button>
-							</div>
-						</div>
-					</li>
-					<li class="flex items-start gap-4">
-						<span class="flex h-8 w-8 shrink-0 items-center justify-center bg-secondary font-medium text-secondary-fg">
-							3
-						</span>
-						<div>
-							<h3 class="font-medium text-card-foreground">
-								{T("common.contributing.step3.title", {
-									defaultValue: "Make Your Changes",
-								})}
-							</h3>
-							<p
-								class="mt-1 whitespace-pre-line text-card-foreground"
-								set:html={LinkMentions(
-									T("common.contributing.step3.description", {
-										defaultValue:
-											"Create a branch, make your changes, and follow the PascalCase naming convention used throughout the project.",
-									}),
-								)}
-							/>
-						</div>
-					</li>
-					<li class="flex items-start gap-4">
-						<span class="flex h-8 w-8 shrink-0 items-center justify-center bg-secondary font-medium text-secondary-fg">
-							4
-						</span>
-						<div>
-							<h3 class="font-medium text-card-foreground">
-								{T("common.contributing.step4.title", {
-									defaultValue: "Submit a Pull Request",
-								})}
-							</h3>
-							<p
-								class="mt-1 whitespace-pre-line text-card-foreground"
-								set:html={LinkMentions(
-									T("common.contributing.step4.description", {
-										defaultValue:
-											"Push your branch and open a pull request against the Current branch.\n\nDescribe what changed and why. One sentence is enough.",
-									}),
-								)}
-							/>
-						</div>
-					</li>
-				</ol>
+			<div class="reading-document__process">
+				<RecordStage stages={Stages} />
+				{
+					Wells.map((Well) => (
+						<RecordWell
+							label={T(Well.titleKey, {
+								defaultValue: Well.title,
+							})}
+							language={Well.language}
+							lines={Well.lines}
+						/>
+					))
+				}
 			</div>
 		</section>
 
 		<!-- Elements Architecture -->
-		<section class="mb-12">
-			<h2 class="mb-6 text-2xl font-medium">
+		<section class="reading-document__part">
+			<h2 class="reading-clause" id="fifteen-elements-one-editor">
 				{T("common.contributing.elements.heading", {
 					defaultValue: "Fifteen Elements, One Editor",
 				})}
@@ -482,15 +349,15 @@ const MetaDescription = T("meta.contributing.description", {
 		</section>
 
 		<!-- Ways to Contribute -->
-		<section class="mb-12">
-			<h2 class="mb-6 text-2xl font-medium">
+		<section class="reading-document__part">
+			<h2 class="reading-clause" id="ways-to-contribute">
 				{T("common.contributing.ways.heading", {
 					defaultValue: "Ways to Contribute",
 				})}
 			</h2>
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 				<div class="StaccatoCard StaccatoBorderShimmer bg-card p-5">
-					<h3 class="text-card-foreground mb-2 font-medium">
+					<h3 class="text-card-foreground mb-2 font-medium" id="code">
 						{T("common.contributing.ways.code.title", {
 							defaultValue: "Code",
 						})}
@@ -507,7 +374,7 @@ const MetaDescription = T("meta.contributing.description", {
 					/>
 				</div>
 				<div class="StaccatoCard StaccatoBorderShimmer bg-card p-5">
-					<h3 class="text-card-foreground mb-2 font-medium">
+					<h3 class="text-card-foreground mb-2 font-medium" id="documentation">
 						{T("common.contributing.ways.documentation.title", {
 							defaultValue: "Documentation",
 						})}
@@ -527,7 +394,7 @@ const MetaDescription = T("meta.contributing.description", {
 					/>
 				</div>
 				<div class="StaccatoCard StaccatoBorderShimmer bg-card p-5">
-					<h3 class="text-card-foreground mb-2 font-medium">
+					<h3 class="text-card-foreground mb-2 font-medium" id="testing">
 						{T("common.contributing.ways.testing.title", {
 							defaultValue: "Testing",
 						})}
@@ -544,7 +411,7 @@ const MetaDescription = T("meta.contributing.description", {
 					/>
 				</div>
 				<div class="StaccatoCard StaccatoBorderShimmer bg-card p-5">
-					<h3 class="text-card-foreground mb-2 font-medium">
+					<h3 class="text-card-foreground mb-2 font-medium" id="design">
 						{T("common.contributing.ways.design.title", {
 							defaultValue: "Design",
 						})}
@@ -564,8 +431,8 @@ const MetaDescription = T("meta.contributing.description", {
 		</section>
 
 		<!-- Funding -->
-		<section class="mb-12">
-			<h2 class="mb-6 text-2xl font-medium">
+		<section class="reading-document__part">
+			<h2 class="reading-clause" id="funding">
 				{T("common.contributing.funding.heading", {
 					defaultValue: "Funding",
 				})}
@@ -621,8 +488,8 @@ const MetaDescription = T("meta.contributing.description", {
 		</section>
 
 		<!-- Code of Conduct -->
-		<section class="mb-12">
-			<h2 class="mb-6 text-2xl font-medium">
+		<section class="reading-document__part">
+			<h2 class="reading-clause" id="code-of-conduct">
 				{T("common.contributing.conduct.heading", {
 					defaultValue: "Code of Conduct",
 				})}
@@ -647,6 +514,7 @@ const MetaDescription = T("meta.contributing.description", {
 				/>
 			</div>
 		</section>
+		</ReadingDocument>
 
 		<!-- Back to top -->
 		<div class="mt-12 border-t pt-8">
@@ -662,5 +530,7 @@ const MetaDescription = T("meta.contributing.description", {
 
 <script>
 	import { WireCopyButtons } from "../Function/Utility/CopyCommand";
+	import { WireWells } from "../Library/Document/WireWells";
 	WireCopyButtons();
+	WireWells();
 </script>

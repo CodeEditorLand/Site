@@ -1,5 +1,7 @@
 {
 	"logo": "Land",
+	"menu": "Menu",
+	"close": "Close",
 	"nav": {
 		"features": "Features",
 		"download": "Download",
@@ -16,6 +18,9 @@
 		"getStarted": "Get Land",
 		"logout": "Sign Out",
 		"loading": "Loading\u2026"
+	},
+	"status": {
+		"value": "SOURCE ACTIVE · PRE-RELEASE"
 	},
 	"user": {
 		"avatarAlt": "User menu",

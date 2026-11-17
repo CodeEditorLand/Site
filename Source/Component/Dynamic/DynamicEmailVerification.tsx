@@ -1,16 +1,6 @@
-import * as lucide from "lucide-react";
-
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
-
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "../UI/Card";
 
 import { DynamicButton } from "./DynamicButton";
 
@@ -21,8 +11,13 @@ import type Property from "./Interface/Property/Verification/Email.js";
 import type { default as VerificationState } from "./Type/State/Verification.js";
 
 /**
- * Dynamic EmailVerification component with states: pending, verifying, success, error
- * Auto-verifies if token present in URL, otherwise shows pending state with resend
+ * Dynamic EmailVerification component with states: pending, verifying,
+ * success, error. Auto-verifies if a token is present in the URL, otherwise
+ * shows the pending state with resend.
+ *
+ * Each state is a report - a status line saying what the state is, one
+ * sentence saying what happened, and the action that is available - rendered
+ * inside the route's AuthShell, which owns the page frame.
  */
 const DynamicEmailVerification = ({
 	Content,
@@ -141,165 +136,142 @@ const DynamicEmailVerification = ({
 		}
 	};
 
+	const PendingStatus = T("auth.pendingStatus", {
+		defaultValue: "AWAITING CLICK",
+	});
+
+	const VerifyingStatus = T("auth.verifyingStatus", {
+		defaultValue: "VERIFYING",
+	});
+
+	const VerifiedStatus = T("auth.verifiedStatus", {
+		defaultValue: "EMAIL VERIFIED",
+	});
+
+	const FailedStatus = T("auth.failedStatus", {
+		defaultValue: "VERIFICATION FAILED",
+	});
+
 	const RenderPending = () => (
-		<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
-			<CardHeader className="text-center">
-				<div className="flat mx-auto mb-4 flex h-12 w-12 items-center justify-center bg-[color-mix(in_srgb,var(--Primary)_10%,transparent)]">
-					<lucide.Mail
-						className="h-6 w-6 text-primary"
-						aria-hidden="true"
-					/>
-				</div>
-				<CardTitle className="text-2xl">
-					{Content.Pending.Title}
-				</CardTitle>
-				<CardDescription>{Content.Pending.Description}</CardDescription>
-			</CardHeader>
-			<CardContent className="space-y-6">
-				<div className="space-y-4">
-					<DynamicInput
-						Content={{
-							Label: T("emailLabel", { defaultValue: "Email" }),
-							Placeholder: T("emailPlaceholder", {
-								defaultValue: "Enter your email address",
-							}),
-							Type: "email",
-							Value: Email,
-							OnChange: SetEmail,
-						}}
-						Id="email"
-					/>
+		<div className="auth-shell__report" aria-live="polite">
+			<p className="auth-shell__status">{PendingStatus}</p>
 
-					<DynamicButton
-						Content={{
-							...Content.Pending.ResendButton,
-							Text:
-								ResendCooldown > 0
-									? T("resendCooldown", {
-											defaultValue:
-												"Resend in {{seconds}}s",
-											seconds: ResendCooldown,
-										})
-									: (Content.Pending.ResendButton.Text ?? ""),
-							FullWidth: true,
-							Disabled: !Email || ResendCooldown > 0,
-						}}
-						OnAction={HandleResend}
-					/>
+			<p className="auth-shell__report-sentence">
+				{Content.Pending.Description}
+			</p>
 
-					{ResendSuccess && (
-						<p className="text-center text-green-600" role="status">
-							{Content.Pending.ResendSuccessMessage ||
-								T("resendSuccess", {
-									defaultValue: "Verification email resent!",
-								})}
-						</p>
-					)}
+			<div className="auth-shell__field">
+				<DynamicInput
+					Content={{
+						Label: T("emailLabel", { defaultValue: "Email" }),
+						Placeholder: T("emailPlaceholder", {
+							defaultValue: "Enter your email address",
+						}),
+						Type: "email",
+						Value: Email,
+						OnChange: SetEmail,
+					}}
+					Id="email"
+				/>
 
-					{Content.Pending.EmailSentMessage && (
-						<p className="text-center text-card-foreground opacity-70">
-							{Content.Pending.EmailSentMessage}
-						</p>
-					)}
-				</div>
-			</CardContent>
-		</Card>
+				<DynamicButton
+					Content={{
+						...Content.Pending.ResendButton,
+						Text:
+							ResendCooldown > 0
+								? T("resendCooldown", {
+										defaultValue: "Resend in {{seconds}}s",
+										seconds: ResendCooldown,
+									})
+								: (Content.Pending.ResendButton.Text ?? ""),
+						FullWidth: true,
+						Disabled: !Email || ResendCooldown > 0,
+						ClassName: "auth-shell__primary emphasis-expressive",
+					}}
+					OnAction={HandleResend}
+				/>
+
+				{ResendSuccess && (
+					<p className="auth-shell__note" role="status">
+						{Content.Pending.ResendSuccessMessage ||
+							T("resendSuccess", {
+								defaultValue: "Verification email resent!",
+							})}
+					</p>
+				)}
+
+				{Content.Pending.EmailSentMessage && (
+					<p className="auth-shell__note">
+						{Content.Pending.EmailSentMessage}
+					</p>
+				)}
+			</div>
+		</div>
 	);
 
 	const RenderVerifying = () => (
-		<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
-			<CardHeader className="text-center">
-				<div
-					className="flat mx-auto mb-4 flex h-12 w-12 items-center justify-center bg-[color-mix(in_srgb,var(--Primary)_10%,transparent)]"
-					aria-hidden="true"
-				>
-					<div className="h-6 w-6 animate-spin rounded-none border-2 border-primary border-t-transparent"></div>
-				</div>
-				<CardTitle>
-					{Content.Verifying?.Title ||
-						T("verifying.title", {
-							defaultValue: "Verifying your email",
-						})}
-				</CardTitle>
-				<CardDescription role="status">
-					{Content.Verifying?.Description ||
-						T("verifying.description", {
-							defaultValue:
-								"Please wait while we verify your email address...",
-						})}
-				</CardDescription>
-			</CardHeader>
-		</Card>
+		<div className="auth-shell__report" role="status">
+			<p className="auth-shell__status">{VerifyingStatus}</p>
+
+			<p className="auth-shell__report-sentence">
+				{Content.Verifying?.Description ||
+					T("verifying.description", {
+						defaultValue:
+							"Please wait while we verify your email address...",
+					})}
+			</p>
+		</div>
 	);
 
 	const RenderSuccess = () => (
-		<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
-			<CardHeader className="text-center">
-				<DynamicButton
-					Content={{
-						...Content.Success.ContinueButton,
-						FullWidth: true,
-					}}
-					OnAction={() => OnNavigate?.("/Dashboard")}
-				/>
-				<div className="flex items-center justify-center pt-4">
-					<CardTitle className="text-2xl">
-						{Content.Success.Title}
-					</CardTitle>
-					{"\u2001"}
-					<lucide.CheckCircle
-						className="h-5 w-5 shrink-0 text-green-600"
-						aria-hidden="true"
-					/>
-				</div>
-				<CardDescription className="">
-					{Content.Success.Description}
-				</CardDescription>
-			</CardHeader>
-		</Card>
+		<div className="auth-shell__report" role="status">
+			<p className="auth-shell__status auth-shell__status--success">
+				{VerifiedStatus}
+			</p>
+
+			<p className="auth-shell__report-sentence">
+				{Content.Success.Description}
+			</p>
+
+			<DynamicButton
+				Content={{
+					...Content.Success.ContinueButton,
+					FullWidth: true,
+					ClassName: "auth-shell__primary emphasis-expressive",
+				}}
+				OnAction={() => OnNavigate?.("/Dashboard")}
+			/>
+		</div>
 	);
 
 	const RenderError = () => (
-		<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
-			<CardHeader className="text-center">
-				<DynamicButton
-					Content={{
-						...Content.Error.BackToSignInButton,
-						FullWidth: true,
-					}}
-					OnAction={() => OnNavigate?.("/Account/SignIn")}
-				/>
-				<div className="flex items-center justify-center pt-4">
-					<CardTitle className="text-2xl">
-						{Content.Error.Title}
-					</CardTitle>
-					{"\u2001"}
-					<lucide.XCircle
-						className="h-5 w-5 shrink-0 text-red-600"
-						aria-hidden="true"
-					/>
-				</div>
-				<CardDescription className="">
-					{ErrorMessage || Content.Error.Description}
-				</CardDescription>
-			</CardHeader>
-		</Card>
+		<div className="auth-shell__report" role="alert">
+			<p className="auth-shell__status auth-shell__status--failure">
+				{FailedStatus}
+			</p>
+
+			<p className="auth-shell__report-sentence">
+				{ErrorMessage || Content.Error.Description}
+			</p>
+
+			<DynamicButton
+				Content={{
+					...Content.Error.BackToSignInButton,
+					FullWidth: true,
+					ClassName: "auth-shell__primary emphasis-expressive",
+				}}
+				OnAction={() => OnNavigate?.("/Account/SignIn")}
+			/>
+		</div>
 	);
 
 	return (
-		<section className="py-20" aria-label="Email verification">
-			<div className="container mx-auto px-4">
-				<div
-					className={`mx-auto max-w-md ${ClassName}`}
-					aria-live="polite"
-				>
-					{State === "pending" && RenderPending()}
-					{State === "verifying" && RenderVerifying()}
-					{State === "success" && RenderSuccess()}
-					{State === "error" && RenderError()}
-				</div>
-			</div>
-		</section>
+		<div className={`auth-shell__form ${ClassName || ""}`}>
+			{State === "pending" && RenderPending()}
+			{State === "verifying" && RenderVerifying()}
+			{State === "success" && RenderSuccess()}
+			{State === "error" && RenderError()}
+		</div>
 	);
 };
 

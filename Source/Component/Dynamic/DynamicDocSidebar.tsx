@@ -23,6 +23,24 @@ interface DynamicDocSidebarProps {
 	Mobile?: boolean;
 }
 
+/**
+ * DynamicDocSidebar - the documentation rail.
+ *
+ * The interaction is unchanged from the version this replaces: one collapsible
+ * per section, one per group inside it, the section and group holding the
+ * current page opened on load and everything else collapsed, and a single
+ * disclosure panel above the content below the rail's breakpoint.
+ *
+ * What changed is the styling contract. Every class is the component's own
+ * (`doc-sidebar__*`, owned by `System/Component/Doc/_Sidebar.scss`) instead of a
+ * Tailwind string, so the type roles, the nesting rules and the current-page
+ * state are one partial's business.
+ *
+ * The current page is marked three ways, because one of them is colour: the
+ * `aria-current="page"` attribute, the ink and weight of `--active`, and a
+ * hairline rule on the row's leading edge. Its ancestor section and group are
+ * marked too, so a reader never has to hunt for where they are.
+ */
 const DynamicDocSidebar = ({
 	Sections,
 	ActiveId,
@@ -86,34 +104,51 @@ const DynamicDocSidebar = ({
 		});
 	};
 
+	const Leaf = (Child: DocItem) => {
+		const IsActive = ActiveId === Child.Id;
+
+		return (
+			<li key={Child.Id} class="doc-sidebar__item">
+				<a
+					href={`/Doc/${Child.Id}`}
+					aria-current={IsActive ? "page" : undefined}
+					className={`doc-sidebar__link${IsActive ? " doc-sidebar__link--active" : ""}`}
+				>
+					{Child.Label}
+				</a>
+			</li>
+		);
+	};
+
 	const Nav = (
-		<nav
-			aria-label="Documentation sections"
-			className={Mobile ? "pt-2" : undefined}
-		>
-			<ul role="list" className="space-y-0.5">
+		<nav class="doc-sidebar" aria-label="Documentation sections">
+			<ul role="list" class="doc-sidebar__list">
 				{Sections.map((Section) => {
 					const HasChildren =
 						Section.Children && Section.Children.length > 0;
 
 					const IsOpen = !CollapsedSections.has(Section.Id);
 
+					const IsCurrent = ActiveSectionId === Section.Id;
+
 					if (HasChildren) {
 						return (
-							<li key={Section.Id}>
+							<li key={Section.Id} class="doc-sidebar__item">
 								<Collapsible
 									open={IsOpen}
 									onOpenChange={() =>
 										ToggleSection(Section.Id)
 									}
 								>
-									<CollapsibleTrigger className="flat flex w-full items-center justify-between px-2 py-1.5 text-sm font-medium uppercase tracking-widest text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
-										<span className="font-mono">
+									<CollapsibleTrigger
+										className={`doc-sidebar__trigger doc-sidebar__trigger--section${IsCurrent ? " doc-sidebar__trigger--active" : ""}`}
+									>
+										<span class="doc-sidebar__label">
 											{Section.Label}
 										</span>
 										<span
 											aria-hidden="true"
-											className={`transition-transform duration-150 ${IsOpen ? "rotate-90" : ""}`}
+											className={`doc-sidebar__marker${IsOpen ? " doc-sidebar__marker--open" : ""}`}
 										>
 											›
 										</span>
@@ -121,107 +156,71 @@ const DynamicDocSidebar = ({
 									<CollapsibleContent>
 										<ul
 											role="list"
-											className="ml-2 mt-0.5 space-y-0.5 border-l border-border pl-3"
+											class="doc-sidebar__children"
 										>
 											{Section.Children!.map((Item) => {
-												if (IsDocGroup(Item)) {
-													const IsGroupOpen =
-														!CollapsedGroups.has(
-															Item.Id,
-														);
-
-													return (
-														<li key={Item.Id}>
-															<Collapsible
-																open={
-																	IsGroupOpen
-																}
-																onOpenChange={() =>
-																	ToggleGroup(
-																		Item.Id,
-																	)
-																}
-															>
-																<CollapsibleTrigger className="flat flex w-full items-center justify-between px-2 py-1 text-sm font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
-																	<span>
-																		{
-																			Item.Label
-																		}
-																	</span>
-																	<span
-																		aria-hidden="true"
-																		className={`transition-transform duration-150 ${IsGroupOpen ? "rotate-90" : ""}`}
-																	>
-																		›
-																	</span>
-																</CollapsibleTrigger>
-																<CollapsibleContent>
-																	<ul
-																		role="list"
-																		className="ml-2 mt-0.5 space-y-0.5 border-l border-border pl-3"
-																	>
-																		{Item.Children.map(
-																			(
-																				Child,
-																			) => {
-																				const IsActive =
-																					ActiveId ===
-																					Child.Id;
-
-																				return (
-																					<li
-																						key={
-																							Child.Id
-																						}
-																					>
-																						<a
-																							href={`/Doc/${Child.Id}`}
-																							aria-current={
-																								IsActive
-																									? "page"
-																									: undefined
-																							}
-																							className={`flat block px-2 py-1 text-sm transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)] ${
-																								IsActive
-																									? "bg-accent font-medium text-accent-foreground"
-																									: "text-muted-foreground"
-																							}`}
-																						>
-																							{
-																								Child.Label
-																							}
-																						</a>
-																					</li>
-																				);
-																			},
-																		)}
-																	</ul>
-																</CollapsibleContent>
-															</Collapsible>
-														</li>
-													);
+												if (!IsDocGroup(Item)) {
+													return Leaf(Item);
 												}
 
-												const IsActive =
-													ActiveId === Item.Id;
+												const IsGroupOpen =
+													!CollapsedGroups.has(
+														Item.Id,
+													);
+
+												const IsGroupCurrent =
+													ActiveGroupId === Item.Id;
 
 												return (
-													<li key={Item.Id}>
-														<a
-															href={`/Doc/${Item.Id}`}
-															aria-current={
-																IsActive
-																	? "page"
-																	: undefined
+													<li
+														key={Item.Id}
+														class="doc-sidebar__item"
+													>
+														<Collapsible
+															open={
+																IsGroupOpen
 															}
-															className={`flat block px-2 py-1 text-sm transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)] ${
-																IsActive
-																	? "bg-accent font-medium text-accent-foreground"
-																	: "text-muted-foreground"
-															}`}
+															onOpenChange={() =>
+																ToggleGroup(
+																	Item.Id,
+																)
+															}
 														>
-															{Item.Label}
-														</a>
+															<CollapsibleTrigger
+																className={`doc-sidebar__trigger doc-sidebar__trigger--group${IsGroupCurrent ? " doc-sidebar__trigger--active" : ""}`}
+															>
+																<span class="doc-sidebar__label">
+																	{
+																		Item.Label
+																	}
+																</span>
+																<span
+																	aria-hidden="true"
+																	className={`doc-sidebar__marker${IsGroupOpen ? " doc-sidebar__marker--open" : ""}`}
+																>
+																	›
+																</span>
+															</CollapsibleTrigger>
+															<CollapsibleContent>
+																<ul
+																	role="list"
+																	class="doc-sidebar__children"
+																>
+																	{Item.Children.map(
+																		(
+																			Child,
+																		) => (
+																			<Leaf
+																				key={
+																					Child.Id
+																				}
+																				{...Child}
+																			/>
+																		),
+																	)}
+																</ul>
+															</CollapsibleContent>
+														</Collapsible>
 													</li>
 												);
 											})}
@@ -233,10 +232,10 @@ const DynamicDocSidebar = ({
 					}
 
 					return (
-						<li key={Section.Id}>
+						<li key={Section.Id} class="doc-sidebar__item">
 							<a
 								href={`/Doc/${Section.Id}`}
-								className="flat block px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+								className="doc-sidebar__link doc-sidebar__link--section"
 							>
 								{Section.Label}
 							</a>
@@ -262,31 +261,27 @@ const DynamicDocSidebar = ({
 	const [MobileOpen, SetMobileOpen] = useState(false);
 
 	return (
-		<div className="border-b border-border pb-3 lg:hidden">
+		<div className="doc-sidebar doc-sidebar--mobile">
 			<button
 				type="button"
 				onClick={() => SetMobileOpen((O) => !O)}
-				className="flex w-full items-center justify-between px-1 py-2 text-sm font-medium text-foreground hover:text-accent-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+				className="doc-sidebar__toggle"
 				aria-expanded={MobileOpen}
 			>
-				<span className="flex items-center gap-2">
-					<span className="font-mono text-sm uppercase tracking-widest text-muted-foreground">
-						Docs
-					</span>
-					<span className="text-muted-foreground">/</span>
-					<span className="truncate">{ActiveLabel}</span>
+				<span class="doc-sidebar__toggle-label">Docs</span>
+				<span class="doc-sidebar__toggle-separator" aria-hidden="true">
+					/
 				</span>
+				<span class="doc-sidebar__toggle-current">{ActiveLabel}</span>
 				<span
 					aria-hidden="true"
-					className={`ml-2 shrink-0 transition-transform duration-150 ${MobileOpen ? "rotate-90" : ""}`}
+					className={`doc-sidebar__marker${MobileOpen ? " doc-sidebar__marker--open" : ""}`}
 				>
 					›
 				</span>
 			</button>
 
-			{MobileOpen && (
-				<div className="mt-2 border-t border-border pt-2">{Nav}</div>
-			)}
+			{MobileOpen && <div class="doc-sidebar__panel">{Nav}</div>}
 		</div>
 	);
 };

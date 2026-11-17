@@ -1,14 +1,6 @@
-import * as lucide from "lucide-react";
-
 import React, { useEffect, useState } from "react";
 
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "../UI/Card";
+import { useTranslation } from "react-i18next";
 
 import { DynamicButton } from "./DynamicButton";
 
@@ -18,9 +10,25 @@ import type Property from "./Interface/Property/Password/Reset.js";
 
 import type { default as ResetState } from "./Type/State/Reset.js";
 
+/** The three strength segments, and how many of them a level fills. */
+const StrengthFill = {
+	none: 0,
+	weak: 1,
+	medium: 2,
+	strong: 3,
+} as const;
+
+type StrengthTone = keyof typeof StrengthFill;
+
+const Segments = [0, 1, 2] as const;
+
 /**
- * Dynamic ResetPassword component for setting new password with token validation
- * Supports 4 states: checking, valid (form), invalid (error), success
+ * Dynamic ResetPassword component for setting a new password with token
+ * validation. Supports 4 states: checking, valid (form), invalid (error),
+ * success.
+ *
+ * The page frame belongs to AuthShell; this component owns the token check,
+ * the two fields, the validation and the four states inside that frame.
  */
 const DynamicResetPassword = ({
 	Content,
@@ -31,11 +39,9 @@ const DynamicResetPassword = ({
 	IsLoading = false,
 	ErrorMessage,
 }: Property) => {
+	const { t: T } = useTranslation("account");
+
 	const {
-		Title,
-
-		Description,
-
 		PasswordField,
 
 		ConfirmPasswordField,
@@ -122,289 +128,200 @@ const DynamicResetPassword = ({
 		}
 	};
 
+	const Tone: StrengthTone =
+		Password.length >= 12 && /[^a-zA-Z0-9]/.test(Password)
+			? "strong"
+			: Password.length >= 8
+				? "medium"
+				: Password.length >= 6
+					? "weak"
+					: "none";
+
+	const Filled = StrengthFill[Tone];
+
+	const CheckingStatus = T("auth.resetPassword.checkingStatus", {
+		defaultValue: "CHECKING LINK",
+	});
+
+	const ExpiredStatus = T("auth.resetPassword.expiredStatus", {
+		defaultValue: "LINK EXPIRED",
+	});
+
+	const UpdatedStatus = T("auth.resetPassword.updatedStatus", {
+		defaultValue: "PASSWORD UPDATED",
+	});
+
+	const BackToSignIn = T("account.forgotPassword.backToSignIn", {
+		defaultValue: "Back to Sign In",
+	});
+
+	const GoToSignIn = T("account.resetPassword.success.button", {
+		defaultValue: "Sign In",
+	});
+
 	if (State === "checking") {
 		return (
-			<section className="py-20" aria-label="Reset password">
-				<div className="container mx-auto px-4">
-					<div
-						className={`mx-auto max-w-md text-center ${ClassName}`}
-					>
-						<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
-							<CardContent className="pt-6">
-								<div className="space-y-4" aria-live="polite">
-									<div
-										className="mx-auto h-8 w-8 animate-spin rounded-none border-4 border-primary border-t-transparent"
-										aria-hidden="true"
-									></div>
-									<p
-										className="text-muted-foreground"
-										role="status"
-									>
-										{CheckingMessage ||
-											"Validating reset token..."}
-									</p>
-								</div>
-							</CardContent>
-						</Card>
-					</div>
-				</div>
-			</section>
+			<div
+				className={`auth-shell__report ${ClassName || ""}`}
+				aria-live="polite"
+			>
+				<p className="auth-shell__status">{CheckingStatus}</p>
+
+				<p className="auth-shell__report-sentence">
+					{CheckingMessage || "Validating reset token..."}
+				</p>
+			</div>
 		);
 	}
 
 	if (State === "invalid") {
 		return (
-			<section className="py-20" aria-label="Reset password">
-				<div className="container mx-auto px-4">
-					<div
-						className={`mx-auto max-w-md text-center ${ClassName}`}
-					>
-						<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
-							<CardContent className="pt-6">
-								<div className="space-y-4" role="alert">
-									<DynamicButton
-										Content={{
-											Text: "Back to Sign In",
-											Variant: "default",
-											FullWidth: true,
-										}}
-										OnAction={() =>
-											OnNavigate?.("/Account/SignIn")
-										}
-									/>
-									<div className="flex items-center justify-center">
-										<h3 className="text-lg font-medium">
-											Invalid or Expired Token
-										</h3>
-										{"\u2001"}
-										<lucide.AlertCircle
-											className="h-5 w-5 shrink-0 text-destructive"
-											aria-hidden="true"
-										/>
-									</div>
-									<p className="text-muted-foreground">
-										{InvalidTokenMessage ||
-											"This password reset link is invalid or has expired. Please request a new one."}
-									</p>
-								</div>
-							</CardContent>
-						</Card>
-					</div>
-				</div>
-			</section>
+			<div
+				className={`auth-shell__report ${ClassName || ""}`}
+				role="alert"
+			>
+				<p className="auth-shell__status auth-shell__status--failure">
+					{ExpiredStatus}
+				</p>
+
+				<p className="auth-shell__report-sentence">
+					{InvalidTokenMessage ||
+						"This password reset link is invalid or has expired. Please request a new one."}
+				</p>
+
+				<button
+					type="button"
+					className="auth-shell__primary emphasis-expressive"
+					onClick={() => OnNavigate?.("/Account/SignIn")}
+				>
+					{BackToSignIn}
+				</button>
+			</div>
 		);
 	}
 
 	if (State === "success") {
 		return (
-			<section className="py-20" aria-label="Reset password">
-				<div className="container mx-auto px-4">
-					<div
-						className={`mx-auto max-w-md text-center ${ClassName}`}
-					>
-						<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
-							<CardContent className="pt-6">
-								<div
-									className="space-y-4"
-									role="status"
-									aria-live="polite"
-								>
-									<DynamicButton
-										Content={{
-											Text: "Go to Sign In",
-											Variant: "default",
-											FullWidth: true,
-										}}
-										OnAction={() =>
-											OnNavigate?.("/Account/SignIn")
-										}
-									/>
-									<div className="flex items-center justify-center">
-										<h3 className="text-lg font-medium">
-											Password Reset Successful
-										</h3>
-										{"\u2001"}
-										<lucide.CheckCircle
-											className="h-5 w-5 shrink-0 text-green-600"
-											aria-hidden="true"
-										/>
-									</div>
-									<p className="text-muted-foreground">
-										{SuccessMessage ||
-											"Your password has been reset successfully. You can now sign in with your new password."}
-									</p>
-								</div>
-							</CardContent>
-						</Card>
-					</div>
-				</div>
-			</section>
+			<div
+				className={`auth-shell__report ${ClassName || ""}`}
+				role="status"
+				aria-live="polite"
+			>
+				<p className="auth-shell__status auth-shell__status--success">
+					{UpdatedStatus}
+				</p>
+
+				<p className="auth-shell__report-sentence">
+					{SuccessMessage ||
+						"Your password has been reset successfully. You can now sign in with your new password."}
+				</p>
+
+				<button
+					type="button"
+					className="auth-shell__primary emphasis-expressive"
+					onClick={() => OnNavigate?.("/Account/SignIn")}
+				>
+					{GoToSignIn}
+				</button>
+			</div>
 		);
 	}
 
 	// Valid state - show form
 	return (
-		<section className="py-20" aria-label="Reset password">
-			<div className="container mx-auto px-4">
-				<div className={`mx-auto max-w-md ${ClassName}`}>
-					<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
-						<CardHeader className="space-y-1 text-center">
-							<CardTitle className="text-2xl">{Title}</CardTitle>
-							<CardDescription>{Description}</CardDescription>
-						</CardHeader>
-						<CardContent>
-							<form
-								className="space-y-4"
-								onSubmit={HandleSubmit}
-								aria-label="Reset password form"
-							>
-								<div aria-live="polite" aria-atomic="true">
-									{ErrorMessage && (
-										<div
-											className="flat bg-[color-mix(in_srgb,var(--Destruct)_10%,transparent)] p-3 text-destructive"
-											role="alert"
-										>
-											{ErrorMessage}
-										</div>
-									)}
-								</div>
-
-								<div>
-									<div className="relative">
-										<DynamicInput
-											Content={{
-												...PasswordField,
-												Type: ShowPassword
-													? "text"
-													: "password",
-												OnChange: SetPassword,
-												AutoComplete: "new-password",
-												Error: Errors.password,
-											}}
-											Id="password"
-										/>
-										<button
-											type="button"
-											className="absolute right-3 top-2 text-muted-foreground hover:text-foreground"
-											aria-label={
-												ShowPassword
-													? "Hide password"
-													: "Show password"
-											}
-											onClick={() =>
-												SetShowPassword(!ShowPassword)
-											}
-										>
-											{ShowPassword ? (
-												<lucide.EyeOff
-													className="h-4 w-4"
-													aria-hidden="true"
-												/>
-											) : (
-												<lucide.Eye
-													className="h-4 w-4"
-													aria-hidden="true"
-												/>
-											)}
-										</button>
-									</div>
-									{Password && (
-										<div
-											className="mt-1 flex gap-1"
-											role="status"
-											aria-label={
-												Password.length >= 12 &&
-												/[^a-zA-Z0-9]/.test(Password)
-													? "Strong password"
-													: "Weak password"
-											}
-										>
-											{[0, 1, 2].map((Segment) => (
-												<div
-													key={Segment}
-
-													className="flat h-1 flex-1 transition-colors"
-													style={{
-														backgroundColor:
-															Password.length >=
-																12 &&
-															/[^a-zA-Z0-9]/.test(
-																Password,
-															)
-																? "#16a34a"
-																: Password.length >=
-																			8 &&
-																	  Segment <
-																			2
-																	? "#ca8a04"
-																	: Password.length >=
-																				6 &&
-																		  Segment <
-																				1
-																		? "var(--Destruct)"
-																		: "var(--Border, #e5e7eb)",
-													}}
-												/>
-											))}
-										</div>
-									)}
-								</div>
-
-								<div className="relative">
-									<DynamicInput
-										Content={{
-											...ConfirmPasswordField,
-											Type: ShowConfirmPassword
-												? "text"
-												: "password",
-											OnChange: SetConfirmPassword,
-											AutoComplete: "new-password",
-											Error: Errors.confirmPassword,
-										}}
-										Id="confirmPassword"
-									/>
-									<button
-										type="button"
-										className="absolute right-3 top-2 text-muted-foreground hover:text-foreground"
-										aria-label={
-											ShowConfirmPassword
-												? "Hide confirm password"
-												: "Show confirm password"
-										}
-										onClick={() =>
-											SetShowConfirmPassword(
-												!ShowConfirmPassword,
-											)
-										}
-									>
-										{ShowConfirmPassword ? (
-											<lucide.EyeOff
-												className="h-4 w-4"
-												aria-hidden="true"
-											/>
-										) : (
-											<lucide.Eye
-												className="h-4 w-4"
-												aria-hidden="true"
-											/>
-										)}
-									</button>
-								</div>
-
-								<DynamicButton
-									Content={{
-										...SubmitButton,
-										Type: "submit",
-										FullWidth: true,
-									}}
-									IsLoading={IsLoading}
-								/>
-							</form>
-						</CardContent>
-					</Card>
-				</div>
+		<form
+			className={`auth-shell__form ${ClassName || ""}`}
+			onSubmit={HandleSubmit}
+			aria-label="Reset password form"
+		>
+			<div aria-live="polite" aria-atomic="true">
+				{ErrorMessage && (
+					<p className="auth-shell__error" role="alert">
+						{ErrorMessage}
+					</p>
+				)}
 			</div>
-		</section>
+
+			<div className="auth-shell__field">
+				<DynamicInput
+					Content={{
+						...PasswordField,
+						Type: ShowPassword ? "text" : "password",
+						OnChange: SetPassword,
+						AutoComplete: "new-password",
+						Error: Errors.password,
+					}}
+					Id="password"
+				/>
+
+				<button
+					type="button"
+					className="auth-shell__reveal"
+					onClick={() => SetShowPassword(!ShowPassword)}
+				>
+					{ShowPassword ? "Hide password" : "Show password"}
+				</button>
+			</div>
+
+			{Password && (
+				<div
+					className="auth-shell__strength"
+					role="status"
+					aria-label={
+						Tone === "strong" || Tone === "medium"
+							? "Strong password"
+							: "Weak password"
+					}
+				>
+					{Segments.map((Segment) => (
+						<span
+							key={Segment}
+							className={[
+								"auth-shell__strength-segment",
+								Segment < Filled
+									? `auth-shell__strength-segment--${Tone}`
+									: "",
+							]
+								.filter(Boolean)
+								.join(" ")}
+						/>
+					))}
+				</div>
+			)}
+
+			<div className="auth-shell__field">
+				<DynamicInput
+					Content={{
+						...ConfirmPasswordField,
+						Type: ShowConfirmPassword ? "text" : "password",
+						OnChange: SetConfirmPassword,
+						AutoComplete: "new-password",
+						Error: Errors.confirmPassword,
+					}}
+					Id="confirmPassword"
+				/>
+
+				<button
+					type="button"
+					className="auth-shell__reveal"
+					onClick={() => SetShowConfirmPassword(!ShowConfirmPassword)}
+				>
+					{ShowConfirmPassword
+						? "Hide confirm password"
+						: "Show confirm password"}
+				</button>
+			</div>
+
+			<DynamicButton
+				Content={{
+					...SubmitButton,
+					Type: "submit",
+					FullWidth: true,
+					ClassName: "auth-shell__primary emphasis-expressive",
+				}}
+				IsLoading={IsLoading}
+			/>
+		</form>
 	);
 };
 

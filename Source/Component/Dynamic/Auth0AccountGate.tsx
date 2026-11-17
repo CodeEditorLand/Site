@@ -6,47 +6,30 @@ import { useEffect } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { Header } from "../Layout/Header";
-
-import { Button } from "../UI/Button";
-
 /**
  * Auth0 redirect-based account gate.
  *
  * - "signin" route: triggers loginWithRedirect()
- * - "signup" route: shows a Coming Soon state while registration is disabled
- * - If already authenticated: shows user profile + logout
+ * - "signup" route: shows the registration-closed report while registration
+ *   is disabled
+ * - If already authenticated: shows the signed-in report with the two
+ *   destinations that exist (Dashboard, Sign Out)
  *
  * This replaces custom email/password forms - Auth0 Universal Login
  * handles enabled Auth0 UI such as login, password reset, MFA, social, and SSO.
+ *
+ * Every branch below is a report, not a bare outcome: a status line saying
+ * what this state is, one sentence saying what happened, and the one action
+ * that is actually available from it. The page frame (header, /KICKER, h1,
+ * supporting sentence, alternate action) belongs to the route's AuthShell -
+ * this component renders inside that frame and owns no page chrome.
  */
 export default ({
 	Route,
-	Header: HeaderContent,
 	Connection,
 	Organization,
 }: {
 	Route: "signin" | "signup";
-
-	Header?: {
-		logo?: { text: string };
-
-		navigation?: Array<{ label: string; href: string; icon?: string }>;
-
-		actions?: Array<{
-			type?: string;
-
-			text: string;
-
-			variant?: string;
-
-			size?: string;
-
-			href?: string;
-
-			icon?: string;
-		}>;
-	};
 
 	/** Auth0 enterprise connection name (e.g. "okta-acme" for Okta SSO) */
 	Connection?: string;
@@ -182,85 +165,79 @@ export default ({
 
 	if (Route === "signup" && !RegistrationEnabled) {
 		return (
-			<div className="flex min-h-screen flex-col">
-				<Header
-					{...(HeaderContent ? { content: HeaderContent } : {})}
-					Mode="functional"
-				/>
-				<div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-5 px-4 text-center">
-					<jelly-badge
-						variant="platinum"
-						shape="square"
-						style={
-							{
-								"--jelly-fill": "var(--Mute)",
-								"--jelly-label": "var(--MuteForeground)",
-								"--jelly-badge-radius": "0px",
-								"--jelly-badge-font-size": "0.8125rem",
-							} as React.CSSProperties
-						}
-					>
-						Coming Soon
-					</jelly-badge>
-					<h1 className="text-2xl font-medium">
-						{T("registrationComingSoon.title", {
-							defaultValue: "Registration is not open yet",
-						})}
-					</h1>
-					<p className="text-muted-foreground">
-						{T("registrationComingSoon.description", {
-							defaultValue:
-								"Account creation is disabled while the portal flow is being finished. Existing sign-in remains available for configured accounts.",
-						})}
-					</p>
-					<Button variant="outline" asChild>
-						<a href="/Account/SignIn">
-							{T("registrationComingSoon.signIn", {
-								defaultValue: "Sign In",
-							})}
-						</a>
-					</Button>
-				</div>
+			<div className="auth-shell__report">
+				<p className="auth-shell__status">
+					{T("auth.signUp.closedStatus", {
+						defaultValue: "REGISTRATION CLOSED",
+					})}
+				</p>
+
+				<p className="auth-shell__report-sentence">
+					{T("registrationComingSoon.description", {
+						defaultValue:
+							"Account creation is disabled while the portal flow is being finished. Existing sign-in remains available for configured accounts.",
+					})}
+				</p>
+
+				<a
+					href="/Account/SignIn"
+					className="auth-shell__primary emphasis-expressive"
+				>
+					{T("registrationComingSoon.signIn", {
+						defaultValue: "Sign In",
+					})}
+				</a>
 			</div>
 		);
 	}
 
 	if (IsLoading) {
 		return (
-			<div className="flex min-h-screen flex-col">
-				<Header
-					{...(HeaderContent ? { content: HeaderContent } : {})}
-					Mode="functional"
-				/>
-				<div className="flex flex-1 items-center justify-center">
-					<p className="text-muted-foreground">
-						{T("loading", { defaultValue: "Loading..." })}
-					</p>
-				</div>
+			<div className="auth-shell__report" role="status">
+				<p className="auth-shell__status">
+					{T("auth.signIn.checkingStatus", {
+						defaultValue: "CHECKING SESSION",
+					})}
+				</p>
+
+				<p className="auth-shell__report-sentence">
+					{T("loading", { defaultValue: "Loading..." })}
+				</p>
+
+				<a href="/" className="auth-shell__alternate">
+					{T("auth.signIn.leave", {
+						defaultValue: "Back to the editor",
+					})}
+				</a>
 			</div>
 		);
 	}
 
 	if (Error) {
 		return (
-			<div className="flex min-h-screen flex-col">
-				<Header
-					{...(HeaderContent ? { content: HeaderContent } : {})}
-					Mode="functional"
-				/>
-				<div className="flex flex-1 flex-col items-center justify-center gap-4 px-4">
-					<p className="text-destructive">
-						{T("error", {
-							defaultValue: "Authentication error",
-						})}
-						: {Error.message}
-					</p>
-					<Button variant="outline" onClick={() => Login()}>
-						{T("tryAgain", {
-							defaultValue: "Try again",
-						})}
-					</Button>
-				</div>
+			<div className="auth-shell__report" role="alert">
+				<p className="auth-shell__status auth-shell__status--failure">
+					{T("auth.signIn.failedStatus", {
+						defaultValue: "SIGN-IN FAILED",
+					})}
+				</p>
+
+				<p className="auth-shell__report-sentence">
+					{T("error", {
+						defaultValue: "Authentication error",
+					})}
+					: {Error.message}
+				</p>
+
+				<button
+					type="button"
+					className="auth-shell__primary emphasis-expressive"
+					onClick={() => Login()}
+				>
+					{T("tryAgain", {
+						defaultValue: "Try again",
+					})}
+				</button>
 			</div>
 		);
 	}
@@ -272,50 +249,38 @@ export default ({
 				: User.nickname || User.email?.split("@")[0] || "User";
 
 		return (
-			<div className="flex min-h-screen flex-col">
-				<Header
-					{...(HeaderContent ? { content: HeaderContent } : {})}
-					Mode="functional"
-				/>
-				<div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-6 px-4">
-					<Button variant="default" className="w-full" asChild>
-						<a href="/Dashboard">
-							{T("dashboard", {
-								defaultValue: "Go to Dashboard",
-							})}
-						</a>
-					</Button>
+			<div className="auth-shell__report" role="status">
+				<p className="auth-shell__status auth-shell__status--success">
+					{T("auth.signIn.signedInStatus", {
+						defaultValue: "SIGNED IN",
+					})}
+				</p>
 
-					<Button
-						variant="outline"
-						className="w-full"
-						onClick={Logout}
-					>
-						{T("logout", {
-							defaultValue: "Sign Out",
-						})}
-					</Button>
+				<p className="auth-shell__report-sentence">
+					{T("auth.signIn.signedInSentence", {
+						defaultValue:
+							"You are signed in. This page continues to your dashboard.",
+					})}
+				</p>
 
+				<div className="auth-shell__identity">
 					{User.picture && (
 						<img
 							src={User.picture}
-
 							alt={User.name || "User avatar"}
-
 							title={User.name || "User avatar"}
-
 							width="64"
 							height="64"
-							className="flat h-16 w-16"
+							className="auth-shell__avatar"
 						/>
 					)}
 
-					<h2 className="text-lg font-medium">{DisplayName}</h2>
+					<p className="auth-shell__note">{DisplayName}</p>
 
-					<p className="text-muted-foreground">{User.email}</p>
+					<p className="auth-shell__note">{User.email}</p>
 
 					{User.email_verified === false && (
-						<p className="border border-yellow-200 bg-yellow-50 px-3 py-2 text-yellow-700">
+						<p className="auth-shell__note">
 							{T("emailNotVerified", {
 								defaultValue:
 									"Email not verified. Check your inbox.",
@@ -323,24 +288,49 @@ export default ({
 						</p>
 					)}
 				</div>
+
+				<a
+					href="/Dashboard"
+					className="auth-shell__primary emphasis-expressive"
+				>
+					{T("dashboard", {
+						defaultValue: "Go to Dashboard",
+					})}
+				</a>
+
+				<button
+					type="button"
+					className="auth-shell__alternate"
+					onClick={Logout}
+				>
+					{T("logout", {
+						defaultValue: "Sign Out",
+					})}
+				</button>
 			</div>
 		);
 	}
 
 	// Not authenticated, not loading - redirect is in progress
 	return (
-		<div className="flex min-h-screen flex-col">
-			<Header
-				{...(HeaderContent ? { Content: HeaderContent } : {})}
-				Mode="functional"
-			/>
-			<div className="flex flex-1 items-center justify-center">
-				<p className="text-muted-foreground">
-					{T("redirecting", {
-						defaultValue: "Redirecting to sign in...",
-					})}
-				</p>
-			</div>
+		<div className="auth-shell__report" role="status">
+			<p className="auth-shell__status">
+				{T("auth.signIn.redirectingStatus", {
+					defaultValue: "REDIRECTING",
+				})}
+			</p>
+
+			<p className="auth-shell__report-sentence">
+				{T("redirecting", {
+					defaultValue: "Redirecting to sign in...",
+				})}
+			</p>
+
+			<a href="/" className="auth-shell__alternate">
+				{T("auth.signIn.leave", {
+					defaultValue: "Back to the editor",
+				})}
+			</a>
 		</div>
 	);
 };

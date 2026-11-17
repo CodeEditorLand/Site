@@ -1,4 +1,60 @@
 {
+	"auth": {
+		"account": {
+			"kicker": "/ACCOUNT",
+			"heading": "Your account",
+			"sentence": "Profile fields, session controls and the editor connection for this workspace.",
+			"action": "Back to the editor"
+		},
+		"signIn": {
+			"kicker": "/SIGN IN",
+			"heading": "Sign in",
+			"sentence": "Sign in to your Land workspace.",
+			"action": "Create an account",
+			"checkingStatus": "CHECKING SESSION",
+			"signedInStatus": "SIGNED IN",
+			"signedInSentence": "You are signed in. This page continues to your dashboard.",
+			"failedStatus": "SIGN-IN FAILED",
+			"redirectingStatus": "REDIRECTING",
+			"leave": "Back to the editor"
+		},
+		"signUp": {
+			"kicker": "/CREATE ACCOUNT",
+			"heading": "Create an account",
+			"sentence": "Account creation is not open yet while the portal flow is being finished.",
+			"action": "Sign in",
+			"closedStatus": "REGISTRATION CLOSED"
+		},
+		"forgotPassword": {
+			"kicker": "/FORGOT PASSWORD",
+			"heading": "Reset your password",
+			"sentence": "Enter your email and we'll send a secure reset link to your inbox.",
+			"action": "Back to sign in",
+			"sentStatus": "RESET LINK SENT"
+		},
+		"resetPassword": {
+			"kicker": "/RESET PASSWORD",
+			"heading": "Set a new password",
+			"sentence": "Enter your new password below.",
+			"action": "Back to sign in",
+			"checkingStatus": "CHECKING LINK",
+			"expiredStatus": "LINK EXPIRED",
+			"updatedStatus": "PASSWORD UPDATED"
+		},
+		"oauthSuccess": {
+			"kicker": "/OAUTH CALLBACK",
+			"heading": "Sign-in result",
+			"sentence": "This page reports what the identity provider returned for your sign-in attempt.",
+			"completingSentence": "Your identity provider has returned you to Land. This page continues once the session is written.",
+			"signedInStatus": "SIGNED IN"
+		},
+		"verify": {
+			"kicker": "/VERIFY",
+			"heading": "Verify your email",
+			"sentence": "Email verification protects the account and the workspace it can reach.",
+			"action": "Back to sign in"
+		}
+	},
 	"forgotPassword": {
 		"emailPlaceholder": "name@example.com",
 		"submit": "Send Reset Link",
@@ -240,6 +296,20 @@
 			"protocol": "Protocol:",
 			"settingsManaged": "Settings Managed",
 			"allTiers": "Included in all tiers"
+		},
+		"surface": {
+			"roadmap": "Each tier opens the same Auth0 Universal Login; the connection parameter picks the identity route.",
+			"actions": {
+				"heading": "What you can do from here",
+				"standfirst": "Every link on this page, in the order the page offers it, with what it opens."
+			},
+			"action": {
+				"cloud": "Opens Auth0 Universal Login on the hosted-account connection.",
+				"provider": "Opens Auth0 Universal Login on the OAuth provider connection.",
+				"localfirst": "Opens Auth0 Universal Login on the local-first connection.",
+				"enterprise": "Opens Auth0 Universal Login on the enterprise connection.",
+				"index": "Goes back to the site's front page."
+			}
 		}
 	},
 	"loading": "Loading...",
@@ -255,7 +325,31 @@
 		"downloadsHeading": "Downloads",
 		"signOut": "Sign Out",
 		"loading": "Loading account...",
-		"error": "Could not load your account. Please refresh."
+		"error": "Could not load your account. Please refresh.",
+		"surface": {
+			"account": "Read from your Auth0 session in the browser. Signing in, signing out and data requests are unchanged.",
+			"telemetry": "Three paths, one default: nothing leaves the process unless you build it in and point it somewhere.",
+			"settings": "Two settings are planned; the account page behind the third row is live.",
+			"partners": "The organisations that host and fund the work.",
+			"access": {
+				"footnote": "Every tier is described on the portal page; this rail only shows which route your session uses."
+			},
+			"start": {
+				"heading": "Downloads & Quick Links",
+				"standfirst": "Where the account ends and the rest of the site begins.",
+				"docs": "The reference for every element, protocol and platform Land implements.",
+				"issue": "Opens the Land issue tracker on GitHub in a new tab.",
+				"contribute": "How to build Land from source and send a change back."
+			},
+			"state": {
+				"loading": "Reading your session from the identity provider. The account rows appear as soon as it answers.",
+				"error": "The identity provider did not answer, so no account rows can be shown. Reloading asks it again.",
+				"signedOut": "You are not signed in. Sign in to see your account.",
+				"noEmail": "No email on this account. The provider did not return one.",
+				"noDate": "Not recorded. The provider returned no update date for this account.",
+				"actions": "Manage opens your account page. Sign Out ends the Auth0 session and clears the local token."
+			}
+		}
 	},
 	"notSignedIn": "Sign in to manage your account.",
 	"signInButton": "Sign In",

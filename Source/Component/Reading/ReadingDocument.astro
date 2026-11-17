@@ -1,0 +1,125 @@
+---
+/**
+ * ReadingDocument - the reading surface: the facts that date and scope a
+ * document, an index into it, and one measure to read it on.
+ *
+ * A legal document is not a band. A band is one subject with one claim; a
+ * document is one subject with twenty-six claims, and putting each of them in
+ * its own band would space a page a lawyer reads linearly at chapter rhythm.
+ * So this surface is deliberately the inverse of the block layer's density
+ * decision: one column, one measure, prose rhythm between paragraphs, and the
+ * document's own headings carrying the structure.
+ *
+ * Four rules this file keeps, and a caller must not break:
+ *
+ * - Renders props only: no script, no client directive. The index is a list of
+ *   in-page anchors, so there is nothing to hydrate.
+ * - `h1` appears exactly once and only here. The document's own title is the
+ *   page's first `h2` - a document that opens with a second `h1` is the defect
+ *   this surface exists to remove.
+ * - The ledger is `RecordLedger`, not a second `<dl>`. The rows are the
+ *   document's own values, so this file takes them as data and derives none.
+ * - `index` is optional and absent means no index at all - never an empty nav.
+ *
+ * The measure is a switch, not a guess: `prose` caps the body at 72ch for a
+ * document that is all text, `full` leaves it uncapped for a page that also
+ * carries grids and cards, whose own blocks decide their width.
+ */
+import RecordLedger from "../Record/RecordLedger.astro";
+import type { LedgerRow } from "../Record/Type.js";
+import type { ReadingIndexItem } from "./Type.js";
+
+interface Props {
+	/** The `/SECTION LABEL` opening the surface. */
+	kicker: string;
+
+	/** The page's single `h1`. */
+	heading: string;
+
+	/** One sentence under the `h1` - what this document is, in its own words. */
+	standfirst?: string;
+
+	/**
+	 * The same sentence, already carrying the site's inline term links. A page
+	 * that runs its prose through `LinkMentions` passes the result here instead
+	 * of `standfirst`, so the anchors in the opening sentence survive.
+	 */
+	standfirstHtml?: string;
+
+	/** EFFECTIVE / VERSION / APPLIES TO / LICENSE, in the order they are read. */
+	rows: readonly LedgerRow[];
+
+	/** The document's own headings, in document order. */
+	index?: readonly ReadingIndexItem[];
+
+	/** The index's visible label, and its accessible name. */
+	indexLabel: string;
+
+	/** `prose` caps the body at one reading measure; `full` leaves it open. */
+	measure?: "prose" | "full";
+
+	/**
+	 * Classes for the body element. The legal pages pass `LegalCard`, which
+	 * carries the white surface, the list lettering and the print rules - the
+	 * document keeps them rather than the surface restating them.
+	 */
+	bodyClass?: string;
+
+	/** Extra classes from the page, appended after the surface's own. */
+	class?: string;
+}
+
+const {
+	kicker,
+	heading,
+	standfirst,
+	standfirstHtml,
+	rows,
+	index,
+	indexLabel,
+	measure = "prose",
+	bodyClass,
+	class: Class,
+} = Astro.props;
+---
+
+<article class:list={["reading-document", `reading-document--${measure}`, Class]}>
+	<header class="reading-document__head">
+		<p class="reading-document__kicker">{kicker}</p>
+		<h1 class="reading-document__heading">{heading}</h1>
+		{standfirst && <p class="reading-document__standfirst">{standfirst}</p>}
+		{
+			standfirstHtml && (
+				<p class="reading-document__standfirst" set:html={standfirstHtml} />
+			)
+		}
+	</header>
+
+	<div class="reading-document__ledger">
+		<RecordLedger rows={rows} />
+	</div>
+
+	{
+		index && index.length > 0 && (
+			<nav class="reading-document__index" aria-label={indexLabel}>
+				<p class="reading-document__index-label">{indexLabel}</p>
+				<ol class="reading-document__index-list">
+					{index.map((Item) => (
+						<li class="reading-document__index-item">
+							<a class="reading-document__index-link" href={Item.href}>
+								<span class="reading-document__index-number">
+									&#167;{Item.number}
+								</span>
+								<span class="reading-document__index-name">{Item.label}</span>
+							</a>
+						</li>
+					))}
+				</ol>
+			</nav>
+		)
+	}
+
+	<div class:list={["reading-document__body", "prose-flow", bodyClass]}>
+		<slot />
+	</div>
+</article>

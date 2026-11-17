@@ -1,0 +1,48 @@
+---
+/**
+ * DynamicSystemRequirements - one ledger per platform, plus the toolchain a
+ * source build needs before the commands in band 1 can run.
+ *
+ * This replaces the `.tsx` island of the same name. The interaction it drops is
+ * the Staccato noise scatter it applied to its own cards and the two icon
+ * tooltips it carried; the tooltips' sentences are kept, as the band's footnote,
+ * because they were copy and not chrome.
+ *
+ * The rows arrive already resolved: `Download/Data.ts` owns the values, their
+ * order and the recommended figure each row carries as a note. This file maps
+ * them into ledgers and nothing else.
+ */
+import RecordLedger from "../Record/RecordLedger.astro";
+
+import type { LedgerRow } from "../Record/Type.js";
+
+import type { PlatformRequirements } from "./Download/Type.js";
+
+interface Props {
+	/** One entry per platform, in the order the page prints them. */
+	platforms: readonly PlatformRequirements[];
+
+	/** The source-build toolchain, as one more ledger. */
+	toolchain: readonly LedgerRow[];
+
+	/** The toolchain ledger's own heading, printed above it. */
+	toolchainLabel: string;
+}
+
+const { platforms, toolchain, toolchainLabel } = Astro.props;
+---
+
+<div class="download-requirements">
+	{
+		platforms.map((entry) => (
+			<div class="download-requirements__group">
+				<h3 class="download-requirements__platform">{entry.platform}</h3>
+				<RecordLedger rows={entry.rows} />
+			</div>
+		))
+	}
+	<div class="download-requirements__group">
+		<h3 class="download-requirements__platform">{toolchainLabel}</h3>
+		<RecordLedger rows={toolchain} />
+	</div>
+</div>

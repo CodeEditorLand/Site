@@ -16,33 +16,12 @@ import Auth0AccountGate from "./Auth0AccountGate";
  */
 export default ({
 	Route,
-	Header,
 	Domain,
 	ClientIdentifier,
 	Connection,
 	Organization,
 }: {
 	Route: "signin" | "signup";
-
-	Header?: {
-		logo?: { text: string };
-
-		navigation?: Array<{ label: string; href: string; icon?: string }>;
-
-		actions?: Array<{
-			type?: string;
-
-			text: string;
-
-			variant?: string;
-
-			size?: string;
-
-			href?: string;
-
-			icon?: string;
-		}>;
-	};
 
 	Domain?: string;
 
@@ -58,8 +37,6 @@ export default ({
 		Children={
 			<Auth0AccountGate
 				Route={Route}
-
-				{...(Header ? { Header } : {})}
 
 				{...(Connection ? { Connection } : {})}
 

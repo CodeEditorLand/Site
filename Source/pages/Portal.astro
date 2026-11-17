@@ -2,20 +2,14 @@
 import { Header } from "../Component/Layout/Header";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
-import { FieldRecordDataCard } from "../Component/Brand/FieldRecordDataCard";
-import { FieldRecordIndex } from "../Component/Brand/FieldRecordIndex";
-import { FieldRecordStatus } from "../Component/Brand/FieldRecordStatus";
-import { FieldRecordAction } from "../Component/Brand/FieldRecordAction";
-import { FieldRecordEvidence } from "../Component/Brand/FieldRecordEvidence";
-import { FieldRecordMetadata } from "../Component/Brand/FieldRecordMetadata";
-import { FieldRecordSeal } from "../Component/Brand/FieldRecordSeal";
-
-import {
-	ACCENT_GREEN,
-	GLYPH_INK,
-	KeywordInk,
-	ROUTE_KEYWORD_INK,
-} from "../Function/Theme/SemanticColor";
+import RecordBand from "../Component/Record/RecordBand.astro";
+import RecordEntry from "../Component/Record/RecordEntry.astro";
+import RecordFigure from "../Component/Record/RecordFigure.astro";
+import RecordLedger from "../Component/Record/RecordLedger.astro";
+import RecordMatrix from "../Component/Record/RecordMatrix.astro";
+import RecordStage from "../Component/Record/RecordStage.astro";
+import SurfaceShell from "../Component/Surface/SurfaceShell.astro";
+import { PortalPage } from "../Content/Surface/Portal.js";
 
 const T = GetI18n();
 
@@ -27,393 +21,10 @@ const MetaDescription = T("meta.portal.description", {
 		"CodeEditorLand account sign-in and planned portal modes for cloud, provider, local-first, and enterprise workflows.",
 });
 
-const PortalContent = {
-	Title: T("account.portal.title", {
-		defaultValue: "CodeEditorLand Portal Roadmap",
-	}),
-	Subtitle: T("account.portal.subtitle", {
-		defaultValue:
-			"Land is organized around four authentication tiers: Cloud account sign-in, OAuth provider identity, local-first Air daemon control, and enterprise SSO. The local editor works without any of them.",
-	}),
-
-	Cloud: {
-		Identifier: "Cloud" as const,
-		Title: T("account.portal.cloud.title", {
-			defaultValue: "Cloud Plan",
-		}),
-		Subtitle: T("account.portal.cloud.subtitle", {
-			defaultValue:
-				"Sign in with a hosted account through Auth0 Universal Login. Workspace sync, backup, and team features are planned.\n\nThe local editor remains fully usable without an account.",
-		}),
-		Color: "var(--TierCloud)",
-		BorderColor: "var(--TierCloudFore)",
-		Icon: "Cloud",
-		Badge: "Online",
-		Protocol: "HTTPS / TLS 1.3",
-		Status: "ComingSoon" as const,
-		Feature: [
-			{
-				Heading: "Sync",
-				Description: T("account.portal.cloud.feature.sync", {
-					defaultValue: "Planned workspace sync across devices",
-				}),
-				Icon: ["RefreshCw", "Cloud", "Monitor"],
-			},
-			{
-				Heading: "Backup",
-				Description: T("account.portal.cloud.feature.backup", {
-					defaultValue:
-						"Planned encrypted backup for selected configuration",
-				}),
-				Icon: ["Cloud", "HardDrive", "Shield"],
-			},
-			{
-				Heading: "Team",
-				Description: T("account.portal.cloud.feature.team", {
-					defaultValue: "Planned shared team workspace support",
-				}),
-				Icon: ["Users", "Settings"],
-			},
-			{
-				Heading: "Extensions",
-				Description: T("account.portal.cloud.feature.extension", {
-					defaultValue:
-						"Marketplace installation is planned after local extension paths stabilize",
-				}),
-				Icon: ["Puzzle", "Cloud", "Box"],
-			},
-			{
-				Heading: "Remote",
-				Description: T("account.portal.cloud.feature.remote", {
-					defaultValue: "Remote development integration is planned",
-				}),
-				Icon: ["Server", "Monitor", "Wifi"],
-			},
-		],
-		Capability: [
-			T("account.portal.cloud.capability.jwt", {
-				defaultValue: "JWT account tokens for hosted services, issued on sign-in",
-			}),
-			T("account.portal.cloud.capability.okta", {
-				defaultValue: "Okta SSO belongs to the enterprise plan",
-			}),
-			T("account.portal.cloud.capability.mfa", {
-				defaultValue:
-					"MFA support depends on the configured identity provider",
-			}),
-			T("account.portal.cloud.capability.rbac", {
-				defaultValue: "Gateway RBAC is planned",
-			}),
-			T("account.portal.cloud.capability.audit", {
-				defaultValue: "Audit logging is planned",
-			}),
-			T("account.portal.cloud.capability.cert", {
-				defaultValue: "Developer certificate automation is planned",
-			}),
-		],
-	},
-
-	Provider: {
-		Identifier: "Provider" as const,
-		Title: T("account.portal.provider.title", {
-			defaultValue: "Provider Plan",
-		}),
-		Subtitle: T("account.portal.provider.subtitle", {
-			defaultValue:
-				"Sign in with GitHub, GitLab, or Google through OAuth 2.0 PKCE via Auth0. Which provider connections are available depends on tenant configuration; linking sessions to repositories is planned.",
-		}),
-		Color: "var(--TierProvider)",
-		BorderColor: "var(--TierProviderFore)",
-		Icon: "GitFork",
-		Badge: "OAuth 2.0",
-		Protocol: "OAuth 2.0 / PKCE",
-		Status: "ComingSoon" as const,
-		Feature: [
-			{
-				Heading: "GitHub",
-				Description: T("account.portal.provider.feature.github", {
-					defaultValue:
-						"GitHub identity is planned as a low-friction sign-in option",
-				}),
-				Icon: ["/Image/GitHub.svg", "KeyRound", "Settings"],
-			},
-			{
-				Heading: "SSO",
-				Description: T("account.portal.provider.feature.sso", {
-					defaultValue:
-						"Single sign-on across Land services is planned",
-				}),
-				Icon: ["KeyRound", "Shield", "Globe"],
-			},
-			{
-				Heading: "Repository",
-				Description: T("account.portal.provider.feature.repo", {
-					defaultValue:
-						"Settings sync tied to provider identity is planned",
-				}),
-				Icon: ["GitBranch", "Settings", "HardDrive"],
-			},
-			{
-				Heading: "Team",
-				Description: T("account.portal.provider.feature.team", {
-					defaultValue:
-						"Organization and team membership sync is planned",
-				}),
-				Icon: ["Users", "RefreshCw", "Building2"],
-			},
-			{
-				Heading: "CI/CD",
-				Description: T("account.portal.provider.feature.ci", {
-					defaultValue: "CI/CD integration belongs to later portal work",
-				}),
-				Icon: ["CirclePlay", "Rocket", "GitBranch"],
-			},
-		],
-		Capability: [
-			T("account.portal.provider.capability.oauth", {
-				defaultValue:
-					"OAuth 2.0 / PKCE support where provider flows are enabled",
-			}),
-			T("account.portal.provider.capability.scope", {
-				defaultValue:
-					"Minimal OAuth scopes - only what each provider integration requires",
-			}),
-			T("account.portal.provider.capability.token", {
-				defaultValue:
-					"Refresh token handling depends on provider configuration",
-			}),
-			T("account.portal.provider.capability.webhook", {
-				defaultValue: "Webhook subscriptions are planned",
-			}),
-			T("account.portal.provider.capability.org", {
-				defaultValue: "Organization-level access policies are planned",
-			}),
-			T("account.portal.provider.capability.cert", {
-				defaultValue: "Developer certificate automation is planned",
-			}),
-		],
-	},
-
-	LocalFirst: {
-		Identifier: "LocalFirst" as const,
-		Title: T("account.portal.localfirst.title", {
-			defaultValue: "Local-First",
-		}),
-		Subtitle: T("account.portal.localfirst.subtitle", {
-			defaultValue:
-				"The Air daemon runs as a persistent background process handling updates, file indexing, signing, and health monitoring.\n\nThe portal surface for browser-to-daemon control is in development - the daemon itself is active source today.",
-		}),
-		Color: "var(--TierLocalFirst)",
-		BorderColor: "var(--TierLocalFirstFore)",
-		Icon: "HardDrive",
-		Badge: "Local-First",
-		Protocol: "mTLS active / WebSocket planned",
-		Status: "ComingSoon" as const,
-		Feature: [
-			{
-				Heading: "Air Daemon",
-				Description: T("account.portal.localfirst.feature.daemon", {
-					defaultValue: "Browser-to-daemon loopback control is planned",
-				}),
-				Icon: ["Wifi", "Server", "Lock"],
-			},
-			{
-				Heading: "Build",
-				Description: T("account.portal.localfirst.feature.build", {
-					defaultValue:
-						"Launching builds from the website console is planned",
-				}),
-				Icon: ["Hammer", "Monitor", "Globe"],
-			},
-			{
-				Heading: "Deploy",
-				Description: T("account.portal.localfirst.feature.deploy", {
-					defaultValue:
-						"Deploying changes into a running editor is planned",
-				}),
-				Icon: ["Rocket", "HardDrive"],
-			},
-			{
-				Heading: "Configure",
-				Description: T("account.portal.localfirst.feature.configure", {
-					defaultValue: "Editor configuration management is planned",
-				}),
-				Icon: ["Settings", "Monitor"],
-			},
-			{
-				Heading: "Extensions",
-				Description: T("account.portal.localfirst.feature.parity", {
-					defaultValue:
-						"Installed VS Code extensions run unmodified through the Cocoon path when their APIs are implemented",
-				}),
-				Icon: ["Monitor", "RefreshCw"],
-			},
-			{
-				Heading: "Offline",
-				Description: T("account.portal.localfirst.feature.offline", {
-					defaultValue:
-						"Local editor operation should not require a cloud login",
-				}),
-				Icon: ["WifiOff", "Shield", "HardDrive"],
-			},
-			{
-				Heading: "Embedded SaaS",
-				Description: T("account.portal.localfirst.feature.bake", {
-					defaultValue:
-						"Embedding portal surfaces into the editor is planned",
-				}),
-				Icon: ["Box", "Monitor", "Globe"],
-			},
-		],
-		Capability: [
-			T("account.portal.localfirst.capability.jwt", {
-				defaultValue:
-					"Local session tokens with short expiry, managed by the daemon",
-			}),
-			T("account.portal.localfirst.capability.mtls", {
-				defaultValue:
-					"mTLS mutual authentication is enabled by default for daemon connections",
-			}),
-			T("account.portal.localfirst.capability.crdt", {
-				defaultValue:
-					"CRDT state synchronization - planned for conflict-free offline edits",
-			}),
-			T("account.portal.localfirst.capability.team", {
-				defaultValue: "Fully local team management is planned",
-			}),
-			T("account.portal.localfirst.capability.cert", {
-				defaultValue:
-					"Local certificate management is planned; daemon credential storage is active",
-			}),
-			T("account.portal.localfirst.capability.ws", {
-				defaultValue: "WebSocket loopback connection is planned",
-			}),
-			T("account.portal.localfirst.capability.rbac", {
-				defaultValue: "Local RBAC policies are planned",
-			}),
-			T("account.portal.localfirst.capability.backup", {
-				defaultValue: "Encrypted local backup is planned",
-			}),
-		],
-	},
-
-	Enterprise: {
-		Identifier: "Enterprise" as const,
-		Title: T("account.portal.enterprise.title", {
-			defaultValue: "Enterprise Plan",
-		}),
-		Subtitle: T("account.portal.enterprise.subtitle", {
-			defaultValue:
-				"Connect Land to your organisation's identity infrastructure through Auth0 enterprise connections for Okta, Azure AD, and SAML 2.0. SCIM directory provisioning is planned.",
-		}),
-		Color: "var(--PlatformDesktopFore)",
-		BorderColor: "var(--PlatformDesktop)",
-		Icon: "Shield",
-		Badge: "Planned",
-		Protocol: "OIDC / SAML 2.0 / SCIM planned",
-		Status: "ComingSoon" as const,
-		Feature: [
-			{
-				Heading: "Okta",
-				Description: T("account.portal.enterprise.feature.okta", {
-					defaultValue: "Okta SSO integration is planned",
-				}),
-				Icon: ["/Image/Okta.svg", "KeyRound", "Shield"],
-			},
-			{
-				Heading: "Azure AD",
-				Description: T("account.portal.enterprise.feature.azure", {
-					defaultValue: "Azure AD / Entra ID integration is planned",
-				}),
-				Icon: ["/Image/Microsoft.svg", "Cloud", "Building2"],
-			},
-			{
-				Heading: "SAML 2.0",
-				Description: T("account.portal.enterprise.feature.saml", {
-					defaultValue: "SAML 2.0 support is planned",
-				}),
-				Icon: ["Shield", "Lock", "Building2"],
-			},
-			{
-				Heading: "SCIM",
-				Description: T("account.portal.enterprise.feature.scim", {
-					defaultValue: "SCIM provisioning is planned",
-				}),
-				Icon: ["UserPlus", "RefreshCw", "Users"],
-			},
-			{
-				Heading: "Groups",
-				Description: T("account.portal.enterprise.feature.group", {
-					defaultValue: "IdP group to Land role mapping is planned",
-				}),
-				Icon: ["Users", "KeyRound", "Shield"],
-			},
-			{
-				Heading: "Audit",
-				Description: T("account.portal.enterprise.feature.audit", {
-					defaultValue: "Audit export is planned",
-				}),
-				Icon: ["FileText", "Shield", "Lock"],
-			},
-		],
-		Capability: [
-			T("account.portal.enterprise.capability.oidc", {
-				defaultValue:
-					"OIDC discovery is handled by the configured identity provider",
-			}),
-			T("account.portal.enterprise.capability.jit", {
-				defaultValue:
-					"Just-in-time provisioning happens through the configured identity provider",
-			}),
-			T("account.portal.enterprise.capability.mfa", {
-				defaultValue: "MFA enforcement depends on the configured IdP",
-			}),
-			T("account.portal.enterprise.capability.session", {
-				defaultValue:
-					"Session duration follows the configured tenant policy",
-			}),
-			T("account.portal.enterprise.capability.ca", {
-				defaultValue:
-					"Organization CA certificate management is planned",
-			}),
-			T("account.portal.enterprise.capability.compliance", {
-				defaultValue: "Compliance documentation is planned",
-			}),
-		],
-	},
-
-	Labels: {
-		Included: T("account.portal.labels.included", {
-			defaultValue: "Included",
-		}),
-		Capabilities: T("account.portal.labels.capabilities", {
-			defaultValue: "Capabilities",
-		}),
-		Protocol: T("account.portal.labels.protocol", {
-			defaultValue: "Protocol:",
-		}),
-		SettingsManaged: T("account.portal.labels.settingsManaged", {
-			defaultValue: "Settings Managed",
-		}),
-		AllTiers: T("account.portal.labels.allTiers", {
-			defaultValue: "Included in all tiers",
-		}),
-	},
-};
-
-const TierSealMap: Record<string, "Mountain" | "Cocoon" | "Wind" | "Sky"> = {
-	Cloud: "Mountain",
-	Provider: "Cocoon",
-	LocalFirst: "Wind",
-	Enterprise: "Sky",
-};
-
-const TierIndexMap: Record<string, string> = {
-	Cloud: "CLOUD_01",
-	Provider: "PROVIDER_02",
-	LocalFirst: "LOCALFIRST_03",
-	Enterprise: "ENTERPRISE_04",
-};
+// Every fact on the page comes from this table: the four tiers, their
+// protocols, their feature and capability copy, and the four sign-in links.
+// The page owns the band order and nothing else.
+const Page = PortalPage(T);
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription}>
@@ -423,319 +34,57 @@ const TierIndexMap: Record<string, string> = {
 	 Auth0AccountGate (which auto-calls loginWithRedirect() on mount). -->
 	<Header client:load Mode="functional" />
 
-	<main id="main-content" class="bg-background">
-		<!-- ── HERO SECTION: Field Record Pattern ── -->
-		<section
-			id="portal-hero"
-			aria-label="Portal Hero"
-			class="relative w-full overflow-hidden"
-		>
-			<!-- Daylight Field Record: faint grid on creme canvas -->
-			<div
-				aria-hidden="true"
-				class="pointer-events-none absolute inset-0"
-				style="background-color: var(--Background);"
-			></div>
-
-			<!-- ── TWO-PANEL ARTIFACT ── -->
-			<div
-				class="relative mx-auto flex min-h-[60dvh] flex-col md:flex-row"
-				style="padding: clamp(2rem, 5vw, 5rem); gap: clamp(0.5rem, 1.5vw, 1.875rem);"
-			>
-				<!-- ══ LEFT: Warm-white data card ══ -->
-				<div class="flex flex-1 flex-col justify-center">
-					<FieldRecordDataCard className="h-full">
-						<div class="flex h-full flex-col justify-between">
-							<!-- Top: Index + Seal -->
-							<div class="flex items-start justify-between">
-								<FieldRecordIndex index="PORTAL_01" client:load />
-								<FieldRecordSeal element="Land" client:load />
-							</div>
-
-							<!-- Middle: Oversized stamp -->
-													<div class="mt-10">
-														<h1
-															class="text-field-xl font-mono font-normal leading-[0.95] tracking-[-0.02em] text-card-foreground"
-														>
-															<span style={`color:${GLYPH_INK}`}>〈</span
-															><span
-																style={`color:${KeywordInk("AUTHENTICATION TIERS") ?? "var(--CardForeground)"}`}
-																>AUTHENTICATION TIERS</span
-															><span style={`color:${GLYPH_INK}`}>〉</span>
-														</h1>
-														<p
-															class="text-field-l mt-2 font-mono font-normal leading-[1.0] tracking-[-0.02em] text-card-foreground"
-														>
-															<span style={`color:${GLYPH_INK}`}>〈</span
-															><span
-																style={`color:${KeywordInk("FOUR MODES") ?? "var(--CardForeground)"}`}
-																>FOUR MODES</span
-															><span style={`color:${GLYPH_INK}`}>〉</span>
-														</p>
-													</div>
-
-													<!-- Route block -->
-													<div class="mt-10">
-														<p
-															class="text-field-l font-mono font-normal leading-[1.05] text-card-foreground"
-														>
-															<span style={`color:${GLYPH_INK}`}>/</span
-															><span style={`color:${ROUTE_KEYWORD_INK}`}
-																>PROTOCOL</span
-															><span style={`color:var(--CardForeground)`}
-																>:HTTPS</span
-															>
-														</p>
-														<p
-															class="text-field-s mt-1 font-mono font-normal leading-[1.1] text-card-foreground opacity-70"
-														>
-															CLOUD{"\u2001"}PROVIDER{"\u2001"}LOCAL-FIRST{"\u2001"}ENTERPRISE
-														</p>
-													</div>
-
-							<!-- Program + Status -->
-							<p
-								class="text-field-s mt-6 font-mono uppercase tracking-[0.25em] text-card-foreground opacity-60"
-							>
-								NATIVE{"\u2001"}OPEN{"\u2001"}CROSS-PLATFORM
-							</p>
-
-							<div class="mt-3">
-								<FieldRecordStatus
-									status="preparing"
-									tone="specimen"
-									client:load
-								/>
-							</div>
-
-							<!-- MAJOR BLANK ZONE -->
-							<div class="my-12 flex-1" aria-hidden="true"></div>
-
-							<!-- Project / artist block -->
-							<div>
-								<p
-									class="text-field-l font-mono font-normal leading-[1.08] text-card-foreground"
-								>
-									LAND:
-								</p>
-								<p
-									class="text-field-s mt-3 font-mono font-normal leading-[1.1] text-card-foreground opacity-70"
-								>
-									↳EDITOR WITHOUT CHROMIUM
-								</p>
-							</div>
-
-							<!-- Metadata footer -->
-							<div class="mt-10">
-								<FieldRecordMetadata
-									rows={[
-										{
-											label: "TARGET",
-											value: "MACOS / WINDOWS / LINUX",
-										},
-										{ label: "LICENSE", value: "CC0" },
-										{
-											label: "SIGNAL",
-											value: "LOCAL-FIRST",
-										},
-									]}
-									client:load
-								/>
-							</div>
-						</div>
-					</FieldRecordDataCard>
-				</div>
-
-				<!-- ══ Black gutter ══ -->
-				<div
-					class="hidden w-px md:block"
-					style="background-color: var(--Background)"
-					aria-hidden="true"
-				></div>
-
-				<!-- ══ RIGHT: Evidence image ══ -->
-				<div class="flex flex-1 items-center justify-center">
-					<FieldRecordEvidence
-						src="/Evidence/Land/NightGlass-01.png"
-						alt="Rain-speckled glass reflecting a green light at night"
-						position="right"
-						className="h-full min-h-[40dvh] w-full"
-						client:load
-					/>
-				</div>
+	<SurfaceShell
+		index={Page.index}
+		title={Page.title}
+		standfirst={Page.standfirst}
+		rows={Page.status}
+	>
+		<RecordBand band={Page.roadmap}>
+			<RecordStage stages={Page.stages} />
+			<div class="surface__panel">
+				<RecordFigure
+					src="/Evidence/Land/NightGlass-01.png"
+					alt="Rain-speckled glass reflecting a green light at night"
+					caption="Rain-speckled glass reflecting a green light at night."
+					provenance="PORTAL_01 · EVIDENCE"
+				/>
 			</div>
-		</section>
+		</RecordBand>
 
-		<!-- ── TIER CARDS: Field Record Grammar ── -->
-		<section
-			id="portal-tiers"
-			aria-label="Authentication Tiers"
-			class="w-full py-16 sm:py-20"
-		>
-			<div class="container mx-auto px-4">
-				<div class="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-2">
-					{(Object.keys(PortalContent) as Array<keyof typeof PortalContent>)
-						.filter(
-							(key): key is "Cloud" | "Provider" | "LocalFirst" | "Enterprise" =>
-								key !== "Title" &&
-								key !== "Subtitle" &&
-								key !== "Labels",
-						)
-						.map((TierKey) => {
-							const Tier = PortalContent[TierKey];
-							const SealElement = TierSealMap[Tier.Identifier];
-							const TierIndex = TierIndexMap[Tier.Identifier];
-							const StatusLabel =
-								Tier.Status === "ComingSoon"
-									? "PLANNED"
-									: Tier.Status === "WIP"
-										? "WIP"
-										: "ACTIVE";
-
-							return (
-															<div
-																key={Tier.Identifier}
-																class="flex h-full flex-col border border-border p-5"
-															>
-																{/* Top: specimen index (green accent) + seal */}
-																<div class="flex items-start justify-between gap-3">
-																	<span class="font-mono text-sm font-medium uppercase tracking-[0.2em] text-accent">
-																		# {TierIndex}
-																	</span>
-																	<FieldRecordSeal
-																		element={SealElement}
-																		size={32}
-																		client:load
-																	/>
-																</div>
-
-																{/* Tier stamp - ledger scale (not the hero text-field-xl) */}
-																														<div class="mt-3 border-t border-border pt-3">
-																															<h2 class="font-mono text-xl font-medium uppercase tracking-[0.1em] text-card-foreground">
-																																<span style={`color:${GLYPH_INK}`}>〈</span
-																																><span
-																																	style={`color:${KeywordInk(Tier.Title.toUpperCase()) ?? "var(--CardForeground)"}`}
-																																	>{Tier.Title.toUpperCase()}</span
-																																><span style={`color:${GLYPH_INK}`}>〉</span>
-																															</h2>
-																															<p class="mt-1 font-mono text-sm uppercase tracking-[0.15em] text-card-foreground">
-																																<span style={`color:${GLYPH_INK}`}>/</span
-																																><span style={`color:${ROUTE_KEYWORD_INK}`}
-																																	>PROTOCOL</span
-																																><span style={`color:var(--CardForeground)`}
-																																	>: {Tier.Protocol}</span
-																																>
-																															</p>
-																														</div>
-
-																{/* Status + badge ledger rows */}
-																<div class="mt-3 border-t border-border pt-3">
-																	<div class="flex gap-3 py-0.5">
-																															<span class="w-20 shrink-0 font-mono text-sm uppercase tracking-[0.15em] text-card-foreground">
-																																STATUS:
-																															</span>
-																															<span
-																																class="font-mono text-sm font-medium uppercase tracking-[0.15em]"
-																																style={`color:${StatusLabel === "ACTIVE" ? ACCENT_GREEN : "var(--CardForeground)"}`}
-																															>
-																																{StatusLabel}
-																															</span>
-																														</div>
-																	<div class="flex gap-3 py-0.5">
-																		<span class="w-20 shrink-0 font-mono text-sm uppercase tracking-[0.15em] text-card-foreground opacity-60">
-																			BADGE:
-																		</span>
-																		<span class="font-mono text-sm font-medium uppercase tracking-[0.15em] text-card-foreground">
-																			{Tier.Badge}
-																		</span>
-																	</div>
-																</div>
-
-																{/* Features ledger */}
-																<div class="mt-3 border-t border-border pt-3">
-																	<p class="font-mono text-xs uppercase tracking-[0.25em] text-card-foreground opacity-60">
-																		FEATURES:
-																	</p>
-																	<ul class="mt-2">
-																		{Tier.Feature.map((Feature, Index) => (
-																			<li
-																				key={Index}
-																				class="flex flex-col gap-0 border-b border-border py-2"
-																			>
-																				<span class="font-mono text-sm font-medium uppercase tracking-wider text-card-foreground">
-																					{Feature.Heading}
-																				</span>
-																				<span class="font-mono text-xs text-card-foreground opacity-60">
-																					{Feature.Description}
-																				</span>
-																			</li>
-																		))}
-																	</ul>
-																</div>
-
-																{/* Capabilities ledger */}
-																{Tier.Capability.length > 0 && (
-																	<div class="mt-3 border-t border-border pt-3">
-																		<p class="font-mono text-xs uppercase tracking-[0.25em] text-card-foreground opacity-60">
-																			CAPABILITIES:
-																		</p>
-																		<div class="mt-2 flex flex-wrap gap-x-4 gap-y-1">
-																			{Tier.Capability.map(
-																				(CapabilityText, CapIndex) => (
-																					<span
-																						key={CapIndex}
-																						class="font-mono text-sm text-card-foreground opacity-60"
-																					>
-																						{CapabilityText}
-																					</span>
-																				),
-																			)}
-																		</div>
-																	</div>
-																)}
-
-																{/* CTA - functional control, kept as-is */}
-																<div class="mt-3 border-t border-border pt-3">
-																	<FieldRecordAction
-																		label={`ENTER ${Tier.Identifier.toUpperCase()}`}
-																		href={`/Account/SignIn?connection=${Tier.Identifier.toLowerCase()}`}
-																		variant="button"
-																		client:load
-																	/>
-																</div>
-															</div>
-														);
-						})}
-				</div>
-			</div>
-		</section>
-
-		<!-- ── FOOTER: Credits Record Format ── -->
-		<section
-			id="portal-footer"
-			aria-label="Portal Credits"
-			class="w-full border-t border-border py-12"
-		>
-			<div class="container mx-auto px-4">
-				<div class="mx-auto max-w-3xl">
-					<div class="flex flex-col items-center gap-4 text-center">
-						<p class="text-field-s font-mono uppercase tracking-wider text-muted-foreground">
-							CODEEDITORLAND PORTAL{"\u2001"}CC0 LICENSED
-						</p>
-						<p class="text-field-s font-mono uppercase tracking-wider text-muted-foreground">
-							TELEMETRY FEATURE GATED{"\u2001"}AUTH0 + OAUTH 2.0{"\u2001"}OIDC / SAML PLANNED
-						</p>
-						<div class="mt-4 flex items-center gap-4">
-							<a
-								href="/"
-								class="text-field-s font-mono uppercase tracking-wider text-accent underline-offset-4 hover:underline"
-							>
-								↳RETURN TO INDEX
-							</a>
-						</div>
+		{
+			Page.tiers.map((Tier) => (
+				<RecordBand band={Tier.band}>
+					{Tier.rest.map((Line) => (
+						<p class="surface__prose">{Line}</p>
+					))}
+					<div class="surface__panel">
+						<RecordLedger rows={Tier.facts} />
 					</div>
-				</div>
+					<div class="surface__stack">
+						{Tier.features.map((Feature) => (
+							<RecordEntry {...Feature} />
+						))}
+					</div>
+					<div class="surface__panel">
+						<RecordMatrix
+							columns={Page.capabilityColumns}
+							rows={Tier.capabilities}
+							caption={`${Tier.title} capabilities`}
+						/>
+					</div>
+				</RecordBand>
+			))
+		}
+
+		<RecordBand band={Page.actions}>
+			<div class="surface__stack">
+				{
+					Page.decisions.map((Decision) => (
+						<RecordEntry {...Decision} />
+					))
+				}
 			</div>
-		</section>
-	</main>
+		</RecordBand>
+	</SurfaceShell>
 </Base>

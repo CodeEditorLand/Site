@@ -1,0 +1,63 @@
+---
+// ContactShell - one request route, in one file.
+//
+// Thirteen routes repeated the same fifty-five lines: the document, the header,
+// a breadcrumb with the request title hard-coded into it, the Auth0 identifiers,
+// and the form. The only two things that differed were the request code and the
+// breadcrumb leaf, which is a sign that the file was a config lookup written out
+// thirteen times.
+//
+// A route now names its code and nothing else. Everything the shell renders -
+// the trail, the document title and description, the `h1`, the standfirst and
+// the form - is read out of `Requests[code]`, so a route cannot disagree with
+// the registry and a title is written once.
+//
+// The trail keeps the three destinations the routes already had: `/`, then
+// `/Dashboard`, then this request's own title.
+//
+// The Auth0 identifiers are read the same way the routes read them - a dynamic
+// import of `Function/Configuration/Auth.js`, which reads the environment at
+// build time. No auth behaviour is changed here.
+//
+// The form is the only island: `DynamicContactForm` hydrates because it holds
+// form state and the Auth0 context. Nothing else in this file needs JavaScript.
+import ContactPage from "./ContactPage.astro";
+import DynamicContactForm from "../Dynamic/DynamicContactForm";
+import { Requests, type IncomeCode } from "../../Library/Contact/Request.js";
+import type { ContactTrailItem } from "../../Library/Contact/Data.js";
+
+interface Props {
+	/** The income code whose configuration this route renders. */
+	code: IncomeCode;
+}
+
+const { code } = Astro.props;
+
+const Config = Requests[code];
+
+const { Auth0Domain, Auth0ClientIdentifier } = await import(
+	"../../Function/Configuration/Auth.js"
+);
+
+/** The trail: home, the dashboard the request is filed from, then the request. */
+const trail: readonly ContactTrailItem[] = [
+	{ label: "/HOME", href: "/" },
+	{ label: "/DASHBOARD", href: "/Dashboard" },
+	{ label: `/${Config.Title.toUpperCase()}` },
+];
+---
+
+<ContactPage
+	metaTitle={`${Config.Title} | Code Editor Land`}
+	metaDescription={Config.Subtitle}
+	trail={trail}
+	heading={Config.Title}
+	standfirst={Config.Subtitle}
+>
+	<DynamicContactForm
+		client:load
+		Config={Config}
+		Domain={Auth0Domain}
+		ClientIdentifier={Auth0ClientIdentifier}
+	/>
+</ContactPage>

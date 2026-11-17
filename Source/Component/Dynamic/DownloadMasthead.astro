@@ -1,0 +1,78 @@
+---
+/**
+ * DownloadMasthead - the page's one level-one heading, the sentence that answers
+ * "can I install this today", and the eight marks the page has always carried.
+ *
+ * Three decisions worth knowing before you compose it:
+ *
+ * - The h1 is the page's only one (BRIDGE §3): every band below opens with an
+ *   h2, so the product name sits above the band stack rather than inside it.
+ * - The sentence is not decoration. It is the page's answer in one line, and it
+ *   is the first thing a stranger reads after the product name.
+ * - A mark is data: label, variant, and the two token names the `jelly-badge`
+ *   resolves. The badge's own custom properties are the web component's input,
+ *   so they stay on the element; the dot and the logo beside the label are the
+ *   masthead's own anatomy and are styled in its partial.
+ *
+ * No client-side script and no hydration directive: the block is static.
+ */
+import type { Mark } from "./Download/Type.js";
+
+interface Props {
+	/** The page's h1, printed verbatim. */
+	title: string;
+
+	/** One sentence stating the release status in plain words. */
+	sentence: string;
+
+	/** The marks, in the order they are printed. */
+	marks: readonly Mark[];
+}
+
+const { title, sentence, marks } = Astro.props;
+---
+
+<header class="download-masthead">
+	<div class="download-masthead__inner">
+		<img
+			class="download-masthead__glyph"
+			alt="Land"
+			src="/Asset/Logo/Glyph/Land.svg"
+			width="24"
+			height="24"
+		/>
+		<h1 class="download-masthead__title">{title}</h1>
+		<p class="download-masthead__sentence">{sentence}</p>
+		<div class="download-masthead__marks">
+			{
+				marks.map((mark) => (
+					<jelly-badge
+						variant={mark.variant}
+						shape="square"
+						style={`--jelly-fill:var(--${mark.fill});--jelly-label:var(--${mark.ink});--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
+					>
+						{mark.label}
+						{mark.dot || mark.glyph ? "\u2001" : null}
+						{mark.dot ? (
+							<span
+								class="download-masthead__dot"
+								style={`background-color:var(--${mark.dot})`}
+								aria-hidden="true"
+							/>
+						) : null}
+						{mark.glyph ? (
+							<img
+								class="download-masthead__mark"
+								src={mark.glyph.src}
+								alt={mark.glyph.alt}
+								width="14"
+								height="14"
+								aria-hidden="true"
+							/>
+						) : null}
+					</jelly-badge>
+				))
+			}
+		</div>
+	</div>
+</header>

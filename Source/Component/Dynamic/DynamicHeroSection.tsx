@@ -1,485 +1,216 @@
-import * as lucide from "lucide-react";
-
-import { useEffect, useRef } from "react";
-
-import { IconTooltip } from "../UI/IconTooltip.js";
-
-import { RichText } from "../UI/RichText.js";
-
-import { DynamicBadge } from "./DynamicBadge";
-
-import { DynamicButton } from "./DynamicButton";
-
-import { FieldRecordDataCard } from "../Brand/FieldRecordDataCard.js";
-
 import { FieldRecordEvidence } from "../Brand/FieldRecordEvidence.js";
 
-import { FieldRecordIndex } from "../Brand/FieldRecordIndex.js";
-
-import { FieldRecordMetadata } from "../Brand/FieldRecordMetadata.js";
-
 import { FieldRecordSeal } from "../Brand/FieldRecordSeal.js";
-
-import { FieldRecordAction } from "../Brand/FieldRecordAction.js";
 
 import { FieldRecordStatus } from "../Brand/FieldRecordStatus.js";
 
 import { RouteText, StampText } from "../Brand/SemanticLedger.js";
 
+import { Badge } from "../UI/Badge.js";
+
+import { cn } from "../UI/Utility";
+
+import { HeroBandDefault } from "./Hero/Data.js";
+
 import type Property from "./Interface/Property/Hero.js";
 
 /**
- * Dynamic HeroSection - Daylight Field Record.
+ * DynamicHeroSection - the homepage hero, as one band.
  *
- * Two-panel artifact:
- *   LEFT: white data card with field-record grammar
- *   RIGHT: full-bleed evidence image
+ * The band says four things, in this order, and nothing else:
  *
- * Hierarchy (per design_system.md + further_design_system.md):
- *   # LAND_01 → 〈RUST + TAURI〉 (oversized runtime claim - product
- *   assertion, not a date) → 〈NO ELECTRON〉 →
- *   /COMPAT:VS CODE → WALK · LISTEN · SIGNAL → NATIVE · OPEN ·
- *   CROSS-PLATFORM → STATUS: SOURCE ACTIVE → [MAJOR BLANK ZONE] →
- *   LAND: → ↳EDITOR WITHOUT CHROMIUM → TARGET / LICENSE / SIGNAL →
- *   SPECIES / TEMP / WIND → [ENTER]
+ *   1. THE CLAIM     `# LAND_01` and the runtime assertion - `〈RUST + TAURI〉`
+ *                    and `〈NO ELECTRON〉` on one line at `--type-display`, then
+ *                    the compatibility route and the record's own subject,
+ *                    `LAND: EDITOR WITHOUT CHROMIUM`. The band's one expressive
+ *                    moment, and the page's only `h1`.
+ *   2. THE STATUS    `STATUS: SOURCE ACTIVE`, plus what is still missing:
+ *                    installers and extension coverage. At `--type-meta`, on the
+ *                    `.emphasis-standard` tier - a chip row, not a shout.
+ *   3. THE EVIDENCE  What runs today: the four-element rail (Mountain → Cocoon →
+ *                    Sky → Wind), the record's own facts as a ledger, and the
+ *                    evidence plate with its caption and provenance.
+ *   4. THE ENTRY     Two destinations that exist: `/Doc` and `/Download`.
  *
- * Animation logic (simplex noise, Staccato, Attention) preserved unchanged.
+ * What the band does not do, and why:
+ *
+ * - It reserves no blank zone. The area between the claim and the entry carries
+ *   the evidence; air there is the defect this band replaces.
+ * - It is not a click target. The old section was `role="button"` and sent the
+ *   whole band - image included - to one destination, which hid the two real
+ *   destinations behind a single guessed one. The two anchors are the only
+ *   actions, and each says where it goes.
+ * - It does not animate. The floating technology cards and their noise drift
+ *   belonged to the blank zone they filled. Their subjects survive: four are the
+ *   rail's steps, and the architecture band that now follows the hero carries
+ *   every element at length.
+ *
+ * The evidence is rendered through the Record blocks' published class API
+ * (`record-stage`, `record-ledger`, `record-figure`) rather than by mounting the
+ * blocks: those are `.astro` components and an `.astro` component cannot be
+ * imported from a `.tsx` island (BRIDGE §2.1) - and this band must stay a
+ * `.tsx` island, because it is the child of the page's first `ErrorBoundary`
+ * and a boundary cannot catch an error in a separate island root. The class
+ * names, and therefore every declaration behind them, are the blocks' own; this
+ * file adds none of them.
  */
-const DynamicHeroSection = ({ Content, ClassName }: Property) => {
-	const SceneReference = useRef<HTMLDivElement>(null);
+const DynamicHeroSection = ({ Content, Band, ClassName }: Property) => {
+	const Hero = Band ?? HeroBandDefault();
 
-	const SectionReference = useRef<HTMLElement>(null);
+	/** The page's own primary action, when it sets one. */
+	const Primary = Content.PrimaryCTA?.Href;
 
-	const {
-		Title,
-
-		TitleHighlight,
-
-		Subtitle,
-
-		PrimaryCTA: PrimaryCTA,
-
-		SecondaryCTA: SecondaryCTA,
-
-		FloatingCard: FloatingCard = [],
-		...HeroConfiguration
-	} = Content;
-
-	useEffect(() => {
-		const Scene = SceneReference.current;
-
-		if (
-			!Scene ||
-			(HeroConfiguration.RespectReducedMotion &&
-				window.matchMedia("(prefers-reduced-motion: reduce)").matches)
-		) {
-			return;
-		}
-
-		const CardElement =
-			Scene.querySelectorAll<HTMLElement>(".FloatingCard");
-
-		let FrameIdentifier: number;
-
-		let NoiseFunction: ((X: number, Y: number) => number) | null = null;
-
-		interface CardState {
-			CurrentX: number;
-
-			CurrentY: number;
-
-			IsHovered: boolean;
-		}
-
-		const CardStates = new Map<HTMLElement, CardState>();
-
-		const LoadNoise = async () => {
-			const { createNoise2D } = await import("simplex-noise");
-
-			NoiseFunction = createNoise2D();
-
-			const StaccatoModule =
-				await import("../../Function/Noise/Staccato.js");
-
-			const Engine = await StaccatoModule.default;
-
-			CardElement.forEach((Card, Index) => {
-				Engine.SeedElement(Card, Index);
-
-				const State: CardState = {
-					CurrentX: 0,
-
-					CurrentY: 0,
-
-					IsHovered: false,
-				};
-
-				CardStates.set(Card, State);
-
-				Card.addEventListener("mouseenter", () => {
-					State.IsHovered = true;
-				});
-
-				Card.addEventListener("mouseleave", () => {
-					State.IsHovered = false;
-				});
-			});
-
-			const AttentionModule =
-				await import("../../Function/Noise/Attention.js");
-
-			const Attention = await AttentionModule.default;
-
-			Attention.ApplyToSelector(".FloatingCard", 6, 4);
-		};
-
-		const AnimateCards = (Time: number) => {
-			if (!NoiseFunction) {
-				FrameIdentifier = requestAnimationFrame(AnimateCards);
-
-				return;
-			}
-
-			const TimeFactor = Time * 0.00007;
-
-			CardElement.forEach((Card, Index) => {
-				const State = CardStates.get(Card);
-
-				if (!State) return;
-
-				const Seed = Index * 1.3;
-
-				const TargetX = State.IsHovered
-					? 0
-					: NoiseFunction!(TimeFactor + Seed, Seed * 0.4) * 5;
-
-				const TargetY = State.IsHovered
-					? 0
-					: NoiseFunction!(Seed * 0.4, TimeFactor + Seed) * 3.5;
-
-				State.CurrentX += (TargetX - State.CurrentX) * 0.04;
-
-				State.CurrentY += (TargetY - State.CurrentY) * 0.04;
-
-				// Float motion via the standalone `translate` property so it composes
-				// with the Attention wobble (which owns `transform`: scale + rotate)
-				// instead of clobbering it on the same property.
-				Card.style.translate = `${State.CurrentX.toFixed(2)}px ${State.CurrentY.toFixed(2)}px`;
-			});
-
-			FrameIdentifier = requestAnimationFrame(AnimateCards);
-		};
-
-		LoadNoise();
-
-		FrameIdentifier = requestAnimationFrame(AnimateCards);
-
-		return () => {
-			cancelAnimationFrame(FrameIdentifier);
-
-			CardElement.forEach((Card) => {
-				const Fresh: CardState = {
-					CurrentX: 0,
-
-					CurrentY: 0,
-
-					IsHovered: false,
-				};
-
-				CardStates.set(Card, Fresh);
-			});
-		};
-	}, [HeroConfiguration.RespectReducedMotion]);
-
-	const HandleHeroClick = () => {
-		if (PrimaryCTA?.Href) {
-			window.location.href = PrimaryCTA.Href;
-		}
-	};
+	const Entry = Hero.entry.map((Destination) =>
+		Destination.primary && Primary
+			? { ...Destination, href: Primary }
+			: Destination,
+	);
 
 	return (
 		<section
-			ref={SectionReference}
 			id="hero"
-			aria-label="Hero"
-			className={`relative w-full cursor-pointer overflow-hidden ${ClassName || ""}`}
-			onClick={HandleHeroClick}
-			onKeyDown={(Event) => {
-				if (Event.key === "Enter" || Event.key === " ") {
-					Event.preventDefault();
-
-					HandleHeroClick();
-				}
-			}}
-			role="button"
-			tabIndex={0}
+			aria-labelledby="hero-marker hero-claim"
+			className={cn("band band--flush hero-band", ClassName)}
 		>
-			{/* Daylight Field Record: faint grid on creme canvas */}
-			<div
-				aria-hidden="true"
-				className="pointer-events-none absolute inset-0"
-				style={{ backgroundColor: "var(--Background)" }}
-			/>
+			<div className="band-inner hero-band__inner">
+				{/* ─── 1. THE CLAIM ─────────────────────────────────────────── */}
+				<header className="hero-band__claim">
+					<div className="hero-band__mark">
+						<p
+							id="hero-marker"
+							className="section-kicker hero-band__kicker"
+						>
+							{Hero.claim.kicker}
+						</p>
 
-			{/* ── TWO-PANEL ARTIFACT ── */}
-			<div
-				className="relative mx-auto flex min-h-[80dvh] flex-col md:flex-row"
-				style={{
-					padding: "clamp(2rem, 5vw, 5rem)",
-					gap: "clamp(0.5rem, 1.5vw, 1.875rem)",
-				}}
-			>
-				{/* ══ LEFT: Warm-white data card ══ */}
-				<div className="flex flex-1 flex-col justify-center">
-					<FieldRecordDataCard className="h-full">
-						<div className="flex h-full flex-col justify-between">
-							{/* Top: Index + Seal */}
-							<div className="flex items-start justify-between">
-								<FieldRecordIndex index="LAND_01" />
+						<FieldRecordSeal
+							element="Land"
+							size={48}
+							className="hero-band__seal"
+						/>
+					</div>
 
-								<FieldRecordSeal element="Land" />
-							</div>
+					<h1
+						id="hero-claim"
+						className="type-display hero-band__display"
+					>
+						<StampText Line={Hero.claim.runtime} />{" "}
+						<StampText Line={Hero.claim.engine} />
+					</h1>
 
-							{/* Middle: Oversized stamp */}
-							<div className="mt-10">
-								<p className="text-field-xl font-mono font-normal leading-[0.95] tracking-[-0.02em] text-card-foreground">
-									<StampText Line="RUST + TAURI" />
-								</p>
+					<p className="type-sub hero-band__route">
+						<RouteText Line={Hero.claim.route} />{" "}
+						<span className="hero-band__compat">
+							{Hero.claim.compat}
+						</span>
+					</p>
 
-								<p className="text-field-l mt-2 font-mono font-normal leading-[1.0] tracking-[-0.02em] text-card-foreground">
-									<StampText Line="NO ELECTRON" />
-								</p>
-							</div>
+					<p className="type-body hero-band__standfirst">
+						<span className="hero-band__relation">
+							{Hero.claim.project} {Hero.claim.relation}
+						</span>{" "}
+						{Content.Subtitle || Hero.claim.standfirst}
+					</p>
+				</header>
 
-							{/* Route block */}
-							<div className="mt-10">
-								<p className="text-field-l font-mono font-normal leading-[1.05] text-card-foreground">
-									<RouteText Line="/COMPAT:VS CODE" />
-								</p>
-
-								<p className="text-field-s mt-1 font-mono font-normal leading-[1.1] text-card-foreground">
-									<RouteText Line="EXTENSIONS / UNMODIFIED" />
-								</p>
-							</div>
-
-							{/* Program verbs (design_system.md:157-158, 486) - em quad U+2001 separators (DesignSystem-Grammar §3) */}
-							<p className="text-field-s mt-6 font-mono uppercase tracking-[0.25em] text-card-foreground opacity-60">
-								{"WALK\u2001LISTEN\u2001SIGNAL"}
-							</p>
-
-							{/* Program + Status */}
-							<p className="text-field-s mt-6 font-mono uppercase tracking-[0.25em] text-card-foreground opacity-60">
-								{"NATIVE\u2001OPEN\u2001CROSS-PLATFORM"}
-							</p>
-
-							<div className="mt-3">
-								<FieldRecordStatus
-									status="active"
-									copy="STATUS: SOURCE ACTIVE"
-								/>
-							</div>
-
-							{/* MAJOR BLANK ZONE */}
-							<div className="my-12 flex-1" aria-hidden="true" />
-
-							{/* Project / artist block */}
-							<div>
-								<p className="text-field-l font-mono font-normal leading-[1.08] text-card-foreground">
-									{Title || "LAND:"}
-								</p>
-
-								<p className="text-field-s mt-3 font-mono font-normal leading-[1.1] text-card-foreground opacity-70">
-									↳EDITOR WITHOUT CHROMIUM
-								</p>
-							</div>
-
-							{/* Metadata footer */}
-							<div className="mt-10">
-								<FieldRecordMetadata
-									rows={[
-										{
-											label: "TARGET",
-											value: "MACOS / WINDOWS / LINUX",
-										},
-										{ label: "LICENSE", value: "CC0" },
-										{
-											label: "SIGNAL",
-											value: "LOCAL-FIRST",
-										},
-									]}
-								/>
-							</div>
-
-							{/* Observational metadata footer (design_system.md:162-163, 186-189, 492-495) - specimen data verbatim from the spec example, no invented fields */}
-							<div className="mt-3">
-								<FieldRecordMetadata
-									rows={[
-										{
-											label: "SPECIES",
-											value: "NOCTUA PRONUBA",
-										},
-										{ label: "TEMP", value: "16.2 C" },
-										{ label: "WIND", value: "01.8 KM/H" },
-									]}
-								/>
-							</div>
-
-							{/* Program line + CTA */}
-							<div className="mt-10">
-								<p className="text-field-s mb-4 font-mono uppercase tracking-[0.25em] text-card-foreground opacity-60">
-									{"OPEN\u2001EDIT\u2001SHIP"}
-								</p>
-
-								<FieldRecordAction
-									label="ENTER"
-									href={PrimaryCTA?.Href || "/Download"}
-								/>
-							</div>
-						</div>
-					</FieldRecordDataCard>
-				</div>
-
-				{/* ══ Black gutter ══ */}
-				<div
-					className="hidden w-px md:block"
-					style={{ backgroundColor: "var(--Background)" }}
-					aria-hidden="true"
-				/>
-
-				{/* ══ RIGHT: Evidence image ══ */}
-				<div className="flex flex-1 items-center justify-center">
-					<FieldRecordEvidence
-						src="/Evidence/Land/NightGlass-01.png"
-						alt="Rain-speckled glass reflecting a green light at night"
-						position="right"
-						className="h-full min-h-[40dvh] w-full"
+				{/* ─── 2. THE STATUS ────────────────────────────────────────── */}
+				<div className="emphasis-standard hero-band__status">
+					<FieldRecordStatus
+						status="active"
+						copy={Hero.status.copy}
+						className="hero-band__status-line"
 					/>
+
+					{Hero.status.chips.map((Chip) => (
+						<Badge
+							variant="outline"
+							className="hero-band__chip"
+							key={Chip}
+						>
+							{Chip}
+						</Badge>
+					))}
 				</div>
-			</div>
 
-			{/* ── TECH STACK GRID (below artifact) ── */}
-			<div className="relative mx-auto mt-20 max-w-5xl px-6 pb-20 lg:px-10">
-				<p className="mb-8 font-mono text-sm uppercase tracking-[0.25em] text-muted-foreground">
-					TECH STACK
-				</p>
-
-				<div
-					ref={SceneReference}
-					className="grid grid-cols-2 items-center gap-3 sm:grid-cols-3 lg:grid-cols-4"
-					aria-hidden="true"
-				>
-					{FloatingCard.map((Card, Index) => {
-						const GetIcon = () => {
-							const Title = Card.Title.toLowerCase();
-
-							if (
-								Title.includes("rust") ||
-								Title.includes("core")
-							)
-								return lucide.Cpu;
-
-							if (Title.includes("tauri") || Title.includes("ui"))
-								return lucide.Box;
-
-							if (
-								Title.includes("effect") ||
-								Title.includes("service")
-							)
-								return lucide.Layers;
-
-							if (Title.includes("grpc") || Title.includes("ipc"))
-								return lucide.Network;
-
-							if (Title.includes("extension"))
-								return lucide.Puzzle;
-
-							if (
-								Title.includes("cross") ||
-								Title.includes("platform")
-							)
-								return lucide.Globe;
-
-							if (
-								Title.includes("vs code") ||
-								Title.includes("api")
-							)
-								return lucide.Server;
-
-							if (
-								Title.includes("open") ||
-								Title.includes("source")
-							)
-								return lucide.Zap;
-
-							return lucide.Cpu;
-						};
-
-						const IconComponent = GetIcon();
-
-						const GetIconColor = (): string => {
-							const Title = Card.Title.toLowerCase();
-
-							if (
-								Title.includes("rust") ||
-								Title.includes("core")
-							)
-								return "var(--SpineTCP)";
-
-							if (Title.includes("tauri") || Title.includes("ui"))
-								return "var(--SpineIPC)";
-
-							if (
-								Title.includes("effect") ||
-								Title.includes("service")
-							)
-								return "var(--SpineWASM)";
-
-							if (Title.includes("grpc") || Title.includes("ipc"))
-								return "var(--SpinegRPC)";
-
-							if (Title.includes("extension"))
-								return "var(--SpineWASM)";
-
-							if (
-								Title.includes("cross") ||
-								Title.includes("platform")
-							)
-								return "var(--SpineIPC)";
-
-							if (
-								Title.includes("vs code") ||
-								Title.includes("api")
-							)
-								return "var(--SpinegRPC)";
-
-							if (
-								Title.includes("open") ||
-								Title.includes("source")
-							)
-								return "var(--SpineTCP)";
-
-							return "var(--SpineIPC)";
-						};
-
-						return (
-							<div
-								key={Card.Id}
-								className="FloatingCard group relative flex h-full items-center border border-border bg-background p-4 transition-colors hover:border-accent"
-							>
-								<div className="flex items-center gap-3">
-									<IconComponent
-										className="h-5 w-5 shrink-0"
-										strokeWidth={1.5}
-										style={{ color: GetIconColor() }}
-									/>
-
-									<span className="truncate font-mono text-sm uppercase tracking-wider text-foreground">
-										{Card.Title}
+				{/* ─── 3. THE EVIDENCE ──────────────────────────────────────── */}
+				<div className="hero-band__evidence">
+					<div className="hero-band__proof">
+						<ol className="record-stage record-stage--stack hero-band__stage">
+							{Hero.steps.map((Step) => (
+								<li
+									className="record-stage__item"
+									key={Step.index}
+								>
+									<span className="record-stage__index">
+										{Step.index}
 									</span>
+
+									<span className="record-stage__label">
+										{Step.label}
+									</span>
+
+									<span className="record-stage__line">
+										{Step.line}
+									</span>
+								</li>
+							))}
+						</ol>
+
+						<dl className="record-ledger record-ledger--1 hero-band__facts">
+							{Hero.facts.map((Fact) => (
+								<div
+									className="record-ledger__row"
+									key={Fact.key}
+								>
+									<dt className="record-ledger__key">
+										{Fact.key}
+									</dt>
+
+									<dd className="record-ledger__value">
+										{Fact.value}
+									</dd>
 								</div>
-							</div>
-						);
-					})}
+							))}
+						</dl>
+					</div>
+
+					<figure className="record-figure hero-band__plate">
+						<div className="record-figure__media hero-band__plate-frame">
+							<FieldRecordEvidence
+								src={Hero.plate.src}
+								alt={Hero.plate.alt}
+								position="center"
+								className="hero-band__plate-image"
+							/>
+						</div>
+
+						<figcaption className="record-figure__caption">
+							<span className="record-figure__caption-text">
+								{Hero.plate.caption}
+							</span>
+
+							<span className="record-figure__provenance">
+								{Hero.plate.provenance}
+							</span>
+						</figcaption>
+					</figure>
+				</div>
+
+				{/* ─── 4. THE ENTRY ─────────────────────────────────────────── */}
+				<div className="hero-band__entry">
+					<p className="hero-band__program">{Hero.program}</p>
+
+					<div className="hero-band__destinations">
+						{Entry.map((Destination) => (
+							<a
+								className="hero-band__destination"
+								href={Destination.href}
+								key={Destination.href}
+							>
+								{Destination.label}
+							</a>
+						))}
+					</div>
 				</div>
 			</div>
 		</section>

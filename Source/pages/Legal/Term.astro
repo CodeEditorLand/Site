@@ -2,6 +2,8 @@
 import { Header } from "../../Component/Layout/Header";
 import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
+import ReadingDocument from "../../Component/Reading/ReadingDocument.astro";
+import { Index, Ledger } from "../../Library/Document/Term/Data.js";
 
 const T = GetI18n();
 
@@ -42,98 +44,17 @@ const LastUpdated = "May 29, 2026";
 			</ol>
 		</nav>
 
-		<header class="mb-12">
-			<h1 class="text-2xl font-medium tracking-tight sm:text-3xl">
-				Terms of Service
-			</h1>
-			<div class="space-y-1 text-muted-foreground">
-				<p><strong>Effective Date:</strong> {EffectiveDate}</p>
-				<p><strong>Last Updated:</strong> {LastUpdated}</p>
-			</div>
-		</header>
-
-				<article class="LegalCard prose prose-slate max-w-none">
-			<ul class="LegalPrintHide">
-				<li>
-					<a href="#terms-of-service">TERMS OF SERVICE</a>
-					<ul>
-						<li><a href="#introduction">Introduction</a></li>
-						<li><a href="#communications">Communications</a></li>
-						<li><a href="#purchases">Purchases</a></li>
-						<li>
-							<a href="#contests-sweepstakes-and-promotions"
-								>Contests, Sweepstakes and Promotions</a
-							>
-						</li>
-						<li><a href="#subscriptions">Subscriptions</a></li>
-						<li><a href="#free-trial">Free Trial</a></li>
-						<li><a href="#fee-changes">Fee Changes</a></li>
-						<li><a href="#refunds">Refunds</a></li>
-						<li><a href="#content">Content</a></li>
-						<li><a href="#prohibited-uses">Prohibited Uses</a></li>
-						<li>
-							<a href="#no-use-by-minors">No Use by Minors</a>
-						</li>
-						<li><a href="#accounts">Accounts</a></li>
-						<li>
-							<a href="#intellectual-property"
-								>Intellectual Property</a
-							>
-						</li>
-						<li>
-							<a href="#copyright-policy">Copyright Policy</a>
-						</li>
-						<li>
-							<a
-								href="#dmca-notice-and-procedure-for-copyright-infringement-claims"
-								>DMCA Notice and Procedure for Copyright
-								Infringement Claims</a
-							>
-						</li>
-						<li>
-							<a href="#error-reporting-and-feedback"
-								>Error Reporting and Feedback</a
-							>
-						</li>
-						<li>
-							<a href="#links-to-other-web-sites"
-								>Links To Other Web Sites</a
-							>
-						</li>
-						<li>
-							<a href="#disclaimer-of-warranty"
-								>Disclaimer Of Warranty</a
-							>
-						</li>
-						<li>
-							<a href="#limitation-of-liability"
-								>Limitation Of Liability</a
-							>
-						</li>
-						<li><a href="#termination">Termination</a></li>
-						<li><a href="#governing-law">Governing Law</a></li>
-						<li>
-							<a href="#changes-to-service">Changes To Service</a>
-						</li>
-						<li>
-							<a href="#amendments-to-terms"
-								>Amendments To Terms</a
-							>
-						</li>
-						<li>
-							<a href="#waiver-and-severability"
-								>Waiver And Severability</a
-							>
-						</li>
-						<li>
-							<a href="#acknowledgement">Acknowledgement</a>
-						</li>
-						<li><a href="#contact-us">Contact Us</a></li>
-					</ul>
-				</li>
-			</ul>
-
-			<h1 id="terms-of-service">TERMS OF SERVICE</h1>
+		<ReadingDocument
+			kicker="/LEGAL"
+			heading="Terms of Service"
+			standfirst="Governing your use of our open-source code editor and related services."
+			rows={Ledger}
+			index={Index}
+			indexLabel="Clauses"
+			bodyClass="LegalCard">
+			<h2 class="reading-document__title" id="terms-of-service"
+				>TERMS OF SERVICE</h2
+			>
 
 			<p>
 				<strong>Effective date:</strong>
@@ -142,7 +63,7 @@ const LastUpdated = "May 29, 2026";
 				{LastUpdated}
 			</p>
 
-			<h2 id="introduction">Introduction</h2>
+			<h3 class="reading-clause" id="introduction">Introduction</h3>
 
 			<p>
 				Welcome to Code Editor Land (“<strong>Company</strong>”, “<strong
@@ -195,7 +116,7 @@ const LastUpdated = "May 29, 2026";
 
 			<p>Thank you for being responsible.</p>
 
-			<h2 id="communications">Communications</h2>
+			<h3 class="reading-clause" id="communications">Communications</h3>
 
 			<p>
 				By creating an account on our Service, you agree to subscribe to
@@ -211,7 +132,7 @@ const LastUpdated = "May 29, 2026";
 				>.
 			</p>
 
-			<h2 id="purchases">Purchases</h2>
+			<h3 class="reading-clause" id="purchases">Purchases</h3>
 
 			<p>
 				If you wish to purchase any product or service made available
@@ -255,9 +176,9 @@ const LastUpdated = "May 29, 2026";
 				an unauthorized or illegal transaction is suspected.
 			</p>
 
-			<h2 id="contests-sweepstakes-and-promotions">
+			<h3 class="reading-clause" id="contests-sweepstakes-and-promotions">
 				Contests, Sweepstakes and Promotions
-			</h2>
+			</h3>
 
 			<p>
 				Any contests, sweepstakes or other promotions (collectively, “<strong
@@ -269,7 +190,7 @@ const LastUpdated = "May 29, 2026";
 				these Terms of Service, Promotion rules will apply.
 			</p>
 
-			<h2 id="subscriptions">Subscriptions</h2>
+			<h3 class="reading-clause" id="subscriptions">Subscriptions</h3>
 
 			<p>
 				Some parts of Service are billed on a subscription basis (“<strong
@@ -307,7 +228,7 @@ const LastUpdated = "May 29, 2026";
 				corresponding to the billing period as indicated on the invoice.
 			</p>
 
-			<h2 id="free-trial">Free Trial</h2>
+			<h3 class="reading-clause" id="free-trial">Free Trial</h3>
 
 			<p>
 				We may, at our sole discretion, offer a Subscription with a free
@@ -336,7 +257,7 @@ const LastUpdated = "May 29, 2026";
 				<li>cancel such Free Trial offer.</li>
 			</ol>
 
-			<h2 id="fee-changes">Fee Changes</h2>
+			<h3 class="reading-clause" id="fee-changes">Fee Changes</h3>
 
 			<p>
 				We, in our sole discretion and at any time, may modify
@@ -357,7 +278,7 @@ const LastUpdated = "May 29, 2026";
 				Subscription fee amount.
 			</p>
 
-			<h2 id="refunds">Refunds</h2>
+			<h3 class="reading-clause" id="refunds">Refunds</h3>
 
 			<p>
 				We issue refunds for eligible paid contracts, subscriptions, or
@@ -366,7 +287,7 @@ const LastUpdated = "May 29, 2026";
 				in separate written terms for a specific offering.
 			</p>
 
-			<h2 id="content">Content</h2>
+			<h3 class="reading-clause" id="content">Content</h3>
 
 			<p>
 				Our Service allows you to post, link, store, share and otherwise
@@ -435,7 +356,7 @@ const LastUpdated = "May 29, 2026";
 				permitted by the applicable license.
 			</p>
 
-			<h2 id="prohibited-uses">Prohibited Uses</h2>
+			<h3 class="reading-clause" id="prohibited-uses">Prohibited Uses</h3>
 
 			<p>
 				You may use Service only for lawful purposes and in accordance
@@ -539,7 +460,7 @@ const LastUpdated = "May 29, 2026";
 				Service.
 			</p>
 
-			<h2 id="no-use-by-minors">No Use by Minors</h2>
+			<h3 class="reading-clause" id="no-use-by-minors">No Use by Minors</h3>
 
 			<p>
 				Service is intended only for access and use by individuals at
@@ -553,7 +474,7 @@ const LastUpdated = "May 29, 2026";
 				are prohibited from access and usage of Service.
 			</p>
 
-			<h2 id="accounts">Accounts</h2>
+			<h3 class="reading-clause" id="accounts">Accounts</h3>
 
 			<p>
 				When you create an account with us, you guarantee that the
@@ -598,7 +519,7 @@ const LastUpdated = "May 29, 2026";
 				remove or edit content, or cancel orders in our sole discretion.
 			</p>
 
-			<h2 id="intellectual-property">Intellectual Property</h2>
+			<h3 class="reading-clause" id="intellectual-property">Intellectual Property</h3>
 
 			<p>
 				Service and its original content (excluding Content provided by
@@ -633,7 +554,7 @@ const LastUpdated = "May 29, 2026";
 				by the applicable third-party licenses.
 			</p>
 
-			<h2 id="copyright-policy">Copyright Policy</h2>
+			<h3 class="reading-clause" id="copyright-policy">Copyright Policy</h3>
 
 			<p>
 				We respect the intellectual property rights of others. It is our
@@ -665,10 +586,10 @@ const LastUpdated = "May 29, 2026";
 				on your copyright.
 			</p>
 
-			<h2
+			<h3 class="reading-clause"
 				id="dmca-notice-and-procedure-for-copyright-infringement-claims">
 				DMCA Notice and Procedure for Copyright Infringement Claims
-			</h2>
+			</h3>
 
 			<p>
 				You may submit a notification pursuant to the Digital Millennium
@@ -719,9 +640,9 @@ const LastUpdated = "May 29, 2026";
 				>.
 			</p>
 
-			<h2 id="error-reporting-and-feedback">
+			<h3 class="reading-clause" id="error-reporting-and-feedback">
 				Error Reporting and Feedback
-			</h2>
+			</h3>
 
 			<p>
 				You may provide us via the <a href="/Contact/Scout"
@@ -761,7 +682,7 @@ const LastUpdated = "May 29, 2026";
 				commercialize) Feedback in any manner and for any purpose.
 			</p>
 
-			<h2 id="links-to-other-web-sites">Links To Other Web Sites</h2>
+			<h3 class="reading-clause" id="links-to-other-web-sites">Links To Other Web Sites</h3>
 
 			<p>
 				Our Service may contain links to third-party web sites or
@@ -790,7 +711,7 @@ const LastUpdated = "May 29, 2026";
 				VISIT.
 			</p>
 
-			<h2 id="disclaimer-of-warranty">Disclaimer Of Warranty</h2>
+			<h3 class="reading-clause" id="disclaimer-of-warranty">Disclaimer Of Warranty</h3>
 
 			<p>
 				THESE SERVICES ARE PROVIDED BY COMPANY ON AN “AS IS” AND “AS
@@ -829,7 +750,7 @@ const LastUpdated = "May 29, 2026";
 				EXCLUDED OR LIMITED UNDER APPLICABLE LAW.
 			</p>
 
-			<h2 id="limitation-of-liability">Limitation Of Liability</h2>
+			<h3 class="reading-clause" id="limitation-of-liability">Limitation Of Liability</h3>
 
 			<p>
 				EXCEPT AS PROHIBITED BY LAW, YOU WILL HOLD US AND OUR OFFICERS,
@@ -862,7 +783,7 @@ const LastUpdated = "May 29, 2026";
 				LIMITATION OR EXCLUSION MAY NOT APPLY TO YOU.
 			</p>
 
-			<h2 id="termination">Termination</h2>
+			<h3 class="reading-clause" id="termination">Termination</h3>
 
 			<p>
 				We may terminate or suspend your account and bar access to
@@ -888,7 +809,7 @@ const LastUpdated = "May 29, 2026";
 				indemnity and limitations of liability.
 			</p>
 
-			<h2 id="governing-law">Governing Law</h2>
+			<h3 class="reading-clause" id="governing-law">Governing Law</h3>
 
 			<p>
 				These Terms shall be governed and construed in accordance with
@@ -906,7 +827,7 @@ const LastUpdated = "May 29, 2026";
 				agreements we might have had between us regarding Service.
 			</p>
 
-			<h2 id="changes-to-service">Changes To Service</h2>
+			<h3 class="reading-clause" id="changes-to-service">Changes To Service</h3>
 
 			<p>
 				We reserve the right to withdraw or amend our Service, and any
@@ -918,7 +839,7 @@ const LastUpdated = "May 29, 2026";
 				including registered users.
 			</p>
 
-			<h2 id="amendments-to-terms">Amendments To Terms</h2>
+			<h3 class="reading-clause" id="amendments-to-terms">Amendments To Terms</h3>
 
 			<p>
 				We may amend Terms at any time by posting the amended terms on
@@ -940,7 +861,7 @@ const LastUpdated = "May 29, 2026";
 				to use Service.
 			</p>
 
-			<h2 id="waiver-and-severability">Waiver And Severability</h2>
+			<h3 class="reading-clause" id="waiver-and-severability">Waiver And Severability</h3>
 
 			<p>
 				No waiver by Company of any term or condition set forth in Terms
@@ -958,7 +879,7 @@ const LastUpdated = "May 29, 2026";
 				provisions of Terms will continue in full force and effect.
 			</p>
 
-			<h2 id="acknowledgement">Acknowledgement</h2>
+			<h3 class="reading-clause" id="acknowledgement">Acknowledgement</h3>
 
 			<p>
 				BY USING SERVICE OR OTHER SERVICES PROVIDED BY US, YOU
@@ -966,7 +887,7 @@ const LastUpdated = "May 29, 2026";
 				TO BE BOUND BY THEM.
 			</p>
 
-			<h2 id="contact-us">Contact Us</h2>
+			<h3 class="reading-clause" id="contact-us">Contact Us</h3>
 
 			<p>
 				Please send your feedback, comments, requests for technical
@@ -1001,7 +922,7 @@ const LastUpdated = "May 29, 2026";
 			</p>
 
 			<p>By mail: PlayForm / Code Editor Land, Sofia, Bulgaria.</p>
-		</article>
+		</ReadingDocument>
 
 		<div class="LegalPrintHide mt-12 border-t pt-8">
 			<a href="#top" class="StaccatoButton text-primary hover:underline"

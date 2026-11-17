@@ -22,7 +22,9 @@ const Frames: Record<AuthSurface, (T: Translate) => AuthFrame> = {
 				"Profile fields, session controls and the editor connection for this workspace.",
 		}),
 		action: {
-			label: T("auth.account.action", { defaultValue: "Back to the editor" }),
+			label: T("auth.account.action", {
+				defaultValue: "Back to the editor",
+			}),
 			href: "/",
 		},
 	}),
@@ -94,7 +96,9 @@ const Frames: Record<AuthSurface, (T: Translate) => AuthFrame> = {
 	}),
 
 	oauthSuccess: (T) => ({
-		kicker: T("auth.oauthSuccess.kicker", { defaultValue: "/OAUTH CALLBACK" }),
+		kicker: T("auth.oauthSuccess.kicker", {
+			defaultValue: "/OAUTH CALLBACK",
+		}),
 		heading: T("auth.oauthSuccess.heading", {
 			defaultValue: "Sign-in result",
 		}),
@@ -123,3 +127,28 @@ const Frames: Record<AuthSurface, (T: Translate) => AuthFrame> = {
 /** The frame for one surface. Total over `AuthSurface`, so no page branches. */
 export const AuthFrameFor = (Surface: AuthSurface, T: Translate): AuthFrame =>
 	Frames[Surface](T);
+
+/** One breadcrumb row. `Href` absent means the reader is already there. */
+export interface AuthCrumb {
+	readonly Label: string;
+	readonly Href?: string;
+}
+
+/**
+ * The account index's breadcrumb, left where it was: Home / Dashboard /
+ * Account. The frame's single alternate action covers the way back to the
+ * editor, but not the way to the dashboard, so the row stays.
+ */
+export const AccountCrumbs = (T: Translate): readonly AuthCrumb[] => [
+	{
+		Label: T("common.breadcrumb.home", { defaultValue: "Home" }),
+		Href: "/",
+	},
+	{
+		Label: T("common.breadcrumb.dashboard", { defaultValue: "Dashboard" }),
+		Href: "/Dashboard",
+	},
+	{
+		Label: T("common.breadcrumb.account", { defaultValue: "Account" }),
+	},
+];

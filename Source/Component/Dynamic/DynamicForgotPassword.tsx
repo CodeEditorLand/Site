@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "../UI/Card";
+import { useTranslation } from "react-i18next";
 
 import { DynamicButton } from "./DynamicButton";
 
@@ -15,8 +9,11 @@ import { DynamicInput } from "./DynamicInput";
 import type Property from "./Interface/Property/Password/Forgot.js";
 
 /**
- * Dynamic ForgotPassword component for password reset request
- * Renders email form, success state, and resend functionality
+ * Dynamic ForgotPassword component for password reset request.
+ *
+ * Renders the email form, then the sent state. The page frame - the /KICKER,
+ * the h1 and the supporting sentence - belongs to AuthShell; this component
+ * owns the fields, the validation and the two states inside that frame.
  */
 const DynamicForgotPassword = ({
 	Content,
@@ -27,19 +24,9 @@ const DynamicForgotPassword = ({
 	IsLoading = false,
 	ErrorMessage,
 }: Property) => {
-	const {
-		Title,
+	const { t: T } = useTranslation("account");
 
-		Description,
-
-		EmailField,
-
-		SubmitButton,
-
-		ResendButton,
-
-		SuccessMessage,
-	} = Content;
+	const { EmailField, SubmitButton, ResendButton, SuccessMessage } = Content;
 
 	const [Email, SetEmail] = useState("");
 
@@ -57,7 +44,7 @@ const DynamicForgotPassword = ({
 		}
 
 		if (!/\S+@\S+\.\S+/.test(Email)) {
-			SetInternalError("Please enter a valid email");
+			SetInternalError("Please enter a valid email address");
 
 			return;
 		}
@@ -69,124 +56,92 @@ const DynamicForgotPassword = ({
 		SetInternalError("");
 	};
 
+	const SentStatus = T("auth.forgotPassword.sentStatus", {
+		defaultValue: "RESET LINK SENT",
+	});
+
+	const BackToSignIn = T("account.forgotPassword.backToSignIn", {
+		defaultValue: "Back to Sign In",
+	});
+
 	return (
-		<section className="py-20" aria-label="Forgot password">
-			<div className="container mx-auto px-4">
-				<div className={`mx-auto max-w-md ${ClassName}`}>
-					<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
-						<CardHeader className="space-y-1 text-center">
-							<CardTitle className="text-2xl">{Title}</CardTitle>
-							<CardDescription>{Description}</CardDescription>
-						</CardHeader>
-						<CardContent>
-							{!IsSubmitted ? (
-								<form
-									className="space-y-4"
-									onSubmit={HandleSubmit}
+		<>
+			{!IsSubmitted ? (
+				<form
+					className={`auth-shell__form ${ClassName || ""}`}
+					onSubmit={HandleSubmit}
+					aria-label="Password reset request form"
+				>
+					<div aria-live="polite" aria-atomic="true">
+						{(ErrorMessage || InternalError) && (
+							<p className="auth-shell__error" role="alert">
+								{ErrorMessage || InternalError}
+							</p>
+						)}
+					</div>
 
-									aria-label="Password reset request form"
-								>
-									<div aria-live="polite" aria-atomic="true">
-										{(ErrorMessage || InternalError) && (
-											<div
-												className="flat bg-[color-mix(in_srgb,var(--Destruct)_10%,transparent)] p-3 text-destructive"
-												role="alert"
-											>
-												{ErrorMessage || InternalError}
-											</div>
-										)}
-									</div>
+					<DynamicInput
+						Content={{
+							...EmailField,
+							OnChange: SetEmail,
+						}}
 
-									<DynamicInput
-										Content={{
-											...EmailField,
-											OnChange: SetEmail,
-										}}
+						Id="email"
+					/>
 
-										Id="email"
-									/>
+					<DynamicButton
+						Content={{
+							...SubmitButton,
+							Type: "submit",
+							FullWidth: true,
+							ClassName:
+								"auth-shell__primary emphasis-expressive",
+						}}
 
-									<DynamicButton
-										Content={{
-											...SubmitButton,
-											Type: "submit",
-											FullWidth: true,
-										}}
+						IsLoading={IsLoading}
+					/>
+				</form>
+			) : (
+				<div
+					className="auth-shell__report"
+					role="status"
+					aria-live="polite"
+				>
+					<p className="auth-shell__status auth-shell__status--success">
+						{SentStatus}
+					</p>
 
-										IsLoading={IsLoading}
-									/>
-								</form>
-							) : (
-								<div
-									className="space-y-6 text-center"
-									role="status"
-									aria-live="polite"
-								>
-									<div className="space-y-2">
-										<div
-											className="flat mx-auto flex h-12 w-12 items-center justify-center bg-green-100"
-											aria-hidden="true"
-										>
-											<svg
-												className="h-6 w-6 text-green-600"
-												fill="none"
-												viewBox="0 0 24 24"
-												stroke="currentColor"
-												aria-hidden="true"
-											>
-												<path
-													strokeLinecap="round"
-													strokeLinejoin="round"
-													strokeWidth={2}
+					<p className="auth-shell__report-sentence">
+						{SuccessMessage ||
+							"We've sent a password reset link to your email address."}
+					</p>
 
-													d="M5 13l4 4L19 7"
-												/>
-											</svg>
-										</div>
-										<h3 className="text-lg font-medium">
-											Check your email
-										</h3>
-										<p className="text-muted-foreground">
-											{SuccessMessage ||
-												"We've sent a password reset link to your email address."}
-										</p>
-									</div>
+					{ResendButton && (
+						<>
+							<p className="auth-shell__note">
+								Didn't receive the email?
+							</p>
 
-									{ResendButton && (
-										<div className="border-t border-border pt-4">
-											<DynamicButton
-												Content={{
-													...ResendButton,
-													Variant: "outline",
-													FullWidth: true,
-												}}
+							<button
+								type="button"
+								className="auth-shell__primary emphasis-expressive"
+								onClick={() => OnResend?.()}
+							>
+								{ResendButton.Text}
+							</button>
+						</>
+					)}
 
-												OnAction={() => OnResend?.()}
-											/>
-											<p className="mt-2 text-muted-foreground">
-												Didn't receive the email?
-											</p>
-										</div>
-									)}
-
-									<div>
-										<button
-											type="button"
-											className="font-medium text-primary hover:underline"
-											onClick={() =>
-												OnNavigate?.("/Account/SignIn")
-											}
-										>
-											Back to Sign In
-										</button>
-									</div>
-								</div>
-							)}
-						</CardContent>
-					</Card>
+					<button
+						type="button"
+						className="auth-shell__alternate"
+						onClick={() => OnNavigate?.("/Account/SignIn")}
+					>
+						{BackToSignIn}
+					</button>
 				</div>
-			</div>
-		</section>
+			)}
+		</>
 	);
 };
 

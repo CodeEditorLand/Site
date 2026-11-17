@@ -1,0 +1,124 @@
+// The enterprise page - the sale route, on the same bands as the hub.
+//
+// Publishes:
+//   .contact-sale__prose      running prose, on the locale file's line breaks
+//   .contact-sale__subheading a sub-heading inside a band, at --type-sub
+//   .contact-sale__panel      the quiet panel that carries a labelled list
+//   .contact-sale__features   the six things an enterprise plan adds
+//   .contact-sale__action     the GitHub issue target
+//   .contact-sale__address    the direct address
+//   .contact-sale__route      the link to the DEALS form
+//   .contact-sale__top        the back-to-top row
+//
+// The prose keeps `white-space: pre-line` because the locale strings carry their
+// own paragraph breaks: the copy is written as paragraphs in the JSON, and a
+// stylesheet that reflowed them into one block would be rewriting the text.
+//
+// No fill, no elevation, no rounding: the page is prose on the canvas, and the
+// only surfaces are the published emphasis tiers.
+
+@use "../../Mixin" as *;
+
+.contact-sale__prose {
+	margin: 0;
+	max-width: 62ch;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--Foreground);
+	white-space: pre-line;
+}
+
+.contact-sale__subheading {
+	margin: 0;
+	max-width: 62ch;
+	font-family: var(--FontMono);
+	font-size: var(--type-sub);
+	font-weight: 500;
+	line-height: var(--type-sub-line);
+	color: var(--Foreground);
+}
+
+// The quiet panel adds the padding the `.emphasis-quiet` tier does not carry.
+// A tier publishes a surface; the component that uses it publishes its insides.
+.contact-sale__panel {
+	max-width: 62ch;
+	padding: var(--space-reading) var(--space-group);
+}
+
+// The six features as a ruled list: one line each, separated by a hairline, so
+// the set reads as one list rather than as six paragraphs.
+.contact-sale__features {
+	margin: 0;
+	padding: 0;
+	max-width: 62ch;
+	list-style: none;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--Foreground);
+}
+
+.contact-sale__features > li {
+	margin: 0;
+	padding-block: var(--space-tight);
+}
+
+.contact-sale__features > li + li {
+	@include hairline(top);
+}
+
+// The two targets: the GitHub issue and the direct address. Both shrink to
+// their own text and carry their own padding, because a target is as wide as
+// what it says.
+.contact-sale__action,
+.contact-sale__address {
+	display: inline-block;
+	align-self: flex-start;
+	padding: var(--space-reading) var(--space-group);
+	text-decoration: none;
+}
+
+.contact-sale__action {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+}
+
+.contact-sale__address {
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	text-wrap: nowrap;
+}
+
+.contact-sale__action:hover,
+.contact-sale__action:focus-visible,
+.contact-sale__address:hover,
+.contact-sale__address:focus-visible {
+	text-decoration: underline;
+}
+
+.contact-sale__route {
+	@include mono-meta;
+	@include track(0.08em);
+	color: var(--Foreground);
+	text-decoration: none;
+}
+
+.contact-sale__route:hover,
+.contact-sale__route:focus-visible {
+	text-decoration: underline;
+}
+
+.contact-sale__top {
+	@include mono-meta;
+	@include track(0.08em);
+	margin: 0;
+}
+
+.contact-sale__top a {
+	color: var(--Foreground);
+	text-decoration: none;
+}
+
+.contact-sale__top a:hover,
+.contact-sale__top a:focus-visible {
+	text-decoration: underline;
+}

@@ -1,0 +1,57 @@
+// The Contact hub - four bands of records and one address.
+//
+// Publishes:
+//   .contact-hub__requests  the record stack inside a band
+//   .contact-hub__address   the one address that is not a form
+//   .contact-hub__top       the back-to-top row
+//
+// Nothing here restates a block: the bands are `RecordBand`, the records are
+// `RecordEntry`, and the address uses the published `.emphasis-expressive` tier
+// for its surface. This file only owns the three things the hub composes with -
+// how its records stack, how wide the address is, and where the way back to the
+// top sits.
+
+@use "../../Mixin" as *;
+
+// One column of records. The stack is the band body's own rhythm, so the gap
+// here is the tight one: records are read as a set, not as separate subjects.
+.contact-hub__requests {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-reading);
+}
+
+// The address is the band's expressive element: `--Primary` fill from the tier,
+// and the padding that turns a link into a target. It shrinks to its own text
+// instead of spanning the band, because it is one address, not a banner.
+.contact-hub__address {
+	display: inline-block;
+	align-self: flex-start;
+	padding: var(--space-reading) var(--space-group);
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	text-decoration: none;
+	text-wrap: nowrap;
+}
+
+.contact-hub__address:hover,
+.contact-hub__address:focus-visible {
+	text-decoration: underline;
+}
+
+// The way back to the top, at meta weight: an affordance, never a claim.
+.contact-hub__top {
+	@include mono-meta;
+	@include track(0.08em);
+	margin: 0;
+}
+
+.contact-hub__top a {
+	color: var(--Foreground);
+	text-decoration: none;
+}
+
+.contact-hub__top a:hover,
+.contact-hub__top a:focus-visible {
+	text-decoration: underline;
+}

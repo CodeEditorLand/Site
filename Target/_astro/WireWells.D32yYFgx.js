@@ -1,0 +1,1 @@
+function t(t="[data-record-well-copy]"){const e=Array.from(document.querySelectorAll(t));for(const o of e){const t=o.innerHTML;o.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(o.dataset.copy??"")}catch{return}o.textContent="copied",setTimeout(()=>{o.innerHTML=t},1800)})}}export{t};

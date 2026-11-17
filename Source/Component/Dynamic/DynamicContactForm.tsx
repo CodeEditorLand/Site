@@ -55,8 +55,34 @@ const ProviderLabel = (Sub?: string): string => {
 	return "Auth0";
 };
 
+// ── Required marker ───────────────────────────────────────────────────────
+
+/**
+ * The asterisk every required label shares, so it is written once.
+ *
+ * Module-level rather than declared inside the form: a component defined in
+ * another component's body is a new component type on every render, which
+ * remounts its DOM. This one has no state, but it should still be a type, not a
+ * value.
+ */
+const RequiredMark = () => (
+	<span className="contact-form__required" aria-hidden="true">
+		*
+	</span>
+);
+
 // ── Inner form component ──────────────────────────────────────────────────
 
+/**
+ * The form body. Presentation changed; behaviour did not.
+ *
+ * Every handler, the Auth0 context, the field types, the validation rules, the
+ * mailto/copy payloads and the pair reference are exactly as they were. What
+ * changed is the surface: the request's title and subtitle moved up to
+ * `ContactPage` (the page owns its only `h1`), and every Tailwind string inside
+ * the form was replaced by a class from `Contact/_Form.scss`, so the form's
+ * anatomy is in one partial instead of in the markup.
+ */
 const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 	const { user: User } = useAuth0();
 
@@ -162,191 +188,181 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 	// Always build the full href; validation fires only on user interaction.
 	const MailtoHref = BuildMailtoHref(Config, Values, Year, PairId);
 
-	const BadgeColor = Config.Destructive
-		? "border-red-200 bg-red-50 text-red-700"
-		: Config.Article
-			? "border-blue-200 bg-blue-50 text-blue-700"
-			: "border-[var(--Border)] bg-mute text-muted-foreground";
+	/** The required marker every label shares, so it is written once. */
 
 	return (
-		<div className="mx-auto max-w-2xl space-y-8 px-4 py-12">
-			{/* Income code badge + header */}
-			<div className="space-y-3">
-				<div className="flex flex-wrap items-center gap-3">
+		<div className="contact-form">
+			<div className="contact-form__inner">
+				{/* Income code, legal basis, response window and handler */}
+				<div className="contact-form__meta">
 					<span
-						className={`inline-flex items-center gap-2 border px-3 py-1 text-foreground`}
+						className="contact-form__pair"
 						title="Pair reference - income code + instance ID. Quote this in all replies."
 					>
 						{Config.Code}-{PairId}
 					</span>
 					{Config.Article && (
-						<span className="bg-mute inline-flex items-center border border-[var(--Border)] px-2 py-0.5 font-mono text-sm text-muted-foreground">
-							{Config.Article}
-						</span>
+						<span className="contact-form__tag">{Config.Article}</span>
 					)}
-					<span className="bg-mute inline-flex items-center px-2 py-0.5 font-mono text-sm text-muted-foreground">
-						{Config.ResponseDays}d SLA
-					</span>
+					<span className="contact-form__tag">{Config.ResponseDays}d SLA</span>
 				</div>
-				<h1 className="font-mono text-lg font-medium tracking-tight">
-					{Config.Title}
-				</h1>
-				<p className="text-muted-foreground">{Config.Subtitle}</p>
-				<p className="font-mono text-sm text-muted-foreground">
-					Sends to:{" "}
-					<span className="text-foreground">{Config.To}</span>
+
+				<p className="contact-form__handler">
+					Sends to: <span className="contact-form__handler-value">{Config.To}</span>
 				</p>
-			</div>
 
-			{/* Form */}
-			<div className="StaccatoCard space-y-5 bg-card p-6">
-				{Config.Fields.map((Field) => {
-					const Value = Values[Field.id];
+				{/* Form */}
+				<div className="contact-form__fields">
+					{Config.Fields.map((Field) => {
+						const Value = Values[Field.id];
 
-					const Error = Errors[Field.id];
+						const Error = Errors[Field.id];
 
-					if (Field.type === "checkbox") {
-						return (
-							<div key={Field.id}>
-								<label className="flex cursor-pointer items-start gap-3 text-sm">
-									<input
-										type="checkbox"
-										className="mt-0.5 accent-[var(--Primary)]"
-										checked={Value === "true"}
+						if (Field.type === "checkbox") {
+							return (
+								<div key={Field.id} className="contact-form__field">
+									<label className="contact-form__check">
+										<input
+											type="checkbox"
+											className="contact-form__checkbox"
+											checked={Value === "true"}
+											onChange={(E) =>
+												HandleChange(
+													Field.id,
+
+													E.target.checked
+														? "true"
+														: "false",
+												)
+											}
+										/>
+										<span className="contact-form__check-label">
+											{Field.label}
+										</span>
+									</label>
+									{Error && (
+										<p className="contact-form__error">{Error}</p>
+									)}
+								</div>
+							);
+						}
+
+						if (Field.type === "checkboxes") {
+							const Selected = (Value as string[]) || [];
+
+							return (
+								<div key={Field.id} className="contact-form__field">
+									<label className="contact-form__label">
+										{Field.label}
+										{Field.required && <RequiredMark />}
+									</label>
+									<div className="contact-form__options">
+										{(Field.options || []).map((Opt) => (
+											<label
+												key={Opt}
+
+												className="contact-form__option"
+											>
+												<input
+													type="checkbox"
+													className="contact-form__checkbox"
+													checked={Selected.includes(Opt)}
+
+													onChange={() =>
+														HandleCheckboxGroup(
+															Field.id,
+
+															Opt,
+														)
+													}
+												/>
+												{Opt}
+											</label>
+										))}
+									</div>
+									{Error && (
+										<p className="contact-form__error">{Error}</p>
+									)}
+								</div>
+							);
+						}
+
+						if (Field.type === "select") {
+							return (
+								<div key={Field.id} className="contact-form__field">
+									<label
+										htmlFor={Field.id}
+										className="contact-form__label"
+									>
+										{Field.label}
+										{Field.required && <RequiredMark />}
+									</label>
+									<select
+										id={Field.id}
+										className="contact-form__input"
+										value={(Value as string) || ""}
 										onChange={(E) =>
-											HandleChange(
-												Field.id,
+											HandleChange(Field.id, E.target.value)
+										}
+									>
+										<option value="">Select...</option>
+										{(Field.options || []).map((Opt) => (
+											<option key={Opt} value={Opt}>
+												{Opt}
+											</option>
+										))}
+									</select>
+									{Error && (
+										<p className="contact-form__error">{Error}</p>
+									)}
+								</div>
+							);
+						}
 
-												E.target.checked
-													? "true"
-													: "false",
-											)
+						if (Field.type === "textarea") {
+							return (
+								<div key={Field.id} className="contact-form__field">
+									<label
+										htmlFor={Field.id}
+										className="contact-form__label"
+									>
+										{Field.label}
+										{Field.required && <RequiredMark />}
+									</label>
+									<textarea
+										id={Field.id}
+										rows={4}
+										className="contact-form__input"
+										placeholder={Field.placeholder}
+										value={(Value as string) || ""}
+										onChange={(E) =>
+											HandleChange(Field.id, E.target.value)
 										}
 									/>
-									<span className="leading-snug">
-										{Field.label}
-									</span>
-								</label>
-								{Error && (
-									<p className="mt-1 text-sm text-red-600">
-										{Error}
-									</p>
-								)}
-							</div>
-						);
-					}
-
-					if (Field.type === "checkboxes") {
-						const Selected = (Value as string[]) || [];
-
-						return (
-							<div key={Field.id}>
-								<label className="mb-2 block text-sm font-medium">
-									{Field.label}
-									{Field.required && (
-										<span
-											className="ml-1 text-red-500"
-											aria-hidden="true"
-										>
-											*
-										</span>
+									{Field.hint && (
+										<p className="contact-form__hint">{Field.hint}</p>
 									)}
-								</label>
-								<div className="space-y-2">
-									{(Field.options || []).map((Opt) => (
-										<label
-											key={Opt}
-
-											className="flex cursor-pointer items-center gap-2.5 text-sm"
-										>
-											<input
-												type="checkbox"
-												className="accent-[var(--Primary)]"
-												checked={Selected.includes(Opt)}
-
-												onChange={() =>
-													HandleCheckboxGroup(
-														Field.id,
-
-														Opt,
-													)
-												}
-											/>
-											{Opt}
-										</label>
-									))}
+									{Error && (
+										<p className="contact-form__error">{Error}</p>
+									)}
 								</div>
-								{Error && (
-									<p className="mt-1 text-sm text-red-600">
-										{Error}
-									</p>
-								)}
-							</div>
-						);
-					}
+							);
+						}
 
-					if (Field.type === "select") {
+						// text / email
 						return (
-							<div key={Field.id}>
+							<div key={Field.id} className="contact-form__field">
 								<label
 									htmlFor={Field.id}
-									className="mb-1 block text-sm font-medium"
+									className="contact-form__label"
 								>
 									{Field.label}
-									{Field.required && (
-										<span
-											className="ml-1 text-red-500"
-											aria-hidden="true"
-										>
-											*
-										</span>
-									)}
+									{Field.required && <RequiredMark />}
 								</label>
-								<select
+								<input
 									id={Field.id}
-									className="w-full border border-[var(--Border)] bg-card px-3 py-2 text-sm focus:outline-2 focus:outline-[var(--Primary)]"
-									value={(Value as string) || ""}
-									onChange={(E) =>
-										HandleChange(Field.id, E.target.value)
-									}
-								>
-									<option value="">Select...</option>
-									{(Field.options || []).map((Opt) => (
-										<option key={Opt} value={Opt}>
-											{Opt}
-										</option>
-									))}
-								</select>
-								{Error && (
-									<p className="mt-1 text-sm text-red-600">
-										{Error}
-									</p>
-								)}
-							</div>
-						);
-					}
-
-					if (Field.type === "textarea") {
-						return (
-							<div key={Field.id}>
-								<label
-									htmlFor={Field.id}
-									className="mb-1 block text-sm font-medium"
-								>
-									{Field.label}
-									{Field.required && (
-										<span
-											className="ml-1 text-red-500"
-											aria-hidden="true"
-										>
-											*
-										</span>
-									)}
-								</label>
-								<textarea
-									id={Field.id}
-									rows={4}
-									className="w-full border border-[var(--Border)] bg-card px-3 py-2 text-sm focus:outline-2 focus:outline-[var(--Primary)]"
+									type={Field.type}
+									className="contact-form__input"
 									placeholder={Field.placeholder}
 									value={(Value as string) || ""}
 									onChange={(E) =>
@@ -354,147 +370,105 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 									}
 								/>
 								{Field.hint && (
-									<p className="mt-0.5 text-sm text-card-foreground">
-										{Field.hint}
-									</p>
+									<p className="contact-form__hint">{Field.hint}</p>
 								)}
-								{Error && (
-									<p className="mt-1 text-sm text-red-600">
-										{Error}
-									</p>
-								)}
+								{Error && <p className="contact-form__error">{Error}</p>}
 							</div>
 						);
-					}
+					})}
+				</div>
 
-					// text / email
-					return (
-						<div key={Field.id}>
-							<label
-								htmlFor={Field.id}
-								className="mb-1 block text-sm font-medium"
-							>
-								{Field.label}
-								{Field.required && (
-									<span
-										className="ml-1 text-red-500"
-										aria-hidden="true"
-									>
-										*
-									</span>
-								)}
-							</label>
-							<input
-								id={Field.id}
-								type={Field.type}
-								className="w-full border border-[var(--Border)] bg-card px-3 py-2 text-sm focus:outline-2 focus:outline-[var(--Primary)]"
-								placeholder={Field.placeholder}
-								value={(Value as string) || ""}
-								onChange={(E) =>
-									HandleChange(Field.id, E.target.value)
-								}
-							/>
-							{Field.hint && (
-								<p className="mt-0.5 text-sm text-card-foreground">
-									{Field.hint}
-								</p>
-							)}
-							{Error && (
-								<p className="mt-1 text-sm text-red-600">
-									{Error}
-								</p>
-							)}
-						</div>
-					);
-				})}
-			</div>
+				{/* Three action options */}
+				<div className="contact-form__actions">
+					<p className="contact-form__actions-label">
+						How would you like to send this?
+					</p>
 
-			{/* Three action options */}
-			<div className="space-y-4">
-				<p className="text-sm font-medium">
-					How would you like to send this?
-				</p>
-
-				{/* Option A - Email client */}
-				<a
-					href={MailtoHref}
-					onClick={Validate}
-					className={`StaccatoButton flex w-full items-center gap-3 border px-5 py-3 font-medium transition-all hover:bg-secondary focus:outline-2 focus:outline-[var(--Primary)] ${Config.Destructive ? "border-red-200 hover:bg-red-50" : "border-[var(--Border)]"}`}
-				>
-					<Mail className="h-4 w-4 shrink-0" aria-hidden="true" />
-					<div className="flex-1 text-left">
-						<div className="font-medium">Open in email client</div>
-						<div className="text-sm text-muted-foreground">
-							Opens your default mail app with the form pre-filled
-							as plain text - ready to review and send.
-						</div>
-					</div>
-				</a>
-
-				{/* Option B - Copy text */}
-				<button
-					type="button"
-					onClick={HandleCopy}
-					className="StaccatoButton flex w-full items-center gap-3 border border-[var(--Border)] px-5 py-3 font-medium transition-all hover:bg-secondary focus:outline-2 focus:outline-[var(--Primary)]"
-				>
-					<Copy className="h-4 w-4 shrink-0" aria-hidden="true" />
-					<div className="flex-1 text-left">
-						<div className="font-medium">
-							{CopyState === "copied"
-								? "Copied to clipboard"
-								: "Copy request text"}
-						</div>
-						<div className="text-sm text-muted-foreground">
-							Copies a formatted plain-text version with pair
-							reference{" "}
-							<span className="font-mono">
-								{Config.Code}-{PairId}
-							</span>{" "}
-							- paste into any email, ticket, or chat.
-						</div>
-					</div>
-				</button>
-
-				{/* Option C - Conversation (GitHub / external) */}
-				{Config.ConversationHref && (
+					{/* Option A - Email client. The one expressive element: this is
+					    the action the form exists for. */}
 					<a
-						href={Config.ConversationHref}
-
-						target="_blank"
-						rel="noopener noreferrer"
-						className="StaccatoButton flex w-full items-center gap-3 border border-[var(--Border)] px-5 py-3 font-medium transition-all hover:bg-secondary focus:outline-2 focus:outline-[var(--Primary)]"
+						href={MailtoHref}
+						onClick={Validate}
+						className={`contact-form__action emphasis-expressive${
+							Config.Destructive
+								? " contact-form__action--destructive"
+								: ""
+						}`}
 					>
-						<MessageSquare
-							className="h-4 w-4 shrink-0"
-							aria-hidden="true"
-						/>
-						<div className="flex-1 text-left">
-							<div className="font-medium">
-								Open a conversation
-							</div>
-							<div className="text-sm text-muted-foreground">
-								Start a public or private thread - good for
-								questions that benefit from community input.
-							</div>
-						</div>
+						<Mail aria-hidden="true" />
+						<span className="contact-form__action-text">
+							<span className="contact-form__action-title">
+								Open in email client
+							</span>
+							<span className="contact-form__action-note">
+								Opens your default mail app with the form pre-filled
+								as plain text - ready to review and send.
+							</span>
+						</span>
 					</a>
-				)}
-			</div>
 
-			{/* Pair reference explanation */}
-			<div className="bg-mute border border-[var(--Border)] px-5 py-4 text-sm text-muted-foreground">
-				<span className="font-mono font-medium text-foreground">
-					{Config.Code}-{PairId}
-				</span>{" "}
-				is your unique pair reference for this submission -{" "}
-				<span className="font-mono">{Config.Code}</span> identifies the
-				request type, <span className="font-mono">{PairId}</span> is the
-				instance ID. Quote{" "}
-				<span className="font-mono text-foreground">
-					{Config.Code}-{PairId}
-				</span>{" "}
-				in any reply so our team can locate and track your request
-				immediately without searching by email address.
+					{/* Option B - Copy text */}
+					<button
+						type="button"
+						onClick={HandleCopy}
+						className="contact-form__action"
+					>
+						<Copy aria-hidden="true" />
+						<span className="contact-form__action-text">
+							<span className="contact-form__action-title">
+								{CopyState === "copied"
+									? "Copied to clipboard"
+									: "Copy request text"}
+							</span>
+							<span className="contact-form__action-note">
+								Copies a formatted plain-text version with pair
+								reference{" "}
+								<span className="contact-form__mono">
+									{Config.Code}-{PairId}
+								</span>{" "}
+								- paste into any email, ticket, or chat.
+							</span>
+						</span>
+					</button>
+
+					{/* Option C - Conversation (GitHub / external) */}
+					{Config.ConversationHref && (
+						<a
+							href={Config.ConversationHref}
+
+							target="_blank"
+							rel="noopener noreferrer"
+							className="contact-form__action"
+						>
+							<MessageSquare aria-hidden="true" />
+							<span className="contact-form__action-text">
+								<span className="contact-form__action-title">
+									Open a conversation
+								</span>
+								<span className="contact-form__action-note">
+									Start a public or private thread - good for
+									questions that benefit from community input.
+								</span>
+							</span>
+						</a>
+					)}
+				</div>
+
+				{/* Pair reference explanation */}
+				<div className="contact-form__note">
+					<span className="contact-form__mono contact-form__mono--strong">
+						{Config.Code}-{PairId}
+					</span>{" "}
+					is your unique pair reference for this submission -{" "}
+					<span className="contact-form__mono">{Config.Code}</span> identifies the
+					request type, <span className="contact-form__mono">{PairId}</span> is
+					the instance ID. Quote{" "}
+					<span className="contact-form__mono contact-form__mono--strong">
+						{Config.Code}-{PairId}
+					</span>{" "}
+					in any reply so our team can locate and track your request
+					immediately without searching by email address.
+				</div>
 			</div>
 		</div>
 	);

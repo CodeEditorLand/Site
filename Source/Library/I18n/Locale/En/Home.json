@@ -103,6 +103,81 @@
 					]
 				}
 			}
+		},
+		"claim": {
+			"kicker": "# LAND_01",
+			"runtime": "RUST + TAURI",
+			"engine": "NO ELECTRON",
+			"route": "/COMPAT: VS CODE",
+			"compat": "EXTENSIONS / UNMODIFIED",
+			"project": "LAND:",
+			"relation": "EDITOR WITHOUT CHROMIUM",
+			"standfirst": "A native code editor with the soul of VS Code - and none of the browser. Built on Rust and Tauri, compatible with the extensions you already use."
+		},
+		"status": {
+			"copy": "STATUS: SOURCE ACTIVE",
+			"chip": {
+				"release": "PRE-RELEASE",
+				"installers": "INSTALLERS PENDING",
+				"extensions": "EXTENSION COVERAGE IN PROGRESS"
+			}
+		},
+		"step": {
+			"mountain": {
+				"label": "Mountain",
+				"line": "Native Rust backend: files, terminals, processes and gRPC IPC - no Electron main process."
+			},
+			"cocoon": {
+				"label": "Cocoon",
+				"line": "Extension host: unmodified VS Code extensions on the VS Code API surface."
+			},
+			"sky": {
+				"label": "Sky",
+				"line": "Astro UI in the operating system WebView; Tauri events bridged to the workbench APIs."
+			},
+			"wind": {
+				"label": "Wind",
+				"line": "Effect-TS workbench services, one typed layer stack per runtime target."
+			}
+		},
+		"fact": {
+			"target": {
+				"label": "TARGET",
+				"value": "MACOS / WINDOWS / LINUX"
+			},
+			"license": {
+				"label": "LICENSE",
+				"value": "CC0"
+			},
+			"signal": {
+				"label": "SIGNAL",
+				"value": "LOCAL-FIRST"
+			},
+			"species": {
+				"label": "SPECIES",
+				"value": "NOCTUA PRONUBA"
+			},
+			"temp": {
+				"label": "TEMP",
+				"value": "16.2 C"
+			},
+			"wind": {
+				"label": "WIND",
+				"value": "01.8 KM/H"
+			}
+		},
+		"plate": {
+			"alt": "Rain-speckled glass reflecting a green light at night",
+			"caption": "Night glass: rain on the pane, one green light behind it."
+		},
+		"entry": {
+			"documentation": "/READ THE DOCUMENTATION",
+			"source": "/BUILD FROM SOURCE"
+		},
+		"program": {
+			"verbs": "WALK\u2001LISTEN\u2001SIGNAL",
+			"values": "NATIVE\u2001OPEN\u2001CROSS-PLATFORM",
+			"actions": "OPEN\u2001EDIT\u2001SHIP"
 		}
 	},
 	"nav": {

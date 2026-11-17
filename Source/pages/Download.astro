@@ -1,20 +1,64 @@
 ---
-import { DynamicReleaseManifest } from "../Component/Dynamic/DynamicReleaseManifest";
+/**
+ * Download - the installation contract: can I install this today, and if not,
+ * what can I do instead?
+ *
+ * The page is a masthead and five bands, in that order:
+ *
+ *   1. status       the answer, the three platforms, and the one action that exists
+ *   2. requirements what each platform needs, and what a source build needs
+ *   3. manifest     what RELEASE_01 publishes, and the verification material
+ *   4. previous     the releases before this one - none, said in one line
+ *   5. transparency the telemetry and build-profile disclosure this page carried
+ *
+ * The page owns the band order and nothing else (BRIDGE §2.1): every row, label
+ * and figure lives in `Component/Dynamic/Download/Data.ts`, every band body is a
+ * component, and every block is the Record layer's.
+ *
+ * Band 5 is the one section still built by a `.tsx` island
+ * (`DynamicTransparency`). It is outside this card's ownership, so it keeps its
+ * markup, its hydrating noise and its four strategy commands exactly as they
+ * were; the band supplies its h2 and standfirst, and the island is asked for its
+ * body only.
+ */
+import DownloadMasthead from "../Component/Dynamic/DownloadMasthead.astro";
+import DynamicPreviousReleases from "../Component/Dynamic/DynamicPreviousReleases.astro";
+import DynamicReleaseManifest from "../Component/Dynamic/DynamicReleaseManifest.astro";
+import DynamicSystemRequirements from "../Component/Dynamic/DynamicSystemRequirements.astro";
 import { DynamicTransparency } from "../Component/Dynamic/DynamicTransparency";
 import { Header } from "../Component/Layout/Header";
+import RecordBand from "../Component/Record/RecordBand.astro";
+import RecordMatrix from "../Component/Record/RecordMatrix.astro";
+import RecordWell from "../Component/Record/RecordWell.astro";
+import {
+	Availability,
+	AvailabilityCaption,
+	AvailabilityColumns,
+	Bands,
+	BuildLines,
+	ManifestPlatforms,
+	Marks,
+	PreviousReleases,
+	ReleaseColumns,
+	Requirements,
+	Toolchain,
+	Verification,
+} from "../Component/Dynamic/Download/Data";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
 const T = GetI18n();
 
+const Band = Bands(T);
+
+/**
+ * The disclosure band's body, carried over unchanged from this page's previous
+ * version: six telemetry policy items, nine named build profiles, sixteen test
+ * permutations, four deployment strategies with their commands, and the source
+ * URL. `Title` and `Subtitle` are absent on purpose - they are the band's heading
+ * and standfirst now, so the island renders its body without a second h2.
+ */
 const TransparencyContent = {
-	Title: T("download.transparency.title", {
-		defaultValue: "Telemetry Is Compile-Gated in Land.",
-	}),
-	Subtitle: T("download.transparency.subtitle", {
-		defaultValue:
-			"Telemetry and tracing are behind named Rust feature gates in the native layer. Nothing is emitted by default. Each build profile explicitly lists which paths are compiled in.",
-	}),
 	Policy: [
 		{
 			Identifier: "no-telemetry-default",
@@ -194,58 +238,12 @@ const TransparencyContent = {
 				"Run Land in the browser without installing anything. No native shell needed.",
 			Icon: "Layers",
 			Command: "bash Maintain/Release.sh --profile web-browser",
-			Feature: [
-				"No Install",
-				"Browser Only",
-				"Web Deploy",
-				"OXC Bundled",
-			],
+			Feature: ["No Install", "Browser Only", "Web Deploy", "OXC Bundled"],
 		},
 	],
 	MatrixPermutation: 16,
 	SourceURL: "https://github.com/CodeEditorLand/Land",
 } as const;
-
-// Release manifest content - field-record grammar
-const ReleaseManifestContent = {
-	Title: T("download.page.title", { defaultValue: "Release Manifest" }),
-	Subtitle: T("download.page.subtitle", {
-		defaultValue:
-			"Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
-	}),
-	ReleaseIndex: "RELEASE_01",
-	Platforms: [
-		{
-			Name: "macOS",
-			Channel: "PUBLIC",
-			Arch: "AARCH64 / X86_64",
-			Signing: "IN PREPARATION" as const,
-			Size: "-",
-			Checksum: "-",
-			Status: "active" as const,
-			DownloadUrl: "https://github.com/CodeEditorLand/Land/releases",
-			DownloadLabel: "VIEW SOURCE BUILDS",
-		},
-		{
-			Name: "Windows",
-			Channel: "PUBLIC",
-			Arch: "X86_64",
-			Signing: "IN PREPARATION" as const,
-			Size: "-",
-			Checksum: "-",
-			Status: "preparing" as const,
-		},
-		{
-			Name: "Linux",
-			Channel: "PUBLIC",
-			Arch: "X86_64",
-			Signing: "IN PREPARATION" as const,
-			Size: "-",
-			Checksum: "-",
-			Status: "preparing" as const,
-		},
-	],
-};
 
 const MetaTitle = T("meta.downloads.title", {
 	defaultValue:
@@ -259,96 +257,70 @@ const MetaDescription = T("meta.downloads.description", {
 
 <Base Title={MetaTitle} Description={MetaDescription}>
 	<Header client:load Mode="functional" />
-	<div
-		class="container mx-auto flex flex-wrap items-center justify-center gap-3 px-4 pt-6 text-foreground"
-	>
-		<img
-			alt="Land"
-			src="/Asset/Logo/Glyph/Land.svg"
-			width="24"
-			height="24"
+
+	<DownloadMasthead
+		title={T("download:page.title", { defaultValue: "Download Land" })}
+		sentence={T("download:status.sentence", {
+			defaultValue:
+				"Nothing here is downloadable yet. Land builds from source on macOS, Windows and Linux; public installers, signing and verification artifacts are still in preparation.",
+		})}
+		marks={Marks}
+	/>
+
+	<RecordBand band={Band.Status}>
+		<RecordMatrix
+			columns={AvailabilityColumns}
+			rows={Availability}
+			caption={AvailabilityCaption}
 		/>
-		<jelly-badge
-			variant="mint"
-			shape="square"
-			style={`--jelly-fill:var(--SpinegRPCMute);--jelly-label:var(--SpinegRPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-		>
-			Telemetry Feature Gated&#x2001;<span
-				class="flat h-1.5 w-1.5"
-				style="background-color:var(--SpinegRPC)"
-				aria-hidden="true"></span>
-		</jelly-badge>
-		<jelly-badge
-			variant="mint"
-			shape="square"
-			style={`--jelly-fill:var(--SpinegRPCMute);--jelly-label:var(--SpinegRPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-		>
-			CC0 Licensed
-		</jelly-badge>
-		<jelly-badge
-			variant="platinum"
-			shape="square"
-			style={`--jelly-fill:var(--Mute);--jelly-label:var(--MuteForeground);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-		>
-			Signing Planned
-		</jelly-badge>
-		<jelly-badge
-			variant="azure"
-			shape="square"
-			style={`--jelly-fill:var(--SpineIPCMute);--jelly-label:var(--SpineIPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-		>
-			Native Rust&#x2001;<img
-				src="/Image/Rust.svg"
-				alt=""
-				width="14"
-				height="14"
-				class="opacity-70"
-				aria-hidden="true"
-			/>
-		</jelly-badge>
-		<jelly-badge
-			variant="amber"
-			shape="square"
-			style={`--jelly-fill:var(--ExtensionTauriMute);--jelly-label:var(--ExtensionTauriFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-		>
-			Tauri&#x2001;<img
-				src="/Image/Tauri.svg"
-				alt=""
-				width="14"
-				height="14"
-				class="opacity-70"
-				aria-hidden="true"
-			/>
-		</jelly-badge>
-		<jelly-badge
-			variant="platinum"
-			shape="square"
-			style={`--jelly-fill:var(--ExtensionEffectTypeScriptMute);--jelly-label:var(--ExtensionEffectTypeScriptFore);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-		>
-			Effect-TS&#x2001;<img
-				src="/Image/EffectTS.svg"
-				alt=""
-				width="14"
-				height="14"
-				class="opacity-70"
-				aria-hidden="true"
-			/>
-		</jelly-badge>
-		<jelly-badge
-			variant="platinum"
-			shape="square"
-			style={`--jelly-fill:var(--Mute);--jelly-label:var(--MuteForeground);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-		>
-			macOS + Windows + Linux Targets
-		</jelly-badge>
-		<jelly-badge
-			variant="platinum"
-			shape="square"
-			style={`--jelly-fill:var(--Mute);--jelly-label:var(--MuteForeground);--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-		>
-			Unmodified Extensions
-		</jelly-badge>
-	</div>
-	<DynamicReleaseManifest Content={ReleaseManifestContent} client:load />
-	<DynamicTransparency Content={TransparencyContent} client:load />
+		<RecordWell
+			label={T("download:status.well", {
+				defaultValue: "BUILD FROM SOURCE",
+			})}
+			language="sh"
+			lines={BuildLines}
+		/>
+	</RecordBand>
+
+	<RecordBand band={Band.Requirements}>
+		<DynamicSystemRequirements
+			platforms={Requirements(T)}
+			toolchain={Toolchain}
+			toolchainLabel={T("download:requirements.toolchain", {
+				defaultValue: "BUILD TOOLCHAIN (SOURCE)",
+			})}
+		/>
+	</RecordBand>
+
+	<RecordBand band={Band.Manifest}>
+		<DynamicReleaseManifest
+			platforms={ManifestPlatforms}
+			verification={Verification(T)}
+			verificationHeading={T("download:verification.title", {
+				defaultValue: "Verification Will Ship With Public Releases.",
+			})}
+			empty={T("download:manifest.empty", {
+				defaultValue: "No release published yet.",
+			})}
+		/>
+	</RecordBand>
+
+	<RecordBand band={Band.Previous}>
+		<DynamicPreviousReleases
+			releases={PreviousReleases}
+			columns={ReleaseColumns}
+			empty={T("download:previousReleases.description", {
+				defaultValue:
+					"No public releases yet. Older versions will appear here once public releases ship.",
+			})}
+		/>
+	</RecordBand>
+
+	<RecordBand band={Band.Transparency}>
+		<DynamicTransparency
+			Content={TransparencyContent}
+			ClassName="download-transparency"
+			client:load
+		/>
+	</RecordBand>
 </Base>

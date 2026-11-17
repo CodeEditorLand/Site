@@ -1,0 +1,18 @@
+// DynamicPreviousReleases - the releases before this one.
+//
+// Publishes:
+//   .download-releases__empty  the sentence an empty release list says
+//
+// Owned by P7. The populated state renders RecordMatrix, whose anatomy is the
+// block's; this partial only gives the empty state a voice, so it publishes one
+// class and nothing else.
+
+@use "../Mixin" as *;
+
+.download-releases__empty {
+	margin: 0;
+	max-width: 62ch;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--MuteForeground);
+}

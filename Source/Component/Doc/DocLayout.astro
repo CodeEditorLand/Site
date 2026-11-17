@@ -1,0 +1,76 @@
+---
+/**
+ * DocLayout - the documentation column: a sticky navigation rail beside the
+ * content column, and the same navigation collapsed into a panel above it on
+ * narrow viewports.
+ *
+ * Both pages that have a sidebar render this instead of retyping the aside, so
+ * the rail's width, its sticky behaviour, its own scroll area and the mobile
+ * panel are one decision in one file.
+ *
+ * Two notes on what this file does NOT do:
+ *
+ * - **It does not render `<main id="main-content">`.** `Base.astro` already
+ *   owns that id, and a second element with it is an invalid duplicate that the
+ *   skip link resolves against the first match anyway. This shell's `<main>`
+ *   carries no id.
+ * - **It does not wrap the content in a container.** The page owns its own
+ *   container and gutters; the shell only lays the rail and the column out.
+ *
+ * `id="top"` is here because the documentation pages link back to `#top` and
+ * nothing on the page defined it.
+ *
+ * The sidebar is an island (`client:load`) because it collapses: it is the one
+ * part of this shell that hydrates.
+ */
+import { GetI18n } from "../../Library/I18n/Server";
+import { DynamicDocSidebar } from "../Dynamic/DynamicDocSidebar";
+
+import type { DocSection } from "../Dynamic/Interface/Content/Page/Doc.js";
+
+interface Props {
+	sections: DocSection[];
+
+	/** The current page's collection id, so the rail can mark it. */
+	activeId?: string;
+}
+
+const { sections, activeId } = Astro.props;
+
+const T = GetI18n();
+
+const SidebarTitle = T("sidebar.title", {
+	ns: "doc",
+	defaultValue: "Documentation",
+});
+---
+
+<div class="doc-layout" id="top">
+	<div class="doc-layout__shell">
+		<aside class="doc-layout__aside" aria-label="Documentation navigation">
+			<div class="doc-layout__sticky">
+				<p class="doc-layout__title">{SidebarTitle}</p>
+				<DynamicDocSidebar
+					Sections={sections}
+					ActiveId={activeId}
+					client:load
+				/>
+				<div class="doc-layout__foot">
+					<a class="doc-layout__rust" href="/Doc/Rust"
+						>Rust API <span aria-hidden="true">↗</span></a
+					>
+				</div>
+			</div>
+		</aside>
+
+		<main class="doc-layout__main">
+			<DynamicDocSidebar
+				Sections={sections}
+				ActiveId={activeId}
+				Mobile={true}
+				client:load
+			/>
+			<slot />
+		</main>
+	</div>
+</div>

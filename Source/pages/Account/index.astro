@@ -1,4 +1,6 @@
 ---
+import AuthShell from "../../Component/Auth/AuthShell.astro";
+import { AccountCrumbs, AuthFrameFor } from "../../Component/Auth/Data";
 import DynamicAccountProfile from "../../Component/Dynamic/DynamicAccountProfile";
 import DynamicAuthHeader from "../../Component/Dynamic/DynamicAuthHeader";
 import Base from "../../Layout/Base.astro";
@@ -16,6 +18,12 @@ const MetaTitle = T("meta.account.title", {
 const MetaDescription = T("meta.account.description", {
 	defaultValue: "Manage your Code Editor Land account and profile.",
 });
+
+/* The profile surface is a field table, not a form, so this is the one route
+   that asks the shell for the wide measure. Reported on the card. */
+const Frame = AuthFrameFor("account", T);
+
+const Crumbs = AccountCrumbs(T);
 ---
 
 <Base
@@ -30,54 +38,42 @@ const MetaDescription = T("meta.account.description", {
 		ClientIdentifier={Auth0ClientIdentifier}
 	/>
 
-	<main id="main-content">
-		<div class="container mx-auto max-w-5xl px-4">
-			<!-- Breadcrumbs -->
-			<nav aria-label="Breadcrumb" class="pt-6">
-				<ol
-					class="flex flex-wrap items-center space-x-2 text-muted-foreground"
-				>
-					<li>
-						<a
-							href="/"
-							class="transition-colors hover:text-foreground"
-							>{
-								T("common.breadcrumb.home", {
-									defaultValue: "Home",
-								})
-							}</a
-						>
-					</li>
-					<li class="mx-2">/</li>
-					<li>
-						<a
-							href="/Dashboard"
-							class="transition-colors hover:text-foreground"
-							>{
-								T("common.breadcrumb.dashboard", {
-									defaultValue: "Dashboard",
-								})
-							}</a
-						>
-					</li>
-					<li class="mx-2">/</li>
-					<li>
-						<span class="font-medium text-foreground"
-							>{
-								T("common.breadcrumb.account", {
-									defaultValue: "Account",
-								})
-							}</span
-						>
-					</li>
-				</ol>
-			</nav>
-		</div>
+	<AuthShell frame={Frame} measure="wide">
+		<nav class="auth-shell__crumbs" aria-label="Breadcrumb">
+			<ol class="auth-shell__crumb-list">
+				{
+					Crumbs.map(({ Label, Href }, Index) => (
+						<li class="auth-shell__crumb">
+							{Href ? (
+								<a class="auth-shell__crumb-link" href={Href}>
+									{Label}
+								</a>
+							) : (
+								<span
+									class="auth-shell__crumb-current"
+									aria-current="page"
+								>
+									{Label}
+								</span>
+							)}
+							{Index < Crumbs.length - 1 && (
+								<span
+									class="auth-shell__crumb-separator"
+									aria-hidden="true"
+								>
+									/
+								</span>
+							)}
+						</li>
+					))
+				}
+			</ol>
+		</nav>
 
 		<DynamicAccountProfile
 			client:load
 			Domain={Auth0Domain}
 			ClientIdentifier={Auth0ClientIdentifier}
 		/>
-	</main>
+	</AuthShell>
 </Base>

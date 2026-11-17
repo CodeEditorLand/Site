@@ -1,0 +1,71 @@
+---
+// ContactPage - the page chrome every Contact route shares.
+//
+// Fifteen routes opened with the same eleven lines: the document layout, the
+// header, a container, a breadcrumb list and an `h1` with a standfirst. That is
+// one page opening, so it lives here once and the routes compose it.
+//
+// What the shell owns, in order: the document (`Base`), the site header, the
+// breadcrumb trail, the page's only `h1` at `--type-section`, and the
+// standfirst at `--type-sub`. What it does not own is anything below that - a
+// request route hands in its form, the hub and the sale page hand in their
+// bands.
+//
+// `mode` is a pass-through to the site header, not a second layout: the hub
+// opens in the functional header it already used, and the request routes keep
+// the minimal one they already used.
+//
+// No script of its own: the header is the only island here.
+import Base from "../../Layout/Base.astro";
+import { Header } from "../Layout/Header";
+import ContactBreadcrumb from "./ContactBreadcrumb.astro";
+import type { ContactTrailItem } from "../../Library/Contact/Data.js";
+
+interface Props {
+	/** The document title. */
+	metaTitle: string;
+
+	/** The document description. */
+	metaDescription: string;
+
+	/** The breadcrumb trail, last crumb being this page. */
+	trail: readonly ContactTrailItem[];
+
+	/** The page's only `h1`. */
+	heading: string;
+
+	/** The sentence under the `h1`, when the page has one. */
+	standfirst?: string;
+
+	/** The site header's presentation, passed through unchanged. */
+	mode?: "minimal" | "functional";
+}
+
+const {
+	metaTitle,
+	metaDescription,
+	trail,
+	heading,
+	standfirst,
+	mode,
+} = Astro.props;
+---
+
+<Base
+	Title={metaTitle}
+	Description={metaDescription}
+	Url={Astro.url.href}
+	Language="en"
+>
+	<Header client:load {...mode ? { Mode: mode } : {}} />
+
+	<div class="contact-page">
+		<header class="contact-page__header">
+			<ContactBreadcrumb trail={trail} />
+			<h1 class="contact-page__heading">{heading}</h1>
+			{standfirst ? <p class="contact-page__standfirst">{standfirst}</p> : null}
+		</header>
+
+		<slot />
+	</div>
+</Base>

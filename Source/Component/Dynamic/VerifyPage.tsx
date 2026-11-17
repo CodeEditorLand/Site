@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 import { toast } from "sonner";
 
+import { useTranslation } from "react-i18next";
+
 import { AuthAPI as AuthAPIClass } from "../../Library/API/Authentication";
 
 import { DynamicEmailVerification } from "./DynamicEmailVerification";
@@ -14,6 +16,14 @@ const NavigateToPath = (Path: string): void => {
 	window.location.href = Path;
 };
 
+/**
+ * VerifyPage - the state machine behind /Verify.
+ *
+ * Three entry modes: `verify` (a token is in the URL), `pending` (no token,
+ * no reason - the email is still waiting to be clicked) and `failure` (the
+ * provider sent a reason). Each mode renders a report inside the route's
+ * AuthShell: what the state is, what happened, and the action available.
+ */
 const VerifyPage = ({
 	Content,
 	Route,
@@ -24,6 +34,8 @@ const VerifyPage = ({
 	OnResend,
 	OnNavigate,
 }: Property) => {
+	const { t: T } = useTranslation("verify");
+
 	const { Verification } = Content;
 
 	const Navigate = OnNavigate || NavigateToPath;
@@ -83,129 +95,91 @@ const VerifyPage = ({
 		}
 	};
 
+	const VerifiedStatus = T("auth.verifiedStatus", {
+		defaultValue: "EMAIL VERIFIED",
+	});
+
+	const ExpiredStatus = T("auth.expiredStatus", {
+		defaultValue: "LINK EXPIRED",
+	});
+
 	return (
-		<div className={`flex min-h-screen flex-col ${ClassName || ""}`}>
-			<div className="flex-1">
-				{(Route === "verify" || Route === "pending") && (
-					<DynamicEmailVerification
-						Content={Verification}
+		<div className={`auth-shell__form ${ClassName || ""}`}>
+			{(Route === "verify" || Route === "pending") && (
+				<DynamicEmailVerification
+					Content={Verification}
 
-						{...(Token ? { Token } : {})}
+					{...(Token ? { Token } : {})}
 
-						UserEmail={UserEmail}
+					UserEmail={UserEmail}
 
-						OnVerify={OnVerify || HandleVerify}
+					OnVerify={OnVerify || HandleVerify}
 
-						OnResend={OnResend || HandleResend}
+					OnResend={OnResend || HandleResend}
 
-						OnNavigate={Navigate}
-					/>
-				)}
+					OnNavigate={Navigate}
+				/>
+			)}
 
-				{Route === "success" && (
-					<section className="py-20">
-						<div className="container mx-auto px-4">
-							<div className="mx-auto max-w-md text-center">
-								<div className="flat border border-green-500 p-8">
-									<div className="flat mx-auto mb-4 flex h-16 w-16 items-center justify-center bg-green-100">
-										<svg
-											className="h-10 w-10 text-green-600"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke="currentColor"
-											aria-hidden="true"
-										>
-											<title>Email verified</title>
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												strokeWidth={2}
+			{Route === "success" && (
+				<div className="auth-shell__report" role="status">
+					<p className="auth-shell__status auth-shell__status--success">
+						{VerifiedStatus}
+					</p>
 
-												d="M5 13l4 4L19 7"
-											/>
-										</svg>
-									</div>
-									<h1 className="mb-2 text-2xl font-medium">
-										{"Email Verified Successfully!"}
-									</h1>
-									<p className="mb-6 text-muted-foreground">
-										{
-											"Your email has been successfully verified. You can now sign in to your account and start using Code Editor Land."
-										}
-									</p>
-									<button
-										type="button"
-										className="StaccatoButton flat inline-flex h-10 items-center justify-center gap-0 bg-primary px-4 py-2 font-medium text-primary-foreground transition-all hover:bg-primary disabled:pointer-events-none disabled:opacity-50"
-										onClick={() => Navigate("/")}
-									>
-										{"Continue to Homepage"}
-									</button>
-								</div>
-							</div>
-						</div>
-					</section>
-				)}
+					<p className="auth-shell__report-sentence">
+						{
+							"Your email has been successfully verified. You can now sign in to your account and start using Code Editor Land."
+						}
+					</p>
 
-				{Route === "failure" && (
-					<section className="py-20">
-						<div className="container mx-auto px-4">
-							<div className="mx-auto max-w-md text-center">
-								<div className="flat border border-destructive p-8">
-									<div className="flat mx-auto mb-4 flex h-16 w-16 items-center justify-center bg-red-100">
-										<svg
-											className="h-10 w-10 text-red-600"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke="currentColor"
-											aria-hidden="true"
-										>
-											<title>Verification failed</title>
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												strokeWidth={2}
+					<button
+						type="button"
+						className="auth-shell__primary emphasis-expressive"
+						onClick={() => Navigate("/")}
+					>
+						{"Continue to Homepage"}
+					</button>
+				</div>
+			)}
 
-												d="M6 18L18 6M6 6l12 12"
-											/>
-										</svg>
-									</div>
-									<h1 className="mb-2 text-2xl font-medium">
-										{"Verification Failed"}
-									</h1>
-									<p className="mb-2 text-muted-foreground">
-										{Reason
-											? `Error: ${Reason}`
-											: "This verification link is invalid or has expired."}
-									</p>
-									<p className="mb-6 text-muted-foreground">
-										{
-											"Please request a new verification email or contact support if the problem persists."
-										}
-									</p>
-									<div className="flex justify-center gap-4">
-										<button
-											type="button"
-											className="StaccatoButton flat inline-flex h-10 items-center justify-center gap-0 bg-primary px-4 py-2 font-medium text-primary-foreground transition-all hover:bg-primary"
-											onClick={() => Navigate("/Verify")}
-										>
-											{"Send New Verification Email"}
-										</button>
-										<button
-											type="button"
-											className="StaccatoButton flat inline-flex h-10 items-center justify-center gap-0 bg-background px-4 py-2 font-medium transition-all hover:bg-accent"
-											onClick={() =>
-												Navigate("/Account/SignIn")
-											}
-										>
-											{"Sign In"}
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</section>
-				)}
-			</div>
+			{Route === "failure" && (
+				<div className="auth-shell__report" role="alert">
+					<p className="auth-shell__status auth-shell__status--failure">
+						{ExpiredStatus}
+					</p>
+
+					<p className="auth-shell__report-sentence">
+						{Reason
+							? `Error: ${Reason}`
+							: "This verification link is invalid or has expired."}
+					</p>
+
+					<p className="auth-shell__report-sentence">
+						{
+							"Please request a new verification email or contact support if the problem persists."
+						}
+					</p>
+
+					<div className="auth-shell__actions">
+						<button
+							type="button"
+							className="auth-shell__primary emphasis-expressive"
+							onClick={() => Navigate("/Verify")}
+						>
+							{"Send New Verification Email"}
+						</button>
+
+						<button
+							type="button"
+							className="auth-shell__alternate"
+							onClick={() => Navigate("/Account/SignIn")}
+						>
+							{"Sign In"}
+						</button>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 };

@@ -4,12 +4,14 @@
 // second card or a second label size.
 //
 // Rules this partial obeys, from BRIDGE 2.3 and the P12 card:
-//   - tokens only: no literal colour, no box-shadow, no border-radius, no px
-//     outside the hairline mixin;
+//   - tokens only: no literal colour, no elevation, no corner rounding, and no
+//     px outside the hairline mixin;
 //   - the surface is the published `.emphasis-standard` tier, the primary
 //     action is the published `.emphasis-expressive` tier - this file adds
 //     layout and type to those tiers, it never restates them;
 //   - the narrow measure is the card's 28rem, which is `--ContainerMedium`.
+
+@use "../../Mixin" as *;
 
 /* ─── THE FRAME ────────────────────────────────────────────────────────── */
 
@@ -96,12 +98,16 @@
 	gap: var(--space-tight);
 }
 
-.auth-shell__label {
+/* The field primitives (UI/Input, UI/Label) are shared components this card
+   does not own, so their own class names stay and the auth vocabulary reaches
+   them through the field wrapper. Nothing here re-implements the primitive -
+   it only sets the ink, the face and the hairline the card asks for. */
+.auth-shell__field label {
 	@include mono-meta;
 	@include track(0.08em);
 }
 
-.auth-shell__input {
+.auth-shell__field input {
 	inline-size: 100%;
 	background: var(--Card);
 	color: var(--Foreground);
@@ -112,27 +118,85 @@
 	@include hairline;
 }
 
-.auth-shell__input::placeholder {
+.auth-shell__field input::placeholder {
 	color: var(--MuteForeground);
 }
 
-.auth-shell__input:focus-visible {
+.auth-shell__field input:focus-visible {
 	outline: 1px solid var(--Primary);
 	outline-offset: 0;
 }
 
+.auth-shell__field input[aria-invalid="true"] {
+	border-color: var(--Destruct);
+}
+
 /* A validation message is a sentence at caption size in --Destruct - never
    the word "Invalid" on its own. */
-.auth-shell__error {
+.auth-shell__error,
+.auth-shell__field p[role="alert"] {
 	margin: 0;
 	font-size: var(--type-caption);
 	line-height: var(--type-caption-line);
 	color: var(--Destruct);
 }
 
-.auth-shell__hint {
+/* The signed-in identity block: the face, the name and the address. */
+.auth-shell__identity {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+}
+
+.auth-shell__avatar {
+	inline-size: var(--space-group);
+	block-size: var(--space-group);
+	object-fit: cover;
+	@include hairline;
+}
+
+/* A field plus the control that belongs to it (reveal a password, resend a
+   link). The field itself keeps its own markup; this only groups the two. */
+.auth-shell__reveal {
 	@include mono-meta;
+	@include hairline(bottom);
+	align-self: flex-start;
+	padding-block-end: var(--space-tight);
+	background: none;
+	border-top: 0;
+	border-inline: 0;
+	color: var(--MuteForeground);
+	cursor: pointer;
+}
+
+.auth-shell__reveal:hover {
+	color: var(--Primary);
+	border-bottom-color: var(--Primary);
+}
+
+/* Password strength: three hairlines that fill as the password lengthens.
+   Tone comes from a modifier class, so no colour is ever written inline. */
+.auth-shell__strength {
+	display: flex;
+	gap: var(--space-tight);
 	margin: 0;
+}
+
+.auth-shell__strength-segment {
+	flex: 1 1 auto;
+	@include hairline(top);
+}
+
+.auth-shell__strength-segment--weak {
+	border-top-color: var(--Destruct);
+}
+
+.auth-shell__strength-segment--medium {
+	border-top-color: var(--SemanticYellow);
+}
+
+.auth-shell__strength-segment--strong {
+	border-top-color: var(--Accent);
 }
 
 .auth-shell__actions {
@@ -202,4 +266,46 @@
 .auth-shell__note {
 	@include mono-meta;
 	margin: 0;
+}
+
+/* ─── THE BREADCRUMB ───────────────────────────────────────────────────── */
+
+/* Only the account index carries one: the frame's alternate action returns to
+   the editor, but the dashboard is a second destination the reader came from.
+   It reads as position, not as a second navigation grammar. */
+.auth-shell__crumbs {
+	@include mono-meta;
+	@include hairline(bottom);
+	padding-block-end: var(--space-tight);
+}
+
+.auth-shell__crumb-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.auth-shell__crumb {
+	display: flex;
+	gap: var(--space-tight);
+}
+
+.auth-shell__crumb-link {
+	color: var(--MuteForeground);
+	text-decoration: none;
+}
+
+.auth-shell__crumb-link:hover {
+	color: var(--Primary);
+}
+
+.auth-shell__crumb-current {
+	color: var(--Foreground);
+}
+
+.auth-shell__crumb-separator {
+	color: var(--MuteForeground);
 }

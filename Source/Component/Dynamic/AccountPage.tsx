@@ -12,8 +12,6 @@ import { toast } from "sonner";
 
 import { AuthAPI as AuthAPIClass } from "../../Library/API/Authentication";
 
-import { Header } from "../Layout/Header";
-
 import { DynamicForgotPassword } from "./DynamicForgotPassword";
 
 import { DynamicResetPassword } from "./DynamicResetPassword";
@@ -292,61 +290,54 @@ const AccountPage = ({
 	}, [Route, Navigate]);
 
 	return (
-		<div className={`flex min-h-screen flex-col ${ClassName || ""}`}>
-			<Header
-				{...(Content.Header ? { content: Content.Header } : {})}
-				Mode="functional"
-			/>
+		<div className={`auth-shell__form ${ClassName || ""}`}>
+			{Route === "signin" && (
+				<DynamicSignIn
+					Content={SignIn}
 
-			<div className="flex-1">
-				{Route === "signin" && (
-					<DynamicSignIn
-						Content={SignIn}
+					OnSubmit={HandleSignIn}
 
-						OnSubmit={HandleSignIn}
+					OnOAuth={HandleOAuth}
 
-						OnOAuth={HandleOAuth}
+					OnNavigate={Navigate}
+				/>
+			)}
 
-						OnNavigate={Navigate}
-					/>
-				)}
+			{Route === "signup" && (
+				<DynamicSignUp
+					Content={SignUp}
 
-				{Route === "signup" && (
-					<DynamicSignUp
-						Content={SignUp}
+					OnSubmit={HandleSignUp}
 
-						OnSubmit={HandleSignUp}
+					OnOAuth={HandleOAuth}
 
-						OnOAuth={HandleOAuth}
+					OnNavigate={Navigate}
+				/>
+			)}
 
-						OnNavigate={Navigate}
-					/>
-				)}
+			{Route === "forgot-password" && (
+				<DynamicForgotPassword
+					Content={ForgotPassword}
 
-				{Route === "forgot-password" && (
-					<DynamicForgotPassword
-						Content={ForgotPassword}
+					OnSubmit={HandleForgotPassword}
 
-						OnSubmit={HandleForgotPassword}
+					OnResend={() => HandleForgotPassword("")}
 
-						OnResend={() => HandleForgotPassword("")}
+					OnNavigate={Navigate}
+				/>
+			)}
 
-						OnNavigate={Navigate}
-					/>
-				)}
+			{Route === "reset-password" && (
+				<DynamicResetPassword
+					Content={ResetPassword}
 
-				{Route === "reset-password" && (
-					<DynamicResetPassword
-						Content={ResetPassword}
+					Token={ResetToken || ""}
 
-						Token={ResetToken || ""}
+					OnReset={HandleResetPassword}
 
-						OnReset={HandleResetPassword}
-
-						OnNavigate={Navigate}
-					/>
-				)}
-			</div>
+					OnNavigate={Navigate}
+				/>
+			)}
 		</div>
 	);
 };

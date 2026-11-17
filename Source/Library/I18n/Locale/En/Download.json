@@ -19,9 +19,25 @@
 		"subtitle": "Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
 		"title": "Download Land"
 	},
+	"status": {
+		"kicker": "SOURCE ACTIVE · INSTALLERS IN PROGRESS",
+		"heading": "Land builds from source today. There is no installer to download yet.",
+		"standfirst": "macOS, Windows and Linux all build from the repository. None of them has a published installer, a signature or a checksum, so building from source is the only way to run Land right now.",
+		"footnote": "Build steps are quoted from the Land repository's Documentation/GitHub/Building.md. Installer, signing and checksum status is quoted from this page's release manifest.",
+		"sentence": "Nothing here is downloadable yet. Land builds from source on macOS, Windows and Linux; public installers, signing and verification artifacts are still in preparation.",
+		"well": "BUILD FROM SOURCE"
+	},
+	"requirements": {
+		"kicker": "/REQUIREMENTS",
+		"heading": "What each platform needs before it builds.",
+		"footnote": "Minimum requirements, with the recommended figure noted under each value. The component's two cards were Minimum Requirements and Recommended for the Best Experience. Processor notes: your code runs at native CPU speed (minimum) and span your work across every monitor (recommended).",
+		"toolchain": "BUILD TOOLCHAIN (SOURCE)"
+	},
 	"previousReleases": {
 		"description": "No public releases yet. Older versions will appear here once public releases ship.",
-		"title": "Previous Releases"
+		"title": "Previous Releases",
+		"kicker": "/PREVIOUS RELEASES",
+		"heading": "There is nothing to go back to yet."
 	},
 	"subtitle": "Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
 	"systemRequirements": {
@@ -54,15 +70,20 @@
 		"downloadVerification": "Download Verification",
 		"integrityCheck": "Integrity Check",
 		"copy": "Copy",
-		"signedWithKeyId": "Signed with key ID {{keyId}}"
+		"signedWithKeyId": "Signed with key ID {{keyId}}"
 	},
 	"manifest": {
 		"title": "Release Manifest",
 		"heading": "Release Manifest",
-		"subtitle": "Source builds are active today. Public installers, signing, and verification artifacts are still being prepared."
+		"subtitle": "Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
+		"kicker": "/RELEASE MANIFEST",
+		"headline": "RELEASE_01 lists three platforms and publishes no artifact.",
+		"footnote": "The manifest carries a release index, a channel and a per-platform status. It carries no version, no release date and no artifact size.",
+		"empty": "No release published yet."
 	},
 	"transparency": {
 		"title": "Telemetry Is Compile-Gated in Land.",
-		"subtitle": "Telemetry and tracing are behind named Rust feature gates in the native layer. Nothing is emitted by default. Each build profile explicitly lists which paths are compiled in."
+		"subtitle": "Telemetry and tracing are behind named Rust feature gates in the native layer. Nothing is emitted by default. Each build profile explicitly lists which paths are compiled in.",
+		"kicker": "/TRANSPARENCY"
 	}
 }

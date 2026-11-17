@@ -1,0 +1,65 @@
+---
+/**
+ * DynamicReleaseManifest - what the release manifest publishes, per platform,
+ * and what verification material ships with it.
+ *
+ * This replaces the `.tsx` island of the same name. It rendered one field-record
+ * card per platform behind a `client:load` hydration that carried no interaction
+ * except a link, so the island is gone and the link is a plain anchor. The seal,
+ * the index stamp and the status dot the card drew are not carried over: they
+ * were ornament on a ledger, and the ledger is the denser reading of the same
+ * seven facts.
+ *
+ * Two states, both written out. With platforms, one ledger per platform in the
+ * manifest's own field order. Without platforms - a manifest that resolves to
+ * nothing - one sentence saying so, because a box with no claim in it is a
+ * defect (BRIDGE §7).
+ */
+import RecordLedger from "../Record/RecordLedger.astro";
+
+import { ManifestRows } from "./Download/Data";
+
+import type { LedgerRow } from "../Record/Type.js";
+
+import type { ManifestPlatform } from "./Download/Type.js";
+
+interface Props {
+	/** One entry per platform, in the order the manifest lists them. */
+	platforms: readonly ManifestPlatform[];
+
+	/** The verification material the release promises, as ledger rows. */
+	verification: readonly LedgerRow[];
+
+	/** The verification ledger's heading, printed above it. */
+	verificationHeading: string;
+
+	/** What a manifest with no platforms says instead of rendering nothing. */
+	empty: string;
+}
+
+const { platforms, verification, verificationHeading, empty } = Astro.props;
+---
+
+<div class="download-manifest">
+	{
+		platforms.length === 0 ? (
+			<p class="download-manifest__empty">{empty}</p>
+		) : (
+			platforms.map((platform) => (
+				<div class="download-manifest__group">
+					<h3 class="download-manifest__platform">{platform.name}</h3>
+					<RecordLedger rows={ManifestRows(platform)} />
+					{platform.downloadUrl && platform.downloadLabel ? (
+						<p class="download-manifest__link">
+							<a href={platform.downloadUrl}>{platform.downloadLabel}</a>
+						</p>
+					) : null}
+				</div>
+			))
+		)
+	}
+	<div class="download-manifest__group">
+		<h3 class="download-manifest__platform">{verificationHeading}</h3>
+		<RecordLedger rows={verification} />
+	</div>
+</div>

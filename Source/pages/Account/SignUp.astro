@@ -1,5 +1,8 @@
 ---
+import AuthShell from "../../Component/Auth/AuthShell.astro";
+import { AuthFrameFor } from "../../Component/Auth/Data";
 import Auth0Account from "../../Component/Dynamic/Auth0Account";
+import { Header } from "../../Component/Layout/Header";
 import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
 
@@ -15,13 +18,21 @@ const MetaDescription = T("account.signUp.subtitle", {
 
 const { Auth0Domain, Auth0ClientIdentifier } =
 	await import("../../Function/Configuration/Auth.js");
+
+/* Registration is closed, so this page's honest state is a report, not a
+   form. The island decides that (RegistrationEnabled) and renders the report;
+   the shell supplies the same frame the sign-in page uses. */
+const Frame = AuthFrameFor("signUp", T);
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription}>
-	<Auth0Account
-		client:only="react"
-		Route="signup"
-		Domain={Auth0Domain}
-		ClientIdentifier={Auth0ClientIdentifier}
-	/>
+	<Header client:load Mode="functional" />
+	<AuthShell frame={Frame}>
+		<Auth0Account
+			client:only="react"
+			Route="signup"
+			Domain={Auth0Domain}
+			ClientIdentifier={Auth0ClientIdentifier}
+		/>
+	</AuthShell>
 </Base>

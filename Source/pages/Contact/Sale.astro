@@ -1,7 +1,20 @@
 ---
-import { Header } from "../../Component/Layout/Header";
-import Base from "../../Layout/Base.astro";
+// Enterprise inquiries - the sale route, in the same language as the request
+// routes.
+//
+// The page used to be a Tailwind two-column layout: a card with a shimmering
+// border, a sidebar of three more cards, and a breadcrumb list with `/`
+// separators. It carried the same facts in the same order, so nothing was cut -
+// each card became a band, and the sentence "Prefer email? Reach us directly:"
+// finally has the address it was asking the reader to use.
+//
+// Every string still comes through `T` with its key, so the locale files keep
+// their copy. The GitHub issue URL, the DEALS route and the PlayForm line are
+// unchanged.
+import ContactPage from "../../Component/Contact/ContactPage.astro";
+import RecordBand from "../../Component/Record/RecordBand.astro";
 import { GetI18n } from "../../Library/I18n/Server";
+import type { ContactTrailItem } from "../../Library/Contact/Data.js";
 
 const T = GetI18n();
 
@@ -13,258 +26,200 @@ const MetaDescription = T("meta.contact.sales.description", {
 	defaultValue:
 		"Contact the Code Editor Land team for enterprise licensing, support, and deployment options.",
 });
+
+const PageTitle = T("common.sales.pageTitle", {
+	defaultValue: "Enterprise Inquiries",
+});
+
+const PageSubtitle = T("common.sales.pageSubtitle", {
+	defaultValue:
+		"Deploying Land across your organization? Get in touch and we'll work out the details together.",
+});
+
+const HomeLabel = T("common.breadcrumb.home", { defaultValue: "Home" });
+
+const Trail: readonly ContactTrailItem[] = [
+	{ label: `/${HomeLabel.toUpperCase()}`, href: "/" },
+	{ label: "/CONTACT", href: "/Contact" },
+	{ label: `/${PageTitle.toUpperCase()}` },
+];
+
+/** The six things an enterprise plan adds, in the order the page lists them. */
+const Features: readonly string[] = [
+	T("common.sales.features.prioritySupport", {
+		defaultValue: "Priority support and SLA",
+	}),
+	T("common.sales.features.customDeployment", {
+		defaultValue: "Custom deployment options: cloud, on-prem, or air-gapped",
+	}),
+	T("common.sales.features.volumeLicensing", {
+		defaultValue: "Volume licensing for large teams",
+	}),
+	T("common.sales.features.accountManagement", {
+		defaultValue: "Direct contact with the maintainers",
+	}),
+	T("common.sales.features.securityReview", {
+		defaultValue: "Security review and compliance documentation",
+	}),
+	T("common.sales.features.customIntegrations", {
+		defaultValue: "Custom integrations and development work",
+	}),
+];
+
+/** The one address that is not a form. A working mailbox, not a placeholder. */
+const DirectAddress = "Community@PlayForm.Cloud";
+
+/**
+ * The GitHub issue note is written as two paragraphs in the locale file. A
+ * standfirst is one sentence-run, so the blank line is folded to a space rather
+ * than dropped - both paragraphs survive.
+ */
+const GithubNote = T("common.sales.contact.githubNote", {
+	defaultValue:
+		"We handle enterprise inquiries through GitHub Issues.\n\nThis ensures your request is tracked, visible to the full team, and responded to.",
+}).replace(/\s*\n\s*/g, " ");
 ---
 
-<Base
-	Title={MetaTitle}
-	Description={MetaDescription}
-	Url={Astro.url.href}
-	lang="en"
+<ContactPage
+	metaTitle={MetaTitle}
+	metaDescription={MetaDescription}
+	trail={Trail}
+	heading={PageTitle}
+	standfirst={PageSubtitle}
 >
-	<Header client:load />
+	<RecordBand
+		band={{
+			kicker: "/ENTERPRISE",
+			heading: T("common.sales.contact.heading", {
+				defaultValue: "How to Reach Us",
+			}),
+			standfirst: GithubNote,
+			tone: "flush",
+		}}
+	>
+		<a
+			class="contact-sale__action emphasis-expressive"
+			href="https://github.com/CodeEditorLand/Land/issues/new?title=Enterprise+Inquiry&labels=enterprise"
+			target="_blank"
+			rel="noopener noreferrer"
+			>{T("common.sales.contact.openIssueButton", {
+				defaultValue: "Open GitHub Issue",
+			})}<span class="InlineSeparator">→</span></a
+		>
 
-	<div class="container mx-auto max-w-4xl px-4 py-16">
-		<!-- Breadcrumbs -->
-		<nav aria-label="Breadcrumb" class="mb-8">
-			<ol
-				class="flex flex-wrap items-center space-x-2 text-muted-foreground"
-			>
-				<li>
-					<a href="/" class="transition-colors hover:text-foreground"
-						>{
-							T("common.breadcrumb.home", {
-								defaultValue: "Home",
-							})
-						}</a
-					>
-				</li>
-				<li class="mx-2">/</li>
-				<li>
-					<span class="font-medium text-foreground"
-						>{
-							T("common.sales.pageTitle", {
-								defaultValue: "Enterprise Inquiries",
-							})
-						}</span
-					>
-				</li>
-			</ol>
-		</nav>
+		<h3 class="contact-sale__subheading">
+			{
+				T("common.sales.contact.openIssueHeading", {
+					defaultValue: "Open a GitHub Issue",
+				})
+			}
+		</h3>
 
-		<!-- Page Header -->
-		<header class="mb-12">
-			<h1 class="text-2xl font-medium tracking-tight sm:text-3xl">
+		<p class="contact-sale__prose">
+			{
+				T("common.sales.contact.openIssueDescription", {
+					defaultValue:
+						"Create an issue on our GitHub repository describing your organization's needs.\n\nInclude your company name, team size, use case, and deployment requirements.\n\nWe review issues regularly.",
+				})
+			}
+		</p>
+
+		<div class="contact-sale__panel emphasis-quiet">
+			<p class="contact-sale__prose">
+				<strong
+					>{
+						T("common.sales.contact.issueIncludeLabel", {
+							defaultValue: "What to include in your issue:",
+						})
+					}</strong
+				>
 				{
-					T("common.sales.pageTitle", {
-						defaultValue: "Enterprise Inquiries",
-					})
-				}
-			</h1>
-			<p class="whitespace-pre-line text-muted-foreground">
-				{
-					T("common.sales.pageSubtitle", {
+					T("common.sales.contact.issueIncludeText", {
 						defaultValue:
-							"Deploying Land across your organization? Get in touch and we'll work out the details together.",
+							"Company name, team size, intended use case, deployment environment, timeline, and any specific support or compliance requirements.",
 					})
 				}
 			</p>
-		</header>
-
-		<div class="grid grid-cols-1 gap-12 lg:grid-cols-3">
-			<!-- Contact via GitHub Issues -->
-			<div class="lg:col-span-2">
-				<div class="StaccatoCard StaccatoBorderShimmer bg-card p-8">
-					<div class="mb-6 border-l-4 border-[var(--Primary)] pl-4">
-						<p class="mb-1 font-medium text-card-foreground">
-							{
-								T("common.sales.contact.heading", {
-									defaultValue: "How to Reach Us",
-								})
-							}
-						</p>
-						<p class="whitespace-pre-line text-card-foreground">
-							{
-								T("common.sales.contact.githubNote", {
-									defaultValue:
-										"We handle enterprise inquiries through GitHub Issues.\n\nThis ensures your request is tracked, visible to the full team, and responded to.",
-								})
-							}
-						</p>
-					</div>
-
-					<a
-						href="https://github.com/CodeEditorLand/Land/issues/new?title=Enterprise+Inquiry&labels=enterprise"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="StaccatoButton text-primary-fg mb-4 inline-flex items-center bg-primary px-8 py-2 font-medium transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-						>{
-							T("common.sales.contact.openIssueButton", {
-								defaultValue: "Open GitHub Issue",
-							})
-						}<span class="InlineSeparator">→</span></a
-					>
-					<h2 class="text-card-foreground mb-4 text-xl font-medium">
-						{
-							T("common.sales.contact.openIssueHeading", {
-								defaultValue: "Open a GitHub Issue",
-							})
-						}
-					</h2>
-					<p class="whitespace-pre-line text-card-foreground">
-						{
-							T("common.sales.contact.openIssueDescription", {
-								defaultValue:
-									"Create an issue on our GitHub repository describing your organization's needs.\n\nInclude your company name, team size, use case, and deployment requirements.\n\nWe review issues regularly.",
-							})
-						}
-					</p>
-
-					<div class="mt-8 bg-secondary p-4">
-						<p class="text-card-foreground opacity-70">
-							<strong
-								>{
-									T(
-										"common.sales.contact.issueIncludeLabel",
-										{
-											defaultValue:
-												"What to include in your issue:",
-										},
-									)
-								}</strong
-							>
-							{
-								T("common.sales.contact.issueIncludeText", {
-									defaultValue:
-										"Company name, team size, intended use case, deployment environment, timeline, and any specific support or compliance requirements.",
-								})
-							}
-						</p>
-					</div>
-				</div>
-			</div>
-
-			<!-- Sidebar -->
-			<div class="space-y-6">
-				<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
-					<h3 class="text-card-foreground mb-3 font-medium">
-						{
-							T("common.sales.features.heading", {
-								defaultValue: "What Enterprise Includes",
-							})
-						}
-					</h3>
-					<ul class="space-y-2 text-card-foreground">
-						<li>
-							{
-								T("common.sales.features.prioritySupport", {
-									defaultValue: "Priority support and SLA",
-								})
-							}
-						</li>
-						<li>
-							{
-								T("common.sales.features.customDeployment", {
-									defaultValue:
-										"Custom deployment options: cloud, on-prem, or air-gapped",
-								})
-							}
-						</li>
-						<li>
-							{
-								T("common.sales.features.volumeLicensing", {
-									defaultValue:
-										"Volume licensing for large teams",
-								})
-							}
-						</li>
-						<li>
-							{
-								T("common.sales.features.accountManagement", {
-									defaultValue: "Direct contact with the maintainers",
-								})
-							}
-						</li>
-						<li>
-							{
-								T("common.sales.features.securityReview", {
-									defaultValue:
-										"Security review and compliance documentation",
-								})
-							}
-						</li>
-						<li>
-							{
-								T("common.sales.features.customIntegrations", {
-									defaultValue:
-										"Custom integrations and development work",
-								})
-							}
-						</li>
-					</ul>
-				</div>
-
-				<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
-					<a
-						href="/Contact/Deals"
-						class="StaccatoButton font-medium text-card-foreground hover:underline"
-						>Enterprise Sales form (DEALS)<span
-							class="InlineSeparator">&#9993;</span
-						></a
-					>
-					<h3 class="text-card-foreground mb-3 mt-2 font-medium">
-						{
-							T("common.sales.contact.directHeading", {
-								defaultValue: "Direct Contact",
-							})
-						}
-					</h3>
-					<p class="mb-2 whitespace-pre-line text-card-foreground">
-						{
-							T("common.sales.contact.description", {
-								defaultValue:
-									"Prefer email? Reach us directly:",
-							})
-						}
-					</p>
-					<p class="text-card-foreground">
-						{
-							T("common.sales.contact.operatedBy", {
-								defaultValue:
-									"Operated by PlayForm, Sofia, Bulgaria",
-							})
-						}
-					</p>
-				</div>
-
-				<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
-					<h3 class="text-card-foreground mb-3 font-medium">
-						{
-							T("common.sales.openSource.heading", {
-								defaultValue: "Still Open Source",
-							})
-						}
-					</h3>
-					<p class="whitespace-pre-line text-card-foreground">
-						{
-							T("common.sales.openSource.description", {
-								defaultValue:
-									"Enterprise plans add support, SLA, and custom development.\n\nThe code itself remains CC0. Fork it, read it, ship it.",
-							})
-						}
-					</p>
-				</div>
-			</div>
 		</div>
+	</RecordBand>
 
-		<!-- Back to top -->
-		<div class="mt-12 border-t pt-8">
-			<a href="#top" class="StaccatoButton text-primary hover:underline"
-				>{
-					T("common.button.backToTop", {
-						defaultValue: "Back to top",
-					})
-				}<span class="InlineSeparator">↑</span></a
+	<RecordBand
+		band={{
+			kicker: "/WHAT ENTERPRISE ADDS",
+			heading: T("common.sales.features.heading", {
+				defaultValue: "What Enterprise Includes",
+			}),
+			tone: "paper",
+		}}
+	>
+		<ul class="contact-sale__features">
+			{Features.map((feature) => <li>{feature}</li>)}
+		</ul>
+	</RecordBand>
+
+	<RecordBand
+		band={{
+			kicker: "/DIRECT CONTACT",
+			heading: T("common.sales.contact.directHeading", {
+				defaultValue: "Direct Contact",
+			}),
+			tone: "canvas",
+		}}
+	>
+		<p class="contact-sale__prose">
+			{
+				T("common.sales.contact.description", {
+					defaultValue: "Prefer email? Reach us directly:",
+				})
+			}
+		</p>
+
+		<a
+			class="contact-sale__address emphasis-expressive"
+			href={`mailto:${DirectAddress}`}>{DirectAddress}</a
+		>
+
+		<p class="contact-sale__prose">
+			{
+				T("common.sales.contact.operatedBy", {
+					defaultValue: "Operated by PlayForm, Sofia, Bulgaria",
+				})
+			}
+		</p>
+
+		<p>
+			<a class="contact-sale__route" href="/Contact/Deals"
+				>Enterprise Sales form (DEALS)<span class="InlineSeparator"
+					>&#9993;</span
+				></a
 			>
-		</div>
-	</div>
-</Base>
+		</p>
+	</RecordBand>
+
+	<RecordBand
+		band={{
+			kicker: "/LICENCE",
+			heading: T("common.sales.openSource.heading", {
+				defaultValue: "Still Open Source",
+			}),
+			tone: "paper",
+		}}
+	>
+		<p class="contact-sale__prose">
+			{
+				T("common.sales.openSource.description", {
+					defaultValue:
+						"Enterprise plans add support, SLA, and custom development.\n\nThe code itself remains CC0. Fork it, read it, ship it.",
+				})
+			}
+		</p>
+
+		<p class="contact-sale__top">
+			<a href="#top"
+				>{T("common.button.backToTop", { defaultValue: "Back to top" })}<span
+					class="InlineSeparator">↑</span
+				></a
+			>
+		</p>
+	</RecordBand>
+</ContactPage>

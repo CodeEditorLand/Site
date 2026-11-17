@@ -1,0 +1,94 @@
+// DownloadMasthead - the page's one h1, the sentence that answers the page's
+// question, and the strip of marks the page has always carried.
+//
+// Publishes:
+//   .download-masthead            the masthead shell: card surface, lower hairline
+//   .download-masthead__inner     the one inner container, on the band gutters
+//   .download-masthead__glyph     the product glyph beside the h1
+//   .download-masthead__title     the page's only h1, at display weight
+//   .download-masthead__sentence  the release status in one line
+//   .download-masthead__marks     the mark strip
+//   .download-masthead__dot       a mark's trailing status dot
+//   .download-masthead__mark      a mark's trailing logo
+//
+// Owned by P7.
+
+@use "../Mixin" as *;
+
+// ─── The shell ────────────────────────────────────────────────────────────
+// The masthead is the page's own block: it is not a band, so it carries no
+// kicker and no h2 - it carries the h1 the bands below are read against. Its
+// lower hairline is the only rule it needs, because the first band is `flush`
+// and drops its own top rule.
+
+.download-masthead {
+	@include hairline(bottom);
+	background: var(--Card);
+	color: var(--CardForeground);
+	padding-block: var(--space-chapter);
+}
+
+.download-masthead__inner {
+	@include band-inner;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-tight) var(--space-reading);
+}
+
+.download-masthead__glyph {
+	display: block;
+	flex: none;
+}
+
+// ─── The claim ────────────────────────────────────────────────────────────
+// The h1 is the page's one display-weight line (BRIDGE §6). `_Global.scss`
+// gives every h1 a 2rem bottom margin; a masthead's own rhythm is set below, so
+// that margin is cancelled here rather than worked around in the markup.
+
+.download-masthead__title {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-display);
+	font-weight: 500;
+	line-height: var(--type-display-line);
+	letter-spacing: -0.03em;
+	color: var(--Foreground);
+	text-wrap: balance;
+}
+
+// The sentence takes its own line: it is the answer, and an answer that wraps
+// beside a heading is read second.
+.download-masthead__sentence {
+	margin: 0;
+	max-width: 62ch;
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+	inline-size: 100%;
+}
+
+// ─── The mark strip ───────────────────────────────────────────────────────
+
+.download-masthead__marks {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
+	inline-size: 100%;
+	margin-block-start: var(--space-reading);
+}
+
+// The dot is a status mark inside the badge, so it is a square of the badge's
+// own ink, not an icon: 0.375rem is the 1.5 Tailwind step it replaces.
+.download-masthead__dot {
+	display: inline-block;
+	inline-size: 0.375rem;
+	block-size: 0.375rem;
+}
+
+.download-masthead__mark {
+	display: inline-block;
+	vertical-align: middle;
+	opacity: 0.7;
+}

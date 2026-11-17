@@ -2,6 +2,9 @@
 import { Header } from "../Component/Layout/Header";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
+import ReadingDocument from "../Component/Reading/ReadingDocument.astro";
+import RecordWell from "../Component/Record/RecordWell.astro";
+import { Index, Ledger } from "../Library/Document/License/Data.js";
 
 const T = GetI18n();
 
@@ -132,6 +135,7 @@ legal effect of CC0 on those rights.
  and acknowledges that Creative Commons is not a party to this document
  and has no duty or obligation with respect to this CC0 or use of the
  Work.`;
+const Lines = CC0LicenseText.split("\n");
 ---
 
 <Base
@@ -158,20 +162,16 @@ legal effect of CC0 on those rights.
 		</nav>
 
 		<!-- Page Header -->
-		<header class="mb-12">
-			<h1 class="text-2xl font-medium tracking-tight sm:text-3xl">
-				License
-			</h1>
-			<p class="text-muted">
-				Code Editor Land is open source software dedicated to the public
-				domain.
-			</p>
-		</header>
-
-		<!-- Content -->
-		<article class="LegalCard prose prose-slate max-w-none">
-			<section class="mb-10">
-				<h2 class="mb-4 text-2xl font-medium">CC0 1.0 Universal</h2>
+				<ReadingDocument
+			kicker="/LICENSE"
+			heading="License"
+			standfirst="Code Editor Land is open source software dedicated to the public domain."
+			rows={Ledger}
+			index={Index}
+			indexLabel="Parts"
+			bodyClass="LegalCard">
+			<section class="reading-document__part">
+				<h2 class="reading-clause" id="cc0-1-0-universal">CC0 1.0 Universal</h2>
 				<p class="mb-4">
 					The Code Editor Land project, including all source code,
 					documentation, and related materials, is dedicated to the
@@ -182,15 +182,15 @@ legal effect of CC0 on those rights.
 						>Creative Commons CC0 1.0 Universal</a
 					> license.
 				</p>
-				<div class="bg-mute mb-6 flat border border-[var(--Border)] p-6">
-					<p class="mb-4 text-muted-foreground">
+				<div class="reading-document__note">
+					<p>
 						<strong>What this means:</strong> You are free to use, modify,
 						distribute, and use the code for any purpose, including commercial
 						purposes, without attribution or restrictions. The authors
 						have waived all copyright and related rights to the fullest
 						extent permitted by law.
 					</p>
-					<p class="text-muted-foreground">
+					<p>
 						This is not a "copyfree" license; it is a public domain
 						dedication with a fallback license. See the full legal
 						text below.
@@ -198,43 +198,17 @@ legal effect of CC0 on those rights.
 				</div>
 			</section>
 
-			<section class="mb-10">
-				<h2 class="mb-4 text-2xl font-medium">Full License Text</h2>
-				<div
-					class="bg-mute flex items-start gap-4 overflow-x-auto flat border border-[var(--Border)] p-6">
-					<pre
-						class="min-w-0 flex-1 whitespace-pre-wrap font-mono leading-relaxed text-foreground">{CC0LicenseText}</pre>
-					<jelly-icon-button
-						data-copy
-						size="small"
-						shape="square"
-						label="Copy to clipboard"
-						aria-label="Copy to clipboard"
-						title="Copy to clipboard"
-						style="--jelly-fill: var(--Mute); --jelly-label: var(--Foreground); --jelly-icon-button-radius: 0px; --jelly-ring: var(--Accent);"
-					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="24"
-							height="24"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							style="color: var(--jelly-label)"
-							aria-hidden="true"
-							><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path
-								d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
-							/></svg
-						>
-					</jelly-icon-button>
-				</div>
+			<section class="reading-document__part">
+				<h2 class="reading-clause" id="full-license-text">Full License Text</h2>
+				<RecordWell
+					label="Creative Commons Legal Code"
+					language="text"
+					lines={Lines}
+				/>
 			</section>
 
-			<section class="mb-10">
-				<h2 class="mb-4 text-2xl font-medium">Key Points</h2>
+			<section class="reading-document__part">
+				<h2 class="reading-clause" id="key-points">Key Points</h2>
 				<ul class="mb-4 list-disc space-y-2 pl-8">
 					<li>
 						<strong>No copyright restrictions:</strong> To the fullest
@@ -262,10 +236,10 @@ legal effect of CC0 on those rights.
 				</ul>
 			</section>
 
-			<section class="mb-10">
-				<h2 class="mb-4 text-2xl font-medium">
-					Third-Party Licenses
-				</h2>
+			<section class="reading-document__part">
+				<h2 class="reading-clause" id="third-party-licenses"
+					>Third-Party Licenses</h2
+				>
 				<p class="mb-4">
 					The Code Editor Land project incorporates numerous
 					third-party open-source components. Each component retains
@@ -295,8 +269,8 @@ legal effect of CC0 on those rights.
 				</p>
 			</section>
 
-			<section class="mb-10">
-				<h2 class="mb-4 text-2xl font-medium">Why CC0?</h2>
+			<section class="reading-document__part">
+				<h2 class="reading-clause" id="why-cc0">Why CC0?</h2>
 				<p class="mb-4">
 					We believe that foundational software tools should be freely
 					available to everyone, without barriers or restrictions. By
@@ -328,7 +302,7 @@ legal effect of CC0 on those rights.
 				</p>
 			</section>
 
-			<section class="mb-10">
+			<section class="reading-document__part">
 				<div class="mb-4 flex flex-wrap gap-x-6 gap-y-2">
 					<a
 						href="/Contact/Legal"
@@ -347,13 +321,13 @@ legal effect of CC0 on those rights.
 						></a
 					>
 				</div>
-				<h2 class="mb-4 text-2xl font-medium">Contact</h2>
+				<h2 class="reading-clause" id="contact">Contact</h2>
 				<p>
 					If you have questions about the license, feel free to
 					contact us.
 				</p>
 			</section>
-		</article>
+		</ReadingDocument>
 
 		<div class="LegalPrintHide mt-12 border-t pt-8">
 			<a href="#top" class="StaccatoButton text-primary hover:underline"
@@ -409,5 +383,7 @@ legal effect of CC0 on those rights.
 
 <script>
 	import { WireCopyButtons } from "../Function/Utility/CopyCommand";
+	import { WireWells } from "../Library/Document/WireWells";
 	WireCopyButtons();
+	WireWells();
 </script>

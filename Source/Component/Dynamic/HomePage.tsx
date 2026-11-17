@@ -20,6 +20,8 @@ import { DynamicPricing } from "./DynamicPricing";
 
 import { DynamicTestimonials } from "./DynamicTestimonials";
 
+import { HeroBandFor } from "./Hero/Data.js";
+
 import type Interface from "./Interface/Content/Page/Home.js";
 
 import type Property from "./Interface/Property/Page/Home.js";
@@ -27,9 +29,18 @@ import type Property from "./Interface/Property/Page/Home.js";
 /**
  * Dynamic HomePage composition - Daylight Field Record.
  * Creme canvas, white cards, mono type, green accent.
+ *
+ * Five bands, in the order a reader needs them: the hero states the claim and
+ * shows what runs, the architecture band names the elements, the six properties
+ * say what that buys, the roadmap says what is still coming, and the platform
+ * grid says where it runs. Demonstration before explanation - the order is this
+ * file's whole job.
  */
 const HomePage = ({ Content, ClassName }: Property) => {
 	const { t: T } = useTranslation(["home", "common", "download", "footer"]);
+
+	/** The hero band's own copy, rows and destinations (`Hero/Data.ts`). */
+	const Band = HeroBandFor(T);
 
 	const TArr = (Key: string, Fallback: string[]) =>
 		T(Key, {
@@ -1159,35 +1170,16 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			)}
 
 			<div className="flex-1" role="region" aria-label="Page content">
+				{/* 1. THE HERO - the claim, its status, the evidence, the entry. */}
 				<ErrorBoundary
 					FallbackComponent={() => (
 						<SkeletonFeatureCard className="min-h-[60dvh]" />
 					)}
 				>
-					<DynamicHeroSection Content={Hero} />
+					<DynamicHeroSection Content={Hero} Band={Band} />
 				</ErrorBoundary>
-				<ErrorBoundary
-					FallbackComponent={() => (
-						<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-2 lg:grid-cols-3">
-							{[1, 2, 3, 4, 5, 6].map((Index) => (
-								<SkeletonFeatureCard key={Index} />
-							))}
-						</div>
-					)}
-				>
-					<DynamicFeatures Content={Feature} />
-				</ErrorBoundary>
-				<ErrorBoundary
-					FallbackComponent={() => (
-						<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-2 lg:grid-cols-3">
-							{[1, 2, 3].map((Index) => (
-								<SkeletonPricingTier key={Index} />
-							))}
-						</div>
-					)}
-				>
-					<DynamicPricing Content={Pricing} />
-				</ErrorBoundary>
+				{/* 2. WHAT RUNS - the elements themselves, before any explanation
+				    of them: demonstration before explanation. */}
 				<ErrorBoundary
 					FallbackComponent={() => (
 						<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-2 lg:grid-cols-3">
@@ -1199,6 +1191,31 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				>
 					<DynamicTestimonials Content={Testimonials} />
 				</ErrorBoundary>
+				{/* 3. THE SIX PROPERTIES. */}
+				<ErrorBoundary
+					FallbackComponent={() => (
+						<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-2 lg:grid-cols-3">
+							{[1, 2, 3, 4, 5, 6].map((Index) => (
+								<SkeletonFeatureCard key={Index} />
+							))}
+						</div>
+					)}
+				>
+					<DynamicFeatures Content={Feature} />
+				</ErrorBoundary>
+				{/* 4. WHAT YOU GET - the roadmap, once the properties are known. */}
+				<ErrorBoundary
+					FallbackComponent={() => (
+						<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-2 lg:grid-cols-3">
+							{[1, 2, 3].map((Index) => (
+								<SkeletonPricingTier key={Index} />
+							))}
+						</div>
+					)}
+				>
+					<DynamicPricing Content={Pricing} />
+				</ErrorBoundary>
+				{/* 5. THE PLATFORMS - where it runs, last. */}
 				<ErrorBoundary
 					FallbackComponent={() => (
 						<SkeletonCard className="min-h-[30dvh]" />

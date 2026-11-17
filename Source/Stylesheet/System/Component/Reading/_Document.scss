@@ -1,0 +1,232 @@
+// ReadingDocument - the reading surface: one measure, prose rhythm, the facts
+// above, the index between, the document below.
+//
+// Publishes:
+//   .reading-document                 the surface shell
+//   .reading-document--prose|--full   the measure switch
+//   .reading-document__head           kicker + h1 + standfirst
+//   .reading-document__kicker         the /SECTION LABEL opening the surface
+//   .reading-document__heading        the page's single h1
+//   .reading-document__standfirst     one sentence under it
+//   .reading-document__ledger         the RecordLedger slot's spacing
+//   .reading-document__index          the clause index nav
+//   .reading-document__index-label    its visible label
+//   .reading-document__index-list     the two-column list
+//   .reading-document__index-item     one row, closed by a hairline
+//   .reading-document__index-link     the row's anchor
+//   .reading-document__index-number   the §NN marker
+//   .reading-document__index-name     the heading's own words
+//   .reading-document__body           the document itself, on the measure
+//   .reading-document__title          the document's own title, opening the body
+//   .reading-document__part           one part of a document that is not all text
+//   .reading-document__note           a quoted summary panel, held apart
+//   .reading-document__process        the stage rail and the wells that belong to it
+//
+// And the one heading role the body carries:
+//   .reading-clause                   a numbered clause: §NN above the words
+//
+// Three things this partial deliberately does NOT do:
+//
+// - It does not restate `.prose-flow`. Paragraph rhythm is that class's job;
+//   this file only cancels the global `p`/`h2`/`h3` bottom margins so the two
+//   mechanisms cannot compound into a gap neither of them asked for.
+// - It does not restate `LegalCard`. The legal pages pass that class on the
+//   body, so the white surface, the `LegalList` lettering and the print rules
+//   (including the URL appendix after every link) stay where they already are.
+// - It does not number anything by hand. `counter(clause)` counts the
+//   `.reading-clause` headings in document order, which is the same order the
+//   page's index data is written in, so the two cannot drift.
+
+@use "../../Mixin" as *;
+
+.reading-document {
+	/* One knob for the anchor offset. The header is not sticky today, so the
+	   offset is reading air; a sticky header repoints this one value. */
+	--reading-anchor-offset: var(--space-group);
+}
+
+.reading-document__head {
+	max-width: 72ch;
+}
+
+.reading-document__kicker {
+	@include mono-meta;
+	@include track;
+
+	margin: 0 0 var(--space-tight);
+}
+
+.reading-document__heading {
+	font-size: var(--type-section);
+	line-height: var(--type-section-line);
+	letter-spacing: -0.02em;
+	text-wrap: balance;
+
+	margin-block-end: var(--space-tight);
+}
+
+.reading-document__standfirst {
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+
+	color: var(--MuteForeground);
+
+	max-width: 62ch;
+
+	white-space: pre-line;
+
+	margin: 0;
+}
+
+.reading-document__ledger {
+	margin-block-start: var(--space-group);
+}
+
+.reading-document__index {
+	@include hairline(top);
+
+	margin-block-start: var(--space-group);
+	padding-block-start: var(--space-reading);
+}
+
+.reading-document__index-label {
+	@include mono-meta;
+	@include track;
+
+	margin: 0 0 var(--space-reading);
+}
+
+.reading-document__index-list {
+	display: grid;
+	grid-template-columns: 1fr;
+
+	list-style: none;
+
+	margin: 0;
+	padding: 0;
+
+	@include bp(768px) {
+		grid-template-columns: 1fr 1fr;
+		column-gap: var(--space-group);
+	}
+}
+
+.reading-document__index-item {
+	@include hairline(bottom);
+}
+
+.reading-document__index-link {
+	display: flex;
+	gap: var(--space-tight);
+	align-items: baseline;
+
+	padding-block: var(--space-tight);
+}
+
+.reading-document__index-number {
+	@include mono-meta;
+
+	flex: 0 0 3ch;
+}
+
+.reading-document__index-name {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+}
+
+.reading-document__body {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+
+	margin-block-start: var(--space-group);
+
+	/* The clause counter. One reset, one increment site, document order. */
+	counter-reset: clause;
+}
+
+.reading-document--prose .reading-document__body {
+	max-width: 72ch;
+}
+
+/* The global sheet gives every p and heading a bottom margin. Inside a
+   `.prose-flow` that margin is a second rhythm competing with the first, so
+   this surface owns the vertical space outright. */
+.reading-document__body > * {
+	margin-block-end: 0;
+}
+
+.reading-document__body > h2,
+.reading-document__body > h3 {
+	margin-block-end: var(--space-tight);
+}
+
+.reading-document__body.prose-flow > h2,
+.reading-document__body.prose-flow > h3 {
+	margin-block-start: var(--space-group);
+}
+
+.reading-document__title {
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+
+	@include hairline(bottom);
+
+	padding-block-end: var(--space-reading);
+}
+
+/* A part of a document that is not all text: the contributing guide's cards and
+   its fifteen-element grid need the full width, so the surface only spaces the
+   parts and lets each one decide its own measure. What it does not let them do
+   is set a paragraph wider than a reading measure. */
+.reading-document__part {
+	margin-block-start: var(--space-group);
+}
+
+.reading-document--full .reading-document__part p {
+	max-width: 72ch;
+}
+
+/* The quoted summary panel: a claim the page makes about itself, held apart from
+   the clause text it summarises. A fill and a hairline, never a second card. */
+.reading-document__note {
+	background: var(--Mute);
+
+	@include hairline;
+
+	padding: var(--space-reading);
+
+	> * + * {
+		margin-block-start: var(--space-reading);
+	}
+}
+
+/* The process rail and the wells that belong to it, on the reading measure. */
+.reading-document__process {
+	max-width: 72ch;
+
+	> * + * {
+		margin-block-start: var(--space-group);
+	}
+}
+
+.reading-clause {
+	scroll-margin-block-start: var(--reading-anchor-offset);
+
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	font-weight: 500;
+
+	text-wrap: balance;
+}
+
+.reading-clause::before {
+	counter-increment: clause;
+
+	content: "§" counter(clause, decimal-leading-zero);
+
+	display: block;
+
+	@include mono-meta;
+
+	margin-block-end: var(--space-tight);
+}

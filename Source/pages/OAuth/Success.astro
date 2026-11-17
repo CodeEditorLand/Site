@@ -1,4 +1,6 @@
 ---
+import AuthShell from "../../Component/Auth/AuthShell.astro";
+import { AuthFrameFor } from "../../Component/Auth/Data";
 import Auth0CallbackHandler from "../../Component/Dynamic/Auth0CallbackHandler";
 import { Header } from "../../Component/Layout/Header";
 import Auth0ClientIdentifier from "../../Function/Configuration/Auth0ClientIdentifier.js";
@@ -18,6 +20,13 @@ const MetaDescription = T("meta.oauth.successDescription", {
 const CompletingText = T("common.oauth.completing", {
 	defaultValue: "Completing sign-in...",
 });
+const CompletingSentence = T("auth.oauthSuccess.completingSentence", {
+	defaultValue:
+		"Your identity provider has returned you to Land. This page continues once the session is written.",
+});
+const SignedInStatus = T("auth.oauthSuccess.signedInStatus", {
+	defaultValue: "SIGNED IN",
+});
 const SuccessTitle = T("common.oauth.success.title", {
 	defaultValue: "You're signed in",
 });
@@ -36,6 +45,8 @@ const BackToSignInText = T("common.oauth.backToSignIn", {
 const GoToDashboardText = T("common.oauth.goToDashboard", {
 	defaultValue: "Go to Dashboard",
 });
+
+const Frame = AuthFrameFor("oauthSuccess", T);
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
@@ -45,76 +56,52 @@ const GoToDashboardText = T("common.oauth.goToDashboard", {
 		Domain={Auth0Domain}
 		ClientIdentifier={Auth0ClientIdentifier}
 	/>
-	<section class="flex min-h-screen items-center justify-center py-20">
-		<div class="container mx-auto px-4">
-			<div class="mx-auto max-w-md text-center">
-				<div class="StaccatoCard StaccatoBorderShimmer flat p-8">
-					<div
-						id="LoadingState"
-						class="flex flex-col items-center gap-4"
-					>
-						<div
-							class="h-8 w-8 animate-spin rounded-none border-2 border-current border-t-transparent"
-						>
-						</div>
-						<p class="text-card-foreground">
-							{CompletingText}
-						</p>
-					</div>
-					<div
-						id="SuccessState"
-						class="hidden flex-col items-center gap-4"
-					>
-						<div
-							class="flex h-12 w-12 items-center justify-center rounded-none border-2 border-green-500 text-green-500"
-						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="24"
-								height="24"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								aria-hidden="true"
-							>
-								<polyline points="20 6 9 17 4 12"></polyline>
-							</svg>
-						</div>
-						<h1 class="text-2xl font-medium">
-							{SuccessTitle}
-						</h1>
-						<p class="text-card-foreground">
-							{SuccessRedirect}
-						</p>
-						<a
-							href="/Dashboard"
-							id="DashboardFallback"
-							class="StaccatoButton text-primary-fg mt-2 inline-flex h-10 items-center justify-center bg-primary px-4 py-2 font-medium transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-						>
-							{GoToDashboardText}&#x2001;&rarr;
-						</a>
-					</div>
-					<div id="ErrorState" class="hidden">
-						<h1 class="mb-2 text-2xl font-medium">
-							{FailedText}
-						</h1>
-						<p id="ErrorMessage" class="mb-6 text-card-foreground">
-							{ErrorGenericText}
-						</p>
-						<a
-							href="/Account/SignIn"
-							class="StaccatoButton flat text-primary-fg inline-flex h-10 items-center justify-center bg-primary px-4 py-2 font-medium transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-						>
-							{BackToSignInText}&#x2001;&rarr;
-						</a>
-					</div>
-				</div>
-			</div>
+	<AuthShell frame={Frame}>
+		<!--
+			Three mutually exclusive states, toggled by the inline script below and
+			by Auth0CallbackHandler through these ids. Each states what it is, what
+			happened, and what the reader can do - never a bare "Success".
+		-->
+		<div id="LoadingState" class="auth-shell__report" role="status">
+			<p class="auth-shell__status">{CompletingText}</p>
+			<p class="auth-shell__report-sentence">{CompletingSentence}</p>
 		</div>
-	</section>
+
+		<div id="SuccessState" class="auth-shell__report hidden">
+			<p class="auth-shell__status auth-shell__status--success">
+				{SignedInStatus}
+			</p>
+			<p class="auth-shell__report-sentence">
+				{SuccessTitle}. {SuccessRedirect}
+			</p>
+			<a
+				href="/Dashboard"
+				id="DashboardFallback"
+				class="auth-shell__primary emphasis-expressive"
+			>
+				{GoToDashboardText}
+				{"\u2001"}
+				<span aria-hidden="true">&rarr;</span>
+			</a>
+		</div>
+
+		<div id="ErrorState" class="auth-shell__report hidden">
+			<p class="auth-shell__status auth-shell__status--failure">
+				{FailedText}
+			</p>
+			<p id="ErrorMessage" class="auth-shell__report-sentence">
+				{ErrorGenericText}
+			</p>
+			<a
+				href="/Account/SignIn"
+				class="auth-shell__primary emphasis-expressive"
+			>
+				{BackToSignInText}
+				{"\u2001"}
+				<span aria-hidden="true">&rarr;</span>
+			</a>
+		</div>
+	</AuthShell>
 </Base>
 
 <script>

@@ -1,0 +1,46 @@
+---
+// ContactBreadcrumb - the site's breadcrumb in its mono nav grammar.
+//
+// A trail is `{ label, href }` per crumb, the last one without an `href`
+// because the current page is not a link. The label is printed exactly as the
+// caller wrote it: the `/LABEL` voice is the caller's to supply, the same rule
+// RecordBand's kicker follows, so this component never re-cases a title it did
+// not write.
+//
+// It exists because fifteen Contact routes opened with the same Tailwind list of
+// `<li>/</li>` separators. One component means one grammar, and a change to it
+// is one edit.
+//
+// No script and no hydration: a trail is markup.
+import type { ContactTrailItem } from "../../Library/Contact/Data.js";
+
+interface Props {
+	/** The crumbs, first to last. The last one is the current page. */
+	trail: readonly ContactTrailItem[];
+
+	/** A class the page adds to the shell, for its own spacing. */
+	class?: string;
+}
+
+const { trail, class: Class } = Astro.props;
+---
+
+<nav class:list={["contact-breadcrumb", Class]} aria-label="Breadcrumb">
+	<ol class="contact-breadcrumb__list">
+		{
+			trail.map((item) => (
+				<li class="contact-breadcrumb__item">
+					{item.href ? (
+						<a class="contact-breadcrumb__link" href={item.href}>
+							{item.label}
+						</a>
+					) : (
+						<span class="contact-breadcrumb__current" aria-current="page">
+							{item.label}
+						</span>
+					)}
+				</li>
+			))
+		}
+	</ol>
+</nav>

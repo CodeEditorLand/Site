@@ -1,0 +1,291 @@
+// DynamicContactForm - the request form, in the site's own language.
+//
+// Publishes:
+//   .contact-form                   the form's page container, on the band gutters
+//   .contact-form__inner            the form measure and its vertical rhythm
+//   .contact-form__meta             the pair reference, legal basis and window
+//   .contact-form__pair             the CODE-XXXXX reference
+//   .contact-form__tag              one fact chip beside it
+//   .contact-form__handler          who the request is sent to
+//   .contact-form__handler-value    that address, at full ink
+//   .contact-form__fields           the field stack
+//   .contact-form__field            one field: label, control, hint, error
+//   .contact-form__label            a field label, at --type-meta
+//   .contact-form__required         the required marker, in --Destruct
+//   .contact-form__input            a text, email, select or textarea control
+//   .contact-form__hint             the hint under a control
+//   .contact-form__error            the error under a control, in --Destruct
+//   .contact-form__check            a single consent checkbox and its sentence
+//   .contact-form__check-label      that sentence, at body weight
+//   .contact-form__options          a checkbox group
+//   .contact-form__option           one option in that group
+//   .contact-form__checkbox         the checkbox itself
+//   .contact-form__actions          the three ways to send
+//   .contact-form__actions-label    the question above them
+//   .contact-form__action           one way to send
+//   .contact-form__action--destructive  the same, in --Destruct ink
+//   .contact-form__action-text      the action's title and note
+//   .contact-form__action-title     what the action does
+//   .contact-form__action-note      what happens when it is used
+//   .contact-form__note             the pair reference explanation
+//   .contact-form__mono             a code inside running prose
+//   .contact-form__mono--strong     that code, at medium weight
+//
+// Three decisions worth knowing:
+//
+// - A control sits on `--Card` with a hairline and square corners. The canvas is
+//   creme, so a white field is the one place the eye can type; the form has no
+//   card around it, because a card behind the fields would hide exactly that.
+// - The primary action is the published `.emphasis-expressive` tier, and it is
+//   the only expressive element in the form. A destructive request keeps the
+//   tier and swaps its ink to `--Destruct`, so ERASE still reads as the request
+//   that cannot be undone.
+// - Focus is an outline in `--Primary` at the hairline width. No shadow, no ring
+//   offset, no colour that is not a token.
+
+@use "../../Mixin" as *;
+
+// ─── The container ────────────────────────────────────────────────────────
+
+.contact-form {
+	@include band-inner;
+	padding-block: var(--space-chapter);
+}
+
+// The measure: a form reads in a narrower column than a band, so the stack
+// stops at the two-extra-large container while the gutters stay the page's.
+.contact-form__inner {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-group);
+	max-width: var(--ContainerTwoExtraLarge);
+}
+
+// ─── The facts above the fields ───────────────────────────────────────────
+
+.contact-form__meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-tight) var(--space-reading);
+}
+
+.contact-form__pair,
+.contact-form__tag {
+	@include mono-meta;
+	@include hairline;
+	padding: var(--space-tight) var(--space-reading);
+}
+
+// The pair reference is the one fact the reader is asked to quote, so it keeps
+// full ink while the chips beside it stay muted.
+.contact-form__pair {
+	color: var(--Foreground);
+}
+
+.contact-form__handler {
+	@include mono-meta;
+	margin: 0;
+}
+
+.contact-form__handler-value {
+	color: var(--Foreground);
+}
+
+// ─── The fields ───────────────────────────────────────────────────────────
+
+.contact-form__fields {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-group);
+}
+
+.contact-form__field {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-width: 0;
+}
+
+.contact-form__label {
+	@include mono-meta;
+	color: var(--Foreground);
+}
+
+.contact-form__required {
+	margin-inline-start: var(--space-tight);
+	color: var(--Destruct);
+}
+
+// The one surface the reader types on: white field, hairline, square corners
+// (radius is a token whose value is 0 - this file never restates it).
+.contact-form__input {
+	width: 100%;
+	padding: var(--space-tight) var(--space-reading);
+	background: var(--Card);
+	color: var(--CardForeground);
+	font-family: var(--FontMono);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	@include hairline;
+}
+
+.contact-form__input:focus-visible {
+	outline: var(--BorderWidth) var(--BorderStyle) var(--Primary);
+	outline-offset: 0;
+}
+
+.contact-form__hint {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+}
+
+// An error is a sentence, not a mark: it says what is missing, in the one ink
+// the site reserves for it.
+.contact-form__error {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--Destruct);
+}
+
+// ─── Checkboxes ───────────────────────────────────────────────────────────
+
+.contact-form__check {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--space-tight);
+	cursor: pointer;
+}
+
+// A consent line is a sentence, so it keeps body weight and sentence case -
+// only the field labels above sit at meta weight.
+.contact-form__check-label {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--Foreground);
+}
+
+.contact-form__options {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+}
+
+.contact-form__option {
+	display: flex;
+	align-items: center;
+	gap: var(--space-tight);
+	cursor: pointer;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--Foreground);
+}
+
+.contact-form__checkbox {
+	accent-color: var(--Primary);
+	flex-shrink: 0;
+	margin: 0;
+}
+
+// ─── The three ways to send ───────────────────────────────────────────────
+
+.contact-form__actions {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-reading);
+}
+
+.contact-form__actions-label {
+	@include mono-meta;
+	@include track(0.08em);
+	margin: 0;
+}
+
+// A target is as wide as the form, and carries its own padding: the tier
+// publishes a surface, this rule publishes the box around it.
+.contact-form__action {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--space-reading);
+	width: 100%;
+	padding: var(--space-reading) var(--space-group);
+	background: transparent;
+	color: var(--Foreground);
+	font-family: var(--FontMono);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	text-align: left;
+	text-decoration: none;
+	cursor: pointer;
+	@include hairline;
+}
+
+.contact-form__action:hover,
+.contact-form__action:focus-visible {
+	border-color: var(--Primary);
+}
+
+// The icon takes the action's own type size, so it never needs a px value of
+// its own and never drifts from the label it sits beside.
+.contact-form__action svg {
+	flex-shrink: 0;
+	inline-size: 1em;
+	block-size: 1em;
+	margin-block-start: 0.15em;
+}
+
+.contact-form__action-text {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-width: 0;
+}
+
+.contact-form__action-title {
+	font-weight: 500;
+}
+
+.contact-form__action-note {
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+}
+
+// The expressive tier inverts the surface, so the note inside it inherits the
+// tier's own foreground instead of the muted ink it carries elsewhere.
+.contact-form__action.emphasis-expressive .contact-form__action-note {
+	color: inherit;
+}
+
+// A destructive request keeps the expressive tier and swaps its ink: ERASE is
+// the one action on the site that cannot be undone, and it should not look like
+// a request for a copy of your data.
+.contact-form__action--destructive.emphasis-expressive {
+	background: var(--Destruct);
+	border-color: var(--Destruct);
+	color: var(--DestructForeground);
+}
+
+// ─── The pair reference explanation ───────────────────────────────────────
+
+.contact-form__note {
+	padding: var(--space-reading) var(--space-group);
+	background: var(--Mute);
+	color: var(--MuteForeground);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	@include hairline;
+}
+
+.contact-form__mono {
+	font-family: var(--FontMono);
+	color: var(--Foreground);
+}
+
+.contact-form__mono--strong {
+	font-weight: 500;
+}

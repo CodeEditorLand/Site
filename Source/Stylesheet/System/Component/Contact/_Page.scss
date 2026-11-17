@@ -1,0 +1,57 @@
+// ContactPage - the page opening every Contact route shares.
+//
+// Publishes:
+//   .contact-page             the page shell (bands follow it, full width)
+//   .contact-page__header     the opening container, on the band gutters
+//   .contact-page__heading    the page's only h1, at --type-section
+//   .contact-page__standfirst the sentence under it, at --type-sub
+//
+// The header is a container, not a band: it has no surface and no rule, because
+// the first band below it opens the page's rhythm. Its gutters come from the
+// `band-inner` mixin, so the opening and every band under it line up on the same
+// left edge without either retyping the clamp.
+//
+// The heading is the page's one `h1`. A block never renders one - RecordBand
+// publishes an `h2` for exactly this reason.
+
+@use "../../Mixin" as *;
+
+.contact-page {
+	display: block;
+}
+
+.contact-page__header {
+	@include band-inner;
+	padding-block: var(--space-chapter) 0;
+}
+
+.contact-page__heading {
+	margin: 0;
+	max-width: var(--ContainerTwoExtraLarge);
+	font-family: var(--FontMono);
+	font-size: var(--type-section);
+	font-weight: 500;
+	line-height: var(--type-section-line);
+	letter-spacing: -0.02em;
+	color: var(--Foreground);
+	text-wrap: balance;
+}
+
+.contact-page__standfirst {
+	margin: 0;
+	max-width: 62ch;
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+// ─── The opening rhythm ───────────────────────────────────────────────────
+// Two tiers only: the trail sits at reading distance above the heading, and
+// the standfirst reads as the heading's own sentence. Both parts zero their
+// margins above, so this is the whole rhythm of the opening.
+
+.contact-page__heading,
+.contact-page__standfirst {
+	margin-block-start: var(--space-reading);
+}

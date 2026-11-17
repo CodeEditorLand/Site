@@ -1,0 +1,115 @@
+---
+/**
+ * Footer - the record's closing band.
+ *
+ * Three parts, in reading order: the facts as a `RecordLedger` (SOURCE, LICENSE,
+ * MAINTAINED BY, SUPPORT, STATUS), the destinations those linked facts come from
+ * in the footer's own `/LABEL` form, and the link rows the footer has always
+ * carried. The band closes on `# LAND / RECORD END`, so the record ends where the
+ * page ends.
+ *
+ * This was a `.tsx` island. It is now an `.astro` component because the ledger it
+ * composes is an `.astro` block and an `.astro` component cannot be imported from
+ * a `.tsx` file. What that removed: the footer's strings were re-translated
+ * client-side by react-i18next when the reader switched locale. They are now
+ * rendered once, in English, by the server translator - which is what every other
+ * prerendered surface on this site already does (`GetI18n` is English-only by
+ * design). `LocaleSwitcher` stays and still lists all five locales.
+ */
+import { GetI18n } from "../../Library/I18n/Server";
+import RecordLedger from "../Record/RecordLedger.astro";
+import { FooterData, FooterLinkAttributes } from "./Footer/Data.js";
+import { LocaleSwitcher } from "./LocaleSwitcher";
+
+const T = GetI18n();
+
+const Data = FooterData(T);
+
+const Year = new Date().getFullYear();
+
+const Copyright = T("footer:bottomBar.copyright", {
+	year: Year,
+	defaultValue: `© ${Year} Code Editor Land. All rights reserved.`,
+});
+---
+
+<footer class="Footer" role="contentinfo" aria-label="Site footer">
+	<div class="FooterRecord">
+		<div class="FooterRule" aria-hidden="true"></div>
+
+		<RecordLedger rows={Data.Ledger} class="FooterLedger" />
+
+		<nav class="FooterSources" aria-label="Sources">
+			{
+				Data.Sources.map((Link) => (
+					<a
+						class="FooterSourceLink"
+						href={Link.Href}
+						{...FooterLinkAttributes(Link.Target)}
+					>
+						<span class="FooterSourceLabel">/{Link.Label}</span>
+					</a>
+				))
+			}
+		</nav>
+
+		<nav class="FooterQuickLinks" aria-label="Quick links">
+			{
+				Data.Quick.map((Link) => (
+					<a
+						class="FooterQuickLink"
+						href={Link.Href}
+						{...FooterLinkAttributes(Link.Target)}
+					>
+						{Link.Label}
+					</a>
+				))
+			}
+		</nav>
+
+		<nav class="FooterLegal" aria-label="Legal">
+			{
+				Data.Legal.map((Link) => (
+					<a
+						class="FooterLegalLink"
+						href={Link.Href}
+						{...FooterLinkAttributes(Link.Target)}
+					>
+						{Link.Label}
+					</a>
+				))
+			}
+		</nav>
+
+		<div class="FooterBottom">
+			<span class="FooterCopyright">{Copyright}</span>
+
+			<span class="FooterLocale">
+				<LocaleSwitcher client:idle />
+			</span>
+
+			<span class="FooterTauri">
+				<a
+					class="FooterTauriLink"
+					href="https://tauri.app"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<img
+						src="/Image/GitHub/Made/Tauri.svg"
+						alt="Made with Tauri"
+						width="160"
+						height="32"
+						loading="lazy"
+						decoding="async"
+					/>
+				</a>
+			</span>
+		</div>
+
+		<p class="FooterRecordEnd">
+			<span class="FooterRecordMarker" aria-hidden="true">#</span>
+			{T("footer:record.end", { defaultValue: "LAND / RECORD END" })}
+		</p>
+	</div>
+</footer>

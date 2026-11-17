@@ -1,0 +1,63 @@
+// DynamicReleaseManifest - what the manifest publishes per platform, and the
+// verification material that ships with a release.
+//
+// Publishes:
+//   .download-manifest           the group grid: one column, two from 1024px
+//   .download-manifest__group    one platform's label, its ledger and its link
+//   .download-manifest__platform the group's own h3
+//   .download-manifest__link     the manifest's one live URL, when it has one
+//   .download-manifest__empty    the sentence a manifest with no platforms says
+//
+// Owned by P7. The ledger anatomy belongs to RecordLedger; this partial places
+// the ledgers, names their groups and gives the empty state a voice.
+
+@use "../Mixin" as *;
+
+.download-manifest {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-group);
+}
+
+@include bp(1024px) {
+	.download-manifest {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.download-manifest__group {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+}
+
+// Platform names are data and keep their case, so no `track()` here - it would
+// uppercase `macOS`. The verification heading shares this class because it is
+// the same job at the same size: a group's own label above its ledger.
+.download-manifest__platform {
+	@include mono-meta;
+	margin: 0;
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	font-weight: 500;
+	color: var(--Foreground);
+}
+
+// The underline comes from the global link rule, which outranks a single-class
+// component rule; this only sets the measure and the caption weight.
+.download-manifest__link {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+}
+
+// An empty state is a sentence, never a box: body weight, muted, measure-capped.
+.download-manifest__empty {
+	margin: 0;
+	max-width: 62ch;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--MuteForeground);
+}

@@ -3,7 +3,7 @@ import "@Stylesheet/System.scss";
 
 import Background from "../Background.astro";
 import { ErrorBoundary } from "../Component/ErrorBoundary";
-import { Footer } from "../Component/Layout/Footer";
+import Footer from "../Component/Layout/Footer.astro";
 import { AnalyticsProvider } from "../Component/Provider/AnalyticsProvider";
 import { PageviewTracker } from "../Component/Provider/PageviewTracker";
 import MetaTags from "../Component/Social/MetaTags";
@@ -141,11 +141,19 @@ const T = GetI18n();
 			<Background />
 			<AnalyticsProvider>
 				<PageviewTracker />
+				<!--
+					The shell's band order is header -> main -> footer. A page that hands
+					its header to this slot keeps <header> outside <main>, where it is a
+					real banner landmark; a page that renders <Header> as the default
+					slot's first child still works, because the header carries an
+					explicit role="banner" and lands first in the document.
+				-->
+				<slot name="Header" />
 				<main id="main-content" class="grow" tabindex="-1">
 					<ErrorBoundary client:load><slot /></ErrorBoundary>
 				</main>
 			</AnalyticsProvider>
-			<div id="Footer" class="shrink"><Footer client:idle /></div>
+			<div id="Footer" class="shrink"><Footer /></div>
 		</jelly-theme>
 		<script>
 			import "@Script/Firebase";
