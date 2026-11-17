@@ -9,8 +9,10 @@ description:
     layer in the Land project."
 ---
 
+# Sky - Deep Dive
+
 [Sky](https://github.com/CodeEditorLand/Sky) renders the complete editor interface inside the Tauri webview using Astro,
-consuming state and services from the [Wind](https://github.com/CodeEditorLand/Wind) service layer. the
+consuming state and services from the [Wind](https://github.com/CodeEditorLand/Wind) service layer. This page covers the
 internal architecture, module inventory, Sky Bridge event routing, build
 optimization strategy, data flow, integration points, and configuration.
 
@@ -68,6 +70,7 @@ by [Mountain](https://github.com/CodeEditorLand/Mountain) and routes them to VS 
 bridge is modular: each `Install*` module in [`Bridge/`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/) registers a related group
 of channels.
 
+> [!NOTE]
 > [Mountain](https://github.com/CodeEditorLand/Mountain) is used as a relay for [Cocoon](https://github.com/CodeEditorLand/Cocoon)-to-[Sky](https://github.com/CodeEditorLand/Sky) communication. Sky emits a
 > `sky://` Tauri event, Mountain re-emits it as a gRPC notification to Cocoon.
 > This avoids a separate transport while keeping the workbench renderer and the

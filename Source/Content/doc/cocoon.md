@@ -9,6 +9,8 @@ description:
     the Vine gRPC protocol for native operations."
 ---
 
+# Cocoon: Extension Host
+
 [Cocoon](https://github.com/CodeEditorLand/Cocoon) is the `Node.js` extension host sidecar for [`Land`](https://github.com/CodeEditorLand/Land). We run VS Code
 extensions in a supervised `Node.js` process and provide a `vscode` API shim
 via [`Effect-TS`](https://effect.website). That shim translates extension API calls into declarative
@@ -318,7 +320,7 @@ to [`Mountain`](https://github.com/CodeEditorLand/Mountain) for native `Rust` ex
 | **A - Stock Node**  | Unmodified VS Code `extHost*.ts`                                              | In-process | Default for all APIs                       |
 | **B - Rust Native** | gRPC `ActionEffect` to [Mountain](https://github.com/CodeEditorLand/Mountain) | ~1ms       | I/O-heavy APIs (fs, terminal, search, git) |
 
-### Track Distribution by API
+### API Track Assignment
 
 | API                             | Default Track | Rationale                       |
 | ------------------------------- | ------------- | ------------------------------- |
@@ -440,7 +442,7 @@ module loading.
    disposed, module unloaded
 ```
 
-## Dual-Track Routing 🛤️
+## Dual-Track Routing Reference 🛤️
 
 | Track               | Implementation                                                                | Latency    | When Used                                  |
 | ------------------- | ----------------------------------------------------------------------------- | ---------- | ------------------------------------------ |
@@ -472,16 +474,14 @@ module loading.
 - [VSCode-API-Coverage-Matrix](/Doc/vscode-api-coverage) - Comprehensive
   API status
 
+## See Also
+
+- [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing
+
 ## Funding 💎
 
 **Project Maintainers:** Source Open
 ([Source/Open@Editor.Land](mailto:Source/Open@Editor.Land)) |
 [GitHub Repository](https://github.com/CodeEditorLand/Cocoon) |
 [Report an Issue](https://github.com/CodeEditorLand/Cocoon/issues)
-
----
-
-## See Also
-
-- [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
-- [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing

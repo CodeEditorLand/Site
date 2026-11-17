@@ -126,7 +126,7 @@ properties:
 | ---------------------- | --------------------- | ---------------------------- |
 | `inputBox.value`       | `InputBoxValue`       | `{ inputBoxValue: V }`       |
 | `inputBox.placeholder` | `InputBoxPlaceholder` | `{ inputBoxPlaceholder: V }` |
-| `commitTemplate`       | `InputBoxPlaceholder` | `{ commitTemplate: V }`      |
+| `commitTemplate`       | `CommitTemplate`      | `{ commitTemplate: V }`      |
 | `acceptInputCommand`   | `AcceptInputCommand`  | `{ acceptInputCommand: V }`  |
 
 Changes to `inputBox.value` in [Cocoon](https://github.com/CodeEditorLand/Cocoon) must go through the `ScmProvider` service
@@ -135,7 +135,7 @@ box will not propagate to the extension.
 
 When [Mountain](https://github.com/CodeEditorLand/Mountain) receives `$scm:updateSourceControl` it emits
 **`sky://scm/provider/changed`** to the [Sky](https://github.com/CodeEditorLand/Sky) renderer with the updated provider
-state. The [`InstallScm.ts`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge.ts) bridge handler finds the matching shim by numeric
+state. The [`InstallScm.ts`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallScm.ts) bridge handler finds the matching shim by numeric
 handle and applies `InputModel.setValue(newValue)` (or `applyEdits` as a
 fallback) so the workbench commit input reflects the extension-set text, then
 fires `provider.onDidChange` so the SCM panel re-renders.

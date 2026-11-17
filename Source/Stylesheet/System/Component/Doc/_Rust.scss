@@ -1,0 +1,93 @@
+// DocRust - the Rust API surface: the page container, the crate switcher and the
+// rustdoc frame.
+//
+// Publishes:
+//   .doc-rust            the page container (one gutter, one max width)
+//   .doc-rust__viewer    the switcher and its frame
+//   .doc-rust__bar       the tab list
+//   .doc-rust__tab       one crate
+//   .doc-rust__tab--active  the crate the frame is showing
+//   .doc-rust__frame     the rustdoc iframe
+//   .doc-rust__back      the way back into the documentation
+//
+// The active tab is marked twice - `aria-selected` in the markup and an inverted
+// fill here - so the state is not colour-only. The fill is `ink-invert`, the same
+// tier a band's one expressive element uses, because the tab bar is this page's
+// single expressive moment.
+//
+// The frame is 70vh: it is a viewport into another site, and the one number that
+// makes it read as a window rather than a strip. It is a literal on purpose and
+// the only one in this partial.
+@use "../../Mixin" as *;
+
+.doc-rust {
+	@include band-inner;
+
+	padding-block: var(--space-group);
+}
+
+.doc-rust__viewer {
+	@include hairline;
+
+	overflow: hidden;
+
+	background: var(--Card);
+}
+
+.doc-rust__bar {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
+
+	padding: var(--space-tight) var(--space-reading);
+
+	@include hairline(bottom);
+}
+
+.doc-rust__tab {
+	@include mono-meta;
+	@include track(0.08em);
+
+	padding: var(--space-tight) var(--space-reading);
+
+	background: var(--Card);
+
+	@include hairline;
+
+	color: var(--MuteForeground);
+
+	cursor: pointer;
+}
+
+.doc-rust__tab:hover {
+	color: var(--Foreground);
+
+	border-color: var(--Primary);
+}
+
+.doc-rust__tab--active {
+	@include ink-invert;
+
+	border-color: var(--Primary);
+}
+
+.doc-rust__frame {
+	display: block;
+
+	inline-size: 100%;
+	block-size: 70vh;
+
+	border: 0;
+
+	background: var(--Card);
+}
+
+.doc-rust__back {
+	@include hairline(top);
+
+	@include mono-meta;
+	@include track;
+
+	margin-block-start: var(--space-chapter);
+	padding-block-start: var(--space-group);
+}

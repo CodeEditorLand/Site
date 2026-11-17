@@ -38,31 +38,13 @@ reference page.
 The following areas have known gaps and will not function correctly in the
 current release:
 
-**`vscode.authentication` full OAuth flows** - The `getSession()` call returns
-stubs. Extensions that require GitHub OAuth, Microsoft account sign-in, or any
-OAuth 2.0 provider (Copilot, GitHub Pull Requests, Live Share) will fail to
-authenticate. The API structure is present but there is no real OAuth backend
-wired.
-
-**`registerInlineCompletionItemProvider` (🟡 partial)** - The [Vine](https://github.com/CodeEditorLand/Vine) proto
-definition, [Mountain](https://github.com/CodeEditorLand/Mountain) dispatcher, and [Sky](https://github.com/CodeEditorLand/Sky) `ILanguageFeaturesService`
-registration all exist. Single-item and list providers work for basic inline
-suggestions. Providers that return `InlineCompletionList` with
-`suppressSuggestions` or custom range objects may not render correctly in all
-configurations.
-
-**Debug adapter types** - `DebugProvider` handles `executable`-type debug
-configurations (launching a child process). Server-mode and pipe-mode debug
-adapters (`attach` type with `debugServer` or `pipeTransport`) are not delegated
-correctly.
-
-**`registerWebviewPanelSerializer`** - Panel state is not persisted across
-reloads. Extensions that restore webview panels after a window reload will not
-recover their state.
-
-**`vscode.env.openExternal` with non-file schemes** - Works for `http`/`https`
-URLs via the native open handler; custom scheme URIs may not route correctly on
-all platforms.
+| API | What does not work |
+| --- | --- |
+| `vscode.authentication` full OAuth flows | The `getSession()` call returns stubs. Extensions that require GitHub OAuth, Microsoft account sign-in, or any OAuth 2.0 provider (Copilot, GitHub Pull Requests, Live Share) will fail to authenticate. The API structure is present but there is no real OAuth backend wired |
+| `registerInlineCompletionItemProvider` (🟡 partial) | The [Vine](https://github.com/CodeEditorLand/Vine) proto definition, [Mountain](https://github.com/CodeEditorLand/Mountain) dispatcher, and [Sky](https://github.com/CodeEditorLand/Sky) `ILanguageFeaturesService` registration all exist. Single-item and list providers work for basic inline suggestions. Providers that return `InlineCompletionList` with `suppressSuggestions` or custom range objects may not render correctly in all configurations |
+| Debug adapter types | `DebugProvider` handles `executable`-type debug configurations (launching a child process). Server-mode and pipe-mode debug adapters (`attach` type with `debugServer` or `pipeTransport`) are not delegated correctly |
+| `registerWebviewPanelSerializer` | Panel state is not persisted across reloads. Extensions that restore webview panels after a window reload will not recover their state |
+| `vscode.env.openExternal` with non-file schemes | Works for `http`/`https` URLs via the native open handler; custom scheme URIs may not route correctly on all platforms |
 
 ## Extension Context Capabilities 🧩
 
@@ -93,7 +75,7 @@ Place your unpacked extension directory in the user extension root. On macOS:
 ```
 
 The directory must contain a valid `package.json` with `"main"` pointing to the
-the compiled entry point. [Land](https://github.com/CodeEditorLand/Land) scans this directory at startup and activates
+compiled entry point. [Land](https://github.com/CodeEditorLand/Land) scans this directory at startup and activates
 extensions matching their `activationEvents`.
 
 ### VSIX Install

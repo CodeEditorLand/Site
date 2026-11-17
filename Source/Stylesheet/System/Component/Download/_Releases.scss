@@ -7,7 +7,7 @@
 // block's; this partial only gives the empty state a voice, so it publishes one
 // class and nothing else.
 
-@use "../Mixin" as *;
+@use "../../Mixin" as *;
 
 .download-releases__empty {
 	margin: 0;

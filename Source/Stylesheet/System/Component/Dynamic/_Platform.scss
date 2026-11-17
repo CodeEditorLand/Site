@@ -1,0 +1,25 @@
+// Platforms - the availability matrix.
+//
+// Publishes:
+//   .platform-matrix         the matrix shell, for the page's own spacing only
+//   .platform-matrix__note   the package format under a platform's name
+//
+// The table, its head, its rows and its cells are `RecordMatrix`'s own
+// (`System/Record/_Matrix.scss`); this partial adds the one thing a matrix cell
+// cannot carry, which is a second line under a row label.
+//
+// The note has to undo two of the block's rules to read as a note rather than as
+// part of the key: the label cell refuses to wrap (`white-space: nowrap`), and
+// its ink is the row's own `--Foreground`. A format string is longer than a
+// label, so it wraps, and it is telemetry rather than a key, so it is muted.
+
+@use "../../Mixin" as *;
+
+.platform-matrix__note {
+	display: block;
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+	white-space: normal;
+}

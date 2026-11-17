@@ -1,177 +1,92 @@
-import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
-import { RichText } from "../UI/RichText.js";
+import type Content from "../Interface/Content/Feature.js";
 
-import { SpecimenLabel } from "../Brand/SpecimenLabel.js";
-
-import { Mountain } from "../../Content/Record/Mountain.js";
-
-import { Cocoon } from "../../Content/Record/Cocoon.js";
-
-import { Wind } from "../../Content/Record/Wind.js";
-
-import { Sky } from "../../Content/Record/Sky.js";
-
-import { Air } from "../../Content/Record/Air.js";
-
-import { Echo } from "../../Content/Record/Echo.js";
-
-import { JellyCardStyle } from "./Interface/Card/Jelly.js";
-
-import type Property from "./Interface/Property/Feature.js";
+import { EntriesOf, Heading, Kicker } from "./Properties/Data.js";
 
 /**
- * Element records behind the six feature cards, in feature order:
- *   performance → Mountain (native backend)
- *   compatibility → Cocoon (extension host)
- *   architecture → Wind (workbench shell)
- *   cross-platform → Sky (UI layer)
- *   tooling → Air (background services)
- *   opensource → Echo (scheduler primitives)
+ * The six properties - one band, six records.
+ *
+ * The band used to print six `SpecimenLabel` ledgers of *element* records
+ * (Mountain, Cocoon, Wind, Sky, Air, Echo) in feature order, which meant the
+ * six properties' own titles and paragraphs - `home:features.item.*`, the copy
+ * this band exists for - were never rendered at all. They are now the records:
+ * the claim is the record's name and the paragraph is its body, quoted whole.
+ *
+ * The band heading is `home:features.heading` rather than the old
+ * `features.title`, because a heading has to say what its own band is; the old
+ * title restated the hero's claim one section below the hero. Both the key and
+ * its `defaultValue` are present - the JSON in
+ * `Source/Library/I18n/Locale/En/Home.json` and the constant in `Data.ts` - so
+ * neither silently overrides the other (BRIDGE §8.6).
+ *
+ * The markup is the Record layer's published class API rather than the
+ * `.astro` blocks: this component is a child of the page's `ErrorBoundary`
+ * inside `HomePage.tsx`, and an `.astro` component cannot be imported from a
+ * `.tsx` file (BRIDGE §2.1).
+ *
+ * The band is printed, not driven: no state, no effect, no handler. The noise
+ * scatter the old cards ran is gone with them - it moved decoration over six
+ * cards whose copy was not being read.
  */
-const ElementRecords = [Mountain, Cocoon, Wind, Sky, Air, Echo];
+interface Props {
+	readonly Content: Content;
 
-/**
- * Dynamic Features - Daylight Field Record series.
- * Six feature cards render as per-element SPECIMEN-LABEL ledgers
- * (Source/Component/Brand/SpecimenLabel.tsx) driven by
- * Source/Content/Record/<Element>.ts (index, stamp, route, status,
- * metadata, seal). Ink-on-creme ledger cards with hairline rules -
- * deliberately distinct from the white FieldRecord boxes used by the
- * hero, 404 and Portal. The section header and the simplex-noise scatter
- * (Staccato + Attention) are preserved unchanged.
- */
-const DynamicFeatures = ({ Content, ClassName }: Property) => {
-	const {
-		Title,
+	readonly ClassName?: string;
+}
 
-		Subtitle,
+/** The one heading id the band's `aria-labelledby` points at. */
+const HeadingId = "FeaturesHeading";
 
-		Feature: Features,
+const Features = ({ Content, ClassName }: Props) => {
+	const { t: T } = useTranslation(["home", "common"]);
 
-		Columns = 3,
+	const { Subtitle, Feature } = Content;
 
-		Gap = "lg",
-	} = Content;
+	const HeadingText = T("home:features.heading", { defaultValue: Heading });
 
-	const GridReference = useRef<HTMLDivElement>(null);
-
-	const GapClass = {
-		sm: "gap-4",
-
-		md: "gap-6",
-
-		lg: "gap-8",
-
-		xl: "gap-12",
-	};
-
-	const ColumnClass: Record<number, string> = {
-		1: "grid-cols-1",
-
-		2: "grid-cols-1 md:grid-cols-2",
-
-		3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
-
-		4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
-
-		5: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5",
-
-		6: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6",
-	};
-
-	useEffect(() => {
-		const Grid = GridReference.current;
-
-		if (!Grid) return;
-
-		const ReducedMotion = window.matchMedia(
-			"(prefers-reduced-motion: reduce)",
-		).matches;
-
-		if (ReducedMotion) return;
-
-		const ApplyScatter = async () => {
-			const AttentionModule =
-				await import("../../Function/Noise/Attention.js");
-
-			const Attention = await AttentionModule.default;
-
-			const Cards = Grid.querySelectorAll<HTMLElement>(".FeatureCard");
-
-			Cards.forEach((Card, Index) => {
-				Attention.ApplyToElement(Card, Index, 6, 4);
-			});
-
-			const StaccatoModule =
-				await import("../../Function/Noise/Staccato.js");
-
-			const Engine = await StaccatoModule.default;
-
-			Engine.SeedSelector(".FeatureCard");
-		};
-
-		ApplyScatter();
-	}, [Features]);
+	const Entries = EntriesOf(Feature ?? []);
 
 	return (
 		<section
 			id="features"
-			aria-labelledby="FeaturesHeading"
-			className={`w-full py-16 sm:py-20 ${ClassName || ""}`}
+			aria-labelledby={HeadingId}
+			className={`record-band record-band--canvas ${ClassName ?? ""}`.trim()}
 		>
-			<div className="container mx-auto px-4">
-				{(Title || Subtitle) && (
-					<div className="mx-auto mb-10 max-w-2xl text-center">
-						<p className="mb-4 font-mono text-sm uppercase tracking-[0.25em] text-muted">
-							Features
-						</p>
-						{Title && (
-							<h2
-								id="FeaturesHeading"
-								className="font-mono text-4xl font-normal tracking-tight sm:text-5xl"
-							>
-								{Title}
-							</h2>
-						)}
+			<div className="record-band__inner">
+				<p className="record-band__kicker">{Kicker}</p>
+				<h2 id={HeadingId} className="record-band__heading">
+					{HeadingText}
+				</h2>
+				{Subtitle ? (
+					<p className="record-band__standfirst">{Subtitle}</p>
+				) : null}
 
-						{Subtitle && (
-							<div className="mt-3 text-muted">
-								<RichText Text={Subtitle} />
-							</div>
-						)}
+				<div className="record-band__body">
+					<div className="properties-grid">
+						{Entries.map((Entry) => (
+							<article
+								className="record-entry properties-entry"
+								key={Entry.index}
+							>
+								<p className="record-entry__index">
+									{Entry.index}
+								</p>
+								<h3 className="record-entry__name">
+									{Entry.name}
+								</h3>
+								<p className="record-entry__body">
+									{Entry.body}
+								</p>
+							</article>
+						))}
 					</div>
-				)}
-
-				<div
-					ref={GridReference}
-					className={`StaccatoMorphGap grid min-h-0 items-start ${
-						ColumnClass[Columns]
-					} ${GapClass[Gap]} mx-auto max-w-6xl`}
-				>
-					{Features.map((Feature, Index) => {
-						const Record =
-							ElementRecords[Index % ElementRecords.length];
-
-						return (
-							<jelly-card
-								key={Record.Id}
-								className="FeatureCard flat min-h-0 p-5"
-								style={JellyCardStyle(Record.Id)}
-							>
-								<SpecimenLabel
-									record={Record}
-									className="h-full"
-								/>
-							</jelly-card>
-						);
-					})}
 				</div>
 			</div>
 		</section>
 	);
 };
 
-export { DynamicFeatures };
+export { Features as DynamicFeatures };
 
-export default DynamicFeatures;
+export default Features;

@@ -1,9 +1,31 @@
 ---
+import DocArticle from "../../Component/Doc/DocArticle.astro";
+import DocIndex from "../../Component/Doc/DocIndex.astro";
+import {
+	RustBand,
+	RustCrates,
+	RustViewerBand,
+} from "../../Component/Doc/Rust/Data";
+import RustViewer from "../../Component/Doc/RustViewer.astro";
 import { Header } from "../../Component/Layout/Header";
+import RecordBand from "../../Component/Record/RecordBand.astro";
 import Base from "../../Layout/Base.astro";
-import { GetI18n } from "../../Library/I18n/Server";
 import { LinkMentions } from "../../Library/CodeMentions";
+import { GetI18n } from "../../Library/I18n/Server";
 
+/**
+ * The Rust API surface: the crate list, then the frame that reads one.
+ *
+ * The same shell as every other documentation page (`DocArticle`), so the Rust
+ * documentation reads like the rest: a kicker, one `h1`, the standfirst, then
+ * the body. What it does not have is the rail - this page is a viewer, and its
+ * position is carried by the breadcrumb and the back link.
+ *
+ * The crate list is `RustBand` (a `DocBand`, rendered by the same `DocIndex` the
+ * index page uses) and the frame is `RustViewer`. Every rustdoc URL, label and
+ * description is in `Component/Doc/Rust/Data.ts`, and every one of them is the
+ * string this page printed before it was a composition.
+ */
 const T = GetI18n();
 
 const MetaTitle = T("meta.docs.rust.title", {
@@ -15,70 +37,21 @@ const MetaDescription = T("meta.docs.rust.description", {
 		"Browse the generated Rust API documentation for Land's core crates.",
 });
 
-const RustDocSite = [
-	{
-		Id: "Mountain",
-		Label: "Mountain",
-		Url: "https://Rust.Documentation.Mountain.editor.land",
-		Description:
-			"Native Rust/Tauri backend: window management, file system, process lifecycle, gRPC server",
-	},
-	{
-		Id: "Common",
-		Label: "Common",
-		Url: "https://Rust.Documentation.Common.editor.land",
-		Description:
-			"Shared traits, DTOs, configuration helpers, and cross-element contracts",
-	},
-	{
-		Id: "Echo",
-		Label: "Echo",
-		Url: "https://Rust.Documentation.Echo.editor.land",
-		Description:
-			"Lock-free work-stealing scheduler built on crossbeam-deque",
-	},
-	{
-		Id: "Air",
-		Label: "Air",
-		Url: "https://Rust.Documentation.Air.editor.land",
-		Description:
-			"Background services for updates, downloads, integrity checks, authentication, and indexing",
-	},
-	{
-		Id: "SideCar",
-		Label: "SideCar",
-		Url: "https://Rust.Documentation.SideCar.editor.land",
-		Description: "Node.js binary distribution compiled per target triple",
-	},
-	{
-		Id: "Mist",
-		Label: "Mist",
-		Url: "https://Rust.Documentation.Mist.editor.land",
-		Description:
-			"Embedded DNS resolver for local-first hostname resolution",
-	},
-	{
-		Id: "Rest",
-		Label: "Rest",
-		Url: "https://Rust.Documentation.Rest.editor.land",
-		Description:
-			"OXC-based TypeScript transform work for the output pipeline",
-	},
-	{
-		Id: "Maintain",
-		Label: "Maintain",
-		Url: "https://Rust.Documentation.Maintain.editor.land",
-		Description:
-			"Build orchestrator, configuration, and release profile tooling",
-	},
-	{
-		Id: "Land",
-		Label: "Land",
-		Url: "https://Rust.Documentation.Land.editor.land",
-		Description:
-			"Top-level workspace that ties the Rust element crates together",
-	},
-];
+const Heading = T("rust.heading", {
+	ns: "doc",
+	defaultValue: "Rust API Documentation",
+});
+
+const Standfirst =
+	"Generated <code>rustdoc</code> output for Land's Rust crates. Select a crate below, or open directly in a new tab.";
+
+const ViewerBand = RustViewerBand(T);
+
+const Home = T("common.breadcrumb.home", { defaultValue: "Home" });
+const Documentation = T("common.docs.pageTitle", {
+	defaultValue: "Documentation",
+});
+const Crumb = T("rust.crumb", { ns: "doc", defaultValue: "Rust API" });
 ---
 
 <Base
@@ -89,148 +62,38 @@ const RustDocSite = [
 >
 	<Header client:load Mode="functional" />
 
-	<div class="container mx-auto max-w-6xl px-4 py-16">
-		<!-- Breadcrumbs -->
-		<nav aria-label="Breadcrumb" class="mb-8">
-			<ol class="flex flex-wrap items-center space-x-2 text-muted-foreground">
-				<li>
-					<a href="/" class="transition-colors hover:text-foreground">
-						{T("common.breadcrumb.home", { defaultValue: "Home" })}
-					</a>
-				</li>
-				<li class="mx-2">/</li>
-				<li>
-					<a
-						href="/Doc"
-						class="transition-colors hover:text-foreground"
-					>
-						{T("common.docs.pageTitle", {
-							defaultValue: "Documentation",
-						})}
-					</a>
-				</li>
-				<li class="mx-2">/</li>
-				<li>
-					<span class="font-medium text-foreground">Rust API</span>
-				</li>
-			</ol>
-		</nav>
-
-		<!-- Page Header -->
-		<header class="mb-8">
-			<h1 class="mb-3 text-4xl font-medium tracking-tight">
-				Rust API Documentation
-			</h1>
-			<p
-				class="text-muted"
-				set:html={LinkMentions(
-					"Generated <code>rustdoc</code> output for Land's Rust crates. Select a crate below, or open directly in a new tab.",
-				)}
-			/>
-		</header>
-
-		<!-- Crate selector cards -->
-		<div
-			class="mb-6 grid grid-cols-2 gap-3 md:grid-cols-5"
-			role="group"
-			aria-label="Rust crate documentation sets"
+	<div class="doc-rust">
+		<DocArticle
+			kicker="/RUST API"
+			title={Heading}
+			standfirstHtml={LinkMentions(Standfirst)}
+			crumbs={[
+				{ label: Home, href: "/" },
+				{ label: Documentation, href: "/Doc" },
+				{ label: Crumb },
+			]}
+			measure={false}
+			banded
 		>
-			{RustDocSite.map((Site) => (
-				<a
-					href={Site.Url}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer block bg-card p-4 transition-colors hover:border-[var(--Primary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-				>
-					<p class="font-medium text-card-foreground">
-						{Site.Label}
-						<span class="InlineSeparator">↗</span>
-					</p>
-					<p class="mt-1 text-card-foreground">{Site.Description}</p>
-				</a>
-			))}
-		</div>
+			<DocIndex band={RustBand(T)} />
 
-		<!-- Iframe embed with switcher -->
-		<div class="StaccatoCard StaccatoBorderShimmer overflow-hidden bg-card">
-			<!-- Tab bar -->
-			<div
-				class="flex flex-wrap items-center gap-1 border-b border-[var(--Border)] px-4 py-2"
-				role="tablist"
-				aria-label="Rust crate group"
-			>
-				{RustDocSite.map((Site, Index) => (
-					<button
-						type="button"
-						role="tab"
-						aria-selected={Index === 0 ? "true" : "false"}
-						aria-controls="RustDocFrame"
-						data-id={Site.Id}
-						data-rustdoc-url={Site.Url}
-						class={`RustDocTab border px-3 py-1 font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)] ${
-							Index === 0
-								? "text-primary-fg border-[var(--Primary)] bg-primary"
-								: "border-[var(--Border)] bg-card text-card-foreground hover:bg-secondary"
-						}`}
-					>
-						{Site.Label}
-					</button>
-				))}
-			</div>
+			<RecordBand band={ViewerBand}>
+				<RustViewer
+					crates={RustCrates}
+					label={T("rust.viewer.label", {
+						ns: "doc",
+						defaultValue: "Rust crate group",
+					})}
+					title={T("rust.viewer.title", {
+						ns: "doc",
+						defaultValue: "Rust API Documentation",
+					})}
+				/>
+			</RecordBand>
 
-			<iframe
-				id="RustDocFrame"
-				src={RustDocSite[0].Url}
-				title="Rust API Documentation"
-				class="h-[70vh] w-full border-0"
-				loading="lazy"
-				sandbox="allow-scripts allow-same-origin allow-popups allow-top-navigation-by-user-activation"
-			></iframe>
-		</div>
-
-		<!-- Back to docs -->
-		<div class="mt-8 border-t pt-6">
-			<a href="/Doc" class="StaccatoButton text-primary hover:underline">
-				{T("common.docs.pageTitle", { defaultValue: "Documentation" })}
-				<span class="InlineSeparator">←</span>
-			</a>
-		</div>
+			<p class="doc-rust__back">
+				<a href="/Doc">{Documentation}<span aria-hidden="true"> ←</span></a>
+			</p>
+		</DocArticle>
 	</div>
 </Base>
-
-<script>
-	const Tabs = document.querySelectorAll<HTMLButtonElement>(".RustDocTab");
-	const Frame = document.getElementById("RustDocFrame") as HTMLIFrameElement;
-
-	const BaseClass =
-		"RustDocTab border px-3 py-1 font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]";
-	const ActiveClass = "border-[var(--Primary)] bg-primary text-primary-fg";
-	const InactiveClass =
-		"border-[var(--Border)] bg-card text-card-foreground hover:bg-secondary";
-
-	function SetActive(ActiveTab: HTMLButtonElement): void {
-		Tabs.forEach((Tab) => {
-			const IsActive = Tab === ActiveTab;
-			Tab.setAttribute("aria-selected", IsActive ? "true" : "false");
-			Tab.className = `${BaseClass} ${IsActive ? ActiveClass : InactiveClass}`;
-		});
-	}
-
-	Tabs.forEach((Tab) => {
-		Tab.addEventListener("click", () => {
-			const Url = Tab.dataset["rustdocUrl"];
-			const Id = Tab.dataset["id"];
-			if (!Url || !Frame) return;
-			Frame.src = Url;
-			SetActive(Tab);
-			if (Id) history.replaceState(null, "", `#${Id}`);
-		});
-	});
-
-	// Restore active tab from URL hash on load
-	const Hash = window.location.hash.slice(1);
-	if (Hash) {
-		const MatchTab = Array.from(Tabs).find((T) => T.dataset["id"] === Hash);
-		if (MatchTab) MatchTab.click();
-	}
-</script>

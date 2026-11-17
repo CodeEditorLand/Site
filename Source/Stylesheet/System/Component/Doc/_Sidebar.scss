@@ -1,0 +1,207 @@
+// DocSidebar - the documentation rail: sections, the groups inside them, and the
+// current page.
+//
+// Publishes:
+//   .doc-sidebar                      the nav (and the mobile wrapper)
+//   .doc-sidebar--mobile              the collapsed panel above the content
+//   .doc-sidebar__list                the top-level list
+//   .doc-sidebar__children            a nested list
+//   .doc-sidebar__item                one row
+//   .doc-sidebar__trigger             a section/group disclosure button
+//   .doc-sidebar__trigger--section    a section
+//   .doc-sidebar__trigger--group      a group inside a section
+//   .doc-sidebar__trigger--active     the ancestor of the current page
+//   .doc-sidebar__label               the row's words
+//   .doc-sidebar__marker              the disclosure marker
+//   .doc-sidebar__marker--open        the marker, opened
+//   .doc-sidebar__link                a page
+//   .doc-sidebar__link--active        the current page
+//   .doc-sidebar__link--section       a section that has no children
+//   .doc-sidebar__toggle              the mobile panel's trigger
+//   .doc-sidebar__toggle-label        "Docs"
+//   .doc-sidebar__toggle-separator    the "/" between label and current page
+//   .doc-sidebar__toggle-current      the current page's name, in the trigger
+//   .doc-sidebar__panel               the opened panel
+//
+// THE CURRENT PAGE IS MARKED THREE WAYS, AND ONLY ONE IS COLOUR:
+//
+//   1. `aria-current="page"` on the anchor - the machine-readable state.
+//   2. Ink (`--Foreground`) and weight 600 - the text itself changes.
+//   3. A `1px` rule on the row's leading edge in `--Primary` - a shape, not a
+//      hue: it survives greyscale, a colour-blind reader and a printed page.
+//
+// The section and group that CONTAIN the current page are marked too (ink and
+// weight, no rule), so the reader never has to hunt for where they are. That is
+// the difference between a rail and a list of links.
+//
+// Type roles: sections and groups are `mono-meta` + tracking (a label), pages are
+// `--type-body` (something you read), and the nesting is one gutter step, not a
+// border per level.
+@use "../../Mixin" as *;
+
+.doc-sidebar {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+}
+
+.doc-sidebar__list,
+.doc-sidebar__children {
+	list-style: none;
+
+	margin: 0;
+	padding: 0;
+}
+
+.doc-sidebar__children {
+	margin-inline-start: var(--space-tight);
+
+	@include hairline(left);
+}
+
+.doc-sidebar__item {
+	min-inline-size: 0;
+}
+
+.doc-sidebar__trigger {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-tight);
+
+	inline-size: 100%;
+
+	padding: var(--space-tight) 0 var(--space-tight) var(--space-tight);
+
+	background: none;
+	border: 0;
+
+	color: var(--MuteForeground);
+
+	text-align: start;
+
+	cursor: pointer;
+}
+
+.doc-sidebar__trigger--section {
+	@include mono-meta;
+	@include track;
+
+	padding-block: var(--space-reading) var(--space-tight);
+}
+
+.doc-sidebar__trigger--group {
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	font-weight: 500;
+
+	letter-spacing: 0.04em;
+}
+
+.doc-sidebar__trigger--active {
+	color: var(--Foreground);
+}
+
+.doc-sidebar__trigger--active .doc-sidebar__label {
+	font-weight: 600;
+}
+
+.doc-sidebar__marker {
+	font-size: var(--type-meta);
+
+	transition: transform 150ms ease;
+}
+
+.doc-sidebar__marker--open {
+	transform: rotate(90deg);
+}
+
+.doc-sidebar__link {
+	display: block;
+
+	padding: var(--space-tight) 0 var(--space-tight) var(--space-tight);
+
+	color: var(--MuteForeground);
+
+	border-inline-start: 1px solid transparent;
+}
+
+.doc-sidebar__link--section {
+	@include mono-meta;
+	@include track;
+
+	color: var(--Foreground);
+}
+
+.doc-sidebar__link--active {
+	color: var(--Foreground);
+
+	font-weight: 600;
+
+	border-inline-start-color: var(--Primary);
+}
+
+/* ─── MOBILE ────────────────────────────────────────────────────────────── */
+
+/* Below the rail's breakpoint the tree is not a column at all: it is one
+   disclosure row above the content, so the page never scrolls sideways and the
+   reader always knows which page they are on without opening anything. */
+.doc-sidebar--mobile {
+	display: block;
+
+	margin-block-end: var(--space-group);
+
+	@include bp(1024px) {
+		display: none;
+	}
+}
+
+.doc-sidebar__toggle {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	inline-size: 100%;
+
+	padding: var(--space-tight) var(--space-reading);
+
+	background: var(--Card);
+
+	@include hairline;
+
+	color: var(--Foreground);
+
+	text-align: start;
+
+	cursor: pointer;
+}
+
+.doc-sidebar__toggle-label {
+	@include mono-meta;
+	@include track;
+}
+
+.doc-sidebar__toggle-separator {
+	@include mono-meta;
+}
+
+.doc-sidebar__toggle-current {
+	flex: 1 1 auto;
+
+	min-inline-size: 0;
+
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+
+	font-weight: 500;
+}
+
+.doc-sidebar__panel {
+	background: var(--Card);
+
+	@include hairline;
+
+	border-block-start: 0;
+
+	padding: var(--space-reading);
+}

@@ -18,19 +18,6 @@ The [`Air`](https://github.com/CodeEditorLand/Air) background daemon:
 
 ---
 
-## Table of Contents
-
-1. [Overview](#overview)
-2. [Architecture](#architecture️)
-3. [Module Map](#module-map️)
-4. [Services](#services)
-5. [Data Flow](#data-flow)
-6. [Startup Sequence](#startup-sequence)
-7. [Configuration](#configuration️)
-8. [Related Documentation](#related-documentation)
-
----
-
 <img src="/Mermaid/033d441edd08796f.svg" alt="Mermaid diagram" />
 
 ## Overview 📋
@@ -156,6 +143,23 @@ Manages sensitive cryptographic operations:
 ---
 
 ## Startup Sequence 🚀
+
+```mermaid
+sequenceDiagram
+    participant M as Mountain
+    participant A as Air
+    participant V as gRPC server (50053)
+    M->>A: spawn via ProcessManagement
+    Note over M,A: VINE_PORT, MIST_PORT, DATA_DIR, LOG_LEVEL
+    A->>A: parse CLI, initialise tracing, load configuration
+    A->>V: bind BackgroundServices
+    A->>M: Connect (updater, indexer, auth, downloader)
+    loop every 5 seconds
+        M->>A: Heartbeat
+        A->>M: Heartbeat + resource usage metrics
+    end
+    M->>A: dispatch background work
+```
 
 ```
 1. Mountain spawns Air binary via ProcessManagement

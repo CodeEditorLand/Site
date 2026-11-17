@@ -9,6 +9,8 @@ description:
     integration points, and CLI configuration."
 ---
 
+# Maintain - Deep Dive
+
 [Maintain](https://github.com/CodeEditorLand/Maintain) is the build orchestrator for [Land](https://github.com/CodeEditorLand/Land). It covers the internals of
 the [Maintain](https://github.com/CodeEditorLand/Maintain) Rust binary: its architecture, module layout, data flow,
 integration with other [Land](https://github.com/CodeEditorLand/Land) elements, and configuration options.
@@ -78,7 +80,7 @@ modifications to project configuration files.
 | Script path    | `--script`                     | Override the default Rhai build configuration script     |
 | Verbosity      | `--verbose`                    | Enable detailed subprocess output logging                |
 
-### Shell script entry points
+### Shell Script Entry Points
 
 | Script                                                                                            | Purpose                                                                                |
 | :------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------- |

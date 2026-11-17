@@ -1,0 +1,108 @@
+// DocIndex - one documentation band: the section name as the heading, the page
+// count in the kicker, and one dense row per page underneath.
+//
+// Publishes:
+//   .doc-index            the band's body, and the section's anchor id
+//   .doc-index__lede      the paragraph that opens an appendix band
+//   .doc-index__group     one run of rows sharing a sub-label
+//   .doc-index__label     that sub-label ("Filesystem Footprint")
+//   .doc-index__list      the rows
+//   .doc-index__row       one page: its name, then its description
+//   .doc-index__link      the name, which is the link
+//   .doc-index__arrow     the direction marker (decorative)
+//   .doc-index__note      the page's description, at caption weight
+//   .doc-index__back      the index's back-to-top line
+//
+// The row is the ledger's grammar without the ledger's block: a key on the left,
+// a muted note on the right, one hairline per row, `--space-tight` inside and
+// nothing between. `RecordLedger` could not carry it - its prop surface has no
+// `href`, and a documentation index exists to be navigated - so the anatomy is
+// restated here and nowhere else.
+//
+// Two columns appear at 768px, and only there: below it the note stacks under
+// the name, because a description squeezed into a 12ch column is a column of
+// hyphens. The name column is capped so the eye scans ONE left edge, which is
+// the whole point of the band.
+@use "../../Mixin" as *;
+
+.doc-index__lede {
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+
+	color: var(--MuteForeground);
+
+	max-width: 62ch;
+
+	margin: 0 0 var(--space-group);
+}
+
+.doc-index__group + .doc-index__group {
+	margin-block-start: var(--space-group);
+}
+
+.doc-index__label {
+	@include mono-meta;
+	@include track;
+
+	margin: 0 0 var(--space-tight);
+}
+
+.doc-index__list {
+	@include hairline(top);
+
+	list-style: none;
+
+	margin: 0;
+	padding: 0;
+}
+
+.doc-index__row {
+	@include hairline(bottom);
+
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	row-gap: var(--space-tight);
+
+	padding-block: var(--space-reading);
+
+	@include bp(768px) {
+		grid-template-columns: minmax(0, 30ch) minmax(0, 1fr);
+		column-gap: var(--space-group);
+		align-items: baseline;
+	}
+}
+
+.doc-index__link {
+	display: inline-flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	font-weight: 500;
+
+	color: var(--Foreground);
+}
+
+.doc-index__arrow {
+	@include mono-meta;
+}
+
+.doc-index__note {
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+
+	max-width: 62ch;
+}
+
+.doc-index__back {
+	@include hairline(top);
+
+	@include mono-meta;
+	@include track;
+
+	margin-block-start: var(--space-chapter);
+	padding-block-start: var(--space-group);
+}

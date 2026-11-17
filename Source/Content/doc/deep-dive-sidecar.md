@@ -9,7 +9,9 @@ description:
     integration, and version mismatch handling."
 ---
 
-[SideCar](https://github.com/CodeEditorLand/SideCar) provides the technical foundation binary
+# SideCar - Deep Dive
+
+[SideCar](https://github.com/CodeEditorLand/SideCar) provides the technical foundation for the binary
 distribution layer within the [Land](https://github.com/CodeEditorLand/Land) project. **[SideCar](https://github.com/CodeEditorLand/SideCar)** manages pre-compiled,
 platform-specific runtime binaries (primarily Node.js) so that the [Land](https://github.com/CodeEditorLand/Land) editor
 can bundle vendored runtimes without requiring users to install them separately.
@@ -44,7 +46,7 @@ launch sidecars from the vendored binary store.
 
 <img src="/Mermaid/437ef5e8ea10ac60.svg" alt="Mermaid diagram" />
 
-**Build-time selection:**
+### Build-Time Selection
 
 [Mountain](https://github.com/CodeEditorLand/Mountain)'s `build.rs` reads the [SideCar](https://github.com/CodeEditorLand/SideCar) directory, selects the binary matching
 the current Tauri build target triple, and copies it into the Tauri `sidecar`
@@ -236,6 +238,7 @@ it alongside the existing cached version (different `{major}` subdirectory), and
 updates `Cache.json`. Old versions are not automatically deleted; they remain
 until the cache is manually cleared or a full re-download is triggered.
 
+> [!NOTE]
 > [Mountain](https://github.com/CodeEditorLand/Mountain)'s `build.rs` selects a binary by major version number. If
 > `Cache.json` contains entries for multiple major versions of the same platform,
 > `build.rs` takes the highest available major version. To pin a specific

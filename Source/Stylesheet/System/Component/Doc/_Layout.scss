@@ -1,0 +1,88 @@
+// DocLayout - the documentation column: one container, a sticky rail beside the
+// content column, and the same rail collapsed into a panel above it below the
+// breakpoint.
+//
+// Publishes:
+//   .doc-layout            the page container (one gutter, one max width)
+//   .doc-layout__shell     the rail/content grid
+//   .doc-layout__aside     the rail's landmark, hidden below 1024px
+//   .doc-layout__sticky    the rail's own scroll area under the sticky header
+//   .doc-layout__title     the rail's visible label
+//   .doc-layout__foot      the rail's closing block, opened by a hairline
+//   .doc-layout__rust      the one link that leaves the documentation tree
+//   .doc-layout__main      the content column
+//
+// Two decisions worth knowing:
+//
+// - The container is HERE, once. The rail and the content column share one
+//   gutter, so content never indents away from the rail it is read beside, and
+//   no page that renders this shell wraps its content in a second container.
+// - The rail scrolls, the page does not. `.doc-layout__sticky` is pinned under
+//   the header with its own `overflow-y`, so a 78-entry tree never stretches the
+//   page - and below the breakpoint the rail is not rendered as a column at all,
+//   it is the collapsed panel the island draws above the content. That is the
+//   whole reason the page never scrolls horizontally on a narrow viewport.
+//
+// The rail's width is a `ch` value, not a container token: it has to hold
+// documentation labels ("Filesystem Footprint - User Dotfile"), so it is sized
+// in the type it holds rather than in a breakpoint guess.
+@use "../../Mixin" as *;
+
+.doc-layout {
+	@include band-inner;
+
+	padding-block: var(--space-group);
+}
+
+.doc-layout__shell {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	row-gap: var(--space-group);
+
+	@include bp(1024px) {
+		grid-template-columns: minmax(0, 26ch) minmax(0, 1fr);
+		column-gap: var(--space-group);
+	}
+}
+
+.doc-layout__aside {
+	display: none;
+
+	@include bp(1024px) {
+		display: block;
+	}
+}
+
+.doc-layout__sticky {
+	position: sticky;
+	top: calc(var(--HeaderHeight) + var(--space-tight));
+	max-block-size: calc(100dvh - var(--HeaderHeight) - var(--space-group));
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	padding-block-end: var(--space-group);
+	padding-inline-end: var(--space-tight);
+}
+
+.doc-layout__title {
+	@include mono-meta;
+	@include track;
+
+	margin: 0 0 var(--space-tight);
+}
+
+.doc-layout__foot {
+	@include hairline(top);
+
+	margin-block-start: var(--space-group);
+	padding-block-start: var(--space-reading);
+}
+
+.doc-layout__rust {
+	@include mono-meta;
+
+	display: block;
+}
+
+.doc-layout__main {
+	min-inline-size: 0;
+}

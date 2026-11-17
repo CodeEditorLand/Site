@@ -8,6 +8,8 @@ description:
     with the Node.js extension host."
 ---
 
+# Echo: Work-Stealing Scheduler
+
 [Echo](https://github.com/CodeEditorLand/Echo) is a bounded work-stealing task scheduler written in Rust. It is not a
 separate process - it is a library embedded directly inside [Mountain](https://github.com/CodeEditorLand/Mountain)'s binary.
 When [Mountain](https://github.com/CodeEditorLand/Mountain) needs to dispatch parallel work, it submits tasks to [Echo](https://github.com/CodeEditorLand/Echo)'s worker
@@ -96,9 +98,10 @@ deque first.
 | **Normal** | File operations, configuration, extension API calls   | Default deque                            |
 | **Low**    | Background indexing, search, telemetry, cache warming | Dedicated per-worker low-priority deque  |
 
-High-priority tasks are never starved by background work. A batch of
-Low-priority index scans does not delay a High-priority command execution
-because the worker checks High before Low on every scheduling cycle.
+> [!IMPORTANT]
+> High-priority tasks are never starved by background work. A batch of
+> Low-priority index scans does not delay a High-priority command execution
+> because the worker checks High before Low on every scheduling cycle.
 
 ```rust
 pub enum Priority {
@@ -197,4 +200,4 @@ handles all async work dispatched through `ApplicationRunTime`.
 - [Echo Deep Dive](/Doc/deep-dive-echo)
 - [Mountain](/Doc/mountain)
 - [Common](/Doc/common)
-  Related: [Architecture](/Doc/architecture/)
+- [Architecture](/Doc/architecture) - System-wide process and IPC model

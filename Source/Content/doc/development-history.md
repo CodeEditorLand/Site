@@ -87,9 +87,15 @@ TypeScript layer required reading both codebases simultaneously, which was slow
 and error-prone.
 
 **Solution:** The `TierIPC` environment variable was introduced with three
-values: [`Mountain`](https://github.com/CodeEditorLand/Mountain) (default - all calls go to [Mountain](https://github.com/CodeEditorLand/Mountain)'s Tauri IPC), `Node` (all
-calls route directly to [Cocoon](https://github.com/CodeEditorLand/Cocoon) via `cocoon:request`), and `NodeDeferred`
-([Mountain](https://github.com/CodeEditorLand/Mountain) first, [Cocoon](https://github.com/CodeEditorLand/Cocoon) fallback on miss or undefined). The variable is read at
+values:
+
+| Value | Routing |
+| --- | --- |
+| [`Mountain`](https://github.com/CodeEditorLand/Mountain) (default) | All calls go to [Mountain](https://github.com/CodeEditorLand/Mountain)'s Tauri IPC |
+| `Node` | All calls route directly to [Cocoon](https://github.com/CodeEditorLand/Cocoon) via `cocoon:request` |
+| `NodeDeferred` | [Mountain](https://github.com/CodeEditorLand/Mountain) first, [Cocoon](https://github.com/CodeEditorLand/Cocoon) fallback on miss or undefined |
+
+The variable is read at
 runtime by both [`Wind/Source/Service/TauriMainProcessService.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Service/TauriMainProcessService.ts) and
 [`Output/Source/Service/Tauri/Main/Process/Service.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/Tauri/Main/Process/Service.ts).
 

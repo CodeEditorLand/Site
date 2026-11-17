@@ -6,7 +6,9 @@ order: 1
 description: "Internals of the Cocoon extension host: core architecture principles, 7-stage bootstrap ordering, Effect-TS usage patterns, RequireInterceptor rules, gRPC server implementation, extension activation lifecycle with topological ordering and cycle guard, dual-track TierIPC routing, and the showInformationMessage call path end-to-end."
 ---
 
-Cocoon is the Node.js extension host sidecar for Land. its
+# Cocoon - Deep Dive
+
+Cocoon is the Node.js extension host sidecar for Land. This page covers its
 internal mechanics in depth - why bootstrap stage ordering matters, how the
 module interceptor works, how Effect-TS layers compose the application, how the
 Vine gRPC server is implemented, how extensions are activated in topological
@@ -250,12 +252,22 @@ Mountain's budget expires, the connection fails and Mountain logs a fatal error.
 
 The correct order:
 
+```mermaid
+flowchart LR
+    S1["1 Environment"] --> S2["2 Configuration"]
+    S2 --> S3["3 RPCServer (50052)"]
+    S3 --> S4["4 ModuleInterceptor"]
+    S4 --> S5["5 MountainConnection (50051)"]
+    S5 --> S6["6 Extensions"]
+    S6 --> S7["7 HealthCheck"]
+```
+
 ```text
 Stage 1: Environment
   Reads process.version, platform, arch; logs Node details.
 
 Stage 2: Configuration
-  Parses env vars (MOUNTAIN_GRPC_PORT, COCOON_GRPC_PORT, Trace, …)
+  Parses env vars (MOUNTAIN_GRPC_PORT, COCOON_GRPC_PORT, Trace, ...)
   into globalThis.__cocoonBootstrapConfig.
 
 Stage 3: RPCServer
@@ -437,7 +449,7 @@ activate(ExtId):
   InProgress.add(ExtId)
   for each DepId in extensionDependencies:
     if not activated and not InProgress → activate(DepId)
-  … load & call activate() …
+  ... load & call activate() ...
   ActivatedExtensions.add(ExtId)
   InProgress.delete(ExtId)
 ```

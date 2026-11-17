@@ -10,7 +10,9 @@ description:
     patterns, build.rs compilation, URI/Range message formats, and how new RPCs are added."
 ---
 
-[Vine](https://github.com/CodeEditorLand/Vine) provides the technical foundation gRPC protocol layer
+# Vine - Deep Dive
+
+[Vine](https://github.com/CodeEditorLand/Vine) provides the technical foundation for the gRPC protocol layer
 within the [Land](https://github.com/CodeEditorLand/Land) project. **[Vine](https://github.com/CodeEditorLand/Vine)** defines the strongly-typed inter-process
 communication contracts used between [Mountain](https://github.com/CodeEditorLand/Mountain) and [Cocoon](https://github.com/CodeEditorLand/Cocoon), with [Air](https://github.com/CodeEditorLand/Air) as an
 additional gRPC consumer. The `.proto` files are the canonical source of truth;

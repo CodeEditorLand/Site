@@ -1,1 +1,0 @@
-import{r}from"./rolldown-runtime.BnSiKwcJ.js";import{et as s,tt as t}from"./Vendor/React.CthA3ysS.js";import{t as a}from"./Utility.C7AGYvdc.js";t();var e=s(),o=({index:r,className:s})=>(0,e.jsxs)("span",{className:a("text-field-s font-mono uppercase tracking-widest",s),style:{color:"var(--CardForeground)"},children:["# ",r]});export{o as FieldRecordIndex,o as default};

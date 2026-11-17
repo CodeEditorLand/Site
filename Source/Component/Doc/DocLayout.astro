@@ -8,14 +8,18 @@
  * the rail's width, its sticky behaviour, its own scroll area and the mobile
  * panel are one decision in one file.
  *
- * Two notes on what this file does NOT do:
+ * Three notes on what this file does NOT do:
  *
- * - **It does not render `<main id="main-content">`.** `Base.astro` already
- *   owns that id, and a second element with it is an invalid duplicate that the
- *   skip link resolves against the first match anyway. This shell's `<main>`
- *   carries no id.
- * - **It does not wrap the content in a container.** The page owns its own
- *   container and gutters; the shell only lays the rail and the column out.
+ * - **It does not render `<main>`.** `Base.astro` already owns the page's one
+ *   `<main id="main-content">`, and a `<main>` inside a `<main>` is invalid
+ *   markup that leaves the skip link pointing at the outer element anyway. The
+ *   content column is a `<div>`; the rail is the `<aside>` that names the
+ *   landmark.
+ * - **It does not render `<h1>`.** The content the page passes in owns the
+ *   page's only level-one heading.
+ * - **It does not wrap the content in a container of its own.** `.doc-layout`
+ *   carries the page's one container and gutter; a second one inside the column
+ *   would indent the content away from the rail it is read beside.
  *
  * `id="top"` is here because the documentation pages link back to `#top` and
  * nothing on the page defined it.
@@ -63,7 +67,7 @@ const SidebarTitle = T("sidebar.title", {
 			</div>
 		</aside>
 
-		<main class="doc-layout__main">
+		<div class="doc-layout__main">
 			<DynamicDocSidebar
 				Sections={sections}
 				ActiveId={activeId}
@@ -71,6 +75,6 @@ const SidebarTitle = T("sidebar.title", {
 				client:load
 			/>
 			<slot />
-		</main>
+		</div>
 	</div>
 </div>

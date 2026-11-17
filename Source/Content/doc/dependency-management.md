@@ -14,6 +14,14 @@ element is also a Git submodule with its own repository, so dependency changes
 require following the correct per-submodule workflow. The rules
 and procedures for both dependency graphs are as follows.
 
+Each graph has its own manifest, shared file, and command:
+
+| Graph | Scope | Manifest per element | Shared file | Command |
+| --- | --- | --- | --- | --- |
+| pnpm workspace | All TypeScript elements | `package.json` | `pnpm-lock.yaml` | `pnpm install` from the repo root |
+| Cargo workspace | All Rust elements | `Cargo.toml` | workspace root `Cargo.toml`, which carries the 51 active `[patch.crates-io]` entries | `cargo build -p <element-name>` |
+| npm | `Dependency/Microsoft/Dependency/Editor` only | `package.json` | `package-lock.json`, `.npmrc` | `npm install` inside that directory only |
+
 ## JavaScript Dependencies (pnpm) 📦
 
 ### Workspace Protocol

@@ -8,6 +8,8 @@ description:
     relying on Node.js process isolation.
 ---
 
+# Grove: Native WASM Extension Host
+
 [Grove](https://github.com/CodeEditorLand/Grove) is [Land](https://github.com/CodeEditorLand/Land)'s native Rust and WASM extension host. It provides a sandboxed
 environment for running WASM-compiled VS Code extensions via Wasmtime, sharing
 the same VS Code API surface as [Cocoon](https://github.com/CodeEditorLand/Cocoon). Grove is implemented and available as an

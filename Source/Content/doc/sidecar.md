@@ -8,6 +8,8 @@ description:
     target triples so Cocoon always starts with the right runtime.
 ---
 
+# SideCar: Vendored Runtime Binaries
+
 [SideCar](https://github.com/CodeEditorLand/SideCar) is a Rust library and binary that manages pre-compiled native dependency
 binaries for [Land](https://github.com/CodeEditorLand/Land). It handles download, caching, verification, and management of
 Node.js runtime binaries across multiple target platforms, integrating with
@@ -38,34 +40,18 @@ Node.js runtime binaries across multiple target platforms, integrating with
 The resolution process selects the correct Node.js binary for the target
 platform:
 
-```
-Build.sh reads NodeVersion and NodePlatform from .env.Land
-    |
-    v
-SideCar::resolve()
-    |
-    +---> Check SideCar/Cache.json for cached binary
-    |       |
-    |       +---> CACHED: Return cached path
-    |       |
-    |       +---> NOT CACHED: Continue
-    |
-    +---> Determine target platform string
-    |       - darwin-arm64 (Apple Silicon)
-    |       - darwin-x64 (Intel)
-    |       - linux-arm64
-    |       - linux-x64
-    |
-    +---> Construct download URL:
-    |       https://nodejs.org/dist/v{version}/node-v{version}-{platform}.tar.gz
-    |
-    +---> Download binary (via Download.rs)
-    +---> Verify SHA-256 checksum
-    +---> Extract to SideCar/{platform}/node
-    +---> Record in Cache.json
-    |
-    v
-Return resolved binary path to Mountain
+```mermaid
+flowchart TD
+    A["Build.sh reads NodeVersion and NodePlatform from .env.Land"] --> B["SideCar::resolve()"]
+    B --> C{"Check SideCar/Cache.json for cached binary"}
+    C -->|"CACHED"| D["Return cached path"]
+    C -->|"NOT CACHED"| E["Determine target platform string<br/>darwin-arm64 (Apple Silicon)<br/>darwin-x64 (Intel)<br/>linux-arm64<br/>linux-x64"]
+    E --> F["Construct download URL<br/>https://nodejs.org/dist/v{version}/node-v{version}-{platform}.tar.gz"]
+    F --> G["Download binary (via Download.rs)"]
+    G --> H["Verify SHA-256 checksum"]
+    H --> I["Extract to SideCar/{platform}/node"]
+    I --> J["Record in Cache.json"]
+    J --> K["Return resolved binary path to Mountain"]
 ```
 
 ### Version Resolution Priority

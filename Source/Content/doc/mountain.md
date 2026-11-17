@@ -7,8 +7,9 @@ description:
     Environment providers, and Cocoon process orchestration."
 ---
 
+# Mountain: Native Backend
+
 [`Mountain`](https://github.com/CodeEditorLand/Mountain) is the primary `Tauri` application and native `Rust` backend for the [`Land`](https://github.com/CodeEditorLand/Land) code editor. `Mountain`:
-`Land` code editor. `Mountain`:
 
 - Implements every abstract trait from [`Common`](https://github.com/CodeEditorLand/Common)
 - Hosts the `gRPC` server
@@ -18,31 +19,17 @@ description:
 
 ---
 
-## Table of Contents
-
-1. [Overview](#overview)
-2. [Application Lifecycle](#application-lifecycle)
-3. [Module Architecture](#module-architecture️)
-4. [ApplicationState](#applicationstate)
-5. [Environment and Providers](#environment-and-providers)
-6. [Tauri Command System](#tauri-command-system-️)
-7. [gRPC Service (Vine)](#grpc-service-vine)
-8. [Process Management](#process-management️)
-9. [IPC and Event System](#ipc-and-event-system)
-10. [Cache System](#cache-system)
-11. [Extension Management](#extension-management)
-12. [Related Documentation](#related-documentation)
-
----
-
 <img src="/Mermaid/d7d58c57ba37be8c.svg" alt="Mermaid diagram" />
 
 ## Overview 📋
 
 [`Mountain`](https://github.com/CodeEditorLand/Mountain) is a `Rust` binary built with `Tauri` v2 and `tonic` `gRPC`:
 
-- It is the single native process that owns all OS-level capabilities (file
-  system, terminal PTY, clipboard, dialogs)
+- It is the single native process that owns all OS-level capabilities:
+    - file system
+    - terminal PTY
+    - clipboard
+    - dialogs
 - It coordinates the [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) extension host and [`Air`](https://github.com/CodeEditorLand/Air) background daemon
 
 | Attribute    | Value                                                                                                                                                                                                                                                             |
@@ -289,6 +276,9 @@ Server::builder()
     .await?;
 ```
 
+> [!NOTE]
+> `Mountain`'s `Vine` server listens on `50051` by default; `Air`'s `BackgroundServices` server listens on `50053`. The two ports are configured independently.
+
 ### Service Handlers 📋
 
 | Service       | RPC                | Handler Module                                                                                                                                      |
@@ -389,16 +379,14 @@ app_handle.emit("configuration-changed", serde_json::json!({
 - [InterComponentProtocol](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/InterComponentProtocol.md) -
   Protocol specification
 
+## See Also
+
+- [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing
+
 ---
 
 **Project Maintainers:** Source Open
 ([Source/Open@Editor.Land](mailto:Source/Open@Editor.Land)) |
 [GitHub Repository](https://github.com/CodeEditorLand/Mountain) |
 [Report an Issue](https://github.com/CodeEditorLand/Mountain/issues)
-
----
-
-## See Also
-
-- [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
-- [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing

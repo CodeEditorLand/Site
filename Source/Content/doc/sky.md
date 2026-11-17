@@ -13,23 +13,14 @@ description:
 [`Sky`](https://github.com/CodeEditorLand/Sky) is the UI component layer of [`Land`](https://github.com/CodeEditorLand/Land).
 
 - [`Sky`](https://github.com/CodeEditorLand/Sky) is built with the `Astro` framework.
-- It renders the editor interface - editor, side bar, activity bar, status bar,
-  and panels - inside the `Tauri` WebView.
+- It renders the editor interface inside the `Tauri` WebView:
+    - editor
+    - side bar
+    - activity bar
+    - status bar
+    - panels
 - It loads the VS Code workbench from [`@codeeditorland/output`](https://github.com/CodeEditorLand/Output).
 - It communicates via `SkyBridge` for event routing.
-
----
-
-## Table of Contents
-
-1. [Overview](#overview)
-2. [Architecture](#architecture️)
-3. [Page Structure](#page-structure)
-4. [Workbench Variants](#workbench-variants️)
-5. [SkyBridge](#skybridge)
-6. [Build-time Variant Selection](#build-time-variant-selection)
-7. [Static Asset Layout](#static-asset-layout)
-8. [Related Documentation](#related-documentation)
 
 ---
 
@@ -82,7 +73,7 @@ description:
 `Sky` provides multiple page entry points, each selecting a different workbench
 variant.
 
-### index.astro
+### `index.astro`
 
 The default entry point. It selects the active workbench at build time based on
 environment variables:
@@ -164,21 +155,16 @@ message channel system.
 
 ### Bridge Architecture
 
-```
-Mountain emits Tauri event
-    |
-    v
-Tauri WebView event listener
-    |
-    v
-SkyBridge intercepts event
-    |
-    +---> Translates to VS Code internal channel format
-    +---> Dispatches to registered workbench handlers
-    +---> Handles async responses if required
-    |
-    v
-VS Code workbench service receives notification
+```mermaid
+flowchart TD
+    A["Mountain emits Tauri event"] --> B["Tauri WebView event listener"]
+    B --> C["SkyBridge intercepts event"]
+    C --> D["Translates to VS Code internal channel format"]
+    C --> E["Dispatches to registered workbench handlers"]
+    C --> F["Handles async responses if required"]
+    D --> G["VS Code workbench service receives notification"]
+    E --> G
+    F --> G
 ```
 
 ### Webview Panel Management
@@ -272,16 +258,14 @@ Sky/Target/
 - [BuildPipeline](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/BuildPipeline.md) -
   Build pipeline for workbench variants
 
+## See Also
+
+- [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing
+
 ---
 
 **Project Maintainers:** Source Open
 ([Source/Open@Editor.Land](mailto:Source/Open@Editor.Land)) |
 [GitHub Repository](https://github.com/CodeEditorLand/Sky) |
 [Report an Issue](https://github.com/CodeEditorLand/Sky/issues)
-
----
-
-## See Also
-
-- [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
-- [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing

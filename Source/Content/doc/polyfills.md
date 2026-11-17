@@ -5,8 +5,6 @@ order: 12
 description: "Every polyfill, shim, and compatibility layer that enables the VS Code workbench and extension host to function inside Land's Tauri WebView and Node.js sidecar architecture."
 ---
 
-# Polyfills and Compatibility Shims
-
 This document catalogues every polyfill, shim, and compatibility layer that
 enables the VS Code workbench and extension host to function inside [**Land**](https://github.com/CodeEditorLand/Land)'s
 `Tauri` WebView and `Node.js` sidecar architecture. These layers translate
@@ -15,21 +13,7 @@ modifying upstream VS Code source code.
 
 ---
 
-## Table of Contents
-
-1. [Wind Preload Shim](#wind-preload-shim️)
-2. [SkyBridge](#skybridge)
-3. [Cocoon Initialization Prelude](#cocoon-initialization-prelude)
-4. [Output Transform Pipeline](#output-transform-pipeline)
-5. [Worker Service Worker](#worker-service-worker️)
-6. [LandFix Diagnostics](#landfix-diagnostics)
-7. [Telemetry Bridge](#telemetry-bridge)
-8. [Polyfill Lifecycle](#polyfill-lifecycle)
-9. [Global Namespace Cleanup](#global-namespace-cleanup)
-
----
-
-## [`Wind`](https://github.com/CodeEditorLand/Wind) Preload Shim 🛡️
+## [`Wind`](https://github.com/CodeEditorLand/Wind) Preload Shim  🛡️
 
 The Preload shim ([`Wind/Source/Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts)) establishes the VS Code workbench
 execution environment inside the `Tauri` WebView. It runs as the first script
@@ -79,34 +63,25 @@ bridge between `Tauri`'s IPC system and the VS Code workbench's internal message
 channel system. It is composed of focused sub-modules in the `Bridge/`
 directory:
 
-- `InstallCommands.ts` - `sky://command/*` handlers (execute, register,
-  unregister)
-- `InstallDebug.ts` - debug breakpoint gutter sync
-  (`sky://debug/addBreakpoints`)
-- `InstallDeadChannelListeners.ts` - no-op stubs for deprecated channels
-- `InstallDiagnostics.ts` - language diagnostics relay to Monaco
-- `InstallEditorAndOutput.ts` - `sky://workspace/applyEdit`, save, saveAll,
-  saveAs
-- `InstallEditorOperations.ts` - Monaco content debounce (300 ms) →
-  `sky:model:contentChanged` → `$acceptModelChanged` → [Cocoon](https://github.com/CodeEditorLand/Cocoon)
-  `onDidChangeTextDocument`
-- `InstallFanOut.ts` - fan-out dispatcher for multi-subscriber channels
-- `InstallInlineCompletions.ts` -
-  `ILanguageFeaturesService.inlineCompletionsProvider.register()` relay
-- `InstallProgressTerminalWorkspace.ts` - progress notifications and terminal
-  events
-- `InstallScm.ts` - SCM provider registration with 10 × 200 ms retry for
-  `__CEL_SERVICES__.SCM` population race
-- `InstallSearch.ts` - workspace search result forwarding
-- `InstallSimpleRelays.ts` - single-line DOM CustomEvent relays (language
-  config, theme, etc.)
-- `InstallStatusbar.ts` - `sky://statusbar/*` status-bar entry lifecycle
-- `InstallTasksAndDecorations.ts` - task and file-decoration event relay
-- `InstallTreeView.ts` - tree-view selection, expand/collapse, reveal
-  (`sky://tree-view/*`)
-- `InstallUiRequests.ts` - `sky://ui/show-message-request`, quick-pick,
-  input-box
-- `InstallWebview.ts` - webview message forwarding and disposal
+| Module                            | Responsibility                                                                                                                  |
+| :-------------------------------- | :------------------------------------------------------------------------------------------------------------------------------ |
+| `InstallCommands.ts`              | `sky://command/*` handlers (execute, register, unregister)                                                                      |
+| `InstallDebug.ts`                 | debug breakpoint gutter sync (`sky://debug/addBreakpoints`)                                                                     |
+| `InstallDeadChannelListeners.ts`  | no-op stubs for deprecated channels                                                                                             |
+| `InstallDiagnostics.ts`           | language diagnostics relay to Monaco                                                                                            |
+| `InstallEditorAndOutput.ts`       | `sky://workspace/applyEdit`, save, saveAll, saveAs                                                                              |
+| `InstallEditorOperations.ts`      | Monaco content debounce (300 ms) → `sky:model:contentChanged` → `$acceptModelChanged` → [Cocoon](https://github.com/CodeEditorLand/Cocoon) `onDidChangeTextDocument` |
+| `InstallFanOut.ts`                | fan-out dispatcher for multi-subscriber channels                                                                                |
+| `InstallInlineCompletions.ts`     | `ILanguageFeaturesService.inlineCompletionsProvider.register()` relay                                                           |
+| `InstallProgressTerminalWorkspace.ts` | progress notifications and terminal events                                                                                  |
+| `InstallScm.ts`                   | SCM provider registration with 10 × 200 ms retry for `__CEL_SERVICES__.SCM` population race                                      |
+| `InstallSearch.ts`                | workspace search result forwarding                                                                                              |
+| `InstallSimpleRelays.ts`          | single-line DOM CustomEvent relays (language config, theme, etc.)                                                               |
+| `InstallStatusbar.ts`             | `sky://statusbar/*` status-bar entry lifecycle                                                                                  |
+| `InstallTasksAndDecorations.ts`   | task and file-decoration event relay                                                                                            |
+| `InstallTreeView.ts`              | tree-view selection, expand/collapse, reveal (`sky://tree-view/*`)                                                              |
+| `InstallUiRequests.ts`            | `sky://ui/show-message-request`, quick-pick, input-box                                                                          |
+| `InstallWebview.ts`               | webview message forwarding and disposal                                                                                         |
 
 It translates between two event models:
 
@@ -417,10 +392,12 @@ The startup sequence coordinates all polyfill layers:
 The `Disable` environment variable can be set to `true` to bypass all polyfill
 layers, useful for diagnosing polyfill-related issues:
 
-- `Disable=true` - All polyfills skipped
-- `Disable=false` (default) - Normal polyfill installation
-- `Disable=preload` - Skip only Preload shim
-- `Disable=bridge` - Skip only `SkyBridge`
+| Value             | Effect                              |
+| :---------------- | :---------------------------------- |
+| `Disable=true`    | All polyfills skipped               |
+| `Disable=false`   | Normal polyfill installation (default) |
+| `Disable=preload` | Skip only Preload shim              |
+| `Disable=bridge`  | Skip only `SkyBridge`               |
 
 ---
 
@@ -439,14 +416,14 @@ Only essential globals remain on `window.vscode` and `globalThis.__LandTiers`.
 
 ---
 
-**Project Maintainers:** Source Open
-([Source/Open@Editor.Land](mailto:Source/Open@Editor.Land)) |
-[GitHub Repository](https://github.com/CodeEditorLand/Land) |
-[Report an Issue](https://github.com/CodeEditorLand/Land/issues)
-
----
-
 ## See Also
 
 - [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
 - [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing
+
+---
+
+**Project Maintainers:** Source Open
+([Source/Open@Editor.Land](mailto:Source/Open@Editor.Land)) |
+[GitHub Repository](https://github.com/CodeEditorLand/Land) |
+[Report an Issue](https://github.com/CodeEditorLand/Land/issues)

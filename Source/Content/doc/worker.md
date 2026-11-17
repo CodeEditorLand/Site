@@ -9,6 +9,8 @@ description:
     use standard import syntax inside the Tauri WebView."
 ---
 
+# Worker: Service Worker
+
 Worker is the service worker for `Land`. We implement asset caching and offline
 support, a dynamic CSS loading strategy for the workbench bundle, and fetch
 interception that converts JS imports of CSS files into native `<link>` tag
@@ -57,39 +59,20 @@ We implement a multi-tier caching strategy for different resource types.
 
 ### Network-First Strategy (CACHE_CORE)
 
-```
-Request navigation (HTML)
-    |
-    v
-1. Try network fetch
-    |
-    +---> Network succeeds:
-    |       - Return response to page
-    |       - Cache response in CACHE_CORE
-    |
-    +---> Network fails:
-            - Check CACHE_CORE for cached response
-            - Return cached response if available
-            - Return fallback page if not cached
+```mermaid
+flowchart TD
+    A["Request navigation (HTML)"] --> B["1. Try network fetch"]
+    B -->|"Network succeeds"| C["Return response to page<br/>Cache response in CACHE_CORE"]
+    B -->|"Network fails"| D["Check CACHE_CORE for cached response<br/>Return cached response if available<br/>Return fallback page if not cached"]
 ```
 
 ### Cache-First Strategy (CACHE_ASSET)
 
-```
-Request static asset (JS, CSS)
-    |
-    v
-1. Check CACHE_ASSET for cached response
-    |
-    +---> Cache hit:
-    |       - Return cached response
-    |       - Background-fetch update (stale-while-revalidate)
-    |       - Update cache if newer version available
-    |
-    +---> Cache miss:
-            - Fetch from network
-            - Cache response in CACHE_ASSET
-            - Return response
+```mermaid
+flowchart TD
+    A["Request static asset (JS, CSS)"] --> B["1. Check CACHE_ASSET for cached response"]
+    B -->|"Cache hit"| C["Return cached response<br/>Background-fetch update (stale-while-revalidate)<br/>Update cache if newer version available"]
+    B -->|"Cache miss"| D["Fetch from network<br/>Cache response in CACHE_ASSET<br/>Return response"]
 ```
 
 ## Dynamic CSS Loading 🎨
@@ -151,7 +134,16 @@ Phase 2: Browser loads styles.css?Skip=Intercept
 | Source maps | Lost during JS bundling         | Preserved via native loading    |
 | Hot reload  | Requires full rebuild           | Works with CSS-only refresh     |
 
-## Service Worker Lifecycle 🔄
+## Service Worker Lifecycle 🔄
+
+```mermaid
+stateDiagram-v2
+    [*] --> Installing: Sky registers Worker
+    Installing --> Waiting: install event caches CACHE_CORE, pre-caches workbench bundles, installs CSS interceptor
+    Waiting --> Activating: Sky sends postMessage ACTIVATE
+    Activating --> Active: claims uncontrolled clients, clears old caches, intercepts fetch
+    Active --> Installing: Sky re-registers, byte-different script detected
+```
 
 ### Installation
 
@@ -208,7 +200,7 @@ Phase 2: Browser loads styles.css?Skip=Intercept
 
 We provide client-side scripts for integration.
 
-### Register.ts
+### `Register.ts`
 
 Handles service worker registration and update management:
 

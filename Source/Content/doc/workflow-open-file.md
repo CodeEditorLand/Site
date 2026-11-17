@@ -7,7 +7,7 @@ description:
     services to a Mountain disk read, then back to Monaco."
 ---
 
-**Workflow Example: Opening a File from the UI**
+## Workflow Example: Opening a File from the UI
 
 **Goal:** The user clicks on a file in the File Explorer ([Wind](https://github.com/CodeEditorLand/Wind)/[Sky](https://github.com/CodeEditorLand/Sky) UI), and the
 file's content is loaded into an editor.
@@ -110,7 +110,7 @@ abstraction (`EditorService` → `FileService` → `FileSystemProvider` → Taur
 Integration) until it becomes a native OS call, with the result flowing back up
 the same chain to update the UI.
 
-### File Content Flow
+## File Content Flow
 
 The raw byte payload passes through distinct representations at each layer:
 

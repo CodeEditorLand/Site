@@ -27,7 +27,7 @@ stored at registration time.
 
 ## Phase 1 - Opening the Command Palette ([Sky](https://github.com/CodeEditorLand/Sky) → [Wind](https://github.com/CodeEditorLand/Wind))
 
-**Source files:**
+### Source files
 
 - `Wind/Source/Application/QuickInput/Definition.ts`
 - `vs/workbench/contrib/quickaccess/browser/commandsQuickAccess.ts`
@@ -50,7 +50,7 @@ stored at registration time.
 
 ## Phase 2 - Fetching the Command List ([Mountain](https://github.com/CodeEditorLand/Mountain))
 
-**Source files:**
+### Source files
 
 - [`track.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs)
 - [`CommandProvider.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/CommandProvider.rs)
@@ -126,9 +126,9 @@ stored at registration time.
 ## Phase 4B - Extension Command Execution ([Wind](https://github.com/CodeEditorLand/Wind) → [Mountain](https://github.com/CodeEditorLand/Mountain) → [Cocoon](https://github.com/CodeEditorLand/Cocoon))
 
 Steps 8 and 9 are identical to Phase 4A. The difference is in what [Mountain](https://github.com/CodeEditorLand/Mountain)
-finds at step 10.
+finds at step 12.
 
-10. **`handlers/commands/CommandsLogic.rs` ([Mountain](https://github.com/CodeEditorLand/Mountain))** - `ExecuteCommandLogic`
+12. **`handlers/commands/CommandsLogic.rs` ([Mountain](https://github.com/CodeEditorLand/Mountain))** - `ExecuteCommandLogic`
     looks up `"my-extension.doSomething"`. It finds the handler is of type:
 
     ```rust
@@ -138,19 +138,19 @@ finds at step 10.
     }
     ```
 
-11. **`IpcProvider` ([Mountain](https://github.com/CodeEditorLand/Mountain))** - The handler knows it must proxy the request.
+13. **`IpcProvider` ([Mountain](https://github.com/CodeEditorLand/Mountain))** - The handler knows it must proxy the request.
     It uses the `IpcProvider` capability from the `MountainEnvironment` and sends
     a **`$executeContributedCommand` gRPC request to [Cocoon](https://github.com/CodeEditorLand/Cocoon)**, carrying the
     command ID and its arguments. The arguments are serialized using the same
     JSON encoding used in Phase 4A, then deserialized by [Cocoon](https://github.com/CodeEditorLand/Cocoon) before invoking
     the JavaScript handler.
 
-12. **[Cocoon](https://github.com/CodeEditorLand/Cocoon) Command Resolution** - [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s gRPC server receives the request
+14. **[Cocoon](https://github.com/CodeEditorLand/Cocoon) Command Resolution** - [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s gRPC server receives the request
     and dispatches it to the `CommandsProvider`. The `CommandsProvider` looks up
     `"my-extension.doSomething"` in its own local registry and executes the
     extension's JavaScript handler function with the deserialized arguments.
 
-13. **Result Propagation** - The extension's command finishes and returns a
+15. **Result Propagation** - The extension's command finishes and returns a
     result (e.g. a string, number, or object). This result is serialized and
     sent back to [Mountain](https://github.com/CodeEditorLand/Mountain) as the gRPC response. [Mountain](https://github.com/CodeEditorLand/Mountain) receives the response
     and forwards it back to [Wind](https://github.com/CodeEditorLand/Wind) as the resolution of the `TauriInvoke` promise.

@@ -8,6 +8,8 @@ description:
     Buffer definitions."
 ---
 
+# Vine: gRPC Protocol
+
 [Vine](https://github.com/CodeEditorLand/Vine) is the gRPC protocol definition and communication specification for the
 [Land](https://github.com/CodeEditorLand/Land) project. It defines the strongly-typed IPC layer used for communication
 between:

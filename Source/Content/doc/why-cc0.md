@@ -13,7 +13,7 @@ include a license file, or avoid certain uses. CC0 Universal requires nothing.
 It is a waiver, not a license. The authors irrevocably surrender all copyright
 and related rights. The code belongs to everyone, unconditionally.
 
-## What CC0 means in practice
+## The Decision
 
 CC0 eliminates the one condition every permissive license imposes: attribution.
 MIT requires the copyright notice in every binary. Apache 2.0 adds a NOTICE file
@@ -27,7 +27,20 @@ that creates a cascade of legal compliance work. CC0 removes it entirely.
 | Embed in regulated system        | License review   | Patent clause review      | No review needed   |
 | Use without any copyright notice | No               | No                        | **Yes**            |
 
-## CC0 vs MIT vs Apache 2.0 vs GPL
+## What It Costs
+
+CC0 waives copyright, not trademarks. The names FIDDEE and [Land](https://github.com/CodeEditorLand/Land), the logos, and
+the [editor.land](https://github.com/CodeEditorLand/Land) domain are not granted by CC0 - trademark rights are separate.
+Someone who forks [Land](https://github.com/CodeEditorLand/Land) can use the code freely but cannot ship it as "FIDDEE"
+or "[Land](https://github.com/CodeEditorLand/Land)" without permission.
+
+CC0 also does not grant patent licenses beyond what the waiver covers in
+applicable jurisdictions. For a code editor, this is not a practical concern.
+
+## Alternatives Considered
+
+Three licenses were the realistic alternatives for infrastructure that must stay
+embeddable: MIT, Apache 2.0, and GPL.
 
 MIT has one condition: every binary carrying MIT code must include the copyright
 notice. [Land](https://github.com/CodeEditorLand/Land) is designed to be reused - its Rust crates extracted into other
@@ -43,16 +56,6 @@ GPL requires derivative works to be GPL'd. [Land](https://github.com/CodeEditorL
 that can be embedded anywhere, including proprietary products. CC0 imposes no
 copyleft constraint.
 
-## What CC0 does not cover
-
-CC0 waives copyright, not trademarks. The names FIDDEE and [Land](https://github.com/CodeEditorLand/Land), the logos, and
-the [editor.land](https://github.com/CodeEditorLand/Land) domain are not granted by CC0 - trademark rights are separate.
-Someone who forks [Land](https://github.com/CodeEditorLand/Land) can use the code freely but cannot ship it as "FIDDEE"
-or "[Land](https://github.com/CodeEditorLand/Land)" without permission.
-
-CC0 also does not grant patent licenses beyond what the waiver covers in
-applicable jurisdictions. For a code editor, this is not a practical concern.
-
 ## NLnet NGI0 alignment
 
 [Land](https://github.com/CodeEditorLand/Land) is funded by the NLnet NGI0 Commons Fund, part of the European
@@ -67,7 +70,7 @@ change the terms.
 > organization: all elements, the website, documentation, build tooling, and CI
 > infrastructure. No dual-licensed components exist.
 
-## Related Documentation
+## See Also
 
 - [Why Rust](/Doc/why-rust)
 - [Why Tauri](/Doc/why-tauri)

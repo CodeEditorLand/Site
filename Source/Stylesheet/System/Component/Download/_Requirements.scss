@@ -9,7 +9,7 @@
 // Owned by P7. The ledger anatomy belongs to RecordLedger; this partial only
 // places the ledgers and names their groups.
 
-@use "../Mixin" as *;
+@use "../../Mixin" as *;
 
 .download-requirements {
 	display: grid;

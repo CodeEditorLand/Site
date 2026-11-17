@@ -1,6 +1,7 @@
 {
 	"features": {
 		"badge": "Feature",
+		"heading": "What the editor actually is.",
 		"item": {
 			"designTokens": {
 				"title": "Native services where they count.",

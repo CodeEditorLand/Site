@@ -22,20 +22,6 @@ workbench.
 
 ---
 
-## Table of Contents
-
-1. [Overview](#overview)
-2. [Architecture](#architecture️)
-3. [Service Architecture](#service-architecture️)
-4. [Layer Composition](#layer-composition)
-5. [Preload Shim Integration](#preload-shim-integration)
-6. [Service Catalog](#service-catalog)
-7. [Mountain IPC Service](#mountain-ipc-service)
-8. [Workbench Integration](#workbench-integration)
-9. [Related Documentation](#related-documentation)
-
----
-
 <img src="/Mermaid/f65329819d9f0d8d.svg" alt="Mermaid diagram" />
 
 ## Overview 📋
@@ -303,16 +289,14 @@ await workbench.startup();
 - [EditorCore](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EditorCore.md) -
   Editor workbench adaptation
 
+## See Also
+
+- [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing
+
 ---
 
 **Project Maintainers:** Source Open
 ([Source/Open@Editor.Land](mailto:Source/Open@Editor.Land)) |
 [GitHub Repository](https://github.com/CodeEditorLand/Wind) |
 [Report an Issue](https://github.com/CodeEditorLand/Wind/issues)
-
----
-
-## See Also
-
-- [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
-- [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing

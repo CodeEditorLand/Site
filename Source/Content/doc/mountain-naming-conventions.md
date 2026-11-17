@@ -8,8 +8,6 @@ description:
     Protocol Buffers."
 ---
 
-# Mountain Naming Conventions
-
 ## Overview
 
 **[Mountain](https://github.com/CodeEditorLand/Mountain)** adopts **PascalCase** as the primary naming convention for nearly
@@ -123,7 +121,7 @@ name mappings and serialization aliases.
 | **Static Items**        | PascalCase               | `SIDECAR_CLIENTS`             | Static variables                   |
 | **Type Aliases**        | PascalCase               | `CocoonClient`                | Type aliases and generic types     |
 | **Generics**            | PascalCase               | `TCapabilityProvider`         | Type parameters with 'T' prefix    |
-| **Lifetimes**           | lowercase with 'a prefix | `'a`, `'result`               | Standard Rust lifetime conventions |
+| **Lifetimes**           | lowercase with `'` prefix | `'a`, `'result`               | Standard Rust lifetime conventions |
 | **Local Variables**     | PascalCase               | `WorkSpaceIdentifier`         | All local variables                |
 | **Function Parameters** | PascalCase               | `ApplicationHandle:AppHandle` | All parameters                     |
 | **Fields**              | PascalCase               | `ActiveDocuments`             | All struct fields                  |
@@ -322,6 +320,16 @@ async fn ProcessRequest(&self, RequestIdentifier: String) -> Result<Value, Commo
 ---
 
 ## Allowed Exceptions
+
+Five categories are allowed to keep their original conventions:
+
+| Exception | Retains | Example |
+| --- | --- | --- |
+| External crate types | Their original crate conventions | `tokio::spawn`, `tokio::time::sleep`, `AppHandle<Wry>`, `serde_json::Value` |
+| Standard library types | Rust conventions | `HashMap`, `Arc`, `Mutex`, `PathBuf` |
+| Lifetime parameters | Rust convention (lowercase with `'` prefix) | `'a`, `'b` |
+| Attributes and macros | Rust conventions | `#[derive(Debug, Clone, Serialize)]`, `#[async_trait]`, `#[command]` |
+| Raw identifiers and system constants | Lowercase | `r#async`, `PATH_SEPARATOR`, `std::env::var("PATH")` |
 
 ### 1. External Crate Types
 

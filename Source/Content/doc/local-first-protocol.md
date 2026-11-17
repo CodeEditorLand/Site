@@ -26,10 +26,10 @@ The storage is namespaced by extension ID. An extension writing to
 `context.workspaceState` or `context.globalState` calls [Mountain](https://github.com/CodeEditorLand/Mountain)'s `storage:set`
 handler, which writes to SQLite at:
 
-```
-~/.land/storage/<extension-id>.db         # macOS / Linux
-%APPDATA%\Land\storage\<extension-id>.db  # Windows
-```
+| Platform | Path |
+| --- | --- |
+| macOS / Linux | `~/.land/storage/<extension-id>.db` |
+| Windows | `%APPDATA%\Land\storage\<extension-id>.db` |
 
 No data leaves the device unless the extension itself initiates a network
 request.
@@ -79,13 +79,10 @@ remains local-only.
 The **[Air](https://github.com/CodeEditorLand/Air)** daemon provides optional services that the editor does not depend on
 for core function:
 
-- **Update delivery** - [Air](https://github.com/CodeEditorLand/Air) checks for new [Land](https://github.com/CodeEditorLand/Land) releases and downloads update
-  packages. If Air is not running, the editor continues to work; no update
-  prompt appears.
-- **Authentication** - [Air](https://github.com/CodeEditorLand/Air) can broker OAuth tokens for extensions that integrate
-  with Editor.Land accounts. Extensions requiring GitHub OAuth or other
-  third-party OAuth (Copilot, GitHub Pull Requests) still require their own auth
-  flows, which are not currently implemented in the core editor.
+| Service | What it provides | If Air is not running |
+| --- | --- | --- |
+| Update delivery | [Air](https://github.com/CodeEditorLand/Air) checks for new [Land](https://github.com/CodeEditorLand/Land) releases and downloads update packages | The editor continues to work; no update prompt appears |
+| Authentication | [Air](https://github.com/CodeEditorLand/Air) can broker OAuth tokens for extensions that integrate with Editor.Land accounts. Extensions requiring GitHub OAuth or other third-party OAuth (Copilot, GitHub Pull Requests) still require their own auth flows, which are not currently implemented in the core editor | - |
 
 The editor starts correctly with [Air](https://github.com/CodeEditorLand/Air) absent. No startup path has a hard
 dependency on [Air](https://github.com/CodeEditorLand/Air) being reachable.
@@ -111,17 +108,9 @@ users into a proprietary data format or a mandatory cloud service.
 
 ## What Local-First Means for Extension Developers 📝
 
-- **Extension state is always local.** `context.workspaceState`,
-  `context.globalState`, and `context.secrets` write to the local device. There
-  is no cloud-sync API in the [Cocoon](https://github.com/CodeEditorLand/Cocoon) shim.
-- **Sync is the extension's responsibility.** If an extension needs to
-  synchronize state across machines, it must implement that sync itself using
-  whatever backend it chooses (its own API, GitHub Gist, etc.). [Land](https://github.com/CodeEditorLand/Land) provides no
-  cross-device sync primitives.
-- **Extensions work offline.** An extension that relies only on the `vscode.*`
-  API and local file access will work without a network connection. Extensions
-  that make outbound HTTP requests are responsible for handling offline
-  conditions.
-- **No account required.** Extensions must not assume the user has an
-  Editor.Land account or has authenticated with any service. Account-gated
-  features should be optional enhancements, not required for basic function.
+| Guarantee | Consequence for the extension |
+| --- | --- |
+| Extension state is always local | `context.workspaceState`, `context.globalState`, and `context.secrets` write to the local device. There is no cloud-sync API in the [Cocoon](https://github.com/CodeEditorLand/Cocoon) shim |
+| Sync is the extension's responsibility | If an extension needs to synchronize state across machines, it must implement that sync itself using whatever backend it chooses (its own API, GitHub Gist, etc.). [Land](https://github.com/CodeEditorLand/Land) provides no cross-device sync primitives |
+| Extensions work offline | An extension that relies only on the `vscode.*` API and local file access will work without a network connection. Extensions that make outbound HTTP requests are responsible for handling offline conditions |
+| No account required | Extensions must not assume the user has an Editor.Land account or has authenticated with any service. Account-gated features should be optional enhancements, not required for basic function |

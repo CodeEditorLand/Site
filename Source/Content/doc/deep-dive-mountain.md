@@ -11,6 +11,8 @@ description:
     performance optimization."
 ---
 
+# Mountain - Deep Dive
+
 [Mountain](https://github.com/CodeEditorLand/Mountain) is the Rust binary at the foundation of [Land](https://github.com/CodeEditorLand/Land). It serves as the concrete
 implementation layer that brings VSCode service compatibility through native Rust
 implementations, Tauri integration, and gRPC communication.
@@ -674,13 +676,23 @@ lines) imports every atom and dispatches via a single `match` arm per command
 string. Nothing is implemented inline in `mod.rs` except trivially short
 responses that are not reused anywhere.
 
+```mermaid
+flowchart LR
+    W["Wind / Sky frontend"] -->|"Tauri invoke with a command string"| M["IPC/WindServiceHandlers/mod.rs<br/>one match arm per command"]
+    M --> A["NativeHost/Quit.rs"]
+    M --> B["Terminal/LocalPTYCreateProcess.rs"]
+    M --> C["FileSystem/*.rs"]
+    M --> D["Cocoon/*.rs"]
+    M --> E["... one atom per command"]
+```
+
 **File and struct naming** follow PascalCase throughout:
 
 ```
-NativeHost/Quit.rs       → pub struct NativeQuit; impl Fn(…)
-NativeHost/Relaunch.rs   → pub struct NativeRelaunch; impl Fn(…)
+NativeHost/Quit.rs       → pub struct NativeQuit; impl Fn(...)
+NativeHost/Relaunch.rs   → pub struct NativeRelaunch; impl Fn(...)
 Encryption/Key.rs        → pub fn Fn() -> Result<[u8;32], String>
-Terminal/LocalPTYCreateProcess.rs → pub struct LocalPTYCreateProcess; …
+Terminal/LocalPTYCreateProcess.rs → pub struct LocalPTYCreateProcess; ...
 ```
 
 **Domain subdirectories** currently in `WindServiceHandlers/`:

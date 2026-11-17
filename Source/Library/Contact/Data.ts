@@ -36,6 +36,16 @@ export interface ContactFamily {
 
 	/** The requests on this route, in the order the reader should consider them. */
 	readonly requests: readonly Entry[];
+
+	/**
+	 * Records in this family that are pages rather than request routes.
+	 *
+	 * The registry only knows request codes, but the hub has always listed the
+	 * SALE page beside them - it is the same decision ("I want this commercially")
+	 * asked in a longer form. Dropping it would make the family's own standfirst
+	 * ("the SALE page carries the deployment options") a dead end.
+	 */
+	readonly pages?: readonly Entry[];
 }
 
 /** One crumb: a label in the site's mono nav grammar, and where it leads. */
@@ -111,6 +121,22 @@ const EntryOf = (code: IncomeCode): Entry => {
 };
 
 /**
+ * The SALE page as a record.
+ *
+ * It is not in the request registry - it is a page, not an income code - so
+ * there is nothing to derive its title and subtitle from. They are carried here
+ * verbatim, because the hub's old card grid printed both and losing them would
+ * be losing copy, not removing duplication.
+ */
+const ContactSale: Entry = {
+	index: "# SALE",
+	name: "Enterprise Inquiries",
+	chips: ["Deployment options"],
+	body: "Contact the Code Editor Land team for enterprise licensing, support, and deployment options.",
+	href: "/Contact/Sale",
+};
+
+/**
  * The hub, in reading order: the seven GDPR rights first because they are the
  * largest family and the one with statutory deadlines, then support, then the
  * routes that carry obligations, then enterprise.
@@ -149,6 +175,7 @@ export const ContactFamilies: readonly ContactFamily[] = [
 			"Enterprise Sales answers within 3 days from enterprise@editor.land; the SALE page carries the deployment options.",
 		tone: "paper",
 		requests: (["DEALS"] as const).map(EntryOf),
+		pages: [ContactSale],
 	},
 ];
 

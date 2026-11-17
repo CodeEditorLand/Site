@@ -17,23 +17,8 @@ description:
 - Data Transfer Objects (`DTO`s)
 - A universal error type
 
-It contains no concrete implementations.
-
----
-
-## Table of Contents
-
-1. [Overview](#overview)
-2. [Architecture Principles](#architecture-principles)
-3. [Trait Architecture](#trait-architecture)
-4. [ActionEffect System](#actioneffect-system)
-5. [Environment and Dependency Injection](#environment-and-dependency-injection)
-6. [Data Transfer Objects](#data-transfer-objects)
-7. [CommonError](#commonerror️)
-8. [Transport Layer](#transport-layer)
-9. [Telemetry Module](#telemetry-module)
-10. [Service Domain Map](#service-domain-map️)
-11. [Related Documentation](#related-documentation)
+> [!IMPORTANT]
+> `Common` contains no concrete implementations.
 
 ---
 
@@ -191,23 +176,14 @@ pub trait Environment {
 
 ### Capability Resolution Flow 🗺️
 
-```
-ActionEffect<C, E, T>
-    |
-    v
-ApplicationRunTime
-    |
-    v
-Environment Provider
-    |  - Resolves concrete capability C
-    |  - Environment::FileSystem -> MountainFileSystem
-    |  - Environment::Terminal -> MountainTerminal
-    |
-    v
-Concrete Capability (e.g., Mountain's FileSystem impl)
-    |
-    v
-Effect executed with concrete implementation
+```mermaid
+flowchart TD
+    A["ActionEffect<C, E, T>"] --> B["ApplicationRunTime"]
+    B --> C["Environment Provider"]
+    C -->|"Resolves concrete capability C"| D["Concrete Capability (e.g., Mountain's FileSystem impl)"]
+    C -.->|"Environment::FileSystem -> MountainFileSystem"| D
+    C -.->|"Environment::Terminal -> MountainTerminal"| D
+    D --> E["Effect executed with concrete implementation"]
 ```
 
 ---

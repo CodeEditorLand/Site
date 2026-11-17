@@ -11,7 +11,7 @@ description:
 
 # Mist - Deep Dive
 
-Mist provides the technical foundation DNS isolation layer
+Mist provides the technical foundation for the DNS isolation layer
 within the [Land](https://github.com/CodeEditorLand/Land) project. **[Mist](https://github.com/CodeEditorLand/Mist)** operates a local authoritative DNS server
 for the `editor.land` zone, ensuring all private network communication stays on
 loopback and preventing sidecars from reaching unauthorized external hosts.
@@ -46,7 +46,7 @@ restricted forward allowlist for external queries.
 
 <img src="/Mermaid/64fac31bdb95d126.svg" alt="Mermaid diagram" />
 
-**Startup sequence:**
+### Startup Sequence
 
 1. [Mountain](https://github.com/CodeEditorLand/Mountain) calls `Mist::start(5380)` during initialization.
 2. Mist attempts to bind to port 5380; if unavailable, `portpicker` selects an

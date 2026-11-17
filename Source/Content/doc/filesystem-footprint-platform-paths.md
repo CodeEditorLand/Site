@@ -31,7 +31,7 @@ macOS folds `app_data_dir` and `app_config_dir` into the same location; Linux an
 
 ---
 
-## 🍎 macOS Layout
+## macOS Layout 🍎
 
 Status: 🟢 fully supported (primary development target).
 
@@ -78,7 +78,7 @@ Status: 🟢 fully supported (primary development target).
 
 ---
 
-## 🐧 Linux Layout
+## Linux Layout 🐧
 
 Status: 🟡 partial (Tauri's path resolver works; webview-storage paths differ from WKWebView equivalents).
 
@@ -115,7 +115,7 @@ Status: 🟡 partial (Tauri's path resolver works; webview-storage paths differ 
 
 ---
 
-## 🪟 Windows Layout
+## Windows Layout 🪟
 
 Status: 🔴 pending - `dirs` crate paths and Tauri PathResolver are documented here for completeness, but the editor has not been smoke-tested on Windows. Treat the table as a forward-looking reference; expect minor drift when the platform target lands.
 

@@ -5,10 +5,9 @@ order: 11
 description: "Every build configuration variant, environment variable, and how they propagate across all Elements in the Land monorepo."
 ---
 
-# Build Matrix & Environment Variables
-
-Every build configuration variant, environment variable, and how they propagate
-across all Elements in the Land monorepo.
+Twelve build profiles, fifteen Elements, and one shared set of `.env.Land*`
+files - this page is the lookup table for which file sets a value and which
+Element reads it.
 
 ---
 
@@ -32,6 +31,8 @@ files that are read by every Element's build system.
 | **Production + Node**         | `.env.Land.Production + .env.Land.Production.Node`        | Production with specific Node.js version  |
 | **Production + PostHog**      | `.env.Land.Production + .env.Land.Production.PostHog`     | Production with telemetry                 |
 | **Production + Diagnostics**  | `.env.Land.Production + .env.Land.Production.Diagnostics` | Production with trace/record              |
+
+### Per-Element Build Systems
 
 Each Element consumer reads from the same `.env.Land*` files. If a tier flag
 flips, every Element picks up the change through its own build system.
@@ -159,7 +160,10 @@ Variables exported by build scripts (not stored in `.env` files).
 
 ## File Mapping
 
-Which `.env.Land*` file each variable originates from:
+Which `.env.Land*` file each variable originates from. The values are file
+suffixes, so `PostHog` is `.env.Land.PostHog` and `Production.PostHog` is
+`.env.Land.Production.PostHog`. [Build Pipeline](/Doc/build-pipeline) carries
+the full per-domain file list (dev, sample, production).
 
 | Variable                       | Files                                                         |
 | :----------------------------- | :------------------------------------------------------------ |
@@ -168,9 +172,9 @@ Which `.env.Land*` file each variable originates from:
 | `Batch`                        | `PostHog`, `Production.PostHog`                               |
 | `Beam`                         | `Production.PostHog`                                          |
 | `Boot`                         | `Bundled`, `Production.Bundled`                               |
-| `BundleLevel`                  | Build-Shim (exported by `Debug/Build.sh`, `Release/Build.sh`) |
 | `Brand`                        | `PostHog`, `Production.PostHog`                               |
 | `Buffer`                       | `PostHog`, `Production.PostHog`                               |
+| `BundleLevel`                  | Build-Shim (exported by `Debug/Build.sh`, `Release/Build.sh`) |
 | `Cap`                          | `PostHog`, `Production.PostHog`                               |
 | `Capture`                      | `PostHog`, `Production.PostHog`                               |
 | `Disable`                      | `Production.Diagnostics`                                      |
@@ -178,8 +182,8 @@ Which `.env.Land*` file each variable originates from:
 | `Mute`                         | `Production.Extensions`                                       |
 | `NetworkCocoonPort`            | `Core`, `Production`                                          |
 | `NetworkMountainPort`          | `Core`, `Production`                                          |
-| `OTLPEnabled`                  | `PostHog`, `Production.PostHog`                               |
 | `OTLPEndpoint`                 | `PostHog`, `Production.PostHog`                               |
+| `OTLPEnabled`                  | `PostHog`, `Production.PostHog`                               |
 | `Pack`                         | `Bundled`, `Production.Bundled`                               |
 | `ProductApplicationName`       | `Core`, `Production`                                          |
 | `ProductCommit`                | `Core`, `Production`                                          |

@@ -8,6 +8,8 @@ description:
     turbo.json task graph - it does not need to be recompiled when changed.
 ---
 
+# Maintain: Build Orchestrator
+
 [Maintain](https://github.com/CodeEditorLand/Maintain) is the build orchestrator for the [Land](https://github.com/CodeEditorLand/Land) project. It coordinates shell
 scripts, a Rust CLI with embedded Rhai scripting, and a Turborepo task graph to
 produce deterministic builds across all Land elements. Unlike [Mountain](https://github.com/CodeEditorLand/Mountain), [Cocoon](https://github.com/CodeEditorLand/Cocoon),

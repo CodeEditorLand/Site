@@ -7,8 +7,6 @@ description:
     sets HTML content, and exchanges messages with the host."
 ---
 
-# Webview Panel Lifecycle
-
 Webview panels let extensions embed arbitrary HTML inside the editor. The panel
 itself is a native Tauri webview managed by [Mountain](https://github.com/CodeEditorLand/Mountain); [Cocoon](https://github.com/CodeEditorLand/Cocoon) holds a lightweight
 shim that proxies property assignments and message events across gRPC. Every
@@ -146,5 +144,5 @@ shim that proxies property assignments and message events across gRPC. Every
 > the `Environment/WebviewProvider/Messaging.rs` handler to be present in the
 > [Mountain](https://github.com/CodeEditorLand/Mountain) build. If `setup_webview_message_listener_impl` is absent, messages
 > posted from the webview content are silently dropped and the extension never
-> receives them. This affects all panel-based extensions including Roo, Continue,
-> and Continue.
+> receives them. This affects all panel-based extensions including Roo and
+> Continue.

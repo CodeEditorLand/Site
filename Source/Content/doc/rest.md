@@ -19,19 +19,6 @@ Compiler) toolchain:
 
 ---
 
-## Table of Contents
-
-1. [Overview](#overview)
-2. [Architecture](#architecture️)
-3. [Compilation Pipeline](#compilation-pipeline)
-4. [Configuration](#configuration️)
-5. [CLI Usage](#cli-usage)
-6. [Integration with Output](#integration-with-output)
-7. [Performance Benchmarks](#performance-benchmarks)
-8. [Related Documentation](#related-documentation)
-
----
-
 ## Overview 📋
 
 [`Rest`](https://github.com/CodeEditorLand/Rest) is a `Rust` binary and library that provides a
@@ -172,7 +159,8 @@ export function RestPlugin(): ESBuild.Plugin {
 }
 ```
 
-Activated via environment variable: `Compiler=Rest`
+> [!NOTE]
+> Activated via environment variable: `Compiler=Rest`
 
 ---
 

@@ -9,9 +9,7 @@ description:
     requiring asynchronous task management."
 ---
 
-# Echo Deep Dive 📣
-
-# **Echo** 📣 Deep Dive & Architecture
+# Echo - Deep Dive & Architecture
 
 **[Echo](https://github.com/CodeEditorLand/Echo)** provides the technical foundation for implementing
 high-performance task scheduling within the [Land](https://github.com/CodeEditorLand/Land) platform. It serves as
@@ -285,7 +283,7 @@ When integrated with [Mountain](https://github.com/CodeEditorLand/Mountain)'s Ap
 
 ## Concrete Integration Patterns
 
-### Integration with Mountain's ApplicationRunTime
+### ApplicationRunTime Integration
 
 <img src="/Mermaid/d2954fdd8424a8e5.svg" alt="Mermaid diagram" />
 
@@ -308,7 +306,7 @@ ApplicationRunTime and other asynchronous operations.
 
 <img src="/Mermaid/2d67f67ca7b5dbe8.svg" alt="Mermaid diagram" />
 
-#### Performance Characteristics Table
+### Performance Characteristics Table
 
 | Metric                  | [Echo](https://github.com/CodeEditorLand/Echo) Performance | [Mountain](https://github.com/CodeEditorLand/Mountain) Integration | Notes                     |
 | :---------------------- | :--------------------------------------------------------- | :----------------------------------------------------------------- | :------------------------ |

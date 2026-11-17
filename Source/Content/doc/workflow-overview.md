@@ -5,10 +5,11 @@ order: 20
 description: "High-level overview of Land's architecture and the core workflows that drive the application - from startup and file I/O to extension execution and SCM integration."
 ---
 
-# [Land](https://github.com/CodeEditorLand/Land) Project Architecture
+Our system is composed of four primary components, each in its own repository:
 
-A high-level overview of the architecture and the core workflows that drive the
-application. Our system is composed of three primary components:
+---
+
+## Primary Components
 
 - **[`Common`](https://github.com/CodeEditorLand/Common) 🧑🏻‍🏭 (Rust Crate):** The abstract core library. It defines the
   architectural "language" of the application through traits, data structures
@@ -33,9 +34,9 @@ and Commands**.
 
 ---
 
-## Table of Contents 📑
+## Core Workflows
 
-### Core Workflows 🔄
+Each workflow below has its own page; the summary says what that page covers.
 
 1.  [**Application Startup & Handshake**](/Doc/workflow-startup)
     - _Describes the complete end-to-end process of launching [`Mountain`](https://github.com/CodeEditorLand/Mountain),
@@ -96,7 +97,7 @@ and Commands**.
       codebase simultaneously and be selected at build time without duplicating
       call sites._
 
-### Work in Progress (Documentation) 🚧
+## Work in Progress (Documentation) 🚧
 
 The following workflows are implemented in the codebase but are pending detailed
 documentation.

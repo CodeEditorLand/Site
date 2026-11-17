@@ -18,18 +18,6 @@ operation on `macOS`, `Windows`, and `Linux`.
 
 ---
 
-## Table of Contents
-
-1. [Process Model](#process-model️)
-2. [Component Map](#component-map️)
-3. [IPC Architecture](#ipc-architecture)
-4. [Service Layer Design](#service-layer-design)
-5. [Tier-Gated Implementation](#tier-gated-implementation️)
-6. [Data Flow Patterns](#data-flow-patterns)
-7. [Related Documentation](#related-documentation)
-
----
-
 ## Process Model 🏗️
 
 **Land** operates as a multi-process application with three concurrent
@@ -44,11 +32,11 @@ processes:
 A fourth optional process, the background daemon (`Air`), runs as a persistent
 sidecar for updates and indexing.
 
-> **TierIPC note:** The `TierIPC` environment variable controls whether
-> `Wind`/`Output` route IPC through `Mountain` (default), fall back to `Cocoon`
-> on miss (`NodeDeferred`), or bypass `Mountain` entirely (`Node`).
-> Per-subsystem overrides (`TierTerminal`, `TierSCM`, `TierAuth`, etc.) allow
-> independent routing per channel. See
+> [!NOTE]
+> The `TierIPC` environment variable controls whether `Wind`/`Output` route IPC
+> through `Mountain` (default), fall back to `Cocoon` on miss (`NodeDeferred`),
+> or bypass `Mountain` entirely (`Node`). Per-subsystem overrides (`TierTerminal`,
+> `TierSCM`, `TierAuth`, etc.) allow independent routing per channel. See
 > [EnvironmentVariables.md](/Doc/build-matrix).
 
 <img src="/Mermaid/34a85ab8cb121c5d.svg" alt="Mermaid diagram" />
@@ -272,16 +260,14 @@ for the full propagation workflow.
 - [Workflow/](/Doc/workflow-overview) - Detailed component interaction workflows
 - [VSCode-API-Coverage-Matrix](/Doc/vscode-api-coverage) - `vscode.*` API implementation status per namespace
 
+## See Also
+
+- [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing
+
 ---
 
 **Project Maintainers:** Source Open
 ([Source/Open@editor.land](mailto:Source/Open@editor.land)) |
 [GitHub Repository](https://github.com/CodeEditorLand/Land) |
 [Report an Issue](https://github.com/CodeEditorLand/Land/issues)
-
----
-
-## See Also
-
-- [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
-- [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing

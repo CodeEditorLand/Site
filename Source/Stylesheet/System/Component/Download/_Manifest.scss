@@ -11,7 +11,7 @@
 // Owned by P7. The ledger anatomy belongs to RecordLedger; this partial places
 // the ledgers, names their groups and gives the empty state a voice.
 
-@use "../Mixin" as *;
+@use "../../Mixin" as *;
 
 .download-manifest {
 	display: grid;

@@ -1,572 +1,162 @@
+import type { CSSProperties } from "react";
+
+import type Content from "../Interface/Content/Grid/Platform.js";
+
+import { Caption, Columns, Footnote, Kicker, RowsOf } from "./Platform/Data.js";
+
+import type { PlatformRow } from "./Platform/Type.js";
+
 /**
- * DynamicPlatformGrid - download section with OS-specific cards.
+ * The platforms - what exists today, per platform, as a matrix.
  *
- * Auto-detects the user's platform and highlights the matching card.
- * Each card shows version, file size, checksum, and direct download link.
+ * The band used to print three near-identical download cards, each with a
+ * `Download for <platform>` button, a `Version: Pre-release` row, a
+ * `Size: Coming Soon` row and a `SIGNING: IN PREPARATION` row. Three cards that
+ * say the same thing in the same order are not a comparison, and a download
+ * button for a file that is not published is the one dishonest control on the
+ * page. The matrix says the same facts in one table, where the two empty
+ * columns are the statement: source builds exist, installers and signatures do
+ * not.
+ *
+ * What was removed with the cards, and why:
+ *
+ * - **The download button.** It called the Workers download API for a URL that
+ *   the content itself says is not published yet (`Size: Coming Soon`,
+ *   `SIGNING: IN PREPARATION`). Nothing is lost: the Download page carries the
+ *   build path, and the band's caption names it.
+ * - **The Workers `Download.GetLatest` fetch.** It only ran when no platforms
+ *   were passed, which never happens from `HomePage.tsx`, and its fallbacks
+ *   were three invented file sizes (`45.2 MB`, `48.7 MB`, `41.3 MB`) and a
+ *   requirements list no file in the tree states. A fabricated number is worse
+ *   than no number.
+ * - **The noise scatter and the loading/error branches.** A printed table has
+ *   neither a card to scatter nor a request to wait on.
+ *
+ * The markup is the Record layer's published class API (`record-band`,
+ * `record-matrix`) rather than the `.astro` blocks: this component is a child
+ * of the page's `ErrorBoundary` inside `HomePage.tsx`, and an `.astro`
+ * component cannot be imported from a `.tsx` file (BRIDGE §2.1).
  */
-import { useEffect, useRef, useState } from "react";
+interface Props {
+	readonly Content: Content;
 
-import { useTranslation } from "react-i18next";
+	readonly ClassName?: string;
+}
 
-import * as lucide from "lucide-react";
-
-import { RichText } from "../UI/RichText.js";
-
-import { DynamicButton } from "./DynamicButton";
-
-import { DynamicCard } from "./DynamicCard";
-
-import { GLYPH_INK, KeywordInk } from "../../Function/Theme/SemanticColor";
-
-import { PlatformDescriptionText, RouteText } from "../Brand/SemanticLedger";
-
-import type PlatformInformation from "./Interface/Information/Platform.js";
-
-import type Property from "./Interface/Property/Grid/Platform.js";
-
-import type CardSection from "./Interface/Section/Card.js";
+/** The one heading id the band's `aria-labelledby` points at. */
+const HeadingId = "PlatformsHeading";
 
 /**
- * Semantic color map per platform name - maps each platform to its OS token.
- * Applied as a top-border accent on each download card.
+ * A cell's classes: the block's own, the centre modifier the columns ask for,
+ * and the mark modifier when the value is one of the two the stylesheet names.
  */
-const PlatformColorMap: Record<string, string> = {
-	Apple: "var(--OSMacOS)",
+const CellClass = (Value: string): string => {
+	const Mark =
+		Value === "yes"
+			? " record-matrix__cell--yes"
+			: Value === "no"
+				? " record-matrix__cell--no"
+				: "";
 
-	macOS: "var(--OSMacOS)",
-
-	Windows: "var(--OSWindows)",
-
-	Linux: "var(--OSLinux)",
+	return `record-matrix__cell record-matrix__cell--center${Mark}`;
 };
 
-/**
- * Platform icon registry - maps the PlatformInformation.Icon names
- * (Apple / Monitor / Terminal) to lucide components so the icons
- * render in the initial HTML. Inline SVG inherits currentColor,
- * so it renders dark ink on the white card (never /Dark/).
- */
-const PlatformIconRegistry: Record<string, lucide.LucideIcon> = {
-	Apple: lucide.Apple,
+/** A header cell's classes: its own, plus the centre modifier. */
+const ColumnClass = (Align: "left" | "center" | undefined): string =>
+	`record-matrix__column${Align === "center" ? " record-matrix__column--center" : ""}`;
 
-	Monitor: lucide.Monitor,
+const PlatformGrid = ({ Content, ClassName }: Props) => {
+	const { Title, Subtitle, Platforms } = Content;
 
-	Terminal: lucide.Terminal,
-};
-
-/**
- * Dynamic PlatformGrid component that displays download cards for each platform
- * Supports fetching real download data from the Workers API
- * Includes loading and error states
- */
-const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
-	const { t: T } = useTranslation("download");
-
-	const {
-		Title,
-
-		Subtitle,
-
-		Platforms: ProvidedPlatforms,
-
-		ShowVerification = true,
-
-		OnDownload,
-
-		ApiPlatform,
-
-		Labels = {},
-	} = Content;
-
-	const {
-		Version: VersionLabel = T("labels.version", {
-			defaultValue: "Version:",
-		}),
-
-		Size: SizeLabel = T("labels.size", { defaultValue: "Size:" }),
-
-		Loading: LoadingLabel = T("labels.loading", {
-			defaultValue: "Loading available downloads...",
-		}),
-
-		ErrorTitle: ErrorTitleLabel = T("labels.errorTitle", {
-			defaultValue: "Could not load downloads",
-		}),
-
-		DownloadFailed: DownloadFailedLabel = T("labels.downloadFailed", {
-			defaultValue: "Download failed. Please try again.",
-		}),
-	} = Labels;
-
-	const [Platforms, SetPlatforms] = useState<PlatformInformation[]>(
-		ProvidedPlatforms || [],
-	);
-
-	const [Loading, SetLoading] = useState(!ProvidedPlatforms);
-
-	const [ErrorMessage, SetErrorMessage] = useState<string | null>(null);
-
-	useEffect(() => {
-		if (ProvidedPlatforms) {
-			SetPlatforms(ProvidedPlatforms);
-
-			return;
-		}
-
-		const FetchPlatforms = async () => {
-			try {
-				SetLoading(true);
-
-				SetErrorMessage(null);
-
-				// Import workers client directly for platform data
-				const { GetWorkersClient } =
-					await import("../../Library/WorkerClient");
-
-				const Workers = GetWorkersClient();
-
-				const Response = await Workers.Download.GetLatest(ApiPlatform);
-
-				if (!Response.success || !Response.data) {
-					throw new Error(
-						Response.error || "Failed to fetch latest download",
-					);
-				}
-
-				const Latest = Response.data;
-
-				const CurrentPlatform: PlatformInformation[] = [];
-
-				const FormatBytes = (Bytes: number): string => {
-					const MB = Bytes / (1024 * 1024);
-
-					return `${MB.toFixed(1)} MB`;
-				};
-
-				if (Latest.platform === "macos") {
-					CurrentPlatform.push({
-						Id: Latest.id,
-						Name: "Apple",
-						Icon: "Apple",
-						Description: "Universal Binary",
-						Version: Latest.version,
-						Size: Latest.fileSize
-							? FormatBytes(Latest.fileSize)
-							: "45.2 MB",
-						Checksum: Latest.sha256,
-						...(Latest.pgpSignature
-							? { Signature: Latest.pgpSignature }
-							: {}),
-						Requirements: [
-							"macOS 11.0 (Big Sur) or later",
-							"4 GB RAM",
-							"500 MB disk space",
-						],
-					});
-				} else if (Latest.platform === "windows") {
-					CurrentPlatform.push({
-						Id: Latest.id,
-						Name: "Windows",
-						Icon: "Monitor",
-						Description: "64-bit (x64)",
-						Version: Latest.version,
-						Size: Latest.fileSize
-							? FormatBytes(Latest.fileSize)
-							: "48.7 MB",
-						Checksum: Latest.sha256,
-						...(Latest.pgpSignature
-							? { Signature: Latest.pgpSignature }
-							: {}),
-						Requirements: [
-							"Windows 10 or later (64-bit)",
-							"4 GB RAM",
-							"500 MB disk space",
-						],
-					});
-				} else if (Latest.platform === "linux") {
-					CurrentPlatform.push({
-						Id: Latest.id,
-						Name: "Linux",
-						Icon: "Terminal",
-						Description: "DEB, RPM, AppImage",
-						Version: Latest.version,
-						Size: Latest.fileSize
-							? FormatBytes(Latest.fileSize)
-							: "41.3 MB",
-						Checksum: Latest.sha256,
-						...(Latest.pgpSignature
-							? { Signature: Latest.pgpSignature }
-							: {}),
-						Requirements: [
-							"glibc 2.28+",
-							"4 GB RAM",
-							"500 MB disk space",
-						],
-					});
-				}
-
-				SetPlatforms(CurrentPlatform);
-			} catch (FetchError) {
-				SetErrorMessage(
-					FetchError instanceof Error
-						? FetchError.message
-						: "Failed to load downloads",
-				);
-
-				console.error("Failed to fetch platform data:", FetchError);
-			} finally {
-				SetLoading(false);
-			}
-		};
-
-		FetchPlatforms();
-	}, [ProvidedPlatforms, ApiPlatform]);
-
-	const GridReference = useRef<HTMLDivElement>(null);
-
-	// Apply attention scatter to platform download cards
-	useEffect(() => {
-		const Grid = GridReference.current;
-
-		if (!Grid || Loading) return;
-
-		const ReducedMotion = window.matchMedia(
-			"(prefers-reduced-motion: reduce)",
-		).matches;
-
-		if (ReducedMotion) return;
-
-		const ApplyScatter = async () => {
-			const AttentionModule =
-				await import("../../Function/Noise/Attention.js");
-
-			const Attention = await AttentionModule.default;
-
-			Attention.ApplyToSelector(".PlatformCard", 5, 3);
-		};
-
-		ApplyScatter();
-	}, [Platforms, Loading]);
-
-	const FormatFileSize = (SizeString: string) => {
-		return SizeString;
-	};
-
-	const FormatVersion = (Version: string) => {
-		return Version.startsWith("v") ? Version : `v${Version}`;
-	};
-
-	const HandleDownload = async (Platform: PlatformInformation) => {
-		try {
-			// Use workers client directly
-			const { GetWorkersClient } =
-				await import("../../Library/WorkerClient");
-
-			const Workers = GetWorkersClient();
-
-			const InfoResponse = await Workers.Download.GetInfo(Platform.Id);
-
-			if (!InfoResponse.success || !InfoResponse.data) {
-				throw new Error(
-					InfoResponse.error || "Failed to get download info",
-				);
-			}
-
-			window.open(InfoResponse.data.downloadUrl, "_blank");
-
-			await Workers.Download.TrackDownload(Platform.Id);
-
-			OnDownload?.(Platform);
-		} catch (DownloadError) {
-			console.error("Download failed:", DownloadError);
-
-			console.warn(DownloadFailedLabel);
-		}
-	};
-
-	if (Loading) {
-		return (
-			<section
-				className={`py-20 ${ClassName || ""}`}
-				aria-label="Downloads"
-				aria-busy="true"
-			>
-				<div className="container mx-auto px-4">
-					<div
-						className="mb-16 text-center"
-						role="status"
-						aria-live="polite"
-					>
-						<h2 className="mb-4 text-4xl font-normal md:text-5xl lg:text-6xl">
-							{LoadingLabel}
-						</h2>
-					</div>
-					<div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
-						{[1, 2, 3].map((Index) => (
-							<DynamicCard
-								key={Index}
-
-								Sections={{}}
-
-								ClassName="animate-pulse"
-							/>
-						))}
-					</div>
-				</div>
-			</section>
-		);
-	}
-
-	if (ErrorMessage) {
-		return (
-			<section
-				className={`py-20 ${ClassName || ""}`}
-				aria-label="Downloads"
-			>
-				<div className="container mx-auto px-4">
-					<div className="mb-16 text-center" role="alert">
-						<h2 className="mb-4 text-4xl font-normal text-red-500 md:text-5xl lg:text-6xl">
-							{ErrorTitleLabel}
-						</h2>
-						<p className="text-muted-foreground">{ErrorMessage}</p>
-					</div>
-				</div>
-			</section>
-		);
-	}
+	const Rows = RowsOf(Platforms ?? []);
 
 	return (
 		<section
 			id="download"
-			aria-label="Downloads"
-			className={`w-full py-16 sm:py-20 ${ClassName || ""}`}
+			aria-labelledby={HeadingId}
+			className={`record-band record-band--canvas ${ClassName ?? ""}`.trim()}
 		>
-			<div className="container mx-auto px-4">
-				{(Title || Subtitle) && (
-					<div className="mx-auto mb-10 max-w-2xl text-center">
-						<p className="mb-4 font-mono text-sm uppercase tracking-[0.25em] text-muted">
-							Download
-						</p>
-						{Title && (
-							<h2 className="text-4xl font-normal tracking-tight sm:text-5xl">
-								{Title}
-							</h2>
-						)}
+			<div className="record-band__inner">
+				<p className="record-band__kicker">{Kicker}</p>
+				<h2 id={HeadingId} className="record-band__heading">
+					{Title}
+				</h2>
+				{Subtitle ? (
+					<p className="record-band__standfirst">{Subtitle}</p>
+				) : null}
 
-						{Subtitle && (
-							<div className="mt-3 text-muted">
-								<RichText Text={Subtitle} />
-							</div>
-						)}
-					</div>
-				)}
-
-				<div
-					ref={GridReference}
-					className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3"
-				>
-					{Platforms.map((Platform) => {
-						const PlatformIcon =
-							PlatformIconRegistry[Platform.Icon];
-
-						const PlatformCardSection: CardSection = {
-							Header: {
-								content: (
-									<div className="flex flex-col gap-1">
-										<span className="font-mono text-sm font-medium uppercase tracking-[0.2em] text-card-foreground">
-											# RELEASE_01
-										</span>
-
-										<div>
-											<h3
-												className="font-mono text-sm font-medium leading-snug tracking-tight text-card-foreground"
-												style={{
-													color:
-														KeywordInk(
-															Platform.Name.toUpperCase(),
-														) ??
-														"var(--CardForeground)",
-												}}
-											>
-												{Platform.Name}
-											</h3>
-										</div>
-
-										<div className="flex items-center gap-3">
-											<p className="font-mono text-sm uppercase tracking-[0.2em]">
-												<span
-													aria-hidden="true"
-													style={{
-														color: GLYPH_INK,
-													}}
-												>
-													〈
-												</span>
-												<PlatformDescriptionText
-													Text={Platform.Description}
-												/>
-												<span
-													aria-hidden="true"
-													style={{
-														color: GLYPH_INK,
-													}}
-												>
-													〉
-												</span>
-											</p>
-
-											{PlatformIcon && (
-												<PlatformIcon
-													className="h-5 w-5 shrink-0 text-card-foreground"
-													aria-hidden="true"
-												/>
-											)}
-										</div>
-									</div>
-								),
-							},
-							Body: {
-								content: (
-									<div className="space-y-2 font-mono text-sm">
-										<div className="flex justify-between font-mono text-sm text-card-foreground">
-											<span className="uppercase">
-												<RouteText Line="/CHANNEL:" />
-											</span>
-
-											<span className="font-medium text-card-foreground">
-												PUBLIC
-											</span>
-										</div>
-
-										<div className="flex justify-between text-card-foreground opacity-70">
-											<span className="uppercase">
-												{VersionLabel}
-											</span>
-
-											<span className="font-medium text-card-foreground">
-												{FormatVersion(
-													Platform.Version,
+				{Rows.length > 0 ? (
+					<div className="record-band__body">
+						<div className="record-matrix platform-matrix">
+							<table className="record-matrix__table">
+								<caption className="record-matrix__caption">
+									{Caption}
+								</caption>
+								<thead>
+									<tr className="record-matrix__head">
+										<td />
+										{Columns.map((Column) => (
+											<th
+												key={Column.label}
+												scope="col"
+												className={ColumnClass(
+													Column.align,
 												)}
-											</span>
-										</div>
-
-										<div className="flex justify-between text-card-foreground opacity-70">
-											<span className="uppercase">
-												{SizeLabel}
-											</span>
-
-											<span className="font-medium text-card-foreground">
-												{FormatFileSize(Platform.Size)}
-											</span>
-										</div>
-
-										{ShowVerification &&
-											Platform.Checksum && (
-												<div className="flex justify-between text-card-foreground opacity-70">
-													<span className="uppercase">
-														CHECKSUM:
-													</span>
-
-													<span className="font-medium text-card-foreground">
-														{Platform.Checksum.substring(
-															0,
-															16,
-														)}
-														...
-													</span>
-												</div>
-											)}
-
-										<div className="flex justify-between text-card-foreground opacity-70">
-											<span className="uppercase">
-												SIGNING:
-											</span>
-
-											<span className="font-medium text-card-foreground">
-												{Platform.Signature
-													? "VERIFIED"
-													: "IN PREPARATION"}
-											</span>
-										</div>
-
-										<div className="pt-1">
-											<DynamicButton
-												Content={{
-													Text: T(
-														"labels.downloadFor",
-
-														{
-															defaultValue:
-																"Download for {{platform}}",
-															platform:
-																Platform.Name ||
-																"this platform",
-														},
-													),
-													Variant: "default",
-													Size: "lg",
-													FullWidth: true,
-													Icon: "Download",
-													ClassName:
-														"PlatformDownloadButton whitespace-nowrap",
-												}}
-												OnAction={() =>
-													HandleDownload(Platform)
+												style={
+													Column.ink
+														? ({
+																"--col-ink": `var(--${Column.ink})`,
+															} as CSSProperties)
+														: undefined
 												}
-											/>
-										</div>
-									</div>
-								),
-							},
-							Footer: {
-								content: (
-									<div className="flex justify-between font-mono text-sm text-card-foreground">
-										<span
-											className="uppercase"
-											style={{
-												color: "var(--CardForeground)",
-											}}
+											>
+												{Column.label}
+											</th>
+										))}
+									</tr>
+								</thead>
+								<tbody>
+									{Rows.map((Row: PlatformRow) => (
+										<tr
+											className="record-matrix__row"
+											key={Row.label}
 										>
-											STATUS:
-										</span>
+											<th
+												scope="row"
+												className="record-matrix__label"
+											>
+												{Row.label}
+												{Row.note ? (
+													<span className="platform-matrix__note">
+														{Row.note}
+													</span>
+												) : null}
+											</th>
+											{Row.cells.map((Cell, Index) => (
+												<td
+													key={
+														Columns[Index]?.label ??
+														Index
+													}
+													className={CellClass(Cell)}
+												>
+													{Cell}
+												</td>
+											))}
+										</tr>
+									))}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				) : null}
 
-										<span className="font-medium text-card-foreground">
-											RELEASE PREPARATION
-										</span>
-									</div>
-								),
-							},
-						};
-
-						const PlatformAccentColor =
-							PlatformColorMap[Platform.Name] ??
-							"var(--PlatformDesktop)";
-
-						return (
-							<DynamicCard
-								key={Platform.Id ?? Platform.Name}
-								Sections={PlatformCardSection}
-								ClassName="PlatformCard flex flex-col"
-								Style={
-									{
-										"--jelly-color-border-default":
-											PlatformAccentColor,
-										"--jelly-fill": "var(--Card)",
-										"--jelly-radius": "0",
-										"--jelly-card-padding-block": "0",
-										"--jelly-card-padding-inline": "0",
-										"--jelly-card-font-size": "inherit",
-									} as React.CSSProperties
-								}
-							/>
-						);
-					})}
-				</div>
+				<p className="record-band__footnote">{Footnote}</p>
 			</div>
 		</section>
 	);
 };
 
-export { DynamicPlatformGrid };
+export { PlatformGrid as DynamicPlatformGrid };
 
-export default DynamicPlatformGrid;
+export default PlatformGrid;

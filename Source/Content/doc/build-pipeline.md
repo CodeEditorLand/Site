@@ -5,8 +5,6 @@ order: 10
 description: "The complete build pipeline for the Land code editor, from environment variable resolution through binary artifact production - six stages across Rust, TypeScript, and static asset compilation."
 ---
 
-# **Build Pipeline** 📋
-
 The complete build pipeline for the **Land** code editor, from environment
 variable resolution through binary artifact production. The pipeline is a
 multi-stage, multi-language process that coordinates `Rust`, `TypeScript`, and
@@ -14,24 +12,7 @@ static asset compilation across 15+ component workspaces.
 
 ---
 
-## Table of Contents
-
-1. [Pipeline Overview](#pipeline-overview)
-2. [Environment Variable System](#environment-variable-system️)
-3. [Program Launch Options](#program-launch-options)
-4. [Profile System](#profile-system)
-5. [Env Propagation to Each Element](#env-propagation-to-each-element)
-6. [Rust Build Process](#rust-build-process)
-7. [TypeScript Build Process](#typescript-build-process)
-8. [Artifact Layout](#artifact-layout)
-9. [Output Transform Pipeline](#output-transform-pipeline)
-10. [Worker Build Process](#worker-build-process️)
-11. [SideCar Binary Management](#sidecar-binary-management)
-12. [Related Documentation](#related-documentation)
-
----
-
-## Pipeline Overview 📋
+## Pipeline Overview  📋
 
 The **Land** build has six stages:
 
@@ -77,7 +58,7 @@ The `compile-extensions-build` step produces `out-<platform>` directories
 containing compiled extension JavaScript and metadata. These are consumed by the
 `Output` element for bundling into the `@codeeditorland/output` package.
 
-### Stage 2: Land Application Assembly
+### Stages 2-6: Land Application Assembly
 
 Stage 2 compiles the native `Rust` backend and bundles the `TypeScript` frontend
 into a runnable `Tauri` application:
@@ -121,11 +102,13 @@ The build script invokes, in sequence:
 
 The build script resolves env files in this priority order:
 
-1. `$Land_Env_File` (if explicitly exported)
-2. `.env.Land` (local gitignored overrides)
-3. `../.env.Land` (one level up)
-4. `.env.Land.Sample` (checked-in defaults)
-5. `../.env.Land.Sample`
+| Priority | Path                  | Role                         |
+| :------- | :-------------------- | :--------------------------- |
+| 1        | `$Land_Env_File`      | Explicitly exported override |
+| 2        | `.env.Land`           | Local gitignored overrides   |
+| 3        | `../.env.Land`        | One level up                 |
+| 4        | `.env.Land.Sample`    | Checked-in defaults          |
+| 5        | `../.env.Land.Sample` |                              |
 
 The resolved file is sourced via `set -a; . "$EnvFile"; set +a`, exporting every
 key-value pair into the shell environment so every child tool inherits the same
@@ -446,12 +429,14 @@ The `SideCar` element manages vendored `Node.js` runtime binaries:
 
 Target triples supported:
 
-- `aarch64-apple-darwin` (Apple Silicon `macOS`)
-- `x86_64-apple-darwin` (Intel `macOS`)
-- `aarch64-unknown-linux-gnu` (ARM64 Linux)
-- `x86_64-unknown-linux-gnu` (x86_64 Linux)
-- `aarch64-pc-windows-msvc` (ARM64 Windows)
-- `x86_64-pc-windows-msvc` (x86_64 Windows)
+| Target Triple               | Platform            |
+| :-------------------------- | :------------------ |
+| `aarch64-apple-darwin`      | Apple Silicon macOS |
+| `x86_64-apple-darwin`       | Intel macOS         |
+| `aarch64-unknown-linux-gnu` | ARM64 Linux         |
+| `x86_64-unknown-linux-gnu`  | x86_64 Linux        |
+| `aarch64-pc-windows-msvc`   | ARM64 Windows       |
+| `x86_64-pc-windows-msvc`    | x86_64 Windows      |
 
 ---
 
@@ -470,14 +455,14 @@ Target triples supported:
 
 ---
 
-**Project Maintainers:** Source Open
-([Source/Open@Editor.Land](mailto:Source/Open@Editor.Land)) |
-[GitHub Repository](https://github.com/CodeEditorLand/Land) |
-[Report an Issue](https://github.com/CodeEditorLand/Land/issues)
-
----
-
 ## See Also
 
 - [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
 - [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing
+
+---
+
+**Project Maintainers:** Source Open
+([Source/Open@Editor.Land](mailto:Source/Open@Editor.Land)) |
+[GitHub Repository](https://github.com/CodeEditorLand/Land) |
+[Report an Issue](https://github.com/CodeEditorLand/Land/issues)

@@ -8,6 +8,8 @@ description: "Technical architecture of the Air background daemon: gRPC service
     lifecycle with Mountain."
 ---
 
+# Air - Deep Dive
+
 [Air](https://github.com/CodeEditorLand/Air) is a standalone Rust binary structured around a central gRPC server that
 receives task delegation from [Mountain](https://github.com/CodeEditorLand/Mountain). It runs as a persistent sidecar process
 alongside [Mountain](https://github.com/CodeEditorLand/Mountain), offloading resource-intensive operations so the editor
@@ -43,7 +45,7 @@ receives progress notifications.
 
 <img src="/Mermaid/378b32a5be76d9a8.svg" alt="Mermaid diagram" />
 
-**Port allocation:**
+### Port Allocation
 
 - [Air](https://github.com/CodeEditorLand/Air) listens on `[::1]:50053` (reserved for the Air daemon).
 - [Cocoon](https://github.com/CodeEditorLand/Cocoon) uses `[::1]:50052` (the VS Code extension host).
@@ -74,4 +76,4 @@ receives progress notifications.
 - [Air overview](/Doc/air)
 - [Vine protocol](/Doc/vine)
 - [Mountain deep dive](/Doc/deep-dive-mountain)
-  Related: [Architecture](/Doc/architecture/)
+- [Architecture](/Doc/architecture) - System-wide process and IPC model

@@ -11,7 +11,7 @@ description:
 
 # Grove - Deep Dive
 
-[Grove](https://github.com/CodeEditorLand/Grove) provides the technical foundation Rust/WASM
+[Grove](https://github.com/CodeEditorLand/Grove) provides the technical foundation for the Rust/WASM
 extension host within the [Land](https://github.com/CodeEditorLand/Land) project. **[Grove](https://github.com/CodeEditorLand/Grove)** provides a native, sandboxed
 environment for running VS Code extensions compiled to WebAssembly or native
 Rust, complementing the Node.js-based [Cocoon](https://github.com/CodeEditorLand/Cocoon) host.
@@ -78,6 +78,9 @@ communicates with [Mountain](https://github.com/CodeEditorLand/Mountain), and sh
 | Transport         | feature flag       | gRPC             | Select `grpc`, `ipc`, or `wasm` transport via Cargo features                              |
 | Memory limit      | runtime config     | platform default | Per-extension WASM memory ceiling enforced by WASMtime                                    |
 | WASM build target | `wasm32-wasi`      | native           | Extensions must target `wasm32-wasi` for WASM mode                                        |
+
+> [!IMPORTANT]
+> Extensions must target `wasm32-wasi` for WASM mode.
 
 ### Cargo features
 

@@ -1,13 +1,28 @@
 ---
 import { getCollection, render } from "astro:content";
 
-import { DynamicDocSidebar } from "../../Component/Dynamic/DynamicDocSidebar";
-import { Header } from "../../Component/Layout/Header";
+import DocArticle from "../../Component/Doc/DocArticle.astro";
+import DocLayout from "../../Component/Doc/DocLayout.astro";
 import MermaidFallback from "../../Component/Dynamic/MermaidFallback.astro";
+import { Header } from "../../Component/Layout/Header";
 import BuildDocSidebar from "../../Function/Doc/BuildDocSidebar";
+import BuildDocToc from "../../Function/Doc/BuildDocToc";
 import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
 
+/**
+ * One documentation page: the reading shell, then the markdown.
+ *
+ * The shell (`DocArticle`) renders the page's single `h1`, the section as its
+ * kicker, the frontmatter `description` as the standfirst, an in-page contents
+ * list built from this page's own `##` headings, and the body on one measure.
+ * The rail (`DocLayout`) is the collection's tree with this page marked.
+ *
+ * The contents list is generated, never hand-written: `BuildDocToc` reads the
+ * headings `render()` actually emitted, so an anchor can never disagree with its
+ * heading. Pages that carry their own `## Table of Contents` get none from here -
+ * two contents lists above one document is worse than one.
+ */
 export async function getStaticPaths() {
 	const Entries = await getCollection("doc");
 	return Entries.map((Entry) => ({
@@ -17,7 +32,7 @@ export async function getStaticPaths() {
 }
 
 const { Entry } = Astro.props;
-const { Content } = await render(Entry);
+const { Content, headings } = await render(Entry);
 
 const AllEntries = (await getCollection("doc")).sort(
 	(A, B) => A.data.order - B.data.order,
@@ -47,8 +62,16 @@ const T = GetI18n();
 const MetaTitle = `${Entry.data.title} | Code Editor Land`;
 const MetaDescription = Entry.data.description;
 
-const AbsoluteDocUrl = (Id: string) =>
-	new URL(`/Doc/${Id}`, Astro.url.origin).href;
+const Toc = BuildDocToc(
+	headings,
+	T("article.toc", { ns: "doc", defaultValue: "On this page" }),
+);
+
+const Home = T("common.breadcrumb.home", { defaultValue: "Home" });
+const Documentation = T("sidebar.title", {
+	ns: "doc",
+	defaultValue: "Documentation",
+});
 ---
 
 <Base
@@ -59,171 +82,54 @@ const AbsoluteDocUrl = (Id: string) =>
 >
 	<Header client:load Mode="functional" />
 
-	<div class="mx-auto max-w-6xl px-4 py-8 sm:py-12 lg:py-16">
-		<div class="flex gap-8 lg:gap-10">
-			<!-- Desktop sidebar: sticky + independently scrollable -->
-			<aside
-				class="hidden w-52 shrink-0 lg:block xl:w-60"
-				aria-label="Documentation navigation"
-			>
-				<div
-					class="sticky top-6 max-h-[calc(100vh-3.5rem)] overflow-y-auto overscroll-contain pb-8 pr-1 [-webkit-overflow-scrolling:touch] [scrollbar-color:var(--Border)_transparent] [scrollbar-width:thin]"
-				>
-					<p
-						class="mb-2 px-2 font-mono text-sm font-medium uppercase tracking-widest text-muted-foreground"
-					>
-						{
-							T("sidebar.title", {
-								ns: "doc",
-								defaultValue: "Documentation",
-							})
-						}
-					</p>
-					<DynamicDocSidebar
-						Sections={SidebarSections}
-						ActiveId={Entry.id}
-						client:load
-					/>
-					<div class="mt-4 border-t border-border pt-4">
+	<DocLayout sections={SidebarSections} activeId={Entry.id}>
+		<DocArticle
+			kicker={`/${Entry.data.section.toUpperCase()}`}
+			title={Entry.data.title}
+			standfirst={Entry.data.description}
+			toc={Toc}
+			crumbs={[
+				{ label: Home, href: "/" },
+				{ label: Documentation, href: "/Doc" },
+				{ label: Entry.data.title },
+			]}
+		>
+			<Content />
+		</DocArticle>
+
+		<MermaidFallback />
+
+		{
+			(PrevEntry || NextEntry) && (
+				<nav class="doc-pager" aria-label="Page navigation">
+					{PrevEntry ? (
 						<a
-							href="/Doc/Rust"
-							class="flat block px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+							class="doc-pager__link doc-pager__link--prev"
+							href={`/Doc/${PrevEntry.id}`}
 						>
-							Rust API ↗
+							<span class="doc-pager__label">
+								<span aria-hidden="true">←</span> Previous
+							</span>
+							<span class="doc-pager__title">
+								{PrevEntry.data.title}
+							</span>
 						</a>
-					</div>
-				</div>
-			</aside>
-
-			<!-- Main content -->
-			<main id="main-content" class="min-w-0 flex-1">
-				<!-- Mobile sidebar (collapsed by default, shows current page context) -->
-				<DynamicDocSidebar
-					Sections={SidebarSections}
-					ActiveId={Entry.id}
-					Mobile={true}
-					client:load
-				/>
-
-				<!-- Breadcrumbs -->
-				<nav
-					aria-label="Breadcrumb"
-					class="mb-6 mt-4 hidden sm:block lg:mt-0"
-				>
-					<ol
-						class="flex flex-wrap items-center gap-1 text-sm text-muted-foreground"
-					>
-						<li>
-							<a
-								href="/"
-								class="transition-colors hover:text-foreground"
-								>{
-									T("common.breadcrumb.home", {
-										defaultValue: "Home",
-									})
-								}</a
-							>
-						</li>
-						<li aria-hidden="true">/</li>
-						<li>
-							<a
-								href="/Doc"
-								class="transition-colors hover:text-foreground"
-								>{
-									T("sidebar.title", {
-										ns: "doc",
-										defaultValue: "Documentation",
-									})
-								}</a
-							>
-						</li>
-						<li aria-hidden="true">/</li>
-						<li
-							class="font-medium text-foreground"
-							aria-current="page"
+					) : null}
+					{NextEntry ? (
+						<a
+							class="doc-pager__link doc-pager__link--next"
+							href={`/Doc/${NextEntry.id}`}
 						>
-							{Entry.data.title}
-						</li>
-					</ol>
+							<span class="doc-pager__label">
+								Next <span aria-hidden="true">→</span>
+							</span>
+							<span class="doc-pager__title">
+								{NextEntry.data.title}
+							</span>
+						</a>
+					) : null}
 				</nav>
-
-				<!-- Article header -->
-				<header class="mb-8 mt-4 lg:mt-0">
-					<p
-						class="mb-2 font-mono text-sm font-medium uppercase tracking-widest text-muted-foreground"
-					>
-						{Entry.data.section}
-					</p>
-					<h1
-						class="mb-3 text-3xl font-medium tracking-tight sm:text-4xl"
-					>
-						{Entry.data.title}
-					</h1>
-					{
-						Entry.data.description && (
-							<p class="text-base text-muted-foreground sm:text-lg">
-								{Entry.data.description}
-							</p>
-						)
-					}
-				</header>
-
-				<!-- Doc content - prose on white card per design system -->
-				<div
-					class="prose max-w-none rounded-none bg-card p-6 prose-headings:tracking-tight prose-headings:text-card-foreground prose-p:text-card-foreground prose-a:font-normal prose-a:text-accent prose-strong:text-card-foreground prose-code:text-sm prose-code:text-card-foreground prose-pre:overflow-x-auto prose-pre:bg-muted prose-pre:text-sm prose-pre:text-foreground prose-li:text-card-foreground prose-table:block prose-table:overflow-x-auto prose-thead:border-[rgba(7,7,7,0.08)] prose-tr:border-[rgba(7,7,7,0.08)] prose-img:rounded-none prose-blockquote:text-card-foreground prose-th:text-card-foreground prose-td:text-card-foreground prose-figcaption:text-[color-mix(in_srgb,var(--CardForeground)_70%,transparent)] prose-hr:border-[color-mix(in_srgb,var(--CardForeground)_20%,transparent)] prose-ul:text-card-foreground prose-ol:text-card-foreground sm:p-8"
-				>
-					<Content />
-				</div>
-
-				<MermaidFallback />
-
-				<!-- Prev / Next navigation -->
-				{
-					(PrevEntry || NextEntry) && (
-						<nav
-							aria-label="Page navigation"
-							class="mt-12 border-t border-border pt-8"
-						>
-							<div class="flex flex-col gap-3 sm:flex-row sm:justify-between">
-								{PrevEntry ? (
-									<jelly-card
-										squish
-										class="focus-ring flat group flex min-w-0 flex-col gap-0.5 p-3 sm:max-w-[45%]"
-										tabindex="0"
-										style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
-										onclick={`location.href='${AbsoluteDocUrl(PrevEntry.id)}'`}
-									>
-										<span class="font-mono text-sm uppercase tracking-widest text-card-foreground">
-											← Previous
-										</span>
-										<span class="truncate text-sm font-medium text-card-foreground">
-											{PrevEntry.data.title}
-										</span>
-									</jelly-card>
-								) : (
-									<span />
-								)}
-								{NextEntry && (
-									<jelly-card
-										squish
-										class="focus-ring flat group flex min-w-0 flex-col gap-0.5 p-3 text-right sm:ml-auto sm:max-w-[45%]"
-										tabindex="0"
-										style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
-										onclick={`location.href='${AbsoluteDocUrl(NextEntry.id)}'`}
-									>
-										<span class="font-mono text-sm uppercase tracking-widest text-card-foreground">
-											Next →
-										</span>
-										<span class="truncate text-sm font-medium text-card-foreground">
-											{NextEntry.data.title}
-										</span>
-									</jelly-card>
-								)}
-							</div>
-						</nav>
-					)
-				}
-			</main>
-		</div>
-	</div>
+			)
+		}
+	</DocLayout>
 </Base>

@@ -9,6 +9,8 @@ description:
     lifting patterns, and performance characteristics."
 ---
 
+# Common - Deep Dive
+
 Common defines the abstract architectural patterns, service contracts, and data
 structures that enable type-safe, testable service implementations across Rust
 and TypeScript boundaries - providing the technical foundation for

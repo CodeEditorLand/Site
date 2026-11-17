@@ -9,6 +9,8 @@ description:
     Sky, and Wind."
 ---
 
+# Output: Build Artifact Layer
+
 [Output](https://github.com/CodeEditorLand/Output) is the build orchestration layer for [Land](https://github.com/CodeEditorLand/Land)'s TypeScript assets. It wraps
 ESBuild with [Land](https://github.com/CodeEditorLand/Land)-specific transforms, plugin hooks, and polyfill injection,
 and supports an optional [Rest](https://github.com/CodeEditorLand/Rest) (OXC-based) compiler pipeline for faster
@@ -77,6 +79,14 @@ if (compiler) {
 ## Build Pipeline
 
 The Output build pipeline processes VS Code platform code:
+
+```mermaid
+flowchart TD
+    A["1. Input discovery"] --> B["2. Module resolution"]
+    B --> C["3. Transform application"]
+    C --> D["4. Bundle compilation"]
+    D --> E["5. Output packaging"]
+```
 
 ```
 1. Input discovery
@@ -177,16 +187,14 @@ Output/Target/
 - [Polyfills](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Polyfills.md) -
   Full polyfill documentation
 
+## See Also
+
+- [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing
+
 ---
 
 **Project Maintainers:** Source Open
 ([Source/Open@Editor.Land](mailto:Source/Open@Editor.Land)) |
 [GitHub Repository](https://github.com/CodeEditorLand/Output) |
 [Report an Issue](https://github.com/CodeEditorLand/Output/issues)
-
----
-
-## See Also
-
-- [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
-- [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing

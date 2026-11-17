@@ -14,6 +14,13 @@ means three Chromium renderer processes, each carrying a full heap. Every OS
 call crosses a serialized JSON IPC pipe. [Mountain](https://github.com/CodeEditorLand/Mountain) eliminates each of those
 costs by doing the work in Rust directly.
 
+## What It Costs
+
+The cost of the choice is scope. Rust does not make the extension host faster. [Cocoon](https://github.com/CodeEditorLand/Cocoon) (Node.js) is still a
+single event loop. That problem is addressed by [Effect-TS](https://effect.website) structured
+concurrency. [Mountain](https://github.com/CodeEditorLand/Mountain)'s role is the native layer - OS calls, IPC dispatch, PTY
+management - the operations where a GC runtime pays the highest per-call cost.
+
 ## Memory without a garbage collector
 
 Rust's ownership model eliminates the GC entirely. A GC pause at the moment a
@@ -71,14 +78,7 @@ the IPC boundary.
 that are version-sensitive - do not upgrade the toolchain without auditing
 those patches.
 
-## What Rust does not solve
-
-Rust does not make the extension host faster. [Cocoon](https://github.com/CodeEditorLand/Cocoon) (Node.js) is still a
-single event loop. That problem is addressed by [Effect-TS](https://effect.website) structured
-concurrency. [Mountain](https://github.com/CodeEditorLand/Mountain)'s role is the native layer - OS calls, IPC dispatch, PTY
-management - the operations where a GC runtime pays the highest per-call cost.
-
-## Related Documentation
+## See Also
 
 - [Why Tauri](/Doc/why-tauri)
 - [Why Effect-TS](/Doc/why-effect-ts)

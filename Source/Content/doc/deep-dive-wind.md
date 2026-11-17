@@ -11,7 +11,9 @@ description:
     patterns, and security architecture."
 ---
 
-[Wind](https://github.com/CodeEditorLand/Wind) is the [Effect-TS](https://effect.website) frontend service layer for [Land](https://github.com/CodeEditorLand/Land). the
+# Wind - Deep Dive
+
+[Wind](https://github.com/CodeEditorLand/Wind) is the [Effect-TS](https://effect.website) frontend service layer for [Land](https://github.com/CodeEditorLand/Land). This page covers the
 internal mechanics of `TauriLiveLayer` construction, `TauriMainProcessService`
 tier routing, [`Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts) shimming strategy, the `Generated/*Upstream.ts`
 codegen pipeline, and how [Wind](https://github.com/CodeEditorLand/Wind) maintains lockstep state with [Output](https://github.com/CodeEditorLand/Output)'s service

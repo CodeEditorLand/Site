@@ -1,0 +1,1 @@
+import{z as t}from"./Vendor/React.Bx5RSL7s.js";var a=t();function s({src:t,alt:s="",width:r,height:e,className:i,...c}){return(0,a.jsx)("img",{src:t,alt:s,width:r,height:e,className:i,...c})}export{s as t};

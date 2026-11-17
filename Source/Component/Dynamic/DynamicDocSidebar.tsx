@@ -9,10 +9,45 @@ import {
 import type {
 	DocGroup,
 	DocItem,
+	DocLeaf,
 	DocSection,
 } from "./Interface/Content/Page/Doc.js";
 
 const IsDocGroup = (Item: DocItem): Item is DocGroup => "Children" in Item;
+
+/**
+ * One page in the rail: the leaf the reader clicks.
+ *
+ * Declared at module scope, not inside `DynamicDocSidebar`, so its identity is
+ * stable across a toggle. A component defined during render is a new type on
+ * every render, which makes React unmount and remount every leaf - and a
+ * remount drops the focus the reader had on the row they just clicked past.
+ */
+const Leaf = ({
+	Item,
+	ActiveId,
+}: {
+	Item: DocLeaf;
+	ActiveId: string | undefined;
+}) => {
+	const IsActive = ActiveId === Item.Id;
+
+	return (
+		<li className="doc-sidebar__item">
+			<a
+				href={`/Doc/${Item.Id}`}
+				aria-current={IsActive ? "page" : undefined}
+				className={
+					IsActive
+						? "doc-sidebar__link doc-sidebar__link--active"
+						: "doc-sidebar__link"
+				}
+			>
+				{Item.Label}
+			</a>
+		</li>
+	);
+};
 
 interface DynamicDocSidebarProps {
 	Sections: DocSection[];
@@ -36,10 +71,12 @@ interface DynamicDocSidebarProps {
  * Tailwind string, so the type roles, the nesting rules and the current-page
  * state are one partial's business.
  *
- * The current page is marked three ways, because one of them is colour: the
+ * The current page is marked three ways, and only one of them is colour: the
  * `aria-current="page"` attribute, the ink and weight of `--active`, and a
  * hairline rule on the row's leading edge. Its ancestor section and group are
- * marked too, so a reader never has to hunt for where they are.
+ * marked too (ink and weight, no rule), so a reader never has to hunt for where
+ * they are - and a reader who cannot see colour still reads the same three
+ * signals.
  */
 const DynamicDocSidebar = ({
 	Sections,
@@ -104,25 +141,9 @@ const DynamicDocSidebar = ({
 		});
 	};
 
-	const Leaf = (Child: DocItem) => {
-		const IsActive = ActiveId === Child.Id;
-
-		return (
-			<li key={Child.Id} class="doc-sidebar__item">
-				<a
-					href={`/Doc/${Child.Id}`}
-					aria-current={IsActive ? "page" : undefined}
-					className={`doc-sidebar__link${IsActive ? " doc-sidebar__link--active" : ""}`}
-				>
-					{Child.Label}
-				</a>
-			</li>
-		);
-	};
-
 	const Nav = (
-		<nav class="doc-sidebar" aria-label="Documentation sections">
-			<ul role="list" class="doc-sidebar__list">
+		<nav className="doc-sidebar" aria-label="Documentation sections">
+			<ul role="list" className="doc-sidebar__list">
 				{Sections.map((Section) => {
 					const HasChildren =
 						Section.Children && Section.Children.length > 0;
@@ -131,114 +152,129 @@ const DynamicDocSidebar = ({
 
 					const IsCurrent = ActiveSectionId === Section.Id;
 
-					if (HasChildren) {
+					if (!HasChildren) {
 						return (
-							<li key={Section.Id} class="doc-sidebar__item">
-								<Collapsible
-									open={IsOpen}
-									onOpenChange={() =>
-										ToggleSection(Section.Id)
-									}
+							<li key={Section.Id} className="doc-sidebar__item">
+								<a
+									href={`/Doc/${Section.Id}`}
+									className="doc-sidebar__link doc-sidebar__link--section"
 								>
-									<CollapsibleTrigger
-										className={`doc-sidebar__trigger doc-sidebar__trigger--section${IsCurrent ? " doc-sidebar__trigger--active" : ""}`}
-									>
-										<span class="doc-sidebar__label">
-											{Section.Label}
-										</span>
-										<span
-											aria-hidden="true"
-											className={`doc-sidebar__marker${IsOpen ? " doc-sidebar__marker--open" : ""}`}
-										>
-											›
-										</span>
-									</CollapsibleTrigger>
-									<CollapsibleContent>
-										<ul
-											role="list"
-											class="doc-sidebar__children"
-										>
-											{Section.Children!.map((Item) => {
-												if (!IsDocGroup(Item)) {
-													return Leaf(Item);
-												}
-
-												const IsGroupOpen =
-													!CollapsedGroups.has(
-														Item.Id,
-													);
-
-												const IsGroupCurrent =
-													ActiveGroupId === Item.Id;
-
-												return (
-													<li
-														key={Item.Id}
-														class="doc-sidebar__item"
-													>
-														<Collapsible
-															open={
-																IsGroupOpen
-															}
-															onOpenChange={() =>
-																ToggleGroup(
-																	Item.Id,
-																)
-															}
-														>
-															<CollapsibleTrigger
-																className={`doc-sidebar__trigger doc-sidebar__trigger--group${IsGroupCurrent ? " doc-sidebar__trigger--active" : ""}`}
-															>
-																<span class="doc-sidebar__label">
-																	{
-																		Item.Label
-																	}
-																</span>
-																<span
-																	aria-hidden="true"
-																	className={`doc-sidebar__marker${IsGroupOpen ? " doc-sidebar__marker--open" : ""}`}
-																>
-																	›
-																</span>
-															</CollapsibleTrigger>
-															<CollapsibleContent>
-																<ul
-																	role="list"
-																	class="doc-sidebar__children"
-																>
-																	{Item.Children.map(
-																		(
-																			Child,
-																		) => (
-																			<Leaf
-																				key={
-																					Child.Id
-																				}
-																				{...Child}
-																			/>
-																		),
-																	)}
-																</ul>
-															</CollapsibleContent>
-														</Collapsible>
-													</li>
-												);
-											})}
-										</ul>
-									</CollapsibleContent>
-								</Collapsible>
+									{Section.Label}
+								</a>
 							</li>
 						);
 					}
 
 					return (
-						<li key={Section.Id} class="doc-sidebar__item">
-							<a
-								href={`/Doc/${Section.Id}`}
-								className="doc-sidebar__link doc-sidebar__link--section"
+						<li key={Section.Id} className="doc-sidebar__item">
+							<Collapsible
+								open={IsOpen}
+								onOpenChange={() => ToggleSection(Section.Id)}
 							>
-								{Section.Label}
-							</a>
+								<CollapsibleTrigger
+									className={
+										IsCurrent
+											? "doc-sidebar__trigger doc-sidebar__trigger--section doc-sidebar__trigger--active"
+											: "doc-sidebar__trigger doc-sidebar__trigger--section"
+									}
+								>
+									<span className="doc-sidebar__label">
+										{Section.Label}
+									</span>
+									<span
+										aria-hidden="true"
+										className={
+											IsOpen
+												? "doc-sidebar__marker doc-sidebar__marker--open"
+												: "doc-sidebar__marker"
+										}
+									>
+										›
+									</span>
+								</CollapsibleTrigger>
+								<CollapsibleContent>
+									<ul
+										role="list"
+										className="doc-sidebar__children"
+									>
+										{Section.Children!.map((Item) => {
+											if (!IsDocGroup(Item)) {
+												return (
+													<Leaf
+														key={Item.Id}
+														Item={Item}
+														ActiveId={ActiveId}
+													/>
+												);
+											}
+
+											const IsGroupOpen =
+												!CollapsedGroups.has(Item.Id);
+
+											const IsGroupCurrent =
+												ActiveGroupId === Item.Id;
+
+											return (
+												<li
+													key={Item.Id}
+													className="doc-sidebar__item"
+												>
+													<Collapsible
+														open={IsGroupOpen}
+														onOpenChange={() =>
+															ToggleGroup(Item.Id)
+														}
+													>
+														<CollapsibleTrigger
+															className={
+																IsGroupCurrent
+																	? "doc-sidebar__trigger doc-sidebar__trigger--group doc-sidebar__trigger--active"
+																	: "doc-sidebar__trigger doc-sidebar__trigger--group"
+															}
+														>
+															<span className="doc-sidebar__label">
+																{Item.Label}
+															</span>
+															<span
+																aria-hidden="true"
+																className={
+																	IsGroupOpen
+																		? "doc-sidebar__marker doc-sidebar__marker--open"
+																		: "doc-sidebar__marker"
+																}
+															>
+																›
+															</span>
+														</CollapsibleTrigger>
+														<CollapsibleContent>
+															<ul
+																role="list"
+																className="doc-sidebar__children"
+															>
+																{Item.Children.map(
+																	(Child) => (
+																		<Leaf
+																			key={
+																				Child.Id
+																			}
+																			Item={
+																				Child
+																			}
+																			ActiveId={
+																				ActiveId
+																			}
+																		/>
+																	),
+																)}
+															</ul>
+														</CollapsibleContent>
+													</Collapsible>
+												</li>
+											);
+										})}
+									</ul>
+								</CollapsibleContent>
+							</Collapsible>
 						</li>
 					);
 				})}
@@ -253,10 +289,15 @@ const DynamicDocSidebar = ({
 		(Item) => (IsDocGroup(Item) ? Item.Children : [Item]),
 	);
 
+	// The disclosure's second half names where the reader is: the page they are
+	// on, else the section that holds it. It falls back to the section's LABEL,
+	// never to its id - `ActiveSectionId` is a slug (`deep-dive`), and printing a
+	// slug in the rail is the one thing this row must not do. A page with no
+	// current entry (the index itself) renders the label alone, with no separator
+	// and no placeholder word.
 	const ActiveLabel =
 		AllLeaves.find((C) => C.Id === ActiveId)?.Label ??
-		ActiveSectionId ??
-		"Navigation";
+		Sections.find((S) => S.Id === ActiveSectionId)?.Label;
 
 	const [MobileOpen, SetMobileOpen] = useState(false);
 
@@ -268,20 +309,33 @@ const DynamicDocSidebar = ({
 				className="doc-sidebar__toggle"
 				aria-expanded={MobileOpen}
 			>
-				<span class="doc-sidebar__toggle-label">Docs</span>
-				<span class="doc-sidebar__toggle-separator" aria-hidden="true">
-					/
-				</span>
-				<span class="doc-sidebar__toggle-current">{ActiveLabel}</span>
+				<span className="doc-sidebar__toggle-label">Docs</span>
+				{ActiveLabel ? (
+					<>
+						<span
+							className="doc-sidebar__toggle-separator"
+							aria-hidden="true"
+						>
+							/
+						</span>
+						<span className="doc-sidebar__toggle-current">
+							{ActiveLabel}
+						</span>
+					</>
+				) : null}
 				<span
 					aria-hidden="true"
-					className={`doc-sidebar__marker${MobileOpen ? " doc-sidebar__marker--open" : ""}`}
+					className={
+						MobileOpen
+							? "doc-sidebar__marker doc-sidebar__marker--open"
+							: "doc-sidebar__marker"
+					}
 				>
 					›
 				</span>
 			</button>
 
-			{MobileOpen && <div class="doc-sidebar__panel">{Nav}</div>}
+			{MobileOpen && <div className="doc-sidebar__panel">{Nav}</div>}
 		</div>
 	);
 };

@@ -1,1 +1,0 @@
-import{t}from"./LocaleSwitcher.CLUys0ie.js";export{t as LocaleSwitcher,t as default};

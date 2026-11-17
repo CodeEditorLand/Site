@@ -9,8 +9,6 @@ description:
     plus the archive pattern used in production cleanups.
 ---
 
-# Cleanup Recipes 🧼
-
 Per-OS commands to wipe every piece of Land / FIDDEE state from a system, plus
 the archive pattern used in production cleanups.
 
@@ -35,7 +33,7 @@ Read before running anything below:
 
 ---
 
-## 🍎 macOS - Complete Wipe
+## macOS - Complete Wipe 🍎
 
 Tested against the 2026-05-26 cleanup; archive-then-delete pattern.
 
@@ -106,7 +104,7 @@ What survives this recipe (intentional):
 
 ---
 
-## 🐧 Linux - Complete Wipe
+## Linux - Complete Wipe 🐧
 
 XDG-aware. Adapts `$XDG_*` overrides correctly.
 
@@ -160,7 +158,7 @@ What survives this recipe (intentional):
 
 ---
 
-## 🪟 Windows - Complete Wipe (PowerShell)
+## Windows - Complete Wipe (PowerShell) 🪟
 
 Status: 🔴 untested at the time of writing. Layout per `dirs` crate resolution;
 expect minor drift in path leaf names until the Windows target ships.

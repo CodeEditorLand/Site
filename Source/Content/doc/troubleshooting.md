@@ -14,44 +14,13 @@ and the specific fix. For issues not listed here, check the FIDDEE.log in
 
 ## Build Issues 🔨
 
-### npm install stalls during VS Code source step
-
-**Symptom:** Running `npm install` inside
-`Dependency/Microsoft/Dependency/Editor` hangs indefinitely, typically after
-resolving most packages.
-
-**Cause:** The VS Code source tree includes `electron` (~200 MB) and
-`@playwright/browser-chromium` (~300 MB) as devDependencies. Without skip flags,
-`npm install` downloads these binaries on every fresh install.
-
-**Fix:** Add the following to your shell profile (`~/.zshrc` or `~/.bashrc`) and
-reload before running `npm install`:
-
-```sh
-export ELECTRON_SKIP_BINARY_DOWNLOAD=1
-export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
-```
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Running `npm install` inside `Dependency/Microsoft/Dependency/Editor` hangs indefinitely, typically after resolving most packages | The VS Code source tree includes `electron` (~200 MB) and `@playwright/browser-chromium` (~300 MB) as devDependencies. Without skip flags, `npm install` downloads these binaries on every fresh install | Add `export ELECTRON_SKIP_BINARY_DOWNLOAD=1` and `export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` to your shell profile (`~/.zshrc` or `~/.bashrc`) and reload before running `npm install` |
+| `npm install` fails with `Error: An active lockfile is found at: ~/Library/Caches/ms-playwright/__dirlock` | A previous `npm install` run was interrupted, leaving a stale lockfile that blocks subsequent installs | Remove the stale lockfile with `rm -rf ~/Library/Caches/ms-playwright/__dirlock`, then retry `npm install` |
 
 Neither binary is needed to compile Land. They are only required for running VS
 Code's own integration tests.
-
-### Playwright lockfile error
-
-**Symptom:** `npm install` fails with:
-
-```
-Error: An active lockfile is found at: ~/Library/Caches/ms-playwright/__dirlock
-```
-
-**Cause:** A previous `npm install` run was interrupted, leaving a stale
-lockfile that blocks subsequent installs.
-
-**Fix:** Remove the stale lockfile and retry:
-
-```sh
-rm -rf ~/Library/Caches/ms-playwright/__dirlock
-npm install
-```
 
 ### `debug-electron-bundled` path error
 
@@ -169,22 +138,10 @@ Node.js binary to spawn the shell.
 
 ## Code Signing Issues 🖊️
 
-### codesign failures on macOS
-
-**Symptom:** The application bundle fails to launch with a "damaged or
-incomplete" error, or Gatekeeper blocks it. Alternatively, `codesign --verify`
-reports `not signed` or `invalid signature`.
-
-**Cause:** Tauri's build process does not automatically re-sign the bundle after
-it copies the [Cocoon](https://github.com/CodeEditorLand/Cocoon) Node.js binary and other resources into the `.app`. The
-ad-hoc signature applied at Tauri bundle time becomes invalid once additional
-files are written.
-
-**Fix:** Re-run `SignBundle.sh` after the build:
-
-```sh
-BundleLevel=debug sh Maintain/Script/SignBundle.sh
-```
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| The application bundle fails to launch with a "damaged or incomplete" error, or Gatekeeper blocks it. Alternatively, `codesign --verify` reports `not signed` or `invalid signature` | Tauri's build process does not automatically re-sign the bundle after it copies the [Cocoon](https://github.com/CodeEditorLand/Cocoon) Node.js binary and other resources into the `.app`. The ad-hoc signature applied at Tauri bundle time becomes invalid once additional files are written | Re-run `SignBundle.sh` after the build: `BundleLevel=debug sh Maintain/Script/SignBundle.sh` |
+| `codesign --verify` passes but macOS still shows "cannot be opened" at launch | The quarantine extended attribute was not cleared before signing | Clear the quarantine attribute explicitly before signing, then re-sign: `xattr -cr Element/Mountain/Target/debug/Mountain.app` and `BundleLevel=debug sh Maintain/Script/SignBundle.sh`. `SignBundle.sh` already calls `xattr -cr` internally, so re-running the full script is sufficient |
 
 The script runs `xattr -cr` to strip quarantine attributes, then applies a fresh
 `codesign` with the entitlements from [`Element/Mountain/Entitlements.plist`](https://github.com/CodeEditorLand/Mountain/tree/Current/Entitlements.plist).
@@ -194,20 +151,3 @@ The script runs `xattr -cr` to strip quarantine attributes, then applies a fresh
 > cause `codesign` to reject the file with a parse error. Comments must appear
 > **outside** the `<dict>` element. If you edit `Entitlements.plist`, verify the
 > XML is well-formed before signing.
-
-### codesign succeeds but app still blocked
-
-**Symptom:** `codesign --verify` passes but macOS still shows "cannot be opened"
-at launch.
-
-**Cause:** The quarantine extended attribute was not cleared before signing.
-
-**Fix:** Clear the quarantine attribute explicitly before signing:
-
-```sh
-xattr -cr Element/Mountain/Target/debug/Mountain.app
-BundleLevel=debug sh Maintain/Script/SignBundle.sh
-```
-
-`SignBundle.sh` already calls `xattr -cr` internally, so re-running the full
-script is sufficient.

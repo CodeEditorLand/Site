@@ -10,9 +10,19 @@ description:
 
 VS Code's extension host is a single Node.js event loop. One hung Promise
 blocks every other extension. There is no cancellation, back-pressure, or
-preemption. [Effect-TS](https://effect.website) replaces untyped thrown exceptions with typed error
+preemption.
+
+## The Decision
+
+[Effect-TS](https://effect.website) replaces untyped thrown exceptions with typed error
 channels, unstructured `async`/`await` with interruptible fibers, and manual
 service wiring with a compile-time `Layer` system.
+
+| Baseline                     | Effect-TS replacement | Consequence                                                                     |
+| ---------------------------- | --------------------- | ------------------------------------------------------------------------------- |
+| Untyped thrown exceptions    | Typed error channels  | A new failure mode becomes a compile error at every unhandled call site         |
+| Unstructured `async`/`await` | Interruptible fibers  | If the parent is interrupted, all children are interrupted automatically         |
+| Manual service wiring        | Compile-time `Layer`  | The compiler builds the dependency graph and verifies it before the program runs |
 
 ## Typed errors instead of `unknown`
 
@@ -86,7 +96,7 @@ This is the architectural claim: "Every extension runs in its own supervised
 fiber. One crash doesn't take down the rest." That guarantee comes from
 Effect's fiber model.
 
-## Related Documentation
+## See Also
 
 - [Why gRPC](/Doc/why-grpc)
 - [Why Rust](/Doc/why-rust)

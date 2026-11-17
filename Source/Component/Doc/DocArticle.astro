@@ -4,18 +4,24 @@
  * the page's only `h1`, standfirst, an optional in-page contents list, then the
  * body.
  *
- * The shell owns three things a page must not re-decide per file:
+ * The shell owns four things a page must not re-decide per file:
  *
  * - **One `h1`.** The title is the page's single level-one heading; the blocks
  *   inside the body never render one, so a page that composes from blocks can
  *   never produce two.
- * - **One measure.** The header and (by default) the body are capped at the
- *   same `72ch`, so the standfirst ends where the prose ends. `measure={false}`
- *   drops the body cap and nothing else - the index's band stack and the Rust
- *   page's iframe viewer need the full column, the header still reads at one
- *   measure.
+ * - **One measure.** The header, the contents list and (by default) the body are
+ *   capped at the same `72ch`, so the standfirst ends where the prose ends.
+ *   `measure={false}` drops the body cap and nothing else - the index's band
+ *   stack and the Rust page's viewer need the full column, the header still
+ *   reads at one measure.
  * - **The contents list.** `toc` is `null` when the markdown already carries its
  *   own list (see `BuildDocToc`); the shell renders no empty nav for it.
+ * - **The container contract.** The shell adds no gutter and no max width of its
+ *   own: the page owns the one container (`DocLayout` on the rail pages, the
+ *   page's own class on a page without a rail). That is why a page whose body is
+ *   a band stack passes `banded` - the bands bring their own inner container,
+ *   and inside this article it would indent them away from the heading they
+ *   sit under.
  *
  * The kicker is printed exactly as the caller wrote it: the `/SECTION` voice is
  * the caller's to supply, and this shell never invents the leading slash.
@@ -34,11 +40,32 @@ interface Props {
 	/** The page's `description`, at standfirst weight. */
 	standfirst?: string;
 
+	/**
+	 * The same sentence, already carrying the site's inline term links. A page
+	 * that runs its copy through `LinkMentions` passes the result here instead
+	 * of `standfirst`, so the anchors in the opening sentence survive.
+	 */
+	standfirstHtml?: string;
+
 	/** The in-page contents list, or `null` when the page needs none. */
 	toc?: DocToc | null;
 
 	/** Cap the body at the reading measure. Defaults to `true`. */
 	measure?: boolean;
+
+	/**
+	 * The body is a stack of bands, each with its own inner container. This
+	 * article then stops competing with them for the gutter.
+	 */
+	banded?: boolean;
+
+	/**
+	 * The page's position, as a page-level nav. Position is the kicker's job
+	 * inside a band (LAYER-MAP §4), so this is the one place the documentation
+	 * surfaces carry a breadcrumb: rendered by the shell, never retyped per page.
+	 * The last crumb is the current page and renders as text, not a link.
+	 */
+	crumbs?: readonly { label: string; href?: string }[];
 
 	/** Extra classes from the page, appended after the shell's own. */
 	class?: string;
@@ -48,17 +75,54 @@ const {
 	kicker,
 	title,
 	standfirst,
+	standfirstHtml,
 	toc,
 	measure = true,
+	banded = false,
+	crumbs,
 	class: Class,
 } = Astro.props;
 ---
 
-<article class:list={["doc-article", Class]}>
+<article
+	class:list={["doc-article", banded ? "doc-article--banded" : null, Class]}
+>
+	{
+		crumbs?.length ? (
+			<nav class="doc-article__crumbs" aria-label="Breadcrumb">
+				<ol class="doc-article__crumb-list">
+					{crumbs.map((Crumb) => (
+						<li class="doc-article__crumb">
+							{Crumb.href ? (
+								<a
+									class="doc-article__crumb-link"
+									href={Crumb.href}
+								>
+									{Crumb.label}
+								</a>
+							) : (
+								<span
+									class="doc-article__crumb-current"
+									aria-current="page"
+								>
+									{Crumb.label}
+								</span>
+							)}
+						</li>
+					))}
+				</ol>
+			</nav>
+		) : null
+	}
 	<header class="doc-article__header">
 		<p class="doc-article__kicker">{kicker}</p>
 		<h1 class="doc-article__title">{title}</h1>
 		{standfirst ? <p class="doc-article__standfirst">{standfirst}</p> : null}
+		{
+			standfirstHtml && (
+				<p class="doc-article__standfirst" set:html={standfirstHtml} />
+			)
+		}
 	</header>
 
 	{

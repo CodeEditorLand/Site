@@ -64,6 +64,7 @@ const Standfirst = T("common.contact.pageSubtitle", {
 					{family.requests.map((entry) => (
 						<RecordEntry {...entry} />
 					))}
+					{family.pages?.map((entry) => <RecordEntry {...entry} />)}
 				</div>
 			</RecordBand>
 		))

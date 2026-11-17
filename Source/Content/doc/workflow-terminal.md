@@ -55,19 +55,14 @@ and clones of the PTY master reader and writer handles. It is stored in
 
 ### 3. I/O task spawning
 
-Three Tokio tasks are spawned for the terminal's lifetime:
+Three Tokio tasks are spawned for the terminal's lifetime, one per direction of
+the PTY plus one for the shell's exit:
 
-- **Writer Task** - holds the receiver end of a `tokio::mpsc` channel; when a
-  string arrives it writes the bytes to the PTY master writer, delivering input
-  to the shell. The sender end of the channel is stored in the
-  `TerminalStateDto`.
-- **Reader Task** - loops reading from the PTY master reader; for each chunk of
-  output it both sends a **`$acceptTerminalProcessData` gRPC notification** to
-  [Cocoon](https://github.com/CodeEditorLand/Cocoon) (containing the `TerminalId` and data string) and emits a Tauri event
-  to [Sky](https://github.com/CodeEditorLand/Sky): `sky://terminal/data { id, data }`.
-- **Waiter Task** - awaits shell process exit; on termination it sends a
-  **`$acceptTerminalClosed` gRPC notification** to [Cocoon](https://github.com/CodeEditorLand/Cocoon) and removes the entry
-  from `AppState.ActiveTerminals`.
+| Task            | Holds                                                                              | What it does                                                                                                                                                                                                                                                       |
+| --------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Writer Task** | the receiver end of a `tokio::mpsc` channel; the sender end is stored in the `TerminalStateDto` | when a string arrives it writes the bytes to the PTY master writer, delivering input to the shell                                                                                                                                                                  |
+| **Reader Task** | the PTY master reader                                                              | loops reading from it; for each chunk of output it both sends a **`$acceptTerminalProcessData` gRPC notification** to [Cocoon](https://github.com/CodeEditorLand/Cocoon) (containing the `TerminalId` and data string) and emits a Tauri event to [Sky](https://github.com/CodeEditorLand/Sky): `sky://terminal/data { id, data }` |
+| **Waiter Task** | the shell process                                                                  | awaits its exit; on termination it sends a **`$acceptTerminalClosed` gRPC notification** to [Cocoon](https://github.com/CodeEditorLand/Cocoon) and removes the entry from `AppState.ActiveTerminals`                                                                |
 
 ### 4. Initial notifications
 
@@ -147,7 +142,7 @@ The OS delivers the input to the waiting shell.
 
 ### 11. Shell execution and output loop
 
-The shell (bash/powershell) receives the input, executes the `ls -la` command,
+The shell (`bash`/PowerShell) receives the input, executes the `ls -la` command,
 and writes the resulting directory listing to stdout. The PTY slave captures it
 and makes it available on the PTY master.
 
@@ -188,12 +183,13 @@ them as IPC calls:
 
 ### Extension event mapping
 
-Extension subscribers receive these events via the following `window` API:
+Extension subscribers receive these events through the `window` API:
 
-- `window.onDidStartTerminalShellExecution` - fires on `OSC 633 ; C`
-- `window.onDidEndTerminalShellExecution` - fires on `OSC 633 ; D`
-- `window.onDidExecuteTerminalCommand` - fires after `OSC 633 ; D` with the
-  captured command line and exit code
+| `window` event                          | Fires on                                                                 |
+| --------------------------------------- | ------------------------------------------------------------------------ |
+| `window.onDidStartTerminalShellExecution` | `OSC 633 ; C`                                                          |
+| `window.onDidEndTerminalShellExecution`   | `OSC 633 ; D`                                                          |
+| `window.onDidExecuteTerminalCommand`      | after `OSC 633 ; D` with the captured command line and exit code       |
 
 ### Detailed OSC 633 flow
 

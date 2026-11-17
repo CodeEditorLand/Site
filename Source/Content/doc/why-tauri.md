@@ -38,6 +38,26 @@ The practical result: dialog open ~2 ms vs ~200 ms. File reads go through
 `tokio::fs::read` rather than a JSON IPC round-trip. Terminal resize sends
 SIGWINCH directly rather than through a bridge serialization layer.
 
+## What It Costs
+
+The gaps are specific, not general. Tauri 2.x does not expose the full macOS
+NSWindowTabGroup API. The `nativeHost:newWindowTab`, `showPreviousWindowTab`,
+and related handlers are correct no-ops because the underlying API is not in
+Tauri's surface. Some macOS-only APIs that Electron exposes through native
+addons also have no Tauri equivalent and require platform-specific Rust code.
+
+> **WARNING**: WebView2 (Windows) and WebKitGTK (Linux) differ from WKWebView
+> (macOS). macOS is the primary development path; other platforms may have
+> rendering differences.
+
+## [Cocoon](https://github.com/CodeEditorLand/Cocoon) is still Node.js
+
+Tauri removes Node.js from the main process. It does not remove it from the
+extension host. [Cocoon](https://github.com/CodeEditorLand/Cocoon) - the VS Code extension host sidecar - is still a
+Node.js process managed by [Mountain](https://github.com/CodeEditorLand/Mountain). The architecture isolates Node.js to
+extension execution rather than making it the main process that owns all OS
+calls.
+
 ## Typed IPC via invoke
 
 [Wind](https://github.com/CodeEditorLand/Wind) calls [Mountain](https://github.com/CodeEditorLand/Mountain) handlers through `@tauri-apps/api`'s `invoke()`. Each call
@@ -54,27 +74,7 @@ Rust code, not in a config flag that can be set to `true` and forgotten.
 binary is permitted to do on macOS - hardened runtime, keychain, network
 client - enforced by macOS itself.
 
-## What Tauri cannot do yet
-
-Tauri 2.x does not expose the full macOS NSWindowTabGroup API. The
-`nativeHost:newWindowTab`, `showPreviousWindowTab`, and related handlers are
-correct no-ops because the underlying API is not in Tauri's surface. Some
-macOS-only APIs that Electron exposes through native addons also have no Tauri
-equivalent and require platform-specific Rust code.
-
-> **WARNING**: WebView2 (Windows) and WebKitGTK (Linux) differ from WKWebView
-> (macOS). macOS is the primary development path; other platforms may have
-> rendering differences.
-
-## [Cocoon](https://github.com/CodeEditorLand/Cocoon) is still Node.js
-
-Tauri removes Node.js from the main process. It does not remove it from the
-extension host. [Cocoon](https://github.com/CodeEditorLand/Cocoon) - the VS Code extension host sidecar - is still a
-Node.js process managed by [Mountain](https://github.com/CodeEditorLand/Mountain). The architecture isolates Node.js to
-extension execution rather than making it the main process that owns all OS
-calls.
-
-## Related Documentation
+## See Also
 
 - [Why Rust](/Doc/why-rust)
 - [Why WebAssembly](/Doc/why-wasm)

@@ -35,7 +35,8 @@ export const SectionOrder = [
  * single hyphen. Section ids and the index's band anchors both come from here,
  * so `/Doc#deep-dive` addresses the same section the sidebar calls `Deep Dive`.
  */
-export const Slugify = (Value: string) => Value.toLowerCase().replace(/\s+/g, "-");
+export const Slugify = (Value: string) =>
+	Value.toLowerCase().replace(/\s+/g, "-");
 
 const BuildDocSidebar = (Entries: CollectionEntry<"doc">[]): DocSection[] => {
 	const EntriesBySection = new Map<string, CollectionEntry<"doc">[]>();

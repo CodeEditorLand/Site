@@ -79,7 +79,7 @@ flag. Budget controls (memory ceilings, CPU metering via Wasmtime fuel) are
 implemented. [Cocoon](https://github.com/CodeEditorLand/Cocoon) remains the default extension host for all VS Code
 extensions.
 
-## Related Documentation
+## See Also
 
 - [Why Tauri](/Doc/why-tauri)
 - [Deep Dive: Grove](/Doc/deep-dive-grove)

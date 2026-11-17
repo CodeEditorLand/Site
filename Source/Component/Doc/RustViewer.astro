@@ -1,0 +1,113 @@
+---
+/**
+ * RustViewer - the rustdoc frame and the crate switcher above it.
+ *
+ * One component, because the two halves are one interaction: the tab bar is the
+ * frame's only control, and the frame is what every tab loads. Splitting them
+ * would leave a bar with nothing to point at.
+ *
+ * What this file owns and what it does not:
+ *
+ * - It renders one tab per crate and one `<iframe>` whose `src` starts on the
+ *   first crate, so the page is readable before any script runs.
+ * - It ships the switching script, because the switching IS this component's
+ *   behaviour. The script is the interaction the page had before this shell
+ *   existed, unchanged: click a tab, the frame loads that crate, the URL hash
+ *   follows, and a hash on load restores the tab.
+ * - It does not print the crate list. The list is `RustBand` in `Rust/Data.ts`,
+ *   rendered by the same `DocIndex` the documentation index uses.
+ *
+ * The active tab is marked by `aria-selected` and by `--active` - attribute and
+ * ink, so the state is not colour-only. No inline style, no Tailwind string: the
+ * partial `System/Component/Doc/_Rust.scss` owns the anatomy.
+ */
+import type { RustCrate } from "./Rust/Type.js";
+
+interface Props {
+	/** The crates, in tab order. The first one is what the frame opens on. */
+	crates: readonly RustCrate[];
+
+	/** The tab list's accessible name. */
+	label: string;
+
+	/** The frame's accessible name. */
+	title: string;
+}
+
+const { crates, label, title } = Astro.props;
+
+/** The crate the frame opens on, or `undefined` if the page passed none. */
+const First = crates.at(0);
+---
+
+<div class="doc-rust__viewer">
+	<div class="doc-rust__bar" role="tablist" aria-label={label}>
+		{
+			crates.map((Crate, Index) => (
+				<button
+					type="button"
+					role="tab"
+					aria-selected={Index === 0 ? "true" : "false"}
+					aria-controls="RustDocFrame"
+					data-id={Crate.Id}
+					data-rustdoc-url={Crate.Url}
+					class:list={[
+						"doc-rust__tab",
+						Index === 0 ? "doc-rust__tab--active" : null,
+					]}
+				>
+					{Crate.Label}
+				</button>
+			))
+		}
+	</div>
+
+	<iframe
+		id="RustDocFrame"
+		class="doc-rust__frame"
+		src={First?.Url}
+		title={title}
+		loading="lazy"
+		sandbox="allow-scripts allow-same-origin allow-popups allow-top-navigation-by-user-activation"></iframe>
+</div>
+
+<script>
+	const Tabs = document.querySelectorAll<HTMLButtonElement>(".doc-rust__tab");
+	const Frame = document.getElementById("RustDocFrame");
+
+	/** Move the active state to one tab: attribute first, ink follows the class. */
+	function SetActive(ActiveTab: HTMLButtonElement): void {
+		Tabs.forEach((Tab) => {
+			const IsActive = Tab === ActiveTab;
+
+			Tab.setAttribute("aria-selected", IsActive ? "true" : "false");
+			Tab.classList.toggle("doc-rust__tab--active", IsActive);
+		});
+	}
+
+	Tabs.forEach((Tab) => {
+		Tab.addEventListener("click", () => {
+			const Url = Tab.dataset["rustdocUrl"];
+			const Id = Tab.dataset["id"];
+
+			if (!Url || !(Frame instanceof HTMLIFrameElement)) return;
+
+			Frame.src = Url;
+
+			SetActive(Tab);
+
+			if (Id) history.replaceState(null, "", `#${Id}`);
+		});
+	});
+
+	// Restore the active tab from the URL hash on load. Clicking the tab runs the
+	// same handler the reader would, so the frame, the attribute and the hash can
+	// never disagree.
+	const Hash = window.location.hash.slice(1);
+
+	if (Hash) {
+		const Match = Array.from(Tabs).find((Tab) => Tab.dataset["id"] === Hash);
+
+		Match?.click();
+	}
+</script>

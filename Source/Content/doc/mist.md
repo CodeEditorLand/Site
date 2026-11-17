@@ -8,6 +8,8 @@ description:
     external access by allowlist.
 ---
 
+# Mist: DNS Isolation Server
+
 [Mist](https://github.com/CodeEditorLand/Mist) runs an authoritative Hickory DNS server for the `editor.land` zone,
 binding exclusively on `127.0.0.1` so that every `*.editor.land` subdomain
 resolves to `127.0.0.1` instead of reaching the public internet. It acts as a

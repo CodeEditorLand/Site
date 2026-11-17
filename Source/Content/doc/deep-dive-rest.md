@@ -9,7 +9,9 @@ description:
     reference."
 ---
 
-[Rest](https://github.com/CodeEditorLand/Rest) provides the technical foundation TypeScript compiler
+# Rest - Deep Dive
+
+[Rest](https://github.com/CodeEditorLand/Rest) provides the technical foundation for the TypeScript compiler
 within the [Land](https://github.com/CodeEditorLand/Land) project. **[Rest](https://github.com/CodeEditorLand/Rest)** is a Rust binary that uses the OXC toolchain
 to compile TypeScript 2-3x faster than esbuild while producing output compatible
 with VS Code's build process.
@@ -50,8 +52,9 @@ concurrently across CPU cores.
 
 <img src="/Mermaid/32628aab22a45d3f.svg" alt="Mermaid diagram" />
 
-When `--Parallel` is specified, the compiler fans out file compilation across
-Tokio worker threads and collects aggregated metrics.
+> [!NOTE]
+> When `--Parallel` is specified, the compiler fans out file compilation across
+> Tokio worker threads and collects aggregated metrics.
 
 ---
 

@@ -7,12 +7,10 @@ description: "Authoritative map of every top-level vscode.* API surface and its
     Node sidecar), and Mountain (Rust backend). Drives the dual-track strategy."
 ---
 
-# VS Code API Coverage Matrix
-
-Authoritative map of every top-level `vscode.*` API surface and its
+The authoritative map covers every top-level `vscode.*` API surface and its
 implementation split across **[Sky](https://github.com/CodeEditorLand/Sky)** (workbench renderer), **[Cocoon](https://github.com/CodeEditorLand/Cocoon)**
-(extension-host Node sidecar), and **[Mountain](https://github.com/CodeEditorLand/Mountain)** (Rust backend). Drives the
-dual-track strategy:
+(extension-host Node sidecar), and **[Mountain](https://github.com/CodeEditorLand/Mountain)** (Rust backend). The split
+drives the dual-track strategy:
 
 - **Track A - Stock-Node**: [Cocoon](https://github.com/CodeEditorLand/Cocoon) loads stock VS Code `extHost*.ts` sources
   unchanged; the workbench's `mainThread*.ts` runs inside [Sky](https://github.com/CodeEditorLand/Sky) (already the
@@ -42,11 +40,13 @@ per-call.
 
 Status symbols:
 
-- ✅ Working end-to-end (activation + feature render path confirmed)
-- 🟡 Partial - RPC wired but UI render gap, or missing sub-method
-- 🔴 Stubbed / dropped-on-floor - registration accepted, no effect
-- ⚪ Not yet attempted
-- 🟢 Pure-function lift (stateless, no RPC) already landed via `Cocoon/.../VscodeAPI/StockLift.ts`
+| Symbol | Meaning |
+| --- | --- |
+| ✅ | Working end-to-end (activation + feature render path confirmed) |
+| 🟡 | Partial - RPC wired but UI render gap, or missing sub-method |
+| 🔴 | Stubbed / dropped-on-floor - registration accepted, no effect |
+| ⚪ | Not yet attempted |
+| 🟢 | Pure-function lift (stateless, no RPC) already landed via `Cocoon/.../VscodeAPI/StockLift.ts` |
 
 ---
 
@@ -67,7 +67,7 @@ Status symbols:
 
 ### `vscode.commands`
 
-| Operation                   | Primary | Status | Stock file           | [Mountain](https://github.com/CodeEditorLand/Mountain) | Sky[Sky](https://github.com/CodeEditorLand/Sky)    |
+| Operation                   | Primary | Status | Stock file           | [Mountain](https://github.com/CodeEditorLand/Mountain) | Sky    |
 | --------------------------- | ------- | ------ | -------------------- | ------------------------------------------------------ | -------------------------------------------------- |
 | `registerCommand`           | A+S     | ✅     | `extHostCommands.ts` | `commands` channel                                     | `__CEL_SERVICES__.CommandRegistry.registerCommand` |
 | `registerTextEditorCommand` | A       | ✅     | `extHostCommands.ts` | -                                                      | -                                                  |
@@ -76,7 +76,7 @@ Status symbols:
 
 ### `vscode.window` - Editors
 
-| Operation                     | Primary | Status | Stock file                                              | [Mountain](https://github.com/CodeEditorLand/Mountain) | Sky[Sky](https://github.com/CodeEditorLand/Sky) |
+| Operation                     | Primary | Status | Stock file                                              | [Mountain](https://github.com/CodeEditorLand/Mountain) | Sky |
 | ----------------------------- | ------- | ------ | ------------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------- |
 | `activeTextEditor`            | A       | ✅     | `extHostTextEditor.ts`                                  | -                                                      | `IEditorService.activeTextEditorControl`        |
 | `visibleTextEditors`          | A       | ✅     | `extHostTextEditors.ts`                                 | -                                                      | -                                               |
@@ -85,7 +85,7 @@ Status symbols:
 
 ### `vscode.window` - Surfaces (TreeView, StatusBar, Webview, Terminal)
 
-| Operation                                                            | Primary    | Status | Stock file                    | [Mountain](https://github.com/CodeEditorLand/Mountain)                                                                | Sky[Sky](https://github.com/CodeEditorLand/Sky)                                         |
+| Operation                                                            | Primary    | Status | Stock file                    | [Mountain](https://github.com/CodeEditorLand/Mountain)                                                                | Sky                                         |
 | -------------------------------------------------------------------- | ---------- | ------ | ----------------------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | `createStatusBarItem`                                                | S (native) | ✅     | `extHostStatusBar.ts`         | `sky://statusbar/{update,dispose,set-entry}`                                                                          | `__CEL_SERVICES__.Statusbar.addEntry`                                                   |
 | `setStatusBarMessage`                                                | S          | ✅     | `extHostStatusBar.ts`         | `sky://statusbar/set-message`                                                                                         | CustomEvent fan-out                                                                     |
@@ -113,7 +113,7 @@ Status symbols:
 
 ### `vscode.workspace`
 
-| Operation                                                                                                 | Primary | Status                | Stock file                           | [Mountain](https://github.com/CodeEditorLand/Mountain)       | Sky[Sky](https://github.com/CodeEditorLand/Sky) |
+| Operation                                                                                                 | Primary | Status                | Stock file                           | [Mountain](https://github.com/CodeEditorLand/Mountain)       | Sky |
 | --------------------------------------------------------------------------------------------------------- | ------- | --------------------- | ------------------------------------ | ------------------------------------------------------------ | ----------------------------------------------- |
 | `workspaceFolders`                                                                                        | A       | ✅                    | `extHostWorkspace.ts`                | seeded via `InitializationData.FoldersWire`                  | -                                               |
 | `onDidChangeWorkspaceFolders`                                                                             | A       | ✅                    | `extHostWorkspace.ts`                | `sky://workspace/foldersChanged`                             | -                                               |
@@ -136,7 +136,7 @@ Status symbols:
 
 ### `vscode.languages`
 
-| Operation                                | Primary | Status | Stock file                   | [Mountain](https://github.com/CodeEditorLand/Mountain)                                                                     | Sky[Sky](https://github.com/CodeEditorLand/Sky)                  |
+| Operation                                | Primary | Status | Stock file                   | [Mountain](https://github.com/CodeEditorLand/Mountain)                                                                     | Sky                  |
 | ---------------------------------------- | ------- | ------ | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
 | `registerCompletionItemProvider`         | A       | 🟡     | `extHostLanguageFeatures.ts` | `register_completion_item_provider` + `GetCompletions` gRPC                                                                | -                                                                |
 | `registerHoverProvider`                  | A       | 🟡     | same                         | `register_hover_provider` + `GetHoverAtPosition` gRPC                                                                      | -                                                                |
@@ -159,7 +159,7 @@ Status symbols:
 
 ### `vscode.debug`
 
-| Operation                                         | Primary | Status | Stock file               | [Mountain](https://github.com/CodeEditorLand/Mountain)                                                                                                                                                 | Sky[Sky](https://github.com/CodeEditorLand/Sky) |
+| Operation                                         | Primary | Status | Stock file               | [Mountain](https://github.com/CodeEditorLand/Mountain)                                                                                                                                                 | Sky |
 | ------------------------------------------------- | ------- | ------ | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------- |
 | `registerDebugConfigurationProvider`              | A       | 🟡     | `extHostDebugService.ts` | `register_debug_configuration_provider`                                                                                                                                                                | -                                               |
 | `registerDebugAdapterDescriptorFactory`           | A       | 🟡     | same                     | `register_debug_adapter` notif-drop covered                                                                                                                                                            | -                                               |
@@ -171,7 +171,7 @@ Status symbols:
 
 ### `vscode.tasks`
 
-| Operation                                            | Primary | Status | Stock file       | [Mountain](https://github.com/CodeEditorLand/Mountain)                                                                                                                    | Sky[Sky](https://github.com/CodeEditorLand/Sky) |
+| Operation                                            | Primary | Status | Stock file       | [Mountain](https://github.com/CodeEditorLand/Mountain)                                                                                                                    | Sky |
 | ---------------------------------------------------- | ------- | ------ | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
 | `registerTaskProvider`                               | A       | 🟡     | `extHostTask.ts` | `register_task_provider` notif-drop covered                                                                                                                               | -                                               |
 | `fetchTasks`                                         | A       | 🟡     | same             | `Task.Fetch` → [Mountain](https://github.com/CodeEditorLand/Mountain) round-trip                                                                                          | -                                               |
@@ -180,7 +180,7 @@ Status symbols:
 
 ### `vscode.scm`
 
-| Operation                     | Primary | Status | Stock file                              | [Mountain](https://github.com/CodeEditorLand/Mountain)                                                                           | Sky[Sky](https://github.com/CodeEditorLand/Sky)                       |
+| Operation                     | Primary | Status | Stock file                              | [Mountain](https://github.com/CodeEditorLand/Mountain)                                                                           | Sky                       |
 | ----------------------------- | ------- | ------ | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
 | `createSourceControl`         | A+S     | 🟡     | `extHostSCM.ts`                         | `register_scm_provider` + `sky://scm/register` emit                                                                              | SkyBridge diagnostic subscriber; needs `ISCMService` route (deferred) |
 | `inputBox.value` read/write   | A       | 🟡     | `extHostSCM.ts`                         | round-trip via `ResolveUIRequest`                                                                                                | -                                                                     |
@@ -188,7 +188,7 @@ Status symbols:
 
 ### `vscode.env`
 
-| Operation                                                                                                  | Primary | Status                | Stock file            | [Mountain](https://github.com/CodeEditorLand/Mountain)  | Sky[Sky](https://github.com/CodeEditorLand/Sky) |
+| Operation                                                                                                  | Primary | Status                | Stock file            | [Mountain](https://github.com/CodeEditorLand/Mountain)  | Sky |
 | ---------------------------------------------------------------------------------------------------------- | ------- | --------------------- | --------------------- | ------------------------------------------------------- | ----------------------------------------------- |
 | `appName` / `appRoot` / `uriScheme` / `language` / `shell` / `machineId` / `sessionId` / `isNewAppInstall` | A       | ✅                    | `extHost.api.impl.ts` | seeded in InitData                                      | -                                               |
 | `isAppPortable`                                                                                            | A       | ⚪                    | same                  | -                                                       | -                                               |
@@ -204,7 +204,7 @@ Status symbols:
 
 ### `vscode.extensions`
 
-| Operation          | Primary | Status | Stock file            | [Mountain](https://github.com/CodeEditorLand/Mountain) | Sky[Sky](https://github.com/CodeEditorLand/Sky) |
+| Operation          | Primary | Status | Stock file            | [Mountain](https://github.com/CodeEditorLand/Mountain) | Sky |
 | ------------------ | ------- | ------ | --------------------- | ------------------------------------------------------ | ----------------------------------------------- |
 | `getExtension(id)` | A       | ✅     | `extHost.api.impl.ts` | `extensions:get`                                       | -                                               |
 | `all`              | A       | ✅     | same                  | `extensions:getInstalled`                              | -                                               |
@@ -212,7 +212,7 @@ Status symbols:
 
 ### `vscode.authentication`
 
-| Operation                        | Primary | Status | Stock file                 | [Mountain](https://github.com/CodeEditorLand/Mountain) | Sky[Sky](https://github.com/CodeEditorLand/Sky) |
+| Operation                        | Primary | Status | Stock file                 | [Mountain](https://github.com/CodeEditorLand/Mountain) | Sky |
 | -------------------------------- | ------- | ------ | -------------------------- | ------------------------------------------------------ | ----------------------------------------------- |
 | `registerAuthenticationProvider` | A       | 🟡     | `extHostAuthentication.ts` | `register_authentication_provider`                     | -                                               |
 | `getSession`                     | A       | 🟡     | same                       | `$getSession` gRPC                                     | -                                               |
@@ -220,7 +220,7 @@ Status symbols:
 
 ### `vscode.notebooks`
 
-| Operation                                   | Primary | Status | Stock file                  | [Mountain](https://github.com/CodeEditorLand/Mountain) | Sky[Sky](https://github.com/CodeEditorLand/Sky) |
+| Operation                                   | Primary | Status | Stock file                  | [Mountain](https://github.com/CodeEditorLand/Mountain) | Sky |
 | ------------------------------------------- | ------- | ------ | --------------------------- | ------------------------------------------------------ | ----------------------------------------------- |
 | `createNotebookController`                  | A       | 🔴     | `extHostNotebookKernels.ts` | -                                                      | -                                               |
 | `registerNotebookCellStatusBarItemProvider` | A       | 🔴     | -                           | -                                                      | -                                               |
@@ -228,14 +228,14 @@ Status symbols:
 
 ### `vscode.tests`
 
-| Operation                 | Primary | Status | Stock file          | [Mountain](https://github.com/CodeEditorLand/Mountain) | Sky[Sky](https://github.com/CodeEditorLand/Sky) |
+| Operation                 | Primary | Status | Stock file          | [Mountain](https://github.com/CodeEditorLand/Mountain) | Sky |
 | ------------------------- | ------- | ------ | ------------------- | ------------------------------------------------------ | ----------------------------------------------- |
 | `createTestController`    | A       | 🟡     | `extHostTesting.ts` | `sky://tests/registered` emit                          | -                                               |
 | Run profile / run request | A       | 🔴     | same                | -                                                      | -                                               |
 
 ### `vscode.chat` / `vscode.lm`
 
-| Operation                           | Primary | Status | Stock file                 | [Mountain](https://github.com/CodeEditorLand/Mountain) | Sky[Sky](https://github.com/CodeEditorLand/Sky) |
+| Operation                           | Primary | Status | Stock file                 | [Mountain](https://github.com/CodeEditorLand/Mountain) | Sky |
 | ----------------------------------- | ------- | ------ | -------------------------- | ------------------------------------------------------ | ----------------------------------------------- |
 | `createChatParticipant`             | A       | 🔴     | `extHostChatAgents2.ts`    | -                                                      | -                                               |
 | `registerLanguageModelChatProvider` | A       | ⚪     | `extHostLanguageModels.ts` | -                                                      | -                                               |
@@ -243,14 +243,14 @@ Status symbols:
 
 ### `vscode.l10n`
 
-| Operation         | Primary | Status | Stock file                              | [Mountain](https://github.com/CodeEditorLand/Mountain) | Sky[Sky](https://github.com/CodeEditorLand/Sky) |
+| Operation         | Primary | Status | Stock file                              | [Mountain](https://github.com/CodeEditorLand/Mountain) | Sky |
 | ----------------- | ------- | ------ | --------------------------------------- | ------------------------------------------------------ | ----------------------------------------------- |
 | `t(message, ...)` | 🟢 pure | ✅     | StockLift-able `vs/base/common/l10n.ts` | -                                                      | -                                               |
 | `bundle` / `uri`  | A       | ✅     | `extHostLocalizationService.ts`         | NLS bundle loaded at scan time                         | -                                               |
 
 ### `vscode.comments`
 
-| Operation                 | Primary | Status | Stock file           | [Mountain](https://github.com/CodeEditorLand/Mountain)                  | Sky[Sky](https://github.com/CodeEditorLand/Sky) |
+| Operation                 | Primary | Status | Stock file           | [Mountain](https://github.com/CodeEditorLand/Mountain)                  | Sky |
 | ------------------------- | ------- | ------ | -------------------- | ----------------------------------------------------------------------- | ----------------------------------------------- |
 | `createCommentController` | A       | 🟡     | `extHostComments.ts` | in-process thread store in `Comments/Namespace.ts`; no UI rendering yet | -                                               |
 

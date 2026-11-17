@@ -8,7 +8,9 @@ description:
     bundle configuration, and service worker lifecycle stages."
 ---
 
-Worker is the Service Worker element for Land. the worker
+# Worker - Deep Dive
+
+Worker is the Service Worker element for Land. This page covers the worker
 registration pattern, the fetch interception protocol between the Service Worker
 and client page, the ESBuild bundle configuration, and the full service worker
 lifecycle. For an overview, see the
@@ -71,6 +73,19 @@ completing the update handshake.
 
 `Source/Worker/Policy.ts` implements the fetch event handler. Every intercepted
 request passes through a decision tree:
+
+```mermaid
+flowchart TD
+    A["fetch(request)"] --> B{"Path starts with /Application/, or is Register.js or Load.js?"}
+    B -->|Yes| C["CACHE_CORE network-first<br/>cache on success, cached response on failure"]
+    B -->|No| D{"/Static/Application/ ending in .css without ?Skip=Intercept?"}
+    D -->|Yes| E["CSS interception<br/>generate JS module, cache in CACHE_ASSET"]
+    D -->|No| F{"/Static/Application/ containing ?Skip=Intercept?"}
+    F -->|Yes| G["CSS passthrough<br/>strip parameter for cache key, serve cached CSS"]
+    F -->|No| H{"/Static/Application/ JS, images, fonts?"}
+    H -->|Yes| I["CACHE_ASSET cache-first<br/>hit returns immediately, miss fetches and caches"]
+    H -->|No| J["Pass through to network without caching"]
+```
 
 ```
 fetch(request)
