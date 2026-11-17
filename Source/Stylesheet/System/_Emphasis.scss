@@ -1,0 +1,25 @@
+/* ─── EMPHASIS TIERS ───────────────────────────────────────────────────── */
+
+/* .emphasis-quiet - hairline rule only, no fill. The default weight. */
+.emphasis-quiet {
+	border: 1px solid var(--Border);
+	border-radius: 0;
+	box-shadow: none;
+}
+
+/* .emphasis-standard - card surface plus hairline. */
+.emphasis-standard {
+	background: var(--Card);
+	border: 1px solid var(--Border);
+	border-radius: 0;
+	box-shadow: none;
+}
+
+/* .emphasis-expressive - ink-inverted. ONE PER BAND. */
+.emphasis-expressive {
+	background: var(--Primary);
+	color: var(--PrimaryForeground);
+	border: 1px solid var(--Primary);
+	border-radius: 0;
+	box-shadow: none;
+}

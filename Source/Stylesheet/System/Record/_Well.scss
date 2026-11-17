@@ -1,0 +1,86 @@
+// RecordWell - a command, config block or transcript: a recessed mono body in a
+// hairline frame, under a title bar carrying the label and the copy control.
+// Lines print verbatim: no wrapping, no reflow, no syntax highlighting.
+//
+// Publishes:
+//   .record-well                the well shell - frame, title bar, recessed body
+//   .record-well__bar           the title bar
+//   .record-well__label         the title-bar label, e.g. INSTALL, CONFIG, TRANSCRIPT
+//   .record-well__lang          the language tag (`bash`, `json`, `toml`) - a label, not a highlighter
+//   .record-well__copy          the copy control
+//   .record-well__body          the recessed body
+//   .record-well__line          one verbatim line
+//
+// The body scrolls sideways rather than wrapping, so a long command keeps its
+// shape; that is the one overflow this block owns. The frame is square: a well
+// is cut into the band, not laid on it.
+//
+// Owned by B6. S1 published the skeleton; B6 refines the values, never the names.
+
+@use "../Mixin" as *;
+
+.record-well {
+	@include hairline;
+	margin: 0;
+	background: var(--Card);
+	overflow: hidden;
+}
+
+.record-well__bar {
+	@include hairline(bottom);
+	@include mono-meta;
+	display: flex;
+	align-items: center;
+	gap: var(--space-tight);
+	padding: var(--space-tight) var(--space-reading);
+}
+
+// The label takes the slack, so the language tag and the control sit right.
+.record-well__label {
+	@include track;
+	flex: 1 1 auto;
+	margin: 0;
+}
+
+.record-well__lang {
+	flex: 0 0 auto;
+	white-space: nowrap;
+}
+
+.record-well__copy {
+	@include hairline;
+	@include mono-meta;
+	@include track(0.1em);
+	appearance: none;
+	flex: 0 0 auto;
+	padding: 0 var(--space-tight);
+	background: transparent;
+	cursor: pointer;
+}
+
+.record-well__copy:hover {
+	border-color: var(--Primary);
+}
+
+.record-well__copy:focus-visible {
+	outline: var(--BorderWidth) solid var(--Ring);
+	outline-offset: var(--BorderWidth);
+}
+
+.record-well__body {
+	margin: 0;
+	padding: var(--space-reading);
+	background: var(--Mute);
+	overflow-x: auto;
+	font-family: var(--FontMono);
+	font-size: var(--type-code);
+	line-height: 1.55;
+	color: var(--Foreground);
+	white-space: pre;
+	tab-size: 4;
+}
+
+.record-well__line {
+	display: block;
+	white-space: pre;
+}

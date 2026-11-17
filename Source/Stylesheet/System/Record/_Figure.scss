@@ -1,0 +1,72 @@
+// RecordFigure - evidence: a framed figure, a caption at caption weight and the
+// provenance line that says what the picture is evidence of. The media is an
+// image or composed children, never both, and the caption is required - an
+// uncaptioned figure is decoration.
+//
+// Publishes:
+//   .record-figure                the figure shell
+//   .record-figure__media         the framed body - image or composed children
+//   .record-figure__caption       the caption block: the sentence and its source
+//   .record-figure__caption-text  what the evidence shows, measure-capped
+//   .record-figure__provenance    where it came from: file, manifest, measurement, commit
+//
+// The frame is a hairline and nothing else: square corners, flat, no fill on
+// hover, no elevation. `SpecimenLabel` and `FieldRecordSeal` are the caller's
+// decoration - a seal on evidence is a claim about who looked at it.
+//
+// The caption and the provenance are one caption block, stacked: the sentence
+// first at caption weight, the source under it at meta weight, uppercase and
+// tracked. That difference is the whole distinction - a reader must be able to
+// tell a claim about the picture from the file the picture came out of.
+//
+// Owned by B8. S1 publishes the skeleton; B8 refines the values, never the
+// names.
+
+@use "../Mixin" as *;
+
+.record-figure {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	margin: 0;
+}
+
+// The frame carries the image or the composed diagram. `overflow-x: auto` is
+// the one concession to composed media: a diagram wider than the column
+// scrolls inside its frame instead of pushing the page grid wider.
+.record-figure__media {
+	@include hairline;
+	display: block;
+	max-width: 100%;
+	overflow-x: auto;
+	background: var(--Card);
+}
+
+.record-figure__media img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+.record-figure__caption {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	max-width: 62ch;
+	margin: 0;
+}
+
+.record-figure__caption-text {
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+}
+
+// `mono-meta` already carries the mono face, the meta size and the muted ink;
+// `track` adds the uppercase and the spacing that make it read as a label
+// rather than as the end of the sentence above it.
+.record-figure__provenance {
+	@include mono-meta;
+	@include track(0.1em);
+	margin: 0;
+}

@@ -1,0 +1,55 @@
+// The mixin layer. Every later card composes from these names instead of
+// retyping the same declarations. A name here is API: change a value if you
+// must, never a name. Nothing in this file emits CSS on its own - it is @use'd
+// by the partials, never @include'd at the root.
+
+/// hairline - 1px solid var(--Border) on all four sides, or on the one side named.
+@mixin hairline($side: all) {
+	@if $side == all {
+		border: 1px solid var(--Border);
+	} @else {
+		border-#{$side}: 1px solid var(--Border);
+	}
+}
+
+/// ink-invert - the inverted emphasis surface: --Primary fill, --PrimaryForeground text.
+@mixin ink-invert {
+	background: var(--Primary);
+	color: var(--PrimaryForeground);
+}
+
+/// track - uppercase plus letter-spacing, the tracking a label needs to read as a label.
+@mixin track($space: 0.18em) {
+	text-transform: uppercase;
+	letter-spacing: $space;
+}
+
+/// mono-meta - the meta type role in the mono face at muted ink: kickers, markers, table heads.
+@mixin mono-meta {
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	font-family: var(--FontMono);
+	color: var(--MuteForeground);
+}
+
+/// band-inner - the one inner container every band uses, so no band re-invents its gutters.
+@mixin band-inner {
+	max-width: 72rem;
+	margin-inline: auto;
+	padding-inline: clamp(1rem, 4vw, 2.5rem);
+}
+
+/// bp - one breakpoint, taken as a value: 640px, 768px, 1024px and 1280px are the
+/// only four the site uses, so there are no named breakpoints to remember.
+@mixin bp($min) {
+	@media (min-width: $min) {
+		@content;
+	}
+}
+
+/// grid-12 - the page grid: twelve equal columns on the group rhythm.
+@mixin grid-12 {
+	display: grid;
+	grid-template-columns: repeat(12, 1fr);
+	gap: var(--space-group);
+}

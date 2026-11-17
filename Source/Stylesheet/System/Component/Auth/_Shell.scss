@@ -1,0 +1,205 @@
+// The auth shell - one frame, one vocabulary, for the eight routes a reader
+// meets at their most fragile. `.auth-shell` is the block; everything inside
+// it is that block's own anatomy, so a route cannot drift by inventing a
+// second card or a second label size.
+//
+// Rules this partial obeys, from BRIDGE 2.3 and the P12 card:
+//   - tokens only: no literal colour, no box-shadow, no border-radius, no px
+//     outside the hairline mixin;
+//   - the surface is the published `.emphasis-standard` tier, the primary
+//     action is the published `.emphasis-expressive` tier - this file adds
+//     layout and type to those tiers, it never restates them;
+//   - the narrow measure is the card's 28rem, which is `--ContainerMedium`.
+
+/* ─── THE FRAME ────────────────────────────────────────────────────────── */
+
+.auth-shell {
+	padding-block: var(--space-chapter);
+}
+
+.auth-shell__inner {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-group);
+	max-width: calc(var(--ContainerMedium) + var(--space-group) * 2);
+	margin-inline: auto;
+	padding-inline: var(--space-group);
+}
+
+.auth-shell--wide .auth-shell__inner {
+	max-width: calc(var(--ContainerSixExtraLarge) + var(--space-group) * 2);
+}
+
+.auth-shell__header {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+}
+
+/* The /SECTION LABEL opening the frame. Type and colour only - no rule, no
+   fill - so it never competes with the heading underneath it. */
+.auth-shell__kicker {
+	@include mono-meta;
+	@include track;
+	margin: 0;
+}
+
+/* `.type-section` owns the size; `_Global.scss` gives every h1 a 2rem bottom
+   margin, which the frame's own gap already provides. */
+.auth-shell__heading {
+	margin: 0;
+}
+
+.auth-shell__sentence {
+	margin: 0;
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+/* The form's surface. `.emphasis-standard` supplies the fill and the hairline;
+   this only spaces what sits on it. */
+.auth-shell__surface {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-group);
+	padding: var(--space-group);
+}
+
+/* The alternate action: a plain hairline link, never a second button. */
+.auth-shell__alternate {
+	@include mono-meta;
+	@include track(0.08em);
+	align-self: flex-start;
+	padding-block-end: var(--space-tight);
+	color: var(--MuteForeground);
+	text-decoration: none;
+	@include hairline(bottom);
+}
+
+.auth-shell__alternate:hover {
+	color: var(--Primary);
+	border-bottom-color: var(--Primary);
+}
+
+/* ─── THE FORM ─────────────────────────────────────────────────────────── */
+
+.auth-shell__form {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-group);
+	margin: 0;
+}
+
+.auth-shell__field {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+}
+
+.auth-shell__label {
+	@include mono-meta;
+	@include track(0.08em);
+}
+
+.auth-shell__input {
+	inline-size: 100%;
+	background: var(--Card);
+	color: var(--Foreground);
+	font-family: var(--FontMono);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	padding: var(--space-tight) var(--space-reading);
+	@include hairline;
+}
+
+.auth-shell__input::placeholder {
+	color: var(--MuteForeground);
+}
+
+.auth-shell__input:focus-visible {
+	outline: 1px solid var(--Primary);
+	outline-offset: 0;
+}
+
+/* A validation message is a sentence at caption size in --Destruct - never
+   the word "Invalid" on its own. */
+.auth-shell__error {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--Destruct);
+}
+
+.auth-shell__hint {
+	@include mono-meta;
+	margin: 0;
+}
+
+.auth-shell__actions {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-reading);
+}
+
+/* `.emphasis-expressive` supplies the ink-inverted fill; this adds the hit
+   area, the tracked label and the square corners the tier already declares. */
+.auth-shell__primary {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-tight);
+	padding: var(--space-reading) var(--space-group);
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+.auth-shell__primary:disabled {
+	cursor: not-allowed;
+	opacity: 0.5;
+}
+
+/* ─── THE STATE REPORT ─────────────────────────────────────────────────── */
+
+/* Every ending says three things in this order: what it is (the status line),
+   what happened (one sentence), and what the reader can do now (one action).
+   A bare "Success" is the defect this block exists to prevent. */
+.auth-shell__report {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-reading);
+}
+
+.auth-shell__status {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--Foreground);
+}
+
+.auth-shell__status--success {
+	color: var(--Accent);
+}
+
+.auth-shell__status--failure {
+	color: var(--Destruct);
+}
+
+.auth-shell__report-sentence {
+	margin: 0;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.auth-shell__note {
+	@include mono-meta;
+	margin: 0;
+}

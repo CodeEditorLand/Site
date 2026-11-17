@@ -1,0 +1,149 @@
+---
+/**
+ * RecordMatrix - comparison across columns: a header row carrying one ink per
+ * column, hairline rows and an optional caption.
+ *
+ * This is tabular data, so it is a real table element, not a grid of divs. A
+ * grid can be made to look identical, but only a table gives every cell its
+ * column header and every row its label without a script - which is the one
+ * thing this block is for: reading Land against a Chromium editor, one
+ * platform at a time.
+ *
+ * Two things travel with a column, and they travel differently on purpose:
+ * `ink` is an open set of token names (`MatrixColumn.ink` is a `string`), so it
+ * is handed over as the `--col-ink` custom property on that column's header
+ * cell - the only inline declaration in this file. `align` is a closed
+ * two-value union, so it travels as a modifier class and the stylesheet owns
+ * it.
+ *
+ * No script, no hydration: a printed table that happens to be markup.
+ */
+import type { MatrixColumn } from "./Type.js";
+
+/**
+ * One row: the label in the first column, then one value per column.
+ *
+ * `Type.ts` publishes `MatrixColumn` but no row shape, so the row is declared
+ * here rather than forced into the shared module - its own header says a block
+ * that needs a shape the module does not carry declares a local type. A short
+ * row is legal: a missing value renders as an empty cell.
+ */
+interface MatrixRow {
+	/** The row's key, printed in the first column. */
+	label: string;
+
+	/** One value per column, in the order the columns are given. */
+	cells: readonly string[];
+}
+
+interface Props {
+	/** The columns: header label, optional ink token name, optional align. */
+	columns: readonly MatrixColumn[];
+
+	/** The rows, each read left to right across the columns. */
+	rows: readonly MatrixRow[];
+
+	/** A caption under the matrix. Absent means no caption element. */
+	caption?: string;
+
+	/**
+	 * A class the page adds to the shell, for its own spacing or grid slot.
+	 * Additive: the block owns `record-matrix`, the page owns the rest.
+	 */
+	class?: string;
+}
+
+const { columns, rows, caption, class: Class } = Astro.props;
+
+/** The shell's classes: the block's own, then whatever the page adds. */
+const shellClass = `record-matrix${Class ? ` ${Class}` : ""}`;
+
+/**
+ * The value a row carries at a column index.
+ *
+ * This is the ragged-row guard: the row is indexed by the column, not the
+ * other way round, so a row with fewer values than there are columns still
+ * renders exactly one cell per column - the missing ones empty - instead of
+ * throwing or shifting the columns. Values past the last column are not
+ * rendered, because a cell with no header is an unlabelled column.
+ */
+const valueAt = (row: MatrixRow, index: number): string =>
+	row.cells?.[index] ?? "";
+
+/**
+ * The mark class a value earns. `yes` and `no` are the only two the stylesheet
+ * names, and they are matched case-insensitively because the content tables
+ * are written by hand. Every other value earns no modifier and prints
+ * verbatim - a value is never translated into an icon.
+ */
+const markOf = (value: string): string => {
+	const normalised = value.trim().toLowerCase();
+
+	if (normalised === "yes") return " record-matrix__cell--yes";
+	if (normalised === "no") return " record-matrix__cell--no";
+
+	return "";
+};
+
+/** A header cell's classes: its own, plus the centre modifier when asked. */
+const columnClass = (column: MatrixColumn): string =>
+	`record-matrix__column${
+		column.align === "center" ? " record-matrix__column--center" : ""
+	}`;
+
+/** A body cell's classes: its own, the centre modifier, and the mark. */
+const cellClass = (column: MatrixColumn, value: string): string =>
+	`record-matrix__cell${
+		column.align === "center" ? " record-matrix__cell--center" : ""
+	}${markOf(value)}`;
+---
+
+<div class={shellClass}>
+	<table class="record-matrix__table">
+		{
+			caption && (
+				<caption class="record-matrix__caption">{caption}</caption>
+			)
+		}
+		<thead>
+			<tr class="record-matrix__head">
+				<td></td>
+				{
+					columns.map((column) => (
+						<th
+							scope="col"
+							class={columnClass(column)}
+							style={
+								column.ink
+									? `--col-ink:var(--${column.ink})`
+									: undefined
+							}
+						>
+							{column.label}
+						</th>
+					))
+				}
+			</tr>
+		</thead>
+		<tbody>
+			{
+				rows.map((row) => (
+					<tr class="record-matrix__row">
+						<th scope="row" class="record-matrix__label">
+							{row.label}
+						</th>
+						{columns.map((column, index) => {
+							const value = valueAt(row, index);
+
+							return (
+								<td class={cellClass(column, value)}>
+									{value}
+								</td>
+							);
+						})}
+					</tr>
+				))
+			}
+		</tbody>
+	</table>
+</div>

@@ -1,0 +1,112 @@
+// RecordPair - two things read against each other: two pods of equal height,
+// each with a title bar and a body, under one shared caption. One column on a
+// phone, two columns from 768px - the pods stack rather than shrink.
+//
+// Publishes:
+//   .record-pair                the pair shell - the two pods and the shared caption
+//   .record-pair__pod           one pod; the two are equal height
+//   .record-pair__pod--subject  the pod the other one is read against
+//   .record-pair__bar           a pod's title bar
+//   .record-pair__label         the title-bar label
+//   .record-pair__body          the pod's body
+//   .record-pair__caption       the caption shared below both pods
+//
+// Equal height is the grid's own stretch, not a matched value: the two pods are
+// items of one row, neither sets a height, and the body grows to fill the pod so
+// its text sits at the top of whatever height the row takes. Nothing is
+// vertically centred - a centred body reads as a card, not as a record.
+//
+// The subject is the ink-inverted pod, one per pair. The inverted ink carries
+// into the frame and the title-bar rule, because `--Border` is a creme-canvas
+// hairline and would vanish on the fill. The fill is the whole difference: flat,
+// no radius, no lift.
+//
+// Owned by B7. S1 publishes the skeleton; B7 refines the values, never the
+// names.
+
+@use "../Mixin" as *;
+
+.record-pair {
+	display: grid;
+	grid-template-columns: 1fr;
+	align-items: stretch;
+	gap: var(--space-reading);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	@include bp(768px) {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+// `.emphasis-standard` reproduced here rather than applied as a class, so the
+// block stays self-contained: `--Card` fill plus a hairline frame. Radius is
+// left unwritten - its initial value is already the 0 this identity wants.
+.record-pair__pod {
+	@include hairline;
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	background: var(--Card);
+	color: var(--Foreground);
+}
+
+.record-pair__pod--subject {
+	@include ink-invert;
+	border-color: currentColor;
+}
+
+.record-pair__pod--subject .record-pair__bar {
+	border-bottom-color: currentColor;
+}
+
+// `mono-meta` and the body both carry `--Foreground`; on the inverted fill the
+// pod's own ink is the readable one.
+.record-pair__pod--subject .record-pair__label,
+.record-pair__pod--subject .record-pair__body {
+	color: inherit;
+}
+
+.record-pair__bar {
+	@include hairline(bottom);
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-tight);
+	padding: var(--space-tight) var(--space-reading);
+}
+
+.record-pair__label {
+	@include mono-meta;
+	@include track;
+	margin: 0;
+	color: var(--Foreground);
+}
+
+.record-pair__body {
+	flex: 1 1 auto;
+	margin: 0;
+	padding: var(--space-reading);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--Foreground);
+}
+
+.record-pair__body p {
+	margin: 0;
+}
+
+.record-pair__body p + p {
+	margin-top: var(--space-reading);
+}
+
+// The caption spans both columns: it is the one statement made about the pair
+// as a pair - the shared floor, or the verdict.
+.record-pair__caption {
+	grid-column: 1 / -1;
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--Foreground);
+}

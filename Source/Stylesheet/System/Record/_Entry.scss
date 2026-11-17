@@ -1,0 +1,132 @@
+// RecordEntry - one record in a set (element, edition, article, doc): index
+// marker, optional glyph, name, chip row, one-paragraph body, optional link.
+//
+// The index is displayed verbatim, so nothing here re-cases it: no
+// `text-transform` on the index or on the chips (the chips carry the caller's
+// labels as written, `WebGPU` stays `WebGPU`). Tracking is a letter-spacing
+// value, not the `track` mixin, for exactly that reason.
+//
+// Publishes:
+//   .record-entry               the entry shell - the white card surface
+//   .record-entry__index        the `# NAME_01` marker, verbatim
+//   .record-entry__glyph        a leading glyph (↳, 〈〉, #) when the record carries one
+//   .record-entry__name         the record's name, the entry's own heading
+//   .record-entry__link         the name, as a link, when the entry leads somewhere
+//   .record-entry__arrow        the `→` in front of that linked name
+//   .record-entry__chips        the chip row
+//   .record-entry__chip         one short label in that row
+//   .record-entry__body         one paragraph - the entry's claim
+//
+// Owned by B2.
+//
+// The `.emphasis-standard` surface is reproduced here instead of being applied
+// as a class, so the block is self-contained: `--Card` fill and a hairline all
+// round. The card is flat by construction - corners stay square and the surface
+// carries no elevation, so neither property is written out at all: their
+// initial values already say so, and a written value would put a literal in a
+// partial that must carry none.
+//
+// Hover is flat: the link's underline ink moves to `--Primary` and nothing else
+// moves - no lift, no elevation, no border colour, no corner change.
+
+@use "../Mixin" as *;
+
+.record-entry {
+	@include hairline;
+	background: var(--Card);
+	color: var(--Foreground);
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	grid-template-areas:
+		"index glyph"
+		"name name"
+		"chips chips"
+		"body body";
+	column-gap: var(--space-tight);
+	row-gap: var(--space-tight);
+	align-items: baseline;
+	min-width: 0;
+	margin: 0;
+	padding: var(--space-reading);
+
+	// A phone-width column reads denser; from one column of a record grid up,
+	// the rows get the reading rhythm instead.
+	@include bp(640px) {
+		row-gap: var(--space-reading);
+	}
+}
+
+.record-entry__index {
+	@include mono-meta;
+	grid-area: index;
+	letter-spacing: 0.08em;
+	white-space: nowrap;
+}
+
+.record-entry__glyph {
+	@include mono-meta;
+	grid-area: glyph;
+	justify-self: end;
+	color: var(--Accent);
+}
+
+.record-entry__name {
+	grid-area: name;
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-sub);
+	font-weight: 500;
+	line-height: var(--type-sub-line);
+	color: var(--Foreground);
+}
+
+.record-entry__link {
+	color: inherit;
+	text-decoration-line: underline;
+	text-decoration-color: var(--MuteForeground);
+	text-underline-offset: 0.2em;
+}
+
+.record-entry__link:hover {
+	text-decoration-color: var(--Primary);
+}
+
+.record-entry__link:focus-visible {
+	outline: 1px solid var(--Primary);
+	outline-offset: 0.15em;
+}
+
+// The arrow is followed by a real space in the markup, so a copied link reads
+// `→ MOUNTAIN`; this margin is only the hairline of extra air on top of it.
+.record-entry__arrow {
+	margin-inline-end: 0.1em;
+}
+
+.record-entry__chips {
+	grid-area: chips;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+// Hairline frame, no fill: a filled chip is `.tag-mono`'s job and belongs to
+// the ledger, not to the record grid.
+.record-entry__chip {
+	@include mono-meta;
+	@include hairline;
+	letter-spacing: 0.08em;
+	padding: 0.125rem var(--space-tight);
+	color: var(--MuteForeground);
+}
+
+.record-entry__body {
+	grid-area: body;
+	margin: 0;
+	max-width: 62ch;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--Foreground);
+}

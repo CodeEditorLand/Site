@@ -1,0 +1,116 @@
+// RecordMatrix - comparison across columns: a real table, hairline rules, one
+// ink per column, and no interaction at all.
+//
+// Publishes:
+//   .record-matrix                  the shell - scrolls sideways, never wraps a cell
+//   .record-matrix__table           the table itself
+//   .record-matrix__caption         caption under the matrix
+//   .record-matrix__head            the header row
+//   .record-matrix__column          one header cell
+//   .record-matrix__column--center  a header cell centred over its column
+//   .record-matrix__row             one data row
+//   .record-matrix__label           the row's label cell, the first column
+//   .record-matrix__cell            one data cell
+//   .record-matrix__cell--center    a data cell centred under its header
+//   .record-matrix__cell--yes       a positive mark
+//   .record-matrix__cell--no        a negative mark
+//
+// One custom property carries what a class cannot, set by the block from
+// `MatrixColumn.ink`:
+//   --col-ink   a token name the block resolves to `var(--<ink>)`, so this
+//               file never carries a literal colour. Falls back to --Foreground,
+//               which is the ink an unmarked column gets.
+//
+// The table is the thing that overflows, not the page: every cell refuses to
+// wrap, so a wide matrix grows the table and the shell scrolls it. That is the
+// whole mobile behaviour - there is no collapse rule below 640, because a
+// comparison folded into cards is no longer a comparison. The rules are the
+// row separators only: no zebra, no fill, no radius.
+//
+// Owned by B4. S1 published the skeleton; B4 refines the values, never the
+// names.
+
+@use "../Mixin" as *;
+
+.record-matrix {
+	overflow-x: auto;
+	padding-block-end: var(--space-tight);
+}
+
+.record-matrix__table {
+	width: 100%;
+	border-collapse: collapse;
+	@include hairline(top);
+}
+
+.record-matrix__caption {
+	@include mono-meta;
+	caption-side: bottom;
+	text-align: left;
+	padding-block-start: var(--space-tight);
+}
+
+.record-matrix__head {
+	@include hairline(bottom);
+}
+
+.record-matrix__column {
+	@include mono-meta;
+	@include track(0.08em);
+	color: var(--col-ink, var(--Foreground));
+	text-align: left;
+	vertical-align: bottom;
+	padding: var(--space-tight) var(--space-reading) var(--space-tight) 0;
+
+	&:last-child {
+		padding-inline-end: 0;
+	}
+}
+
+.record-matrix__column--center {
+	text-align: center;
+}
+
+.record-matrix__row {
+	@include hairline(bottom);
+}
+
+.record-matrix__label {
+	@include mono-meta;
+	// The mixin's face and size, but a row label is a key rather than a caption,
+	// so its ink stays at --Foreground: it is what the eye returns to on every
+	// row, and muting it would leave the cells floating.
+	color: var(--Foreground);
+	text-align: left;
+	vertical-align: baseline;
+	white-space: nowrap;
+	padding: var(--space-tight) var(--space-reading) var(--space-tight) 0;
+}
+
+.record-matrix__cell {
+	font-family: var(--FontMono);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--Foreground);
+	text-align: left;
+	vertical-align: baseline;
+	white-space: nowrap;
+	padding: var(--space-tight) var(--space-reading) var(--space-tight) 0;
+
+	&:last-child {
+		padding-inline-end: 0;
+	}
+}
+
+.record-matrix__cell--center {
+	text-align: center;
+}
+
+.record-matrix__cell--yes {
+	color: var(--Accent);
+	font-weight: 500;
+}
+
+.record-matrix__cell--no {
+	color: var(--MuteForeground);
+}

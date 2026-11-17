@@ -1,0 +1,57 @@
+---
+/**
+ * AuthShell - the one frame every account, OAuth and verify route renders.
+ *
+ * Anatomy: /KICKER, the surface name as the page's single `h1`, one
+ * supporting sentence, the form or state report on an `.emphasis-standard`
+ * surface, and one alternate action as a plain hairline link.
+ *
+ * The frame is `.astro` (no JavaScript); each route's island renders inside
+ * the slot and owns only its own fields, states and handlers. The shell never
+ * knows what the island does - which is what makes all eight routes agree.
+ *
+ * The measure is narrow by default (28rem, the card's rule for a form). The
+ * account index passes `measure="wide"` because it carries the profile field
+ * table, not a form - reported on the card rather than silently widened.
+ */
+import type { AuthFrame } from "./Type.js";
+
+interface Props {
+	frame: AuthFrame;
+	measure?: "narrow" | "wide";
+	class?: string;
+}
+
+const { frame, measure = "narrow", class: ClassName } = Astro.props;
+
+const { kicker, heading, sentence, action } = frame;
+---
+
+<main
+	id="main-content"
+	class:list={["auth-shell", `auth-shell--${measure}`, ClassName]}
+>
+	<div class="auth-shell__inner">
+		<header class="auth-shell__header">
+			<p class="auth-shell__kicker">{kicker}</p>
+			<h1 class="auth-shell__heading type-section">{heading}</h1>
+			{
+				sentence && (
+					<p class="auth-shell__sentence type-sub">{sentence}</p>
+				)
+			}
+		</header>
+		<div class="auth-shell__surface emphasis-standard">
+			<slot />
+		</div>
+		{
+			action && (
+				<a class="auth-shell__alternate" href={action.href}>
+					{action.label}
+					{"\u2001"}
+					<strong aria-hidden="true">&rarr;</strong>
+				</a>
+			)
+		}
+	</div>
+</main>

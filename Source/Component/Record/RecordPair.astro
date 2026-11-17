@@ -1,0 +1,70 @@
+---
+/**
+ * RecordPair - two things read against each other.
+ *
+ * Two pods of equal height, each a title bar over a body, under one caption
+ * shared by both: the shared floor, or the verdict. Use it only where the two
+ * sides are read against each other - a pair is one comparison, and two cards
+ * that happen to sit side by side are not one.
+ *
+ * One subject per pair: the pod the other is read against. It is marked on the
+ * frame (`.record-pair__pod--subject`), never restated in the label. A caller
+ * that marks both pods gets the left one and a build-time warning, because two
+ * subjects would be two claims and no comparison.
+ */
+import type { Pair } from "./Type.js";
+
+interface Props {
+	/** The two pods and the caption they share. */
+	pair: Pair;
+}
+
+const { pair } = Astro.props;
+
+/**
+ * The pair's pods, left first. The order is the component's, not the caller's:
+ * the left pod is the one that takes the subject mark when both are marked.
+ */
+const Pods = [
+	{ Side: "left", Pod: pair.left },
+	{ Side: "right", Pod: pair.right },
+] as const;
+
+/** The subject pod, left first. `null` when the caller marks neither. */
+const Subject = Pods.find(({ Pod }) => Pod.subject)?.Side ?? null;
+
+if (Pods.filter(({ Pod }) => Pod.subject).length > 1) {
+	console.warn(
+		"RecordPair: both pods are marked subject - only the left one renders as the subject.",
+	);
+}
+
+/** A blank line starts a paragraph: the body keeps its own reading rhythm. */
+const Paragraphs = (Body: string): readonly string[] =>
+	Body.split(/\n{2,}/)
+		.map((Paragraph) => Paragraph.trim())
+		.filter(Boolean);
+---
+
+<div class="record-pair">
+	{
+		Pods.map(({ Side, Pod }) => (
+			<div
+				class:list={[
+					"record-pair__pod",
+					{ "record-pair__pod--subject": Side === Subject },
+				]}
+			>
+				<div class="record-pair__bar">
+					<span class="record-pair__label">{Pod.label}</span>
+				</div>
+				<div class="record-pair__body">
+					{Paragraphs(Pod.body).map((Paragraph) => (
+						<p>{Paragraph}</p>
+					))}
+				</div>
+			</div>
+		))
+	}
+	{pair.caption ? <p class="record-pair__caption">{pair.caption}</p> : null}
+</div>

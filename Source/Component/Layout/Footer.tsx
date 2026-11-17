@@ -4,8 +4,6 @@ import { useTranslation } from "react-i18next";
 
 import { LocaleSwitcher } from "./LocaleSwitcher.js";
 
-import "./Footer/Stylesheet.css";
-
 interface FooterProps {
 	Content?: Record<string, unknown>;
 }

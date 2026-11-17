@@ -1,0 +1,59 @@
+---
+// RecordEntry - one record in a set (element, edition, article, doc): index
+// marker, optional glyph, name, chip row, one-paragraph body, optional link.
+//
+// The name is the accessible label, so the glyph is decorative (`aria-hidden`)
+// and the index is meta that renders exactly as the caller wrote it - never
+// re-derived from the name, never re-cased.
+//
+// `href` makes the name the link: the anchor wraps the name and nothing else,
+// so the body stays selectable text and the card is not one big click target.
+// No `href` means no anchor at all - never an empty one.
+//
+// No script tags and no client directives: the block is static.
+import type { Entry } from "./Type.js";
+
+/**
+ * `Entry` plus the one additive page hook: a composing page needs to place the
+ * entry in its own grid, and `class` is the pass-through the sibling blocks
+ * publish. Nothing else is added - the six `Entry` fields are the whole surface.
+ */
+type Props = Entry & { readonly class?: string };
+
+const { index, name, glyph, chips, body, href, class: ClassName } = Astro.props;
+---
+
+<article class:list={["record-entry", ClassName]}>
+	<p class="record-entry__index">{index}</p>
+	{
+		glyph ? (
+			<span class="record-entry__glyph" aria-hidden="true">
+				{glyph}
+			</span>
+		) : null
+	}
+	<h3 class="record-entry__name">
+		{
+			href ? (
+				<a class="record-entry__link" href={href}>
+					<span class="record-entry__arrow" aria-hidden="true">
+						→
+					</span>{" "}
+					{name}
+				</a>
+			) : (
+				name
+			)
+		}
+	</h3>
+	{
+		chips?.length ? (
+			<ul class="record-entry__chips">
+				{chips.map((chip) => (
+					<li class="record-entry__chip">{chip}</li>
+				))}
+			</ul>
+		) : null
+	}
+	<p class="record-entry__body">{body}</p>
+</article>

@@ -1,6 +1,5 @@
 ---
-import "@Stylesheet/Base.css";
-import "@Stylesheet/UtilityClasses.css";
+import "@Stylesheet/System.scss";
 
 import Background from "../Background.astro";
 import { ErrorBoundary } from "../Component/ErrorBoundary";
@@ -84,9 +83,6 @@ const T = GetI18n();
 				href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=optional"
 			/>
 		</noscript>
-		<style is:global>
-			@import "@Stylesheet/Global.css";
-		</style>
 		<style is:inline>
 			/* Mermaid diagrams render ink-on-white via the Base.css token
 			   overrides (var(--CardForeground) / var(--Card)) - no invert

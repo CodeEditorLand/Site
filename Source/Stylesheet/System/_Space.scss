@@ -1,0 +1,58 @@
+/* .prose-flow - one spacing mechanism for a prose block. Every child after the
+   first is separated by --space-reading, and the block itself contributes no
+   margin, so it cannot compound with a parent's gap or a child's mb-*. */
+.prose-flow > * + * {
+	margin-block-start: var(--space-reading);
+}
+
+/* .prose-flow--group - the same mechanism at --space-group: a figure and its
+   caption, an explanation and the evidence it introduces. Declared after
+   .prose-flow so it wins when both classes are on the same element. */
+.prose-flow--group > * + * {
+	margin-block-start: var(--space-group);
+}
+
+/* .figure-caption - the caption under a figure. Measure-capped so a caption
+   never runs wider than a comfortable line. */
+.figure-caption {
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+	max-width: 62ch;
+}
+
+/* ─── BANDS ────────────────────────────────────────────────────────────── */
+
+/* .band - one subject. Opened by a hairline rule and --space-chapter, so a
+   band boundary is never a spacer div. */
+.band {
+	width: 100%;
+	padding-block: var(--space-chapter);
+	border-top: 1px solid var(--Border);
+}
+
+/* .band--paper - white card surface. .band--canvas - the creme canvas.
+   Alternation carries the rhythm: never two paper bands in a row, never
+   three canvas bands in a row. */
+.band--paper {
+	background: var(--Card);
+}
+
+.band--canvas {
+	background: var(--Background);
+}
+
+/* .band--flush - the first band after the header: no rule above it, because
+   the header already ends the page. */
+.band--flush {
+	border-top: 0;
+}
+
+/* .band-inner - the one inner container. Same max width and gutters on every
+   page, so no band re-invents its own container. */
+.band-inner {
+	max-width: 72rem;
+	margin-inline: auto;
+	padding-inline: clamp(1rem, 4vw, 2.5rem);
+	width: 100%;
+}

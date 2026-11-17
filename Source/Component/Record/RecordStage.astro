@@ -1,0 +1,50 @@
+---
+// RecordStage - an ordered process: a rail of numbered steps.
+//
+// The site describes several sequences in prose (Mountain starts the native
+// process, Cocoon hosts extensions, Sky renders the interface, Wind applies
+// configuration). Prose is the wrong shape for an order a reader must hold, so
+// a stage is one step of a rail: an index, a label and one line. A step that
+// needs a paragraph is not a step.
+//
+// The index is printed exactly as the caller writes it - `01`, `02`, or `A`,
+// `B`. The block never renumbers and never derives a number from the position,
+// because the caller's numbering is itself a fact (a `01`-prefixed rail and an
+// `A`-prefixed one are two different processes).
+//
+// No script and no client directive: the rail is a list, not a stepper. There
+// is nothing to click through, so there is nothing to hydrate.
+import type { Stage } from "./Type.js";
+
+interface Props {
+	/** The steps, in order. Order is the content: nothing here sorts. */
+	stages: readonly Stage[];
+
+	/**
+	 * `row` lays the rail across the band, `stack` runs it down its left edge.
+	 * Below 1024px the rail is a stack whatever this says - the stylesheet owns
+	 * that switch, so a page never has to know the breakpoint.
+	 */
+	orientation?: "row" | "stack";
+}
+
+const { stages, orientation } = Astro.props;
+---
+
+<ol class={`record-stage record-stage--${orientation ?? "row"}`}>
+	{
+		stages.map((stage) => (
+			<li class="record-stage__item">
+				<span class="record-stage__index">{stage.index}</span>
+				{stage.href ? (
+					<a class="record-stage__label" href={stage.href}>
+						{stage.label}
+					</a>
+				) : (
+					<span class="record-stage__label">{stage.label}</span>
+				)}
+				<span class="record-stage__line">{stage.line}</span>
+			</li>
+		))
+	}
+</ol>

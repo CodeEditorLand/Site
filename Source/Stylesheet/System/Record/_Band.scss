@@ -1,0 +1,159 @@
+// RecordBand - the section grammar itself: one subject per band, opened by a
+// kicker and a heading, with an optional standfirst, index strip and footnote.
+// Surface alternation carries the rhythm: never two paper bands in a row, never
+// three canvas bands in a row.
+//
+// Publishes:
+//   .record-band                the band shell: full width, chapter spacing, top hairline
+//   .record-band--paper         white card surface
+//   .record-band--canvas        the creme canvas (default)
+//   .record-band--flush         first band after the header - no top rule
+//   .record-band__inner         the one inner container, on the band gutters
+//   .record-band__kicker        the /SECTION LABEL opening the band
+//   .record-band__heading       the band's single h2
+//   .record-band__standfirst    one sentence, at most two lines
+//   .record-band__index         the index strip above the body, one cell per marker
+//   .record-band__index-item    one link in that strip
+//   .record-band__body          the band's content
+//   .record-band__footnote      provenance, caveat or source line
+//
+// Owned by B1. S1 publishes the skeleton; B1 refines the values, never the
+// names.
+
+@use "../Mixin" as *;
+
+// ─── The shell ────────────────────────────────────────────────────────────
+// A band is separated from the one above it by a hairline rule and the chapter
+// rhythm, never by a spacer element.
+
+.record-band {
+	@include hairline(top);
+	background: var(--Background);
+	color: var(--Foreground);
+	padding-block: var(--space-chapter);
+}
+
+// The white card surface. A white band on the creme canvas needs a lower edge
+// as well as the shell's top rule, or it has no boundary against the band
+// below it.
+.record-band--paper {
+	@include hairline(bottom);
+	background: var(--Card);
+	color: var(--CardForeground);
+}
+
+.record-band--canvas {
+	background: var(--Background);
+}
+
+// The first band after the header. Same canvas surface, no top rule: the
+// header already ends the page, so a second rule there would be two.
+.record-band--flush {
+	border-top: none;
+}
+
+// ─── The inner container ──────────────────────────────────────────────────
+
+.record-band__inner {
+	@include band-inner;
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+
+// ─── The header block: kicker, heading, standfirst, index ─────────────────
+
+.record-band__kicker {
+	@include mono-meta;
+	@include track;
+	margin: 0;
+}
+
+.record-band__heading {
+	margin: 0;
+	max-width: var(--ContainerTwoExtraLarge);
+	font-family: var(--FontMono);
+	font-size: var(--type-section);
+	font-weight: 500;
+	line-height: var(--type-section-line);
+	letter-spacing: -0.02em;
+	color: var(--Foreground);
+	text-wrap: balance;
+}
+
+.record-band__standfirst {
+	margin: 0;
+	max-width: 62ch;
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+// The index strip: one cell per marker, wrapping. Its own top hairline
+// separates it from the header. On a wide band the cells are separated from
+// each other by a hairline too, which is why that rule is a breakpoint
+// decision: on a narrow band the cells wrap, and a leading rule at the start of
+// every second line reads as damage rather than as a strip.
+.record-band__index {
+	@include mono-meta;
+	@include track(0.08em);
+	@include hairline(top);
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight) var(--space-reading);
+	margin: 0;
+	padding: 0;
+	padding-block-start: var(--space-reading);
+}
+
+.record-band__index-item {
+	color: var(--Foreground);
+	text-decoration: none;
+}
+
+.record-band__index-item:hover,
+.record-band__index-item:focus-visible {
+	text-decoration: underline;
+}
+
+@include bp(640px) {
+	.record-band__index-item + .record-band__index-item {
+		@include hairline(left);
+		padding-inline-start: var(--space-reading);
+	}
+}
+
+// ─── The body and the footnote ────────────────────────────────────────────
+
+.record-band__body {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-reading);
+	min-width: 0;
+}
+
+.record-band__footnote {
+	@include mono-meta;
+	@include hairline(top);
+	margin: 0;
+	max-width: var(--ContainerTwoExtraLarge);
+	padding-block-start: var(--space-tight);
+}
+
+// ─── The vertical rhythm ──────────────────────────────────────────────────
+// Assigned in one place, at the end, so the two tiers read at a glance: a part
+// opens at reading distance inside the header block, a new group - the body,
+// the footnote - opens at group distance. Every part above zeroes its own
+// margins, so these two rules are the whole rhythm of the band.
+
+.record-band__heading,
+.record-band__standfirst,
+.record-band__index {
+	margin-block-start: var(--space-reading);
+}
+
+.record-band__body,
+.record-band__footnote {
+	margin-block-start: var(--space-group);
+}

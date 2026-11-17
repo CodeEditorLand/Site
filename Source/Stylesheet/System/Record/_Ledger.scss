@@ -1,0 +1,147 @@
+// RecordLedger - key/value facts and one giant figure. `<dl>` rows: mono key,
+// ink value, optional note, with at most one `lead` row at display weight. A
+// ledger has no header row; a card that needs column labels needs RecordMatrix.
+//
+// Publishes:
+//   .record-ledger              the ledger shell
+//   .record-ledger--1           rows in one column (the default, at every width)
+//   .record-ledger--2           rows in two columns at 1024px and up
+//   .record-ledger--3           rows in three columns at 1024px and up
+//   .record-ledger__row         one key/value pair
+//   .record-ledger__row--lead   the one giant figure, at display weight
+//   .record-ledger__key         mono key, e.g. TARGET, LICENSE, SIGNAL
+//   .record-ledger__value       ink value
+//   .record-ledger__note        qualifier under the value, at caption weight
+//
+// Surfaces. `quiet` is the default and the shell itself carries no fill: an
+// interior hairline divides the rows and nothing else. `standard` is the
+// published `.emphasis-standard` tier (card fill plus outer hairline) worn on
+// the same shell, and the one rule at the foot of this file adds only the inner
+// padding a filled surface needs - the fill and the frame are never retyped
+// here, because a partial that retypes a tier is a defect.
+//
+// The `--1`/`--2`/`--3` modifiers are a page-level choice, not a data field:
+// `LedgerRow` carries no column count, so a block sets the class on the shell.
+// `--3` is published for a page-authored shell; RecordLedger's `columns` prop
+// stops at 2, because three columns of facts is a RecordMatrix.
+//
+// Owned by B3. S1 published the skeleton; B3 refines the values, never the
+// names.
+
+@use "../Mixin" as *;
+
+.record-ledger {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	column-gap: var(--space-group);
+	row-gap: 0;
+	margin: 0;
+	padding: 0;
+}
+
+// The column count is a wide-screen decision. Below 1024px every ledger is one
+// column: two facts side by side in a phone-width band read as a wrapped mess.
+@include bp(1024px) {
+	.record-ledger--2 {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.record-ledger--3 {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+// A row is a key above its value until there is width for the two to sit
+// side by side (see the 640px block below).
+.record-ledger__row {
+	@include hairline(top);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+	margin: 0;
+	padding-block: var(--space-tight);
+}
+
+// A one-column ledger opens without a rule: the band heading above it already
+// ends the page, and a rule under that heading would double it. A multi-column
+// ledger keeps its top rule, because the grid's first visual row holds more
+// than one cell and a half-drawn top edge reads as a defect. `:not()` on the
+// modifiers keeps this working for a hand-authored shell that sets no modifier.
+// `border-top: 0` cancels exactly what the row's `hairline(top)` wrote.
+.record-ledger:not(.record-ledger--2):not(.record-ledger--3)
+	> .record-ledger__row:first-child {
+	border-top: 0;
+}
+
+.record-ledger__key {
+	@include mono-meta;
+	@include track;
+	margin: 0;
+}
+
+.record-ledger__value {
+	margin: 0;
+	min-inline-size: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-body);
+	font-weight: 500;
+	line-height: var(--type-body-line);
+	color: var(--Foreground);
+	overflow-wrap: break-word;
+}
+
+// The qualifier is a second line inside the value's `<dd>`, so it is a block
+// rather than a sibling: it never joins the value on one line, and it never
+// becomes a column of its own.
+.record-ledger__note {
+	display: block;
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+}
+
+// Wide enough for a key column: the key takes a fixed `min(14rem, 40%)` and the
+// value takes the rest. `flex: 0 0 auto` keeps the key from collapsing under a
+// long value, and `min-inline-size: 0` on the value lets a long path wrap
+// instead of pushing the key column narrower.
+@include bp(640px) {
+	.record-ledger__row {
+		flex-direction: row;
+		align-items: baseline;
+		gap: var(--space-reading);
+	}
+
+	.record-ledger__key {
+		flex: 0 0 auto;
+		inline-size: min(14rem, 40%);
+	}
+}
+
+// The lead row, declared after the 640px block on purpose: `--lead` and
+// `__row` have the same specificity, so source order is what keeps the lead
+// row stacked (kicker above figure) at every width. It spans the whole grid so
+// a two-column ledger never halves the one figure.
+//
+// This is the only place `--type-display` is read. The value's own rule sets
+// `--type-body`, and nothing else in this partial touches the display role, so
+// a row without `lead` cannot reach display weight by any path.
+.record-ledger__row--lead {
+	grid-column: 1 / -1;
+	flex-direction: column;
+	align-items: start;
+	padding-block: var(--space-reading);
+}
+
+.record-ledger__row--lead .record-ledger__value {
+	font-size: var(--type-display);
+	line-height: var(--type-display-line);
+	letter-spacing: -0.02em;
+}
+
+// The filled surface: the tier supplies the fill and the frame, this supplies
+// the room inside them.
+.record-ledger.emphasis-standard {
+	padding: var(--space-reading);
+}

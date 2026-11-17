@@ -1,0 +1,135 @@
+// RecordStage - an ordered process: a rail of numbered steps, each with an
+// index, a label, one line and a hairline connector. A stage that needs a
+// paragraph is not a stage.
+//
+// Publishes:
+//   .record-stage               the stage shell - a markerless list, one column
+//   .record-stage--row          the rail runs across the band (the default)
+//   .record-stage--stack        the rail runs down its left edge
+//   .record-stage__item         one step on the rail
+//   .record-stage__index        the rail number, printed as the caller wrote it
+//   .record-stage__label        the step's name - an anchor when the step has an href
+//   .record-stage__line         one line under the label
+//
+// Mobile first, and the switch is the `bp()` mixin: below 1024px the rail is a
+// stack whatever the modifier says, because four columns of a sentence are
+// unreadable in a phone-width band. `--stack` therefore carries no rules of its
+// own - it IS the base case, and only `--row` is switched on at the breakpoint.
+// A page hands over the modifier it wants and the stylesheet decides what that
+// means at the width it is read at.
+//
+// The connector is the item's own `::before`: a hairline drawn in the gutter to
+// the left of every step but the first. It is not a class, not an arrow glyph
+// and not a `Separator` - an arrow claims a direction the rail does not have,
+// and a glyph would be read as content.
+//
+// Each step's three parts sit in its own grid, so a label that wraps in one
+// column does not push its neighbours' lines down. That is the trade for a rail
+// that may hold more steps than the band holds columns: a long rail wraps into
+// a second row instead of being squeezed, and the connector leads into it.
+//
+// The hairline underline on a linked label is not declared here. The site's
+// global link rule (`_Global.scss`) already underlines an anchor in
+// `var(--Border)`, and its `:not()` chain outranks any single component rule -
+// a `border-bottom` here would draw a second line under the first, so the
+// partial leaves the underline to the one rule that wins.
+//
+// Owned by B5. S1 published the skeleton; B5 refines the values, never the
+// names.
+
+@use "../Mixin" as *;
+
+.record-stage {
+	display: grid;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+// One step, stacked: the index holds a fixed 4rem column on the left edge of
+// the rail, and the label and the line read beside it. A stage is a row, never
+// a card - no surface, no fill, no radius.
+.record-stage__item {
+	position: relative;
+	display: grid;
+	grid-template-columns: 4rem minmax(0, 1fr);
+	column-gap: var(--space-reading);
+	align-items: baseline;
+	padding-block: var(--space-tight);
+	min-width: 0;
+	list-style: none;
+}
+
+// Rows are separated by the same hairline the rest of the site uses. The first
+// step has nothing above it to be separated from.
+.record-stage__item + .record-stage__item {
+	@include hairline(top);
+}
+
+.record-stage__index {
+	@include mono-meta;
+	@include track(0.12em);
+}
+
+.record-stage__label {
+	@include mono-meta;
+	@include track(0.1em);
+	grid-column: 2;
+	margin: 0;
+	font-size: var(--type-sub);
+	font-weight: 500;
+	line-height: var(--type-sub-line);
+	color: var(--Foreground);
+}
+
+.record-stage__line {
+	grid-column: 2;
+	margin: 0;
+	max-width: 46ch;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--MuteForeground);
+}
+
+// Wide: `--row` lays the rail across the band. Steps side by side, and the
+// gutter between two of them is the connector's whole length.
+@include bp(1024px) {
+	.record-stage--row {
+		grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+		column-gap: var(--space-group);
+		row-gap: var(--space-group);
+	}
+
+	.record-stage--row .record-stage__item {
+		grid-template-columns: minmax(0, 1fr);
+		align-items: start;
+		padding-block: var(--space-tight) 0;
+	}
+
+	// The stack's row separator has no meaning across the band: the connector
+	// in the gutter is the separation here.
+	.record-stage--row .record-stage__item + .record-stage__item {
+		border-top: 0;
+	}
+
+	.record-stage--row .record-stage__label,
+	.record-stage--row .record-stage__line {
+		grid-column: 1;
+	}
+
+	// The connector: one hairline spanning the gutter, at the height of the
+	// rail's first row.
+	.record-stage--row .record-stage__item::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: calc(var(--space-group) * -1);
+		width: var(--space-group);
+		@include hairline(top);
+	}
+
+	.record-stage--row .record-stage__item:first-child::before {
+		content: none;
+	}
+}

@@ -1,0 +1,101 @@
+---
+/**
+ * RecordFigure - evidence, not illustration: a framed figure, a caption at
+ * caption weight, and the provenance line that says what the picture is
+ * evidence *of*.
+ *
+ * Three render modes, decided by what the caller hands in:
+ *
+ * - `src` + `alt` - an image, framed. The two are one field pair: `alt` is
+ *   required whenever `src` is set, so an image without alternative text
+ *   cannot compile.
+ * - the slot - composed media: a Mermaid diagram, a chart, a rendered element.
+ *   Framed the same way. The block never renders Mermaid itself; the caller
+ *   owns the diagram and its output.
+ * - neither - the caption alone, with no frame. A figure whose evidence is its
+ *   sentence (a measured claim, a quoted manifest line) needs no box drawn
+ *   around nothing.
+ *
+ * No `<script>` and no `client:*`: this block ships zero JavaScript. No
+ * lightbox, no zoom, no hover treatment - `SpecimenLabel` and
+ * `FieldRecordSeal` are the caller's decoration, and a figure is not a
+ * specimen.
+ *
+ * The caption is never numbered here. A figure index ("FIGURE 02 · ...")
+ * belongs to the caller's caption text, because only the page knows the order
+ * its figures appear in.
+ */
+import type { Figure } from "./Type.js";
+
+/** The image arm: `src` and `alt` are one indivisible pair. */
+type Picture = { readonly src: string; readonly alt: string };
+
+/**
+ * The media arm. The image arm carries `src` and `alt` together; the composed
+ * arm carries neither and uses the slot. Written as a union rather than as two
+ * loose optionals so `{ src }` without `alt` is a compile error, not a silent
+ * `alt=""` - an image whose text nobody wrote is a picture, not evidence.
+ */
+type Media =
+	| Picture
+	| { readonly src?: never; readonly alt?: never };
+
+/**
+ * The published `Figure` shape with its two loose media fields replaced by the
+ * media arm, plus the page's own class. `caption` stays required: an
+ * uncaptioned figure is decoration.
+ */
+type Props = Omit<Figure, "src" | "alt"> &
+	Media & {
+		/** Extra classes from the page, appended after the block's own. */
+		readonly class?: string;
+	};
+
+const { caption, provenance, class: Class } = Astro.props;
+
+/**
+ * The image arm as a value. A type guard rather than a truthiness test because
+ * `src` and `alt` are correlated by the union: testing `src` alone leaves `alt`
+ * a `string | undefined` at the type level, and the point of the pair is that
+ * it is never half-set.
+ */
+const IsPicture = (Value: Props): Value is Props & Picture =>
+	Value.src !== undefined;
+
+const Image = IsPicture(Astro.props)
+	? { src: Astro.props.src, alt: Astro.props.alt }
+	: undefined;
+
+/**
+ * Slot content is composed media. When a caller passes both an image and
+ * children the image wins - one figure shows one thing.
+ */
+const Composed = Astro.slots.has("default");
+---
+
+<figure class:list={["record-figure", Class]}>
+	{
+		Image ? (
+			<div class="record-figure__media">
+				<img
+					src={Image.src}
+					alt={Image.alt}
+					loading="lazy"
+					decoding="async"
+				/>
+			</div>
+		) : Composed ? (
+			<div class="record-figure__media">
+				<slot />
+			</div>
+		) : null
+	}
+	<figcaption class="record-figure__caption">
+		<span class="record-figure__caption-text">{caption}</span>
+		{
+			provenance && (
+				<span class="record-figure__provenance">{provenance}</span>
+			)
+		}
+	</figcaption>
+</figure>

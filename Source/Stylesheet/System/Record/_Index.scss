@@ -1,0 +1,11 @@
+// Record layer - the eight blocks. S1 and B1-B8 own every rule in this
+// directory; the partials below are declared and documented, not yet written,
+// so the load order is fixed before the first block lands.
+@use "Band";
+@use "Entry";
+@use "Ledger";
+@use "Matrix";
+@use "Stage";
+@use "Well";
+@use "Pair";
+@use "Figure";

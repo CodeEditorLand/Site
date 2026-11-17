@@ -12,8 +12,6 @@ import { IconTooltip } from "../UI/IconTooltip.js";
 
 import { LocaleSwitcher } from "./LocaleSwitcher";
 
-import "../Layout/Header/Stylesheet.css";
-
 const IconRegistry: Record<string, lucide.LucideIcon> = {
 	Sparkles: lucide.Sparkles,
 

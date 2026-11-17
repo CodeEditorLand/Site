@@ -1,0 +1,73 @@
+---
+/**
+ * RecordWell - a command, config block or transcript: a recessed mono body in a
+ * hairline frame, under a title bar carrying the label and the copy control.
+ *
+ * Two rules this file keeps, and a caller must not break:
+ *
+ * - Renders props only: no hydration directive, no script element. The block
+ *   ships zero JavaScript. A page that wants the copy control to work hydrates
+ *   it from its own island: select `[data-record-well-copy]` inside the well and
+ *   read the raw command from that element's `data-copy`.
+ * - The command text is in the DOM whether or not the control renders. The
+ *   `<pre>` always carries every line, so `copy: false` removes the affordance,
+ *   never the content.
+ *
+ * The copy payload is the raw command: no `$` prompt, no trailing `#` or `//`
+ * annotation, no line numbers. The body prints the prompt-free line, so the two
+ * differ only on a line the caller annotated.
+ */
+import type { Well } from "./Type.js";
+
+interface Props extends Well {
+	/** Extra classes from the page, appended after the block's own. */
+	class?: string;
+}
+
+const { label, language, lines, copy = true, class: Class } = Astro.props;
+
+/** A shell prompt is chrome, not part of the command a reader copies. */
+const Prompt = /^\$ /;
+
+/** A trailing `#` or `//` annotation is prose about a command, not the command. */
+const Annotation = /\s+(?:#|\/\/).*$/;
+
+/**
+ * One entry per printed line. The newline is carried inside the entry rather
+ * than between the spans because `.record-well__line` is a block: it already
+ * breaks the line, and whitespace between two block boxes inside a `<pre>`
+ * prints as a blank line. Keeping the newline in the text makes the `<pre>` text
+ * content equal the printed lines joined by "\n"; the last line carries none.
+ */
+const Printed = lines.map((Line, Index) =>
+	Index === lines.length - 1
+		? Line.replace(Prompt, "")
+		: `${Line.replace(Prompt, "")}\n`,
+);
+
+/** What the copy control hands the clipboard: every line, prompt and note gone. */
+const Payload = lines
+	.map((Line) => Line.replace(Prompt, "").replace(Annotation, "").trimEnd())
+	.join("\n");
+---
+
+<figure class:list={["record-well", Class]}>
+	<figcaption class="record-well__bar">
+		<span class="record-well__label">{label}</span>
+		{language && <span class="record-well__lang">{language}</span>}
+		{
+			copy && (
+				<button
+					type="button"
+					class="record-well__copy"
+					data-record-well-copy
+					data-copy={Payload}
+					aria-label={`Copy ${label} to the clipboard`}
+				>
+					<span aria-hidden="true">⧉</span> copy
+				</button>
+			)
+		}
+	</figcaption>
+	<pre class="record-well__body"><code>{Printed.map((Line) => <span class="record-well__line">{Line}</span>)}</code></pre>
+</figure>

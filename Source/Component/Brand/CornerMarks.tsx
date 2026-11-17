@@ -2,8 +2,6 @@ import React from "react";
 
 import { cn } from "../UI/Utility";
 
-import "./CornerMarks/Stylesheet.css";
-
 /**
  * CornerMarks - picture-frame corner crosshairs for white card surfaces (C19).
  *
@@ -26,7 +24,7 @@ import "./CornerMarks/Stylesheet.css";
  *
  * HOVER (implemented, CSS-only - the C19 "old-school game UI" intent):
  * the host shell that keeps the marks adds the .CornerMarkShell class
- * (see CornerMarks/Stylesheet.css). On shell hover the cursor becomes a
+ * (see System/Component/_CornerMarks.scss). On shell hover the cursor becomes a
  * pointer and each L arm slides PERPENDICULAR to itself (the horizontal
  * mark moves up/down, the vertical mark moves left/right) so the arms
  * separate at the corner and never cross - a rigid whole-line slide (no

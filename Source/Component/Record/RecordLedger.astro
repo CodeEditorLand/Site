@@ -1,0 +1,79 @@
+---
+/**
+ * RecordLedger - the site's factual spine as rows: a mono key, an ink value, an
+ * optional qualifier under the value, and at most one row at display weight.
+ *
+ * Three rules this file keeps, and a caller must not break:
+ *
+ * - No `<script>` and no `client:*`. The ledger is a definition list; nothing
+ *   about it is interactive, so it ships zero JavaScript.
+ * - It is a `<dl>`, never a table. Each row is a `<div>` holding a `<dt>` and a
+ *   `<dd>`; a page that needs column headers or a verdict row needs
+ *   RecordMatrix.
+ * - The block renders what it is given. It sorts nothing, derives nothing and
+ *   invents nothing - `lead` is a row's own field, so a page that sets it on two
+ *   rows gets two display rows, and the ledger does not police the count.
+ *
+ * The prop surface is four independent switches: `rows` alone is a quiet
+ * one-column ledger; `columns` changes only the shell's layout modifier,
+ * `surface` changes only whether the shell wears the `.emphasis-standard` tier,
+ * and each row's `note`/`lead` change only that row's own markup.
+ */
+import type { LedgerRow } from "./Type.js";
+
+interface Props {
+	/** The facts, in the order they are read. */
+	rows: readonly LedgerRow[];
+
+	/**
+	 * Layout columns: one (the default, at every width) or two, the latter only
+	 * at 1024px and up. Two columns are for a dense reference ledger, never for
+	 * two unrelated lists - that is a RecordPair.
+	 */
+	columns?: 1 | 2;
+
+	/**
+	 * `quiet` (the default) is the shell alone: interior hairlines, no fill.
+	 * `standard` adds the published `.emphasis-standard` card tier.
+	 */
+	surface?: "quiet" | "standard";
+
+	/** Extra classes from the page, appended after the block's own. */
+	class?: string;
+}
+
+const { rows, columns = 1, surface = "quiet", class: Class } = Astro.props;
+
+/**
+ * The shell's classes. `quiet` contributes none: the tier class is the only
+ * difference between the two surfaces, which is why the stylesheet can style
+ * the filled case without a second modifier of its own.
+ */
+const Shell = [
+	"record-ledger",
+	`record-ledger--${columns}`,
+	surface === "standard" ? "emphasis-standard" : null,
+	Class,
+];
+---
+
+<dl class:list={Shell}>
+	{
+		rows.map((Row) => (
+			<div
+				class:list={[
+					"record-ledger__row",
+					Row.lead ? "record-ledger__row--lead" : null,
+				]}
+			>
+				<dt class="record-ledger__key">{Row.key}</dt>
+				<dd class="record-ledger__value">
+					{Row.value}
+					{Row.note && (
+						<span class="record-ledger__note">{Row.note}</span>
+					)}
+				</dd>
+			</div>
+		))
+	}
+</dl>

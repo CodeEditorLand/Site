@@ -28,6 +28,52 @@ export default {
 				serif: ["var(--FontSans)", ...fontFamily.serif],
 			},
 
+			/* Composition foundation (Source/Stylesheet/UtilityClasses.css).
+			 * Seven type roles, each carrying its own line-height so a utility
+			 * never needs a second `leading-*` class. `section` also carries the
+			 * band-heading tracking. Names are API: sibling cards compose with
+			 * `text-display` ... `text-code`. */
+			fontSize: {
+				display: [
+					"var(--type-display)",
+					{ lineHeight: "var(--type-display-line)" },
+				],
+
+				section: [
+					"var(--type-section)",
+					{
+						lineHeight: "var(--type-section-line)",
+
+						letterSpacing: "-0.02em",
+					},
+				],
+
+				sub: [
+					"var(--type-sub)",
+					{ lineHeight: "var(--type-sub-line)" },
+				],
+
+				body: [
+					"var(--type-body)",
+					{ lineHeight: "var(--type-body-line)" },
+				],
+
+				caption: [
+					"var(--type-caption)",
+					{ lineHeight: "var(--type-caption-line)" },
+				],
+
+				meta: [
+					"var(--type-meta)",
+					{ lineHeight: "var(--type-meta-line)" },
+				],
+
+				code: [
+					"var(--type-code)",
+					{ lineHeight: "var(--type-code-line)" },
+				],
+			},
+
 			typography: {
 				DEFAULT: {
 					css: {

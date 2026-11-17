@@ -1,0 +1,57 @@
+---
+// RecordBand - the section grammar itself. One subject per band, opened by a
+// kicker and a heading, with an optional standfirst, index strip and footnote.
+//
+// The anatomy is the same on every page, so it lives here once instead of being
+// retyped per page: kicker, heading, standfirst, index strip, body, footnote.
+//
+// Three decisions worth knowing before you compose a band:
+//
+// - The band is a section with the page's only level-two heading inside it. The
+//   page owns the only level-one heading; a block never renders one.
+// - The kicker is printed exactly as the caller wrote it. The `/LABEL` voice is
+//   the caller's to supply - this block never invents the leading slash and
+//   never re-cases the text.
+// - The band adds no second expressive element. Exactly one thing per band may
+//   be ink-inverted, and which thing that is belongs to the page, not here.
+//
+// `tone` picks the surface: `paper` (white card), `canvas` (creme, the default)
+// or `flush` (the first band after the header, which drops its top rule).
+//
+// No client-side script and no hydration directive: the block is static.
+import type { Band } from "./Type.js";
+
+interface Props {
+	band: Band;
+}
+
+const { band } = Astro.props;
+const tone = band.tone ?? "canvas";
+---
+
+<section class={`record-band record-band--${tone}`}>
+	<div class="record-band__inner">
+		<p class="record-band__kicker">{band.kicker}</p>
+		<h2 class="record-band__heading">{band.heading}</h2>
+		{
+			band.standfirst ? (
+				<p class="record-band__standfirst">{band.standfirst}</p>
+			) : null
+		}
+		{
+			band.index?.length ? (
+				<nav class="record-band__index" aria-label={band.heading}>
+					{band.index.map((item) => (
+						<a class="record-band__index-item" href={item.href}>
+							{item.label}
+						</a>
+					))}
+				</nav>
+			) : null
+		}
+		<div class="record-band__body">
+			<slot />
+		</div>
+		{band.footnote ? <p class="record-band__footnote">{band.footnote}</p> : null}
+	</div>
+</section>

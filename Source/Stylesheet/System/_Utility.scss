@@ -135,34 +135,39 @@
 
 /* ─── TYPOGRAPHY PATTERNS ──────────────────────────────────────────────── */
 
-/* .eyebrow - section eyebrow label - mono, uppercase, tracked */
+/* .eyebrow - section eyebrow label - mono, uppercase, tracked.
+   Size from --type-meta; the wide 0.25em tracking is this class's own voice. */
 .eyebrow {
 	font-family: var(--FontMono);
-	font-size: 0.875rem;
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
 	text-transform: uppercase;
 	letter-spacing: 0.25em;
 	color: var(--MuteForeground);
 }
 
-/* .headline - mono display, 4 scales only per design system */
+/* .headline - mono display. Size comes from --type-display, which is already a
+   fluid clamp, so the old 2.25rem -> 3rem breakpoint ladder is gone: the role
+   governs the scale. */
 .headline {
 	font-family: var(--FontSans);
-	font-size: 2.25rem;
-	line-height: 2.5rem;
+	font-size: var(--type-display);
+	line-height: var(--type-display-line);
 	font-weight: 400;
 	letter-spacing: -0.025em;
 }
 @media (min-width: 640px) {
 	.headline {
-		font-size: 3rem;
-		line-height: 1;
+		font-size: var(--type-display);
+		line-height: var(--type-display-line);
 	}
 }
 
 /* .section-label - small mono section label */
 .section-label {
 	font-family: var(--FontMono);
-	font-size: 0.875rem;
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
 	font-weight: 500;
 	text-transform: uppercase;
 	letter-spacing: 0.05em;
@@ -172,7 +177,8 @@
 /* .nav-label - navigation link label, mono uppercase */
 .nav-label {
 	font-family: var(--FontMono);
-	font-size: 0.875rem;
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
 	font-weight: 500;
 	text-transform: uppercase;
 	letter-spacing: 0.1em;
@@ -181,8 +187,8 @@
 /* .card-title-mono - mono card heading */
 .card-title-mono {
 	font-family: var(--FontMono);
-	font-size: 0.875rem;
-	line-height: 1.375;
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
 	font-weight: 500;
 	letter-spacing: -0.025em;
 }
@@ -192,7 +198,8 @@
 	background-color: var(--Mute);
 	padding: 0.125rem 0.5rem;
 	font-family: var(--FontMono);
-	font-size: 13px;
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
 	letter-spacing: 0.025em;
 	color: var(--MuteForeground);
 }
