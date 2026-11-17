@@ -1,0 +1,62 @@
+---
+/**
+ * Trail - the site's one breadcrumb grammar.
+ *
+ * `DESIGN.md` §9 Q3 found two trail grammars in the tree - the mono `/LABEL`
+ * strip on Contact and Blog, and the plain `Home /` list on Contributing,
+ * License, the two legal pages, the doc article and the account index - and
+ * settled on the mono form: a trail is a Route Strip artifact (§1.8), not a
+ * detail of whichever page first needed one.
+ *
+ * The grammar, in three rules:
+ *
+ * - **The label is printed as the caller wrote it, `/`-prefixed.** `/HOME`,
+ *   `/DASHBOARD`, `/ACCOUNT`. The component adds nothing to it.
+ * - **The leading slash is the only separator.** There is no separator element
+ *   between crumbs, because a second `/` prints the grammar twice.
+ * - **The current page is not a link.** The last crumb is a `<span>` carrying
+ *   `aria-current="page"`, and the `href` is absent rather than empty.
+ *
+ * It publishes `.trail`, `.trail__list`, `.trail__item`, `.trail__link` and
+ * `.trail__current` from `System/Component/Route/_Trail.scss`.
+ *
+ * No script and no hydration: a trail is markup. It is also not a heading - the
+ * trail says where the reader is, and the page's `h1` says what they are reading.
+ *
+ * This component absorbs `Component/Contact/ContactBreadcrumb.astro` and
+ * `System/Component/Contact/_Breadcrumb.scss`, which were the same trail under a
+ * surface's own name; both files are kept and marked absorbed rather than
+ * deleted, and this file is the survivor.
+ */
+import type { TrailItem } from "./Type.js";
+
+interface Props {
+	/** The crumbs, first to last. The last one is the current page. */
+	trail: readonly TrailItem[];
+
+	/** A class the page adds to the shell, for its own spacing. */
+	class?: string;
+}
+
+const { trail, class: Class } = Astro.props;
+---
+
+<nav class:list={["trail", Class]} aria-label="Breadcrumb">
+	<ol class="trail__list">
+		{
+			trail.map((Item) => (
+				<li class="trail__item">
+					{Item.href ? (
+						<a class="trail__link" href={Item.href}>
+							{Item.label}
+						</a>
+					) : (
+						<span class="trail__current" aria-current="page">
+							{Item.label}
+						</span>
+					)}
+				</li>
+			))
+		}
+	</ol>
+</nav>

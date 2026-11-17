@@ -17,10 +17,16 @@
  */
 import type TransparencyContent from "../Interface/Content/Transparency.js";
 
+import type { LedgerRow, MatrixColumn } from "../../Record/Type.js";
+
 import type {
 	ManifestCopy,
 	ManifestPlatform,
 	Mark,
+	Regions,
+	Release,
+	RequirementsPanel,
+	SupportedOS,
 	Translate,
 } from "./Type.js";
 
@@ -420,5 +426,176 @@ export function Transparency(T: Translate): TransparencyContent {
 		MatrixPermutation: 16,
 
 		SourceURL: "https://github.com/CodeEditorLand/Land",
+	};
+}
+
+// ─── Requirements: what a build needs ─────────────────────────────────────
+// Recovered from `3480853ac^` and merged with the two-panel form it replaced.
+// The figures are the ones both forms carried and they agree: the minimum is the
+// row's value, the recommendation is the same fact stated larger, which is why
+// the recovered `.astro` travelled it as the row's `note` ("Recommended: 8 GB
+// RAM") and the `.tsx` as a second panel. Here it is both - one panel each, so
+// the reader compares two columns instead of reading a note under every row.
+//
+// The labels carry their colons: a compact label is `KEY:` in this grammar, and
+// the recovered rows printed bare words.
+
+export function Requirements(T: Translate): readonly RequirementsPanel[] {
+	return [
+		{
+			label: T("download:systemRequirements.minimum", {
+				defaultValue: "Minimum Requirements",
+			}),
+			recommended: false,
+			rows: [
+				{
+					key: "PROCESSOR:",
+					value: "64-bit processor (x86_64 or Apple Silicon)",
+				},
+				{ key: "MEMORY:", value: "4 GB RAM" },
+				{ key: "DISK:", value: "500 MB" },
+			],
+		},
+		{
+			label: T("download:systemRequirements.recommended", {
+				defaultValue: "Recommended for the Best Experience",
+			}),
+			recommended: true,
+			rows: [
+				{
+					key: "PROCESSOR:",
+					value: "Multi-core 64-bit processor (x86_64 or Apple Silicon)",
+				},
+				{ key: "MEMORY:", value: "8 GB RAM" },
+				{ key: "DISK:", value: "1 GB SSD" },
+			],
+		},
+	];
+}
+
+/**
+ * The supported-OS strip: one chip per platform, carrying the OS floor the
+ * platform needs and, under it, the architectures and installer formats it
+ * ships.
+ *
+ * These are the recovered per-platform cards' own values, moved from three
+ * repeating ledgers into one line each. The installer phrases are the locale
+ * keys the recovered component resolved (`card.platform.*`), not new copy.
+ */
+export function OperatingSystems(T: Translate): readonly SupportedOS[] {
+	/** The one separator a compact string may use. */
+	const Quad = "\u2001";
+
+	return [
+		{
+			name: "macOS 10.15+",
+			note: [
+				"AARCH64 / X86_64",
+				T("download:card.platform.macos.universalBadge", {
+					defaultValue: "Universal Binary: Apple Silicon and Intel",
+				}),
+			].join(Quad),
+		},
+		{
+			name: "Windows 10+",
+			note: [
+				"X86_64",
+				T("download:card.platform.windows.description", {
+					defaultValue: "64-bit (x64)",
+				}),
+			].join(Quad),
+		},
+		{
+			name: "Ubuntu / Debian (deb) / Fedora (rpm)",
+			note: [
+				"X86_64",
+				T("download:card.platform.linux.description", {
+					defaultValue: "DEB, RPM, AppImage",
+				}),
+			].join(Quad),
+		},
+	];
+}
+
+/**
+ * The toolchain a source build needs, from the Prerequisites section of the
+ * Land repository's `Documentation/GitHub/Building.md`. This is not a runtime
+ * requirement - it is what the reader has to install before the commands in the
+ * record can run.
+ */
+export const Toolchain: readonly LedgerRow[] = [
+	{
+		key: "RUST:",
+		value: "1.95.0+",
+		note: "Workspace MSRV for all Rust elements",
+	},
+	{
+		key: "NODE.JS:",
+		value: "24",
+		note: "Pinned 24.22.1 in Dependency/Microsoft/Dependency/Editor/.nvmrc",
+	},
+	{ key: "PNPM:", value: "npm install -g pnpm" },
+	{ key: "GIT:", value: "Git with LFS support" },
+	{
+		key: "PROTOBUF:",
+		value: "optional",
+		note: "Only if modifying .proto files",
+	},
+];
+
+// ─── Previous releases: what has shipped before ───────────────────────────
+// Empty, and that is the fact. The region says so with §7's `RECORD: EMPTY` and
+// one sentence; the columns below are what the matrix becomes the day there is a
+// row to put in it.
+
+export const PreviousReleases: readonly Release[] = [];
+
+export const ReleaseColumns: readonly MatrixColumn[] = [
+	{ label: "PUBLISHED" },
+	{ label: "PLATFORM" },
+	{ label: "CHANGE" },
+];
+
+// ─── The record's regions ─────────────────────────────────────────────────
+// The `# RELEASE_01` artifact continues past the manifest's own fields into
+// these two regions: what a build needs, and what shipped before this release.
+// Each one is a region of the record - a `/LABEL`, an `h3` and a body - not a
+// chapter of the page. Both sit on the creme field and put their information in
+// white cards, so no region alternates a surface to make a rhythm out of it
+// (§5 A5).
+//
+// The disclosure is the record's third part and deliberately not a region: it
+// keeps its own centred heading, its three sub-blocks and its `#Transparency`
+// anchor, and the page owns only the padding it hands it (`Download/_Page.scss`).
+
+export function Regions(T: Translate): Regions {
+	return {
+		Requirements: {
+			id: "release-requirements",
+			kicker: T("download:requirements.kicker", {
+				defaultValue: "/REQUIREMENTS",
+			}),
+			heading: T("download:requirements.heading", {
+				defaultValue: "What each platform needs before it builds.",
+			}),
+			standfirst: T("download:systemRequirements.subtitle", {
+				defaultValue:
+					"A quick check before you download saves a reinstall later.",
+			}),
+			footnote: T("download:requirements.footnote", {
+				defaultValue:
+					"Minimum requirements, with the recommended figure in the panel beside it. Processor notes: your code runs at native CPU speed (minimum) and span your work across every monitor (recommended).",
+			}),
+		},
+
+		Previous: {
+			id: "release-previous",
+			kicker: T("download:previousReleases.kicker", {
+				defaultValue: "/PREVIOUS RELEASES",
+			}),
+			heading: T("download:previousReleases.heading", {
+				defaultValue: "There is nothing to go back to yet.",
+			}),
+		},
 	};
 }

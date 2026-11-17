@@ -16,13 +16,15 @@
  */
 import { Requests, type IncomeCode } from "./Request.js";
 
-/** One crumb: a label and where it leads. The last crumb is the current page. */
-export interface ContactTrailItem {
-	readonly label: string;
-
-	/** Absent on the last crumb - the current page is not a link. */
-	readonly href?: string;
-}
+/**
+ * One crumb: a label and where it leads. The last crumb is the current page.
+ *
+ * The shape is the Route surface's (`Component/Route/Type.ts`) - a trail is a
+ * Route Strip artifact, not a Contact detail - and it is re-exported under its
+ * historical name so every Contact caller keeps its import.
+ */
+export type { TrailItem as ContactTrailItem } from "../../Component/Route/Type.js";
+import type { TrailItem } from "../../Component/Route/Type.js";
 
 /** One record on the hub: its slug, its name, its sentence, and its route. */
 export interface ContactEntry {
@@ -40,12 +42,14 @@ export interface ContactEntry {
 }
 
 /**
- * The hub's trail. Two crumbs, in the site's plain voice - a breadcrumb is a
- * location, not a record marker, so it carries no slash prefix.
+ * The hub's trail. Two crumbs in the site's one breadcrumb grammar
+ * (`DESIGN.md` §9 Q3): the mono `/LABEL` form, the leading slash the only
+ * separator, so the strip reads `/HOME  /CONTACT` and no second `/` is drawn
+ * between the two.
  */
-export const ContactHubTrail: readonly ContactTrailItem[] = [
-	{ label: "Home", href: "/" },
-	{ label: "Contact" },
+export const ContactHubTrail: readonly TrailItem[] = [
+	{ label: "/HOME", href: "/" },
+	{ label: "/CONTACT" },
 ];
 
 /**

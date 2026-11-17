@@ -1,5 +1,8 @@
 ---
+import AuthShell from "../../Component/Auth/AuthShell.astro";
+import { AuthFrameFor } from "../../Component/Auth/Data";
 import Auth0Account from "../../Component/Dynamic/Auth0Account";
+import { Header } from "../../Component/Layout/Header";
 import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
 
@@ -18,16 +21,31 @@ const { Auth0Domain, Auth0ClientIdentifier } =
 
 /* Registration is closed, so this page's honest state is a report, not a
    form. The island decides that (RegistrationEnabled) and renders the report
-   with its own heading, sentence and action - the page adds none above it, and
-   mounts no site header: the baseline's `<body>` on this route is the skip
-   link, the island and the footer. */
+   with its own status line, sentence and action.
+
+   What is restored around it, and why: the functional header banner and the
+   shell's frame, both of which `3480853ac` removed by arguing only from the
+   baseline's absence (rule A2). The frame is the auth tree's only `h1`
+   (`DESIGN-COMPLETE.md` §6 X10) - this route had none - and `584d6a814` shipped
+   exactly this composition: `Header Mode="functional"` + `AuthShell` + island.
+
+   The frame's sentence and the report's sentence are two different facts: the
+   frame says account creation is not open yet, the report says what that means
+   for an existing account. Neither is removed.
+
+   No behaviour changes: the island receives the same two identifiers and the
+   same `Route`. */
+const Frame = AuthFrameFor("signUp", T);
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription}>
-	<Auth0Account
-		client:only="react"
-		Route="signup"
-		Domain={Auth0Domain}
-		ClientIdentifier={Auth0ClientIdentifier}
-	/>
+	<Header client:load Mode="functional" slot="Header" />
+	<AuthShell Label="Create an account" Frame={Frame}>
+		<Auth0Account
+			client:only="react"
+			Route="signup"
+			Domain={Auth0Domain}
+			ClientIdentifier={Auth0ClientIdentifier}
+		/>
+	</AuthShell>
 </Base>

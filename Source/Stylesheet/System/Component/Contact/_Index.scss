@@ -3,10 +3,15 @@
 // Every route in `Source/pages/Contact/` is built from these five components:
 //
 //   Page        ContactPage.astro       the document, header, trail and h1
-//   Breadcrumb  ContactBreadcrumb.astro the trail, in the baseline's own shape
+//   Breadcrumb  ContactBreadcrumb.astro ABSORBED into Route/Trail.astro
 //   Hub         index.astro             the fourteen-card grid and its close
 //   Form        DynamicContactForm.tsx  the request form's anatomy
 //   Sale        Sale.astro              the two-thirds / one-third enterprise page
+//
+// The trail moved to the Route surface (`Component/Route/Trail.astro`,
+// `System/Component/Route/_Trail.scss`) because a breadcrumb is a Route Strip
+// artifact, not a Contact detail (`DESIGN.md` §9 Q3). `Breadcrumb` is still
+// wired below: its rules are kept, and they are idle.
 //
 // `Shell` has no partial: `ContactShell.astro` composes `Page` and `Form` and
 // publishes no class of its own.

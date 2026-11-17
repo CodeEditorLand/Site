@@ -1,0 +1,52 @@
+// Download - the page's own composition rules.
+//
+// Publishes:
+//   .download-transparency  the disclosure island, with its own block padding removed
+//
+// Owned by P7. The page owns one thing about a component it does not own: the
+// spacing it hands it. `DynamicTransparency` is a `.tsx` island that still pads
+// its own section at `py-20`; inside the record's `/TRANSPARENCY` region, whose
+// heading and standfirst already open it, that is two rhythms fighting. The page
+// zeroes it and the region owns the distance.
+//
+// Recovered verbatim from `3480853ac^` at K6. It is live again: the island now
+// renders as the record's closing block, inside `#release-record`, so its own
+// `py-20` would double the record's separation of its parts. The page hands it
+// the `download-transparency` class and this rule takes the padding off. The
+// disclosure keeps its own centred heading, its three sub-blocks and its
+// `#Transparency` anchor - the baseline's section, with the page owning the
+// distance around it.
+
+@use "../../Mixin" as *;
+
+.download-transparency {
+	padding-block: 0;
+}
+
+// ─── The record's continuation ─────────────────────────────────────────────
+// The two regions and the disclosure are parts of the artifact the manifest band
+// opens, so the page gives them one container and one separation: the band's own
+// inner (the same 72rem and the same gutters the manifest band uses, so the two
+// blocks align column for column), the documented group distance between two
+// parts of one subject, and the chapter distance before the disclosure - which
+// is a new subject inside the record rather than another part of it.
+//
+// This is the second half of what `_Page.scss` is for: the file is the page's
+// own composition rules, and the record's composition is the page's, not the
+// manifest band's and not the disclosure island's.
+
+.download-record {
+	@include band-inner;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-group);
+	padding-block: 0 var(--space-chapter);
+}
+
+// The flex gap has already contributed one group step, so the disclosure adds
+// only the difference between the two distances - a chapter boundary, not a
+// spacer element.
+.download-record > .download-transparency {
+	margin-block-start: calc(var(--space-chapter) - var(--space-group));
+}

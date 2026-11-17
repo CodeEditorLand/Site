@@ -1,0 +1,1 @@
+import{t}from"./LocaleSwitcher.ClDDZYrt.js";export{t as LocaleSwitcher,t as default};

@@ -1,6 +1,18 @@
-// ContactBreadcrumb - the trail, in the baseline's own shape.
+// ContactBreadcrumb - ABSORBED into `System/Component/Route/_Trail.scss`.
 //
-// Publishes:
+// The trail is the site's one breadcrumb grammar (`DESIGN.md` §9 Q3): `.trail`,
+// `.trail__list`, `.trail__item`, `.trail__link`, `.trail__current`, published
+// from the Route partial and rendered by `Component/Route/Trail.astro`. That is
+// what every page now prints.
+//
+// This file is kept, not deleted - a card does not delete a partial - and it is
+// left compiling exactly as it was so nothing that still names
+// `.contact-breadcrumb` loses its styling. Nothing in `Source/` emits those
+// classes any more (`ContactBreadcrumb.astro` forwards to `Route/Trail.astro`),
+// so these rules are idle rather than wrong. A card permitted to delete a
+// partial may remove this file and its `@use` line together.
+//
+// What it published, for the record:
 //   .contact-breadcrumb            the nav shell
 //   .contact-breadcrumb__list      the ordered list, laid out as a strip
 //   .contact-breadcrumb__item      one crumb

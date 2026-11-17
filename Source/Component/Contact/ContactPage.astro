@@ -6,11 +6,15 @@
 // page opening, so it lives here once and the routes compose it.
 //
 // What the shell owns, in order: the document (`Base`), the site header, the
-// opening container, the breadcrumb trail, and - on the two pages that have one
-// - the page's `h1` and the sentence under it. What it does not own is anything
+// opening container, the trail, and - on the two pages that have one - the
+// page's `h1` and the sentence under it. What it does not own is anything
 // below that: a request route hands in its form, which prints its own `h1` (the
 // request title, inside the form's own chip row), the hub hands in its grid,
 // the sale page its two panels.
+//
+// The trail is `Component/Route/Trail.astro` - the site's one breadcrumb
+// grammar (`DESIGN.md` §9 Q3), not a Contact detail. It prints each crumb as
+// `/LABEL`, so the page reads `/HOME  /CONTACT` above its heading.
 //
 // The shell prints no record header. The baseline renders no `# CODE` /
 // `〈 〉` / `/CONTACT` line on any contact page, so the facts those three
@@ -31,7 +35,7 @@
 // No script of its own: the header is the only island here.
 import Base from "../../Layout/Base.astro";
 import { Header } from "../Layout/Header";
-import ContactBreadcrumb from "./ContactBreadcrumb.astro";
+import Trail from "../Route/Trail.astro";
 import type { ContactTrailItem } from "../../Library/Contact/Data.js";
 
 interface Props {
@@ -88,7 +92,7 @@ const {
 				`contact-page__open--${opening}`,
 			]}
 		>
-			<ContactBreadcrumb trail={trail} />
+			<Trail trail={trail} />
 
 			{
 				heading && (

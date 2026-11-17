@@ -1,0 +1,57 @@
+// Trail - the site's one breadcrumb grammar (`Component/Route/Trail.astro`).
+//
+// Publishes:
+//   .trail           the nav shell
+//   .trail__list     the ordered list, laid out as a strip
+//   .trail__item     one crumb
+//   .trail__link     a crumb that leads somewhere
+//   .trail__current  the page the reader is on
+//
+// The grammar is `DESIGN.md` §9 Q3's: a mono meta strip in muted ink, each crumb
+// printed as its own `/LABEL`, the current page at full ink. There is no
+// separator element - the leading slash inside every label is the only one, and
+// a `/` drawn between two crumbs would print the grammar twice.
+//
+// It is chrome: no fill, no rule, no second type size. The heading below it
+// carries the weight, and the page's own spacing owns the distance to it, so the
+// trail declares none of its own.
+//
+// Absorbed from `System/Component/Contact/_Breadcrumb.scss`, which published the
+// same strip as `.contact-breadcrumb*` with a separate `/` list item. That file
+// is kept and marked absorbed rather than deleted; this one is the survivor.
+
+@use "../../Mixin" as *;
+
+.trail {
+	display: block;
+}
+
+.trail__list {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	@include mono-meta;
+}
+
+.trail__item {
+	margin: 0;
+}
+
+.trail__link {
+	color: var(--MuteForeground);
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+.trail__link:hover,
+.trail__link:focus-visible {
+	color: var(--Foreground);
+}
+
+.trail__current {
+	color: var(--Foreground);
+}

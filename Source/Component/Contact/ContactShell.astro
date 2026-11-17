@@ -13,7 +13,10 @@
 // registry and a title is written once.
 //
 // The trail keeps the three destinations the routes already had: `/`, then
-// `/Dashboard`, then this request's own title.
+// `/Dashboard`, then this request's own title. The grammar is the site's one
+// breadcrumb form (`DESIGN.md` §9 Q3): each crumb prints as `/LABEL`, the
+// leading slash is the only separator, and the label is the request's title -
+// which the form then repeats as the page's `h1`, exactly as the baseline does.
 //
 // The opening is the trail alone: a request route's `h1` is the request title,
 // and the baseline prints it inside the form's chip row rather than in a page
@@ -47,9 +50,9 @@ const { Auth0Domain, Auth0ClientIdentifier } = await import(
 
 /** The trail: home, the dashboard the request is filed from, then the request. */
 const trail: readonly ContactTrailItem[] = [
-	{ label: "Home", href: "/" },
-	{ label: "Dashboard", href: "/Dashboard" },
-	{ label: Config.Title },
+	{ label: "/HOME", href: "/" },
+	{ label: "/DASHBOARD", href: "/Dashboard" },
+	{ label: `/${Config.Title.toUpperCase()}` },
 ];
 ---
 

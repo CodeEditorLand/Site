@@ -1,6 +1,7 @@
 ---
 import AuthShell from "../Component/Auth/AuthShell.astro";
 import { VerifyContent } from "../Component/Auth/Content";
+import { AuthFrameFor } from "../Component/Auth/Data";
 import { VerifyPage } from "../Component/Dynamic/VerifyPage";
 import { Header } from "../Component/Layout/Header";
 import Base from "../Layout/Base.astro";
@@ -16,6 +17,18 @@ const Token = Astro.url.searchParams.get("token");
 const Reason = Astro.url.searchParams.get("reason");
 const Route = Token ? "verify" : Reason ? "failure" : "pending";
 
+/* The frame is `/VERIFY` + the page's `h1` + one sentence + the one alternate
+   action. This is the route `DESIGN-COMPLETE.md` §6 X10 named as the last page
+   on the site with no `h1`: the baseline titles the card with an `h3` and the
+   document had nothing above it. The card's own title steps down to an `h2`
+   under it, so the page reads `h1` → `h2` → body without skipping a level.
+
+   The card is the baseline's and does not move: one centred `max-w-md`
+   `jelly-card`, the tinted icon tile, the state's title, its sentence, the email
+   field and the full-width resend button. Every state branch keeps its sentence
+   and its action. */
+const Frame = AuthFrameFor("verify", T);
+
 const MetaTitle = T("meta.verify.title", {
 	defaultValue: "Verify Email - Code Editor Land",
 });
@@ -27,7 +40,7 @@ const MetaDescription = T("verify.pending.description", {
 
 <Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
 	<Header client:load Mode="functional" slot="Header" />
-	<AuthShell Label="Email verification" Live>
+	<AuthShell Label="Email verification" Frame={Frame} Live>
 		<VerifyPage
 			Content={Verify}
 			Route={Route}

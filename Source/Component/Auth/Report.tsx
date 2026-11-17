@@ -2,11 +2,12 @@
  * AuthReport - one state inside the auth card.
  *
  * The baseline's card anatomy, as one block: an optional glyph tile, the
- * state's `h3` title, one sentence saying what happened, and the action the
+ * state's title, one sentence saying what happened, and the action the
  * reader can take now. Verify's pending state is the reference (`p-6
  * space-y-1.5 text-center` over `p-6 pt-0 space-y-6`), so every other state a
  * route can reach lands on the same surface instead of inventing a second
- * card.
+ * card. The title is an `h2`: the baseline prints an `h3` because the baseline
+ * has no page heading, and the route's `AuthShell` now supplies the `h1`.
  *
  * A branch is never a bare word: the title names the state, the sentence says
  * what it means and `Children` holds the action. A state with no sentence is
@@ -26,7 +27,14 @@ const Glyphs: Record<Glyph, typeof Mail> = {
 };
 
 interface Props {
-	/** The state's own name - an `h3`, the level the baseline prints. */
+	/**
+	 * The state's own name - an `h2`, one level under the shell's `h1`.
+	 *
+	 * The baseline prints it as an `h3` because the baseline has no page heading
+	 * at all. Once `AuthShell` supplies the page's `h1` (`DESIGN-COMPLETE.md` §6
+	 * X10), a state title one level under it is an `h2`; keeping the `h3` would
+	 * skip a level between the page and its own state.
+	 */
 	Title: string;
 
 	/** What happened, in one sentence (or one composed paragraph). */
@@ -61,9 +69,9 @@ const AuthReport = ({ Title, Sentence, Glyph, Role, Children }: Props) => {
 					</div>
 				)}
 
-				<h3 className="font-mono text-2xl font-medium tracking-tight">
+				<h2 className="font-mono text-2xl font-medium tracking-tight">
 					{Title}
-				</h3>
+				</h2>
 
 				<p className="text-card-foreground text-sm opacity-70">{Sentence}</p>
 			</div>

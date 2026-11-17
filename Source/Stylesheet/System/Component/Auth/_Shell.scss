@@ -16,6 +16,10 @@
 
 /* ─── THE FRAME ────────────────────────────────────────────────────────── */
 
+/* `section py-20` in the baseline is 5rem above the frame; the chapter token is
+   5.25rem. The token wins because this rule set is tokens-only, and the 4px is
+   the difference between two steps of the same scale - not a composition
+   change. The frame's own sections therefore carry no padding. */
 .auth-shell {
 	padding-block: var(--space-chapter);
 }
@@ -29,14 +33,25 @@
 	padding-inline: var(--space-group);
 }
 
+/* The account index is the one wide route. Its baseline measure is
+   `container max-w-5xl` - 64rem - so the wide frame is that container, not the
+   72rem the frame was first written against: the frame may not widen a page the
+   baseline measured. */
 .auth-shell--wide .auth-shell__inner {
-	max-width: calc(var(--ContainerSixExtraLarge) + var(--space-group) * 2);
+	max-width: calc(var(--ContainerFiveExtraLarge) + var(--space-group) * 2);
 }
 
 .auth-shell__header {
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-tight);
+}
+
+/* A frame that opens a page on its own - the OAuth result route prints it above
+   its own card rather than inside the shell's column - needs the distance the
+   shell's own flex gap would have given it. */
+.auth-shell__header--opening {
+	margin-block-end: var(--space-group);
 }
 
 /* The /SECTION LABEL opening the frame. Type and colour only - no rule, no
@@ -60,12 +75,14 @@
 }
 
 /* The form's surface. `.emphasis-standard` supplies the fill and the hairline;
-   this only spaces what sits on it. */
+   the element is a `jelly-card` that sets its own padding to zero, because every
+   interior block carries the baseline's own `p-6`. So this rule supplies the
+   rhythm and no padding: a second pad here would double every card's inset. */
 .auth-shell__surface {
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-group);
-	padding: var(--space-group);
+	padding: 0;
 }
 
 /* The alternate action: a plain hairline link, never a second button. */
@@ -355,11 +372,18 @@
 	margin: 0;
 }
 
-/* ─── THE BREADCRUMB ───────────────────────────────────────────────────── */
+/* ─── THE BREADCRUMB - ABSORBED ────────────────────────────────────────── */
 
-/* Only the account index carries one: the frame's alternate action returns to
-   the editor, but the dashboard is a second destination the reader came from.
-   It reads as position, not as a second navigation grammar. */
+/* The account index's row is the site's one trail now
+   (`Component/Route/Trail.astro`, `System/Component/Route/_Trail.scss`), so
+   nothing emits these classes any more. They are kept, not deleted - a card does
+   not delete a partial - and they are idle rather than wrong. A card permitted to
+   delete may remove this block with the markup that named it.
+
+   What they drew: a mono strip under a hairline, the account index's position
+   above the profile column. The trail keeps the mono strip and the position; the
+   hairline was this surface's own addition and the baseline's breadcrumb has no
+   rule, so the trail declares none. */
 .auth-shell__crumbs {
 	@include mono-meta;
 	@include hairline(bottom);

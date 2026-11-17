@@ -1,0 +1,147 @@
+// Requirements - one card per panel, plus the source-build toolchain.
+//
+// Publishes:
+//   .download-requirements              the card grid: one column, two from 1024px
+//   .download-requirements__group       one panel: its label and its ledger
+//   .download-requirements__platform    the panel's own h4, under the region's h3
+//   .download-requirements__group--recommended  the panel the site recommends
+//   .download-requirements__group--wide the card that is one fact, not one option
+//   .download-requirements__os          the supported-OS strip, full width
+//   .download-requirements__os-label    its heading
+//   .download-requirements__os-list     the chip row
+//   .download-requirements__os-chip     one platform's chip
+//   .download-requirements__os-name     the OS floor inside the chip
+//   .download-requirements__os-note     the arch and installer under it
+//
+// Owned by P7, recovered from `3480853ac^` at K6 and then merged with the
+// treatment it replaced. The recovered partial drew one card per platform plus
+// a fourth for the toolchain; the form it superseded drew two panels - minimum
+// and recommended - with the recommended one marked `border-primary`, and closed
+// on a strip of one chip per supported OS. Both are the same subject, so the
+// merge keeps the recovered grid and card anatomy and adds the two things the
+// panels carried: the recommended panel's ink border, and the OS strip. Nothing
+// is dropped: the per-platform OS, arch and installer values moved into the
+// strip's chips, where they are read as one line each instead of as three
+// repeating ledgers.
+//
+// The ledger anatomy belongs to RecordLedger and the frame belongs to the Jelly
+// element; this partial places the cards, names their headings and sets the box
+// that holds them.
+
+@use "../../Mixin" as *;
+
+.download-requirements {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-group);
+	align-items: stretch;
+}
+
+@include bp(1024px) {
+	.download-requirements {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+// The card is the Jelly element: white box on the creme field, square, hairline
+// boundary. `box-sizing` keeps that hairline from widening the grid track, and
+// the flex column lets a card's ledger fill the row height its neighbour sets.
+jelly-card.download-requirements__group {
+	@include hairline;
+	@include flat;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	box-sizing: border-box;
+	min-inline-size: 0;
+}
+
+// A platform name is data, so it is printed in the case it was written in:
+// `mono-meta` for the face and the size, then the ink and weight a card label
+// needs, and no `track()` - that mixin uppercases, and uppercasing `macOS` would
+// re-case a value. The ink is the card's own foreground, because the heading
+// sits on a white box and not on the creme field. The element is an `h4`: the
+// region's own heading is the `h3` above it, and the recovered `.astro` printed
+// the card heading at the region's level, which read as two claims of one rank.
+.download-requirements__platform {
+	@include mono-meta;
+	margin: 0;
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	font-weight: 500;
+	color: var(--CardForeground);
+}
+
+// The recommendation is a border weight, not a badge: the recovered form marked
+// this panel `border-primary`, which in this token sheet is the ink the rest of
+// the site writes in. The width stays the hairline the other cards carry, so the
+// two panels remain the same size and only one of them is drawn in full ink.
+jelly-card.download-requirements__group--recommended {
+	border-color: var(--Primary);
+}
+
+// The toolchain is not a third option beside two - it is what both of them need
+// before the source build runs - so its card takes the whole row.
+jelly-card.download-requirements__group--wide {
+	grid-column: 1 / -1;
+}
+
+// ─── The supported-OS strip ────────────────────────────────────────────────
+// The strip is a part of the region, so it paints no fill and no boundary: the
+// chips are the only boxes in it. It spans the grid because it answers for all
+// three platforms at once.
+
+.download-requirements__os {
+	grid-column: 1 / -1;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+}
+
+.download-requirements__os-label {
+	@include mono-meta;
+	margin: 0;
+	font-weight: 500;
+	color: var(--CardForeground);
+}
+
+.download-requirements__os-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+// One chip per platform: the OS floor in the card's ink, then the architectures
+// and the installer format the platform ships, in the muted ink. The chip is the
+// deeper creme the baseline used for its OS strip - the same surface its own
+// chips had, `bg-secondary` having resolved to the white card in this sheet.
+.download-requirements__os-chip {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	box-sizing: border-box;
+	padding-block: var(--space-tight);
+	padding-inline: var(--space-group);
+	background: var(--Mute);
+	min-inline-size: 0;
+}
+
+.download-requirements__os-name {
+	@include mono-meta;
+	margin: 0;
+	font-weight: 500;
+	color: var(--CardForeground);
+}
+
+.download-requirements__os-note {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}

@@ -1,5 +1,6 @@
 ---
-import { AccountCrumbs } from "../../Component/Auth/Data";
+import AuthShell from "../../Component/Auth/AuthShell.astro";
+import { AccountCrumbs, AuthFrameFor } from "../../Component/Auth/Data";
 import DynamicAccountProfile from "../../Component/Dynamic/DynamicAccountProfile";
 import DynamicAuthHeader from "../../Component/Dynamic/DynamicAuthHeader";
 import Base from "../../Layout/Base.astro";
@@ -18,9 +19,16 @@ const MetaDescription = T("meta.account.description", {
 	defaultValue: "Manage your Code Editor Land account and profile.",
 });
 
-/* The baseline's only visible copy on this route is the breadcrumb: the page
-   itself is a loading state until the profile island answers, and it carries
-   no heading, no card and no sentence of its own. */
+/* The baseline's visible copy on this route is the breadcrumb above a column
+   that is a loading state until the profile island answers. Both survive: the
+   trail is the site's one grammar and the column is the island's own, unchanged.
+
+   What is added is the frame - `/ACCOUNT`, the page's `h1`, one sentence and one
+   alternate action - because one `h1` per page is identity (`DESIGN.md` §2.1,
+   `DESIGN-COMPLETE.md` §6 X10) and this route had none. `Bare` is the shell's
+   one exception: the profile column is already a stack of cards, so the shell
+   does not put a card around it (`DESIGN.md` §1.3 forbids cards-within-cards). */
+const Frame = AuthFrameFor("account", T);
 const Crumbs = AccountCrumbs(T);
 ---
 
@@ -37,32 +45,11 @@ const Crumbs = AccountCrumbs(T);
 		ClientIdentifier={Auth0ClientIdentifier}
 	/>
 
-	<div class="container mx-auto max-w-5xl px-4">
-		<nav aria-label="Breadcrumb" class="pt-6">
-			<ol class="flex flex-wrap items-center space-x-2 text-muted-foreground">
-				{
-					Crumbs.map(({ Label, Href }, Index) => (
-						<>
-							<li>
-								{Href ? (
-									<a class="transition-colors hover:text-foreground" href={Href}>
-										{Label}
-									</a>
-								) : (
-									<span class="font-medium text-foreground">{Label}</span>
-								)}
-							</li>
-							{Index < Crumbs.length - 1 && <li class="mx-2">/</li>}
-						</>
-					))
-				}
-			</ol>
-		</nav>
-	</div>
-
-	<DynamicAccountProfile
-		client:load
-		Domain={Auth0Domain}
-		ClientIdentifier={Auth0ClientIdentifier}
-	/>
+	<AuthShell Label="Account" Measure="wide" Bare Frame={Frame} Trail={Crumbs}>
+		<DynamicAccountProfile
+			client:load
+			Domain={Auth0Domain}
+			ClientIdentifier={Auth0ClientIdentifier}
+		/>
+	</AuthShell>
 </Base>

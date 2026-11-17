@@ -1,5 +1,6 @@
 ---
 import Auth0CallbackHandler from "../../Component/Dynamic/Auth0CallbackHandler";
+import { AuthFrameFor } from "../../Component/Auth/Data";
 import { Header } from "../../Component/Layout/Header";
 import Auth0ClientIdentifier from "../../Function/Configuration/Auth0ClientIdentifier.js";
 import Auth0Domain from "../../Function/Configuration/Auth0Domain.js";
@@ -7,6 +8,17 @@ import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
 
 const T = GetI18n();
+
+/* The frame, as data: `/OAUTH CALLBACK`, the page's `h1`, one sentence. It has
+   no alternate action because the page's two endings each carry their own -
+   "Go to Dashboard" and "Back to Sign In" - and a third way out would be a
+   second action on an artifact that has exactly one.
+
+   The frame prints inside the card, above the three states, because the card is
+   the page (the baseline's centred `max-w-md` panel) and the states replace each
+   other inside it. It is what gives this route a page-level `h1`: the baseline's
+   two `h1`s are per-state, and only one of them is ever visible. */
+const Frame = AuthFrameFor("oauthSuccess", T);
 
 const MetaTitle = T("meta.oauth.success", {
 	defaultValue: "Authentication Successful - Code Editor Land",
@@ -56,6 +68,14 @@ const GoToDashboardText = T("common.oauth.goToDashboard", {
 	<section class="flex min-h-screen items-center justify-center py-20">
 		<div class="container mx-auto px-4">
 			<div class="mx-auto max-w-md text-center">
+				<header class="auth-shell__header auth-shell__header--opening">
+					<p class="auth-shell__kicker">{Frame.kicker}</p>
+					<h1 class="auth-shell__heading type-section">{Frame.heading}</h1>
+					{Frame.sentence ? (
+						<p class="auth-shell__sentence type-sub">{Frame.sentence}</p>
+					) : null}
+				</header>
+
 				<div class="StaccatoBorderShimmer StaccatoCard flat p-8">
 					<div id="LoadingState" class="flex flex-col items-center gap-4">
 						<div
@@ -70,7 +90,7 @@ const GoToDashboardText = T("common.oauth.goToDashboard", {
 						class="hidden flex-col items-center gap-4"
 					>
 						<div
-							class="flex h-12 w-12 items-center justify-center rounded-none border-2 border-green-500 text-green-500"
+							class="flex h-12 w-12 items-center justify-center rounded-none border-2 border-[color:var(--Accent)] text-[color:var(--Accent)]"
 						>
 							<svg
 								aria-hidden="true"
@@ -87,7 +107,7 @@ const GoToDashboardText = T("common.oauth.goToDashboard", {
 								<polyline points="20 6 9 17 4 12"></polyline>
 							</svg>
 						</div>
-						<h1 class="text-2xl font-medium">{SuccessTitle}</h1>
+						<h2 class="text-2xl font-medium">{SuccessTitle}</h2>
 						<p class="text-card-foreground">{SuccessRedirect}</p>
 						<a
 							href="/Dashboard"
@@ -101,7 +121,7 @@ const GoToDashboardText = T("common.oauth.goToDashboard", {
 					</div>
 
 					<div id="ErrorState" class="hidden">
-						<h1 class="mb-2 text-2xl font-medium">Sign-In Failed</h1>
+						<h2 class="mb-2 text-2xl font-medium">Sign-In Failed</h2>
 						<p id="ErrorMessage" class="mb-6 text-card-foreground">
 							{ErrorGenericText}
 						</p>

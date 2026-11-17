@@ -39,7 +39,7 @@
 	"requirements": {
 		"kicker": "/REQUIREMENTS",
 		"heading": "What each platform needs before it builds.",
-		"footnote": "Minimum requirements, with the recommended figure noted under each value. The component's two cards were Minimum Requirements and Recommended for the Best Experience. Processor notes: your code runs at native CPU speed (minimum) and span your work across every monitor (recommended).",
+		"footnote": "Minimum requirements, with the recommended figure in the panel beside it. Processor notes: your code runs at native CPU speed (minimum) and span your work across every monitor (recommended).",
 		"toolchain": "BUILD TOOLCHAIN (SOURCE)"
 	},
 	"previousReleases": {

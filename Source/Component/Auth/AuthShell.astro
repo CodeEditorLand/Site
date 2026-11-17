@@ -1,40 +1,100 @@
 ---
 /**
- * AuthShell - the one card the account and verify routes render.
+ * AuthShell - the one frame every account, OAuth and verify route renders.
  *
- * The baseline's shape, restored: a `py-20` section, a centred `max-w-md`
- * measure, and a single `jelly-card` on the canvas. The route supplies the
- * card's interior - the heading block, the fields and the states - so the
- * surfaces cannot disagree about the measure, the surface or the vertical
- * rhythm.
+ * Anatomy, restored at K7 from `584d6a814` and merged with the card the
+ * baseline prints: `/KICKER`, the surface name as the page's single `h1`, one
+ * supporting sentence, the route's own card on the canvas, and one alternate
+ * action as a plain hairline link. The route supplies the card's interior - the
+ * fields and the states - so the surfaces cannot disagree about the measure, the
+ * surface or the vertical rhythm.
  *
- * The heading is deliberately NOT the shell's. The baseline prints an `h3`
- * inside the card on Verify and on both password routes, and the account
- * index prints no heading at all, so a shell that owned an `h1` would print
- * one the baseline never had. Each route names itself inside the card.
+ * The frame is data (`AuthFrameFor` in `Auth/Data.ts`), never retyped here: a
+ * kicker, a heading and an alternate action are the three things a route could
+ * invent, and the contract in `Auth/Type.ts` is what stops it.
+ *
+ * **Why the frame came back.** `Auth0AccountGate`'s own docstring says "the page
+ * frame (header, /KICKER, h1, supporting sentence, alternate action) belongs to
+ * the route's `AuthShell` - this component renders inside that frame and owns no
+ * page chrome", and `3480853ac` removed the frame while leaving that sentence
+ * standing. The removal was argued only from the baseline's absence, which rule
+ * A2 does not treat as an instruction. `DESIGN-COMPLETE.md` §6 X10 settles the
+ * other half: one `h1` per page is identity (level 1), it outranks the baseline's
+ * typographic silence, and it named Verify as the route still missing one.
+ *
+ * **What the frame does not change.** The card stays the baseline's - a single
+ * `jelly-card` on the creme field, square, no shadow beyond `StaccatoShadowLift`,
+ * the interior's own `p-6` blocks inside it - and `min-h-screen` keeps the
+ * content column filling the viewport before the footer on the short states.
+ * The opening distance moved from the route's `py-20` (5rem) onto `.auth-shell`
+ * (the 5.25rem chapter token): a 4px difference between two steps of the same
+ * scale, recorded in the partial, not a composition change.
+ *
+ * `Measure` is the frame's one measure: `narrow` is the form's 28rem (the
+ * baseline's `max-w-md`), `wide` is the account index's 64rem (the baseline's
+ * `max-w-5xl`). The card fills it.
+ *
+ * `Frame.sentence` is optional on purpose. On the two password routes the card
+ * prints the same sentence under its own title, and printing it twice would be
+ * two copies of one fact rather than one frame - so those two routes hand in a
+ * frame without a sentence, and the sentence still renders, in the card.
  *
  * The root is a `<div>`, not a `<main>`: `Base.astro` already renders the
- * document's single `<main id="main-content">`, and the skip link points at
- * it. A second `<main>` here would be a second landmark and a duplicate ID.
- *
- * `min-h-screen` reproduces the baseline's page-start treatment - the content
- * column fills the viewport before the footer, even on the short states.
+ * document's single `<main id="main-content">`, and the skip link points at it.
+ * A second `<main>` here would be a second landmark and a duplicate ID.
  */
+import Trail from "../Route/Trail.astro";
+import type { TrailItem } from "../Route/Type.js";
+import type { AuthFrame } from "./Type.js";
+
 interface Props {
 	/** The section's accessible name - the route's own surface name. */
 	Label: string;
 
-	/** `md` is the card's 28rem measure; `2xl` is for a field table. */
-	Width?: "md" | "2xl";
+	/**
+	 * The route's breadcrumb, when it has one.
+	 *
+	 * It is the site's one trail (`Component/Route/Trail.astro`), and the shell
+	 * renders it above the frame because a trail is position and the frame is
+	 * what the page is - the order the baseline prints on every route that has
+	 * both.
+	 */
+	Trail?: readonly TrailItem[];
+
+	/** `narrow` is the form's 28rem; `wide` is the account index's 64rem. */
+	Measure?: "narrow" | "wide";
+
+	/** The frame: `/KICKER`, the page's `h1`, one sentence, one alternate action. */
+	Frame?: AuthFrame;
 
 	/** Centre the card's own text block (the reset route's loading state). */
 	Center?: boolean;
 
 	/** Announce the interior's changes (the verify route's state machine). */
 	Live?: boolean;
+
+	/**
+	 * Render the interior on the canvas instead of in the card.
+	 *
+	 * The account index is the one route whose interior is already a column of
+	 * its own cards (`DynamicAccountProfile`), and a card around a column of
+	 * cards is the one thing `DESIGN.md` §1.3 forbids outright. So the frame
+	 * stays - kicker, `h1`, sentence, alternate action - and the card does not:
+	 * the baseline prints that route as a bare column under its breadcrumb, and
+	 * this keeps it that way.
+	 */
+	Bare?: boolean;
 }
 
-const { Label, Width = "md", Center = false, Live = false } = Astro.props;
+const {
+	Label,
+	Trail: Crumbs,
+	Measure = "narrow",
+	Frame,
+	Center = false,
+	Live = false,
+	Bare = false,
+} = Astro.props;
 
 /* The card paints itself from its own custom properties, so the interior
    controls its own padding - the baseline's blocks carry their own `p-6`. */
@@ -48,25 +108,61 @@ const Surface = {
 };
 ---
 
-<div class="flex min-h-screen flex-col">
+<div
+	class:list={[
+		"auth-shell",
+		`auth-shell--${Measure}`,
+		"flex min-h-screen flex-col",
+	]}
+>
 	<div class="flex-1">
-		<section class="py-20" aria-label={Label}>
-			<div class="container mx-auto px-4">
+		<section aria-label={Label}>
+			<div class="auth-shell__inner">
+				{Crumbs ? <Trail trail={Crumbs} /> : null}
+
+				{
+					Frame && (
+						<header class="auth-shell__header">
+							<p class="auth-shell__kicker">{Frame.kicker}</p>
+							<h1 class="auth-shell__heading type-section">
+								{Frame.heading}
+							</h1>
+							{Frame.sentence ? (
+								<p class="auth-shell__sentence type-sub">
+									{Frame.sentence}
+								</p>
+							) : null}
+						</header>
+					)
+				}
+
 				<div
-					class:list={[
-						"mx-auto",
-						Width === "2xl" ? "max-w-2xl" : "max-w-md",
-						Center && "text-center",
-					]}
+					class:list={[Center && "text-center"]}
 					aria-live={Live ? "polite" : undefined}
 				>
-					<jelly-card
-						class="StaccatoBorderShimmer StaccatoCard StaccatoShadowLift text-card-fg"
-						style={Surface}
-					>
-						<slot />
-					</jelly-card>
+					{
+						Bare ? (
+							<slot />
+						) : (
+							<jelly-card
+								class="auth-shell__surface StaccatoBorderShimmer StaccatoCard StaccatoShadowLift text-card-fg"
+								style={Surface}
+							>
+								<slot />
+							</jelly-card>
+						)
+					}
 				</div>
+
+				{
+					Frame?.action ? (
+						<a class="auth-shell__alternate" href={Frame.action.href}>
+							{Frame.action.label}
+							{"\u2001"}
+							<span aria-hidden="true">&rarr;</span>
+						</a>
+					) : null
+				}
 			</div>
 		</section>
 	</div>

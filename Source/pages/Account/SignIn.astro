@@ -1,5 +1,8 @@
 ---
+import AuthShell from "../../Component/Auth/AuthShell.astro";
+import { AuthFrameFor } from "../../Component/Auth/Data";
 import Auth0Account from "../../Component/Dynamic/Auth0Account";
+import { Header } from "../../Component/Layout/Header";
 import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
 
@@ -15,19 +18,36 @@ const MetaDescription = T("account.signIn.subtitle", {
 const { Auth0Domain, Auth0ClientIdentifier } =
 	await import("../../Function/Configuration/Auth.js");
 
-/* The baseline renders this route as the island alone: the gate owns the
-   redirect and its own loading / error / signed-in states, and the page adds
-   no heading, card or sentence of its own above them. It also carries no site
-   header - the baseline's `<body>` is the skip link, the island and the
-   footer - so the route stays chrome-free rather than mounting the banner the
-   auth-shell card added. */
+/* The frame is data (`Component/Auth/Data.ts`): `/SIGN IN`, the page's `h1`, the
+   one supporting sentence and the one alternate action. The island below owns
+   the redirect and its own loading / error / signed-in states - the shell owns
+   the page.
+
+   Two treatments are restored here, both of which a card had removed by arguing
+   only from the baseline's absence (rule A2):
+
+   - **the functional header banner** - `<Header Mode="functional">`, the same
+     chrome the other credential routes carry. `3480853ac` dropped it and left a
+     comment saying the route "stays chrome-free rather than mounting the
+     banner"; that is a reason about the baseline, not an instruction.
+   - **the frame itself** - `584d6a814` rendered this route as
+     `Header` + `AuthShell` + island, and the shell was the auth tree's only
+     `h1`. `Auth0AccountGate`'s docstring still says the frame "belongs to the
+     route's AuthShell".
+
+   No behaviour changes: the island receives the same two identifiers and the
+   same `Route`. */
+const Frame = AuthFrameFor("signIn", T);
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription}>
-	<Auth0Account
-		client:only="react"
-		Route="signin"
-		Domain={Auth0Domain}
-		ClientIdentifier={Auth0ClientIdentifier}
-	/>
+	<Header client:load Mode="functional" slot="Header" />
+	<AuthShell Label="Sign in" Frame={Frame}>
+		<Auth0Account
+			client:only="react"
+			Route="signin"
+			Domain={Auth0Domain}
+			ClientIdentifier={Auth0ClientIdentifier}
+		/>
+	</AuthShell>
 </Base>

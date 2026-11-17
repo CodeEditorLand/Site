@@ -1,0 +1,106 @@
+---
+/**
+ * Requirements - what a build needs, and what the source build needs first.
+ *
+ * This is the recovered `DynamicSystemRequirements.astro` (`3480853ac^`), rehomed
+ * into the Download surface's own directory and merged with the form it
+ * replaced. The merge is additive and it is the point of the file:
+ *
+ * - From the recovered `.astro`: the `download-requirements` grid, the
+ *   `jelly-card.download-requirements__group` card anatomy, the case-preserving
+ *   panel heading, and the source-build toolchain as a card of its own.
+ * - From the `.tsx` island that came before it: the two-panel split - "Minimum
+ *   Requirements" beside "Recommended for the Best Experience", the second one
+ *   marked `border-primary` - and the strip of one chip per supported OS.
+ * - From neither, because both lost them: the two icon-tooltip sentences, which
+ *   the `.astro` demoted to the region's footnote and the region still prints.
+ *
+ * Nothing was dropped to make the merge fit. The per-platform OS, arch and
+ * installer values the recovered cards carried as three repeating ledgers now
+ * print once each, inside the OS strip's chips - the same values, read as one
+ * line per platform instead of three lists with the same two shared rows under
+ * them. The panels carry the figures that actually differ between minimum and
+ * recommended, and the shared rows keep the recommendation as the row's `note`.
+ *
+ * The rows arrive already resolved: `Download/Data.ts` owns the values, their
+ * order and the recommended figure each row carries as a note. This file maps
+ * them into ledgers and nothing else.
+ */
+import RecordLedger from "../../Record/RecordLedger.astro";
+
+import type { LedgerRow } from "../../Record/Type.js";
+
+import type { RequirementsPanel, SupportedOS } from "./Type.js";
+
+interface Props {
+	/** The panels, in the order the page prints them: minimum, then recommended. */
+	panels: readonly RequirementsPanel[];
+
+	/** The supported-OS strip's heading. */
+	osLabel: string;
+
+	/** One chip per platform: its OS floor, its architectures, its installer. */
+	operatingSystems: readonly SupportedOS[];
+
+	/** The source-build toolchain, as one more card. */
+	toolchain: readonly LedgerRow[];
+
+	/** The toolchain card's own heading, printed above its ledger. */
+	toolchainLabel: string;
+}
+
+const { panels, osLabel, operatingSystems, toolchain, toolchainLabel } =
+	Astro.props;
+
+/**
+ * The card's Jelly custom properties, the same box the manifest's platform
+ * groups use: white on the creme field, square, the documented inset, and
+ * `font-size: inherit` so the card never resets type to Jelly's 15px default.
+ */
+const Card =
+	"--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:var(--space-group);--jelly-card-padding-inline:var(--space-group)";
+---
+
+<div class="download-requirements">
+	{
+		panels.map((panel) => (
+			<jelly-card
+				class={`download-requirements__group${
+					panel.recommended
+						? " download-requirements__group--recommended"
+						: ""
+				}`}
+				style={Card}
+			>
+				<h4 class="download-requirements__platform">{panel.label}</h4>
+				<RecordLedger rows={panel.rows} />
+			</jelly-card>
+		))
+	}
+
+	<div class="download-requirements__os">
+		<h4 class="download-requirements__os-label">{osLabel}</h4>
+		<ul class="download-requirements__os-list">
+			{
+				operatingSystems.map((operatingSystem) => (
+					<li class="download-requirements__os-chip">
+						<p class="download-requirements__os-name">
+							{operatingSystem.name}
+						</p>
+						<p class="download-requirements__os-note">
+							{operatingSystem.note}
+						</p>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+
+	<jelly-card
+		class="download-requirements__group download-requirements__group--wide"
+		style={Card}
+	>
+		<h4 class="download-requirements__platform">{toolchainLabel}</h4>
+		<RecordLedger rows={toolchain} />
+	</jelly-card>
+</div>

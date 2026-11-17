@@ -3,37 +3,53 @@
  * Download - the installation contract: can I install this today, and if not,
  * what can I do instead?
  *
- * The page is the baseline render's composition, band for band:
+ * The page is the baseline render's composition, band for band, with the record
+ * it opens finished:
  *
  *   1. masthead      the page's one h1, its answer in one sentence, eight marks
  *   2. manifest      `#release-manifest` - the centred header and the three
  *                    platform entries
- *   3. transparency  `#Transparency` - the disclosure band, with its own centred
- *                    heading and its three sub-blocks
+ *   3. record        the `# RELEASE_01` artifact continued past its own fields:
+ *                    `/REQUIREMENTS` and `/PREVIOUS RELEASES`, then the
+ *                    `#Transparency` disclosure that closes the page
  *
- * The middle band was briefly a single record with the other subjects as regions
- * inside it; the baseline rendered two sections and this page renders two
- * sections, because a reader who remembers the page remembers a manifest band
- * under a manifest heading and a disclosure band under a sentence. The
- * decomposition is what the programme keeps: every row, label and figure lives
- * in `Component/Dynamic/Download/Data.ts`, every card is a component, and the
- * page owns the band order and nothing else (BRIDGE §2.1).
+ * The third block is the part this page had lost. The manifest band was briefly
+ * a single record with its other subjects as regions inside it; that was
+ * replaced by the two bands the baseline rendered, and the regions went with it.
+ * Both are true at once, so both are here: the two baseline bands keep their
+ * centred headers and their counts, and the record continues inside a third
+ * block that carries the two content regions the page had stopped making claims
+ * about - what a build needs, and what shipped before this release.
  *
- * The disclosure band's body is still built by a `.tsx` island
- * (`DynamicTransparency`). It is outside this card's ownership, so it keeps its
- * markup and its four strategy commands exactly as they were - including the
- * `Verify in source code` link the baseline closed the page on. The page hands
- * it the section's own title and standfirst, which are what the island prints
- * above its three sub-blocks.
+ * Every row, label and figure lives in `Component/Dynamic/Download/Data.ts`,
+ * every card is a component, and this page owns the artifact order and nothing
+ * else (BRIDGE §2.1).
+ *
+ * The disclosure is still a `.tsx` island (`DynamicTransparency`) and it keeps
+ * its markup, its centred heading, its three sub-blocks and the `Verify in
+ * source code` link the baseline closed the page on. The page hands it one
+ * thing: the `download-transparency` class, so `Download/_Page.scss` can take
+ * off the padding it used to give itself when it was a band of its own. It is a
+ * new subject inside the record, not another part of it, so it separates at the
+ * chapter distance rather than the group distance.
  */
 import DownloadMasthead from "../Component/Dynamic/DownloadMasthead.astro";
 import ManifestBand from "../Component/Dynamic/Download/ManifestBand.astro";
+import PreviousReleases from "../Component/Dynamic/Download/PreviousReleases.astro";
+import Region from "../Component/Dynamic/Download/Region.astro";
+import Requirements from "../Component/Dynamic/Download/Requirements.astro";
 import { DynamicTransparency } from "../Component/Dynamic/DynamicTransparency";
 import {
 	FieldLabels,
 	Manifest,
 	ManifestPlatforms,
 	Marks,
+	OperatingSystems,
+	PreviousReleases as PreviousReleasesData,
+	Regions,
+	ReleaseColumns,
+	Requirements as RequirementsData,
+	Toolchain,
 	Transparency,
 } from "../Component/Dynamic/Download/Data";
 import { Header } from "../Component/Layout/Header";
@@ -41,6 +57,9 @@ import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
 const T = GetI18n();
+
+/** The record's two regions, in page order. */
+const RegionCopy = Regions(T);
 
 /** The page's meta, from the site's own keys. */
 const MetaTitle = T("meta.downloads.title", {
@@ -72,5 +91,39 @@ const MetaDescription = T("meta.downloads.description", {
 		labels={FieldLabels(T)}
 	/>
 
-	<DynamicTransparency Content={Transparency(T)} client:load />
+	<div class="download-record">
+		<Region region={RegionCopy.Requirements}>
+			<Requirements
+				panels={RequirementsData(T)}
+				osLabel={T("download:systemRequirements.supportedOS", {
+					defaultValue: "Supported Operating Systems",
+				})}
+				operatingSystems={OperatingSystems(T)}
+				toolchain={Toolchain}
+				toolchainLabel={T("download:requirements.toolchain", {
+					defaultValue: "BUILD TOOLCHAIN (SOURCE)",
+				})}
+			/>
+		</Region>
+
+		<Region region={RegionCopy.Previous}>
+			<PreviousReleases
+				releases={PreviousReleasesData}
+				columns={ReleaseColumns}
+				label={T("download:previousReleases.state", {
+					defaultValue: "RECORD: EMPTY",
+				})}
+				empty={T("download:previousReleases.description", {
+					defaultValue:
+						"No public releases yet. Older versions will appear here once public releases ship.",
+				})}
+			/>
+		</Region>
+
+		<DynamicTransparency
+			Content={Transparency(T)}
+			ClassName="download-transparency"
+			client:load
+		/>
+	</div>
 </Base>

@@ -21,6 +21,10 @@
 @use "Home/Index" as HomeRules;
 @use "Download/Masthead";
 @use "Download/Manifest";
+@use "Download/Region";
+@use "Download/Page";
+@use "Download/Releases";
+@use "Download/Requirements";
 @use "Doc/Layout";
 @use "Doc/Sidebar";
 @use "Doc/Article";
@@ -29,6 +33,7 @@
 @use "Reading/Document";
 @use "Reading/Steps";
 @use "Blog/Index" as BlogRules;
+@use "Route/Trail" as TrailRules;
 @use "Contact/Index" as ContactRules;
 @use "Auth/Shell" as AuthShell;
 @use "Surface/Shell" as SurfaceShell;

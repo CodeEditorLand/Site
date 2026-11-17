@@ -11,6 +11,11 @@
 //   .contact-page__heading           the page's only `h1`
 //   .contact-page__standfirst        the sentence under it
 //
+// The trail itself is not this surface's: it is `Component/Route/Trail.astro`
+// with `System/Component/Route/_Trail.scss` (`.trail`), the site's one
+// breadcrumb grammar (`DESIGN.md` §9 Q3). This partial only decides how far the
+// trail sits from the heading on a Contact page.
+//
 // The opening is a container, not a band: it has no surface and no rule, because
 // the body below it carries the page's own rhythm. Its gutters are the page's
 // (`--Gutter`), so the opening and the body under it line up on the same left
@@ -61,8 +66,11 @@
 }
 
 // `mb-8` on the trail, `mb-12` on the header: the baseline separates the trail
-// from the heading by 2rem and the heading from the body by 3rem.
-.contact-page__open--page .contact-breadcrumb {
+// from the heading by 2rem and the heading from the body by 3rem. The trail is
+// the site's one grammar (`.trail`, `Component/Route/Trail.astro`); the distance
+// to the heading is this page's, so it is declared here rather than in the
+// shared partial.
+.contact-page__open--page .trail {
 	margin-block-end: var(--space-group);
 }
 

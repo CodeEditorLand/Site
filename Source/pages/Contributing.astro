@@ -4,6 +4,7 @@ import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 import { LinkMentions } from "../Library/CodeMentions";
 import ReadingDocument from "../Component/Reading/ReadingDocument.astro";
+import Trail from "../Component/Route/Trail.astro";
 import {
 	Index,
 	Ledger,
@@ -51,25 +52,13 @@ const Card =
 
 	<div class="container mx-auto max-w-4xl px-4 py-16">
 		<!-- Breadcrumbs -->
-		<nav aria-label="Breadcrumb" class="mb-8">
-			<ol class="flex flex-wrap items-center space-x-2 text-muted-foreground">
-				<li>
-					<a href="/" class="transition-colors hover:text-foreground">
-						{T("common.breadcrumb.home", {
-							defaultValue: "Home",
-						})}
-					</a>
-				</li>
-				<li class="mx-2">/</li>
-				<li>
-					<span class="font-medium text-foreground">
-						{T("common.contributing.pageTitle", {
-							defaultValue: "Contributing",
-						})}
-					</span>
-				</li>
-			</ol>
-		</nav>
+		<Trail
+			class="mb-8"
+			trail={[
+				{ label: "/HOME", href: "/" },
+				{ label: "/CONTRIBUTING" },
+			]}
+		/>
 
 				<ReadingDocument
 			kicker="/CONTRIBUTING"

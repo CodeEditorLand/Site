@@ -1,51 +1,47 @@
 ---
-// ContactBreadcrumb - the site's breadcrumb, in the baseline's own shape.
-//
-// A trail is `{ label, href }` per crumb, the last one without an `href`
-// because the current page is not a link. The labels are the plain names the
-// pages print (`Home`, `Dashboard`, `Contact`) and the separator between them
-// is a `/` of its own, so the trail reads `Home / Contact` exactly as the
-// baseline rendered it.
-//
-// It exists because fifteen Contact routes opened with the same list of
-// `<li>/</li>` separators. One component means one grammar, and a change to it
-// is one edit.
-//
-// No script and no hydration: a trail is markup.
-import type { ContactTrailItem } from "../../Library/Contact/Data.js";
+/**
+ * ContactBreadcrumb - the absorbed trail, kept as the bridge the Blog still uses.
+ *
+ * This file was the trail as the Contact surface first built it: a sans strip
+ * with its own `/` list item between the crumbs, reading `Home / Contact`. The
+ * site had two trail grammars (this one and the plain `Home /` list on the legal
+ * pages, the doc article and the account index) and `DESIGN.md` §9 Q3 settled on
+ * the mono `/LABEL` form for all of them, published as `.trail` from
+ * `System/Component/Route/_Trail.scss`.
+ *
+ * So the markup moved to `Component/Route/Trail.astro`, which is the survivor,
+ * and this file now renders it. It is kept rather than deleted because a card
+ * does not delete a component, and because two Blog components still import it
+ * (`Blog/BlogIndex.astro:38`, `Blog/BlogArticle.astro:32`). Those are not this
+ * card's files, so this file is where their labels are written into the grammar:
+ * a caller that hands in `Home` gets `/HOME`, and a caller that already writes
+ * `/HOME` gets `/HOME` back unchanged. The transform lives here rather than in
+ * `Trail` because `Trail` prints its label as written and never re-cases it.
+ *
+ * A card that owns the Blog should pass `/HOME` and `/BLOG` itself and delete
+ * this file together with its two imports.
+ */
+import Trail from "../Route/Trail.astro";
+import type { TrailItem } from "../Route/Type.js";
 
 interface Props {
 	/** The crumbs, first to last. The last one is the current page. */
-	trail: readonly ContactTrailItem[];
+	trail: readonly TrailItem[];
 
 	/** A class the page adds to the shell, for its own spacing. */
 	class?: string;
 }
 
 const { trail, class: Class } = Astro.props;
+
+/** Write a crumb into the grammar: one leading slash, upper case, nothing else. */
+const Written = (Label: string): string =>
+	`/${Label.replace(/^\/+/, "").toUpperCase()}`;
+
+const Crumbs: readonly TrailItem[] = trail.map((Crumb) => ({
+	label: Written(Crumb.label),
+	...(Crumb.href ? { href: Crumb.href } : {}),
+}));
 ---
 
-<nav class:list={["contact-breadcrumb", Class]} aria-label="Breadcrumb">
-	<ol class="contact-breadcrumb__list">
-		{
-			trail.map((item, index) => (
-				<>
-					{index > 0 ? (
-						<li class="contact-breadcrumb__separator">/</li>
-					) : null}
-					<li class="contact-breadcrumb__item">
-						{item.href ? (
-							<a class="contact-breadcrumb__link" href={item.href}>
-								{item.label}
-							</a>
-						) : (
-							<span class="contact-breadcrumb__current" aria-current="page">
-								{item.label}
-							</span>
-						)}
-					</li>
-				</>
-			))
-		}
-	</ol>
-</nav>
+<Trail trail={Crumbs} {...Class ? { class: Class } : {}} />

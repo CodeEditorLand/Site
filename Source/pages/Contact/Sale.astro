@@ -57,9 +57,12 @@ const OneLine = (Value: string): string => Value.replace(/\s*\n\s*/g, " ");
 
 const HomeLabel = T("common.breadcrumb.home", { defaultValue: "Home" });
 
+/* The site's one breadcrumb grammar (`DESIGN.md` §9 Q3): each crumb prints as
+   `/LABEL`, the leading slash the only separator. The labels stay translated -
+   the slash is added around the locale's word, never instead of it. */
 const Trail: readonly ContactTrailItem[] = [
-	{ label: HomeLabel, href: "/" },
-	{ label: PageTitle },
+	{ label: `/${HomeLabel.toUpperCase()}`, href: "/" },
+	{ label: `/${PageTitle.toUpperCase()}` },
 ];
 
 const BackToTop = T("common.button.backToTop", { defaultValue: "Back to top" });

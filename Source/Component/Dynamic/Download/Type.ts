@@ -18,6 +18,8 @@
  * data it is handed and never sorts, splices or pushes it.
  */
 
+import type { LedgerRow } from "../../Record/Type.js";
+
 /**
  * The i18n resolver the page hands to `Data.ts`.
  *
@@ -133,4 +135,90 @@ export interface ManifestPlatform {
 
 	/** The one action, where the platform has one. */
 	readonly action?: { readonly label: string; readonly href: string };
+}
+
+/**
+ * One region of the `# RELEASE_01` artifact, already resolved to copy.
+ *
+ * The page is one record, not a stack of chapters (DESIGN.md §7 DR-9). After the
+ * manifest's own fields the artifact continues into the regions that answer the
+ * rest of the page's question, and a region carries the artifact's internal
+ * anatomy: a `/LABEL` kicker, its own `h3`, an optional standfirst and an
+ * optional footnote. The regions paint no boundary and take no chapter distance
+ * - they are parts of one subject, so they separate at `--space-group`
+ * (DESIGN.md §2.3, §4.1).
+ *
+ * Recovered from `3480853ac^` with `Download/Region.astro`, which renders it.
+ */
+export interface Region {
+	/** The region's anchor id, and the stem of its heading's id. */
+	readonly id: string;
+
+	/** The `/LABEL` opening the region, printed exactly as written. */
+	readonly kicker: string;
+
+	/** The region's own heading: the artifact's one `h3` per region. */
+	readonly heading: string;
+
+	/** One sentence under the heading, when the region needs one. */
+	readonly standfirst?: string;
+
+	/** Provenance, caveat or source line closing the region. */
+	readonly footnote?: string;
+}
+
+/**
+ * The regions the `# RELEASE_01` artifact continues into, in page order.
+ *
+ * The record opens the page and owns its own head, so nothing here is a band:
+ * each entry is a region inside the record, rendered by `Download/Region.astro`.
+ * The disclosure is the third and it is not a region - it keeps its own centred
+ * heading and its `#Transparency` anchor, and the page only owns the distance it
+ * hands it (`Download/_Page.scss`).
+ */
+export interface Regions {
+	readonly Requirements: Region;
+	readonly Previous: Region;
+}
+
+/**
+ * One requirements panel: the heading it prints and the rows under it.
+ *
+ * Two panels, and the second one is the recommendation - `recommended` is what
+ * puts the ink border on it, so the mark travels as data rather than as a class
+ * the page decides. The recovered `.tsx` island carried the same split as
+ * `border-primary` on its second card.
+ */
+export interface RequirementsPanel {
+	/** The panel's own heading, printed in the case it was written in. */
+	readonly label: string;
+
+	/** The panel's ledger rows, in the order they are read. */
+	readonly rows: readonly LedgerRow[];
+
+	/** Whether this is the panel the site recommends. */
+	readonly recommended: boolean;
+}
+
+/**
+ * One platform in the supported-OS strip.
+ *
+ * `note` is the line under the name: the architectures the platform builds for
+ * and the installer formats it ships, as the recovered per-platform cards stated
+ * them. It is one string because it is one sentence on the page.
+ */
+export interface SupportedOS {
+	/** The platform and the OS floor it needs, e.g. `macOS 10.15+`. */
+	readonly name: string;
+
+	/** The architectures and the installer formats, under the name. */
+	readonly note: string;
+}
+
+/** One published release. The list is empty today; this is what will fill it. */
+export interface Release {
+	readonly version: string;
+	readonly published: string;
+	readonly platform: string;
+	readonly change: string;
 }

@@ -140,6 +140,7 @@ const DynamicStateReport = ({
 					} as React.CSSProperties
 				}
 			>
+				<span className="surface__mark" aria-hidden="true"></span>
 				{Label}
 			</jelly-badge>
 		</div>
