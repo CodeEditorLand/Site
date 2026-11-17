@@ -1,1 +1,0 @@
-import{t}from"./LocaleSwitcher.Di2n__0B.js";export{t as LocaleSwitcher,t as default};

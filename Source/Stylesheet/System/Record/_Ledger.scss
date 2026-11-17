@@ -11,6 +11,8 @@
 //   .record-ledger__row--lead   the one giant figure, at display weight
 //   .record-ledger__key         mono key, e.g. TARGET, LICENSE, SIGNAL
 //   .record-ledger__value       ink value
+//   .record-ledger__code        a value that is a literal, in a `<code>` element
+//   .record-ledger__strong      the one emphasised value in a card
 //   .record-ledger__note        qualifier under the value, at caption weight
 //
 // Surfaces. `quiet` is the default and the shell itself carries no fill: an
@@ -100,6 +102,15 @@
 	font-size: var(--type-caption);
 	line-height: var(--type-caption-line);
 	color: var(--MuteForeground);
+}
+
+// The one emphasised value in a card. The value role is 500 by default, so the
+// emphasis is one step of weight and nothing else - no ink change, no size
+// change: an emphasised fact is still a fact, and the ledger's ink is already
+// `--Foreground`. `.record-ledger__code` needs no rule of its own: the value is
+// already the mono face, and `<code>` inherits it.
+.record-ledger__strong {
+	font-weight: 600;
 }
 
 // Wide enough for a key column: the key takes a fixed `min(14rem, 40%)` and the

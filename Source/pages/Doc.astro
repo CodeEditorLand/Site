@@ -7,8 +7,10 @@ import DocCard from "../Component/Doc/DocCard.astro";
 import DocIndex from "../Component/Doc/DocIndex.astro";
 import DocLayout from "../Component/Doc/DocLayout.astro";
 import { Header } from "../Component/Layout/Header";
+import RecordArchive from "../Component/Record/RecordArchive.astro";
 import BuildDocIndex from "../Function/Doc/BuildDocIndex";
 import BuildDocSidebar from "../Function/Doc/BuildDocSidebar";
+import BuildDocStrip from "../Function/Doc/BuildDocStrip";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
@@ -18,17 +20,28 @@ const T = GetI18n();
  * The documentation index - the page the baseline rendered, rebuilt out of
  * components.
  *
- * The order below IS the page, and it is the baseline's:
+ * The order below IS the page, and it is the baseline's, plus the strip and the
+ * closing archive:
  *
  * 1. **The breadcrumb and the header** - `Home / Documentation`, the `h1` and
  *    the one-sentence standfirst. No kicker: the index has no section above it.
- * 2. **The three ways in** - a three-across card grid whose cards carry their
+ * 2. **The metadata strip** - the five §5 fields plus `PAGES:` and `SECTIONS:`,
+ *    the two numbers a reader can check against the grid below. Recovered from
+ *    `8b58843c5^` with the rest of the strip (`BuildDocStrip`, `DocStripItem`
+ *    and the eight `En/Doc.json` `strip.*` keys all survived the removal).
+ * 3. **The three ways in** - a three-across card grid whose cards carry their
  *    own `h2` (`DocCard level={2}`), because they are not filed under a section.
- * 3. **The ten sections** - one `DocIndex` each: the section name as its `h2`,
+ * 4. **The ten sections** - one `DocIndex` each: the section name as its `h2`,
  *    then one card per page in a three-across grid at the wide breakpoint.
- * 4. **The three closing artifacts** - one `DocAppendix` each: the element badge
+ * 5. **The three closing artifacts** - one `DocAppendix` each: the element badge
  *    strip, the four backend workers, the twelve live deployments.
- * 5. **Back to top** - the baseline's last row.
+ * 6. **The archive** - `RecordArchive`: one row per section, its size in the
+ *    marker column, its anchor as the destination. This is the Record layer's
+ *    live end on this surface (`DESIGN.md` §2.4 D9, §4.1): the block was built
+ *    for exactly these two indexes and had no importer, and it does not replace
+ *    the card grid - `DESIGN.md` §3.2's row ledger does not come back (conflict
+ *    X3) - it closes the page with the map the grid spreads over ten sections.
+ * 7. **Back to top** - the baseline's last row.
  *
  * Every card is built in `Function/Doc/BuildDocIndex.ts`; this page maps three
  * components over three arrays and decides nothing about content. The card grid
@@ -49,6 +62,33 @@ const SidebarSections = BuildDocSidebar(DocEntries);
 const Index = BuildDocIndex(DocEntries, T);
 
 const PageTitle = T("common.docs.pageTitle", { defaultValue: "Documentation" });
+
+/**
+ * The index's metadata strip: the five fields §5 requires plus the two counts a
+ * reader can check against the grid - `PAGES:` is the collection, `SECTIONS:`
+ * the sections that survived the empty-section drop. `BuildDocStrip` owns the
+ * five and their order; U+2001 separates every item.
+ */
+const IndexStrip = BuildDocStrip(
+	{
+		Layer: PageTitle,
+		Source: "DOC COLLECTION",
+		Extras: [
+			{
+				Label: T("strip.pages", { ns: "doc", defaultValue: "PAGES:" }),
+				Value: String(DocEntries.length),
+			},
+			{
+				Label: T("strip.sections", {
+					ns: "doc",
+					defaultValue: "SECTIONS:",
+				}),
+				Value: String(Index.Sections.length),
+			},
+		],
+	},
+	T,
+);
 
 const MetaTitle = T("meta.docs.title", {
 	defaultValue: "Documentation | Code Editor Land",
@@ -76,12 +116,13 @@ const BackToTop = T("common.button.backToTop", {
 	Url={Astro.url.href}
 	lang="en"
 >
-	<Header client:load Mode="functional" slot="Header" />
+	<Header client:idle={{ timeout: 2000 }} Mode="functional" slot="Header" />
 
 	<DocLayout sections={SidebarSections} mobile={false}>
 		<DocArticle
 			title={PageTitle}
 			standfirst={PageStandfirst}
+			strip={IndexStrip}
 			crumbs={[{ label: Home, href: "/" }, { label: PageTitle }]}
 			measure={false}
 		>
@@ -104,6 +145,15 @@ const BackToTop = T("common.button.backToTop", {
 					<DocAppendix appendix={Appendix} />
 				))
 			}
+
+			<div class="doc-archive">
+				<RecordArchive
+					entries={Index.Archive.entries}
+					index={Index.Archive.index}
+					heading={Index.Archive.heading}
+					count={Index.Archive.count}
+				/>
+			</div>
 
 			<p class="doc-index__back">
 				<a href="#top">{BackToTop}<span aria-hidden="true"> ↑</span></a>

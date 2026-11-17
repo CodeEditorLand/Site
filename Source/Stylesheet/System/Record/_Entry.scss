@@ -8,6 +8,8 @@
 //
 // Publishes:
 //   .record-entry               the entry shell - the white card surface
+//   .record-entry--bare         the same anatomy with no fill and no frame, for
+//                               an entry that is structure inside a Jelly surface
 //   .record-entry__index        the `# NAME_01` marker, verbatim
 //   .record-entry__glyph        a leading glyph (↳, 〈〉, #) when the record carries one
 //   .record-entry__name         the record's name, the entry's own heading
@@ -61,6 +63,22 @@
 	grid-area: index;
 	letter-spacing: 0.08em;
 	white-space: nowrap;
+}
+
+// The bare shell: an entry that is structure inside a Jelly surface. It drops
+// the fill and the frame (a card inside a card is a second surface, and the
+// block may never be one) and keeps the anatomy, the grid and the row rhythm.
+// The separation moves to the row's own foot, so a run of bare entries reads as
+// the hairline list it replaces, and the last one closes without a stray rule.
+.record-entry--bare {
+	background: transparent;
+	border: 0;
+	padding: 0;
+	padding-block: var(--space-tight);
+}
+
+.record-entry--bare:not(:last-child) {
+	@include hairline(bottom);
 }
 
 .record-entry__glyph {

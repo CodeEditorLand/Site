@@ -32,7 +32,7 @@ import { Erase, Rights, Support } from "./Data.js";
 						<div class="flex justify-between gap-2 items-start mb-3">
 							<h4 class="text-card-foreground font-medium leading-snug">{Card.title}</h4>
 							<div class="flex flex-col gap-1 items-end shrink-0">
-								<span class="font-medium text-sm font-mono tracking-widest bg-blue-50 border border-blue-200 px-2 py-0.5 text-blue-700">{Card.code}</span>
+								<span class="font-medium text-sm font-mono tracking-widest bg-[var(--SpineIPCSurface)] border border-[color:var(--SpineIPCMute)] px-2 py-0.5 text-[color:var(--SpineIPCFore)]">{Card.code}</span>
 								<span class="text-card-foreground text-sm font-mono opacity-70">{Card.article}</span>
 							</div>
 						</div>
@@ -70,12 +70,12 @@ import { Erase, Rights, Support } from "./Data.js";
 		<h3 class="font-medium text-sm font-mono mb-2">{Erase.label}</h3>
 		<p class="mb-6 text-muted-foreground">{Erase.intro}</p>
 		<a
-			class="bg-card StaccatoCard transition-all focus:outline-2 focus:outline-offset-2 block border border-red-200 focus:outline-red-400 hover:bg-red-50 p-6"
+			class="bg-card StaccatoCard transition-all focus:outline-2 focus:outline-offset-2 block border border-[color:var(--DestructMute)] focus:outline-[var(--Destruct)] hover:bg-[var(--DestructSurface)] p-6"
 			href={Erase.href}
 		>
 			<div class="flex items-start gap-4 mb-4">
 				<div
-					class="flex items-center justify-center shrink-0 border h-10 w-10 bg-red-50 border-red-200 text-red-600"
+					class="flex items-center justify-center shrink-0 border h-10 w-10 bg-[var(--DestructSurface)] border-[color:var(--DestructMute)] text-[color:var(--Destruct)]"
 				>
 					<svg
 						aria-hidden="true"
@@ -98,14 +98,14 @@ import { Erase, Rights, Support } from "./Data.js";
 				</div>
 				<div class="flex-1">
 					<div class="flex items-center gap-2 mb-1">
-						<h4 class="font-medium text-red-700">{Erase.title}</h4>
-						<span class="font-medium text-sm font-mono tracking-widest text-red-700">
+						<h4 class="font-medium text-[color:var(--DestructFore)]">{Erase.title}</h4>
+						<span class="font-medium text-sm font-mono tracking-widest text-[color:var(--DestructFore)]">
 							{Erase.code}
 						</span>
 					</div>
 					<p class="text-card-foreground text-sm">{Erase.body}</p>
 				</div>
-				<span class="font-medium text-red-600 shrink-0">→</span>
+				<span class="font-medium text-[color:var(--Destruct)] shrink-0">→</span>
 			</div>
 		</a>
 	</div>

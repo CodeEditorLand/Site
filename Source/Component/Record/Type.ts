@@ -191,6 +191,21 @@ export interface LedgerRow {
 	value: string;
 
 	/**
+	 * The value is a literal - a command, a path, an identifier, a build
+	 * variable - rather than prose. The ledger's value role is already the mono
+	 * face, so this changes no type; it keeps the fact in a `<code>` element so
+	 * the markup still says which values are literals and which are sentences.
+	 */
+	code?: boolean;
+
+	/**
+	 * The value carries this row's emphasis: the one fact in the card the reader
+	 * is meant to leave with. At most one row per ledger sets it - the ledger
+	 * does not police the count, but a card with two emphasised facts has none.
+	 */
+	strong?: boolean;
+
+	/**
 	 * The value as destinations, when the fact is a link.
 	 *
 	 * `value` stays the row's plain text, so the fact survives without the

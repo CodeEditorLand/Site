@@ -131,6 +131,17 @@
 	color: var(--MuteForeground);
 }
 
+// The runtime badge's cell. It is a fact like the copyright beside it, so it
+// takes the same mono/meta treatment - the rule the cell lost when the footer
+// was rebuilt, leaving `.FooterTauriLink` as the only rule in the row and the
+// badge floating at the browser's default text size. `inline-flex` keeps the
+// badge and any future label on one line without the image's baseline gap.
+.FooterTauri {
+	@include mono-meta;
+	display: inline-flex;
+	align-items: center;
+}
+
 .FooterTauriLink {
 	display: inline-flex;
 	align-items: center;

@@ -1,0 +1,1 @@
+import{t as a}from"./Header.BIQ_vxkw.js";export{a as Header,a as default};

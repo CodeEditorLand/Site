@@ -12,15 +12,22 @@
 //   .doc-article__kicker             the section's name, upper-cased by `track`
 //   .doc-article__title              the page's single h1
 //   .doc-article__standfirst         one sentence under it
+//   .doc-article__strip              the mono metadata strip above the prose
+//   .doc-article__field              one field of it: label, then value
+//   .doc-article__label              the field's label (`STATUS:`), muted
+//   .doc-article__value              the field's value, in the surface ink
+//   .doc-article__value--quiet       a value that is a state, not a claim
+//   .doc-article__value--specimen    the one authenticated value (accent)
+//   .doc-article__separator          the U+2001 between two fields
 //   .doc-article__body               the document
 //   .doc-article__body--measure      the 72ch cap
 //   .doc-pager / __link / __label / __title   prev/next, at the foot of a page
 //
 // Four decisions this file makes so no page has to:
 //
-// - **One measure, one number.** 72ch appears once, on the body; the header and
-//   the pager inherit the same cap, so the standfirst, the prose and the pager
-//   all end on the same right edge.
+// - **One measure, one number.** 72ch appears once, on the body; the header, the
+//   metadata strip and the pager inherit the same cap, so the standfirst, the
+//   prose and the pager all end on the same right edge.
 // - **The container is the page's.** This partial adds no gutter and no max
 //   width: `DocLayout` owns the one container on a rail page, and a page without
 //   a rail owns its own (`.doc-rust`).
@@ -103,6 +110,65 @@
 	margin: 0;
 }
 
+/* §5's mono metadata strip - `STATUS` / `LAYER` / `SOURCE` / `COMPAT` /
+   `UPDATED` - placed by the shell between the header and the body, which is
+   where §5 names it (after the opening, above the prose). It reads at the
+   header's measure and at group distance, so it lands as the record's metadata
+   row and not as a second paragraph of the standfirst.
+
+   The fields are separate elements and the U+2001 between them is its own
+   element, so a reader's assistive tech announces five fields rather than one
+   run-on line. The label carries the muted ink and the value the surface's, and
+   a value that is a state (`UNAVAILABLE`) renders quiet so it never reads as a
+   positive claim (DESIGN.md §1.5). */
+.doc-article__strip {
+	@include mono-meta;
+	@include track(0.08em);
+
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+
+	max-width: 72ch;
+
+	margin-block: var(--space-group);
+
+	overflow-wrap: anywhere;
+}
+
+.doc-article__field {
+	white-space: nowrap;
+}
+
+.doc-article__label {
+	color: var(--MuteForeground);
+}
+
+.doc-article__value {
+	margin-inline-start: var(--space-tight);
+
+	color: var(--Foreground);
+}
+
+.doc-article__value--quiet {
+	color: var(--MuteForeground);
+}
+
+.doc-article__value--specimen {
+	color: var(--Accent);
+}
+
+.doc-article__separator {
+	color: var(--MuteForeground);
+}
+
+/* The strip already carries group distance on both sides; the body's own top
+   margin would double the gap under it. Only the pair is adjusted - a page
+   without a strip keeps the body's opening distance. */
+.doc-article__strip + .doc-article__body {
+	margin-block-start: 0;
+}
+
 /* The document. The shell caps it at the reading measure by default; a page
    whose body is a grid of cards passes `measure={false}` and the grid owns its
    own columns. */
@@ -150,9 +216,13 @@ jelly-card.doc-prose .doc-article__body a {
 }
 
 /* A document that opens with its own `# Heading` renders a second level-one
-   heading next to the shell's. The markdown belongs to the content cards, so
-   this file cannot drop it - but it can stop it competing with the page title:
-   it reads at the h2 tier, as the document's own opening line. */
+   heading next to the shell's. `Function/Markdown/Heading.ts` demotes that line
+   to `##` at the pipeline, which is the real fix; these two rules are the
+   surface half of it and stay as the fallback for a body that reaches this
+   article as pre-rendered HTML rather than through the markdown pipeline - an
+   `h1` inside the body reads at the h2 tier, as the document's opening line,
+   and the document's first `h2` opens flush under the standfirst instead of at
+   group distance. */
 .doc-article__body > h1 {
 	scroll-margin-block-start: calc(var(--HeaderHeight) + var(--space-tight));
 
@@ -167,7 +237,8 @@ jelly-card.doc-prose .doc-article__body a {
 	margin-block-end: var(--space-tight);
 }
 
-.doc-article__body > h1:first-child {
+.doc-article__body > h1:first-child,
+.doc-article__body > h2:first-child {
 	margin-block-start: 0;
 }
 

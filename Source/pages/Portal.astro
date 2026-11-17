@@ -6,6 +6,7 @@ import FieldRecordMetadata from "../Component/Brand/FieldRecordMetadata.astro";
 import { FieldRecordEvidence } from "../Component/Brand/FieldRecordEvidence";
 import { FieldRecordSeal } from "../Component/Brand/FieldRecordSeal";
 import { Header } from "../Component/Layout/Header";
+import RecordEntry from "../Component/Record/RecordEntry.astro";
 import { PortalPage } from "../Content/Surface/Portal.js";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
@@ -57,10 +58,15 @@ const Page = PortalPage(T);
 							</div>
 
 							<div class="mt-10">
+								{/* A page title is not a runtime stamp, a claim or a platform,
+								 so it prints without `〈 〉` (`DESIGN.md` §9 Q7). The ink is
+								 still the tier's semantic token, and the XL clamp is the
+								 page's own opening type. */}
 								<h1
 									class="font-mono text-card-foreground font-normal tracking-[-0.02em] leading-[0.95] text-field-xl"
+									style={`color:var(--${Page.headingInk})`}
 								>
-									<span style="color:var(--MuteForeground)">〈</span><span style={`color:var(--${Page.headingInk})`}>{Page.heading}</span><span style="color:var(--MuteForeground)">〉</span>
+									{Page.heading}
 								</h1>
 								<p
 									class="font-mono text-card-foreground font-normal text-field-l leading-[1.0] mt-2 tracking-[-0.02em]"
@@ -125,7 +131,7 @@ const Page = PortalPage(T);
 						src={Page.evidence.src}
 						alt={Page.evidence.alt}
 						position={Page.evidence.position}
-						className="h-full w-full min-h-[40dvh]"
+						className="portal-hero__evidence h-full w-full min-h-[40dvh]"
 					/>
 				</div>
 			</div>
@@ -147,7 +153,7 @@ const Page = PortalPage(T);
 									<FieldRecordSeal element={Tier.seal} size={32} />
 								</div>
 
-								<div class="border-border border-t mt-3 pt-3">
+								<div class="PortalTierRule mt-3 pt-3">
 									<h2 class="font-mono text-card-foreground font-medium uppercase text-xl tracking-[0.1em]">
 										<span style="color:var(--MuteForeground)">〈</span><span style={`color:var(--${Tier.ink})`}>{Tier.title}</span><span style="color:var(--MuteForeground)">〉</span>
 									</h2>
@@ -156,7 +162,7 @@ const Page = PortalPage(T);
 									</p>
 								</div>
 
-								<div class="border-border border-t mt-3 pt-3">
+								<div class="PortalTierRule mt-3 pt-3">
 									<div class="flex gap-3 py-0.5">
 										<span class="font-mono text-card-foreground text-sm uppercase tracking-[0.15em] shrink-0 w-20">STATUS: </span>
 										<span
@@ -170,19 +176,28 @@ const Page = PortalPage(T);
 									</div>
 								</div>
 
-								<div class="border-border border-t mt-3 pt-3">
+								<div class="PortalTierRule mt-3 pt-3">
 									<p class="font-mono text-card-foreground opacity-60 text-xs tracking-[0.25em] uppercase">FEATURES:</p>
-									<ul class="mt-2">
+									{/* A feature is one record of the tier's set: a marker, a
+									 name and the one sentence that qualifies it. That is
+									 `RecordEntry`'s whole anatomy, so the list imports the
+									 block instead of re-drawing its rows inline. `surface="bare"`
+									 because the entry is structure inside the tier card - the
+									 card is the surface, and a filled entry inside it would be a
+									 card inside a card. */}
+									<div class="mt-2">
 										{Tier.features.map((Feature) => (
-											<li class="flex flex-col border-border border-b gap-0 py-2">
-												<span class="font-mono text-card-foreground text-sm uppercase font-medium tracking-wider">{Feature.name}</span>
-												<span class="font-mono text-card-foreground opacity-60 text-xs">{Feature.description}</span>
-											</li>
+											<RecordEntry
+												surface="bare"
+												index={Feature.marker}
+												name={Feature.name}
+												body={Feature.description}
+											/>
 										))}
-									</ul>
+									</div>
 								</div>
 
-								<div class="border-border border-t mt-3 pt-3">
+								<div class="PortalTierRule mt-3 pt-3">
 									<p class="font-mono text-card-foreground opacity-60 text-xs tracking-[0.25em] uppercase">CAPABILITIES:</p>
 									<div class="flex flex-wrap gap-x-4 gap-y-1 mt-2">
 										{Tier.capabilities.map((Capability) => (
@@ -191,7 +206,7 @@ const Page = PortalPage(T);
 									</div>
 								</div>
 
-								<div class="border-border border-t mt-3 pt-3">
+								<div class="PortalTierRule mt-3 pt-3">
 									<FieldRecordAction
 										label={Tier.action.label}
 										href={Tier.action.href}

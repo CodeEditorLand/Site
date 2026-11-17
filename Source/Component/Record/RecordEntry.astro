@@ -17,13 +17,31 @@ import type { Entry } from "./Type.js";
  * `Entry` plus the one additive page hook: a composing page needs to place the
  * entry in its own grid, and `class` is the pass-through the sibling blocks
  * publish. Nothing else is added - the six `Entry` fields are the whole surface.
+ *
+ * `surface` is the second hook, and it follows `RecordBand`'s `tone="bare"`: an
+ * entry that is structure *inside* a Jelly surface (a tier card, a panel) drops
+ * its own fill and frame, because a card drawn inside a card is a second
+ * surface, and the block may never be one (`DESIGN.md` §4.3). The anatomy -
+ * index, name, chips, body - is identical either way; only the shell changes.
  */
-type Props = Entry & { readonly class?: string };
+type Props = Entry & {
+	readonly class?: string;
+	readonly surface?: "card" | "bare";
+};
 
-const { index, name, glyph, chips, body, href, class: ClassName } = Astro.props;
+const {
+	index,
+	name,
+	glyph,
+	chips,
+	body,
+	href,
+	class: ClassName,
+	surface = "card",
+} = Astro.props;
 ---
 
-<article class:list={["record-entry", ClassName]}>
+<article class:list={["record-entry", `record-entry--${surface}`, ClassName]}>
 	<p class="record-entry__index">{index}</p>
 	{
 		glyph ? (

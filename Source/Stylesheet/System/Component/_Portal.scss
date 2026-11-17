@@ -264,11 +264,32 @@
 
 /* ─── Divider ─────────────────────────────────────────────── */
 
+/* The tier divider is the site's divider strength, not the surface hairline.
+   `var(--Border)` is 8 % ink and reads 1.19:1 on a white card - the tier cards
+   are drawn on the creme field with no fill, so the line between two blocks of
+   a card has nothing to separate at that contrast. `--CardForeground` at 20 %
+   is the mix the hero gutter (`.hero-band__gutter`) and the markdown-alert rule
+   in `_Base.scss` already draw: the record grammar's divider ink, restated for
+   a track that has no card behind it. 1.50:1, the site's one divider value. */
+
 .PortalTierDivider {
 	width: 100%;
 	height: 0;
-	border-top: var(--BorderWidth) solid var(--Border);
+	border-top: var(--BorderWidth) solid
+		color-mix(in srgb, var(--CardForeground) 20%, transparent);
 	margin: 0.5rem 0;
+}
+
+/* The same rule for the live page. `Portal.astro` draws the tier card's four
+   inner separators with Tailwind's `border-border`, which is `var(--Border)` -
+   the 8 % surface hairline, 1.19:1 on the creme field, the same weakness
+   `.PortalTierDivider` carried. A divider between two blocks of a card is not a
+   surface edge, so it takes the divider ink: one class, one declaration, and
+   the tier card now has one divider value from either render path. */
+
+.PortalTierRule {
+	border-top: var(--BorderWidth) solid
+		color-mix(in srgb, var(--CardForeground) 20%, transparent);
 }
 
 /* ─── Orange-on-White Emphasis (LocalFirst hero treatment) ── */

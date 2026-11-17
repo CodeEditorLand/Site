@@ -6,31 +6,37 @@ import DocLayout from "../../Component/Doc/DocLayout.astro";
 import MermaidFallback from "../../Component/Dynamic/MermaidFallback.astro";
 import { Header } from "../../Component/Layout/Header";
 import BuildDocSidebar from "../../Function/Doc/BuildDocSidebar";
+import BuildDocStrip from "../../Function/Doc/BuildDocStrip";
 import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
 
 /**
- * One documentation page: the reading shell, then the markdown on a white card,
- * then the pager.
+ * One documentation page: the reading shell, the markdown on a white card, then
+ * the pager.
  *
  * `DesignSystem-Pages.md` §5 is the shape: **doc pages read on white cards**.
  * The shell (`DocArticle`) renders the page's single `h1`, the section as its
- * kicker, the frontmatter `description` as the standfirst, and then the body -
- * which sits on one `jelly-card` surface, the same card the prose carried at
- * HEAD (`bg-card p-6`), now as the design system's own surface rather than a
- * utility class. The five custom properties are the ones that card set:
- * `--Card` fill, radius 0, inherited type, and no padding of its own - the inset
- * belongs to `.doc-prose` in `System/Component/Doc/_Article.scss`, which is also
- * where the 72ch measure lives, so the card's edge and the prose's edge are one
- * decision.
+ * kicker, the frontmatter `description` as the standfirst, the metadata strip,
+ * and then the body - which sits on one `jelly-card` surface, the same card the
+ * prose carried at HEAD (`bg-card p-6`), now as the design system's own surface
+ * rather than a utility class. The five custom properties are the ones that
+ * card set: `--Card` fill, radius 0, inherited type, and no padding of its own -
+ * the inset belongs to `.doc-prose` in `System/Component/Doc/_Article.scss`,
+ * which is also where the 72ch measure lives, so the card's edge and the
+ * prose's edge are one decision.
  *
- * **What this page does not render, because the baseline did not:** a metadata
- * strip above the prose, and a contents list of its own. The baseline's only
- * contents list was the document's own `## Table of Contents`, which the prose
- * renders in place; a strip of `STATUS` / `LAYER` / `SOURCE` / `COMPAT` /
- * `UPDATED` never appeared on a documentation article at all. Both were added
- * by an earlier pass and both are gone, so the page's element sequence is the
- * reference's: breadcrumb, kicker, `h1`, standfirst, prose, pager.
+ * **The strip is this page's to build, and the shell's to place.** Only the page
+ * knows its section and its source, so `BuildDocStrip` runs here with the three
+ * facts a markdown file can prove about itself - `LAYER:` from `section`,
+ * `SOURCE:` from the file's own path, and the two extras the schema carries,
+ * `ORDER:` and `GROUP:`. `COMPAT:` and `UPDATED:` have no field in the `doc`
+ * collection, so the builder prints `UNAVAILABLE` for them in the quiet ink
+ * rather than inventing a value.
+ *
+ * **The body's own `# ` line is demoted at the pipeline**, not here:
+ * `Function/Markdown/Heading.ts` turns the document's opening `h1` into the
+ * prose's first `h2`, so the shell's title stays the page's only level-one
+ * heading - 39 of the 81 documents under `Source/Content/doc` open that way.
  *
  * The pager's two links sit on a `jelly-card` each, as at HEAD; the card is the
  * pager's flex item and the anchor fills it (`_Article.scss`).
@@ -71,6 +77,35 @@ const NextEntry =
 
 const T = GetI18n();
 
+/**
+ * The page's metadata strip: the five documented fields, then the two facts the
+ * `doc` collection's schema carries beyond them. `LAYER` is the section as the
+ * sidebar names it, `SOURCE` is the file the prose comes from, and `ORDER` is
+ * the page's position in its section - the number the sidebar already sorts by,
+ * printed so a reader can see it.
+ */
+const PageStrip = BuildDocStrip(
+	{
+		Layer: Entry.data.section,
+		Source: `Source/Content/doc/${Entry.id}.md`,
+		Extras: [
+			{
+				Label: T("strip.order", { ns: "doc", defaultValue: "ORDER:" }),
+				Value: String(Entry.data.order),
+			},
+			...(Entry.data.group
+				? [
+						{
+							Label: T("strip.group", { ns: "doc", defaultValue: "GROUP:" }),
+							Value: Entry.data.group,
+						},
+					]
+				: []),
+		],
+	},
+	T,
+);
+
 const MetaTitle = `${Entry.data.title} | Code Editor Land`;
 const MetaDescription = Entry.data.description;
 
@@ -87,13 +122,14 @@ const Documentation = T("sidebar.title", {
 	Url={Astro.url.href}
 	lang="en"
 >
-	<Header client:load Mode="functional" slot="Header" />
+	<Header client:idle={{ timeout: 2000 }} Mode="functional" slot="Header" />
 
 	<DocLayout sections={SidebarSections} activeId={Entry.id}>
 		<DocArticle
 			kicker={Entry.data.section}
 			title={Entry.data.title}
 			standfirst={Entry.data.description}
+			strip={PageStrip}
 			crumbs={[
 				{ label: Home, href: "/" },
 				{ label: Documentation, href: "/Doc" },

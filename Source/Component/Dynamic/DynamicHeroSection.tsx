@@ -100,11 +100,12 @@ import type Property from "./Interface/Property/Hero.js";
  * Every one of those is a move, not a deletion: the strings are the same
  * strings, printed by the band whose layer owns them.
  *
- * This stays a `.tsx` island because it is the child of the page's first
- * `ErrorBoundary` and a boundary cannot catch an error raised in a separate
- * island root. That is also why the frame is drawn here from
- * `CornerMarks/Data.ts`'s own exported geometry instead of by mounting the
- * `.astro` block: an `.astro` component cannot be imported from a `.tsx` file.
+ * This stays a `.tsx` island because the page's `h1` and its record are one
+ * artifact and an `.astro` block cannot be imported from a `.tsx` file: the
+ * `Record*` blocks this record's ledger and evidence would otherwise mount are
+ * `.astro`, and splitting the hero across two files would split the two-panel
+ * pair the person endorsed. The consequence is recorded at the facts ledger
+ * below, and `FeatureBand` carries the two blocks this band cannot.
  */
 
 /** The card's frame ink: the record panel is a warm-white Jelly surface. */
@@ -350,7 +351,18 @@ const DynamicHeroSection = ({ Content, Band, ClassName }: Property) => {
 								{Hero.claim.relation}
 							</p>
 
-							{/* 11. The record's three metadata rows. */}
+							{/*
+							 * 11. The record's three metadata rows - the
+							 * `RecordLedger` anatomy written by hand, because
+							 * the block is `.astro` and an `.astro` component
+							 * cannot be imported from a `.tsx` island. It
+							 * prints what the block prints (no `note`, no
+							 * `links`, no `lead`), so it can fall behind the
+							 * block but never disagree with it: anything added
+							 * to the ledger's anatomy has to be added here too.
+							 * `FeatureBand` mounts the block itself, for the
+							 * specimen observation and the runtime rail.
+							 */}
 							<dl className="record-ledger record-ledger--1 hero-band__facts">
 								{Hero.facts.map((Fact) => (
 									<div

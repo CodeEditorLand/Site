@@ -6,25 +6,36 @@
  * distribution the baseline used, so the six cards read as two rows of three
  * rather than as a stack.
  *
- * This band is also the observation layer. The hero record's specimen
- * observation - `SPECIES` / `TEMP` / `WIND`, what was seen - is printed here,
- * under its own `SPECIMEN` label, and never inside the hero card:
- * `DesignSystem-Components.md` §1 gives a hero record `TARGET / LICENSE /
- * SIGNAL` and caps it at four metadata rows, so a fourth block in the card
- * would both break the template and read as a card row it is not. The strings
- * are the same strings the hero's data layer resolves (`HeroBandFor(T)
- * .observation`), so the observation is a move, not a deletion.
+ * Below the grid the band prints the two blocks the record layer carries and a
+ * card cannot hold:
  *
- * The strip is a filed ledger, not a card: it sits below the grid, takes the
- * grid's measure, and borrows the record layer's `.record-ledger` shell so its
- * rows keep the field-record hairline.
+ * 1. **The one architecture proof.** The four-element runtime path the hero's
+ *    claim asserts - Mountain → Cocoon → Sky → Wind - one line per element,
+ *    mounted as a `RecordStage`: the block layer's own ordered rail, not a
+ *    hand-composed `<ol>`. The steps are `HeroBandFor(T).steps`, the same four
+ *    rows the hero's data module has always resolved and nothing consumed; the
+ *    label is `RailLabel`, the string the proof band used before the band was
+ *    rebuilt.
+ * 2. **The specimen observation.** `SPECIES:` / `TEMP:` / `WIND:`, the second
+ *    metadata block the field record has always printed beside its facts,
+ *    mounted as a `RecordLedger`. It is printed here and never inside the hero
+ *    card: `DesignSystem-Components.md` §1 gives a hero record `TARGET:` /
+ *    `LICENSE:` / `SIGNAL:` and caps it at four metadata rows, so a fourth block
+ *    in the card would break the template and read as a card row it is not.
+ *
+ * Both are *imports*, not class copies: the specimen strip used to carry
+ * `record-ledger` classes it never imported, which is why it drifted from the
+ * block's own anatomy. A borrowed class is not a block.
  */
 import { BandOf, HomeBands } from "../../Content/Home/Band.js";
 import { FeatureCards } from "../../Content/Home/Feature.js";
 import { GetI18n } from "../../Library/I18n/Server";
 
 import { HeroBandFor } from "../Dynamic/Hero/Data.js";
-import { ObservationLabel } from "../Dynamic/Properties/Data.js";
+import { ObservationLabel, RailLabel } from "../Dynamic/Properties/Data.js";
+
+import RecordLedger from "../Record/RecordLedger.astro";
+import RecordStage from "../Record/RecordStage.astro";
 
 import Band from "./Band.astro";
 import FeatureCard from "./FeatureCard.astro";
@@ -33,8 +44,11 @@ const T = GetI18n();
 
 const Head = BandOf(HomeBands(T), "features");
 
-/** The hero record's specimen observation: `SPECIES` / `TEMP` / `WIND`. */
-const Observation = HeroBandFor(T).observation;
+/** The band's data, resolved once: the rail and the observation both live on it. */
+const Hero = HeroBandFor(T);
+
+/** The hero record's specimen observation: `SPECIES:` / `TEMP:` / `WIND:`. */
+const Observation = Hero.observation;
 ---
 
 <Band head={Head}>
@@ -42,19 +56,15 @@ const Observation = HeroBandFor(T).observation;
 		{FeatureCards.map((Card) => <FeatureCard card={Card} />)}
 	</div>
 
+	<div class="home-feature__rail">
+		<p class="home-feature__rail-label">{RailLabel}</p>
+
+		<RecordStage stages={Hero.steps} orientation="row" />
+	</div>
+
 	<div class="home-feature__specimen">
 		<p class="home-feature__specimen-label">{ObservationLabel}</p>
 
-		<dl class="record-ledger record-ledger--1 home-feature__specimen-ledger">
-			{
-				Observation.map((Fact) => (
-					<div class="record-ledger__row">
-						<dt class="record-ledger__key">{Fact.key}</dt>
-
-						<dd class="record-ledger__value">{Fact.value}</dd>
-					</div>
-				))
-			}
-		</dl>
+		<RecordLedger rows={Observation} class="home-feature__specimen-ledger" />
 	</div>
 </Band>

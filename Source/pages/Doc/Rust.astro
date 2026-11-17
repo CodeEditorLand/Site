@@ -3,6 +3,7 @@ import DocArticle from "../../Component/Doc/DocArticle.astro";
 import { RustCrates } from "../../Component/Doc/Rust/Data";
 import RustViewer from "../../Component/Doc/RustViewer.astro";
 import { Header } from "../../Component/Layout/Header";
+import BuildDocStrip from "../../Function/Doc/BuildDocStrip";
 import Base from "../../Layout/Base.astro";
 import { LinkMentions } from "../../Library/CodeMentions";
 import { GetI18n } from "../../Library/I18n/Server";
@@ -16,17 +17,22 @@ import { GetI18n } from "../../Library/I18n/Server";
  * 1. **The breadcrumb** - `Home / Documentation / Rust API`.
  * 2. **The header** - one `h1` and one standfirst. No kicker: the baseline gave
  *    this page none, and the crumb already names where it sits.
- * 3. **The crate grid** - nine tiles, two across on a narrow viewport and five
+ * 3. **The metadata strip** - the same five fields every documentation surface
+ *    carries (`DesignSystem-Pages.md` §5, built by `BuildDocStrip`), plus the
+ *    crate count. Recovered from `8b58843c5^`, where the removal took it with
+ *    the strip on every other doc surface: the layer is the page's own subject
+ *    (`RUST API`), the source is the rustdoc output the viewer frames, and the
+ *    count is the one number a reader can check against the grid below.
+ * 4. **The crate grid** - nine tiles, two across on a narrow viewport and five
  *    across from 768px, each tile a name with its `↗` and one line saying what
  *    the crate is. The tiles are the only navigation this page needs.
- * 4. **The viewer** - the tab bar and the rustdoc frame, one surface.
- * 5. **The way back** - `Documentation ←`, closed by a hairline.
+ * 5. **The viewer** - the tab bar and the rustdoc frame, one surface.
+ * 6. **The way back** - `Documentation ←`, closed by a hairline.
  *
- * What is NOT here, because the baseline had none: a metadata strip, a section
- * kicker, and the two band headings (`Rust crates`, `Read it here`) an earlier
- * pass wrapped the list and the frame in. Every crate URL, label and
- * description is in `Component/Doc/Rust/Data.ts` and is the string the page has
- * always printed.
+ * What is NOT here, because the baseline had none: a section kicker, and the
+ * two band headings (`Rust crates`, `Read it here`) an earlier pass wrapped the
+ * list and the frame in. Every crate URL, label and description is in
+ * `Component/Doc/Rust/Data.ts` and is the string the page has always printed.
  */
 const T = GetI18n();
 
@@ -52,6 +58,21 @@ const Documentation = T("common.docs.pageTitle", {
 	defaultValue: "Documentation",
 });
 const Crumb = T("rust.crumb", { ns: "doc", defaultValue: "Rust API" });
+
+/** The page's metadata strip - see the sequence above for what each field says. */
+const PageStrip = BuildDocStrip(
+	{
+		Layer: Crumb,
+		Source: "RUSTDOC",
+		Extras: [
+			{
+				Label: T("strip.crates", { ns: "doc", defaultValue: "CRATES:" }),
+				Value: String(RustCrates.length),
+			},
+		],
+	},
+	T,
+);
 ---
 
 <Base
@@ -60,12 +81,13 @@ const Crumb = T("rust.crumb", { ns: "doc", defaultValue: "Rust API" });
 	Url={Astro.url.href}
 	lang="en"
 >
-	<Header client:load Mode="functional" slot="Header" />
+	<Header client:idle={{ timeout: 2000 }} Mode="functional" slot="Header" />
 
 	<div class="doc-rust">
 		<DocArticle
 			title={Heading}
 			standfirstHtml={LinkMentions(Standfirst)}
+			strip={PageStrip}
 			crumbs={[
 				{ label: Home, href: "/" },
 				{ label: Documentation, href: "/Doc" },

@@ -18,6 +18,13 @@
 // The tile is the one place on the homepage with a hover state: it is the only
 // element in the strip that a pointer can find, and the border is the whole of
 // the response - no fill, no shadow, no movement.
+//
+// The border is the site's *divider* ink, not the surface hairline. `--Border`
+// is 8% ink and the tile's fill is the hero's own creme canvas, so the hairline
+// measured 1.18:1 against it - a chip defined by nothing a reader can see. The
+// 20% mix is the same divider strength the hero's gutter and the markdown-alert
+// rule draw (1.50:1), which is what makes the chip a chip without giving it a
+// fill the baseline never had.
 
 @use "../../Mixin" as *;
 
@@ -55,7 +62,8 @@
 	block-size: 100%;
 	padding: 1rem;
 	background: var(--Background);
-	border: 1px solid var(--Border);
+	border: 1px solid
+		color-mix(in srgb, var(--CardForeground) 20%, transparent);
 	transition: border-color 160ms ease;
 }
 

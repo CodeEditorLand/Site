@@ -106,15 +106,15 @@ const ScanAnimation = () => (
 	<div className="flex items-center gap-3">
 		<div className="flex gap-1" aria-hidden="true">
 			<span
-				className="flat inline-block h-2 w-2 animate-pulse bg-orange-400"
+				className="flat inline-block h-2 w-2 animate-pulse bg-[var(--TierLocalFirst)]"
 				style={{ animationDelay: "0ms" }}
 			/>
 			<span
-				className="flat inline-block h-2 w-2 animate-pulse bg-orange-400"
+				className="flat inline-block h-2 w-2 animate-pulse bg-[var(--TierLocalFirst)]"
 				style={{ animationDelay: "150ms" }}
 			/>
 			<span
-				className="flat inline-block h-2 w-2 animate-pulse bg-orange-400"
+				className="flat inline-block h-2 w-2 animate-pulse bg-[var(--TierLocalFirst)]"
 				style={{ animationDelay: "300ms" }}
 			/>
 		</div>
@@ -209,7 +209,7 @@ const LocalFirstScanInner = () => {
 							})}
 						</h3>
 						{Status === "Scanning" && (
-							<span className="inline-flex items-center border border-orange-200 bg-orange-50 px-2.5 py-0.5 font-medium text-orange-700">
+							<span className="inline-flex items-center border border-[color:var(--TierLocalFirstMute)] bg-[var(--TierLocalFirstSurface)] px-2.5 py-0.5 font-medium text-[color:var(--TierLocalFirstFore)]">
 								{T("dashboard.localFirst.scanning", {
 									defaultValue: "Scanning",
 								})}
@@ -217,13 +217,13 @@ const LocalFirstScanInner = () => {
 								{"\u2001"}
 
 								<span
-									className="flat h-1.5 w-1.5 animate-pulse bg-orange-500"
+									className="flat h-1.5 w-1.5 animate-pulse bg-[var(--TierLocalFirst)]"
 									aria-hidden="true"
 								/>
 							</span>
 						)}
 						{Status === "Connected" && (
-							<span className="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
+							<span className="inline-flex items-center border border-[color:var(--SpinegRPCMute)] bg-[var(--SpinegRPCSurface)] px-2.5 py-0.5 font-medium text-[color:var(--SpinegRPCFore)]">
 								{T("dashboard.localFirst.connected", {
 									defaultValue: "Connected",
 								})}
@@ -231,7 +231,7 @@ const LocalFirstScanInner = () => {
 								{"\u2001"}
 
 								<span
-									className="flat h-1.5 w-1.5 bg-green-500"
+									className="flat h-1.5 w-1.5 bg-[var(--SpinegRPC)]"
 									aria-hidden="true"
 								/>
 							</span>
@@ -245,7 +245,7 @@ const LocalFirstScanInner = () => {
 								{"\u2001"}
 
 								<span
-									className="flat h-1.5 w-1.5 bg-gray-400"
+									className="flat h-1.5 w-1.5 bg-[var(--MuteForeground)]"
 									aria-hidden="true"
 								/>
 							</span>
@@ -256,9 +256,9 @@ const LocalFirstScanInner = () => {
 					{Status === "Scanning" && (
 						<div className="mt-3">
 							<ScanAnimation />
-							<div className="mt-2 h-1 w-full overflow-hidden bg-gray-100">
+							<div className="mt-2 h-1 w-full overflow-hidden bg-[var(--Mute)]">
 								<div
-									className="h-full bg-orange-400 transition-all duration-500"
+									className="h-full bg-[var(--TierLocalFirst)] transition-all duration-500"
 									style={{ width: `${ScanProgress}%` }}
 								/>
 							</div>
@@ -274,7 +274,7 @@ const LocalFirstScanInner = () => {
 					{/* Connected State */}
 					{Status === "Connected" && DaemonDetail && (
 						<div className="mt-3 space-y-2">
-							<p className="text-green-700">
+							<p className="text-[color:var(--SpinegRPCFore)]">
 								{T("dashboard.localFirst.connectedMessage", {
 									defaultValue: "Connected to Air Daemon",
 								})}
@@ -312,24 +312,24 @@ const LocalFirstScanInner = () => {
 								</span>
 							</div>
 							<div className="flex flex-wrap gap-2 pt-1">
-								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-blue-700">
+								<span className="inline-flex items-center border border-[color:var(--SpineIPCMute)] bg-[var(--SpineIPCSurface)] px-2 py-0.5 text-[color:var(--SpineIPCFore)]">
 									Peer-to-peer design{"\u2001"}
 									<span
-										className="flat h-1 w-1 bg-blue-500"
+										className="flat h-1 w-1 bg-[var(--SpineIPC)]"
 										aria-hidden="true"
 									/>
 								</span>
-								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-blue-700">
+								<span className="inline-flex items-center border border-[color:var(--SpineIPCMute)] bg-[var(--SpineIPCSurface)] px-2 py-0.5 text-[color:var(--SpineIPCFore)]">
 									Local-first{"\u2001"}
 									<span
-										className="flat h-1 w-1 bg-blue-500"
+										className="flat h-1 w-1 bg-[var(--SpineIPC)]"
 										aria-hidden="true"
 									/>
 								</span>
-								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-blue-700">
+								<span className="inline-flex items-center border border-[color:var(--SpineIPCMute)] bg-[var(--SpineIPCSurface)] px-2 py-0.5 text-[color:var(--SpineIPCFore)]">
 									No cloud required{"\u2001"}
 									<span
-										className="flat h-1 w-1 bg-blue-500"
+										className="flat h-1 w-1 bg-[var(--SpineIPC)]"
 										aria-hidden="true"
 									/>
 								</span>
@@ -349,7 +349,7 @@ const LocalFirstScanInner = () => {
 							<div className="flex flex-wrap gap-3">
 								<a
 									href="/Download"
-									className="StaccatoButton inline-flex items-center justify-center border border-orange-300 bg-orange-50 px-4 py-2 font-medium text-orange-700 transition-all hover:bg-orange-100"
+									className="StaccatoButton inline-flex items-center justify-center border border-[color:var(--TierLocalFirstMute)] bg-[var(--TierLocalFirstSurface)] px-4 py-2 font-medium text-[color:var(--TierLocalFirstFore)] transition-all hover:bg-[var(--TierLocalFirstMute)]"
 								>
 									{T("dashboard.localFirst.downloadButton", {
 										defaultValue: "Download Land",

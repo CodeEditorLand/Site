@@ -24,6 +24,16 @@ const Documentation = "/Doc";
 const Source = "/Download";
 
 /**
+ * A ledger key, printed as the grammar prints it: `TARGET:`.
+ *
+ * The colon is grammar, not copy - it is part of the compact field-label form
+ * the record grammar defines - so it is added here rather than stored in five
+ * locale files where four of them would lose it. The translatable part is the
+ * word, and the word is what the locale files carry.
+ */
+const Label = (Word: string): string => `${Word}:`;
+
+/**
  * The band, resolved once per render.
  *
  * The four-element rail is the runtime path the card names (Mountain → Cocoon →
@@ -128,7 +138,9 @@ const HeroBandFor = (T: Translate): HeroBand => ({
 
 	facts: [
 		{
-			key: T("home:hero.fact.target.label", { defaultValue: "TARGET" }),
+			key: Label(
+				T("home:hero.fact.target.label", { defaultValue: "TARGET" }),
+			),
 
 			value: T("home:hero.fact.target.value", {
 				defaultValue: "MACOS / WINDOWS / LINUX",
@@ -136,13 +148,17 @@ const HeroBandFor = (T: Translate): HeroBand => ({
 		},
 
 		{
-			key: T("home:hero.fact.license.label", { defaultValue: "LICENSE" }),
+			key: Label(
+				T("home:hero.fact.license.label", { defaultValue: "LICENSE" }),
+			),
 
 			value: T("home:hero.fact.license.value", { defaultValue: "CC0" }),
 		},
 
 		{
-			key: T("home:hero.fact.signal.label", { defaultValue: "SIGNAL" }),
+			key: Label(
+				T("home:hero.fact.signal.label", { defaultValue: "SIGNAL" }),
+			),
 
 			value: T("home:hero.fact.signal.value", {
 				defaultValue: "LOCAL-FIRST",
@@ -160,7 +176,9 @@ const HeroBandFor = (T: Translate): HeroBand => ({
 	 */
 	observation: [
 		{
-			key: T("home:hero.fact.species.label", { defaultValue: "SPECIES" }),
+			key: Label(
+				T("home:hero.fact.species.label", { defaultValue: "SPECIES" }),
+			),
 
 			value: T("home:hero.fact.species.value", {
 				defaultValue: "NOCTUA PRONUBA",
@@ -168,13 +186,13 @@ const HeroBandFor = (T: Translate): HeroBand => ({
 		},
 
 		{
-			key: T("home:hero.fact.temp.label", { defaultValue: "TEMP" }),
+			key: Label(T("home:hero.fact.temp.label", { defaultValue: "TEMP" })),
 
 			value: T("home:hero.fact.temp.value", { defaultValue: "16.2 C" }),
 		},
 
 		{
-			key: T("home:hero.fact.wind.label", { defaultValue: "WIND" }),
+			key: Label(T("home:hero.fact.wind.label", { defaultValue: "WIND" })),
 
 			value: T("home:hero.fact.wind.value", {
 				defaultValue: "01.8 KM/H",
@@ -218,6 +236,15 @@ const HeroBandFor = (T: Translate): HeroBand => ({
 		},
 	],
 
+	/**
+	 * The program line: three phrases, each an em-quad-separated run.
+	 *
+	 * U+2001 is the grammar's only separator, so it is the only one here - a
+	 * middle dot between the phrases is forbidden (`DESIGN.md` §1.5), and `→`
+	 * would claim a progression the three phrases are not. The line therefore
+	 * prints as one run of em-quad-separated verbs, and the grouping is carried
+	 * by the phrase order the data already has.
+	 */
 	program: [
 		T("home:hero.program.verbs", {
 			defaultValue: "WALK\u2001LISTEN\u2001SIGNAL",
@@ -230,7 +257,7 @@ const HeroBandFor = (T: Translate): HeroBand => ({
 		T("home:hero.program.actions", {
 			defaultValue: "OPEN\u2001EDIT\u2001SHIP",
 		}),
-	].join("\u2001·\u2001"),
+	].join("\u2001"),
 });
 
 /**

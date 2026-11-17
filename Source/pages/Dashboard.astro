@@ -3,6 +3,7 @@ import DynamicAuthHeader from "../Component/Dynamic/DynamicAuthHeader";
 import DynamicDashboardUser from "../Component/Dynamic/DynamicDashboardUser";
 import DynamicLocalFirstScan from "../Component/Dynamic/DynamicLocalFirstScan";
 import PrivacyRequests from "../Component/Dashboard/PrivacyRequests.astro";
+import RecordLedger from "../Component/Record/RecordLedger.astro";
 import SurfaceBadge from "../Component/Surface/SurfaceBadge.astro";
 import { RichText } from "../Component/UI/RichText";
 import { DashboardPage } from "../Content/Surface/Dashboard.js";
@@ -203,20 +204,20 @@ const Panel = "bg-card StaccatoCard StaccatoBorderShimmer";
 										dot={Card.badge.dot}
 									/>
 								</div>
-								<div class="space-y-2 mt-4">
-									{Card.rows.map((Row) => (
-										<div class="flex justify-between">
-											<span class="text-card-foreground">{Row.key}</span>
-											{Row.mono ? (
-												<code class="text-card-foreground">{Row.value}</code>
-											) : Row.strong ? (
-												<span class="font-medium">{Row.value}</span>
-											) : (
-												<span>{Row.value}</span>
-											)}
-										</div>
-									))}
-								</div>
+								{/* The card's facts are the site's factual spine, so they are
+								 a `RecordLedger` rather than four hand-drawn rows: the
+								 block is the published key/value anatomy (mono key, ink
+								 value), and `code`/`strong` keep the two distinctions the
+								 rows already carried. */}
+								<RecordLedger
+									class="mt-4"
+									rows={Card.rows.map((Row) => ({
+										key: Row.key,
+										value: Row.value,
+										code: Row.mono,
+										strong: Row.strong,
+									}))}
+								/>
 							</div>
 						))
 					}
@@ -232,19 +233,15 @@ const Panel = "bg-card StaccatoCard StaccatoBorderShimmer";
 					{
 						Page.tiers.cards.map((Card) => (
 							<a
-								class:list={[
-									"flex items-center StaccatoBorderShimmer StaccatoCard bg-card transition-all gap-4 p-5",
-									Card.hover,
-								]}
+								class="flex items-center StaccatoBorderShimmer StaccatoCard bg-card transition-all gap-4 p-5 hover:border-[color:var(--TierEdge)]"
+								style={`--TierWash:var(--${Card.token}Surface);--TierLine:var(--${Card.token}Mute);--TierInk:var(--${Card.token}Fore);--TierEdge:var(--${Card.token})`}
 								href="/Portal"
 							>
 								<div
-									class:list={[
-										"flex items-center justify-center shrink-0 border h-10 w-10 flat",
-										Card.tile,
-									]}
+									class="flex items-center justify-center shrink-0 border h-10 w-10 flat"
+									style="background-color:var(--TierWash);border-color:var(--TierLine);color:var(--TierInk)"
 								>
-									<span class:list={[Card.ink, "text-lg"]}>{Card.glyph}</span>
+									<span class="text-lg">{Card.glyph}</span>
 								</div>
 								<div>
 									<h3 class="text-card-foreground font-medium">{Card.title}</h3>
@@ -285,7 +282,16 @@ const Panel = "bg-card StaccatoCard StaccatoBorderShimmer";
 										<h3 class="text-card-foreground font-medium">
 											{Page.editor.name}
 										</h3>
-										<span class="font-medium items-center inline-flex bg-mute px-2.5 py-0.5 text-muted-foreground">{Page.editor.status}<span class="flat h-1.5 w-1.5 bg-gray-400" /></span>
+										{/* The state word is a badge, not a pill with a literal grey
+										 dot: `Not Connected` is one of the twelve words
+										 `BadgeInk` tints, and the Instrument Panel rule is that
+										 every state word carries its tone and its marker
+										 (`DESIGN.md` §3.8, §7 DR-14). */}
+										<SurfaceBadge
+											label={Page.editor.status}
+											tone="mute"
+											dot
+										/>
 									</div>
 									<RichText
 										client:load
@@ -297,7 +303,7 @@ const Panel = "bg-card StaccatoCard StaccatoBorderShimmer";
 							</div>
 							<div class="flex items-center gap-3 flex-wrap mt-6">
 								<a
-									class="font-medium items-center inline-flex justify-center StaccatoButton px-4 transition-all focus:outline-2 focus:outline-offset-2 bg-orange-50 border border-orange-300 focus:outline-orange-400 hover:bg-orange-100 py-2 text-orange-700"
+									class="font-medium items-center inline-flex justify-center StaccatoButton px-4 transition-all focus:outline-2 focus:outline-offset-2 bg-[var(--TierLocalFirstSurface)] border border-[color:var(--TierLocalFirstMute)] focus:outline-[var(--TierLocalFirst)] hover:bg-[var(--TierLocalFirstMute)] py-2 text-[color:var(--TierLocalFirstFore)]"
 									href={Page.editor.scan.href}
 								>
 									{Page.editor.scan.label}

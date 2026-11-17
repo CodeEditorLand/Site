@@ -6,12 +6,22 @@
  * two containment stamps, its route over the service line, its own name as the
  * link out to the element's repository, its status, and its four-row ledger.
  *
+ * The card's surface is the element's own tint. `JellyCardFill(SealName)` is the
+ * semantic per-element fill - the same colour the element wears everywhere else
+ * on the site, resolved from the record's own seal rather than from a position
+ * in the list, so a reordered card keeps its element's colour and an unknown
+ * element still gets a stable one. It is handed to the `jelly-card` as
+ * `--jelly-fill`; the partial's `.home-feature` fill is the fallback, and an
+ * inline property is what lets the identity win.
+ *
  * The name row is `MOUNTAIN:` with a trailing colon because the baseline printed
  * it as a label rather than as a title - the element is being addressed, not
  * introduced - and the arrow is the link's own mark.
  */
 import { FieldRecordSeal } from "../Brand/FieldRecordSeal";
 import type { FieldRecordElement } from "../Brand/FieldRecordSeal";
+
+import { JellyCardFill } from "../Dynamic/Interface/Card/Jelly.js";
 
 import Arrow from "./Arrow.astro";
 import RecordAnatomy from "./RecordAnatomy.astro";
@@ -25,9 +35,12 @@ interface Props {
 const { card } = Astro.props;
 
 const Seal = card.SealName as FieldRecordElement;
+
+/** The element's own surface tint: the card's identity, not a decoration. */
+const Fill = JellyCardFill(card.SealName);
 ---
 
-<jelly-card class="home-card home-feature">
+<jelly-card class="home-card home-feature" style={`--jelly-fill:${Fill}`}>
 	<article class="home-record">
 		<div class="home-record__head">
 			<span class="home-record__index">{card.Index}</span>

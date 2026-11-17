@@ -47,6 +47,19 @@
 
 		--DestructForeground: #ffffff;
 
+		/* The destructive hue's two derived surfaces, on the same convention as
+		   every other hue in this sheet (base / Mute 18 % / Surface 8 % / Fore):
+		   `Mute` is the hairline a destructive panel is drawn with and `Surface`
+		   the wash behind its tile. The dashboard's erasure entry is the one
+		   place on the site that draws a destructive card, so the two names it
+		   needs are here rather than as Tailwind's `red-50`/`red-200` literals
+		   in the markup. */
+		--DestructMute: color-mix(in srgb, #dc2626 18%, #ffffff);
+
+		--DestructSurface: color-mix(in srgb, #dc2626 8%, #ffffff);
+
+		--DestructFore: #b91c1c;
+
 		/* Border → hairline on light surfaces (sitewide) */
 		--Border: rgba(7, 7, 7, 0.08);
 
@@ -135,6 +148,18 @@
 		--TierLocalFirstSurface: var(--SpineTCPSurface);
 
 		--TierLocalFirstFore: var(--SpineTCPFore);
+
+		/* Enterprise is the one tier with no protocol spine of its own: it speaks
+		   OIDC / SAML / SCIM over the desktop platform, so it takes the desktop
+		   platform's hue. Aliased here so the four tiers are one naming run and a
+		   caller never has to know which tier borrows which spine. */
+		--TierEnterprise: var(--PlatformDesktop);
+
+		--TierEnterpriseMute: var(--PlatformDesktopMute);
+
+		--TierEnterpriseSurface: var(--PlatformDesktopSurface);
+
+		--TierEnterpriseFore: var(--PlatformDesktopFore);
 
 		/* ─────────────────────────────────────────────────────────────
 		 FRAMEWORK / EXTENSION COLORS

@@ -1,44 +1,54 @@
 ---
 /**
  * DocArticle - the reading shell every documentation surface shares: the
- * page-level breadcrumb, then kicker, the page's only `h1`, standfirst, then
- * the body.
+ * page-level breadcrumb, then kicker, the page's only `h1`, standfirst, the
+ * metadata strip, then the body.
  *
- * That is the whole sequence, and it is the sequence the baseline rendered on
- * every documentation page. Two things the shell deliberately does NOT render,
- * because the baseline did not:
+ * That is the whole sequence, and it is the baseline's sequence plus one
+ * element. The baseline rendered breadcrumb, `h1`, standfirst, prose; it did
+ * not render the strip, because the pre-programme page was a React island that
+ * printed its prose and nothing about it.
  *
- * - **No metadata strip.** The baseline article carried no `STATUS` / `LAYER` /
- *   `SOURCE` / `COMPAT` / `UPDATED` row - the only `STATUS` and `SOURCE` on the
- *   page belong to the footer's own record. A strip above the prose would be an
- *   invented element on a page whose reference is readable from git, so the
- *   shell has none.
- * - **No generated contents list.** The one table of contents the baseline
- *   rendered was the document's own (`## Table of Contents` in the markdown,
- *   which the prose renders in place). A second list above it was the shell's,
- *   and it is gone.
- *
- * What the shell still owns:
+ * Three things the shell owns so no page re-decides them:
  *
  * - **One `h1`.** The title is the page's single level-one heading; the blocks
- *   inside the body never render one, so a page that composes from blocks can
- *   never produce two.
- * - **One measure.** The header and (by default) the body are capped at the same
- *   `72ch`, so the standfirst ends where the prose ends. `measure={false}` drops
- *   the body cap and nothing else - the index's card grid and the Rust page's
- *   viewer need the full column, the header still reads at one measure.
- * - **The container contract.** The shell adds no gutter and no max width of its
- *   own: the page owns the one container (`DocLayout` on the rail pages, the
- *   page's own class on a page without a rail).
+ *   inside the body never render one, and the markdown's own `# ` line is
+ *   demoted by `Function/Markdown/Heading.ts`, so a page cannot produce two.
+ * - **The metadata strip.** `DesignSystem-Pages.md` §5 requires a mono
+ *   `STATUS` / `LAYER` / `SOURCE` / `COMPAT` / `UPDATED` strip above doc prose,
+ *   and it is the record grammar on a page that prints a record: `STATUS:` and
+ *   `LAYER:` are the `:` field labels, and `UNAVAILABLE` is the grammar's own
+ *   word for a field the tree cannot fill. The page builds the fields
+ *   (`Function/Doc/BuildDocStrip`) because only the page knows its section and
+ *   its source; the shell owns where they sit. The strip is recovered from
+ *   `9666ad4c5` - element, field anatomy and tone rules unchanged - and its
+ *   position is the one the removal left free: between the header and the body,
+ *   at the header's measure, above the prose it describes.
+ * - **One measure.** The header, the strip and (by default) the body are capped
+ *   at the same `72ch`, so the standfirst ends where the prose ends.
+ *   `measure={false}` drops the body cap and nothing else - the index's card
+ *   grid and the Rust page's viewer need the full column, the header still
+ *   reads at one measure.
+ *
+ * What the shell deliberately does NOT render: **a generated contents list.**
+ * The one table of contents the baseline rendered was the document's own
+ * (`## Table of Contents` in the markdown, which the prose renders in place). A
+ * second list above it was the shell's, the baseline article carried none, and
+ * it stays gone.
+ *
+ * The container contract: the shell adds no gutter and no max width of its own:
+ * the page owns the one container (`DocLayout` on the rail pages, the page's own
+ * class on a page without a rail).
  *
  * The kicker is the section's own name, printed as the caller wrote it and
  * upper-cased by the type role - `Deep Dive` on the page, `DEEP DIVE` on screen.
- * The baseline printed the section, not a `/SECTION` path, and this shell never
- * invents a leading slash. A page with no section (the index itself) passes no
- * kicker at all and renders no paragraph.
+ * A page with no section (the index itself) passes no kicker at all and renders
+ * no paragraph.
  *
  * No script and no hydration directive.
  */
+import type { DocStripItem } from "./Type.js";
+
 interface Props {
 	/** The section's name, e.g. `Deep Dive`. Printed verbatim; upper-cased in CSS. */
 	kicker?: string;
@@ -55,6 +65,14 @@ interface Props {
 	 * of `standfirst`, so the anchors in the opening sentence survive.
 	 */
 	standfirstHtml?: string;
+
+	/**
+	 * The mono metadata strip: one `DocStripItem` per field, rendered with U+2001
+	 * between them. Built by `Function/Doc/BuildDocStrip`, which supplies the five
+	 * documented fields in their documented order and appends whatever else the
+	 * page can prove.
+	 */
+	strip?: readonly DocStripItem[];
 
 	/** Cap the body at the reading measure. Defaults to `true`. */
 	measure?: boolean;
@@ -76,6 +94,7 @@ const {
 	title,
 	standfirst,
 	standfirstHtml,
+	strip,
 	measure = true,
 	crumbs,
 	class: Class,
@@ -114,6 +133,33 @@ const {
 			)
 		}
 	</header>
+
+	{
+		strip?.length ? (
+			<p class="doc-article__strip">
+				{strip.map((Item, Position) => (
+					<>
+						{Position > 0 ? (
+							<span class="doc-article__separator" aria-hidden="true">
+								{"\u2001"}
+							</span>
+						) : null}
+						<span class="doc-article__field">
+							<span class="doc-article__label">{Item.Label}</span>
+							<span
+								class:list={[
+									"doc-article__value",
+									Item.Tone ? `doc-article__value--${Item.Tone}` : null,
+								]}
+							>
+								{Item.Value}
+							</span>
+						</span>
+					</>
+				))}
+			</p>
+		) : null
+	}
 
 	<div
 		class:list={[

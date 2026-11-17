@@ -23,6 +23,12 @@
 // The card is a record with a body, so its two halves are divided by the one
 // hairline the header draws under itself - the same division the record grammar
 // uses between a record's stamp and its ledger.
+//
+// That hairline is the site's *divider* ink at 20%, not the surface hairline at
+// 8%. The card's fill is white and the head sits on it, so an 8% rule measured
+// 1.17:1 and read as no division at all; 20% is the same strength the hero's
+// gutter and the stack tile's border draw, and it is the only thing separating
+// the stamp from the release's two lists.
 
 @use "../../Mixin" as *;
 
@@ -46,7 +52,7 @@
 	padding-block-end: 1.5rem;
 	padding-inline: 2rem;
 	border-block-end: 1px solid
-		color-mix(in srgb, var(--CardForeground) 8%, transparent);
+		color-mix(in srgb, var(--CardForeground) 20%, transparent);
 }
 
 .home-release__stamp {

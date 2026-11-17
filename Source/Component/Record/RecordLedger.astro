@@ -95,6 +95,10 @@ const Shell = [
 									</a>
 								</>
 							))
+						) : Row.code ? (
+							<code class="record-ledger__code">{Row.value}</code>
+						) : Row.strong ? (
+							<strong class="record-ledger__strong">{Row.value}</strong>
 						) : (
 							Row.value
 						)

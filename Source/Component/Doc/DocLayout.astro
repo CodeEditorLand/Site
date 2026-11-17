@@ -24,8 +24,18 @@
  * `id="top"` is here because the documentation pages link back to `#top` and
  * nothing on the page defined it.
  *
- * The sidebar is an island (`client:load`) because it collapses: it is the one
- * part of this shell that hydrates.
+ * The sidebar is an island because it collapses: it is the one part of this
+ * shell that hydrates. It is rendered twice - once as the rail, once as the
+ * mobile panel - and exactly one of the two is painted at any viewport width
+ * (`.doc-layout__aside` is `display:none` below 1024px, `.doc-sidebar--mobile`
+ * is `display:none` above it), so each instance carries `client:media` with the
+ * complement of its own `display:none` rule instead of `client:load`:
+ * hydrating both meant hydrating a 78-row tree that was never painted.
+ *
+ * The two queries are written without spaces on purpose. The build strips
+ * attribute quotes, and an unquoted attribute value cannot contain a space -
+ * `(min-width: 1024px)` would be truncated at the space and the island would
+ * silently never hydrate.
  */
 import { GetI18n } from "../../Library/I18n/Server";
 import { DynamicDocSidebar } from "../Dynamic/DynamicDocSidebar";
@@ -65,7 +75,7 @@ const SidebarTitle = T("sidebar.title", {
 				<DynamicDocSidebar
 					Sections={sections}
 					ActiveId={activeId}
-					client:load
+					client:media="(min-width:1024px)"
 				/>
 				<div class="doc-layout__foot">
 					<a class="doc-layout__rust" href="/Doc/Rust"
@@ -82,7 +92,7 @@ const SidebarTitle = T("sidebar.title", {
 						Sections={sections}
 						ActiveId={activeId}
 						Mobile={true}
-						client:load
+						client:media="(max-width:1023.98px)"
 					/>
 				) : null
 			}

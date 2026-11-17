@@ -61,6 +61,16 @@
 // converts only the trace, which is a width animation, and which had to become
 // a transform for the "trace" relationship to be expressible at all.
 //
+// ── WHERE EACH RULE POINTS ────────────────────────────────────────────────
+// The four families were written against `RecordEntry`, `RecordArchive`,
+// `RecordBand` and `RecordHero`. Two of those blocks had no importer when this
+// file was written, so the rules could not fire. Each family now names a block
+// that renders: the entry arrow (live: the Portal's tier feature set), the
+// ledger's key and value (live: the footer, the reading document, the surface
+// shell and the Dashboard's build cards), and the evidence frame (live: the
+// Portal hero). The selectors changed; the relationships, the tokens and the
+// two-leg structure did not.
+//
 // What the document asks for that CSS cannot do is reported on the card rather
 // than simulated here: the four canonical state sequences (download, checksum,
 // copy, expand) are runtime state machines, and a transition needs a state to
@@ -132,6 +142,11 @@
    the part that moves: 2px inline on hover and on keyboard focus, and back to
    its own place on the settle curve when the pointer leaves.
 
+   The block is live: the Portal's four tier cards render their feature sets as
+   `RecordEntry` rows, so the anatomy below paints on a real surface. An entry
+   that carries no `href` renders no arrow - the rule's subject is a *linked*
+   record name, and a feature row is a fact rather than a destination.
+
    `display: inline-block` is what gives the arrow a box to transform. A span is
    `inline`, and `transform` is ignored on an inline box, so without it the
    declaration below would parse and do nothing.
@@ -154,23 +169,37 @@
 	@include motion-enter;
 }
 
-/* ─── THE ARCHIVE ROW ────────────────────────────────────────────────────── */
+/* ─── THE LEDGER ROW - THE TRACE ─────────────────────────────────────────── */
 
-/* The trace under an archive title, drawn rather than widened.
-   `Record/_Archive.scss` animates `inline-size` from 0 to 100%, which is a
-   width animation: it reflows the row on every frame of the disclosure, and
-   `width` is the first property the card forbids. The rule below keeps the same
-   picture - a hairline of the accent running the title's own width, from the
-   left - and paints it with `scaleX`, which runs without touching layout.
+/* The trace under a record's name, drawn rather than widened. It was written
+   for `RecordArchive`, which has no importer; the ledger is the block that
+   renders, and its `<dt>` is the record's name, so the line is re-pointed
+   there.
 
-   `inline-size: 100%` at rest is the whole trick: the line is always the full
-   width of the name, and the disclosure changes only its scale. Nothing about
-   the box moves, so nothing can reflow and the row's height is identical in
-   both states. */
+   `scaleX` on a hairline is the whole trick: the line is always the full width
+   of the key, and the disclosure changes only its scale. Nothing about the box
+   moves, so nothing can reflow and the row's height is identical in both
+   states.
 
-.record-archive__title::after {
+   `:has()` is what keeps this off static content: a ledger row whose value is
+   not a link is not interactive, and MOTION MUST NOT decorate static content.
+   The rule fires on hover and on `:focus-within`, so the keyboard sees the same
+   line the pointer does. */
+
+.record-ledger__key {
+	position: relative;
+}
+
+.record-ledger__key::after {
+	content: "";
+
+	position: absolute;
+	inset-block-end: calc(var(--motion-trace-weight) * -2);
+	inset-inline-start: 0;
 	inline-size: 100%;
 	block-size: var(--motion-trace-weight);
+
+	background-color: var(--Accent);
 
 	transform: scaleX(0);
 	transform-origin: left center;
@@ -178,37 +207,36 @@
 	@include motion-settle;
 }
 
-.record-archive__link:is(:hover, :focus-visible, :active)
-	.record-archive__title::after {
+.record-ledger__row:has(.record-ledger__link):is(:hover, :focus-within)
+	.record-ledger__key::after {
 	transform: scaleX(1);
 
 	@include motion-trace;
 }
 
-/* ─── THE INDEX STRIP ────────────────────────────────────────────────────── */
+/* ─── THE LEDGER VALUE - THE PULL ────────────────────────────────────────── */
 
-/* The strip is the band's table of contents: one cell per marker. Its cells are
-   flex items of `.record-band__index`, so each is blockified and `transform`
-   has a box to act on.
+/* The band's index strip was a run of one-cell links and has no importer, so
+   the pull is re-pointed at the live link anatomy: the value of a ledger row
+   that leads somewhere. The value is a block box, so it takes the same 2px the
+   record's arrow takes without needing a display change, and the press adds 1px
+   of travel under it. That is the whole compression: a mono fact has no shape
+   to compress, only a position to register. */
 
-   The pull is the same 2px the record block uses - the strip answers "Can I
-   interact with this?" with the same word the record does - and the press adds
-   1px of travel under it. That is the strip's whole compression: a link in a
-   mono line has no shape to compress, only a position to register. */
-
-.record-band__index-item {
+.record-ledger__value {
 	transform: none;
 
 	@include motion-settle;
 }
 
-.record-band__index-item:is(:hover, :focus-visible) {
+.record-ledger__row:has(.record-ledger__link):is(:hover, :focus-within)
+	.record-ledger__value {
 	transform: translateX(var(--motion-enter-lift));
 
 	@include motion-enter;
 }
 
-.record-band__index-item:active {
+.record-ledger__row:has(.record-ledger__link:active) .record-ledger__value {
 	transform: translate(var(--motion-enter-lift), var(--motion-press-travel));
 
 	@include motion-press;
@@ -218,23 +246,27 @@
 
 /* "For an evidence image, a hover should feel like closer inspection, not
    animation for its own sake: a 1-2% crop shift" (`further_design_system.md`).
-   The scale is applied to the image inside the plate, not to the plate: the
-   primitive already gives the plate `overflow: hidden`, so the image grows
-   inside a frame that stays exactly where it is and the page does not move. A
-   `transform` on the image is also the only way to crop without a `width`
-   change.
+   `RecordHero` has no importer; the evidence frame that renders is the Portal
+   hero's `FieldRecordEvidence`, which is already `overflow: hidden` and
+   full-bleed, so the image grows inside a frame that stays exactly where it is
+   and the page does not move. A `transform` on the image is also the only way
+   to crop without a `width` change.
+
+   The page passes the hook, rather than the primitive carrying it, because the
+   same primitive renders the 404's evidence - the programme's reference for
+   what "restored" means - and that page keeps its still frame.
 
    `RecordFigure`'s media frame is deliberately NOT treated the same way: it
    carries `overflow-x: auto` so a composed diagram can be wider than its
    column, and clipping it to a crop would take that scroll away. */
 
-.record-hero__plate img {
+.portal-hero__evidence img {
 	transform: scale(1);
 
 	@include motion-settle;
 }
 
-.record-hero__evidence:hover .record-hero__plate img {
+.portal-hero__evidence:hover img {
 	transform: scale(var(--motion-crop-scale));
 
 	@include motion-enter;

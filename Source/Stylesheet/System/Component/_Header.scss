@@ -42,7 +42,7 @@
 // reader, and a second copy of the number is how the offset drifts.
 :root {
 	--HeaderBar: 3.5rem;
-	--HeaderStrip: 0rem;
+	--HeaderStrip: 1.75rem;
 	--HeaderGlyph: 1.75rem;
 	--HeaderHeight: calc(var(--HeaderBar) + var(--HeaderStrip));
 }
@@ -179,21 +179,34 @@ html {
 	@include hairline(bottom);
 }
 
-// The label is ink and nothing else: a nav label is not body prose, so it
-// carries no decoration at rest. The sitewide prose underline in _Global.scss
-// already excludes `[class*="NavLink"]` for exactly this reason. The active
-// destination is marked by a shape at the foot of the link, never by an
-// underline - one indicator, and it is a shape (DesignSystem-Components.md §2).
+// The label carries a resting underline at 20% of the mode's own ink, 2px, so
+// the rule reads on the creme field and on the white card without a second
+// value (DesignSystem-Components.md §2). It is a *resting* state, not an
+// indicator: the active destination is still marked by the 2px accent bar at the
+// foot of the link and by nothing else, so the two never compete. The sitewide
+// prose underline in _Global.scss excludes `[class*="NavLink"]`, so this rule is
+// the only underline a nav label gets.
 .HeaderLinkLabel {
 	@include mono-meta;
 	@include track;
 	position: relative;
 	color: var(--HeaderFg);
-	transition: color 0.15s ease;
+	text-decoration: underline;
+	text-decoration-color: color-mix(
+		in srgb,
+		var(--HeaderFg) 20%,
+		transparent
+	);
+	text-decoration-thickness: 2px;
+	text-underline-offset: 0.12em;
+	transition:
+		text-decoration-color 0.15s ease,
+		color 0.15s ease;
 }
 
-// Hover is a measured state change: the label goes to the accent, and a 12%
-// accent field sits behind the link. No decoration, no glow, no emitted light.
+// Hover is a measured state change: the label and its rule go to the accent,
+// and a 12% accent field sits behind the link. No decoration, no glow, no
+// emitted light.
 .HeaderNavLink::before {
 	content: "";
 	position: absolute;
@@ -210,6 +223,7 @@ html {
 
 .HeaderNavLink:hover .HeaderLinkLabel {
 	color: var(--Accent);
+	text-decoration-color: var(--Accent);
 }
 
 .HeaderNavLink:hover::before {
@@ -224,9 +238,9 @@ html {
 // derives from the path and the section in view - not an href comparison, which
 // cannot tell an in-page anchor from a route. The marker is ONE 2px specimen
 // rule at the foot of the link: a shape, so the state survives greyscale and is
-// never colour-only (DesignSystem-Components.md §2). It is the only indicator -
-// the label carries no underline, so there is no second accent line to read as
-// a double rule.
+// never colour-only (DesignSystem-Components.md §2). It is the only *indicator* -
+// the label's resting underline is at 20% ink and is a resting state, so there
+// is no second accent line to read as a double rule.
 .HeaderNavLink[aria-current="page"]::after {
 	content: "";
 	position: absolute;
@@ -254,6 +268,47 @@ html {
 	inline-size: 100%;
 	justify-content: flex-start;
 	color: var(--HeaderFg);
+}
+
+// ─── The status strip ─────────────────────────────────────────────────────
+// One line, on every page, in the meta role: the accent square marks it as a
+// live status rather than a sentence. The strip is the header's last child, so
+// `.Header`'s closing hairline falls under it and the strip's own top hairline
+// separates it from the bar - the bar and the status are two rows of one
+// artifact, divided the way the record grammar divides a stamp from its body.
+//
+// `--HeaderStrip` is this band's height and it is part of `--HeaderHeight`, so
+// an anchored heading clears the bar *and* the strip. The value is the band's
+// real height at the meta floor; a zero here makes the height arithmetic dead
+// and drops the strip's reserved space out of `scroll-padding-block-start`.
+
+.HeaderStrip {
+	@include band-inner;
+	display: flex;
+	align-items: center;
+	min-block-size: var(--HeaderStrip);
+
+	@include hairline(top);
+}
+
+.HeaderStatus {
+	@include mono-meta;
+	@include track(0.08em);
+	display: flex;
+	align-items: center;
+	gap: var(--space-tight);
+	margin: 0;
+	color: var(--HeaderMuted);
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.HeaderStatus::before {
+	content: "";
+	flex: none;
+	inline-size: var(--space-tight);
+	block-size: var(--space-tight);
+	background: var(--Accent);
 }
 
 // ─── The bar at 1024px and up ─────────────────────────────────────────────

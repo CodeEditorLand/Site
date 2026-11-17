@@ -10,6 +10,7 @@ import {
 	HeaderLinkAttributes,
 	HeaderLinkState,
 	HeaderSections,
+	HeaderStatus,
 	HeaderView,
 } from "./Header/Data.js";
 
@@ -201,6 +202,17 @@ const Header = ({ Content, AuthSlot, Mode = "minimal" }: HeaderProps) => {
 					(Action) => Action.Href !== "/Account/SignIn",
 				);
 
+	/**
+	 * The status line under the bar.
+	 *
+	 * `status.value` is the key `En/Header.json` carries; `HeaderStatus` is the
+	 * module's own English default, so the strip prints on a page whose locale
+	 * file has not caught up rather than printing an empty band. The string is
+	 * `STATUS: ACTIVE␁PRE-RELEASE` - the em quad is the grammar's only
+	 * separator, and the label keeps its colon.
+	 */
+	const Status = T("status.value", { defaultValue: HeaderStatus });
+
 	const ModeClass =
 		Mode === "functional" ? "HeaderFunctional" : "HeaderMinimal";
 
@@ -336,6 +348,18 @@ const Header = ({ Content, AuthSlot, Mode = "minimal" }: HeaderProps) => {
 						</div>
 					</div>
 				</div>
+			</div>
+
+			{/*
+			 * The status strip: one line under the bar, on every page, in the meta
+			 * role. It is the record grammar's compact field label - `STATUS:`
+			 * keeps its colon and the em quad is the only separator - and the
+			 * accent square beside it marks the line as a live state rather than
+			 * a sentence. The styles are `.HeaderStrip` / `.HeaderStatus` in
+			 * `_Header.scss`, and `--HeaderStrip` is the band's own height.
+			 */}
+			<div className="HeaderStrip">
+				<p className="HeaderStatus">{Status}</p>
 			</div>
 		</header>
 	);

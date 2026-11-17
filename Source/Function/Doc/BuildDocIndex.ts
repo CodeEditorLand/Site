@@ -21,6 +21,12 @@
  *   shape - a badge strip, a bulleted list, a tile grid - so each band carries
  *   a `Kind` and `DocAppendix.astro` switches on it. The rows are the same
  *   `DocLink` every card uses.
+ * - **The closing archive is derived, never written.** `BuildArchive` maps the
+ *   sections it was just given, so the ten rows, their order and their sizes are
+ *   the grid's own - a section that gains a page gains it in the archive in the
+ *   same build, and the header's count is the length of that list. No count is
+ *   printed beside a section heading (the baseline printed none there); the one
+ *   number on the page is the archive's, and it is the sum of its rows.
  *
  * Copy stays at the call site: every label and sentence below comes from an
  * existing i18n key, read through the `T` the page passes in. This module never
@@ -35,6 +41,8 @@ import type {
 	DocSection,
 	DocTranslate,
 } from "../../Component/Doc/Type.js";
+
+import type { Archive } from "../../Component/Record/Type.js";
 
 import { SectionOrder, Slugify } from "./BuildDocSidebar.js";
 
@@ -378,8 +386,43 @@ const BuildAppendices = (T: DocTranslate): DocAppendix[] => {
 };
 
 /**
+ * The closing archive: one row per section, in the order the grid prints them.
+ *
+ * The marker column carries the section's size and the title is the section's
+ * name, so the row reads `12␁PAGES   Elements` and jumps to the grid it counts.
+ * The header's count is composed from the same array - `10 SECTIONS` - so the
+ * number at the far end can never disagree with the ten rows under it; the
+ * block would derive the length on its own, and the word is what makes a bare
+ * `10` mean something.
+ *
+ * U+2001 is the only separator in a compact label string, so the count and the
+ * marker use it and never a centre dot.
+ */
+const BuildArchive = (
+	Sections: readonly DocSection[],
+	T: DocTranslate,
+): Archive => {
+	const Pages = T("archive.pages", { defaultValue: "PAGES" });
+
+	const SectionsWord = T("archive.sections", { defaultValue: "SECTIONS" });
+
+	return {
+		index: "ARCHIVE_01",
+		heading: T("archive.heading", {
+			defaultValue: "Documentation archive",
+		}),
+		count: `${Sections.length}\u2001${SectionsWord}`,
+		entries: Sections.map((Section) => ({
+			title: Section.Heading,
+			href: `#${Section.Id}`,
+			marker: `${Section.Rows.length}\u2001${Pages}`,
+		})),
+	};
+};
+
+/**
  * The whole index: the three ways in, the ten sections in `SectionOrder`, then
- * the three closing artifacts.
+ * the three closing artifacts and the archive that maps them.
  *
  * A section that no entry declares is dropped rather than rendered empty -
  * `Telemetry` is in `SectionOrder` but the four telemetry pages carry
@@ -412,6 +455,7 @@ const BuildDocIndex = (
 		Features: BuildFeatures(T),
 		Sections,
 		Appendices: BuildAppendices(T),
+		Archive: BuildArchive(Sections, T),
 	};
 };
 

@@ -26,16 +26,22 @@
 </style>
 
 <script>
-	import mermaid from "mermaid";
-
 	// Find any pre/code blocks with language-mermaid that haven't been inlined yet
 	const blocks = document.querySelectorAll(
 		'pre > code.language-mermaid, pre > code[class*="language-mermaid"]',
 	);
 
-	if (blocks.length === 0) {
-		// No fallback needed - all inlined at build time
-	} else {
+	// The import is dynamic on purpose. This script is on every documentation
+	// page, and a static `import mermaid from "mermaid"` made the browser
+	// evaluate the whole mermaid graph before the check below could discover
+	// that the remark plugin had already inlined every diagram at build time:
+	// 13-27 ms of module evaluation per page load, measured on the built output,
+	// spent to find out there was nothing to do. Nothing is lost by waiting - a
+	// page that does keep a client-side block still renders it, one dynamic
+	// import later.
+	if (blocks.length > 0) {
+		const { default: mermaid } = await import("mermaid");
+
 		// Single daylight theme: always the default (light) mermaid theme
 		mermaid.initialize({
 			startOnLoad: false,

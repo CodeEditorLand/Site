@@ -13,6 +13,8 @@
  * which is what makes the band a staggered wall with ragged edges rather than an
  * even grid of equal tiles.
  */
+import EnglishHome from "../../Library/I18n/Locale/En/Home.json";
+
 import { Air } from "../Record/Air.js";
 import { Cocoon } from "../Record/Cocoon.js";
 import { Common } from "../Record/Common.js";
@@ -62,6 +64,28 @@ const Symbol = "◎";
 
 /** The elements drawn as a symbol rather than as an engraved seal. */
 const Symbolic: ReadonlySet<string> = new Set(["Common"]);
+
+/**
+ * The element's English copy, as the `defaultValue` the band resolves against.
+ *
+ * Every string this band prints is `T(key, { defaultValue })`, and the rule is
+ * that the English copy lives in the `defaultValue` **and** in
+ * `Locale/En/Home.json` (`DESIGN.md` §4.4). This module used to pass an empty
+ * string as the default, which made the copy depend entirely on the resolver
+ * being live at the moment the band renders - and when it is not, the band
+ * prints fifteen records with no chips and an empty body instead of failing
+ * loudly. The locale module is the single source of truth and is imported here
+ * rather than re-typed, so the two can never drift.
+ */
+const English = (
+	Key: string,
+): { readonly subtitle: string; readonly description: string } => {
+	const Rows = EnglishHome.architecture as unknown as Readonly<
+		Record<string, { readonly subtitle: string; readonly description: string }>
+	>;
+
+	return Rows[Key] ?? { subtitle: "", description: "" };
+};
 
 /** One row of the table: the record, its width, and the order it prints in. */
 const Order: readonly { readonly Record: FieldRecord; readonly Span: number }[] =
@@ -125,9 +149,13 @@ const CardOf =
 			Seal: Symbolic.has(Record.Seal) ? "symbol" : "figure",
 			Symbol,
 			Chips: ChipsOf(
-				T(`home:architecture.${Key}.subtitle`, { defaultValue: "" }),
+				T(`home:architecture.${Key}.subtitle`, {
+					defaultValue: English(Key).subtitle,
+				}),
 			),
-			Body: T(`home:architecture.${Key}.description`, { defaultValue: "" }),
+			Body: T(`home:architecture.${Key}.description`, {
+				defaultValue: English(Key).description,
+			}),
 			Source: Record.Href,
 			Span,
 		};

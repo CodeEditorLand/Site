@@ -16,6 +16,9 @@ const { default: remarkMermaid } =
 const { default: remarkCodeMentions } =
 	await import("./Source/Function/Markdown/CodeMentions.js");
 
+const { default: remarkHeading } =
+	await import("./Source/Function/Markdown/Heading.js");
+
 export default (await import("astro/config")).defineConfig({
 	markdown: {
 		syntaxHighlight: "shiki",
@@ -24,7 +27,12 @@ export default (await import("astro/config")).defineConfig({
 			theme: "github-light",
 		},
 
-		remarkPlugins: [remarkCallout, remarkMermaid, remarkCodeMentions],
+		remarkPlugins: [
+			remarkCallout,
+			remarkMermaid,
+			remarkCodeMentions,
+			remarkHeading,
+		],
 	},
 
 	srcDir: "./Source",
@@ -79,7 +87,12 @@ export default (await import("astro/config")).defineConfig({
 				theme: "github-light",
 			},
 
-			remarkPlugins: [remarkCallout, remarkMermaid, remarkCodeMentions],
+			remarkPlugins: [
+				remarkCallout,
+				remarkMermaid,
+				remarkCodeMentions,
+				remarkHeading,
+			],
 		}),
 
 		(await import("@astrojs/sitemap")).default({

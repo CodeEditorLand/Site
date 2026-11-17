@@ -18,7 +18,12 @@
  * - No shape carries a surface. The card's tone belongs to the card component
  *   (`System/Component/Doc/_Index.scss`), so the data can never alternate one
  *   section against the next.
+ *
+ * The index's closing archive borrows the Record layer's own `Archive` shape
+ * rather than declaring a second one: `RecordArchive` is the block that renders
+ * it, and a page hands a block the shape the block publishes (`DESIGN.md` §4.2).
  */
+import type { Archive } from "../Record/Type.js";
 
 /** One page, crate or destination in a documentation list. */
 export interface DocLink {
@@ -104,6 +109,15 @@ export interface DocIndexData {
 
 	/** The three closing artifacts, in print order. */
 	Appendices: readonly DocAppendix[];
+
+	/**
+	 * The index's closing archive: one row per section, its size in the marker
+	 * column, its anchor as the destination. It is the page's table of contents
+	 * in the record grammar - a reader who has scrolled the wall can see the
+	 * whole map and how it is distributed in one screen, and each row jumps to
+	 * the section it names.
+	 */
+	Archive: Archive;
 }
 
 /**

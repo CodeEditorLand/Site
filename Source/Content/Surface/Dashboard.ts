@@ -94,14 +94,16 @@ export interface TierCard {
 	/** The glyph in the pastel tile. */
 	readonly glyph: string;
 
-	/** The tile's pastel classes. */
-	readonly tile: string;
-
-	/** The glyph's ink. */
-	readonly ink: string;
-
-	/** The border the card takes on hover. */
-	readonly hover: string;
+	/**
+	 * The tier's token run, without the `--` or the trailing surface word:
+	 * `TierCloud`, `TierProvider`, `TierLocalFirst`, `TierEnterprise`. The card
+	 * resolves `--<token>Surface` for the tile's wash, `--<token>Mute` for its
+	 * hairline, `--<token>Fore` for the glyph and `--<token>` for the border the
+	 * card takes on hover. One name per tier, so the pastel is a token and never
+	 * a Tailwind literal (`bg-blue-50`, `border-purple-200`) that no other
+	 * surface can reach.
+	 */
+	readonly token: string;
 }
 
 /** One partner card. */
@@ -332,7 +334,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 				{
 					badges: [
 						{ label: "Disabled", tone: "grpc", dot: true },
-						{ label: "Feature Gated", tone: "mute" },
+						{ label: "Feature Gated", tone: "mute", dot: true },
 					],
 					heading: T("common.dashboard.telemetry.production.title", {
 						defaultValue: "Feature-gated by build profile.",
@@ -424,36 +426,28 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 					protocol: ["Auth0", "HTTPS / TLS 1.3"].join(` ${Quad} `),
 					badge: { label: "Online", tone: "ipc", dot: true },
 					glyph: "☁",
-					tile: "bg-blue-50 border-blue-200",
-					ink: "text-blue-600",
-					hover: "hover:border-blue-300",
+					token: "TierCloud",
 				},
 				{
 					title: "Provider",
 					protocol: ["OAuth 2.0", "PKCE"].join(` ${Quad} `),
 					badge: { label: "OAuth", tone: "wasm", dot: true },
 					glyph: "♧",
-					tile: "bg-purple-50 border-purple-200",
-					ink: "text-purple-600",
-					hover: "hover:border-purple-300",
+					token: "TierProvider",
 				},
 				{
 					title: "Local-First",
 					protocol: ["mTLS", "CRDTs", "WebSocket"].join(` ${Quad} `),
 					badge: { label: "Local", tone: "tcp", dot: true },
 					glyph: "⚙",
-					tile: "bg-orange-50 border-orange-200",
-					ink: "text-orange-600",
-					hover: "hover:border-orange-300",
+					token: "TierLocalFirst",
 				},
 				{
 					title: "Enterprise",
 					protocol: ["OIDC", "SAML 2.0", "SCIM"].join(` ${Quad} `),
 					badge: { label: "SSO", tone: "grpc", dot: true },
 					glyph: "☋",
-					tile: "bg-green-50 border-green-200",
-					ink: "text-green-600",
-					hover: "hover:border-green-300",
+					token: "TierEnterprise",
 				},
 			],
 		},

@@ -30,6 +30,14 @@ const Quad = "\u2001";
 
 /** One feature row: a name, and the one sentence that qualifies it. */
 export interface PortalFeature {
+	/**
+	 * `01` - the feature's position in its tier's own list, zero-padded. A
+	 * feature is one record of the tier's set, and a record carries a marker;
+	 * the order is a fact of the table, so it is derived here rather than
+	 * invented in the template. `RecordEntry` prints it verbatim.
+	 */
+	readonly marker: string;
+
 	/** `Sync` - printed uppercase by the row's own class. */
 	readonly name: string;
 
@@ -194,7 +202,8 @@ const Features = (
 	Tier: "cloud" | "provider" | "localfirst" | "enterprise",
 	Rows: readonly PortalFeatureCopy[],
 ): readonly PortalFeature[] =>
-	Rows.map((Row) => ({
+	Rows.map((Row, Position) => ({
+		marker: String(Position + 1).padStart(2, "0"),
 		name: Row.Heading,
 		description: T(`account.portal.${Tier}.feature.${Row.Key}`, {
 			defaultValue: Row.Fallback,

@@ -2,7 +2,6 @@
 import "@Stylesheet/System.scss";
 
 import Background from "../Background.astro";
-import { ErrorBoundary } from "../Component/ErrorBoundary";
 import Footer from "../Component/Layout/Footer.astro";
 import { AnalyticsProvider } from "../Component/Provider/AnalyticsProvider";
 import { PageviewTracker } from "../Component/Provider/PageviewTracker";
@@ -150,7 +149,27 @@ const T = GetI18n();
 				-->
 				<slot name="Header" />
 				<main id="main-content" class="grow" tabindex="-1">
-					<ErrorBoundary client:load><slot /></ErrorBoundary>
+					<!--
+						No React error boundary here, on purpose. It was
+						`<ErrorBoundary client:load><slot /></ErrorBoundary>`
+						and it cost two things it could not repay:
+
+						1. It cannot catch anything. The page body reaches a
+						   framework component as `<astro-slot>` innerHTML, never
+						   as React nodes, so `getDerivedStateFromError` can
+						   never fire for page content and the boundary's "Try
+						   again" fallback is unreachable.
+						2. It gated every island on the page. Astro's
+						   `astro-island.hydrate()` returns early when
+						   `parentElement.closest("astro-island[ssr]")` matches
+						   and waits for that ancestor's `astro:hydrate` event -
+						   and this boundary wrapped the whole of `<slot />`, so
+						   every island below it waited for a React root that
+						   provided no coverage. Measured on
+						   `/Doc/deep-dive-mountain/`: removing it is what lets
+						   the doc rail hydrate on its own directive.
+					-->
+					<slot />
 				</main>
 			</AnalyticsProvider>
 			<div id="Footer" class="shrink"><Footer /></div>

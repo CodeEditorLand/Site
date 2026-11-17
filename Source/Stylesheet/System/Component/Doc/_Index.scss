@@ -26,6 +26,7 @@
 //   .doc-services__note      its sentence, printed after the baseline's `-`
 //   .doc-tiles               the twelve live deployments
 //   .doc-tile                one destination: name, arrow, one line of context
+//   .doc-archive             the closing RecordArchive, at chapter distance
 //   .doc-index__back         the index's back-to-top line
 //
 // ─── WHY A CARD GRID ──────────────────────────────────────────────────────
@@ -353,6 +354,18 @@ jelly-card.doc-card__surface {
 	color: var(--MuteForeground);
 
 	margin-block-start: var(--space-tight);
+}
+
+/* ─── THE CLOSING ARCHIVE ───────────────────────────────────────────────── */
+
+/* `RecordArchive` owns its own anatomy, its rules and its disclosure
+   (`System/Record/_Archive.scss`); the page adds the one thing the block
+   deliberately does not carry - the distance from the artifact above it. The
+   block sits at chapter distance, like every other closing artifact, and it
+   paints no surface of its own, so it reads on the creme field with the grid's
+   own hairlines. */
+.doc-archive {
+	margin-block-start: var(--space-chapter);
 }
 
 /* ─── BACK TO TOP ───────────────────────────────────────────────────────── */
