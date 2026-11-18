@@ -78,9 +78,11 @@ type Fact = {
  */
 const Facts: Fact[] = [
 	count !== undefined ? { kind: "count", text: count } : undefined,
-	figure ? { kind: "figure", text: `${figure.value} ${figure.unit}` } : undefined,
+	figure
+		? { kind: "figure", text: `${figure.value} ${figure.unit}` }
+		: undefined,
 	asOf ? { kind: "as-of", text: `AS OF: ${asOf}` } : undefined,
-	source ? { kind: "source", text: source } : undefined,
+	source ? { kind: "source", text: `SOURCE: ${source}` } : undefined,
 ].filter((Entry): Entry is Fact => Entry !== undefined);
 ---
 
@@ -92,26 +94,22 @@ const Facts: Fact[] = [
 
 	{Facts.length > 0 && (
 		<span class="detail-folio__facts">
-			{Facts.map((Fact) => (
+			{Facts.map((Field) => (
 				<span
 					class:list={[
 						"detail-folio__fact",
-						`detail-folio__${Fact.kind}`,
+						`detail-folio__${Field.kind}`,
 					]}
 				>
-					{Fact.kind === "source"
-						? Fact.text.split("/").map((Segment, Position, Segments) => (
-								<>
-									{Segment}
-									{Position < Segments.length - 1 && (
-										<>
-											{"/"}
-											<wbr />
-										</>
-									)}
-								</>
-							))
-						: Fact.text}
+					{Field.kind === "source"
+						? Field.text
+								.split("/")
+								.map((Segment, Position, Segments) =>
+									Position < Segments.length - 1
+										? [Segment, "/", <wbr />]
+										: [Segment],
+								)
+						: Field.text}
 				</span>
 			))}
 		</span>

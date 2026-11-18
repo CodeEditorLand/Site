@@ -51,13 +51,14 @@
 //   a sibling item   the break can fall on either side of it, so a line can
 //                    OPEN with a separator - one em of indent at the band's
 //                    left edge, where every other folio line starts flush
-//   the fact's own   the separator is glued to the fact before it, so a break
-//     `::after`      can only fall AFTER it: the em quad stays at the end of
-//                    the finished line (invisible - it is a space) and the
-//                    next line opens flush on its own fact
+//   the fact's own   the separator is inside the fact's box, so a break falls
+//     `::after`      either BEFORE a whole fact (the line ends on its last
+//                    fact's ink, the next line opens flush on its own fact) or
+//                    AFTER one (the em quad ends the line - invisible, it is a
+//                    space). No line ever opens with a separator.
 //
-// So no line ever begins with a separator, and no mark is ever orphaned: at a
-// break the separator is simply the air the break consumed.
+// So no mark is ever orphaned: at a break the separator is either the air the
+// break consumed or it has not been reached yet.
 //
 // ─── THE SLOTS ────────────────────────────────────────────────────────────
 //   .detail-folio             the line
@@ -146,10 +147,13 @@
 // The separator is the site's one separator and it is drawn, not typed: a
 // template's whitespace around U+2001 becomes a 200px gap, which is the defect
 // the clause rail's head already paid for once. It is the fact's own `::after`
-// and not a sibling item (the head of this file says why), and its
-// `letter-spacing: 0` keeps the gap at exactly one em: the register's tracking
-// would otherwise add its 0.08em after a character that is already a space.
+// and not a sibling item (the head of this file says why), its
+// `letter-spacing: 0` keeps the gap at exactly one em - the register's tracking
+// would otherwise add its 0.08em after a character that is already a space - and
+// its `white-space: nowrap` makes the separator itself unbreakable, so even the
+// source's `anywhere` backstop cannot push the em quad to the start of a line.
 .detail-folio__fact:not(:last-child)::after {
 	content: "\2001";
 	letter-spacing: 0;
+	white-space: nowrap;
 }

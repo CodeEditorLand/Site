@@ -279,7 +279,7 @@ $Item: ':is([data-slot="dropdown-menu-item"], [data-slot="dropdown-menu-checkbox
 .SlipAction:hover {
 	text-decoration: underline;
 	text-decoration-thickness: 1px;
-	text-underline-offset: 0.25em;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 .SlipAction:focus-visible {

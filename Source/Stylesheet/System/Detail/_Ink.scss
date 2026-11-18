@@ -16,12 +16,25 @@
 //
 // ─── THE UNDERLINE'S METRICS ──────────────────────────────────────────────
 // An underline's offset is not a fixed distance; it is a fraction of the type
-// size. At a 13px label a 2px offset sits inside the descender of `p` and `g`;
-// at a 52px heading the same 2px floats in the gap. `0.22em` holds at every size
-// the ladder has, and 1px thickness keeps the underline a hairline rather than
-// a rule. The sitewide rule in `System/_Global.scss` now states the same two
-// values - this layer repeats them for the artifacts that live here so the
-// detail does not depend on a selector list it does not own.
+// size, and the fraction is set by the face's descender, not by taste: with
+// `text-underline-position: auto` the offset is measured from the alphabetic
+// baseline (css-text-decor-4 §2.8.1), and IBM Plex Mono's deepest printable
+// descender is `g` at 0.212em. The value this layer carried - 0.22em - put the
+// top of a 1px line 0.008em above the bottom of a `g`, a tenth of a pixel at the
+// 13px meta tier: the line sat on the glyphs, and skip-ink broke it into
+// fragments under every `p`, `g` and `y`. `--optical-underline-offset`
+// (`System/_Token.scss`) is 0.3em - the deepest descender in the font stack
+// (0.236em in Menlo and SF Mono) plus 0.064em of air - so the line clears every
+// descender the ladder can print, at every size, and stays one continuous
+// hairline. The sitewide rule in `System/_Global.scss` reads the same token;
+// this layer repeats it for the artifacts that live here so the detail does not
+// depend on a selector list it does not own.
+//
+// The artifacts are the ones a reader follows: the leader's name (body tier)
+// and the cross-reference's route (the meta tier, where the collision was
+// visible). `.detail-folio__link` is the group's third member and has no markup
+// target since the folio became a row of facts rather than a link; it keeps the
+// metrics so a folio that prints a route again draws the same line.
 //
 // ─── SELECTION ────────────────────────────────────────────────────────────
 // The browser's default selection is a blue that appears nowhere in this
@@ -52,7 +65,7 @@
 .detail-see__route,
 .detail-folio__link {
 	text-decoration-thickness: 1px;
-	text-underline-offset: 0.22em;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 // ─── THE TRACKED LABEL'S OPTICAL EDGE ─────────────────────────────────────

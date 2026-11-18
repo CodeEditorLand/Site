@@ -245,7 +245,7 @@
 
 	text-decoration: underline;
 	text-decoration-thickness: 2px;
-	text-underline-offset: 0.3em;
+	text-underline-offset: var(--optical-underline-offset);
 	text-decoration-color: color-mix(
 		in srgb,
 		var(--CardForeground) 20%,

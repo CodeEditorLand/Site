@@ -196,6 +196,7 @@
 .record-band__index-item:hover,
 .record-band__index-item:focus-visible {
 	text-decoration: underline;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 @include bp(640px) {

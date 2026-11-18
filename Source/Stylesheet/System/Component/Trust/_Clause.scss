@@ -42,7 +42,7 @@
 	color: var(--Foreground);
 
 	text-decoration: underline;
-	text-underline-offset: 0.25em;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 .trust-clause__cite:focus-visible {

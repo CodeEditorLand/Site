@@ -162,6 +162,7 @@
 
 .home-release__destination:hover {
 	text-decoration: underline;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 .home-release__title {
@@ -231,6 +232,7 @@
 
 .home-release__element:hover {
 	text-decoration: underline;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 .home-release__role {

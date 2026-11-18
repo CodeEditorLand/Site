@@ -461,7 +461,7 @@
 .contact-form__errors-link:hover,
 .contact-form__errors-link:focus-visible {
 	text-decoration: underline;
-	text-underline-offset: 0.25em;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 .contact-form__errors-link:focus-visible {

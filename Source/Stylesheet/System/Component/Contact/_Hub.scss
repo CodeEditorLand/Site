@@ -184,7 +184,7 @@
 .contact-hub__address:hover,
 .contact-hub__address:focus-visible {
 	text-decoration: underline;
-	text-underline-offset: 0.25em;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 // ─── The process band ─────────────────────────────────────────────────────
@@ -251,4 +251,5 @@
 .contact-hub__top a:hover,
 .contact-hub__top a:focus-visible {
 	text-decoration: underline;
+	text-underline-offset: var(--optical-underline-offset);
 }

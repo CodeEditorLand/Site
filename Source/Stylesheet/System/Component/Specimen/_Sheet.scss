@@ -120,7 +120,7 @@
 a.specimen-sheet__cell-inner:hover .specimen-sheet__name {
 	text-decoration: underline;
 	text-decoration-thickness: 2px;
-	text-underline-offset: 3px;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 .specimen-sheet__mark {

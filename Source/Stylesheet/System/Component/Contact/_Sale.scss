@@ -190,6 +190,7 @@
 .contact-sale__route:hover,
 .contact-sale__route:focus-visible {
 	text-decoration: underline;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 // The address: ink, no fill, underlined on hover only. No `user-select` and no
@@ -203,7 +204,7 @@
 .contact-sale__address:hover,
 .contact-sale__address:focus-visible {
 	text-decoration: underline;
-	text-underline-offset: 0.25em;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 // ─── The close ────────────────────────────────────────────────────────────
@@ -226,4 +227,5 @@
 .contact-sale__top a:hover,
 .contact-sale__top a:focus-visible {
 	text-decoration: underline;
+	text-underline-offset: var(--optical-underline-offset);
 }

@@ -322,5 +322,5 @@
 .blog-index__back a {
 	color: var(--Accent);
 	text-decoration: underline;
-	text-underline-offset: 4px;
+	text-underline-offset: var(--optical-underline-offset);
 }

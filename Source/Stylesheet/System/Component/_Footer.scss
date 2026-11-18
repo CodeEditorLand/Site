@@ -108,7 +108,7 @@
 	text-decoration: underline;
 	text-decoration-color: color-mix(in srgb, currentColor 30%, transparent);
 	text-decoration-thickness: 1px;
-	text-underline-offset: 0.22em;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 // Hover is ink, not hue. The fact is a destination and the underline says so at
@@ -163,7 +163,7 @@
 .FooterQuickLink:hover {
 	text-decoration: underline;
 	text-decoration-thickness: 1px;
-	text-underline-offset: 0.22em;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 .FooterLegal {
@@ -183,7 +183,7 @@
 	color: var(--Foreground);
 	text-decoration: underline;
 	text-decoration-thickness: 1px;
-	text-underline-offset: 0.22em;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 // ─── Bottom row ───────────────────────────────────────────────────────────
@@ -224,7 +224,7 @@
 	color: var(--Foreground);
 	text-decoration: underline;
 	text-decoration-thickness: 1px;
-	text-underline-offset: 0.22em;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 // The runtime badge's cell. It is a fact like the copyright beside it, so it

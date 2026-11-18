@@ -660,6 +660,7 @@
 .surface-button:hover,
 .surface-button:focus-visible {
 	text-decoration: underline;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 // The white information box a region's records lie on. Never nested: a panel

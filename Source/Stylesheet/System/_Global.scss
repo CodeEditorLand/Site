@@ -411,14 +411,17 @@ a:where(
 ) {
 	text-decoration: underline;
 	text-decoration-color: var(--Divider);
-	/* The underline's metrics are a fraction of the type size, not a distance:
-	   2px sits inside a 13px label's descenders and floats under a 52px heading,
-	   and the ladder has both. 0.22em holds at every step, and 1px keeps the
-	   underline a hairline instead of a second rule. `System/Detail/_Ink.scss`
-	   states the same two values for the artifacts that live on the detail
-	   layer, so a change here is a change there. */
+	/* The underline's metrics are a fraction of the type size, not a distance,
+	   and they are one value for the whole site: `--optical-underline-offset`
+	   (`System/_Token.scss`) carries the arithmetic - the mono face's deepest
+	   descender is 0.212em and the fallbacks reach 0.236em, so 0.3em is the
+	   first fraction that clears them at every step of the ladder. At 0.22em
+	   the top of the line sat a tenth of a pixel above the bottom of a `g` at
+	   13px, which is what put it on the glyphs. 1px keeps the underline a
+	   hairline instead of a second rule. `System/Detail/_Ink.scss` reads the
+	   same token for the artifacts that live on the detail layer. */
 	text-decoration-thickness: 1px;
-	text-underline-offset: 0.22em;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 /* Hover moves the line's colour, never its thickness: a link that gains weight

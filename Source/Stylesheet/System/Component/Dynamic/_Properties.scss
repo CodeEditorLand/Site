@@ -139,7 +139,7 @@ jelly-card > .record-entry.properties-entry {
 
 .properties-filed__link {
 	text-decoration-color: var(--MuteForeground);
-	text-underline-offset: 0.22em;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 .properties-filed__link:hover {

@@ -48,5 +48,5 @@
 .trust-page__close a:hover,
 .trust-page__close a:focus-visible {
 	text-decoration: underline;
-	text-underline-offset: 0.25em;
+	text-underline-offset: var(--optical-underline-offset);
 }

@@ -132,7 +132,7 @@
 	color: inherit;
 	text-decoration-line: underline;
 	text-decoration-color: var(--MuteForeground);
-	text-underline-offset: 0.2em;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 .record-entry__link:hover {

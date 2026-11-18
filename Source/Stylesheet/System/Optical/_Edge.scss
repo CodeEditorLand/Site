@@ -24,8 +24,11 @@
 @use "../Mixin" as *;
 
 // The folio's right end: `〈03〉 /LEGAL␁26 CLAUSES␁AS OF: 2026-11-18` ends on the
-// band's right edge, under a rule that runs the band's whole width. The date is
-// the last thing on that rule or the rule is longer than the line it closes.
+// band's right edge, under a rule that runs the band's whole width. Its last
+// fact is the last thing on that rule or the rule is longer than the line it
+// closes. (When the facts wrap, the block's edge is the widest line's edge and
+// this cancel keeps that line on the band's edge; the shorter line above it is
+// ragged by design - it is a register, not a justified column.)
 .detail-folio__facts {
 	margin-inline-end: var(--optical-edge-row);
 }

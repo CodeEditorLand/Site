@@ -152,7 +152,7 @@
 .record-margin__link a {
 	color: var(--Primary);
 	text-decoration-thickness: 1px;
-	text-underline-offset: 0.25em;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 .record-margin__link a:hover {

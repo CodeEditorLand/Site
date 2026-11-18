@@ -997,7 +997,9 @@
 	 * cancel on an edge, an overlap on a rule; a positive one means "given" - a
 	 * gap, a column, a cap height.
 	 *
-	 * The layer that reads them is `System/Optical/`.
+	 * The layer that reads them is `System/Optical/`; the underline offset is
+	 * the one of them that leaves that layer, because the line under a word is
+	 * drawn by the link rule that owns it and not by a component.
 	 */
 
 	/* A HANG. A mark is not text: `#`, `↳`, `/` and `◎` say something *about*
@@ -1055,6 +1057,34 @@
 	 * exactly this, or the space between the two grows with the heading's clamp
 	 * - 6.5px at 32px and 10.5px at 52px for the same intended gap. */
 	--optical-cap-gap: 0.2em;
+
+	/* THE LINE UNDER A WORD. While `text-underline-position` is `auto` - and
+	 * nothing on the site states otherwise - `text-underline-offset` is measured
+	 * from the ALPHABETIC BASELINE (css-text-decor-4 §2.8.1), so the one
+	 * quantity an offset has to clear is the face's deepest descender. In IBM
+	 * Plex Mono 2.005 that is `g` at 0.212em (upm 1000, yMin -212); the
+	 * fallbacks reach deeper - Menlo and SF Mono bottom out at 0.236em.
+	 *
+	 * The link rules carried 0.22em, which puts the top of a 1px line 0.008em
+	 * above the bottom of a `g` in Plex - and 0.016em INSIDE the descender of
+	 * Menlo and SF Mono, the faces the page actually renders in whenever the
+	 * webfont has not loaded (`display=optional`). That is the line sitting on
+	 * the glyphs, and it is also why `text-decoration-skip-ink` keeps cutting
+	 * it - a rule drawn through descenders is drawn in fragments.
+	 * 0.3em is the deepest fallback descender plus 0.064em of air: 0.8px at the
+	 * meta tier, 1.0px at body, and 1.1px over Plex's own `g`. A fraction of the
+	 * type, not a distance, so it holds at every step of the ladder - 3.9px at
+	 * 13px, 4.8px at 16px, 15.6px at 52px - and once it clears the descenders
+	 * there is nothing left for skip-ink to break, so the line stays one
+	 * continuous hairline.
+	 *
+	 * Every rule that draws the site's one line under words reads it: the prose
+	 * default in `System/_Global.scss`, the detail layer's artifacts
+	 * (`Detail/_Ink.scss`), and each component that states its own underline. A
+	 * component that states `text-decoration` states this too - the alternative
+	 * is the browser's own underline position (-0.06em in Menlo, -0.14em in
+	 * Plex), which sits inside the descender by design. */
+	--optical-underline-offset: 0.3em;
 
 	/* TWO COLUMNS ON A CHARACTER MEASURE. 14rem is 28.7 characters at the meta
 	 * role, so the value column of every ledger starts in the middle of a

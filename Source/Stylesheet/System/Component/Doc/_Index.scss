@@ -343,6 +343,7 @@ jelly-card.doc-card__surface {
 		color: var(--Accent);
 
 		text-decoration: underline;
+		text-underline-offset: var(--optical-underline-offset);
 	}
 }
 
@@ -407,6 +408,7 @@ jelly-card.doc-card__surface {
 		color: var(--Accent);
 
 		text-decoration: underline;
+		text-underline-offset: var(--optical-underline-offset);
 	}
 }
 
@@ -503,5 +505,6 @@ jelly-card.doc-card__surface {
 
 	&:hover {
 		text-decoration: underline;
+		text-underline-offset: var(--optical-underline-offset);
 	}
 }

@@ -260,6 +260,7 @@
 
 .home-record__link:hover {
 	text-decoration: underline;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 .home-record__arrow {
@@ -289,6 +290,7 @@
 
 .home-record__name-link:hover {
 	text-decoration: underline;
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 .home-record__glyph {
