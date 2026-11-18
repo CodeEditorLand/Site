@@ -225,6 +225,34 @@ const LayoutSpec = LanguageOf(RawPath);
 				/* Storage refused: the density holds for this visit, in the control. */
 			}
 		</script>
+		<script is:inline>
+			/*
+			 * The clipboard gate, before first paint - and before the element.
+			 *
+			 * A Jelly host that upgrades inside `display: none` has no box: it
+			 * builds a 0x0 canvas and no physics body, parks itself out of the
+			 * shared loop, and is inert under the pointer for the rest of the
+			 * session while looking perfectly correct at rest. So the copy
+			 * controls (`.record-well__copy`, `.record-transcript__copy`) ship
+			 * VISIBLE in the markup and their sheets hide them until this line
+			 * un-gates them - which happens while the document is still being
+			 * parsed, before any module (the Jelly bundle included) can upgrade
+			 * them. `is:inline` is the whole point: a bundled Astro script is
+			 * deferred, and deferred is already too late.
+			 *
+			 * No clipboard, no gate: the controls stay `display: none` - absent
+			 * from layout and from the tab order rather than dead in it.
+			 */
+			try {
+				if (navigator.clipboard && navigator.clipboard.writeText)
+					document.documentElement.setAttribute(
+						"data-clipboard",
+						"ready",
+					);
+			} catch (Error) {
+				/* No clipboard object (an insecure context): the controls stay absent. */
+			}
+		</script>
 		<script>
 			import "@/Library/I18n/Client.js";
 		</script>

@@ -114,14 +114,26 @@
 	color: var(--MuteForeground);
 }
 
+// ─── THE COPY CONTROL - THE WELL'S RULE, NOT A SECOND ONE ─────────────────
+// Same host, same size, same gate as `.record-well__copy`: the control ships
+// visible in the markup and this sheet hides it until `Base.astro`'s
+// `is:inline` clipboard gate has set `html[data-clipboard="ready"]` - which
+// happens before the element is parsed, so a Jelly build always finds a box.
+// A Jelly host upgraded inside `display: none` has no box: 0x0 canvas, no
+// physics body, parked - and its hover is silent for the rest of the session.
+// The box is declared here for the same reason it is there: the host must have
+// its final size before it upgrades, whatever the parse order.
 .record-transcript__copy {
+	display: none;
 	flex: 0 0 auto;
 	--jelly-icon-button-size: var(--space-group);
 	--jelly-icon-button-icon-size: var(--space-reading);
+	inline-size: var(--jelly-icon-button-size);
+	block-size: var(--jelly-icon-button-size);
 }
 
-.record-transcript__copy[hidden] {
-	display: none;
+html[data-clipboard="ready"] .record-transcript__copy {
+	display: inline-block;
 }
 
 // ─── THE TURNS ────────────────────────────────────────────────────────────

@@ -43,10 +43,14 @@
  *   read and names the rest.
  *
  * THE COPY CONTROL IS THE WELL'S CONTRACT, NOT A SECOND ONE. The button is a
- * `jelly-icon-button` carrying the whole session on `data-copy-payload`, revealed
- * by `WireWells` once the listener is attached - so with JavaScript off the
- * transcript prints and offers nothing inert. The payload is `SPEAKER> line` per
- * turn: the session as a reader would paste it.
+ * `jelly-icon-button` carrying the whole session on `data-copy-payload`, wired
+ * by `WireWells` - and hidden by CSS until the document declares a clipboard
+ * (`html[data-clipboard="ready"]`, set in `Base.astro` while the page is still
+ * parsing), never by `hidden` and a later reveal: a Jelly host upgraded inside
+ * `display: none` has no box, so it builds no physics body and its hover is
+ * silent for good. With JavaScript off the transcript prints and offers nothing
+ * inert. The payload is `SPEAKER> line` per turn: the session as a reader would
+ * paste it.
  *
  * No hydration directive: the one script is the sitewide copy wiring.
  */
@@ -133,7 +137,6 @@ const Id = `transcript-${transcript.index.toLowerCase().replace(/[^a-z0-9]+/g, "
 				aria-label={CopyLabel}
 				title={CopyLabel}
 				style="--jelly-fill: var(--Mute); --jelly-label: var(--Foreground); --jelly-icon-button-radius: 0px; --jelly-ring: var(--Accent);"
-				hidden
 			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"

@@ -3,13 +3,22 @@
  *
  * The block renders a `jelly-icon-button` - the design system's element, not a
  * hand-rolled `<button>` - with the raw command on `data-copy-payload`, and
- * leaves it `hidden` until this module binds it. Three consequences:
+ * this module binds the clipboard behaviour to it. Four consequences:
  *
- * - With JavaScript off the control never leaves `hidden`: the well prints its
- *   command and nothing else. No inert button, no empty focus stop, and every
- *   line of the `<pre>` is still selectable.
- * - With no clipboard API (an insecure context) the control stays hidden too. A
- *   copy button that cannot copy is absent, not dead.
+ * - **This module never reveals the control.** It attaches a listener; it does
+ *   not touch `hidden`, `display` or the host's size. Visibility is decided by
+ *   CSS from `html[data-clipboard="ready"]`, which `Base.astro` sets from an
+ *   `is:inline` script while the page is still parsing. That order is the whole
+ *   contract: a Jelly host that upgrades inside `display: none` has no box, so
+ *   it builds a 0x0 canvas and no physics body, parks itself out of the shared
+ *   loop, and is inert under the pointer for the rest of the session. Revealed
+ *   before it upgrades, the build sees the box the control keeps.
+ * - With JavaScript off the control never appears: the gate is never set, the
+ *   sheet keeps it `display: none`, and the well prints its command and nothing
+ *   else. No inert button, no empty focus stop, and every line of the `<pre>` is
+ *   still selectable.
+ * - With no clipboard API (an insecure context) the same holds: the gate is not
+ *   set, and a copy button that cannot copy is absent, not dead.
  * - `WireCopyButtons()` in `Function/Utility/CopyCommand` cannot bind it: that
  *   resolves its source as the button's previous element sibling, which inside a
  *   well is the title bar's label span, not the `<pre>`. The payload therefore
@@ -94,7 +103,13 @@ function Bind(
 		}, Hold);
 	});
 
-	Button.hidden = false;
+	/*
+	 * No reveal here. The control's visibility is the sheet's, gated on
+	 * `html[data-clipboard="ready"]`, which is set before the element is parsed -
+	 * a reveal from this module would be a reveal *after* the Jelly upgrade, and
+	 * that is the order that leaves a control with no physics body. See the
+	 * module note above.
+	 */
 }
 
 export function WireWells(Selector: string = "[data-record-well-copy]"): void {

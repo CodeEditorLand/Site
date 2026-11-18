@@ -20,8 +20,10 @@
 //                   command that wrapped would be a command the reader cannot
 //                   copy, so the overflow is inside the frame and the page grid
 //                   never widens. The copy control is Jelly's, at the bar's
-//                   rhythm, and it is revealed by the wiring - with JavaScript
-//                   off the well prints its command and nothing else.
+//                   rhythm, and it is absent - not hidden-then-revealed - when
+//                   the document has no clipboard to offer (see the note on
+//                   `.record-well__copy`): with JavaScript off the well prints
+//                   its command and nothing else.
 // WIDE              the well takes the column it is given; `white-space: pre`
 //                   keeps every line's shape at any width.
 // DENSE             none. A command must not compress: the one thing a well
@@ -79,19 +81,42 @@
 // Jelly's. The well contributes placement only, and the two size properties:
 // the bar is a mono strip, not a toolbar, so the control takes the bar's rhythm
 // instead of Jelly's 40px default.
+//
+// ─── ABSENT, NOT DEAD - DECIDED BEFORE THE ELEMENT IS PARSED ──────────────
+// The control is a Jelly host, and a Jelly host that upgrades inside
+// `display: none` has no box at all: `build()` runs, the canvas is sized 0x0,
+// no physics body is created, and the element parks itself out of the shared
+// loop. It then paints nothing and answers nothing - it looks right at rest and
+// is inert under the pointer, which is exactly "the copy button lost its jelly
+// on hover". The body is built from the box present at upgrade, so the box has
+// to be there *then*.
+//
+// So the control ships VISIBLE in the markup (no `hidden` attribute) and this
+// sheet hides it until the document declares the clipboard, which `Base.astro`
+// does from an `is:inline` script while the page is still being parsed - before
+// any module, the Jelly bundle included, can upgrade the element. Revealed that
+// way, the build sees the box the control keeps, and the body is there on the
+// first pointerenter.
+//
+// `display: none` is the absence: out of layout, out of the tab order, out of
+// the accessibility tree - the same contract `hidden` had. What changed is
+// *when* the decision is made, and that is the whole fix.
 .record-well__copy {
+	display: none;
 	flex: 0 0 auto;
 	--jelly-icon-button-size: var(--space-group);
 	--jelly-icon-button-icon-size: var(--space-reading);
+	/* The box, declared rather than inferred. The host is a custom element: until
+	   it upgrades, its size would be whatever its own `<svg>` happens to give it,
+	   and if it upgrades mid-parse that can be nothing at all. Declared here, the
+	   control has its final box from the first layout, so the build cannot catch
+	   it at the wrong size. */
+	inline-size: var(--jelly-icon-button-size);
+	block-size: var(--jelly-icon-button-size);
 }
 
-// Revealed by the wiring, never by CSS: with JavaScript off - or with no
-// clipboard API - the attribute stays, so the control is absent from layout and
-// from the tab order rather than dead. Jelly's `:host` declares no display, so
-// `hidden` hides the host; this pins that against a future `:host { display }`
-// in the vendored element, which would outrank the user-agent rule.
-.record-well__copy[hidden] {
-	display: none;
+html[data-clipboard="ready"] .record-well__copy {
+	display: inline-block;
 }
 
 .record-well__body {

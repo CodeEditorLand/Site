@@ -11,10 +11,15 @@
  *   script at the foot of this file, so every consumer gets a working control -
  *   including a static record that ships no script of its own. A page never
  *   wires a well a second time.
- * - The control is rendered `hidden` and revealed by that wiring once the
- *   listener is attached. With JavaScript off, or with no clipboard API, the
- *   well prints its command and nothing else: no inert button, no empty focus
- *   stop, and every line of the `<pre>` still selectable.
+ * - The control ships VISIBLE and is hidden only by CSS, until the document has
+ *   declared a clipboard (`html[data-clipboard="ready"]`, set by an inline
+ *   script in `Base.astro` while the page is still parsing). It must never
+ *   carry `hidden` and be revealed later: a Jelly host that upgrades inside
+ *   `display: none` has no box, so it builds a 0x0 canvas and no physics body,
+ *   and the control is inert under the pointer forever. With JavaScript off, or
+ *   with no clipboard API, the gate is never set and the well prints its
+ *   command and nothing else: no inert button, no empty focus stop, and every
+ *   line of the `<pre>` still selectable.
  * - The command text is in the DOM whether or not the control renders, so
  *   `copy: false` removes the affordance, never the content.
  *
@@ -84,7 +89,6 @@ const CopyLabel = `Copy ${label} to the clipboard`;
 				aria-label={CopyLabel}
 				title={CopyLabel}
 				style="--jelly-fill: var(--Mute); --jelly-label: var(--Foreground); --jelly-icon-button-radius: 0px; --jelly-ring: var(--Accent);"
-				hidden
 			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"

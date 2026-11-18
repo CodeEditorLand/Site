@@ -195,27 +195,21 @@ const Skin =
 	"--jelly-fill: var(--Mute); --jelly-label: var(--Foreground); --jelly-icon-button-radius: 0px; --jelly-ring: var(--Accent);";
 
 /**
- * Whether this context can copy at all - the same test `WireWells` binds on.
- * When it cannot, the control keeps `hidden` and never becomes an affordance.
- */
-const CanCopy = (): boolean =>
-	typeof navigator !== "undefined" && !!navigator.clipboard?.writeText;
-
-/**
  * The bar's copy control, built the way `RecordWell` builds it: the design
- * system's element, rendered `hidden` until `WireWells` binds it, carrying the
- * payload on `data-copy-payload` (see `Library/Document/WireWells` for why that
- * attribute and not `data-copy`).
+ * system's element, wired by `WireWells`, carrying the payload on
+ * `data-copy-payload` (see `Library/Document/WireWells` for why that attribute
+ * and not `data-copy`).
  *
- * `Reveal` is true when the clipboard is available, and then the control is
- * revealed *before* it is inserted. That order is the point: a Jelly element
- * upgraded inside `display: none` has no box, so it builds no physics body and
- * is parked; it would only be handed back to the loop on the first resize
- * after the reveal, which never comes for a control that is revealed once and
- * then hovered. Revealed first, it upgrades with the box it will keep, and its
- * hover jelly is there on the first pointerenter.
+ * It is built visible and never carries `hidden`. Visibility is the sheet's
+ * business: `System/Record/_Well.scss` keeps `.record-well__copy` at
+ * `display: none` until `html[data-clipboard="ready"]` is set, which
+ * `Base.astro` does from an `is:inline` script while the page is still parsing -
+ * so this control is visible (or not) from the moment it is inserted, and the
+ * Jelly build always finds the box it keeps. A control created `hidden` and
+ * revealed later upgrades with no box: 0x0 canvas, no physics body, and a hover
+ * that never answers.
  */
-const Control = (Payload: string, Label: string, Reveal: boolean): HTMLElement => {
+const Control = (Payload: string, Label: string): HTMLElement => {
 	const Button = document.createElement("jelly-icon-button");
 
 	Button.className = "record-well__copy";
@@ -237,8 +231,6 @@ const Control = (Payload: string, Label: string, Reveal: boolean): HTMLElement =
 	Button.setAttribute("style", Skin);
 
 	Button.innerHTML = Glyph;
-
-	Button.hidden = !Reveal;
 
 	return Button;
 };
@@ -332,8 +324,6 @@ const Wrap = (Block: HTMLPreElement): void => {
 				Payload,
 
 				`Copy ${KindLabel ?? (Language || "block")} to the clipboard`,
-
-				CanCopy(),
 			),
 		);
 	}
