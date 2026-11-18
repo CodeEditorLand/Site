@@ -2,7 +2,7 @@
 //
 // Publishes:
 //   .PageShell                 the query container and the page's one outer measure
-//   .PageShell__declaration    `# LAYOUT / READING␁GIVES: …` - one printed line
+//   .PageShell__declaration    the page's opening record: a declaration row and its gloss
 //   .PageShell__head           the slot above the grid (a plate's record head)
 //   .PageShell__grid           the tracks
 //   .PageShell__rail           the leading column
@@ -11,12 +11,13 @@
 //   .PageShell__foot           the full-width row under the grid (an audit's wells)
 //
 // ─── THE DECLARATION STRIP ────────────────────────────────────────────────
-// One line at the meta tier, under a hairline, above the page's own head. It
-// prints the language, the tracks it gives and the page's own marker. The long
-// form (`DECLARES: …`) is hidden below the wide container: it is the contract in
-// full, and a contract belongs at the width where a reader is reading structure
-// rather than prose. Nothing is lost at the narrow width - `GIVES:` already
-// names the tracks.
+// Two rows, under a hairline, above the page's own head. Row 1 is the
+// declaration at the meta tier - `# LAYOUT / READING`, the facts as `KEY:`/value
+// pairs separated by U+2001, and the page's stamp pinned to the row's end by the
+// grid. Row 2 is the gloss - the same three things as prose, at the body tier
+// and the opening measure, one proposition per line under a `↳`. The long form
+// is printed at every width: the strip is the page's answer to "what did this
+// page have to declare", and an answer that disappears on a phone is a caption.
 //
 // ─── THE TRACKS ───────────────────────────────────────────────────────────
 // Reading is asymmetric on purpose: a 13rem rail, the measure itself, and a
@@ -50,19 +51,72 @@ $ShellStickyTop: calc(5.25rem + var(--space-tight));
 }
 
 // ─── THE DECLARATION STRIP ────────────────────────────────────────────────
+// Two rows, three columns:
+//
+//   record | facts | stamp     the declaration, at the meta tier
+//   gloss  | gloss | gloss     the gloss, at the body tier, at its own measure
+//
+// Row 1 is what a reader scans; row 2 is what the page hands in. They are two
+// rows because they are two kinds of sentence: a record line and its
+// explanation. On one line, at one tier, they competed - and the explanation,
+// right-flushed into ragged-left meta capitals, lost its shape.
+//
+// The grid is what pins the stamp. `margin-inline-start: auto` inside a wrapping
+// flex was the old mechanism, and it could not survive a wrap: the stamp drifted
+// into the middle of the line the moment the facts wrapped. A named column
+// cannot drift.
 
 .PageShell__declaration {
 	@include mono-meta;
-	@include track(var(--track-row));
+
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	grid-template-areas:
+		"record stamp"
+		"facts facts"
+		"gloss gloss";
+	column-gap: var(--space-tight);
+	row-gap: var(--space-tight);
+	align-items: baseline;
+	margin: 0;
+	padding-block: var(--space-tight) var(--space-reading);
+
+	@include hairline(bottom);
+}
+
+// ─── ROW 1: THE DECLARATION ───────────────────────────────────────────────
+// `# LAYOUT / READING`. The mark is the accent and the name is ink; the kind and
+// the slash stay mute, because they are grammar rather than fact. The flex is
+// only a baseline row - the wrap points are its own, so a narrow container wraps
+// the head instead of clipping it.
+.PageShell__record {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: baseline;
 	gap: 0 0.4em;
+	grid-area: record;
 	margin: 0;
-	padding-block: var(--space-tight);
-	color: var(--MuteForeground);
+}
 
-	@include hairline(bottom);
+// ─── INK AND TRACKING: LABEL AGAINST VALUE ────────────────────────────────
+// Hierarchy without weight and without a new colour. A label is tracked at the
+// row register; a value is set solid. That is the ledger's own rule (its key is
+// tracked, its value is not) and it is what lets a 13px line hold two ranks
+// without a second size. The mark is grammar, so it is tracked with the labels
+// - and it is the strip's one accent.
+.PageShell__mark,
+.PageShell__word,
+.PageShell__slash,
+.PageShell__key,
+.PageShell__index {
+	@include track(var(--track-row));
+}
+
+.PageShell__name,
+.PageShell__tracks,
+.PageShell__label {
+	letter-spacing: var(--track-set);
+	text-transform: uppercase;
 }
 
 .PageShell__mark {
@@ -73,30 +127,120 @@ $ShellStickyTop: calc(5.25rem + var(--space-tight));
 	color: var(--Foreground);
 }
 
-.PageShell__tracks {
-	color: var(--Foreground);
+// The em quad that separates the declaration from its facts. It is the grammar's
+// only separator (U+2001), and it lives inside the name's own inline content so
+// that it can never become a flex item on a line of its own - a wrapped
+// separator would add a blank line to the head, which is the one thing a
+// separator must not do.
+.PageShell__name::after {
+	content: "\2001";
 }
 
-.PageShell__index,
-.PageShell__label {
-	color: var(--Foreground);
+// The facts: a `dl` of `KEY:`/value pairs, because that is what they are, and
+// because `.surface__declares` already prints the site's declarations this way.
+// The pairs sit on one line while there is room and stack when there is not;
+// the em quad between them is a trailing space, so a stack never starts with an
+// indent it did not mean.
+.PageShell__facts {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	row-gap: calc(var(--space-tight) / 2);
+	grid-area: facts;
+	margin: 0;
+	padding: 0;
+}
+
+.PageShell__fact {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 var(--space-tight);
+}
+
+.PageShell__fact:not(:last-child)::after {
+	content: "\2001";
 }
 
 .PageShell__key {
+	margin: 0;
 	color: var(--MuteForeground);
 }
 
-// The full contract, at the width where structure is being read.
-.PageShell__declares {
-	display: none;
+.PageShell__tracks,
+.PageShell__label {
+	margin: 0;
+	color: var(--Foreground);
 }
 
+// The page's own stamp, at the row's end. Ink, not accent: the strip spends its
+// one accent on the `#` that opens it, and a stamp is a quotation of a record
+// marker rather than a second seal.
+.PageShell__index {
+	grid-area: stamp;
+	justify-self: end;
+	margin: 0;
+	color: var(--Foreground);
+}
+
+// ─── ROW 2: THE GLOSS ─────────────────────────────────────────────────────
+// The declaration's three clauses as prose. Body tier, not meta: this is the
+// only sentence in the strip and it is meant to be read, not skimmed. Set
+// solid - no caps, no tracking - because a value's setting is a fact's and a
+// sentence is not a fact. Muted, because it is the apparatus of the strip and
+// the strip's claim is row 1: hierarchy here is ink and position, never weight.
+//
+// The measure is the opening measure (62ch), the site's cap for anything that
+// opens a surface: a standfirst, a caption, an empty state's sentence. It is
+// left-aligned and capped, so the gloss ends where a reader's eye expects a
+// paragraph to end - never flushed right, and never a wall across the container.
+.PageShell__declares {
+	grid-area: gloss;
+	max-inline-size: var(--MeasureOpening);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	letter-spacing: var(--track-set);
+	color: var(--MuteForeground);
+}
+
+// One proposition per row, the `↳` in a column of its own and the clause in the
+// next. That column is what makes the mark a hanging indent rather than a
+// bullet: every wrapped line returns to the clause's own edge, so a clause that
+// runs to three lines still reads as one proposition and the three clauses read
+// as a set.
+//
+// The mark column is the mark's advance plus the site's own mark gap (0.5ch) -
+// 1.5ch at the body tier, 14.4px. The declaration row's word lands at 14.04px
+// (the `#`'s 1ch advance, its 0.08em tracking, and the row's 0.4em gap, all at
+// the meta tier), so the gloss's text and `LAYOUT` sit on one edge to within a
+// third of a pixel, without either of them hanging into the page gutter.
+.PageShell__clause {
+	display: grid;
+	grid-template-columns: calc(1ch + var(--optical-mark-gap)) minmax(0, 1fr);
+}
+
+.PageShell__clause-text {
+	text-wrap: pretty;
+}
+
+// ─── THE WIDE DECLARATION ─────────────────────────────────────────────────
+// One row: head, facts, stamp. The facts column is the flexible one - a long
+// `FOR:` label wraps inside it instead of crowding the stamp off the row - and
+// the stamp keeps its own column at the end.
+//
+// 56rem is where the head, the longest label the register can print and the
+// stamp all fit on one line with room to spare. Below it the same grid stacks,
+// which is re-composition rather than a squeeze: the stamp stays on the
+// declaration's row and the facts stay together under it.
 @container shell (min-width: 56rem) {
-	.PageShell__declares {
-		display: inline;
-		margin-inline-start: auto;
-		text-align: end;
-		color: var(--MuteForeground);
+	.PageShell__declaration {
+		grid-template-columns: auto minmax(0, 1fr) auto;
+		grid-template-areas:
+			"record facts stamp"
+			"gloss gloss gloss";
 	}
 }
 

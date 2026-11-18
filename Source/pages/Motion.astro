@@ -163,10 +163,7 @@ const Contents = Registers.map((Register) => ({
 	Meta: Register.meta,
 }));
 
-const TrailItems = [
-	{ label: "/HOME", href: "/" },
-	{ label: "/MOTION" },
-];
+const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/MOTION" }];
 
 /** The margin's note: the one class that is switched off rather than shortened. */
 const ReducedNote = {
@@ -235,10 +232,7 @@ const ReducedNote = {
 				id: "specimens",
 			}}
 		>
-			<MotionSpecimen
-				motion={ClassOf("FOLD")}
-				note={SpecimenNotes.Fold}
-			>
+			<MotionSpecimen motion={ClassOf("FOLD")} note={SpecimenNotes.Fold}>
 				<MotionFold
 					name="THE FOLD, IN FOUR RULES"
 					label="KEPT"
@@ -270,14 +264,14 @@ const ReducedNote = {
 				note={SpecimenNotes.Handover}
 			>
 				<a class="MotionSpecimen__Act" href="/Doc">
-					<span class="MotionSpecimen__ActMark" aria-hidden="true"
-						>→</span
-					>
+					<span class="MotionSpecimen__ActMark" aria-hidden="true">
+						→
+					</span>
 					<span>HAND OVER TO /DOC</span>
 				</a>
 				<RecordLedger
 					rows={HandoverRows.map((Row) => ({ ...Row }))}
-					register="# THE TWO IMAGES / 04"
+					register="THE TWO IMAGES"
 					class="MotionSpecimen__Ledger--stage"
 				/>
 			</MotionSpecimen>
@@ -324,7 +318,7 @@ const ReducedNote = {
 				<div>
 					<RecordLedger
 						rows={SkeletonArrived.map((Row) => ({ ...Row }))}
-						register="# THE SAME RECORD, ARRIVED / 05"
+						register="THE SAME RECORD, ARRIVED"
 					/>
 				</div>
 			</MotionSpecimen>
@@ -338,12 +332,16 @@ const ReducedNote = {
 		>
 			<div class="motion-sequences">
 				{Sequences.map((Sequence) => (
-					<MotionSequence sequence={{ ...Sequence, nodes: [...Sequence.nodes], edges: [...Sequence.edges] }} />
+					<MotionSequence
+						sequence={{
+							...Sequence,
+							nodes: [...Sequence.nodes],
+							edges: [...Sequence.edges],
+						}}
+					/>
 				))}
 			</div>
-			<p class="motion-sequences__caption">
-				{SequenceCaption}
-			</p>
+			<p class="motion-sequences__caption">{SequenceCaption}</p>
 		</RecordBand>
 
 		<RecordBand
@@ -425,7 +423,7 @@ const ReducedNote = {
 					value: Interval.value,
 					note: Interval.note,
 				}))}
-				register="# THE INTERVALS / 03"
+				register="THE INTERVALS"
 			/>
 			<RecordLedger
 				rows={Curves.map((Curve) => ({
@@ -434,7 +432,7 @@ const ReducedNote = {
 					note: Curve.note,
 					code: true,
 				}))}
-				register="# THE CURVES / 03"
+				register="THE CURVES"
 				class="MotionMargin__Curves"
 			/>
 			<RecordMargin note={ReducedNote} />

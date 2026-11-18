@@ -225,8 +225,7 @@ export default ({
 							defaultValue:
 								"The identity provider did not return a session",
 						})}
-						{":"}{" "}
-						{Error.message}
+						{":"} {Error.message}
 					</>
 				}
 				Action={

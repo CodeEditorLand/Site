@@ -17,7 +17,6 @@ declare module "*.astro" {
 	export default Component;
 }
 
-
 // PUBLIC_* vars - exposed to the browser via import.meta.env
 // Server-only vars (AUTH0_*, SITE_ENVIRONMENT, etc.) - available via
 // import.meta.env on the server only, never included in client bundles.

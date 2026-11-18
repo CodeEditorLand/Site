@@ -44,35 +44,33 @@ const { title, sentence, marks } = Astro.props;
 		<h1 class="download-masthead__title">{title}</h1>
 		<p class="download-masthead__sentence">{sentence}</p>
 		<div class="download-masthead__marks">
-			{
-				marks.map((mark) => (
-					<jelly-badge
-						variant={mark.variant}
-						shape="square"
-						style={`--jelly-fill:var(--${mark.fill});--jelly-label:var(--${mark.ink});--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
-					>
-						{mark.label}
-						{mark.dot || mark.glyph ? "\u2001" : null}
-						{mark.dot ? (
-							<span
-								class="download-masthead__dot"
-								style={`background-color:var(--${mark.dot})`}
-								aria-hidden="true"
-							/>
-						) : null}
-						{mark.glyph ? (
-							<img
-								class="download-masthead__mark"
-								src={mark.glyph.src}
-								alt={mark.glyph.alt}
-								width="14"
-								height="14"
-								aria-hidden="true"
-							/>
-						) : null}
-					</jelly-badge>
-				))
-			}
+			{marks.map((mark) => (
+				<jelly-badge
+					variant={mark.variant}
+					shape="square"
+					style={`--jelly-fill:var(--${mark.fill});--jelly-label:var(--${mark.ink});--jelly-badge-radius:0;--jelly-badge-font-size:13px`}
+				>
+					{mark.label}
+					{mark.dot || mark.glyph ? "\u2001" : null}
+					{mark.dot ? (
+						<span
+							class="download-masthead__dot"
+							style={`background-color:var(--${mark.dot})`}
+							aria-hidden="true"
+						/>
+					) : null}
+					{mark.glyph ? (
+						<img
+							class="download-masthead__mark"
+							src={mark.glyph.src}
+							alt={mark.glyph.alt}
+							width="14"
+							height="14"
+							aria-hidden="true"
+						/>
+					) : null}
+				</jelly-badge>
+			))}
 		</div>
 	</div>
 </header>

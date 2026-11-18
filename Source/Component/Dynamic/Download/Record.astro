@@ -59,13 +59,19 @@ const { record, release } = Astro.props;
 	<div class="download-record__inner">
 		<div class="download-record__head">
 			<div class="download-record__marker">
-				<FieldRecordIndex index={record.index} className="download-record__index" />
+				<FieldRecordIndex
+					index={record.index}
+					className="download-record__index"
+				/>
 				<FieldRecordSeal element="Land" size={48} />
 			</div>
 
 			<div class="download-record__opening">
 				<p class="download-record__eyebrow">{record.eyebrow}</p>
-				<h2 class="download-record__heading" id="release-manifest-heading">
+				<h2
+					class="download-record__heading"
+					id="release-manifest-heading"
+				>
 					{record.heading}
 				</h2>
 			</div>

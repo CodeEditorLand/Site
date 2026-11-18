@@ -46,7 +46,10 @@
 import Trail from "../Route/Trail.astro";
 import SurfaceStatusLine from "../Surface/SurfaceStatusLine.astro";
 import type { TrailItem } from "../Route/Type.js";
-import type { Declaration, SurfaceState as StateRow } from "../Surface/State.js";
+import type {
+	Declaration,
+	SurfaceState as StateRow,
+} from "../Surface/State.js";
 import type { AuthFrame } from "./Type.js";
 
 interface Props {
@@ -151,54 +154,51 @@ const Surface = {
 			<div class="auth-shell__inner">
 				{Crumbs ? <Trail trail={Crumbs} /> : null}
 
-				{
-					Frame && (
-						<header class="auth-shell__header">
-							<p class="auth-shell__kicker">{Frame.kicker}</p>
-							<h1 class="auth-shell__heading type-section">
-								{Frame.heading}
-							</h1>
-							{Frame.sentence ? (
-								<p class="auth-shell__sentence type-sub">
-									{Frame.sentence}
-								</p>
-							) : null}
-							{States.length || Declarations.length ? (
-								<div class="auth-shell__states">
-									<SurfaceStatusLine states={States} declarations={Declarations} />
-								</div>
-							) : null}
-						</header>
-					)
-				}
+				{Frame && (
+					<header class="auth-shell__header">
+						<p class="auth-shell__kicker">{Frame.kicker}</p>
+						<h1 class="auth-shell__heading type-section">
+							{Frame.heading}
+						</h1>
+						{Frame.sentence ? (
+							<p class="auth-shell__sentence type-sub">
+								{Frame.sentence}
+							</p>
+						) : null}
+						{States.length || Declarations.length ? (
+							<div class="auth-shell__states">
+								<SurfaceStatusLine
+									states={States}
+									declarations={Declarations}
+								/>
+							</div>
+						) : null}
+					</header>
+				)}
 
 				<div
 					class:list={[Center && "text-center"]}
 					aria-live={Live ? "polite" : undefined}
 				>
-					{
-						Bare ? (
+					{Bare ? (
+						<slot />
+					) : (
+						<jelly-card
+							class="auth-shell__surface StaccatoBorderShimmer StaccatoCard StaccatoShadowLift text-card-fg"
+							style={Surface}
+						>
 							<slot />
-						) : (
-							<jelly-card
-								class="auth-shell__surface StaccatoBorderShimmer StaccatoCard StaccatoShadowLift text-card-fg"
-								style={Surface}
-							>
-								<slot />
-							</jelly-card>
-						)
-					}
+						</jelly-card>
+					)}
 				</div>
 
-				{
-					Frame?.action ? (
-						<a class="auth-shell__alternate" href={Frame.action.href}>
-							{Frame.action.label}
-							{"\u2001"}
-							<span aria-hidden="true">&rarr;</span>
-						</a>
-					) : null
-				}
+				{Frame?.action ? (
+					<a class="auth-shell__alternate" href={Frame.action.href}>
+						{Frame.action.label}
+						{"\u2001"}
+						<span aria-hidden="true">&rarr;</span>
+					</a>
+				) : null}
 			</div>
 		</section>
 	</div>

@@ -100,7 +100,14 @@ interface Props {
 	density?: MatrixDensity;
 }
 
-const { columns, rows, caption, density = "rest", class: Class, id } = Astro.props;
+const {
+	columns,
+	rows,
+	caption,
+	density = "rest",
+	class: Class,
+	id,
+} = Astro.props;
 
 /** The shell's classes: the block's own, its density, then whatever the page adds. */
 const shellClass = [
@@ -153,50 +160,40 @@ const cellClass = (column: MatrixColumn, value: string): string =>
 
 <div class={shellClass} id={id}>
 	<table class="record-matrix__table">
-		{
-			caption && (
-				<caption class="record-matrix__caption">{caption}</caption>
-			)
-		}
+		{caption && <caption class="record-matrix__caption">{caption}</caption>}
 		<thead>
 			<tr class="record-matrix__head">
 				<td class="record-matrix__corner"></td>
-				{
-					columns.map((column) => (
-						<th
-							scope="col"
-							class={columnClass(column)}
-							style={
-								column.ink
-									? `--col-ink:var(--${column.ink})`
-									: undefined
-							}
-						>
-							{column.label}
-						</th>
-					))
-				}
+				{columns.map((column) => (
+					<th
+						scope="col"
+						class={columnClass(column)}
+						style={
+							column.ink
+								? `--col-ink:var(--${column.ink})`
+								: undefined
+						}
+					>
+						{column.label}
+					</th>
+				))}
 			</tr>
 		</thead>
 		<tbody>
-			{
-				rows.map((row) => (
-					<tr class="record-matrix__row">
-						<th scope="row" class="record-matrix__label">
-							{row.label}
-						</th>
-						{columns.map((column, index) => {
-							const value = valueAt(row, index);
+			{rows.map((row) => (
+				<tr class="record-matrix__row">
+					<th scope="row" class="record-matrix__label">
+						{row.label}
+					</th>
+					{columns.map((column, index) => {
+						const value = valueAt(row, index);
 
-							return (
-								<td class={cellClass(column, value)}>
-									{value}
-								</td>
-							);
-						})}
-					</tr>
-				))
-			}
+						return (
+							<td class={cellClass(column, value)}>{value}</td>
+						);
+					})}
+				</tr>
+			))}
 		</tbody>
 	</table>
 </div>

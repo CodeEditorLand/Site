@@ -75,7 +75,14 @@ interface Props {
 	children?: ReactNode;
 }
 
-const AuthReport = ({ State, Title, Sentence, Glyph, Role, children }: Props) => {
+const AuthReport = ({
+	State,
+	Title,
+	Sentence,
+	Glyph,
+	Role,
+	children,
+}: Props) => {
 	const Icon = Glyph ? Glyphs[Glyph] : null;
 
 	return (
@@ -88,7 +95,7 @@ const AuthReport = ({ State, Title, Sentence, Glyph, Role, children }: Props) =>
 				)}
 
 				{Icon && (
-					<div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center bg-[color-mix(in_srgb,var(--Primary)_10%,transparent)] flat">
+					<div className="flat mx-auto mb-4 flex h-12 w-12 items-center justify-center bg-[color-mix(in_srgb,var(--Primary)_10%,transparent)]">
 						<Icon
 							aria-hidden="true"
 							className={
@@ -100,11 +107,11 @@ const AuthReport = ({ State, Title, Sentence, Glyph, Role, children }: Props) =>
 					</div>
 				)}
 
-				<h3 className="type-heading">
-					{Title}
-				</h3>
+				<h3 className="type-heading">{Title}</h3>
 
-				<p className="text-card-foreground text-sm opacity-70">{Sentence}</p>
+				<p className="text-sm text-card-foreground opacity-70">
+					{Sentence}
+				</p>
 			</div>
 
 			{children && (

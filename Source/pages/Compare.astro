@@ -88,12 +88,10 @@ const MeasureCells = Measurements.map((Row) => ({
 }));
 
 /** The one row's date, as the stale state prints it. */
-const Dated = Measurements.find((Row) => Row.asOf !== undefined)?.asOf ?? "UNAVAILABLE";
+const Dated =
+	Measurements.find((Row) => Row.asOf !== undefined)?.asOf ?? "UNAVAILABLE";
 
-const TrailItems = [
-	{ label: "/HOME", href: "/" },
-	{ label: "/COMPARE" },
-];
+const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/COMPARE" }];
 
 /** The substitution matrix's control: its two columns, named by their own heads. */
 const SubstitutionFacets = Columns.map((Column, Index) => ({
@@ -139,11 +137,7 @@ const SubstitutionFacets = Columns.map((Column, Index) => ({
 				caption="SOURCE: SOURCE/CONTENT/DOC/COCOON.MD. Both columns are that document's table, verbatim."
 			/>
 
-			<RecordLedger
-				register={`# WHAT CHANGES / 0${Changes.length}`}
-				rows={Changes}
-				columns={1}
-			/>
+			<RecordLedger register="WHAT CHANGES" rows={Changes} columns={1} />
 		</RecordBand>
 
 		{/*
@@ -213,7 +207,11 @@ const SubstitutionFacets = Columns.map((Column, Index) => ({
 					age="THE DOCUMENT'S OWN DATE"
 					rows={[
 						{ key: "FIGURE:", value: "88% WEIGHTED COVERAGE" },
-						{ key: "DOCUMENT:", value: "/BLOG/VSCODE-COMPATIBILITY", code: true },
+						{
+							key: "DOCUMENT:",
+							value: "/BLOG/VSCODE-COMPATIBILITY",
+							code: true,
+						},
 					]}
 					note="SOURCE: SOURCE/CONTENT/BLOG/VSCODECOMPATIBILITY.MD"
 				/>
@@ -223,10 +221,16 @@ const SubstitutionFacets = Columns.map((Column, Index) => ({
 					index="MEASURE / 02"
 					statement="Four of the five measurements a reader wants before switching do not exist on this site: startup time, memory, installer size and a public build."
 					cause="Three are unmeasured and one has no artifact to measure. The table prints `UNAVAILABLE` in both columns rather than borrowing a number from a benchmark nobody here ran."
-					next={{ label: "BUILD FROM SOURCE", href: "/Doc/installation" }}
+					next={{
+						label: "BUILD FROM SOURCE",
+						href: "/Doc/installation",
+					}}
 					rows={[
 						{ key: "MEASURED:", value: "1 OF 5" },
-						{ key: "UNAVAILABLE:", value: "STARTUP, MEMORY, SIZE, BUILD" },
+						{
+							key: "UNAVAILABLE:",
+							value: "STARTUP, MEMORY, SIZE, BUILD",
+						},
 					]}
 					note="SOURCE: SOURCE/CONTENT/MORE/COMPARE.TS"
 				/>

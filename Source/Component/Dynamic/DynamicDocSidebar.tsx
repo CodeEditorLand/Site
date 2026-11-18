@@ -194,13 +194,14 @@ const DynamicDocSidebar = ({
 
 	// Same auto-expand behavior one level deeper, for groups nested inside a section.
 	const AllGroups = useMemo(
-		() =>
-			Sections.flatMap((S) => S.Children ?? []).filter(IsDocGroup),
+		() => Sections.flatMap((S) => S.Children ?? []).filter(IsDocGroup),
 		[Sections],
 	);
 
 	const ActiveGroupId = useMemo(
-		() => AllGroups.find((G) => G.Children.some((C) => C.Id === ActiveId))?.Id,
+		() =>
+			AllGroups.find((G) => G.Children.some((C) => C.Id === ActiveId))
+				?.Id,
 		[AllGroups, ActiveId],
 	);
 
@@ -245,9 +246,7 @@ const DynamicDocSidebar = ({
 						Matches(Needle, Leaf),
 					);
 
-					return Children.length > 0
-						? { ...Item, Children }
-						: null;
+					return Children.length > 0 ? { ...Item, Children } : null;
 				})
 				.filter((Item): Item is DocItem => Item !== null),
 		})).filter((Section) => (Section.Children ?? []).length > 0);
@@ -314,7 +313,11 @@ const DynamicDocSidebar = ({
 			)
 				Box = Box.parentElement;
 
-			if (!Box || Box === document.body || Box === document.documentElement)
+			if (
+				!Box ||
+				Box === document.body ||
+				Box === document.documentElement
+			)
 				return;
 
 			const Row = Active.getBoundingClientRect();
@@ -472,7 +475,8 @@ const DynamicDocSidebar = ({
 																className="doc-sidebar__count"
 															>
 																{String(
-																	Item.Children
+																	Item
+																		.Children
 																		.length,
 																).padStart(
 																	2,

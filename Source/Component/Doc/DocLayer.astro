@@ -51,44 +51,44 @@ const Marker = (Position: number): string =>
 	String(Position + 1).padStart(2, "0");
 ---
 
-{
-	entries.length > 1 ? (
-		<details class="doc-layer">
-			<summary class="doc-layer__summary">
-				<span class="doc-layer__label">{label}</span>
-				<span class="doc-layer__value">{heading}</span>
-				<span class="doc-layer__count">
-					{entries.length}
-					{"\u2001"}
-					{unit}
-				</span>
-				<span class="doc-layer__marker" aria-hidden="true">
-					›
-				</span>
-			</summary>
-			<div class="doc-layer__body">
-				<ol class="doc-layer__list">
-					{entries.map((Entry, Position) => (
-						<li class="doc-layer__item">
-							<a
-								class:list={[
-									"doc-layer__link",
-									Entry.Id === activeId
-										? "doc-layer__link--current"
-										: null,
-								]}
-								href={Entry.Href}
-								aria-current={Entry.Id === activeId ? "page" : undefined}
-							>
-								<span class="doc-layer__index" aria-hidden="true">
-									{Marker(Position)}
-								</span>
-								<span class="doc-layer__name">{Entry.Label}</span>
-							</a>
-						</li>
-					))}
-				</ol>
-			</div>
-		</details>
-	) : null
-}
+{entries.length > 1 ? (
+	<details class="doc-layer">
+		<summary class="doc-layer__summary">
+			<span class="doc-layer__label">{label}</span>
+			<span class="doc-layer__value">{heading}</span>
+			<span class="doc-layer__count">
+				{entries.length}
+				{"\u2001"}
+				{unit}
+			</span>
+			<span class="doc-layer__marker" aria-hidden="true">
+				›
+			</span>
+		</summary>
+		<div class="doc-layer__body">
+			<ol class="doc-layer__list">
+				{entries.map((Entry, Position) => (
+					<li class="doc-layer__item">
+						<a
+							class:list={[
+								"doc-layer__link",
+								Entry.Id === activeId
+									? "doc-layer__link--current"
+									: null,
+							]}
+							href={Entry.Href}
+							aria-current={
+								Entry.Id === activeId ? "page" : undefined
+							}
+						>
+							<span class="doc-layer__index" aria-hidden="true">
+								{Marker(Position)}
+							</span>
+							<span class="doc-layer__name">{Entry.Label}</span>
+						</a>
+					</li>
+				))}
+			</ol>
+		</div>
+	</details>
+) : null}

@@ -19,16 +19,14 @@ const { items } = Astro.props;
 ---
 
 <ol class="trust-contents__list">
-	{
-		items.map((Item) => (
-			<li class="trust-contents__item">
-				<a class="trust-contents__link" href={Item.href}>
-					<span class="trust-contents__number" data-trust-number>
-						&#167;{Item.number}
-					</span>
-					<span class="trust-contents__name">{Item.label}</span>
-				</a>
-			</li>
-		))
-	}
+	{items.map((Item) => (
+		<li class="trust-contents__item">
+			<a class="trust-contents__link" href={Item.href}>
+				<span class="trust-contents__number" data-trust-number>
+					&#167;{Item.number}
+				</span>
+				<span class="trust-contents__name">{Item.label}</span>
+			</a>
+		</li>
+	))}
 </ol>

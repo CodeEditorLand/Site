@@ -85,46 +85,44 @@ if ([HasSlot, Rows, Prose].filter(Boolean).length > 1) {
 const HasBody = HasSlot || Rows || Prose || (aside.empty ?? "") !== "";
 ---
 
-{
-	HasBody ? (
-		<details class:list={["record-aside", Class]} open={aside.open}>
-			<summary class="record-aside__summary">
-				<span class="record-aside__index"># {aside.index}</span>
-				<span class="record-aside__label">/ {aside.label}</span>
-				<span class="record-aside__mark" aria-hidden="true">
-					&#8594;
-				</span>
-			</summary>
+{HasBody ? (
+	<details class:list={["record-aside", Class]} open={aside.open}>
+		<summary class="record-aside__summary">
+			<span class="record-aside__index"># {aside.index}</span>
+			<span class="record-aside__label">/ {aside.label}</span>
+			<span class="record-aside__mark" aria-hidden="true">
+				&#8594;
+			</span>
+		</summary>
 
-			<div class="record-aside__body">
-				{aside.line ? (
-					<p class="record-aside__line">
-						<span aria-hidden="true">&#8627;</span>
-						{aside.line}
-					</p>
-				) : null}
+		<div class="record-aside__body">
+			{aside.line ? (
+				<p class="record-aside__line">
+					<span aria-hidden="true">&#8627;</span>
+					{aside.line}
+				</p>
+			) : null}
 
-				{HasSlot ? (
-					<slot />
-				) : Rows ? (
-					<RecordLedger rows={aside.rows ?? []} />
-				) : Prose ? (
-					Paragraphs(aside.body ?? "").map((Paragraph) => (
-						<p class="record-aside__paragraph">{Paragraph}</p>
-					))
-				) : (
-					<p class="record-aside__empty">
-						<span aria-hidden="true">&#9678;</span> {aside.empty}
-					</p>
-				)}
+			{HasSlot ? (
+				<slot />
+			) : Rows ? (
+				<RecordLedger rows={aside.rows ?? []} />
+			) : Prose ? (
+				Paragraphs(aside.body ?? "").map((Paragraph) => (
+					<p class="record-aside__paragraph">{Paragraph}</p>
+				))
+			) : (
+				<p class="record-aside__empty">
+					<span aria-hidden="true">&#9678;</span> {aside.empty}
+				</p>
+			)}
 
-				{aside.source ? (
-					<p class="record-aside__source">
-						<span class="record-aside__source-key">SOURCE:</span>
-						{aside.source}
-					</p>
-				) : null}
-			</div>
-		</details>
-	) : null
-}
+			{aside.source ? (
+				<p class="record-aside__source">
+					<span class="record-aside__source-key">SOURCE:</span>
+					{aside.source}
+				</p>
+			) : null}
+		</div>
+	</details>
+) : null}

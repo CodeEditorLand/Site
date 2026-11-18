@@ -120,7 +120,8 @@ const TermDictionary = new Map<string, TermCategory>([
 const CategoryStyle: Record<TermCategory, string> = {
 	Architecture: "border-[var(--SpineIPC)] text-[color:var(--SpineIPCFore)]",
 
-	Telemetry: "border-[var(--ExtensionTauri)] text-[color:var(--ExtensionTauriFore)]",
+	Telemetry:
+		"border-[var(--ExtensionTauri)] text-[color:var(--ExtensionTauriFore)]",
 
 	Protocol: "border-[var(--SpineWASM)] text-[color:var(--SpineWASMFore)]",
 
@@ -142,7 +143,8 @@ const CategoryStyle: Record<TermCategory, string> = {
 const CategoryBadgeStyle: Record<TermCategory, string> = {
 	Architecture: "border-[var(--SpineIPC)] text-[color:var(--SpineIPCFore)]",
 
-	Telemetry: "border-[var(--ExtensionTauri)] text-[color:var(--ExtensionTauriFore)]",
+	Telemetry:
+		"border-[var(--ExtensionTauri)] text-[color:var(--ExtensionTauriFore)]",
 
 	Protocol: "border-[var(--SpineWASM)] text-[color:var(--SpineWASMFore)]",
 

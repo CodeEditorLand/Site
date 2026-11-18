@@ -98,102 +98,125 @@ const Id = `plates-${set.index.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 	<figcaption class="record-plate-set__head">
 		<span class="record-plate-set__head-main">
 			<span class="record-plate-set__index"># {set.index}</span>
-			{set.label ? <span class="record-plate-set__label">/ {set.label}</span> : null}
+			{set.label ? (
+				<span class="record-plate-set__label">/ {set.label}</span>
+			) : null}
 		</span>
 		<span class="record-plate-set__count">
-			{Count}<span class="record-plate-set__count-unit">{Unit}</span>
+			{Count}
+			<span class="record-plate-set__count-unit">{Unit}</span>
 		</span>
 	</figcaption>
 
-	{
-		State === "empty" ? (
-			<p class="record-plate-set__empty">
-				<span class="record-plate-set__empty-mark" aria-hidden="true">
-					&#9678;
-				</span>
-				{set.empty}
-			</p>
-		) : (
-			<ol class="record-plate-set__field">
-				{Printed.map((Cell) => {
-					const Tone_ = Cell.state
-						? (Tone(Cell.state.toUpperCase()) ?? "ink")
-						: undefined;
+	{State === "empty" ? (
+		<p class="record-plate-set__empty">
+			<span class="record-plate-set__empty-mark" aria-hidden="true">
+				&#9678;
+			</span>
+			{set.empty}
+		</p>
+	) : (
+		<ol class="record-plate-set__field">
+			{Printed.map((Cell) => {
+				const Tone_ = Cell.state
+					? (Tone(Cell.state.toUpperCase()) ?? "ink")
+					: undefined;
 
-					return (
-						<li class="record-plate-set__cell">
-							<p class="record-plate-set__cell-head">
-								<span class="record-plate-set__cell-index">{Cell.index}</span>
-								{Cell.state ? (
+				return (
+					<li class="record-plate-set__cell">
+						<p class="record-plate-set__cell-head">
+							<span class="record-plate-set__cell-index">
+								{Cell.index}
+							</span>
+							{Cell.state ? (
+								<span
+									class:list={[
+										"record-plate-set__cell-state",
+										`record-plate-set__cell-state--${Tone_}`,
+									]}
+								>
 									<span
-										class:list={[
-											"record-plate-set__cell-state",
-											`record-plate-set__cell-state--${Tone_}`,
-										]}
-									>
-										<span class="record-plate-set__cell-marker" aria-hidden="true" />
-										{Cell.state.toUpperCase()}
-									</span>
-								) : null}
-							</p>
-
-							<div
-								class:list={[
-									"record-plate-set__frame",
-									Cell.state && "record-plate-set__frame--absent",
-								]}
-							>
-								{Cell.state ? (
-									<span class="record-plate-set__absent" aria-hidden="true">
-										&#9678;
-									</span>
-								) : State === "loading" ? (
-									<span class="record-plate-set__skeleton" aria-hidden="true" />
-								) : Cell.src !== undefined && Cell.alt !== undefined ? (
-									<FieldRecordEvidence
-										src={Cell.src}
-										alt={Cell.alt}
-										className="record-plate-set__picture"
+										class="record-plate-set__cell-marker"
+										aria-hidden="true"
 									/>
-								) : (
-									<span class="record-plate-set__absent" aria-hidden="true">
-										&#9678;
-									</span>
-								)}
-							</div>
+									{Cell.state.toUpperCase()}
+								</span>
+							) : null}
+						</p>
 
-							<p class="record-plate-set__subject">
-								<span class="record-plate-set__arrow" aria-hidden="true">&#8627;</span>
-								{Cell.subject}
-							</p>
+						<div
+							class:list={[
+								"record-plate-set__frame",
+								Cell.state && "record-plate-set__frame--absent",
+							]}
+						>
+							{Cell.state ? (
+								<span
+									class="record-plate-set__absent"
+									aria-hidden="true"
+								>
+									&#9678;
+								</span>
+							) : State === "loading" ? (
+								<span
+									class="record-plate-set__skeleton"
+									aria-hidden="true"
+								/>
+							) : Cell.src !== undefined &&
+							  Cell.alt !== undefined ? (
+								<FieldRecordEvidence
+									src={Cell.src}
+									alt={Cell.alt}
+									className="record-plate-set__picture"
+								/>
+							) : (
+								<span
+									class="record-plate-set__absent"
+									aria-hidden="true"
+								>
+									&#9678;
+								</span>
+							)}
+						</div>
 
-							{Cell.note ? <p class="record-plate-set__note">{Cell.note}</p> : null}
-						</li>
-					);
-				})}
-			</ol>
-		)
-	}
+						<p class="record-plate-set__subject">
+							<span
+								class="record-plate-set__arrow"
+								aria-hidden="true"
+							>
+								&#8627;
+							</span>
+							{Cell.subject}
+						</p>
 
-	{
-		set.caption || set.source || set.window ? (
-			<figcaption class="record-plate-set__foot">
-				{set.caption ? <span class="record-plate-set__caption">{set.caption}</span> : null}
-				{set.window ? (
-					<span class="record-plate-set__window">
-						<span class="record-plate-set__window-key">SHOWING:</span>
-						{set.window.showing}
-						<span class="record-plate-set__window-of">OF</span>
-						{set.window.total}
-					</span>
-				) : null}
-				{set.source ? (
-					<span class="record-plate-set__source">
-						<span class="record-plate-set__source-key">SOURCE:</span>
-						{set.source}
-					</span>
-				) : null}
-			</figcaption>
-		) : null
-	}
+						{Cell.note ? (
+							<p class="record-plate-set__note">{Cell.note}</p>
+						) : null}
+					</li>
+				);
+			})}
+		</ol>
+	)}
+
+	{set.caption || set.source || set.window ? (
+		<figcaption class="record-plate-set__foot">
+			{set.caption ? (
+				<span class="record-plate-set__caption">{set.caption}</span>
+			) : null}
+			{set.window ? (
+				<span class="record-plate-set__window">
+					<span class="record-plate-set__window-key">SHOWING:</span>
+					{set.window.showing}
+					<span class="record-plate-set__window-of">OF</span>
+					{set.window.total}
+				</span>
+			) : null}
+			{set.source ? (
+				<span class="record-plate-set__source">
+					<span class="record-plate-set__source-key">SOURCE:</span>
+					{set.source}
+				</span>
+			) : null}
+		</figcaption>
+	) : null}
 </figure>

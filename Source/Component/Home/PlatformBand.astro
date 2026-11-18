@@ -28,6 +28,8 @@ const Head = BandOf(HomeBands(T), "download");
 
 <Band head={Head} series="ACTION" rhythm="tight">
 	<jelly-card class="home-platform__manifest">
-		{PlatformCards.map((Card) => <PlatformCard card={Card} />)}
+		{PlatformCards.map((Card) => (
+			<PlatformCard card={Card} />
+		))}
 	</jelly-card>
 </Band>

@@ -37,7 +37,7 @@ import {
 
 import { useEffect, useRef } from "react";
 
-import { Badge } from "../UI/Badge";
+import { Badge, type BadgeTone } from "../UI/Badge";
 
 import { RichText } from "../UI/RichText";
 
@@ -73,16 +73,57 @@ const StatusColor: Record<string, string> = {
 	Recommended: "bg-blue-500",
 };
 
-const StatusBadgeVariant: Record<string, "default" | "secondary" | "outline"> =
-	{
-		Active: "default",
+// A badge is a Jelly surface with a real ink pair, not an outlined label.
+const StatusTone: Record<string, BadgeTone> = {
+	Active: "grpc",
 
-		Disabled: "secondary",
+	Disabled: "quiet",
 
-		Optional: "outline",
+	Optional: "ipc",
 
-		Recommended: "default",
-	};
+	Recommended: "accent",
+
+	Available: "grpc",
+
+	Legacy: "tcp",
+
+	Experimental: "wasm",
+
+	Ready: "grpc",
+
+	Preparing: "quiet",
+
+	Unavailable: "tcp",
+
+	Verified: "accent",
+};
+
+// A row of feature marks cycles the spine palette so it reads as a set of
+// distinct marks rather than the same outline repeated.
+const FeatureToneCycle: BadgeTone[] = [
+	"tcp",
+	"ipc",
+	"grpc",
+	"wasm",
+	"rust",
+	"tauri",
+	"effect",
+	"electron",
+	"accent",
+	"quiet",
+];
+
+const FeatureTone: Record<string, BadgeTone> = {
+	"Hot Reload": "tcp",
+
+	"Instant Preview": "ipc",
+
+	"Development Server": "grpc",
+
+	"Bundle-free": "wasm",
+
+	"No Bundling": "wasm",
+};
 
 const VariantStatusColor: Record<string, string> = {
 	Recommended: "bg-blue-500",
@@ -150,7 +191,8 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 		 * that is safe to wire; the finding is recorded in the ledger (§5.6).
 		 */
 		const ApplyNoise = async (): Promise<void> => {
-			const StaccatoModule = await import("../../Function/Noise/Staccato.js");
+			const StaccatoModule =
+				await import("../../Function/Noise/Staccato.js");
 
 			const Engine = await StaccatoModule.default;
 
@@ -201,9 +243,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 				{(Title || Subtitle) && (
 					<div className="StaccatoBreath mb-16 text-center">
 						{Title && (
-							<h2 className="type-section mb-4">
-								{Title}
-							</h2>
+							<h2 className="type-section mb-4">{Title}</h2>
 						)}
 
 						{Subtitle && (
@@ -216,9 +256,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 
 				{/* Telemetry Policy */}
 				<div className="mb-16">
-					<h3 className="mb-2 text-foreground">
-						Telemetry Policy
-					</h3>
+					<h3 className="mb-2 text-foreground">Telemetry Policy</h3>
 					<p className="mb-8 text-muted-foreground">
 						Full disclosure on what Land collects - and what it does
 						not.
@@ -238,10 +276,9 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 										</h4>
 										<div className="ml-4 flex items-center gap-3">
 											<Badge
-												variant={
-													StatusBadgeVariant[
-														Item.Status
-													]
+												tone={
+													StatusTone[Item.Status] ??
+													"quiet"
 												}
 												className="StaccatoBadge"
 											>
@@ -285,9 +322,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 
 				{/* Build Variants */}
 				<div className="mb-16">
-					<h3 className="mb-2 text-foreground">
-						Build Variants
-					</h3>
+					<h3 className="mb-2 text-foreground">Build Variants</h3>
 					<p className="mb-8 text-foreground opacity-70">
 						{Variant.length} named profiles across{" "}
 						{MatrixPermutation} test permutations. Every combination
@@ -326,7 +361,10 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 										</td>
 										<td className="px-4 py-3 text-foreground">
 											<Badge
-												variant="outline"
+												tone={
+													StatusTone[Item.Tier] ??
+													"quiet"
+												}
 												className="StaccatoBadge"
 											>
 												{Item.Tier}
@@ -424,7 +462,15 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 											(FeatureName, Index) => (
 												<Badge
 													key={Index}
-													variant="outline"
+													tone={
+														FeatureTone[
+															FeatureName
+														] ??
+														FeatureToneCycle[
+															Index %
+																FeatureToneCycle.length
+														]
+													}
 													className="StaccatoBadge"
 												>
 													{FeatureName}
@@ -450,10 +496,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 						>
 							Verify in source code
 							<span className="InlineSeparator">
-								<Code
-									className="h-4 w-4"
-									aria-hidden="true"
-								/>
+								<Code className="h-4 w-4" aria-hidden="true" />
 							</span>
 						</a>
 					</div>

@@ -206,9 +206,15 @@ const ScrollCode: React.FC<ScrollCodeProperty> = ({ Text = "", Font = 1 }) => {
 
 							return MatrixRowArray.map(
 								(Row, RowIndex): React.ReactNode => (
-									<div key={`row-${RowIndex}`} className="Row flex">
+									<div
+										key={`row-${RowIndex}`}
+										className="Row flex"
+									>
 										{Row.map(
-											(Show: number, Index: number): React.ReactNode => {
+											(
+												Show: number,
+												Index: number,
+											): React.ReactNode => {
 												if (!Pixel || !Box) return null;
 
 												return (
@@ -217,7 +223,9 @@ const ScrollCode: React.FC<ScrollCodeProperty> = ({ Text = "", Font = 1 }) => {
 														Character={Character}
 														Index={Index}
 														Show={Show}
-														Text={TextContent.length}
+														Text={
+															TextContent.length
+														}
 														Mouse={MouseState}
 														Container={Box}
 														Row={RowIndex}

@@ -201,9 +201,7 @@ describe("Auth0AccountGate", () => {
 
 		render(<Auth0AccountGate Route="signin" />);
 
-		const RedirectingText = screen.getByText(
-			/The sign-in page opens next/,
-		);
+		const RedirectingText = screen.getByText(/The sign-in page opens next/);
 
 		expect(RedirectingText).toBeInTheDocument();
 	});

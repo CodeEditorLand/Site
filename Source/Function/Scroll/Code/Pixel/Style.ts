@@ -253,7 +253,8 @@ export default class {
 
 		this.Ink = Color;
 
-		for (const Particle of this.Dust) Particle.style.backgroundColor = Color;
+		for (const Particle of this.Dust)
+			Particle.style.backgroundColor = Color;
 	}
 
 	private Opacity(): void {

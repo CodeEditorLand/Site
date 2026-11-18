@@ -66,72 +66,68 @@ const { term: Entry, run: Run, class: Class } = Astro.props;
 const Id = TermId(Run, Entry.term);
 
 /** The state word's ink, from the one table that decides tones. */
-const StateTone = Entry.state ? (Tone(Entry.state.toUpperCase()) ?? "ink") : undefined;
+const StateTone = Entry.state
+	? (Tone(Entry.state.toUpperCase()) ?? "ink")
+	: undefined;
 ---
 
 <article class:list={["lexicon-entry", Class]} id={Id}>
 	<div class="lexicon-entry__term">
 		<h3 class="lexicon-entry__name">{Entry.term}</h3>
-		{
-			Entry.expansion ? (
-				<p class="lexicon-entry__expansion">{Entry.expansion}</p>
-			) : null
-		}
-		{
-			Entry.state && StateTone ? (
-				<p
-					class:list={[
-						"lexicon-entry__state",
-						`lexicon-entry__state--${StateTone}`,
-					]}
-				>
-					<span class="lexicon-entry__state-mark" aria-hidden="true" />
-					{Entry.state}
-				</p>
-			) : null
-		}
+		{Entry.expansion ? (
+			<p class="lexicon-entry__expansion">{Entry.expansion}</p>
+		) : null}
+		{Entry.state && StateTone ? (
+			<p
+				class:list={[
+					"lexicon-entry__state",
+					`lexicon-entry__state--${StateTone}`,
+				]}
+			>
+				<span class="lexicon-entry__state-mark" aria-hidden="true" />
+				{Entry.state}
+			</p>
+		) : null}
 	</div>
 
 	<div class="lexicon-entry__body">
 		<p class="lexicon-entry__definition">{Entry.definition}</p>
 
-		{
-			Entry.rows?.length ? (
-				<dl class="lexicon-entry__rows">
-					{Entry.rows.map((Row) => (
-						<div class="lexicon-entry__row">
-							<dt class="lexicon-entry__row-key">{Row.key}</dt>
-							<dd class="lexicon-entry__row-value">
-								{Row.code ? <code>{Row.value}</code> : Row.value}
-								{Row.note ? (
-									<span class="lexicon-entry__row-note">{Row.note}</span>
-								) : null}
-							</dd>
-						</div>
-					))}
-				</dl>
-			) : null
-		}
+		{Entry.rows?.length ? (
+			<dl class="lexicon-entry__rows">
+				{Entry.rows.map((Row) => (
+					<div class="lexicon-entry__row">
+						<dt class="lexicon-entry__row-key">{Row.key}</dt>
+						<dd class="lexicon-entry__row-value">
+							{Row.code ? <code>{Row.value}</code> : Row.value}
+							{Row.note ? (
+								<span class="lexicon-entry__row-note">
+									{Row.note}
+								</span>
+							) : null}
+						</dd>
+					</div>
+				))}
+			</dl>
+		) : null}
 
 		<footer class="lexicon-entry__foot">
-			{
-				Entry.record ? (
-					<p class="lexicon-entry__fact">
-						<span class="lexicon-entry__fact-key">RECORD:</span>
-						<span class="lexicon-entry__fact-value">{Entry.record}</span>
-					</p>
-				) : null
-			}
-			{
-				Entry.route ? (
-					<p class="lexicon-entry__fact">
-						<span class="lexicon-entry__fact-key">WHERE:</span>
-						<a class="lexicon-entry__link" href={Entry.route.href}>
-							{Entry.route.label}
-						</a>
-					</p>
-				) : null
-			}
+			{Entry.record ? (
+				<p class="lexicon-entry__fact">
+					<span class="lexicon-entry__fact-key">RECORD:</span>
+					<span class="lexicon-entry__fact-value">
+						{Entry.record}
+					</span>
+				</p>
+			) : null}
+			{Entry.route ? (
+				<p class="lexicon-entry__fact">
+					<span class="lexicon-entry__fact-key">WHERE:</span>
+					<a class="lexicon-entry__link" href={Entry.route.href}>
+						{Entry.route.label}
+					</a>
+				</p>
+			) : null}
 			<p class="lexicon-entry__fact">
 				<span class="lexicon-entry__fact-key">SOURCE:</span>
 				<span class="lexicon-entry__fact-value">

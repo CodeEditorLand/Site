@@ -183,8 +183,7 @@ const DynamicEmailVerification = ({
 						Text:
 							ResendCooldown > 0
 								? T("resendCooldown", {
-										defaultValue:
-											"Resend in {{seconds}}s",
+										defaultValue: "Resend in {{seconds}}s",
 										seconds: ResendCooldown,
 									})
 								: (Content.Pending.ResendButton.Text ?? ""),

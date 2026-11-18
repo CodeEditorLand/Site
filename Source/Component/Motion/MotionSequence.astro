@@ -40,8 +40,13 @@ interface Props {
 
 const { sequence: SequenceData } = Astro.props;
 
-const { name: Name, nodes: Nodes, edges: Edges, source: Source, empty: Empty } =
-	SequenceData;
+const {
+	name: Name,
+	nodes: Nodes,
+	edges: Edges,
+	source: Source,
+	empty: Empty,
+} = SequenceData;
 
 /** The count is the nodes' own length; the edges are one fewer. */
 const Count = String(Nodes.length).padStart(2, "0");
@@ -78,67 +83,62 @@ Nodes.forEach((Node, Position) => {
 
 <div class="MotionSequence" data-motion="sequence">
 	<p class="MotionSequence__Marker">
-		# SEQUENCE / {Name}<span aria-hidden="true">{"\u2001"}</span>{Count} STATES
+		# SEQUENCE / {Name}
+		<span aria-hidden="true">{"\u2001"}</span>
+		{Count} STATES
 	</p>
 
-	{
-		Drawable ? (
-			<ol class="MotionSequence__Run">
-				{Steps.map((Step) =>
-					Step.kind === "node" ? (
-						<li class="MotionSequence__Step MotionSequence__Step--node">
+	{Drawable ? (
+		<ol class="MotionSequence__Run">
+			{Steps.map((Step) =>
+				Step.kind === "node" ? (
+					<li class="MotionSequence__Step MotionSequence__Step--node">
+						<span class="MotionSequence__Index" aria-hidden="true">
+							{Step.index}
+						</span>
+						<span class="MotionSequence__State">{Step.state}</span>
+						{Step.note ? (
+							<span class="MotionSequence__Note">
+								{Step.note}
+							</span>
+						) : null}
+					</li>
+				) : (
+					<li class="MotionSequence__Step MotionSequence__Step--edge">
+						<span class="MotionSequence__Motion">
+							{Step.motion}
+						</span>
+						<span class="MotionSequence__Line">
 							<span
-								class="MotionSequence__Index"
+								class="MotionSequence__Mark"
 								aria-hidden="true"
 							>
-								{Step.index}
+								→
 							</span>
-							<span class="MotionSequence__State">
-								{Step.state}
-							</span>
-							{Step.note ? (
-								<span class="MotionSequence__Note">
-									{Step.note}
-								</span>
-							) : null}
-						</li>
-					) : (
-						<li class="MotionSequence__Step MotionSequence__Step--edge">
-							<span class="MotionSequence__Motion">
-								{Step.motion}
-							</span>
-							<span class="MotionSequence__Line">
-								<span
-									class="MotionSequence__Mark"
-									aria-hidden="true"
-								>
-									→
-								</span>
-							</span>
-							<span
-								class:list={[
-									"MotionSequence__Interval",
-									UnknownInterval(Step.interval) &&
-										"MotionSequence__Interval--unknown",
-								]}
-							>
-								{IntervalOf(Step.interval)}
-							</span>
-						</li>
-					),
-				)}
-			</ol>
-		) : (
-			<div class="MotionSequence__Empty">
-				<p class="MotionSequence__EmptyMark">
-					<b aria-hidden="true">◎</b> NO TRANSITION
-				</p>
-				<p class="MotionSequence__EmptyLine">
-					<span aria-hidden="true">↳</span> {Empty}
-				</p>
-			</div>
-		)
-	}
+						</span>
+						<span
+							class:list={[
+								"MotionSequence__Interval",
+								UnknownInterval(Step.interval) &&
+									"MotionSequence__Interval--unknown",
+							]}
+						>
+							{IntervalOf(Step.interval)}
+						</span>
+					</li>
+				),
+			)}
+		</ol>
+	) : (
+		<div class="MotionSequence__Empty">
+			<p class="MotionSequence__EmptyMark">
+				<b aria-hidden="true">◎</b> NO TRANSITION
+			</p>
+			<p class="MotionSequence__EmptyLine">
+				<span aria-hidden="true">↳</span> {Empty}
+			</p>
+		</div>
+	)}
 
 	<p class="MotionSequence__Source">SOURCE: {Source}</p>
 </div>

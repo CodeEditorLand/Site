@@ -126,11 +126,9 @@ const {
 		<p class="reading-document__kicker">{kicker}</p>
 		<h1 class="reading-document__heading">{heading}</h1>
 		{standfirst && <p class="reading-document__standfirst">{standfirst}</p>}
-		{
-			standfirstHtml && (
-				<p class="reading-document__standfirst" set:html={standfirstHtml} />
-			)
-		}
+		{standfirstHtml && (
+			<p class="reading-document__standfirst" set:html={standfirstHtml} />
+		)}
 	</header>
 
 	<div class="reading-document__ledger">
@@ -141,44 +139,45 @@ const {
 		/>
 	</div>
 
-	{
-		index && index.length > 0 && layout === "rail" && (
-			<>
-				<TrustContents
-					class="reading-document__contents"
-					items={index}
-					label={indexLabel}
-					variant="rail"
-				/>
-				<TrustContents
-					class="reading-document__contents-narrow"
-					items={index}
-					label={indexLabel}
-					variant="disclosure"
-				/>
-			</>
-		)
-	}
+	{index && index.length > 0 && layout === "rail" && (
+		<>
+			<TrustContents
+				class="reading-document__contents"
+				items={index}
+				label={indexLabel}
+				variant="rail"
+			/>
+			<TrustContents
+				class="reading-document__contents-narrow"
+				items={index}
+				label={indexLabel}
+				variant="disclosure"
+			/>
+		</>
+	)}
 
-	{
-		index && index.length > 0 && layout === "stack" && (
-			<nav class="reading-document__index" aria-label={indexLabel}>
-				<p class="reading-document__index-label">{indexLabel}</p>
-				<ol class="reading-document__index-list">
-					{index.map((Item) => (
-						<li class="reading-document__index-item">
-							<a class="reading-document__index-link" href={Item.href}>
-								<span class="reading-document__index-number">
-									&#167;{Item.number}
-								</span>
-								<span class="reading-document__index-name">{Item.label}</span>
-							</a>
-						</li>
-					))}
-				</ol>
-			</nav>
-		)
-	}
+	{index && index.length > 0 && layout === "stack" && (
+		<nav class="reading-document__index" aria-label={indexLabel}>
+			<p class="reading-document__index-label">{indexLabel}</p>
+			<ol class="reading-document__index-list">
+				{index.map((Item) => (
+					<li class="reading-document__index-item">
+						<a
+							class="reading-document__index-link"
+							href={Item.href}
+						>
+							<span class="reading-document__index-number">
+								&#167;{Item.number}
+							</span>
+							<span class="reading-document__index-name">
+								{Item.label}
+							</span>
+						</a>
+					</li>
+				))}
+			</ol>
+		</nav>
+	)}
 
 	<div class:list={["reading-document__body", "prose-flow", bodyClass]}>
 		<slot />

@@ -44,7 +44,9 @@ const { index, id, title, standfirst, class: ClassName } = Astro.props;
 >
 	<div class="surface-region__head">
 		<p class="surface-region__index">{index}</p>
-		<h2 class="surface-region__title" id={`${id}-title`}>{title}</h2>
+		<h2 class="surface-region__title" id={`${id}-title`}>
+			{title}
+		</h2>
 	</div>
 	{standfirst ? <p class="surface-region__standfirst">{standfirst}</p> : null}
 	<slot />

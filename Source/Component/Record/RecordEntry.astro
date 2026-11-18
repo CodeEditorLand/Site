@@ -43,35 +43,29 @@ const {
 
 <article class:list={["record-entry", `record-entry--${surface}`, ClassName]}>
 	<p class="record-entry__index">{index}</p>
-	{
-		glyph ? (
-			<span class="record-entry__glyph" aria-hidden="true">
-				{glyph}
-			</span>
-		) : null
-	}
+	{glyph ? (
+		<span class="record-entry__glyph" aria-hidden="true">
+			{glyph}
+		</span>
+	) : null}
 	<h3 class="record-entry__name">
-		{
-			href ? (
-				<a class="record-entry__link" href={href}>
-					<span class="record-entry__arrow" aria-hidden="true">
-						→
-					</span>{" "}
-					{name}
-				</a>
-			) : (
-				name
-			)
-		}
+		{href ? (
+			<a class="record-entry__link" href={href}>
+				<span class="record-entry__arrow" aria-hidden="true">
+					→
+				</span>{" "}
+				{name}
+			</a>
+		) : (
+			name
+		)}
 	</h3>
-	{
-		chips?.length ? (
-			<ul class="record-entry__chips">
-				{chips.map((chip) => (
-					<li class="record-entry__chip">{chip}</li>
-				))}
-			</ul>
-		) : null
-	}
+	{chips?.length ? (
+		<ul class="record-entry__chips">
+			{chips.map((chip) => (
+				<li class="record-entry__chip">{chip}</li>
+			))}
+		</ul>
+	) : null}
 	<p class="record-entry__body">{body}</p>
 </article>

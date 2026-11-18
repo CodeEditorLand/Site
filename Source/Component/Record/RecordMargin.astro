@@ -72,42 +72,50 @@ const StateTone = note.state
 >
 	<p class="record-margin__head">
 		<span class="record-margin__index"># {note.index}</span>
-		{note.label ? <span class="record-margin__label">/ {note.label}</span> : null}
+		{note.label ? (
+			<span class="record-margin__label">/ {note.label}</span>
+		) : null}
 	</p>
 
-	{
-		note.state ? (
-			<p class:list={["record-margin__state", `record-margin__state--${StateTone}`]}>
-				<span class="record-margin__marker" aria-hidden="true" />
-				<span class="record-margin__state-key">STATUS:</span>
-				{note.state.toUpperCase()}
-			</p>
-		) : null
-	}
+	{note.state ? (
+		<p
+			class:list={[
+				"record-margin__state",
+				`record-margin__state--${StateTone}`,
+			]}
+		>
+			<span class="record-margin__marker" aria-hidden="true" />
+			<span class="record-margin__state-key">STATUS:</span>
+			{note.state.toUpperCase()}
+		</p>
+	) : null}
 
 	<p class="record-margin__body">
-		<span class="record-margin__arrow" aria-hidden="true">&#8627;</span>{note.body}
+		<span class="record-margin__arrow" aria-hidden="true">
+			&#8627;
+		</span>
+		{note.body}
 	</p>
 
-	{
-		note.link ? (
-			note.link.state === "gone" ? (
-				<p class="record-margin__gone">
-					<span class="record-margin__gone-mark" aria-hidden="true">&#9678;</span>
-					<span class="record-margin__gone-label">TARGET GONE:</span>
+	{note.link ? (
+		note.link.state === "gone" ? (
+			<p class="record-margin__gone">
+				<span class="record-margin__gone-mark" aria-hidden="true">
+					&#9678;
+				</span>
+				<span class="record-margin__gone-label">TARGET GONE:</span>
+				{note.link.label}
+				<span class="record-margin__gone-route">{note.link.href}</span>
+			</p>
+		) : (
+			<p class="record-margin__link">
+				<a href={note.link.href}>
+					<span aria-hidden="true">&#8594;</span>
 					{note.link.label}
-					<span class="record-margin__gone-route">{note.link.href}</span>
-				</p>
-			) : (
-				<p class="record-margin__link">
-					<a href={note.link.href}>
-						<span aria-hidden="true">&#8594;</span>
-						{note.link.label}
-					</a>
-				</p>
-			)
-		) : null
-	}
+				</a>
+			</p>
+		)
+	) : null}
 
 	<p
 		class:list={[

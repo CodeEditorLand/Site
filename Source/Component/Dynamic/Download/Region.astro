@@ -40,14 +40,16 @@ const HeadingId = `${region.id}-heading`;
 
 <section class="download-region" id={region.id} aria-labelledby={HeadingId}>
 	<p class="download-region__kicker">{region.kicker}</p>
-	<h3 class="download-region__heading" id={HeadingId}>{region.heading}</h3>
-	{
-		region.standfirst ? (
-			<p class="download-region__standfirst">{region.standfirst}</p>
-		) : null
-	}
+	<h3 class="download-region__heading" id={HeadingId}>
+		{region.heading}
+	</h3>
+	{region.standfirst ? (
+		<p class="download-region__standfirst">{region.standfirst}</p>
+	) : null}
 	<div class="download-region__body">
 		<slot />
 	</div>
-	{region.footnote ? <p class="download-region__footnote">{region.footnote}</p> : null}
+	{region.footnote ? (
+		<p class="download-region__footnote">{region.footnote}</p>
+	) : null}
 </section>

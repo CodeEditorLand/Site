@@ -376,7 +376,9 @@ describe("the layer's first consumers", () => {
 		expect(Pods).toHaveLength(2);
 		expect(All(".record-pair__gutter", Page)).toHaveLength(1);
 		expect(All("h4.record-pair__label", Page)).toHaveLength(2);
-		expect(Pods[1]?.classList.contains("record-pair__pod--subject")).toBe(true);
+		expect(Pods[1]?.classList.contains("record-pair__pod--subject")).toBe(
+			true,
+		);
 
 		// Each pod's body is a real RecordLedger, not prose.
 		expect(All(".record-pair__pod .record-ledger", Page)).toHaveLength(2);

@@ -52,47 +52,46 @@ const ActionInk =
 		<div class="home-release__stamp">
 			<span class="home-release__index">{card.Index}</span>
 
-			{
-				card.Stamp.map((Line) => (
-					<span class="home-release__stamp-line">
-						{Line.map((Span) => (
-							<span
-								style={
-									Span.Ink === undefined
-										? undefined
-										: `color:${Span.Ink}`
-								}
-							>
-								{Span.Text}
-							</span>
-						))}
-					</span>
-				))
-			}
+			{card.Stamp.map((Line) => (
+				<span class="home-release__stamp-line">
+					{Line.map((Span) => (
+						<span
+							style={
+								Span.Ink === undefined
+									? undefined
+									: `color:${Span.Ink}`
+							}
+						>
+							{Span.Text}
+						</span>
+					))}
+				</span>
+			))}
 		</div>
 
 		<div class="home-release__action">
-			{
-				Primary ? (
-					<a
-						class="home-release__anchor"
-						href={card.Action.Href}
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<jelly-button block style={ActionInk}>
-							{card.Action.Label}
-						</jelly-button>
-					</a>
-				) : (
-					<a
-						class="home-release__destination"
-						href={card.Action.Href}
-						target="_blank"
-						rel="noopener noreferrer"
-					><span aria-hidden="true">/</span>{card.Action.Label}</a>
-				)
-			}
+			{Primary ? (
+				<a
+					class="home-release__anchor"
+					href={card.Action.Href}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<jelly-button block style={ActionInk}>
+						{card.Action.Label}
+					</jelly-button>
+				</a>
+			) : (
+				<a
+					class="home-release__destination"
+					href={card.Action.Href}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<span aria-hidden="true">/</span>
+					{card.Action.Label}
+				</a>
+			)}
 		</div>
 
 		<h3 class="home-release__title">{card.Title}</h3>
@@ -102,54 +101,50 @@ const ActionInk =
 		<p class="home-release__section">Elements</p>
 
 		<ul class="home-release__list">
-			{
-				card.Elements.map((Element) => (
-					<li class="home-release__item">
-						<a
-							class="home-release__element"
-							href={Element.Href}
-							style={`color:${Element.Ink}`}
+			{card.Elements.map((Element) => (
+				<li class="home-release__item">
+					<a
+						class="home-release__element"
+						href={Element.Href}
+						style={`color:${Element.Ink}`}
+					>
+						<jelly-badge
+							shape="square"
+							style="--jelly-fill:var(--SpineIPCMute);--jelly-label:currentColor;--jelly-badge-radius:0px;--jelly-badge-font-size:0.78em"
 						>
-							<jelly-badge
-								shape="square"
-								style="--jelly-fill:var(--SpineIPCMute);--jelly-label:currentColor;--jelly-badge-radius:0px;--jelly-badge-font-size:0.78em"
-							>
-								{Element.Name}
-							</jelly-badge>
-						</a>
+							{Element.Name}
+						</jelly-badge>
+					</a>
 
-						<span class="home-release__role">{Element.Role}</span>
+					<span class="home-release__role">{Element.Role}</span>
 
-						<span class="home-release__line">
-							{Element.Before}
-							{Element.Badge && (
-								<Fragment>
-									{" "}
-									<jelly-badge
-										shape="square"
-										style="--jelly-fill:var(--SpineIPCMute);--jelly-label:currentColor;--jelly-badge-radius:0px;--jelly-badge-font-size:0.78em"
-									>
-										{Element.Badge}
-									</jelly-badge>{" "}
-								</Fragment>
-							)}
-							{Element.After}
-						</span>
-					</li>
-				))
-			}
+					<span class="home-release__line">
+						{Element.Before}
+						{Element.Badge && (
+							<Fragment>
+								{" "}
+								<jelly-badge
+									shape="square"
+									style="--jelly-fill:var(--SpineIPCMute);--jelly-label:currentColor;--jelly-badge-radius:0px;--jelly-badge-font-size:0.78em"
+								>
+									{Element.Badge}
+								</jelly-badge>{" "}
+							</Fragment>
+						)}
+						{Element.After}
+					</span>
+				</li>
+			))}
 		</ul>
 
 		<p class="home-release__section">Manifest</p>
 
 		<ul class="home-release__manifest">
-			{
-				card.Manifest.map((Line) => (
-					<li class="home-release__manifest-row">
-						<span>{Line}</span>
-					</li>
-				))
-			}
+			{card.Manifest.map((Line) => (
+				<li class="home-release__manifest-row">
+					<span>{Line}</span>
+				</li>
+			))}
 		</ul>
 	</div>
 </article>

@@ -16,5 +16,12 @@
 // ink, a figure tracked as a word) and source order is the mechanism. See
 // `System/Detail/_Index.scss` before moving this line.
 @use "System/Detail/Index" as Detail;
+// The optical layer loads after every layer it refines - the Detail layer
+// included, whose Leader, See and Folio it corrects - because each of its rules
+// moves a declaration a partial already wrote, and source order is the mechanism.
+// It writes no name, paints no surface and adds no block: it moves a rule by half
+// a pixel, a mark by two characters, a column by seven pixels. See
+// `System/Optical/_Index.scss` before moving this line.
+@use "System/Optical/Index" as Optical;
 @use "System/Motion";
 @use "System/Motion/Index" as Interaction;

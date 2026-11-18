@@ -69,12 +69,13 @@ export class ErrorBoundary extends Component<
 							to do. The exception message is still printed, as `CAUSE:`,
 							because it is the one fact the boundary actually holds.
 						*/}
-						<h2 className="mb-4 font-mono text-[13px] font-medium tracking-[0.08em] text-card-foreground uppercase">
-							<span aria-hidden="true">#</span>{" "}FAILURE / 01{"\u2001"}
+						<h2 className="mb-4 font-mono text-[13px] font-medium uppercase tracking-[0.08em] text-card-foreground">
+							<span aria-hidden="true">#</span> FAILURE / 01
+							{"\u2001"}
 							<span aria-hidden="true">/</span>RUNTIME
 						</h2>
 
-						<p className="mb-4 flex items-center gap-2 font-mono text-[13px] tracking-[0.08em] text-card-foreground uppercase">
+						<p className="mb-4 flex items-center gap-2 font-mono text-[13px] uppercase tracking-[0.08em] text-card-foreground">
 							<span
 								aria-hidden="true"
 								className="bg-destruct inline-block h-2 w-2"
@@ -85,16 +86,17 @@ export class ErrorBoundary extends Component<
 
 						<dl className="space-y-3 text-left">
 							<div>
-								<dt className="font-mono text-[13px] tracking-[0.08em] text-muted uppercase">
+								<dt className="font-mono text-[13px] uppercase tracking-[0.08em] text-muted">
 									WHAT FAILED:
 								</dt>
 								<dd className="text-card-foreground">
-									This region stopped rendering. The rest of the page
-									still reads, and nothing was sent anywhere.
+									This region stopped rendering. The rest of
+									the page still reads, and nothing was sent
+									anywhere.
 								</dd>
 							</div>
 							<div>
-								<dt className="font-mono text-[13px] tracking-[0.08em] text-muted uppercase">
+								<dt className="font-mono text-[13px] uppercase tracking-[0.08em] text-muted">
 									CAUSE:
 								</dt>
 								<dd className="text-card-foreground">
@@ -103,14 +105,14 @@ export class ErrorBoundary extends Component<
 								</dd>
 							</div>
 							<div>
-								<dt className="font-mono text-[13px] tracking-[0.08em] text-muted uppercase">
+								<dt className="font-mono text-[13px] uppercase tracking-[0.08em] text-muted">
 									RETRY:
 								</dt>
 								<dd>
 									<button
 										type="button"
 										onClick={this.HandleRetry}
-										className="text-destruct hover:bg-destruct hover:text-destruct-fg inline-flex h-9 items-center justify-center border border-[var(--Destruct)] bg-card px-4 py-2 font-mono text-[13px] tracking-[0.08em] uppercase transition-all"
+										className="text-destruct hover:bg-destruct hover:text-destruct-fg inline-flex h-9 items-center justify-center border border-[var(--Destruct)] bg-card px-4 py-2 font-mono text-[13px] uppercase tracking-[0.08em] transition-all"
 									>
 										RELOAD THE REGION{"\u2001"}
 										<span aria-hidden="true">&rarr;</span>

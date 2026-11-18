@@ -73,7 +73,10 @@ const Declarations = [
 
 /* The hero's facts, as the ledger prints them: the key carries its colon
    (`DESIGN-COMPLETE.md` §1.5 - the colon is part of the label). */
-const Facts = Page.metadata.map((Row) => ({ key: `${Row.label}:`, value: Row.value }));
+const Facts = Page.metadata.map((Row) => ({
+	key: `${Row.label}:`,
+	value: Row.value,
+}));
 
 /* The plan beside each tier's state. `PLANNED` is not one of §1.5's eight
    states, so it is a declaration in the same row as `STATUS: PREPARING` -
@@ -99,8 +102,7 @@ const Plan = [{ key: "PLAN", value: "PLANNED" }];
 		<div
 			class="absolute inset-0 pointer-events-none"
 			style="background-color: var(--Background);"
-		>
-		</div>
+		></div>
 		<div
 			class="flex flex-col md:flex-row min-h-[60dvh] mx-auto relative"
 			style="padding: clamp(2rem, 5vw, 5rem); gap: clamp(0.5rem, 1.5vw, 1.875rem);"
@@ -117,37 +119,54 @@ const Plan = [{ key: "PLAN", value: "PLANNED" }];
 							declarations={Declarations}
 							rows={Facts}
 						>
-							<FieldRecordSeal slot="mark" element="Land" size={64} />
+							<FieldRecordSeal
+								slot="mark"
+								element="Land"
+								size={64}
+							/>
 
 							{/* A claim, not a title: `〈 〉` is allowed here (§9 Q7). It
 							    is the page's one claim at L, under the `h1` at XL. */}
 							<p class="portal-head__claim">
-								<span style="color:var(--MuteForeground)">〈</span><span
+								<span style="color:var(--MuteForeground)">
+									〈
+								</span>
+								<span
 									style={`color:var(--${Page.subheadingInk})`}
-									>{Page.subheading}</span
-								><span style="color:var(--MuteForeground)">〉</span>
+								>
+									{Page.subheading}
+								</span>
+								<span style="color:var(--MuteForeground)">
+									〉
+								</span>
 							</p>
 
 							<p class="portal-head__protocol">
-								<span style="color:var(--MuteForeground)">/</span><span
-									style="color:var(--SemanticSky)">PROTOCOL</span
-								><span style="color:var(--CardForeground)">:{Page.protocol}</span>
+								<span style="color:var(--MuteForeground)">
+									/
+								</span>
+								<span style="color:var(--SemanticSky)">
+									PROTOCOL
+								</span>
+								<span style="color:var(--CardForeground)">
+									:{Page.protocol}
+								</span>
 							</p>
-							<p class="portal-head__program">{Page.program.join("\u2001")}</p>
-							<p class="portal-head__banner">{Page.banner.join("\u2001")}</p>
+							<p class="portal-head__program">
+								{Page.program.join("\u2001")}
+							</p>
+							<p class="portal-head__banner">
+								{Page.banner.join("\u2001")}
+							</p>
 						</SurfaceHead>
 
 						<div class="flex-1 my-12" aria-hidden="true"></div>
 
 						<div>
-							<p
-								class="font-mono text-card-foreground font-normal text-field-l leading-[1.08]"
-							>
+							<p class="font-mono text-card-foreground font-normal text-field-l leading-[1.08]">
 								{Page.title}:
 							</p>
-							<p
-								class="font-mono text-card-foreground font-normal leading-[1.1] opacity-70 text-field-s mt-3"
-							>
+							<p class="font-mono text-card-foreground font-normal leading-[1.1] opacity-70 text-field-s mt-3">
 								↳{Page.relation}
 							</p>
 						</div>
@@ -161,8 +180,7 @@ const Plan = [{ key: "PLAN", value: "PLANNED" }];
 			<div
 				class="hidden md:block w-px"
 				style="background-color: color-mix(in srgb, var(--CardForeground) 20%, transparent);"
-			>
-			</div>
+			></div>
 
 			<div class="flex items-center justify-center flex-1">
 				<FieldRecordEvidence
@@ -180,102 +198,126 @@ const Plan = [{ key: "PLAN", value: "PLANNED" }];
 	 Each band is the baseline's: the `#` marker and the seal, the bracketed
 	 plan name, the protocol line, the two status rows, the feature records,
 	 the capability run, and the one action. -->
-	<section id="portal-tiers" aria-label="Authentication Tiers" class="w-full py-16 sm:py-20">
+	<section
+		id="portal-tiers"
+		aria-label="Authentication Tiers"
+		class="w-full py-16 sm:py-20"
+	>
 		<div class="container mx-auto px-4">
 			<div class="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-2">
-				{
-					Page.tiers.map((Tier) => (
-						<article
-							id={`tier-${Tier.index.split("_")[0].toLowerCase()}`}
-							class="flex h-full flex-col border border-border p-5"
-						>
-							<div class="flex items-start justify-between gap-3">
-								<span class="font-mono type-meta uppercase tracking-rule text-accent">
-									# {Tier.index}
-								</span>
-								<FieldRecordSeal element={Tier.seal} size={32} />
-							</div>
+				{Page.tiers.map((Tier) => (
+					<article
+						id={`tier-${Tier.index.split("_")[0].toLowerCase()}`}
+						class="flex h-full flex-col border border-border p-5"
+					>
+						<div class="flex items-start justify-between gap-3">
+							<span class="font-mono type-meta uppercase tracking-rule text-accent">
+								# {Tier.index}
+							</span>
+							<FieldRecordSeal element={Tier.seal} size={32} />
+						</div>
 
-							{/* The plan name is a containment stamp: `〈 CLOUD PLAN 〉`,
+						{/* The plan name is a containment stamp: `〈 CLOUD PLAN 〉`,
 							    as the baseline printed it (Appendix B). */}
-							<div class="PortalTierRule mt-3 pt-3">
-								<h2 class="font-mono text-card-foreground font-medium uppercase tracking-row">
-									<span style="color:var(--MuteForeground)">〈</span>
-									<span style={`color:var(--${Tier.ink})`}>{Tier.title}</span>
-									<span style="color:var(--MuteForeground)">〉</span>
-								</h2>
-								<p class="font-mono text-card-foreground type-meta uppercase tracking-rule mt-1">
-									<span style="color:var(--MuteForeground)">/</span>
-									<span style="color:var(--SemanticSky)">PROTOCOL</span>
-									<span style="color:var(--CardForeground)">: {Tier.protocol}</span>
-								</p>
-							</div>
+						<div class="PortalTierRule mt-3 pt-3">
+							<h2 class="font-mono text-card-foreground font-medium uppercase tracking-row">
+								<span style="color:var(--MuteForeground)">
+									〈
+								</span>
+								<span style={`color:var(--${Tier.ink})`}>
+									{Tier.title}
+								</span>
+								<span style="color:var(--MuteForeground)">
+									〉
+								</span>
+							</h2>
+							<p class="font-mono text-card-foreground type-meta uppercase tracking-rule mt-1">
+								<span style="color:var(--MuteForeground)">
+									/
+								</span>
+								<span style="color:var(--SemanticSky)">
+									PROTOCOL
+								</span>
+								<span style="color:var(--CardForeground)">
+									: {Tier.protocol}
+								</span>
+							</p>
+						</div>
 
-							{/* The register, one scale down: `STATUS: PREPARING` from the
+						{/* The register, one scale down: `STATUS: PREPARING` from the
 							    state table, `PLAN: PLANNED` as its declaration. */}
-							<div class="PortalTierDivider" aria-hidden="true"></div>
-							<div class="portal-tier__status">
-								<SurfaceStatusLine states={Tier.states} declarations={Plan} />
-							</div>
+						<div class="PortalTierDivider" aria-hidden="true"></div>
+						<div class="portal-tier__status">
+							<SurfaceStatusLine
+								states={Tier.states}
+								declarations={Plan}
+							/>
+						</div>
 
-							<div class="PortalTierDivider" aria-hidden="true"></div>
-							<div>
-								<p class="font-mono type-meta text-muted-foreground tracking-rule uppercase">
-									BADGE:
-								</p>
-								<div class="mt-2">
-									<SurfaceBadge label={Tier.badge} tone="mute" />
-								</div>
+						<div class="PortalTierDivider" aria-hidden="true"></div>
+						<div>
+							<p class="font-mono type-meta text-muted-foreground tracking-rule uppercase">
+								BADGE:
+							</p>
+							<div class="mt-2">
+								<SurfaceBadge label={Tier.badge} tone="mute" />
 							</div>
+						</div>
 
-							{/* A feature is one record of the tier's set: a marker, a
+						{/* A feature is one record of the tier's set: a marker, a
 							    name and the one sentence that qualifies it. It is a
 							    row, not an `h3` - the rebuild turned each of these into
 							    a headed chip, which cost the sentence and added 28
 							    headings to a page that had none. */}
-							<div class="PortalTierDivider" aria-hidden="true"></div>
-							<div>
-								<p class="font-mono type-meta text-muted-foreground tracking-rule uppercase">
-									FEATURES:
-								</p>
-								<ul class="portal-tier__features mt-2">
-									{Tier.features.map((Feature) => (
-										<li class="portal-tier__feature">
-											<span class="portal-tier__feature-index" aria-hidden="true">
-												{Feature.marker}
-											</span>
-											<span class="portal-tier__feature-name">{Feature.name}</span>
-											<span class="portal-tier__feature-description">
-												{Feature.description}
-											</span>
-										</li>
-									))}
-								</ul>
-							</div>
+						<div class="PortalTierDivider" aria-hidden="true"></div>
+						<div>
+							<p class="font-mono type-meta text-muted-foreground tracking-rule uppercase">
+								FEATURES:
+							</p>
+							<ul class="portal-tier__features mt-2">
+								{Tier.features.map((Feature) => (
+									<li class="portal-tier__feature">
+										<span
+											class="portal-tier__feature-index"
+											aria-hidden="true"
+										>
+											{Feature.marker}
+										</span>
+										<span class="portal-tier__feature-name">
+											{Feature.name}
+										</span>
+										<span class="portal-tier__feature-description">
+											{Feature.description}
+										</span>
+									</li>
+								))}
+							</ul>
+						</div>
 
-							<div class="PortalTierDivider" aria-hidden="true"></div>
-							<div>
-								<p class="font-mono type-meta text-muted-foreground tracking-rule uppercase">
-									CAPABILITIES:
-								</p>
-								<ul class="portal-tier__capabilities mt-2">
-									{Tier.capabilities.map((Capability) => (
-										<li class="portal-tier__capability">{Capability}</li>
-									))}
-								</ul>
-							</div>
+						<div class="PortalTierDivider" aria-hidden="true"></div>
+						<div>
+							<p class="font-mono type-meta text-muted-foreground tracking-rule uppercase">
+								CAPABILITIES:
+							</p>
+							<ul class="portal-tier__capabilities mt-2">
+								{Tier.capabilities.map((Capability) => (
+									<li class="portal-tier__capability">
+										{Capability}
+									</li>
+								))}
+							</ul>
+						</div>
 
-							<div class="PortalTierDivider" aria-hidden="true"></div>
-							<div class="mt-auto pt-3">
-								<FieldRecordAction
-									label={Tier.action.label}
-									href={Tier.action.href}
-									variant="button"
-								/>
-							</div>
-						</article>
-					))
-				}
+						<div class="PortalTierDivider" aria-hidden="true"></div>
+						<div class="mt-auto pt-3">
+							<FieldRecordAction
+								label={Tier.action.label}
+								href={Tier.action.href}
+								variant="button"
+							/>
+						</div>
+					</article>
+				))}
 			</div>
 		</div>
 	</section>
@@ -290,18 +332,18 @@ const Plan = [{ key: "PLAN", value: "PLANNED" }];
 		<div class="container mx-auto px-4">
 			<div class="mx-auto max-w-3xl">
 				<div class="flex flex-col items-center gap-4 text-center">
-					{
-						Page.credits.map((Line) => (
-							<p class="font-mono text-field-s uppercase tracking-wider text-muted-foreground">
-								{Line}
-							</p>
-						))
-					}
+					{Page.credits.map((Line) => (
+						<p class="font-mono text-field-s uppercase tracking-wider text-muted-foreground">
+							{Line}
+						</p>
+					))}
 					<div class="flex items-center gap-4 mt-4">
 						<a
 							class="font-mono text-field-s uppercase tracking-wider hover:underline text-accent underline-offset-4"
-							href={Page.returnHref}>{Page.returnLabel}</a
+							href={Page.returnHref}
 						>
+							{Page.returnLabel}
+						</a>
 					</div>
 				</div>
 			</div>

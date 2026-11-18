@@ -497,7 +497,8 @@ jelly-icon-button[data-copy][label="Copied"] {
 }
 
 details[open] > :not(summary) {
-	animation: reveal-in var(--motion-reveal-duration) var(--motion-reveal-easing);
+	animation: reveal-in var(--motion-reveal-duration)
+		var(--motion-reveal-easing);
 
 	@media (prefers-reduced-motion: reduce) {
 		animation: none;

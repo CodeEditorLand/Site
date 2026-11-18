@@ -102,7 +102,7 @@ const {
 	Url={Astro.url.href}
 	Language="en"
 >
-	<Header client:load {...mode ? { Mode: mode } : {}} slot="Header" />
+	<Header client:load {...(mode ? { Mode: mode } : {})} slot="Header" />
 
 	<div class="contact-page">
 		<div
@@ -114,40 +114,40 @@ const {
 		>
 			<Trail trail={trail} />
 
-			{
-				record && (
-					<p class="contact-page__record">
-						<span class="contact-page__record-code"># {record.code}</span>
-						{record.article ? (
-							<span class="contact-page__record-article">
-								〈{record.article}〉
-							</span>
-						) : null}
-						<span class="contact-page__record-route">{record.route}</span>
-						{record.window ? (
-							<span class="contact-page__record-window">
-								SLA: {record.window}d
-							</span>
-						) : null}
-						{record.count ? (
-							<span class="contact-page__record-count">
-								REGISTER: {record.count} ENTRIES
-							</span>
-						) : null}
-					</p>
-				)
-			}
+			{record && (
+				<p class="contact-page__record">
+					<span class="contact-page__record-code">
+						# {record.code}
+					</span>
+					{record.article ? (
+						<span class="contact-page__record-article">
+							〈{record.article}〉
+						</span>
+					) : null}
+					<span class="contact-page__record-route">
+						{record.route}
+					</span>
+					{record.window ? (
+						<span class="contact-page__record-window">
+							SLA: {record.window}d
+						</span>
+					) : null}
+					{record.count ? (
+						<span class="contact-page__record-count">
+							REGISTER: {record.count} ENTRIES
+						</span>
+					) : null}
+				</p>
+			)}
 
-			{
-				heading && (
-					<header class="contact-page__header">
-						<h1 class="contact-page__heading">{heading}</h1>
-						{standfirst ? (
-							<p class="contact-page__standfirst">{standfirst}</p>
-						) : null}
-					</header>
-				)
-			}
+			{heading && (
+				<header class="contact-page__header">
+					<h1 class="contact-page__heading">{heading}</h1>
+					{standfirst ? (
+						<p class="contact-page__standfirst">{standfirst}</p>
+					) : null}
+				</header>
+			)}
 		</div>
 
 		<slot />

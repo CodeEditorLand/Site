@@ -84,7 +84,7 @@ export const VerifyAudit = (
 	T: TFunction,
 	Declarations: readonly { key: string; value: string }[],
 ): VerifySurface => ({
-	scopeRegister: "# CHECK\u2001/ 06",
+	scopeRegister: "CHECK",
 
 	scope: [
 		...Declarations.map((Row) => ({

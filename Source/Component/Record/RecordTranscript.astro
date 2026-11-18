@@ -103,112 +103,116 @@ const Id = `transcript-${transcript.index.toLowerCase().replace(/[^a-z0-9]+/g, "
 	<figcaption class="record-transcript__bar">
 		<span class="record-transcript__head">
 			<span class="record-transcript__index"># {transcript.index}</span>
-			{transcript.label ? <span class="record-transcript__label">/ {transcript.label}</span> : null}
+			{transcript.label ? (
+				<span class="record-transcript__label">
+					/ {transcript.label}
+				</span>
+			) : null}
 		</span>
 
-		{
-			transcript.asOf ? (
-				<span class="record-transcript__asof">
-					<span class="record-transcript__asof-key">AS OF:</span>
-					{transcript.asOf}
-				</span>
-			) : null
-		}
+		{transcript.asOf ? (
+			<span class="record-transcript__asof">
+				<span class="record-transcript__asof-key">AS OF:</span>
+				{transcript.asOf}
+			</span>
+		) : null}
 
 		<span class="record-transcript__count">
-			{Count}<span class="record-transcript__count-unit">{Unit}</span>
+			{Count}
+			<span class="record-transcript__count-unit">{Unit}</span>
 		</span>
 
-		{
-			Copy && State !== "empty" ? (
-				<jelly-icon-button
-					class="record-transcript__copy"
-					data-record-transcript-copy
-					data-copy-payload={Payload}
-					size="small"
-					shape="square"
-					label={CopyLabel}
-					aria-label={CopyLabel}
-					title={CopyLabel}
-					style="--jelly-fill: var(--Mute); --jelly-label: var(--Foreground); --jelly-icon-button-radius: 0px; --jelly-ring: var(--Accent);"
-					hidden
+		{Copy && State !== "empty" ? (
+			<jelly-icon-button
+				class="record-transcript__copy"
+				data-record-transcript-copy
+				data-copy-payload={Payload}
+				size="small"
+				shape="square"
+				label={CopyLabel}
+				aria-label={CopyLabel}
+				title={CopyLabel}
+				style="--jelly-fill: var(--Mute); --jelly-label: var(--Foreground); --jelly-icon-button-radius: 0px; --jelly-ring: var(--Accent);"
+				hidden
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					style="color: var(--jelly-label)"
+					aria-hidden="true"
 				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						style="color: var(--jelly-label)"
-						aria-hidden="true"
-					>
-						<rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-						<path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-					</svg>
-				</jelly-icon-button>
-			) : null
-		}
+					<rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+					<path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+				</svg>
+			</jelly-icon-button>
+		) : null}
 	</figcaption>
 
-	{
-		State === "empty" ? (
-			<p class="record-transcript__empty">
-				<span class="record-transcript__empty-mark" aria-hidden="true">
-					&#9678;
-				</span>
-				{transcript.empty}
-			</p>
-		) : (
-			<ol class="record-transcript__turns">
-				{Printed.map((Turn) => (
-					<li
-						class:list={[
-							"record-transcript__turn",
-							Turn.state && "record-transcript__turn--state",
-						]}
-						data-mark={Turn.mark}
-					>
-						<span class="record-transcript__mark" aria-hidden="true">
-							{Turn.mark}
-						</span>
-						<span class="record-transcript__speaker">{Turn.speaker}</span>
-						<span class="record-transcript__line">
-							{State === "loading" ? (
-								<span class="record-transcript__skeleton" aria-hidden="true" />
-							) : (
-								Turn.line
-							)}
-						</span>
-						<span class="record-transcript__stamp">
-							{Turn.state ? Turn.state.toUpperCase() : (Turn.stamp ?? "")}
-						</span>
-					</li>
-				))}
-			</ol>
-		)
-	}
-
-	{
-		transcript.window !== undefined || transcript.note ? (
-			<p class="record-transcript__foot">
-				{transcript.window !== undefined ? (
-					<span class="record-transcript__window">
-						<span class="record-transcript__window-key">SHOWING:</span>
-						{transcript.window.showing}
-						<span class="record-transcript__window-of">OF</span>
-						{transcript.window.total}
+	{State === "empty" ? (
+		<p class="record-transcript__empty">
+			<span class="record-transcript__empty-mark" aria-hidden="true">
+				&#9678;
+			</span>
+			{transcript.empty}
+		</p>
+	) : (
+		<ol class="record-transcript__turns">
+			{Printed.map((Turn) => (
+				<li
+					class:list={[
+						"record-transcript__turn",
+						Turn.state && "record-transcript__turn--state",
+					]}
+					data-mark={Turn.mark}
+				>
+					<span class="record-transcript__mark" aria-hidden="true">
+						{Turn.mark}
 					</span>
-				) : null}
-				{transcript.note ? (
-					<span class="record-transcript__note">{transcript.note}</span>
-				) : null}
-			</p>
-		) : null
-	}
+					<span class="record-transcript__speaker">
+						{Turn.speaker}
+					</span>
+					<span class="record-transcript__line">
+						{State === "loading" ? (
+							<span
+								class="record-transcript__skeleton"
+								aria-hidden="true"
+							/>
+						) : (
+							Turn.line
+						)}
+					</span>
+					<span class="record-transcript__stamp">
+						{Turn.state
+							? Turn.state.toUpperCase()
+							: (Turn.stamp ?? "")}
+					</span>
+				</li>
+			))}
+		</ol>
+	)}
+
+	{transcript.window !== undefined || transcript.note ? (
+		<p class="record-transcript__foot">
+			{transcript.window !== undefined ? (
+				<span class="record-transcript__window">
+					<span class="record-transcript__window-key">SHOWING:</span>
+					{transcript.window.showing}
+					<span class="record-transcript__window-of">OF</span>
+					{transcript.window.total}
+				</span>
+			) : null}
+			{transcript.note ? (
+				<span class="record-transcript__note">{transcript.note}</span>
+			) : null}
+		</p>
+	) : null}
 
 	<p class="record-transcript__source">
 		<span class="record-transcript__source-key">SOURCE:</span>

@@ -90,38 +90,34 @@ const Card =
 ---
 
 <div class="download-requirements">
-	{
-		Minimum && Recommended ? (
-			<RecordPair
-				class="download-requirements__pair"
-				pair={{
-					left: { label: Minimum.label },
-					right: { label: Recommended.label, subject: true },
-					caption: Caption,
-					heading: "h4",
-				}}
-			>
-				<RecordLedger slot="left" rows={Minimum.rows} />
-				<RecordLedger slot="right" rows={Recommended.rows} />
-			</RecordPair>
-		) : null
-	}
+	{Minimum && Recommended ? (
+		<RecordPair
+			class="download-requirements__pair"
+			pair={{
+				left: { label: Minimum.label },
+				right: { label: Recommended.label, subject: true },
+				caption: Caption,
+				heading: "h4",
+			}}
+		>
+			<RecordLedger slot="left" rows={Minimum.rows} />
+			<RecordLedger slot="right" rows={Recommended.rows} />
+		</RecordPair>
+	) : null}
 
 	<div class="download-requirements__os">
 		<h4 class="download-requirements__os-label">{osLabel}</h4>
 		<ul class="download-requirements__os-list">
-			{
-				operatingSystems.map((operatingSystem) => (
-					<li class="download-requirements__os-chip">
-						<p class="download-requirements__os-name">
-							{operatingSystem.name}
-						</p>
-						<p class="download-requirements__os-note">
-							{operatingSystem.note}
-						</p>
-					</li>
-				))
-			}
+			{operatingSystems.map((operatingSystem) => (
+				<li class="download-requirements__os-chip">
+					<p class="download-requirements__os-name">
+						{operatingSystem.name}
+					</p>
+					<p class="download-requirements__os-note">
+						{operatingSystem.note}
+					</p>
+				</li>
+			))}
 		</ul>
 	</div>
 

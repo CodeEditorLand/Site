@@ -43,20 +43,18 @@ const { trail, class: Class } = Astro.props;
 
 <nav class:list={["trail", Class]} aria-label="Breadcrumb">
 	<ol class="trail__list">
-		{
-			trail.map((Item) => (
-				<li class="trail__item">
-					{Item.href ? (
-						<a class="trail__link" href={Item.href}>
-							{Item.label}
-						</a>
-					) : (
-						<span class="trail__current" aria-current="page">
-							{Item.label}
-						</span>
-					)}
-				</li>
-			))
-		}
+		{trail.map((Item) => (
+			<li class="trail__item">
+				{Item.href ? (
+					<a class="trail__link" href={Item.href}>
+						{Item.label}
+					</a>
+				) : (
+					<span class="trail__current" aria-current="page">
+						{Item.label}
+					</span>
+				)}
+			</li>
+		))}
 	</ol>
 </nav>

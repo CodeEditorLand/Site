@@ -61,71 +61,72 @@ const { measures, label, caption, empty, class: Class } = Astro.props;
  * value and its unit. The unit is dropped for a state word - `UNAVAILABLE
  * ENTRIES` would read as a figure with a unit, which is exactly what it is not.
  */
-const HasFigure = (measure: Measure): boolean =>
-	measure.state === undefined;
+const HasFigure = (measure: Measure): boolean => measure.state === undefined;
 ---
 
 <section class:list={["record-instrument", Class]}>
 	{label ? <p class="record-instrument__label">{label}</p> : null}
 
-	{
-		measures.length > 0 ? (
-			<div class="record-instrument__panel">
-				{measures.map((measure) => (
-					<div
-						class:list={[
-							"record-instrument__measure",
-							measure.lead ? "record-instrument__measure--lead" : null,
-						]}
+	{measures.length > 0 ? (
+		<div class="record-instrument__panel">
+			{measures.map((measure) => (
+				<div
+					class:list={[
+						"record-instrument__measure",
+						measure.lead
+							? "record-instrument__measure--lead"
+							: null,
+					]}
+				>
+					<p class="record-instrument__key">{measure.label}:</p>
+
+					<p
+						class="record-instrument__figure"
+						data-figure={HasFigure(measure) ? "value" : "state"}
 					>
-						<p class="record-instrument__key">{measure.label}:</p>
+						{HasFigure(measure) ? (
+							<>
+								<span class="record-instrument__value">
+									{measure.value}
+								</span>
+								{measure.unit ? (
+									<span class="record-instrument__unit">
+										{measure.unit}
+									</span>
+								) : null}
+							</>
+						) : (
+							<FieldRecordStatus status={measure.state!} />
+						)}
+					</p>
 
-						<p
-							class="record-instrument__figure"
-							data-figure={HasFigure(measure) ? "value" : "state"}
-						>
-							{HasFigure(measure) ? (
-								<>
-									<span class="record-instrument__value">
-										{measure.value}
-									</span>
-									{measure.unit ? (
-										<span class="record-instrument__unit">
-											{measure.unit}
-										</span>
-									) : null}
-								</>
-							) : (
-								<FieldRecordStatus status={measure.state!} />
-							)}
-						</p>
-
-						<p class="record-instrument__source">
-							<span class="record-instrument__source-key">SOURCE:</span>{" "}
-							{measure.provenance}
-							{measure.asOf ? (
-								<>
-									<span class="record-instrument__separator">
-										{"\u2001"}
-									</span>
-									<span class="record-instrument__as-of">
-										AS OF: {measure.asOf}
-									</span>
-								</>
-							) : null}
-						</p>
-					</div>
-				))}
-			</div>
-		) : empty ? (
-			<p class="record-instrument__empty">
-				<span class="record-instrument__empty-mark" aria-hidden="true">
-					◎
-				</span>{" "}
-				{empty}
-			</p>
-		) : null
-	}
+					<p class="record-instrument__source">
+						<span class="record-instrument__source-key">
+							SOURCE:
+						</span>{" "}
+						{measure.provenance}
+						{measure.asOf ? (
+							<>
+								<span class="record-instrument__separator">
+									{"\u2001"}
+								</span>
+								<span class="record-instrument__as-of">
+									AS OF: {measure.asOf}
+								</span>
+							</>
+						) : null}
+					</p>
+				</div>
+			))}
+		</div>
+	) : empty ? (
+		<p class="record-instrument__empty">
+			<span class="record-instrument__empty-mark" aria-hidden="true">
+				◎
+			</span>{" "}
+			{empty}
+		</p>
+	) : null}
 
 	{caption ? <p class="record-instrument__caption">{caption}</p> : null}
 </section>

@@ -23,24 +23,32 @@ import { Erase, Rights, Support } from "./Data.js";
 		<h3 class="font-medium font-mono mb-2">{Rights.label}</h3>
 		<p class="mb-6 text-muted-foreground">{Rights.intro}</p>
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-3">
-			{
-				Rights.cards.map((Card) => (
-					<a
-						class="flex StaccatoBorderShimmer StaccatoCard bg-card transition-all p-5 flex-col focus:outline-2 focus:outline-[var(--Primary)] focus:outline-offset-2 hover:bg-secondary"
-						href={Card.href}
-					>
-						<div class="flex justify-between gap-2 items-start mb-3">
-							<h4 class="text-card-foreground font-medium leading-snug">{Card.title}</h4>
-							<div class="flex flex-col gap-1 items-end shrink-0">
-								<span class="font-medium text-sm font-mono tracking-widest bg-[var(--SpineIPCSurface)] border border-[color:var(--SpineIPCMute)] px-2 py-0.5 text-[color:var(--SpineIPCFore)]">{Card.code}</span>
-								<span class="text-card-foreground text-sm font-mono opacity-70">{Card.article}</span>
-							</div>
+			{Rights.cards.map((Card) => (
+				<a
+					class="flex StaccatoBorderShimmer StaccatoCard bg-card transition-all p-5 flex-col focus:outline-2 focus:outline-[var(--Primary)] focus:outline-offset-2 hover:bg-secondary"
+					href={Card.href}
+				>
+					<div class="flex justify-between gap-2 items-start mb-3">
+						<h4 class="text-card-foreground font-medium leading-snug">
+							{Card.title}
+						</h4>
+						<div class="flex flex-col gap-1 items-end shrink-0">
+							<span class="font-medium text-sm font-mono tracking-widest bg-[var(--SpineIPCSurface)] border border-[color:var(--SpineIPCMute)] px-2 py-0.5 text-[color:var(--SpineIPCFore)]">
+								{Card.code}
+							</span>
+							<span class="text-card-foreground text-sm font-mono opacity-70">
+								{Card.article}
+							</span>
 						</div>
-						<p class="text-card-foreground text-sm flex-1 leading-relaxed mb-4">{Card.body}</p>
-						<span class="text-card-foreground font-medium text-sm inline-flex items-center mt-auto">Open form<span class="ml-1">→</span></span>
-					</a>
-				))
-			}
+					</div>
+					<p class="text-card-foreground text-sm flex-1 leading-relaxed mb-4">
+						{Card.body}
+					</p>
+					<span class="text-card-foreground font-medium text-sm inline-flex items-center mt-auto">
+						Open form<span class="ml-1">→</span>
+					</span>
+				</a>
+			))}
 		</div>
 	</div>
 
@@ -48,21 +56,27 @@ import { Erase, Rights, Support } from "./Data.js";
 		<h3 class="font-medium font-mono mb-2">{Support.label}</h3>
 		<p class="mb-6 text-muted-foreground">{Support.intro}</p>
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-4">
-			{
-				Support.cards.map((Card) => (
-					<a
-						class="flex StaccatoBorderShimmer StaccatoCard bg-card transition-all p-5 flex-col focus:outline-2 focus:outline-[var(--Primary)] focus:outline-offset-2 hover:bg-secondary"
-						href={Card.href}
-					>
-						<div class="flex items-center justify-between gap-2 mb-2">
-							<h4 class="text-card-foreground font-medium">{Card.title}</h4>
-							<span class="text-card-foreground font-medium text-sm font-mono shrink-0 tracking-widest">{Card.code}</span>
-						</div>
-						<p class="text-card-foreground text-sm flex-1 leading-relaxed mb-4">{Card.body}</p>
-						<span class="text-card-foreground text-sm font-mono mt-auto">{Card.address}</span>
-					</a>
-				))
-			}
+			{Support.cards.map((Card) => (
+				<a
+					class="flex StaccatoBorderShimmer StaccatoCard bg-card transition-all p-5 flex-col focus:outline-2 focus:outline-[var(--Primary)] focus:outline-offset-2 hover:bg-secondary"
+					href={Card.href}
+				>
+					<div class="flex items-center justify-between gap-2 mb-2">
+						<h4 class="text-card-foreground font-medium">
+							{Card.title}
+						</h4>
+						<span class="text-card-foreground font-medium text-sm font-mono shrink-0 tracking-widest">
+							{Card.code}
+						</span>
+					</div>
+					<p class="text-card-foreground text-sm flex-1 leading-relaxed mb-4">
+						{Card.body}
+					</p>
+					<span class="text-card-foreground text-sm font-mono mt-auto">
+						{Card.address}
+					</span>
+				</a>
+			))}
 		</div>
 	</div>
 
@@ -74,9 +88,7 @@ import { Erase, Rights, Support } from "./Data.js";
 			href={Erase.href}
 		>
 			<div class="flex items-start gap-4 mb-4">
-				<div
-					class="flex items-center justify-center shrink-0 border h-10 w-10 bg-[var(--DestructSurface)] border-[color:var(--DestructMute)] text-[color:var(--Destruct)]"
-				>
+				<div class="flex items-center justify-center shrink-0 border h-10 w-10 bg-[var(--DestructSurface)] border-[color:var(--DestructMute)] text-[color:var(--Destruct)]">
 					<svg
 						aria-hidden="true"
 						viewBox="0 0 24 24"
@@ -98,14 +110,18 @@ import { Erase, Rights, Support } from "./Data.js";
 				</div>
 				<div class="flex-1">
 					<div class="flex items-center gap-2 mb-1">
-						<h4 class="font-medium text-[color:var(--DestructFore)]">{Erase.title}</h4>
+						<h4 class="font-medium text-[color:var(--DestructFore)]">
+							{Erase.title}
+						</h4>
 						<span class="font-medium text-sm font-mono tracking-widest text-[color:var(--DestructFore)]">
 							{Erase.code}
 						</span>
 					</div>
 					<p class="text-card-foreground text-sm">{Erase.body}</p>
 				</div>
-				<span class="font-medium text-[color:var(--Destruct)] shrink-0">→</span>
+				<span class="font-medium text-[color:var(--Destruct)] shrink-0">
+					→
+				</span>
 			</div>
 		</a>
 	</div>

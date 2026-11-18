@@ -58,7 +58,6 @@
 	border-block-start: 1px solid var(--Divider);
 }
 
-
 /// band-inner - the one inner container every band uses, so no band re-invents its gutters.
 @mixin band-inner {
 	max-width: var(--ContainerSixExtraLarge);

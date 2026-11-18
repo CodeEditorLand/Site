@@ -104,7 +104,10 @@ const PageStrip = BuildDocStrip(
 			...(Entry.data.group
 				? [
 						{
-							Label: T("strip.group", { ns: "doc", defaultValue: "GROUP:" }),
+							Label: T("strip.group", {
+								ns: "doc",
+								defaultValue: "GROUP:",
+							}),
 							Value: Entry.data.group,
 						},
 					]
@@ -225,7 +228,11 @@ const PageExtent = PageInset({
 >
 	<Header client:idle={{ timeout: 2000 }} Mode="functional" slot="Header" />
 
-	<DocLayout sections={SidebarSections} activeId={Entry.id} contents={Contents}>
+	<DocLayout
+		sections={SidebarSections}
+		activeId={Entry.id}
+		contents={Contents}
+	>
 		<DocArticle
 			kicker={`/${Entry.data.section}`}
 			title={Entry.data.title}
@@ -289,47 +296,45 @@ const PageExtent = PageInset({
 			activeId={Entry.id}
 		/>
 
-		{
-			(PrevEntry || NextEntry) && (
-				<nav class="doc-pager" aria-label="Page navigation">
-					{PrevEntry ? (
-						<jelly-card
-							class="doc-pager__card"
-							style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
+		{(PrevEntry || NextEntry) && (
+			<nav class="doc-pager" aria-label="Page navigation">
+				{PrevEntry ? (
+					<jelly-card
+						class="doc-pager__card"
+						style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
+					>
+						<a
+							class="doc-pager__link doc-pager__link--prev"
+							href={`/Doc/${PrevEntry.id}`}
 						>
-							<a
-								class="doc-pager__link doc-pager__link--prev"
-								href={`/Doc/${PrevEntry.id}`}
-							>
-								<span class="doc-pager__label">
-									<span aria-hidden="true">←</span> Previous
-								</span>
-								<span class="doc-pager__title">
-									{PrevEntry.data.title}
-								</span>
-							</a>
-						</jelly-card>
-					) : null}
-					{NextEntry ? (
-						<jelly-card
-							class="doc-pager__card doc-pager__card--next"
-							style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
+							<span class="doc-pager__label">
+								<span aria-hidden="true">←</span> Previous
+							</span>
+							<span class="doc-pager__title">
+								{PrevEntry.data.title}
+							</span>
+						</a>
+					</jelly-card>
+				) : null}
+				{NextEntry ? (
+					<jelly-card
+						class="doc-pager__card doc-pager__card--next"
+						style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
+					>
+						<a
+							class="doc-pager__link doc-pager__link--next"
+							href={`/Doc/${NextEntry.id}`}
 						>
-							<a
-								class="doc-pager__link doc-pager__link--next"
-								href={`/Doc/${NextEntry.id}`}
-							>
-								<span class="doc-pager__label">
-									Next <span aria-hidden="true">→</span>
-								</span>
-								<span class="doc-pager__title">
-									{NextEntry.data.title}
-								</span>
-							</a>
-						</jelly-card>
-					) : null}
-				</nav>
-			)
-		}
+							<span class="doc-pager__label">
+								Next <span aria-hidden="true">→</span>
+							</span>
+							<span class="doc-pager__title">
+								{NextEntry.data.title}
+							</span>
+						</a>
+					</jelly-card>
+				) : null}
+			</nav>
+		)}
 	</DocLayout>
 </Base>

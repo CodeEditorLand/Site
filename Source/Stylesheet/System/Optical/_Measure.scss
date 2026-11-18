@@ -1,0 +1,56 @@
+// OPTICAL/MEASURE - columns on the character grid, and the cap distance.
+//
+// ─── THE LAW ──────────────────────────────────────────────────────────────
+// Two measurements decide whether a page reads as drawn:
+//
+//   1. **A column is a character measure, not a fraction of a box.** The site's
+//      text is one mono stack, so a `ch` is exact. A column set in `rem` lands
+//      its content in the middle of a character, and two blocks that should share
+//      a grid (a ledger and a state register, a ledger in a band and the same
+//      ledger in a margin) then agree only to within a few pixels - which is the
+//      worst of both: close enough to look aligned, far enough to look wrong.
+//      The ledger's key column, the surface state's key column and the
+//      cross-reference's route column are now `--optical-key-column` and
+//      `--optical-route-column` (`Record/_Ledger.scss`,
+//      `Component/Surface/_Shell.scss`, `Detail/_See.scss`), and the archive's
+//      `12ch / 26ch` columns are the model they were moved onto.
+//
+//   2. **The space between a label and a display line is a cap distance.** A
+//      heading's line box carries half-leading above the cap - 0.2em at the
+//      section role - so a margin that is right at 32px is 4px too large at 52px,
+//      and the same band on two pages reads with two different gaps. The kicker
+//      must give back the cap gap, which makes the visible distance constant
+//      across the clamp.
+//
+// ─── WHAT IS NOT HERE ─────────────────────────────────────────────────────
+// The band's standfirst is capped at 62ch and its heading at 42rem: 669.6px
+// against 672px, three right edges within 2.4px that never quite meet. The
+// standfirst's cap is the identity's opening measure (`DESIGN.md` X10), so it
+// outranks this layer and the two stay as they are - named here so the next card
+// does not "fix" one of them by eye.
+@use "../Mixin" as *;
+
+// ─── 1. THE ARCHIVE'S HEADER ON ITS ROWS' INSET ───────────────────────────
+// An archive's rows are anchors with `--space-tight` of inline padding, so their
+// markers and titles start 8px in from the block's edge. The header above them
+// started at 0, so `# ARCHIVE_01` and the markers it names were two different
+// columns - and the row rules, which belong to the `<li>`, start at 0 as well.
+// The header takes the rows' resting inset on its own leading edge only: its far
+// end stays on the block's edge, where the count and the rows' closing rule are.
+.record-archive__head {
+	padding-inline-start: var(--space-tight);
+}
+
+// ─── 2. THE KICKER TO THE HEADING ─────────────────────────────────────────
+// `--space-reading` of margin, less the heading's own cap gap. At 32px the
+// heading moves up 6.4px and at 52px 10.4px, so the distance from the kicker's
+// baseline to the heading's cap is the same 16px on every page and at every
+// width - which is the one gap a reader reads as *the same gap* from page to page.
+.record-band__heading {
+	margin-block-start: calc(var(--space-reading) - var(--optical-cap-gap));
+}
+
+// The arm this law cannot take: a band with no kicker. The kicker is required by
+// the block's contract (`Record/Type.ts`), so every band that reaches this rule
+// has a label above its heading; a hand-authored section that does not must set
+// its own margin rather than inherit a cap gap with nothing to cap.

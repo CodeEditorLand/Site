@@ -13,14 +13,35 @@
  *   plate       head over a full-bleed plate | caption channel
  *
  * ─── THE DECLARATION STRIP ────────────────────────────────────────────────
- * Every page on the site now opens with one printed line:
+ * Every page on the site opens with one printed record, in two rows:
  *
- *   # LAYOUT / READING␁GIVES: RAIL␁MEASURE␁MARGIN␁DECLARES: RAIL, MEASURE, MARGIN
+ *   row 1  # LAYOUT / READING␁GIVES: RAIL␁MEASURE␁MARGIN␁FOR: THE LEXICON   # READING_09
+ *   row 2  ↳ a rail (the document's own contents, or the set it belongs to)
+ *          ↳ a measure (72ch of prose, or `full` for a page that also carries grids)
+ *          ↳ a margin (the notes, the facts, the aside) - or nothing, and then
+ *            the measure takes the rail's side
  *
- * It is the answer to the card's question ("what does a page have to declare to
- * get one") printed on the page that got it. It is one line, at the meta tier, in
- * the muted ink, under a hairline: a colophon, not a banner. A page that is one
- * artifact prints `◎ RECORD` and no tracks, because that is what is true.
+ * Row 1 is the *declaration*: the `#` in the accent, `LAYOUT` and `/` in the
+ * mute, the language's name in ink, its facts as `KEY:`/value pairs separated
+ * by U+2001 (labels mute, values ink), and the page's own stamp pinned to the
+ * row's end by the grid. It is one line while the container can hold it, and
+ * head-and-stamp over facts when it cannot - never three fragments, and never a
+ * stamp adrift in the middle of the line. It is the line a reader scans.
+ *
+ * Row 2 is the *gloss*: the same three things as prose, at the body tier and
+ * the opening measure, one proposition per line under a `↳`. The three clauses
+ * are a set - the tracks the language gives, in the order it gives them - so
+ * they print as three rows rather than as one run-together sentence. The shell
+ * prints `Spec.declares` verbatim: the register owns the sentence, the shell
+ * owns the shape.
+ *
+ * The split is the whole point. Facts and explanation on one line compete, and
+ * at the meta tier a right-flushed paragraph of clauses reads as a wall of
+ * small capitals rather than as a declaration with a gloss. Two rows, one
+ * measure, and the hierarchy is ink, tracking and space - never weight.
+ *
+ * A page that is one artifact prints `DECLARES: NOTHING` and no tracks, because
+ * that is what is true.
  *
  * ─── CONTAINER QUERIES, NOT VIEWPORT QUERIES ──────────────────────────────
  * The shell is a query container (`container: shell / inline-size`). Every track
@@ -47,9 +68,9 @@ import type { LayoutAnswer } from "./Language.js";
 
 interface Props {
 	/**
-	 * The shell's own record marker, printed at the head of the declaration
-	 * strip's second half - e.g. `# READING_01`. A page writes its own, because
-	 * only the page knows which reading of the language it is.
+	 * The shell's own record marker, pinned to the end of the declaration row -
+	 * e.g. `# READING_01`. A page writes its own, because only the page knows
+	 * which reading of the language it is.
 	 */
 	index?: string;
 
@@ -61,7 +82,10 @@ interface Props {
 	 */
 	language?: LayoutAnswer;
 
-	/** What this shell is for, printed after the tracks: `FOR: THE SALE LETTER`. */
+	/**
+	 * What this shell is for, printed as the declaration row's second fact:
+	 * `FOR: THE SALE LETTER`.
+	 */
 	label?: string;
 
 	/**
@@ -98,9 +122,13 @@ const HasMargin = Astro.slots.has("margin");
 const HasHead = Astro.slots.has("head");
 const HasFoot = Astro.slots.has("foot");
 
-/** The declaration strip's tracks, as one printable string. */
-const Tracks = Spec.gives.split("\u2001").join("\u2001");
-const Declares = Spec.declares.join("\u2001");
+/**
+ * The declaration row's first fact. A language names the tracks it gives; the
+ * one-artifact page has none to name and says so, rather than printing an empty
+ * value where a reader expects three words.
+ */
+const GivesKey = Spec.key === "record" ? "DECLARES:" : "GIVES:";
+const GivesValue = Spec.key === "record" ? "NOTHING" : Spec.gives;
 ---
 
 <div
@@ -108,83 +136,79 @@ const Declares = Spec.declares.join("\u2001");
 	data-layout={Spec.key}
 	data-measure={measure}
 >
-	<p class="PageShell__declaration">
-		<span class="PageShell__mark" aria-hidden="true">#</span>
-		<span class="PageShell__word">LAYOUT</span>
-		<span class="PageShell__slash" aria-hidden="true">/</span>
-		<span class="PageShell__name">{Spec.name}</span>
-		{
-			Spec.key !== "record" ? (
-				<>
-					<span class="PageShell__sep" aria-hidden="true">
-						{"\u2001"}
-					</span>
-					<span class="PageShell__key">GIVES:</span>
-					<span class="PageShell__tracks">{Tracks}</span>
-				</>
-			) : (
-				<>
-					<span class="PageShell__sep" aria-hidden="true">
-						{"\u2001"}
-					</span>
-					<span class="PageShell__key">DECLARES:</span>
-					<span class="PageShell__tracks">NOTHING</span>
-				</>
-			)
-		}
-		{
-			index ? (
-				<>
-					<span class="PageShell__sep" aria-hidden="true">
-						{"\u2001"}
-					</span>
-					<span class="PageShell__index">{index}</span>
-				</>
-			) : null
-		}
-		{
-			label ? (
-				<>
-					<span class="PageShell__sep" aria-hidden="true">
-						{"\u2001"}
-					</span>
-					<span class="PageShell__key">FOR:</span>
-					<span class="PageShell__label">{label}</span>
-				</>
-			) : null
-		}
-		<span class="PageShell__declares">{Declares}</span>
-	</p>
+	<div class="PageShell__declaration">
+		<p class="PageShell__record">
+			<span class="PageShell__mark" aria-hidden="true">
+				#
+			</span>
+			<span class="PageShell__word">LAYOUT</span>
+			<span class="PageShell__slash" aria-hidden="true">
+				/
+			</span>
+			<span class="PageShell__name">{Spec.name}</span>
+		</p>
 
-	{HasHead ? <div class="PageShell__head"><slot name="head" /></div> : null}
+		<dl class="PageShell__facts">
+			<div class="PageShell__fact">
+				<dt class="PageShell__key">{GivesKey}</dt>
+				<dd class="PageShell__tracks">{GivesValue}</dd>
+			</div>
+
+			{label ? (
+				<div class="PageShell__fact">
+					<dt class="PageShell__key">FOR:</dt>
+					<dd class="PageShell__label">{label}</dd>
+				</div>
+			) : null}
+		</dl>
+
+		{index ? <p class="PageShell__index">{index}</p> : null}
+
+		<ol class="PageShell__declares">
+			{Spec.declares.map((Clause) => (
+				<li class="PageShell__clause">
+					<span class="PageShell__clause-mark" aria-hidden="true">
+						↳
+					</span>
+					<span class="PageShell__clause-text">{Clause}</span>
+				</li>
+			))}
+		</ol>
+	</div>
+
+	{HasHead ? (
+		<div class="PageShell__head">
+			<slot name="head" />
+		</div>
+	) : null}
 
 	<div class="PageShell__grid">
-		{
-			HasRail ? (
-				<aside
-					class="PageShell__rail"
-					aria-label={railLabel ?? `${Spec.name} rail`}
-				>
-					<slot name="rail" />
-				</aside>
-			) : null
-		}
+		{HasRail ? (
+			<aside
+				class="PageShell__rail"
+				aria-label={railLabel ?? `${Spec.name} rail`}
+			>
+				<slot name="rail" />
+			</aside>
+		) : null}
 
 		<div class="PageShell__main">
 			<slot />
 		</div>
 
-		{
-			HasMargin ? (
-				<div
-					class="PageShell__margin"
-					aria-label={marginLabel ?? `${Spec.name} margin`}
-				>
-					<slot name="margin" />
-				</div>
-			) : null
-		}
+		{HasMargin ? (
+			<div
+				class="PageShell__margin"
+				aria-label={marginLabel ?? `${Spec.name} margin`}
+			>
+				<slot name="margin" />
+			</div>
+		) : null}
 	</div>
 
-	{HasFoot ? <div class="PageShell__foot"><slot name="foot" /></div> : null}
+	{HasFoot ? (
+		<div class="PageShell__foot">
+			<slot name="foot" />
+		</div>
+	) : null}
 </div>

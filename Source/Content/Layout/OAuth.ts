@@ -88,7 +88,9 @@ export const OAuthResult = (T: TFunction): OAuthSurface => ({
 	heading: T("common.oauth.failed", { defaultValue: "Sign-In Interrupted" }),
 
 	next: {
-		label: T("common.oauth.backToSignIn", { defaultValue: "SIGN IN AGAIN" }),
+		label: T("common.oauth.backToSignIn", {
+			defaultValue: "SIGN IN AGAIN",
+		}),
 		href: "/Account/SignIn",
 	},
 
@@ -109,7 +111,8 @@ export const OAuthResult = (T: TFunction): OAuthSurface => ({
 		provider: {
 			state: "INTERRUPTED",
 			statement: T("common.oauth.errorProvider", {
-				defaultValue: "The provider returned an error instead of a code.",
+				defaultValue:
+					"The provider returned an error instead of a code.",
 			}),
 			cause: T("common.oauth.failure.provider.cause", {
 				defaultValue:

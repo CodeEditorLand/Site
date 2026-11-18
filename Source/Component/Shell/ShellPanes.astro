@@ -78,20 +78,24 @@ const HasDrawer = Astro.slots.has("drawer");
 ---
 
 <div
-	class:list={["ShellPanes", `ShellPanes--${ratio.replace("/", "-")}`, ClassName]}
+	class:list={[
+		"ShellPanes",
+		`ShellPanes--${ratio.replace("/", "-")}`,
+		ClassName,
+	]}
 >
 	<div class="ShellPanes__grid">
 		<section class="ShellPanes__pane ShellPanes__pane--primary">
 			<header class="ShellPanes__head">
 				<p class="ShellPanes__mark">{primary.mark}</p>
 				<p class="ShellPanes__label">{primary.label}</p>
-				{
-					primary.meta ? (
-						<p class="ShellPanes__meta">{primary.meta}</p>
-					) : null
-				}
+				{primary.meta ? (
+					<p class="ShellPanes__meta">{primary.meta}</p>
+				) : null}
 			</header>
-			{primary.note ? <p class="ShellPanes__note">{primary.note}</p> : null}
+			{primary.note ? (
+				<p class="ShellPanes__note">{primary.note}</p>
+			) : null}
 			<div class="ShellPanes__body">
 				<slot name="primary" />
 			</div>
@@ -103,35 +107,33 @@ const HasDrawer = Astro.slots.has("drawer");
 			<header class="ShellPanes__head">
 				<p class="ShellPanes__mark">{secondary.mark}</p>
 				<p class="ShellPanes__label">{secondary.label}</p>
-				{
-					secondary.meta ? (
-						<p class="ShellPanes__meta">{secondary.meta}</p>
-					) : null
-				}
+				{secondary.meta ? (
+					<p class="ShellPanes__meta">{secondary.meta}</p>
+				) : null}
 			</header>
-			{secondary.note ? <p class="ShellPanes__note">{secondary.note}</p> : null}
+			{secondary.note ? (
+				<p class="ShellPanes__note">{secondary.note}</p>
+			) : null}
 			<div class="ShellPanes__body">
 				<slot name="secondary" />
 			</div>
 		</section>
 	</div>
 
-	{
-		drawer && HasDrawer ? (
-			<details class="ShellPanes__drawer" open={drawer.open}>
-				<summary class="ShellPanes__drawer-summary">
-					<span class="ShellPanes__drawer-mark" aria-hidden="true">
-						&rarr;
-					</span>
-					<span class="ShellPanes__drawer-label">{drawer.label}</span>
-					{drawer.note ? (
-						<span class="ShellPanes__drawer-note">{drawer.note}</span>
-					) : null}
-				</summary>
-				<div class="ShellPanes__drawer-body">
-					<slot name="drawer" />
-				</div>
-			</details>
-		) : null
-	}
+	{drawer && HasDrawer ? (
+		<details class="ShellPanes__drawer" open={drawer.open}>
+			<summary class="ShellPanes__drawer-summary">
+				<span class="ShellPanes__drawer-mark" aria-hidden="true">
+					&rarr;
+				</span>
+				<span class="ShellPanes__drawer-label">{drawer.label}</span>
+				{drawer.note ? (
+					<span class="ShellPanes__drawer-note">{drawer.note}</span>
+				) : null}
+			</summary>
+			<div class="ShellPanes__drawer-body">
+				<slot name="drawer" />
+			</div>
+		</details>
+	) : null}
 </div>

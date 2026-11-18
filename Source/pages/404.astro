@@ -162,20 +162,18 @@ const Record: Hero = {
 			height="clamp(15rem, 32vh, 24rem)"
 		/>
 
-		{
-			IsLongPath ? (
-				<ShellState
-					kind="too-long"
-					index="TRACE / 01"
-					value={RequestedPath}
-					limit={Copy.tooLong.limit}
-					statement={Copy.tooLong.statement}
-					cause={Copy.tooLong.cause}
-					next={Copy.tooLong.next}
-					note={`CHARACTERS: ${RequestedPath.length}\u2001LIMIT: ${Copy.tooLong.limit}`}
-				/>
-			) : null
-		}
+		{IsLongPath ? (
+			<ShellState
+				kind="too-long"
+				index="TRACE / 01"
+				value={RequestedPath}
+				limit={Copy.tooLong.limit}
+				statement={Copy.tooLong.statement}
+				cause={Copy.tooLong.cause}
+				next={Copy.tooLong.next}
+				note={`CHARACTERS: ${RequestedPath.length}\u2001LIMIT: ${Copy.tooLong.limit}`}
+			/>
+		) : null}
 
 		<ShellState
 			kind="missing"

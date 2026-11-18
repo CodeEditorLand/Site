@@ -101,17 +101,18 @@ const SidebarTitle = T("sidebar.title", {
 
 <div class="doc-layout" id="top">
 	<div
-		class:list={["doc-layout__shell", HasMargin && "doc-layout__shell--margin"]}
+		class:list={[
+			"doc-layout__shell",
+			HasMargin && "doc-layout__shell--margin",
+		]}
 	>
 		<aside class="doc-layout__aside" aria-label="Documentation navigation">
 			<div class="doc-layout__sticky">
-				{
-					contents && contents.Items.length > 0 ? (
-						<div class="doc-layout__head">
-							<DocContents toc={contents} variant="rail" />
-						</div>
-					) : null
-				}
+				{contents && contents.Items.length > 0 ? (
+					<div class="doc-layout__head">
+						<DocContents toc={contents} variant="rail" />
+					</div>
+				) : null}
 
 				<div class="doc-layout__tree">
 					<p class="doc-layout__title">{SidebarTitle}</p>
@@ -123,33 +124,29 @@ const SidebarTitle = T("sidebar.title", {
 				</div>
 
 				<div class="doc-layout__foot">
-					<a class="doc-layout__rust" href="/Doc/Rust"
-						>Rust API <span aria-hidden="true">↗</span></a
-					>
+					<a class="doc-layout__rust" href="/Doc/Rust">
+						Rust API <span aria-hidden="true">↗</span>
+					</a>
 				</div>
 			</div>
 		</aside>
 
 		<div class="doc-layout__main">
-			{
-				mobile ? (
-					<DynamicDocSidebar
-						Sections={sections}
-						ActiveId={activeId}
-						Mobile={true}
-						client:media="(max-width:1023.98px)"
-					/>
-				) : null
-			}
+			{mobile ? (
+				<DynamicDocSidebar
+					Sections={sections}
+					ActiveId={activeId}
+					Mobile={true}
+					client:media="(max-width:1023.98px)"
+				/>
+			) : null}
 			<slot />
 		</div>
 
-		{
-			HasMargin ? (
-				<aside class="doc-layout__margin" aria-label="Page apparatus">
-					<slot name="margin" />
-				</aside>
-			) : null
-		}
+		{HasMargin ? (
+			<aside class="doc-layout__margin" aria-label="Page apparatus">
+				<slot name="margin" />
+			</aside>
+		) : null}
 	</div>
 </div>

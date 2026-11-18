@@ -42,13 +42,11 @@ const { card, level = 3 } = Astro.props;
 			target={card.Blank ? "_blank" : undefined}
 			rel={card.Blank ? "noopener noreferrer" : undefined}
 		>
-			{
-				level === 2 ? (
-					<h2 class="doc-card__title">{card.Label}</h2>
-				) : (
-					<h3 class="doc-card__title">{card.Label}</h3>
-				)
-			}
+			{level === 2 ? (
+				<h2 class="doc-card__title">{card.Label}</h2>
+			) : (
+				<h3 class="doc-card__title">{card.Label}</h3>
+			)}
 			{card.Note ? <p class="doc-card__note">{card.Note}</p> : null}
 		</a>
 	</jelly-card>

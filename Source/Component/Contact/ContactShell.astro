@@ -55,9 +55,8 @@ const { code } = Astro.props;
 
 const Config = Requests[code];
 
-const { Auth0Domain, Auth0ClientIdentifier } = await import(
-	"../../Function/Configuration/Auth.js"
-);
+const { Auth0Domain, Auth0ClientIdentifier } =
+	await import("../../Function/Configuration/Auth.js");
 
 /** The trail: home, the dashboard the request is filed from, then the request. */
 const trail: readonly ContactTrailItem[] = [
@@ -134,8 +133,7 @@ const Aside: Aside = {
 		},
 		{
 			key: "URGENT:",
-			value:
-				"UNAVAILABLE - the desk has no priority channel. The window is the commitment, and it is printed above.",
+			value: "UNAVAILABLE - the desk has no priority channel. The window is the commitment, and it is printed above.",
 		},
 	],
 	source: "Source/Library/Contact/Request.ts",
@@ -157,11 +155,7 @@ const Aside: Aside = {
 	<div class="contact-shell">
 		<div class="contact-shell__workspace">
 			<aside class="contact-shell__record" aria-label="Request record">
-				<RecordLedger
-					rows={Record}
-					register={`REQUEST / ${String(Record.length).padStart(2, "0")}`}
-					pinned={true}
-				/>
+				<RecordLedger rows={Record} register="REQUEST" pinned={true} />
 
 				<RecordStage stages={Process} orientation="stack" />
 

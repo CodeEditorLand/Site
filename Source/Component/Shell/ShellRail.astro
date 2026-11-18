@@ -108,77 +108,81 @@ const Count = count === undefined ? null : String(count);
 	aria-label={label}
 >
 	<p class="ShellRail__head">
-		<span class="ShellRail__mark" aria-hidden="true">#</span>
+		<span class="ShellRail__mark" aria-hidden="true">
+			#
+		</span>
 		<span class="ShellRail__label">{label}</span>
-		{
-			Count !== null ? (
-				<>
-					<span class="ShellRail__sep" aria-hidden="true">
-						{"\u2001"}
-					</span>
-					<span class="ShellRail__count">{Count}</span>
-				</>
-			) : null
-		}
+		{Count !== null ? (
+			<>
+				<span class="ShellRail__sep" aria-hidden="true">
+					{"\u2001"}
+				</span>
+				<span class="ShellRail__count">{Count}</span>
+			</>
+		) : null}
 	</p>
 
 	<ol class="ShellRail__list">
-		{
-			items.map((Item) => (
-				<li class="ShellRail__item">
-					{Item.href ? (
-						<a
-							class="ShellRail__row"
-							href={Item.href}
-							aria-current={Item.current ? current : undefined}
-						>
-							<span class="ShellRail__row-mark" aria-hidden="true">
-								{Item.mark ?? ""}
+		{items.map((Item) => (
+			<li class="ShellRail__item">
+				{Item.href ? (
+					<a
+						class="ShellRail__row"
+						href={Item.href}
+						aria-current={Item.current ? current : undefined}
+					>
+						<span class="ShellRail__row-mark" aria-hidden="true">
+							{Item.mark ?? ""}
+						</span>
+						<span class="ShellRail__row-body">
+							<span class="ShellRail__row-label">
+								{Item.label}
 							</span>
-							<span class="ShellRail__row-body">
-								<span class="ShellRail__row-label">{Item.label}</span>
-								{Item.note ? (
-									<span class="ShellRail__row-note">{Item.note}</span>
-								) : null}
-							</span>
-							{Item.meta ? (
-								<span class="ShellRail__row-meta">{Item.meta}</span>
-							) : null}
-						</a>
-					) : (
-						<span
-							class="ShellRail__row ShellRail__row--statement"
-							aria-current={Item.current ? current : undefined}
-						>
-							<span class="ShellRail__row-mark" aria-hidden="true">
-								{Item.mark ?? ""}
-							</span>
-							<span class="ShellRail__row-body">
-								<span class="ShellRail__row-label">{Item.label}</span>
-								{Item.note ? (
-									<span class="ShellRail__row-note">{Item.note}</span>
-								) : null}
-							</span>
-							{Item.meta ? (
-								<span class="ShellRail__row-meta">{Item.meta}</span>
+							{Item.note ? (
+								<span class="ShellRail__row-note">
+									{Item.note}
+								</span>
 							) : null}
 						</span>
-					)}
-				</li>
-			))
-		}
+						{Item.meta ? (
+							<span class="ShellRail__row-meta">{Item.meta}</span>
+						) : null}
+					</a>
+				) : (
+					<span
+						class="ShellRail__row ShellRail__row--statement"
+						aria-current={Item.current ? current : undefined}
+					>
+						<span class="ShellRail__row-mark" aria-hidden="true">
+							{Item.mark ?? ""}
+						</span>
+						<span class="ShellRail__row-body">
+							<span class="ShellRail__row-label">
+								{Item.label}
+							</span>
+							{Item.note ? (
+								<span class="ShellRail__row-note">
+									{Item.note}
+								</span>
+							) : null}
+						</span>
+						{Item.meta ? (
+							<span class="ShellRail__row-meta">{Item.meta}</span>
+						) : null}
+					</span>
+				)}
+			</li>
+		))}
 	</ol>
 
-	{
-		foot ? (
-			<p class="ShellRail__foot">
-				<a class="ShellRail__foot-link" href={foot.href}>
-					{foot.label}
-					<span class="ShellRail__foot-arrow" aria-hidden="true">
-						&rarr;
-					</span>
-				</a>
-			</p>
-		) : null
-	}
+	{foot ? (
+		<p class="ShellRail__foot">
+			<a class="ShellRail__foot-link" href={foot.href}>
+				{foot.label}
+				<span class="ShellRail__foot-arrow" aria-hidden="true">
+					&rarr;
+				</span>
+			</a>
+		</p>
+	) : null}
 </nav>

@@ -65,7 +65,8 @@ const Filed = FiledOf(entries);
  * and a lane class repainting a Jelly element is the defect §4.3 names.
  */
 const Surface = (Index: number): string => {
-	const Element = ElementOrder[Index % ElementOrder.length] ?? ElementOrder[0];
+	const Element =
+		ElementOrder[Index % ElementOrder.length] ?? ElementOrder[0];
 
 	return [
 		`--jelly-fill:${JellyCardFill(Element)}`,
@@ -78,44 +79,42 @@ const Surface = (Index: number): string => {
 ---
 
 <div class:list={["properties", ClassName]}>
-	{
-		Claims.length === 0 ? (
-			<p class="properties-empty">{Empty}</p>
-		) : (
-			<div class="properties-grid">
-				{Claims.map((Entry, Index) => (
-					<jelly-card style={Surface(Index)}>
-						<RecordEntry
-							class="properties-entry"
-							index={Entry.index}
-							name={Entry.name}
-							body={Entry.body}
-							href={Entry.href}
-						/>
-					</jelly-card>
-				))}
-			</div>
-		)
-	}
+	{Claims.length === 0 ? (
+		<p class="properties-empty">{Empty}</p>
+	) : (
+		<div class="properties-grid">
+			{Claims.map((Entry, Index) => (
+				<jelly-card style={Surface(Index)}>
+					<RecordEntry
+						class="properties-entry"
+						index={Entry.index}
+						name={Entry.name}
+						body={Entry.body}
+						href={Entry.href}
+					/>
+				</jelly-card>
+			))}
+		</div>
+	)}
 
-	{
-		Filed.length > 0 && (
-			<nav class="properties-filed" aria-label={FiledLabel}>
-				<p class="properties-filed__label">{FiledLabel}</p>
-				<ul class="properties-filed__list">
-					{Filed.map((Entry) => (
-						<li class="properties-filed__item">
-							{Entry.href ? (
-								<a class="properties-filed__link" href={Entry.href}>
-									{Entry.name}
-								</a>
-							) : (
-								<span class="properties-filed__name">{Entry.name}</span>
-							)}
-						</li>
-					))}
-				</ul>
-			</nav>
-		)
-	}
+	{Filed.length > 0 && (
+		<nav class="properties-filed" aria-label={FiledLabel}>
+			<p class="properties-filed__label">{FiledLabel}</p>
+			<ul class="properties-filed__list">
+				{Filed.map((Entry) => (
+					<li class="properties-filed__item">
+						{Entry.href ? (
+							<a class="properties-filed__link" href={Entry.href}>
+								{Entry.name}
+							</a>
+						) : (
+							<span class="properties-filed__name">
+								{Entry.name}
+							</span>
+						)}
+					</li>
+				))}
+			</ul>
+		</nav>
+	)}
 </div>

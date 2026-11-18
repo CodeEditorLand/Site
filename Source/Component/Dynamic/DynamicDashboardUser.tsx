@@ -373,7 +373,9 @@ const DashboardUserInner = () => {
 			<dl className="record-ledger record-ledger--1">
 				<div className="record-ledger__row">
 					<dt className="record-ledger__key">
-						{T("dashboard.account.nameLabel", { defaultValue: "Name" })}
+						{T("dashboard.account.nameLabel", {
+							defaultValue: "Name",
+						})}
 					</dt>
 					<dd className="record-ledger__value">
 						<Pii visible={PIIVisible}>{DisplayName}</Pii>
@@ -392,18 +394,24 @@ const DashboardUserInner = () => {
 								<Pii visible={PIIVisible}>{User.email}</Pii>
 							) : (
 								<span className="surface__state">
-									{T("account:dashboardPage.surface.state.noEmail", {
-										defaultValue:
-											"No email on this account. The provider did not return one.",
-									})}
+									{T(
+										"account:dashboardPage.surface.state.noEmail",
+										{
+											defaultValue:
+												"No email on this account. The provider did not return one.",
+										},
+									)}
 								</span>
 							)}
 							{User.email_verified === true && (
 								<span
 									className="inline-flex items-center border border-green-200 bg-green-50 px-1.5 py-0 text-sm font-medium text-green-700"
-									title={T("dashboard.account.emailVerifiedTitle", {
-										defaultValue: "Email verified",
-									})}
+									title={T(
+										"dashboard.account.emailVerifiedTitle",
+										{
+											defaultValue: "Email verified",
+										},
+									)}
 								>
 									{T("dashboard.account.emailVerifiedBadge", {
 										defaultValue: "Verified",
@@ -420,7 +428,9 @@ const DashboardUserInner = () => {
 
 				<div className="record-ledger__row">
 					<dt className="record-ledger__key">
-						{T("dashboard.account.planLabel", { defaultValue: "Plan" })}
+						{T("dashboard.account.planLabel", {
+							defaultValue: "Plan",
+						})}
 					</dt>
 					<dd className="record-ledger__value">
 						{IsEnterprise
@@ -455,20 +465,21 @@ const DashboardUserInner = () => {
 					</dd>
 				</div>
 
-				{IsEnterprise && (OrganizationName || OrganizationIdentifier) && (
-					<div className="record-ledger__row">
-						<dt className="record-ledger__key">
-							{T("dashboard.account.organizationLabel", {
-								defaultValue: "Organization",
-							})}
-						</dt>
-						<dd className="record-ledger__value">
-							<Pii visible={PIIVisible}>
-								{OrganizationName || OrganizationIdentifier}
-							</Pii>
-						</dd>
-					</div>
-				)}
+				{IsEnterprise &&
+					(OrganizationName || OrganizationIdentifier) && (
+						<div className="record-ledger__row">
+							<dt className="record-ledger__key">
+								{T("dashboard.account.organizationLabel", {
+									defaultValue: "Organization",
+								})}
+							</dt>
+							<dd className="record-ledger__value">
+								<Pii visible={PIIVisible}>
+									{OrganizationName || OrganizationIdentifier}
+								</Pii>
+							</dd>
+						</div>
+					)}
 
 				<div className="record-ledger__row">
 					<dt className="record-ledger__key">
@@ -481,10 +492,13 @@ const DashboardUserInner = () => {
 							<Pii visible={PIIVisible}>{MemberSince}</Pii>
 						) : (
 							<span className="surface__state">
-								{T("account:dashboardPage.surface.state.noDate", {
-									defaultValue:
-										"Not recorded. The provider returned no update date for this account.",
-								})}
+								{T(
+									"account:dashboardPage.surface.state.noDate",
+									{
+										defaultValue:
+											"Not recorded. The provider returned no update date for this account.",
+									},
+								)}
 							</span>
 						)}
 					</dd>

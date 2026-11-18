@@ -86,12 +86,12 @@ tour, or jump to whichever matches the task at hand.
 
 | Document                                                                    | Topic                                                                                | Lines |
 | :-------------------------------------------------------------------------- | :----------------------------------------------------------------------------------- | :---- |
-| [`User Dotfile`](/Doc/filesystem-footprint-user-dotfile/)                   | `~/.fiddee/` tree, `~/.land/` legacy, cross-OS resolution, Cocoon-side mirror        | 166  |
-| [`Platform Paths`](/Doc/filesystem-footprint-platform-paths/)               | Per-OS Library / XDG / AppData paths, OS-managed state, temp-dir conventions         | 203  |
-| [`Per-Element`](/Doc/filesystem-footprint-per-element/)                     | Write-site index by Element (Mountain, Cocoon, Sky, Wind, Output, Air, SideCar, ...) | 214  |
-| [`Environment Variables`](/Doc/filesystem-footprint-environment-variables/) | Path-shaping env vars catalogued by Element + role                                   | 149  |
-| [`Cleanup`](/Doc/filesystem-footprint-cleanup/)                             | Per-OS cleanup recipes, archive pattern, what each `rm -rf` removes                  | 326  |
-| [`Encapsulation`](/Doc/filesystem-footprint-encapsulation/)                 | Potential directions for compaction, versioning, self-uninstall, foreign-tool gating | 245  |
+| [`User Dotfile`](/Doc/filesystem-footprint-user-dotfile/)                   | `~/.fiddee/` tree, `~/.land/` legacy, cross-OS resolution, Cocoon-side mirror        | 166   |
+| [`Platform Paths`](/Doc/filesystem-footprint-platform-paths/)               | Per-OS Library / XDG / AppData paths, OS-managed state, temp-dir conventions         | 203   |
+| [`Per-Element`](/Doc/filesystem-footprint-per-element/)                     | Write-site index by Element (Mountain, Cocoon, Sky, Wind, Output, Air, SideCar, ...) | 214   |
+| [`Environment Variables`](/Doc/filesystem-footprint-environment-variables/) | Path-shaping env vars catalogued by Element + role                                   | 149   |
+| [`Cleanup`](/Doc/filesystem-footprint-cleanup/)                             | Per-OS cleanup recipes, archive pattern, what each `rm -rf` removes                  | 326   |
+| [`Encapsulation`](/Doc/filesystem-footprint-encapsulation/)                 | Potential directions for compaction, versioning, self-uninstall, foreign-tool gating | 245   |
 
 ---
 

@@ -137,15 +137,13 @@ const Right = BodyOf("right", pair.right);
 				</LabelTag>
 			</div>
 			<div class="record-pair__body">
-				{
-					Left.HasSlot ? (
-						<slot name="left" />
-					) : Left.HasProse ? (
-						Paragraphs(pair.left.body ?? "").map((Paragraph) => (
-							<p>{Paragraph}</p>
-						))
-					) : null
-				}
+				{Left.HasSlot ? (
+					<slot name="left" />
+				) : Left.HasProse ? (
+					Paragraphs(pair.left.body ?? "").map((Paragraph) => (
+						<p>{Paragraph}</p>
+					))
+				) : null}
 			</div>
 		</div>
 
@@ -171,15 +169,13 @@ const Right = BodyOf("right", pair.right);
 				</LabelTag>
 			</div>
 			<div class="record-pair__body">
-				{
-					Right.HasSlot ? (
-						<slot name="right" />
-					) : Right.HasProse ? (
-						Paragraphs(pair.right.body ?? "").map((Paragraph) => (
-							<p>{Paragraph}</p>
-						))
-					) : null
-				}
+				{Right.HasSlot ? (
+					<slot name="right" />
+				) : Right.HasProse ? (
+					Paragraphs(pair.right.body ?? "").map((Paragraph) => (
+						<p>{Paragraph}</p>
+					))
+				) : null}
 			</div>
 		</div>
 	</div>

@@ -69,9 +69,7 @@ const MarkOf = (Leaf: FoldLeaf): string =>
 	Leaf.gone ? "◎" : (Leaf.index ?? "");
 
 const ClassOf = (Leaf: FoldLeaf): string =>
-	Leaf.gone
-		? "MotionFold__Leaf MotionFold__Leaf--gone"
-		: "MotionFold__Leaf";
+	Leaf.gone ? "MotionFold__Leaf MotionFold__Leaf--gone" : "MotionFold__Leaf";
 ---
 
 <details
@@ -80,17 +78,21 @@ const ClassOf = (Leaf: FoldLeaf): string =>
 	data-state={State}
 >
 	<summary class="MotionFold__Summary">
-		<span class="MotionFold__Mark" aria-hidden="true">#</span>
+		<span class="MotionFold__Mark" aria-hidden="true">
+			#
+		</span>
 		<span class="MotionFold__Name">{Name}</span>
-		{
-			Label ? (
-				<>
-					<span class="MotionFold__Rule" aria-hidden="true">/</span>
-					<span class="MotionFold__Count">{Label}</span>
-				</>
-			) : null
-		}
-		<span class="MotionFold__Rule" aria-hidden="true">/</span>
+		{Label ? (
+			<>
+				<span class="MotionFold__Rule" aria-hidden="true">
+					/
+				</span>
+				<span class="MotionFold__Count">{Label}</span>
+			</>
+		) : null}
+		<span class="MotionFold__Rule" aria-hidden="true">
+			/
+		</span>
 		<span class="MotionFold__Count">{Loading ? "UNAVAILABLE" : Count}</span>
 		<span class="MotionFold__Words" aria-hidden="true">
 			<span class="MotionFold__Word MotionFold__Word--open">OPEN</span>
@@ -102,76 +104,74 @@ const ClassOf = (Leaf: FoldLeaf): string =>
 		</span>
 	</summary>
 
-	{
-		Loading ? (
-			<ol class="MotionFold__Leaves" aria-busy="true">
-				{Keys.map((Key) => (
-					<li class="MotionFold__Leaf">
+	{Loading ? (
+		<ol class="MotionFold__Leaves" aria-busy="true">
+			{Keys.map((Key) => (
+				<li class="MotionFold__Leaf">
+					<span class="MotionFold__LeafIndex" aria-hidden="true">
+						:
+					</span>
+					<span class="MotionFold__Label">{Key}</span>
+					<span class="MotionFold__Meta" aria-hidden="true">
+						<span class="MotionSkeleton__Bar" style="--bar: 38%" />
+					</span>
+				</li>
+			))}
+			{Waiting ? (
+				<li class="MotionFold__Leaf">
+					<span class="MotionFold__LeafIndex" aria-hidden="true">
+						↳
+					</span>
+					<span class="MotionFold__Label MotionFold__Note">
+						WAITING ON: {Waiting}
+					</span>
+				</li>
+			) : null}
+		</ol>
+	) : Leaves.length > 0 ? (
+		<>
+			<ol
+				class:list={[
+					"MotionFold__Leaves",
+					Long && "MotionFold__Leaves--long",
+				]}
+			>
+				{Leaves.map((Leaf) => (
+					<li class={ClassOf(Leaf)}>
 						<span class="MotionFold__LeafIndex" aria-hidden="true">
-							:
+							{MarkOf(Leaf)}
 						</span>
-						<span class="MotionFold__Label">{Key}</span>
-						<span class="MotionFold__Meta" aria-hidden="true">
-							<span class="MotionSkeleton__Bar" style="--bar: 38%" />
+						<span class="MotionFold__Label">
+							{Leaf.href && !Leaf.gone ? (
+								<a class="MotionFold__Link" href={Leaf.href}>
+									{Leaf.label}
+								</a>
+							) : (
+								Leaf.label
+							)}
+							{Leaf.note ? (
+								<span class="MotionFold__Note">
+									<span aria-hidden="true">↳</span>{" "}
+									{Leaf.note}
+								</span>
+							) : null}
 						</span>
+						{Leaf.meta ? (
+							<span class="MotionFold__Meta">{Leaf.meta}</span>
+						) : null}
 					</li>
 				))}
-				{Waiting ? (
-					<li class="MotionFold__Leaf">
-						<span class="MotionFold__LeafIndex" aria-hidden="true">
-							↳
-						</span>
-						<span class="MotionFold__Label MotionFold__Note">
-							WAITING ON: {Waiting}
-						</span>
-					</li>
-				) : null}
 			</ol>
-		) : Leaves.length > 0 ? (
-			<>
-				<ol
-					class:list={[
-						"MotionFold__Leaves",
-						Long && "MotionFold__Leaves--long",
-					]}
-				>
-					{Leaves.map((Leaf) => (
-						<li class={ClassOf(Leaf)}>
-							<span class="MotionFold__LeafIndex" aria-hidden="true">
-								{MarkOf(Leaf)}
-							</span>
-							<span class="MotionFold__Label">
-								{Leaf.href && !Leaf.gone ? (
-									<a class="MotionFold__Link" href={Leaf.href}>
-										{Leaf.label}
-									</a>
-								) : (
-									Leaf.label
-								)}
-								{Leaf.note ? (
-									<span class="MotionFold__Note">
-										<span aria-hidden="true">↳</span>{" "}
-										{Leaf.note}
-									</span>
-								) : null}
-							</span>
-							{Leaf.meta ? (
-								<span class="MotionFold__Meta">{Leaf.meta}</span>
-							) : null}
-						</li>
-					))}
-				</ol>
-				{More ? <p class="MotionFold__EmptyLine">{More}</p> : null}
-			</>
-		) : (
-			<div class="MotionFold__Empty">
-				<p class="MotionFold__EmptyMark">
-					<b aria-hidden="true">◎</b> NO LEAF
-				</p>
-				<p class="MotionFold__EmptyLine">
-					<span aria-hidden="true">↳</span> {Empty}
-				</p>
-			</div>
-		)
-	}
+			{More ? <p class="MotionFold__EmptyLine">{More}</p> : null}
+		</>
+	) : (
+		<div class="MotionFold__Empty">
+			<p class="MotionFold__EmptyMark">
+				<b aria-hidden="true">◎</b> NO LEAF
+			</p>
+			<p class="MotionFold__EmptyLine">
+				<span aria-hidden="true">↳</span> {Empty}
+			</p>
+		</div>
+	)}
 </details>

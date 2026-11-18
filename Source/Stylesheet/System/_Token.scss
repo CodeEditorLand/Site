@@ -984,4 +984,83 @@
 	   still carries its own --jelly-fill (DesignSystem-Components.md §2). */
 	--jelly-label: var(--Foreground);
 	--jelly-ring: var(--Ring);
+
+	/* OPTICAL - the named offsets.
+	 *
+	 * Every value below is a correction the eye makes and the grid does not: the
+	 * width of a mark plus the tracking after it, the letter-space a tracked
+	 * label leaves on its own right edge, the half of a hairline a 2px bar has to
+	 * cross to sit centred, half of a divider gutter, the cap gap of a display
+	 * line. They are tokens for one reason: each of these recurs in a dozen
+	 * partials, and a literal in each of them is a dozen decisions wearing one
+	 * name. A negative value means "taken back" - a hang into the margin, a
+	 * cancel on an edge, an overlap on a rule; a positive one means "given" - a
+	 * gap, a column, a cap height.
+	 *
+	 * The layer that reads them is `System/Optical/`.
+	 */
+
+	/* A HANG. A mark is not text: `#`, `↳`, `/` and `◎` say something *about*
+	 * the line they open, so they sit in the margin and the word after them
+	 * stays on the measure. The value is the mark's own advance plus the
+	 * tracking that follows it - letter-spacing is added after the last letter
+	 * of a mark exactly as it is between two letters, so a bare `2ch` would
+	 * leave the word half a step short of the edge. */
+	--optical-hang-word: calc(
+		(2ch + var(--track-row)) * -1
+	); /* `# NAME` - a mark and its word space */
+	--optical-hang-mark: calc(
+		(1ch + var(--track-row)) * -1
+	); /* `#NAME` - a mark with no space */
+	--optical-hang-kicker: calc(
+		(1ch + var(--track-rule)) * -1
+	); /* `/LABEL` at the rule register */
+
+	/* AN EDGE. A tracked label's last letter carries the register's
+	 * letter-space after it, so its box is one tracking step wider than its ink
+	 * and a label that ends a row or a measure stops a pixel short of the edge
+	 * it is supposed to meet. Cancelling exactly that much on the right edge is
+	 * the difference between `RUST ` and `RUST`. */
+	--optical-edge-name: calc(var(--track-name) * -1);
+	--optical-edge-row: calc(var(--track-row) * -1);
+	--optical-edge-rule: calc(var(--track-rule) * -1);
+
+	/* A MARK'S GAP. The thin space between a mark and the thing it marks: the
+	 * `↳` before `SEE`, the `〈03〉` before its part. Half a character, because a
+	 * mark and its subject are one reading, not two. */
+	--optical-mark-gap: 0.5ch;
+
+	/* HALF A TRACKING STEP. A centred tracked label is centred by its advance,
+	 * and its advance carries the register's letter-space after the last letter,
+	 * so its ink sits half a step left of the box's centre. Half a step to the
+	 * right is what centres the ink. */
+	--optical-track-half: calc(var(--track-row) / 2);
+
+	/* HALF A RULE. A 2px mark centred on a 1px frame crosses half the frame on
+	 * each side, and half a pixel is the whole difference between a bar that
+	 * sits on the rule and a bar that hangs off it. */
+	--optical-half-rule: calc(var(--BorderWidth) / -2);
+
+	/* HALF A GUTTER. A divider drawn as a border on the right-hand column of a
+	 * grid that has a gap sits at that column's edge, so the gutter reads twice
+	 * as wide on one side as on the other. The seam is half the gap, taken off
+	 * the box and given back to the padding, so the rule moves and the text does
+	 * not. */
+	--optical-seam: calc(var(--space-group) / -2);
+
+	/* THE CAP GAP OF A DISPLAY LINE. The distance from a line box's top edge to
+	 * the cap of the letter in it: half-leading (-0.125em at the section role's
+	 * 1.05 line) plus the ascent (1.025em) minus the cap height (0.698em) of the
+	 * mono face, which is 0.2em. A heading that follows a label has to give back
+	 * exactly this, or the space between the two grows with the heading's clamp
+	 * - 6.5px at 32px and 10.5px at 52px for the same intended gap. */
+	--optical-cap-gap: 0.2em;
+
+	/* TWO COLUMNS ON A CHARACTER MEASURE. 14rem is 28.7 characters at the meta
+	 * role, so the value column of every ledger starts in the middle of a
+	 * character and two ledgers in different containers cannot share a grid.
+	 * The same columns, on the character grid: the ledger's key column, the
+	 * surface state's key column, and the cross-reference's route column. */
+	--optical-key-column: 28ch;
+	--optical-route-column: 24ch;
 }

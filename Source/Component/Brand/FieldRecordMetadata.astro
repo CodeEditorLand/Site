@@ -25,19 +25,17 @@ const Items = pairs || rows || [];
 	class:list={["space-y-1", className, Class]}
 	style="color:var(--CardForeground)"
 >
-	{
-		Items.map((Pair) => (
-			<div class="flex gap-2">
-				<dt
-					class="text-field-s font-mono uppercase tracking-wider opacity-70"
-					style="color:var(--CardForeground)"
-				>
-					{Pair.label}:
-				</dt>
-				<dd class="text-field-s font-mono uppercase tracking-wider">
-					{Pair.value}
-				</dd>
-			</div>
-		))
-	}
+	{Items.map((Pair) => (
+		<div class="flex gap-2">
+			<dt
+				class="text-field-s font-mono uppercase tracking-wider opacity-70"
+				style="color:var(--CardForeground)"
+			>
+				{Pair.label}:
+			</dt>
+			<dd class="text-field-s font-mono uppercase tracking-wider">
+				{Pair.value}
+			</dd>
+		</div>
+	))}
 </dl>

@@ -35,16 +35,14 @@ const Head = BandOf(HomeBands(T), "pricing");
 		 * thing that makes the two states two columns.
 		 */}
 		<div class="home-manifest__grid">
-			{
-				ReleaseCards.map((Card, Index) => (
-					<>
-						{Index > 0 && (
-							<div class="home-manifest__gutter" aria-hidden="true" />
-						)}
-						<ReleaseCard card={Card} />
-					</>
-				))
-			}
+			{ReleaseCards.map((Card, Index) => (
+				<>
+					{Index > 0 && (
+						<div class="home-manifest__gutter" aria-hidden="true" />
+					)}
+					<ReleaseCard card={Card} />
+				</>
+			))}
 		</div>
 	</jelly-card>
 </Band>

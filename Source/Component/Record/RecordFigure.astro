@@ -78,9 +78,7 @@ type Picture = { readonly src: string; readonly alt: string };
  * loose optionals so `{ src }` without `alt` is a compile error, not a silent
  * `alt=""` - an image whose text nobody wrote is a picture, not evidence.
  */
-type Media =
-	| Picture
-	| { readonly src?: never; readonly alt?: never };
+type Media = Picture | { readonly src?: never; readonly alt?: never };
 
 /**
  * The published `Figure` shape with its two loose media fields replaced by the
@@ -145,32 +143,35 @@ const Absent = state !== undefined;
 		Class,
 	]}
 >
-	{
-		Absent ? (
-			<div class="record-figure__absent">
-				<span class="record-figure__absent-mark" aria-hidden="true">
-					&#9678;
-				</span>
-				<span class:list={["record-figure__absent-state", `record-figure__absent-state--${StateTone}`]}>
-					<span class="record-figure__absent-key">STATUS:</span>
-					{state.toUpperCase()}
-				</span>
-			</div>
-		) : Image ? (
-			<div class="record-figure__media">
-				<FieldRecordEvidence
-					src={Image.src}
-					alt={Image.alt}
-					position={position}
-					className="record-figure__plate"
-				/>
-			</div>
-		) : Composed ? (
-			<div class="record-figure__media">
-				<slot />
-			</div>
-		) : null
-	}
+	{Absent ? (
+		<div class="record-figure__absent">
+			<span class="record-figure__absent-mark" aria-hidden="true">
+				&#9678;
+			</span>
+			<span
+				class:list={[
+					"record-figure__absent-state",
+					`record-figure__absent-state--${StateTone}`,
+				]}
+			>
+				<span class="record-figure__absent-key">STATUS:</span>
+				{state.toUpperCase()}
+			</span>
+		</div>
+	) : Image ? (
+		<div class="record-figure__media">
+			<FieldRecordEvidence
+				src={Image.src}
+				alt={Image.alt}
+				position={position}
+				className="record-figure__plate"
+			/>
+		</div>
+	) : Composed ? (
+		<div class="record-figure__media">
+			<slot />
+		</div>
+	) : null}
 
 	<figcaption
 		class:list={[
@@ -178,28 +179,26 @@ const Absent = state !== undefined;
 			Channel && "record-figure__caption--channel",
 		]}
 	>
-		{
-			Channel ? (
-				<>
-					<span class="record-figure__row">
-						<span class="record-figure__key">FIGURE:</span>
-						<span class="record-figure__caption-text">{caption}</span>
-					</span>
-					<span class="record-figure__row">
-						<span class="record-figure__key">SOURCE:</span>
-						<span class="record-figure__provenance">
-							{provenance ?? "UNAVAILABLE"}
-						</span>
-					</span>
-				</>
-			) : (
-				<>
+		{Channel ? (
+			<>
+				<span class="record-figure__row">
+					<span class="record-figure__key">FIGURE:</span>
 					<span class="record-figure__caption-text">{caption}</span>
-					{provenance && (
-						<span class="record-figure__provenance">{provenance}</span>
-					)}
-				</>
-			)
-		}
+				</span>
+				<span class="record-figure__row">
+					<span class="record-figure__key">SOURCE:</span>
+					<span class="record-figure__provenance">
+						{provenance ?? "UNAVAILABLE"}
+					</span>
+				</span>
+			</>
+		) : (
+			<>
+				<span class="record-figure__caption-text">{caption}</span>
+				{provenance && (
+					<span class="record-figure__provenance">{provenance}</span>
+				)}
+			</>
+		)}
 	</figcaption>
 </figure>

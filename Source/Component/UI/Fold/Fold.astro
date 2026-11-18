@@ -75,38 +75,44 @@ const Count = String(Items.length).padStart(2, "0");
 
 <details class:list={["Fold", Wide && "Fold--wide", Class]}>
 	<summary class="Fold__Summary">
-		<span class="Fold__Mark" aria-hidden="true">#</span>
+		<span class="Fold__Mark" aria-hidden="true">
+			#
+		</span>
 		<span class="Fold__Name">{Name}</span>
-		<span class="Fold__Rule" aria-hidden="true">/</span>
+		<span class="Fold__Rule" aria-hidden="true">
+			/
+		</span>
 		<span class="Fold__Count">{Count}</span>
 		<span class="Fold__Word Fold__Word--open">OPEN</span>
 		<span class="Fold__Word Fold__Word--close">CLOSE</span>
-		<span class="Fold__Disclosure" aria-hidden="true">›</span>
+		<span class="Fold__Disclosure" aria-hidden="true">
+			›
+		</span>
 	</summary>
 
-	{
-		Items.length > 0 ? (
-			<ol class="Fold__List">
-				{Items.map((Item) => (
-					<li>
-						<a class="Fold__Row" href={Item.Href}>
-							<span class="Fold__Index">{Item.Index}</span>
-							<span class="Fold__Label">{Item.Label}</span>
-							{Item.Meta ? <span class="Fold__Meta">{Item.Meta}</span> : null}
-						</a>
-					</li>
-				))}
-			</ol>
-		) : (
-			<div class="Fold__Empty">
-				<p class="Fold__EmptyMark">
-					<b aria-hidden="true">◎</b>
-					<span>NO SECTION</span>
-				</p>
-				<p class="Fold__EmptyLine">
-					<span aria-hidden="true">↳</span> {Empty}
-				</p>
-			</div>
-		)
-	}
+	{Items.length > 0 ? (
+		<ol class="Fold__List">
+			{Items.map((Item) => (
+				<li>
+					<a class="Fold__Row" href={Item.Href}>
+						<span class="Fold__Index">{Item.Index}</span>
+						<span class="Fold__Label">{Item.Label}</span>
+						{Item.Meta ? (
+							<span class="Fold__Meta">{Item.Meta}</span>
+						) : null}
+					</a>
+				</li>
+			))}
+		</ol>
+	) : (
+		<div class="Fold__Empty">
+			<p class="Fold__EmptyMark">
+				<b aria-hidden="true">◎</b>
+				<span>NO SECTION</span>
+			</p>
+			<p class="Fold__EmptyLine">
+				<span aria-hidden="true">↳</span> {Empty}
+			</p>
+		</div>
+	)}
 </details>

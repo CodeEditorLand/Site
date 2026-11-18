@@ -32,7 +32,14 @@ interface Props extends Well {
 	class?: string;
 }
 
-const { label, language, lines, copy = true, source, class: Class } = Astro.props;
+const {
+	label,
+	language,
+	lines,
+	copy = true,
+	source,
+	class: Class,
+} = Astro.props;
 
 /** A shell prompt is chrome, not part of the command a reader copies. */
 const Prompt = /^\$ /;
@@ -66,49 +73,45 @@ const CopyLabel = `Copy ${label} to the clipboard`;
 	<figcaption class="record-well__bar">
 		<span class="record-well__label">{label}</span>
 		{language && <span class="record-well__lang">{language}</span>}
-		{
-			copy && (
-				<jelly-icon-button
-					class="record-well__copy"
-					data-record-well-copy
-					data-copy-payload={Payload}
-					size="small"
-					shape="square"
-					label={CopyLabel}
-					aria-label={CopyLabel}
-					title={CopyLabel}
-					style="--jelly-fill: var(--Mute); --jelly-label: var(--Foreground); --jelly-icon-button-radius: 0px; --jelly-ring: var(--Accent);"
-					hidden
+		{copy && (
+			<jelly-icon-button
+				class="record-well__copy"
+				data-record-well-copy
+				data-copy-payload={Payload}
+				size="small"
+				shape="square"
+				label={CopyLabel}
+				aria-label={CopyLabel}
+				title={CopyLabel}
+				style="--jelly-fill: var(--Mute); --jelly-label: var(--Foreground); --jelly-icon-button-radius: 0px; --jelly-ring: var(--Accent);"
+				hidden
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					style="color: var(--jelly-label)"
+					aria-hidden="true"
 				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						style="color: var(--jelly-label)"
-						aria-hidden="true"
-					>
-						<rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-						<path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-					</svg>
-				</jelly-icon-button>
-			)
-		}
+					<rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+					<path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+				</svg>
+			</jelly-icon-button>
+		)}
 	</figcaption>
 	<pre class="record-well__body"><code>{Printed.map((Line) => <span class="record-well__line">{Line}</span>)}</code></pre>
-	{
-		source && (
-			<p class="record-well__source">
-				<span class="record-well__source-key">SOURCE:</span>
-				{source}
-			</p>
-		)
-	}
+	{source && (
+		<p class="record-well__source">
+			<span class="record-well__source-key">SOURCE:</span>
+			{source}
+		</p>
+	)}
 </figure>
 
 <script>

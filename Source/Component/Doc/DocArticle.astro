@@ -132,80 +132,80 @@ const {
 ---
 
 <article class:list={["doc-article", Class]}>
-	{
-		crumbs?.length ? (
-			<nav class="doc-article__crumbs" aria-label="Breadcrumb">
-				<ol class="doc-article__crumb-list">
-					{crumbs.map((Crumb) => (
-						<li class="doc-article__crumb">
-							{Crumb.href ? (
-								<a class="doc-article__crumb-link" href={Crumb.href}>
-									{Crumb.label}
-								</a>
-							) : (
-								<span class="doc-article__crumb-current" aria-current="page">
-									{Crumb.label}
-								</span>
-							)}
-						</li>
-					))}
-				</ol>
-			</nav>
-		) : null
-	}
+	{crumbs?.length ? (
+		<nav class="doc-article__crumbs" aria-label="Breadcrumb">
+			<ol class="doc-article__crumb-list">
+				{crumbs.map((Crumb) => (
+					<li class="doc-article__crumb">
+						{Crumb.href ? (
+							<a
+								class="doc-article__crumb-link"
+								href={Crumb.href}
+							>
+								{Crumb.label}
+							</a>
+						) : (
+							<span
+								class="doc-article__crumb-current"
+								aria-current="page"
+							>
+								{Crumb.label}
+							</span>
+						)}
+					</li>
+				))}
+			</ol>
+		</nav>
+	) : null}
 	<header class="doc-article__header">
 		{kicker ? <p class="doc-article__kicker">{kicker}</p> : null}
 		<h1 class="doc-article__title">{title}</h1>
-		{standfirst ? <p class="doc-article__standfirst">{standfirst}</p> : null}
-		{
-			standfirstHtml && (
-				<p class="doc-article__standfirst" set:html={standfirstHtml} />
-			)
-		}
+		{standfirst ? (
+			<p class="doc-article__standfirst">{standfirst}</p>
+		) : null}
+		{standfirstHtml && (
+			<p class="doc-article__standfirst" set:html={standfirstHtml} />
+		)}
 	</header>
 
-	{
-		strip?.length ? (
-			<p class="doc-article__strip">
-				{strip.map((Item, Position) => (
-					<>
-						{Position > 0 ? (
-							<span class="doc-article__separator" aria-hidden="true">
-								{"\u2001"}
-							</span>
-						) : null}
-						<span class="doc-article__field">
-							<span class="doc-article__label">{Item.Label}</span>
-							<span
-								class:list={[
-									"doc-article__value",
-									Item.Tone ? `doc-article__value--${Item.Tone}` : null,
-								]}
-							>
-								{Item.Value}
-							</span>
+	{strip?.length ? (
+		<p class="doc-article__strip">
+			{strip.map((Item, Position) => (
+				<>
+					{Position > 0 ? (
+						<span class="doc-article__separator" aria-hidden="true">
+							{"\u2001"}
 						</span>
-					</>
-				))}
-			</p>
-		) : null
-	}
+					) : null}
+					<span class="doc-article__field">
+						<span class="doc-article__label">{Item.Label}</span>
+						<span
+							class:list={[
+								"doc-article__value",
+								Item.Tone
+									? `doc-article__value--${Item.Tone}`
+									: null,
+							]}
+						>
+							{Item.Value}
+						</span>
+					</span>
+				</>
+			))}
+		</p>
+	) : null}
 
-	{
-		plate ? (
-			<div class="doc-article__plate">
-				<RecordPlate plate={plate} />
-			</div>
-		) : null
-	}
+	{plate ? (
+		<div class="doc-article__plate">
+			<RecordPlate plate={plate} />
+		</div>
+	) : null}
 
-	{
-		contents && contents.Items.length > 0 ? (
-			<div class="doc-article__contents">
-				<DocContents toc={contents} variant="disclosure" />
-			</div>
-		) : null
-	}
+	{contents && contents.Items.length > 0 ? (
+		<div class="doc-article__contents">
+			<DocContents toc={contents} variant="disclosure" />
+		</div>
+	) : null}
 
 	<div
 		class:list={[

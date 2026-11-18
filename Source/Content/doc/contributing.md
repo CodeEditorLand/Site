@@ -28,12 +28,12 @@ runs from private correction through temporary and permanent ban.
 
 ## What Contributions Are Accepted ✅
 
-| Contribution | Where to send it | What to include | Note |
-| --- | --- | --- | --- |
-| Bug reports | A GitHub issue | Reproduction steps, the [Land](https://github.com/CodeEditorLand/Land) version, and the platform (macOS/Linux/Windows). Include the FIDDEE log content if the bug involves startup or extension loading | The more specific the reproduction, the faster it gets triaged |
-| Pull requests | A pull request against `Current` | Code fixes, new IPC handlers, TypeScript API coverage improvements, documentation updates, and test additions are all accepted | Complex changes benefit from a brief issue or discussion before work begins |
-| Documentation | A pull request against `Current` | Corrections or additions to files under [`Land/Documentation/GitHub/`](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub) and the WebSite source at `WebSite/Source/Content/` | Documentation PRs have a lower review bar than code PRs |
-| Extension compatibility reports | A GitHub issue | If a VS Code extension fails in [Land](https://github.com/CodeEditorLand/Land), report the extension name, the failing API call, the error message, and the extension version | This helps prioritize [Cocoon](https://github.com/CodeEditorLand/Cocoon) API coverage work. Even partial reports are useful |
+| Contribution                    | Where to send it                 | What to include                                                                                                                                                                                         | Note                                                                                                                        |
+| ------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Bug reports                     | A GitHub issue                   | Reproduction steps, the [Land](https://github.com/CodeEditorLand/Land) version, and the platform (macOS/Linux/Windows). Include the FIDDEE log content if the bug involves startup or extension loading | The more specific the reproduction, the faster it gets triaged                                                              |
+| Pull requests                   | A pull request against `Current` | Code fixes, new IPC handlers, TypeScript API coverage improvements, documentation updates, and test additions are all accepted                                                                          | Complex changes benefit from a brief issue or discussion before work begins                                                 |
+| Documentation                   | A pull request against `Current` | Corrections or additions to files under [`Land/Documentation/GitHub/`](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub) and the WebSite source at `WebSite/Source/Content/`    | Documentation PRs have a lower review bar than code PRs                                                                     |
+| Extension compatibility reports | A GitHub issue                   | If a VS Code extension fails in [Land](https://github.com/CodeEditorLand/Land), report the extension name, the failing API call, the error message, and the extension version                           | This helps prioritize [Cocoon](https://github.com/CodeEditorLand/Cocoon) API coverage work. Even partial reports are useful |
 
 ---
 
@@ -66,14 +66,14 @@ runs from private correction through temporary and permanent ban.
 
 ## Commit Message Style 💬
 
-| Rule | Detail |
-| --- | --- |
-| Subject line mood | Write imperative-mood subject lines: "Add handler for `nativeHost:quit`", not "Added handler" or "Adds handler" |
-| Subject line length | Keep the subject line under 72 characters |
-| Body | Use the body (blank line after subject) for motivation and context when the change is non-obvious: why the approach was chosen, what alternatives were considered |
-| Attribution | Do not add `Co-Authored-By` or attribution trailers of any kind |
-| Agent and session references | Do not reference agent names, session identifiers, or tool names in commit messages or code comments |
-| Decoration | Do not use emoji or ASCII art in commit subjects |
+| Rule                         | Detail                                                                                                                                                            |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Subject line mood            | Write imperative-mood subject lines: "Add handler for `nativeHost:quit`", not "Added handler" or "Adds handler"                                                   |
+| Subject line length          | Keep the subject line under 72 characters                                                                                                                         |
+| Body                         | Use the body (blank line after subject) for motivation and context when the change is non-obvious: why the approach was chosen, what alternatives were considered |
+| Attribution                  | Do not add `Co-Authored-By` or attribution trailers of any kind                                                                                                   |
+| Agent and session references | Do not reference agent names, session identifiers, or tool names in commit messages or code comments                                                              |
+| Decoration                   | Do not use emoji or ASCII art in commit subjects                                                                                                                  |
 
 ---
 

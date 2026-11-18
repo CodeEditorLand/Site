@@ -88,7 +88,11 @@
 
 	position: absolute;
 	inset-inline: 0;
-	inset-block-end: -1px;
+	/* The 2px marker is centred on the control's 1px frame, not hung under it:
+	   half of the rule on each side. `-1px` put the bar's top edge on the frame's
+	   top edge, so the accent sat half a pixel low and read as a bar that had
+	   slipped off the rule rather than as the rule itself, inked. */
+	inset-block-end: var(--optical-half-rule);
 
 	block-size: 2px;
 

@@ -24,7 +24,6 @@ export const CanonicalPath: Set<string> = new Set(
 	CanonicalRoute.map((Entry) => Entry.Path),
 );
 
-
 // ─── Built-path → PascalCase mapping ───
 // Maps what Astro historically built (lowercase) to PascalCase canonical.
 // Used by Integration.ts for dev redirects, sitemap rewriting, and directory copies.
@@ -244,7 +243,6 @@ export const CanonicalizePath = (Path: string): string => {
 		Clean
 	);
 };
-
 
 // ─── Simplified variant generation ───
 // Generates the practically useful URL variants:

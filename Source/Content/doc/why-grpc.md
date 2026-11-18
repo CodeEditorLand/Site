@@ -55,11 +55,11 @@ a single persistent gRPC connection rather than opening one per event type.
 > **IMPORTANT**: All gRPC connections bind to `[::1]` or `127.0.0.1`, never
 > `0.0.0.0`. No remote connections are accepted.
 
-| Channel | Port |
-| --- | --- |
+| Channel                                                                                                                                                                     | Port  |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
 | [Mountain](https://github.com/CodeEditorLand/Mountain) → [Cocoon](https://github.com/CodeEditorLand/Cocoon) ([Mountain](https://github.com/CodeEditorLand/Mountain) server) | 50051 |
-| [Cocoon](https://github.com/CodeEditorLand/Cocoon) → [Mountain](https://github.com/CodeEditorLand/Mountain) ([Cocoon](https://github.com/CodeEditorLand/Cocoon) server) | 50052 |
-| [Mountain](https://github.com/CodeEditorLand/Mountain) → [Air](https://github.com/CodeEditorLand/Air) ([Air](https://github.com/CodeEditorLand/Air) server) | 50053 |
+| [Cocoon](https://github.com/CodeEditorLand/Cocoon) → [Mountain](https://github.com/CodeEditorLand/Mountain) ([Cocoon](https://github.com/CodeEditorLand/Cocoon) server)     | 50052 |
+| [Mountain](https://github.com/CodeEditorLand/Mountain) → [Air](https://github.com/CodeEditorLand/Air) ([Air](https://github.com/CodeEditorLand/Air) server)                 | 50053 |
 
 ## TierIPC routing
 
@@ -82,10 +82,10 @@ Two alternatives were considered: JSON-RPC, the transport VS Code's extension
 host uses, and Tauri commands, the transport Land uses between the WebView and
 Mountain. Neither fits Mountain-Cocoon.
 
-| Alternative | Why Land does not use it |
-| --- | --- |
-| JSON-RPC | Every message is serialized to JSON text, transmitted over a pipe, and deserialized. For high-frequency events this means UTF-8 encoding and JSON parsing on every message. gRPC uses protobuf binary encoding: a `Position` message (line + character) is 4-6 bytes; the JSON equivalent is `{"line":42,"character":7}` - 22 bytes. At hundreds of IPC calls per second during active editing, the difference is measurable. |
-| Tauri commands | Tauri commands are designed for WebView-Rust communication. [Cocoon](https://github.com/CodeEditorLand/Cocoon) is a separate OS process, not a WebView. gRPC is the right transport for two native processes that need a typed, bidirectional, streaming protocol. |
+| Alternative    | Why Land does not use it                                                                                                                                                                                                                                                                                                                                                                                                      |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| JSON-RPC       | Every message is serialized to JSON text, transmitted over a pipe, and deserialized. For high-frequency events this means UTF-8 encoding and JSON parsing on every message. gRPC uses protobuf binary encoding: a `Position` message (line + character) is 4-6 bytes; the JSON equivalent is `{"line":42,"character":7}` - 22 bytes. At hundreds of IPC calls per second during active editing, the difference is measurable. |
+| Tauri commands | Tauri commands are designed for WebView-Rust communication. [Cocoon](https://github.com/CodeEditorLand/Cocoon) is a separate OS process, not a WebView. gRPC is the right transport for two native processes that need a typed, bidirectional, streaming protocol.                                                                                                                                                            |
 
 ## See Also
 

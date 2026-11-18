@@ -92,159 +92,176 @@ const Empty = inset.empty !== undefined && !inset.body;
 ---
 
 <aside
-	class:list={[
-		"record-inset",
-		HasFigure && "record-inset--figure",
-		Class,
-	]}
+	class:list={["record-inset", HasFigure && "record-inset--figure", Class]}
 	role="note"
 	aria-label={`Inset ${inset.index}${inset.label ? `: ${inset.label}` : ""}`}
 >
-	{
-		Empty ? (
-			<p class="record-inset__empty">
-				<span class="record-inset__empty-mark" aria-hidden="true">
-					&#9678;
-				</span>
-				{inset.empty}
-			</p>
-		) : (
-			<>
-				{
-					HasFigure ? (
-						<figure class="record-inset__figure">
-							{inset.figure?.state ? (
-								<div class="record-inset__frame record-inset__frame--absent">
-									<span class="record-inset__absent-mark" aria-hidden="true">
-										&#9678;
-									</span>
-									<span
-										class:list={[
-											"record-inset__absent-state",
-											`record-inset__absent-state--${FigureStateTone}`,
-										]}
-									>
-										<span class="record-inset__absent-key">STATUS:</span>
-										{inset.figure.state.toUpperCase()}
-									</span>
-								</div>
-							) : Picture ? (
-								<div class="record-inset__frame">
-									<FieldRecordEvidence
-										src={Picture.src}
-										alt={Picture.alt}
-										className="record-inset__picture"
-									/>
-								</div>
-							) : Bars.length > 0 ? (
-								<div class="record-inset__bars">
-									{Bars.map((Bar) => (
-										<div class="record-inset__bar">
-											<p class="record-inset__bar-head">
-												<span class="record-inset__bar-label">{Bar.label}</span>
-												<span class="record-inset__bar-value">{Bar.value}</span>
-											</p>
-											<span class="record-inset__bar-track" aria-hidden="true">
-												<span
-													class="record-inset__bar-fill"
-													style={`--bar-share: ${Math.max(0, Math.min(1, Bar.share))}`}
-												/>
-											</span>
-										</div>
-									))}
-								</div>
-							) : (
-								<div class="record-inset__frame record-inset__frame--composed">
-									<slot />
-								</div>
-							)}
-
-							{
-								inset.figure ? (
-									<figcaption class="record-inset__figure-caption">
-										<span class="record-inset__figure-row">
-											<span class="record-inset__figure-key">FIGURE:</span>
-											<span class="record-inset__figure-text">
-												{inset.figure.caption}
-											</span>
-										</span>
-										<span class="record-inset__figure-row">
-											<span class="record-inset__figure-key">SOURCE:</span>
-											<span class="record-inset__figure-source">
-												{inset.figure.source}
-											</span>
-										</span>
-										{inset.figure.asOf ? (
-											<span class="record-inset__figure-row">
-												<span class="record-inset__figure-key">AS OF:</span>
-												<span class="record-inset__figure-source">
-													{inset.figure.asOf}
-												</span>
-											</span>
-										) : null}
-									</figcaption>
-								) : null
-							}
-						</figure>
-					) : null
-				}
-
-				<p class="record-inset__head">
-					<span class="record-inset__index"># {inset.index}</span>
-					{inset.label ? <span class="record-inset__label">/ {inset.label}</span> : null}
-				</p>
-
-				{
-					inset.state ? (
-						<p
-							class:list={[
-								"record-inset__state",
-								`record-inset__state--${StateTone}`,
-							]}
-						>
-							<span class="record-inset__state-marker" aria-hidden="true" />
-							<span class="record-inset__state-key">STATUS:</span>
-							{inset.state.toUpperCase()}
-						</p>
-					) : null
-				}
-
-				<p class="record-inset__body">
-					<span class="record-inset__arrow" aria-hidden="true">&#8627;</span>{inset.body}
-				</p>
-
-				{
-					inset.link ? (
-						inset.link.state === "gone" ? (
-							<p class="record-inset__gone">
-								<span class="record-inset__gone-mark" aria-hidden="true">
-									&#9678;
+	{Empty ? (
+		<p class="record-inset__empty">
+			<span class="record-inset__empty-mark" aria-hidden="true">
+				&#9678;
+			</span>
+			{inset.empty}
+		</p>
+	) : (
+		<>
+			{HasFigure ? (
+				<figure class="record-inset__figure">
+					{inset.figure?.state ? (
+						<div class="record-inset__frame record-inset__frame--absent">
+							<span
+								class="record-inset__absent-mark"
+								aria-hidden="true"
+							>
+								&#9678;
+							</span>
+							<span
+								class:list={[
+									"record-inset__absent-state",
+									`record-inset__absent-state--${FigureStateTone}`,
+								]}
+							>
+								<span class="record-inset__absent-key">
+									STATUS:
 								</span>
-								<span class="record-inset__gone-key">TARGET GONE:</span>
-								{inset.link.label}
-								<span class="record-inset__gone-route">{inset.link.href}</span>
-							</p>
-						) : (
-							<p class="record-inset__link">
-								<a href={inset.link.href}>
-									<span aria-hidden="true">&#8594;</span>
-									{inset.link.label}
-								</a>
-							</p>
-						)
-					) : null
-				}
+								{inset.figure.state.toUpperCase()}
+							</span>
+						</div>
+					) : Picture ? (
+						<div class="record-inset__frame">
+							<FieldRecordEvidence
+								src={Picture.src}
+								alt={Picture.alt}
+								className="record-inset__picture"
+							/>
+						</div>
+					) : Bars.length > 0 ? (
+						<div class="record-inset__bars">
+							{Bars.map((Bar) => (
+								<div class="record-inset__bar">
+									<p class="record-inset__bar-head">
+										<span class="record-inset__bar-label">
+											{Bar.label}
+										</span>
+										<span class="record-inset__bar-value">
+											{Bar.value}
+										</span>
+									</p>
+									<span
+										class="record-inset__bar-track"
+										aria-hidden="true"
+									>
+										<span
+											class="record-inset__bar-fill"
+											style={`--bar-share: ${Math.max(0, Math.min(1, Bar.share))}`}
+										/>
+									</span>
+								</div>
+							))}
+						</div>
+					) : (
+						<div class="record-inset__frame record-inset__frame--composed">
+							<slot />
+						</div>
+					)}
 
+					{inset.figure ? (
+						<figcaption class="record-inset__figure-caption">
+							<span class="record-inset__figure-row">
+								<span class="record-inset__figure-key">
+									FIGURE:
+								</span>
+								<span class="record-inset__figure-text">
+									{inset.figure.caption}
+								</span>
+							</span>
+							<span class="record-inset__figure-row">
+								<span class="record-inset__figure-key">
+									SOURCE:
+								</span>
+								<span class="record-inset__figure-source">
+									{inset.figure.source}
+								</span>
+							</span>
+							{inset.figure.asOf ? (
+								<span class="record-inset__figure-row">
+									<span class="record-inset__figure-key">
+										AS OF:
+									</span>
+									<span class="record-inset__figure-source">
+										{inset.figure.asOf}
+									</span>
+								</span>
+							) : null}
+						</figcaption>
+					) : null}
+				</figure>
+			) : null}
+
+			<p class="record-inset__head">
+				<span class="record-inset__index"># {inset.index}</span>
+				{inset.label ? (
+					<span class="record-inset__label">/ {inset.label}</span>
+				) : null}
+			</p>
+
+			{inset.state ? (
 				<p
 					class:list={[
-						"record-inset__source",
-						!inset.source && "record-inset__source--absent",
+						"record-inset__state",
+						`record-inset__state--${StateTone}`,
 					]}
 				>
-					<span class="record-inset__source-key">SOURCE:</span>
-					{inset.source ?? "UNAVAILABLE"}
+					<span
+						class="record-inset__state-marker"
+						aria-hidden="true"
+					/>
+					<span class="record-inset__state-key">STATUS:</span>
+					{inset.state.toUpperCase()}
 				</p>
-			</>
-		)
-	}
+			) : null}
+
+			<p class="record-inset__body">
+				<span class="record-inset__arrow" aria-hidden="true">
+					&#8627;
+				</span>
+				{inset.body}
+			</p>
+
+			{inset.link ? (
+				inset.link.state === "gone" ? (
+					<p class="record-inset__gone">
+						<span
+							class="record-inset__gone-mark"
+							aria-hidden="true"
+						>
+							&#9678;
+						</span>
+						<span class="record-inset__gone-key">TARGET GONE:</span>
+						{inset.link.label}
+						<span class="record-inset__gone-route">
+							{inset.link.href}
+						</span>
+					</p>
+				) : (
+					<p class="record-inset__link">
+						<a href={inset.link.href}>
+							<span aria-hidden="true">&#8594;</span>
+							{inset.link.label}
+						</a>
+					</p>
+				)
+			) : null}
+
+			<p
+				class:list={[
+					"record-inset__source",
+					!inset.source && "record-inset__source--absent",
+				]}
+			>
+				<span class="record-inset__source-key">SOURCE:</span>
+				{inset.source ?? "UNAVAILABLE"}
+			</p>
+		</>
+	)}
 </aside>

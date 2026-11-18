@@ -1,0 +1,119 @@
+// OPTICAL/SEAM - where two rules meet, and where one rule is doing two jobs.
+//
+// ─── THE LAW ──────────────────────────────────────────────────────────────
+// A page of rules is only as good as its joins. Three joins fail on a grid that
+// is otherwise exact:
+//
+//   1. **The rule that is off-centre in its gutter.** A divider drawn as a
+//      `border-inline-start` on the right-hand column of a grid with a gap sits
+//      at that column's edge - so the gutter reads twice as wide on one side as
+//      on the other, and the rule looks like it belongs to the column instead of
+//      to the space between two. It belongs in the middle of the gap.
+//   2. **The rule that is drawn twice.** A composition that owns a gutter and a
+//      block inside it that draws its own left rule produce two vertical rules a
+//      gutter apart: one long, then a short one beside every note. The channel
+//      owns its rule; the blocks in it do not draw a second.
+//   3. **The rule that is not a band.** A stamp's impression band is drawn inside
+//      the frame's padding, so the two rules that make it a band stop 32px short
+//      of the frame on each side - a box inside a box. A band runs edge to edge.
+//
+// ─── HOW ──────────────────────────────────────────────────────────────────
+// The seam is `--optical-seam`, half the gap, taken off the box and given back to
+// the padding so the rule moves and the text does not. Every rule below is scoped
+// to the breakpoint that draws it, because the stacked arm of each composition
+// rotates the rule to a top edge, and a seam offset on a horizontal rule would be
+// a rule hanging off the side of a page.
+@use "../Mixin" as *;
+
+// ─── 1. THE RULE IN THE MIDDLE OF ITS GUTTER ──────────────────────────────
+
+// The plate and figure channels: a plate in one column, its caption channel in
+// the other, one `--Divider` rule between them at a `--space-group` gap. The rule
+// sat 32px from the plate and 16px from the caption.
+@include bp(1024px) {
+	.record-figure--channel .record-figure__caption,
+	.record-plate--channel .record-plate__channel {
+		margin-inline-start: var(--optical-seam);
+		padding-inline-start: var(--space-group);
+	}
+}
+
+// The doc article's margin channel: the measure, then the apparatus. The margin
+// draws the rule itself (this composition has no gutter track), at the same
+// 32/16 asymmetry.
+@include bp(1280px) {
+	.doc-layout__margin {
+		margin-inline-start: var(--optical-seam);
+		padding-inline-start: var(--space-group);
+	}
+}
+
+// The shell's reading margin: rail, measure, margin, one group gap. This one is
+// scoped to the container query that draws the rule, because below it the margin
+// is a ruled block under the measure and has no vertical rule to centre.
+@container shell (min-width: 64rem) {
+	.PageShell[data-layout="reading"] .PageShell__margin {
+		margin-inline-start: var(--optical-seam);
+		padding-inline-start: var(--space-group);
+	}
+}
+
+// ─── 2. THE CHANNEL OWNS ITS RULE ─────────────────────────────────────────
+// A margin note and an inset draw a left rule of their own, which is right when
+// they stand in a band and wrong when they stand in a channel that already has
+// one. The rule is removed and the padding kept, so the note's text does not move
+// and the channel keeps one boundary instead of one boundary and three stubs.
+//
+// The blog's channel is a 1px gutter track, so it owns its rule at every width
+// from 1024; the doc's draws the rule at 1280, so the law starts there.
+@include bp(1024px) {
+	.blog-article__margin .record-margin,
+	.blog-article__margin .record-inset {
+		border-inline-start: 0;
+	}
+}
+
+@include bp(1280px) {
+	.doc-layout__margin .record-margin,
+	.doc-layout__margin .record-inset {
+		border-inline-start: 0;
+	}
+}
+
+@container shell (min-width: 64rem) {
+	.PageShell__margin .record-margin,
+	.PageShell__margin .record-inset {
+		border-inline-start: 0;
+	}
+}
+
+// ─── 3. THE IMPRESSION BAND REACHES THE FRAME ─────────────────────────────
+// The stamp's two 20% rules are what make it read as a stamp rather than a small
+// card, and a band that stops inside the frame's padding reads as a box drawn
+// inside a box. The negative frame padding is the mechanism `Detail/_Rule.scss`
+// uses for the band foot: the rules run to the frame, the mark stays where it was.
+.record-stamp__mark {
+	margin-inline: calc(var(--space-group) * -1);
+	padding-inline: var(--space-group);
+}
+
+// ─── 4. THE TWO TICKS AT A CORNER ─────────────────────────────────────────
+// The corner crosshair is eight ticks at 45% ink, and the two ticks of one corner
+// overlap by a 1x2px rectangle at the joint. Two translucent marks on top of each
+// other are not 45% ink, they are 70%: every corner of every framed card carried a
+// darker speck where its L met.
+//
+// The ink belongs to the GROUP, not to each arm - so the group carries the
+// opacity and the arms carry none. The value is published as `--corner-ink` so a
+// host that draws a different frame overrides one custom property instead of the
+// geometry's own default.
+.CornerMarks {
+	opacity: var(--corner-ink, 0.45);
+}
+
+// `!important` is the point, not a shortcut: the component writes each tick's
+// opacity as an inline style, and an inline style can only be answered by an
+// important declaration. Removing it puts the double ink back at every joint.
+.CornerMarkTick {
+	opacity: 1 !important;
+}

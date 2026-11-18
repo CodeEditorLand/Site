@@ -156,11 +156,11 @@ Status: 🔴 pending - `dirs` crate paths and Tauri PathResolver are documented 
 
 The `~/.fiddee/` tree resolves the same way on every OS. Summary:
 
-| OS         | Resolves to                    |
-| :--------- | :----------------------------- |
-| 🍎 macOS   | `$HOME/.fiddee/`               |
-| 🐧 Linux   | `$HOME/.fiddee/`               |
-| 🪟 Windows | `%USERPROFILE%\.fiddee\`      |
+| OS         | Resolves to              |
+| :--------- | :----------------------- |
+| 🍎 macOS   | `$HOME/.fiddee/`         |
+| 🐧 Linux   | `$HOME/.fiddee/`         |
+| 🪟 Windows | `%USERPROFILE%\.fiddee\` |
 
 `~/.land/extensions/` (legacy fan-out) follows the same convention.
 

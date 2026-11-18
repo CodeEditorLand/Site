@@ -92,8 +92,12 @@ const CanonicalList = [...CanonicalPath];
 				margin: 14vh auto 0;
 				padding: 0 1.5rem 4rem;
 				color: #1c1c1e;
-				font: 400 14px/1.65 ui-monospace, "IBM Plex Mono", SFMono-Regular,
-					Menlo, monospace;
+				font:
+					400 14px/1.65 ui-monospace,
+					"IBM Plex Mono",
+					SFMono-Regular,
+					Menlo,
+					monospace;
 			}
 			.visit-record__head {
 				display: flex;
@@ -169,12 +173,15 @@ const CanonicalList = [...CanonicalPath];
 			<div class="visit-record">
 				<p class="visit-record__head">
 					<span>{VisitTombstone.index}</span>
-					<span class="visit-record__route">{VisitTombstone.route}</span>
+					<span class="visit-record__route">
+						{VisitTombstone.route}
+					</span>
 				</p>
 
 				<p class="visit-record__state">
 					<span aria-hidden="true">◎</span>
-					{"\u2001"}STATUS:{"\u2001"}{VisitTombstone.state}
+					{"\u2001"}STATUS:{"\u2001"}
+					{VisitTombstone.state}
 				</p>
 
 				<dl class="visit-record__rows">

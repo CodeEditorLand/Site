@@ -1,0 +1,54 @@
+// OPTICAL/CENTRE - a box centres a label by its ink, not by its advance.
+//
+// ─── THE LAW ──────────────────────────────────────────────────────────────
+// Every label on this site is tracked, and tracking is added after the last
+// letter as well as between letters. So a label's advance is one tracking step
+// wider than its ink, and any box that centres or insets a label by its advance
+// centres or insets it by a phantom character. The defect is never more than a
+// pixel and it is always visible: a chip whose label sits a pixel left of its
+// box, a scope cell whose word leans left, a centred column head that is not
+// quite centred over its column.
+//
+// ─── HOW ──────────────────────────────────────────────────────────────────
+// Two directions of the same correction:
+//
+//   INSET   a box with symmetric padding adds the missing tracking step to its
+//           inline-end padding, so the label's ink is inset equally on both
+//           sides.
+//   CENTRE  a box that centres its label moves the line half a step to the
+//           right, so the ink - which is half a step narrower than the line -
+//           lands on the box's centre.
+//
+// Both are tokens (`--optical-edge-row`, `--optical-track-half`), because the
+// phantom character is the same character everywhere.
+@use "../Mixin" as *;
+
+// ─── INSET ────────────────────────────────────────────────────────────────
+
+// The record grid's chip: a hairline box with `--space-tight` on each side and
+// a tracked label inside it. The label's right inset was 9px and its left 8px.
+.record-entry__chip {
+	padding-inline-end: calc(var(--space-tight) + var(--optical-edge-row));
+}
+
+// The segmented control's cell: the same box, the same 8px, the same phantom
+// character - and here it also decides where the cell's label sits between the
+// two 1px rules that bound it.
+.Segmented__Cell {
+	padding-inline-end: calc(var(--space-tight) + var(--optical-edge-row));
+}
+
+// ─── CENTRE ───────────────────────────────────────────────────────────────
+
+// A centred matrix column head. The head is tracked at the row register and the
+// column's cells are not, so the head's ink was half a step left of the cells it
+// names - which is exactly the misalignment a centred column exists to avoid.
+.record-matrix__column--center {
+	text-indent: var(--optical-track-half);
+}
+
+// The arm this law cannot take: a centred label that is not tracked. The matrix's
+// own state cells are set at the set register, so they have no phantom character
+// and take no correction - `.record-matrix__cell--center` is deliberately absent
+// from this file, and a card that tracks a cell must add it here rather than
+// nudge the cell's padding by hand.

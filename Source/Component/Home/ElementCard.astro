@@ -84,73 +84,65 @@ const TraceSteps = card.Trace.map((Step) => ({
 			<span class="home-record__index">{card.Index}</span>
 
 			<span class="home-record__seal" aria-hidden="true">
-				{
-					card.Seal === "symbol" ? (
-						<span class="home-record__symbol">{card.Symbol}</span>
-					) : (
-						<FieldRecordSeal
-							element={Seal}
-							size={36}
-							className="home-record__figure"
-						/>
-					)
-				}
+				{card.Seal === "symbol" ? (
+					<span class="home-record__symbol">{card.Symbol}</span>
+				) : (
+					<FieldRecordSeal
+						element={Seal}
+						size={36}
+						className="home-record__figure"
+					/>
+				)}
 			</span>
 		</div>
 
 		<div class="home-record__name-row">
 			<span class="home-record__name">
-				{
-					Href === undefined ? (
-						card.Title
-					) : (
-						<a
-							class="home-record__name-link"
-							href={Href}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							{card.Title}
-						</a>
-					)
-				}
+				{Href === undefined ? (
+					card.Title
+				) : (
+					<a
+						class="home-record__name-link"
+						href={Href}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						{card.Title}
+					</a>
+				)}
 			</span>
 
 			<span class="home-record__glyph" aria-hidden="true">
 				{card.Glyph}
 			</span>
 
-			{
-				Href !== undefined && (
-					<a
-						class="home-record__source"
-						href={Href}
-						target="_blank"
-						rel="noopener noreferrer"
-						aria-label={`Open ${card.Title} source`}
-					>
-						<Arrow />
-					</a>
-				)
-			}
+			{Href !== undefined && (
+				<a
+					class="home-record__source"
+					href={Href}
+					target="_blank"
+					rel="noopener noreferrer"
+					aria-label={`Open ${card.Title} source`}
+				>
+					<Arrow />
+				</a>
+			)}
 		</div>
 
-		{
-			card.Chips.length > 0 && (
-				<ul class="home-record__chips">
-					{card.Chips.map((Chip) => (
-						<li class="home-record__chip">
-							<jelly-badge
-								shape="square"
-								style="--jelly-fill:var(--OSMacOSMute);--jelly-label:var(--CardForeground);--jelly-badge-radius:0;--jelly-badge-font-size:14px"
-							>
-								{Chip}
-							</jelly-badge>
-						</li>
-					))}
-				</ul>
-			)
-		}
+		{card.Chips.length > 0 && (
+			<ul class="home-record__chips">
+				{card.Chips.map((Chip) => (
+					<li class="home-record__chip">
+						<jelly-badge
+							shape="square"
+							style="--jelly-fill:var(--OSMacOSMute);--jelly-label:var(--CardForeground);--jelly-badge-radius:0;--jelly-badge-font-size:14px"
+						>
+							{Chip}
+						</jelly-badge>
+					</li>
+				))}
+			</ul>
+		)}
 
 		<RecordAnatomy card={card}>
 			<p class="home-record__body">{card.Body}</p>
@@ -164,18 +156,16 @@ const TraceSteps = card.Trace.map((Step) => ({
 					empty="NO WORKING IS RECORDED FOR THIS ELEMENT YET: THE RECORD PRINTS ITS OWN FACTS AND NAMES NO SOURCE."
 				/>
 
-				{
-					card.Depth === "plate" && (
-						<RecordTrace
-							trace={{
-								steps: TraceSteps,
-								label: card.Title,
-								source: ManualRoute,
-								empty: "NO TRACE IS RECORDED FOR THIS ELEMENT: ITS MANUAL PAGE NAMES NO FILE.",
-							}}
-						/>
-					)
-				}
+				{card.Depth === "plate" && (
+					<RecordTrace
+						trace={{
+							steps: TraceSteps,
+							label: card.Title,
+							source: ManualRoute,
+							empty: "NO TRACE IS RECORDED FOR THIS ELEMENT: ITS MANUAL PAGE NAMES NO FILE.",
+						}}
+					/>
+				)}
 			</div>
 		</RecordAnatomy>
 	</article>

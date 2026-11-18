@@ -170,7 +170,8 @@
 }
 
 // Wide enough for the ledger's key column: the register takes the same
-// `min(14rem, 40%)` the ledger gives its key, so the two rows line up.
+// `--optical-key-column` the ledger gives its key, so the two rows line up on
+// the character grid and not merely near it.
 @include bp(640px) {
 	.surface__state-row {
 		flex-direction: row;
@@ -180,7 +181,7 @@
 
 	.surface__state-key {
 		flex: 0 0 auto;
-		inline-size: min(14rem, 40%);
+		inline-size: min(var(--optical-key-column), 40%);
 	}
 }
 
@@ -479,7 +480,10 @@
 
 @include bp(640px) {
 	.surface-absent__row {
-		grid-template-columns: min(14rem, 40%) minmax(0, 1fr);
+		grid-template-columns: min(var(--optical-key-column), 40%) minmax(
+				0,
+				1fr
+			);
 		gap: var(--space-reading);
 		align-items: baseline;
 	}

@@ -31,11 +31,11 @@ this atom so future renames touch a single file per Element.
 
 The dotfile root resolves to the user's home directory with `.fiddee` appended:
 
-| OS         | Resolves to                    |
-| :--------- | :----------------------------- |
-| 🍎 macOS   | `$HOME/.fiddee/`               |
-| 🐧 Linux   | `$HOME/.fiddee/`               |
-| 🪟 Windows | `%USERPROFILE%\.fiddee\`      |
+| OS         | Resolves to              |
+| :--------- | :----------------------- |
+| 🍎 macOS   | `$HOME/.fiddee/`         |
+| 🐧 Linux   | `$HOME/.fiddee/`         |
+| 🪟 Windows | `%USERPROFILE%\.fiddee\` |
 
 `$HOME` (macOS, Linux) and `%USERPROFILE%` (Windows) carry the per-user home
 root; `.fiddee` is appended to it verbatim on every platform, so the three rows

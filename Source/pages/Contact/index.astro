@@ -38,10 +38,7 @@ import {
 	RegisterEntries,
 } from "../../Component/Contact/Register.js";
 import RecordStage from "../../Component/Record/RecordStage.astro";
-import {
-	ContactDirect,
-	ContactHubTrail,
-} from "../../Library/Contact/Data.js";
+import { ContactDirect, ContactHubTrail } from "../../Library/Contact/Data.js";
 import { GetI18n } from "../../Library/I18n/Server";
 
 const T = GetI18n();
@@ -80,29 +77,27 @@ const BackToTop = T("common.button.backToTop", { defaultValue: "Back to top" });
 >
 	<div class="contact-hub">
 		<div class="contact-hub__grid">
-			{
-				RegisterEntries.map((Entry) => (
-					<a class="contact-hub__card" href={Entry.href}>
-						<p class="contact-hub__slug">{Entry.slug}</p>
-						<h2 class="contact-hub__name">{Entry.title}</h2>
-						<p class="contact-hub__note">{Entry.subtitle}</p>
-						{Entry.basis || Entry.window ? (
-							<p class="contact-hub__foot">
-								{Entry.basis ? (
-									<span class="contact-hub__basis">
-										〈{Entry.basis}〉
-									</span>
-								) : null}
-								{Entry.window ? (
-									<span class="contact-hub__window">
-										SLA: {Entry.window}
-									</span>
-								) : null}
-							</p>
-						) : null}
-					</a>
-				))
-			}
+			{RegisterEntries.map((Entry) => (
+				<a class="contact-hub__card" href={Entry.href}>
+					<p class="contact-hub__slug">{Entry.slug}</p>
+					<h2 class="contact-hub__name">{Entry.title}</h2>
+					<p class="contact-hub__note">{Entry.subtitle}</p>
+					{Entry.basis || Entry.window ? (
+						<p class="contact-hub__foot">
+							{Entry.basis ? (
+								<span class="contact-hub__basis">
+									〈{Entry.basis}〉
+								</span>
+							) : null}
+							{Entry.window ? (
+								<span class="contact-hub__window">
+									SLA: {Entry.window}
+								</span>
+							) : null}
+						</p>
+					) : null}
+				</a>
+			))}
 		</div>
 
 		<section
@@ -114,31 +109,40 @@ const BackToTop = T("common.button.backToTop", { defaultValue: "Back to top" });
 				What happens after you send
 			</h2>
 			<p class="contact-hub__process-note">
-				Every route above is filed under its income code and answered inside the
-				window its own card prints. The four steps are the desk's process, not a
-				promise about any one request: the window is the commitment.
+				Every route above is filed under its income code and answered
+				inside the window its own card prints. The four steps are the
+				desk's process, not a promise about any one request: the window
+				is the commitment.
 			</p>
 			<RecordStage stages={[...ContactProcess]} variant="plates" />
 		</section>
 
 		<p class="contact-hub__direct">
 			<span class="contact-hub__direct-label">{ContactDirect.label}</span>
-			<a class="contact-hub__address" href={`mailto:${ContactDirect.address}`}
-				>{ContactDirect.address}</a
+			<a
+				class="contact-hub__address"
+				href={`mailto:${ContactDirect.address}`}
 			>
-			<span class="contact-hub__direct-label">{ContactChannel.label}</span>
+				{ContactDirect.address}
+			</a>
+			<span class="contact-hub__direct-label">
+				{ContactChannel.label}
+			</span>
 			<a
 				class="contact-hub__address"
 				href={ContactChannel.href}
 				target="_blank"
-				rel="noopener noreferrer">{ContactChannel.text}</a
+				rel="noopener noreferrer"
 			>
+				{ContactChannel.text}
+			</a>
 		</p>
 
 		<div class="contact-hub__top">
-			<a class="StaccatoButton" href="#top"
-				>{BackToTop}<span class="InlineSeparator">↑</span></a
-			>
+			<a class="StaccatoButton" href="#top">
+				{BackToTop}
+				<span class="InlineSeparator">↑</span>
+			</a>
 		</div>
 	</div>
 </ContactPage>

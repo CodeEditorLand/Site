@@ -12,11 +12,7 @@ interface Roller {
 }
 
 // Import dependencies
-let Dimensional: any,
-	Style: any,
-	Spectrum: any,
-	Constant: any,
-	ALL_COLORS: any;
+let Dimensional: any, Style: any, Spectrum: any, Constant: any, ALL_COLORS: any;
 
 // biome-ignore lint/nursery/useComponentExportOnlyModules:
 const InitDimensional = async () => {
@@ -152,7 +148,18 @@ const Pixel = ({
 
 			Roller.current = null;
 		};
-	}, [Show, Container, Mouse, Position, Seed, Character, Text, Font, Row, Column]);
+	}, [
+		Show,
+		Container,
+		Mouse,
+		Position,
+		Seed,
+		Character,
+		Text,
+		Font,
+		Row,
+		Column,
+	]);
 
 	return <div ref={ElementReference} className={`h-${Font} w-${Font}`} />;
 };

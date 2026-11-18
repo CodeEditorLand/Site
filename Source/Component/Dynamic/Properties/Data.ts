@@ -142,7 +142,10 @@ const PropertyIds = [
  * read because a module that imported the JSON would be a module that ships the
  * whole locale file to resolve six sentences.
  */
-const PropertyCopy: Record<string, { readonly title: string; readonly description: string }> = {
+const PropertyCopy: Record<
+	string,
+	{ readonly title: string; readonly description: string }
+> = {
 	designTokens: {
 		title: "Native services where they count.",
 		description:

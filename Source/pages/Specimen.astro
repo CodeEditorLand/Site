@@ -131,9 +131,9 @@ const Entries = await getCollection("blog");
  * cannot describe an article that does not exist - and if the collection is
  * empty the plate states that instead of printing a card made of nothing.
  */
-const Newest = [...Entries].sort((A, B) =>
-	A.data.publishedAt.localeCompare(B.data.publishedAt),
-).at(-1);
+const Newest = [...Entries]
+	.sort((A, B) => A.data.publishedAt.localeCompare(B.data.publishedAt))
+	.at(-1);
 
 /** The longest title filed, which is the `too-long` arm's specimen value. */
 const LongestTitle = Entries.reduce(
@@ -143,7 +143,8 @@ const LongestTitle = Entries.reduce(
 );
 
 /** The one dated measurement on `/Compare`, and how old it is at build time. */
-const Dated = Measurements.find((Row) => Row.asOf !== undefined)?.asOf ?? "UNAVAILABLE";
+const Dated =
+	Measurements.find((Row) => Row.asOf !== undefined)?.asOf ?? "UNAVAILABLE";
 
 const AgeInDays = (AsOf: string): string => {
 	const Then = new Date(`${AsOf}T00:00:00Z`).getTime();
@@ -201,13 +202,15 @@ const Properties = ItemsOf(GetI18n());
 /* ─── THE SHEET'S OWN FACTS ────────────────────────────────────────────── */
 
 /** The trail: the index, then this sheet. A crumb is a place, not a route. */
-const TrailItems = [
-	{ label: "/HOME", href: "/" },
-	{ label: "/SPECIMEN" },
-];
+const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/SPECIMEN" }];
 ---
 
-<Base Title={MetaTitle} Description={MetaDescription} Url={Astro.url.href} lang="en">
+<Base
+	Title={MetaTitle}
+	Description={MetaDescription}
+	Url={Astro.url.href}
+	lang="en"
+>
 	<Header client:load slot="Header" />
 
 	{/* The crumb sits above the shell, the way the dashboard's does: the trail is
@@ -231,181 +234,196 @@ const TrailItems = [
 			/>
 
 			<p class="specimen-page__note">
-				The sheet is the page's index and its adverse state at once: a part that
-				cannot be printed keeps its cell, and the cell says so.
-				{` ${PartCount} `} cells, {` ${PrintedCount} `} of them printed and
+				The sheet is the page's index and its adverse state at once: a
+				part that cannot be printed keeps its cell, and the cell says
+				so.
+				{` ${PartCount} `} cells, {` ${PrintedCount} `} of them printed
+				and
 				{` ${AbsentCount} `} of them stated.
 			</p>
 		</RecordBand>
 
 		{/* ─── THE PLATES ────────────────────────────────────────────── */}
 		<RecordBand band={Bands.Plates}>
-			{
-				PrintedCount === 0 ? (
-					<ShellState
-						kind="empty"
-						index="PLATES / 00"
-						statement="No part on this sheet can be printed, so the band holds no plate."
-						cause="Every part is either absent or folded, and the sheet states each one's reason in THE ABSENCES below rather than printing a stage with nothing on it."
-						next={{ label: "READ THE ABSENCES", href: "#absences" }}
-						note="SOURCE: CONTENT/SPECIMEN/PARTS.TS"
-					/>
-				) : (
-					<div class="specimen-page__plates">
-						<SpecimenPlate
-							part={Printed[0]!}
-							caption="Two of the badge's four variants. The `default` variant is the inverted one, and an inverted surface on this site belongs to the thing the reader clicks - so the sheet prints the two light variants and leaves the inverted one to the pages that have an action."
-							source="SOURCE/COMPONENT/DYNAMIC/DYNAMICBADGE.TSX"
-						>
-							<div class="specimen-page__row">
-								<DynamicBadge Content={{ Text: "PROTOCOL: gRPC", Variant: "secondary" }} />
-								<DynamicBadge Content={{ Text: "LICENSE: CC0", Variant: "outline" }} />
-							</div>
-						</SpecimenPlate>
-
-						<SpecimenPlate
-							part={Printed[1]!}
-							caption="The label states its own two conditions on itself: `aria-required` and `aria-disabled` travel with the label, not only with the control it names. The field beside it is a specimen field, not a form - nothing here submits anywhere."
-							source="SOURCE/COMPONENT/DYNAMIC/DYNAMICLABEL.TSX"
-						>
-							<div class="specimen-page__field-set">
-								<div class="specimen-page__field-row">
-									<DynamicLabel
-										Content={{ Text: "EMAIL", Required: true }}
-										HTMLFor="specimen-field"
-									/>
-									<input
-										class="specimen-page__input"
-										id="specimen-field"
-										type="email"
-										value="reader@editor.land"
-										readonly
-									/>
-								</div>
-								<div class="specimen-page__field-row">
-									<DynamicLabel
-										Content={{ Text: "HANDLE", Disabled: true }}
-										HTMLFor="specimen-field-disabled"
-									/>
-									<input
-										class="specimen-page__input"
-										id="specimen-field-disabled"
-										type="text"
-										value="UNAVAILABLE"
-										disabled
-										readonly
-									/>
-								</div>
-							</div>
-						</SpecimenPlate>
-
-						<SpecimenPlate
-							part={Printed[2]!}
-							caption="Three sections on one Jelly card, on the creme field - where a card lies on a page. The stage is the field rather than the white insert, because a white card on a white stage is a card inside a box."
-							source="SOURCE/COMPONENT/DYNAMIC/DYNAMICCARD.TSX"
-							stage="field"
-						>
-							<DynamicCard
-								Sections={{
-									Header: {
-										title: "RELEASE_01",
-										description: "One card, three sections, and a state at its foot.",
-									},
-									Body: {
-										title: "WHAT IT CARRIES",
-										description:
-											"A header with a title and a description, a body with a second title and its prose, and a footer for the one thing the card is for.",
-									},
-									Footer: {
-										content: "STATUS: UNAVAILABLE\u2001CHANNEL: PUBLIC",
-									},
+			{PrintedCount === 0 ? (
+				<ShellState
+					kind="empty"
+					index="PLATES / 00"
+					statement="No part on this sheet can be printed, so the band holds no plate."
+					cause="Every part is either absent or folded, and the sheet states each one's reason in THE ABSENCES below rather than printing a stage with nothing on it."
+					next={{ label: "READ THE ABSENCES", href: "#absences" }}
+					note="SOURCE: CONTENT/SPECIMEN/PARTS.TS"
+				/>
+			) : (
+				<div class="specimen-page__plates">
+					<SpecimenPlate
+						part={Printed[0]!}
+						caption="Two of the badge's four variants. The `default` variant is the inverted one, and an inverted surface on this site belongs to the thing the reader clicks - so the sheet prints the two light variants and leaves the inverted one to the pages that have an action."
+						source="SOURCE/COMPONENT/DYNAMIC/DYNAMICBADGE.TSX"
+					>
+						<div class="specimen-page__row">
+							<DynamicBadge
+								Content={{
+									Text: "PROTOCOL: gRPC",
+									Variant: "secondary",
 								}}
 							/>
-						</SpecimenPlate>
-
-						<SpecimenPlate
-							part={Printed[3]!}
-							caption="The four connection tiers, read across. The protocol spines are the only place in the tree that states them, and until this plate no page printed them - the portal reads the tiers one per band, and this plate reads them as a set."
-							source="SOURCE/COMPONENT/DYNAMIC/INTERFACE/CONTENT/PAGE/PORTALDATA.TS"
-						>
-							<DynamicTable Content={{ Columns: TierColumns, Data: TierRows }} />
-						</SpecimenPlate>
-
-						<SpecimenPlate
-							part={Printed[4]!}
-							caption="One string, parsed: a blank line is a paragraph and a backtick is code. The island ships only where the parser is read, so the plate mounts it lazily rather than on every visit to the sheet."
-							source="SOURCE/COMPONENT/DYNAMIC/DYNAMICRICHTEXT.TSX"
-						>
-							<DynamicRichText
-								client:visible
-								Text={"A record states what it is before it states what it wants.\n\nThe second paragraph is the proposition, and `TARGET:` is a field label."}
-								ClassName="specimen-page__prose"
+							<DynamicBadge
+								Content={{
+									Text: "LICENSE: CC0",
+									Variant: "outline",
+								}}
 							/>
-						</SpecimenPlate>
+						</div>
+					</SpecimenPlate>
 
-						<SpecimenPlate
-							part={Printed[5]!}
-							caption="The newest entry in the collection, as a card. The card is fed by the collection rather than written here, so it cannot describe an article that does not exist."
-							source="SOURCE/COMPONENT/DYNAMIC/DYNAMICBLOGCARD.TSX"
-							stage="field"
-						>
-							{
-								Newest ? (
-									<DynamicBlogCard
-										Post={{
-											Slug: Newest.id,
-											Title: Newest.data.title,
-											Summary: Newest.data.summary,
-											PublishedAt: Newest.data.publishedAt,
-											Tags: Newest.data.tags,
-											Author: Newest.data.author,
-											ReadTime: Newest.data.readTime,
-										}}
-									/>
-								) : (
-									<ShellState
-										kind="empty"
-										index="ARTICLE / 00"
-										statement="The collection holds no entry, so the article card has nothing to print."
-										cause="A card fed by a collection prints what the collection holds. With no entries there is no card, and the plate says so rather than printing a card made of placeholders."
-										next={{ label: "READ THE ARCHIVE", href: "/Blog" }}
-										surface="bare"
-									/>
-								)
+					<SpecimenPlate
+						part={Printed[1]!}
+						caption="The label states its own two conditions on itself: `aria-required` and `aria-disabled` travel with the label, not only with the control it names. The field beside it is a specimen field, not a form - nothing here submits anywhere."
+						source="SOURCE/COMPONENT/DYNAMIC/DYNAMICLABEL.TSX"
+					>
+						<div class="specimen-page__field-set">
+							<div class="specimen-page__field-row">
+								<DynamicLabel
+									Content={{ Text: "EMAIL", Required: true }}
+									HTMLFor="specimen-field"
+								/>
+								<input
+									class="specimen-page__input"
+									id="specimen-field"
+									type="email"
+									value="reader@editor.land"
+									readonly
+								/>
+							</div>
+							<div class="specimen-page__field-row">
+								<DynamicLabel
+									Content={{ Text: "HANDLE", Disabled: true }}
+									HTMLFor="specimen-field-disabled"
+								/>
+								<input
+									class="specimen-page__input"
+									id="specimen-field-disabled"
+									type="text"
+									value="UNAVAILABLE"
+									disabled
+									readonly
+								/>
+							</div>
+						</div>
+					</SpecimenPlate>
+
+					<SpecimenPlate
+						part={Printed[2]!}
+						caption="Three sections on one Jelly card, on the creme field - where a card lies on a page. The stage is the field rather than the white insert, because a white card on a white stage is a card inside a box."
+						source="SOURCE/COMPONENT/DYNAMIC/DYNAMICCARD.TSX"
+						stage="field"
+					>
+						<DynamicCard
+							Sections={{
+								Header: {
+									title: "RELEASE_01",
+									description:
+										"One card, three sections, and a state at its foot.",
+								},
+								Body: {
+									title: "WHAT IT CARRIES",
+									description:
+										"A header with a title and a description, a body with a second title and its prose, and a footer for the one thing the card is for.",
+								},
+								Footer: {
+									content:
+										"STATUS: UNAVAILABLE\u2001CHANNEL: PUBLIC",
+								},
+							}}
+						/>
+					</SpecimenPlate>
+
+					<SpecimenPlate
+						part={Printed[3]!}
+						caption="The four connection tiers, read across. The protocol spines are the only place in the tree that states them, and until this plate no page printed them - the portal reads the tiers one per band, and this plate reads them as a set."
+						source="SOURCE/COMPONENT/DYNAMIC/INTERFACE/CONTENT/PAGE/PORTALDATA.TS"
+					>
+						<DynamicTable
+							Content={{ Columns: TierColumns, Data: TierRows }}
+						/>
+					</SpecimenPlate>
+
+					<SpecimenPlate
+						part={Printed[4]!}
+						caption="One string, parsed: a blank line is a paragraph and a backtick is code. The island ships only where the parser is read, so the plate mounts it lazily rather than on every visit to the sheet."
+						source="SOURCE/COMPONENT/DYNAMIC/DYNAMICRICHTEXT.TSX"
+					>
+						<DynamicRichText
+							client:visible
+							Text={
+								"A record states what it is before it states what it wants.\n\nThe second paragraph is the proposition, and `TARGET:` is a field label."
 							}
-						</SpecimenPlate>
+							ClassName="specimen-page__prose"
+						/>
+					</SpecimenPlate>
 
-						<SpecimenPlate
-							part={Printed[6]!}
-							caption="The six properties the proof band carries, as records: three claimed, three filed against the pages that argue them. The homepage prints the six *elements* one band down and prints them as records of their own, so the claim grid has no page of its own - it is printed here, at 1:1, the way every part on this sheet is."
-							source="SOURCE/COMPONENT/DYNAMIC/PROPERTIES/GRID.ASTRO"
-							stage="field"
-						>
-							<Grid entries={Properties} />
-						</SpecimenPlate>
-					</div>
-				)
-			}
+					<SpecimenPlate
+						part={Printed[5]!}
+						caption="The newest entry in the collection, as a card. The card is fed by the collection rather than written here, so it cannot describe an article that does not exist."
+						source="SOURCE/COMPONENT/DYNAMIC/DYNAMICBLOGCARD.TSX"
+						stage="field"
+					>
+						{Newest ? (
+							<DynamicBlogCard
+								Post={{
+									Slug: Newest.id,
+									Title: Newest.data.title,
+									Summary: Newest.data.summary,
+									PublishedAt: Newest.data.publishedAt,
+									Tags: Newest.data.tags,
+									Author: Newest.data.author,
+									ReadTime: Newest.data.readTime,
+								}}
+							/>
+						) : (
+							<ShellState
+								kind="empty"
+								index="ARTICLE / 00"
+								statement="The collection holds no entry, so the article card has nothing to print."
+								cause="A card fed by a collection prints what the collection holds. With no entries there is no card, and the plate says so rather than printing a card made of placeholders."
+								next={{
+									label: "READ THE ARCHIVE",
+									href: "/Blog",
+								}}
+								surface="bare"
+							/>
+						)}
+					</SpecimenPlate>
+
+					<SpecimenPlate
+						part={Printed[6]!}
+						caption="The six properties the proof band carries, as records: three claimed, three filed against the pages that argue them. The homepage prints the six *elements* one band down and prints them as records of their own, so the claim grid has no page of its own - it is printed here, at 1:1, the way every part on this sheet is."
+						source="SOURCE/COMPONENT/DYNAMIC/PROPERTIES/GRID.ASTRO"
+						stage="field"
+					>
+						<Grid entries={Properties} />
+					</SpecimenPlate>
+				</div>
+			)}
 		</RecordBand>
 
 		{/* ─── THE ABSENCES ──────────────────────────────────────────── */}
 		<RecordBand band={{ ...Bands.Absences, id: "absences" }}>
 			<div class="specimen-page__absences">
-				{
-					Absent.map((Part) =>
-						Part.absence === undefined ? null : (
-							<div class="specimen-page__absence">
-								<SurfaceAbsent
-									status={Part.absence.status}
-									wouldBe={Part.absence.wouldBe}
-									whyNot={Part.absence.whyNot}
-									next={Part.absence.next}
-									note={Part.absence.note}
-								/>
-							</div>
-						),
-					)
-				}
+				{Absent.map((Part) =>
+					Part.absence === undefined ? null : (
+						<div class="specimen-page__absence">
+							<SurfaceAbsent
+								status={Part.absence.status}
+								wouldBe={Part.absence.wouldBe}
+								whyNot={Part.absence.whyNot}
+								next={Part.absence.next}
+								note={Part.absence.note}
+							/>
+						</div>
+					),
+				)}
 			</div>
 		</RecordBand>
 
@@ -417,29 +435,27 @@ const TrailItems = [
 			</div>
 
 			<div class="specimen-page__states">
-				{
-					StateCells.map((Cell) => (
-						<div class="specimen-page__state">
-							<ShellState
-								kind={Cell.kind}
-								index={Cell.index}
-								statement={Cell.statement}
-								cause={Cell.cause}
-								next={Cell.next}
-								rows={Cell.rows}
-								shown={Cell.shown}
-								total={Cell.total}
-								value={Cell.value}
-								limit={Cell.limit}
-								asOf={Cell.asOf}
-								age={Cell.age}
-								keys={Cell.keys}
-								note={Cell.note}
-								surface="bare"
-							/>
-						</div>
-					))
-				}
+				{StateCells.map((Cell) => (
+					<div class="specimen-page__state">
+						<ShellState
+							kind={Cell.kind}
+							index={Cell.index}
+							statement={Cell.statement}
+							cause={Cell.cause}
+							next={Cell.next}
+							rows={Cell.rows}
+							shown={Cell.shown}
+							total={Cell.total}
+							value={Cell.value}
+							limit={Cell.limit}
+							asOf={Cell.asOf}
+							age={Cell.age}
+							keys={Cell.keys}
+							note={Cell.note}
+							surface="bare"
+						/>
+					</div>
+				))}
 			</div>
 		</RecordBand>
 
@@ -459,7 +475,7 @@ const TrailItems = [
 				<RecordLedger
 					rows={RegisterRows}
 					columns={2}
-					register={`# REGISTER / 0${RegisterRows.length}`}
+					register="REGISTER"
 				/>
 			</div>
 

@@ -23,21 +23,32 @@ import { beforeAll, describe, expect, it } from "vitest";
 
 import Grid from "../../Component/Dynamic/Properties/Grid.astro";
 
-import { ClaimsOf, FiledOf, ItemsOf } from "../../Component/Dynamic/Properties/Data.js";
+import {
+	ClaimsOf,
+	FiledOf,
+	ItemsOf,
+} from "../../Component/Dynamic/Properties/Data.js";
 
 import type { PropertyEntry } from "../../Component/Dynamic/Properties/Type.js";
 
 /** The six, as `ItemsOf` resolves them from the locale's own copy. */
 const Copy: Record<string, string> = {
-	"home:features.item.designTokens.title": "Native services where they count.",
-	"home:features.item.designTokens.description": "Heavy editor work runs natively.",
-	"home:features.item.componentLibrary.title": "Unmodified extensions, no fork path.",
-	"home:features.item.componentLibrary.description": "Extensions run unmodified.",
+	"home:features.item.designTokens.title":
+		"Native services where they count.",
+	"home:features.item.designTokens.description":
+		"Heavy editor work runs natively.",
+	"home:features.item.componentLibrary.title":
+		"Unmodified extensions, no fork path.",
+	"home:features.item.componentLibrary.description":
+		"Extensions run unmodified.",
 	"home:features.item.documentation.title": "Fibers, not Promises.",
 	"home:features.item.documentation.description": "Failures are typed.",
-	"home:features.item.versionControl.title": "One source tree, configured targets.",
-	"home:features.item.versionControl.description": "Tauri uses the OS WebView.",
-	"home:features.item.cicdIntegration.title": "Background daemon, always running.",
+	"home:features.item.versionControl.title":
+		"One source tree, configured targets.",
+	"home:features.item.versionControl.description":
+		"Tauri uses the OS WebView.",
+	"home:features.item.cicdIntegration.title":
+		"Background daemon, always running.",
 	"home:features.item.cicdIntegration.description": "A persistent daemon.",
 	"home:features.item.collaboration.title": "CC0. No restrictions.",
 	"home:features.item.collaboration.description": "Fork it, ship it.",
@@ -57,7 +68,9 @@ let Page: Window["document"];
 beforeAll(async () => {
 	const Container = await AstroContainer.create();
 
-	Html = await Container.renderToString(Grid, { props: { entries: Entries } });
+	Html = await Container.renderToString(Grid, {
+		props: { entries: Entries },
+	});
 
 	const Parsed = new Window({ url: "https://editor.land/Specimen" });
 
@@ -67,9 +80,8 @@ beforeAll(async () => {
 });
 
 /** All elements matching a selector, as a real array. */
-const All = (Selector: string): ParsedElement[] => [
-	...Page.querySelectorAll(Selector),
-] as ParsedElement[];
+const All = (Selector: string): ParsedElement[] =>
+	[...Page.querySelectorAll(Selector)] as ParsedElement[];
 
 /** The first element matching a selector. Throws rather than returning null. */
 const One = (Selector: string): ParsedElement => {
@@ -90,15 +102,15 @@ describe("the properties grid", () => {
 	});
 
 	it("puts one record on each Jelly card, in the record's own anatomy", () => {
-		const Records = All(".properties-grid jelly-card > .record-entry.properties-entry");
+		const Records = All(
+			".properties-grid jelly-card > .record-entry.properties-entry",
+		);
 
 		expect(Records).toHaveLength(3);
 
-		expect(All(".record-entry__index").map((Node) => Node.textContent)).toEqual([
-			"# 01",
-			"# 02",
-			"# 03",
-		]);
+		expect(
+			All(".record-entry__index").map((Node) => Node.textContent),
+		).toEqual(["# 01", "# 02", "# 03"]);
 
 		// The claim is an `h3` - a record's name, never the page's `h1`/`h2`.
 		expect(All(".record-entry__name").map((Node) => Node.tagName)).toEqual([
@@ -112,11 +124,9 @@ describe("the properties grid", () => {
 		expect(All(".record-entry__link")).toHaveLength(3);
 		expect(All(".record-entry__arrow")).toHaveLength(3);
 
-		expect(All(".record-entry__link").map((Node) => Node.getAttribute("href"))).toEqual([
-			"/Doc/why-rust",
-			"/Doc/cocoon",
-			"/Doc/why-effect-ts",
-		]);
+		expect(
+			All(".record-entry__link").map((Node) => Node.getAttribute("href")),
+		).toEqual(["/Doc/why-rust", "/Doc/cocoon", "/Doc/why-effect-ts"]);
 	});
 
 	it("hands each card its own fill and no second surface", () => {
@@ -137,19 +147,23 @@ describe("the properties grid", () => {
 
 	it("labels the filed strip and links every filed property", () => {
 		expect(One(".properties-filed__label").textContent).toBe("ALSO FILED");
-		expect(One(".properties-filed").getAttribute("aria-label")).toBe("ALSO FILED");
+		expect(One(".properties-filed").getAttribute("aria-label")).toBe(
+			"ALSO FILED",
+		);
 
-		expect(All(".properties-filed__link").map((Node) => Node.getAttribute("href"))).toEqual([
-			"/Doc/why-tauri",
-			"/Doc/air",
-			"/Doc/why-cc0",
-		]);
+		expect(
+			All(".properties-filed__link").map((Node) =>
+				Node.getAttribute("href"),
+			),
+		).toEqual(["/Doc/why-tauri", "/Doc/air", "/Doc/why-cc0"]);
 	});
 
 	it("prints one sentence, not six blank columns, when there is nothing", async () => {
 		const Container = await AstroContainer.create();
 
-		const Empty = await Container.renderToString(Grid, { props: { entries: [] } });
+		const Empty = await Container.renderToString(Grid, {
+			props: { entries: [] },
+		});
 
 		expect(Empty).toContain("properties-empty");
 		expect(Empty).not.toContain("properties-grid");
@@ -168,7 +182,9 @@ describe("the records it is handed", () => {
 
 		const Container = await AstroContainer.create();
 
-		const Html = await Container.renderToString(Grid, { props: { entries: Bare } });
+		const Html = await Container.renderToString(Grid, {
+			props: { entries: Bare },
+		});
 
 		expect(Html).toContain("properties-filed__name");
 		expect(Html).not.toContain("properties-filed__link");

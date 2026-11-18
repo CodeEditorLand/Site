@@ -114,37 +114,41 @@ const HasSlot = Astro.slots.has("default");
 >
 	<div class="ShellPlate__grid">
 		<div class="ShellPlate__media">
-			{
-				trace ? (
-					<div class="ShellPlate__trace">
-						<p class="ShellPlate__trace-mark" aria-hidden="true">
-							{trace.mark}
-						</p>
-						<p class="ShellPlate__trace-value">{trace.value}</p>
-						{trace.note ? (
-							<p class="ShellPlate__trace-note">{trace.note}</p>
-						) : null}
-					</div>
-				) : media ? (
-					<img
-						class="ShellPlate__image"
-						src={media.src}
-						alt={media.alt}
-						style={media.position
+			{trace ? (
+				<div class="ShellPlate__trace">
+					<p class="ShellPlate__trace-mark" aria-hidden="true">
+						{trace.mark}
+					</p>
+					<p class="ShellPlate__trace-value">{trace.value}</p>
+					{trace.note ? (
+						<p class="ShellPlate__trace-note">{trace.note}</p>
+					) : null}
+				</div>
+			) : media ? (
+				<img
+					class="ShellPlate__image"
+					src={media.src}
+					alt={media.alt}
+					style={
+						media.position
 							? `object-position:${media.position}`
-							: undefined}
-					/>
-				) : HasSlot ? (
-					<slot />
-				) : null
-			}
+							: undefined
+					}
+				/>
+			) : HasSlot ? (
+				<slot />
+			) : null}
 		</div>
 
 		<figcaption class="ShellPlate__channel">
 			<p class="ShellPlate__register">
-				<span class="ShellPlate__mark" aria-hidden="true">#</span>
+				<span class="ShellPlate__mark" aria-hidden="true">
+					#
+				</span>
 				<span class="ShellPlate__word">PLATE</span>
-				<span class="ShellPlate__slash" aria-hidden="true">/</span>
+				<span class="ShellPlate__slash" aria-hidden="true">
+					/
+				</span>
 				<span class="ShellPlate__index">{index}</span>
 			</p>
 
@@ -157,34 +161,35 @@ const HasSlot = Astro.slots.has("default");
 					<dt class="ShellPlate__key">SOURCE:</dt>
 					<dd class="ShellPlate__value">{source}</dd>
 				</div>
-				{
-					state ? (
-						<div class="ShellPlate__row">
-							<dt class="ShellPlate__key">STATE:</dt>
-							<dd
-								class:list={[
-									"ShellPlate__value",
-									"ShellPlate__value--state",
-									Resolved ? `ShellPlate__value--${Resolved}` : null,
-								]}
-							>
-								{state}
-							</dd>
-						</div>
-					) : null
-				}
+				{state ? (
+					<div class="ShellPlate__row">
+						<dt class="ShellPlate__key">STATE:</dt>
+						<dd
+							class:list={[
+								"ShellPlate__value",
+								"ShellPlate__value--state",
+								Resolved
+									? `ShellPlate__value--${Resolved}`
+									: null,
+							]}
+						>
+							{state}
+						</dd>
+					</div>
+				) : null}
 			</dl>
 
-			{
-				proposition ? (
-					<p class="ShellPlate__proposition">
-						<span class="ShellPlate__proposition-mark" aria-hidden="true">
-							&#8627;
-						</span>
-						{proposition}
-					</p>
-				) : null
-			}
+			{proposition ? (
+				<p class="ShellPlate__proposition">
+					<span
+						class="ShellPlate__proposition-mark"
+						aria-hidden="true"
+					>
+						&#8627;
+					</span>
+					{proposition}
+				</p>
+			) : null}
 		</figcaption>
 	</div>
 </figure>

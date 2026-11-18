@@ -82,87 +82,108 @@ const RowId = (Column: BoardColumn, Row: BoardRow, Index: number): string =>
 ---
 
 <section class:list={["status-board", Class]}>
-	{
-		columns.length > 0 ? (
-			<div class="status-board__shelves">
-				{columns.map((Column) => (
-					<section
-						class="status-board__column"
-						id={`board-${Column.key}`}
-						aria-labelledby={`board-${Column.key}-head`}
-					>
-						<header class="status-board__head">
-							<p class="status-board__register">
-								<span class="status-board__mark" aria-hidden="true">
-									#
-								</span>
-								<span class="status-board__label" id={`board-${Column.key}-head`}>
-									{Column.label}
-								</span>
-								<span class="status-board__count">
-									{Column.rows.length}
-								</span>
-							</p>
-							<p class="status-board__words">
-								{Column.words.join("\u2001")}
-							</p>
-						</header>
+	{columns.length > 0 ? (
+		<div class="status-board__shelves">
+			{columns.map((Column) => (
+				<section
+					class="status-board__column"
+					id={`board-${Column.key}`}
+					aria-labelledby={`board-${Column.key}-head`}
+				>
+					<header class="status-board__head">
+						<p class="status-board__register">
+							<span class="status-board__mark" aria-hidden="true">
+								#
+							</span>
+							<span
+								class="status-board__label"
+								id={`board-${Column.key}-head`}
+							>
+								{Column.label}
+							</span>
+							<span class="status-board__count">
+								{Column.rows.length}
+							</span>
+						</p>
+						<p class="status-board__words">
+							{Column.words.join("\u2001")}
+						</p>
+					</header>
 
-						<p class="status-board__note">{Column.note}</p>
+					<p class="status-board__note">{Column.note}</p>
 
-						{Column.rows.length > 0 ? (
-							<ol class="status-board__rows">
-								{Column.rows.map((Row, RowIndex) => (
-									<li class="status-board__row" id={RowId(Column, Row, RowIndex)}>
-										{Row.href ? (
-											<a class="status-board__link" href={Row.href}>
-												<span class="status-board__row-mark">{Row.mark}</span>
-												<span class="status-board__row-body">
-													<span class="status-board__row-name">{Row.label}</span>
-													<span class="status-board__row-meta">{Row.meta}</span>
+					{Column.rows.length > 0 ? (
+						<ol class="status-board__rows">
+							{Column.rows.map((Row, RowIndex) => (
+								<li
+									class="status-board__row"
+									id={RowId(Column, Row, RowIndex)}
+								>
+									{Row.href ? (
+										<a
+											class="status-board__link"
+											href={Row.href}
+										>
+											<span class="status-board__row-mark">
+												{Row.mark}
+											</span>
+											<span class="status-board__row-body">
+												<span class="status-board__row-name">
+													{Row.label}
 												</span>
-												<span
-													class:list={[
-														"status-board__row-state",
-														`status-board__row-state--${ToneOf(Row.state)}`,
-													]}
-												>
-													{Row.state}
-												</span>
-											</a>
-										) : (
-											<span class="status-board__link status-board__link--statement">
-												<span class="status-board__row-mark">{Row.mark}</span>
-												<span class="status-board__row-body">
-													<span class="status-board__row-name">{Row.label}</span>
-													<span class="status-board__row-meta">{Row.meta}</span>
-												</span>
-												<span
-													class:list={[
-														"status-board__row-state",
-														`status-board__row-state--${ToneOf(Row.state)}`,
-													]}
-												>
-													{Row.state}
+												<span class="status-board__row-meta">
+													{Row.meta}
 												</span>
 											</span>
-										)}
-										{Row.note ? (
-											<p class="status-board__row-note">{Row.note}</p>
-										) : null}
-									</li>
-								))}
-							</ol>
-						) : (
-							<p class="status-board__empty">{Column.empty}</p>
-						)}
-					</section>
-				))}
-			</div>
-		) : (
-			<p class="status-board__empty">{empty}</p>
-		)
-	}
+											<span
+												class:list={[
+													"status-board__row-state",
+													`status-board__row-state--${ToneOf(Row.state)}`,
+												]}
+											>
+												{Row.state}
+											</span>
+										</a>
+									) : (
+										<span class="status-board__link status-board__link--statement">
+											<span class="status-board__row-mark">
+												{Row.mark}
+											</span>
+											<span class="status-board__row-body">
+												<span class="status-board__row-name">
+													{Row.label}
+												</span>
+												<span class="status-board__row-meta">
+													{Row.meta}
+												</span>
+											</span>
+											<span
+												class:list={[
+													"status-board__row-state",
+													`status-board__row-state--${ToneOf(Row.state)}`,
+												]}
+											>
+												{Row.state}
+											</span>
+										</span>
+									)}
+									{Row.note ? (
+										<p class="status-board__row-note">
+											{Row.note}
+										</p>
+									) : null}
+								</li>
+							))}
+						</ol>
+					) : (
+						<p class="status-board__empty">{Column.empty}</p>
+					)}
+				</section>
+			))}
+		</div>
+	) : (
+		<p class="status-board__empty">{empty}</p>
+	)}
 
 	{caption ? <p class="status-board__caption">{caption}</p> : null}
 </section>

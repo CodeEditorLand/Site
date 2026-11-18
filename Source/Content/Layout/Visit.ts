@@ -72,8 +72,7 @@ export const VisitTombstone: VisitTombstone = {
 	state: "UNAVAILABLE",
 	statement:
 		"No record is filed at this address. The site answers every unresolved path here and sends the reader on.",
-	cause:
-		"The address is well formed; the build emits no route for it and the redirect table carries no entry. A moved page would have left a redirect, and a renamed one a tombstone.",
+	cause: "The address is well formed; the build emits no route for it and the redirect table carries no entry. A moved page would have left a redirect, and a renamed one a tombstone.",
 	next: { label: "OPEN THE INDEX", href: "/Contents" },
 	back: { label: "BACK TO LAND", href: "/" },
 	note: `SOURCE: _REDIRECTS${Quad}EVERY PATH WITHOUT A STATIC FILE IS SERVED THIS PAGE`,

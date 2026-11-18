@@ -60,40 +60,40 @@ interface Props {
 const { stages, orientation, variant = "rail" } = Astro.props;
 ---
 
-{
-	variant === "plates" ? (
-		<ol class="record-stage record-stage--plates">
-			{stages.map((stage) => (
-				<li class="record-stage__plate">
-					<span class="record-stage__plate-index">{stage.index}</span>
-					<div class="record-stage__plate-body">
-						{stage.href ? (
-							<a class="record-stage__plate-label" href={stage.href}>
-								{stage.label}
-							</a>
-						) : (
-							<span class="record-stage__plate-label">{stage.label}</span>
-						)}
-						<span class="record-stage__plate-line">{stage.line}</span>
-					</div>
-				</li>
-			))}
-		</ol>
-	) : (
-		<ol class={`record-stage record-stage--${orientation ?? "row"}`}>
-			{stages.map((stage) => (
-				<li class="record-stage__item">
-					<span class="record-stage__index">{stage.index}</span>
+{variant === "plates" ? (
+	<ol class="record-stage record-stage--plates">
+		{stages.map((stage) => (
+			<li class="record-stage__plate">
+				<span class="record-stage__plate-index">{stage.index}</span>
+				<div class="record-stage__plate-body">
 					{stage.href ? (
-						<a class="record-stage__label" href={stage.href}>
+						<a class="record-stage__plate-label" href={stage.href}>
 							{stage.label}
 						</a>
 					) : (
-						<span class="record-stage__label">{stage.label}</span>
+						<span class="record-stage__plate-label">
+							{stage.label}
+						</span>
 					)}
-					<span class="record-stage__line">{stage.line}</span>
-				</li>
-			))}
-		</ol>
-	)
-}
+					<span class="record-stage__plate-line">{stage.line}</span>
+				</div>
+			</li>
+		))}
+	</ol>
+) : (
+	<ol class={`record-stage record-stage--${orientation ?? "row"}`}>
+		{stages.map((stage) => (
+			<li class="record-stage__item">
+				<span class="record-stage__index">{stage.index}</span>
+				{stage.href ? (
+					<a class="record-stage__label" href={stage.href}>
+						{stage.label}
+					</a>
+				) : (
+					<span class="record-stage__label">{stage.label}</span>
+				)}
+				<span class="record-stage__line">{stage.line}</span>
+			</li>
+		))}
+	</ol>
+)}

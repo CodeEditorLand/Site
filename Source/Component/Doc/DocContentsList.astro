@@ -31,16 +31,14 @@ const Marker = (Position: number): string =>
 ---
 
 <ol class:list={["doc-contents__list", Class]}>
-	{
-		items.map((Item, Position) => (
-			<li class="doc-contents__item">
-				<a class="doc-contents__link" href={Item.Href}>
-					<span class="doc-contents__marker" aria-hidden="true">
-						{Marker(Position)}
-					</span>
-					<span class="doc-contents__name">{Item.Label}</span>
-				</a>
-			</li>
-		))
-	}
+	{items.map((Item, Position) => (
+		<li class="doc-contents__item">
+			<a class="doc-contents__link" href={Item.Href}>
+				<span class="doc-contents__marker" aria-hidden="true">
+					{Marker(Position)}
+				</span>
+				<span class="doc-contents__name">{Item.Label}</span>
+			</a>
+		</li>
+	))}
 </ol>

@@ -39,86 +39,86 @@ const Panel = appendix.Kind;
 	<div class="doc-appendix__panel">
 		<p class="doc-appendix__lede">{appendix.Lede}</p>
 
-		{
-			Panel === "architecture" ? (
-				<ul class="doc-badges">
-					{(appendix.Index ?? []).map((Entry) => (
-						<li class="doc-badges__item">
-							<a class="doc-badge" href={Entry.href}>
-								{Entry.label}
-							</a>
-						</li>
-					))}
-				</ul>
-			) : null
-		}
+		{Panel === "architecture" ? (
+			<ul class="doc-badges">
+				{(appendix.Index ?? []).map((Entry) => (
+					<li class="doc-badges__item">
+						<a class="doc-badge" href={Entry.href}>
+							{Entry.label}
+						</a>
+					</li>
+				))}
+			</ul>
+		) : null}
 
-		{
-			Panel === "backend" ? (
-				<ul class="doc-services">
-					{appendix.Rows.map((Row) => (
-						<li class="doc-services__item">
-							<a
-								class="doc-services__link"
-								href={Row.Href}
-								target={Row.Blank ? "_blank" : undefined}
-								rel={Row.Blank ? "noopener noreferrer" : undefined}
-							>
-								{Row.Label}
-								<span class="doc-appendix__arrow" aria-hidden="true">
-									↗
-								</span>
-							</a>{" "}
-							<span class="doc-services__note">- {Row.Note}</span>
-						</li>
-					))}
-				</ul>
-			) : null
-		}
-
-		{
-			Panel === "deployments" ? (
-				<ul class="doc-tiles">
-					{appendix.Rows.map((Row) => (
-						<li class="doc-tiles__item">
-							<a
-								class="doc-tile"
-								href={Row.Href}
-								target={Row.Blank ? "_blank" : undefined}
-								rel={Row.Blank ? "noopener noreferrer" : undefined}
-							>
-								<span class="doc-tile__label">
-									{Row.Label}
-									<span class="doc-appendix__arrow" aria-hidden="true">
-										↗
-									</span>
-								</span>
-								{Row.Note ? <span class="doc-tile__note">{Row.Note}</span> : null}
-							</a>
-						</li>
-					))}
-				</ul>
-			) : null
-		}
-
-		{
-			Panel === "architecture" ? (
-				<div class="doc-appendix__foot">
-					{appendix.Rows.map((Row) => (
+		{Panel === "backend" ? (
+			<ul class="doc-services">
+				{appendix.Rows.map((Row) => (
+					<li class="doc-services__item">
 						<a
-							class="doc-appendix__link"
+							class="doc-services__link"
 							href={Row.Href}
 							target={Row.Blank ? "_blank" : undefined}
 							rel={Row.Blank ? "noopener noreferrer" : undefined}
 						>
 							{Row.Label}
-							<span class="doc-appendix__arrow" aria-hidden="true">
+							<span
+								class="doc-appendix__arrow"
+								aria-hidden="true"
+							>
 								↗
 							</span>
+						</a>{" "}
+						<span class="doc-services__note">- {Row.Note}</span>
+					</li>
+				))}
+			</ul>
+		) : null}
+
+		{Panel === "deployments" ? (
+			<ul class="doc-tiles">
+				{appendix.Rows.map((Row) => (
+					<li class="doc-tiles__item">
+						<a
+							class="doc-tile"
+							href={Row.Href}
+							target={Row.Blank ? "_blank" : undefined}
+							rel={Row.Blank ? "noopener noreferrer" : undefined}
+						>
+							<span class="doc-tile__label">
+								{Row.Label}
+								<span
+									class="doc-appendix__arrow"
+									aria-hidden="true"
+								>
+									↗
+								</span>
+							</span>
+							{Row.Note ? (
+								<span class="doc-tile__note">{Row.Note}</span>
+							) : null}
 						</a>
-					))}
-				</div>
-			) : null
-		}
+					</li>
+				))}
+			</ul>
+		) : null}
+
+		{Panel === "architecture" ? (
+			<div class="doc-appendix__foot">
+				{appendix.Rows.map((Row) => (
+					<a
+						class="doc-appendix__link"
+						href={Row.Href}
+						target={Row.Blank ? "_blank" : undefined}
+						rel={Row.Blank ? "noopener noreferrer" : undefined}
+					>
+						{Row.Label}
+						<span class="doc-appendix__arrow" aria-hidden="true">
+							↗
+						</span>
+					</a>
+				))}
+			</div>
+		) : null}
 	</div>
 </section>

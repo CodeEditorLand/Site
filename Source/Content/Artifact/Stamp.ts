@@ -62,13 +62,16 @@ export const ReleaseStamp: Stamp = {
  * that prints a figure the page did not derive itself - it was handed the totals
  * and it prints them, exactly as the register band does.
  */
-export const DocumentStamp = (Totals: {
-	readonly Routes: number;
-	readonly Documents: number;
-	readonly Elements: number;
-	readonly Blocks: number;
-	readonly Modules: number;
-}, AsOf: string): Stamp => ({
+export const DocumentStamp = (
+	Totals: {
+		readonly Routes: number;
+		readonly Documents: number;
+		readonly Elements: number;
+		readonly Blocks: number;
+		readonly Modules: number;
+	},
+	AsOf: string,
+): Stamp => ({
 	index: "STAMP_01",
 	label: "DOCUMENT",
 	mark: "\u3008FIELD MANUAL\u3009",
@@ -79,7 +82,10 @@ export const DocumentStamp = (Totals: {
 		{ key: "HOLDING", value: `${Totals.Routes}${Quad}ROUTES` },
 		{ key: "READS", value: `${Totals.Documents}${Quad}DOCUMENTS` },
 		{ key: "FORMS", value: `${Totals.Blocks}${Quad}BLOCKS` },
-		{ key: "DECLARED", value: `${Totals.Modules}${Quad}MODULES OUTSIDE BULK` },
+		{
+			key: "DECLARED",
+			value: `${Totals.Modules}${Quad}MODULES OUTSIDE BULK`,
+		},
 	],
 	authority:
 		"SOURCE/SCRIPT/REGISTER.TS - EVERY FIGURE ON THIS PAGE IS COUNTED FROM THE TREE AND READ BACK THROUGH LIBRARY/INDEX/REGISTER.TS, SO THE STAMP AUTHENTICATES THE READING AND NOT THE PROSE.",

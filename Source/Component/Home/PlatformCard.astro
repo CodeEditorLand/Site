@@ -50,20 +50,30 @@ const ActionInk =
 		<span class="home-platform__index">{card.Index}</span>
 
 		<h3 class="home-platform__name" style={`color:${card.Ink}`}>
-			<Glyph className="home-platform__icon" size={18} aria-hidden="true" />
+			<Glyph
+				className="home-platform__icon"
+				size={18}
+				aria-hidden="true"
+			/>
 			{card.Name}
 		</h3>
 
 		<p class="home-platform__architecture">
-			<span class="home-record__bracket" aria-hidden="true">〈</span>
+			<span class="home-record__bracket" aria-hidden="true">
+				〈
+			</span>
 			{card.Architecture}
-			<span class="home-record__bracket" aria-hidden="true">〉</span>
+			<span class="home-record__bracket" aria-hidden="true">
+				〉
+			</span>
 		</p>
 	</div>
 
 	<div class="home-platform__facts">
 		<p class="home-platform__route">
-			<span class="home-record__slash" aria-hidden="true">/</span>
+			<span class="home-record__slash" aria-hidden="true">
+				/
+			</span>
 			<span class="home-record__route-key">CHANNEL</span>
 			<span class="home-record__route-value">: {card.Channel}</span>
 		</p>

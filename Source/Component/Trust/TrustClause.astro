@@ -61,7 +61,12 @@ const { number, id, class: Class } = Astro.props;
 		href={`#${id}`}
 		aria-label={`Clause ${Number(number)}`}
 	>
-		<span class="trust-clause__mark" aria-hidden="true">&#167;</span>{number}
+		<span class="trust-clause__mark" aria-hidden="true">
+			&#167;
+		</span>
+		{number}
 	</a>
-	<span class="trust-clause__name"><slot /></span>
+	<span class="trust-clause__name">
+		<slot />
+	</span>
 </h2>

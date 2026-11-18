@@ -76,7 +76,10 @@ const PageStrip = BuildDocStrip(
 		Source: "RUSTDOC",
 		Extras: [
 			{
-				Label: T("strip.crates", { ns: "doc", defaultValue: "CRATES:" }),
+				Label: T("strip.crates", {
+					ns: "doc",
+					defaultValue: "CRATES:",
+				}),
 				Value: String(RustCrates.length),
 			},
 		],
@@ -149,26 +152,29 @@ const CrateRail = RustCrates.map((Crate, Position) => ({
 				>
 					<div slot="primary">
 						<ul class="doc-crates">
-							{
-								RustCrates.map((Crate) => (
-									<li class="doc-crates__item">
-										<a
-											class="doc-crate"
-											href={Crate.Url}
-											target="_blank"
-											rel="noopener noreferrer"
-										>
-											<span class="doc-crate__label">
-												{Crate.Label}
-												<span class="doc-crate__arrow" aria-hidden="true">
-													↗
-												</span>
+							{RustCrates.map((Crate) => (
+								<li class="doc-crates__item">
+									<a
+										class="doc-crate"
+										href={Crate.Url}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										<span class="doc-crate__label">
+											{Crate.Label}
+											<span
+												class="doc-crate__arrow"
+												aria-hidden="true"
+											>
+												↗
 											</span>
-											<span class="doc-crate__note">{Crate.Description}</span>
-										</a>
-									</li>
-								))
-							}
+										</span>
+										<span class="doc-crate__note">
+											{Crate.Description}
+										</span>
+									</a>
+								</li>
+							))}
 						</ul>
 					</div>
 
@@ -187,8 +193,12 @@ const CrateRail = RustCrates.map((Crate, Position) => ({
 					</div>
 
 					<div slot="drawer">
-						<p class="doc-rust__contract">{Surface.drawer.statement}</p>
-						<p class="doc-rust__contract-source">{Surface.drawer.source}</p>
+						<p class="doc-rust__contract">
+							{Surface.drawer.statement}
+						</p>
+						<p class="doc-rust__contract-source">
+							{Surface.drawer.source}
+						</p>
 
 						<div class="PageShell__row" style="--row-tracks:2">
 							<ShellState
@@ -200,7 +210,10 @@ const CrateRail = RustCrates.map((Crate, Position) => ({
 								rows={[
 									{ key: "SOURCE:", value: "RUSTDOC" },
 									{ key: "AS OF:", value: "UNAVAILABLE" },
-									{ key: "CRATES:", value: String(RustCrates.length) },
+									{
+										key: "CRATES:",
+										value: String(RustCrates.length),
+									},
 								]}
 								note="SOURCE: THE BUILD RECORDS NO RUSTDOC DATE"
 							/>
@@ -217,7 +230,10 @@ const CrateRail = RustCrates.map((Crate, Position) => ({
 				</ShellPanes>
 
 				<p class="doc-rust__back">
-					<a href="/Doc">{Documentation}<span aria-hidden="true"> ←</span></a>
+					<a href="/Doc">
+						{Documentation}
+						<span aria-hidden="true"> ←</span>
+					</a>
 				</p>
 			</DocArticle>
 		</div>

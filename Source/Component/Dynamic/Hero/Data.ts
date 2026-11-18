@@ -186,13 +186,17 @@ const HeroBandFor = (T: Translate): HeroBand => ({
 		},
 
 		{
-			key: Label(T("home:hero.fact.temp.label", { defaultValue: "TEMP" })),
+			key: Label(
+				T("home:hero.fact.temp.label", { defaultValue: "TEMP" }),
+			),
 
 			value: T("home:hero.fact.temp.value", { defaultValue: "16.2 C" }),
 		},
 
 		{
-			key: Label(T("home:hero.fact.wind.label", { defaultValue: "WIND" })),
+			key: Label(
+				T("home:hero.fact.wind.label", { defaultValue: "WIND" }),
+			),
 
 			value: T("home:hero.fact.wind.value", {
 				defaultValue: "01.8 KM/H",

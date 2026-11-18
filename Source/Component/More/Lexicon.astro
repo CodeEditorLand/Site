@@ -77,64 +77,62 @@ const Label = Run.label.replace(/^\//, "");
 	would be a second sectioning level between the band and its entries.
 */}
 <div class:list={["lexicon", Class]} id={`run-${Run.key}`}>
-	{
-		head ? (
-			<header class="lexicon__head">
-				{index ? (
-					<p class="lexicon__register">
-						<span class="lexicon__register-mark" aria-hidden="true">
-							#
-						</span>
-						{index}
-					</p>
-				) : null}
-				<h2 class="lexicon__heading">{Label}</h2>
-				<p class="lexicon__note">{Run.note}</p>
-			</header>
-		) : null
-	}
+	{head ? (
+		<header class="lexicon__head">
+			{index ? (
+				<p class="lexicon__register">
+					<span class="lexicon__register-mark" aria-hidden="true">
+						#
+					</span>
+					{index}
+				</p>
+			) : null}
+			<h2 class="lexicon__heading">{Label}</h2>
+			<p class="lexicon__note">{Run.note}</p>
+		</header>
+	) : null}
 
-	{
-		Run.terms.length > 0 ? (
-			<>
-				<nav class="lexicon__letters" aria-label={`${Label} letters`}>
-					{Letters.map((Letter) => (
-						<a
-							class="lexicon__letter-link"
-							href={`#letter-${Run.key}-${Letter.toLowerCase()}`}
+	{Run.terms.length > 0 ? (
+		<>
+			<nav class="lexicon__letters" aria-label={`${Label} letters`}>
+				{Letters.map((Letter) => (
+					<a
+						class="lexicon__letter-link"
+						href={`#letter-${Run.key}-${Letter.toLowerCase()}`}
+					>
+						{Letter}
+					</a>
+				))}
+			</nav>
+
+			<div class="lexicon__groups">
+				{Letters.map((Letter) => {
+					const Terms = Run.terms.filter((Entry) =>
+						Entry.term.toUpperCase().startsWith(Letter),
+					);
+
+					return (
+						<div
+							class="lexicon__group"
+							id={`letter-${Run.key}-${Letter.toLowerCase()}`}
 						>
-							{Letter}
-						</a>
-					))}
-				</nav>
-
-				<div class="lexicon__groups">
-					{Letters.map((Letter) => {
-						const Terms = Run.terms.filter((Entry) =>
-							Entry.term.toUpperCase().startsWith(Letter),
-						);
-
-						return (
-							<div
-								class="lexicon__group"
-								id={`letter-${Run.key}-${Letter.toLowerCase()}`}
-							>
-								<p class="lexicon__letter">
-									<span class="sr-only">Terms beginning with </span>
-									{Letter}
-								</p>
-								<div class="lexicon__entries">
-									{Terms.map((Entry) => (
-										<LexiconEntry term={Entry} run={Run.key} />
-									))}
-								</div>
+							<p class="lexicon__letter">
+								<span class="sr-only">
+									Terms beginning with{" "}
+								</span>
+								{Letter}
+							</p>
+							<div class="lexicon__entries">
+								{Terms.map((Entry) => (
+									<LexiconEntry term={Entry} run={Run.key} />
+								))}
 							</div>
-						);
-					})}
-				</div>
-			</>
-		) : (
-			<p class="lexicon__empty">{Run.empty}</p>
-		)
-	}
+						</div>
+					);
+				})}
+			</div>
+		</>
+	) : (
+		<p class="lexicon__empty">{Run.empty}</p>
+	)}
 </div>

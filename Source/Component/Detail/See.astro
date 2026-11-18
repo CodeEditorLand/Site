@@ -52,26 +52,24 @@ const {
 const References = items.filter((Item) => Item.reason.trim().length > 0);
 ---
 
-{
-	References.length > 0 && (
-		<nav class:list={["detail-see", Class]} aria-label={ariaLabel}>
-			<p class="detail-see__register">
-				<span class="detail-see__mark" aria-hidden="true">
-					↳
-				</span>
-				{label}
-			</p>
+{References.length > 0 && (
+	<nav class:list={["detail-see", Class]} aria-label={ariaLabel}>
+		<p class="detail-see__register">
+			<span class="detail-see__mark" aria-hidden="true">
+				↳
+			</span>
+			{label}
+		</p>
 
-			<ul class="detail-see__list">
-				{References.map((Item) => (
-					<li class="detail-see__row">
-						<a class="detail-see__route" href={Item.href}>
-							{Item.route}
-						</a>
-						<span class="detail-see__reason">{Item.reason}</span>
-					</li>
-				))}
-			</ul>
-		</nav>
-	)
-}
+		<ul class="detail-see__list">
+			{References.map((Item) => (
+				<li class="detail-see__row">
+					<a class="detail-see__route" href={Item.href}>
+						{Item.route}
+					</a>
+					<span class="detail-see__reason">{Item.reason}</span>
+				</li>
+			))}
+		</ul>
+	</nav>
+)}

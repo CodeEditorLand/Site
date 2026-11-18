@@ -210,7 +210,9 @@ const IsLoading = kind === "loading";
 	aria-label={`${Word}: ${statement}`}
 >
 	<p class="ShellState__register">
-		<span class="ShellState__mark" aria-hidden="true">#</span>
+		<span class="ShellState__mark" aria-hidden="true">
+			#
+		</span>
 		<span class="ShellState__index">{index}</span>
 	</p>
 
@@ -224,122 +226,108 @@ const IsLoading = kind === "loading";
 		<div class="ShellState__row">
 			<dt class="ShellState__key">{StatementKey[kind]}</dt>
 			<dd class="ShellState__value">
-				{
-					IsTooLong && value ? (
-						<>
-							<span class="ShellState__clip" title={value}>
-								{value.length > 72 ? `${value.slice(0, 72)}…` : value}
-							</span>
-							<span class="ShellState__clip-meta">
-								<span class="ShellState__clip-key">FULL:</span>
-								{`${value.length} CHARACTERS`}
-							</span>
-						</>
-					) : (
-						statement
-					)
-				}
+				{IsTooLong && value ? (
+					<>
+						<span class="ShellState__clip" title={value}>
+							{value.length > 72
+								? `${value.slice(0, 72)}…`
+								: value}
+						</span>
+						<span class="ShellState__clip-meta">
+							<span class="ShellState__clip-key">FULL:</span>
+							{`${value.length} CHARACTERS`}
+						</span>
+					</>
+				) : (
+					statement
+				)}
 			</dd>
 		</div>
 
-		{
-			cause ? (
-				<div class="ShellState__row">
-					<dt class="ShellState__key">{CauseKey[kind]}</dt>
-					<dd class="ShellState__value">{cause}</dd>
-				</div>
-			) : null
-		}
+		{cause ? (
+			<div class="ShellState__row">
+				<dt class="ShellState__key">{CauseKey[kind]}</dt>
+				<dd class="ShellState__value">{cause}</dd>
+			</div>
+		) : null}
 
-		{
-			IsTooMuch && shown !== undefined && total !== undefined ? (
-				<div class="ShellState__row">
-					<dt class="ShellState__key">SHOWING:</dt>
-					<dd class="ShellState__value ShellState__value--figure">
-						{shown}
-						<span class="ShellState__of">OF</span>
-						{total}
-					</dd>
-				</div>
-			) : null
-		}
+		{IsTooMuch && shown !== undefined && total !== undefined ? (
+			<div class="ShellState__row">
+				<dt class="ShellState__key">SHOWING:</dt>
+				<dd class="ShellState__value ShellState__value--figure">
+					{shown}
+					<span class="ShellState__of">OF</span>
+					{total}
+				</dd>
+			</div>
+		) : null}
 
-		{
-			IsStale && asOf ? (
-				<div class="ShellState__row">
-					<dt class="ShellState__key">AS OF:</dt>
-					<dd class="ShellState__value">
-						{asOf}
-						{age ? <span class="ShellState__age">{age}</span> : null}
-					</dd>
-				</div>
-			) : null
-		}
+		{IsStale && asOf ? (
+			<div class="ShellState__row">
+				<dt class="ShellState__key">AS OF:</dt>
+				<dd class="ShellState__value">
+					{asOf}
+					{age ? <span class="ShellState__age">{age}</span> : null}
+				</dd>
+			</div>
+		) : null}
 
-		{
-			IsTooLong && limit ? (
-				<div class="ShellState__row">
-					<dt class="ShellState__key">LIMIT:</dt>
-					<dd class="ShellState__value">{limit}</dd>
-				</div>
-			) : null
-		}
+		{IsTooLong && limit ? (
+			<div class="ShellState__row">
+				<dt class="ShellState__key">LIMIT:</dt>
+				<dd class="ShellState__value">{limit}</dd>
+			</div>
+		) : null}
 
-		{
-			next ? (
-				<div class="ShellState__row">
-					<dt class="ShellState__key">
-						{kind === "error" ? "RETRY:" : "NEXT:"}
-					</dt>
-					<dd class="ShellState__value">
-						<a class="ShellState__action" href={next.href}>
-							{next.label}
-							{"\u2001"}
-							<span aria-hidden="true">&rarr;</span>
-						</a>
-					</dd>
-				</div>
-			) : null
-		}
+		{next ? (
+			<div class="ShellState__row">
+				<dt class="ShellState__key">
+					{kind === "error" ? "RETRY:" : "NEXT:"}
+				</dt>
+				<dd class="ShellState__value">
+					<a class="ShellState__action" href={next.href}>
+						{next.label}
+						{"\u2001"}
+						<span aria-hidden="true">&rarr;</span>
+					</a>
+				</dd>
+			</div>
+		) : null}
 	</dl>
 
-	{
-		IsLoading ? (
-			<div class="ShellState__skeleton" aria-hidden="true">
-				{(keys.length > 0 ? keys : ["RECORD", "ROUTE", "STATE"]).map(
-					(Key, Index) => (
-						<p class="ShellState__skeleton-row">
-							<span class="ShellState__skeleton-key">{Key}:</span>
-							<span
-								class="ShellState__bar"
-								style={`--bar:${[64, 42, 78, 55, 36, 70][Index % 6]}%`}
-							/>
-						</p>
-					),
-				)}
-			</div>
-		) : null
-	}
+	{IsLoading ? (
+		<div class="ShellState__skeleton" aria-hidden="true">
+			{(keys.length > 0 ? keys : ["RECORD", "ROUTE", "STATE"]).map(
+				(Key, Index) => (
+					<p class="ShellState__skeleton-row">
+						<span class="ShellState__skeleton-key">{Key}:</span>
+						<span
+							class="ShellState__bar"
+							style={`--bar:${[64, 42, 78, 55, 36, 70][Index % 6]}%`}
+						/>
+					</p>
+				),
+			)}
+		</div>
+	) : null}
 
-	{
-		rows.length > 0 ? (
-			<dl class="ShellState__facts">
-				{rows.map((Row) => (
-					<div class="ShellState__fact">
-						<dt class="ShellState__fact-key">{Row.key}</dt>
-						<dd
-							class:list={[
-								"ShellState__fact-value",
-								Row.code ? "ShellState__fact-value--code" : null,
-							]}
-						>
-							{Row.value}
-						</dd>
-					</div>
-				))}
-			</dl>
-		) : null
-	}
+	{rows.length > 0 ? (
+		<dl class="ShellState__facts">
+			{rows.map((Row) => (
+				<div class="ShellState__fact">
+					<dt class="ShellState__fact-key">{Row.key}</dt>
+					<dd
+						class:list={[
+							"ShellState__fact-value",
+							Row.code ? "ShellState__fact-value--code" : null,
+						]}
+					>
+						{Row.value}
+					</dd>
+				</div>
+			))}
+		</dl>
+	) : null}
 
 	{note ? <p class="ShellState__note">{note}</p> : null}
 </aside>

@@ -55,35 +55,33 @@ const Items = toc?.Items ?? [];
 const Label = toc?.Label ?? "";
 ---
 
-{
-	Items.length > 0 ? (
-		variant === "disclosure" ? (
-			<details
-				class:list={["doc-contents", "doc-contents--disclosure", Class]}
-				data-doc-contents
-			>
-				<summary class="doc-contents__summary">
-					<span class="doc-contents__label">{Label}</span>
-					<span class="doc-contents__marker" aria-hidden="true">
-						›
-					</span>
-				</summary>
-				<nav class="doc-contents__nav" aria-label={Label}>
-					<DocContentsList items={Items} />
-				</nav>
-			</details>
-		) : (
-			<nav
-				class:list={["doc-contents", "doc-contents--rail", Class]}
-				aria-label={Label}
-				data-doc-contents
-			>
-				<p class="doc-contents__label">{Label}</p>
+{Items.length > 0 ? (
+	variant === "disclosure" ? (
+		<details
+			class:list={["doc-contents", "doc-contents--disclosure", Class]}
+			data-doc-contents
+		>
+			<summary class="doc-contents__summary">
+				<span class="doc-contents__label">{Label}</span>
+				<span class="doc-contents__marker" aria-hidden="true">
+					›
+				</span>
+			</summary>
+			<nav class="doc-contents__nav" aria-label={Label}>
 				<DocContentsList items={Items} />
 			</nav>
-		)
-	) : null
-}
+		</details>
+	) : (
+		<nav
+			class:list={["doc-contents", "doc-contents--rail", Class]}
+			aria-label={Label}
+			data-doc-contents
+		>
+			<p class="doc-contents__label">{Label}</p>
+			<DocContentsList items={Items} />
+		</nav>
+	)
+) : null}
 
 <script>
 	import { WireContents } from "./Contents.js";

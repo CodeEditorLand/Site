@@ -83,9 +83,11 @@ time[datetime] {
 // The unit is set at the name register, which adds its letter-space after the
 // last letter as well as between them. Cancelling exactly that much on the
 // right edge is what makes the unit's optical edge flush with the column the
-// measure ends on - the difference between "RUST " and "RUST".
+// measure ends on - the difference between "RUST " and "RUST". The cancel is
+// the layer's named edge (`--optical-edge-row`), because the same one pixel is
+// taken back on every tracked label that ends a row.
 .record-instrument__unit {
-	margin-inline-end: calc(var(--track-row) * -1);
+	margin-inline-end: var(--optical-edge-row);
 	white-space: nowrap;
 }
 

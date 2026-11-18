@@ -152,24 +152,18 @@ const BackToTop = T("common.button.backToTop", {
 			measure={false}
 		>
 			<ul class="doc-features">
-				{
-					Index.Features.map((Card) => (
-						<DocCard card={Card} level={2} />
-					))
-				}
+				{Index.Features.map((Card) => (
+					<DocCard card={Card} level={2} />
+				))}
 			</ul>
 
-			{
-				Index.Sections.map((Section) => (
-					<DocIndex section={Section} />
-				))
-			}
+			{Index.Sections.map((Section) => (
+				<DocIndex section={Section} />
+			))}
 
-			{
-				Index.Appendices.map((Appendix) => (
-					<DocAppendix appendix={Appendix} />
-				))
-			}
+			{Index.Appendices.map((Appendix) => (
+				<DocAppendix appendix={Appendix} />
+			))}
 
 			<div class="doc-archive">
 				<RecordArchive
@@ -181,7 +175,10 @@ const BackToTop = T("common.button.backToTop", {
 			</div>
 
 			<p class="doc-index__back">
-				<a href="#top">{BackToTop}<span aria-hidden="true"> ↑</span></a>
+				<a href="#top">
+					{BackToTop}
+					<span aria-hidden="true"> ↑</span>
+				</a>
 			</p>
 		</DocArticle>
 	</DocLayout>

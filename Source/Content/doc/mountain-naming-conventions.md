@@ -109,23 +109,23 @@ name mappings and serialization aliases.
 
 ## Complete Naming Patterns
 
-| Element Type            | Convention               | Example                       | Notes                              |
-| ----------------------- | ------------------------ | ----------------------------- | ---------------------------------- |
-| **Structs**             | PascalCase               | `WorkSpaceFolderStateDTO`     | All structs, including DTOs        |
-| **Enums**               | PascalCase               | `CommandHandler`              | All enum variants                  |
-| **Traits**              | PascalCase               | `ConfigurationProvider`       | All trait names                    |
-| **Functions**           | PascalCase               | `GetConfigurationValue`       | All public and private functions   |
-| **Methods**             | PascalCase               | `CreateWorkSpace`             | All instance methods               |
-| **Modules**             | PascalCase               | `ApplicationState`            | File and module names PascalCase   |
-| **Constants**           | PascalCase               | `MAX_CONNECTIONS`             | Global constants                   |
-| **Static Items**        | PascalCase               | `SIDECAR_CLIENTS`             | Static variables                   |
-| **Type Aliases**        | PascalCase               | `CocoonClient`                | Type aliases and generic types     |
-| **Generics**            | PascalCase               | `TCapabilityProvider`         | Type parameters with 'T' prefix    |
+| Element Type            | Convention                | Example                       | Notes                              |
+| ----------------------- | ------------------------- | ----------------------------- | ---------------------------------- |
+| **Structs**             | PascalCase                | `WorkSpaceFolderStateDTO`     | All structs, including DTOs        |
+| **Enums**               | PascalCase                | `CommandHandler`              | All enum variants                  |
+| **Traits**              | PascalCase                | `ConfigurationProvider`       | All trait names                    |
+| **Functions**           | PascalCase                | `GetConfigurationValue`       | All public and private functions   |
+| **Methods**             | PascalCase                | `CreateWorkSpace`             | All instance methods               |
+| **Modules**             | PascalCase                | `ApplicationState`            | File and module names PascalCase   |
+| **Constants**           | PascalCase                | `MAX_CONNECTIONS`             | Global constants                   |
+| **Static Items**        | PascalCase                | `SIDECAR_CLIENTS`             | Static variables                   |
+| **Type Aliases**        | PascalCase                | `CocoonClient`                | Type aliases and generic types     |
+| **Generics**            | PascalCase                | `TCapabilityProvider`         | Type parameters with 'T' prefix    |
 | **Lifetimes**           | lowercase with `'` prefix | `'a`, `'result`               | Standard Rust lifetime conventions |
-| **Local Variables**     | PascalCase               | `WorkSpaceIdentifier`         | All local variables                |
-| **Function Parameters** | PascalCase               | `ApplicationHandle:AppHandle` | All parameters                     |
-| **Fields**              | PascalCase               | `ActiveDocuments`             | All struct fields                  |
-| **File Names**          | PascalCase               | `ApplicationState.rs`         | Rust source files                  |
+| **Local Variables**     | PascalCase                | `WorkSpaceIdentifier`         | All local variables                |
+| **Function Parameters** | PascalCase                | `ApplicationHandle:AppHandle` | All parameters                     |
+| **Fields**              | PascalCase                | `ActiveDocuments`             | All struct fields                  |
+| **File Names**          | PascalCase                | `ApplicationState.rs`         | Rust source files                  |
 
 ---
 
@@ -323,13 +323,13 @@ async fn ProcessRequest(&self, RequestIdentifier: String) -> Result<Value, Commo
 
 Five categories are allowed to keep their original conventions:
 
-| Exception | Retains | Example |
-| --- | --- | --- |
-| External crate types | Their original crate conventions | `tokio::spawn`, `tokio::time::sleep`, `AppHandle<Wry>`, `serde_json::Value` |
-| Standard library types | Rust conventions | `HashMap`, `Arc`, `Mutex`, `PathBuf` |
-| Lifetime parameters | Rust convention (lowercase with `'` prefix) | `'a`, `'b` |
-| Attributes and macros | Rust conventions | `#[derive(Debug, Clone, Serialize)]`, `#[async_trait]`, `#[command]` |
-| Raw identifiers and system constants | Lowercase | `r#async`, `PATH_SEPARATOR`, `std::env::var("PATH")` |
+| Exception                            | Retains                                     | Example                                                                     |
+| ------------------------------------ | ------------------------------------------- | --------------------------------------------------------------------------- |
+| External crate types                 | Their original crate conventions            | `tokio::spawn`, `tokio::time::sleep`, `AppHandle<Wry>`, `serde_json::Value` |
+| Standard library types               | Rust conventions                            | `HashMap`, `Arc`, `Mutex`, `PathBuf`                                        |
+| Lifetime parameters                  | Rust convention (lowercase with `'` prefix) | `'a`, `'b`                                                                  |
+| Attributes and macros                | Rust conventions                            | `#[derive(Debug, Clone, Serialize)]`, `#[async_trait]`, `#[command]`        |
+| Raw identifiers and system constants | Lowercase                                   | `r#async`, `PATH_SEPARATOR`, `std::env::var("PATH")`                        |
 
 ### 1. External Crate Types
 

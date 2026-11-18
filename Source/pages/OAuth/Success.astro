@@ -2,7 +2,10 @@
 import AuthShell from "../../Component/Auth/AuthShell.astro";
 import Auth0CallbackHandler from "../../Component/Dynamic/Auth0CallbackHandler";
 import { AuthFrameFor } from "../../Component/Auth/Data";
-import { OAuthResult, type OAuthFailureCode } from "../../Content/Layout/OAuth.js";
+import {
+	OAuthResult,
+	type OAuthFailureCode,
+} from "../../Content/Layout/OAuth.js";
 import { Header } from "../../Component/Layout/Header";
 import PageShell from "../../Component/Shell/PageShell.astro";
 import ShellPlate from "../../Component/Shell/ShellPlate.astro";
@@ -104,13 +107,13 @@ const ErrorWords = [Row("STATUS", "INTERRUPTED")];
 	-->
 	<PageShell index="# PLATE_03" label="THE EXCHANGE">
 		<AuthShell Label="Sign-in result" Frame={Frame}>
-		<div
-			id="LoadingState"
-			class="flex flex-col items-center gap-4 p-8 text-center"
-		>
-			<SurfaceState states={LoadingWords} />
+			<div
+				id="LoadingState"
+				class="flex flex-col items-center gap-4 p-8 text-center"
+			>
+				<SurfaceState states={LoadingWords} />
 
-			{/*
+				{/*
 				The loading arm, in the record grammar. It used to be a
 				`animate-spin` div: a spinner says something is happening, and a
 				skeleton says *what* is happening, because it prints the schema.
@@ -118,64 +121,63 @@ const ErrorWords = [Row("STATUS", "INTERRUPTED")];
 				this state is printed inside the route's card - a white box inside
 				a white card is a card in a card.
 			*/}
-			<ShellState
-				surface="bare"
-				kind="loading"
-				index="EXCHANGE / 00"
-				statement={CompletingText}
-				cause={T("layout.oauth.loading.cause", {
-					defaultValue: "The callback's query string, read in the browser.",
-				})}
-				keys={["CODE:", "STATE:", "SESSION:"]}
-			/>
-		</div>
-
-		<div
-			id="SuccessState"
-			class="hidden flex-col items-center gap-4 p-8 text-center"
-		>
-			<SurfaceState states={SignedInWords} />
-
-			<div
-				class="flex h-12 w-12 items-center justify-center rounded-none border-2 border-[color:var(--Accent)] text-[color:var(--Accent)]"
-			>
-				<svg
-					aria-hidden="true"
-					viewBox="0 0 24 24"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					height="24"
-					stroke="currentColor"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					width="24"
-				>
-					<polyline points="20 6 9 17 4 12"></polyline>
-				</svg>
+				<ShellState
+					surface="bare"
+					kind="loading"
+					index="EXCHANGE / 00"
+					statement={CompletingText}
+					cause={T("layout.oauth.loading.cause", {
+						defaultValue:
+							"The callback's query string, read in the browser.",
+					})}
+					keys={["CODE:", "STATE:", "SESSION:"]}
+				/>
 			</div>
 
-			<h3 class="type-heading">{SuccessTitle}</h3>
-
-			<p class="text-card-foreground">{SuccessRedirect}</p>
-
-			<a
-				href="/Dashboard"
-				id="DashboardFallback"
-				class="StaccatoButton mt-2 inline-flex h-10 items-center justify-center bg-primary px-4 py-2 font-medium text-primary-fg transition-all hover:opacity-90 focus:outline-2 focus:outline-[var(--Primary)] focus:outline-offset-2"
+			<div
+				id="SuccessState"
+				class="hidden flex-col items-center gap-4 p-8 text-center"
 			>
-				{GoToDashboardText}
-				{"\u2001"}
-				<span aria-hidden="true">&rarr;</span>
-			</a>
-		</div>
+				<SurfaceState states={SignedInWords} />
 
-		<div id="ErrorState" class="hidden p-8">
-			<SurfaceState states={ErrorWords} />
+				<div class="flex h-12 w-12 items-center justify-center rounded-none border-2 border-[color:var(--Accent)] text-[color:var(--Accent)]">
+					<svg
+						aria-hidden="true"
+						viewBox="0 0 24 24"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						height="24"
+						stroke="currentColor"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						width="24"
+					>
+						<polyline points="20 6 9 17 4 12"></polyline>
+					</svg>
+				</div>
 
-			<h3 class="type-heading mt-4 mb-6">{Failure.heading}</h3>
+				<h3 class="type-heading">{SuccessTitle}</h3>
 
-			{/*
+				<p class="text-card-foreground">{SuccessRedirect}</p>
+
+				<a
+					href="/Dashboard"
+					id="DashboardFallback"
+					class="StaccatoButton mt-2 inline-flex h-10 items-center justify-center bg-primary px-4 py-2 font-medium text-primary-fg transition-all hover:opacity-90 focus:outline-2 focus:outline-[var(--Primary)] focus:outline-offset-2"
+				>
+					{GoToDashboardText}
+					{"\u2001"}
+					<span aria-hidden="true">&rarr;</span>
+				</a>
+			</div>
+
+			<div id="ErrorState" class="hidden p-8">
+				<SurfaceState states={ErrorWords} />
+
+				<h3 class="type-heading mt-4 mb-6">{Failure.heading}</h3>
+
+				{/*
 				THE FAILURE REGISTER. Four arms, each a composed `error` state:
 				`WHAT FAILED:` / `CAUSE:` / `RETRY:` and the three facts the callback
 				actually holds. The script reveals the arm the provider named; the
@@ -183,25 +185,29 @@ const ErrorWords = [Row("STATUS", "INTERRUPTED")];
 				way the exchange can end rather than the one that happened today.
 				`surface="bare"` because this is printed inside the route's card.
 			*/}
-			{FailureCodes.map((Code, Position) => (
-				<div class="oauth-failure" data-failure={Code} hidden>
-					<ShellState
-						surface="bare"
-						kind="error"
-						index={`FAILURE / ${String(Position + 1).padStart(2, "0")}`}
-						statement={Failure.arms[Code].statement}
-						cause={Failure.arms[Code].cause}
-						note={Failure.arms[Code].note}
-						rows={[
-							{ key: "ARM:", value: Code.toUpperCase() },
-							{ key: "EXCHANGE:", value: "/OAUTH/SUCCESS", code: true },
-							{ key: "SESSION:", value: "NOT WRITTEN" },
-						]}
-						next={Failure.next}
-					/>
-				</div>
-			))}
-		</div>
+				{FailureCodes.map((Code, Position) => (
+					<div class="oauth-failure" data-failure={Code} hidden>
+						<ShellState
+							surface="bare"
+							kind="error"
+							index={`FAILURE / ${String(Position + 1).padStart(2, "0")}`}
+							statement={Failure.arms[Code].statement}
+							cause={Failure.arms[Code].cause}
+							note={Failure.arms[Code].note}
+							rows={[
+								{ key: "ARM:", value: Code.toUpperCase() },
+								{
+									key: "EXCHANGE:",
+									value: "/OAUTH/SUCCESS",
+									code: true,
+								},
+								{ key: "SESSION:", value: "NOT WRITTEN" },
+							]}
+							next={Failure.next}
+						/>
+					</div>
+				))}
+			</div>
 		</AuthShell>
 
 		{/*

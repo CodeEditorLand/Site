@@ -162,8 +162,10 @@ const LayoutSpec = LanguageOf(RawPath);
 		<meta charset="utf-8" />
 		<MetaTags
 			title={Title || T("meta.title", { defaultValue: "Land" })}
-			description={Description ||
-				T("meta.description", { defaultValue: "Code Editor" })}
+			description={
+				Description ||
+				T("meta.description", { defaultValue: "Code Editor" })
+			}
 			image={ResolvedImage}
 			url={CanonicalURL}
 			type={Type}
@@ -215,7 +217,10 @@ const LayoutSpec = LanguageOf(RawPath);
 			try {
 				var Density = localStorage.getItem("land:density");
 				if (Density === "compact")
-					document.documentElement.setAttribute("data-density", "compact");
+					document.documentElement.setAttribute(
+						"data-density",
+						"compact",
+					);
 			} catch (Error) {
 				/* Storage refused: the density holds for this visit, in the control. */
 			}
@@ -254,21 +259,22 @@ const LayoutSpec = LanguageOf(RawPath);
 		<meta name="apple-mobile-web-app-title" content="Code Editor Land" />
 		<link rel="manifest" href="/Favicon/site.webmanifest" />
 		<script>
-		import jellyUrl from "../../Vendor/JellyUI/dist/jelly.js?url";
-		document.head.appendChild(
-			Object.assign(document.createElement("script"), {
-				type: "module",
-				src: jellyUrl,
-			}),
-		);
-	</script>
+			import jellyUrl from "../../Vendor/JellyUI/dist/jelly.js?url";
+			document.head.appendChild(
+				Object.assign(document.createElement("script"), {
+					type: "module",
+					src: jellyUrl,
+				}),
+			);
+		</script>
 	</head>
 	<body>
 		<a
 			href="#main-content"
 			class="text-primary-fg sr-only fixed left-2 top-2 z-[100] -translate-y-full bg-primary px-4 py-2 font-medium transition-transform focus:not-sr-only focus:translate-y-0 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Ring)]"
-			>Skip to main content</a
 		>
+			Skip to main content
+		</a>
 		<!--
 			The document's second focus-revealed control. The palette's trigger is
 			server-rendered inside this island, so it is in the HTML and in the tab
@@ -317,7 +323,9 @@ const LayoutSpec = LanguageOf(RawPath);
 					<slot />
 				</main>
 			</AnalyticsProvider>
-			<div id="Footer" class="shrink"><Footer /></div>
+			<div id="Footer" class="shrink">
+				<Footer />
+			</div>
 		</jelly-theme>
 		<script>
 			import "@Script/Firebase";
@@ -333,6 +341,7 @@ const LayoutSpec = LanguageOf(RawPath);
 			rel="me"
 			href="https://x.com/CodeEditorLand"
 			aria-hidden="true"
-			tabindex="-1"></a>
+			tabindex="-1"
+		></a>
 	</body>
 </html>

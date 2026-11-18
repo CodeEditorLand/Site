@@ -119,7 +119,9 @@ const VerifyPage = ({
 
 			{Route === "success" && (
 				<AuthReport
-					Title={T("success.title", { defaultValue: "Email verified!" })}
+					Title={T("success.title", {
+						defaultValue: "Email verified!",
+					})}
 					Sentence={
 						"Your email has been successfully verified. You can now sign in to your account and start using Code Editor Land."
 					}
@@ -143,7 +145,9 @@ const VerifyPage = ({
 					})}
 					Sentence={
 						<>
-							{"This verification link is invalid or has expired."}
+							{
+								"This verification link is invalid or has expired."
+							}
 							{Reason ? ` Reason: ${Reason}` : null}{" "}
 							{
 								"Please request a new verification email or contact support if the problem persists."

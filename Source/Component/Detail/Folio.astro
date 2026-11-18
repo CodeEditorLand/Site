@@ -50,15 +50,7 @@ interface Props {
 	class?: string;
 }
 
-const {
-	index,
-	part,
-	figure,
-	count,
-	asOf,
-	source,
-	class: Class,
-} = Astro.props;
+const { index, part, figure, count, asOf, source, class: Class } = Astro.props;
 
 /**
  * The right end's fields, in the order they are read. Each is its own span so
@@ -78,18 +70,16 @@ const Facts = [
 		<span class="detail-folio__part">{part}</span>
 	</span>
 
-	{
-		Facts.length > 0 && (
-			<span class="detail-folio__facts">
-				{Facts.map((Entry, Position) => (
-					<>
-						{Position > 0 && (
-							<span class="detail-folio__sep" aria-hidden="true" />
-						)}
-						<span class="detail-folio__count">{Entry}</span>
-					</>
-				))}
-			</span>
-		)
-	}
+	{Facts.length > 0 && (
+		<span class="detail-folio__facts">
+			{Facts.map((Entry, Position) => (
+				<>
+					{Position > 0 && (
+						<span class="detail-folio__sep" aria-hidden="true" />
+					)}
+					<span class="detail-folio__count">{Entry}</span>
+				</>
+			))}
+		</span>
+	)}
 </p>

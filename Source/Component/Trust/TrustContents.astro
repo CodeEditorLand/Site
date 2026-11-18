@@ -45,38 +45,36 @@ interface Props {
 const { items, label, variant = "rail", class: Class } = Astro.props;
 ---
 
-{
-	variant === "disclosure" ? (
-		<details
-			class:list={["trust-contents", "trust-contents--disclosure", Class]}
-			data-trust-contents
-		>
-			<summary class="trust-contents__summary">
-				<span class="trust-contents__label">{label}</span>
-				<span class="trust-contents__count">{items.length}</span>
-				<span class="trust-contents__toggle" aria-hidden="true">
-					&#8595;
-				</span>
-			</summary>
-			<TrustContentsList items={items} />
-		</details>
-	) : (
-		<nav
-			class:list={["trust-contents", "trust-contents--rail", Class]}
-			data-trust-contents
-			aria-label={label}
-		>
-			<p class="trust-contents__head">
-				<span class="trust-contents__label">{label}</span>
-				<span class="trust-contents__count">{items.length}</span>
-				{/*
-				 * The reader's position. Empty in the server HTML on purpose: before
-				 * the first clause is reached there is no clause to name, and a guess
-				 * printed here would be a number the reader is not standing on.
-				 */}
-				<span class="trust-contents__position" data-trust-position />
-			</p>
-			<TrustContentsList items={items} />
-		</nav>
-	)
-}
+{variant === "disclosure" ? (
+	<details
+		class:list={["trust-contents", "trust-contents--disclosure", Class]}
+		data-trust-contents
+	>
+		<summary class="trust-contents__summary">
+			<span class="trust-contents__label">{label}</span>
+			<span class="trust-contents__count">{items.length}</span>
+			<span class="trust-contents__toggle" aria-hidden="true">
+				&#8595;
+			</span>
+		</summary>
+		<TrustContentsList items={items} />
+	</details>
+) : (
+	<nav
+		class:list={["trust-contents", "trust-contents--rail", Class]}
+		data-trust-contents
+		aria-label={label}
+	>
+		<p class="trust-contents__head">
+			<span class="trust-contents__label">{label}</span>
+			<span class="trust-contents__count">{items.length}</span>
+			{/*
+			 * The reader's position. Empty in the server HTML on purpose: before
+			 * the first clause is reached there is no clause to name, and a guess
+			 * printed here would be a number the reader is not standing on.
+			 */}
+			<span class="trust-contents__position" data-trust-position />
+		</p>
+		<TrustContentsList items={items} />
+	</nav>
+)}

@@ -39,27 +39,21 @@ interface Props {
 	class?: string;
 }
 
-const {
-	states = [],
-	declarations = [],
-	class: ClassName,
-} = Astro.props;
+const { states = [], declarations = [], class: ClassName } = Astro.props;
 ---
 
-{
-	states.length || declarations.length ? (
-		<div class:list={["surface__statusline", ClassName]}>
-			{states.length ? <SurfaceState states={states} /> : null}
-			{declarations.length ? (
-				<dl class="surface__declares">
-					{declarations.map((Entry) => (
-						<div class="surface__declare">
-							<dt class="surface__declare-key">{Entry.key}:</dt>
-							<dd class="surface__declare-value">{Entry.value}</dd>
-						</div>
-					))}
-				</dl>
-			) : null}
-		</div>
-	) : null
-}
+{states.length || declarations.length ? (
+	<div class:list={["surface__statusline", ClassName]}>
+		{states.length ? <SurfaceState states={states} /> : null}
+		{declarations.length ? (
+			<dl class="surface__declares">
+				{declarations.map((Entry) => (
+					<div class="surface__declare">
+						<dt class="surface__declare-key">{Entry.key}:</dt>
+						<dd class="surface__declare-value">{Entry.value}</dd>
+					</div>
+				))}
+			</dl>
+		) : null}
+	</div>
+) : null}

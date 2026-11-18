@@ -87,16 +87,25 @@ const {
 			<slot name="mark" />
 		</div>
 
-		<h1 class:list={["surface-head__title", display && "surface-head__title--display"]}>
+		<h1
+			class:list={[
+				"surface-head__title",
+				display && "surface-head__title--display",
+			]}
+		>
 			{title}
 		</h1>
 
-		{proposition ? <p class="surface-head__proposition">{proposition}</p> : null}
+		{proposition ? (
+			<p class="surface-head__proposition">{proposition}</p>
+		) : null}
 
 		<slot />
 
 		<SurfaceStatusLine states={states} declarations={declarations} />
 
-		{rows.length ? <RecordLedger class="surface-head__facts" rows={rows} columns={2} /> : null}
+		{rows.length ? (
+			<RecordLedger class="surface-head__facts" rows={rows} columns={2} />
+		) : null}
 	</div>
 </header>

@@ -66,54 +66,57 @@ const { items, label, count, empty, class: ClassName } = Astro.props;
 const Paint = (Token: string): string => `var(${Token})`;
 ---
 
-<section class:list={["specimen-material", ClassName]} aria-label={`${label}: ${count} specimens`}>
+<section
+	class:list={["specimen-material", ClassName]}
+	aria-label={`${label}: ${count} specimens`}
+>
 	<p class="specimen-material__register">
-		<span class="specimen-material__register-mark" aria-hidden="true">#</span>
+		<span class="specimen-material__register-mark" aria-hidden="true">
+			#
+		</span>
 		<span class="specimen-material__register-word">{label}</span>
-		<span class="specimen-material__register-sep" aria-hidden="true">{"\u2001"}</span>
+		<span class="specimen-material__register-sep" aria-hidden="true">
+			{"\u2001"}
+		</span>
 		<span class="specimen-material__register-count">{count}</span>
 	</p>
 
 	<ul class="specimen-material__strip">
-		{
-			items.length === 0 ? (
-				<li class="specimen-material__empty">{empty}</li>
-			) : null
-		}
-		{
-			items.map((Item) => (
-				<li
-					class="specimen-material__item"
-					data-kind={Item.kind}
-					data-scale={Item.scale ?? "section"}
-				>
-					<span class="specimen-material__swatch" aria-hidden="true">
-						{Item.kind === "fill" ? (
-							<span
-								class="specimen-material__fill"
-								style={`background:${Paint(Item.token)}`}
-							/>
-						) : Item.kind === "ink" ? (
-							<span
-								class="specimen-material__type"
-								style={`color:${Paint(Item.token)}`}
-							>
-								{Item.name}
-							</span>
-						) : (
-							<span class="specimen-material__rule" />
-						)}
-					</span>
+		{items.length === 0 ? (
+			<li class="specimen-material__empty">{empty}</li>
+		) : null}
+		{items.map((Item) => (
+			<li
+				class="specimen-material__item"
+				data-kind={Item.kind}
+				data-scale={Item.scale ?? "section"}
+			>
+				<span class="specimen-material__swatch" aria-hidden="true">
+					{Item.kind === "fill" ? (
+						<span
+							class="specimen-material__fill"
+							style={`background:${Paint(Item.token)}`}
+						/>
+					) : Item.kind === "ink" ? (
+						<span
+							class="specimen-material__type"
+							style={`color:${Paint(Item.token)}`}
+						>
+							{Item.name}
+						</span>
+					) : (
+						<span class="specimen-material__rule" />
+					)}
+				</span>
 
-					<p class="specimen-material__name">{Item.name}</p>
+				<p class="specimen-material__name">{Item.name}</p>
 
-					<p class="specimen-material__token">{Item.token}</p>
+				<p class="specimen-material__token">{Item.token}</p>
 
-					<p class="specimen-material__value">{Item.value}</p>
+				<p class="specimen-material__value">{Item.value}</p>
 
-					<p class="specimen-material__use">{Item.use}</p>
-				</li>
-			))
-		}
+				<p class="specimen-material__use">{Item.use}</p>
+			</li>
+		))}
 	</ul>
 </section>

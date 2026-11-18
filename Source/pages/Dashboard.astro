@@ -140,7 +140,9 @@ const MatrixRows = [
 	/>
 
 	<div class="surface-trail">
-		<Trail trail={[{ label: "/HOME", href: "/" }, { label: "/DASHBOARD" }]} />
+		<Trail
+			trail={[{ label: "/HOME", href: "/" }, { label: "/DASHBOARD" }]}
+		/>
 	</div>
 
 	<!-- The instrument head: `# DASHBOARD_02`, the page's only `h1`, one
@@ -155,11 +157,13 @@ const MatrixRows = [
 		declarations={Declarations}
 	>
 		<div class="surface-head__marks">
-			{
-				Page.badges.map((Badge) => (
-					<SurfaceBadge label={Badge.label} tone={Badge.tone} dot={Badge.dot} />
-				))
-			}
+			{Page.badges.map((Badge) => (
+				<SurfaceBadge
+					label={Badge.label}
+					tone={Badge.tone}
+					dot={Badge.dot}
+				/>
+			))}
 		</div>
 	</SurfaceHead>
 
@@ -169,35 +173,37 @@ const MatrixRows = [
 	<div class="surface-regions">
 		<nav class="surface-regions__rail" aria-label="Dashboard regions">
 			<ul class="surface-regions__list">
-				{
-					Regions.map((Region) => (
-						<li>
-							<a class="surface-regions__link" href={`#${Region.id}`}>
-								<span class="surface-regions__index">{Region.index}</span>
-								{Region.label}
-							</a>
-						</li>
-					))
-				}
+				{Regions.map((Region) => (
+					<li>
+						<a class="surface-regions__link" href={`#${Region.id}`}>
+							<span class="surface-regions__index">
+								{Region.index}
+							</span>
+							{Region.label}
+						</a>
+					</li>
+				))}
 			</ul>
 		</nav>
 
 		<details class="surface-regions__drawer">
 			<summary class="surface-regions__summary">
 				<span>REGIONS: {Regions.length}</span>
-				<span class="surface-regions__summary-mark" aria-hidden="true">↳ OPEN</span>
+				<span class="surface-regions__summary-mark" aria-hidden="true">
+					↳ OPEN
+				</span>
 			</summary>
 			<ul class="surface-regions__list">
-				{
-					Regions.map((Region) => (
-						<li>
-							<a class="surface-regions__link" href={`#${Region.id}`}>
-								<span class="surface-regions__index">{Region.index}</span>
-								{Region.label}
-							</a>
-						</li>
-					))
-				}
+				{Regions.map((Region) => (
+					<li>
+						<a class="surface-regions__link" href={`#${Region.id}`}>
+							<span class="surface-regions__index">
+								{Region.index}
+							</span>
+							{Region.label}
+						</a>
+					</li>
+				))}
 			</ul>
 		</details>
 
@@ -218,7 +224,9 @@ const MatrixRows = [
 			<!-- 02 Downloads. One fact and the one action that acts on it. -->
 			<SurfaceRegion index="# 02" id="downloads" title="Downloads">
 				<div class="surface-panel">
-					<p class="surface-region__standfirst">{Page.downloads.line}</p>
+					<p class="surface-region__standfirst">
+						{Page.downloads.line}
+					</p>
 					<div class="surface__actions">
 						<a class="surface-button" href={Page.downloads.href}>
 							{Page.downloads.label}
@@ -231,50 +239,57 @@ const MatrixRows = [
 			<!-- 03 Quick Links. A route strip: three destinations, one row each. -->
 			<SurfaceRegion index="# 03" id="quick-links" title="Quick Links">
 				<ul class="surface-links">
-					{
-						Page.quickLinks.map((Link) => (
-							<li>
-								<a class="surface-links__item" href={Link.href}>
-									<span>{Link.label}</span>
-									<span class="surface-links__arrow" aria-hidden="true">→</span>
-								</a>
-							</li>
-						))
-					}
+					{Page.quickLinks.map((Link) => (
+						<li>
+							<a class="surface-links__item" href={Link.href}>
+								<span>{Link.label}</span>
+								<span
+									class="surface-links__arrow"
+									aria-hidden="true"
+								>
+									→
+								</span>
+							</a>
+						</li>
+					))}
 				</ul>
 			</SurfaceRegion>
 
 			<!-- 04 Telemetry. Three paths, each a record: its marker, its state
 			 badges, its heading and the sentence that qualifies it. -->
-			<SurfaceRegion index="# 04" id="telemetry" title={Page.telemetry.heading}>
+			<SurfaceRegion
+				index="# 04"
+				id="telemetry"
+				title={Page.telemetry.heading}
+			>
 				<div class="surface-panel surface-telemetry">
-					{
-						Page.telemetry.paths.map((Path, Position) => (
-							<div class="surface-telemetry__row">
-								<p class="surface-telemetry__index">
-									{String(Position + 1).padStart(2, "0")}
-								</p>
-								<div class="surface-telemetry__body">
-									<div class="surface-telemetry__badges">
-										{Path.badges.map((Badge) => (
-											<SurfaceBadge
-												label={Badge.label}
-												tone={Badge.tone}
-												dot={Badge.dot}
-											/>
-										))}
-									</div>
-									<h3 class="surface-telemetry__heading">{Path.heading}</h3>
-									<RichText
-										client:load
-										Text={Path.text}
-										Terms
-										ClassName="mt-2 text-card-foreground"
-									/>
+					{Page.telemetry.paths.map((Path, Position) => (
+						<div class="surface-telemetry__row">
+							<p class="surface-telemetry__index">
+								{String(Position + 1).padStart(2, "0")}
+							</p>
+							<div class="surface-telemetry__body">
+								<div class="surface-telemetry__badges">
+									{Path.badges.map((Badge) => (
+										<SurfaceBadge
+											label={Badge.label}
+											tone={Badge.tone}
+											dot={Badge.dot}
+										/>
+									))}
 								</div>
+								<h3 class="surface-telemetry__heading">
+									{Path.heading}
+								</h3>
+								<RichText
+									client:load
+									Text={Path.text}
+									Terms
+									ClassName="mt-2 text-card-foreground"
+								/>
 							</div>
-						))
-					}
+						</div>
+					))}
 				</div>
 			</SurfaceRegion>
 
@@ -290,34 +305,34 @@ const MatrixRows = [
 				standfirst={Page.build.subtitle}
 			>
 				<div class="surface-panel surface-build">
-					{
-						Page.build.cards.map((Card) => (
-							<div class="surface-build__column">
-								<div class="surface-build__head">
-									<h3 class="surface-build__title">{Card.title}</h3>
-									<SurfaceBadge
-										label={Card.badge.label}
-										tone={Card.badge.tone}
-										dot={Card.badge.dot}
-									/>
-								</div>
-								{/* The card's facts are the site's factual spine, so they are
+					{Page.build.cards.map((Card) => (
+						<div class="surface-build__column">
+							<div class="surface-build__head">
+								<h3 class="surface-build__title">
+									{Card.title}
+								</h3>
+								<SurfaceBadge
+									label={Card.badge.label}
+									tone={Card.badge.tone}
+									dot={Card.badge.dot}
+								/>
+							</div>
+							{/* The card's facts are the site's factual spine, so they are
 								 a `RecordLedger` rather than four hand-drawn rows: the
 								 block is the published key/value anatomy (mono key, ink
 								 value), and `code`/`strong` keep the two distinctions the
 								 rows already carried. */}
-								<RecordLedger
-									class="surface-build__ledger"
-									rows={Card.rows.map((Fact) => ({
-										key: `${Fact.key}:`,
-										value: Fact.value,
-										code: Fact.mono,
-										strong: Fact.strong,
-									}))}
-								/>
-							</div>
-						))
-					}
+							<RecordLedger
+								class="surface-build__ledger"
+								rows={Card.rows.map((Fact) => ({
+									key: `${Fact.key}:`,
+									value: Fact.value,
+									code: Fact.mono,
+									strong: Fact.strong,
+								}))}
+							/>
+						</div>
+					))}
 				</div>
 
 				{/* The matrix: the build's own profile and mode read across the four
@@ -326,7 +341,9 @@ const MatrixRows = [
 				 what `RecordMatrix` is, and a page that drew its own grid here
 				 would be a second, divergent implementation of it. */}
 				<div class="surface-build__matrix">
-					<p class="surface-build__matrix-register">MATRIX: PROFILE / MODE / TIER</p>
+					<p class="surface-build__matrix-register">
+						MATRIX: PROFILE / MODE / TIER
+					</p>
 					<RecordMatrix
 						id="build-tier-matrix"
 						columns={MatrixColumns}
@@ -349,28 +366,30 @@ const MatrixRows = [
 				standfirst={Page.tiers.subtitle}
 			>
 				<div class="surface-tiers">
-					{
-						Page.tiers.cards.map((Card) => (
-							<a
-								class="surface-tier"
-								style={`--TierWash:var(--${Card.token}Surface);--TierLine:var(--${Card.token}Mute);--TierInk:var(--${Card.token}Fore);--TierEdge:var(--${Card.token})`}
-								href="/Portal"
-							>
-								<span class="surface-tier__tile" aria-hidden="true">
-									{Card.glyph}
-								</span>
-								<span class="surface-tier__body">
-									<h3 class="surface-tier__title">{Card.title}</h3>
-									<p class="surface-tier__protocol">{Card.protocol}</p>
-								</span>
-								<SurfaceBadge
-									label={Card.badge.label}
-									tone={Card.badge.tone}
-									dot={Card.badge.dot}
-								/>
-							</a>
-						))
-					}
+					{Page.tiers.cards.map((Card) => (
+						<a
+							class="surface-tier"
+							style={`--TierWash:var(--${Card.token}Surface);--TierLine:var(--${Card.token}Mute);--TierInk:var(--${Card.token}Fore);--TierEdge:var(--${Card.token})`}
+							href="/Portal"
+						>
+							<span class="surface-tier__tile" aria-hidden="true">
+								{Card.glyph}
+							</span>
+							<span class="surface-tier__body">
+								<h3 class="surface-tier__title">
+									{Card.title}
+								</h3>
+								<p class="surface-tier__protocol">
+									{Card.protocol}
+								</p>
+							</span>
+							<SurfaceBadge
+								label={Card.badge.label}
+								tone={Card.badge.tone}
+								dot={Card.badge.dot}
+							/>
+						</a>
+					))}
 				</div>
 			</SurfaceRegion>
 
@@ -384,90 +403,103 @@ const MatrixRows = [
 				title={Page.editor.heading}
 				standfirst={Page.editor.subtitle}
 			>
-				{
-					IsLocalMode ? (
-						<jelly-card style={CardStyle}>
-							<DynamicLocalFirstScan
-								client:load
-								Domain={Auth0Domain}
-								ClientIdentifier={Auth0ClientIdentifier}
+				{IsLocalMode ? (
+					<jelly-card style={CardStyle}>
+						<DynamicLocalFirstScan
+							client:load
+							Domain={Auth0Domain}
+							ClientIdentifier={Auth0ClientIdentifier}
+						/>
+					</jelly-card>
+				) : (
+					<div class="surface-editor">
+						<div class="surface-editor__head">
+							<img
+								class="surface-editor__glyph"
+								src="/Asset/Logo/Glyph/Land.svg"
+								alt="Land"
+								width="32"
+								height="32"
 							/>
-						</jelly-card>
-					) : (
-						<div class="surface-editor">
-							<div class="surface-editor__head">
-								<img
-									class="surface-editor__glyph"
-									src="/Asset/Logo/Glyph/Land.svg"
-									alt="Land"
-									width="32"
-									height="32"
-								/>
-								<div class="surface-editor__body">
-									<div class="surface-editor__name">
-										<h3 class="surface-editor__title">{Page.editor.name}</h3>
-										<SurfaceBadge
-											label={Page.editor.status}
-											tone="mute"
-											dot
-										/>
-									</div>
-									<RichText
-										client:load
-										Text={Page.editor.text}
-										Terms
-										ClassName="mt-1 text-card-foreground"
+							<div class="surface-editor__body">
+								<div class="surface-editor__name">
+									<h3 class="surface-editor__title">
+										{Page.editor.name}
+									</h3>
+									<SurfaceBadge
+										label={Page.editor.status}
+										tone="mute"
+										dot
 									/>
 								</div>
-							</div>
-
-							<SurfaceAbsent
-								class="surface-editor__absent"
-								status="UNAVAILABLE"
-								wouldBe="Build logs, telemetry and configuration from a running Land editor, over WebSocket."
-								whyNot="No Air Daemon is listening on this machine: the editor is not running, or its daemon is not connected."
-								next={{
-									label: Page.editor.scan.label,
-									href: Page.editor.scan.href,
-								}}
-							/>
-
-							<div class="surface__actions">
-								<a class="surface__action" href={Page.editor.connect.href}>
-									{Page.editor.connect.label}
-									<span aria-hidden="true">→</span>
-								</a>
-								<span class="surface-editor__note">{Page.editor.note}</span>
+								<RichText
+									client:load
+									Text={Page.editor.text}
+									Terms
+									ClassName="mt-1 text-card-foreground"
+								/>
 							</div>
 						</div>
-					)
-				}
+
+						<SurfaceAbsent
+							class="surface-editor__absent"
+							status="UNAVAILABLE"
+							wouldBe="Build logs, telemetry and configuration from a running Land editor, over WebSocket."
+							whyNot="No Air Daemon is listening on this machine: the editor is not running, or its daemon is not connected."
+							next={{
+								label: Page.editor.scan.label,
+								href: Page.editor.scan.href,
+							}}
+						/>
+
+						<div class="surface__actions">
+							<a
+								class="surface__action"
+								href={Page.editor.connect.href}
+							>
+								{Page.editor.connect.label}
+								<span aria-hidden="true">→</span>
+							</a>
+							<span class="surface-editor__note">
+								{Page.editor.note}
+							</span>
+						</div>
+					</div>
+				)}
 			</SurfaceRegion>
 
 			<!-- 08 Partners. Three attributed organisations. -->
-			<SurfaceRegion index="# 08" id="partners" title={Page.partners.heading}>
+			<SurfaceRegion
+				index="# 08"
+				id="partners"
+				title={Page.partners.heading}
+			>
 				<div class="surface-partners">
-					{
-						Page.partners.cards.map((Card) => (
-							<a class="surface-partner" href={Card.href}>
-								{Card.logo ? (
-									<img
-										class="surface-partner__logo"
-										src={Card.logo}
-										alt={Card.name}
-										width="32"
-										height="32"
-									/>
-								) : (
-									<span class="surface-partner__tile">{Card.tile}</span>
-								)}
-								<span class="surface-partner__body">
-									<span class="surface-partner__name">{Card.name}</span>
-									<span class="surface-partner__line">{Card.line}</span>
+					{Page.partners.cards.map((Card) => (
+						<a class="surface-partner" href={Card.href}>
+							{Card.logo ? (
+								<img
+									class="surface-partner__logo"
+									src={Card.logo}
+									alt={Card.name}
+									width="32"
+									height="32"
+								/>
+							) : (
+								<span class="surface-partner__tile">
+									{Card.tile}
 								</span>
-							</a>
-						))
-					}
+							)}
+							<span class="surface-partner__body">
+								<span class="surface-partner__name">
+									{Card.name}
+								</span>
+								<span class="surface-partner__line">
+									{Card.line}
+								</span>
+							</span>
+						</a>
+					))}
 				</div>
 			</SurfaceRegion>
 
@@ -485,30 +517,39 @@ const MatrixRows = [
 
 			<!-- 10 Settings. Three rows; the two planned settings state their
 			 state, the live one states its action. -->
-			<SurfaceRegion index="# 10" id="settings" title={Page.settings.heading}>
+			<SurfaceRegion
+				index="# 10"
+				id="settings"
+				title={Page.settings.heading}
+			>
 				<div class="surface-panel surface-settings">
-					{
-						Page.settings.rows.map((Setting) => (
-							<div class="surface-settings__row">
-								<div class="surface-settings__body">
-									{Setting.badge ? (
-										<SurfaceBadge
-											label={Setting.badge.label}
-											tone={Setting.badge.tone}
-										/>
-									) : null}
-									<h3 class="surface-settings__title">{Setting.title}</h3>
-									<p class="surface-settings__line">{Setting.body}</p>
-								</div>
-								{Setting.action ? (
-									<a class="surface__action" href={Setting.action.href}>
-										{Setting.action.label}
-										<span aria-hidden="true">→</span>
-									</a>
+					{Page.settings.rows.map((Setting) => (
+						<div class="surface-settings__row">
+							<div class="surface-settings__body">
+								{Setting.badge ? (
+									<SurfaceBadge
+										label={Setting.badge.label}
+										tone={Setting.badge.tone}
+									/>
 								) : null}
+								<h3 class="surface-settings__title">
+									{Setting.title}
+								</h3>
+								<p class="surface-settings__line">
+									{Setting.body}
+								</p>
 							</div>
-						))
-					}
+							{Setting.action ? (
+								<a
+									class="surface__action"
+									href={Setting.action.href}
+								>
+									{Setting.action.label}
+									<span aria-hidden="true">→</span>
+								</a>
+							) : null}
+						</div>
+					))}
 				</div>
 			</SurfaceRegion>
 		</div>
@@ -518,7 +559,7 @@ const MatrixRows = [
 		/* The region readout. Ten regions is more than one screen, so the rail
 		   marks the one being read - the header's own `aria-current` rule, turned
 		   to stand beside a list.
-		
+
 		   Three ways the mark is set, in order of certainty: the first region is
 		   marked on load (so the rail is never mute), a click marks its own
 		   destination immediately (so the rail answers before the scroll settles),
@@ -526,7 +567,9 @@ const MatrixRows = [
 		   listener, no layout thrash, and the rail is fully usable with the script
 		   off - every link still goes where it says. */
 		const Links = Array.from(
-			document.querySelectorAll<HTMLAnchorElement>(".surface-regions__link"),
+			document.querySelectorAll<HTMLAnchorElement>(
+				".surface-regions__link",
+			),
 		);
 		const RegionsRead = Array.from(
 			document.querySelectorAll<HTMLElement>("[data-region]"),
@@ -553,9 +596,12 @@ const MatrixRows = [
 
 			const Watcher = new IntersectionObserver(
 				(Entries) => {
-					const Reading = Entries.filter((Entry) => Entry.isIntersecting).sort(
+					const Reading = Entries.filter(
+						(Entry) => Entry.isIntersecting,
+					).sort(
 						(Left, Right) =>
-							Left.boundingClientRect.top - Right.boundingClientRect.top,
+							Left.boundingClientRect.top -
+							Right.boundingClientRect.top,
 					)[0];
 
 					if (Reading) {

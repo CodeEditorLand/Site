@@ -169,10 +169,16 @@
 	letter-spacing: var(--track-join);
 }
 
-// Wide enough for a key column: the key takes a fixed `min(14rem, 40%)` and the
+// Wide enough for a key column: the key takes a fixed character measure and the
 // value takes the rest. `flex: 0 0 auto` keeps the key from collapsing under a
 // long value, and `min-inline-size: 0` on the value lets a long path wrap
 // instead of pushing the key column narrower.
+//
+// The measure is `28ch`, not `14rem`: 14rem is 28.7 characters at the meta role,
+// so every ledger's value column used to start in the middle of a character, and
+// two ledgers in different containers could not share a grid. `28ch` is the same
+// column on the character grid the rest of the block is set on
+// (`--optical-key-column`).
 @include bp(640px) {
 	.record-ledger__row {
 		flex-direction: row;
@@ -182,7 +188,7 @@
 
 	.record-ledger__key {
 		flex: 0 0 auto;
-		inline-size: min(14rem, 40%);
+		inline-size: min(var(--optical-key-column), 40%);
 	}
 }
 

@@ -96,8 +96,16 @@ const ColumnLinks = Board.map((Column) => ({
 /** The facts that scope the audit, in the ledger at the head of the main track. */
 const Scope: readonly LedgerRow[] = [
 	{ key: "RECORDS:", value: String(TotalRows), note: "on the board" },
-	{ key: "COLUMNS:", value: String(Board.length), note: "of the eight words" },
-	{ key: "VOCABULARY:", value: String(Vocabulary.length), note: "words, closed" },
+	{
+		key: "COLUMNS:",
+		value: String(Board.length),
+		note: "of the eight words",
+	},
+	{
+		key: "VOCABULARY:",
+		value: String(Vocabulary.length),
+		note: "words, closed",
+	},
 	{ key: "AS OF:", value: AsOf, note: "this build" },
 ];
 
@@ -127,10 +135,7 @@ const Facts: readonly LedgerRow[] = [
 	{ key: "NOT MEASURED:", value: String(CountOf("not-measured")) },
 ];
 
-const TrailItems = [
-	{ label: "/HOME", href: "/" },
-	{ label: "/STATUS" },
-];
+const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/STATUS" }];
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription}>
@@ -166,11 +171,7 @@ const TrailItems = [
 			rail. The declaration strip still prints `LEDGER MATRIX WELLS`, and
 			all three are below it.
 		*/}
-		<RecordLedger
-			register="# SCOPE / 04"
-			rows={Scope}
-			columns={2}
-		/>
+		<RecordLedger register="SCOPE" rows={Scope} columns={2} />
 
 		<RecordBand band={{ ...Bands.Board, index: ColumnLinks }}>
 			<StatusBoard
@@ -240,7 +241,10 @@ const TrailItems = [
 					index="LIMIT / 03"
 					statement="Three platform records point at the Download page, and the Download page has no artifact for any of them."
 					cause="Every platform row's action leads to a record whose VERSION and SIZE print UNAVAILABLE."
-					next={{ label: "BUILD FROM SOURCE", href: "/Doc/installation" }}
+					next={{
+						label: "BUILD FROM SOURCE",
+						href: "/Doc/installation",
+					}}
 					rows={[
 						{ key: "TARGETS:", value: "3" },
 						{ key: "ARTIFACTS:", value: "0" },
@@ -251,10 +255,6 @@ const TrailItems = [
 			</div>
 		</RecordBand>
 
-		<Onward
-			slot="foot"
-			rows={StatusOnward.rows}
-			copy={StatusOnward.copy}
-		/>
+		<Onward slot="foot" rows={StatusOnward.rows} copy={StatusOnward.copy} />
 	</PageShell>
 </Base>

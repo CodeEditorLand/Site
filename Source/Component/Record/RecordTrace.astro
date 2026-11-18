@@ -51,47 +51,50 @@ const { steps, label, source, state = "rest", empty } = trace;
 /** `# TRACE / BUILD␁06 STEPS` - the count is the steps' own length. */
 const Count = String(steps.length).padStart(2, "0");
 
-const Marker =
-	state === "loading" ? "LOADING" : `${Count} STEPS`;
+const Marker = state === "loading" ? "LOADING" : `${Count} STEPS`;
 
 /** The marker line: the block's own name, then the caller's label, then the count. */
-const MarkerLine = label === undefined ? `TRACE\u2001${Marker}` : `TRACE / ${label}\u2001${Marker}`;
+const MarkerLine =
+	label === undefined
+		? `TRACE\u2001${Marker}`
+		: `TRACE / ${label}\u2001${Marker}`;
 ---
 
 <div class="record-trace" data-state={state}>
 	<p class="record-trace__marker"># {MarkerLine}</p>
 
-	{
-		state === "empty" || steps.length === 0 ? (
-			empty && <p class="record-trace__empty">{empty}</p>
-		) : (
-			<ol class="record-trace__steps">
-				{steps.map((Step) => (
-					<li class="record-trace__step">
-						<span class="record-trace__index">{Step.index}</span>
-						<span class="record-trace__arrow" aria-hidden="true">
-							→
-						</span>
-						<span class="record-trace__path">
-							{Step.href === undefined ? (
+	{state === "empty" || steps.length === 0 ? (
+		empty && <p class="record-trace__empty">{empty}</p>
+	) : (
+		<ol class="record-trace__steps">
+			{steps.map((Step) => (
+				<li class="record-trace__step">
+					<span class="record-trace__index">{Step.index}</span>
+					<span class="record-trace__arrow" aria-hidden="true">
+						→
+					</span>
+					<span class="record-trace__path">
+						{Step.href === undefined ? (
+							<code>{Step.path}</code>
+						) : (
+							<a class="record-trace__link" href={Step.href}>
 								<code>{Step.path}</code>
-							) : (
-								<a class="record-trace__link" href={Step.href}>
-									<code>{Step.path}</code>
-								</a>
-							)}
+							</a>
+						)}
+					</span>
+					<span class="record-trace__note">
+						<span
+							class="record-trace__note-mark"
+							aria-hidden="true"
+						>
+							↳
 						</span>
-						<span class="record-trace__note">
-							<span class="record-trace__note-mark" aria-hidden="true">
-								↳
-							</span>
-							{Step.note}
-						</span>
-					</li>
-				))}
-			</ol>
-		)
-	}
+						{Step.note}
+					</span>
+				</li>
+			))}
+		</ol>
+	)}
 
 	<p class="record-trace__source">
 		<span class="record-trace__source-key">SOURCE:</span>

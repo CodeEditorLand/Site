@@ -116,10 +116,7 @@ const DynamicButton = ({ Content, OnAction, IsLoading = false }: Property) => {
 				<>
 					{"\u2001"}
 
-					<IconComponent
-						className="h-5 w-5"
-						aria-hidden="true"
-					/>
+					<IconComponent className="h-5 w-5" aria-hidden="true" />
 				</>
 			) : null}
 		</Button>

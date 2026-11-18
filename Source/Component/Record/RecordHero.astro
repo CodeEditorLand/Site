@@ -125,28 +125,24 @@ const SEAL = 48;
 				<div class="record-hero__inset">
 					<div class="record-hero__mark">
 						<FieldRecordIndex index={Marker} />
-						{
-							seal && (
-								<FieldRecordSeal
-									element={seal}
-									size={SEAL}
-									className="record-hero__seal"
-								/>
-							)
-						}
+						{seal && (
+							<FieldRecordSeal
+								element={seal}
+								size={SEAL}
+								className="record-hero__seal"
+							/>
+						)}
 					</div>
 
 					<h1 class="type-display record-hero__claim">
 						<StampText Line={claim} />
 					</h1>
 
-					{
-						route && (
-							<p class="record-hero__route">
-								<RouteText Line={route} />
-							</p>
-						)
-					}
+					{route && (
+						<p class="record-hero__route">
+							<RouteText Line={route} />
+						</p>
+					)}
 
 					<div class="record-hero__status">
 						<FieldRecordStatus
@@ -160,59 +156,50 @@ const SEAL = 48;
 
 					<div class="record-hero__blank" aria-hidden="true"></div>
 
-					{
-						relation && (
-							<p class="record-hero__relation">{relation}</p>
-						)
-					}
+					{relation && (
+						<p class="record-hero__relation">{relation}</p>
+					)}
 
-					{
-						proposition && (
-							<p class="record-hero__proposition">
-								<span class="record-hero__proposition-mark" aria-hidden="true">
-									↳
-								</span>
-								{proposition}
-							</p>
-						)
-					}
+					{proposition && (
+						<p class="record-hero__proposition">
+							<span
+								class="record-hero__proposition-mark"
+								aria-hidden="true"
+							>
+								↳
+							</span>
+							{proposition}
+						</p>
+					)}
 
-					{
-						action && (
-							<div class="record-hero__action">
-								<FieldRecordAction
-									label={action.label}
-									href={action.href}
-									variant={action.variant ?? "button"}
-								/>
-							</div>
-						)
-					}
+					{action && (
+						<div class="record-hero__action">
+							<FieldRecordAction
+								label={action.label}
+								href={action.href}
+								variant={action.variant ?? "button"}
+							/>
+						</div>
+					)}
 				</div>
 			</FieldRecordDataCard>
 		</div>
 
-		{
-			HasEvidence && (
-				<div class="record-hero__gutter" aria-hidden="true" />
-			)
-		}
+		{HasEvidence && <div class="record-hero__gutter" aria-hidden="true" />}
 
-		{
-			HasEvidence && (
-				<div class="record-hero__evidence">
-					{evidence ? (
-						<FieldRecordEvidence
-							src={evidence.src}
-							alt={evidence.alt}
-							position={evidence.position}
-							className="record-hero__plate"
-						/>
-					) : (
-						<slot />
-					)}
-				</div>
-			)
-		}
+		{HasEvidence && (
+			<div class="record-hero__evidence">
+				{evidence ? (
+					<FieldRecordEvidence
+						src={evidence.src}
+						alt={evidence.alt}
+						position={evidence.position}
+						className="record-hero__plate"
+					/>
+				) : (
+					<slot />
+				)}
+			</div>
+		)}
 	</div>
 </section>

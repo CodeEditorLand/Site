@@ -1,0 +1,102 @@
+// The Optical layer - the half-pixel work that makes a page look drawn.
+//
+// ─── WHY A SECOND REFINEMENT LAYER ────────────────────────────────────────
+// The Detail layer wrote down what a figure is, where a mark hangs, which ink a
+// rule takes and that a hover is ink. It was the last five per cent of the
+// *system*. What it could not write down is the part that is not a system at
+// all: the corrections a hand makes to a page that already obeys every rule and
+// still reads as assembled.
+//
+// A page can be on the grid and off the eye. A register line whose `#` pushes
+// its own name two characters in from the facts beneath it; a tracked label that
+// ends a pixel short of the rule it is supposed to meet; a divider drawn at the
+// right column's edge, so the gutter is twice as wide on one side as the other;
+// a 2px bar hung under a 1px frame instead of centred on it; a heading whose gap
+// to its kicker grows with the clamp because a line box carries half-leading
+// above the cap. None of these is a rule broken. All of them are the difference
+// between a page set by a machine and a page set by a hand.
+//
+// ─── THE FIVE LAWS ────────────────────────────────────────────────────────
+//   HANG     a mark is not text. `#`, `↳`, `/` say something *about* the line
+//            they open, so they hang into the margin and the word after them
+//            lands on the measure.                      (_Hang.scss)
+//   EDGE     a tracked label's last letter carries the register's letter-space
+//            after it, so a label that ends a row stops a pixel short of it.
+//                                                          (_Edge.scss)
+//   CENTRE   a box centres a label by its ink, not by its advance. A chip's
+//            padding is symmetric; its label is not.        (_Centre.scss)
+//   SEAM     two rules must meet, not overlap; a rule in a gutter belongs in
+//            the middle of it; a rule inside a frame's padding is not a band.
+//                                                          (_Seam.scss)
+//   MEASURE  a column is a character measure, and the space between a label and
+//            a display line is a cap distance, not a line-box distance.
+//                                                        (_Measure.scss)
+//
+// Every offset is a token in `System/_Token.scss` under OPTICAL. No rule here
+// carries a number of its own, and that is the layer's one hard requirement: an
+// optical correction that is a literal is a correction the next card will
+// "tidy" away.
+//
+// ─── WHY IT LOADS LAST ────────────────────────────────────────────────────
+// Every rule here refines a declaration a partial already wrote - the band's
+// heading margin, the archive's header inset, the channel's rule, the stamp's
+// impression band, the corner marks' ink. Source order is the mechanism, so this
+// layer loads after the Record layer, the Component families, the Layout frames
+// and the Detail layer, and before the Motion tokens. See `System.scss`.
+//
+// ─── WHAT THIS LAYER MAY NOT DO ───────────────────────────────────────────
+// It may not delete a declaration, weaken one into invisibility, repaint a
+// surface, move a keeper or add a name to the block grammar. It moves a rule by
+// half a pixel, a mark by two characters, a column onto the character grid, and it
+// says why in the partial it moves them in.
+//
+// ─── THE NINE ADVERSE STATES ──────────────────────────────────────────────
+// The brief's adverse states are part of the design, so they are part of this
+// layer's argument - each one is composed by a rule below, not left to chance:
+//
+//   EMPTY     a register with no rows still prints its `#` line, and the composed
+//             sentence under it starts at the measure: the hang aligns the
+//             register's name with the sentence it introduces. Live on
+//             `/Contents` (an empty register) and `/Status` (an empty column).
+//   LOADING   `# WORKING / LOADING` - the hang is on the schema, so the line
+//             that arrives and the line that is still arriving sit on one edge.
+//   PARTIAL   an unknown fact is `UNAVAILABLE` at the name register, and the edge
+//             cancel is a margin, so a word that ends a row ends it flush
+//             whether it is a figure or the vocabulary's word for no figure.
+//   ERROR     a failure record's `# FAILURE_01` is a mark like any other and
+//             hangs like any other; the failure's own shape is ShellState's.
+//   STALE     the folio's right end carries `AS OF:`; the edge cancel is what
+//             lets a dated line end where the band ends, so the date is the last
+//             thing on the rule rather than a pixel inside it.
+//   TOO MUCH  the hang is a per-line indent, never a running one: the fortieth
+//             register row's `#` is at the same x as the first's.
+//   TOO LONG  a mark on a line that wraps hangs on the first line only - the
+//             second line returns to the measure, which is what hanging means -
+//             and a label longer than its column wraps inside it, because the
+//             edge cancel is a margin and not an indent.
+//   MISSING   a line that prints no mark is never shifted: every hang below is
+//             scoped to an element whose template writes the mark itself, so a
+//             block that names itself without one keeps the measure. A record
+//             whose target is gone still prints its `#` and still hangs.
+//   DENIED    not this layer's to compose: the surfaces that deny are the auth
+//             gates and the drawer, and they compose their own state.
+//
+// Two arms are this layer's own, and they are the two ways the eye can be
+// wrong about a margin:
+//
+//   NO MARGIN   below 640px the page gutter is 16px and the word-register hang
+//               is 16.6px, so the mark would cross the paper's edge. The hang
+//               returns flush; the page loses one nicety and no structure.
+//   ON PAPER    a printed page's margin is the printer's, not the stylesheet's,
+//               so every hang that borrows from the page is cancelled under
+//               `@media print`.
+//
+// One hang is exempt from both, and the exemption is the layer's own test of
+// itself: the stamp's two characters come out of its own 32px frame padding, not
+// out of the page's gutter, so they are safe at 320px and on paper. A correction
+// that borrows from the surface travels; one that borrows from the page does not.
+@use "Hang";
+@use "Edge";
+@use "Centre";
+@use "Seam";
+@use "Measure";

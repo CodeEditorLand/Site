@@ -78,11 +78,9 @@ const {
 
 <div class:list={["detail-foot", Class]} data-surface={surface}>
 	<div class="detail-foot__row">
-		{
-			see && see.length > 0 && (
-				<See class="detail-foot__see" items={see} label={seeLabel} />
-			)
-		}
+		{see && see.length > 0 && (
+			<See class="detail-foot__see" items={see} label={seeLabel} />
+		)}
 
 		<Folio
 			class="detail-foot__folio"

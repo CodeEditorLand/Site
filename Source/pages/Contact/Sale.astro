@@ -79,7 +79,8 @@ const Features: readonly string[] = [
 		defaultValue: "Priority support and SLA",
 	}),
 	T("common.sales.features.customDeployment", {
-		defaultValue: "Custom deployment options: cloud, on-prem, or air-gapped",
+		defaultValue:
+			"Custom deployment options: cloud, on-prem, or air-gapped",
 	}),
 	T("common.sales.features.volumeLicensing", {
 		defaultValue: "Volume licensing for large teams",
@@ -253,18 +254,22 @@ const SaleRail = [
 					href="https://github.com/CodeEditorLand/Land/issues/new?title=Enterprise+Inquiry&labels=enterprise"
 					target="_blank"
 					rel="noopener noreferrer"
-					>{T("common.sales.contact.openIssueButton", {
-						defaultValue: "Open GitHub Issue",
-					})}<span class="InlineSeparator">→</span></a
 				>
+					{T("common.sales.contact.openIssueButton", {
+						defaultValue: "Open GitHub Issue",
+					})}
+					<span class="InlineSeparator">→</span>
+				</a>
 
-				<h2 class="contact-sale__heading" id="open-issue">{OpenIssueHeading}</h2>
+				<h2 class="contact-sale__heading" id="open-issue">
+					{OpenIssueHeading}
+				</h2>
 
 				<p class="contact-sale__prose">{OpenIssueDescription}</p>
 
 				<div class="contact-sale__inset">
 					<p class="contact-sale__inset-text">
-						<strong>{IssueIncludeLabel}</strong>{" "}{IssueIncludeText}
+						<strong>{IssueIncludeLabel}</strong> {IssueIncludeText}
 					</p>
 				</div>
 			</div>
@@ -281,7 +286,9 @@ const SaleRail = [
 					</h3>
 
 					<ul class="contact-sale__features">
-						{Features.map((Feature) => <li>{Feature}</li>)}
+						{Features.map((Feature) => (
+							<li>{Feature}</li>
+						))}
 					</ul>
 				</div>
 
@@ -289,20 +296,26 @@ const SaleRail = [
 					class="contact-sale__card StaccatoBorderShimmer StaccatoCard"
 					id="direct"
 				>
-					<a class="contact-sale__route" href="/Contact/Deals"
-						>{T("common.sales.contact.dealsButton", {
+					<a class="contact-sale__route" href="/Contact/Deals">
+						{T("common.sales.contact.dealsButton", {
 							defaultValue: "Enterprise Sales form (DEALS)",
-						})}<span class="InlineSeparator">&#9993;</span></a
-					>
+						})}
+						<span class="InlineSeparator">&#9993;</span>
+					</a>
 
-					<h3 class="contact-sale__subheading">{DirectContactHeading}</h3>
+					<h3 class="contact-sale__subheading">
+						{DirectContactHeading}
+					</h3>
 
 					<p class="contact-sale__prose">{DirectContactNote}</p>
 
 					<p class="contact-sale__prose">
-						<a class="contact-sale__address" href={`mailto:${DirectAddress}`}
-							>{DirectAddress}</a
+						<a
+							class="contact-sale__address"
+							href={`mailto:${DirectAddress}`}
 						>
+							{DirectAddress}
+						</a>
 					</p>
 
 					<p class="contact-sale__prose">{OperatedBy}</p>
@@ -312,16 +325,19 @@ const SaleRail = [
 					class="contact-sale__card StaccatoBorderShimmer StaccatoCard"
 					id="open-source"
 				>
-					<h3 class="contact-sale__subheading">{OpenSourceHeading}</h3>
+					<h3 class="contact-sale__subheading">
+						{OpenSourceHeading}
+					</h3>
 
 					<p class="contact-sale__prose">{OpenSourceDescription}</p>
 				</div>
 			</div>
 
 			<div class="contact-sale__top">
-				<a class="StaccatoButton" href="#top"
-					>{BackToTop}<span class="InlineSeparator">↑</span></a
-				>
+				<a class="StaccatoButton" href="#top">
+					{BackToTop}
+					<span class="InlineSeparator">↑</span>
+				</a>
 			</div>
 		</div>
 	</PageShell>

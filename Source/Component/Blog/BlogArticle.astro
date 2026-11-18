@@ -154,43 +154,39 @@ const Meta = [
 	<ContactBreadcrumb trail={trail} class="blog-article__trail" />
 
 	<header class="blog-article__head">
-		{
-			tags.length > 0 ? (
-				<ul class="blog-article__tags">
-					{tags.map((Tag) => (
-						<li class="blog-article__tag">
-							<jelly-badge
-								variant="platinum"
-								shape="square"
-								style="--jelly-fill:var(--Mute);--jelly-label:var(--MuteForeground);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
-							>
-								{Tag}
-							</jelly-badge>
-						</li>
-					))}
-				</ul>
-			) : null
-		}
+		{tags.length > 0 ? (
+			<ul class="blog-article__tags">
+				{tags.map((Tag) => (
+					<li class="blog-article__tag">
+						<jelly-badge
+							variant="platinum"
+							shape="square"
+							style="--jelly-fill:var(--Mute);--jelly-label:var(--MuteForeground);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
+						>
+							{Tag}
+						</jelly-badge>
+					</li>
+				))}
+			</ul>
+		) : null}
 
 		<h1 class="blog-article__title">{title}</h1>
 		<p class="blog-article__standfirst">{summary}</p>
 
 		<p class="blog-article__meta">
-			{
-				Meta.map((Part) =>
-					Part.kind === "date" ? (
-						<time class="blog-article__date" datetime={Part.value}>
-							{Part.value}
-						</time>
-					) : Part.kind === "separator" ? (
-						<span class="blog-article__separator" aria-hidden="true">
-							{Part.value}
-						</span>
-					) : (
-						<span class="blog-article__fact">{Part.value}</span>
-					),
-				)
-			}
+			{Meta.map((Part) =>
+				Part.kind === "date" ? (
+					<time class="blog-article__date" datetime={Part.value}>
+						{Part.value}
+					</time>
+				) : Part.kind === "separator" ? (
+					<span class="blog-article__separator" aria-hidden="true">
+						{Part.value}
+					</span>
+				) : (
+					<span class="blog-article__fact">{Part.value}</span>
+				),
+			)}
 		</p>
 	</header>
 
@@ -201,46 +197,60 @@ const Meta = [
 			</div>
 
 			<p class="blog-article__back">
-				<a href={backHref}>{backLabel}<span aria-hidden="true"> ←</span></a>
+				<a href={backHref}>
+					{backLabel}
+					<span aria-hidden="true"> ←</span>
+				</a>
 			</p>
 		</div>
 
 		<div class="blog-article__gutter" aria-hidden="true"></div>
 
-		<aside class="blog-article__margin" aria-label="Margin: summary and notes">
+		<aside
+			class="blog-article__margin"
+			aria-label="Margin: summary and notes"
+		>
 			<RecordLedger
 				rows={summaryRows}
 				register={summaryRegister}
 				pinned={true}
 			/>
 
-			{
-				toc ? (
-					<nav class="blog-article__register" aria-label={toc.label}>
-						<p class="blog-article__register-label">{toc.label}</p>
-						<ol class="blog-article__register-list">
-							{toc.items.map((Item) => (
-								<li class="blog-article__register-item">
-									<a class="blog-article__register-link" href={Item.href}>
-										{Item.label}
-									</a>
-								</li>
-							))}
-						</ol>
-					</nav>
-				) : (
-					<p class="blog-article__register-empty">
-						<span class="blog-article__register-mark" aria-hidden="true">
-							&#9678;
-						</span>
-						{registerEmpty}
-					</p>
-				)
-			}
+			{toc ? (
+				<nav class="blog-article__register" aria-label={toc.label}>
+					<p class="blog-article__register-label">{toc.label}</p>
+					<ol class="blog-article__register-list">
+						{toc.items.map((Item) => (
+							<li class="blog-article__register-item">
+								<a
+									class="blog-article__register-link"
+									href={Item.href}
+								>
+									{Item.label}
+								</a>
+							</li>
+						))}
+					</ol>
+				</nav>
+			) : (
+				<p class="blog-article__register-empty">
+					<span
+						class="blog-article__register-mark"
+						aria-hidden="true"
+					>
+						&#9678;
+					</span>
+					{registerEmpty}
+				</p>
+			)}
 
-			{insets.map((Inset) => <RecordInset inset={Inset} />)}
+			{insets.map((Inset) => (
+				<RecordInset inset={Inset} />
+			))}
 
-			{notes.map((Note) => <RecordMargin note={Note} />)}
+			{notes.map((Note) => (
+				<RecordMargin note={Note} />
+			))}
 
 			{aside ? <RecordAside aside={aside} /> : null}
 		</aside>

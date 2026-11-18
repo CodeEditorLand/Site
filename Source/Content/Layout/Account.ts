@@ -121,7 +121,7 @@ export const AccountWorkspace = (T: TFunction): AccountSurface => ({
 		},
 	],
 
-	accessRegister: "# ACCESS\u2001/ 06",
+	accessRegister: "ACCESS",
 
 	access: [
 		{

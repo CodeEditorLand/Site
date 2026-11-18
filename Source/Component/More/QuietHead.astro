@@ -58,7 +58,9 @@ const { index, label, title, proposition, rows, class: Class } = Astro.props;
 
 <header class:list={["quiet-head", Class]}>
 	<p class="quiet-head__register">
-		<span class="quiet-head__mark" aria-hidden="true">#</span>
+		<span class="quiet-head__mark" aria-hidden="true">
+			#
+		</span>
 		<span class="quiet-head__index">{index}</span>
 		<span class="quiet-head__label">{label}</span>
 	</p>
@@ -66,7 +68,9 @@ const { index, label, title, proposition, rows, class: Class } = Astro.props;
 	<h1 class="quiet-head__title">{title}</h1>
 
 	<p class="quiet-head__proposition">
-		<span class="quiet-head__proposition-mark" aria-hidden="true">↳</span>
+		<span class="quiet-head__proposition-mark" aria-hidden="true">
+			↳
+		</span>
 		{proposition}
 	</p>
 

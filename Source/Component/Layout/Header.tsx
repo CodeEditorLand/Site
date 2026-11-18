@@ -330,7 +330,9 @@ const Header = ({ Content, AuthSlot, Mode = "minimal" }: HeaderProps) => {
 									>
 										<a
 											href={Action.Href}
-											{...HeaderLinkAttributes(Action.Target)}
+											{...HeaderLinkAttributes(
+												Action.Target,
+											)}
 											onClick={() => SetOpen(false)}
 										>
 											{Action.Label}

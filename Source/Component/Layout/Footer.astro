@@ -52,7 +52,9 @@ const Copyright = T("footer:bottomBar.copyright", {
 
 		<div class="FooterRecordHeader">
 			<p class="FooterRecordEnd">
-				<span class="FooterRecordMarker" aria-hidden="true">#</span>
+				<span class="FooterRecordMarker" aria-hidden="true">
+					#
+				</span>
 				{T("footer:record.end", { defaultValue: "LAND / RECORD END" })}
 			</p>
 
@@ -91,17 +93,15 @@ const Copyright = T("footer:bottomBar.copyright", {
 				</p>
 
 				<nav class="FooterQuickLinks" aria-label="Routes">
-					{
-						Data.Quick.map((Link) => (
-							<a
-								class="FooterQuickLink"
-								href={Link.Href}
-								{...FooterLinkAttributes(Link.Target)}
-							>
-								{Link.Label}
-							</a>
-						))
-					}
+					{Data.Quick.map((Link) => (
+						<a
+							class="FooterQuickLink"
+							href={Link.Href}
+							{...FooterLinkAttributes(Link.Target)}
+						>
+							{Link.Label}
+						</a>
+					))}
 				</nav>
 			</div>
 
@@ -111,17 +111,15 @@ const Copyright = T("footer:bottomBar.copyright", {
 				</p>
 
 				<nav class="FooterLegal" aria-label="Legal">
-					{
-						Data.Legal.map((Link) => (
-							<a
-								class="FooterLegalLink"
-								href={Link.Href}
-								{...FooterLinkAttributes(Link.Target)}
-							>
-								{Link.Label}
-							</a>
-						))
-					}
+					{Data.Legal.map((Link) => (
+						<a
+							class="FooterLegalLink"
+							href={Link.Href}
+							{...FooterLinkAttributes(Link.Target)}
+						>
+							{Link.Label}
+						</a>
+					))}
 				</nav>
 			</div>
 
@@ -133,17 +131,15 @@ const Copyright = T("footer:bottomBar.copyright", {
 				</p>
 
 				<nav class="FooterQuickLinks" aria-label="Index">
-					{
-						Data.Index.map((Link) => (
-							<a
-								class="FooterQuickLink"
-								href={Link.Href}
-								{...FooterLinkAttributes(Link.Target)}
-							>
-								{Link.Label}
-							</a>
-						))
-					}
+					{Data.Index.map((Link) => (
+						<a
+							class="FooterQuickLink"
+							href={Link.Href}
+							{...FooterLinkAttributes(Link.Target)}
+						>
+							{Link.Label}
+						</a>
+					))}
 				</nav>
 			</div>
 		</div>

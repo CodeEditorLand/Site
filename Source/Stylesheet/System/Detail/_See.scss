@@ -46,9 +46,11 @@
 	color: var(--Foreground);
 }
 
-// The mark is the grammar's, drawn not spoken.
+// The mark is the grammar's, drawn not spoken. Its gap is the site's mark gap,
+// so the `↳` sits half a character from `SEE` here exactly as the `〈03〉` sits
+// half a character from its part in the folio.
 .detail-see__mark {
-	margin-inline-end: 0.5ch;
+	margin-inline-end: var(--optical-mark-gap);
 	color: var(--MuteForeground);
 }
 
@@ -80,7 +82,7 @@
 
 	.detail-see__route {
 		flex: 0 0 auto;
-		inline-size: min(12rem, 40%);
+		inline-size: min(var(--optical-route-column), 40%);
 	}
 }
 

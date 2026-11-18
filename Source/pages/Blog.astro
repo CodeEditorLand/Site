@@ -92,7 +92,9 @@ const PlateMeasures = [
 	},
 	{
 		label: "READING",
-		value: String(Entries.reduce((Sum, Entry) => Sum + Entry.data.readTime, 0)),
+		value: String(
+			Entries.reduce((Sum, Entry) => Sum + Entry.data.readTime, 0),
+		),
 		unit: "MINUTES",
 	},
 ];

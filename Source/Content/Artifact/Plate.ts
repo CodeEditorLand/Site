@@ -51,7 +51,11 @@ import { Wind } from "../Record/Wind.js";
 import { Worker } from "../Record/Worker.js";
 
 import type { FieldRecord } from "../Record/FieldRecord.js";
-import type { Plate, PlateCell, PlateSet } from "../../Component/Record/Type.js";
+import type {
+	Plate,
+	PlateCell,
+	PlateSet,
+} from "../../Component/Record/Type.js";
 
 /** The field-record separator: U+2001, never U+00B7. */
 const Quad = "\u2001";
@@ -144,8 +148,7 @@ export const ElementPlateSet: PlateSet = {
 	caption:
 		"Fifteen element records, fifteen manifest states, and not one capture: eight manifests are `placeholder` with no plate beside them, seven elements have no manifest at all, and the set prints each cell's own state rather than a gallery of empty frames. The one verified capture in the build belongs to the product record, and it is printed as PLATE_01 on /Download.",
 	source: `PUBLIC/EVIDENCE/*/MANIFEST.YAML${Quad}SOURCE/CONTENT/ELEMENT/WORKING.TS`,
-	empty:
-		"No element record carries an evidence row in this build, so there is no set to print. The cells would name each element's manifest and its state; the register has not been run against this tree.",
+	empty: "No element record carries an evidence row in this build, so there is no set to print. The cells would name each element's manifest and its state; the register has not been run against this tree.",
 };
 
 /**
@@ -187,7 +190,9 @@ export const ElementPlate = (Record: FieldRecord): Plate => {
 				value: "UNAVAILABLE",
 			},
 		],
-		source: HasManifest ? ManifestOf(Record) : "SOURCE/CONTENT/ELEMENT/WORKING.TS",
+		source: HasManifest
+			? ManifestOf(Record)
+			: "SOURCE/CONTENT/ELEMENT/WORKING.TS",
 		state: "unavailable",
 		next: "OPEN THE ELEMENT'S MANUAL - IT DESCRIBES THE THING THE CAPTURE WOULD HAVE SHOWN.",
 		placement: "foot",
@@ -215,9 +220,15 @@ export const ReleasePlate: Plate = {
 	alt: "Rain-speckled glass reflecting a green light at night",
 	position: "right",
 	facts: [
-		{ key: "SUBJECT", value: "RAIN-SPECKLED GLASS WITH REFLECTED GREEN LIGHT" },
+		{
+			key: "SUBJECT",
+			value: "RAIN-SPECKLED GLASS WITH REFLECTED GREEN LIGHT",
+		},
 		{ key: "MODE", value: "FLASH-OBSERVATION" },
-		{ key: "CROP", value: `RIGHT-EDGE${Quad}SUBJECT EXCEEDS TOP AND RIGHT FRAME` },
+		{
+			key: "CROP",
+			value: `RIGHT-EDGE${Quad}SUBJECT EXCEEDS TOP AND RIGHT FRAME`,
+		},
 		{ key: "USAGE", value: `HOMEPAGE-HERO${Quad}LAND-ELEMENT-PAGE` },
 		{ key: "STATUS", value: "VERIFIED" },
 	],
@@ -264,8 +275,7 @@ export const ReleasePlateSet: PlateSet = {
 	caption:
 		"Three screens the manual documents in full - /Doc/workflow-open-file, /Doc/workflow-command-palette and /Doc/workflow-terminal - and no capture of any of them. A release that printed its interface as a drawing would be illustrating; this set says what the build has and what it does not.",
 	source: `SOURCE/CONTENT/DOC/WORKFLOW-*.MD${Quad}PUBLIC/EVIDENCE/*/MANIFEST.YAML`,
-	empty:
-		"The manual does not document a screen in this build, so there is no release evidence to list. The set would name each documented screen and the capture the build carries for it.",
+	empty: "The manual does not document a screen in this build, so there is no release evidence to list. The set would name each documented screen and the capture the build carries for it.",
 };
 
 /**

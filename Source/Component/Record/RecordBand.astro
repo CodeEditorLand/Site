@@ -33,32 +33,28 @@ const tone = band.tone ?? "canvas";
 	<div class="record-band__inner">
 		<p class="record-band__kicker">{band.kicker}</p>
 		<h2 class="record-band__heading">{band.heading}</h2>
-		{
-			band.standfirst ? (
-				<p class="record-band__standfirst">{band.standfirst}</p>
-			) : null
-		}
-		{
-			band.index?.length ? (
-				<nav class="record-band__index" aria-label={band.heading}>
-					{band.index.map((item) => (
-						<a class="record-band__index-item" href={item.href}>
-							{item.label}
-						</a>
-					))}
-				</nav>
-			) : null
-		}
+		{band.standfirst ? (
+			<p class="record-band__standfirst">{band.standfirst}</p>
+		) : null}
+		{band.index?.length ? (
+			<nav class="record-band__index" aria-label={band.heading}>
+				{band.index.map((item) => (
+					<a class="record-band__index-item" href={item.href}>
+						{item.label}
+					</a>
+				))}
+			</nav>
+		) : null}
 		<div class="record-band__body">
 			<slot />
 		</div>
-		{band.footnote ? <p class="record-band__footnote">{band.footnote}</p> : null}
-		{
-			Astro.slots.has("foot") ? (
-				<div class="record-band__foot">
-					<slot name="foot" />
-				</div>
-			) : null
-		}
+		{band.footnote ? (
+			<p class="record-band__footnote">{band.footnote}</p>
+		) : null}
+		{Astro.slots.has("foot") ? (
+			<div class="record-band__foot">
+				<slot name="foot" />
+			</div>
+		) : null}
 	</div>
 </section>

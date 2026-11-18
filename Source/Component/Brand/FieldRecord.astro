@@ -70,37 +70,31 @@ const Frame = ["h-full", className, Class].filter(Boolean).join(" ");
 			<FieldRecordSeal element={record.Seal} />
 		</div>
 
-		{
-			record.Stamp?.length ? (
-				<div class="mt-8">
-					{record.Stamp.map((Line) => (
-						<p class="text-field-l font-mono font-normal leading-[1.0] tracking-join text-card-foreground">
-							<StampText Line={Line} />
-						</p>
-					))}
-				</div>
-			) : null
-		}
+		{record.Stamp?.length ? (
+			<div class="mt-8">
+				{record.Stamp.map((Line) => (
+					<p class="text-field-l font-mono font-normal leading-[1.0] tracking-join text-card-foreground">
+						<StampText Line={Line} />
+					</p>
+				))}
+			</div>
+		) : null}
 
-		{
-			record.Route?.length ? (
-				<div class="mt-6">
-					{record.Route.map((Line) => (
-						<p class="text-field-s font-mono font-normal leading-[1.1]">
-							<RouteText Line={Line} />
-						</p>
-					))}
-				</div>
-			) : null
-		}
+		{record.Route?.length ? (
+			<div class="mt-6">
+				{record.Route.map((Line) => (
+					<p class="text-field-s font-mono font-normal leading-[1.1]">
+						<RouteText Line={Line} />
+					</p>
+				))}
+			</div>
+		) : null}
 
-		{
-			record.Program?.length ? (
-				<p class="text-field-s mt-6 font-mono uppercase tracking-rule text-card-foreground opacity-60">
-					{record.Program.join("\u2001")}
-				</p>
-			) : null
-		}
+		{record.Program?.length ? (
+			<p class="text-field-s mt-6 font-mono uppercase tracking-rule text-card-foreground opacity-60">
+				{record.Program.join("\u2001")}
+			</p>
+		) : null}
 
 		<div class="my-8 flex-1" aria-hidden="true"></div>
 
@@ -109,41 +103,35 @@ const Frame = ["h-full", className, Class].filter(Boolean).join(" ");
 				{record.Title}:
 			</p>
 
-			{
-				record.Relation ? (
-					<p class="text-field-s mt-3 font-mono font-normal leading-[1.1] text-card-foreground opacity-70">
-						↳{record.Relation}
-					</p>
-				) : null
-			}
+			{record.Relation ? (
+				<p class="text-field-s mt-3 font-mono font-normal leading-[1.1] text-card-foreground opacity-70">
+					↳{record.Relation}
+				</p>
+			) : null}
 		</div>
 
 		<div class="mt-6">
 			<FieldRecordStatus status={Status} tone={record.Status.Tone} />
 		</div>
 
-		{
-			record.Metadata?.length ? (
-				<div class="mt-4">
-					<FieldRecordMetadata
-						rows={record.Metadata.map((Row) => ({
-							label: Row.Label,
-							value: Row.Value,
-						}))}
-					/>
-				</div>
-			) : null
-		}
+		{record.Metadata?.length ? (
+			<div class="mt-4">
+				<FieldRecordMetadata
+					rows={record.Metadata.map((Row) => ({
+						label: Row.Label,
+						value: Row.Value,
+					}))}
+				/>
+			</div>
+		) : null}
 
-		{
-			record.Action ? (
-				<div class="mt-6">
-					<FieldRecordAction
-						label={record.Action.Label}
-						href={record.Action.Href}
-					/>
-				</div>
-			) : null
-		}
+		{record.Action ? (
+			<div class="mt-6">
+				<FieldRecordAction
+					label={record.Action.Label}
+					href={record.Action.Href}
+				/>
+			</div>
+		) : null}
 	</div>
 </FieldRecordDataCard>

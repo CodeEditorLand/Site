@@ -51,54 +51,53 @@ const { steps, platforms, action } = Astro.props;
 
 <div class="download-install">
 	<div class="download-install__steps">
-		{
-			steps.map((step) => (
-				<RecordWell
-					label={step.label}
-					language={step.language}
-					lines={step.lines}
-					source={step.source}
-					class="download-install__well"
-				/>
-			))
-		}
+		{steps.map((step) => (
+			<RecordWell
+				label={step.label}
+				language={step.language}
+				lines={step.lines}
+				source={step.source}
+				class="download-install__well"
+			/>
+		))}
 	</div>
 
 	<div class="download-install__runs">
-		{
-			platforms.map((platform) => (
-				<div class="download-install__run">
-					<div class="download-install__identity">
-						<p class="download-install__stamp">
-							<StampText Line={platform.name.toUpperCase()} />
-						</p>
-						<p class="download-install__state">
-							<FieldRecordStatus
-								status={platform.state.status}
-								tone={platform.state.tone}
-								copy={platform.state.copy}
-							/>
-						</p>
-					</div>
-
-					{platform.run ? (
-						<RecordWell
-							label={platform.run.label}
-							language={platform.run.language}
-							lines={platform.run.lines}
-							class="download-install__command"
+		{platforms.map((platform) => (
+			<div class="download-install__run">
+				<div class="download-install__identity">
+					<p class="download-install__stamp">
+						<StampText Line={platform.name.toUpperCase()} />
+					</p>
+					<p class="download-install__state">
+						<FieldRecordStatus
+							status={platform.state.status}
+							tone={platform.state.tone}
+							copy={platform.state.copy}
 						/>
-					) : (
-						<p class="download-install__absence">
-							<span class="download-install__absence-mark" aria-hidden="true">
-								↳
-							</span>
-							{platform.absence}
-						</p>
-					)}
+					</p>
 				</div>
-			))
-		}
+
+				{platform.run ? (
+					<RecordWell
+						label={platform.run.label}
+						language={platform.run.language}
+						lines={platform.run.lines}
+						class="download-install__command"
+					/>
+				) : (
+					<p class="download-install__absence">
+						<span
+							class="download-install__absence-mark"
+							aria-hidden="true"
+						>
+							↳
+						</span>
+						{platform.absence}
+					</p>
+				)}
+			</div>
+		))}
 	</div>
 
 	<p class="download-install__action">

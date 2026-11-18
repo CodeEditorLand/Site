@@ -129,8 +129,12 @@ const Seed = (Position: number): string =>
 		<ContactBreadcrumb trail={trail} class="blog-index__trail" />
 
 		<header class="blog-index__head">
-			<h1 class="blog-index__heading" id={HeadingID}>{heading}</h1>
-			{standfirst ? <p class="blog-index__standfirst">{standfirst}</p> : null}
+			<h1 class="blog-index__heading" id={HeadingID}>
+				{heading}
+			</h1>
+			{standfirst ? (
+				<p class="blog-index__standfirst">{standfirst}</p>
+			) : null}
 		</header>
 	</div>
 
@@ -145,21 +149,21 @@ const Seed = (Position: number): string =>
 				<div class="blog-index__register">
 					<p class="blog-index__register-label"># {plateLabel}</p>
 					<dl class="blog-index__register-rows">
-						{
-							plateMeasures.map((Measure) => (
-								<div class="blog-index__register-row">
-									<dt class="blog-index__register-key">{Measure.label}:</dt>
-									<dd class="blog-index__register-value">
-										{Measure.value}
-										{Measure.unit ? (
-											<span class="blog-index__register-unit">
-												{Measure.unit}
-											</span>
-										) : null}
-									</dd>
-								</div>
-							))
-						}
+						{plateMeasures.map((Measure) => (
+							<div class="blog-index__register-row">
+								<dt class="blog-index__register-key">
+									{Measure.label}:
+								</dt>
+								<dd class="blog-index__register-value">
+									{Measure.value}
+									{Measure.unit ? (
+										<span class="blog-index__register-unit">
+											{Measure.unit}
+										</span>
+									) : null}
+								</dd>
+							</div>
+						))}
 					</dl>
 				</div>
 			</RecordFigure>
@@ -167,59 +171,71 @@ const Seed = (Position: number): string =>
 	</div>
 
 	<div class="blog-index__archive-wrap">
-		{
-			rows.length === 0 ? (
-				<div class="blog-index__empty">
-					<p class="blog-index__empty-title">{emptyTitle}</p>
-					<p class="blog-index__empty-note">{emptyNote}</p>
-				</div>
-			) : (
-				<section class="blog-index__archive" aria-labelledby={HeadingID}>
-					<ul class="blog-index__grid">
-						{rows.map((Row, Position) => (
-							<li class="blog-index__item">
-								<a class="blog-index__link" href={Row.href}>
-									<article
-										class="blog-index__card StaccatoCard"
-										style={Seed(Position)}
-									>
-										{Row.tags.length > 0 ? (
-											<ul class="blog-index__tags">
-												{Row.tags.map((Tag) => (
-													<li class="blog-index__tag">
-														<jelly-badge
-															variant="platinum"
-															shape="square"
-															style="--jelly-fill:transparent;--jelly-label:var(--CardForeground);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
-														>
-															{Tag}
-														</jelly-badge>
-													</li>
-												))}
-											</ul>
-										) : null}
+		{rows.length === 0 ? (
+			<div class="blog-index__empty">
+				<p class="blog-index__empty-title">{emptyTitle}</p>
+				<p class="blog-index__empty-note">{emptyNote}</p>
+			</div>
+		) : (
+			<section class="blog-index__archive" aria-labelledby={HeadingID}>
+				<ul class="blog-index__grid">
+					{rows.map((Row, Position) => (
+						<li class="blog-index__item">
+							<a class="blog-index__link" href={Row.href}>
+								<article
+									class="blog-index__card StaccatoCard"
+									style={Seed(Position)}
+								>
+									{Row.tags.length > 0 ? (
+										<ul class="blog-index__tags">
+											{Row.tags.map((Tag) => (
+												<li class="blog-index__tag">
+													<jelly-badge
+														variant="platinum"
+														shape="square"
+														style="--jelly-fill:transparent;--jelly-label:var(--CardForeground);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
+													>
+														{Tag}
+													</jelly-badge>
+												</li>
+											))}
+										</ul>
+									) : null}
 
-										<h3 class="blog-index__title">{Row.title}</h3>
-										<p class="blog-index__summary">{Row.summary}</p>
+									<h3 class="blog-index__title">
+										{Row.title}
+									</h3>
+									<p class="blog-index__summary">
+										{Row.summary}
+									</p>
 
-										<p class="blog-index__foot">
-											<span class="blog-index__author">{Row.author}</span>
-											<time class="blog-index__date" datetime={Row.date}>
-												{Row.date}
-											</time>
-											<span class="blog-index__read">{Row.readTime}</span>
-										</p>
-									</article>
-								</a>
-							</li>
-						))}
-					</ul>
-				</section>
-			)
-		}
+									<p class="blog-index__foot">
+										<span class="blog-index__author">
+											{Row.author}
+										</span>
+										<time
+											class="blog-index__date"
+											datetime={Row.date}
+										>
+											{Row.date}
+										</time>
+										<span class="blog-index__read">
+											{Row.readTime}
+										</span>
+									</p>
+								</article>
+							</a>
+						</li>
+					))}
+				</ul>
+			</section>
+		)}
 
 		<p class="blog-index__back">
-			<a href={backHref}>{backLabel}<span aria-hidden="true"> ↑</span></a>
+			<a href={backHref}>
+				{backLabel}
+				<span aria-hidden="true"> ↑</span>
+			</a>
 		</p>
 	</div>
 </div>

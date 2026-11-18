@@ -46,7 +46,12 @@ interface Props {
 	class?: string;
 }
 
-const { marker: Marker, records: Records, empty: Empty, class: Class } = Astro.props;
+const {
+	marker: Marker,
+	records: Records,
+	empty: Empty,
+	class: Class,
+} = Astro.props;
 
 /** A value the record does not have is an absence, and the site has a word for it. */
 const Unknown = (Value: string): boolean => Value.trim() === "UNAVAILABLE";
@@ -55,94 +60,87 @@ const Unknown = (Value: string): boolean => Value.trim() === "UNAVAILABLE";
 <div class:list={["MotionExpand", Class]} data-motion="expand">
 	<p class="MotionExpand__Marker">{Marker}</p>
 
-	{
-		Records.length > 0 ? (
-			Records.map((Record) =>
-				Record.missing ? (
-					<div class="MotionExpand__Gone">
-						<span class="MotionExpand__GoneMark" aria-hidden="true">
-							◎
+	{Records.length > 0 ? (
+		Records.map((Record) =>
+			Record.missing ? (
+				<div class="MotionExpand__Gone">
+					<span class="MotionExpand__GoneMark" aria-hidden="true">
+						◎
+					</span>
+					<span>
+						<span class="MotionExpand__GoneName">
+							{Record.name}
 						</span>
-						<span>
-							<span class="MotionExpand__GoneName">
-								{Record.name}
+						<span class="MotionExpand__GoneNote">
+							<span aria-hidden="true">↳</span> WAS:{" "}
+							{Record.missing}
+						</span>
+					</span>
+				</div>
+			) : (
+				<details class="MotionExpand__Record" data-state="record">
+					<summary class="MotionExpand__Row">
+						<span class="MotionExpand__Index" aria-hidden="true">
+							{Record.index}
+						</span>
+						<span class="MotionExpand__Name">{Record.name}</span>
+						{Record.fact ? (
+							<span class="MotionExpand__Fact">
+								{Record.fact}
 							</span>
-							<span class="MotionExpand__GoneNote">
-								<span aria-hidden="true">↳</span> WAS:{" "}
-								{Record.missing}
+						) : null}
+						<span class="MotionExpand__Glyphs" aria-hidden="true">
+							<span class="MotionExpand__Glyph MotionExpand__Glyph--closed">
+								→
+							</span>
+							<span class="MotionExpand__Glyph MotionExpand__Glyph--open">
+								↳
 							</span>
 						</span>
-					</div>
-				) : (
-					<details class="MotionExpand__Record" data-state="record">
-						<summary class="MotionExpand__Row">
-							<span class="MotionExpand__Index" aria-hidden="true">
-								{Record.index}
-							</span>
-							<span class="MotionExpand__Name">
-								{Record.name}
-							</span>
-							{Record.fact ? (
-								<span class="MotionExpand__Fact">
-									{Record.fact}
-								</span>
-							) : null}
-							<span
-								class="MotionExpand__Glyphs"
-								aria-hidden="true"
-							>
-								<span class="MotionExpand__Glyph MotionExpand__Glyph--closed">
-									→
-								</span>
-								<span class="MotionExpand__Glyph MotionExpand__Glyph--open">
-									↳
-								</span>
-							</span>
-						</summary>
+					</summary>
 
-						<div class="MotionExpand__Body">
-							<dl class="MotionExpand__Register">
-								{Record.rows.map((Fact) => (
-									<div class="MotionExpand__Fact-row">
-										<dt class="MotionExpand__Key">
-											{Fact.key}
-										</dt>
-										<dd
-											class:list={[
-												"MotionExpand__Value",
-												Unknown(Fact.value) &&
-													"MotionExpand__Value--unknown",
-											]}
-										>
-											{Fact.value}
-											{Fact.note ? (
-												<span class="MotionExpand__Note">
-													<span aria-hidden="true">
-														↳
-													</span>{" "}
-													{Fact.note}
-												</span>
-											) : null}
-										</dd>
-									</div>
-								))}
-							</dl>
-							<p class="MotionExpand__Source">
-								SOURCE: {Record.source}
-							</p>
-						</div>
-					</details>
-				),
-			)
-		) : (
-			<div class="MotionExpand__Empty">
-				<p class="MotionExpand__EmptyMark">
-					<b aria-hidden="true">◎</b> NO RECORD
-				</p>
-				<p class="MotionExpand__EmptyLine">
-					<span aria-hidden="true">↳</span> {Empty}
-				</p>
-			</div>
+					<div class="MotionExpand__Body">
+						<dl class="MotionExpand__Register">
+							{Record.rows.map((Fact) => (
+								<div class="MotionExpand__Fact-row">
+									<dt class="MotionExpand__Key">
+										{Fact.key}
+									</dt>
+									<dd
+										class:list={[
+											"MotionExpand__Value",
+											Unknown(Fact.value) &&
+												"MotionExpand__Value--unknown",
+										]}
+									>
+										{Fact.value}
+										{Fact.note ? (
+											<span class="MotionExpand__Note">
+												<span aria-hidden="true">
+													↳
+												</span>{" "}
+												{Fact.note}
+											</span>
+										) : null}
+									</dd>
+								</div>
+							))}
+						</dl>
+						<p class="MotionExpand__Source">
+							SOURCE: {Record.source}
+						</p>
+					</div>
+				</details>
+			),
 		)
-	}
+	) : (
+		<div class="MotionExpand__Empty">
+			<p class="MotionExpand__EmptyMark">
+				<b aria-hidden="true">◎</b> NO RECORD
+			</p>
+			<p class="MotionExpand__EmptyLine">
+				<span aria-hidden="true">↳</span> {Empty}
+			</p>
+		</div>
+	)}
 </div>

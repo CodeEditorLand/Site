@@ -42,17 +42,16 @@ const Style = [
 ].join(";");
 ---
 
-<jelly-badge shape="square" variant={Ink.variant} style={Style}
-	>{label}{
-		dot ? (
-			<>
-				{"\u2001"}
-				<span
-					class="flat h-1.5 w-1.5"
-					aria-hidden="true"
-					style={`background-color:var(--${Ink.dot})`}
-				/>
-			</>
-		) : null
-	}</jelly-badge
->
+<jelly-badge shape="square" variant={Ink.variant} style={Style}>
+	{label}
+	{dot ? (
+		<>
+			{"\u2001"}
+			<span
+				class="flat h-1.5 w-1.5"
+				aria-hidden="true"
+				style={`background-color:var(--${Ink.dot})`}
+			/>
+		</>
+	) : null}
+</jelly-badge>

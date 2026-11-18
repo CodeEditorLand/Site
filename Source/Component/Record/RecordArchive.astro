@@ -122,43 +122,46 @@ const Marker = index?.replace(/^#\s*/, "");
 	<header class="record-archive__head">
 		<div class="record-archive__record">
 			{Marker ? <FieldRecordIndex index={Marker} /> : null}
-			{heading ? <h2 class="record-archive__heading">{heading}</h2> : null}
+			{heading ? (
+				<h2 class="record-archive__heading">{heading}</h2>
+			) : null}
 		</div>
 		<p class="record-archive__count">{Count}</p>
 	</header>
 
-	{
-		entries.length > 0 ? (
-			<div class="record-archive__body">
-				{Runs.map((Run) => (
-					<div class="record-archive__run">
-						{Run.label ? (
-							<p class="record-archive__label">{Run.label}</p>
-						) : null}
-						<ul class="record-archive__list">
-							{Run.entries.map((Entry) => (
-								<li class="record-archive__row">
-									<a class="record-archive__link" href={Entry.href}>
-										{Entry.marker ? (
-											<span class="record-archive__marker">
-												{Entry.marker}
-											</span>
-										) : null}
-										<span class="record-archive__title">
-											{Entry.title}
+	{entries.length > 0 ? (
+		<div class="record-archive__body">
+			{Runs.map((Run) => (
+				<div class="record-archive__run">
+					{Run.label ? (
+						<p class="record-archive__label">{Run.label}</p>
+					) : null}
+					<ul class="record-archive__list">
+						{Run.entries.map((Entry) => (
+							<li class="record-archive__row">
+								<a
+									class="record-archive__link"
+									href={Entry.href}
+								>
+									{Entry.marker ? (
+										<span class="record-archive__marker">
+											{Entry.marker}
 										</span>
-										{Entry.note ? (
-											<span class="record-archive__note">
-												{Entry.note}
-											</span>
-										) : null}
-									</a>
-								</li>
-							))}
-						</ul>
-					</div>
-				))}
-			</div>
-		) : null
-	}
+									) : null}
+									<span class="record-archive__title">
+										{Entry.title}
+									</span>
+									{Entry.note ? (
+										<span class="record-archive__note">
+											{Entry.note}
+										</span>
+									) : null}
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			))}
+		</div>
+	) : null}
 </section>

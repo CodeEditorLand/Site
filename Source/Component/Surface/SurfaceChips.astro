@@ -50,18 +50,16 @@ const Style = (ChipTone: StatusTone): string =>
 ---
 
 <ul class:list={["surface__chips", ClassName]}>
-	{
-		chips.map((Chip) => (
-			<li>
-				<jelly-badge
-					shape="square"
-					variant="platinum"
-					style={Style(Tone(Chip) ?? "ink")}
-				>
-					<span class="surface__mark" aria-hidden="true"></span>
-					{Chip}
-				</jelly-badge>
-			</li>
-		))
-	}
+	{chips.map((Chip) => (
+		<li>
+			<jelly-badge
+				shape="square"
+				variant="platinum"
+				style={Style(Tone(Chip) ?? "ink")}
+			>
+				<span class="surface__mark" aria-hidden="true"></span>
+				{Chip}
+			</jelly-badge>
+		</li>
+	))}
 </ul>

@@ -52,8 +52,16 @@ const { status, wouldBe, whyNot, next, note, class: ClassName } = Astro.props;
 const Resolved = Tone(status) ?? "ink";
 ---
 
-<aside class:list={["surface-absent", ClassName]} aria-label={`${status}: ${wouldBe}`}>
-	<p class:list={["surface-absent__status", `surface-absent__status--${Resolved}`]}>
+<aside
+	class:list={["surface-absent", ClassName]}
+	aria-label={`${status}: ${wouldBe}`}
+>
+	<p
+		class:list={[
+			"surface-absent__status",
+			`surface-absent__status--${Resolved}`,
+		]}
+	>
 		<span class="surface__mark" aria-hidden="true"></span>
 		<span class="surface-absent__status-key">STATUS:</span>
 		{status}

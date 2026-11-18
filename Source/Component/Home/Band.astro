@@ -65,56 +65,50 @@ const HeadingID = `${head.ID}Heading`;
 	<div class="home-band__inner">
 		<div class="home-band__head">
 			<p class="home-band__kicker">
-				{
-					series && (
-						<span class="home-band__marker">{`# ${series}_01`}</span>
-					)
-				}
-				{
-					series && (
-						<span class="home-band__route" aria-hidden="true">
-							/
-						</span>
-					)
-				}
+				{series && (
+					<span class="home-band__marker">{`# ${series}_01`}</span>
+				)}
+				{series && (
+					<span class="home-band__route" aria-hidden="true">
+						/
+					</span>
+				)}
 				<span class="home-band__name">{head.Kicker}</span>
 			</p>
 
-			<h2 class="home-band__heading" id={HeadingID}>{head.Heading}</h2>
+			<h2 class="home-band__heading" id={HeadingID}>
+				{head.Heading}
+			</h2>
 
-			{
-				head.Standfirst && (
-					<p class="home-band__standfirst">{head.Standfirst}</p>
-				)
-			}
+			{head.Standfirst && (
+				<p class="home-band__standfirst">{head.Standfirst}</p>
+			)}
 
-			{
-				head.Stamp && (
-					<div class="home-band__stamp">
-						{head.Stamp.map((Line) => (
-							<span class="home-band__stamp-line">
-								{Line.Label && <Fragment>{Line.Label}: </Fragment>}
-								{Line.Terms
-									? Line.Terms.map((Term, Index) => (
-											<Fragment>
-												{Index > 0 && " / "}
-												<span
-													style={
-														Term.Ink === undefined
-															? undefined
-															: `color:${Term.Ink}`
-													}
-												>
-													{Term.Text}
-												</span>
-											</Fragment>
-										))
-									: Line.Text}
-							</span>
-						))}
-					</div>
-				)
-			}
+			{head.Stamp && (
+				<div class="home-band__stamp">
+					{head.Stamp.map((Line) => (
+						<span class="home-band__stamp-line">
+							{Line.Label && <Fragment>{Line.Label}: </Fragment>}
+							{Line.Terms
+								? Line.Terms.map((Term, Index) => (
+										<Fragment>
+											{Index > 0 && " / "}
+											<span
+												style={
+													Term.Ink === undefined
+														? undefined
+														: `color:${Term.Ink}`
+												}
+											>
+												{Term.Text}
+											</span>
+										</Fragment>
+									))
+								: Line.Text}
+						</span>
+					))}
+				</div>
+			)}
 		</div>
 
 		<div class="home-band__body">

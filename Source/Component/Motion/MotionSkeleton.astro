@@ -47,7 +47,13 @@ interface Props {
 	class?: string;
 }
 
-const { marker: Marker, keys: Keys, waiting: Waiting, age: Age, class: Class } = Astro.props;
+const {
+	marker: Marker,
+	keys: Keys,
+	waiting: Waiting,
+	age: Age,
+	class: Class,
+} = Astro.props;
 
 /**
  * A bar's width per key, derived from the key's own name length so a page does
@@ -67,19 +73,17 @@ const WidthOf = (Key: string): number =>
 	<p class="MotionSkeleton__Marker">{Marker}</p>
 
 	<dl class="MotionSkeleton__Rows">
-		{
-			Keys.map((Key) => (
-				<div class="MotionSkeleton__Row">
-					<dt class="MotionSkeleton__Key">{Key}</dt>
-					<dd class="MotionSkeleton__Value" aria-hidden="true">
-						<span
-							class="MotionSkeleton__Bar"
-							style={`--bar: ${WidthOf(Key)}%`}
-						/>
-					</dd>
-				</div>
-			))
-		}
+		{Keys.map((Key) => (
+			<div class="MotionSkeleton__Row">
+				<dt class="MotionSkeleton__Key">{Key}</dt>
+				<dd class="MotionSkeleton__Value" aria-hidden="true">
+					<span
+						class="MotionSkeleton__Bar"
+						style={`--bar: ${WidthOf(Key)}%`}
+					/>
+				</dd>
+			</div>
+		))}
 	</dl>
 
 	<p class="MotionSkeleton__Wait">

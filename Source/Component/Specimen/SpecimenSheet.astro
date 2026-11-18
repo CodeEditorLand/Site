@@ -72,63 +72,74 @@ const Disposition = {
 } as const;
 ---
 
-<section class:list={["specimen-sheet", ClassName]} aria-label={`${label}: ${count} parts`}>
+<section
+	class:list={["specimen-sheet", ClassName]}
+	aria-label={`${label}: ${count} parts`}
+>
 	<p class="specimen-sheet__register">
-		<span class="specimen-sheet__register-mark" aria-hidden="true">#</span>
+		<span class="specimen-sheet__register-mark" aria-hidden="true">
+			#
+		</span>
 		<span class="specimen-sheet__register-word">{label}</span>
-		<span class="specimen-sheet__register-sep" aria-hidden="true">{"\u2001"}</span>
+		<span class="specimen-sheet__register-sep" aria-hidden="true">
+			{"\u2001"}
+		</span>
 		<span class="specimen-sheet__register-count">{count}</span>
 	</p>
 
-	{
-		rows.length === 0 ? (
-			<p class="specimen-sheet__empty">{empty}</p>
-		) : (
-			<ol class="specimen-sheet__cells">
-				{
-					rows.map((Row) => {
-						const State = Disposition[Row.disposition];
-						const Body = (
-							<>
-								<span class="specimen-sheet__mark" aria-hidden="true">
-									{Row.mark}
-								</span>
-								<span class="specimen-sheet__body">
-									<span class="specimen-sheet__name">{Row.name}</span>
-									<span class="specimen-sheet__note">{Row.note}</span>
-								</span>
-								<span class="specimen-sheet__kind">{Row.kind}</span>
-								<span
-									class:list={[
-										"specimen-sheet__state",
-										`specimen-sheet__state--${Row.disposition}`,
-									]}
-								>
-									<span class="specimen-sheet__state-mark" aria-hidden="true">
-										{State.mark}
-									</span>
-									{State.word}
-								</span>
-							</>
-						);
-
-						return (
-							<li
-								class="specimen-sheet__cell"
-								data-disposition={Row.disposition}
+	{rows.length === 0 ? (
+		<p class="specimen-sheet__empty">{empty}</p>
+	) : (
+		<ol class="specimen-sheet__cells">
+			{rows.map((Row) => {
+				const State = Disposition[Row.disposition];
+				const Body = (
+					<>
+						<span class="specimen-sheet__mark" aria-hidden="true">
+							{Row.mark}
+						</span>
+						<span class="specimen-sheet__body">
+							<span class="specimen-sheet__name">{Row.name}</span>
+							<span class="specimen-sheet__note">{Row.note}</span>
+						</span>
+						<span class="specimen-sheet__kind">{Row.kind}</span>
+						<span
+							class:list={[
+								"specimen-sheet__state",
+								`specimen-sheet__state--${Row.disposition}`,
+							]}
+						>
+							<span
+								class="specimen-sheet__state-mark"
+								aria-hidden="true"
 							>
-								{Row.plate === undefined ? (
-									<span class="specimen-sheet__cell-inner">{Body}</span>
-								) : (
-									<a class="specimen-sheet__cell-inner" href={Row.plate}>
-										{Body}
-									</a>
-								)}
-							</li>
-						);
-					})
-				}
-			</ol>
-		)
-	}
+								{State.mark}
+							</span>
+							{State.word}
+						</span>
+					</>
+				);
+
+				return (
+					<li
+						class="specimen-sheet__cell"
+						data-disposition={Row.disposition}
+					>
+						{Row.plate === undefined ? (
+							<span class="specimen-sheet__cell-inner">
+								{Body}
+							</span>
+						) : (
+							<a
+								class="specimen-sheet__cell-inner"
+								href={Row.plate}
+							>
+								{Body}
+							</a>
+						)}
+					</li>
+				);
+			})}
+		</ol>
+	)}
 </section>

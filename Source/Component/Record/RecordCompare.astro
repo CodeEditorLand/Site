@@ -93,73 +93,88 @@ const Skeleton = [0, 1, 2];
 	aria-label={compare.label ?? `${compare.from} to ${compare.to}`}
 	aria-busy={Loading ? "true" : undefined}
 >
-	{compare.label ? <p class="record-compare__label">{compare.label}</p> : null}
+	{compare.label ? (
+		<p class="record-compare__label">{compare.label}</p>
+	) : null}
 
 	<p class="record-compare__axis">
 		<span class="record-compare__end">{compare.from}</span>
-		<span class="record-compare__axis-mark" aria-hidden="true">&#8594;</span>
+		<span class="record-compare__axis-mark" aria-hidden="true">
+			&#8594;
+		</span>
 		<span class="record-compare__end">{compare.to}</span>
 	</p>
 
-	{
-		Loading ? (
-			<ol class="record-compare__rail" style="--CompareStops:3">
-				{Skeleton.map(() => (
-					<li class="record-compare__stop record-compare__stop--skeleton">
-						<span class="record-compare__tick" aria-hidden="true" />
-						<span class="record-compare__bar record-compare__bar--label" aria-hidden="true" />
-						<span class="record-compare__bar record-compare__bar--value" aria-hidden="true" />
-					</li>
-				))}
-			</ol>
-		) : Empty ? (
-			<p class="record-compare__empty">
-				<span aria-hidden="true">&#9678;</span>{" "}
-				{compare.empty ??
-					"No position is recorded on this axis yet. The rail prints its ends rather than a blank line, so a reader can see which order is being asked about."}
-			</p>
-		) : (
-			<ol
-				class="record-compare__rail"
-				style={`--CompareStops:${compare.stops.length}`}
-			>
-				{compare.stops.map((Stop) => (
-					<li
-						class:list={[
-							"record-compare__stop",
-							Stop.state && "record-compare__stop--unreached",
-						]}
-					>
-						<span class="record-compare__tick" aria-hidden="true" />
-						<span class="record-compare__stop-label">{Stop.label}</span>
-						{Stop.state ? (
+	{Loading ? (
+		<ol class="record-compare__rail" style="--CompareStops:3">
+			{Skeleton.map(() => (
+				<li class="record-compare__stop record-compare__stop--skeleton">
+					<span class="record-compare__tick" aria-hidden="true" />
+					<span
+						class="record-compare__bar record-compare__bar--label"
+						aria-hidden="true"
+					/>
+					<span
+						class="record-compare__bar record-compare__bar--value"
+						aria-hidden="true"
+					/>
+				</li>
+			))}
+		</ol>
+	) : Empty ? (
+		<p class="record-compare__empty">
+			<span aria-hidden="true">&#9678;</span>{" "}
+			{compare.empty ??
+				"No position is recorded on this axis yet. The rail prints its ends rather than a blank line, so a reader can see which order is being asked about."}
+		</p>
+	) : (
+		<ol
+			class="record-compare__rail"
+			style={`--CompareStops:${compare.stops.length}`}
+		>
+			{compare.stops.map((Stop) => (
+				<li
+					class:list={[
+						"record-compare__stop",
+						Stop.state && "record-compare__stop--unreached",
+					]}
+				>
+					<span class="record-compare__tick" aria-hidden="true" />
+					<span class="record-compare__stop-label">{Stop.label}</span>
+					{Stop.state ? (
+						<span
+							class:list={[
+								"record-compare__stop-state",
+								`record-compare__stop-state--${StopTone(Stop.state)}`,
+							]}
+						>
 							<span
-								class:list={[
-									"record-compare__stop-state",
-									`record-compare__stop-state--${StopTone(Stop.state)}`,
-								]}
-							>
-								<span class="record-compare__stop-mark" aria-hidden="true" />
-								STATUS: {Stop.state.toUpperCase()}
-							</span>
-						) : null}
-						<span class="record-compare__stop-value">
-							{Stop.href ? <a href={Stop.href}>{Stop.value}</a> : Stop.value}
+								class="record-compare__stop-mark"
+								aria-hidden="true"
+							/>
+							STATUS: {Stop.state.toUpperCase()}
 						</span>
-						{Stop.note ? (
-							<span class="record-compare__stop-note">{Stop.note}</span>
-						) : null}
-					</li>
-				))}
-			</ol>
-		)
-	}
+					) : null}
+					<span class="record-compare__stop-value">
+						{Stop.href ? (
+							<a href={Stop.href}>{Stop.value}</a>
+						) : (
+							Stop.value
+						)}
+					</span>
+					{Stop.note ? (
+						<span class="record-compare__stop-note">
+							{Stop.note}
+						</span>
+					) : null}
+				</li>
+			))}
+		</ol>
+	)}
 
-	{
-		Loading ? (
-			<p class="record-compare__state">STATUS: LOADING</p>
-		) : compare.caption ? (
-			<p class="record-compare__caption">{compare.caption}</p>
-		) : null
-	}
+	{Loading ? (
+		<p class="record-compare__state">STATUS: LOADING</p>
+	) : compare.caption ? (
+		<p class="record-compare__caption">{compare.caption}</p>
+	) : null}
 </div>

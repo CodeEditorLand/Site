@@ -311,10 +311,7 @@ const Stages = [
 	},
 ];
 
-const TrailItems = [
-	{ label: "/HOME", href: "/" },
-	{ label: "/CONTENTS" },
-];
+const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/CONTENTS" }];
 
 /** The number of addresses the build emits, as the footnote names it. */
 const Built = Routes.length;
@@ -337,12 +334,16 @@ const BandIds = {
 	Record: "record",
 } as const;
 
-const Movements: { Index: string; Label: string; Href: string; Meta?: string }[] =
-	Object.entries(Bands).map(([Key, Entry], Index) => ({
-		Index: String(Index + 1).padStart(2, "0"),
-		Label: Entry.heading.toUpperCase(),
-		Href: `#${BandIds[Key as keyof typeof BandIds]}`,
-	}));
+const Movements: {
+	Index: string;
+	Label: string;
+	Href: string;
+	Meta?: string;
+}[] = Object.entries(Bands).map(([Key, Entry], Index) => ({
+	Index: String(Index + 1).padStart(2, "0"),
+	Label: Entry.heading.toUpperCase(),
+	Href: `#${BandIds[Key as keyof typeof BandIds]}`,
+}));
 
 /** The one band this page writes inline (the four languages) has no entry in `Bands`. */
 Movements.push({
@@ -479,7 +480,13 @@ const FormFacets = FormColumns.map((Column, Index) => ({
 		<RecordLedger rows={LanguageContract} columns={1} />
 	</RecordBand>
 
-	<RecordBand band={{ ...Bands.Routes, id: BandIds.Routes, footnote: RegistryFootnote(Registry.Count, Built, Registry.Missing) }}>
+	<RecordBand
+		band={{
+			...Bands.Routes,
+			id: BandIds.Routes,
+			footnote: RegistryFootnote(Registry.Count, Built, Registry.Missing),
+		}}
+	>
 		<RecordArchive entries={RouteEntries} index="ROUTES_01" />
 	</RecordBand>
 
@@ -493,26 +500,26 @@ const FormFacets = FormColumns.map((Column, Index) => ({
 	</RecordBand>
 
 	<RecordBand band={{ ...Bands.Declared, id: BandIds.Declared }}>
-		{
-			DeclaredRows.length > 0 ? (
-				<RecordLedger rows={DeclaredRows} />
-			) : (
-				<RecordLedger
-					rows={[
-						{
-							key: "◎",
-							value:
-								"Every module outside the bulk trees is read by something. There is nothing on this page to explain, which is the state this band exists to reach.",
-						},
-					]}
-				/>
-			)
-		}
+		{DeclaredRows.length > 0 ? (
+			<RecordLedger rows={DeclaredRows} />
+		) : (
+			<RecordLedger
+				rows={[
+					{
+						key: "◎",
+						value: "Every module outside the bulk trees is read by something. There is nothing on this page to explain, which is the state this band exists to reach.",
+					},
+				]}
+			/>
+		)}
 	</RecordBand>
 
 	<RecordBand band={{ ...Bands.Record, id: BandIds.Record }}>
 		<RecordStage stages={Stages} orientation="row" />
-		<RecordLedger rows={RecordRows(Totals, AsOf, JellyUIVersion)} columns={2} />
+		<RecordLedger
+			rows={RecordRows(Totals, AsOf, JellyUIVersion)}
+			columns={2}
+		/>
 
 		<Onward
 			slot="foot"

@@ -76,10 +76,7 @@ const Note = {
 	source: "SOURCE/CONTENT/MORE/GLOSSARY.TS",
 };
 
-const TrailItems = [
-	{ label: "/HOME", href: "/" },
-	{ label: "/GLOSSARY" },
-];
+const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/GLOSSARY" }];
 
 /**
  * The lexicon's own contents, for a measure that has no rail.
@@ -167,7 +164,11 @@ const Sections = [
 					cause="The word was replaced by `UNAVAILABLE`, which states the same fact without claiming that a version exists."
 					next={{ label: "READ THE EDITION", href: "/Download" }}
 					rows={[
-						{ key: "WAS:", value: "VERSION: vPre-release", code: true },
+						{
+							key: "WAS:",
+							value: "VERSION: vPre-release",
+							code: true,
+						},
 						{ key: "NOW:", value: "UNAVAILABLE" },
 						{ key: "FILES:", value: "0 PRINT IT" },
 					]}
@@ -179,7 +180,10 @@ const Sections = [
 					index="COVERAGE / 01"
 					statement="Two words the document uses are not in this lexicon: `LAND`, the repository and project name, and `FIDDEE`, the product name for the compiled application."
 					cause="The element run covers the fifteen parts, not the product or its binary. A definition invented for either would be this page's own prose in a run that promises the records'."
-					next={{ label: "READ THE INTRODUCTION", href: "/Doc/introduction" }}
+					next={{
+						label: "READ THE INTRODUCTION",
+						href: "/Doc/introduction",
+					}}
 					rows={[
 						{ key: "KNOWN:", value: `${TermCount} TERMS, 3 RUNS` },
 						{ key: "UNAVAILABLE:", value: "LAND, FIDDEE" },

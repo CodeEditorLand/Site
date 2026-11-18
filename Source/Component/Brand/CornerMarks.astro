@@ -69,14 +69,12 @@ const Ticks = CornerTicks({
 	class:list={["CornerMarks pointer-events-none absolute inset-0", className]}
 	{...Rest}
 >
-	{
-		Ticks.map((Tick) => (
-			<span
-				class="CornerMarkTick"
-				data-corner={Tick.corner}
-				data-axis={Tick.axis}
-				style={Tick.style}
-			/>
-		))
-	}
+	{Ticks.map((Tick) => (
+		<span
+			class="CornerMarkTick"
+			data-corner={Tick.corner}
+			data-axis={Tick.axis}
+			style={Tick.style}
+		/>
+	))}
 </div>

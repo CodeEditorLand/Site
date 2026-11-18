@@ -1,0 +1,148 @@
+// OPTICAL/HANG - a mark is not text, so it sits in the margin.
+//
+// ─── THE LAW ──────────────────────────────────────────────────────────────
+// A record opens on a mark: `# WORKING / 06`, `/THE FORMS`, `↳ SEE`. The mark
+// says something *about* the line; the word after it is the line. So the mark
+// hangs into the margin and the word lands on the measure - which means on the
+// same optical edge as everything under it. A register whose `#` pushes its own
+// name two characters in from the facts it names is the most repeated defect on
+// this site: every block that prints a register line had it.
+//
+// ─── HOW ──────────────────────────────────────────────────────────────────
+// Two mechanisms, because there are two shapes:
+//
+//   1. **`text-indent`** for a line whose mark and word are one text run. The
+//      first line moves left by the mark's advance plus the tracking after it
+//      and every following line stays on the measure - which is exactly what
+//      hanging means, and what makes a wrapped register line correct for free.
+//   2. **A negative `margin-inline-start` on the mark element** for a mark that
+//      is already its own span (`↳` in the cross-reference). The mark moves and
+//      the label after it does not, because the label is a sibling.
+//
+// ─── WHAT MAY NOT HANG ────────────────────────────────────────────────────
+// Only a line whose template writes the mark itself. `.record-entry__index` is
+// the case that decides this: the doc index hands it `01` - a position, no mark -
+// while the properties grid hands it `# CLAIM_01`. One class, two shapes, so the
+// entry's marker does not hang: a line that prints no mark must never be shifted,
+// and CSS cannot see the difference. (The brief's `missing` state, made concrete
+// by the tree.)
+@use "../Mixin" as *;
+
+// ─── 1. THE REGISTER LINES ────────────────────────────────────────────────
+// `# WORKING / 06` above the facts, `# CHAPTERS / 08` above the index. The
+// `#` is a literal in both templates, so the hang is safe by construction.
+.record-ledger-block__register,
+.detail-leader__register {
+	text-indent: var(--optical-hang-word);
+}
+
+// THE ONE SURFACE THAT INSETS LESS THAN A HANG. The homepage's element cards pack
+// at 1rem, and the word-register hang is 16.6px: the mark would sit on the card's
+// own hairline, which is a worse defect than the two characters it removes. The
+// wall's registers therefore keep the measure. The card is named rather than the
+// rule weakened, because the next surface that packs at 1rem must make the same
+// choice deliberately.
+.home-element .record-ledger-block__register {
+	text-indent: 0;
+}
+
+// ─── 2. THE SLASH LABELS ──────────────────────────────────────────────────
+// A band's kicker and an instrument's `/LABEL` open a section and sit directly
+// above a heading or a strip of facts. Hanging the slash puts the label's first
+// letter on the heading's first letter, which is the only edge the eye compares.
+// The hang reads the rule register because these two are the labels that sit
+// *above* a region, and their tracking is the widest on the site.
+//
+// A bare band is excluded, and the exclusion is a fact about ownership: a bare
+// band is a section inside a Jelly card, its inner drops the page gutter, and the
+// inset it sits on is the card's - which the doc index sets to zero. This layer
+// hangs into margins it can measure, and a surface whose padding belongs to
+// another component is not one of them.
+.record-band:not(.record-band--bare) .record-band__kicker {
+	text-indent: var(--optical-hang-kicker);
+}
+
+.record-instrument__label {
+	text-indent: var(--optical-hang-mark);
+}
+
+// ─── 3. THE MARK IN A HEAD ROW ────────────────────────────────────────────
+// The stamp's head is a flex row - `# STAMP_01`, `/ EDITION`, then `STATUS:` at
+// the far end - so its mark cannot be moved with an indent: an indent on a flex
+// item changes the item's own content box, and the label after it would drift by
+// the same two characters. The margin is the right tool here. A negative start
+// margin on the row's first item moves the row's whole line two characters left:
+// the `#` lands in the frame's padding, `STAMP_01` lands on the frame's content
+// edge - where the impression band's own text and the facts under it begin - and
+// `/ EDITION` keeps the gap it was written with. `STATUS:` is pushed to the other
+// end by `margin-inline-start: auto` and does not move at all.
+//
+// The stamp is the one head row on the site that can hang: it has 32px of frame
+// padding to hang into. The plate, plate-set, transcript, margin, inset and aside
+// heads have no inset of their own - a hang there would borrow from whatever
+// contains them - and a layer that works by measurement does not borrow blind. So
+// their marks stay flush: the "no margin to hang into" arm, stated rather than
+// guessed at.
+.record-stamp__index {
+	margin-inline-start: var(--optical-hang-word);
+}
+
+// ─── 4. THE MARK THAT IS ALREADY AN ELEMENT ───────────────────────────────
+// The cross-reference's `↳` is a span with a mark gap of its own, so the hang is
+// the mark's advance plus that gap - the register lines' two characters, minus the
+// half character the mark does not take, split across a margin and a sibling.
+.detail-see__mark {
+	margin-inline-start: calc(
+		var(--optical-hang-mark) - var(--optical-mark-gap)
+	);
+}
+
+// A failure's `#` is its own span in a flex row, so it takes the margin
+// mechanism. The row's gap is the block's own 0.6ch - quoted here, not invented -
+// so the hang is the hash's advance plus the gap it was written with, and
+// `FAILURE_01` lands on the measure with the `SYMPTOM:` field below it. The error
+// state hangs like every other state: a condition is a record.
+.record-failure__hash {
+	margin-inline-start: calc(-1ch - 0.6ch);
+}
+
+// ─── 5. THE TWO ARMS WHERE A HANG IS WRONG ────────────────────────────────
+
+// NO MARGIN. Below 640px the page gutter is `clamp(1rem, 4vw, 2.5rem)` - 16px at
+// the narrow end - and the word-register hang is 16.6px. The mark would cross
+// the paper's own edge, so it returns flush. The line loses a nicety; it does
+// not lose its structure, its mark or its order.
+@media (max-width: 639px) {
+	.record-ledger-block__register,
+	.detail-leader__register,
+	.record-band:not(.record-band--bare) .record-band__kicker,
+	.record-instrument__label,
+	.detail-see__mark,
+	.record-failure__hash {
+		text-indent: 0;
+		margin-inline-start: 0;
+	}
+}
+
+// ON PAPER. A printed page's margin is the printer's, not the stylesheet's: a
+// negative indent under `@media print` would push the mark into a margin the
+// page cannot set. The mark prints flush and the line stays whole.
+@media print {
+	.record-ledger-block__register,
+	.detail-leader__register,
+	.record-band:not(.record-band--bare) .record-band__kicker,
+	.record-instrument__label {
+		text-indent: 0;
+	}
+
+	.detail-see__mark,
+	.record-failure__hash {
+		margin-inline-start: 0;
+	}
+}
+
+// The stamp's hang is not cancelled in either arm, and that is the distinction
+// this layer turns on: its two characters come out of the stamp's own 32px frame
+// padding, not out of the page's gutter. A correction that borrows from the
+// surface is safe on paper and at 320px; a correction that borrows from the page
+// is neither.

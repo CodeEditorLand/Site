@@ -127,19 +127,25 @@ const Workspace = AccountWorkspace(T);
 			ratio="7/5"
 			primary={{
 				mark: "# PROFILE_01",
-				label: T("layout.account.pane.profile", { defaultValue: "PROFILE" }),
+				label: T("layout.account.pane.profile", {
+					defaultValue: "PROFILE",
+				}),
 				meta: "AUTH0",
 			}}
 			secondary={{
 				mark: "# ACCESS_01",
-				label: T("layout.account.pane.access", { defaultValue: "ACCESS" }),
+				label: T("layout.account.pane.access", {
+					defaultValue: "ACCESS",
+				}),
 				meta: `${Workspace.access.length}\u2001ROWS`,
 			}}
 			drawer={{
 				label: T("layout.account.drawer", {
 					defaultValue: "WHAT THE PROFILE DOES NOT CARRY",
 				}),
-				note: T("layout.account.drawer.note", { defaultValue: "FOLDED" }),
+				note: T("layout.account.drawer.note", {
+					defaultValue: "FOLDED",
+				}),
 			}}
 		>
 			<div slot="primary">

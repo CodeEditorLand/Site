@@ -135,80 +135,87 @@ const SkeletonRows: readonly LedgerRow[] =
 		"record-ledger-block",
 		pinned && "record-ledger-block--pinned",
 		`record-ledger-block--${density}`,
-	]}>
-	{
-		RegisterLine && (
-			<p class="record-ledger-block__register" data-state={state}>
-				# {RegisterLine}
-			</p>
-		)
-	}
-	{
-		state === "empty" ? (
-			empty && <p class="record-ledger-block__empty">{empty}</p>
-		) : (
-	<dl class:list={Shell} aria-busy={state === "loading" ? "true" : undefined}>
-	{
-		state === "loading" ? (
-			SkeletonRows.map((Row) => (
-				<div class="record-ledger__row record-ledger__row--skeleton">
-					<dt class="record-ledger__key">{Row.key}</dt>
-					<dd class="record-ledger__value">
-						<span class="record-ledger__bar" aria-hidden="true" />
-					</dd>
-				</div>
-			))
-		) : rows.map((Row) => (
-			<div
-				class:list={[
-					"record-ledger__row",
-					Row.lead ? "record-ledger__row--lead" : null,
-				]}
-			>
-				<dt class="record-ledger__key">{Row.key}</dt>
-				<dd class="record-ledger__value">
-					{
-						Row.links !== undefined && Row.links.length > 0 ? (
-							Row.links.map((Link, Index) => (
-								<>
-									{Index > 0 && (
-										<span class="record-ledger__separator">
-											{" / "}
-										</span>
-									)}
-									<a
-										class="record-ledger__link"
-										href={Link.href}
-										target={
-											Link.target === "blank"
-												? "_blank"
-												: undefined
-										}
-										rel={
-											Link.target === "blank"
-												? "noopener noreferrer"
-												: undefined
-										}
-									>
-										{Link.text}
-									</a>
-								</>
-							))
-						) : Row.code ? (
-							<code class="record-ledger__code">{Row.value}</code>
-						) : Row.strong ? (
-							<strong class="record-ledger__strong">{Row.value}</strong>
-						) : (
-							Row.value
-						)
-					}
-					{Row.note && (
-						<span class="record-ledger__note">{Row.note}</span>
-					)}
-				</dd>
-			</div>
-		))
-	}
-	</dl>
+	]}
+>
+	{RegisterLine && (
+		<p class="record-ledger-block__register" data-state={state}>
+			# {RegisterLine}
+		</p>
+	)}
+	{state === "empty" ? (
+		empty && <p class="record-ledger-block__empty">{empty}</p>
+	) : (
+		<dl
+			class:list={Shell}
+			aria-busy={state === "loading" ? "true" : undefined}
+		>
+			{state === "loading"
+				? SkeletonRows.map((Row) => (
+						<div class="record-ledger__row record-ledger__row--skeleton">
+							<dt class="record-ledger__key">{Row.key}</dt>
+							<dd class="record-ledger__value">
+								<span
+									class="record-ledger__bar"
+									aria-hidden="true"
+								/>
+							</dd>
+						</div>
+					))
+				: rows.map((Row) => (
+						<div
+							class:list={[
+								"record-ledger__row",
+								Row.lead ? "record-ledger__row--lead" : null,
+							]}
+						>
+							<dt class="record-ledger__key">{Row.key}</dt>
+							<dd class="record-ledger__value">
+								{Row.links !== undefined &&
+								Row.links.length > 0 ? (
+									Row.links.map((Link, Index) => (
+										<>
+											{Index > 0 && (
+												<span class="record-ledger__separator">
+													{" / "}
+												</span>
+											)}
+											<a
+												class="record-ledger__link"
+												href={Link.href}
+												target={
+													Link.target === "blank"
+														? "_blank"
+														: undefined
+												}
+												rel={
+													Link.target === "blank"
+														? "noopener noreferrer"
+														: undefined
+												}
+											>
+												{Link.text}
+											</a>
+										</>
+									))
+								) : Row.code ? (
+									<code class="record-ledger__code">
+										{Row.value}
+									</code>
+								) : Row.strong ? (
+									<strong class="record-ledger__strong">
+										{Row.value}
+									</strong>
+								) : (
+									Row.value
+								)}
+								{Row.note && (
+									<span class="record-ledger__note">
+										{Row.note}
+									</span>
+								)}
+							</dd>
+						</div>
+					))}
+		</dl>
 	)}
 </div>

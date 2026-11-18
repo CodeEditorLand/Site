@@ -84,31 +84,29 @@ const Marker = (Position: number): string =>
 		band={{ kicker: Kicker, heading: section.Heading, tone: "bare" }}
 	>
 		<ul class="doc-grid">
-			{
-				section.Rows.map((Card, Position) => (
-					<li class="doc-card">
-						<jelly-card
-							class="doc-card__surface"
-							style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
+			{section.Rows.map((Card, Position) => (
+				<li class="doc-card">
+					<jelly-card
+						class="doc-card__surface"
+						style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
+					>
+						<a
+							class="doc-card__link"
+							href={Card.Href}
+							target={Card.Blank ? "_blank" : undefined}
+							rel={Card.Blank ? "noopener noreferrer" : undefined}
 						>
-							<a
-								class="doc-card__link"
-								href={Card.Href}
-								target={Card.Blank ? "_blank" : undefined}
-								rel={Card.Blank ? "noopener noreferrer" : undefined}
-							>
-								<RecordEntry
-									index={Marker(Position)}
-									name={Card.Label}
-									glyph={Card.Blank ? "↗" : "→"}
-									body={Card.Note ?? ""}
-									surface="bare"
-								/>
-							</a>
-						</jelly-card>
-					</li>
-				))
-			}
+							<RecordEntry
+								index={Marker(Position)}
+								name={Card.Label}
+								glyph={Card.Blank ? "↗" : "→"}
+								body={Card.Note ?? ""}
+								surface="bare"
+							/>
+						</a>
+					</jelly-card>
+				</li>
+			))}
 		</ul>
 	</RecordBand>
 </div>

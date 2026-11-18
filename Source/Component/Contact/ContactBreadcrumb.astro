@@ -44,4 +44,4 @@ const Crumbs: readonly TrailItem[] = trail.map((Crumb) => ({
 }));
 ---
 
-<Trail trail={Crumbs} {...Class ? { class: Class } : {}} />
+<Trail trail={Crumbs} {...(Class ? { class: Class } : {})} />

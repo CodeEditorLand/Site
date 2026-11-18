@@ -58,36 +58,36 @@ const { rows, copy, class: Class } = Astro.props;
 
 <nav class:list={["onward", Class]} aria-label={copy.label.replace(/^\//, "")}>
 	<p class="onward__register">
-		<span class="onward__mark" aria-hidden="true">#</span>
+		<span class="onward__mark" aria-hidden="true">
+			#
+		</span>
 		<span class="onward__index">{copy.index}</span>
 		<span class="onward__label">{copy.label}</span>
 	</p>
 
 	<p class="onward__statement">{copy.statement}</p>
 
-	{
-		rows.length > 0 ? (
-			<ol class="onward__rows">
-				{rows.map((Row) => (
-					<li class="onward__row">
-						<a class="onward__link" href={Row.href}>
-							<span class="onward__row-mark" aria-hidden="true">
-								{Row.mark}
-							</span>
-							<span class="onward__want">{Row.want}</span>
-							<span class="onward__arrow" aria-hidden="true">
-								&rarr;
-							</span>
-							<span class="onward__where">{Row.where}</span>
-						</a>
-						{Row.note ? <p class="onward__note">{Row.note}</p> : null}
-					</li>
-				))}
-			</ol>
-		) : (
-			<p class="onward__empty">{copy.empty}</p>
-		)
-	}
+	{rows.length > 0 ? (
+		<ol class="onward__rows">
+			{rows.map((Row) => (
+				<li class="onward__row">
+					<a class="onward__link" href={Row.href}>
+						<span class="onward__row-mark" aria-hidden="true">
+							{Row.mark}
+						</span>
+						<span class="onward__want">{Row.want}</span>
+						<span class="onward__arrow" aria-hidden="true">
+							&rarr;
+						</span>
+						<span class="onward__where">{Row.where}</span>
+					</a>
+					{Row.note ? <p class="onward__note">{Row.note}</p> : null}
+				</li>
+			))}
+		</ol>
+	) : (
+		<p class="onward__empty">{copy.empty}</p>
+	)}
 
 	{copy.note ? <p class="onward__source">{copy.note}</p> : null}
 </nav>

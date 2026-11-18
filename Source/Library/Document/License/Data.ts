@@ -22,8 +22,7 @@ export const Ledger: readonly LedgerRow[] = [
 	},
 	{
 		key: "APPLIES TO:",
-		value:
-			"The Code Editor Land project, including all source code, documentation, and related materials",
+		value: "The Code Editor Land project, including all source code, documentation, and related materials",
 		note: "dedicated to the public domain",
 	},
 	{

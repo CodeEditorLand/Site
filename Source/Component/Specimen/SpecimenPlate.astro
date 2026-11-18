@@ -82,7 +82,9 @@ const Id = Part.plate.replace(/^#/, "");
 	<div class="specimen-plate__grid">
 		<header class="specimen-plate__spec">
 			<p class="specimen-plate__mark">
-				<span class="specimen-plate__mark-hash" aria-hidden="true">#</span>
+				<span class="specimen-plate__mark-hash" aria-hidden="true">
+					#
+				</span>
 				{Part.mark}
 			</p>
 
@@ -91,40 +93,45 @@ const Id = Part.plate.replace(/^#/, "");
 			<p class="specimen-plate__kind">{Part.kind}</p>
 
 			<dl class="specimen-plate__contract">
-				{
-					Part.contract.map((Row) => (
-						<div class="specimen-plate__row">
-							<dt class="specimen-plate__key">{Row.key}</dt>
-							<dd
-								class:list={[
-									"specimen-plate__value",
-									Row.code ? "specimen-plate__value--code" : null,
-								]}
-							>
-								{Row.value}
-							</dd>
-						</div>
-					))
-				}
+				{Part.contract.map((Row) => (
+					<div class="specimen-plate__row">
+						<dt class="specimen-plate__key">{Row.key}</dt>
+						<dd
+							class:list={[
+								"specimen-plate__value",
+								Row.code ? "specimen-plate__value--code" : null,
+							]}
+						>
+							{Row.value}
+						</dd>
+					</div>
+				))}
 			</dl>
 		</header>
 
 		<div class="specimen-plate__stage">
 			<p class="specimen-plate__stage-head">
-				<span class="specimen-plate__stage-mark" aria-hidden="true">#</span>
+				<span class="specimen-plate__stage-mark" aria-hidden="true">
+					#
+				</span>
 				<span class="specimen-plate__stage-word">LIVE</span>
-				<span class="specimen-plate__stage-sep" aria-hidden="true">{"\u2001"}</span>
+				<span class="specimen-plate__stage-sep" aria-hidden="true">
+					{"\u2001"}
+				</span>
 				<span class="specimen-plate__stage-scale">1:1</span>
-				{
-					stageNote ? (
-						<>
-							<span class="specimen-plate__stage-sep" aria-hidden="true">
-								{"\u2001"}
-							</span>
-							<span class="specimen-plate__stage-note">{stageNote}</span>
-						</>
-					) : null
-				}
+				{stageNote ? (
+					<>
+						<span
+							class="specimen-plate__stage-sep"
+							aria-hidden="true"
+						>
+							{"\u2001"}
+						</span>
+						<span class="specimen-plate__stage-note">
+							{stageNote}
+						</span>
+					</>
+				) : null}
 			</p>
 
 			<div class="specimen-plate__field" data-stage={stage}>

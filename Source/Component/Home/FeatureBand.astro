@@ -46,12 +46,17 @@ const Observation = HeroBandFor(T).observation;
 
 <Band head={Head} series="OBSERVATION" rhythm="wide">
 	<div class="home-feature__grid">
-		{FeatureCards.map((Card) => <FeatureCard card={Card} />)}
+		{FeatureCards.map((Card) => (
+			<FeatureCard card={Card} />
+		))}
 	</div>
 
 	<div class="home-feature__specimen">
 		<p class="home-feature__specimen-label">{ObservationLabel}</p>
 
-		<RecordLedger rows={Observation} class="home-feature__specimen-ledger" />
+		<RecordLedger
+			rows={Observation}
+			class="home-feature__specimen-ledger"
+		/>
 	</div>
 </Band>

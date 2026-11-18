@@ -61,7 +61,7 @@
 }
 
 .detail-folio__part {
-	margin-inline-start: 0.5ch;
+	margin-inline-start: var(--optical-mark-gap);
 	color: var(--Foreground);
 	white-space: nowrap;
 }

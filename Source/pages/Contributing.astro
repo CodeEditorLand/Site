@@ -57,13 +57,10 @@ const Card =
 		<!-- Breadcrumbs -->
 		<Trail
 			class="trust-page__trail"
-			trail={[
-				{ label: "/HOME", href: "/" },
-				{ label: "/CONTRIBUTING" },
-			]}
+			trail={[{ label: "/HOME", href: "/" }, { label: "/CONTRIBUTING" }]}
 		/>
 
-				<ReadingDocument
+		<ReadingDocument
 			kicker="/CONTRIBUTING"
 			heading={T("common.contributing.pageTitle", {
 				defaultValue: "Contributing",
@@ -80,72 +77,85 @@ const Card =
 			layout="rail"
 			ledgerSurface="standard"
 			ledgerColumns={2}
-			measure="full">
-		<!-- Quick Links -->
-		<section class="reading-document__part">
-			<TrustClause number="01" id="quick-links" class="sr-only">
-				{T("common.contributing.quickLinks.heading", {
-					defaultValue: "Quick Links",
-				})}
-			</TrustClause>
-			<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-				<a
-					href="https://github.com/CodeEditorLand/Land/tree/Current/CONTRIBUTING.md"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-				>
-					<h3 class="text-card-foreground mb-2 type-sub font-medium" id="contributing-guide">
-						{T("common.contributing.guide.title", {
-							defaultValue: "Contributing Guide",
-						})}
-						<span class="InlineSeparator">→</span>
-					</h3>
-					<p class="whitespace-pre-line text-card-foreground">
-						{T("common.contributing.guide.description", {
-							defaultValue:
-								"Read CONTRIBUTING.md on GitHub for the full setup walkthrough: environment, branch conventions, and how to submit changes.",
-						})}
-					</p>
-				</a>
+			measure="full"
+		>
+			<!-- Quick Links -->
+			<section class="reading-document__part">
+				<TrustClause number="01" id="quick-links" class="sr-only">
+					{T("common.contributing.quickLinks.heading", {
+						defaultValue: "Quick Links",
+					})}
+				</TrustClause>
+				<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+					<a
+						href="https://github.com/CodeEditorLand/Land/tree/Current/CONTRIBUTING.md"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+					>
+						<h3
+							class="text-card-foreground mb-2 type-sub font-medium"
+							id="contributing-guide"
+						>
+							{T("common.contributing.guide.title", {
+								defaultValue: "Contributing Guide",
+							})}
+							<span class="InlineSeparator">→</span>
+						</h3>
+						<p class="whitespace-pre-line text-card-foreground">
+							{T("common.contributing.guide.description", {
+								defaultValue:
+									"Read CONTRIBUTING.md on GitHub for the full setup walkthrough: environment, branch conventions, and how to submit changes.",
+							})}
+						</p>
+					</a>
 
-				<a
-					href="https://github.com/CodeEditorLand/Land/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-				>
-					<h3 class="text-card-foreground mb-2 type-sub font-medium" id="good-first-issues">
-						{T("common.contributing.goodFirstIssues.title", {
-							defaultValue: "Good First Issues",
-						})}
-						<span class="InlineSeparator">→</span>
-					</h3>
-					<p class="whitespace-pre-line text-card-foreground">
-						{T("common.contributing.goodFirstIssues.description", {
-							defaultValue:
-								'Browse issues labeled "good first issue" to find approachable tasks for new contributors.',
-						})}
-					</p>
-				</a>
-			</div>
-		</section>
+					<a
+						href="https://github.com/CodeEditorLand/Land/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+					>
+						<h3
+							class="text-card-foreground mb-2 type-sub font-medium"
+							id="good-first-issues"
+						>
+							{T("common.contributing.goodFirstIssues.title", {
+								defaultValue: "Good First Issues",
+							})}
+							<span class="InlineSeparator">→</span>
+						</h3>
+						<p class="whitespace-pre-line text-card-foreground">
+							{T(
+								"common.contributing.goodFirstIssues.description",
+								{
+									defaultValue:
+										'Browse issues labeled "good first issue" to find approachable tasks for new contributors.',
+								},
+							)}
+						</p>
+					</a>
+				</div>
+			</section>
 
-		<!-- How to Contribute -->
-		<section class="reading-document__part">
-			<TrustClause number="02" id="how-to-contribute">
-				{T("common.contributing.howToContribute.heading", {
-					defaultValue: "How to Contribute",
-				})}
-			</TrustClause>
-			<div class="contributing-steps">
-				<ol class="contributing-steps__list">
-					{
-						Steps.map((Step) => (
+			<!-- How to Contribute -->
+			<section class="reading-document__part">
+				<TrustClause number="02" id="how-to-contribute">
+					{T("common.contributing.howToContribute.heading", {
+						defaultValue: "How to Contribute",
+					})}
+				</TrustClause>
+				<div class="contributing-steps">
+					<ol class="contributing-steps__list">
+						{Steps.map((Step) => (
 							<li class="contributing-steps__step">
-								<span class="contributing-steps__index">{Step.index}</span>
+								<span class="contributing-steps__index">
+									{Step.index}
+								</span>
 								<div class="contributing-steps__body">
-									<h3 class="contributing-steps__title">{Step.title}</h3>
+									<h3 class="contributing-steps__title">
+										{Step.title}
+									</h3>
 									<p
 										class="contributing-steps__line"
 										set:html={LinkMentions(Step.line)}
@@ -189,406 +199,430 @@ const Card =
 									) : null}
 								</div>
 							</li>
-						))
-					}
-				</ol>
-			</div>
-		</section>
+						))}
+					</ol>
+				</div>
+			</section>
 
-		<!-- Elements Architecture -->
-		<section class="reading-document__part">
-			<TrustClause number="03" id="fifteen-elements-one-editor">
-				{T("common.contributing.elements.heading", {
-					defaultValue: "Fifteen Elements, One Editor",
-				})}
-			</TrustClause>
-			<p
-				class="mb-6 whitespace-pre-line text-muted-foreground"
-				set:html={LinkMentions(
-					T("common.contributing.elements.description", {
-						defaultValue:
-							"Land is built from fifteen modular Elements, each a standalone Rust crate or TypeScript package. Each element can be developed, tested, and published independently without touching the others.",
-					}),
-				)}
-			/>
-			<div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-				<a
-					href="https://github.com/CodeEditorLand/Mountain"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
-				>
-					<span class="font-medium">
-						Mountain&#x2001;&#x26F0;&#xFE0F;
-					</span>
-					<span class="block text-card-foreground">
-						Native backend
-					</span>
-				</a>
-				<a
-					href="https://github.com/CodeEditorLand/Cocoon"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
-				>
-					<span class="font-medium">Cocoon&#x2001;&#x1F98B;</span>
-					<span class="block text-card-foreground">
-						Extension host
-					</span>
-				</a>
-				<a
-					href="https://github.com/CodeEditorLand/Wind"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
-				>
-					<span class="font-medium">Wind&#x2001;&#x1F343;</span>
-					<span class="block text-card-foreground">
-						Workbench shell
-					</span>
-				</a>
-				<a
-					href="https://github.com/CodeEditorLand/Sky"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
-				>
-					<span class="font-medium">Sky&#x2001;&#x1F30C;</span>
-					<span class="block text-card-foreground">
-						UI components
-					</span>
-				</a>
-				<a
-					href="https://github.com/CodeEditorLand/Air"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
-				>
-					<span class="font-medium">Air&#x2001;&#x1FA81;</span>
-					<span class="block text-card-foreground">
-						Background daemon
-					</span>
-				</a>
-				<a
-					href="https://github.com/CodeEditorLand/Echo"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
-				>
-					<span class="font-medium">Echo&#x2001;&#x1F4E3;</span>
-					<span class="block text-card-foreground">
-						Work-stealing scheduler
-					</span>
-				</a>
-				<a
-					href="https://github.com/CodeEditorLand/Common"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
-				>
-					<span class="font-medium">
-						Common&#x2001;&#x1F468;&#x1F3FB;&#x200D;&#x1F3ED;
-					</span>
-					<span class="block text-card-foreground">
-						Traits &amp; DTOs
-					</span>
-				</a>
-				<a
-					href="https://github.com/CodeEditorLand/Vine"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
-				>
-					<span class="font-medium">Vine&#x2001;&#x1F33F;</span>
-					<span class="block text-card-foreground">
-						gRPC protocol
-					</span>
-				</a>
-				<a
-					href="https://github.com/CodeEditorLand/Rest"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
-				>
-					<span class="font-medium">
-						Rest&#x2001;&#x26F1;&#xFE0F;
-					</span>
-					<span class="block text-card-foreground">
-						TypeScript compiler
-					</span>
-				</a>
-				<a
-					href="https://github.com/CodeEditorLand/Output"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
-				>
-					<span class="font-medium">Output&#x2001;&#x26AB;</span>
-					<span class="block text-card-foreground">Build output</span>
-				</a>
-				<a
-					href="https://github.com/CodeEditorLand/Mist"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
-				>
-					<span class="font-medium">
-						Mist&#x2001;&#x1F32B;&#xFE0F;
-					</span>
-					<span class="block text-card-foreground">DNS resolver</span>
-				</a>
-				<a
-					href="https://github.com/CodeEditorLand/Grove"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
-				>
-					<span class="font-medium">Grove&#x2001;&#x1F333;</span>
-					<span class="block text-card-foreground">WASM sandbox</span>
-				</a>
-				<a
-					href="https://github.com/CodeEditorLand/SideCar"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
-				>
-					<span class="font-medium">SideCar&#x2001;&#x1F683;</span>
-					<span class="block text-card-foreground">
-						Node.js binary distributor
-					</span>
-				</a>
-				<a
-					href="https://github.com/CodeEditorLand/Worker"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
-				>
-					<span class="font-medium">Worker&#x2001;&#x1F369;</span>
-					<span class="block text-card-foreground">
-						Web Worker pool
-					</span>
-				</a>
-				<a
-					href="https://github.com/CodeEditorLand/Maintain"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
-				>
-					<span class="font-medium">
-						Maintain&#x2001;&#x1F4AA;&#x1F3FB;
-					</span>
-					<span class="block text-card-foreground">
-						Build orchestrator
-					</span>
-				</a>
-			</div>
-			<p
-				class="mt-4 whitespace-pre-line text-muted-foreground"
-				set:html={LinkMentions(
-					T("common.contributing.elements.docs", {
-						defaultValue:
-							"Every Element has its own README with architecture details. Find them in Land/Element/",
-					}),
-				)}
-			/>
-		</section>
-
-		<!-- Ways to Contribute -->
-		<section class="reading-document__part">
-			<TrustClause number="04" id="ways-to-contribute">
-				{T("common.contributing.ways.heading", {
-					defaultValue: "Ways to Contribute",
-				})}
-			</TrustClause>
-			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-				<jelly-card style={Card}>
-					<h3 class="text-card-foreground mb-2 font-medium" id="code">
-						{T("common.contributing.ways.code.title", {
-							defaultValue: "Code",
-						})}
-						&#x2001;&#x1F4BB;
-					</h3>
-					<p
-						class="whitespace-pre-line text-card-foreground"
-						set:html={LinkMentions(
-							T("common.contributing.ways.code.description", {
-								defaultValue:
-									"Fix bugs, implement features, or improve performance in Rust or TypeScript.",
-							}),
-						)}
-					/>
-				</jelly-card>
-				<jelly-card style={Card}>
-					<h3 class="text-card-foreground mb-2 font-medium" id="documentation">
-						{T("common.contributing.ways.documentation.title", {
-							defaultValue: "Documentation",
-						})}
-						&#x2001;&#x1F4D6;
-					</h3>
-					<p
-						class="whitespace-pre-line text-card-foreground"
-						set:html={LinkMentions(
-							T(
-								"common.contributing.ways.documentation.description",
-								{
-									defaultValue:
-										"Improve guides, add examples, or translate existing content into other languages.",
-								},
-							),
-						)}
-					/>
-				</jelly-card>
-				<jelly-card style={Card}>
-					<h3 class="text-card-foreground mb-2 font-medium" id="testing">
-						{T("common.contributing.ways.testing.title", {
-							defaultValue: "Testing",
-						})}
-						&#x2001;&#x1F9EA;
-					</h3>
-					<p
-						class="whitespace-pre-line text-card-foreground"
-						set:html={LinkMentions(
-							T("common.contributing.ways.testing.description", {
-								defaultValue:
-									"Write tests, reproduce reported bugs, or help triage open issues.",
-							}),
-						)}
-					/>
-				</jelly-card>
-				<jelly-card style={Card}>
-					<h3 class="text-card-foreground mb-2 font-medium" id="design">
-						{T("common.contributing.ways.design.title", {
-							defaultValue: "Design",
-						})}
-						&#x2001;&#x1F3A8;
-					</h3>
-					<p
-						class="whitespace-pre-line text-card-foreground"
-						set:html={LinkMentions(
-							T("common.contributing.ways.design.description", {
-								defaultValue:
-									"Contribute UI and UX improvements, icons, or visual design work for the editor or website.",
-							}),
-						)}
-					/>
-				</jelly-card>
-			</div>
-		</section>
-
-		<!-- Funding -->
-		<section class="reading-document__part">
-			<TrustClause number="05" id="funding">
-				{T("common.contributing.funding.heading", {
-					defaultValue: "Funding",
-				})}
-			</TrustClause>
-			<jelly-card style={Card}>
-				<div class="mb-4 flex flex-wrap gap-x-4 gap-y-1">
+			<!-- Elements Architecture -->
+			<section class="reading-document__part">
+				<TrustClause number="03" id="fifteen-elements-one-editor">
+					{T("common.contributing.elements.heading", {
+						defaultValue: "Fifteen Elements, One Editor",
+					})}
+				</TrustClause>
+				<p
+					class="mb-6 whitespace-pre-line text-muted-foreground"
+					set:html={LinkMentions(
+						T("common.contributing.elements.description", {
+							defaultValue:
+								"Land is built from fifteen modular Elements, each a standalone Rust crate or TypeScript package. Each element can be developed, tested, and published independently without touching the others.",
+						}),
+					)}
+				/>
+				<div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
 					<a
-						href="https://nlnet.nl/project/Land/"
+						href="https://github.com/CodeEditorLand/Mountain"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="font-medium text-card-foreground hover:underline"
+						class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
 					>
-						NLnet Project Page
-						<span class="InlineSeparator">&#x1F310;</span>
+						<span class="font-medium">
+							Mountain&#x2001;&#x26F0;&#xFE0F;
+						</span>
+						<span class="block text-card-foreground">
+							Native backend
+						</span>
 					</a>
 					<a
-						href="https://nlnet.nl/commonsfund"
+						href="https://github.com/CodeEditorLand/Cocoon"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="font-medium text-card-foreground hover:underline"
+						class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
 					>
-						NGI0 Commons Fund
-						<span class="InlineSeparator">&#x1F91D;</span>
+						<span class="font-medium">Cocoon&#x2001;&#x1F98B;</span>
+						<span class="block text-card-foreground">
+							Extension host
+						</span>
 					</a>
 					<a
-						href="https://nlnet.nl"
+						href="https://github.com/CodeEditorLand/Wind"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="font-medium text-card-foreground hover:underline"
+						class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
 					>
-						NLnet<span class="InlineSeparator">&#x1F3E0;</span>
+						<span class="font-medium">Wind&#x2001;&#x1F343;</span>
+						<span class="block text-card-foreground">
+							Workbench shell
+						</span>
+					</a>
+					<a
+						href="https://github.com/CodeEditorLand/Sky"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
+					>
+						<span class="font-medium">Sky&#x2001;&#x1F30C;</span>
+						<span class="block text-card-foreground">
+							UI components
+						</span>
+					</a>
+					<a
+						href="https://github.com/CodeEditorLand/Air"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
+					>
+						<span class="font-medium">Air&#x2001;&#x1FA81;</span>
+						<span class="block text-card-foreground">
+							Background daemon
+						</span>
+					</a>
+					<a
+						href="https://github.com/CodeEditorLand/Echo"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
+					>
+						<span class="font-medium">Echo&#x2001;&#x1F4E3;</span>
+						<span class="block text-card-foreground">
+							Work-stealing scheduler
+						</span>
+					</a>
+					<a
+						href="https://github.com/CodeEditorLand/Common"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
+					>
+						<span class="font-medium">
+							Common&#x2001;&#x1F468;&#x1F3FB;&#x200D;&#x1F3ED;
+						</span>
+						<span class="block text-card-foreground">
+							Traits &amp; DTOs
+						</span>
+					</a>
+					<a
+						href="https://github.com/CodeEditorLand/Vine"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
+					>
+						<span class="font-medium">Vine&#x2001;&#x1F33F;</span>
+						<span class="block text-card-foreground">
+							gRPC protocol
+						</span>
+					</a>
+					<a
+						href="https://github.com/CodeEditorLand/Rest"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
+					>
+						<span class="font-medium">
+							Rest&#x2001;&#x26F1;&#xFE0F;
+						</span>
+						<span class="block text-card-foreground">
+							TypeScript compiler
+						</span>
+					</a>
+					<a
+						href="https://github.com/CodeEditorLand/Output"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
+					>
+						<span class="font-medium">Output&#x2001;&#x26AB;</span>
+						<span class="block text-card-foreground">
+							Build output
+						</span>
+					</a>
+					<a
+						href="https://github.com/CodeEditorLand/Mist"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
+					>
+						<span class="font-medium">
+							Mist&#x2001;&#x1F32B;&#xFE0F;
+						</span>
+						<span class="block text-card-foreground">
+							DNS resolver
+						</span>
+					</a>
+					<a
+						href="https://github.com/CodeEditorLand/Grove"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
+					>
+						<span class="font-medium">Grove&#x2001;&#x1F333;</span>
+						<span class="block text-card-foreground">
+							WASM sandbox
+						</span>
+					</a>
+					<a
+						href="https://github.com/CodeEditorLand/SideCar"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
+					>
+						<span class="font-medium">
+							SideCar&#x2001;&#x1F683;
+						</span>
+						<span class="block text-card-foreground">
+							Node.js binary distributor
+						</span>
+					</a>
+					<a
+						href="https://github.com/CodeEditorLand/Worker"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
+					>
+						<span class="font-medium">Worker&#x2001;&#x1F369;</span>
+						<span class="block text-card-foreground">
+							Web Worker pool
+						</span>
+					</a>
+					<a
+						href="https://github.com/CodeEditorLand/Maintain"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
+					>
+						<span class="font-medium">
+							Maintain&#x2001;&#x1F4AA;&#x1F3FB;
+						</span>
+						<span class="block text-card-foreground">
+							Build orchestrator
+						</span>
 					</a>
 				</div>
 				<p
-					class="mb-4 whitespace-pre-line text-card-foreground"
+					class="mt-4 whitespace-pre-line text-muted-foreground"
 					set:html={LinkMentions(
-						T("common.contributing.funding.nlnetIntro", {
+						T("common.contributing.elements.docs", {
 							defaultValue:
-								"Code Editor Land has been funded through the NGI0 Commons Fund, supported by NLnet.",
+								"Every Element has its own README with architecture details. Find them in Land/Element/",
 						}),
 					)}
 				/>
-				<p
-					class="whitespace-pre-line text-card-foreground"
-					set:html={LinkMentions(
-						T("common.contributing.funding.playformInfo", {
-							defaultValue:
-								"The project is operated by PlayForm, a company based in Sofia, Bulgaria.\n\nPlayForm acts as the open-source steward for Code Editor Land under the NGI0 Commons Fund grant.",
-						}),
-					)}
-				/>
-			</jelly-card>
-		</section>
+			</section>
 
-		<!-- Code of Conduct -->
-		<section class="reading-document__part">
-			<TrustClause number="06" id="code-of-conduct">
-				{T("common.contributing.conduct.heading", {
-					defaultValue: "Code of Conduct",
-				})}
-			</TrustClause>
-			<jelly-card style={Card}>
-				<a
-					href="https://github.com/CodeEditorLand/Land/tree/Current/CODE_OF_CONDUCT.md"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoButton font-medium text-card-foreground hover:underline"
-				>
-					Code of Conduct<span class="InlineSeparator">→</span>
-				</a>
-				<p
-					class="mt-2 text-card-foreground"
-					set:html={LinkMentions(
-						T("common.contributing.conduct.description", {
-							defaultValue:
-								"All participants in the Land community are expected to be respectful and constructive.\n\nRead the full Code of Conduct on GitHub.",
-						}),
-					)}
-				/>
-			</jelly-card>
-		</section>
+			<!-- Ways to Contribute -->
+			<section class="reading-document__part">
+				<TrustClause number="04" id="ways-to-contribute">
+					{T("common.contributing.ways.heading", {
+						defaultValue: "Ways to Contribute",
+					})}
+				</TrustClause>
+				<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+					<jelly-card style={Card}>
+						<h3
+							class="text-card-foreground mb-2 font-medium"
+							id="code"
+						>
+							{T("common.contributing.ways.code.title", {
+								defaultValue: "Code",
+							})}
+							&#x2001;&#x1F4BB;
+						</h3>
+						<p
+							class="whitespace-pre-line text-card-foreground"
+							set:html={LinkMentions(
+								T("common.contributing.ways.code.description", {
+									defaultValue:
+										"Fix bugs, implement features, or improve performance in Rust or TypeScript.",
+								}),
+							)}
+						/>
+					</jelly-card>
+					<jelly-card style={Card}>
+						<h3
+							class="text-card-foreground mb-2 font-medium"
+							id="documentation"
+						>
+							{T("common.contributing.ways.documentation.title", {
+								defaultValue: "Documentation",
+							})}
+							&#x2001;&#x1F4D6;
+						</h3>
+						<p
+							class="whitespace-pre-line text-card-foreground"
+							set:html={LinkMentions(
+								T(
+									"common.contributing.ways.documentation.description",
+									{
+										defaultValue:
+											"Improve guides, add examples, or translate existing content into other languages.",
+									},
+								),
+							)}
+						/>
+					</jelly-card>
+					<jelly-card style={Card}>
+						<h3
+							class="text-card-foreground mb-2 font-medium"
+							id="testing"
+						>
+							{T("common.contributing.ways.testing.title", {
+								defaultValue: "Testing",
+							})}
+							&#x2001;&#x1F9EA;
+						</h3>
+						<p
+							class="whitespace-pre-line text-card-foreground"
+							set:html={LinkMentions(
+								T(
+									"common.contributing.ways.testing.description",
+									{
+										defaultValue:
+											"Write tests, reproduce reported bugs, or help triage open issues.",
+									},
+								),
+							)}
+						/>
+					</jelly-card>
+					<jelly-card style={Card}>
+						<h3
+							class="text-card-foreground mb-2 font-medium"
+							id="design"
+						>
+							{T("common.contributing.ways.design.title", {
+								defaultValue: "Design",
+							})}
+							&#x2001;&#x1F3A8;
+						</h3>
+						<p
+							class="whitespace-pre-line text-card-foreground"
+							set:html={LinkMentions(
+								T(
+									"common.contributing.ways.design.description",
+									{
+										defaultValue:
+											"Contribute UI and UX improvements, icons, or visual design work for the editor or website.",
+									},
+								),
+							)}
+						/>
+					</jelly-card>
+				</div>
+			</section>
 
-		{/* The document's foot: what a contributor needs that this guide does not
+			<!-- Funding -->
+			<section class="reading-document__part">
+				<TrustClause number="05" id="funding">
+					{T("common.contributing.funding.heading", {
+						defaultValue: "Funding",
+					})}
+				</TrustClause>
+				<jelly-card style={Card}>
+					<div class="mb-4 flex flex-wrap gap-x-4 gap-y-1">
+						<a
+							href="https://nlnet.nl/project/Land/"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="font-medium text-card-foreground hover:underline"
+						>
+							NLnet Project Page
+							<span class="InlineSeparator">&#x1F310;</span>
+						</a>
+						<a
+							href="https://nlnet.nl/commonsfund"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="font-medium text-card-foreground hover:underline"
+						>
+							NGI0 Commons Fund
+							<span class="InlineSeparator">&#x1F91D;</span>
+						</a>
+						<a
+							href="https://nlnet.nl"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="font-medium text-card-foreground hover:underline"
+						>
+							NLnet<span class="InlineSeparator">&#x1F3E0;</span>
+						</a>
+					</div>
+					<p
+						class="mb-4 whitespace-pre-line text-card-foreground"
+						set:html={LinkMentions(
+							T("common.contributing.funding.nlnetIntro", {
+								defaultValue:
+									"Code Editor Land has been funded through the NGI0 Commons Fund, supported by NLnet.",
+							}),
+						)}
+					/>
+					<p
+						class="whitespace-pre-line text-card-foreground"
+						set:html={LinkMentions(
+							T("common.contributing.funding.playformInfo", {
+								defaultValue:
+									"The project is operated by PlayForm, a company based in Sofia, Bulgaria.\n\nPlayForm acts as the open-source steward for Code Editor Land under the NGI0 Commons Fund grant.",
+							}),
+						)}
+					/>
+				</jelly-card>
+			</section>
+
+			<!-- Code of Conduct -->
+			<section class="reading-document__part">
+				<TrustClause number="06" id="code-of-conduct">
+					{T("common.contributing.conduct.heading", {
+						defaultValue: "Code of Conduct",
+					})}
+				</TrustClause>
+				<jelly-card style={Card}>
+					<a
+						href="https://github.com/CodeEditorLand/Land/tree/Current/CODE_OF_CONDUCT.md"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="StaccatoButton font-medium text-card-foreground hover:underline"
+					>
+						Code of Conduct<span class="InlineSeparator">→</span>
+					</a>
+					<p
+						class="mt-2 text-card-foreground"
+						set:html={LinkMentions(
+							T("common.contributing.conduct.description", {
+								defaultValue:
+									"All participants in the Land community are expected to be respectful and constructive.\n\nRead the full Code of Conduct on GitHub.",
+							}),
+						)}
+					/>
+				</jelly-card>
+			</section>
+
+			{/* The document's foot: what a contributor needs that this guide does not
 		    say, and where in the document they have got to. The clause count is
 		    this page's own, and the as-of is absent on purpose - the guide
 		    carries no revision date, and a folio may not invent one. */}
-		<BandFoot
-			surface="card"
-			index="06"
-			part="/THE BACK MATTER"
-			see={[
-				{
-					route: "/LICENSE",
-					href: "/License",
-					reason:
-						"what a contribution is licensed under: the same public-domain dedication as the code",
-				},
-				{
-					route: "/DOC",
-					href: "/Doc",
-					reason: "the manual a documentation contribution is written against",
-				},
-				{
-					route: "/CONTACT/SCOUT",
-					href: "/Contact/Scout",
-					reason: "technical support, when the question is not a contribution",
-				},
-			]}
-			figure={{ value: "06", unit: "PARTS" }}
-			source="SOURCE/PAGES/CONTRIBUTING.ASTRO"
-		/>
+			<BandFoot
+				surface="card"
+				index="06"
+				part="/THE BACK MATTER"
+				see={[
+					{
+						route: "/LICENSE",
+						href: "/License",
+						reason: "what a contribution is licensed under: the same public-domain dedication as the code",
+					},
+					{
+						route: "/DOC",
+						href: "/Doc",
+						reason: "the manual a documentation contribution is written against",
+					},
+					{
+						route: "/CONTACT/SCOUT",
+						href: "/Contact/Scout",
+						reason: "technical support, when the question is not a contribution",
+					},
+				]}
+				figure={{ value: "06", unit: "PARTS" }}
+				source="SOURCE/PAGES/CONTRIBUTING.ASTRO"
+			/>
 		</ReadingDocument>
 
 		<!-- Back to top -->

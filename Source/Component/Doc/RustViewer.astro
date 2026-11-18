@@ -42,24 +42,22 @@ const First = crates.at(0);
 
 <div class="doc-rust__viewer">
 	<div class="doc-rust__bar" role="tablist" aria-label={label}>
-		{
-			crates.map((Crate, Index) => (
-				<button
-					type="button"
-					role="tab"
-					aria-selected={Index === 0 ? "true" : "false"}
-					aria-controls="RustDocFrame"
-					data-id={Crate.Id}
-					data-rustdoc-url={Crate.Url}
-					class:list={[
-						"doc-rust__tab",
-						Index === 0 ? "doc-rust__tab--active" : null,
-					]}
-				>
-					{Crate.Label}
-				</button>
-			))
-		}
+		{crates.map((Crate, Index) => (
+			<button
+				type="button"
+				role="tab"
+				aria-selected={Index === 0 ? "true" : "false"}
+				aria-controls="RustDocFrame"
+				data-id={Crate.Id}
+				data-rustdoc-url={Crate.Url}
+				class:list={[
+					"doc-rust__tab",
+					Index === 0 ? "doc-rust__tab--active" : null,
+				]}
+			>
+				{Crate.Label}
+			</button>
+		))}
 	</div>
 
 	<iframe
@@ -68,7 +66,8 @@ const First = crates.at(0);
 		src={First?.Url}
 		title={title}
 		loading="lazy"
-		sandbox="allow-scripts allow-same-origin allow-popups allow-top-navigation-by-user-activation"></iframe>
+		sandbox="allow-scripts allow-same-origin allow-popups allow-top-navigation-by-user-activation"
+	></iframe>
 </div>
 
 <script>
@@ -106,7 +105,9 @@ const First = crates.at(0);
 	const Hash = window.location.hash.slice(1);
 
 	if (Hash) {
-		const Match = Array.from(Tabs).find((Tab) => Tab.dataset["id"] === Hash);
+		const Match = Array.from(Tabs).find(
+			(Tab) => Tab.dataset["id"] === Hash,
+		);
 
 		Match?.click();
 	}

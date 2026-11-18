@@ -1,0 +1,73 @@
+// OPTICAL/EDGE - a tracked label ends where its ink ends, not where its box does.
+//
+// ─── THE LAW ──────────────────────────────────────────────────────────────
+// `letter-spacing` is added after every letter of a tracked label, including the
+// last one. So a label's box is one tracking step wider than its ink, and a label
+// that ends a row - a folio's last fact, a leader's figure, a stamp's status, an
+// archive's count, an entry's glyph - stops a pixel short of the edge it is
+// supposed to meet. The eye reads that pixel as an indentation, and a page whose
+// right edges are all a pixel in reads as a page with a margin it does not have.
+//
+// ─── HOW ──────────────────────────────────────────────────────────────────
+// One negative `margin-inline-end` per element, equal to that element's own
+// register (`--optical-edge-row`, -1.04px at 13px). The margin moves the box, so
+// the ink lands on the edge and the text does not otherwise move: the element is
+// `flex: 0 0 auto` or `justify-self: end` in every case, so taking a pixel off
+// its trailing margin takes a pixel off the space before it and nothing else.
+//
+// ─── WHY THIS ONE NEEDS NO PRINT ARM ──────────────────────────────────────
+// The hang is cancelled on paper because it reaches into the page's margin, and
+// the margin belongs to the printer. This correction does the opposite: it moves
+// ink *onto* the edge it was already supposed to end on. On paper that is still
+// true, so the rule holds in both media - and that difference is the test for
+// whether an optical offset is a page offset or a typographic one.
+@use "../Mixin" as *;
+
+// The folio's right end: `〈03〉 /LEGAL␁26 CLAUSES␁AS OF: 2026-11-18` ends on the
+// band's right edge, under a rule that runs the band's whole width. The date is
+// the last thing on that rule or the rule is longer than the line it closes.
+.detail-folio__facts {
+	margin-inline-end: var(--optical-edge-row);
+}
+
+// The leader's figure: the dotted leader runs to it, so the figure's right edge
+// is the row's edge and the dots must not stop a pixel short of it.
+.detail-leader__meta {
+	margin-inline-end: var(--optical-edge-row);
+}
+
+// The stamp's status: `STATUS: VERIFIED` is pushed to the frame's right padding
+// edge by `margin-inline-start: auto`. Without the cancel, the stamp's one
+// authenticating word sits a pixel inside the frame it authenticates.
+.record-stamp__state {
+	margin-inline-end: var(--optical-edge-row);
+}
+
+// The archive's count: `52 ENTRIES` at the far end of the header, on the same
+// edge as the rows' closing rule.
+.record-archive__count {
+	margin-inline-end: var(--optical-edge-row);
+}
+
+// The entry's glyph: the one mark in a record grid that is `justify-self: end`.
+.record-entry__glyph {
+	margin-inline-end: var(--optical-edge-row);
+}
+
+// A plate's as-of: the capture's date at the far end of its head, at the name
+// register, so the head ends on the frame's edge - the same edge the plate's own
+// frame draws a few pixels below it.
+.record-plate__asof {
+	margin-inline-end: var(--optical-edge-name);
+}
+
+// A plate set's count: `15 PLATES` at the far end of the set's head, over a rule
+// that runs the set's whole width.
+.record-plate-set__count {
+	margin-inline-end: var(--optical-edge-row);
+}
+
+// The unit of a figure is the same correction and already reads the same token
+// (`Detail/_Figure.scss`): a figure and its unit are one object, and the unit is
+// where the object ends. Named here so the two are visibly one rule rather than
+// two cards who happened to compute the same pixel.

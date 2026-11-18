@@ -105,86 +105,93 @@ const Bars = [64, 42, 78, 55, 36, 70];
 ---
 
 <div class:list={["detail-leader", Class]} data-state={state}>
-	{
-		RegisterLine && (
-			<p class="detail-leader__register" data-state={state}>
-				# {RegisterLine}
-			</p>
-		)
-	}
-	{
-		state === "empty" ? (
-			empty && <p class="detail-leader__empty">{empty}</p>
-		) : (
-			<ol
-				class:list={[
-					"detail-leader__list",
-					`detail-leader__list--${columns}`,
-				]}
-				aria-busy={state === "loading" ? "true" : undefined}
-			>
-				{state === "loading"
-					? Array.from({ length: SkeletonRows }, (_, Index) => (
-							<li class="detail-leader__row detail-leader__row--skeleton">
-								<span class="detail-leader__line">
+	{RegisterLine && (
+		<p class="detail-leader__register" data-state={state}>
+			# {RegisterLine}
+		</p>
+	)}
+	{state === "empty" ? (
+		empty && <p class="detail-leader__empty">{empty}</p>
+	) : (
+		<ol
+			class:list={[
+				"detail-leader__list",
+				`detail-leader__list--${columns}`,
+			]}
+			aria-busy={state === "loading" ? "true" : undefined}
+		>
+			{state === "loading"
+				? Array.from({ length: SkeletonRows }, (_, Index) => (
+						<li class="detail-leader__row detail-leader__row--skeleton">
+							<span class="detail-leader__line">
+								<span class="detail-leader__label">
+									<span
+										class="detail-leader__bar"
+										style={`--bar:${Bars[Index % Bars.length]}%`}
+										aria-hidden="true"
+									/>
+								</span>
+								<span
+									class="detail-leader__dots"
+									aria-hidden="true"
+								/>
+								<span class="detail-leader__meta">
+									<span
+										class="detail-leader__bar"
+										style={`--bar:${Bars[(Index + 3) % Bars.length]}%`}
+										aria-hidden="true"
+									/>
+								</span>
+							</span>
+						</li>
+					))
+				: Shown.map((Item) => (
+						<li
+							class="detail-leader__row"
+							data-state={Item.state ?? "rest"}
+						>
+							<span class="detail-leader__line">
+								{Item.href ? (
+									<a
+										class="detail-leader__label"
+										href={Item.href}
+									>
+										{Item.label}
+									</a>
+								) : (
 									<span class="detail-leader__label">
-										<span
-											class="detail-leader__bar"
-											style={`--bar:${Bars[Index % Bars.length]}%`}
-											aria-hidden="true"
-										/>
+										{Item.label}
 									</span>
-									<span class="detail-leader__dots" aria-hidden="true" />
-									<span class="detail-leader__meta">
-										<span
-											class="detail-leader__bar"
-											style={`--bar:${Bars[(Index + 3) % Bars.length]}%`}
-											aria-hidden="true"
-										/>
-									</span>
-								</span>
-							</li>
-						))
-					: Shown.map((Item) => (
-							<li
-								class="detail-leader__row"
-								data-state={Item.state ?? "rest"}
-							>
-								<span class="detail-leader__line">
-									{Item.href ? (
-										<a class="detail-leader__label" href={Item.href}>
-											{Item.label}
-										</a>
-									) : (
-										<span class="detail-leader__label">{Item.label}</span>
-									)}
-									<span class="detail-leader__dots" aria-hidden="true" />
-									<span class="detail-leader__meta">
-										{Item.state === "unavailable"
-											? "UNAVAILABLE"
-											: (Item.meta ?? "◎")}
-									</span>
-								</span>
-								{Item.note && (
-									<span class="detail-leader__note">↳ {Item.note}</span>
 								)}
-							</li>
-						))}
-			</ol>
-		)
-	}
-	{
-		Truncated && (
-			<p class="detail-leader__more">
-				SHOWING: {Shown.length} OF {items.length}
-				{more && (
-					<a class="detail-leader__more-link" href={more.href}>
-						{more.label}
-						{"\u2001"}
-						<span aria-hidden="true">→</span>
-					</a>
-				)}
-			</p>
-		)
-	}
+								<span
+									class="detail-leader__dots"
+									aria-hidden="true"
+								/>
+								<span class="detail-leader__meta">
+									{Item.state === "unavailable"
+										? "UNAVAILABLE"
+										: (Item.meta ?? "◎")}
+								</span>
+							</span>
+							{Item.note && (
+								<span class="detail-leader__note">
+									↳ {Item.note}
+								</span>
+							)}
+						</li>
+					))}
+		</ol>
+	)}
+	{Truncated && (
+		<p class="detail-leader__more">
+			SHOWING: {Shown.length} OF {items.length}
+			{more && (
+				<a class="detail-leader__more-link" href={more.href}>
+					{more.label}
+					{"\u2001"}
+					<span aria-hidden="true">→</span>
+				</a>
+			)}
+		</p>
+	)}
 </div>
