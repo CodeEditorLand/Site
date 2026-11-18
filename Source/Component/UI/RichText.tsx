@@ -118,39 +118,45 @@ const TermDictionary = new Map<string, TermCategory>([
 ]);
 
 const CategoryStyle: Record<TermCategory, string> = {
-	Architecture: "border-[var(--SpineIPC)] text-[#2563eb]",
+	Architecture: "border-[var(--SpineIPC)] text-[color:var(--SpineIPCFore)]",
 
-	Telemetry: "border-[#fbbf24] text-[#b45309]",
+	Telemetry: "border-[var(--ExtensionTauri)] text-[color:var(--ExtensionTauriFore)]",
 
-	Protocol: "border-[var(--SpineWASM)] text-[#9333ea]",
+	Protocol: "border-[var(--SpineWASM)] text-[color:var(--SpineWASMFore)]",
 
-	Feature: "border-[var(--SpineTCP)] text-[#c2410c]",
+	Feature: "border-[var(--SpineTCP)] text-[color:var(--SpineTCPFore)]",
 
-	License: "border-[var(--SpinegRPC)] text-[#15803d]",
+	License: "border-[var(--SpinegRPC)] text-[color:var(--SpinegRPCFore)]",
 
-	Tool: "border-[#60a5fa] text-[#2563eb]",
+	Tool: "border-[var(--ExtensionReact)] text-[color:var(--SpineIPCFore)]",
 };
 
-// Jelly-badge variant: labels sit on light 18%-hue color-mix fills, so
-// they use dark -700 shades (single daylight ink rule, master §7).
+// Both maps draw the same ink: the `*Fore` token is the -700 shade the token
+// layer declares as "the ink for labels on light fills" (`_Token.scss`, PROTOCOL
+// SPINE COLORS), and an inline chip and a Jelly badge are the same label on the
+// same light surface. Before this, the inline map carried the -600 hexes
+// (`#2563eb`, `#9333ea`) and the badge map the -700 ones, so one term printed in
+// two blues depending on which renderer reached it, and neither came from a
+// token. The literal hexes are gone; `border-[var(--SpineIPC)]` and its five
+// siblings already resolved and are unchanged.
 const CategoryBadgeStyle: Record<TermCategory, string> = {
-	Architecture: "border-[var(--SpineIPC)] text-[#1d4ed8]",
+	Architecture: "border-[var(--SpineIPC)] text-[color:var(--SpineIPCFore)]",
 
-	Telemetry: "border-[#fbbf24] text-[#b45309]",
+	Telemetry: "border-[var(--ExtensionTauri)] text-[color:var(--ExtensionTauriFore)]",
 
-	Protocol: "border-[var(--SpineWASM)] text-[#6d28d9]",
+	Protocol: "border-[var(--SpineWASM)] text-[color:var(--SpineWASMFore)]",
 
-	Feature: "border-[var(--SpineTCP)] text-[#c2410c]",
+	Feature: "border-[var(--SpineTCP)] text-[color:var(--SpineTCPFore)]",
 
-	License: "border-[var(--SpinegRPC)] text-[#15803d]",
+	License: "border-[var(--SpinegRPC)] text-[color:var(--SpinegRPCFore)]",
 
-	Tool: "border-[#60a5fa] text-[#1d4ed8]",
+	Tool: "border-[var(--ExtensionReact)] text-[color:var(--SpineIPCFore)]",
 };
 
 const CategoryFill: Record<TermCategory, string> = {
 	Architecture: "var(--SpineIPCMute)",
 
-	Telemetry: "color-mix(in srgb, #fbbf24 18%, #ffffff)",
+	Telemetry: "var(--ExtensionTauriMute)",
 
 	Protocol: "var(--SpineWASMMute)",
 
@@ -158,7 +164,7 @@ const CategoryFill: Record<TermCategory, string> = {
 
 	License: "var(--SpinegRPCMute)",
 
-	Tool: "color-mix(in srgb, #60a5fa 18%, #ffffff)",
+	Tool: "var(--ExtensionReactMute)",
 };
 
 const CategoryLabel: Record<TermCategory, string> = {

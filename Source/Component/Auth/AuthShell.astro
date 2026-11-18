@@ -44,7 +44,9 @@
  * A second `<main>` here would be a second landmark and a duplicate ID.
  */
 import Trail from "../Route/Trail.astro";
+import SurfaceState from "../Surface/SurfaceState.astro";
 import type { TrailItem } from "../Route/Type.js";
+import type { SurfaceState as StateRow } from "../Surface/State.js";
 import type { AuthFrame } from "./Type.js";
 
 interface Props {
@@ -60,6 +62,23 @@ interface Props {
 	 * both.
 	 */
 	Trail?: readonly TrailItem[];
+
+	/**
+	 * The route's states, when it states one before its interior boots.
+	 *
+	 * The register is the same block the portal and dashboard shells print
+	 * (`SurfaceState`): a key, §1.5's marker, one of the eight words at its own
+	 * tone. A route hands in rows composed by `Row()` from `Surface/State.ts`,
+	 * so it cannot state a word the table does not know or a tone of its own
+	 * choosing.
+	 *
+	 * Only a state the route knows *at request time* belongs here - `/Verify`'s
+	 * failure route is the one on this surface, because its card prints a title
+	 * and a sentence and the word itself has no other home. A state the
+	 * interior decides (loading, signed in, interrupted) stays in the interior,
+	 * where the report already prints it: one fact, one print.
+	 */
+	States?: readonly StateRow[];
 
 	/** `narrow` is the form's 28rem; `wide` is the account index's 64rem. */
 	Measure?: "narrow" | "wide";
@@ -89,6 +108,7 @@ interface Props {
 const {
 	Label,
 	Trail: Crumbs,
+	States = [],
 	Measure = "narrow",
 	Frame,
 	Center = false,
@@ -131,6 +151,11 @@ const Surface = {
 								<p class="auth-shell__sentence type-sub">
 									{Frame.sentence}
 								</p>
+							) : null}
+							{States.length ? (
+								<div class="auth-shell__states">
+									<SurfaceState states={States} />
+								</div>
 							) : null}
 						</header>
 					)

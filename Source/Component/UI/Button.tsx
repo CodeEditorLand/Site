@@ -20,7 +20,7 @@ const ButtonVariants = cva(
 				destructive:
 					"bg-destruct text-destruct-fg hover:bg-[color-mix(in_srgb,var(--Destruct)_85%,transparent)] focus-visible:ring-[color-mix(in_srgb,var(--Destruct)_20%,transparent)]",
 				outline:
-					"bg-background text-fg border border-border hover:bg-mute",
+					"bg-background text-fg border border-divider hover:bg-mute",
 				secondary: "bg-secondary text-secondary-fg hover:bg-surface3",
 				ghost: "text-fg hover:bg-mute",
 				link: "text-fg underline-offset-4 hover:underline",

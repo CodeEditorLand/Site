@@ -2,12 +2,12 @@
 /**
  * SurfaceChips - a record's state chips, as Jelly badges.
  *
- * The chips a surface prints - `Disabled`, `Feature Gated`, `Optional`,
- * `Active`, `Coming Soon` - are states, not tags, so each one carries the §7
- * marker beside its word: a status that renders exactly like an ordinary fact
- * has lost its state. `jelly-badge` stays the surface the chip sits on; the
- * badge only loses its one-neutral-ink habit, which is what made five different
- * states look like five copies of the same fact.
+ * The chips a surface prints - `Active`, `Coming Soon`, `Disabled` - are
+ * states, not tags, so each one carries the §1.5 marker beside its word: a
+ * status that renders exactly like an ordinary fact has lost its state.
+ * `jelly-badge` stays the surface the chip sits on; the badge only loses its
+ * one-neutral-ink habit, which is what made five different states look like
+ * five copies of the same fact.
  *
  * The fill stays the neutral mute for every tone - these are state chips, not
  * protocol chips, so they take no spine ink - and the ink carries the tone.
@@ -15,9 +15,11 @@
  * below is the single declaration that paints both the green rule and the green
  * word on a `specimen` chip.
  *
- * A chip the vocabulary does not know is `ink`: a label the page chose to print
- * is still a state of the record it sits on, and an unmarked one would be the
- * drift this block exists to remove.
+ * The tone comes from `State.ts`, which knows §1.5's eight values and nothing
+ * else. A chip outside those eight - `Disabled`, `Coming Soon`, `Optional` -
+ * is `ink`: those are the dashboard's badge words (`Badge.ts` tints them on its
+ * own table) and not states of the register, and an unmarked one would be the
+ * drift this block exists to remove. A chip is never given a tone by hand.
  *
  * No script and no hydration: the chips are static.
  */

@@ -4,6 +4,7 @@ import { VerifyContent } from "../Component/Auth/Content";
 import { AuthFrameFor } from "../Component/Auth/Data";
 import { VerifyPage } from "../Component/Dynamic/VerifyPage";
 import { Header } from "../Component/Layout/Header";
+import { Row } from "../Component/Surface/State";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
@@ -16,6 +17,34 @@ const Verify = VerifyContent(T);
 const Token = Astro.url.searchParams.get("token");
 const Reason = Astro.url.searchParams.get("reason");
 const Route = Token ? "verify" : Reason ? "failure" : "pending";
+
+/* The one state this route knows before its card boots. The three card states
+   (`pending`, `verifying`, `success`) print their own word through
+   `DynamicEmailVerification`, and the failure branch belongs to `VerifyPage` -
+   card 1's component, which prints the title and the sentence but no word. So
+   the word prints here, in the shell's register, through `SurfaceState` and
+   `Row()`: the term is `Verify.json`'s own, and its tone is `State.ts`'s.
+   Nothing is invented and nothing is printed twice.
+
+   The two failure words are two different conditions: a link the provider
+   rejected (`auth.failedStatus`, INTERRUPTED) and a link that expired
+   (`auth.expiredStatus`, UNAVAILABLE). The query string already distinguishes
+   them, so the register does too, rather than flattening both into one word. */
+const States =
+	Route === "failure"
+		? [
+				Row(
+					"STATUS",
+					Reason === "expired"
+						? T("verify:auth.expiredStatus", {
+								defaultValue: "STATUS: UNAVAILABLE",
+							})
+						: T("verify:auth.failedStatus", {
+								defaultValue: "STATUS: INTERRUPTED",
+							}),
+				),
+			]
+		: [];
 
 /* The frame is `/VERIFY` + the page's `h1` + one sentence + the one alternate
    action. This is the route `DESIGN-COMPLETE.md` §6 X10 named as the last page
@@ -40,7 +69,7 @@ const MetaDescription = T("verify.pending.description", {
 
 <Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
 	<Header client:load Mode="functional" slot="Header" />
-	<AuthShell Label="Email verification" Frame={Frame} Live>
+	<AuthShell Label="Email verification" Frame={Frame} Live States={States}>
 		<VerifyPage
 			Content={Verify}
 			Route={Route}

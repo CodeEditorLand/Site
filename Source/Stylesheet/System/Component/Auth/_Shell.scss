@@ -47,13 +47,6 @@
 	gap: var(--space-tight);
 }
 
-/* A frame that opens a page on its own - the OAuth result route prints it above
-   its own card rather than inside the shell's column - needs the distance the
-   shell's own flex gap would have given it. */
-.auth-shell__header--opening {
-	margin-block-end: var(--space-group);
-}
-
 /* The /SECTION LABEL opening the frame. Type and colour only - no rule, no
    fill - so it never competes with the heading underneath it. */
 .auth-shell__kicker {
@@ -351,12 +344,17 @@
 	color: var(--Foreground);
 }
 
-.auth-shell__status--success {
-	color: var(--Accent);
+/* The route's register, under the frame's sentence. Same block the portal and
+   dashboard shells print; the tone travels on the word, never on this class -
+   a state printed as a colour the page chose is what `State.ts` exists to
+   stop, so the two colour modifiers that used to sit here (`--success` and
+   `--failure`) are gone with the fourth tone they belonged to. */
+.auth-shell__states {
+	margin-block-start: var(--space-group);
 }
 
-.auth-shell__status--failure {
-	color: var(--Destruct);
+.auth-shell__states .surface__states {
+	text-align: start;
 }
 
 .auth-shell__report-sentence {

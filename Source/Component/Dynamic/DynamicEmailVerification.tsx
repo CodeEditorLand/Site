@@ -8,6 +8,8 @@ import { DynamicButton } from "./DynamicButton";
 
 import { DynamicInput } from "./DynamicInput";
 
+import { StateLabel } from "./DynamicStateReport";
+
 import type Property from "./Interface/Property/Verification/Email.js";
 
 import type { default as VerificationState } from "./Type/State/Verification.js";
@@ -18,10 +20,22 @@ import type { default as VerificationState } from "./Type/State/Verification.js"
  * shows the pending state with resend.
  *
  * Every state is a report in the card's own anatomy (`AuthReport`): the
- * state's title as an `h3`, one sentence saying what happened, and the action
- * that is available. The pending state is the baseline's - the mail tile, the
- * `Verify Your Email Address` heading, the four-sentence paragraph, the
- * labelled email field and the full-width resend button.
+ * state's coded label, the state's title as an `h2`, one sentence saying what
+ * happened, and the action that is available. The pending state is the
+ * baseline's - the mail tile, the `Verify Your Email Address` heading, the
+ * four-sentence paragraph, the labelled email field and the full-width resend
+ * button.
+ *
+ * **The label is the vocabulary, and it was missing.** `Verify.json` carried
+ * `auth.pendingStatus`, `auth.verifyingStatus`, `auth.verifiedStatus` and
+ * `auth.failedStatus` - `STATUS: PREPARING`, `LOADING`, `VERIFIED`,
+ * `INTERRUPTED` - and this component read none of them, so /Verify printed its
+ * states as prose and never printed the word. Each branch now passes its own
+ * locale key, so the words in that file are the words this route prints, and
+ * their tones come from `State.ts` rather than from a branch's opinion about
+ * how bad the news is. (The file's fifth key, `auth.expiredStatus`, is the
+ * failure route's - `pages/Verify.astro` prints it when the provider says the
+ * link expired.)
  */
 const DynamicEmailVerification = ({
 	Content,
@@ -141,6 +155,9 @@ const DynamicEmailVerification = ({
 
 	const RenderPending = () => (
 		<AuthReport
+			State={T("auth.pendingStatus", {
+				defaultValue: StateLabel.Preparing,
+			})}
 			Title={Content.Pending.Title}
 			Sentence={Content.Pending.Description}
 			Glyph="mail"
@@ -198,6 +215,9 @@ const DynamicEmailVerification = ({
 
 	const RenderVerifying = () => (
 		<AuthReport
+			State={T("auth.verifyingStatus", {
+				defaultValue: StateLabel.Loading,
+			})}
 			Title={
 				Content.Verifying?.Title ||
 				T("verifying.title", { defaultValue: "Verifying your email" })
@@ -220,6 +240,9 @@ const DynamicEmailVerification = ({
 
 	const RenderSuccess = () => (
 		<AuthReport
+			State={T("auth.verifiedStatus", {
+				defaultValue: StateLabel.Verified,
+			})}
 			Title={Content.Success.Title}
 			Sentence={Content.Success.Description}
 			Glyph="check"
@@ -238,6 +261,9 @@ const DynamicEmailVerification = ({
 
 	const RenderError = () => (
 		<AuthReport
+			State={T("auth.failedStatus", {
+				defaultValue: StateLabel.Interrupted,
+			})}
 			Title={Content.Error.Title}
 			Sentence={ErrorMessage || Content.Error.Description}
 			Glyph="alert"

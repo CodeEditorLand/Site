@@ -109,10 +109,15 @@ export const IsState = (Label: string): boolean => Tone(Label) !== undefined;
  * a page that states `STATUS: LOADING` cannot state it in a tone of its own
  * choosing. A term outside the eight prints in `ink` and is not a state: the
  * caller's word is never re-cased or re-worded, only tinted.
+ *
+ * `Term` may be the word alone (`LOADING`) or the whole label a locale file
+ * carries (`STATUS: LOADING`); the key prefix is stripped, because the key is
+ * the first argument and a row that printed it twice would read
+ * `STATUS: STATUS: LOADING`.
  */
 export const Row = (Key: string, Term: string): SurfaceState => ({
 	key: Key,
-	value: Term,
+	value: Word(Term),
 	tone: Tone(Term) ?? "ink",
 });
 

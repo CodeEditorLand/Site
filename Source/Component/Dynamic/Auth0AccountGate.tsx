@@ -173,7 +173,6 @@ export default ({
 				Label={T("auth.signUp.closedStatus", {
 					defaultValue: StateLabel.Unavailable,
 				})}
-				Tone="ink"
 				Sentence={T("registrationComingSoon.description", {
 					defaultValue:
 						"Account creation is disabled while the portal flow is being finished. Existing sign-in remains available for configured accounts.",
@@ -197,7 +196,6 @@ export default ({
 				Label={T("auth.signIn.checkingStatus", {
 					defaultValue: StateLabel.Loading,
 				})}
-				Tone="ink"
 				Loading
 				Sentence={T("loading", { defaultValue: "Loading..." })}
 				Action={
@@ -218,7 +216,6 @@ export default ({
 				Label={T("auth.signIn.failedStatus", {
 					defaultValue: StateLabel.Interrupted,
 				})}
-				Tone="strong"
 				Sentence={
 					<>
 						{T("error", { defaultValue: "Authentication error" })}:{" "}
@@ -252,7 +249,6 @@ export default ({
 				Label={T("auth.signIn.signedInStatus", {
 					defaultValue: StateLabel.Active,
 				})}
-				Tone="specimen"
 				Sentence={T("auth.signIn.signedInSentence", {
 					defaultValue:
 						"You are signed in. This page continues to your dashboard.",
@@ -314,7 +310,6 @@ export default ({
 			Label={T("auth.signIn.redirectingStatus", {
 				defaultValue: StateLabel.Loading,
 			})}
-			Tone="ink"
 			Loading
 			Sentence={T("redirecting", {
 				defaultValue: "Redirecting to sign in...",

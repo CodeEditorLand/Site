@@ -460,7 +460,6 @@ const AccountProfileInner = ({
 
 				<DynamicStateReport
 					Label={StateLabel.Loading}
-					Tone="ink"
 					Loading
 					Sentence={T("accountPage.loading", {
 						defaultValue:
@@ -485,7 +484,6 @@ const AccountProfileInner = ({
 			<DynamicStateReport
 				Role="alert"
 				Label={StateLabel.Interrupted}
-				Tone="strong"
 				Sentence={
 					<>
 						{T("error", { defaultValue: "Authentication error" })}:{" "}
@@ -508,7 +506,6 @@ const AccountProfileInner = ({
 		return (
 			<DynamicStateReport
 				Label={StateLabel.SignInRequired}
-				Tone="ink"
 				Sentence={T("notSignedIn", {
 					defaultValue: "Sign in to manage your account.",
 				})}

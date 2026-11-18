@@ -4,9 +4,13 @@ import { useTranslation } from "react-i18next";
 
 import { AuthReport } from "../Auth/Report";
 
+import { StateBadge } from "../Surface/StateBadge";
+
 import { DynamicButton } from "./DynamicButton";
 
 import { DynamicInput } from "./DynamicInput";
+
+import { StateLabel } from "./DynamicStateReport";
 
 import type Property from "./Interface/Property/Password/Reset.js";
 
@@ -141,6 +145,14 @@ const DynamicResetPassword = ({
 		return (
 			<div className="p-6 pt-6">
 				<div className="space-y-4" aria-live="polite">
+					<div className="auth-shell__status flex justify-center">
+						<StateBadge
+							Label={T("auth.resetPassword.checkingStatus", {
+								defaultValue: StateLabel.Loading,
+							})}
+						/>
+					</div>
+
 					<div
 						className="mx-auto h-8 w-8 animate-spin rounded-none border-4 border-primary border-t-transparent"
 						aria-hidden="true"
@@ -158,6 +170,9 @@ const DynamicResetPassword = ({
 	if (State === "invalid") {
 		return (
 			<AuthReport
+				State={T("auth.resetPassword.expiredStatus", {
+					defaultValue: StateLabel.Unavailable,
+				})}
 				Title={T("account.resetPassword.invalidToken.title", {
 					defaultValue: "Link Expired or Invalid",
 				})}
@@ -183,6 +198,9 @@ const DynamicResetPassword = ({
 	if (State === "success") {
 		return (
 			<AuthReport
+				State={T("auth.resetPassword.updatedStatus", {
+					defaultValue: StateLabel.Ready,
+				})}
 				Title={T("account.resetPassword.success.title", {
 					defaultValue: "Password updated",
 				})}

@@ -1,7 +1,10 @@
 ---
+import AuthShell from "../../Component/Auth/AuthShell.astro";
 import Auth0CallbackHandler from "../../Component/Dynamic/Auth0CallbackHandler";
 import { AuthFrameFor } from "../../Component/Auth/Data";
 import { Header } from "../../Component/Layout/Header";
+import { Row } from "../../Component/Surface/State";
+import SurfaceState from "../../Component/Surface/SurfaceState.astro";
 import Auth0ClientIdentifier from "../../Function/Configuration/Auth0ClientIdentifier.js";
 import Auth0Domain from "../../Function/Configuration/Auth0Domain.js";
 import Base from "../../Layout/Base.astro";
@@ -14,10 +17,13 @@ const T = GetI18n();
    "Go to Dashboard" and "Back to Sign In" - and a third way out would be a
    second action on an artifact that has exactly one.
 
-   The frame prints inside the card, above the three states, because the card is
-   the page (the baseline's centred `max-w-md` panel) and the states replace each
-   other inside it. It is what gives this route a page-level `h1`: the baseline's
-   two `h1`s are per-state, and only one of them is ever visible. */
+   **The frame is the shell's now.** This route used to print the frame itself,
+   by hand, with `auth-shell__kicker` and `auth-shell__heading` on its own
+   markup - the only credential route with no `AuthShell`, and the reason it had
+   two `h1`s (one per state, only one of them ever visible). `AuthShell` prints
+   the kicker, the single `h1` and the sentence above the card, exactly as it
+   does on `/Account/SignIn`, `/Account/SignUp` and `/Verify`, so the five
+   credential routes now open the same way. */
 const Frame = AuthFrameFor("oauthSuccess", T);
 
 const MetaTitle = T("meta.oauth.success", {
@@ -45,6 +51,22 @@ const BackToSignInText = T("common.oauth.backToSignIn", {
 const GoToDashboardText = T("common.oauth.goToDashboard", {
 	defaultValue: "Go to Dashboard",
 });
+
+/* The three states' words, from `State.ts`'s table through `Row()`: LOADING
+   while the callback is read, ACTIVE once the session is written, INTERRUPTED
+   when the provider returned an error. `SignedInStatus` is `Account.json`'s own
+   `auth.oauthSuccess.signedInStatus`, so the word a reader sees here is the one
+   the locale file already carried. */
+const LoadingWords = [Row("STATUS", "LOADING")];
+const SignedInWords = [
+	Row(
+		"STATUS",
+		T("account:auth.oauthSuccess.signedInStatus", {
+			defaultValue: "STATUS: ACTIVE",
+		}),
+	),
+];
+const ErrorWords = [Row("STATUS", "INTERRUPTED")];
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
@@ -60,84 +82,85 @@ const GoToDashboardText = T("common.oauth.goToDashboard", {
 
 	<!--
 		Three mutually exclusive states, toggled by the inline script below and
-		by Auth0CallbackHandler through these ids. The card is the baseline's:
-		one centred panel, the in-progress spinner, the signed-in result with its
-		heading and the redirect sentence, and the failure result with its own
-		heading and the one way back.
+		by Auth0CallbackHandler through these ids. The card is the shell's - the
+		baseline's one centred `max-w-md` panel, square, on the creme field - and
+		each state carries its word through `SurfaceState`, so the state is a
+		state of the record and not a spinner that happens to be on screen.
 	-->
-	<section class="flex min-h-screen items-center justify-center py-20">
-		<div class="container mx-auto px-4">
-			<div class="mx-auto max-w-md text-center">
-				<header class="auth-shell__header auth-shell__header--opening">
-					<p class="auth-shell__kicker">{Frame.kicker}</p>
-					<h1 class="auth-shell__heading type-section">{Frame.heading}</h1>
-					{Frame.sentence ? (
-						<p class="auth-shell__sentence type-sub">{Frame.sentence}</p>
-					) : null}
-				</header>
+	<AuthShell Label="Sign-in result" Frame={Frame}>
+		<div
+			id="LoadingState"
+			class="flex flex-col items-center gap-4 p-8 text-center"
+		>
+			<SurfaceState states={LoadingWords} />
 
-				<div class="StaccatoBorderShimmer StaccatoCard flat p-8">
-					<div id="LoadingState" class="flex flex-col items-center gap-4">
-						<div
-							class="h-8 w-8 animate-spin rounded-none border-2 border-current border-t-transparent"
-						>
-						</div>
-						<p class="text-card-foreground">{CompletingText}</p>
-					</div>
-
-					<div
-						id="SuccessState"
-						class="hidden flex-col items-center gap-4"
-					>
-						<div
-							class="flex h-12 w-12 items-center justify-center rounded-none border-2 border-[color:var(--Accent)] text-[color:var(--Accent)]"
-						>
-							<svg
-								aria-hidden="true"
-								viewBox="0 0 24 24"
-								xmlns="http://www.w3.org/2000/svg"
-								fill="none"
-								height="24"
-								stroke="currentColor"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								width="24"
-							>
-								<polyline points="20 6 9 17 4 12"></polyline>
-							</svg>
-						</div>
-						<h2 class="text-2xl font-medium">{SuccessTitle}</h2>
-						<p class="text-card-foreground">{SuccessRedirect}</p>
-						<a
-							href="/Dashboard"
-							id="DashboardFallback"
-							class="StaccatoButton mt-2 inline-flex h-10 items-center justify-center bg-primary px-4 py-2 font-medium text-primary-fg transition-all hover:opacity-90 focus:outline-2 focus:outline-[var(--Primary)] focus:outline-offset-2"
-						>
-							{GoToDashboardText}
-							{"\u2001"}
-							<span aria-hidden="true">&rarr;</span>
-						</a>
-					</div>
-
-					<div id="ErrorState" class="hidden">
-						<h2 class="mb-2 text-2xl font-medium">Sign-In Failed</h2>
-						<p id="ErrorMessage" class="mb-6 text-card-foreground">
-							{ErrorGenericText}
-						</p>
-						<a
-							href="/Account/SignIn"
-							class="StaccatoButton flat inline-flex h-10 items-center justify-center bg-primary px-4 py-2 font-medium text-primary-fg transition-all hover:opacity-90 focus:outline-2 focus:outline-[var(--Primary)] focus:outline-offset-2"
-						>
-							{BackToSignInText}
-							{"\u2001"}
-							<span aria-hidden="true">&rarr;</span>
-						</a>
-					</div>
-				</div>
+			<div
+				class="h-8 w-8 animate-spin rounded-none border-2 border-current border-t-transparent"
+			>
 			</div>
+
+			<p class="text-card-foreground">{CompletingText}</p>
 		</div>
-	</section>
+
+		<div
+			id="SuccessState"
+			class="hidden flex-col items-center gap-4 p-8 text-center"
+		>
+			<SurfaceState states={SignedInWords} />
+
+			<div
+				class="flex h-12 w-12 items-center justify-center rounded-none border-2 border-[color:var(--Accent)] text-[color:var(--Accent)]"
+			>
+				<svg
+					aria-hidden="true"
+					viewBox="0 0 24 24"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					height="24"
+					stroke="currentColor"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					width="24"
+				>
+					<polyline points="20 6 9 17 4 12"></polyline>
+				</svg>
+			</div>
+
+			<h2 class="text-2xl font-medium">{SuccessTitle}</h2>
+
+			<p class="text-card-foreground">{SuccessRedirect}</p>
+
+			<a
+				href="/Dashboard"
+				id="DashboardFallback"
+				class="StaccatoButton mt-2 inline-flex h-10 items-center justify-center bg-primary px-4 py-2 font-medium text-primary-fg transition-all hover:opacity-90 focus:outline-2 focus:outline-[var(--Primary)] focus:outline-offset-2"
+			>
+				{GoToDashboardText}
+				{"\u2001"}
+				<span aria-hidden="true">&rarr;</span>
+			</a>
+		</div>
+
+		<div id="ErrorState" class="hidden p-8 text-center">
+			<SurfaceState states={ErrorWords} />
+
+			<h2 class="mt-4 mb-2 text-2xl font-medium">Sign-In Failed</h2>
+
+			<p id="ErrorMessage" class="mb-6 text-card-foreground">
+				{ErrorGenericText}
+			</p>
+
+			<a
+				href="/Account/SignIn"
+				class="StaccatoButton flat inline-flex h-10 items-center justify-center bg-primary px-4 py-2 font-medium text-primary-fg transition-all hover:opacity-90 focus:outline-2 focus:outline-[var(--Primary)] focus:outline-offset-2"
+			>
+				{BackToSignInText}
+				{"\u2001"}
+				<span aria-hidden="true">&rarr;</span>
+			</a>
+		</div>
+	</AuthShell>
 </Base>
 
 <script>

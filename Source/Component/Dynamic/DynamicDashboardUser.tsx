@@ -188,7 +188,6 @@ const DashboardUserInner = () => {
 
 				<DynamicStateReport
 					Label={StateLabel.Loading}
-					Tone="ink"
 					Loading
 					Sentence={T("account:dashboardPage.surface.state.loading", {
 						defaultValue:
@@ -213,7 +212,6 @@ const DashboardUserInner = () => {
 			<DynamicStateReport
 				Role="alert"
 				Label={StateLabel.Interrupted}
-				Tone="strong"
 				Sentence={
 					<>
 						{T("account:dashboardPage.surface.state.error", {
@@ -244,7 +242,6 @@ const DashboardUserInner = () => {
 		return (
 			<DynamicStateReport
 				Label={StateLabel.SignInRequired}
-				Tone="ink"
 				Sentence={T("account:dashboardPage.surface.state.signedOut", {
 					defaultValue:
 						"You are not signed in. Sign in to see your account.",
@@ -299,7 +296,6 @@ const DashboardUserInner = () => {
 			{HasNoProfile ? (
 				<DynamicStateReport
 					Label={StateLabel.Empty}
-					Tone="quiet"
 					Sentence={T("account:dashboardPage.surface.state.noEmail", {
 						defaultValue:
 							"No email on this account. The provider did not return one.",

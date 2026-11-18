@@ -148,6 +148,19 @@
 .border-hairline {
 	border-color: var(--Border);
 }
+
+/* `.border-divider` - the frame of an element the frame is the only thing
+   defining. `--Border` is the sitewide hairline: 8 % ink, 1.19:1 on a white
+   card, right for a card whose fill already separates it from the canvas. A
+   form control has no such fill - `UI/Checkbox` sits on `--Background` inside
+   a white card, and its 16px frame is the whole of the control - so at 8 % it
+   measures 1.18:1 and reads as an empty gap until focus draws the ring. This is
+   the same 20 % divider ink `--Divider` holds (1.50:1), named as a class so the
+   kit asks for the decision instead of restating the mix. */
+.border-divider {
+	border-color: var(--Divider);
+}
+
 .border-transparent {
 	border-color: transparent;
 }

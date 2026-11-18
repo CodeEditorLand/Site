@@ -2,9 +2,13 @@ import React, { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
+import { StateBadge } from "../Surface/StateBadge";
+
 import { DynamicButton } from "./DynamicButton";
 
 import { DynamicInput } from "./DynamicInput";
+
+import { StateLabel } from "./DynamicStateReport";
 
 import type Property from "./Interface/Property/Password/Forgot.js";
 
@@ -115,6 +119,14 @@ const DynamicForgotPassword = ({
 					role="status"
 					aria-live="polite"
 				>
+					<div className="auth-shell__status flex justify-center">
+						<StateBadge
+							Label={T("auth.forgotPassword.sentStatus", {
+								defaultValue: StateLabel.Ready,
+							})}
+						/>
+					</div>
+
 					<p className="auth-shell__report-sentence">
 						{SuccessMessage ||
 							"We've sent a password reset link to your email address."}
