@@ -1,8 +1,11 @@
 import { describe, expect, it } from "vitest";
 
 import GenerateRouteMap, {
+
 	CanonicalPath,
+
 	PascalCaseCanonical,
+
 	SemanticAlias,
 } from "../../Function/Route/Map.js";
 

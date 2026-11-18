@@ -13,6 +13,7 @@ const RunRedirect = async (
 		Variant: Record<string, string>;
 	} | null,
 ): Promise<string | null> => {
+
 	const CleanPath = CurrentPath.replace(/\/+$/, "") || "/";
 
 	if (CleanPath === "/") {
@@ -53,6 +54,7 @@ const RunRedirect = async (
 };
 
 const TestRouteMap = {
+
 	Canonical: [
 		"/",
 

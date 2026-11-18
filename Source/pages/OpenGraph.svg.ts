@@ -61,6 +61,7 @@ import {
  * Index, Stamp, Route, Title, Status, Metadata, Program, and Seal.
  */
 export const GenerateFieldRecordSvg = (Record: FieldRecord): string => {
+
 	const Width = 1200;
 
 	const Height = 675;
@@ -122,6 +123,7 @@ export const GenerateFieldRecordSvg = (Record: FieldRecord): string => {
 	// ↳relation - the record's one-line proposition, when it carries one
 	const RelationLines = Record.Relation
 		? WrapText(Record.Relation, 60).slice(0, 2)
+
 		: [];
 
 	const RelationStartY = SeparatorY + 26;
@@ -171,6 +173,7 @@ export const GenerateFieldRecordSvg = (Record: FieldRecord): string => {
 
 	const ProgramElement = ProgramText
 		? `\t<text x="${TextX}" y="${CardY + CardH - 52}" font-family="${FONT}" font-size="${TYPE_S}" font-weight="${WEIGHT_TEXT}" fill="${INK}" fill-opacity="0.6" letter-spacing="0.25em">${EscapeXML(ProgramText)}</text>\n`
+
 		: "";
 
 	// Evidence field geometry
@@ -238,6 +241,7 @@ ${ProgramElement}	<!-- Evidence field: deeper creme, one hairline, no type on th
 };
 
 export const GET: APIRoute = async () => {
+
 	const { Land } = await import("../Content/Record/Land");
 
 	const Svg = GenerateFieldRecordSvg(Land);

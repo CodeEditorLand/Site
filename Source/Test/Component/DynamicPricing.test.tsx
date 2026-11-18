@@ -58,6 +58,7 @@ const One = (
 
 	Root: ParsedElement | Window["document"] | undefined = Page,
 ): ParsedElement => {
+
 	const Found = Root?.querySelector(Selector) ?? null;
 
 	if (Found === null) throw new Error(`No element matches \`${Selector}\`.`);

@@ -46,7 +46,11 @@ export const TAURI_AMBER_INK = "var(--ExtensionTauriFore)"; // #b45309
 
 export const EFFECT_TS_CYAN_INK = "var(--ExtensionEffectTypeScriptFore)"; // #0e7490
 
-export const ACCENT_GREEN = "var(--Accent)"; // #1e742a site green (STATUS values)
+export const ACCENT_GREEN = "var(--Accent)"; // #1e742a - the site's one accent.
+
+// NOT a status ink. It authenticates a route, a link, a focus and a seal; a
+// STATUS value is a fact and reads in the record's own ink, with the attested
+// tone carried by the 6px state square (`Brand/FieldRecordStatus.tsx`).
 
 /* ── Keyword -> ink (stamp text inside 〈 〉) ─────────────────────── */
 export const KEYWORD_INK: Record<string, string> = {
@@ -206,7 +210,13 @@ export const ELEMENT_INK: Record<string, string> = {
 
 	Mountain: INK.Red,
 
-	Cocoon: ACCENT_GREEN,
+	/* Cocoon is gRPC, and gRPC's ink is the spine's - not the site's accent.
+	   This read `ACCENT_GREEN` (the same #1e742a as every link, focus ring and
+	   current-route bar), so the element's NAME on the wall was printed in the
+	   colour that means "you can go here". The spine green is the same family,
+	   a step darker, and it is the fill's own label ink: `Cocoon`'s card is
+	   `--SpinegRPCMute`, so its -700 is `--SpinegRPCFore`. */
+	Cocoon: SPINE_GREEN_INK,
 
 	Wind: INK.Gray,
 

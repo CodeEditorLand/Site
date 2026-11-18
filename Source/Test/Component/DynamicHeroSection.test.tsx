@@ -11,6 +11,7 @@ afterEach(() => {
 });
 
 const MinimalContent = {
+
 	Title: "Build the future",
 
 	TitleHighlight: "together",

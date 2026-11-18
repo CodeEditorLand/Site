@@ -1,7 +1,6 @@
 import React from "react";
 
 import {
-	ACCENT_GREEN,
 	GLYPH_INK,
 	INK,
 	KeywordInk,
@@ -140,21 +139,16 @@ export interface StatusTextProps {
 	className?: string;
 }
 
-/** STATUS: ink label + colored value (green for ACTIVE, ink otherwise). */
-export const StatusText: React.FC<StatusTextProps> = ({
-	value,
-	active = false,
-	className,
-}) => {
-	const ValueColor = active ? ACCENT_GREEN : "var(--CardForeground)";
-
-	return (
-		<span className={className}>
-			<span style={{ color: "var(--CardForeground)" }}>STATUS:</span>
-			<span style={{ color: ValueColor }}> {value}</span>
-		</span>
-	);
-};
+/** STATUS: ink label + the value in the record's ink. The attested tone is a
+ *  shape (the 6px square `FieldRecordStatus` prints), never the accent - see
+ *  that primitive for the argument. `active` is kept so a caller that has the
+ *  fact can state it, and it no longer changes the ink. */
+export const StatusText: React.FC<StatusTextProps> = ({ value, className }) => (
+	<span className={className}>
+		<span style={{ color: "var(--CardForeground)" }}>STATUS:</span>
+		<span style={{ color: "var(--CardForeground)" }}> {value}</span>
+	</span>
+);
 
 export interface PlatformDescriptionTextProps {
 	Text: string;

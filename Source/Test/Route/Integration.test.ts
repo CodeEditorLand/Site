@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import GenerateRouteMap, {
+
 	PascalCaseCanonical,
 } from "../../Function/Route/Map.js";
 

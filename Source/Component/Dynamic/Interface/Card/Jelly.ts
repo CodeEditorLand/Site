@@ -160,27 +160,30 @@ const BADGE_FILL_RULES: ReadonlyArray<readonly [string, string]> = [
 	["TYPE", "var(--OSMacOSMute)"],
 ];
 
-/** FNV-1a 32-bit hash - deterministic fallback for unknown ids/labels. */
-const Hash = (Input: string): number => {
-	let Value = 2166136261;
-
-	for (let i = 0; i < Input.length; i++) {
-		Value ^= Input.charCodeAt(i);
-
-		Value = Math.imul(Value, 16777619);
-	}
-
-	return Value >>> 0;
-};
-
-const Pick = (Input: string, Palette: readonly string[]): string =>
-	Palette[Hash(Input) % Palette.length];
-
-/** Semantic element fill first, FNV-1a hash fallback for unknown ids. */
+/**
+ * THE UNMAPPED ELEMENT - the ink surface's adverse state, and why the hash had
+ * to go.
+ *
+ * Both lookups below used to fall back to `Pick(Id, PALETTE)`: a hue chosen by
+ * hashing the element's or the badge's name (FNV-1a). That is an invented
+ * colour - no reader can decode it, two names that hash alike get one hue, and
+ * it collides with the spine palette where a hue MEANS a protocol. It is the
+ * exact defect this palette exists to prevent: "when a shade drifts, it looks
+ * approximate". A card whose element the system does not know now takes the
+ * neutral insert (`--Card`, the white information box), and a badge whose
+ * domain the rules do not match takes `--Mute` (the creme recess). Both are
+ * honest: the surface says "this is a record, and this badge claims no domain"
+ * instead of claiming one at random.
+ *
+ * The hash went with the colour it produced. It had exactly one consumer and
+ * that consumer was the drift; a caller that needs a stable ORDER rather than a
+ * stable colour sorts by name, which is legible, and the two predicates below
+ * are how a caller prints the absence instead of painting it.
+ */
 export const JellyCardFill = (Id: string): string =>
-	ElementFill(Id) ?? Pick(Id, JELLY_CARD_FILLS);
+	ElementFill(Id) ?? "var(--Card)";
 
-/** Keyword-domain fill first, FNV-1a hash fallback for unknown labels. */
+/** Keyword-domain fill first; an unmatched label claims no domain. */
 export const JellyBadgeFill = (Label: string): string => {
 	const Upper = Label.toUpperCase();
 
@@ -188,7 +191,19 @@ export const JellyBadgeFill = (Label: string): string => {
 		if (Upper.includes(Rule)) return Fill;
 	}
 
-	return Pick(Label, JELLY_BADGE_FILLS);
+	return "var(--Mute)";
+};
+
+/** Whether the palette knows this element at all - the fact a caller prints as
+ *  `◎ UNMAPPED` when it wants to say so rather than only paint the fallback. */
+export const JellyCardMapped = (Id: string): boolean =>
+	ElementFill(Id) !== null;
+
+/** Whether the badge rules claim this label's domain. */
+export const JellyBadgeMapped = (Label: string): boolean => {
+	const Upper = Label.toUpperCase();
+
+	return BADGE_FILL_RULES.some(([Rule]) => Upper.includes(Rule));
 };
 
 /**

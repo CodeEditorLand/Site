@@ -38,6 +38,7 @@ import {
 
 /** One boundary-aware match: the term, its URL (undefined = protected), and its span in the scanned text. */
 export interface Match {
+
 	Term: string;
 
 	Url: string | undefined;
@@ -49,6 +50,7 @@ export interface Match {
 
 /** A compiled matcher: longest-first terms plus the boundary regex, frozen after construction. */
 export interface Matcher {
+
 	Terms: readonly string[];
 
 	Regex: RegExp;
@@ -84,6 +86,7 @@ const Compile = (
 
 	Urls: Readonly<Record<string, string>>,
 ): Matcher => {
+
 	const Sorted = [...Terms].sort((A, B) => B.length - A.length);
 
 	const Regex = new RegExp(

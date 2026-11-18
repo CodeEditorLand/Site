@@ -1,4 +1,5 @@
 export default {
+
 	A: [
 		[0, 1, 0],
 
@@ -515,5 +516,6 @@ export default {
 		[1, 1, 1],
 	],
 } as {
+
 	[key: string]: number[][];
 };

@@ -14,6 +14,7 @@ import type { LinkSpec } from "../../../../../Links";
 import type { LinkIndexData } from "../../../../Type";
 
 export const LinkIndexData: LinkIndexFragment = {
+
 	url: "https://github.com/CodeEditorLand/Wind/tree/Current/Source/Types/Sandbox.ts#L105",
 
 	pages: ["deep-dive-wind"],
