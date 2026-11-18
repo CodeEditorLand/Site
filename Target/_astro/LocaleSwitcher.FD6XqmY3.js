@@ -1,1 +1,0 @@
-import{t}from"./LocaleSwitcher.BCVUtH4_.js";export{t as LocaleSwitcher,t as default};

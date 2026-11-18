@@ -505,6 +505,38 @@ details[open] > :not(summary) {
 	}
 }
 
+/* ─── THE MARGIN'S CONVERSION - THE REGISTER BECOMING A BAR ─────────────── */
+
+/* A reading page's margin has three states (`Layout/_Shell.scss`, and the two
+   page compositions that own a margin): a sticky column at the page's right
+   edge, a horizontal bar under the header when the plate and the rails cannot
+   share the desk, and a ruled section under the paper when neither rail can
+   stand beside it. It is ONE element in all three.
+
+   The conversion between the first two is a LAYOUT change - a column becomes a
+   row - and layout is the one thing this vocabulary may not animate. What is
+   animated is the arrival of the row: the segments it is made of settle from
+   `--space-tight` above their place, on the resolve interval and curve, because
+   one printed state (a column of apparatus) is giving way to another (a ledger
+   row). `transform` and `opacity` only.
+
+   The keyframe states only `from`. With no fill mode the end state is the
+   element's own, so an interval that never runs leaves the bar exactly where it
+   belongs - the same construction as `reveal-in` above, for the same reason.
+   Reduced motion keeps the bar and loses the interval: the conversion is a
+   state, not an effect.
+
+   It cannot decorate static content: the animation is declared only inside the
+   bar's own container query, so at a window that never enters that state there
+   is no rule to fire, and the wide column never animates in. */
+
+@keyframes register-to-bar {
+	from {
+		opacity: 0;
+		transform: translateY(calc(var(--space-tight) * -1));
+	}
+}
+
 /* ─── THE REFUSED CONTROL - THE INTERRUPT ────────────────────────────────── */
 
 /* "Error reveals interruption: a short interrupted offset - NOT a playful

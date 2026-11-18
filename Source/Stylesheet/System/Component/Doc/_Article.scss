@@ -20,14 +20,16 @@
 //   .doc-article__value--specimen    the one authenticated value (accent)
 //   .doc-article__separator          the U+2001 between two fields
 //   .doc-article__body               the document
-//   .doc-article__body--measure      the 72ch cap
+//   .doc-article__body--measure      the reading measure
 //   .doc-pager / __link / __label / __title   prev/next, at the foot of a page
 //
 // Four decisions this file makes so no page has to:
 //
-// - **One measure, one number.** 72ch appears once, on the body; the header, the
-//   metadata strip and the pager inherit the same cap, so the standfirst, the
-//   prose and the pager all end on the same right edge.
+// - **One measure, one token.** The body, the header, the metadata strip and the
+//   pager all read `var(--Measure)` - the paper's plate, fluid from 72ch to 88ch
+//   on the window (`_Token.scss`) - so the standfirst, the prose and the pager
+//   end on the same right edge at every width, and a wider window widens the
+//   page's plate rather than the prose's line.
 // - **The container is the page's.** This partial adds no gutter and no max
 //   width: `DocLayout` owns the one container on a rail page, and a page without
 //   a rail owns its own (`.doc-rust`).
@@ -88,7 +90,7 @@
 }
 
 .doc-article__header {
-	max-width: 72ch;
+	max-width: var(--Measure);
 }
 
 .doc-article__kicker {
@@ -146,7 +148,7 @@
 
 	row-gap: var(--space-tight);
 
-	max-width: 72ch;
+	max-width: var(--Measure);
 
 	margin-block: var(--space-group);
 
@@ -203,7 +205,7 @@
 }
 
 .doc-article__body--measure {
-	max-width: 72ch;
+	max-width: var(--Measure);
 }
 
 /* ─── THE PLATE ─────────────────────────────────────────────────────────── */
@@ -238,11 +240,18 @@
    `.doc-article__body` - so every element rule in this file applies to the
    markdown unchanged and none of them is restated for the card.
 
-   The width is `72ch` PLUS the two insets: with `box-sizing: border-box` a bare
-   72ch would put the padding inside the measure and the prose would end short
-   of the header above it. This way the card's frame starts on the header's left
-   edge, the content box is exactly the 72ch the standfirst and the contents
-   list use, and the inset is the documented card padding (§2.2, 4-6%). */
+   The width is `--Paper` - the measure PLUS its two insets - because with
+   `box-sizing: border-box` a bare `--Measure` would put the padding inside the
+   measure and the prose would end short of the header above it. This way the
+   card's frame starts on the column's left edge, the content box is exactly the
+   measure the standfirst and the contents list use, and the inset is the
+   documented card padding (§2.2, 4-6%).
+
+   `--Paper` and `--Gutter` are the two tokens, and the padding MUST be
+   `--Gutter`: `--Paper` is `--Measure + 2 * --Gutter`, so the card's content box
+   is the measure only while its inset is the same gutter. A literal here would
+   be a second inset and the prose would stop short of the paper's own edge by
+   the difference. */
 jelly-card.doc-prose {
 	display: block;
 
@@ -250,18 +259,18 @@ jelly-card.doc-prose {
 	   15px size and a system font, so a bare `72ch` here measured 620px while the
 	   header's `72ch` measured 643px, and the pager and the layer - which resolve
 	   `ch` at the body's mono - ended past the card's right edge. Pinning the
-	   card's type to the body's own face and size makes one `72ch` mean one width
-	   on this page: the card's content box, the header, the strip, the layer and
-	   the pager all end on the same edge. It also keeps the identity's one-typeface
-	   rule inside the card's own box. The prose is unaffected - `.doc-prose__body`
-	   sets its own type. */
+	   card's type to the body's own face and size makes one `--Measure` mean one
+	   width on this page: the card's content box, the header, the strip, the
+	   layer and the pager all end on the same edge. It also keeps the identity's
+	   one-typeface rule inside the card's own box. The prose is unaffected -
+	   `.doc-prose__body` sets its own type. */
 	font-family: var(--FontMono);
 	font-size: var(--type-body);
 
-	max-inline-size: calc(72ch + 2 * clamp(1rem, 4vw, 2.5rem));
+	max-inline-size: var(--Paper);
 
 	padding-block: var(--space-group);
-	padding-inline: clamp(1rem, 4vw, 2.5rem);
+	padding-inline: var(--Gutter);
 }
 
 /* Ink is the card token, explicitly (§5: "every prose element uses
@@ -522,7 +531,7 @@ jelly-card.doc-prose .doc-article__body a {
 
 	/* The prose card's own width - measure plus its two insets - so the pager's
 	   two cards end on the same right edge as the paper above them. */
-	max-inline-size: calc(72ch + 2 * clamp(1rem, 4vw, 2.5rem));
+	max-inline-size: var(--Paper);
 
 	margin-block-start: var(--space-chapter);
 	padding-block-start: var(--space-group);

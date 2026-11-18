@@ -177,17 +177,173 @@
 	border-block-start: 1px solid var(--Divider);
 }
 
+/* ─── THE TWO-COLUMN FORM: the piece on the desk, the margin as a bar ─────
+   Between the rail's breakpoint and the width where the register can stand
+   beside the plate, the margin leaves the flow: it becomes one row pinned under
+   the header, its four objects laid inline as segments of that row, scrolling
+   horizontally when they do not fit. Nothing is dropped and nothing is
+   abbreviated - the ledger's rows go inline, the register's list goes inline,
+   and the notes keep their own anatomy.
+
+   A wrapping flex row, because the bar has to be pinned for the whole piece and
+   a sticky grid item is confined to its own row. `flex: 1 1 0` on the piece
+   keeps it and the desk on one line at every width - line breaking reads flex
+   base sizes, so a piece based on `--Measure` would wrap at 1024 and print the
+   stacked composition inside the two-column one. */
 @include bp(1024px) {
+	@container article (max-width: 83.99rem) {
+		.blog-article__workspace {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: flex-start;
+		}
+
+		.blog-article__main {
+			flex: 1 1 0;
+			max-inline-size: var(--Measure);
+			margin-inline: auto;
+		}
+
+	/* The 1px divider has nothing to divide while the margin is a full-width row:
+	   its duty is taken by the bar's own closing rule, which is the same
+	   `--Divider`. The element is `aria-hidden` and draws no content. */
+	.blog-article__gutter {
+		display: none;
+	}
+
+	.blog-article__margin {
+		order: -1;
+		flex: 1 0 100%;
+
+		position: sticky;
+		inset-block-start: var(--HeaderHeight);
+		z-index: 2;
+
+		display: flex;
+		flex-direction: row;
+		align-items: stretch;
+		gap: var(--space-group);
+
+		block-size: var(--RailBar);
+		padding-block: var(--space-tight);
+		padding-inline: 0;
+
+		overflow: auto;
+		overscroll-behavior: contain;
+		scroll-snap-type: x proximity;
+
+		background: var(--Background);
+		border-block-start: 0;
+		border-block-end: 1px solid var(--Divider);
+	}
+
+	.blog-article__margin > * {
+		flex: 0 0 auto;
+		max-inline-size: 34ch;
+		scroll-snap-align: start;
+
+		animation: register-to-bar var(--motion-resolve-duration)
+			var(--motion-resolve-easing);
+
+		@media (prefers-reduced-motion: reduce) {
+			animation: none;
+		}
+	}
+
+	/* The pinned unit is a segment of the bar like any other, so its pin, its
+	   fill and its cap are off: it is inside a sticky row already, and a sticky
+	   inside a sticky is a plate pinned over the bar it belongs to. Its two
+	   objects lay out inline - the summary as one ledger row, the register as
+	   one line of links - which is the "single ledger row, facts inline" form
+	   the conversion is for. */
+	.blog-article__pinned {
+		position: static;
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		gap: var(--space-group);
+
+		max-block-size: none;
+		padding-block: 0;
+		background: none;
+	}
+
+	.blog-article__margin .record-ledger {
+		display: flex;
+		flex-direction: row;
+		gap: var(--space-group);
+	}
+
+	.blog-article__margin .record-ledger__row {
+		flex-direction: row;
+		align-items: baseline;
+		gap: var(--space-tight);
+		white-space: nowrap;
+	}
+
+	.blog-article__margin .record-ledger__key {
+		inline-size: auto;
+	}
+
+	.blog-article__register,
+	.blog-article__register-empty {
+		flex: 0 0 auto;
+		max-inline-size: none;
+		padding-block-start: 0;
+		border-block-start: 0;
+	}
+
+	.blog-article__register-list {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		gap: var(--space-tight);
+	}
+
+	.blog-article__register-item {
+		white-space: nowrap;
+	}
+
+	/* The notes and the inset keep their rules, rotated: in a column a note hangs
+	   on a hairline at its left, and in a row that hairline is the segment's
+	   separator - the same rule, the same `--Divider`, the same reading order. */
+	.blog-article__margin > .record-margin,
+	.blog-article__margin > .record-inset {
+		padding-inline-start: var(--space-reading);
+		border-inline-start: 1px solid var(--Divider);
+		padding-block-start: 0;
+		border-block-start: 0;
+	}
+}
+
+/* ─── THE THREE-COLUMN FORM: the register outside the plate ─────────────── */
+/* 84rem of desk is the first container that holds a 77ch plate, a 2rem desk,
+   the 1px divider and a 20rem register with air left over; below it the register
+   is the bar above. The piece is centred in the desk between the page's left
+   edge and the register's rule, and the register is a ruled column at the
+   page's right edge - the same relationship the manual's rail has on the left,
+   mirrored. */
+@container article (min-width: 84rem) {
 	.blog-article__workspace {
-		grid-template-columns: minmax(0, 8fr) 1px minmax(0, 4fr);
-		column-gap: var(--space-group);
+		display: grid;
+		grid-template-columns:
+			minmax(var(--Desk), 1fr) minmax(0, var(--Measure))
+			minmax(var(--Desk), 1fr) 1px minmax(0, 20rem);
+		grid-template-areas: ". paper . rule margin";
+		column-gap: 0;
 		row-gap: 0;
 		align-items: start;
 	}
 
+	.blog-article__main {
+		grid-area: paper;
+		max-inline-size: none;
+		margin-inline: 0;
+	}
+
 	.blog-article__gutter {
 		display: block;
-		grid-column: 2;
+		grid-area: rule;
 		inline-size: 1px;
 		block-size: 100%;
 		background: var(--Divider);
@@ -199,18 +355,87 @@
 	   pin a third of the way down the piece: the summary and the register then
 	   scroll away with the prose they were meant to outlast, and the annotations
 	   they pass read through them. Stretching the margin gives the sticky block
-	   the row's full height - the containing block a pin needs - and changes
-	   nothing else, because the margin draws no fill and no rule here.
-
-	   The pin and its plate are `.blog-article__pinned`'s, below, which scopes
-	   the pin to this same breakpoint: below 1024 the margin is a section under
-	   the piece, and a unit pinned there would pin over the piece it belongs
-	   to. */
+	   the row's full height - the containing block a pin needs. */
 	.blog-article__margin {
-		grid-column: 3;
-		padding-block-start: 0;
+		grid-area: margin;
+		order: 0;
+
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-group);
+
+		block-size: auto;
+		overflow: visible;
+		padding-block: 0;
+		padding-inline: 0 0;
+		padding-inline-start: var(--space-reading);
+		background: none;
 		border-block-start: 0;
+		border-block-end: 0;
+		border-inline-start: 1px solid var(--Divider);
 		align-self: stretch;
+
+		position: static;
+		z-index: auto;
+	}
+
+	.blog-article__margin > * {
+		max-inline-size: none;
+		animation: none;
+	}
+
+	/* The pinned unit back to a column, and back on its own pin: the summary and
+	   the register stay with the reader for the length of the piece. */
+	.blog-article__pinned {
+		position: sticky;
+		inset-block-start: var(--HeaderHeight);
+		z-index: 1;
+
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-group);
+		padding-block: var(--space-tight);
+		background: var(--Background);
+		max-block-size: calc(100dvh - var(--HeaderHeight) - var(--space-group));
+	}
+
+	.blog-article__margin .record-ledger {
+		display: grid;
+		flex-direction: row;
+		gap: 0;
+	}
+
+	.blog-article__margin .record-ledger__row {
+		flex-direction: column;
+		align-items: start;
+		gap: var(--space-tight);
+		white-space: normal;
+	}
+
+	.blog-article__margin .record-ledger__key {
+		inline-size: auto;
+	}
+
+	.blog-article__register,
+	.blog-article__register-empty {
+		flex: 0 1 auto;
+		max-inline-size: 30ch;
+		padding-block-start: var(--space-tight);
+		border-block-start: 1px solid var(--Divider);
+	}
+
+	.blog-article__register-list {
+		display: block;
+	}
+
+	.blog-article__register-item {
+		white-space: normal;
+	}
+
+	.blog-article__margin > .record-margin,
+	.blog-article__margin > .record-inset {
+		padding-inline-start: 0;
+		border-inline-start: 0;
 	}
 }
 

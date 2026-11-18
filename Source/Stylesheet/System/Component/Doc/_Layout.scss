@@ -3,7 +3,7 @@
 // breakpoint.
 //
 // Publishes:
-//   .doc-layout            the page container (one gutter, one max width)
+//   .doc-layout            the page container (one gutter, one reading desk)
 //   .doc-layout__shell     the rail/content grid
 //   .doc-layout__aside     the rail's landmark, hidden below 1024px
 //   .doc-layout__sticky    the rail's own box under the sticky header
@@ -13,8 +13,59 @@
 //   .doc-layout__foot      the rail's closing block, opened by a hairline
 //   .doc-layout__rust      the one link that leaves the documentation tree
 //   .doc-layout__main      the content column
+//   .doc-layout__margin    the apparatus: a column, a bar, or a ruled section
 //
-// Three decisions worth knowing:
+// ─── THE COMPOSITION: THE PAPER IS THE PAGE ───────────────────────────────
+// A documentation page is a document, and the owner's report was exact about
+// what it had become: three columns squeezing an A4. The old shell was
+// `26ch | 1fr | 18rem` inside a 72rem container, so on a 2560px monitor the
+// card the prose is printed on was ~430px wide - narrower than the measure it
+// was supposed to BE - while the desk either side of it was empty.
+//
+// The shell now reads `rail | desk | paper | desk | margin`:
+//
+//   rail    26ch, at the page's left edge, sticky
+//   desk    `1fr` - real space, floored at `--Desk`
+//   paper   `--Paper` (the measure plus its two insets), the white card
+//   desk    `1fr`
+//   margin  18rem, at the page's right edge, sticky
+//
+// and the container is the reading desk (`--ContainerReading`, 120rem) rather
+// than the frame's 6XL. The paper is centred in what the rails leave, so the
+// document sits in the middle of the page and the rails are its marginalia -
+// which is what a document with marginal notes looks like, and what the owner
+// asked for by name ("distribute the sidebars to the left and right of the
+// page").
+//
+// ─── THE MARGIN'S THREE STATES ────────────────────────────────────────────
+// The apparatus (the page's extent, the notes about how it is filed) is ONE
+// aside in one slot in all three states:
+//
+//   column  (>= 84rem of desk)  the sticky right track above
+//   bar     (>= 1024px)         a horizontal register pinned under the header
+//   stacked (< 1024px)          a ruled section under the paper
+//
+// The bar is the interesting one. Below 84rem of desk there is no room for
+// 26ch + a 77ch plate + 18rem of apparatus, and taking the apparatus out of the
+// plate is exactly the mistake this card repairs - so the apparatus LEAVES THE
+// FLOW instead of narrowing the page: it becomes a single row under the header,
+// its items laid inline as segments of the row, scrolling horizontally when
+// they do not fit. Nothing is hidden, nothing is abbreviated, and nothing is
+// duplicated: `DocLayout.astro` renders one aside, and this file gives it three
+// layouts.
+//
+// The bar is pinned with `position: sticky` inside a WRAPPING FLEX row, not a
+// grid. A sticky grid item is confined to its own grid row, so a bar in row 1
+// could only stay under the header for the height of row 1; a flex item's
+// containing block is the flex container, which is the page, so the bar
+// outlasts the document it annotates. `order: -1` puts it above the rail and
+// the paper without moving a node.
+//
+// The rail's sticky offset carries `--RailBar` in the bar state, so the rail
+// starts under the bar and the two can never overlap; `--RailBar` is the bar's
+// own height, so it is one number and not two guesses.
+//
+// Three decisions that do not change:
 //
 // - The container is HERE, once. The rail and the content column share one
 //   gutter, so content never indents away from the rail it is read beside, and
@@ -22,7 +73,7 @@
 // - The rail is TWO REGISTERS, not one list. Its head is the page's own
 //   contents, pinned: it answers "where am I in this page" and does not move
 //   while the reader reads. Under a hairline the tree takes the rail's scroll:
-//   it answers "where am I in the manual". The head is capped at 55% of the rail
+//   it answers "where am I in the manual". The head is capped at 50% of the rail
 //   so a document with twenty sections can never push the tree off the screen,
 //   and each register scrolls on its own - `overscroll-behavior: contain` keeps a
 //   gesture inside the register it started in.
@@ -38,55 +89,196 @@
 @use "../../Mixin" as *;
 
 .doc-layout {
-	@include band-inner;
-
+	max-inline-size: var(--ContainerReading);
+	margin-inline: auto;
+	padding-inline: var(--Gutter);
 	padding-block: var(--space-group);
+
+	/* The page's own query container: the margin's state is decided by the desk
+	   this page actually has, not by the window, so the same partial inside a
+	   narrower slot re-composes instead of overflowing. The rail's breakpoint
+	   stays a viewport query below, because it is the one the mobile panel's
+	   island hydrates on (`client:media`). */
+	container: doc / inline-size;
 }
 
 .doc-layout__shell {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
 	row-gap: var(--space-group);
-
-	@include bp(1024px) {
-		grid-template-columns: minmax(0, 26ch) minmax(0, 1fr);
-		column-gap: var(--space-group);
-	}
 }
 
-// ─── The margin channel ───────────────────────────────────────────────────
-// A third track, only when a page hands apparatus in (`doc-layout__shell--margin`).
-// It appears at 1280px and not at 1024: at 1024 the container cannot hold a rail,
-// a 72ch measure and an 18rem margin without narrowing the prose, and the measure
-// is the page. Below 1280 the margin prints under the measure as a ruled block -
-// the same notes, one column, in the same order.
-
+// ─── THE STACKED FORM'S RULE ──────────────────────────────────────────────
+// Below the rail's breakpoint the apparatus prints under the paper, opened by
+// the divider: it is a new subject when it is stacked, not a footnote to the
+// prose. The notes keep their block-start rhythm here, because here they are a
+// column; the bar and the column states below override both.
 .doc-layout__margin {
 	padding-block-start: var(--space-group);
 	border-block-start: 1px solid var(--Divider);
 }
 
-// The margin owns the rhythm of its notes: one mechanism, at the group distance,
-// so two notes never touch and never need a margin of their own.
 .doc-layout__margin > * + * {
 	margin-block-start: var(--space-group);
 }
 
-@include bp(1280px) {
-	.doc-layout__shell--margin {
-		grid-template-columns: minmax(0, 26ch) minmax(0, 1fr) minmax(0, 18rem);
+// ─── THE TWO-COLUMN FORM: rail | desk | paper, the apparatus as a bar ─────
+// A wrapping flex row, because the bar has to be pinned for the length of the
+// page and a sticky grid item cannot leave its own row (see the file's head).
+// `flex: 1 1 0` on the paper keeps the rail and the paper on one line at every
+// width: line breaking reads flex base sizes, so a paper based on `--Paper`
+// would wrap under the rail at 1024 and print the stacked composition inside
+// the two-column one.
+@include bp(1024px) {
+	.doc-layout__shell {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-start;
 	}
 
-	.doc-layout__margin {
-		position: sticky;
-		top: calc(var(--HeaderHeight) + var(--space-tight));
+	.doc-layout__aside {
+		flex: 0 0 26ch;
+	}
 
-		padding-block-start: 0;
-		padding-inline-start: var(--space-reading);
+	.doc-layout__main {
+		flex: 1 1 0;
+		min-inline-size: 0;
+		max-inline-size: var(--Paper);
+		margin-inline: auto;
+	}
+
+	// ─── THE BAR ─────────────────────────────────────────────────────────
+	// The apparatus leaves its column and becomes a register under the header:
+	// the same aside, the same notes, the same inset, laid inline. Its height is
+	// `--RailBar` so the rail can clear it exactly, and `overflow: auto` on both
+	// axes is the "nothing is hidden" clause - a page with more apparatus than
+	// the bar holds scrolls it rather than clipping a source row or eliding a
+	// sentence.
+	.doc-layout__margin {
+		order: -1;
+		flex: 1 0 100%;
+
+		position: sticky;
+		inset-block-start: var(--HeaderHeight);
+		z-index: 2;
+
+		display: flex;
+		flex-direction: row;
+		align-items: stretch;
+		gap: var(--space-group);
+
+		block-size: var(--RailBar);
+		padding-block: var(--space-tight);
+		padding-inline: 0;
+
+		overflow: auto;
+		overscroll-behavior: contain;
+		scroll-snap-type: x proximity;
+
+		background: var(--Background);
 		border-block-start: 0;
-		border-inline-start: 1px solid var(--Divider);
+		border-block-end: 1px solid var(--Divider);
+	}
+
+	// One segment per item, at its block's own measure (`RecordMargin` is 30ch
+	// wide at this breakpoint, `RecordInset` 34ch), so the anatomy inside is
+	// unchanged - only the axis is.
+	.doc-layout__margin > * {
+		flex: 0 0 auto;
+		max-inline-size: 36ch;
+		scroll-snap-align: start;
+
+		animation: register-to-bar var(--motion-resolve-duration)
+			var(--motion-resolve-easing);
+
+		@media (prefers-reduced-motion: reduce) {
+			animation: none;
+		}
+	}
+
+	// The notes' block-start rhythm belongs to the column. In the bar the
+	// rhythm is the row's gap, and a margin here would drop a segment below the
+	// bar's own top edge.
+	.doc-layout__margin > * + * {
+		margin-block-start: 0;
+	}
+
+	// The rail clears the bar: its sticky box is pinned under both.
+	.doc-layout__sticky {
+		top: calc(var(--HeaderHeight) + var(--RailBar) + var(--space-tight));
+		block-size: calc(
+			100dvh - var(--HeaderHeight) - var(--RailBar) - var(--space-group)
+		);
 	}
 }
+
+// ─── THE THREE-COLUMN FORM: both rails outside the plate ──────────────────
+// 84rem of desk is the first container that holds a 26ch rail, a 77ch plate,
+// an 18rem register and two 2rem desks (26 + 46.5 + 18 + 4 = 94.5ch at the
+// body tier), and at that width the desks are 68px each - real space, not a
+// squeeze. Below it the register is the bar above.
+@container doc (min-width: 84rem) {
+	.doc-layout__shell {
+		display: grid;
+		grid-template-columns:
+			minmax(0, 26ch) minmax(var(--Desk), 1fr) minmax(0, var(--Paper))
+			minmax(var(--Desk), 1fr) minmax(0, 18rem);
+		grid-template-areas: "rail . paper . margin";
+		column-gap: 0;
+		row-gap: 0;
+		align-items: start;
+	}
+
+	.doc-layout__aside {
+		grid-area: rail;
+	}
+
+	.doc-layout__main {
+		grid-area: paper;
+		max-inline-size: none;
+		margin-inline: 0;
+	}
+
+	// The apparatus back in its column, at the page's right edge: a ruled column
+	// that sticks under the header for as long as the document is read. Its rule
+	// is at its own left edge, so the desk between the rule and the paper is the
+	// page's - the same relationship the rail has on the left.
+	.doc-layout__margin {
+		grid-area: margin;
+		order: 0;
+
+		display: block;
+		block-size: auto;
+		overflow: visible;
+		padding-block: 0;
+		padding-inline-start: var(--space-reading);
+		background: none;
+		border-block-end: 0;
+		border-inline-start: 1px solid var(--Divider);
+
+		position: sticky;
+		top: calc(var(--HeaderHeight) + var(--space-tight));
+		z-index: 1;
+	}
+
+	.doc-layout__margin > * {
+		max-inline-size: none;
+		animation: none;
+	}
+
+	.doc-layout__margin > * + * {
+		margin-block-start: var(--space-group);
+	}
+
+	// The rail is pinned under the header alone again: there is no bar above it.
+	.doc-layout__sticky {
+		top: calc(var(--HeaderHeight) + var(--space-tight));
+		block-size: calc(100dvh - var(--HeaderHeight) - var(--space-group));
+	}
+}
+
+// ─── The stacked form's rule ──────────────────────────────────────────────
+// (stated above the two layout states, which override it)
 
 .doc-layout__aside {
 	display: none;

@@ -129,7 +129,7 @@
 .doc-contents--disclosure {
 	display: block;
 
-	max-width: 72ch;
+	max-width: var(--Measure);
 
 	margin-block-start: var(--space-group);
 	margin-block-end: var(--space-group);

@@ -35,7 +35,7 @@
 .doc-layer {
 	/* The pager's measure, so the layer's row and the pager's cards share one
 	   right edge with the prose card above them. */
-	max-inline-size: calc(72ch + 2 * clamp(1rem, 4vw, 2.5rem));
+	max-inline-size: var(--Paper);
 
 	margin-block-start: var(--space-chapter);
 }

@@ -801,6 +801,15 @@
 
 		--ContainerSixExtraLarge: 72rem;
 
+		/* THE READING DESK - 120rem, and it is a measurement rather than a round
+		   number: at 1920 the desk IS the window, so a reading page's rails sit
+		   on the window's own edges with the plate between them, and above that
+		   the desk keeps a margin instead of letting the rails drift so far from
+		   the paper that they stop being marginalia. The frame (header, footer)
+		   stays at 6XL: the reading page is the desk, the frame is its title
+		   block. See `Layout/_Shell.scss`. */
+		--ContainerReading: 120rem;
+
 		/* Design System Constraints - Daylight Field Record */
 		--BorderWidth: 1px;
 
@@ -969,12 +978,42 @@
 	--space-blank: 3.25rem; /* 52px - the card's mandatory blank band */
 	--space-chapter: 5.25rem; /* 84px - a page-level chapter boundary only */
 
-	/* GRID AND MEASURE - the container is HEAD's max-w-6xl (72rem), the gutter
-	   is HEAD's own clamp, and a prose surface caps its body at 72ch and its
-	   opening at 62ch (DESIGN.md §2.2, decision X10). */
+	/* GRID AND MEASURE - the frame is HEAD's max-w-6xl (72rem) and the gutter is
+	   HEAD's own clamp; a prose surface opens at 62ch.
+
+	   THE PAPER IS FLUID, AND IT IS ONE VALUE. `--Measure` is the reading plate.
+	   It opens at 72ch - the widest a line can be before the eye loses its
+	   return - and grows to 88ch (the A4 proportion at the body tier) as the
+	   window widens, because a 72ch column on a 2560px monitor is a column and
+	   not a page. `clamp()` rather than a second breakpoint: a paper that jumps
+	   in width at a threshold reflows every paragraph on the page at once, and a
+	   reader who resizes a window sees the document change its mind.
+
+	   40ch + 25vw is 72ch (691px) at a 1024px window, 77ch (744px) at 1440 and
+	   88ch (845px) from ~1808 up. Every reading surface reads THIS value - the
+	   doc article, the blog article, the legal set, the trust pages - so the
+	   plate is one decision and not five. */
 	--Gutter: clamp(1rem, 4vw, 2.5rem);
-	--Measure: 72ch;
+	--Measure: clamp(72ch, 40ch + 25vw, 88ch);
 	--MeasureOpening: 62ch;
+
+	/* THE PAPER - the reading card: the plate plus its two insets. A white card
+	   on the creme field is the page's paper, and its CONTENT box is `--Measure`
+	   exactly (`Doc/_Article.scss` pays the arithmetic). A partial that needs the
+	   card's outer width reads this rather than restating measure + 2 gutters. */
+	--Paper: calc(var(--Measure) + 2 * var(--Gutter));
+
+	/* THE DESK - the least space between a rail and the paper. A reading page's
+	   gutters are `1fr`, so they take whatever the rails and the plate leave;
+	   this is their floor, and it is the group step because a rail and a measure
+	   are two subjects rather than two columns of one. */
+	--Desk: var(--space-group);
+
+	/* THE CONVERTED REGISTER - the height a margin takes when it leaves its
+	   column and becomes the bar under the header. One token because two things
+	   read it: the bar's own height, and the sticky offset of the rail that has
+	   to clear it. */
+	--RailBar: 8rem;
 
 	/* JELLY UI - the design system's surface family (DESIGN.md §1.7). The
 	   twenty-two radius properties are pinned to 0 in one place, _Global.scss,

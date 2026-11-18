@@ -22,13 +22,46 @@
 // caption.
 //
 // ─── THE TRACKS ───────────────────────────────────────────────────────────
-// Reading is asymmetric on purpose: a 13rem rail, the measure itself, and a
-// 15rem margin. The measure track is `minmax(0, var(--Measure))` and the margin
-// absorbs the rest, so the prose never widens to fill a wider page - the page
-// gets more margin instead, which is what a document does.
+// The paper is the invariant, and the rails leave its flow. Reading is
+// `rail | desk | paper | desk | margin`: the rail is pinned to the page's left
+// edge, the register to its right edge, and the two `1fr` desks between them
+// absorb whatever the plate and the rails do not take. The measure track is
+// `minmax(0, var(--Measure))`, and `--Measure` is the A4 plate (72-88ch, fluid
+// on the window - `_Token.scss`), so a wider page gives the paper a wider plate
+// and the reader a wider desk, and never a wider line: the prose stops where a
+// line stops being a line, which is what a document does.
 //
-// A shell with no margin slot drops its margin track (`:has()`), because an
-// empty 15rem track is a column of nothing holding the measure off-centre.
+// The rule that stood here before said the opposite - that the margin absorbs
+// the rest and the prose never widens to fill a wider page. It was coherent at
+// 1440 and wrong at 2560: with the shell capped at 6XL and both rails taken out
+// of the measure, the paper was left 430px of a 2560px screen while the desk on
+// either side of it was empty. The rails now come out of the DESK rather than
+// out of the paper, and the shell's ceiling is the reading desk (120rem), so
+// the plate reaches its full width with both rails still outside it.
+//
+// A shell with no rail or no margin drops those tracks (`:has()`), because an
+// empty 13rem track is a column of nothing holding the paper off-centre - and
+// the paper is centred in whatever desk it is given.
+//
+// ─── THE MARGIN'S THREE STATES ────────────────────────────────────────────
+// The register has a column form (both rails outside the plate), a bar form
+// (the plate and the rail fit, the register does not) and a stacked form
+// (below the rail's breakpoint). It is ONE element in one slot in all three:
+// the bar is a state of the component, not a second markup, so the facts, the
+// clauses and the notes cannot disagree between the forms.
+//
+// The bar is pinned under the header with `position: sticky` in a wrapping FLEX
+// row, not a grid: a sticky grid item is confined to its own grid row, so a bar
+// in row 1 could only stick for the height of row 1. A flex item's containing
+// block is the flex container, which is the page, so the bar outlasts the paper
+// it annotates - and `order: -1` puts it above the rail and the paper without
+// moving a single node in the document.
+//
+// Everything the register carries stays in it: the segments are `flex: 0 0
+// auto` at their block's own measure and the row scrolls horizontally, so
+// nothing is hidden, nothing is truncated and nothing is printed twice. The
+// bar's height is `--RailBar`, which is also the offset the rail sticks to, so
+// the two can never overlap.
 @use "../Mixin" as *;
 
 // The sticky offset: the header's own published height plus one tight step. The
@@ -45,6 +78,19 @@ $ShellStickyTop: calc(var(--HeaderHeight) + var(--space-tight));
 	margin-inline: auto;
 	padding-inline: var(--Gutter);
 	padding-block-end: var(--space-chapter);
+}
+
+// A reading page is the one page that is a document rather than a band, so its
+// desk is the reading container and not the frame's 6XL: the plate has to be
+// able to reach its full width with a rail outside it on each side, and 72rem
+// cannot hold a 13rem rail, an 88ch plate, a 16rem register and two desks
+// (208 + 845 + 256 + 64 = 1373px, before the page's own gutters). At 1920 the
+// desk is the window; above it the desk keeps a margin. The frame above and
+// below it stays at 6XL - the reading page is the desk, the frame is the title
+// block - and at and below 72rem the two are the same width, so the composition
+// is continuous as the window narrows.
+.PageShell[data-layout="reading"] {
+	max-inline-size: var(--ContainerReading);
 }
 
 // A shell inside a surface that owns a narrower opening container (the contact
@@ -499,64 +545,209 @@ $DeclarationWordEdge: 1.17rem;
 }
 
 // ─── READING ──────────────────────────────────────────────────────────────
-// rail | measure | margin. The rail is a register of the document's own
-// sections; the margin is apparatus (facts, notes, an aside).
+// rail | desk | paper | desk | margin. The rail is a register of the document's
+// own sections; the margin is apparatus (facts, notes, an aside); the paper is
+// the document and it is the only thing on the page with a measure.
 //
-// The margin takes a track only at 64rem of container, and that threshold is a
-// measurement, not a preference: rail (13rem) + margin (16rem) + two gaps is
-// 32rem of furniture, so at 58rem the measure would be under 50ch - narrower than
-// the prose this language exists to protect. Between 58rem and 64rem the margin
-// prints under the measure as a ruled block (the same notes, one column, in the
-// same order); above 64rem it takes its own sticky track beside it.
+// THE THRESHOLDS ARE ARITHMETIC, IN CONTAINER TERMS. The shell's content box is
+// the window less its two gutters, and its ceiling is 120rem:
 //
-// At the narrow container the rail prints above the measure as a ruled register,
-// because a document's contents list is short enough to print and a reader on a
-// phone is still owed the structure.
+//   58rem  rail (13rem) + a desk (2rem) + the smallest plate (72ch = 43.2rem at
+//          the body tier) + a desk = 60.2rem of tracks, so at 58rem the paper
+//          takes 68.5ch - the one place the plate is allowed under its own
+//          measure, and it is the narrowest window that still shows a rail
+//          beside a document. Below it both rails stack.
+//   84rem  rail (13rem) + a desk (2rem) + the plate at 77ch (46.5rem) + a desk
+//          (2rem) + the register (16rem) = 79.5rem, and at 84rem the desks are
+//          68px each: the first container in which the register can stand
+//          OUTSIDE the plate rather than under it. Below it the register
+//          converts to the bar (see THE MARGIN'S BAR below).
+//
+// Between them the paper and the rail share the desk, and the paper is centred
+// in what the rail leaves. Above 84rem the rails are at the page's edges.
 
 @container shell (min-width: 58rem) {
+	// THE TWO-COLUMN FORM: rail, desk, paper - and the register as a bar.
+	//
+	// A wrapping flex row, not a grid, for the reason the file's head states:
+	// the bar has to be pinned for the length of the page, and a sticky grid
+	// item is confined to its own row. `flex: 1 1 0` on the paper is what keeps
+	// the rail and the paper on ONE line whatever the plate's width: line
+	// breaking reads the items' flex base sizes, so a paper with a `var(--Measure)`
+	// basis would wrap under the rail at 1024 and print the stacked composition
+	// inside the two-column one. A zero basis never wraps, grows to the plate,
+	// and the auto margins centre it in what is left.
 	.PageShell[data-layout="reading"] .PageShell__grid {
-		grid-template-columns: 13rem minmax(0, var(--Measure));
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-start;
+		gap: 0;
+	}
+
+	.PageShell[data-layout="reading"] .PageShell__rail {
+		flex: 0 0 13rem;
+		position: sticky;
+
+		// The bar is above the rail, so the rail clears it: `--RailBar` is the
+		// bar's height and this is the one number the two share.
+		inset-block-start: calc(
+			var(--HeaderHeight) + var(--RailBar) + var(--space-tight)
+		);
+
+		padding-inline-end: var(--space-reading);
+		border-inline-end: 1px solid var(--Divider);
+	}
+
+	.PageShell[data-layout="reading"] .PageShell__main {
+		flex: 1 1 0;
+		max-inline-size: var(--Measure);
+		margin-inline: auto;
+	}
+
+	// ─── THE MARGIN'S BAR ─────────────────────────────────────────────────
+	// The register leaves its column and becomes a ledger row under the header:
+	// the same element, the same items, laid inline instead of stacked. It is
+	// `order: -1` and a full flex line, so it prints above the rail and the
+	// paper without a second markup; it is sticky inside the flex container, so
+	// it outlasts the paper; and its height is `--RailBar` so the rail above can
+	// clear it exactly.
+	//
+	// `overflow: auto` on BOTH axes is the "nothing is hidden" clause. The
+	// segments keep their blocks' own measures and their full anatomy - a note's
+	// body, a ledger's rows, a register's list - so a page whose apparatus is
+	// wider or taller than the bar scrolls it rather than clipping or eliding a
+	// single word. Nothing is `display: none`d in this state.
+	.PageShell[data-layout="reading"] .PageShell__margin {
+		order: -1;
+		flex: 1 0 100%;
+
+		position: sticky;
+		inset-block-start: var(--HeaderHeight);
+		z-index: 2;
+
+		display: flex;
+		flex-direction: row;
+		align-items: stretch;
+		gap: var(--space-group);
+
+		block-size: var(--RailBar);
+		padding-block: var(--space-tight);
+		padding-inline: 0;
+
+		overflow: auto;
+		overscroll-behavior: contain;
+		scroll-snap-type: x proximity;
+
+		// The field's own fill, so the paper passing under the bar is covered
+		// rather than read through; the rule at its foot is the bar's own edge
+		// and the only thing it draws.
+		background: var(--Background);
+		border-block-end: 1px solid var(--Divider);
+	}
+
+	.PageShell[data-layout="reading"] .PageShell__margin > * {
+		flex: 0 0 auto;
+		max-inline-size: 36ch;
+		scroll-snap-align: start;
+
+		animation: register-to-bar var(--motion-resolve-duration)
+			var(--motion-resolve-easing);
+
+		@media (prefers-reduced-motion: reduce) {
+			animation: none;
+		}
+	}
+
+	// The rail owns the rhythm of its registers vertically; in the bar the
+	// rhythm is the row's gap, and a block-start margin on a segment would drop
+	// it below the bar's own top edge.
+	.PageShell[data-layout="reading"] .PageShell__margin > * + * {
+		margin-block-start: 0;
+	}
+}
+
+@container shell (min-width: 84rem) {
+	// THE THREE-COLUMN FORM: the rails at the page's edges, the desks between
+	// them and the paper, the plate at its own measure in the middle. One
+	// template per combination of slots, because a missing rail must not leave
+	// its track behind: an empty 13rem column is what held the paper off-centre
+	// before this card.
+	.PageShell[data-layout="reading"] .PageShell__grid {
+		display: grid;
+		grid-template-columns:
+			minmax(0, 13rem) minmax(var(--Desk), 1fr) minmax(0, var(--Measure))
+			minmax(var(--Desk), 1fr) minmax(0, 16rem);
+		grid-template-areas: "rail . paper . margin";
+		column-gap: 0;
 		align-items: start;
 	}
 
 	.PageShell[data-layout="reading"]
 		.PageShell__grid:not(:has(.PageShell__rail)) {
-		grid-template-columns: minmax(0, var(--Measure));
-	}
-
-	.PageShell[data-layout="reading"] .PageShell__rail {
-		position: sticky;
-		inset-block-start: $ShellStickyTop;
-		padding-inline-end: var(--space-reading);
-		border-inline-end: 1px solid var(--Divider);
-	}
-
-	// The margin, below the measure, when there is no room for a third track.
-	.PageShell[data-layout="reading"] .PageShell__margin {
-		grid-column: 2;
-		padding-block-start: var(--space-group);
-		border-block-start: 1px solid var(--Divider);
-	}
-}
-
-@container shell (min-width: 64rem) {
-	.PageShell[data-layout="reading"] .PageShell__grid:has(.PageShell__margin) {
-		grid-template-columns: 13rem minmax(0, 1fr) minmax(0, 16rem);
+		grid-template-columns:
+			minmax(var(--Desk), 1fr) minmax(0, var(--Measure))
+			minmax(var(--Desk), 1fr) minmax(0, 16rem);
+		grid-template-areas: ". paper . margin";
 	}
 
 	.PageShell[data-layout="reading"]
-		.PageShell__grid:not(:has(.PageShell__rail)):has(.PageShell__margin) {
-		grid-template-columns: minmax(0, 1fr) minmax(0, 16rem);
+		.PageShell__grid:not(:has(.PageShell__margin)) {
+		grid-template-columns:
+			minmax(0, 13rem) minmax(var(--Desk), 1fr) minmax(0, var(--Measure))
+			minmax(var(--Desk), 1fr);
+		grid-template-areas: "rail . paper .";
 	}
 
+	.PageShell[data-layout="reading"]
+		.PageShell__grid:not(:has(.PageShell__rail)):not(
+			:has(.PageShell__margin)
+		) {
+		grid-template-columns:
+			minmax(var(--Desk), 1fr) minmax(0, var(--Measure))
+			minmax(var(--Desk), 1fr);
+		grid-template-areas: ". paper .";
+	}
+
+	.PageShell[data-layout="reading"] .PageShell__rail {
+		grid-area: rail;
+		inset-block-start: $ShellStickyTop;
+	}
+
+	.PageShell[data-layout="reading"] .PageShell__main {
+		grid-area: paper;
+		max-inline-size: none;
+		margin-inline: 0;
+	}
+
+	// The register back in its column, at the page's right edge: a ruled column
+	// that sticks under the header for as long as the paper is being read. Its
+	// rule is at its own left edge, so the desk between the rule and the paper
+	// is the page's, not the register's.
 	.PageShell[data-layout="reading"] .PageShell__margin {
-		grid-column: 3;
+		grid-area: margin;
+		order: 0;
+
+		display: block;
+		block-size: auto;
+		overflow: visible;
+		padding-block: 0;
+		padding-inline-start: var(--space-reading);
+		background: none;
+		border-block-end: 0;
+		border-inline-start: 1px solid var(--Divider);
+
 		position: sticky;
 		inset-block-start: $ShellStickyTop;
-		padding-block-start: 0;
-		padding-inline-start: var(--space-reading);
-		border-block-start: 0;
-		border-inline-start: 1px solid var(--Divider);
+		z-index: 1;
+	}
+
+	.PageShell[data-layout="reading"] .PageShell__margin > * {
+		max-inline-size: none;
+		animation: none;
+	}
+
+	.PageShell[data-layout="reading"] .PageShell__margin > * + * {
+		margin-block-start: var(--space-group);
 	}
 }
 

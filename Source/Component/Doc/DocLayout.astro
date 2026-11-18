@@ -88,6 +88,14 @@ const { sections, activeId, mobile = true, contents } = Astro.props;
  * group it nests under, where a correction goes). A third track exists only when
  * a page hands one in, so the 34 pages that need none keep the two-track grid
  * they had, and the article that does gets the reading language's full three.
+ *
+ * THE CHANNEL HAS THREE FORMS AND ONE MARKUP (`_Layout.scss`). Above 84rem of
+ * desk it is a sticky column at the page's right edge; between the rail's
+ * breakpoint and that, it leaves the flow and becomes the bar pinned under the
+ * header - the same items laid inline, scrolling horizontally when they do not
+ * fit; below 1024 it prints under the paper, opened by the divider. Nothing is
+ * hidden in any of them, which is why there is no second copy of this aside
+ * anywhere in the tree.
  */
 const HasMargin = Astro.slots.has("margin");
 
@@ -100,12 +108,7 @@ const SidebarTitle = T("sidebar.title", {
 ---
 
 <div class="doc-layout" id="top">
-	<div
-		class:list={[
-			"doc-layout__shell",
-			HasMargin && "doc-layout__shell--margin",
-		]}
-	>
+	<div class="doc-layout__shell">
 		<aside class="doc-layout__aside" aria-label="Documentation navigation">
 			<div class="doc-layout__sticky">
 				{contents && contents.Items.length > 0 ? (
