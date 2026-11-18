@@ -77,12 +77,50 @@
 	margin: 0;
 }
 
-// Pinned: the ledger stays under the running head while the record it belongs to
-// scrolls past it. `--HeaderHeight` is the header's own height token, so the
-// pinned ledger clears the chrome exactly and never guesses a value.
+// ─── THE PINNED HEAD ──────────────────────────────────────────────────────
+// A pinned ledger heads a column that stays with the reader: the page pins it,
+// and this modifier supplies the plate the pin needs. Four things make a pinned
+// block read as a plate rather than as a defect, and only one of them can be
+// written here:
+//
+// 1. CONTAINING BLOCK. A sticky is released when its containing block's foot
+//    reaches it, so the column the block heads must be as tall as the row it
+//    sits in. A margin that is only as tall as its own annotations releases the
+//    summary a third of the way down the piece, and the block then scrolls away
+//    with the prose it was meant to outlast. The page partial stretches the
+//    column (`align-self: stretch`); this partial cannot, because a block's
+//    containing block is its parent.
+// 2. FILL. The field's own fill, never `--Card`: the block lies on the creme
+//    field in a margin, and a white insert there would be a card inside a card.
+//    The fill is what stops the register, the inset and the notes that follow it
+//    from reading *through* it - a transparent sticky is the overlap it was
+//    meant to prevent, not the fix for it. `doc-layout__title` pays for the same
+//    fill, for the same reason.
+// 3. LAYER. One step above the flow. `record-inset__frame` is `position:
+//    relative` with a `--Mute` fill, so a `z-index: auto` plate lets the inset
+//    paint over the summary it passes.
+// 4. NO SEAM. The register under the plate draws its own `--Divider` rule, and
+//    that rule is the first thing to emerge from behind the plate - it *is* the
+//    seam. A closing hairline here would print a second rule 32px above it, so
+//    the plate ends in `--space-tight` of its own field instead.
+//
+// The pin is scoped to 1024px and up, because that is where a column exists to
+// pin in: below it the margin is a section under the piece, and a summary pinned
+// there would pin over the piece it belongs to. `--HeaderHeight` is the header's
+// own height token, so the plate clears the chrome exactly and never guesses.
 .record-ledger-block--pinned {
-	position: sticky;
-	inset-block-start: calc(var(--HeaderHeight) + var(--space-group));
+	z-index: 1;
+
+	background: var(--Background);
+
+	padding-block-end: var(--space-tight);
+}
+
+@include bp(1024px) {
+	.record-ledger-block--pinned {
+		position: sticky;
+		inset-block-start: calc(var(--HeaderHeight) + var(--space-group));
+	}
 }
 
 // The register line: `# SUMMARY / 04`. Ink, at the row register - it is the

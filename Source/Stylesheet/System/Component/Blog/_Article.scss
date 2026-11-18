@@ -186,18 +186,24 @@
 		background: var(--Divider);
 	}
 
+	/* The margin is the pinned summary's containing block, so it has to be as
+	   tall as the row. `align-items: start` on the workspace sizes a grid item to
+	   its own content, and a margin that ends where its annotations end releases
+	   the pin a third of the way down the piece: the summary then scrolls away
+	   with the prose it was meant to outlast, and the annotations it passes read
+	   through it. Stretching the margin gives the sticky block the row's full
+	   height - the containing block a pin needs - and changes nothing else,
+	   because the margin draws no fill and no rule here.
+
+	   The pin and its plate are `RecordLedger`'s
+	   (`record-ledger-block--pinned`), which scopes the pin to this same
+	   breakpoint: below 1024 the margin is a section under the piece, and a
+	   summary pinned there would pin over the piece it belongs to. */
 	.blog-article__margin {
 		grid-column: 3;
 		padding-block-start: 0;
 		border-block-start: 0;
-	}
-
-	/* The pinned summary stays with the reader while the piece scrolls. It is
-	   pinned only here: in the stacked composition it would pin over the piece
-	   it belongs to. */
-	.blog-article__margin .record-ledger-block--pinned {
-		position: sticky;
-		inset-block-start: calc(var(--HeaderHeight) + var(--space-group));
+		align-self: stretch;
 	}
 }
 

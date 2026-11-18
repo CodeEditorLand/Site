@@ -99,10 +99,16 @@
 // The stamp hangs at the top of its column and stays there while the register
 // scrolls past it - a mark is read once, and a mark that scrolled away was
 // printed at the wrong end of the composition.
+//
+// The inset clears the running head, not just the column: the stamp used to pin
+// at `--space-group`, which is 32px from the viewport's top edge and therefore
+// 52px *under* the 84px header - the mark stayed with the reader by staying
+// invisible. `--HeaderHeight` is the header's own token, so the mark hangs below
+// the chrome at every width instead of at the one width it was measured at.
 @include bp(1024px) {
 	.record-stamped__stamp {
 		position: sticky;
-		inset-block-start: var(--space-group);
+		inset-block-start: calc(var(--HeaderHeight) + var(--space-group));
 	}
 
 	// In the composition the mark takes one role down. `〈FIELD MANUAL〉` at the

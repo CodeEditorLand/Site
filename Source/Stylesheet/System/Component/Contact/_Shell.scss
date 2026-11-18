@@ -101,6 +101,15 @@
 		grid-column: 1;
 		padding-block-start: 0;
 		border-block-start: 0;
+
+		/* The record column is the pinned ledger's containing block, so it has to
+		   be as tall as the row: `align-items: start` on the workspace sizes a
+		   grid item to its own content, and a column that ends where its own
+		   blocks end releases the pin part-way down the form - the facts then
+		   scroll away from the reader they were pinned for. The pin and its
+		   plate are `RecordLedger`'s (`record-ledger-block--pinned`), scoped
+		   there to this same breakpoint. */
+		align-self: stretch;
 	}
 
 	.contact-shell__gutter {
@@ -115,10 +124,5 @@
 	.contact-shell__form {
 		order: 0;
 		grid-column: 3;
-	}
-
-	.contact-shell__record .record-ledger-block--pinned {
-		position: sticky;
-		inset-block-start: calc(var(--HeaderHeight) + var(--space-group));
 	}
 }

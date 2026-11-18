@@ -29,10 +29,12 @@
 // empty 15rem track is a column of nothing holding the measure off-centre.
 @use "../Mixin" as *;
 
-// The sticky offset: the header's two bands (56px masthead + 28px running head)
-// plus one tight step. The header is a viewport fact, so this is the layer's one
-// viewport-shaped number; everything else is a container query.
-$ShellStickyTop: calc(5.25rem + var(--space-tight));
+// The sticky offset: the header's own published height plus one tight step. The
+// header is a viewport fact, so this is the layer's one viewport-shaped number;
+// everything else is a container query. It reads `--HeaderHeight` rather than
+// restating 5.25rem, because the header grows a second line below 640px and a
+// sticky that guessed the taller value would sit under the bar on a phone.
+$ShellStickyTop: calc(var(--HeaderHeight) + var(--space-tight));
 
 .PageShell {
 	container: shell / inline-size;

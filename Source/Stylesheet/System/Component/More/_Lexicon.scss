@@ -152,7 +152,9 @@
 	margin: 0;
 	font-weight: 500;
 	position: sticky;
-	inset-block-start: calc(5.25rem + var(--space-tight));
+	/* The running head's own height, not a restated 5.25rem: the letter is pinned
+	   under the chrome, and the chrome is the token's business. */
+	inset-block-start: calc(var(--HeaderHeight) + var(--space-tight));
 }
 
 .lexicon__entries {

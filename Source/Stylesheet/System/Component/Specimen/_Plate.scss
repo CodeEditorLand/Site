@@ -64,7 +64,8 @@
 
 	@include bp(1024px) {
 		position: sticky;
-		top: calc(5.25rem + var(--space-reading));
+		/* The running head's own height, not a restated 5.25rem. */
+		top: calc(var(--HeaderHeight) + var(--space-reading));
 		align-self: start;
 		padding-inline-end: var(--space-group);
 		border-inline-end: 1px solid var(--Divider);
