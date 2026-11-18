@@ -46,7 +46,8 @@
  *   summary ledger in the margin *repeats* those facts on purpose - the opening
  *   is what a reader meets, the ledger is what stays with them - and the two
  *   print from one source, so they cannot disagree.
- * - **One measure.** The body is capped at `72ch` and the opening at `62ch`.
+ * - **One measure.** The body is capped at `--Measure` (the plate, 72-88ch,
+ *   fluid on the window) and the opening at `--MeasureOpening` (62ch).
  * - **The contents list is generated, never hand-written.** `BuildToc` reads the
  *   pipeline's own slugs, so an anchor can never drift from its heading, and an
  *   article below the heading floor gets no register at all - it gets the
@@ -60,6 +61,7 @@ import RecordAside from "../Record/RecordAside.astro";
 import RecordInset from "../Record/RecordInset.astro";
 import RecordLedger from "../Record/RecordLedger.astro";
 import RecordMargin from "../Record/RecordMargin.astro";
+import type { Register as RegisterShape } from "../Record/RegisterLine.js";
 
 import type { Aside, Inset, LedgerRow, MarginNote } from "../Record/Type.js";
 import type { BlogToc, BlogTrailItem } from "./Type.js";
@@ -102,8 +104,13 @@ interface Props {
 	 */
 	summaryRows: readonly LedgerRow[];
 
-	/** The register line above the summary, e.g. `SUMMARY / 05`. */
-	summaryRegister: string;
+	/**
+	 * The register line above the summary: a `Register`, not a string -
+	 * `RegisterOf("SUMMARY", summaryRows)`. The shape carries the count, and the
+	 * ledger recomposes it from the rows it prints, so the line cannot outlive
+	 * the facts under it.
+	 */
+	summaryRegister: RegisterShape;
 
 	/** The margin notes, in the order they hang. */
 	notes: readonly MarginNote[];

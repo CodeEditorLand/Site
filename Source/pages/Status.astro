@@ -53,6 +53,7 @@ import RecordLedger from "../Component/Record/RecordLedger.astro";
 import RecordStage from "../Component/Record/RecordStage.astro";
 import RecordTrace from "../Component/Record/RecordTrace.astro";
 import RecordWell from "../Component/Record/RecordWell.astro";
+import { RegisterOf } from "../Component/Record/RegisterLine.js";
 import Trail from "../Component/Route/Trail.astro";
 import PageShell from "../Component/Shell/PageShell.astro";
 import ShellState from "../Component/Shell/ShellState.astro";
@@ -116,10 +117,10 @@ const Scope: readonly LedgerRow[] = [
  * is a register, the label names the set, and the count is the set's own length -
  * the four facts `Scope` declares, read from the same array the ledger prints, so
  * a fifth fact added to the scope moves the number above it in the same edit.
- * `RecordLedger` folds the caller's mark and count away and recomposes both from
- * `rows`, so the line and the rows cannot disagree in either direction; the
- * expression exists because the *source* has to state the count too - a register
- * that only counts at render time reads like copy in the template.
+ * `RegisterOf` takes that same array, so the register has no way to exist
+ * without its count and no way to carry a figure its rows do not have;
+ * `RecordLedger` recomposes the count from the rows it prints, so the line and
+ * the rows cannot disagree in either direction.
  *
  * No arm of this line is `UNAVAILABLE`: the four rows are composed here, and the
  * three figures among them are read from the board below (`TotalRows`,
@@ -128,7 +129,7 @@ const Scope: readonly LedgerRow[] = [
  * are the board's question, and the board answers each column from the module
  * named in its footnote.
  */
-const ScopeRegister = `# SCOPE / ${String(Scope.length).padStart(2, "0")}`;
+const ScopeRegister = RegisterOf("SCOPE", Scope);
 
 /**
  * The head's states. Two words from the vocabulary and nothing else: the board

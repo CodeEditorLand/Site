@@ -31,6 +31,7 @@ import DynamicAccountProfile from "../../Component/Dynamic/DynamicAccountProfile
 import DynamicAuthHeader from "../../Component/Dynamic/DynamicAuthHeader";
 import RecordAside from "../../Component/Record/RecordAside.astro";
 import RecordLedger from "../../Component/Record/RecordLedger.astro";
+import { RegisterOf } from "../../Component/Record/RegisterLine.js";
 import Trail from "../../Component/Route/Trail.astro";
 import PageShell from "../../Component/Shell/PageShell.astro";
 import ShellPanes from "../../Component/Shell/ShellPanes.astro";
@@ -158,7 +159,10 @@ const Workspace = AccountWorkspace(T);
 
 			<div slot="secondary">
 				<RecordLedger
-					register={Workspace.accessRegister}
+					register={RegisterOf(
+						Workspace.accessLabel,
+						Workspace.access,
+					)}
 					rows={Workspace.access}
 					columns={1}
 				/>

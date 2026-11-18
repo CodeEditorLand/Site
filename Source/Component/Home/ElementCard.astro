@@ -21,6 +21,7 @@ import type { FieldRecordElement } from "../Brand/FieldRecordSeal";
 
 import RecordLedger from "../Record/RecordLedger.astro";
 import RecordTrace from "../Record/RecordTrace.astro";
+import { RegisterOf } from "../Record/RegisterLine.js";
 
 import Arrow from "./Arrow.astro";
 import RecordAnatomy from "./RecordAnatomy.astro";
@@ -151,7 +152,7 @@ const TraceSteps = card.Trace.map((Step) => ({
 				<RecordLedger
 					rows={RegisterRows}
 					density="register"
-					register="WORKING"
+					register={RegisterOf("WORKING", RegisterRows)}
 					state={RegisterRows.length === 0 ? "empty" : "rest"}
 					empty="NO WORKING IS RECORDED FOR THIS ELEMENT YET: THE RECORD PRINTS ITS OWN FACTS AND NAMES NO SOURCE."
 				/>

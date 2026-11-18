@@ -25,7 +25,9 @@
  *   position is the one the removal left free: between the header and the body,
  *   at the header's measure, above the prose it describes.
  * - **One measure.** The header, the strip and (by default) the body are capped
- *   at the same `72ch`, so the standfirst ends where the prose ends.
+ *   at the same `var(--Measure)` - the plate, 72-88ch, fluid on the window - so
+ *   the standfirst ends where the prose ends at every width, and a wider window
+ *   widens the page's paper rather than the prose's line.
  *   `measure={false}` drops the body cap and nothing else - the index's card
  *   grid and the Rust page's viewer need the full column, the header still
  *   reads at one measure.

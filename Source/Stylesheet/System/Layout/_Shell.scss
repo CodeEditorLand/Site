@@ -566,7 +566,7 @@ $DeclarationWordEdge: 1.17rem;
 // Between them the paper and the rail share the desk, and the paper is centred
 // in what the rail leaves. Above 84rem the rails are at the page's edges.
 
-@container shell (min-width: 58rem) {
+@container shell (min-width: 58rem) and (max-width: 83.99rem) {
 	// THE TWO-COLUMN FORM: rail, desk, paper - and the register as a bar.
 	//
 	// A wrapping flex row, not a grid, for the reason the file's head states:
@@ -664,6 +664,26 @@ $DeclarationWordEdge: 1.17rem;
 	.PageShell[data-layout="reading"] .PageShell__margin > * + * {
 		margin-block-start: 0;
 	}
+
+	// A reading page with a rail and NO margin slot has no bar above the rail,
+	// so the rail sticks to the header alone. Without this it would reserve
+	// `--RailBar` of nothing - the same defect as an empty margin track.
+	.PageShell[data-layout="reading"]
+		.PageShell__grid:not(:has(.PageShell__margin))
+		.PageShell__rail {
+		inset-block-start: $ShellStickyTop;
+	}
+
+	// An anchor in the paper must clear the bar rather than land under it: the
+	// frame's offset is the header's height, and the bar is a second strip of
+	// chrome in this state only (`#requireinterceptor` on `/Doc/cocoon` is the
+	// case the owner reported, and the manual's rail links to the same ids).
+	.PageShell[data-layout="reading"]
+		.PageShell__grid:has(.PageShell__margin)
+		.PageShell__main
+		:is(h2, h3, h4) {
+		scroll-margin-block-start: var(--RailBar);
+	}
 }
 
 @container shell (min-width: 84rem) {
@@ -710,13 +730,16 @@ $DeclarationWordEdge: 1.17rem;
 
 	.PageShell[data-layout="reading"] .PageShell__rail {
 		grid-area: rail;
+
+		position: sticky;
 		inset-block-start: $ShellStickyTop;
+
+		padding-inline-end: var(--space-reading);
+		border-inline-end: 1px solid var(--Divider);
 	}
 
 	.PageShell[data-layout="reading"] .PageShell__main {
 		grid-area: paper;
-		max-inline-size: none;
-		margin-inline: 0;
 	}
 
 	// The register back in its column, at the page's right edge: a ruled column
@@ -725,29 +748,13 @@ $DeclarationWordEdge: 1.17rem;
 	// is the page's, not the register's.
 	.PageShell[data-layout="reading"] .PageShell__margin {
 		grid-area: margin;
-		order: 0;
-
-		display: block;
-		block-size: auto;
-		overflow: visible;
-		padding-block: 0;
-		padding-inline-start: var(--space-reading);
-		background: none;
-		border-block-end: 0;
-		border-inline-start: 1px solid var(--Divider);
 
 		position: sticky;
 		inset-block-start: $ShellStickyTop;
 		z-index: 1;
-	}
 
-	.PageShell[data-layout="reading"] .PageShell__margin > * {
-		max-inline-size: none;
-		animation: none;
-	}
-
-	.PageShell[data-layout="reading"] .PageShell__margin > * + * {
-		margin-block-start: var(--space-group);
+		padding-inline-start: var(--space-reading);
+		border-inline-start: 1px solid var(--Divider);
 	}
 }
 

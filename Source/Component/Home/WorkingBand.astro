@@ -36,6 +36,7 @@ import { GetI18n } from "../../Library/I18n/Server";
 import RecordFailure from "../Record/RecordFailure.astro";
 import RecordLedger from "../Record/RecordLedger.astro";
 import RecordTrace from "../Record/RecordTrace.astro";
+import { RegisterOf } from "../Record/RegisterLine.js";
 
 import Band from "./Band.astro";
 
@@ -96,7 +97,10 @@ const TraceSteps = BuildTrace.map((Step) => ({
 				<RecordLedger
 					rows={RegisterRows}
 					density="register"
-					register={WorkingBandCopy.RegisterLabel}
+					register={RegisterOf(
+						WorkingBandCopy.RegisterLabel,
+						RegisterRows,
+					)}
 					empty="THE RELEASE RECORD IS NOT WRITTEN YET: NO ARTIFACT EXISTS TO DESCRIBE."
 				/>
 			</div>

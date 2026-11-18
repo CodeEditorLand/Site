@@ -273,6 +273,24 @@ jelly-card.doc-prose {
 	padding-inline: var(--Gutter);
 }
 
+/* ─── ANCHORS CLEAR THE BAR ─────────────────────────────────────────────── */
+/* `System/_Base.scss` writes the anchor offset once, on the scroll container:
+   `html { scroll-padding-block-start: calc(var(--HeaderHeight) + --space-tight) }`.
+   The article adds no `scroll-margin` to it, because a target margin ADDS to
+   the container's padding and a heading would then land two header heights down.
+
+   The bar is the one state where a second offset is owed: between 59rem and
+   84rem of desk the margin is pinned under the header, so a heading scrolled to
+   would land UNDER it - `#requireinterceptor` on `/Doc/cocoon` is the case the
+   owner reported. `scroll-margin-block-start: var(--RailBar)` is exactly the
+   height the bar takes, added to the frame's own offset, so the heading lands
+   one tight step under the bar's rule in that state and nowhere else. */
+@container doc (min-width: 59rem) and (max-width: 83.99rem) {
+	.doc-layout:has(.doc-layout__margin) .doc-article__body :is(h2, h3, h4) {
+		scroll-margin-block-start: var(--RailBar);
+	}
+}
+
 /* Ink is the card token, explicitly (§5: "every prose element uses
    `text-card-foreground`"). The two inks are the same value in the daylight
    theme, so this is the card's own token, not a different colour. */

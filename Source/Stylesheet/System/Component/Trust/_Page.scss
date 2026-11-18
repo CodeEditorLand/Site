@@ -21,6 +21,12 @@
 .trust-page {
 	@include band-inner;
 
+	/* The reading desk (`_Token.scss`): the legal set, the licence and the
+	   contributing guide are documents, and a document's plate has to be able to
+	   reach its own width with a clause rail outside it. At and below 72rem this
+	   is the frame's container, so nothing changes there. */
+	max-inline-size: var(--ContainerReading);
+
 	padding-block: var(--space-chapter) var(--space-group);
 }
 

@@ -46,6 +46,7 @@ import RecordLedger from "../Component/Record/RecordLedger.astro";
 import RecordMatrix from "../Component/Record/RecordMatrix.astro";
 import RecordTrace from "../Component/Record/RecordTrace.astro";
 import RecordWell from "../Component/Record/RecordWell.astro";
+import { RegisterOf } from "../Component/Record/RegisterLine.js";
 import Trail from "../Component/Route/Trail.astro";
 import PageShell from "../Component/Shell/PageShell.astro";
 import ShellPanes from "../Component/Shell/ShellPanes.astro";
@@ -92,16 +93,17 @@ const Dated =
 	Measurements.find((Row) => Row.asOf !== undefined)?.asOf ?? "UNAVAILABLE";
 
 /**
- * The register above the substitution's reading, in the site's grammar:
- * `# WHAT CHANGES / 08`. The mark is the grammar's, the name is the band's, and
- * the count is `Changes.length` - the same eight aspects the matrix above
- * prints, because `Changes` is `Rows` mapped - so the register cannot name a
- * number its rows do not have. The ledger folds the mark away and re-reads the
- * count from the rows it is handed, so the line and the rows cannot disagree;
- * a page that could not count its set prints `UNAVAILABLE`, never a zero, and
- * this page always can.
+ * The register above the substitution's reading: `# WHAT CHANGES / 08`. The mark
+ * is the grammar's and `RecordLedger` prints it; the name is the band's; the
+ * count is `Changes.length` - the same eight aspects the matrix above prints,
+ * because `Changes` is `Rows` mapped. `RegisterOf` takes the array it counts, so
+ * the register cannot name a number its rows do not have, and the block
+ * recomposes the figure from the rows it is handed, so the line and the set
+ * cannot disagree. A page that could not count its set would build the line with
+ * `RegisterUnavailable` - the vocabulary's word, never a zero - and this page
+ * always can.
  */
-const ChangesRegister = `# WHAT CHANGES / ${String(Changes.length).padStart(2, "0")}`;
+const ChangesRegister = RegisterOf("WHAT CHANGES", Changes);
 
 const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/COMPARE" }];
 

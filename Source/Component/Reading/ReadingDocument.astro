@@ -21,9 +21,11 @@
  *   document's own values, so this file takes them as data and derives none.
  * - `index` is optional and absent means no index at all - never an empty nav.
  *
- * The measure is a switch, not a guess: `prose` caps the body at 72ch for a
- * document that is all text, `full` leaves it uncapped for a page that also
- * carries grids and cards, whose own blocks decide their width.
+ * The measure is a switch, not a guess: `prose` caps the body at `--Measure` -
+ * the plate, 72-88ch, fluid on the window, and the same value a doc page and an
+ * article read at - for a document that is all text, `full` leaves it uncapped
+ * for a page that also carries grids and cards, whose own blocks decide their
+ * width.
  *
  * `layout` is the composition switch. `stack` prints the index between the facts
  * and the document; `rail` moves it into the margin beside the document as the

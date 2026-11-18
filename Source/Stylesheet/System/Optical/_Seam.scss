@@ -38,49 +38,43 @@
 	}
 }
 
-// The doc article's margin channel: the measure, then the apparatus. The margin
-// draws the rule itself (this composition has no gutter track), at the same
-// 32/16 asymmetry.
-@include bp(1280px) {
-	.doc-layout__margin {
-		margin-inline-start: var(--optical-seam);
-		padding-inline-start: var(--space-group);
-	}
-}
+// The doc article's margin channel. It used to be a column of a grid with a
+// `--space-group` gap, so its rule sat at the column's edge and the seam pulled
+// it back into the middle of that gap. It is now the page's LAST track with the
+// desk (`1fr`) before it: there is no gap to centre a rule in, and the rule at
+// the track's own edge IS the middle of nothing - it is the margin's boundary,
+// where a ruled column's rule belongs. So the seam is retired here rather than
+// moved, and the reading margins keep their own edge.
 
-// The shell's reading margin: rail, measure, margin, one group gap. This one is
-// scoped to the container query that draws the rule, because below it the margin
-// is a ruled block under the measure and has no vertical rule to centre.
-@container shell (min-width: 64rem) {
-	.PageShell[data-layout="reading"] .PageShell__margin {
-		margin-inline-start: var(--optical-seam);
-		padding-inline-start: var(--space-group);
-	}
-}
-
+// The shell's reading margin, same story: `rail | desk | paper | desk | margin`
+// with no column gaps, so the rule is the column's edge.
+//
 // ─── 2. THE CHANNEL OWNS ITS RULE ─────────────────────────────────────────
 // A margin note and an inset draw a left rule of their own, which is right when
 // they stand in a band and wrong when they stand in a channel that already has
 // one. The rule is removed and the padding kept, so the note's text does not move
 // and the channel keeps one boundary instead of one boundary and three stubs.
 //
-// The blog's channel is a 1px gutter track, so it owns its rule at every width
-// from 1024; the doc's draws the rule at 1280, so the law starts there.
-@include bp(1024px) {
+// THE CHANNEL EXISTS IN THE COLUMN FORM ONLY, and so does this law. In the bar
+// form the margin has no vertical rule of its own - it is a row - so each note's
+// left rule is the SEPARATOR between two segments, and removing it would leave
+// four notes running into one another. The queries below therefore name the
+// column form's own container width rather than the old breakpoint.
+@container article (min-width: 84rem) {
 	.blog-article__margin .record-margin,
 	.blog-article__margin .record-inset {
 		border-inline-start: 0;
 	}
 }
 
-@include bp(1280px) {
+@container doc (min-width: 84rem) {
 	.doc-layout__margin .record-margin,
 	.doc-layout__margin .record-inset {
 		border-inline-start: 0;
 	}
 }
 
-@container shell (min-width: 64rem) {
+@container shell (min-width: 84rem) {
 	.PageShell__margin .record-margin,
 	.PageShell__margin .record-inset {
 		border-inline-start: 0;

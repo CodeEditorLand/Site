@@ -40,8 +40,8 @@ export interface VerifySurface {
 	/** The audit's ledger column: the facts that bound the check. */
 	readonly scope: readonly LedgerRow[];
 
-	/** The register line above the scope ledger. */
-	readonly scopeRegister: string;
+	/** The register's label: the scope ledger prints `# CHECK / 06` from it. */
+	readonly scopeLabel: string;
 
 	/** The audit's columns. */
 	readonly columns: readonly MatrixColumn[];
@@ -97,7 +97,7 @@ export const VerifyAudit = (
 
 	Declarations: readonly { key: string; value: string }[],
 ): VerifySurface => ({
-	scopeRegister: "CHECK",
+	scopeLabel: "CHECK",
 
 	scope: [
 		...Declarations.map((Row) => ({

@@ -40,6 +40,7 @@ import RecordAside from "../Record/RecordAside.astro";
 import RecordLedger from "../Record/RecordLedger.astro";
 import RecordMargin from "../Record/RecordMargin.astro";
 import RecordStage from "../Record/RecordStage.astro";
+import { RegisterOf } from "../Record/RegisterLine.js";
 import { ContactProcess } from "./Register.js";
 import { Requests, type IncomeCode } from "../../Library/Contact/Request.js";
 import type { ContactTrailItem } from "../../Library/Contact/Data.js";
@@ -155,7 +156,11 @@ const Aside: Aside = {
 	<div class="contact-shell">
 		<div class="contact-shell__workspace">
 			<aside class="contact-shell__record" aria-label="Request record">
-				<RecordLedger rows={Record} register="REQUEST" pinned={true} />
+				<RecordLedger
+					rows={Record}
+					register={RegisterOf("REQUEST", Record)}
+					pinned={true}
+				/>
 
 				<RecordStage stages={Process} orientation="stack" />
 

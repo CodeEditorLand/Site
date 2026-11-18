@@ -25,6 +25,7 @@
 import { getCollection, render } from "astro:content";
 
 import BlogArticle from "../../Component/Blog/BlogArticle.astro";
+import { RegisterOf } from "../../Component/Record/RegisterLine.js";
 import {
 	BuildAside,
 	BuildNotes,
@@ -135,7 +136,7 @@ const Trail = [
 		backLabel={PageTitle}
 		backHref="/Blog"
 		summaryRows={Summary}
-		summaryRegister="SUMMARY"
+		summaryRegister={RegisterOf("SUMMARY", Summary)}
 		notes={Notes}
 		insets={[Extent]}
 		aside={Aside}

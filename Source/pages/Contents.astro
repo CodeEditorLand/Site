@@ -66,6 +66,7 @@ import RecordMatrix from "../Component/Record/RecordMatrix.astro";
 import RecordPlateSet from "../Component/Record/RecordPlateSet.astro";
 import RecordStamp from "../Component/Record/RecordStamp.astro";
 import RecordStage from "../Component/Record/RecordStage.astro";
+import { RegisterOf } from "../Component/Record/RegisterLine.js";
 import Onward from "../Component/More/Onward.astro";
 import Trail from "../Component/Route/Trail.astro";
 import { CountOf, Languages } from "../Component/Shell/Language.js";
@@ -148,10 +149,10 @@ const ChapterEntries = RouteGroups.map(({ chapter, routes }) => ({
  * edit. Three places on this page print that figure; all three read
  * `RouteGroups.length`, and none of them types it.
  *
- * `Leader` folds the caller's mark and count away and recomposes both from
- * `items`, so the line and the entries cannot disagree in either direction; the
- * expression exists because the *source* has to state the count too - a register
- * that only counts at render time reads like copy in the template.
+ * `Leader` recomposes the count from the `items` it prints, so the line and the
+ * entries cannot disagree in either direction; `RegisterOf` takes that same
+ * array, so the register has no way to exist without its count and no way to
+ * carry a figure its entries do not have.
  *
  * No arm of this line is `UNAVAILABLE`: `RouteGroups` is derived at build time
  * from `Source/Generated/Facts/Routes.json`, which this page imports statically -
@@ -159,7 +160,7 @@ const ChapterEntries = RouteGroups.map(({ chapter, routes }) => ({
  * `00` that would claim the document has no chapters. The register's age is a
  * separate question, and the band's footnote already states it.
  */
-const ChaptersRegister = `# CHAPTERS / ${String(ChapterEntries.length).padStart(2, "0")}`;
+const ChaptersRegister = RegisterOf("CHAPTERS", ChapterEntries);
 
 /**
  * The chapters band's references: the two bands on this page that answer the

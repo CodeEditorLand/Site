@@ -79,9 +79,11 @@ export interface LayoutSpec {
 	readonly declares: readonly string[];
 
 	/**
-	 * The measure the language reads at. `72ch` for reading, `none` for a
-	 * workspace (a pane is as wide as the instrument in it), `matrix` for an
-	 * audit, `plate + channel` for a plate.
+	 * The measure the language reads at. `72-88ch` for reading (the plate is
+	 * fluid on the window: 72ch where a rail shares the desk, 88ch where the
+	 * page has room for the A4 proportion), `none` for a workspace (a pane is as
+	 * wide as the instrument in it), `matrix` for an audit, `plate + channel`
+	 * for a plate.
 	 */
 	readonly measure: string;
 }
@@ -100,12 +102,12 @@ export const Languages: Readonly<Record<LayoutAnswer, LayoutSpec>> = {
 		declares: [
 			"a rail (the document's own contents, or the set it belongs to)",
 
-			"a measure (72ch of prose, or `full` for a page that also carries grids)",
+			"a measure (72-88ch of prose, or `full` for a page that also carries grids)",
 
 			"a margin (the notes, the facts, the aside) - or nothing, and then the measure takes the rail's side",
 		],
 
-		measure: "72CH",
+		measure: "72-88CH",
 	},
 
 	workspace: {

@@ -48,6 +48,7 @@ import RecordBand from "../Component/Record/RecordBand.astro";
 import RecordLedger from "../Component/Record/RecordLedger.astro";
 import RecordMargin from "../Component/Record/RecordMargin.astro";
 import RecordMatrix from "../Component/Record/RecordMatrix.astro";
+import { RegisterOf } from "../Component/Record/RegisterLine.js";
 import Trail from "../Component/Route/Trail.astro";
 import PageShell from "../Component/Shell/PageShell.astro";
 import ShellRail from "../Component/Shell/ShellRail.astro";
@@ -114,23 +115,26 @@ const RegisterRows = Classes.map((Entry) => ({
  * above it in the same edit. A number typed beside a label is a claim about the
  * rows that nothing checks, and the moment the rows grow the claim is false.
  *
- * `RecordLedger` folds the caller's mark and count away and recomposes both from
- * `rows`, so the line and the set cannot disagree in either direction; these
- * expressions exist because the *source* has to state the count too. A register
- * that only counts at render time reads like copy in the template, and copy is
- * what the next card trims.
+ * The register is a `Register`, not a string: `RegisterOf(label, rows)` takes
+ * the array it counts, so the line has no way to exist without a figure and no
+ * way to carry one that its rows do not have. `RecordLedger` then recomposes the
+ * count from the rows it prints, so the line and the set cannot disagree in
+ * either direction.
  *
  * The two margin registers are the same shape for the same reason: the three
  * intervals and the three curves are `System/_Motion.scss`'s, and the margin
  * prints how many of each this page is standing on.
  */
-const ImagesRegister = `# THE TWO IMAGES / ${String(HandoverRows.length).padStart(2, "0")}`;
+const ImagesRegister = RegisterOf("THE TWO IMAGES", HandoverRows);
 
-const RecordArrivedRegister = `# THE SAME RECORD, ARRIVED / ${String(SkeletonArrived.length).padStart(2, "0")}`;
+const RecordArrivedRegister = RegisterOf(
+	"THE SAME RECORD, ARRIVED",
+	SkeletonArrived,
+);
 
-const IntervalsRegister = `# THE INTERVALS / ${String(Intervals.length).padStart(2, "0")}`;
+const IntervalsRegister = RegisterOf("THE INTERVALS", Intervals);
 
-const CurvesRegister = `# THE CURVES / ${String(Curves.length).padStart(2, "0")}`;
+const CurvesRegister = RegisterOf("THE CURVES", Curves);
 
 /** The page's seven registers, as both the rail and the contents fold print them. */
 const Registers = [

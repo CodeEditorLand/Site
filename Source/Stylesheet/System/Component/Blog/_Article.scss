@@ -30,15 +30,19 @@
 //   gutters every band on the site uses, so an article lines up with the index
 //   that led to it and with the footer under it. Nothing inside adds a second
 //   gutter.
-// - **The workspace is 8 / 1px / 4, and the 1px is a real track.** The margin is
-//   not a float and not a second container: it is the third column of one grid,
+// - **The workspace is the plate, two desks and the register.** The margin is
+//   not a float and not a second container: it is the last column of one grid,
 //   divided from the piece by the site's `--Divider` (20 % ink, 1.50:1) - the
 //   same rule the keeper hero pair and the legal clause rail use. An 8 % hairline
-//   between a piece and its annotations is a rumour of a division.
+//   between a piece and its annotations is a rumour of a division. The two `1fr`
+//   desks are what keep the register at the page's right edge while the piece
+//   reads at its own plate: the article is wider than its prose, which is the
+//   difference between a page and a column.
 // - **Two measures, on purpose.** The opening reads at `--MeasureOpening`
-//   (62ch) and the prose at `--Measure` (72ch): a standfirst is one sentence and
-//   a line of it should be short, while a paragraph is a paragraph. The margin
-//   is 30ch and is not a measure at all - it is a channel.
+//   (62ch) and the prose at `--Measure` (72-88ch, fluid on the window): a
+//   standfirst is one sentence and a line of it should be short, while a
+//   paragraph is a paragraph. The margin is 30ch and is not a measure at all -
+//   it is a channel.
 // - **No bold.** Every heading in the body renders at `font-weight: 500`.
 // - **The body's own elements are styled here, not by a utility class.** Code
 //   blocks are the exception and are deliberately not restyled.
@@ -57,6 +61,17 @@
 
 .blog-article {
 	@include band-inner;
+
+	/* The reading desk, not the frame's 6XL: an article is a page, and its
+	   register has to stand OUTSIDE the plate rather than under it - 88ch + a
+	   20rem register + two desks does not fit in 72rem. At and below 72rem the
+	   two containers are the same width, so the composition is continuous as the
+	   window narrows. */
+	max-inline-size: var(--ContainerReading);
+
+	/* The article's own query container: the register's three states are decided
+	   by the desk the piece actually has (see THE TWO-COLUMN FORM below). */
+	container: article / inline-size;
 
 	padding-block: var(--space-chapter) 0;
 }
@@ -190,19 +205,18 @@
    keeps it and the desk on one line at every width - line breaking reads flex
    base sizes, so a piece based on `--Measure` would wrap at 1024 and print the
    stacked composition inside the two-column one. */
-@include bp(1024px) {
-	@container article (max-width: 83.99rem) {
-		.blog-article__workspace {
-			display: flex;
-			flex-wrap: wrap;
-			align-items: flex-start;
-		}
+@container article (min-width: 59rem) and (max-width: 83.99rem) {
+	.blog-article__workspace {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-start;
+	}
 
-		.blog-article__main {
-			flex: 1 1 0;
-			max-inline-size: var(--Measure);
-			margin-inline: auto;
-		}
+	.blog-article__main {
+		flex: 1 1 0;
+		max-inline-size: var(--Measure);
+		margin-inline: auto;
+	}
 
 	/* The 1px divider has nothing to divide while the margin is a full-width row:
 	   its duty is taken by the bar's own closing rule, which is the same
@@ -255,17 +269,39 @@
 	   inside a sticky is a plate pinned over the bar it belongs to. Its two
 	   objects lay out inline - the summary as one ledger row, the register as
 	   one line of links - which is the "single ledger row, facts inline" form
-	   the conversion is for. */
-	.blog-article__pinned {
+	   the conversion is for.
+
+	   The selector carries the margin as well as the unit because the pin below
+	   is declared later in this file (it is the column form's, and the column
+	   form is the one that needs a pin): one class of specificity would lose to
+	   it. */
+	.blog-article__margin .blog-article__pinned {
 		position: static;
 		display: flex;
 		flex-direction: row;
 		align-items: flex-start;
 		gap: var(--space-group);
 
+		/* No cap on the unit: its ledger rows and its register are `nowrap` in
+		   this state (a ledger row that wraps is a ledger, not a row), so the
+		   segment is as wide as the facts it prints and the BAR is what
+		   scrolls. A 34ch cap here would spill the row over its neighbour. */
+		max-inline-size: none;
 		max-block-size: none;
 		padding-block: 0;
 		background: none;
+	}
+
+	/* The register stops being a vertical scroller in the bar: `overflow: hidden
+	   auto` on a 128px row would clip the line it is printed on, and the bar is
+	   the scroller here. */
+	.blog-article__margin
+		.blog-article__pinned
+		> :is(.blog-article__register, .blog-article__register-empty) {
+		flex: 0 0 auto;
+		min-block-size: auto;
+		overflow: visible;
+		scroll-snap-type: none;
 	}
 
 	.blog-article__margin .record-ledger {
@@ -274,14 +310,16 @@
 		gap: var(--space-group);
 	}
 
-	.blog-article__margin .record-ledger__row {
+	/* One ledger row, its facts inline. Three classes, because the channel's own
+	   "keys above values" rule is declared later and would otherwise win. */
+	.blog-article__margin .record-ledger .record-ledger__row {
 		flex-direction: row;
 		align-items: baseline;
 		gap: var(--space-tight);
 		white-space: nowrap;
 	}
 
-	.blog-article__margin .record-ledger__key {
+	.blog-article__margin .record-ledger .record-ledger__key {
 		inline-size: auto;
 	}
 
@@ -313,6 +351,14 @@
 		border-inline-start: 1px solid var(--Divider);
 		padding-block-start: 0;
 		border-block-start: 0;
+	}
+
+	/* An anchor scrolled to must clear the bar, not land under it: the frame's
+	   own offset (`html { scroll-padding-block-start }`) is the header's height,
+	   and the bar is a second strip of chrome in this state only. The register's
+	   links are the anchors, so this is the state's other half. */
+	.blog-article__body :is(h2, h3, h4) {
+		scroll-margin-block-start: var(--RailBar);
 	}
 }
 
@@ -358,84 +404,16 @@
 	   the row's full height - the containing block a pin needs. */
 	.blog-article__margin {
 		grid-area: margin;
-		order: 0;
 
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-group);
 
-		block-size: auto;
-		overflow: visible;
 		padding-block: 0;
-		padding-inline: 0 0;
+		padding-inline: 0;
 		padding-inline-start: var(--space-reading);
-		background: none;
 		border-block-start: 0;
-		border-block-end: 0;
-		border-inline-start: 1px solid var(--Divider);
 		align-self: stretch;
-
-		position: static;
-		z-index: auto;
-	}
-
-	.blog-article__margin > * {
-		max-inline-size: none;
-		animation: none;
-	}
-
-	/* The pinned unit back to a column, and back on its own pin: the summary and
-	   the register stay with the reader for the length of the piece. */
-	.blog-article__pinned {
-		position: sticky;
-		inset-block-start: var(--HeaderHeight);
-		z-index: 1;
-
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-group);
-		padding-block: var(--space-tight);
-		background: var(--Background);
-		max-block-size: calc(100dvh - var(--HeaderHeight) - var(--space-group));
-	}
-
-	.blog-article__margin .record-ledger {
-		display: grid;
-		flex-direction: row;
-		gap: 0;
-	}
-
-	.blog-article__margin .record-ledger__row {
-		flex-direction: column;
-		align-items: start;
-		gap: var(--space-tight);
-		white-space: normal;
-	}
-
-	.blog-article__margin .record-ledger__key {
-		inline-size: auto;
-	}
-
-	.blog-article__register,
-	.blog-article__register-empty {
-		flex: 0 1 auto;
-		max-inline-size: 30ch;
-		padding-block-start: var(--space-tight);
-		border-block-start: 1px solid var(--Divider);
-	}
-
-	.blog-article__register-list {
-		display: block;
-	}
-
-	.blog-article__register-item {
-		white-space: normal;
-	}
-
-	.blog-article__margin > .record-margin,
-	.blog-article__margin > .record-inset {
-		padding-inline-start: 0;
-		border-inline-start: 0;
 	}
 }
 
@@ -711,7 +689,8 @@
 
 /* A markdown table is bare in the source, so the row rules are the table's own:
    a hairline above, one between rows, one under the head. Wide tables scroll
-   inside their own box rather than widening the page - the measure stays 72ch. */
+   inside their own box rather than widening the page - the measure is
+   `--Measure`, and it does not move for a table. */
 .blog-article__body table {
 	display: block;
 

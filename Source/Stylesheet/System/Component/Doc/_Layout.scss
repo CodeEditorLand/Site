@@ -129,7 +129,12 @@
 // width: line breaking reads flex base sizes, so a paper based on `--Paper`
 // would wrap under the rail at 1024 and print the stacked composition inside
 // the two-column one.
-@include bp(1024px) {
+//
+// The range is the desk's, not the window's: 59rem is the rail's breakpoint in
+// container terms (a 1024px window less its two gutters), and 84rem is where
+// the register can stand outside the plate. The rail's own `display` stays a
+// viewport query - it is the one the mobile panel's island hydrates on.
+@container doc (min-width: 59rem) and (max-width: 83.99rem) {
 	.doc-layout__shell {
 		display: flex;
 		flex-wrap: wrap;
@@ -203,8 +208,15 @@
 		margin-block-start: 0;
 	}
 
-	// The rail clears the bar: its sticky box is pinned under both.
-	.doc-layout__sticky {
+	// The rail clears the bar: its sticky box is pinned under both - but only
+	// when there IS a bar. Thirty-four of the manual's pages hand in no
+	// apparatus, and their rail must sit under the header alone rather than
+	// leave `--RailBar` of nothing above it.
+	//
+	// Three classes, because the rail's own base rule (its height and its plain
+	// header offset) is declared further down this file, and a state must not be
+	// undone by the rule it sits above.
+	.doc-layout__shell:has(.doc-layout__margin) .doc-layout__sticky {
 		top: calc(var(--HeaderHeight) + var(--RailBar) + var(--space-tight));
 		block-size: calc(
 			100dvh - var(--HeaderHeight) - var(--RailBar) - var(--space-group)
@@ -218,15 +230,27 @@
 // body tier), and at that width the desks are 68px each - real space, not a
 // squeeze. Below it the register is the bar above.
 @container doc (min-width: 84rem) {
+	// No margin: rail | desk | paper | desk. The register's track is added by
+	// the `:has()` rule below and not reserved here, because an empty 18rem
+	// column is a column of nothing holding the paper off-centre - the defect
+	// the shell's own head warns about. Thirty-four of the manual's pages hand
+	// in no apparatus.
 	.doc-layout__shell {
 		display: grid;
 		grid-template-columns:
 			minmax(0, 26ch) minmax(var(--Desk), 1fr) minmax(0, var(--Paper))
-			minmax(var(--Desk), 1fr) minmax(0, 18rem);
-		grid-template-areas: "rail . paper . margin";
+			minmax(var(--Desk), 1fr);
+		grid-template-areas: "rail . paper .";
 		column-gap: 0;
 		row-gap: 0;
 		align-items: start;
+	}
+
+	.doc-layout__shell:has(.doc-layout__margin) {
+		grid-template-columns:
+			minmax(0, 26ch) minmax(var(--Desk), 1fr) minmax(0, var(--Paper))
+			minmax(var(--Desk), 1fr) minmax(0, 18rem);
+		grid-template-areas: "rail . paper . margin";
 	}
 
 	.doc-layout__aside {
@@ -245,32 +269,18 @@
 	// page's - the same relationship the rail has on the left.
 	.doc-layout__margin {
 		grid-area: margin;
-		order: 0;
-
-		display: block;
-		block-size: auto;
-		overflow: visible;
-		padding-block: 0;
-		padding-inline-start: var(--space-reading);
-		background: none;
-		border-block-end: 0;
-		border-inline-start: 1px solid var(--Divider);
 
 		position: sticky;
 		top: calc(var(--HeaderHeight) + var(--space-tight));
 		z-index: 1;
+
+		padding-block: 0;
+		padding-inline-start: var(--space-reading);
+		border-block-start: 0;
+		border-inline-start: 1px solid var(--Divider);
 	}
 
-	.doc-layout__margin > * {
-		max-inline-size: none;
-		animation: none;
-	}
-
-	.doc-layout__margin > * + * {
-		margin-block-start: var(--space-group);
-	}
-
-	// The rail is pinned under the header alone again: there is no bar above it.
+	// The rail is pinned under the header alone here: there is no bar above it.
 	.doc-layout__sticky {
 		top: calc(var(--HeaderHeight) + var(--space-tight));
 		block-size: calc(100dvh - var(--HeaderHeight) - var(--space-group));

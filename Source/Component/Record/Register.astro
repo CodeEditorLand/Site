@@ -1,0 +1,74 @@
+---
+/**
+ * Register - the register line, printed once for every block that has one.
+ *
+ * The line is four parts in a fixed order, and this file is the only place they
+ * are assembled in markup:
+ *
+ *     #      the mark          `#`, printed by the block, never by the caller
+ *     label  the set's name    `WHAT CHANGES`
+ *     sep    `/` or U+2001     the register's separator, never a middot
+ *     count  the figure        `08`, `UNAVAILABLE`, `LOADING`
+ *
+ * ─── WHY A COMPONENT AND NOT A TEMPLATE LINE PER BLOCK ────────────────────
+ * Five blocks used to spell this line out themselves, so five blocks could drop
+ * a part of it - and the one that mattered was the count. `Register` takes a
+ * `Register` (see `RegisterLine.ts`), a shape whose `count` is required, so a
+ * block that renders through this component cannot print a register without its
+ * figure. A caller that wants to hand in a bare string cannot: the prop does not
+ * accept one.
+ *
+ * The parts are spans rather than one text node so the line can be read - and
+ * coloured - character by character, which is the site's collage method: the
+ * mark and the separator are the grammar's furniture, the label is the set's
+ * name, and the count is the figure the reader came for.
+ *
+ * `state` is the register's own state, and it changes only the count slot:
+ * `loading` prints the vocabulary's `LOADING` where the figure will be. An
+ * `empty` register still prints its line - the line is what names the set that
+ * turned out to be empty, and it is the one thing that must not disappear.
+ *
+ * No script and no hydration: a register is printed.
+ */
+import type { RegisterState } from "./Type.js";
+import {
+	RegisterCountText,
+	RegisterSeparatorText,
+	type Register,
+} from "./RegisterLine.js";
+
+interface Props {
+	/** The register: its label and its count. Never a string. */
+	register: Register;
+
+	/** The register's state. Only `loading` changes the line (the count slot). */
+	state?: RegisterState;
+
+	/**
+	 * The block's own register class (`.record-ledger-block__register`,
+	 * `.detail-leader__register`). The type, tracking and ink belong to the
+	 * block that prints the line; this component owns only the four parts.
+	 */
+	class?: string;
+}
+
+const { register, state = "rest", class: Class } = Astro.props;
+
+/** The separator as it prints: ` / ` or U+2001. */
+const Separator = RegisterSeparatorText(register);
+
+/** The count in this state: the figure, or `LOADING` where it will be. */
+const Count = RegisterCountText(register, state);
+---
+
+<p class:list={[Class]} data-state={state}>
+	<span class="register-line__mark" aria-hidden="true">#</span>{" "}
+	<span class="register-line__label">{register.label}</span>
+	<span class="register-line__separator" aria-hidden="true">{Separator}</span>
+	<span class="register-line__count">{Count}</span>
+	{
+		register.unit === undefined ? null : (
+			<span class="register-line__unit">{" "}{register.unit}</span>
+		)
+	}
+</p>

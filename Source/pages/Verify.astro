@@ -41,6 +41,7 @@ import { Header } from "../Component/Layout/Header";
 import RecordLedger from "../Component/Record/RecordLedger.astro";
 import RecordMatrix from "../Component/Record/RecordMatrix.astro";
 import RecordWell from "../Component/Record/RecordWell.astro";
+import { RegisterOf } from "../Component/Record/RegisterLine.js";
 import Trail from "../Component/Route/Trail.astro";
 import PageShell from "../Component/Shell/PageShell.astro";
 import ShellState from "../Component/Shell/ShellState.astro";
@@ -165,7 +166,7 @@ const MetaDescription = T("verify.pending.description", {
 
 		<RecordLedger
 			slot="rail"
-			register={Audit.scopeRegister}
+			register={RegisterOf(Audit.scopeLabel, Audit.scope)}
 			rows={Audit.scope}
 			columns={1}
 		/>

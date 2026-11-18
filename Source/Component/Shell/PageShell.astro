@@ -7,17 +7,35 @@
  * languages is *which tracks exist and what they are called*, and that is
  * decided in `Language.ts` - this file only lays them out.
  *
- *   reading     rail | measure | margin
+ *   reading     rail | desk | paper | desk | margin
  *   workspace   rail | panes (the default slot holds a `ShellPanes`)
  *   audit       ledger | matrix | wells
  *   plate       head over a full-bleed plate | caption channel
+ *
+ * ─── READING: THE PAPER IS THE INVARIANT ─────────────────────────────────
+ * The reading language is the one that is a document, so its grid is the one
+ * that puts the paper in the middle and the rails at the page's edges: the rail
+ * on the left, the register on the right, and a `1fr` desk on either side of the
+ * plate. `--Measure` is the plate (72-88ch, fluid on the window) and the shell
+ * widens to `--ContainerReading` so the plate can reach its full width with both
+ * rails still outside it. A page that is 72ch wide on a 2560px screen has not
+ * used the screen; a page that stretches prose to 160ch has stopped being a
+ * document.
+ *
+ * The margin has THREE STATES and ONE SLOT: a sticky column at the right edge,
+ * a horizontal bar pinned under the header (below 84rem of desk, where the plate
+ * and both rails cannot share the width), and the stacked section the narrow
+ * arm of every language prints. The bar is `order: -1` inside a wrapping flex
+ * row - a state of this component, not a second markup - so every fact, clause
+ * and note is present in all three, and the reader never meets two versions of
+ * the same register.
  *
  * ─── THE DECLARATION STRIP ────────────────────────────────────────────────
  * Every page on the site opens with one printed record, in two rows:
  *
  *   row 1  # LAYOUT / READING␁GIVES: RAIL␁MEASURE␁MARGIN␁FOR: THE LEXICON   # READING_09
  *   row 2  ↳ a rail (the document's own contents, or the set it belongs to)
- *          ↳ a measure (72ch of prose, or `full` for a page that also carries grids)
+ *          ↳ a measure (72-88ch of prose, or `full` for a page that also carries grids)
  *          ↳ a margin (the notes, the facts, the aside) - or nothing, and then
  *            the measure takes the rail's side
  *
@@ -90,9 +108,9 @@ interface Props {
 	label?: string;
 
 	/**
-	 * The reading measure. `prose` caps the main track at `--Measure` (72ch);
-	 * `full` leaves it open for a page that also carries grids. Ignored by the
-	 * languages that do not read at a measure.
+	 * The reading measure. `prose` caps the main track at `--Measure` (the plate,
+	 * 72-88ch); `full` leaves the body inside it open for a page that also
+	 * carries grids. Ignored by the languages that do not read at a measure.
 	 */
 	measure?: "prose" | "full";
 

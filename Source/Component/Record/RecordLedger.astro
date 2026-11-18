@@ -18,8 +18,20 @@
  * one-column ledger; `columns` changes only the shell's layout modifier,
  * `surface` changes only whether the shell wears the `.emphasis-standard` tier,
  * and each row's `note`/`lead` change only that row's own markup.
+ *
+ * ─── THE REGISTER IS NOT A STRING ─────────────────────────────────────────
+ * A register line above the rows is a `Register` (`RegisterLine.ts`): a label
+ * and a count, never a bare string. The shape makes the grammar un-droppable -
+ * there is no way to hand this block a register that has no figure - and the
+ * count is then recomposed from `rows` here, so the figure on the line is always
+ * the rows' own. Build it with `RegisterOf(label, rows)` at the call site and the
+ * two are the same array twice.
  */
+import Register from "./Register.astro";
+
 import type { LedgerRow, LedgerDensity, RegisterState } from "./Type.js";
+
+import { Padded, type Register as RegisterShape } from "./RegisterLine.js";
 
 interface Props {
 	/** The facts, in the order they are read. */
@@ -43,14 +55,17 @@ interface Props {
 	 * then a *register* rather than a bare list - the shape a summary takes when
 	 * it sits in a page's margin and has to name itself.
 	 *
-	 * The prop takes the register in either of the two shapes the grammar has:
-	 * the set's name (`SUMMARY`), or the whole line (`# SUMMARY / 04`, the shape
-	 * §4.1 of the brief prescribes for a prop). Both print one mark and one
-	 * count, because the mark and the count belong to the block: the caller's
-	 * mark is folded away and the count is re-read from `rows`, so a number
-	 * written at the call site can never outlive the rows it counts.
+	 * The prop is a `Register`, never a string: `{ label, count }`, built by
+	 * `RegisterOf(label, rows)` (or `RegisterCount` / `RegisterUnavailable` when
+	 * the figure is not a row count). A bare string cannot express a register
+	 * without its count, so it is not accepted - that was the defect this shape
+	 * exists to end.
+	 *
+	 * The mark and the count belong to the block: the count is recomposed from
+	 * `rows` below, so a figure that arrives from a stale source cannot outlive
+	 * the rows it counts. The label is the caller's and prints verbatim.
 	 */
-	register?: string;
+	register?: RegisterShape;
 
 	/**
 	 * The ledger stays with the reader: it is pinned under the header while the
@@ -119,28 +134,16 @@ const Shell = [
 ];
 
 /** The count is the rows' own length: the register and its rows cannot disagree. */
-const Count = String(rows.length).padStart(2, "0");
+const Count = Padded(rows.length);
 
 /**
- * The set's name, whatever shape the caller handed in. A register may arrive as
- * a name (`WHAT CHANGES`) or as the whole line (`# WHAT CHANGES / 08`); the mark
- * and the count are the block's, so the caller's are folded away here and
- * composed once below. Only a trailing count (or the state word that stands in
- * for one) is stripped - a name that carries a slash of its own keeps it.
+ * The register line's data: the caller's label, and the count recomposed from
+ * the rows this block prints. A `Register` already carries a count - the shape
+ * cannot exist without one - and the block overrides it with its own figure, so
+ * a count that drifted at the call site is corrected here rather than printed.
  */
-const Name =
-	register === undefined
-		? undefined
-		: register
-				.trim()
-				.replace(/^#\s*/, "")
-				.replace(/\s*\/\s*(?:[0-9]+|LOADING|UNAVAILABLE)$/, "");
-
-/** The register line: the caller's name, then the count the block owns. */
-const RegisterLine =
-	Name === undefined
-		? undefined
-		: `${Name} / ${state === "loading" ? "LOADING" : Count}`;
+const Line =
+	register === undefined ? undefined : { ...register, count: Count };
 
 /**
  * The rows a skeleton prints. A loading register keeps the keys it was handed -
@@ -164,10 +167,12 @@ const SkeletonRows: readonly LedgerRow[] =
 		`record-ledger-block--${density}`,
 	]}
 >
-	{RegisterLine && (
-		<p class="record-ledger-block__register" data-state={state}>
-			# {RegisterLine}
-		</p>
+	{Line && (
+		<Register
+			register={Line}
+			state={state}
+			class="record-ledger-block__register"
+		/>
 	)}
 	{state === "empty" ? (
 		empty && <p class="record-ledger-block__empty">{empty}</p>

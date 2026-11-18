@@ -47,8 +47,8 @@ export interface AccountSurface {
 	/** The access ledger beside the instrument. */
 	readonly access: readonly LedgerRow[];
 
-	/** The register line above it. */
-	readonly accessRegister: string;
+	/** The register's label: the access ledger prints `# ACCESS / 05` from it. */
+	readonly accessLabel: string;
 
 	/** The folded disclosure under both panes. */
 	readonly aside: Aside;
@@ -128,7 +128,7 @@ export const AccountWorkspace = (T: TFunction): AccountSurface => ({
 		},
 	],
 
-	accessRegister: "ACCESS",
+	accessLabel: "ACCESS",
 
 	access: [
 		{

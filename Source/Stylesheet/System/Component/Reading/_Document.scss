@@ -51,7 +51,7 @@
 }
 
 .reading-document__head {
-	max-width: 72ch;
+	max-width: var(--Measure);
 }
 
 .reading-document__kicker {
@@ -151,7 +151,7 @@
 }
 
 .reading-document--prose .reading-document__body {
-	max-width: 72ch;
+	max-width: var(--Measure);
 }
 
 /* The global sheet gives every p and heading a bottom margin. Inside a
@@ -196,7 +196,7 @@
 }
 
 .reading-document--full .reading-document__part p {
-	max-width: 72ch;
+	max-width: var(--Measure);
 }
 
 /* The quoted summary panel: a claim the page makes about itself, held apart from
@@ -215,7 +215,7 @@
 
 /* The process rail and the wells that belong to it, on the reading measure. */
 .reading-document__process {
-	max-width: 72ch;
+	max-width: var(--Measure);
 
 	> * + * {
 		margin-block-start: var(--space-group);
@@ -264,9 +264,13 @@
    would read as the rail's caption - and the document takes the wide column
    with the clause rail pinned beside it.
 
-   The measure is unchanged: `--prose` still caps the body at 72ch, so the white
-   card hugs its own text instead of stretching to the column and leaving a dead
-   band of white on the right. What the rail takes is margin, not measure. */
+   THE TRACKS ARE THE READING LANGUAGE'S: `rail | desk | body | desk`. The rail
+   is at the page's left edge, the body reads at `--Measure` (the plate, 72-88ch
+   - `_Token.scss`), and the two `1fr` desks take whatever is left, so the
+   document is centred between the rail and the page's right edge instead of
+   hugging the rail on a wide screen. The container is the reading desk
+   (`.trust-page`, `Trust/_Page.scss`), so the plate can reach its full width
+   here as it does on a doc page or an article - one measure, three surfaces. */
 .reading-document--rail {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
@@ -280,8 +284,10 @@
 
 @include bp(1024px) {
 	.reading-document--rail {
-		grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
-		column-gap: var(--space-group);
+		grid-template-columns:
+			minmax(0, 20rem) minmax(var(--Desk), 1fr)
+			minmax(0, var(--Measure)) minmax(var(--Desk), 1fr);
+		column-gap: 0;
 		align-items: start;
 	}
 
@@ -290,7 +296,7 @@
 	}
 
 	.reading-document--rail .reading-document__body {
-		grid-column: 2;
+		grid-column: 3;
 
 		/* The body's own top margin is the stack composition's separation from
 		   the index above it. In the rail composition the rail and the document

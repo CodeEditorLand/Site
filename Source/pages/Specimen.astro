@@ -66,6 +66,7 @@ import { Header } from "../Component/Layout/Header";
 import Onward from "../Component/More/Onward.astro";
 import RecordBand from "../Component/Record/RecordBand.astro";
 import RecordLedger from "../Component/Record/RecordLedger.astro";
+import { RegisterOf } from "../Component/Record/RegisterLine.js";
 import Trail from "../Component/Route/Trail.astro";
 import ShellState from "../Component/Shell/ShellState.astro";
 import SpecimenMaterial from "../Component/Specimen/SpecimenMaterial.astro";
@@ -127,18 +128,17 @@ const RegisterRows = Register({
  * is a register, the label names the set, and the count is the set's own length
  * - the rows `Register()` just returned, read from the same array the ledger
  * below prints, so a figure added to the sheet's register moves the number above
- * it in the same edit. `RecordLedger` folds the caller's mark and count away and
- * recomposes both from `rows`, so the line and the rows cannot disagree in
- * either direction; the expression exists because the *source* has to state the
- * count too. A register that only counts at render time reads like copy in the
- * template, and copy is what the next card trims.
+ * it in the same edit. `RegisterOf` takes that array, so the line has no way to
+ * exist without its count and no way to carry one the rows do not have;
+ * `RecordLedger` then recomposes the figure from the rows it prints, so the line
+ * and the rows cannot disagree in either direction.
  *
  * No arm of this line is `UNAVAILABLE`: every row is composed here at build time
  * from `Content/Specimen/Parts.ts`, so this page always knows how many facts it
  * is about to print. A sheet with no parts still has a register of seven rows -
  * five of them would read `0` - and that is a counted zero, not an unknown.
  */
-const CountedRegister = `# REGISTER / ${String(RegisterRows.length).padStart(2, "0")}`;
+const CountedRegister = RegisterOf("REGISTER", RegisterRows);
 
 /* ─── THE MEASUREMENTS ONLY THIS PAGE CAN TAKE ─────────────────────────── */
 

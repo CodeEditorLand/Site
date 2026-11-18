@@ -33,7 +33,12 @@
  * No `<script>`, no `client:*`. A register is printed; the only interaction is
  * the links the caller supplies.
  */
+import Register from "../Record/Register.astro";
+
 import type { RegisterState } from "../Record/Type.js";
+
+import { Padded, type Register as RegisterShape } from "../Record/RegisterLine.js";
+
 import type { LeaderItem } from "./Type.js";
 
 interface Props {
@@ -43,14 +48,13 @@ interface Props {
 	/**
 	 * `# CHAPTERS` - the register line's name. Absent, no register line.
 	 *
-	 * The prop takes the register in either of the two shapes the grammar has:
-	 * the set's name (`CHAPTERS`), or the whole line (`# CHAPTERS / 08`, the
-	 * shape §4.1 of the brief prescribes for a prop). Both print one mark and
-	 * one count, because the mark and the count belong to the block: the
-	 * caller's mark is folded away and the count is re-read from `items`, so a
-	 * number written at the call site can never outlive the entries it counts.
+	 * The prop is a `Register`, never a string: `{ label, count }`, built by
+	 * `RegisterOf(label, items)`. A bare string can express a register without
+	 * its count, and that is the defect this shape exists to end - the count is
+	 * required by the type, and this block then recomposes it from `items`, so
+	 * the figure on the line is always the entries' own.
 	 */
-	register?: string;
+	register?: RegisterShape;
 
 	/** One column (the default) or two, the latter only at 1024px and up. */
 	columns?: 1 | 2;
@@ -89,28 +93,15 @@ const {
 } = Astro.props;
 
 /** The count is the list's own length: the register line cannot drift from it. */
-const Count = String(items.length).padStart(2, "0");
+const Count = Padded(items.length);
 
 /**
- * The set's name, whatever shape the caller handed in. A register may arrive as
- * a name (`CHAPTERS`) or as the whole line (`# CHAPTERS / 08`); the mark and the
- * count are the block's, so the caller's are folded away here and composed once
- * below. Only a trailing count (or the state word that stands in for one) is
- * stripped - a name that carries a slash of its own keeps it.
+ * The register line's data: the caller's label, and the count recomposed from the
+ * entries this block prints. A `Register` cannot exist without a count; this
+ * block replaces the one it was handed with the entries' own, so a figure that
+ * drifted at the call site is corrected here rather than printed.
  */
-const Name =
-	register === undefined
-		? undefined
-		: register
-				.trim()
-				.replace(/^#\s*/, "")
-				.replace(/\s*\/\s*(?:[0-9]+|LOADING|UNAVAILABLE)$/, "");
-
-/** The register line states the state it is in, in the vocabulary's word. */
-const RegisterLine =
-	Name === undefined
-		? undefined
-		: `${Name} / ${state === "loading" ? "LOADING" : Count}`;
+const Line = register === undefined ? undefined : { ...register, count: Count };
 
 /** The too-much state: the set is longer than the register prints. */
 const Truncated = limit !== undefined && items.length > limit;
@@ -129,10 +120,8 @@ const Bars = [64, 42, 78, 55, 36, 70];
 ---
 
 <div class:list={["detail-leader", Class]} data-state={state}>
-	{RegisterLine && (
-		<p class="detail-leader__register" data-state={state}>
-			# {RegisterLine}
-		</p>
+	{Line && (
+		<Register register={Line} state={state} class="detail-leader__register" />
 	)}
 	{state === "empty" ? (
 		empty && <p class="detail-leader__empty">{empty}</p>

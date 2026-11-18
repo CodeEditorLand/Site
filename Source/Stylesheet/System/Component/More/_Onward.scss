@@ -73,7 +73,7 @@
 	color: var(--MuteForeground);
 	margin: 0;
 	margin-block-start: var(--space-tight);
-	max-inline-size: 72ch;
+	max-inline-size: var(--Measure);
 	text-wrap: pretty;
 }
 
@@ -152,7 +152,7 @@
 	color: var(--MuteForeground);
 	margin: 0;
 	padding-block-end: var(--space-reading);
-	max-inline-size: 72ch;
+	max-inline-size: var(--Measure);
 	text-wrap: pretty;
 }
 
