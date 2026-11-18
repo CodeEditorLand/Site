@@ -67,6 +67,16 @@ const ToneVariant: Readonly<Record<StatusTone, "mint" | "platinum">> = {
 	quiet: "platinum",
 };
 
+/** The mark's ink, as the tone's - the badge's `--jelly-label` paints the label,
+ * and the square is the state's SHAPE so it takes the same ink the word does. */
+const ToneInk: Readonly<Record<StatusTone, string>> = {
+	ink: "var(--Foreground)",
+
+	specimen: "var(--state-ink-attested)",
+
+	quiet: "var(--MuteForeground)",
+};
+
 interface Props {
 	/** The label, verbatim: `STATUS: LOADING`, `RECORD: EMPTY`. */
 	Label: string;
@@ -87,7 +97,16 @@ const StateBadge = ({ Label }: Props) => {
 				} as CSSProperties
 			}
 		>
-			<span className="surface__mark" aria-hidden="true"></span>
+			{/* The site's one state mark, at the badge's step (`Mark/_Square.scss`).
+			    It used to be a `2px x 0.9em` bar - a second shape for the same
+			    meaning, and the only state mark on the site that was not a square. */}
+			<span
+				className="MarkSquare"
+				data-mark-size="badge"
+				data-mark-tone={Resolved}
+				style={{ color: ToneInk[Resolved] }}
+				aria-hidden="true"
+			/>
 			{Label}
 		</jelly-badge>
 	);

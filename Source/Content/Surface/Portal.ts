@@ -332,13 +332,13 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 				Heading: "Extensions",
 				Key: "extension",
 				Fallback:
-					"Marketplace installation is planned after local extension paths stabilize",
+					"Marketplace installation, planned once local extension paths stabilize",
 			},
 
 			{
 				Heading: "Remote",
 				Key: "remote",
-				Fallback: "Remote development integration is planned",
+				Fallback: "Remote development integration, planned",
 			},
 		]),
 		Capabilities: Capabilities(T, "cloud", [
@@ -359,13 +359,13 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 					"MFA support depends on the configured identity provider",
 			},
 
-			{ Key: "rbac", Fallback: "Gateway RBAC is planned" },
+			{ Key: "rbac", Fallback: "Gateway RBAC, planned" },
 
-			{ Key: "audit", Fallback: "Audit logging is planned" },
+			{ Key: "audit", Fallback: "Audit logging, planned" },
 
 			{
 				Key: "cert",
-				Fallback: "Developer certificate automation is planned",
+				Fallback: "Developer certificate automation, planned",
 			},
 		]),
 	});
@@ -382,19 +382,19 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 				Heading: "GitHub",
 				Key: "github",
 				Fallback:
-					"GitHub identity is planned as a low-friction sign-in option",
+					"Identity, planned as a low-friction sign-in option",
 			},
 
 			{
 				Heading: "SSO",
 				Key: "sso",
-				Fallback: "Single sign-on across Land services is planned",
+				Fallback: "Single sign-on across Land services, planned",
 			},
 
 			{
 				Heading: "Repository",
 				Key: "repo",
-				Fallback: "Settings sync tied to provider identity is planned",
+				Fallback: "Settings sync tied to provider identity, planned",
 			},
 
 			{
@@ -419,7 +419,7 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 			{
 				Key: "scope",
 				Fallback:
-					"Minimal OAuth scopes - only what each provider integration requires",
+					"Minimal OAuth scopes: only what each provider integration requires",
 			},
 
 			{
@@ -428,16 +428,16 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 					"Refresh token handling depends on provider configuration",
 			},
 
-			{ Key: "webhook", Fallback: "Webhook subscriptions are planned" },
+			{ Key: "webhook", Fallback: "Webhook subscriptions, planned" },
 
 			{
 				Key: "org",
-				Fallback: "Organization-level access policies are planned",
+				Fallback: "Organization-level access policies, planned",
 			},
 
 			{
 				Key: "cert",
-				Fallback: "Developer certificate automation is planned",
+				Fallback: "Developer certificate automation, planned",
 			},
 		]),
 	});
@@ -453,26 +453,26 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 			{
 				Heading: "Air Daemon",
 				Key: "daemon",
-				Fallback: "Browser-to-daemon loopback control is planned",
+				Fallback: "Loopback control from the browser, planned",
 			},
 
 			{
 				Heading: "Build",
 				Key: "build",
 				Fallback:
-					"Launching builds from the website console is planned",
+					"Builds launched from the website console, planned",
 			},
 
 			{
 				Heading: "Deploy",
 				Key: "deploy",
-				Fallback: "Deploying changes into a running editor is planned",
+				Fallback: "Changes deployed into a running editor, planned",
 			},
 
 			{
 				Heading: "Configure",
 				Key: "configure",
-				Fallback: "Editor configuration management is planned",
+				Fallback: "Editor configuration management, planned",
 			},
 
 			{
@@ -493,7 +493,7 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 				Heading: "Embedded SaaS",
 				Key: "bake",
 				Fallback:
-					"Embedding portal surfaces into the editor is planned",
+					"Portal surfaces embedded into the editor, planned",
 			},
 		]),
 		Capabilities: Capabilities(T, "localfirst", [
@@ -506,28 +506,28 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 			{
 				Key: "mtls",
 				Fallback:
-					"mTLS mutual authentication is enabled by default for daemon connections",
+					"mTLS authentication is enabled by default for daemon connections",
 			},
 
 			{
 				Key: "crdt",
 				Fallback:
-					"CRDT state synchronization - planned for conflict-free offline edits",
+					"CRDT state synchronization, planned for conflict-free offline edits",
 			},
 
-			{ Key: "team", Fallback: "Fully local team management is planned" },
+			{ Key: "team", Fallback: "Fully local team management, planned" },
 
 			{
 				Key: "cert",
 				Fallback:
-					"Local certificate management is planned; daemon credential storage is active",
+					"Local certificate management, planned; daemon credential storage, active",
 			},
 
-			{ Key: "ws", Fallback: "WebSocket loopback connection is planned" },
+			{ Key: "ws", Fallback: "WebSocket loopback connection, planned" },
 
-			{ Key: "rbac", Fallback: "Local RBAC policies are planned" },
+			{ Key: "rbac", Fallback: "Local RBAC policies, planned" },
 
-			{ Key: "backup", Fallback: "Encrypted local backup is planned" },
+			{ Key: "backup", Fallback: "Encrypted local backup, planned" },
 		]),
 	});
 
@@ -542,50 +542,50 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 			{
 				Heading: "Okta",
 				Key: "okta",
-				Fallback: "Okta SSO integration is planned",
+				Fallback: "SSO integration, planned",
 			},
 
 			{
 				Heading: "Azure AD",
 				Key: "azure",
-				Fallback: "Azure AD / Entra ID integration is planned",
+				Fallback: "Entra ID integration, planned",
 			},
 
 			{
 				Heading: "SAML 2.0",
 				Key: "saml",
-				Fallback: "SAML 2.0 support is planned",
+				Fallback: "SAML 2.0 support, planned",
 			},
 
 			{
 				Heading: "SCIM",
 				Key: "scim",
-				Fallback: "SCIM provisioning is planned",
+				Fallback: "SCIM provisioning, planned",
 			},
 
 			{
 				Heading: "Groups",
 				Key: "group",
-				Fallback: "IdP group to Land role mapping is planned",
+				Fallback: "IdP group to Land role mapping, planned",
 			},
 
 			{
 				Heading: "Audit",
 				Key: "audit",
-				Fallback: "Audit export is planned",
+				Fallback: "Audit export, planned",
 			},
 		]),
 		Capabilities: Capabilities(T, "enterprise", [
 			{
 				Key: "oidc",
 				Fallback:
-					"OIDC discovery is handled by the configured identity provider",
+					"OIDC discovery: handled by the configured identity provider",
 			},
 
 			{
 				Key: "jit",
 				Fallback:
-					"Just-in-time provisioning happens through the configured identity provider",
+					"Just-in-time provisioning through the configured identity provider",
 			},
 
 			{
@@ -601,12 +601,12 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 
 			{
 				Key: "ca",
-				Fallback: "Organization CA certificate management is planned",
+				Fallback: "Organization CA certificate management, planned",
 			},
 
 			{
 				Key: "compliance",
-				Fallback: "Compliance documentation is planned",
+				Fallback: "Compliance documentation, planned",
 			},
 		]),
 	});

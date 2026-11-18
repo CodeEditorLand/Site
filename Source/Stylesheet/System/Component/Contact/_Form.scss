@@ -158,13 +158,17 @@
 	color: var(--Foreground);
 }
 
+// The state's mark is the mark layer's square (`Mark/_Square.scss`), drawn as a
+// pseudo-element because the form's state line is a `<p>` the component owns.
+// It was a `2px x 0.9em` bar - the site's fifth spelling of one state mark.
 .contact-form__state::before {
 	content: "";
 	display: inline-block;
-	inline-size: 2px;
-	block-size: 0.9em;
-	margin-inline-end: 0.45em;
+	inline-size: var(--mark-square);
+	block-size: var(--mark-square);
+	margin-inline-end: var(--mark-gap);
 	background: currentColor;
+	vertical-align: var(--mark-raise);
 }
 
 .contact-form__state[data-state="PREPARING"] {

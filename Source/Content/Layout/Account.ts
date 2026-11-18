@@ -183,7 +183,7 @@ export const AccountWorkspace = (T: TFunction): AccountSurface => ({
 		}),
 		line: T("layout.account.aside.line", {
 			defaultValue:
-				"Three facts about this workspace live on other records, and this one does not restate them.",
+				"Three facts about this workspace live on other records; this one does not restate them.",
 		}),
 		rows: [
 			{

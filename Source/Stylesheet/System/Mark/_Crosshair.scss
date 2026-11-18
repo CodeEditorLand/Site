@@ -1,0 +1,62 @@
+// ─── THE CROSSHAIR ─────────────────────────────────────────────────────────
+//
+// The picture-frame corner: two ticks per corner, one horizontal and one
+// vertical, inset off the panel's edge, drawn in one ink at one opacity. It is
+// the site's only frame mark and it is a keeper - the hero's pair, the field
+// record's card and every framed white surface carry it.
+//
+// ─── ONE GEOMETRY, TWO RENDERERS, ONE SOURCE ──────────────────────────────
+//
+// The frame is eight spans with inline geometry, because a tick has to sit at a
+// corner and an inline box is how that is expressed without eight classes. Two
+// renderers emit them - `Brand/CornerMarks.astro` for Astro and the hero's own
+// `CornerFrame` in React - and both read `Brand/CornerMarks/Data.ts`. What they
+// did NOT share was the values: the data module carried `14`, `24`, `2`, `1` as
+// numbers and each renderer turned them into a style string its own way, so the
+// geometry was one table read twice and re-serialised twice.
+//
+// The numbers are tokens now. The data module emits `var(--mark-inset)` and
+// `var(--mark-arm)` with the host's own number as the fallback, so a card that
+// passes a different frame still gets one, and the default frame is this file's
+// four values and nowhere else.
+//
+// ─── THE JOINT IS ONE INK ─────────────────────────────────────────────────
+//
+// Two translucent arms overlap by a 1x2px rectangle at the corner, and two
+// marks at 45 % on top of each other are not 45 % - they are 70 %, a darker
+// speck at every corner of every framed card. The ink belongs to the GROUP, so
+// the group carries the opacity and the arms carry none. That rule lives in
+// `Optical/_Seam.scss` (it is a join, and joins are the optical layer's) and it
+// reads `--mark-corner-ink`, so the frame has one ink in one place.
+//
+// ─── THE HOVER IS A RIGID SLIDE ───────────────────────────────────────────
+//
+// Each arm travels `--space-tight` perpendicular to itself on hover, so the L
+// separates at the corner and the arms never cross. No scaling, no rotation, no
+// fade: a mark that grew would be a mark pretending to be a button. The
+// implementation is `Component/_CornerMarks.scss`; this file owns the geometry
+// the travel starts from.
+
+@use "../Mixin" as *;
+
+/* The frame's box: it fills its host and takes no pointer. The ink's strength
+   is the JOIN's rule (`Optical/_Seam.scss`), not this file's - the two arms
+   overlap at each corner and two marks at 45 % are 70 % where they meet, so the
+   group carries the opacity and this rule deliberately does not restate it. */
+.CornerMarks,
+.MarkCrosshair {
+	position: absolute;
+	inset: 0;
+
+	pointer-events: none;
+}
+
+/* One arm. The inline style places it; this rule only says what a tick is -
+   a mark, never a box with a border, never a rounded edge. Its ink is the
+   group's, inherited through `currentColor`. */
+.CornerMarkTick,
+.MarkCrosshair__Tick {
+	position: absolute;
+
+	background-color: currentColor;
+}

@@ -123,11 +123,10 @@
 .doc-sidebar__marker {
 	font-size: var(--type-meta);
 
-	transition: transform 150ms ease;
-}
-
-.doc-sidebar__marker--open {
-	transform: rotate(90deg);
+	/* the turn is the mark layer's (`Mark/_Arrow.scss`): one glyph, one quarter
+	   turn, for every disclosure on the site. The rule here rotated a `›` of its
+	   own with its own transition, which is how the site ended up with a `›`
+	   here, a `→` in the aside and a `→`/`↳` pair in the motion specimen. */
 }
 
 .doc-sidebar__link {

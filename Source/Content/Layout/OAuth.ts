@@ -116,7 +116,7 @@ export const OAuthResult = (T: TFunction): OAuthSurface => ({
 			}),
 			cause: T("common.oauth.failure.provider.cause", {
 				defaultValue:
-					"The identity provider refused the request before it reached Land: a cancelled consent screen, a disabled connection, or a tenant rule.",
+					"The identity provider refused the request before it reached Land: a cancelled consent screen, a disabled connection, a tenant rule.",
 			}),
 			note: "CODE: ABSENT",
 		},
@@ -141,7 +141,7 @@ export const OAuthResult = (T: TFunction): OAuthSurface => ({
 			}),
 			cause: T("common.oauth.failure.unknown.cause", {
 				defaultValue:
-					"The callback was read and produced neither a session nor an error parameter. The account is not the fault: the attempt can be repeated.",
+					"The callback was read and produced neither a session nor an error parameter. The account is not at fault; the attempt can be repeated.",
 			}),
 			note: "REASON: UNRECORDED",
 		},

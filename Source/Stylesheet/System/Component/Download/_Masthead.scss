@@ -79,16 +79,11 @@
 	margin-block-start: var(--space-reading);
 }
 
-// The dot is a status mark inside the badge, so it is a square of the badge's
-// own ink, not an icon: 0.375rem is the 1.5 Tailwind step it replaces.
-.download-masthead__dot {
-	display: inline-block;
-	inline-size: 0.375rem;
-	block-size: 0.375rem;
-}
-
+// The dot is the mark layer's square at the badge's step (`Mark/_Square.scss`):
+// a protocol square inside the badge, painted with the spine's own ink. The rule
+// here drew a `0.375rem` box of its own, which was one of the site's five dot
+// sizes; the size is the ladder's now and the ink is still the claim's.
 .download-masthead__mark {
 	display: inline-block;
 	vertical-align: middle;
-	opacity: 0.7;
 }

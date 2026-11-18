@@ -1,0 +1,1 @@
+import{t as a}from"./Header.BSBn7UP_.js";export{a as Header,a as default};

@@ -46,6 +46,8 @@
  */
 import { Tone } from "../Surface/State.js";
 
+import Mark from "../Mark/Mark.astro";
+
 import type { LedgerRow } from "../Record/Type.js";
 
 /** The nine conditions. */
@@ -217,7 +219,7 @@ const IsLoading = kind === "loading";
 	</p>
 
 	<p class:list={["ShellState__status", `ShellState__status--${Resolved}`]}>
-		<span class="ShellState__status-mark" aria-hidden="true"></span>
+		<Mark kind="square" tone={Resolved} />
 		<span class="ShellState__status-key">STATUS:</span>
 		<span class="ShellState__status-word">{Word}</span>
 	</p>
@@ -287,8 +289,7 @@ const IsLoading = kind === "loading";
 				<dd class="ShellState__value">
 					<a class="ShellState__action" href={next.href}>
 						{next.label}
-						{"\u2001"}
-						<span aria-hidden="true">&rarr;</span>
+						<Mark kind="arrow" />
 					</a>
 				</dd>
 			</div>

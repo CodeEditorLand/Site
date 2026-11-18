@@ -2,6 +2,8 @@ import React from "react";
 
 import { cn } from "../UI/Utility";
 
+import { SealNeutral } from "../Mark/SealNeutral";
+
 export type FieldRecordElement =
 	| "Land"
 	| "Mountain"
@@ -25,15 +27,39 @@ export interface FieldRecordSealProps {
 
 	className?: string;
 
-	size?: number;
+	/**
+	 * The seal's size. Three steps, named by role (`Mark/_Token.scss`): `s` 32px
+	 * at the head of a card, `m` 48px at the head of a record, `l` 64px at the
+	 * head of a page. A number is still accepted and is mapped to the nearest
+	 * step, so a host that passed `36` gets `s` and the wall stops carrying two
+	 * sizes four pixels apart.
+	 */
+	size?: SealSize | number;
 }
+
+/** The seal's three steps. */
+export type SealSize = "s" | "m" | "l";
+
+/** A number on the ladder's old API is mapped to the step it was reaching for. */
+const Step = (size: SealSize | number): SealSize => {
+	if (typeof size === "string") return size;
+
+	if (size <= 40) return "s";
+
+	if (size <= 56) return "m";
+
+	return "l";
+};
 
 const SealPattern: React.FC<{ element: FieldRecordElement }> = ({
 	element,
 }) => {
 	const stroke = "var(--Accent)";
 
-	const detail = "#D6B947";
+	/* The seal's one permitted second ink, as a token - it was a literal
+	   `#D6B947` in this file, and a mark is the last place the identity allows a
+	   colour to be typed by hand. */
+	const detail = "var(--AccentDetail)";
 
 	switch (element) {
 		case "Land":
@@ -360,36 +386,28 @@ const SealPattern: React.FC<{ element: FieldRecordElement }> = ({
 			);
 
 		default:
-			// Unknown elements render the spec's neutral ◎ (U+25CE) fallback -
-			// no dedicated seal SVG for the extended architecture elements.
-			return (
-				<span
-					className="flex h-full w-full items-center justify-center font-mono text-base leading-none"
-					style={{ color: stroke }}
-					aria-hidden="true"
-				>
-					◎
-				</span>
-			);
+			// The element whose record carries no device prints the seal's own
+			// FORM - the neutral roundel, with the grammar's `◎` in its empty
+			// field. It used to print the bare `◎` in a box, which was a glyph
+			// in a box beside eight roundels: a second seal form on the same
+			// wall. The mark is the same; the form is now the seal's.
+			return <SealNeutral className="h-full w-full" />;
 	}
 };
 
 const FieldRecordSeal: React.FC<FieldRecordSealProps> = ({
 	element,
 	className,
-	size = 64,
+	size = "l",
 }) => {
 	return (
-		<div
-			className={cn("inline-block", className)}
-			style={{
-				width: size,
-				height: size,
-			}}
+		<span
+			className={cn("MarkSeal", className)}
+			data-mark-size={Step(size)}
 			aria-hidden="true"
 		>
 			<SealPattern element={element} />
-		</div>
+		</span>
 	);
 };
 

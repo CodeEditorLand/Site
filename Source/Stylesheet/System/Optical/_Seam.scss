@@ -98,11 +98,12 @@
 // darker speck where its L met.
 //
 // The ink belongs to the GROUP, not to each arm - so the group carries the
-// opacity and the arms carry none. The value is published as `--corner-ink` so a
-// host that draws a different frame overrides one custom property instead of the
-// geometry's own default.
+// opacity and the arms carry none. The value is `--mark-corner-ink`, the mark
+// layer's token (`System/Mark/_Token.scss`), so the frame has one ink in one
+// place and a host that draws a different frame overrides one custom property
+// instead of the geometry's own default.
 .CornerMarks {
-	opacity: var(--corner-ink, 0.45);
+	opacity: var(--mark-corner-ink);
 }
 
 // `!important` is the point, not a shortcut: the component writes each tick's

@@ -97,6 +97,8 @@ const {
 	class: ClassName,
 } = Astro.props;
 
+import Mark from "../Mark/Mark.astro";
+
 const HasDrawer = Astro.slots.has("drawer");
 ---
 
@@ -148,9 +150,7 @@ const HasDrawer = Astro.slots.has("drawer");
 	{drawer && HasDrawer ? (
 		<details class="ShellPanes__drawer" open={drawer.open}>
 			<summary class="ShellPanes__drawer-summary">
-				<span class="ShellPanes__drawer-mark" aria-hidden="true">
-					&rarr;
-				</span>
+				<Mark kind="fold" class="ShellPanes__drawer-mark" />
 				<span class="ShellPanes__drawer-label">{drawer.label}</span>
 				{drawer.note ? (
 					<span class="ShellPanes__drawer-note">{drawer.note}</span>

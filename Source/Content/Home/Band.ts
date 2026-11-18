@@ -80,11 +80,11 @@ export const HomeBands = (T: HomeTranslate): readonly BandHead[] => [
 		Kicker: "Roadmap",
 
 		Heading: T("home:roadmap.title", {
-			defaultValue: "The Architecture Is Built. Here Is What Comes Next.",
+			defaultValue: "The Architecture Is Built. What Comes Next.",
 		}),
 
 		Standfirst:
-			"Two releases: the active source today, and v1.0 when signed installers ship. Each card prints the six elements it carries and the six manifest rows it declares.",
+			"Two releases: active source today; v1.0 when signed installers ship. Each card prints its six elements and the six manifest rows it declares.",
 
 		Stamp: RoadmapStamp,
 	},

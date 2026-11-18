@@ -12,12 +12,16 @@
  * values, not styles - the band sets the span per card and the stylesheet reads
  * it, so adding a width needs no new rule.
  *
- * The one element the record set draws as a symbol instead of an engraved seal
- * prints `◎` in the same 36px box, so the band's markers line up whether or not
- * the element has a figure.
+ * The one element the record set draws without a device prints the seal's own
+ * FORM instead - the neutral roundel (`Mark/SealNeutral.tsx`), with the grammar's
+ * `◎` in its empty field - in the same box as every other element's seal, so the
+ * band's markers line up and the wall carries one seal form rather than a
+ * roundel beside a glyph in a box.
  */
 import { FieldRecordSeal } from "../Brand/FieldRecordSeal";
 import type { FieldRecordElement } from "../Brand/FieldRecordSeal";
+
+import { SpecimenSeal } from "../UI/SpecimenSeal";
 
 import RecordLedger from "../Record/RecordLedger.astro";
 import RecordTrace from "../Record/RecordTrace.astro";
@@ -86,11 +90,11 @@ const TraceSteps = card.Trace.map((Step) => ({
 
 			<span class="home-record__seal" aria-hidden="true">
 				{card.Seal === "symbol" ? (
-					<span class="home-record__symbol">{card.Symbol}</span>
+					<SpecimenSeal className="home-record__figure" />
 				) : (
 					<FieldRecordSeal
 						element={Seal}
-						size={36}
+						size="s"
 						className="home-record__figure"
 					/>
 				)}

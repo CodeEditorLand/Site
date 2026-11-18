@@ -85,9 +85,7 @@ const Count = String(Items.length).padStart(2, "0");
 		<span class="Fold__Count">{Count}</span>
 		<span class="Fold__Word Fold__Word--open">OPEN</span>
 		<span class="Fold__Word Fold__Word--close">CLOSE</span>
-		<span class="Fold__Disclosure" aria-hidden="true">
-			›
-		</span>
+		<span class="Fold__Disclosure MarkFold" aria-hidden="true" />
 	</summary>
 
 	{Items.length > 0 ? (

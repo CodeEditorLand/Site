@@ -1,0 +1,60 @@
+// ─── THE MARK LAYER ────────────────────────────────────────────────────────
+//
+// A printed manual has a handful of marks it repeats. Their consistency is what
+// makes a page feel typeset rather than assembled from parts, and it is the one
+// thing a design system cannot delegate to the block that happens to need a dot.
+//
+// ─── THE SET ──────────────────────────────────────────────────────────────
+//
+// Eight marks, one form each, one owner each:
+//
+//   CROSSHAIR  two ticks per corner, 24px arms, 14px inset, 45 % ink
+//              `Brand/CornerMarks.astro` (the geometry in `CornerMarks/Data.ts`)
+//   SEAL       one engraved roundel, three sizes, the device is the variation
+//              `Brand/FieldRecordSeal.tsx` (the neutral roundel: `UI/SpecimenSeal`)
+//   STAMP      two 20 % rules with the mark between them - the impression band
+//              `Record/RecordStamp.astro`
+//   SQUARE     the state mark: filled = known, hollow = not; rest 4px, attested 6px
+//              `Mark/Mark.astro`, `Surface/StateBadge.tsx`
+//   BULLET     a 6px x 1px rule in the list's marker column
+//              this layer (prose lists)
+//   GLYPH      14px inside a badge, in the element's own ink
+//              `Mark/Mark.astro`, `Dynamic/DownloadMasthead.astro`
+//   ARROW      `→`, the destination at the end of a line
+//              `Mark/Mark.astro`
+//   FOLD       `›`, the disclosure that is shut, and the only mark that turns
+//              `Mark/Mark.astro`, `UI/Fold.astro`, `Record/RecordAside.astro`
+//
+// ─── THE FOUR LAWS ────────────────────────────────────────────────────────
+//
+// 1. ONE FORM EACH. There is no second arrow, no second disclosure, no second
+//    seal, no third dot size. A mark that needs a new form is a new mark and the
+//    card that adds it says so here.
+// 2. ONE SCALE. Nine steps (`Mark/_Token.scss`), hard jumps. Nothing in the
+//    set is a size that is not on the ladder - 7px, 8px, 0.375rem, 0.4rem,
+//    0.5rem, 0.875em, 0.9em and 36px were all replaced by a step.
+// 3. ONE ALIGNMENT. Inline: baseline, one `--mark-gap` from its word, never
+//    wrapped away from it. In a row: the reserved `--mark-column`, hung from the
+//    row's reading edge. A mark never moves a label by a glyph.
+// 4. ONE INK PER ROLE. A mark about a line takes `--Mark`. A state mark takes
+//    the word's ink. A seal takes the accent. A glyph takes the element's.
+//
+// ─── WHY THIS LAYER LOADS LAST ────────────────────────────────────────────
+//
+// Every rule in it either names a mark the block layer used to name itself, or
+// moves a declaration a partial already wrote (a bar to a square, a `→` to a
+// `›`, an opacity to an ink). Source order is the mechanism, exactly as it is
+// for the Detail, Optical, Motion and Type layers - and for the same reason:
+// the last thing set on a line is the mark that opens it.
+//
+// It writes no block, paints no surface and adds no copy. It is the vocabulary
+// the blocks already speak, printed once.
+
+@use "Token";
+@use "Square";
+@use "Bullet";
+@use "Arrow";
+@use "Glyph";
+@use "Seal";
+@use "Crosshair";
+@use "Adverse";

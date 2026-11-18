@@ -45,6 +45,8 @@
  */
 import Trail from "../Route/Trail.astro";
 import SurfaceStatusLine from "../Surface/SurfaceStatusLine.astro";
+
+import Mark from "../Mark/Mark.astro";
 import type { TrailItem } from "../Route/Type.js";
 import type {
 	Declaration,
@@ -195,8 +197,7 @@ const Surface = {
 				{Frame?.action ? (
 					<a class="auth-shell__alternate" href={Frame.action.href}>
 						{Frame.action.label}
-						{"\u2001"}
-						<span aria-hidden="true">&rarr;</span>
+						<Mark kind="arrow" />
 					</a>
 				) : null}
 			</div>

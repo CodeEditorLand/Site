@@ -155,11 +155,11 @@ export const NotFoundOnwardCopy: OnwardCopy = {
 	label: "/THE NEXT RECORD",
 
 	statement:
-		"This address holds nothing, so the page hands over the six places a reader who typed it usually meant. The first is the index, which lists every address the build emits.",
+		"This address holds nothing, so the page hands over the six places a reader who typed it usually meant. The first is the index, listing every address the build emits.",
 
 	note: `SOURCE: SOURCE/CONTENT/MORE/PAGE.TS${Quad}EVERY ROW POINTS AT A ROUTE THE BUILD EMITS`,
 
-	empty: "There is nowhere to send the reader. That would mean the site has one page, and this register exists because it does not.",
+	empty: "Nowhere to send the reader: that would mean the site has one page, and this register exists because it does not.",
 };
 
 /** The register on the three new surfaces' feet, one set per page. */
@@ -171,7 +171,7 @@ const Foot = (
 		index: `ONWARD / 0${Rows.length}`,
 		label: "/THE REST OF THE DOCUMENT",
 		statement:
-			"These three surfaces were built together and nothing on the site linked to them yet, so each one ends by handing over the other two and the pages a reader is most likely to want next.",
+			"These three surfaces were built together and nothing linked to them yet, so each ends by handing over the other two and the pages a reader is most likely to want next.",
 		note: `SOURCE: SOURCE/CONTENT/MORE/PAGE.TS${Quad}THE SET IS THREE PAGES, NOT A SECTION`,
 		empty: "Nothing to hand over. Every destination this register would list is the page you are on, which cannot happen while the set has three pages.",
 	},

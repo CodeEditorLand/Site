@@ -1,0 +1,123 @@
+// ─── THE MARKS UNDER AN UNKIND WORLD ───────────────────────────────────────
+//
+// `Design-Brief.md` §7: every surface has a second design. A mark is the
+// smallest surface the site has, and it has all nine conditions - not as
+// placeholders, but as the same mark answering a different question.
+//
+// ─── THE TABLE ─────────────────────────────────────────────────────────────
+//
+// EMPTY      nothing to mark yet. The COLUMN is still reserved (`--mark-column`)
+//            and empty, so the label that follows a mark that has not arrived
+//            sits where it will sit when it does. A list with no items prints
+//            the grammar's `◎` and a sentence - never a bare bullet.
+// LOADING    no spinner and no shimmer. The mark's stand-in is a bar in the
+//            mark's own column at the mark's own height, drawn with the
+//            skeleton's ink (`--state-busy-bar`) - the shape says "a mark is
+//            coming here", which a spinner cannot.
+// PARTIAL    a fact that is unknown is the SAME square, hollow, and the word
+//            beside it is `UNAVAILABLE`. Never a zero: zero is a measurement
+//            and an unmeasured fact is not zero. Never a blank: a blank cell
+//            reads as a rendering fault.
+// ERROR      the square stays filled and the word is `INTERRUPTED`. A failure is
+//            a state of the same object, not a different kind of object, so the
+//            shape does not change - and a reader who has learned the square
+//            does not have to learn a second vocabulary for failure.
+// STALE      the square stays filled, the ink steps to quiet and the age is
+//            printed beside it (`AS OF:`, `AGE:`). A mark does not pulse, blink
+//            or fade to say "this is old" - motion explains a change of state,
+//            and nothing changed.
+// TOO MUCH   marks in a row wrap at `--mark-gap` and never shrink, and the
+//            count is a figure in the register line. Two hundred states are
+//            still two hundred squares; the block windows them.
+// TOO LONG   a mark never leaves its word. It is drawn as an inline box or a
+//            `::before` and the WORD wraps, so a 120-character label keeps its
+//            mark on the first line instead of stranding it.
+// MISSING    the grammar's `◎` in ink, and the tombstone's `WAS:` / `TARGET:` /
+//            `NEXT:` rows. A missing target is not a dead link and not an
+//            empty square.
+// DENIED     the hollow square at quiet ink, and the reason printed. Never a
+//            lock glyph from an icon set, never an opacity on the whole row:
+//            a denied surface is described, not greyed out.
+//
+// ─── WHAT IS CSS AND WHAT IS THE BLOCK'S ──────────────────────────────────
+//
+// The stylesheet owns the column, the stand-in bar, the hollow arm and the
+// no-shrink rule. The WORDS (`UNAVAILABLE`, `INTERRUPTED`, `AS OF:`, the
+// sentence) belong to the block that holds the mark, because a word is copy and
+// copy is not a stylesheet's to invent. Every block that prints a state already
+// prints those words - `ShellState`, `RecordStamp`, `RecordCompare`,
+// `RecordMargin`, `RecordInset`, `SurfaceState`.
+
+@use "../Mixin" as *;
+
+// ─── EMPTY: THE COLUMN IS RESERVED ────────────────────────────────────────
+// A row that may print a mark reserves the column whether or not it prints one.
+// The selector is the attribute, not a class, so a block opts in by marking the
+// row it already has.
+[data-mark-row] {
+	position: relative;
+
+	padding-inline-start: calc(var(--space-reading) + var(--mark-column));
+}
+
+[data-mark-row] > .MarkSquare,
+[data-mark-row] > .MarkArrow,
+[data-mark-row] > .MarkFold,
+[data-mark-row] > .MarkTick {
+	position: absolute;
+	inset-inline-start: var(--space-reading);
+}
+
+// ─── LOADING: THE MARK'S STAND-IN IS A BAR ────────────────────────────────
+// The bar is the mark's own width and height, so the column is filled by the
+// same shape at the same size - the difference is that it is a rule and not a
+// filled square, which is exactly what "the value is not known yet" looks like.
+.MarkSquare[data-mark-fill="loading"] {
+	background: var(--state-busy-bar, var(--Border));
+	border: 0;
+
+	/* a bar, not a square: the width is the column's */
+	inline-size: var(--mark-column);
+	block-size: var(--mark-square);
+}
+
+// ─── STALE: QUIET, AND IT DOES NOT MOVE ───────────────────────────────────
+.MarkSquare[data-mark-fill="stale"] {
+	color: var(--MuteForeground);
+}
+
+// ─── TOO MUCH: WRAP, NEVER SHRINK ─────────────────────────────────────────
+// A strip of marks - a chip row, a set of states - wraps at the gap. `flex:
+// 0 0 auto` is already on the mark; this rule makes the WRAP the container's,
+// so a mark is never squeezed by a long list.
+[data-mark-strip] {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--mark-gap);
+}
+
+// ─── TOO LONG: THE MARK KEEPS ITS LINE ────────────────────────────────────
+// A mark that precedes a wrapping label is drawn as an inline box with
+// `vertical-align`, so it stays on the first line by construction. A mark that
+// is a flex item beside a wrapping label needs the label to shrink, not the
+// mark: `min-inline-size: 0` on the label, `flex: 0 0 auto` on the mark.
+[data-mark-row] > .MarkSquare + *,
+[data-mark-row] > .MarkArrow + * {
+	min-inline-size: 0;
+
+	overflow-wrap: anywhere;
+}
+
+// ─── MISSING / DENIED: THE FALLBACK IS THE GRAMMAR'S ──────────────────────
+// `◎` is printed by the block as text (it is a character mark, like `#`), and
+// its ink is the muted one. One declaration, so every block's fallback is the
+// same ink as every other character mark on the site.
+.MarkFallback,
+[data-mark-fallback]::before {
+	content: var(--mark-fallback);
+
+	color: var(--mark-ink);
+
+	margin-inline-end: var(--mark-gap);
+}

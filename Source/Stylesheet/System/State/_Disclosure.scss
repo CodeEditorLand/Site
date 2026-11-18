@@ -57,14 +57,7 @@ $Expander: ":is([aria-expanded]:not(summary))";
 }
 
 :where(#{$Summary}, #{$Expander}):hover
-	:where(
-		.Fold__Mark,
-		.Fold__Word,
-		.Fold__Disclosure,
-		.SlipField__Mark,
-		.record-aside__mark,
-		.doc-sidebar__mark
-	) {
+	:where(.Fold__Mark, .Fold__Word, .Fold__Disclosure, .SlipField__Mark) {
 	color: var(--state-ink);
 }
 

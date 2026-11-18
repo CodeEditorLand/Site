@@ -140,36 +140,13 @@
 	white-space: nowrap;
 }
 
-.MotionExpand__Glyphs {
-	display: inline-grid;
-
+// The glyph is the mark layer's fold (`Mark/_Arrow.scss`): one glyph, one turn,
+// opened by the `<details open>` above. This block used to swap `→` for `↳` - two
+// marks for one gesture, neither of them the fold's.
+.MotionExpand__Glyph {
 	justify-self: end;
 
-	place-items: center;
-}
-
-.MotionExpand__Glyph {
-	grid-area: 1 / 1;
-
-	@include mono-meta;
-
-	color: var(--Foreground);
-
 	@include motion-resolve;
-}
-
-.MotionExpand__Glyph--open {
-	opacity: 0;
-}
-
-.MotionExpand__Record[open] {
-	& .MotionExpand__Glyph--closed {
-		opacity: 0;
-	}
-
-	& .MotionExpand__Glyph--open {
-		opacity: 1;
-	}
 }
 
 // ─── the facts ────────────────────────────────────────────────────────────

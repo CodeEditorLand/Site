@@ -16,7 +16,7 @@
 		}
 	},
 	"page": {
-		"subtitle": "Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
+		"subtitle": "Source builds are active today. Public installers, signing and verification artifacts are in preparation.",
 		"title": "Download Land"
 	},
 	"state": {
@@ -25,13 +25,13 @@
 		"preparing": "STATUS: PREPARING",
 		"preparingNote": "Builds from source today. The public installer, signature and checksum for this platform are in preparation.",
 		"noArtifacts": "STATUS: NO PUBLIC ARTIFACTS",
-		"noArtifactsNote": "Source builds are active for all three platforms. No installer, checksum or signature has been published yet, so building from source is the only way to run Land right now.",
+		"noArtifactsNote": "Source builds are active for all three platforms. No installer, checksum or signature has been published yet, so a source build is the only way to run Land today.",
 		"unavailable": "UNAVAILABLE"
 	},
 	"status": {
 		"kicker": "SOURCE ACTIVE\u2001INSTALLERS IN PROGRESS",
-		"heading": "Land builds from source today. There is no installer to download yet.",
-		"standfirst": "macOS, Windows and Linux all build from the repository. None of them has a published installer, a signature or a checksum, so building from source is the only way to run Land right now.",
+		"heading": "Land builds from source today. No installer is available to download yet.",
+		"standfirst": "macOS, Windows and Linux all build from the repository. None has a published installer, signature or checksum, so a source build is the only way to run Land today.",
 		"footnote": "Source build: the two-step build in the Land repository's Documentation/GitHub/Building.md. Installer, signing and checksum status is quoted from this page's release manifest.",
 		"sentence": "Nothing here is downloadable yet. Land builds from source on macOS, Windows and Linux; public installers, signing and verification artifacts are still in preparation.",
 		"well": "BUILD FROM SOURCE"
@@ -39,17 +39,17 @@
 	"requirements": {
 		"kicker": "/REQUIREMENTS",
 		"heading": "What each platform needs before it builds.",
-		"footnote": "Minimum requirements, with the recommended figure in the panel beside it. Processor notes: your code runs at native CPU speed (minimum) and span your work across every monitor (recommended).",
+		"footnote": "Minimum requirements, with the recommended figure in the panel beside it. Processor: native CPU speed (minimum); every monitor spanned (recommended).",
 		"toolchain": "BUILD TOOLCHAIN (SOURCE)"
 	},
 	"previousReleases": {
-		"description": "No public releases yet. Older versions will appear here once public releases ship.",
+		"description": "No public releases yet. Older versions appear here when they ship.",
 		"title": "Previous Releases",
 		"kicker": "/PREVIOUS RELEASES",
-		"heading": "There is nothing to go back to yet.",
+		"heading": "Nothing to go back to yet.",
 		"state": "RECORD: EMPTY"
 	},
-	"subtitle": "Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
+	"subtitle": "Source builds are active today. Public installers, signing and verification artifacts are in preparation.",
 	"systemRequirements": {
 		"minimum": "Minimum Requirements",
 		"recommended": "Recommended for the Best Experience",
@@ -59,9 +59,9 @@
 	},
 	"title": "Download Land",
 	"verification": {
-		"description": "Release downloads will publish checksum and signature material when public installers are available.",
+		"description": "Release downloads publish checksums and signatures when public installers are available.",
 		"downloadButton": "View Verification Plan",
-		"title": "Verification Will Ship With Public Releases.",
+		"title": "Verification Ships With Public Releases.",
 		"verifyButton": "Verify Download"
 	},
 	"labels": {
@@ -85,15 +85,15 @@
 	"manifest": {
 		"title": "Release Manifest",
 		"heading": "Release Manifest",
-		"subtitle": "Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
+		"subtitle": "Source builds are active today. Public installers, signing and verification artifacts are in preparation.",
 		"kicker": "/RELEASE MANIFEST",
 		"headline": "RELEASE_01 lists three platforms and publishes no artifact.",
-		"footnote": "The manifest carries a release index, a channel and a per-platform status. It carries no version, no release date and no artifact size - those fields print UNAVAILABLE until a public installer publishes them.",
-		"empty": "No release is published. The manifest prints the fields it cannot fill as UNAVAILABLE, and the source build is the only path that exists."
+		"footnote": "The manifest carries a release index, a channel and a per-platform status. It carries no version, no release date and no artifact size - those print UNAVAILABLE until a public installer publishes them.",
+		"empty": "No release is published. The manifest prints the fields it cannot fill as UNAVAILABLE; the source build is the only path that exists."
 	},
 	"transparency": {
-		"title": "Telemetry Is Compile-Gated in Land.",
-		"subtitle": "Telemetry and tracing are behind named Rust feature gates in the native layer. Nothing is emitted by default. Each build profile explicitly lists which paths are compiled in.",
+		"title": "Telemetry Is Compile-Gated.",
+		"subtitle": "Telemetry and tracing sit behind named Rust feature gates in the native layer. Nothing is emitted by default; each build profile explicitly lists which paths are compiled in.",
 		"kicker": "/TRANSPARENCY"
 	},
 	"platform": {

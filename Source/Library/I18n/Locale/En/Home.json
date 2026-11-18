@@ -38,7 +38,7 @@
 	},
 	"hero": {
 		"badge": "No Electron No Chromium CC0",
-		"subtitle": "A native code editor with the soul of VS Code - and none of the browser. Built on Rust and Tauri, compatible with the extensions you already use.",
+		"subtitle": "A native code editor with the soul of VS Code and none of its browser. Built on Rust and Tauri; compatible with the extensions already in use.",
 		"title": "",
 		"titleHighlight": "Land",
 		"scene": {
@@ -113,7 +113,7 @@
 			"compat": "EXTENSIONS / UNMODIFIED",
 			"project": "LAND:",
 			"relation": "EDITOR WITHOUT CHROMIUM",
-			"standfirst": "A native code editor with the soul of VS Code - and none of the browser. Built on Rust and Tauri, compatible with the extensions you already use."
+			"standfirst": "A native code editor with the soul of VS Code and none of its browser. Built on Rust and Tauri; compatible with the extensions already in use."
 		},
 		"status": {
 			"copy": "STATUS: SOURCE ACTIVE",
@@ -188,8 +188,8 @@
 		"github": "GitHub"
 	},
 	"roadmap": {
-		"title": "The Architecture Is Built. Here Is What Comes Next.",
-		"subtitle": "Funded by NLnet NGI0 Commons Fund.\n\nEach milestone is labelled by what it represents: active source, integration work in progress, or release preparation.",
+		"title": "The Architecture Is Built. What Comes Next.",
+		"subtitle": "Funded by NLnet NGI0 Commons Fund.\n\nEach milestone is labelled by what it represents: active source, integration in progress, release preparation.",
 		"tiers": {
 			"current": {
 				"name": "Active Now",

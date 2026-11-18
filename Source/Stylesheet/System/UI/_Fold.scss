@@ -118,16 +118,11 @@
 	display: inline;
 }
 
+// The mark is the mark layer's fold (`Mark/_Arrow.scss`): one glyph, one ink, one
+// quarter turn when the fold opens. The rules here rotated a `›` of their own and
+// gave it a 150ms transition - the site's third spelling of the same gesture.
 .Fold__Disclosure {
-	color: var(--MuteForeground);
-
-	@media (prefers-reduced-motion: no-preference) {
-		transition: rotate 150ms ease;
-	}
-}
-
-.Fold[open] .Fold__Disclosure {
-	rotate: 90deg;
+	/* the fold's own alignment: at the row's end, after the word */
 }
 
 // ─── the list ─────────────────────────────────────────────────────────────

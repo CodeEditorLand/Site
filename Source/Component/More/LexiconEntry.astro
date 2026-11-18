@@ -47,6 +47,8 @@
  */
 import { Tone } from "../Surface/State.js";
 
+import Mark from "../Mark/Mark.astro";
+
 import { TermId, type Term } from "../../Content/More/Glossary.js";
 
 interface Props {
@@ -84,7 +86,7 @@ const StateTone = Entry.state
 					`lexicon-entry__state--${StateTone}`,
 				]}
 			>
-				<span class="lexicon-entry__state-mark" aria-hidden="true" />
+				<Mark kind="square" tone={StateTone} />
 				{Entry.state}
 			</p>
 		) : null}

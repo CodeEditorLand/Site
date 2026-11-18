@@ -42,6 +42,8 @@
  */
 import type { OnwardCopy, OnwardRow } from "../../Content/More/Page.js";
 
+import Mark from "../Mark/Mark.astro";
+
 interface Props {
 	/** The rows, in the order they print. The block sorts nothing. */
 	rows: readonly OnwardRow[];
@@ -76,9 +78,7 @@ const { rows, copy, class: Class } = Astro.props;
 							{Row.mark}
 						</span>
 						<span class="onward__want">{Row.want}</span>
-						<span class="onward__arrow" aria-hidden="true">
-							&rarr;
-						</span>
+						<Mark kind="arrow" class="onward__arrow" />
 						<span class="onward__where">{Row.where}</span>
 					</a>
 					{Row.note ? <p class="onward__note">{Row.note}</p> : null}

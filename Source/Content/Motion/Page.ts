@@ -83,7 +83,7 @@ export const Bands = {
 		heading: "What each motion explains, and the artifact that shows it",
 
 		standfirst:
-			"A motion is a sentence about a change of state. If the change can be described without the motion, the motion is decoration - so every class below is shown on the thing it is for, and the register beside it prints what the class costs and what it refuses to do.",
+			"A motion is a sentence about a change of state. If the change can be described without the motion, the motion is decoration - so every class below is shown on the thing it is for, and the register beside it prints what the class costs and what it refuses.",
 
 		footnote: `EVERY SPECIMEN IS LIVE${Quad}A CLASS WHOSE ARTIFACT COULD NOT BE MOUNTED WOULD BE A CLAIM, NOT A SPECIMEN`,
 
@@ -99,7 +99,7 @@ export const Bands = {
 			"Four state changes this document performs, and one it cannot draw",
 
 		standfirst:
-			"A state machine is not a process: the nodes are conditions a record is in, and the edges are the motions that carry it between them with the interval each one costs. The last sequence on this page is the honest one - a transition whose state nothing in the markup sets, so its motion has no name and its interval has no figure.",
+			"A state machine is not a process: the nodes are conditions a record is in, and the edges are the motions that carry it between them, with the interval each costs. The last sequence on this page is the honest one - a transition whose state nothing in the markup sets, so its motion has no name and its interval has no figure.",
 
 		footnote: `SOURCE: THE BLOCKS THAT SET THE STATE${Quad}AN EDGE WITH NO MEASUREMENT PRINTS UNAVAILABLE, NEVER 0 MS`,
 

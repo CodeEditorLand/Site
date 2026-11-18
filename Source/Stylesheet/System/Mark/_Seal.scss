@@ -1,0 +1,90 @@
+// ─── THE SEAL ──────────────────────────────────────────────────────────────
+//
+// The site's one engraved mark: concentric rings, four cardinal ticks, the
+// element's device in the middle, struck in the accent with the one permitted
+// detail ink inside it. It authenticates - it is the only mark on the page that
+// says "this object has been looked at" - and that is why the accent is allowed
+// to appear on it.
+//
+// ─── ONE FORM, AND THE DEVICE IS THE VARIATION ────────────────────────────
+//
+// There is one roundel geometry. The eight elements are variations of it - the
+// same 64-unit viewBox, the same outer ring at r=28 and stroke 1, the same
+// inner ring at stroke 0.5, the same accent - and each replaces the centre with
+// its own device. Nothing else changes: a seal is never a filled disc, never a
+// rotated plate, never a rubber-stamp texture, and never a glyph in a box.
+//
+// `Common` - the one element whose record carries no device - prints the
+// NEUTRAL roundel: the form itself, rings and ticks with an empty field. That
+// is the honest seal for "no device", and it is why the roundel needs no `◎`
+// fallback beside it.
+//
+// ─── THREE SIZES, AND THEY ARE THE LADDER'S ───────────────────────────────
+//
+// s  32px  a seal at the head of a card (the element wall, a feature, a tier)
+// m  48px  a seal at the head of a record (a hero, a manifest)
+// l  64px  a seal at the head of a page (a page's field record)
+//
+// The site ran 32 / 36 / 48 / 64 - four sizes, two of them four pixels apart.
+// The ladder has three, and the one that was retired is the one that was four
+// pixels from a neighbour: a reader cannot see 36 against 32, but the wall can,
+// and four sizes is four decisions.
+//
+// ─── ALIGNMENT ────────────────────────────────────────────────────────────
+//
+// A seal sits in its host's marker row, flush to the row's inline end, and it
+// never moves: it is not a control, it does not hover, and it does not animate.
+// `System/_Motion.scss` says the same thing in the motion layer - the seal is
+// where motion stops.
+
+@use "../Mixin" as *;
+
+.MarkSeal {
+	display: inline-block;
+
+	flex: 0 0 auto;
+
+	inline-size: var(--mark-size-8);
+	block-size: var(--mark-size-8);
+
+	/* a seal is a mark, not a picture: it is never announced and never clicked */
+	pointer-events: none;
+	user-select: none;
+}
+
+.MarkSeal[data-mark-size="s"] {
+	inline-size: var(--mark-size-7);
+	block-size: var(--mark-size-7);
+}
+
+.MarkSeal[data-mark-size="m"] {
+	inline-size: var(--mark-size-8);
+	block-size: var(--mark-size-8);
+}
+
+.MarkSeal[data-mark-size="l"] {
+	inline-size: var(--mark-size-9);
+	block-size: var(--mark-size-9);
+}
+
+/* The seal's own drawing: the SVG scales to its box, so the geometry is the
+   viewBox's and the size is the ladder's. Nothing here paints an ink - the
+   device's strokes carry `--Accent` and `--AccentDetail` from the component,
+   which is the one place a mark is allowed to name a colour, because a seal's
+   colour IS its authentication. */
+.MarkSeal > svg,
+.MarkSeal svg {
+	display: block;
+
+	inline-size: 100%;
+	block-size: 100%;
+}
+
+/* The neutral seal's empty field: the grammar's `◎`, in the seal's detail ink,
+   at the seal's own face. Declared in CSS because an SVG presentation attribute
+   cannot resolve a custom property. */
+.MarkSeal__field {
+	fill: var(--mark-ink-seal-detail);
+
+	font-family: var(--FontMono);
+}

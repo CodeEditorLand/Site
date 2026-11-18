@@ -94,25 +94,16 @@
 .home-record__seal {
 	display: inline-block;
 	flex-shrink: 0;
-	inline-size: 36px;
-	block-size: 36px;
+
+	/* the seal's own step (m = 32px), so the box cannot be a size the mark set
+	   does not have - it was 36px, four pixels from the 32 the mark layer uses */
+	inline-size: var(--mark-size-7);
+	block-size: var(--mark-size-7);
 }
 
 .home-record__figure {
 	inline-size: 100%;
 	block-size: 100%;
-}
-
-.home-record__symbol {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	inline-size: 100%;
-	block-size: 100%;
-	font-family: var(--FontMono);
-	font-size: var(--type-body);
-	line-height: 1;
-	color: var(--Mark);
 }
 
 .home-record__stamps {

@@ -52,14 +52,19 @@ const DynamicBadge = ({ Content, ClassName }: Property) => {
 				<>
 					{"\u2001"}
 
+					{/* The badge's protocol mark: the state square at the badge's
+					    step, in the spine's own ink (`Mark/_Square.scss`). It used to
+					    be `flat h-2 w-2` - an 8px Tailwind box, the largest of the
+					    site's five dot sizes, on a mark whose ladder tops out at 6px
+					    beside 13px type. */}
 					<span
-						className="flat h-2 w-2"
+						className="MarkSquare"
+						data-mark-size="badge"
 						style={{
-							backgroundColor:
+							color:
 								DotColorTokenMap[DotColor] ??
 								"var(--SpinegRPC)",
 						}}
-
 						aria-hidden="true"
 					/>
 				</>

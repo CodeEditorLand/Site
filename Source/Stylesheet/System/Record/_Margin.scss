@@ -104,19 +104,11 @@
 	color: var(--MuteForeground);
 }
 
-// The mark is a 4px square: the site's one specimen glyph, at the one size a
-// margin can hold. Its ink is the tone's, never a second colour.
-.record-margin__marker {
-	display: block;
-	flex: 0 0 auto;
-	inline-size: calc(4px * var(--state-mark-scale, 1));
-	block-size: calc(4px * var(--state-mark-scale, 1));
-	background: currentColor;
-}
+// The mark is the mark layer's square (`Component/Mark/Mark.astro`), at the one
+// step a margin can hold. Its ink is the tone's, never a second colour.
 
 .record-margin__state--specimen {
 	color: var(--state-ink-attested);
-	--state-mark-scale: var(--state-mark-scale-attested);
 }
 
 .record-margin__state--quiet {

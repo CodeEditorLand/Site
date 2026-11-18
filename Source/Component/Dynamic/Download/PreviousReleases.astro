@@ -24,6 +24,8 @@
  */
 import RecordMatrix from "../../Record/RecordMatrix.astro";
 
+import Mark from "../../Mark/Mark.astro";
+
 import type { MatrixColumn } from "../../Record/Type.js";
 
 import type { Release } from "./Type.js";
@@ -57,9 +59,7 @@ const Rows = releases.map((release) => ({
 <details class="download-releases">
 	<summary class="download-releases__summary">
 		<span class="download-releases__label">{label}</span>
-		<span class="download-releases__marker" aria-hidden="true">
-			→
-		</span>
+		<Mark kind="fold" class="download-releases__marker" />
 	</summary>
 
 	<div class="download-releases__body">

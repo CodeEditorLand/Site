@@ -49,6 +49,8 @@
  */
 import { Tone } from "../Surface/State.js";
 
+import Mark from "../Mark/Mark.astro";
+
 import type { Stamp } from "./Type.js";
 
 interface Props {
@@ -90,7 +92,7 @@ const Id = `stamp-${stamp.index.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 					`record-stamp__state--${StateTone}`,
 				]}
 			>
-				<span class="record-stamp__state-marker" aria-hidden="true" />
+				<Mark kind="square" tone={StateTone} />
 				<span class="record-stamp__state-key">STATUS:</span>
 				{stamp.state.toUpperCase()}
 			</span>

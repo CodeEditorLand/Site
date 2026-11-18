@@ -841,7 +841,7 @@ export const Bands = {
 		heading: "The nouns this document uses as if they were obvious",
 
 		standfirst:
-			"Record, form, band, artifact, register. They are ordinary English words doing a specific job here, and a reader who has just arrived has no way to tell which sense is meant.",
+			"Record, form, band, artifact, register: ordinary English words doing a specific job here, and a reader who has just arrived has no way to tell which sense is meant.",
 
 		footnote: `EACH DEFINITION IS THE RULE AS THE LAYER WRITES IT${Quad}A TERM WITH NO RULE PRINTS UNAVAILABLE, NEVER A PARAPHRASE`,
 
@@ -856,7 +856,7 @@ export const Bands = {
 		heading: "Five words this site used, and what replaced them",
 
 		standfirst:
-			"A manual that quietly stops using a word leaves every document that still quotes it unreadable. These are the corrections, stated as corrections rather than hidden.",
+			"A manual that quietly stops using a word leaves every document that quotes it unreadable. These are the corrections, stated as corrections rather than hidden.",
 
 		footnote: `SOURCE: THE COMMENTS IN THE MODULES THAT PRINTED THEM${Quad}RETIRED IS NOT A STATE: EACH WORD'S ENTRY STATES ARCHIVED`,
 

@@ -47,6 +47,8 @@
  */
 import { Tone } from "../Surface/State.js";
 
+import Mark from "../Mark/Mark.astro";
+
 import type { MarginNote } from "./Type.js";
 
 interface Props {
@@ -84,7 +86,7 @@ const StateTone = note.state
 				`record-margin__state--${StateTone}`,
 			]}
 		>
-			<span class="record-margin__marker" aria-hidden="true" />
+			<Mark kind="square" tone={StateTone} />
 			<span class="record-margin__state-key">STATUS:</span>
 			{note.state.toUpperCase()}
 		</p>

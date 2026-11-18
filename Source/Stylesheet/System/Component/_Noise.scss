@@ -352,7 +352,16 @@
       there is not.
 
    `flex: none` keeps a dot inside a flex row from being squeezed to nothing by
-   a long label. Radius 0 is the identity, not a preference. */
+   a long label. Radius 0 is the identity, not a preference.
+
+   ─── THE SIZE IS THE MARK LAYER'S (this card) ─────────────────────────────
+   `.StaccatoDot` is the state square under its legacy name, so it takes the
+   badge step from the ladder (`--mark-square-badge`, 6px) instead of a
+   `0.5rem` of its own. It was 8px - the largest of the five sizes the site had
+   for one dot - and every surviving caller (the local-first scan, the
+   transparency rows, the error boundary) prints it beside 13px type. The
+   colour still belongs to the caller's `bg-*` utility: the dot's colour IS its
+   status, and the `:where()` keeps that contract. */
 
 .StaccatoDot {
 	display: inline-block;
@@ -361,13 +370,13 @@
 }
 
 :where(.StaccatoDot) {
-	inline-size: 0.5rem;
-	block-size: 0.5rem;
+	inline-size: var(--mark-square-badge);
+	block-size: var(--mark-square-badge);
 
 	/* A surface that paints a dot in CSS rather than in markup sets
-	   `--StaccatoDotFill`; the mute ink is the fallback so a dot with neither
+	   `--StaccatoDotFill`; the mark ink is the fallback so a dot with neither
 	   is still a mark and never a hole. */
-	background-color: var(--StaccatoDotFill, var(--MuteForeground));
+	background-color: var(--StaccatoDotFill, var(--mark-ink));
 }
 
 .StaccatoBadge .StaccatoDot {

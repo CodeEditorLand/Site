@@ -428,11 +428,13 @@ const DynamicDocSidebar = ({
 										aria-hidden="true"
 										className={
 											IsOpen
-												? "doc-sidebar__marker doc-sidebar__marker--open"
-												: "doc-sidebar__marker"
+												? "doc-sidebar__marker MarkFold"
+												: "doc-sidebar__marker MarkFold"
 										}
 									>
-										›
+										{/* the glyph is the mark's (`Mark/_Arrow.scss`): an empty
+										    span, so the fold cannot print two `›`s or a
+										    different glyph from the rest of the site */}
 									</span>
 								</CollapsibleTrigger>
 								<CollapsibleContent>
@@ -496,11 +498,11 @@ const DynamicDocSidebar = ({
 																aria-hidden="true"
 																className={
 																	IsGroupOpen
-																		? "doc-sidebar__marker doc-sidebar__marker--open"
-																		: "doc-sidebar__marker"
+																		? "doc-sidebar__marker MarkFold"
+																		: "doc-sidebar__marker MarkFold"
 																}
 															>
-																›
+																{/* the glyph is the mark's (`Mark/_Arrow.scss`) */}
 															</span>
 														</CollapsibleTrigger>
 														<CollapsibleContent>
@@ -552,11 +554,10 @@ const DynamicDocSidebar = ({
 						onClick={Handoff}
 					>
 						<span
-							className="doc-sidebar__handoff-mark"
+							className="doc-sidebar__handoff-mark MarkArrow"
+							data-place="lead"
 							aria-hidden="true"
-						>
-							→
-						</span>
+						/>
 						<span>FIND ALL RECORDS</span>
 						<span className="doc-sidebar__handoff-chord">
 							<Chord>⌘K</Chord>
@@ -611,11 +612,11 @@ const DynamicDocSidebar = ({
 					aria-hidden="true"
 					className={
 						MobileOpen
-							? "doc-sidebar__marker doc-sidebar__marker--open"
-							: "doc-sidebar__marker"
+							? "doc-sidebar__marker MarkFold"
+							: "doc-sidebar__marker MarkFold"
 					}
 				>
-					›
+					{/* the glyph is the mark's (`Mark/_Arrow.scss`) */}
 				</span>
 			</button>
 

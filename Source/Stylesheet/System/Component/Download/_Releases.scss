@@ -76,16 +76,12 @@
 // The marker sits at the far edge and turns from right to down when the record
 // opens. Transform only: the glyph is at its full size in both states, so the
 // row cannot reflow.
+// The marker is the mark layer's fold (`Mark/_Arrow.scss`): one glyph, one
+// quarter turn, opened by the `<details open>` above. The comment in this file's
+// head says `↳`, the markup printed `→`, and the rule rotated whatever arrived -
+// three descriptions of one mark and no two of them the same.
 .download-releases__marker {
-	@include motion-enter;
-
 	margin-inline-start: auto;
-	color: var(--MuteForeground);
-	line-height: 1;
-}
-
-.download-releases[open] .download-releases__marker {
-	transform: rotate(90deg);
 }
 
 .download-releases__body {

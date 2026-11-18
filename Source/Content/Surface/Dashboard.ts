@@ -273,7 +273,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 
 		AccessSubtitle: T("common.dashboard.portal.subtitle", {
 			defaultValue:
-				"Your current authentication method and available tiers.",
+				"The current authentication method and available tiers.",
 		}),
 
 		Data: T("common.dashboard.privacy.heading", {
@@ -282,7 +282,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 
 		DataSubtitle: T("common.dashboard.privacy.subtitle", {
 			defaultValue:
-				"Exercise your GDPR rights, request data exports, or delete your account. All requests are sent directly to our privacy team and handled within 30 days.",
+				"Exercise GDPR rights, request a data export, or delete the account. Requests go straight to the privacy team; each is answered within 30 days.",
 		}),
 
 		Build: T("common.dashboard.buildLog.heading", {
@@ -291,7 +291,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 
 		BuildSubtitle: T("common.dashboard.buildLog.subtitle", {
 			defaultValue:
-				"Active build variant and deployment mode.\n\nAvailable via Local-First Air Daemon connection.",
+				"Active build variant and deployment mode. Available over a Local-First Air Daemon connection.",
 		}),
 
 		Telemetry: T("common.dashboard.telemetry.heading", {
@@ -304,7 +304,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 
 		EditorSubtitle: T("common.dashboard.editor.subtitle", {
 			defaultValue:
-				"Connect the website to your running Land editor instance.",
+				"Connect the website to a running Land editor.",
 		}),
 
 		EditorStatus: T("common.dashboard.editor.status", {
@@ -313,7 +313,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 
 		EditorDescription: T("common.dashboard.editor.description", {
 			defaultValue:
-				"The Air Daemon connects this dashboard to a running Land editor via WebSocket.\n\nLaunch Land to enable real-time build logs, telemetry, and configuration management.",
+				"The Air Daemon connects this dashboard to a running Land editor over WebSocket. Launch Land for real-time build logs, telemetry and configuration management.",
 		}),
 
 		Settings: T("common.dashboard.settings.heading", {
@@ -351,7 +351,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 
 			line: T("common.dashboard.downloads.description", {
 				defaultValue:
-					"Get the latest Land build for your platform. Native on macOS, Windows, and Linux.",
+					"The latest Land build for the platform. Native on macOS, Windows and Linux.",
 			}),
 		},
 
@@ -401,7 +401,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 
 						{
 							defaultValue:
-								"Telemetry and tracing are behind named Rust feature gates. The build profile determines what is compiled in - nothing is emitted unless a specific feature path is enabled.",
+								"Telemetry and tracing sit behind named Rust feature gates. The build profile decides what is compiled in; nothing is emitted unless a specific feature path is enabled.",
 						},
 					),
 				},
@@ -416,7 +416,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 
 					text: T("common.dashboard.telemetry.otel.description", {
 						defaultValue:
-							"OpenTelemetry tracing is available in source. Activating it requires an explicit feature flag and a configured endpoint - trace data goes only to infrastructure you control.",
+							"OpenTelemetry tracing is available in source. It needs an explicit feature flag and a configured endpoint; trace data goes only to infrastructure you control.",
 					}),
 				},
 
@@ -430,7 +430,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 
 					text: T("common.dashboard.telemetry.effect.description", {
 						defaultValue:
-							"Cocoon has internal timing and service diagnostics for extension-host work. Unless a transport is configured, that data is local process instrumentation.",
+							"Cocoon has internal timing and service diagnostics for extension-host work; unless a transport is configured, that data is local process instrumentation.",
 					}),
 				},
 			],
@@ -647,7 +647,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 
 					body: T("common.dashboard.settings.sync.description", {
 						defaultValue:
-							"Your editor preferences follow you across every device automatically.",
+							"Editor preferences follow the account across every device, automatically.",
 					}),
 
 					badge: { label: Copy.ComingSoon, tone: "mute" },
@@ -663,7 +663,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 
 						{
 							defaultValue:
-								"Your installed extensions stay in sync across all machines.",
+								"Installed extensions stay in sync across all machines.",
 						},
 					),
 

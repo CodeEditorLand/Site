@@ -216,8 +216,11 @@
 
 .home-close__dot {
 	display: inline-block;
-	inline-size: 0.375rem;
-	block-size: 0.375rem;
+
+	/* the mark layer's badge step (6px), not a `0.375rem` box of this block's
+	   own: the strip's dots are the same protocol squares the masthead prints */
+	inline-size: var(--mark-square-badge);
+	block-size: var(--mark-square-badge);
 }
 
 // The two marks that are destinations are anchors, not badges with a click

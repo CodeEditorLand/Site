@@ -24,6 +24,8 @@
  */
 import { Tone } from "./State.js";
 
+import Mark from "../Mark/Mark.astro";
+
 interface Props {
 	/** The state word, verbatim: `UNAVAILABLE`, `PREPARING`, `INTERRUPTED`. */
 	status: string;
@@ -62,7 +64,7 @@ const Resolved = Tone(status) ?? "ink";
 			`surface-absent__status--${Resolved}`,
 		]}
 	>
-		<span class="surface__mark" aria-hidden="true"></span>
+		<Mark kind="square" tone={Resolved} />
 		<span class="surface-absent__status-key">STATUS:</span>
 		{status}
 	</p>
@@ -81,8 +83,7 @@ const Resolved = Tone(status) ?? "ink";
 			<dd class="surface-absent__value">
 				<a class="surface-absent__action" href={next.href}>
 					{next.label}
-					{"\u2001"}
-					<span aria-hidden="true">&rarr;</span>
+					<Mark kind="arrow" />
 				</a>
 			</dd>
 		</div>

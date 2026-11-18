@@ -122,7 +122,7 @@ const Plan = [{ key: "PLAN", value: "PLANNED" }];
 							<FieldRecordSeal
 								slot="mark"
 								element="Land"
-								size={64}
+								size="l"
 							/>
 
 							{/* A claim, not a title: `〈 〉` is allowed here (§9 Q7). It
@@ -217,7 +217,7 @@ const Plan = [{ key: "PLAN", value: "PLANNED" }];
 							<span class="font-mono type-meta uppercase tracking-rule text-[var(--Mark)]">
 								# {Tier.index}
 							</span>
-							<FieldRecordSeal element={Tier.seal} size={32} />
+							<FieldRecordSeal element={Tier.seal} size="s" />
 						</div>
 
 						{/* The plan name is a containment stamp: `〈 CLOUD PLAN 〉`,

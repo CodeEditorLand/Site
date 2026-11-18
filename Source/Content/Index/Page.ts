@@ -180,7 +180,7 @@ export const Bands = {
 		heading: "Eight divisions, in reading order",
 
 		standfirst:
-			"Each chapter names the job a reader arrives with. The figure at the end of its line is the number of addresses the build answers in that chapter, counted from the same register the archive below files them from.",
+			"Each chapter names the job a reader arrives with. The figure at the end of its line is the number of addresses the build answers in that chapter, counted from the register the archive below files them from.",
 	} satisfies Band,
 
 	Marks: {
@@ -212,7 +212,7 @@ export const Bands = {
 		heading: "Four distances, and no fifth",
 
 		standfirst:
-			'Every band in this document opens at one of four intervals. They are a ladder at about 1.4 times a rung - the smallest step the eye reads as a different distance - and two of them are wide while two are tight, which is what lets a page say "wide" twice without saying it at the same volume.',
+			'Every band in this document opens at one of four intervals. They are a ladder at about 1.4 times a rung - the smallest step the eye reads as a different distance - two wide, two tight, which is what lets a page say "wide" twice without saying it at the same volume.',
 
 		footnote: `SOURCE: SOURCE/STYLESHEET/SYSTEM/LAYOUT/_INTERVAL.SCSS${Quad}EVERY SEQUENCE BELOW IS READ FROM THE BANDS ITS PAGE DECLARES, NEVER RESTATED`,
 	} satisfies Band,
@@ -224,7 +224,7 @@ export const Bands = {
 
 		heading: "One information type, one form",
 
-		standfirst: `${TypeForms.length} kinds of information, ${FormCount} forms. The count in the last column is measured, not claimed: it is the number of routes whose import tree mounts the block.`,
+		standfirst: `${TypeForms.length} kinds of information, ${FormCount} forms. The count in the last column is measured, not claimed: the number of routes whose import tree mounts the block.`,
 
 		footnote:
 			"`CLAIM` prints from `RecordHero` on the 404 and on this page; the homepage's claim is the endorsed two-panel hero pair, which is a keeper and outranks the block. One form, two renderings - and the pair is the one the site is recognised by.",

@@ -35,6 +35,8 @@
  */
 import Register from "../Record/Register.astro";
 
+import Mark from "../Mark/Mark.astro";
+
 import type { RegisterState } from "../Record/Type.js";
 
 import { Padded, type Register as RegisterShape } from "../Record/RegisterLine.js";
@@ -201,8 +203,7 @@ const Bars = [64, 42, 78, 55, 36, 70];
 			{more && (
 				<a class="detail-leader__more-link" href={more.href}>
 					{more.label}
-					{"\u2001"}
-					<span aria-hidden="true">→</span>
+					<Mark kind="arrow" />
 				</a>
 			)}
 		</p>

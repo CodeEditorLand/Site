@@ -365,7 +365,7 @@ export const Carries: Comparison = {
 	],
 
 	caption:
-		"One of five carries over with a documented claim. The other four are not stated anywhere in this tree, and this rail prints that rather than a verdict: a comparison whose empty cells were filled with `yes` would be the only page on the site with no source.",
+		"One of five carries over with a documented claim. The other four are not stated anywhere in this tree, and this rail prints that rather than a verdict: a comparison whose empty cells were filled with `yes` would be the only page with no source.",
 };
 
 /**
@@ -571,7 +571,7 @@ export const Bands = {
 		heading: "Eight aspects, and what each one became",
 
 		standfirst:
-			"The two columns of the table are the document's own, in its own words. The ledger under it is the reading of the substitution: what each row changes for a reader, in four words each.",
+			"The table's two columns are the document's own, in its own words. The ledger under it reads the substitution: what each row changes for a reader, in four words each.",
 
 		footnote: `SOURCE: SOURCE/CONTENT/DOC/COCOON.MD${Quad}BOTH COLUMNS ARE QUOTED, NOT SUMMARISED`,
 
@@ -601,7 +601,7 @@ export const Bands = {
 		heading: "What you keep, and how to check it",
 
 		standfirst:
-			"A reader switching editors is not asking which one is faster. They are asking what they lose. One answer is documented, four are not stated anywhere in this tree - and the three documents the answer comes from are beside it.",
+			"A reader switching editors is not asking which is faster, but what they lose. One answer is documented, four are not stated anywhere in this tree - and the three documents the answer comes from are beside it.",
 
 		footnote: `SOURCE: SOURCE/CONTENT/BLOG/VSCODECOMPATIBILITY.MD${Quad}A STOP WITH NO DOCUMENT PRINTS UNAVAILABLE, NEVER A YES`,
 

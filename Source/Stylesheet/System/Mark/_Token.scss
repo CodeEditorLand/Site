@@ -1,0 +1,161 @@
+// ─── THE MARK SCALE ─────────────────────────────────────────────────────────
+//
+// A printed manual has a handful of marks it repeats: a rule, a stamp, a
+// crosshair, a bullet, a glyph. What makes the page read as typeset rather than
+// assembled is that the marks are the SAME marks - one form each, one ladder of
+// sizes, one way of sitting beside a word, one way of taking ink.
+//
+// Before this file the site had four dots and two bars for one idea. The state
+// square was `4px` in a record and `0.4rem` (6.4px) in the shell; a state word
+// in a register carried a `2px x 0.9em` bar and the lexicon's carried
+// `2px x 0.875em`; a badge's protocol dot was `h-2 w-2` (8px) and the masthead's
+// was `0.375rem` (6px). Five sizes and two forms for a mark that means one
+// thing. A reader cannot see the difference between 6px and 6.4px, but the
+// page can: five sizes is five decisions, and five decisions is not a system.
+//
+// ─── THE LADDER IS THE LAW ─────────────────────────────────────────────────
+//
+// Eight steps, hard jumps, and NOTHING IN THE MARK SET IS A SIZE THAT IS NOT ON
+// THIS LADDER. A mark that needs a ninth size does not need a ninth size - it
+// needs to pick a step, and the card that adds one has to say which meaning the
+// step carries.
+//
+//   1  2px   the hairline: a crosshair's stem, a rule that is a mark
+//   2  4px   the square at rest: a state that is known
+//   3  6px   the square attested, a badge's dot, an axis tick, a bullet's length
+//   4  14px  a glyph inside a badge
+//   5  20px  a glyph at the head of a block (a stack tile's icon)
+//   6  24px  a crosshair's arm
+//   7  32px  a seal at the head of a card
+//   8  48px  a seal at the head of a record
+//   9  64px  a seal at the head of a page
+//
+// ─── ONE INK RULE, AND ITS THREE EXCEPTIONS ARE THE POINT ──────────────────
+//
+// A mark that says WHAT A LINE IS - the `#`, the `/`, the `→`, the `›`, the
+// `◎`, the bullet, the crosshair - takes `--Mark` (the muted ink). It is a
+// label about the line, never the line.
+//
+// Three marks are not labels about a line:
+//
+//   the state square   takes `currentColor`, the ink of the word it precedes,
+//                      because the square is that word's SHAPE and a shape
+//                      quieter than its word is a decoration.
+//   the seal           takes the accent, because it authenticates - the one
+//                      thing the accent is for.
+//   the glyph          takes the element's own ink, because a glyph for gRPC
+//                      that is not gRPC's green is a picture of a claim.
+//
+// ─── FILLED IS KNOWN, HOLLOW IS NOT ────────────────────────────────────────
+//
+// The square's adverse state is its fill, not its size and not a colour. A fact
+// that is known is a filled square; a fact that is absent, unavailable or
+// denied is the same square with a 1px rule and no fill. The shape is identical,
+// so a state that is unknown can never be read as a state that is zero, and the
+// distinction survives greyscale, a photocopy and a reader who cannot see the
+// accent at all.
+//
+// That is the whole vocabulary: two fills, two sizes (rest, attested), one
+// ladder, one ink rule per role.
+
+:root {
+	/* ─── the ladder ───────────────────────────────────────────────────── */
+	--mark-size-1: 2px;
+
+	--mark-size-2: 4px;
+
+	--mark-size-3: 6px;
+
+	--mark-size-4: 14px;
+
+	--mark-size-5: 20px;
+
+	--mark-size-6: 24px;
+
+	--mark-size-7: 32px;
+
+	--mark-size-8: 48px;
+
+	--mark-size-9: 64px;
+
+	/* ─── the rules of a mark's own drawing ────────────────────────────── */
+	/* the one stroke a hollow mark is drawn with, and the crosshair's stem */
+	--mark-hairline: 1px;
+
+	/* the crosshair's horizontal arm: 2px for presence over 1px */
+	--mark-tick: var(--mark-size-1);
+
+	/* a bullet is a rule, not a square: the length of the tick, 1px tall */
+	--mark-bullet-length: var(--mark-size-3);
+
+	--mark-bullet-height: var(--mark-hairline);
+
+	/* the crosshair's arm and its inset off the surface's edge. The inset is a
+	   POSITION, not a size - it is the distance the frame floats inside the
+	   panel, and it is one number for all eight ticks. It happens to equal the
+	   glyph's step (14px); it is written as its own value because a card that
+	   moved the frame's inset must not move every glyph on the site. */
+	--mark-arm: var(--mark-size-6);
+
+	--mark-inset: 14px;
+
+	/* the crosshair's ink: 45 %, the value the frame has always run at */
+	--mark-corner-ink: 0.45;
+
+	/* ─── the state square's two sizes ─────────────────────────────────── */
+	/* at rest: a state the vocabulary knows */
+	--mark-square: var(--mark-size-2);
+
+	/* attested: half again, and the SECOND material a state may use - the
+	   accent is not a state's ink (see `State/_Token.scss`) */
+	--mark-square-attested: var(--mark-size-3);
+
+	/* in a badge: the badge's own type is 13px, so the mark steps up one
+	   because a 4px square beside a 13px word reads as dust */
+	--mark-square-badge: var(--mark-size-3);
+
+	/* an axis tick is a station on a rail, not a word's state: one step up */
+	--mark-tick-stop: var(--mark-size-3);
+
+	/* ─── one ink per role ─────────────────────────────────────────────── */
+	/* a label about a line */
+	--mark-ink: var(--Mark);
+
+	/* the ink of a mark that must not be quieter than its word */
+	--mark-ink-state: currentColor;
+
+	/* the seal's two inks - the accent and its one permitted detail */
+	--mark-ink-seal: var(--Accent);
+
+	--mark-ink-seal-detail: var(--AccentDetail);
+
+	/* ─── one alignment rule ───────────────────────────────────────────── */
+	/* the space between a mark and the word it marks. `ch` and not `em`: the
+	   face is mono, so a character is the unit the line is already set in. */
+	--mark-gap: 0.5ch;
+
+	/* the column a row reserves for its mark, whether or not it prints one.
+	   A state change moves ink, never a label by a glyph. */
+	--mark-column: 1.25rem;
+
+	/* a prose list's marker column: the mark column plus one tight step, so the
+	   tick stands off the list's edge and the item's text keeps a measure a
+	   paragraph would recognise */
+	--mark-list-column: calc(var(--mark-column) + var(--space-tight));
+
+	/* a mark sitting inline in a sentence rides the baseline up by this much,
+	   so a 4px square centres on the x-height rather than on the baseline */
+	--mark-raise: -0.1em;
+
+	/* ─── the two character marks, and the one they fall back to ───────── */
+	/* the arrow is a destination; the fold is a disclosure that is shut */
+	--mark-arrow: "→";
+
+	--mark-fold: "›";
+
+	/* the grammar's fallback (U+25CE) - the mark for a thing that is not here */
+	--mark-fallback: "◎";
+
+	/* the fold turns by this much when it opens, and by nothing else */
+	--mark-turn: 90deg;
+}

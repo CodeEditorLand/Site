@@ -34,6 +34,8 @@
  */
 import type { FoldLeaf, FoldSpec } from "./Type.js";
 
+import Mark from "../Mark/Mark.astro";
+
 interface Props extends Partial<FoldSpec> {
 	/** The register line's name. */
 	name: FoldSpec["name"];
@@ -98,10 +100,11 @@ const ClassOf = (Leaf: FoldLeaf): string =>
 			<span class="MotionFold__Word MotionFold__Word--open">OPEN</span>
 			<span class="MotionFold__Word MotionFold__Word--close">CLOSE</span>
 		</span>
-		<span class="MotionFold__Glyphs" aria-hidden="true">
-			<span class="MotionFold__Glyph MotionFold__Glyph--closed">→</span>
-			<span class="MotionFold__Glyph MotionFold__Glyph--open">↳</span>
-		</span>
+		{/* One mark, one turn: the fold's glyph is the mark layer's (`Mark/_Arrow.scss`)
+		    and the `<details open>` above turns it. It used to print `→` when shut and
+		    `↳` when open - two marks for one gesture, and the proposition's mark doing
+		    the fold's work. */}
+		<Mark kind="fold" class="MotionFold__Glyph" />
 	</summary>
 
 	{Loading ? (

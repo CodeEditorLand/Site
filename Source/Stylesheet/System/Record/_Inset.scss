@@ -255,17 +255,10 @@
 	color: var(--MuteForeground);
 }
 
-.record-inset__state-marker {
-	display: block;
-	flex: 0 0 auto;
-	inline-size: calc(4px * var(--state-mark-scale, 1));
-	block-size: calc(4px * var(--state-mark-scale, 1));
-	background: currentColor;
-}
+// The status mark is the mark layer's square (`Component/Mark/Mark.astro`).
 
 .record-inset__state--specimen {
 	color: var(--state-ink-attested);
-	--state-mark-scale: var(--state-mark-scale-attested);
 }
 
 .record-inset__state--quiet {

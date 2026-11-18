@@ -81,16 +81,15 @@
 	color: var(--Foreground);
 }
 
-.ShellState__status-mark {
-	inline-size: calc(0.4rem * var(--state-mark-scale, 1));
-	block-size: calc(0.4rem * var(--state-mark-scale, 1));
-	background: currentColor;
-	translate: 0 -0.1em;
-}
+// The status mark is the mark layer's square (`Component/Mark/Mark.astro`), at
+// the record's own step. The rule here drew a `0.4rem` (6.4px) square with a
+// hand-written `translate: 0 -0.1em`, while a stamp drew 4px and a register drew
+// a 2px bar - three sizes and two shapes for one mark. The square's raise is the
+// mark layer's token now (`--mark-raise`), so the box that holds it does not
+// carry a nudge of its own.
 
 .ShellState__status--specimen {
 	color: var(--state-ink-attested);
-	--state-mark-scale: var(--state-mark-scale-attested);
 }
 
 .ShellState__status--quiet {

@@ -16,7 +16,9 @@
  *
  * No client-side script and no hydration directive: the block is static.
  */
-import type { Mark } from "./Download/Type.js";
+import type { Mark as MarkData } from "./Download/Type.js";
+
+import Mark from "../Mark/Mark.astro";
 
 interface Props {
 	/** The page's h1, printed verbatim. */
@@ -26,7 +28,7 @@ interface Props {
 	sentence: string;
 
 	/** The marks, in the order they are printed. */
-	marks: readonly Mark[];
+	marks: readonly MarkData[];
 }
 
 const { title, sentence, marks } = Astro.props;
@@ -53,17 +55,17 @@ const { title, sentence, marks } = Astro.props;
 					{mark.label}
 					{mark.dot || mark.glyph ? "\u2001" : null}
 					{mark.dot ? (
-						<span
-							class="download-masthead__dot"
-							style={`background-color:var(--${mark.dot})`}
-							aria-hidden="true"
+						<Mark
+							kind="square"
+							size="badge"
+							ink={`var(--${mark.dot})`}
 						/>
 					) : null}
 					{mark.glyph ? (
 						<img
-							class="download-masthead__mark"
+							class="download-masthead__mark MarkGlyph"
 							src={mark.glyph.src}
-							alt={mark.glyph.alt}
+							alt=""
 							width="14"
 							height="14"
 							aria-hidden="true"

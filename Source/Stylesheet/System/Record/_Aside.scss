@@ -76,29 +76,16 @@
 	color: var(--MuteForeground);
 }
 
-// The mark is the row's end. Closed it points along the row (`→`, "there is more
-// this way"); open it points down (`↓`, "this is what is under the row").
-.record-aside__mark {
-	@include mono-meta;
-	flex: 0 0 auto;
-	color: var(--Foreground);
-	@include motion-enter;
-}
+// The mark is the row's end, and it is the mark layer's fold (`Mark/_Arrow.scss`):
+// closed it points along the row (`›`, "there is more this way"); open the same
+// glyph turns a quarter turn and points down. It used to be a `→` that turned -
+// the arrow that means "destination" used for a thing that does not go anywhere,
+// which is exactly the second arrow style this layer removes. The hover travel
+// is the mark's own too, so the aside and the page fold cannot drift apart.
 
-.record-aside[open] > .record-aside__summary > .record-aside__mark {
-	transform: rotate(90deg);
-}
-
+// The label answers the pointer with ink - the row's affordance, unchanged.
 .record-aside__summary:hover > .record-aside__label {
 	color: var(--Foreground);
-}
-
-.record-aside__summary:hover > .record-aside__mark {
-	transform: translateX(2px);
-}
-
-.record-aside[open] > .record-aside__summary:hover > .record-aside__mark {
-	transform: rotate(90deg) translateX(2px);
 }
 
 .record-aside__summary:focus-visible {

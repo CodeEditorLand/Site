@@ -33,6 +33,8 @@
  */
 import type { Sequence } from "./Type.js";
 
+import Mark from "../Mark/Mark.astro";
+
 interface Props {
 	/** The sequence's data. */
 	sequence: Sequence;
@@ -109,12 +111,7 @@ Nodes.forEach((Node, Position) => {
 							{Step.motion}
 						</span>
 						<span class="MotionSequence__Line">
-							<span
-								class="MotionSequence__Mark"
-								aria-hidden="true"
-							>
-								→
-							</span>
+						<Mark kind="arrow" class="MotionSequence__Mark" />
 						</span>
 						<span
 							class:list={[

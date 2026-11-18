@@ -37,6 +37,8 @@
  */
 import type { SurfaceState as State } from "./State.js";
 
+import Mark from "../Mark/Mark.astro";
+
 interface Props {
 	/** The states, in the order the page states them. */
 	states: readonly State[];
@@ -58,7 +60,7 @@ const { states, class: ClassName } = Astro.props;
 					`surface__state-word--${Row.tone}`,
 				]}
 			>
-				<span class="surface__mark" aria-hidden="true"></span>
+				<Mark kind="square" tone={Row.tone} />
 				{Row.value}
 			</span>
 		</li>

@@ -179,7 +179,7 @@ export const ElementPlateSet: PlateSet = {
 	columns: 3,
 
 	caption:
-		"Fifteen element records, fifteen manifest states, and not one capture: eight manifests are `placeholder` with no plate beside them, seven elements have no manifest at all, and the set prints each cell's own state rather than a gallery of empty frames. The one verified capture in the build belongs to the product record, and it is printed as PLATE_01 on /Download.",
+		"Fifteen element records, fifteen manifest states, not one capture: eight manifests are `placeholder` with no plate beside them, seven elements have no manifest at all, and the set prints each cell's own state rather than a gallery of empty frames. The one verified capture in the build belongs to the product record; it prints as PLATE_01 on /Download.",
 
 	source: `PUBLIC/EVIDENCE/*/MANIFEST.YAML${Quad}SOURCE/CONTENT/ELEMENT/WORKING.TS`,
 
@@ -269,7 +269,7 @@ export const ReleasePlate: Plate = {
 		"The one verified capture in the build: rain-speckled glass reflecting a green light at night.",
 
 	caption:
-		"It is a texture plate for the Land element's material, not a screenshot of the editor. No capture of the interface is in the build, and the three screens the manual documents in full are listed beside this plate with the capture the build carries for each: none.",
+		"A texture plate for the Land element's material, not a screenshot of the editor. No capture of the interface is in the build; the three screens the manual documents in full are listed beside this plate with the capture the build carries for each: none.",
 
 	src: "/Evidence/Land/NightGlass-01.png",
 
@@ -356,7 +356,7 @@ export const ReleasePlateSet: PlateSet = {
 	columns: 3,
 
 	caption:
-		"Three screens the manual documents in full - /Doc/workflow-open-file, /Doc/workflow-command-palette and /Doc/workflow-terminal - and no capture of any of them. A release that printed its interface as a drawing would be illustrating; this set says what the build has and what it does not.",
+		"Three screens the manual documents in full - /Doc/workflow-open-file, /Doc/workflow-command-palette, /Doc/workflow-terminal - and no capture of any. A release that printed its interface as a drawing would be illustrating; this set says what the build has and what it does not.",
 
 	source: `SOURCE/CONTENT/DOC/WORKFLOW-*.MD${Quad}PUBLIC/EVIDENCE/*/MANIFEST.YAML`,
 

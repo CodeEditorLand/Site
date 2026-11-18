@@ -40,9 +40,10 @@ export const MotionOrigin = () => (
 			<button type="button" className="MotionOrigin__Trigger">
 				<span className="MotionOrigin__Label">OPEN:</span>
 				<span className="MotionOrigin__Value">A SLIP</span>
-				<span className="MotionOrigin__Mark" aria-hidden="true">
-					→
-				</span>
+				<span
+					className="MotionOrigin__Mark MarkArrow"
+					aria-hidden="true"
+				/>
 			</button>
 		</PopoverTrigger>
 

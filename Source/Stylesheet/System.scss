@@ -1,5 +1,10 @@
 @use "System/Tailwind";
 @use "System/Token";
+// The mark layer's tokens load with the token block: a mark's size, ink, gap and
+// column are read by partials in every layer above (the state square by the
+// Record layer, the crosshair by the Component layer, the bullet by the prose),
+// and a custom property is resolved where it is USED, not where it is declared.
+@use "System/Mark/Token" as MarkToken;
 @use "System/Mixin";
 @use "System/Base";
 @use "System/Global";
@@ -43,3 +48,9 @@
 // `System/State/_Index.scss` before moving this line - it is the law, and the
 // reason the layer is a layer.
 @use "System/State/Index" as State;
+// The mark layer loads LAST of all, after the state layer it refines: every rule
+// in it either names a mark the block layer used to name itself (a 2px bar, a
+// `0.4rem` square, a `→` on a disclosure) or moves a declaration a partial
+// already wrote, and source order is the mechanism. A mark is the last thing set
+// on a line. See `System/Mark/_Index.scss` before moving this line.
+@use "System/Mark/Index" as Mark;

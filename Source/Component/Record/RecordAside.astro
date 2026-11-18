@@ -31,11 +31,14 @@
  * DENSE             none. An aside is already the compressed form of its subject
  *                   - folding it further would make it unopenable.
  *
- * THE DISCLOSURE MARK IS `→`, ROTATED. The site has no chevron: its grammar has
- * `→` for progression and nothing for "open". A `→` that turns 90° when the
- * aside opens is the grammar's own mark acknowledging a change of state, and it
- * is the only motion this block has. With `prefers-reduced-motion` it snaps and
- * loses nothing: the body is present or it is not.
+ * THE DISCLOSURE MARK IS `›`, AND IT TURNS. The site's grammar has `→` for
+ * progression and `›` for "there is more behind this"; a disclosure is the
+ * second, not the first. This block used to print a `→` and rotate it, which
+ * made the arrow that means "destination" do the fold's work - one of the four
+ * spellings of the same gesture the mark set removed. The mark, its ink and its
+ * quarter turn are `Mark/_Arrow.scss`'s now, and the only motion this block has
+ * is that turn. With `prefers-reduced-motion` it snaps and loses nothing: the
+ * body is present or it is not.
  *
  * A `<details>` IS THE WHOLE MECHANISM. No script, no `client:*`, no state in
  * React: the disclosure works with JavaScript off, prints open in a print
@@ -43,6 +46,8 @@
  * closed (the browser opens it to show the match).
  */
 import RecordLedger from "./RecordLedger.astro";
+
+import Mark from "../Mark/Mark.astro";
 
 import type { Aside } from "./Type.js";
 
@@ -90,9 +95,7 @@ const HasBody = HasSlot || Rows || Prose || (aside.empty ?? "") !== "";
 		<summary class="record-aside__summary">
 			<span class="record-aside__index"># {aside.index}</span>
 			<span class="record-aside__label">/ {aside.label}</span>
-			<span class="record-aside__mark" aria-hidden="true">
-				&#8594;
-			</span>
+			<Mark kind="fold" />
 		</summary>
 
 		<div class="record-aside__body">

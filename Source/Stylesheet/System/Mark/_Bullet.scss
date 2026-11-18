@@ -1,0 +1,102 @@
+// ─── THE BULLET ────────────────────────────────────────────────────────────
+//
+// A list item's mark, and the only mark on the site that is a RULE rather than
+// a box. It is 6px long and 1px tall, at `--Mark`, hung in the list's marker
+// column: the dash a printed manual uses before an item, and the reason a list
+// in this face reads as set rather than as a browser default.
+//
+// ─── WHY NOT THE BROWSER'S DISC ───────────────────────────────────────────
+//
+// A `•` is a filled circle at the x-height, and the site has no circles: radius
+// 0 is identity, the state mark is a square, the crosshair is two ticks, the
+// seal is a ring because a seal is struck. A disc was the one round thing on a
+// page of squares, and it was not even the site's - it was the user agent's.
+//
+// ─── WHY NOT A SQUARE ─────────────────────────────────────────────────────
+//
+// The filled square is the STATE mark. A bullet is not a state: it says "one
+// item of a list", which is a different sentence. Two marks that look the same
+// and mean different things is the confusion this layer removes, so the bullet
+// takes the other axis - a tick, not a box.
+//
+// ─── THE ADVERSE STATES ───────────────────────────────────────────────────
+//
+// TOO LONG   the marker is `position: absolute`, so a 400-character item wraps
+//            its text and the tick stays on the first line. A bullet that
+//            drifted to the middle of a wrapped item would mark the wrong line.
+// TOO MUCH   the list keeps its column and its rhythm; `--StateWindow` bounds
+//            it at the block, not here.
+// EMPTY      an empty list prints nothing - and a block that expects items
+//            prints `◎` with a sentence (the grammar's fallback), never a bare
+//            bullet with no item after it.
+
+@use "../Mixin" as *;
+
+// The four prose surfaces, plus the blog article's body, which is the fifth
+// place a markdown list renders. One rule, one column, one tick.
+$Prose: ":is(.prose, .prose-flow, .LegalCard, .reading-document__body, .blog-article__body)";
+
+#{$Prose} ul:not([class]),
+#{$Prose} ul.LegalList {
+	/* the column is the mark's, and the text starts after it */
+	padding-inline-start: var(--mark-list-column);
+}
+
+#{$Prose} ul:not([class]) > li,
+#{$Prose} ul.LegalList > li {
+	position: relative;
+
+	/* the browser's disc is removed and its column is kept: the tick hangs in
+	   the same place the disc did, so no list re-indents by this rule */
+	list-style: none;
+}
+
+#{$Prose} ul:not([class]) > li::before,
+#{$Prose} ul.LegalList > li::before {
+	content: "";
+
+	position: absolute;
+
+	/* the tick hangs in the list's own column, at the li's leading edge */
+	inset-inline-start: calc(var(--mark-list-column) * -1);
+
+	/* half a line down, less half the tick: the mark centres on the first
+	   line's x-height, not on its top edge */
+	inset-block-start: 0.58em;
+	inset-block-start: calc(0.5lh - var(--mark-bullet-height) / 2);
+
+	inline-size: var(--mark-bullet-length);
+	block-size: var(--mark-bullet-height);
+
+	background: var(--mark-ink);
+
+	pointer-events: none;
+}
+
+// An ordered list keeps its numerals: a number IS the item's mark and it is
+// already in the grammar's `:`-free numeral form. Only its ink is ours.
+#{$Prose} ol > li::marker {
+	color: var(--mark-ink);
+}
+
+// A list that carries its own class is a composed block's list (a rail, a
+// register, a set of stops) and draws its own marks. The tick is for prose.
+
+// ─── THE BULLET AS A SPAN ─────────────────────────────────────────────────
+// A row that is not a `<li>` - a stack of propositions in a card, a set of
+// conditions in a margin - prints the same tick as a span. One form, one rule:
+// the block does not draw its own.
+.MarkBullet {
+	display: inline-block;
+
+	flex: 0 0 auto;
+
+	inline-size: var(--mark-bullet-length);
+	block-size: var(--mark-bullet-height);
+
+	background: var(--mark-ink);
+
+	vertical-align: calc(var(--mark-raise) + 0.25em);
+
+	pointer-events: none;
+}

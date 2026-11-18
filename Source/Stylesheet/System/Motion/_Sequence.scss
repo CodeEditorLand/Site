@@ -146,7 +146,10 @@
 	font-size: var(--type-meta);
 	line-height: 1;
 
-	color: var(--Foreground);
+	/* the mark layer's ink (`Mark/_Arrow.scss`); the position is the edge's own,
+	   and the arrow's leading gap is cancelled because the mark is centred on the
+	   line rather than set after a word */
+	margin-inline-start: 0;
 }
 
 .MotionSequence__Interval {

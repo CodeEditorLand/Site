@@ -50,6 +50,8 @@
 import { FieldRecordEvidence } from "../Brand/FieldRecordEvidence";
 import { Tone } from "../Surface/State.js";
 
+import Mark from "../Mark/Mark.astro";
+
 import type { Inset } from "./Type.js";
 
 interface Props {
@@ -212,10 +214,7 @@ const Empty = inset.empty !== undefined && !inset.body;
 						`record-inset__state--${StateTone}`,
 					]}
 				>
-					<span
-						class="record-inset__state-marker"
-						aria-hidden="true"
-					/>
+					<Mark kind="square" tone={StateTone} />
 					<span class="record-inset__state-key">STATUS:</span>
 					{inset.state.toUpperCase()}
 				</p>

@@ -83,7 +83,7 @@ export const RustWorkspace = (T: TFunction): RustSurface => ({
 		note: T("layout.rust.drawer.note", { defaultValue: "FOLDED" }),
 		statement: T("layout.rust.drawer.statement", {
 			defaultValue:
-				"The frame is generated rustdoc output, served from each crate's own documentation host and framed here unchanged. It is not a summary this site wrote, and it is not styled by this site.",
+				"The frame is generated rustdoc output, served from each crate's own documentation host and framed here unchanged. It is not a summary this site wrote, and not styled by this site.",
 		}),
 		source: T("layout.rust.drawer.source", {
 			defaultValue: "SOURCE: COMPONENT/DOC/RUST/DATA.TS",

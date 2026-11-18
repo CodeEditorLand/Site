@@ -243,12 +243,10 @@
 	margin-block-start: var(--space-tight);
 }
 
-.lexicon-entry__state-mark {
-	display: inline-block;
-	inline-size: 2px;
-	block-size: 0.875em;
-	background: currentColor;
-}
+// The status mark is the mark layer's square (`Component/Mark/Mark.astro`). The
+// rule here drew a `2px x 0.875em` bar - the register's bar was `2px x 0.9em`,
+// and two heights eight thousandths of an em apart for one mark is exactly the
+// kind of variant nobody can see and everybody inherits.
 
 .lexicon-entry__state--ink {
 	color: var(--Foreground);

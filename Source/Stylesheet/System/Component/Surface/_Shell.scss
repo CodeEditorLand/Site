@@ -17,7 +17,8 @@
 //   .surface__state-row    one state row, on the ledger's own key column
 //   .surface__state-key    the mono key a state is stated under
 //   .surface__state-word   the state word, at its tone's ink
-//   .surface__mark         the 2px specimen rule a state carries
+//   .surface__mark         (retired) the 2px rule a state carried; the mark
+//                          layer's square is the state mark now
 //   .surface__chips        a row of state chips, each in a `jelly-badge`
 //   .surface__stack        a dense stack of records at --space-tight
 //   .surface__prose        a paragraph inside a band body
@@ -146,11 +147,10 @@
 
 .surface__state-word--specimen {
 	/* The attested tone: the ink, and the marker's size carries the state
-	   (`--state-ink-attested` / `--state-mark-scale-attested` in
-	   `System/State/_Token.scss`). It used to print in the accent, which is the
-	   site's authentication colour and not a state's label ink. */
+	   (`Mark/_Square.scss` - a tone and its step are one rule there). It used to
+	   print in the accent, which is the site's authentication colour and not a
+	   state's label ink. */
 	color: var(--state-ink-attested);
-	--state-mark-scale: var(--state-mark-scale-attested);
 }
 
 .surface__state-word--ink {
@@ -161,20 +161,16 @@
 	color: var(--MuteForeground);
 }
 
-// The marker itself. `currentColor` is the whole trick: the rule takes the
-// word's ink, so `--specimen` paints it green and `--quiet` paints it muted
-// without a second declaration per tone. It is the same span inside a state
-// row and inside a `jelly-badge` chip, so a chip cannot lose its marker.
-.surface__mark {
-	display: inline-block;
-	/* 2px at rest, and a tone may scale it: the attested state's rule is half
-	   again (3px) so a state that authenticates is a SHAPE a reader can see
-	   rather than a hue (`--state-mark-scale`, `System/State/_Token.scss`). */
-	inline-size: calc(2px * var(--state-mark-scale, 1));
-	block-size: 0.9em;
-	margin-inline-end: 0.45em;
-	vertical-align: -0.02em;
-	background: currentColor;
+// The marker itself is the mark layer's square (`Component/Mark/Mark.astro`):
+// one form, `currentColor` for its ink, and the tone's own step. The rule that
+// drew a `2px x 0.9em` bar here was the site's fourth state mark and the second
+// shape for one meaning - a bar is not a state, and a state is not a bar.
+//
+// The one place the mark is INLINE in a sentence rather than a flex child: the
+// register's word. The gap is the mark layer's token, not a second spacing
+// decision, and it is declared here because the row does not own a `gap`.
+.surface__state-word > .MarkSquare {
+	margin-inline-end: var(--mark-gap);
 }
 
 // Wide enough for the ledger's key column: the register takes the same
@@ -203,6 +199,13 @@
 	margin: 0 0 var(--space-tight);
 	padding: 0;
 	list-style: none;
+}
+
+/* A chip's square leads its label inside the badge, and a badge is not a flex
+   row - so the one gap the mark takes on its trailing side is declared here,
+   from the mark layer's token rather than a second spacing decision. */
+.surface__chips .MarkSquare {
+	margin-inline-end: var(--mark-gap);
 }
 
 .surface__stack {

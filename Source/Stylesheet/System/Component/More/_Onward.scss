@@ -126,9 +126,9 @@
 }
 
 .onward__arrow {
+	/* the mark layer's ink and gap (`Mark/_Arrow.scss`); the row owns the type */
 	font-size: var(--type-meta);
 	line-height: var(--type-meta-line);
-	color: var(--MuteForeground);
 	flex: 0 0 auto;
 }
 

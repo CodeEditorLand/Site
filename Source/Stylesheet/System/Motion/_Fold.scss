@@ -138,22 +138,22 @@
 .MotionFold__Glyph {
 	@include mono-meta;
 
-	color: var(--Foreground);
+	/* the mark layer's ink and turn (`Mark/_Arrow.scss`) - this block used to
+	   colour its own glyphs and swap two of them, which is the second arrow
+	   style the mark set removes */
+	margin-inline-start: auto;
 }
 
-.MotionFold__Word--close,
-.MotionFold__Glyph--open {
+.MotionFold__Word--close {
 	opacity: 0;
 }
 
 .MotionFold[open] {
-	& .MotionFold__Word--open,
-	& .MotionFold__Glyph--closed {
+	& .MotionFold__Word--open {
 		opacity: 0;
 	}
 
-	& .MotionFold__Word--close,
-	& .MotionFold__Glyph--open {
+	& .MotionFold__Word--close {
 		opacity: 1;
 	}
 }

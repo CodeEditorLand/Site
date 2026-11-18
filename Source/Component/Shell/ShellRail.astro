@@ -104,6 +104,8 @@ const {
 	class: ClassName,
 } = Astro.props;
 
+import Mark from "../Mark/Mark.astro";
+
 const Count = count === undefined ? null : String(count);
 ---
 
@@ -183,9 +185,7 @@ const Count = count === undefined ? null : String(count);
 		<p class="ShellRail__foot">
 			<a class="ShellRail__foot-link" href={foot.href}>
 				{foot.label}
-				<span class="ShellRail__foot-arrow" aria-hidden="true">
-					&rarr;
-				</span>
+				<Mark kind="arrow" class="ShellRail__foot-arrow" />
 			</a>
 		</p>
 	) : null}

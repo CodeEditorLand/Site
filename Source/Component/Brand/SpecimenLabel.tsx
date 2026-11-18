@@ -8,6 +8,8 @@ import type { FieldRecord as FieldRecordData } from "../../Content/Record/FieldR
 
 import { FieldRecordSeal } from "./FieldRecordSeal";
 
+import type { SealSize } from "./FieldRecordSeal";
+
 import { RouteText, StampText, StatusText } from "./SemanticLedger";
 
 export interface SpecimenLabelProps {
@@ -16,7 +18,8 @@ export interface SpecimenLabelProps {
 	className?: string;
 
 	/** Seal render size in px (default 36 - card-sized specimen anchor, not the hero 64). */
-	sealSize?: number;
+	/** The seal's step (`s` 20 / `m` 32 / `l` 48), or a px number for an old caller. */
+	sealSize?: SealSize | number;
 
 	/** Hide the index + seal header row (used when the host renders its own). */
 	showHeader?: boolean;
@@ -48,7 +51,7 @@ export interface SpecimenLabelProps {
 const SpecimenLabel: React.FC<SpecimenLabelProps> = ({
 	record,
 	className,
-	sealSize = 36,
+	sealSize = "s",
 	showHeader = true,
 	showTitle = true,
 	action,

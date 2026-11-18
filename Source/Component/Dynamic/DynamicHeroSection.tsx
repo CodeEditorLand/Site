@@ -227,18 +227,22 @@ const ANCHOR: Record<
 	},
 };
 
-/** One tick's box: its anchored edge, its arm span, and its slide origin. */
+/** One tick's box: its anchored edge, its arm span, and its slide origin.
+ *
+ * The numbers are the mark ladder's, read as tokens with `CornerMarks/Data.ts`'s
+ * values as the fallback - the same expression the Astro renderer emits, so the
+ * hero's frame and the component's frame are one frame and neither owns a
+ * number. The opacity is the GROUP's (`--mark-corner-ink`), so no tick carries
+ * one and the joint at each corner cannot double it. */
 const TickStyle = (Corner: Corner, Axis: "h" | "v"): CSSProperties => {
 	const Anchor = ANCHOR[Corner];
 
-	const Inset = `${CORNER_GEOMETRY.Inset}px`;
+	const Inset = `var(--mark-inset, ${CORNER_GEOMETRY.Inset}px)`;
 
 	return {
 		position: "absolute",
 
 		backgroundColor: CORNER_GEOMETRY.Color,
-
-		opacity: CORNER_GEOMETRY.Opacity,
 
 		top: Anchor.block === "top" ? Inset : undefined,
 
@@ -250,13 +254,13 @@ const TickStyle = (Corner: Corner, Axis: "h" | "v"): CSSProperties => {
 
 		width:
 			Axis === "h"
-				? `${CORNER_GEOMETRY.Horizontal}px`
-				: `${CORNER_GEOMETRY.StemWidth}px`,
+				? `var(--mark-arm, ${CORNER_GEOMETRY.Horizontal}px)`
+				: `var(--mark-tick, ${CORNER_GEOMETRY.StemWidth}px)`,
 
 		height:
 			Axis === "h"
-				? `${CORNER_GEOMETRY.Thickness}px`
-				: `${CORNER_GEOMETRY.Vertical}px`,
+				? `var(--mark-tick, ${CORNER_GEOMETRY.Thickness}px)`
+				: `var(--mark-arm, ${CORNER_GEOMETRY.Vertical}px)`,
 
 		transformOrigin: Axis === "h" ? Anchor.originH : Anchor.originV,
 	};
@@ -368,7 +372,7 @@ const DynamicHeroSection = ({
 									{Hero.claim.kicker}
 								</p>
 
-								<FieldRecordSeal element="Land" size={48} />
+								<FieldRecordSeal element="Land" size="m" />
 							</div>
 
 							{/*

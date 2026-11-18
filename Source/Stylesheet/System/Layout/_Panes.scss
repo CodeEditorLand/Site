@@ -214,13 +214,11 @@
 	}
 }
 
+// The drawer's mark is the mark layer's fold (`Mark/_Arrow.scss`): one glyph,
+// one quarter turn, opened by the `<details open>` above. The rule here rotated
+// the block's own `&rarr;` - the site's fourth spelling of the disclosure.
 .ShellPanes__drawer-mark {
-	color: var(--Mark);
-	@include motion-enter;
-}
-
-.ShellPanes__drawer[open] .ShellPanes__drawer-mark {
-	transform: rotate(90deg);
+	/* the fold's own place: before the label, so the gap is the mark's */
 }
 
 .ShellPanes__drawer-label {

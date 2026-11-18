@@ -32,6 +32,8 @@
  */
 import type { ExpandRecord } from "./Type.js";
 
+import Mark from "../Mark/Mark.astro";
+
 interface Props {
 	/** The set's register line: `# EXPAND / 04`. Printed above the records. */
 	marker: string;
@@ -89,14 +91,10 @@ const Unknown = (Value: string): boolean => Value.trim() === "UNAVAILABLE";
 								{Record.fact}
 							</span>
 						) : null}
-						<span class="MotionExpand__Glyphs" aria-hidden="true">
-							<span class="MotionExpand__Glyph MotionExpand__Glyph--closed">
-								→
-							</span>
-							<span class="MotionExpand__Glyph MotionExpand__Glyph--open">
-								↳
-							</span>
-						</span>
+						{/* One mark, one turn (`Mark/_Arrow.scss`): the two-glyph swap this
+						    block used to print (`→` / `↳`) was the fold's gesture drawn
+						    with the arrow and the proposition's mark. */}
+						<Mark kind="fold" class="MotionExpand__Glyph" />
 					</summary>
 
 					<div class="MotionExpand__Body">

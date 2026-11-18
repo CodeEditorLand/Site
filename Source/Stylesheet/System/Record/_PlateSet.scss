@@ -153,11 +153,14 @@
 	white-space: nowrap;
 }
 
+// The cell's mark is the mark layer's square (`Mark/_Square.scss`) under this
+// block's own name - it was a 4px box declared here while the stamp next door
+// declared the same 4px box and the shell declared 6.4px.
 .record-plate-set__cell-marker {
 	display: block;
 	flex: 0 0 auto;
-	inline-size: 4px;
-	block-size: 4px;
+	inline-size: var(--mark-square);
+	block-size: var(--mark-square);
 	background: currentColor;
 }
 

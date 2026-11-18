@@ -69,11 +69,11 @@ export const NotFoundPage = (T: TFunction): NotFoundSurface => ({
 	missing: {
 		statement: T("layout.notFound.missing.statement", {
 			defaultValue:
-				"A record was requested at this address. The build emits no route here and the redirect table carries no entry for it.",
+				"A record was requested at this address. The build emits no route here; the redirect table carries no entry for it.",
 		}),
 		cause: T("layout.notFound.missing.cause", {
 			defaultValue:
-				"The address is well formed; nothing was ever filed under it. A moved page would have left a redirect, and a renamed one a tombstone.",
+				"The address is well formed; nothing was ever filed under it. A moved page would have left a redirect, a renamed one a tombstone.",
 		}),
 		next: {
 			label: T("layout.notFound.missing.next", {

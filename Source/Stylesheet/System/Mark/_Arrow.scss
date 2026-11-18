@@ -1,0 +1,158 @@
+// ─── THE ARROW ─────────────────────────────────────────────────────────────
+//
+// The grammar's `→`: direction, progression, the destination at the end of a
+// line. It is the site's only arrow. There is no `➜`, no `➔`, no SVG chevron,
+// no rotated `>` and no icon-set arrow on any surface - a second arrow style is
+// the exact defect this layer exists to remove.
+//
+// ─── WHAT IT IS NOT ───────────────────────────────────────────────────────
+//
+// It is not a button. It is not a state. It is not a disclosure - a disclosure
+// is `›` and it turns; an arrow does not turn, because an arrow that turned
+// would be a fold with the wrong glyph.
+//
+// ─── THE THREE RULES ──────────────────────────────────────────────────────
+//
+// SIZE   it is set in the type it sits in. An arrow is never a size of its own:
+//        it inherits the row's font-size, so a 13px row gets a 13px arrow and
+//        a 16px sentence gets a 16px one.
+// INK    `--Mark`. It says what the line does, not what the line says.
+// ALIGN  one `--mark-gap` between the arrow and the word it belongs to, on the
+//        side the sentence runs toward: after a label that points somewhere
+//        (`OPEN 〈⌘K〉 →`), before a label that is the destination of a row's
+//        own mark column (`→ FIND ALL RECORDS`). One gap, one side, never both.
+//
+// ─── THE GLYPH IS A TOKEN ─────────────────────────────────────────────────
+//
+// The character is drawn by the stylesheet (`content: var(--mark-arrow)`) and
+// not typed into the markup, so the site has one arrow in one place. A span
+// that carried a typed `→` could be edited to `➜` by any later card; a span
+// that draws `--mark-arrow` cannot.
+
+@use "../Mixin" as *;
+
+.MarkArrow {
+	display: inline-block;
+
+	color: var(--mark-ink);
+
+	margin-inline-start: var(--mark-gap);
+	margin-inline-end: 0;
+
+	/* the arrow never leaves its word */
+	white-space: nowrap;
+
+	font-size: inherit;
+	line-height: inherit;
+
+	/* a mark is not read out: the words carry the meaning */
+	pointer-events: none;
+}
+
+/* A leading arrow: the gap moves to its other side, and it is still one gap. */
+.MarkArrow[data-place="lead"] {
+	margin-inline-start: 0;
+	margin-inline-end: var(--mark-gap);
+}
+
+.MarkArrow::before {
+	content: var(--mark-arrow);
+}
+
+// ─── THE HOVER IS INK ─────────────────────────────────────────────────────
+// A row that answers the pointer answers with ink (`Detail/_Ink.scss`), and its
+// mark answers with it: the fold and the arrow step from the muted mark ink to
+// the row's ink. Declared here rather than in each block, because the mark layer
+// loads last and would otherwise win the cascade against every block's hover.
+@media (hover: hover) {
+	:is(a, summary, button, [data-slot="button"], .SlipItem):hover
+		:is(.MarkArrow, .MarkFold),
+	:is(a, summary, button, [data-slot="button"], .SlipItem):focus-visible
+		:is(.MarkArrow, .MarkFold) {
+		color: var(--state-ink);
+	}
+}
+
+// A destination whose arrow travels: the one motion an arrow has, and it is the
+// `press`/`settle` family - 2px along its own direction while the pointer is on
+// the row, and nothing when the reader has asked for less motion. `--mark-travel`
+// is a distance, so it reads a distance token rather than a literal.
+.MarkArrow--travel {
+	--mark-travel: var(--space-hair, 2px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	:is(a, summary, .SlipItem, [data-slot="button"]):hover .MarkArrow--travel,
+	:is(a, summary):focus-visible .MarkArrow--travel {
+		translate: var(--mark-travel) 0;
+		transition: translate var(--motion-interval-press, 150ms)
+			var(--motion-curve-arrive, ease);
+	}
+}
+
+// ─── THE FOLD ──────────────────────────────────────────────────────────────
+//
+// The grammar's `›`: there is more behind this line. It is the site's only
+// disclosure mark, and the ONLY mark that turns.
+//
+// A disclosure is not an arrow. The aside used to print `→` and turn it 90°,
+// the fold printed `›` and turned it 90°, and the rail printed `›` and turned it
+// 90° - three spellings of one gesture, one of them using the mark that means
+// "destination" for a thing that does not go anywhere. The gesture is now one
+// glyph in one token, and every disclosure on the site draws it.
+//
+// OPEN is a quarter turn, clockwise, and nothing else: no chevron swap, no
+// plus/minus, no filled triangle. The word beside it (`OPEN` / `CLOSE`) says the
+// state in words, so the turn is confirmation rather than the only signal - and
+// a reader who cannot see the turn still knows.
+
+.MarkFold {
+	display: inline-block;
+
+	flex: 0 0 auto;
+
+	color: var(--mark-ink);
+
+	font-size: inherit;
+	line-height: 1;
+
+	/* the turn is the mark's own, and it is the one motion a fold has */
+	transform-origin: 50% 50%;
+
+	pointer-events: none;
+}
+
+.MarkFold::before {
+	content: var(--mark-fold);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.MarkFold {
+		transition: rotate var(--motion-interval-fold, 200ms)
+			var(--motion-curve-arrive, ease);
+	}
+}
+
+/* The spellings a disclosure can arrive in: the `<details open>` attribute the
+   browser gives us, Radix's `data-state="open"` on a trigger, and the
+   `data-open` / `aria-expanded` a composed block sets on a control that is not
+   a `<details>`. One turn, wherever the mark sits inside the disclosure - a
+   `<summary>` may wrap its mark in a span of its own. */
+details[open] .MarkFold,
+[data-state="open"] .MarkFold,
+[data-open="true"] .MarkFold,
+[aria-expanded="true"] .MarkFold,
+.MarkFold[data-open="true"] {
+	rotate: var(--mark-turn);
+}
+
+// A fold that is being hovered travels 2px toward its opening - the same travel
+// the arrow uses, so the two marks cannot drift apart in feel.
+@media (prefers-reduced-motion: no-preference) {
+	summary:hover > .MarkFold,
+	summary:focus-visible > .MarkFold {
+		translate: var(--space-hair, 2px) 0;
+		transition: translate var(--motion-interval-fold, 200ms)
+			var(--motion-curve-arrive, ease);
+	}
+}

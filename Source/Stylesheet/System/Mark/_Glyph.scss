@@ -1,0 +1,59 @@
+// ─── THE GLYPH IN A BADGE ─────────────────────────────────────────────────
+//
+// A badge states a claim; a glyph inside it says WHOSE claim - the runtime, the
+// protocol, the licence. It is the site's one in-badge mark, and it is a
+// picture: `/Image/Rust.svg` inside a Rust claim is the claim's own device, and
+// no tint can substitute for it.
+//
+// ─── THREE RULES ──────────────────────────────────────────────────────────
+//
+// SIZE   `--mark-size-4` (14px). It was 14px in the masthead and 20px in the
+//        hero's stack tiles and `h-2 w-2` (8px) when the same claim carried a
+//        protocol dot instead - three sizes for one job. 14px is the step that
+//        sits beside 13px type without out-weighing it, so it is the step.
+// INK    the element's own. A glyph is not ours to recolour: the file carries
+//        the brand's ink and repainting it would be a claim about a logo.
+//        What the stylesheet owns is that the mark is NOT dimmed - the
+//        masthead ran its glyphs at `opacity: 0.7`, which is a mark weakened
+//        into a suggestion.
+// ALIGN  `middle` against the badge's text and one `--mark-gap` after the
+//        label, so a badge reads `LABEL␁[glyph]` and never the reverse.
+//
+// ─── THE DOT IS THE SAME MARK, NOT A SECOND ONE ───────────────────────────
+//
+// A claim with no device carries a protocol square instead of a glyph: the
+// state square's badge step, painted with the spine's own ink. It is a `.MarkSquare`
+// with `data-mark-size="badge"`, so the badge's two arms - a glyph and a dot -
+// are one family at one size.
+
+@use "../Mixin" as *;
+
+.MarkGlyph {
+	display: inline-block;
+
+	flex: 0 0 auto;
+
+	inline-size: var(--mark-size-4);
+	block-size: var(--mark-size-4);
+
+	margin-inline-start: var(--mark-gap);
+
+	vertical-align: middle;
+
+	/* a mark is never dimmed to make it quieter: a quieter mark is a smaller
+	   step on the ladder, or it is not printed */
+	opacity: 1;
+
+	object-fit: contain;
+
+	pointer-events: none;
+}
+
+// A glyph printed at the head of a block (the masthead's product glyph, a
+// stack tile's icon) is the same mark at the same step, with no leading gap:
+// it opens the line rather than following a word.
+.MarkGlyph--lead {
+	margin-inline-start: 0;
+
+	vertical-align: baseline;
+}

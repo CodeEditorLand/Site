@@ -1,0 +1,155 @@
+---
+/**
+ * Mark - the site's small set of signs, rendered once.
+ *
+ * ─── WHAT IT IS ───────────────────────────────────────────────────────────
+ * A mark is not content. It says something ABOUT the line it opens - that the
+ * line is a register, a route, a consequence, a destination, a state - so it
+ * takes the muted ink, it is never read out, and it is never a control.
+ *
+ * Eight kinds, one form each. The form is drawn by `Stylesheet/System/Mark` and
+ * this component is the only renderer, so a block picks a KIND and never a
+ * colour, a size or a shape:
+ *
+ *   <Mark kind="square" tone="specimen" />        a state that was checked
+ *   <Mark kind="square" fill="unknown" />         a fact that is not known
+ *   <Mark kind="arrow" />                         a destination
+ *   <Mark kind="fold" open={false} />             a disclosure, shut
+ *   <Mark kind="glyph" src="/Image/Rust.svg" />   a device inside a badge
+ *   <Mark kind="fallback" />                      the thing is not here
+ *
+ * ─── WHY ONE COMPONENT AND NOT SEVEN ──────────────────────────────────────
+ * Seven components is seven chances to grow a seventh size. One component with
+ * a closed `kind` is a type error when a block asks for a mark the set does not
+ * have - which is the same mechanism `RegisterLine.ts` uses for the register.
+ *
+ * ─── THE ADVERSE ARMS ARE PROPS, NOT VARIANTS ─────────────────────────────
+ * `fill="unknown"` is the same square hollow. `fill="loading"` is the mark's
+ * stand-in: a bar in the mark's own column. `fill="stale"` is the square at
+ * quiet ink. A block in an adverse state passes the fill; it does not pass a
+ * different mark.
+ *
+ * No script, no hydration: a mark is printed.
+ */
+import { MarkClass } from "./Type.js";
+
+import type { MarkFill, MarkKind, MarkTone } from "./Type.js";
+
+interface Props {
+	/** Which mark. One of the eight. */
+	kind: MarkKind;
+
+	/**
+	 * A square's size. `rest` (4px) or `attested` (6px, a state that was
+	 * checked); `badge` (6px) when the square stands in a badge at 13px type.
+	 */
+	size?: "rest" | "attested" | "badge";
+
+	/**
+	 * A square's fill. `known` is the default; `unknown` is the adverse arm and
+	 * it is the SAME square, hollow.
+	 */
+	fill?: MarkFill;
+
+	/** A square's tone: the ink of the word it precedes. */
+	tone?: MarkTone;
+
+	/**
+	 * An explicit ink, as a CSS value - the one escape hatch, and it exists for
+	 * one case: a claim's protocol square inside a badge, which takes the
+	 * spine's own ink because the spine IS the claim (`--SpinegRPC` and its
+	 * three siblings). A page passing a literal colour here is a defect.
+	 */
+	ink?: string;
+
+	/** A glyph's source and its text alternative. The glyph is a picture. */
+	src?: string;
+
+	/** A glyph's alternative text. Required for a glyph that carries a name. */
+	alt?: string;
+
+	/** A fold's state: `true` turns the mark a quarter turn. */
+	open?: boolean;
+
+	/**
+	 * An arrow's side. `trail` (the default) sits after the label it belongs to;
+	 * `lead` sits before it, in a row's mark column. One gap either way.
+	 */
+	place?: "lead" | "trail";
+
+	/** A tick's state: `false` prints it hollow. */
+	reached?: boolean;
+
+	/** Extra classes from the host, appended after the mark's own. */
+	class?: string;
+}
+
+const {
+	kind,
+	size = "rest",
+	fill = "known",
+	tone = "ink",
+	ink,
+	src,
+	alt = "",
+	open = false,
+	place = "trail",
+	reached = true,
+	class: Class,
+} = Astro.props;
+
+/** The mark's own class, from the one table. */
+const Kind = MarkClass[kind];
+
+/** A square's three attributes; every other kind prints none of them. */
+const Square =
+	kind === "square"
+		? {
+				"data-mark-size": size,
+				"data-mark-fill": fill,
+				"data-mark-tone": tone,
+			}
+		: {};
+
+/** The one inline value a mark may carry: a protocol ink, on a square only. */
+const Ink =
+	kind === "square" && ink ? `--mark-ink-state:${ink}` : undefined;
+---
+
+{
+	kind === "glyph" ? (
+		<img
+			class:list={[Kind, Class]}
+			src={src}
+			alt={alt}
+			width="14"
+			height="14"
+			aria-hidden={alt ? undefined : "true"}
+		/>
+	) : kind === "tick" ? (
+		<span
+			class:list={[Kind, Class]}
+			data-reached={String(reached)}
+			aria-hidden="true"
+		/>
+	) : kind === "fold" ? (
+		<span
+			class:list={[Kind, Class]}
+			data-open={String(open)}
+			aria-hidden="true"
+		/>
+	) : kind === "arrow" ? (
+		<span
+			class:list={[Kind, Class]}
+			data-place={place}
+			aria-hidden="true"
+		/>
+	) : (
+		<span
+			class:list={[Kind, Class]}
+			{...Square}
+			style={Ink}
+			aria-hidden="true"
+		/>
+	)
+}

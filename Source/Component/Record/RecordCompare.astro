@@ -54,6 +54,8 @@
  */
 import { Tone } from "../Surface/State.js";
 
+import Mark from "../Mark/Mark.astro";
+
 import type { Comparison } from "./Type.js";
 
 interface Props {
@@ -99,9 +101,7 @@ const Skeleton = [0, 1, 2];
 
 	<p class="record-compare__axis">
 		<span class="record-compare__end">{compare.from}</span>
-		<span class="record-compare__axis-mark" aria-hidden="true">
-			&#8594;
-		</span>
+		<Mark kind="arrow" />
 		<span class="record-compare__end">{compare.to}</span>
 	</p>
 
@@ -148,10 +148,7 @@ const Skeleton = [0, 1, 2];
 								`record-compare__stop-state--${StopTone(Stop.state)}`,
 							]}
 						>
-							<span
-								class="record-compare__stop-mark"
-								aria-hidden="true"
-							/>
+							<Mark kind="square" tone={StopTone(Stop.state)} />
 							STATUS: {Stop.state.toUpperCase()}
 						</span>
 					) : null}

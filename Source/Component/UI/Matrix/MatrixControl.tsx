@@ -550,7 +550,11 @@ const MatrixControl = ({
 								className="SlipAction"
 								onClick={Handoff}
 							>
-								<span aria-hidden="true">→</span>{" "}
+								<span
+									className="MarkArrow"
+									data-place="lead"
+									aria-hidden="true"
+								/>{" "}
 								{MatrixCopy.HandoffLabel} <Chord>⌘K</Chord>
 							</button>
 						</>
@@ -562,7 +566,11 @@ const MatrixControl = ({
 							className="SlipAction"
 							onClick={() => SetPage((Page) => Page + 1)}
 						>
-							<span aria-hidden="true">→</span>{" "}
+							<span
+								className="MarkArrow"
+								data-place="lead"
+								aria-hidden="true"
+							/>{" "}
 							{MatrixCopy.MoreLabel}
 						</button>
 					) : null}

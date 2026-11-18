@@ -1,0 +1,128 @@
+// ─── THE STATE SQUARE ──────────────────────────────────────────────────────
+//
+// One drawn mark, in two fills and two sizes. It is the site's only state mark:
+// every `STATUS:` row, every stamp, every note, every margin, every comparison
+// stop, every chip and every badge prints THIS square, and the class name it
+// arrives under is the block's business, not the mark's.
+//
+// ─── WHY A SQUARE ─────────────────────────────────────────────────────────
+//
+// A dot is round because a dot is a printed full stop; a square is a STAMP. The
+// site's whole material argument is a printed field manual, and the mark a
+// manual uses to say "this condition holds" is a square of ink, not a bullet.
+// It is also the one shape that survives greyscale, a photocopy, a 300dpi scan
+// and a reader with a colour deficiency without a hue to help it.
+//
+// ─── THE TWO SIZES ARE A MEANING, NOT A HIERARCHY ─────────────────────────
+//
+// `rest`     a state the vocabulary knows: `READY`, `LOADING`, `PREPARING`,
+//            `UNAVAILABLE`, `INTERRUPTED`, `ARCHIVED`.
+// `attested` a state that has been CHECKED: `ACTIVE`, `VERIFIED`. Half again,
+//            in the word's own ink - the accent is not a state's ink.
+//
+// ─── THE TWO FILLS ARE THE ADVERSE STATE ──────────────────────────────────
+//
+// `known`   the fact exists: filled.
+// `unknown` the fact does not exist, is not measured, or may not be shown:
+//           the SAME square, 1px rule, no fill. An honest absence is never a
+//           zero and never a smaller shape.
+//
+// The hollow arm is what `UNAVAILABLE`, `ARCHIVED` with no reading, `DENIED` and
+// a missing target all print. Because the geometry does not change, a page that
+// swaps a known state for an unknown one does not reflow by a pixel.
+
+@use "../Mixin" as *;
+
+.MarkSquare {
+	display: inline-block;
+
+	flex: 0 0 auto;
+
+	inline-size: var(--mark-square);
+	block-size: var(--mark-square);
+
+	/* the word's ink, so a tone never needs a second declaration per block */
+	background: var(--mark-ink-state);
+
+	/* inline in a sentence it rides the baseline; in a flex row it centres.
+	   `align-self` is ignored outside flex/grid, so one rule serves both. */
+	vertical-align: var(--mark-raise);
+	align-self: center;
+
+	/* a mark is never a control and never read out: the word beside it carries
+	   the meaning and the block prints it. */
+	pointer-events: none;
+}
+
+// ─── attested: half again ─────────────────────────────────────────────────
+.MarkSquare[data-mark-size="attested"],
+.MarkSquare--attested {
+	inline-size: var(--mark-square-attested);
+	block-size: var(--mark-square-attested);
+}
+
+// ─── in a badge ───────────────────────────────────────────────────────────
+.MarkSquare[data-mark-size="badge"],
+.MarkSquare--badge {
+	inline-size: var(--mark-square-badge);
+	block-size: var(--mark-square-badge);
+}
+
+// ─── unknown: the same square, hollow ─────────────────────────────────────
+// `border` and not `box-shadow`: the identity forbids a shadow, and a shadow
+// that is really a border is the kind of lie the next card inherits.
+.MarkSquare[data-mark-fill="unknown"],
+.MarkSquare--unknown {
+	background: transparent;
+	border: var(--mark-hairline) solid currentColor;
+
+	/* the border grows the box by 2px at `content-box`; the mark's size is the
+	   size the ladder says, so the rule is paid for out of the box. */
+	box-sizing: border-box;
+}
+
+// ─── the four tones ───────────────────────────────────────────────────────
+// The tone is the WORD's ink, and the square inherits it. A block resolves the
+// tone from the vocabulary (`Surface/State.ts`) and never chooses one.
+.MarkSquare[data-mark-tone="ink"] {
+	color: var(--Foreground);
+}
+
+// The attested tone is the one tone that also changes the SIZE: a state that has
+// been checked is half again, in the word's ink. That is the whole distinction -
+// the accent is not a state's ink - so a caller passes the tone and the mark
+// decides the step. Nothing else about the square moves.
+.MarkSquare[data-mark-tone="specimen"] {
+	color: var(--state-ink-attested);
+
+	--mark-square: var(--mark-square-attested);
+}
+
+.MarkSquare[data-mark-tone="quiet"] {
+	color: var(--MuteForeground);
+}
+
+.MarkSquare[data-mark-tone="unknown"] {
+	color: var(--MuteForeground);
+}
+
+// ─── an axis tick ─────────────────────────────────────────────────────────
+// A comparison rail's station: the same square at the badge's step, filled when
+// the position is reached and hollow when it is not. It is the state square
+// seen from the side of a rail, not a second mark.
+.MarkTick {
+	display: block;
+
+	flex: 0 0 auto;
+
+	inline-size: var(--mark-tick-stop);
+	block-size: var(--mark-tick-stop);
+
+	background: currentColor;
+}
+
+.MarkTick[data-reached="false"] {
+	background: transparent;
+	border: var(--mark-hairline) solid currentColor;
+	box-sizing: border-box;
+}

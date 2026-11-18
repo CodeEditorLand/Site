@@ -143,21 +143,38 @@ const ANCHORS: Record<Corner, Anchor> = {
 	},
 };
 
-/** The ink every tick shares: absolute, one colour, one opacity. */
+/** The ink every tick shares: absolute, one colour, one opacity. The opacity is
+ * the group's (`--mark-corner-ink`, `System/Mark/_Token.scss`), not each arm's:
+ * two arms at 45 % overlap into 70 % at the joint, so the arms carry none. */
 const Ink = (Geometry: Geometry): string =>
-	`position:absolute;background-color:${Geometry.Color};opacity:${Geometry.Opacity}`;
+	`position:absolute;background-color:${Geometry.Color}`;
 
-/** The box of one arm: the two anchors, then the arm's own span. */
-const Box = (Geometry: Geometry, Anchor: Anchor, Axis: Axis): string =>
-	[
-		`${Anchor.primary}:${Geometry.Inset}px`,
+/** The box of one arm: the two anchors, then the arm's own span.
+ *
+ * THE NUMBERS ARE THE MARK LADDER'S. Each value is read as a token with the
+ * host's own number as its fallback, so the default frame is declared once in
+ * `System/Mark/_Token.scss` and a host that passes different geometry still
+ * gets it - and the two renderers (this component and the hero's React frame)
+ * cannot drift apart, because neither of them owns a number any more. */
+const Box = (Geometry: Geometry, Anchor: Anchor, Axis: Axis): string => {
+	const Inset = `var(--mark-inset, ${Geometry.Inset}px)`;
 
-		`${Anchor.along}:${Geometry.Inset}px`,
+	const Arm = `var(--mark-arm, ${Geometry.Horizontal}px)`;
+
+	const Stem = `var(--mark-tick, ${Geometry.StemWidth}px)`;
+
+	const Thick = `var(--mark-tick, ${Geometry.Thickness}px)`;
+
+	return [
+		`${Anchor.primary}:${Inset}`,
+
+		`${Anchor.along}:${Inset}`,
 
 		Axis === "h"
-			? `width:${Geometry.Horizontal}px;height:${Geometry.Thickness}px`
-			: `width:${Geometry.StemWidth}px;height:${Geometry.Vertical}px`,
+			? `width:${Arm};height:${Thick}`
+			: `width:${Stem};height:var(--mark-arm, ${Geometry.Vertical}px)`,
 	].join(";");
+};
 
 /** One tick, as the span's `style` attribute and the two data attributes the
  * stylesheet keys its hover direction on. */
