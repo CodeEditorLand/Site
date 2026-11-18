@@ -679,7 +679,7 @@ export const Bands = {
 			"The state vocabulary is closed at eight. A ninth word would be a state with no ink and no tone, which is how a status becomes a decoration.",
 
 		footnote:
-			"The tone column is the word's ink, not a second classification: `SPECIMEN` is the one green, `QUIET` is the muted ink, `INK` is the foreground. A word outside the eight prints in ink and is not a state.",
+			"The tone column is the word's ink, not a second classification: `SPECIMEN` is the attested state - the record's own ink and the state square at half again the size - `QUIET` is the muted ink, `INK` is the foreground. A word outside the eight prints in ink and is not a state.",
 
 		tone: "paper",
 	} satisfies Band,

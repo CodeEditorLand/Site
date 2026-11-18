@@ -31,6 +31,22 @@
 		/* Mute → deeper creme for input backgrounds */
 		--Mute: #e9e2d4;
 
+		/* MUTED INK - and the test for it. `#70685b` carries a LABEL, a CAPTION,
+		   a MARK, a QUIET STATE, or an ABSENCE (`UNAVAILABLE`, a `NO` cell). It
+		   never carries the word a reader came for: not a title, not a link,
+		   not the value half of a `KEY: value` pair (the key is already muted,
+		   so a muted value makes the fact read as its own footnote), not the
+		   name of the thing a band is about.
+
+		   The one thing it does carry that looks like content is a standfirst,
+		   and that is a documented decision rather than a slip: a page's
+		   opening sentence steps down to muted ink under its claim and lets
+		   the blank band do the separating (`DESIGN.md` §9 Q4). Everything
+		   below that line is a fact, and facts are ink.
+
+		   Measured on the field: 4.71:1 on creme, 5.50:1 on a white insert -
+		   legible everywhere, and still visibly quieter than `--Foreground`'s
+		   14.58:1, which is the whole point of having a second ink. */
 		--MuteForeground: #70685b;
 
 		/* Accent → dark botanical green */

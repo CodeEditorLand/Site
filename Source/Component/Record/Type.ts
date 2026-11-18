@@ -646,8 +646,9 @@ export interface HeroStatus {
 
 	/**
 	 * The ink register: `ink` for a fault (plain explanation plus recovery),
-	 * `specimen` for the green accent, `quiet` for a pending or retired state.
-	 * Absent, the primitive's own default applies.
+	 * `specimen` for the attested state (the record's ink and the state square
+	 * at half again the size - a shape, never the accent), `quiet` for a
+	 * pending or retired state. Absent, the primitive's own default applies.
 	 */
 	tone?: FieldRecordStatusTone;
 

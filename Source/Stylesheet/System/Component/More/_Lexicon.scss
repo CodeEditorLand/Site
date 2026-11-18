@@ -344,7 +344,11 @@
 }
 
 .lexicon-entry__fact-value {
-	color: var(--MuteForeground);
+	/* The fact's VALUE is the fact. Both halves were muted, which made every
+	   row in the lexicon's fact strip read as its own footnote - the key is the
+	   label and takes the muted ink, the value takes the record's ink, which is
+	   the same hierarchy `RecordLedger` prints one block away. */
+	color: var(--Foreground);
 	overflow-wrap: anywhere;
 }
 

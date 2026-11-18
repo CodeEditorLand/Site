@@ -10,9 +10,13 @@
  *
  * The marker is ONE 2px rule standing before the word, at the word's own ink: a
  * shape, so the state survives greyscale and is never colour-only, with the
- * tone carried by the ink (`specimen` = the green accent, `ink` = the
- * foreground, `quiet` = the muted foreground). It is the same marker the header
- * draws at the foot of the current destination, turned to stand in a row.
+ * tone carried by the ink (`specimen` = the record's ink plus the state square
+ * at `--state-mark-scale-attested`, `ink` = the foreground, `quiet` = the muted
+ * foreground). The tone used to be the accent for `specimen`; the accent
+ * authenticates a route, a link, a focus and a seal, so a state that spent it
+ * left a page with nine green states and no way to find where the reader was.
+ * It is the same marker the header draws at the foot of the current
+ * destination, turned to stand in a row.
  *
  * A state keeps its key, and the key keeps its colon: `STATUS:` then the word,
  * the same `KEY: WORD` grammar the state's own sentence prints elsewhere on the
