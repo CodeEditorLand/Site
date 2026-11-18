@@ -1,0 +1,65 @@
+---
+/**
+ * SurfaceStatusLine - the one row every app surface states its state in.
+ *
+ * This is the instrument's readout, and it is the single block that makes the
+ * account, verify, portal and dashboard surfaces recognisable as one instrument
+ * without being one page: the same order, the same grammar, the same tone
+ * source, on all four.
+ *
+ * Anatomy, left to right, one row:
+ *
+ *   STATUS: WORD   ROUTE: /PORTAL   SOURCE: RELEASE RECORD   BUILT: 2026-11-18
+ *
+ * - The state word comes from `State.ts` through `SurfaceState`, so a page
+ *   cannot choose a tone for a word the vocabulary does not own. The 2px marker
+ *   is the register's own and survives greyscale.
+ * - The declarations are the audit trail of that word: the route it is read at,
+ *   the source that produced it, and the date the page was built. They are the
+ *   surface's *own* facts, passed in - this block invents none of them.
+ *
+ * The block is one row at every width it can hold, and wraps to two rows of
+ * key/value pairs below 640px. It is never a card and never a second ledger: the
+ * ledger under it stays the surface's facts, this row stays its state.
+ *
+ * No script and no hydration: a status line is static.
+ */
+import SurfaceState from "./SurfaceState.astro";
+
+import type { Declaration, SurfaceState as State } from "./State.js";
+
+interface Props {
+	/** The surface's states, in the order it states them. */
+	states?: readonly State[];
+
+	/** The declarations that make those states auditable. */
+	declarations?: readonly Declaration[];
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const {
+	states = [],
+	declarations = [],
+	class: ClassName,
+} = Astro.props;
+---
+
+{
+	states.length || declarations.length ? (
+		<div class:list={["surface__statusline", ClassName]}>
+			{states.length ? <SurfaceState states={states} /> : null}
+			{declarations.length ? (
+				<dl class="surface__declares">
+					{declarations.map((Entry) => (
+						<div class="surface__declare">
+							<dt class="surface__declare-key">{Entry.key}:</dt>
+							<dd class="surface__declare-value">{Entry.value}</dd>
+						</div>
+					))}
+				</dl>
+			) : null}
+		</div>
+	) : null
+}

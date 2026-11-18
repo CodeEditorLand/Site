@@ -1,0 +1,195 @@
+// ShellPanes - the workspace's two panes, their gutter, and the drawer.
+//
+// Publishes:
+//   .ShellPanes                  the query container
+//   .ShellPanes__grid            `5fr 1px 7fr` at the wide container, one column below
+//   .ShellPanes__gutter          the 1px track in `--Divider` ink
+//   .ShellPanes__pane            one pane: head, note, body
+//   .ShellPanes__head            `# PANE_01  NAME  META`
+//   .ShellPanes__drawer          the `<details>` at the foot
+//
+// ─── THE GUTTER IS A TRACK ────────────────────────────────────────────────
+// The keeper hero pair is `49fr 1px 51fr` and the hairline between the panels is
+// the middle track, not a border on either panel. At pane scale the same object
+// holds at `5fr 1px 7fr`. Two panes with a `gap` are two cards near each other;
+// two panes with a gutter are one instrument divided - and that is the whole
+// difference between a workspace and a dashboard of dashboards.
+//
+// ─── THE SEAM ROTATES ─────────────────────────────────────────────────────
+// Below the panes' own container width the two panes stack and the 1px vertical
+// track becomes a 1px horizontal rule between them, at the same ink. The gutter
+// element stays in the DOM in both states (it is the seam, and the seam exists
+// either way); only its axis changes.
+@use "../Mixin" as *;
+
+.ShellPanes {
+	container: panes / inline-size;
+	min-inline-size: 0;
+}
+
+.ShellPanes__grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	align-items: start;
+}
+
+.ShellPanes__gutter {
+	display: none;
+}
+
+.ShellPanes__pane {
+	min-inline-size: 0;
+}
+
+// ─── THE PANE HEAD ────────────────────────────────────────────────────────
+// A pane opens on its marker, its name and one value - the same three cells a
+// rail row carries, one scale up. The hairline under it is the pane's own top
+// rule, so the head reads as a plate's caption bar rather than a card's title.
+
+.ShellPanes__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 0.5em;
+	margin: 0 0 var(--space-tight);
+	padding-block-end: var(--space-tight);
+
+	@include hairline(bottom);
+}
+
+.ShellPanes__mark {
+	@include mono-meta;
+	@include track(var(--track-row));
+	margin: 0;
+	color: var(--Accent);
+	font-variant-numeric: tabular-nums;
+}
+
+.ShellPanes__label {
+	@include mono-meta;
+	@include track(var(--track-row));
+	margin: 0;
+	color: var(--Foreground);
+	font-weight: 500;
+}
+
+.ShellPanes__meta {
+	@include mono-meta;
+	@include track(var(--track-row));
+	margin: 0;
+	margin-inline-start: auto;
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+.ShellPanes__note {
+	margin: 0 0 var(--space-reading);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--MuteForeground);
+	max-inline-size: var(--MeasureOpening);
+	text-wrap: pretty;
+}
+
+.ShellPanes__body {
+	min-inline-size: 0;
+}
+
+// ─── THE WIDE PANES ───────────────────────────────────────────────────────
+
+@container panes (min-width: 44rem) {
+	.ShellPanes--5-7 .ShellPanes__grid {
+		grid-template-columns: minmax(0, 5fr) 1px minmax(0, 7fr);
+	}
+
+	.ShellPanes--7-5 .ShellPanes__grid {
+		grid-template-columns: minmax(0, 7fr) 1px minmax(0, 5fr);
+	}
+
+	.ShellPanes--1-1 .ShellPanes__grid {
+		grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+	}
+
+	.ShellPanes__gutter {
+		display: block;
+		align-self: stretch;
+		background: var(--Divider);
+	}
+
+	.ShellPanes__pane--primary {
+		padding-inline-end: var(--space-group);
+	}
+
+	.ShellPanes__pane--secondary {
+		padding-inline-start: var(--space-group);
+	}
+}
+
+// ─── THE NARROW PANES ─────────────────────────────────────────────────────
+// The seam rotates to a horizontal rule, and the secondary pane keeps its own
+// head so the reader still knows which pane they are in.
+
+@container panes (max-width: 43.99rem) {
+	.ShellPanes__pane--secondary {
+		margin-block-start: var(--space-group);
+		padding-block-start: var(--space-group);
+		border-block-start: 1px solid var(--Divider);
+	}
+}
+
+// ─── THE DRAWER ───────────────────────────────────────────────────────────
+// A `<details>`: CSS-only, works with JavaScript off, openable by the browser's
+// own in-page search. The summary is a register line; the mark turns 90 degrees
+// when it opens, because `→` is the grammar's only progression mark and the site
+// has no chevron.
+
+.ShellPanes__drawer {
+	margin-block-start: var(--space-group);
+
+	@include hairline(top);
+}
+
+.ShellPanes__drawer-summary {
+	display: flex;
+	align-items: baseline;
+	gap: 0.5em;
+	padding-block: var(--space-tight);
+	cursor: pointer;
+	list-style: none;
+	color: var(--MuteForeground);
+
+	&::-webkit-details-marker {
+		display: none;
+	}
+
+	&:hover {
+		color: var(--Foreground);
+	}
+}
+
+.ShellPanes__drawer-mark {
+	color: var(--Accent);
+	@include motion-enter;
+}
+
+.ShellPanes__drawer[open] .ShellPanes__drawer-mark {
+	transform: rotate(90deg);
+}
+
+.ShellPanes__drawer-label {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: inherit;
+}
+
+.ShellPanes__drawer-note {
+	@include mono-meta;
+	margin: 0;
+	margin-inline-start: auto;
+	color: var(--MuteForeground);
+}
+
+.ShellPanes__drawer-body {
+	padding-block: var(--space-reading) var(--space-group);
+}

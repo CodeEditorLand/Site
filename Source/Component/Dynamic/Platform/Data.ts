@@ -49,13 +49,17 @@ const NO = "no";
  * Whether an installer is published for this platform.
  *
  * The platform data carries a file size and a checksum only when a file exists
- * to describe - today every platform says `Size: "Coming Soon"` and carries no
+ * to describe - today every platform says `Size: "UNAVAILABLE"` and carries no
  * checksum, so every installer cell is empty. The comparison is against the
- * content's own qualifier, which is the only signal the data gives.
+ * status vocabulary's own word for an empty fact, which is the only signal the
+ * data gives: a size that is a number is a file, and a size that says
+ * `UNAVAILABLE` is the truth about not having one.
  */
 const HasInstaller = (Platform: PlatformInformation): boolean =>
 	Boolean(Platform.Checksum) ||
-	(Platform.Size.trim().length > 0 && Platform.Size.trim() !== "Coming Soon");
+	(Platform.Size.trim().length > 0 &&
+		Platform.Size.trim() !== "UNAVAILABLE" &&
+		Platform.Size.trim() !== "Coming Soon");
 
 /** Whether the published build is signed. A signature is the whole signal. */
 const IsSigned = (Platform: PlatformInformation): boolean =>
@@ -96,12 +100,12 @@ export const Caption =
 /**
  * The footnote: the qualifiers the columns cannot carry.
  *
- * Every platform reports `Version: Pre-release` and `Size: Coming Soon` in the
+ * Every platform reports `Version: UNAVAILABLE` and `Size: UNAVAILABLE` in the
  * content, so the three rows say the same thing about release state and the
  * band says it once, here, instead of three times in the grid. Both qualifiers
  * keep their own label, because a status word without its key is a word a
  * reader has to guess at.
  */
 export const Footnote =
-	"Version: Pre-release. Size: Coming Soon. No checksum or signature is " +
+	"Version: UNAVAILABLE. Size: UNAVAILABLE. No checksum or signature is " +
 	"published for any platform yet.";

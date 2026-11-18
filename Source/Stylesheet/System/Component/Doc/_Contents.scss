@@ -1,0 +1,194 @@
+// DocContents - the page's own contents, in the two registers the shell paints
+// it in.
+//
+// Publishes:
+//   .doc-contents                  the block, in either register
+//   .doc-contents--rail            the pinned head of the sticky rail
+//   .doc-contents--disclosure      the CSS-only <details> below the breakpoint
+//   .doc-contents__label           "On this page", in the meta voice
+//   .doc-contents__summary         the disclosure's trigger row
+//   .doc-contents__nav             the list's frame inside the disclosure
+//   .doc-contents__list            the rows
+//   .doc-contents__item            one row
+//   .doc-contents__link            one anchor: marker, then name
+//   .doc-contents__marker          the row's position, two digits
+//   .doc-contents__name            the heading's own words
+//   .doc-contents__link--current   the section the reader is in
+//
+// ─── THE CURRENT ROW IS MARKED THREE WAYS, AND ONLY ONE IS COLOUR ─────────
+//
+// The rail's tree marks its current page with `aria-current`, ink and weight, and
+// a 1px rule on the row's leading edge; the contents marks its current section
+// with the same three. That is the whole point of putting the two registers in
+// one rail: a reader learns one "you are here" and it works in both lists. The
+// rule is a shape rather than a hue, so it survives greyscale and print, and the
+// ink step means a reader who cannot see the rule still reads the change.
+//
+// ─── TYPE ─────────────────────────────────────────────────────────────────
+//
+// The rows are S tier - 13px marker, 13px name - one step under the tree's 16px
+// page links, because the contents is an instrument beside the reading column and
+// not a second navigation spine. The marker column is 3ch wide so the names hang
+// on one edge whatever the numbers are, and a two-line name wraps under itself
+// rather than under its marker.
+//
+// ─── THE DISCLOSURE IS CSS-ONLY ───────────────────────────────────────────
+//
+// `<details>` with a `<summary>`, no script, no hydration: it opens and closes
+// with the platform's own behaviour, it is keyboard-reachable for free, and it
+// prints open. The marker is the same `›` the rail's tree rotates, so one glyph
+// means "this opens" in both places.
+@use "../../Mixin" as *;
+
+.doc-contents {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+}
+
+.doc-contents__label {
+	@include mono-meta;
+	@include track;
+
+	/* The label is a snap point too, so the register's resting position is the top
+	   of the list and not its first row. */
+	scroll-snap-align: start;
+
+	margin: 0 0 var(--space-tight);
+}
+
+.doc-contents__list {
+	list-style: none;
+
+	margin: 0;
+	padding: 0;
+}
+
+.doc-contents__item {
+	min-inline-size: 0;
+
+	scroll-snap-align: start;
+}
+
+/* The row: a 3ch marker column and the name. The leading rule is reserved on
+   every row - transparent at rest, inked when current - so marking a row never
+   moves the text it marks. */
+.doc-contents__link {
+	display: grid;
+	grid-template-columns: 3ch minmax(0, 1fr);
+	column-gap: var(--space-tight);
+	align-items: baseline;
+
+	padding: var(--space-tight) 0 var(--space-tight) var(--space-tight);
+
+	border-inline-start: 1px solid transparent;
+
+	color: var(--MuteForeground);
+
+	text-decoration: none;
+
+	&:hover,
+	&:focus-visible {
+		color: var(--Foreground);
+	}
+}
+
+.doc-contents__marker {
+	@include mono-meta;
+}
+
+.doc-contents__name {
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	text-wrap: pretty;
+}
+
+.doc-contents__link--current {
+	color: var(--Foreground);
+
+	border-inline-start-color: var(--Primary);
+
+	.doc-contents__name {
+		font-weight: 500;
+	}
+}
+
+/* ─── THE RAIL REGISTER ─────────────────────────────────────────────────── */
+
+/* No frame of its own: the rail's head is the frame, and its hairline closes the
+   register. A second border here would draw a box inside the rail. */
+.doc-contents--rail {
+	display: block;
+}
+
+/* ─── THE DISCLOSURE REGISTER ───────────────────────────────────────────── */
+
+/* It sits between the metadata strip and the paper, at the header's measure, and
+   it exists only below the rail's breakpoint - above it the rail carries the same
+   list and this one would be the second contents list the shell refuses. */
+.doc-contents--disclosure {
+	display: block;
+
+	max-width: 72ch;
+
+	margin-block-start: var(--space-group);
+	margin-block-end: var(--space-group);
+
+	background: var(--Card);
+
+	@include hairline;
+
+	@include bp(1024px) {
+		display: none;
+	}
+}
+
+.doc-contents__summary {
+	@include mono-meta;
+	@include track;
+
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-tight);
+
+	padding: var(--space-tight) var(--space-reading);
+
+	cursor: pointer;
+
+	/* The platform's triangle is a second marker beside this block's own. */
+	list-style: none;
+
+	&::-webkit-details-marker {
+		display: none;
+	}
+
+	.doc-contents__label {
+		margin: 0;
+	}
+}
+
+.doc-contents__nav {
+	@include hairline(top);
+
+	padding: var(--space-tight) var(--space-reading) var(--space-reading);
+}
+
+/* The disclosure's marker turns when the list opens - the rail's tree glyph, the
+   same gesture. The state is declared unconditionally; only the interval is
+   motion's, so a reader who asked for less motion keeps the end state. */
+.doc-contents--disclosure .doc-contents__marker {
+	display: inline-block;
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition: transform 150ms ease;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
+}
+
+.doc-contents--disclosure[open] .doc-contents__marker {
+	transform: rotate(90deg);
+}

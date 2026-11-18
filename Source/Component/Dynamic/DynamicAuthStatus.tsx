@@ -52,7 +52,9 @@ export default ({
 		return (
 			<Skeleton
 				className="h-7 w-7"
-				aria-label={T("actions.loading", { defaultValue: "Loading…" })}
+				aria-label={T("actions.loading", {
+					defaultValue: "Reading the session",
+				})}
 			/>
 		);
 	}
@@ -117,8 +119,11 @@ export default ({
 					</Avatar>
 				</button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent align="end" className="w-40">
-				<DropdownMenuItem asChild>
+			<DropdownMenuContent
+				align="end"
+				head={{ Name: "ACCOUNT", Count: 3 }}
+			>
+				<DropdownMenuItem asChild mark="/">
 					<a
 						href={DashboardHref}
 						aria-label={T("user.menu.dashboard", {
@@ -130,7 +135,7 @@ export default ({
 						})}
 					</a>
 				</DropdownMenuItem>
-				<DropdownMenuItem asChild>
+				<DropdownMenuItem asChild mark="/">
 					<a
 						href={AccountHref}
 						aria-label={T("user.menu.account", {

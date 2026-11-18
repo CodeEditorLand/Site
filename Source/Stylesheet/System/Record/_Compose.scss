@@ -1,0 +1,118 @@
+// The Record layer's page-level compositions.
+//
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  none. This partial is not a block: it is the two *layouts*
+//                   two blocks can be composed into, declared once so a page
+//                   never hand-rolls a grid. The containment law holds - a
+//                   composition holds blocks, and a block never holds one.
+// RANK              composition (above a block, below a band).
+// SLOT CONTRACT     .record-spread              the evidence spread: a plate beside a set
+//                   .record-spread__gutter      the 1px divider the two halves meet on
+//                   .record-spread__plate       the narrow half - one plate, its channel under it
+//                   .record-spread__set         the wide half - a field of figures
+//                   .record-stamped             the stamped register: a stamp beside a set
+//                   .record-stamped__stamp      the narrow half (the stamp)
+//                   .record-stamped__register   the wide half (the set)
+// MAY HOLD          blocks. Never prose alone - a composition of one block is a
+//                   block.
+// NARROW            both compositions are one column, in reading order: the
+//                   plate, then the set; the stamp, then the register. The
+//                   gutter does not disappear - it rotates to a top rule on the
+//                   second half, so the two halves still read as two.
+// WIDE (>=1024)     the spread is `5fr | 1px | 7fr` and the stamped register is
+//                   `4fr | 8fr`. Neither is a half: a spread whose halves are
+//                   equal is two columns pretending to be one object.
+// DENSE             none.
+//
+// WHY THESE ARE COMPOSITIONS AND NOT BANDS. A band separates subjects with
+// space; these two put two artifacts of the *same* subject beside each other, so
+// the space between them has to be a rule rather than a chapter. That is the
+// endorsed hero pair's model - two panels, one hairline gutter - applied one
+// scale down, to two blocks that are not the hero.
+//
+// WHY THE SET GETS THE WIDE HALF. A field of figures is compared by being seen
+// at one size, so it needs three columns' worth of width; a plate reads at any
+// size above 320px, because its subject is one picture and its apparatus is a
+// channel under it. The spread therefore gives the plate the narrow half and the
+// set the wide one - the opposite of what the two blocks' names suggest, and the
+// right way round for the reader.
+//
+// THE GUTTER IS `--Divider`, NOT `--Border`. At 8% ink a gutter between a plate
+// and a set is present in the DOM and invisible to the eye, which is the
+// weakness KEEPERS.md names; the spread uses the divider ink the hero pair uses,
+// because it is the same decision at a different scale.
+
+@use "../Mixin" as *;
+
+.record-spread,
+.record-stamped {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	row-gap: var(--space-group);
+	min-inline-size: 0;
+}
+
+// The second half carries the rotated gutter when the composition stacks.
+.record-spread__set,
+.record-stamped__register {
+	min-inline-size: 0;
+	padding-block-start: var(--space-group);
+	border-block-start: 1px solid var(--Divider);
+}
+
+// Below the breakpoint the spread's gutter element is not painted at all: the
+// rotated rule on the second half is the same decision, and an empty 1px grid
+// row would be a gap with no meaning.
+.record-spread__gutter {
+	display: none;
+}
+
+@include bp(1024px) {
+	.record-spread {
+		grid-template-columns: minmax(0, 5fr) 1px minmax(0, 7fr);
+		column-gap: var(--space-group);
+		row-gap: 0;
+		align-items: start;
+	}
+
+	.record-stamped {
+		grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+		column-gap: var(--space-group);
+		row-gap: 0;
+		align-items: start;
+	}
+
+	.record-spread__set,
+	.record-stamped__register {
+		padding-block-start: 0;
+		border-block-start: 0;
+	}
+
+	.record-spread__gutter {
+		display: block;
+		inline-size: 1px;
+		align-self: stretch;
+		background: var(--Divider);
+	}
+}
+
+// The stamp hangs at the top of its column and stays there while the register
+// scrolls past it - a mark is read once, and a mark that scrolled away was
+// printed at the wrong end of the composition.
+@include bp(1024px) {
+	.record-stamped__stamp {
+		position: sticky;
+		inset-block-start: var(--space-group);
+	}
+
+	// In the composition the mark takes one role down. `〈FIELD MANUAL〉` at the
+	// section size is wider than the narrow half of the register, and a mark that
+	// breaks across two lines is not a stamp - it is a broken word. The band, the
+	// route and the authority are untouched; only the scale steps.
+	.record-stamped__stamp .record-stamp__mark {
+		font-size: var(--type-heading);
+		line-height: var(--type-heading-line);
+		letter-spacing: var(--track-row);
+		padding-block: var(--space-tight);
+	}
+}

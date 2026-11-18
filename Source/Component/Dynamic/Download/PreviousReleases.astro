@@ -1,28 +1,26 @@
 ---
 /**
- * PreviousReleases - the releases that came before this one.
+ * PreviousReleases - the releases that came before this one, as a disclosure.
  *
- * This is the recovered `DynamicPreviousReleases.astro` (`3480853ac^`), rehomed
- * into the Download surface's own directory beside the band that renders it.
- * The `.tsx` island it replaced is where the five-column table lived: `Version`,
- * `Published` as a real `<time>`, `Size`, `Downloads`, and one outline button per
- * asset with a gated Changelog link. That step dropped the buttons deliberately -
- * the release list in the tree is empty, so no button was ever reachable, and
- * nothing on the site calls the download API - and it is the last committed form,
- * so it is the one recovered rather than reinvented.
+ * The region's heading says the fact ("There is nothing to go back to yet.") and
+ * the disclosure under it is the record: closed, it is one mono row reading
+ * `RECORD: EMPTY` and the way in; open, it is the sentence that explains the
+ * state and the header of the matrix that will print one row per release. The
+ * closed state is the composition decision - a list of releases that does not
+ * exist yet should not take a screen - and the open state is the shape of the
+ * record the day it does exist.
  *
- * What survives of the five columns is the three the tree can fill: the version
- * labels the row, and the cells are when it shipped, on what, and what changed.
- * `Size` and `Downloads` are not here because no release row exists to carry
- * them, and this page may not invent a size, a checksum or a date.
+ * CSS only, no script: `<details>` works with JavaScript off, and it prints open
+ * when the page is printed, which is what a dossier does.
  *
- * Two states, both written out. With releases, one matrix row each. Without
- * releases - the state today - §7's `RECORD: EMPTY` label followed by one
- * sentence, because an empty table is a blank box and a blank box is a defect
- * (DESIGN.md §3.3; `DesignSystem-Components.md` §7).
+ * The empty matrix keeps its header and its caption rather than disappearing: a
+ * header with no rows is the record's shape, and a caption saying "one row per
+ * release, newest first" is a claim about what will be here - not a blank box.
  *
- * The empty state is text, not a card: a box with no claim in it would be the
- * defect it is meant to avoid, and there is nothing here to put in one.
+ * The rows keep the recovered component's three columns - published, platform,
+ * change - because those are the three the tree can fill; `Size` and `Downloads`
+ * are not here, because no release row exists to carry them and this page may
+ * not invent a size, a checksum or a date.
  */
 import RecordMatrix from "../../Record/RecordMatrix.astro";
 
@@ -42,9 +40,12 @@ interface Props {
 
 	/** What an empty release list says instead of rendering nothing. */
 	empty: string;
+
+	/** The caption the matrix carries: the shape of the record to come. */
+	caption: string;
 }
 
-const { releases, columns, label, empty } = Astro.props;
+const { releases, columns, label, empty, caption } = Astro.props;
 
 /** One matrix row per release: the version labels the row. */
 const Rows = releases.map((release) => ({
@@ -53,13 +54,20 @@ const Rows = releases.map((release) => ({
 }));
 ---
 
-{
-	releases.length === 0 ? (
-		<div class="download-releases__empty">
-			<p class="download-releases__label">{label}</p>
-			<p class="download-releases__sentence">{empty}</p>
-		</div>
-	) : (
-		<RecordMatrix columns={columns} rows={Rows} />
-	)
-}
+<details class="download-releases">
+	<summary class="download-releases__summary">
+		<span class="download-releases__label">{label}</span>
+		<span class="download-releases__marker" aria-hidden="true">→</span>
+	</summary>
+
+	<div class="download-releases__body">
+		<p class="download-releases__sentence">{empty}</p>
+
+		<RecordMatrix
+			columns={columns}
+			rows={releases.length === 0 ? [] : Rows}
+			caption={caption}
+			class="download-releases__matrix"
+		/>
+	</div>
+</details>

@@ -7,24 +7,24 @@
 		"expiredStatus": "STATUS: UNAVAILABLE"
 	},
 	"error": {
-		"title": "Verification failed",
-		"description": "This verification link is invalid or has expired.",
-		"instruction": "Please request a new verification email or contact support if the problem persists.",
-		"resendButton": "Send New Verification Email",
+		"title": "Verification Interrupted",
+		"description": "The link carried no token the provider recognises, or the token's window has closed. A new link is the only way forward.",
+		"instruction": "Request a new link; the old one cannot be revived.",
+		"resendButton": "Send A New Link",
 		"contactSupport": "Contact Support",
-		"backToSignInButton": "Back to Sign In"
+		"backToSignInButton": "SIGN IN"
 	},
 	"pending": {
-		"description": "A verification link has been sent to your email address.\nPlease check your inbox and click the link to activate your account.\nThe link is valid for 24 hours.\nIf the email is not received within a few minutes, check the spam or promotions folder.\nFor security, do not share the verification link with anyone.",
-		"resendButton": "Resend Verification Email",
-		"title": "Verify Your Email Address"
+		"description": "A link was sent to the address on the account. It opens for 24 hours and works once.\n\nIf nothing arrives in a few minutes, the spam folder is the next place to look.\n\nThe link is a credential: anyone who opens it verifies the address.",
+		"resendButton": "Send A New Link",
+		"title": "Check The Inbox"
 	},
 	"success": {
-		"title": "Email verified!",
-		"description": "Your email has been successfully verified.",
+		"title": "Email Verified",
+		"description": "The address on the account is verified. Signing in is the last step before the workspace opens.",
 		"instruction": "You can now sign in to your account and start using Code Editor Land.",
 		"continue": "Continue to Sign In",
-		"continueButton": "Continue to Homepage"
+		"continueButton": "BACK TO LAND"
 	},
 	"title": "Verify your email",
 	"description": "A verification link was sent to",
@@ -40,8 +40,8 @@
 		"title": "Verifying your email",
 		"description": "Please wait while we verify your email address..."
 	},
-	"errorGeneric": "An error occurred during verification.\nPlease try again.",
-	"resendFailed": "Failed to resend email.\nPlease try again.",
+	"errorGeneric": "The check did not complete: the provider returned no answer for this token. Requesting a new link is the next step.",
+	"resendFailed": "The resend did not go out: the provider rejected the request. The existing link still works until it expires.",
 	"emailLabel": "Email",
 	"emailPlaceholder": "Enter your email address",
 	"resendSuccess": "Verification email resent!",

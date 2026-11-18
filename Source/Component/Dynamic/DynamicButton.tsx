@@ -37,9 +37,25 @@ const ButtonIconRegistry: Record<string, lucide.LucideIcon> = {
 };
 
 /**
- * Dynamic Button with simplex noise integration.
- * Icons render immediately via direct imports (no dynamic import flash).
- * Loading state uses StaccatoSpinner for breathing opacity.
+ * Dynamic Button - one action, in a Jelly button.
+ *
+ * The element is Jelly's, so the surface, the padding and the press belong to it
+ * (`--jelly-button-padding-inline`, the host's own spring); the site states the
+ * one thing Jelly cannot know - the focus ring - in its own `:focus-visible` rule
+ * (`_Base.scss`: 2px `--Accent` at 4px). This adapter adds the label, the icon
+ * and the busy state, and nothing else.
+ *
+ * The three `Staccato*` hooks it used to carry are gone. They belonged to the
+ * noise system in `_Noise.scss`, whose channels are "updated every frame by
+ * Staccato.ts" - a script that is not in the tree - so they were resolving to
+ * static values: `StaccatoSpinner` held the loading glyph at 65% opacity and
+ * `StaccatoIcon` held every icon at 85%, both with a 1.4s opacity transition that
+ * had nothing to transition between. `StaccatoButton` also set
+ * `padding-inline: 1rem` on the host, which is a second padding outside Jelly's
+ * own, and a 0.5s `ease` hover lift that is not one of the site's three
+ * intervals. A spinner may stay circular - `animate-spin` is the one loop the
+ * motion layer permits, because a square cannot spin - so the busy state keeps
+ * that class and loses only the dimming.
  */
 const DynamicButton = ({ Content, OnAction, IsLoading = false }: Property) => {
 	const {
@@ -73,7 +89,7 @@ const DynamicButton = ({ Content, OnAction, IsLoading = false }: Property) => {
 			size={Size}
 			type={Type}
 			disabled={Disabled || IsLoading}
-			className={`StaccatoButton ${FullWidth ? "w-full" : ""} ${ClassName || ""}`}
+			className={`${FullWidth ? "w-full" : ""} ${ClassName || ""}`}
 			aria-busy={IsLoading || undefined}
 			onClick={() => {
 				if (IsLoading) return;
@@ -92,7 +108,7 @@ const DynamicButton = ({ Content, OnAction, IsLoading = false }: Property) => {
 					{"\u2001"}
 
 					<lucide.Loader2
-						className="StaccatoSpinner h-4 w-4 animate-spin"
+						className="h-4 w-4 animate-spin"
 						aria-hidden="true"
 					/>
 				</>
@@ -101,7 +117,7 @@ const DynamicButton = ({ Content, OnAction, IsLoading = false }: Property) => {
 					{"\u2001"}
 
 					<IconComponent
-						className="StaccatoIcon h-5 w-5"
+						className="h-5 w-5"
 						aria-hidden="true"
 					/>
 				</>

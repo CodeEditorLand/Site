@@ -1,12 +1,23 @@
-// BlogIndex - the blog's archive page: a centred header and a three-column grid
-// of article cards.
+// BlogIndex - the blog's archive page: a centred header, a full-bleed plate of
+// the archive's extent, and a three-column grid of article cards.
 //
 // Publishes:
-//   .blog-index              the page: its container and its block padding
+//   .blog-index              the page shell - full width, so the plate can bleed
+//   .blog-index__open        the trail and the centred header, on the baseline's measure
 //   .blog-index__trail       the breadcrumb above the header
 //   .blog-index__head        the centred opening block
 //   .blog-index__heading     the page's only h1
 //   .blog-index__standfirst  the one line under it
+//   .blog-index__plate       the full-bleed band: its rules run to the viewport edge
+//   .blog-index__plate-inner the band's content, on the container's gutters
+//   .blog-index__register    the plate's media: `# BLOG / 08 ENTRIES` and its measures
+//   .blog-index__register-label  the plate's register line
+//   .blog-index__register-rows   the four measures
+//   .blog-index__register-row    one measure
+//   .blog-index__register-key    its `:`-label
+//   .blog-index__register-value  its figure
+//   .blog-index__register-unit   its unit, at caption weight
+//   .blog-index__archive-wrap    the grid's measure and the close
 //   .blog-index__archive     the section the grid sits in
 //   .blog-index__grid        the cards, one to three columns
 //   .blog-index__item        one grid cell
@@ -14,7 +25,7 @@
 //   .blog-index__card        the white card
 //   .blog-index__tags        the card's tag row
 //   .blog-index__tag         one chip
-//   .blog-index__title       the article's title, at `text-xl`
+//   .blog-index__title       the article's title, at the heading step
 //   .blog-index__summary     the article's summary
 //   .blog-index__foot        author / date / reading time, one row
 //   .blog-index__author      the author
@@ -23,27 +34,126 @@
 //   .blog-index__empty       the empty state, when the collection is bare
 //   .blog-index__back        the back-to-top row
 //
-// The measurements are the baseline render's: a `max-w-4xl` page with `py-16`,
-// a header capped at `max-w-2xl` and dropped `mb-24` - the largest single margin
-// in the baseline markup - so the heading floats well clear of the grid, and a
-// `1 / 2 / 3` column grid at `gap-6` whose cards are white on the creme field.
-// The card's seed scatter is the site's own: `.StaccatoCard` rotates and offsets
-// by the two custom properties the component sets per position, so the cards sit
-// very slightly out of square with the grid exactly as the baseline's did.
+// THE SHELL IS FULL WIDTH, THE MEASURES ARE INSIDE IT. Before this, `.blog-index`
+// carried the page's one container (`max-inline-size: 56rem`) and every child
+// inherited it - which is why the page could never hold anything wider than its
+// own cards. The container is now three children: `__open`, `__plate` and
+// `__archive-wrap`. The first and third carry the 56rem measure and the gutter;
+// the plate carries neither, so its two hairlines run to the viewport edge. The
+// grid is unchanged - same columns, same gap, same card.
+//
+// The measurements inside the grid are the baseline render's: a header capped at
+// `max-w-2xl` and dropped `mb-24` - the largest single margin in the baseline
+// markup - so the heading floats well clear of what follows, and a `1 / 2 / 3`
+// column grid at `gap-6` whose cards are white on the creme field. The card's
+// seed scatter is the site's own: `.StaccatoCard` rotates and offsets by the two
+// custom properties the component sets per position.
 
 @use "../../Mixin" as *;
 
 // ─── The page ─────────────────────────────────────────────────────────────
 
+// Full width, and it must stay full width: the plate's rules run to the viewport
+// edge, and a container here would stop them at the measure. The two measures
+// inside it carry their own gutters.
 .blog-index {
+	padding-block: 4rem;
+}
+
+.blog-index__open,
+.blog-index__archive-wrap {
 	max-inline-size: 56rem;
 	margin-inline: auto;
 	padding-inline: var(--Gutter);
-	padding-block: 4rem;
 }
 
 .blog-index__trail {
 	margin-block-end: var(--space-group);
+}
+
+// ─── The plate ────────────────────────────────────────────────────────────
+//
+// The one full-bleed band on the site that is not a hero. Two `--Divider` rules
+// run edge to edge; the content stays on the container's gutters; and the whole
+// band sits between the header and the grid at the chapter distance, so it reads
+// as a plate inserted into the document rather than as a band inside it.
+.blog-index__plate {
+	margin-block: 0 var(--space-chapter);
+	border-block: 1px solid var(--Divider);
+}
+
+.blog-index__plate-inner {
+	@include band-inner;
+	padding-block: var(--space-group);
+}
+
+// The plate's media: the register line and its measures, in two columns above
+// 768px so four facts read across rather than down. It is the figure's content,
+// not a block - the plate is the block, and this is what it shows.
+.blog-index__register {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-reading);
+	padding: var(--space-reading);
+	background: var(--Card);
+}
+
+.blog-index__register-label {
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.blog-index__register-rows {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 0;
+	margin: 0;
+}
+
+@include bp(640px) {
+	.blog-index__register-rows {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		column-gap: var(--space-group);
+	}
+}
+
+@include bp(1024px) {
+	.blog-index__register-rows {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+.blog-index__register-row {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+	padding-block: var(--space-tight);
+	border-block-start: 1px solid var(--Border);
+}
+
+.blog-index__register-key {
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.blog-index__register-value {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	letter-spacing: var(--track-join);
+	color: var(--Foreground);
+	overflow-wrap: anywhere;
+}
+
+.blog-index__register-unit {
+	margin-inline-start: 0.4em;
+	@include mono-meta;
+	@include track(var(--track-name));
 }
 
 // The header is centred and narrow: the heading and one line, capped at 42rem.
@@ -58,10 +168,10 @@
 
 .blog-index__heading {
 	margin: 0;
-	font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+	font-size: var(--type-section);
 	font-weight: 500;
 	line-height: 1.15;
-	letter-spacing: -0.01em;
+	letter-spacing: var(--track-join);
 	color: var(--Foreground);
 }
 
@@ -144,8 +254,8 @@
 }
 
 .blog-index__title {
-	margin: 0 0 0.5rem;
-	font-size: 1.25rem;
+	margin: 0 0 var(--space-tight);
+	font-size: var(--type-heading);
 	font-weight: 500;
 	line-height: 1.25;
 	color: var(--CardForeground);

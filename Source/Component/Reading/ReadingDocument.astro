@@ -24,8 +24,17 @@
  * The measure is a switch, not a guess: `prose` caps the body at 72ch for a
  * document that is all text, `full` leaves it uncapped for a page that also
  * carries grids and cards, whose own blocks decide their width.
+ *
+ * `layout` is the composition switch. `stack` prints the index between the facts
+ * and the document; `rail` moves it into the margin beside the document as the
+ * trust surface's clause rail (`Trust/TrustContents`), sticky under the running
+ * head, with the same list as a CSS-only disclosure above the text below 1024.
+ * The legal documents use `rail`: a 26-clause contents list is consulted while
+ * reading, not scrolled past once, and the rail sits outside the measure so
+ * navigation never narrows the prose.
  */
 import RecordLedger from "../Record/RecordLedger.astro";
+import TrustContents from "../Trust/TrustContents.astro";
 import type { LedgerRow } from "../Record/Type.js";
 import type { ReadingIndexItem } from "./Type.js";
 
@@ -55,6 +64,25 @@ interface Props {
 	/** The index's visible label, and its accessible name. */
 	indexLabel: string;
 
+	/**
+	 * Where the index sits. `stack` (the default) prints it between the facts
+	 * and the document; `rail` moves it into the margin beside the document as
+	 * the trust surface's clause rail, sticky under the running head, and adds
+	 * the narrow-viewport disclosure above the text. A legal document is read
+	 * with its contents list open beside it, not scrolled past once.
+	 */
+	layout?: "stack" | "rail";
+
+	/**
+	 * The facts ledger's surface. `quiet` is the bare row ledger; `standard` is
+	 * the white information box lying on the creme field - the legal documents'
+	 * facts strip.
+	 */
+	ledgerSurface?: "quiet" | "standard";
+
+	/** The facts ledger's columns at 1024px and up. One by default. */
+	ledgerColumns?: 1 | 2;
+
 	/** `prose` caps the body at one reading measure; `full` leaves it open. */
 	measure?: "prose" | "full";
 
@@ -77,13 +105,23 @@ const {
 	rows,
 	index,
 	indexLabel,
+	layout = "stack",
+	ledgerSurface = "quiet",
+	ledgerColumns = 1,
 	measure = "prose",
 	bodyClass,
 	class: Class,
 } = Astro.props;
 ---
 
-<article class:list={["reading-document", `reading-document--${measure}`, Class]}>
+<article
+	class:list={[
+		"reading-document",
+		`reading-document--${measure}`,
+		layout === "rail" ? "reading-document--rail" : null,
+		Class,
+	]}
+>
 	<header class="reading-document__head">
 		<p class="reading-document__kicker">{kicker}</p>
 		<h1 class="reading-document__heading">{heading}</h1>
@@ -96,11 +134,34 @@ const {
 	</header>
 
 	<div class="reading-document__ledger">
-		<RecordLedger rows={rows} />
+		<RecordLedger
+			rows={rows}
+			columns={ledgerColumns}
+			surface={ledgerSurface}
+		/>
 	</div>
 
 	{
-		index && index.length > 0 && (
+		index && index.length > 0 && layout === "rail" && (
+			<>
+				<TrustContents
+					class="reading-document__contents"
+					items={index}
+					label={indexLabel}
+					variant="rail"
+				/>
+				<TrustContents
+					class="reading-document__contents-narrow"
+					items={index}
+					label={indexLabel}
+					variant="disclosure"
+				/>
+			</>
+		)
+	}
+
+	{
+		index && index.length > 0 && layout === "stack" && (
 			<nav class="reading-document__index" aria-label={indexLabel}>
 				<p class="reading-document__index-label">{indexLabel}</p>
 				<ol class="reading-document__index-list">

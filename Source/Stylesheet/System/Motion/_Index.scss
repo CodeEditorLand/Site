@@ -1,0 +1,77 @@
+@use "Token";
+@use "Fold";
+@use "Expand";
+@use "Sequence";
+@use "Specimen";
+@use "Handover";
+@use "Origin";
+@use "Sort";
+@use "Skeleton";
+@use "Page";
+
+// ═══════════════════════════════════════════════════════════════════════════
+// THE MOTION LAYER - interaction classes
+//
+// `System/_Motion.scss` answers *what state changed*: eight relationships, three
+// intervals, three curves, and the rule that a paragraph is not loading and a
+// heading is not being hovered. It is the law and it is unchanged.
+//
+// This family answers the next question, the one a reader actually meets: *when
+// does the interface move, and what does the movement tell them?* It names
+// thirteen **interaction classes** - occasions, not properties - and each class
+// is one relationship plus the geometry of that occasion.
+//
+//   CLASS      OCCASION                              RELATIONSHIP   PROPERTY
+//   enter      a thing can be touched                enter          transform
+//   press      the input landed                      press          transform
+//   trace      a row is pointed at                   trace          transform
+//   settle     the change finished                   settle         transform, opacity
+//   resolve    one printed state gives way           resolve        opacity, transform, color
+//   interrupt  the action was refused                interrupt      transform
+//   crop       evidence is looked at closer          crop           transform
+//   fold       a disclosure opens                    reveal         opacity, transform
+//   expand     a record opens in place               reveal+settle  opacity, transform
+//   handover   a page gives way to another           resolve        opacity, transform
+//   sort       a set re-orders                       settle         transform
+//   origin     a control's surface arrives           enter          opacity, transform
+//   skeleton   data has not arrived                  reveal         opacity
+//
+// ─── THE ONE RULE A CLASS IS TESTED AGAINST ───────────────────────────────
+// Name the state change, or do not write the rule. Every class above is bound
+// to an element that carries a state the reader can point at: `[open]` on a
+// `<details>`, `[data-state="open"]` on a slip, `[data-side]` on a popover, a
+// row that moved in the DOM. Nothing here fires on load, on scroll or on a
+// timer, and nothing here loops: a loop is motion that continues without a state
+// change, which the register law forbids before this file says anything.
+//
+// ─── TWO PROPERTIES, AND THE ONE DOCUMENTED EXCEPTION ──────────────────────
+// `transform` and `opacity`. The fold is the exception and it is not a
+// transition: the leaves move, and the *space* they arrive into is claimed in
+// one frame by the browser when `[open]` flips. That is deliberate - a box that
+// grows is a layout animation, and the alternative (a `grid-template-rows`
+// transition) reflows the whole document under the reader's eye. The fold
+// therefore does not grow; it unfolds, and the one frame of reflow is spent at
+// the moment the reader asked for it.
+//
+// `color` appears in exactly one class (`resolve`) and only through the mixin
+// that already owns it: a printed state resolving is an ink change.
+//
+// ─── REDUCED MOTION LOSES NOTHING ─────────────────────────────────────────
+// Every rule below declares its end state unconditionally and gates only its
+// interval, the way `System/_Motion.scss` and `System/_Mixin.scss` already do.
+// Under `prefers-reduced-motion: reduce` a fold is open, a record is expanded, a
+// page has handed over, a matrix is sorted and a skeleton is a printed register
+// with bars - all in one frame, with no state withheld. The page-level handover
+// is switched off entirely rather than shortened, because a snapshot transition
+// that runs in 0.01ms still paints two documents in one frame.
+//
+// ─── WHERE EACH PARTIAL POINTS ────────────────────────────────────────────
+//   Fold      `Component/Motion/MotionFold.astro` - any disclosure with content
+//   Expand    `Component/Motion/MotionExpand.astro` - a record opening in place
+//   Sequence  `Component/Motion/MotionSequence.astro` - a state change drawn
+//   Specimen  `Component/Motion/MotionSpecimen.astro` - the page's own sheet
+//   Handover  the document itself, cross-document, no markup
+//   Origin    every slip the kit opens (`UI/_Slip.scss` owns the frame)
+//   Sort      every matrix the control re-orders (`UI/MatrixControl.tsx`)
+//   Skeleton  `Component/Motion/MotionSkeleton.astro` - the loading arm
+// ═══════════════════════════════════════════════════════════════════════════

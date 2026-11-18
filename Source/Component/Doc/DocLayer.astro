@@ -1,0 +1,94 @@
+---
+/**
+ * DocLayer - the layer this page belongs to, as a map: every page in the same
+ * section, in the order the collection puts them, with the current page marked.
+ *
+ * Why it exists. The pager at the foot of an article gives two destinations,
+ * the one behind and the one ahead, and nothing else: a reader who finishes
+ * "Architecture" is told about "Air" and "Cocoon" and never learns that the
+ * layer has fifteen pages. The rail's tree knows, but it is a scroll away, it is
+ * collapsed except for the current section, and below 1024px it is not painted
+ * at all. This block is the layer at the moment the reader has just finished
+ * reading inside it - one row per page, the current one marked, the size in the
+ * summary.
+ *
+ * It is a `<details>`, closed by default, and that is the composition decision,
+ * not a placeholder: fifteen rows printed open would be a second wall at the end
+ * of a long article. Closed, it is one mono row at chapter distance - the layer,
+ * its size and the way in - and the reader opens it exactly when they want the
+ * map. CSS only; no script, no hydration directive, so it works with JavaScript
+ * off and prints open when the page is printed.
+ *
+ * What it does NOT do: it does not choose the pages. The page passes the
+ * section's entries, already in collection order, so the block can never
+ * disagree with the tree, the pager or the index about what is in the layer.
+ */
+interface Props {
+	/** The field label, with its colon - `LAYER:`. */
+	label: string;
+
+	/** The section's name, printed as the page names it (`Deep Dive`). */
+	heading: string;
+
+	/** The word for one entry's unit, plural - `PAGES`. */
+	unit: string;
+
+	/** The layer's pages, in the order they print. */
+	entries: readonly {
+		readonly Id: string;
+		readonly Label: string;
+		readonly Href: string;
+	}[];
+
+	/** The current page's id, so its row can be marked. */
+	activeId?: string;
+}
+
+const { label, heading, unit, entries, activeId } = Astro.props;
+
+/** The row's position in the layer, two digits, as the record grammar writes it. */
+const Marker = (Position: number): string =>
+	String(Position + 1).padStart(2, "0");
+---
+
+{
+	entries.length > 1 ? (
+		<details class="doc-layer">
+			<summary class="doc-layer__summary">
+				<span class="doc-layer__label">{label}</span>
+				<span class="doc-layer__value">{heading}</span>
+				<span class="doc-layer__count">
+					{entries.length}
+					{"\u2001"}
+					{unit}
+				</span>
+				<span class="doc-layer__marker" aria-hidden="true">
+					›
+				</span>
+			</summary>
+			<div class="doc-layer__body">
+				<ol class="doc-layer__list">
+					{entries.map((Entry, Position) => (
+						<li class="doc-layer__item">
+							<a
+								class:list={[
+									"doc-layer__link",
+									Entry.Id === activeId
+										? "doc-layer__link--current"
+										: null,
+								]}
+								href={Entry.Href}
+								aria-current={Entry.Id === activeId ? "page" : undefined}
+							>
+								<span class="doc-layer__index" aria-hidden="true">
+									{Marker(Position)}
+								</span>
+								<span class="doc-layer__name">{Entry.Label}</span>
+							</a>
+						</li>
+					))}
+				</ol>
+			</div>
+		</details>
+	) : null
+}

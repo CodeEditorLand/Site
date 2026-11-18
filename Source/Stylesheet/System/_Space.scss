@@ -1,26 +1,103 @@
 @use "Mixin" as *;
 
-/* .prose-flow - one spacing mechanism for a prose block. Every child after the
-   first is separated by --space-reading, and the block itself contributes no
-   margin, so it cannot compound with a parent's gap or a child's mb-*. */
-.prose-flow > * + * {
-	margin-block-start: var(--space-reading);
+/* ═══════════════════════════════════════════════════════════════════════════
+ * SPACE - five steps, four relationships and one interval
+ *
+ * THE CONTRACT. A step names a relationship, never a distance:
+ *
+ *   --space-tight     8px   a label to its value; a row to a row
+ *   --space-reading  16px   a paragraph to a paragraph
+ *   --space-group    32px   an artifact to an artifact; a figure to its caption
+ *   --space-blank    52px   a RESERVED EMPTINESS, not a distance (see below)
+ *   --space-chapter  84px   a genuinely new subject - page level only
+ *
+ * `--space-blank` is the odd one and it is stated as such: it is the card's
+ * 15-25% blank interval, so it is a MINIMUM BLOCK SIZE (`min-block-size`), never
+ * a margin. A margin would collapse and the interval would disappear; a floor
+ * cannot. The hero card's `.hero-band__blank` is its one consumer.
+ *
+ * ─── THE CHAPTER'S THREE DISTANCES ────────────────────────────────────────
+ * A chapter reads as a chapter because three distances are different, named and
+ * paid once each:
+ *
+ *   one band                 --space-chapter   the page boundary, under a rule
+ *   a group inside a band    --space-group     an artifact to an artifact
+ *   the record's own rows    --space-tight     the documented row-to-row step
+ *
+ * There is no fourth step and no `--space-block` token: the block-level rhythm
+ * is the flow container's `--flow-gap`, which IS one of those three by name. A
+ * surface that reaches for a number is writing a sixth relationship; a surface
+ * that pays one of these twice on the same seam is the rhythm defect (ONE
+ * BOUNDARY, ONE PAYMENT, below).
+ *
+ * ─── ONE MECHANISM PER BLOCK ──────────────────────────────────────────────
+ * A block's vertical rhythm has exactly one owner: the flow container. It
+ * declares `--flow-gap` once and spaces its children from that one rule, and it
+ * ZEROES the margins it replaces - so a container `gap` and a child `mb-*` can no
+ * longer compound into a distance nobody designed. The base layer's element
+ * margins (`_Global.scss`) are zero-specificity `:where()` for the same reason:
+ * any block class outranks them by cascade law, not by `!important`.
+ *
+ * The flow has four stops and one asymmetry:
+ *   .prose-flow            reading  (the default: a paragraph to a paragraph)
+ *   .prose-flow--tight     tight    (rows: a label to its value)
+ *   .prose-flow--group     group    (a figure and its caption)
+ *   .prose-flow--blank     blank    (a reserved interval between two groups)
+ * and the asymmetry: a heading sits CLOSE to what follows it (tight) and FAR
+ * from what precedes it (group), because a heading belongs to its body. Uniform
+ * `> * + *` spacing is what makes prose read as spaced rather than set.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── THE FLOW ─────────────────────────────────────────────────────────── */
+
+.prose-flow {
+	--flow-gap: var(--space-reading);
 }
 
-/* .prose-flow--group - the same mechanism at --space-group: a figure and its
-   caption, an explanation and the evidence it introduces. Declared after
-   .prose-flow so it wins when both classes are on the same element. */
-.prose-flow--group > * + * {
-	margin-block-start: var(--space-group);
+.prose-flow--tight {
+	--flow-gap: var(--space-tight);
+}
+
+.prose-flow--group {
+	--flow-gap: var(--space-group);
+}
+
+.prose-flow--blank {
+	--flow-gap: var(--space-blank);
+}
+
+/* The mechanism itself. `margin-block: 0` first: the flow owns the rhythm of its
+   children, so the margins it replaces are cancelled rather than allowed to
+   collapse against it. */
+.prose-flow > * {
+	margin-block: 0;
+}
+
+.prose-flow > * + * {
+	margin-block-start: var(--flow-gap);
+}
+
+/* The heading's asymmetry. Declared after the uniform rule so it wins on equal
+   specificity (0,1,0 + element), and expressed against `--flow-gap` so a
+   `--tight` or `--group` flow keeps its own scale. */
+.prose-flow > :is(h2, h3, h4, h5, h6) + * {
+	margin-block-start: var(--space-tight);
+}
+
+.prose-flow > * + :is(h2, h3, h4, h5, h6) {
+	margin-block-start: max(var(--flow-gap), var(--space-group));
 }
 
 /* .figure-caption - the caption under a figure. Measure-capped at the opening
-   measure, so a caption never runs wider than the prose it belongs to. */
+   measure, so a caption never runs wider than the prose it belongs to. It is
+   `.type-caption`'s setting with the muted ink a caption carries. */
 .figure-caption {
 	font-size: var(--type-caption);
 	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
 	color: var(--MuteForeground);
 	max-width: var(--MeasureOpening);
+	text-wrap: pretty;
 }
 
 /* ─── BANDS ────────────────────────────────────────────────────────────── */
@@ -36,12 +113,36 @@
 
 /* .band--chapter - the chapter separator, opt-in. A genuinely new subject on a
    marketing surface opens at the page-boundary value, --space-chapter (84px,
-   the poster scale's largest step), under a hairline rule, so a boundary is
-   never a spacer div. A band that merely groups content does not paint one
-   (DESIGN.md §2.3; §5 A4; §9 Q5). */
+   the poster scale's largest step), under a rule, so a boundary is never a
+   spacer div. A band that merely groups content does not paint one
+   (DESIGN.md §2.3; §5 A4; §9 Q5).
+
+   The rule is the `chapter-boundary` mixin's, which is the same one
+   `.record-band--chapter` includes: one boundary, one ink, two blocks. It draws
+   at `--Divider` (20 % ink, 1.50:1 on the canvas), not `--Border` (8 %, 1.18:1)
+   - a chapter rule is the only thing that defines the boundary, so at hairline
+   strength it measures below the 1.2:1 line and reads as a rumour (LOST.md
+   scan 3; `_Token.scss` `--Divider`). */
 .band--chapter {
-	padding-block: var(--space-chapter);
-	border-top: 1px solid var(--Border);
+	@include chapter-boundary;
+}
+
+/* ─── ONE BOUNDARY, ONE PAYMENT ─────────────────────────────────────────── */
+
+/* Two blocks that both open or close at the chapter distance meet at ONE
+   boundary, so the second pays nothing for an edge the first already paid. The
+   known case is the Download masthead (a keeper) meeting the record it heads:
+   84px of closing air against 84px of opening air is 168px on a seam that is
+   one seam, and no reader can tell which artifact that emptiness belongs to. It
+   is a rhythm defect, not a spacing tweak: the fix is to name the seam once,
+   here, rather than to shorten a keeper's padding.
+
+   `.download-record` is named because it is the page that composes two
+   chapter-paying artifacts edge to edge; every other surface closes a chapter
+   into the footer or into a band that pays nothing. */
+.band--chapter + .band--chapter,
+.download-masthead + .download-record {
+	padding-block-start: 0;
 }
 
 /* .band--paper - the white information box. .band--canvas - the creme field.

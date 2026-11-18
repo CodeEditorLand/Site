@@ -61,6 +61,21 @@ export interface RecordRow {
 }
 
 /**
+ * One row of an element's working register.
+ *
+ * The same three fields a `RecordRow` carries, plus the two a register needs and
+ * a card ledger does not: the qualifier printed under the value (the reason a
+ * fact is `UNAVAILABLE`, the note under a manifest) and the destination the fact
+ * names (the element's manual page). A register row is still one fact; it just
+ * says where it came from.
+ */
+export interface RegisterRow extends RecordRow {
+	readonly Note?: string;
+	readonly Code?: boolean;
+	readonly Href?: string;
+}
+
+/**
  * The record anatomy every card in the features and architecture bands prints.
  *
  * `Stamp` is the two containment lines (`〈 NATIVE BACKEND 〉`), `Route` is the
@@ -97,6 +112,40 @@ export interface ElementCard extends CardRecord {
 	readonly Body: string;
 	readonly Source?: string;
 	readonly Span: number;
+
+	/**
+	 * How much of the element's working the card prints.
+	 *
+	 * `record` is the card as the wall has always printed it plus its six-fact
+	 * register - the dense reading, which is right for twelve of the fifteen.
+	 * `plate` adds the three-step trace, and it is reserved for the four
+	 * elements a reader meets first (the host, the extension host, the service
+	 * layer, the build). The wall is then a page with four annotated entries
+	 * rather than fifteen equal cards, which is what a manual does with the
+	 * entries that carry the argument.
+	 */
+	readonly Depth: "record" | "plate";
+
+	/**
+	 * The six facts the record's claim is checked against: form, language,
+	 * boundary, dependencies, the manual page and the evidence the build holds.
+	 * Same keys, same order, for every element - that is what makes them a
+	 * register rather than six sentences.
+	 */
+	readonly Register: readonly RegisterRow[];
+
+	/**
+	 * The files the element's manual names, in the order it names them. Printed
+	 * only by a `plate` card.
+	 */
+	readonly Trace: readonly TraceStep[];
+}
+
+/** One step of a record's trace: a path the manual names, and what it carries. */
+export interface TraceStep {
+	readonly Index: string;
+	readonly Path: string;
+	readonly Note: string;
 }
 
 /** One tile of the hero's tech-stack strip. */
@@ -147,6 +196,32 @@ export interface PlatformCard {
 	readonly Version: string;
 	readonly Size: string;
 	readonly Signing: string;
+
+	/**
+	 * The OS webview the platform's build runs in: `WKWEBVIEW`, `WEBVIEW2`,
+	 * `WEBKITGTK`. It is the one runtime fact that differs between the three
+	 * rows, and it is why the row is a manifest of a platform rather than a
+	 * badge: the editor is the same binary in three different browsers.
+	 */
+	readonly Webview: string;
+
+	/** The OS floor the site's own supported-OS strip prints for this platform. */
+	readonly Minimum: string;
+
+	/** The digest of the published artifact - `UNAVAILABLE` while none exists. */
+	readonly Checksum: string;
+
+	/** The toolchain a source build needs, from the Download page's own list. */
+	readonly Toolchain: string;
+
+	/**
+	 * Why the version, size and checksum rows print `UNAVAILABLE`, stated once at
+	 * the card's floor. A row that says `UNAVAILABLE` without a reason is a hole
+	 * with a word in it; the note is the reason, and it is the same reason the
+	 * Download page's release register gives for the same three fields.
+	 */
+	readonly Note: string;
+
 	readonly Action: { readonly Label: string; readonly Href: string };
 	readonly Status: RecordRow;
 }

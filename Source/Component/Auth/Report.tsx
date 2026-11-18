@@ -100,9 +100,9 @@ const AuthReport = ({ State, Title, Sentence, Glyph, Role, children }: Props) =>
 					</div>
 				)}
 
-				<h2 className="font-mono text-2xl font-medium tracking-tight">
+				<h3 className="type-heading">
 					{Title}
-				</h2>
+				</h3>
 
 				<p className="text-card-foreground text-sm opacity-70">{Sentence}</p>
 			</div>

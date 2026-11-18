@@ -1,15 +1,25 @@
 ---
 /**
- * Footer - the record's closing band.
+ * Footer - the record's closing band, read as a colophon.
  *
- * The band is the credits record (`DesignSystem-Components.md` §3) and it is
- * read in one order, marker first: `# LAND / RECORD END` opens it with the
- * locale switcher on the same row, then the five facts as a `RecordLedger`
- * (SOURCE, LICENSE, MAINTAINED BY, SUPPORT, STATUS), then the destinations
- * behind the linked facts, then the `/LABEL` route strip, then the partner and
- * legal metadata, then the copyright and the runtime badge. The marker was
- * printed last by the rebuild; it opens the record in the pre-programme footer
- * and in the document's own block, so it opens it here.
+ * A dossier does not end on a link list. It ends on a colophon: the facts of the
+ * record, then the facts of its making, then the index, then the imprint. That is
+ * the order here, and it is one artifact from the marker to the last hairline.
+ *
+ * 1. `# LAND / RECORD END` opens it with the locale switcher on the same row.
+ * 2. Two ledgers side by side under a hairline gutter: **FACTS** (SOURCE,
+ *    LICENSE, MAINTAINED BY, SUPPORT, STATUS - the keeper ledger, untouched) and
+ *    **COLOPHON** (TYPE, BUILD, FIELD, INK, EXTENT, EDITION - how this document
+ *    was set). Both are `RecordLedger`, because a colophon is facts, not a second
+ *    kind of widget.
+ * 3. The labelled rows: `ROUTES:` the `/LABEL` destinations, `LEGAL:` the
+ *    legal set, and `INDEX:` the one door back to `/Contents` - the document's
+ *    own table of contents, which is not a route among the others.
+ * 4. The imprint: copyright, the baseline's own `Back to top ↑`, the runtime
+ *    badge.
+ *
+ * The marker was printed last by the rebuild; it opens the record in the
+ * pre-programme footer and in the document's own block, so it opens it here.
  *
  * This was a `.tsx` island. It is now an `.astro` component because the ledger
  * it composes is an `.astro` block and an `.astro` component cannot be imported
@@ -26,13 +36,13 @@ import { LocaleSwitcher } from "./LocaleSwitcher";
 
 const T = GetI18n();
 
-const Data = FooterData(T);
-
 const Year = new Date().getFullYear();
+
+const Data = FooterData(T, Year);
 
 const Copyright = T("footer:bottomBar.copyright", {
 	year: Year,
-	defaultValue: `© ${Year} Code Editor Land. All rights reserved.`,
+	defaultValue: `© ${Year} Code Editor Land. CC0 1.0 Universal: no rights reserved.`,
 });
 ---
 
@@ -51,38 +61,99 @@ const Copyright = T("footer:bottomBar.copyright", {
 			</div>
 		</div>
 
-		<RecordLedger rows={Data.Ledger} class="FooterLedger" />
+		{/* The record's facts and the record's making, as two ledgers under one
+		    gutter - the same hairline division the hero pair uses. */}
+		<div class="FooterBody">
+			<div class="FooterFacts">
+				<p class="FooterField">
+					{T("footer:field.facts", { defaultValue: "FACTS:" })}
+				</p>
 
-		<nav class="FooterQuickLinks" aria-label="Quick links">
-			{
-				Data.Quick.map((Link) => (
-					<a
-						class="FooterQuickLink"
-						href={Link.Href}
-						{...FooterLinkAttributes(Link.Target)}
-					>
-						{Link.Label}
-					</a>
-				))
-			}
-		</nav>
+				<RecordLedger rows={Data.Ledger} class="FooterLedger" />
+			</div>
 
-		<nav class="FooterLegal" aria-label="Legal">
-			{
-				Data.Legal.map((Link) => (
-					<a
-						class="FooterLegalLink"
-						href={Link.Href}
-						{...FooterLinkAttributes(Link.Target)}
-					>
-						{Link.Label}
-					</a>
-				))
-			}
-		</nav>
+			<div class="FooterColophon">
+				<p class="FooterField">
+					{T("footer:field.colophon", { defaultValue: "COLOPHON:" })}
+				</p>
+
+				<RecordLedger
+					rows={Data.Colophon}
+					class="FooterColophonLedger"
+				/>
+			</div>
+		</div>
+
+		<div class="FooterRows">
+			<div class="FooterRow">
+				<p class="FooterField">
+					{T("footer:field.routes", { defaultValue: "ROUTES:" })}
+				</p>
+
+				<nav class="FooterQuickLinks" aria-label="Routes">
+					{
+						Data.Quick.map((Link) => (
+							<a
+								class="FooterQuickLink"
+								href={Link.Href}
+								{...FooterLinkAttributes(Link.Target)}
+							>
+								{Link.Label}
+							</a>
+						))
+					}
+				</nav>
+			</div>
+
+			<div class="FooterRow">
+				<p class="FooterField">
+					{T("footer:field.legal", { defaultValue: "LEGAL:" })}
+				</p>
+
+				<nav class="FooterLegal" aria-label="Legal">
+					{
+						Data.Legal.map((Link) => (
+							<a
+								class="FooterLegalLink"
+								href={Link.Href}
+								{...FooterLinkAttributes(Link.Target)}
+							>
+								{Link.Label}
+							</a>
+						))
+					}
+				</nav>
+			</div>
+
+			{/* The index closes the register: not a category of destination like
+			    the two rows above, but the page that lists them all. */}
+			<div class="FooterRow">
+				<p class="FooterField">
+					{T("footer:field.index", { defaultValue: "INDEX:" })}
+				</p>
+
+				<nav class="FooterQuickLinks" aria-label="Index">
+					{
+						Data.Index.map((Link) => (
+							<a
+								class="FooterQuickLink"
+								href={Link.Href}
+								{...FooterLinkAttributes(Link.Target)}
+							>
+								{Link.Label}
+							</a>
+						))
+					}
+				</nav>
+			</div>
+		</div>
 
 		<div class="FooterBottom">
 			<span class="FooterCopyright">{Copyright}</span>
+
+			<a class="FooterTop" href="#" aria-label="Back to top">
+				{T("footer:bottomBar.top", { defaultValue: "Back to top ↑" })}
+			</a>
 
 			<span class="FooterTauri">
 				<a

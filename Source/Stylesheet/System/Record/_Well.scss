@@ -2,6 +2,31 @@
 // hairline frame, under a title bar carrying the label and the copy control.
 // Lines print verbatim: no wrapping, no reflow, no syntax highlighting.
 //
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  what you type: a command, a config block, a transcript. An
+//                   object the reader copies, not a paragraph in monospace.
+// RANK              leaf.
+// SLOT CONTRACT (the `Publishes:` list below is the class API; this is what a
+// caller hands in):
+//   label     -> the title-bar label (`INSTALL`, `CONFIG`, `TRANSCRIPT`)
+//   language? -> the language tag, a label and not a highlighter switch
+//   lines[]   -> one printed line each, verbatim: no wrapping, no reflow
+//   copy?     -> the copy control (default true); `false` removes the
+//                affordance, never the content
+// MAY HOLD          nothing. A well is text.
+// MAY NOT HOLD      a second well (a two-step build is two wells in the band's
+//                   body, not one well inside another), a caption, or a figure.
+// NARROW            the body scrolls sideways and the title bar stays put: a
+//                   command that wrapped would be a command the reader cannot
+//                   copy, so the overflow is inside the frame and the page grid
+//                   never widens. The copy control is Jelly's, at the bar's
+//                   rhythm, and it is revealed by the wiring - with JavaScript
+//                   off the well prints its command and nothing else.
+// WIDE              the well takes the column it is given; `white-space: pre`
+//                   keeps every line's shape at any width.
+// DENSE             none. A command must not compress: the one thing a well
+//                   cannot do is reflow its lines.
+//
 // Publishes:
 //   .record-well                the well shell - frame, title bar, recessed body
 //   .record-well__bar           the title bar
@@ -85,4 +110,28 @@
 .record-well__line {
 	display: block;
 	white-space: pre;
+}
+
+// ─── PROVENANCE ───────────────────────────────────────────────────────────
+// The well's source line, when the caller names one: where the command came
+// from. It is a foot, not a bar - the title bar carries what the well is, the
+// foot carries where it was read - and it is separated by the same hairline the
+// bar is, so the well reads as three bands (label, body, source) rather than as
+// a frame with a note appended.
+//
+// The line is `--Mute` fill and `--Border` rule, the recessed surface's own, so
+// the foot reads as part of the well's body rather than as a caption on top of
+// it.
+.record-well__source {
+	@include hairline(top);
+	@include mono-meta;
+	@include track(var(--track-name));
+	margin: 0;
+	padding: var(--space-tight) var(--space-reading);
+	background: var(--Mute);
+	overflow-wrap: anywhere;
+}
+
+.record-well__source-key {
+	color: var(--MuteForeground);
 }

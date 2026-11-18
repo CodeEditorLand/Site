@@ -1,0 +1,223 @@
+---
+/**
+ * RecordTranscript - a session, printed as it happened.
+ *
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  a session: what was typed, what answered, in order, with the
+ *                   speakers named and each turn stamped. Not a well (one
+ *                   command, copied as a block) and not a stage (the order a
+ *                   process happens in, abstracted out of any particular run).
+ * RANK              leaf.
+ * SLOT CONTRACT     transcript.index   -> `# TRANSCRIPT_01`
+ *                   transcript.label?  -> `/ BUILD`, after the marker
+ *                   transcript.turns[] -> mark, speaker, line, stamp?, state?
+ *                   transcript.source  -> `SOURCE: ...` - required
+ *                   transcript.asOf?   -> `AS OF: ...` on the bar
+ *                   transcript.state?  -> `rest` | `loading` | `empty`
+ *                   transcript.window? -> `SHOWING 12 OF 240` on the foot
+ *                   transcript.note?   -> one line: what it does not record
+ * MAY HOLD          turns only.
+ * MAY NOT HOLD      prose, a figure, a second session.
+ * WIDE (>=1024)     the turn is one row: a 2ch mark column, a 9ch speaker
+ *                   column, the line, and the stamp at the far right - four
+ *                   columns, so the eye can read one speaker down the page.
+ * NARROW            the stamp moves under the line and the speaker stays in its
+ *                   column: the mark column is what makes a transcript readable,
+ *                   and it is the one thing that never moves.
+ * DENSE             none. A transcript is verbatim: a compressed session has
+ *                   dropped the line that mattered.
+ *
+ * THE MARK COLUMN IS THE GRAMMAR, NOT DECORATION. `→` is what the reader did,
+ * `↳` is what answered, `#` is the session's own note, `◎` is a turn that never
+ * arrived. The block prints the mark it is given and never chooses one, because
+ * who spoke is a fact of the session and not a style of the page.
+ *
+ * THE THREE ADVERSE STATES ARE COMPOSED, NOT PLACEHOLDERS:
+ * - `loading` prints the session's shape - mark, speaker and a hairline bar where
+ *   the line would be - so a session being read still shows how many turns it
+ *   has. There is no spinner anywhere in this layer.
+ * - `empty` prints the caller's sentence in the frame's own body, because an
+ *   empty transcript is a fact about the build and not a reason to draw nothing.
+ * - `window` prints the first N turns and `SHOWING N OF TOTAL` on the foot. A
+ *   session of two hundred turns is an archive; the page prints what a reader can
+ *   read and names the rest.
+ *
+ * THE COPY CONTROL IS THE WELL'S CONTRACT, NOT A SECOND ONE. The button is a
+ * `jelly-icon-button` carrying the whole session on `data-copy-payload`, revealed
+ * by `WireWells` once the listener is attached - so with JavaScript off the
+ * transcript prints and offers nothing inert. The payload is `SPEAKER> line` per
+ * turn: the session as a reader would paste it.
+ *
+ * No hydration directive: the one script is the sitewide copy wiring.
+ */
+import type { Transcript } from "./Type.js";
+
+interface Props {
+	/** The session: its turns, its source and its states. */
+	transcript: Transcript;
+
+	/** Extra classes from the page, appended after the block's own. */
+	class?: string;
+}
+
+const { transcript, class: Class } = Astro.props;
+
+/** The session's state; `rest` prints the turns. */
+const State = transcript.state ?? "rest";
+
+/** The turns actually printed: `window.showing` when the session is longer. */
+const Printed =
+	transcript.window !== undefined
+		? transcript.turns.slice(0, transcript.window.showing)
+		: transcript.turns;
+
+/** The count the bar prints: the turns printed, not the turns withheld. */
+const Count = transcript.window?.total ?? String(transcript.turns.length);
+
+/** The unit the bar prints beside the count. */
+const Unit = transcript.turns.length === 1 ? "TURN" : "TURNS";
+
+/** What the copy control hands the clipboard: the session, speaker and line. */
+const Payload = transcript.turns
+	.map((Turn) => `${Turn.speaker}> ${Turn.line}`)
+	.join("\n");
+
+/** The control's accessible name; the wiring swaps it for "Copied" on copy. */
+const CopyLabel = `Copy ${transcript.index} to the clipboard`;
+
+/** The bar's register line, and whether the copy control renders at all. */
+const Copy = transcript.copy ?? true;
+
+const Id = `transcript-${transcript.index.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+---
+
+<figure
+	class:list={[
+		"record-transcript",
+		State === "loading" && "record-transcript--loading",
+		State === "empty" && "record-transcript--empty",
+		Class,
+	]}
+	id={Id}
+>
+	<figcaption class="record-transcript__bar">
+		<span class="record-transcript__head">
+			<span class="record-transcript__index"># {transcript.index}</span>
+			{transcript.label ? <span class="record-transcript__label">/ {transcript.label}</span> : null}
+		</span>
+
+		{
+			transcript.asOf ? (
+				<span class="record-transcript__asof">
+					<span class="record-transcript__asof-key">AS OF:</span>
+					{transcript.asOf}
+				</span>
+			) : null
+		}
+
+		<span class="record-transcript__count">
+			{Count}<span class="record-transcript__count-unit">{Unit}</span>
+		</span>
+
+		{
+			Copy && State !== "empty" ? (
+				<jelly-icon-button
+					class="record-transcript__copy"
+					data-record-transcript-copy
+					data-copy-payload={Payload}
+					size="small"
+					shape="square"
+					label={CopyLabel}
+					aria-label={CopyLabel}
+					title={CopyLabel}
+					style="--jelly-fill: var(--Mute); --jelly-label: var(--Foreground); --jelly-icon-button-radius: 0px; --jelly-ring: var(--Accent);"
+					hidden
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						style="color: var(--jelly-label)"
+						aria-hidden="true"
+					>
+						<rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+						<path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+					</svg>
+				</jelly-icon-button>
+			) : null
+		}
+	</figcaption>
+
+	{
+		State === "empty" ? (
+			<p class="record-transcript__empty">
+				<span class="record-transcript__empty-mark" aria-hidden="true">
+					&#9678;
+				</span>
+				{transcript.empty}
+			</p>
+		) : (
+			<ol class="record-transcript__turns">
+				{Printed.map((Turn) => (
+					<li
+						class:list={[
+							"record-transcript__turn",
+							Turn.state && "record-transcript__turn--state",
+						]}
+						data-mark={Turn.mark}
+					>
+						<span class="record-transcript__mark" aria-hidden="true">
+							{Turn.mark}
+						</span>
+						<span class="record-transcript__speaker">{Turn.speaker}</span>
+						<span class="record-transcript__line">
+							{State === "loading" ? (
+								<span class="record-transcript__skeleton" aria-hidden="true" />
+							) : (
+								Turn.line
+							)}
+						</span>
+						<span class="record-transcript__stamp">
+							{Turn.state ? Turn.state.toUpperCase() : (Turn.stamp ?? "")}
+						</span>
+					</li>
+				))}
+			</ol>
+		)
+	}
+
+	{
+		transcript.window !== undefined || transcript.note ? (
+			<p class="record-transcript__foot">
+				{transcript.window !== undefined ? (
+					<span class="record-transcript__window">
+						<span class="record-transcript__window-key">SHOWING:</span>
+						{transcript.window.showing}
+						<span class="record-transcript__window-of">OF</span>
+						{transcript.window.total}
+					</span>
+				) : null}
+				{transcript.note ? (
+					<span class="record-transcript__note">{transcript.note}</span>
+				) : null}
+			</p>
+		) : null
+	}
+
+	<p class="record-transcript__source">
+		<span class="record-transcript__source-key">SOURCE:</span>
+		{transcript.source}
+	</p>
+</figure>
+
+<script>
+	import { WireWells } from "../../Library/Document/WireWells";
+
+	WireWells("[data-record-transcript-copy]");
+</script>

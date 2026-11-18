@@ -1,30 +1,45 @@
 ---
-// The Contact hub - one index of request routes.
+// The Contact hub - the desk's register: one index of request routes.
 //
-// The page is a single three-column grid of fourteen link cards: a slug, a
-// title and one sentence per cell. It answers "which one is mine" by printing
+// The page is a single grid of fourteen link cards: a slug, a title, one
+// sentence and - since this card - the two facts a reader chooses by, the
+// statutory basis the request is filed under (`〈GDPR Art. 15 + 20〉`) and the
+// window it answers in (`SLA: 30d`). It answers "which one is mine" by printing
 // every route the site answers on, in alphabetical order, and nothing else -
 // there is no family grouping, no second level of navigation and no display
 // type anywhere on it.
 //
-// Every slug, title and subtitle comes from `Request.ts` through
-// `Library/Contact/Data.ts` - nothing is retyped here - so a card cannot
-// disagree with the route it links to. The one card that is a page rather than
-// an income code is `SALE`, and it is the one entry whose words the data module
-// carries itself.
+// Every slug, title, sentence, basis and window comes from the registry through
+// `Library/Contact/Data.ts` and `Component/Contact/Register.ts` - nothing is
+// retyped here - so a card cannot disagree with the route it links to. The one
+// card that is a page rather than an income code is `SALE`; it is the one entry
+// whose words the data module carries itself, and the one entry with no basis
+// and no window, because it is not a statutory request.
 //
-// The address that closes the page is the one contact that does not go through a
-// form. It is a link, not an action: an address is not something the page
-// performs, so it takes ink, no fill, and an underline on hover only
-// (`DESIGN.md` §5 A6, §7 DR-12). It is one quiet line between the grid and the
-// closing rule - never a heading, because the page's heading count is its own.
+// The record head counts the register (`REGISTER: 14 ENTRIES`) rather than
+// describing it. A number that is derived from the list under it cannot drift
+// from the list under it.
 //
-// No record header: the baseline renders no `# CONTACT` / `/INDEX` line here,
-// and the hub is an index rather than a record.
+// The two contacts that close the page are the ones that do not go through a
+// form: the mailbox and the public thread. Both are links, not actions - an
+// address is not something the page performs, so it takes ink, no fill, and an
+// underline on hover only (`DESIGN.md` §5 A6, §7 DR-12). They are one quiet
+// line between the grid and the closing rule - never a heading, because the
+// page's heading count is its own.
+//
+// No record header of the `# CONTACT` / `/INDEX` kind was in the baseline; the
+// shell prints one now for the same reason every request route does - the
+// register's size is a fact about the page, and the record grammar is how this
+// site prints a page's facts.
 import ContactPage from "../../Component/Contact/ContactPage.astro";
 import {
+	ContactChannel,
+	ContactProcess,
+	RegisterEntries,
+} from "../../Component/Contact/Register.js";
+import RecordStage from "../../Component/Record/RecordStage.astro";
+import {
 	ContactDirect,
-	ContactEntries,
 	ContactHubTrail,
 } from "../../Library/Contact/Data.js";
 import { GetI18n } from "../../Library/I18n/Server";
@@ -44,7 +59,7 @@ const Heading = T("common.contact.pageTitle", { defaultValue: "Contact" });
 
 const Standfirst = T("common.contact.pageSubtitle", {
 	defaultValue:
-		"Data requests, technical support, legal, and enterprise inquiries - each contact carries a 5-letter income code.",
+		"Fourteen routes, one register: data requests, technical support, legal and enterprise. Each prints its five-letter code and the window it answers in; the four statutory routes name the article they answer under.",
 });
 
 const BackToTop = T("common.button.backToTop", { defaultValue: "Back to top" });
@@ -54,6 +69,11 @@ const BackToTop = T("common.button.backToTop", { defaultValue: "Back to top" });
 	metaTitle={MetaTitle}
 	metaDescription={MetaDescription}
 	trail={ContactHubTrail}
+	record={{
+		code: "CONTACT",
+		route: "/INDEX",
+		count: RegisterEntries.length,
+	}}
 	heading={Heading}
 	standfirst={Standfirst}
 	mode="functional"
@@ -61,20 +81,57 @@ const BackToTop = T("common.button.backToTop", { defaultValue: "Back to top" });
 	<div class="contact-hub">
 		<div class="contact-hub__grid">
 			{
-				ContactEntries.map((Entry) => (
+				RegisterEntries.map((Entry) => (
 					<a class="contact-hub__card" href={Entry.href}>
 						<p class="contact-hub__slug">{Entry.slug}</p>
 						<h2 class="contact-hub__name">{Entry.title}</h2>
 						<p class="contact-hub__note">{Entry.subtitle}</p>
+						{Entry.basis || Entry.window ? (
+							<p class="contact-hub__foot">
+								{Entry.basis ? (
+									<span class="contact-hub__basis">
+										〈{Entry.basis}〉
+									</span>
+								) : null}
+								{Entry.window ? (
+									<span class="contact-hub__window">
+										SLA: {Entry.window}
+									</span>
+								) : null}
+							</p>
+						) : null}
 					</a>
 				))
 			}
 		</div>
 
+		<section
+			class="contact-hub__process"
+			aria-labelledby="ContactProcessHeading"
+		>
+			<p class="contact-hub__process-kicker"># PROCESS / 04 STEPS</p>
+			<h2 class="contact-hub__process-heading" id="ContactProcessHeading">
+				What happens after you send
+			</h2>
+			<p class="contact-hub__process-note">
+				Every route above is filed under its income code and answered inside the
+				window its own card prints. The four steps are the desk's process, not a
+				promise about any one request: the window is the commitment.
+			</p>
+			<RecordStage stages={[...ContactProcess]} variant="plates" />
+		</section>
+
 		<p class="contact-hub__direct">
 			<span class="contact-hub__direct-label">{ContactDirect.label}</span>
 			<a class="contact-hub__address" href={`mailto:${ContactDirect.address}`}
 				>{ContactDirect.address}</a
+			>
+			<span class="contact-hub__direct-label">{ContactChannel.label}</span>
+			<a
+				class="contact-hub__address"
+				href={ContactChannel.href}
+				target="_blank"
+				rel="noopener noreferrer">{ContactChannel.text}</a
 			>
 		</p>
 

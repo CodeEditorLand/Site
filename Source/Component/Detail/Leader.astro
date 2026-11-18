@@ -1,0 +1,190 @@
+---
+/**
+ * Leader - the printed index entry: name, leader, figure, hanging note.
+ *
+ * ─── WHY THIS BLOCK EXISTS ────────────────────────────────────────────────
+ * The site files sets three ways: an archive (a ruled row per record), a ledger
+ * (a key beside a value) and a matrix (one state across columns). None of them
+ * is the shape a set takes when a reader scans it for ONE entry and needs the
+ * figure at the end of the line - a chapter index, a term index, a list of
+ * parts. That shape is the printed leader, and it is a different rhythm: no
+ * rules at all, because the dots are the rule.
+ *
+ * ─── THE GRAMMAR IT KEEPS ─────────────────────────────────────────────────
+ * - A row is `[name] ······· [figure]`, one baseline, the figure end-aligned so
+ *   eight entries read as one column of figures.
+ * - The note under a name is the `↳` proposition in its hanging form: it opens
+ *   under the name and wraps on the name's own edge, not the band's.
+ * - A register line (`# CHAPTERS / 08`) names the set and counts it. The count
+ *   is the list's own length, so the two cannot disagree.
+ * - A row whose figure is not known prints `UNAVAILABLE` - the vocabulary's
+ *   word, never a zero and never a blank cell.
+ *
+ * ─── THE ADVERSE STATES ───────────────────────────────────────────────────
+ * `empty` prints the caller's composed sentence instead of the frame - what
+ * would be here, why it is not, what to do. `loading` prints the entries' two
+ * cells with their values barred: the names are the schema and arrive before the
+ * figures, and a bar is a skeleton in the record grammar, never a spinner.
+ * `too-much` is the `limit` prop: the register prints the first n and a foot line
+ * stating the real size and the route to all of it, which is the same sentence
+ * `RecordLedger`'s register and `ShellState`'s too-much arm print.
+ *
+ * ─── NO SCRIPT ────────────────────────────────────────────────────────────
+ * No `<script>`, no `client:*`. A register is printed; the only interaction is
+ * the links the caller supplies.
+ */
+import type { RegisterState } from "../Record/Type.js";
+import type { LeaderItem } from "./Type.js";
+
+interface Props {
+	/** The entries, in the order they are read. */
+	items: readonly LeaderItem[];
+
+	/** `# CHAPTERS` - the register line's name. Absent, no register line. */
+	register?: string;
+
+	/** One column (the default) or two, the latter only at 1024px and up. */
+	columns?: 1 | 2;
+
+	/** `rest` prints the entries; `loading` prints the schema; `empty` the sentence. */
+	state?: RegisterState;
+
+	/** What the register says when it has nothing in it. */
+	empty?: string;
+
+	/**
+	 * The too-much state: print at most this many entries and state the real
+	 * size. Absent, the register prints every entry it was handed.
+	 */
+	limit?: number;
+
+	/** The route to the whole set, printed beside the too-much line. */
+	more?: {
+		readonly label: string;
+		readonly href: string;
+	};
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const {
+	items,
+	register,
+	columns = 1,
+	state = "rest",
+	empty,
+	limit,
+	more,
+	class: Class,
+} = Astro.props;
+
+/** The count is the list's own length: the register line cannot drift from it. */
+const Count = String(items.length).padStart(2, "0");
+
+/** The register line states the state it is in, in the vocabulary's word. */
+const RegisterLine =
+	register === undefined
+		? undefined
+		: `${register} / ${state === "loading" ? "LOADING" : Count}`;
+
+/** The too-much state: the set is longer than the register prints. */
+const Truncated = limit !== undefined && items.length > limit;
+
+const Shown = Truncated ? items.slice(0, limit) : items;
+
+/**
+ * The skeleton's rows. A loading register keeps the count it was handed (the
+ * schema) and prints six when it was handed nothing, because a register with no
+ * shape would say nothing about what is coming.
+ */
+const SkeletonRows = items.length > 0 ? items.length : 6;
+
+/** The bar widths, so six bars do not read as one repeating block. */
+const Bars = [64, 42, 78, 55, 36, 70];
+---
+
+<div class:list={["detail-leader", Class]} data-state={state}>
+	{
+		RegisterLine && (
+			<p class="detail-leader__register" data-state={state}>
+				# {RegisterLine}
+			</p>
+		)
+	}
+	{
+		state === "empty" ? (
+			empty && <p class="detail-leader__empty">{empty}</p>
+		) : (
+			<ol
+				class:list={[
+					"detail-leader__list",
+					`detail-leader__list--${columns}`,
+				]}
+				aria-busy={state === "loading" ? "true" : undefined}
+			>
+				{state === "loading"
+					? Array.from({ length: SkeletonRows }, (_, Index) => (
+							<li class="detail-leader__row detail-leader__row--skeleton">
+								<span class="detail-leader__line">
+									<span class="detail-leader__label">
+										<span
+											class="detail-leader__bar"
+											style={`--bar:${Bars[Index % Bars.length]}%`}
+											aria-hidden="true"
+										/>
+									</span>
+									<span class="detail-leader__dots" aria-hidden="true" />
+									<span class="detail-leader__meta">
+										<span
+											class="detail-leader__bar"
+											style={`--bar:${Bars[(Index + 3) % Bars.length]}%`}
+											aria-hidden="true"
+										/>
+									</span>
+								</span>
+							</li>
+						))
+					: Shown.map((Item) => (
+							<li
+								class="detail-leader__row"
+								data-state={Item.state ?? "rest"}
+							>
+								<span class="detail-leader__line">
+									{Item.href ? (
+										<a class="detail-leader__label" href={Item.href}>
+											{Item.label}
+										</a>
+									) : (
+										<span class="detail-leader__label">{Item.label}</span>
+									)}
+									<span class="detail-leader__dots" aria-hidden="true" />
+									<span class="detail-leader__meta">
+										{Item.state === "unavailable"
+											? "UNAVAILABLE"
+											: (Item.meta ?? "◎")}
+									</span>
+								</span>
+								{Item.note && (
+									<span class="detail-leader__note">↳ {Item.note}</span>
+								)}
+							</li>
+						))}
+			</ol>
+		)
+	}
+	{
+		Truncated && (
+			<p class="detail-leader__more">
+				SHOWING: {Shown.length} OF {items.length}
+				{more && (
+					<a class="detail-leader__more-link" href={more.href}>
+						{more.label}
+						{"\u2001"}
+						<span aria-hidden="true">→</span>
+					</a>
+				)}
+			</p>
+		)
+	}
+</div>

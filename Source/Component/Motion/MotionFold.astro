@@ -1,0 +1,177 @@
+---
+/**
+ * MotionFold - a disclosure with content behind it, opening like a fold.
+ *
+ * ─── WHAT IT IS ───────────────────────────────────────────────────────────
+ * A `<details>` whose summary is a register line (`# OPEN QUESTIONS / 03`), and
+ * whose body is a run of leaves: `[index] [label] [meta]`, with an optional
+ * `↳` note under the label. It is the general case of the site's two existing
+ * disclosures - the contents `Fold` is a page's own sections, the rail's tree is
+ * the documentation - and it is the one a page uses when the content is prose
+ * rather than navigation.
+ *
+ * ─── WHY IT IS NOT THE CONTENTS FOLD ──────────────────────────────────────
+ * `UI/Fold` prints `ON THIS PAGE` and rows that are all links; it is navigation,
+ * and its body is a list of destinations. A fold of *content* has leaves that
+ * may not lead anywhere (a question with no answer yet, a fact with no source),
+ * leaves that are gone, and a count that can be bigger than its frame. Those are
+ * different facts about a different thing, so they are a different block rather
+ * than a variant that would have to hide half its props on one surface.
+ *
+ * ─── THE ADVERSE ARMS ARE PROPS, NOT A SECOND COMPONENT ───────────────────
+ * `empty` is required: a fold that opens onto nothing is indistinguishable from a
+ * fold that failed. `state="loading"` prints the keys with their values barred -
+ * the schema arrives before the data does. `long` caps the run at 60vh and the
+ * summary keeps printing the whole count, so a fold of two hundred is honest
+ * about being bigger than its frame. A leaf with `gone` keeps its row as a
+ * tombstone: `◎`, muted ink, no link, and the meta cell says what it was.
+ *
+ * ─── NO SCRIPT ────────────────────────────────────────────────────────────
+ * `details` is the disclosure the browser already knows: keyboard operable,
+ * announced as expanded or collapsed, and found by in-page search while closed.
+ * The motion is CSS (`System/Motion/_Fold.scss`) and the state is the `open`
+ * attribute - so this component ships no JavaScript at all.
+ */
+import type { FoldLeaf, FoldSpec } from "./Type.js";
+
+interface Props extends Partial<FoldSpec> {
+	/** The register line's name. */
+	name: FoldSpec["name"];
+
+	/** What the fold says with no leaves. Required. */
+	empty: string;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const {
+	name: Name,
+	label: Label,
+	count: CountProp,
+	leaves: Leaves = [],
+	empty: Empty,
+	state: State = "rest",
+	keys: Keys = [],
+	waiting: Waiting,
+	long: Long = false,
+	more: More,
+	class: Class,
+} = Astro.props;
+
+/** The count is the leaves' own length unless the page measured something else. */
+const Count = CountProp ?? String(Leaves.length).padStart(2, "0");
+
+const Loading = State === "loading";
+
+/** A leaf that is gone prints `◎` instead of its index and never a link. */
+const MarkOf = (Leaf: FoldLeaf): string =>
+	Leaf.gone ? "◎" : (Leaf.index ?? "");
+
+const ClassOf = (Leaf: FoldLeaf): string =>
+	Leaf.gone
+		? "MotionFold__Leaf MotionFold__Leaf--gone"
+		: "MotionFold__Leaf";
+---
+
+<details
+	class:list={["MotionFold", Class]}
+	data-motion="fold"
+	data-state={State}
+>
+	<summary class="MotionFold__Summary">
+		<span class="MotionFold__Mark" aria-hidden="true">#</span>
+		<span class="MotionFold__Name">{Name}</span>
+		{
+			Label ? (
+				<>
+					<span class="MotionFold__Rule" aria-hidden="true">/</span>
+					<span class="MotionFold__Count">{Label}</span>
+				</>
+			) : null
+		}
+		<span class="MotionFold__Rule" aria-hidden="true">/</span>
+		<span class="MotionFold__Count">{Loading ? "UNAVAILABLE" : Count}</span>
+		<span class="MotionFold__Words" aria-hidden="true">
+			<span class="MotionFold__Word MotionFold__Word--open">OPEN</span>
+			<span class="MotionFold__Word MotionFold__Word--close">CLOSE</span>
+		</span>
+		<span class="MotionFold__Glyphs" aria-hidden="true">
+			<span class="MotionFold__Glyph MotionFold__Glyph--closed">→</span>
+			<span class="MotionFold__Glyph MotionFold__Glyph--open">↳</span>
+		</span>
+	</summary>
+
+	{
+		Loading ? (
+			<ol class="MotionFold__Leaves" aria-busy="true">
+				{Keys.map((Key) => (
+					<li class="MotionFold__Leaf">
+						<span class="MotionFold__LeafIndex" aria-hidden="true">
+							:
+						</span>
+						<span class="MotionFold__Label">{Key}</span>
+						<span class="MotionFold__Meta" aria-hidden="true">
+							<span class="MotionSkeleton__Bar" style="--bar: 38%" />
+						</span>
+					</li>
+				))}
+				{Waiting ? (
+					<li class="MotionFold__Leaf">
+						<span class="MotionFold__LeafIndex" aria-hidden="true">
+							↳
+						</span>
+						<span class="MotionFold__Label MotionFold__Note">
+							WAITING ON: {Waiting}
+						</span>
+					</li>
+				) : null}
+			</ol>
+		) : Leaves.length > 0 ? (
+			<>
+				<ol
+					class:list={[
+						"MotionFold__Leaves",
+						Long && "MotionFold__Leaves--long",
+					]}
+				>
+					{Leaves.map((Leaf) => (
+						<li class={ClassOf(Leaf)}>
+							<span class="MotionFold__LeafIndex" aria-hidden="true">
+								{MarkOf(Leaf)}
+							</span>
+							<span class="MotionFold__Label">
+								{Leaf.href && !Leaf.gone ? (
+									<a class="MotionFold__Link" href={Leaf.href}>
+										{Leaf.label}
+									</a>
+								) : (
+									Leaf.label
+								)}
+								{Leaf.note ? (
+									<span class="MotionFold__Note">
+										<span aria-hidden="true">↳</span>{" "}
+										{Leaf.note}
+									</span>
+								) : null}
+							</span>
+							{Leaf.meta ? (
+								<span class="MotionFold__Meta">{Leaf.meta}</span>
+							) : null}
+						</li>
+					))}
+				</ol>
+				{More ? <p class="MotionFold__EmptyLine">{More}</p> : null}
+			</>
+		) : (
+			<div class="MotionFold__Empty">
+				<p class="MotionFold__EmptyMark">
+					<b aria-hidden="true">◎</b> NO LEAF
+				</p>
+				<p class="MotionFold__EmptyLine">
+					<span aria-hidden="true">↳</span> {Empty}
+				</p>
+			</div>
+		)
+	}
+</details>

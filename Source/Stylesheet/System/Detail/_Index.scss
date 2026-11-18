@@ -1,0 +1,56 @@
+// The Detail layer - the last five per cent, and the only layer that is allowed
+// to be small.
+//
+// ─── WHY THIS LAYER EXISTS ────────────────────────────────────────────────
+// Ten cards built the frame, the surfaces, the record grammar and the type
+// system. What none of them could own is the difference between a system applied
+// and a page designed: the optical edge of a tracked label, the way a rule meets
+// a band's edge, the hanging mark on a proposition, the figures in a ledger that
+// do not shift when a value changes, the hover that reads as ink instead of
+// colour. None of it is a new idea. All of it is the difference the reader feels.
+//
+// So this layer is deliberately not a block layer and not a token layer. It
+// changes no name, adds no component to the record grammar and sets no new
+// ladder step. It is the place where four laws are written down once and applied
+// to the artifacts that already exist:
+//
+//   FIGURE   a number is set as a figure: one column, tabular, tracked as a
+//            figure and not as a word, with its unit bound to it.
+//   HANG     punctuation and marks hang in the margin; a sentence opens on its
+//            first letter, not on its first quote.
+//   RULE     a hairline has two inks and one clearance, and a rule that closes a
+//            band runs to the band's edge.
+//   INK      a hover is ink; the accent authenticates and never decorates.
+//
+// ─── WHY IT LOADS LAST ────────────────────────────────────────────────────
+// Every rule here refines a declaration a partial already makes, so this file
+// must come after the Record layer, the Component families and the Layout
+// frames in `System.scss`. It is the one place in the stylesheet where source
+// order is the mechanism rather than an accident, and it is stated here so the
+// next card does not "tidy" the load order and silently undo the layer.
+//
+// ─── WHAT THIS LAYER MAY NOT DO ───────────────────────────────────────────
+// It may not delete a declaration, weaken one into invisibility, or repaint a
+// surface. It changes a value that was a literal into a register, a metric that
+// was a guess into a law, or a gap that was missing into a value. If a rule here
+// would need a new name to work, it is in the wrong layer.
+//
+// ─── THE COMPONENTS ───────────────────────────────────────────────────────
+// Three artifacts live on this layer because they are details that needed a
+// shape, not blocks that needed a stylesheet:
+//
+//   Leader   a printed index entry: label, leader, figure, hanging note
+//   See      the cross-reference: `↳ SEE` then `/ROUTE:` and why
+//   Folio    the band's foot: the ordinal, the part, the count, the as-of
+//
+// and one composition that is only the three read together: `BandFoot`, the
+// band's colophon.
+@use "Figure";
+@use "Hang";
+@use "Rule";
+@use "Ink";
+@use "Rhythm";
+@use "Leader";
+@use "See";
+@use "Folio";
+@use "Foot";

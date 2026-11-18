@@ -48,9 +48,7 @@ export interface PixelProps {
 
 	Container: DOMRect;
 
-	// For React, CurrentTime is the actual number (not an accessor)
-	CurrentTime: number;
-
+	/** Row and column of the cell inside its glyph, for the noise seed. */
 	Row: number;
 
 	Column: number;

@@ -1,18 +1,28 @@
 ---
 /**
- * ReleaseCard - one of the two release records in the roadmap band.
+ * ReleaseCard - one of the two release records in the roadmap manifest.
  *
- * The card is a record with a body: a mono stamp under its marker, its action,
- * its title, and then the two labelled lists the release is read through.
+ * The record is a **column of the manifest plate**, not a card of its own: the
+ * band owns the white surface and the hairline gutter, and this file prints one
+ * state on its half of it. A card inside a card is the one thing `DESIGN.md`
+ * §1.3 forbids, and two cards side by side were what made the release state read
+ * as two offers rather than two states of one offer.
+ *
+ * The record is read as: a stamped header (`# RELEASE_01`, `〈 ACTIVE SOURCE 〉`,
+ * `/ CHANNEL : PUBLIC`, `STATUS:`, `TARGET:`, `SIGNAL:`), the state's one action,
+ * the state's name, and then the two labelled lists it is read through.
  *
  * `Elements` is one row per element the release carries - its name as a badge
  * that opens the element's documentation page, its role, and the line that says
  * what it replaces or which technology it uses, with that technology lifted into
  * a badge of its own. `Manifest` is six `KEY: VALUE` rows and prints as six.
  *
- * The action is a Jelly button inside its own anchor, the same two-body shape
- * every record action on the site uses: the element is the control, the anchor
- * is the destination, and a reader without JavaScript still follows the link.
+ * THE ACTION IS ONE PER ARTIFACT. `# RELEASE_01` is the state a reader can act
+ * on today, so it carries the ink action - the one `.emphasis-expressive` in
+ * this manifest. `# RELEASE_02` is the state a reader can only watch, so it
+ * carries its destination as the site's route line at the accent. Two filled
+ * buttons in one plate was two primary actions, and both of them rendered in
+ * Jelly's default blue - a colour that is in neither the palette nor the accent.
  */
 import type { ReleaseCard as ReleaseCardData } from "../../Content/Home/Type.js";
 
@@ -21,9 +31,23 @@ interface Props {
 }
 
 const { card } = Astro.props;
+
+/**
+ * Which state carries the ink action. The record's own marker is the only
+ * identity the data gives a state, so it is the thing the decision reads: the
+ * first state is the one that is out.
+ */
+const Primary = card.Index === "# RELEASE_01";
+
+/** The action's Jelly ink: the same five properties the hero's action sets. */
+const ActionInk =
+	"--jelly-button-radius:var(--RadiusButton);--jelly-button-height:44px;" +
+	"--jelly-button-padding-inline:2.6rem;--jelly-button-min-width:0px;" +
+	"--jelly-color-background-accent:var(--Foreground);" +
+	"--jelly-color-foreground-on-accent:var(--Background)";
 ---
 
-<jelly-card class="home-card home-release">
+<article class="home-release">
 	<div class="home-release__head">
 		<div class="home-release__stamp">
 			<span class="home-release__index">{card.Index}</span>
@@ -48,16 +72,27 @@ const { card } = Astro.props;
 		</div>
 
 		<div class="home-release__action">
-			<a
-				class="home-release__anchor"
-				href={card.Action.Href}
-				target="_blank"
-				rel="noopener noreferrer"
-			>
-				<jelly-button block class="home-release__button">
-					{card.Action.Label}
-				</jelly-button>
-			</a>
+			{
+				Primary ? (
+					<a
+						class="home-release__anchor"
+						href={card.Action.Href}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<jelly-button block style={ActionInk}>
+							{card.Action.Label}
+						</jelly-button>
+					</a>
+				) : (
+					<a
+						class="home-release__destination"
+						href={card.Action.Href}
+						target="_blank"
+						rel="noopener noreferrer"
+					><span aria-hidden="true">/</span>{card.Action.Label}</a>
+				)
+			}
 		</div>
 
 		<h3 class="home-release__title">{card.Title}</h3>
@@ -117,4 +152,4 @@ const { card } = Astro.props;
 			}
 		</ul>
 	</div>
-</jelly-card>
+</article>

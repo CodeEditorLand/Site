@@ -1,0 +1,48 @@
+---
+/**
+ * MatrixControl - the server half.
+ *
+ * The bar is server-rendered (the island's first render is the SSR HTML), so a
+ * reader with JS off still gets the register line, the count the page measured,
+ * the facet field and the density switch; what they do not get is a filter, and
+ * the table they can see is complete. `client:visible` because the bar is only
+ * worth hydrating when it is on screen - and because a control that hydrates on
+ * load on every matrix of every page would spend the budget of a page whose
+ * matrix is two thousand pixels below the fold.
+ *
+ * The count is handed in rather than measured here: the page knows how many rows
+ * it gave the matrix, and a bar that counted the DOM on the server would be
+ * counting markup it did not build.
+ */
+import { MatrixControl } from "./MatrixControl";
+
+import type { MatrixFacet } from "./Type";
+
+interface Props {
+	/** The id of the matrix shell this control drives. */
+	Target: string;
+
+	/** The columns a reader may narrow by, in the matrix's own order. */
+	Facets: readonly MatrixFacet[];
+
+	/** The matrix's own name, printed at the register line's end. */
+	Name: string;
+
+	/** How many rows the matrix has, counted on the server. */
+	Total: number;
+
+	/** How many rows a page holds before the step control appears. */
+	PageSize?: number;
+}
+
+const { Target, Facets, Name, Total, PageSize } = Astro.props;
+---
+
+<MatrixControl
+	client:visible
+	Target={Target}
+	Facets={Facets}
+	Name={Name}
+	Total={Total}
+	PageSize={PageSize}
+/>

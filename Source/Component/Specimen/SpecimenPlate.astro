@@ -1,0 +1,146 @@
+---
+/**
+ * SpecimenPlate - one part, printed at its own size, beside its contract.
+ *
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  one part of the document, shown and specified at once: the
+ *                   thing itself on a stage, and the four facts that make it
+ *                   checkable in the column beside it. Not a figure (a figure
+ *                   is evidence for a claim), not a well (a well is a command),
+ *                   and not a card (a card is a surface a reader acts on).
+ * RANK              leaf.
+ * SLOT CONTRACT     part    -> mark, name, kind, file, contract[]
+ *                   caption -> one sentence saying what to look at
+ *                   source  -> the file the part is
+ *                   stage   -> `insert` (a white box on the field) or `field`
+ *                              (the creme field itself, for a part that is a
+ *                              surface and would otherwise sit in a box in a box)
+ *                   stageNote -> one line printed in the stage's own register
+ * MAY HOLD          one live part, and its contract.
+ * MAY NOT HOLD      two parts, a second caption, an action. A plate is one
+ *                   specimen; two on one stage is a screenshot.
+ * WIDE              the spec column is 17rem and pinned; the stage takes the
+ *                   rest. The spec is read once and the stage is looked at
+ *                   longest, so the narrow column is the one that stays put.
+ * NARROW            the spec column goes above the stage and stops being
+ *                   pinned. The contract is not hidden: a plate whose contract
+ *                   folded away would be a picture.
+ * DENSE             none. A plate is the airiest object on this page.
+ *
+ * ─── THE STAGE IS THE SURFACE THE PART WILL BE PRINTED ON ─────────────────
+ * A part that is a surface - the card, the article card - is staged on the
+ * creme field, because that is where a card lies on a page and a white card on
+ * a white stage is a card inside a card, which the identity forbids. A part
+ * that is flat - a badge, a label, a table - is staged on the white insert,
+ * which is the box the document uses for an information object. The `stage` prop
+ * is the whole of that decision, and it is a decision the page makes per part.
+ *
+ * ─── PINNED, AND WHY THAT IS NOT A STICKY TRICK ───────────────────────────
+ * The spec column is `position: sticky` at the wide container only. It is not
+ * motion and it explains no state: it keeps a part's contract beside the part
+ * while the reader looks at a tall specimen. It is the same device the legal
+ * rail and the dashboard rail use, at a plate's scale.
+ *
+ * No script and no hydration: a plate is printed.
+ */
+import type { Part } from "../../Content/Specimen/Parts.js";
+
+interface Props {
+	/** The part this plate prints. `plate` is required: a plate has an anchor. */
+	part: Part & { readonly plate: string };
+
+	/** What to look at, in one sentence. */
+	caption: string;
+
+	/** The file the part is, as the plate cites it. */
+	source: string;
+
+	/** The stage's surface. `insert` is the white box; `field` is the creme field. */
+	stage?: "insert" | "field";
+
+	/** One line printed in the stage's register, under `LIVE 1:1`. */
+	stageNote?: string;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const {
+	part: Part,
+	caption,
+	source,
+	stage = "insert",
+	stageNote,
+	class: ClassName,
+} = Astro.props;
+
+/** The anchor, from the part's own plate reference: `#part-badge` -> `part-badge`. */
+const Id = Part.plate.replace(/^#/, "");
+---
+
+<figure class:list={["specimen-plate", ClassName]} id={Id}>
+	<div class="specimen-plate__grid">
+		<header class="specimen-plate__spec">
+			<p class="specimen-plate__mark">
+				<span class="specimen-plate__mark-hash" aria-hidden="true">#</span>
+				{Part.mark}
+			</p>
+
+			<h3 class="specimen-plate__name">{Part.name}</h3>
+
+			<p class="specimen-plate__kind">{Part.kind}</p>
+
+			<dl class="specimen-plate__contract">
+				{
+					Part.contract.map((Row) => (
+						<div class="specimen-plate__row">
+							<dt class="specimen-plate__key">{Row.key}</dt>
+							<dd
+								class:list={[
+									"specimen-plate__value",
+									Row.code ? "specimen-plate__value--code" : null,
+								]}
+							>
+								{Row.value}
+							</dd>
+						</div>
+					))
+				}
+			</dl>
+		</header>
+
+		<div class="specimen-plate__stage">
+			<p class="specimen-plate__stage-head">
+				<span class="specimen-plate__stage-mark" aria-hidden="true">#</span>
+				<span class="specimen-plate__stage-word">LIVE</span>
+				<span class="specimen-plate__stage-sep" aria-hidden="true">{"\u2001"}</span>
+				<span class="specimen-plate__stage-scale">1:1</span>
+				{
+					stageNote ? (
+						<>
+							<span class="specimen-plate__stage-sep" aria-hidden="true">
+								{"\u2001"}
+							</span>
+							<span class="specimen-plate__stage-note">{stageNote}</span>
+						</>
+					) : null
+				}
+			</p>
+
+			<div class="specimen-plate__field" data-stage={stage}>
+				<slot />
+			</div>
+		</div>
+	</div>
+
+	<figcaption class="specimen-plate__caption">
+		<span class="specimen-plate__caption-key">READ:</span>
+		<span class="specimen-plate__caption-value">{caption}</span>
+		<span class="specimen-plate__caption-source">
+			<span class="specimen-plate__caption-key">SOURCE:</span>
+			<span class="specimen-plate__caption-value specimen-plate__caption-value--code">
+				{source}
+			</span>
+		</span>
+	</figcaption>
+</figure>

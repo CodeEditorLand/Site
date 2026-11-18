@@ -1,10 +1,52 @@
 ---
-import AuthShell from "../Component/Auth/AuthShell.astro";
+/**
+ * Verify - the verification link, composed as an AUDIT.
+ *
+ * ─── WHY AN AUDIT ─────────────────────────────────────────────────────────
+ * The route used to be one centred card and a state word. But what a reader is
+ * actually doing on `/Verify` is checking a claim: *this address belongs to this
+ * account*. That is an audit, and the audit language is built for exactly it - a
+ * ledger of the facts that bound the check, a matrix of the states the check can
+ * be in, and a well that makes the check repeatable.
+ *
+ * The card does not go away: it is the audit's *instrument*, and it stays the
+ * baseline's card (`VerifyPage` renders the provider's exchange inside it). What
+ * changes is that the page around it now says what is being checked, in what
+ * states, and what each state means - which the card, by itself, never could.
+ *
+ * ─── THE FOUR PARTS ───────────────────────────────────────────────────────
+ *   head    `# VERIFY_01` + the page's `h1` + the proposition + the status line
+ *   rail    `# CHECK / 06` - the scope: record, route, source, window, producer
+ *   main    the matrix (five states x three questions), the card, the well
+ *   foot    the three ways the check fails, as a register of states
+ *
+ * ─── THE STATES ARE A REGISTER, NOT A GUESS ───────────────────────────────
+ * The site is prerendered, so at build time the query string does not exist:
+ * `token` and `reason` are null on every page, and a page that rendered one
+ * failure branch would be rendering a condition it cannot know. So the three
+ * adverse states are printed *as a register* - `INTERRUPTED`, `ARCHIVED`,
+ * `UNAVAILABLE`, each with its cause and its next step - which is what an audit
+ * does with the ways a check can fail: it documents them.
+ *
+ * ─── WHAT SURVIVES FROM THE AUTH FRAME ────────────────────────────────────
+ * The kicker, the `h1`, the sentence and the one alternate action come from
+ * `AuthFrameFor("verify")`, unchanged - the frame is data, and this page reads
+ * the same record the other credential routes read. The trail is the site's one
+ * trail. The card is the island's. Nothing is retyped and nothing is dropped.
+ */
 import { VerifyContent } from "../Component/Auth/Content";
 import { AuthFrameFor } from "../Component/Auth/Data";
 import { VerifyPage } from "../Component/Dynamic/VerifyPage";
 import { Header } from "../Component/Layout/Header";
+import RecordLedger from "../Component/Record/RecordLedger.astro";
+import RecordMatrix from "../Component/Record/RecordMatrix.astro";
+import RecordWell from "../Component/Record/RecordWell.astro";
+import Trail from "../Component/Route/Trail.astro";
+import PageShell from "../Component/Shell/PageShell.astro";
+import ShellState from "../Component/Shell/ShellState.astro";
+import SurfaceHead from "../Component/Surface/SurfaceHead.astro";
 import { Row } from "../Component/Surface/State";
+import { VerifyAudit } from "../Content/Layout/Verify.js";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
@@ -50,13 +92,46 @@ const States =
    action. This is the route `DESIGN-COMPLETE.md` §6 X10 named as the last page
    on the site with no `h1`: the baseline titles the card with an `h3` and the
    document had nothing above it. The card's own title steps down to an `h2`
-   under it, so the page reads `h1` → `h2` → body without skipping a level.
+   under it, so the page reads `h1` -> `h2` -> body without skipping a level.
 
    The card is the baseline's and does not move: one centred `max-w-md`
    `jelly-card`, the tinted icon tile, the state's title, its sentence, the email
    field and the full-width resend button. Every state branch keeps its sentence
    and its action. */
 const Frame = AuthFrameFor("verify", T);
+
+/* The head's declarations: the record this route is about, where it is read,
+   what produced the link, and the date of this reading. The state word is here
+   only on the two failure branches, because on the other two the card's own
+   report prints it - one fact, one print.
+ *
+ * No `TOKEN:` declaration: this site is prerendered, so a request's query string
+ * does not reach the build. `Astro.url.searchParams.get("token")` is null at
+ * render time on every page, and a row that printed `TOKEN: ABSENT` from it
+ * would be a false fact on every verification link. The token is the island's
+ * business, and the island reads it in the browser. */
+const Declarations = [
+	{ key: "RECORD", value: "EMAIL" },
+	{ key: "ROUTE", value: "/VERIFY" },
+	{ key: "SOURCE", value: "EMAIL LINK" },
+	{ key: "AS OF", value: new Date().toISOString().slice(0, 10) },
+];
+
+/** The audit: the scope ledger, the state matrix, the well and the failures. */
+const Audit = VerifyAudit(T, Declarations);
+
+/** The trail, as the site's one trail: home, the account, then this route. */
+const TrailItems = [
+	{
+		label: `/${T("common.breadcrumb.home", { defaultValue: "Home" }).toUpperCase()}`,
+		href: "/",
+	},
+	{
+		label: `/${T("common.breadcrumb.account", { defaultValue: "Account" }).toUpperCase()}`,
+		href: "/Account",
+	},
+	{ label: Frame.kicker },
+];
 
 const MetaTitle = T("meta.verify.title", {
 	defaultValue: "Verify Email - Code Editor Land",
@@ -69,14 +144,83 @@ const MetaDescription = T("verify.pending.description", {
 
 <Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
 	<Header client:load Mode="functional" slot="Header" />
-	<AuthShell Label="Email verification" Frame={Frame} Live States={States}>
-		<VerifyPage
-			Content={Verify}
-			Route={Route}
-			Token={Token || undefined}
-			Reason={Reason || undefined}
-			MetaTitle={MetaTitle}
-			MetaDescription={MetaDescription}
+
+	<PageShell index="# AUDIT_02" label="THE VERIFICATION LINK">
+		<Trail slot="head" trail={TrailItems} />
+
+		<SurfaceHead
+			slot="head"
+			index="# VERIFY_01"
+			title={Frame.heading}
+			proposition={Frame.sentence}
+			states={States}
+			declarations={Declarations}
+			rows={[
+				{ key: "RECORD:", value: "EMAIL ADDRESS" },
+				{ key: "WINDOW:", value: "24 HOURS" },
+				{ key: "PRODUCER:", value: "AUTH0" },
+				{ key: "ALTERNATE:", value: Frame.action.label },
+			]}
 		/>
-	</AuthShell>
+
+		<RecordLedger
+			slot="rail"
+			register={Audit.scopeRegister}
+			rows={Audit.scope}
+			columns={1}
+		/>
+
+		<RecordMatrix
+			columns={Audit.columns}
+			rows={Audit.rows}
+			caption={Audit.caption}
+		/>
+
+		<div class="PageShell__instrument">
+			<VerifyPage
+				Content={Verify}
+				Route={Route}
+				Token={Token || undefined}
+				Reason={Reason || undefined}
+				MetaTitle={MetaTitle}
+				MetaDescription={MetaDescription}
+			/>
+		</div>
+
+		<RecordWell
+			label={Audit.well.label}
+			language={Audit.well.language}
+			lines={Audit.well.lines}
+			source={Audit.well.source}
+		/>
+
+		<div class="PageShell__row" slot="foot" style="--row-tracks:3">
+			<ShellState
+				kind="error"
+				index="FAILURE / 01"
+				statement={Audit.adverse.error.statement}
+				cause={Audit.adverse.error.cause}
+				next={Audit.adverse.error.next}
+				note="SOURCE: PROVIDER RESPONSE"
+			/>
+			<ShellState
+				kind="stale"
+				index="FAILURE / 02"
+				statement={Audit.adverse.stale.statement}
+				cause={Audit.adverse.stale.cause}
+				next={Audit.adverse.stale.next}
+				asOf="ISSUED AT LINK CREATION"
+				age="PAST THE WINDOW"
+				note="SOURCE: WINDOW DECLARATION"
+			/>
+			<ShellState
+				kind="denied"
+				index="FAILURE / 03"
+				statement={Audit.adverse.denied.statement}
+				cause={Audit.adverse.denied.cause}
+				next={Audit.adverse.denied.next}
+				note="SOURCE: SESSION"
+			/>
+		</div>
+	</PageShell>
 </Base>

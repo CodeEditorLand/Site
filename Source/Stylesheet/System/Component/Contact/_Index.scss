@@ -1,9 +1,10 @@
 // The Contact surface - one partial per component, wired in load order.
 //
-// Every route in `Source/pages/Contact/` is built from these five components:
+// Every route in `Source/pages/Contact/` is built from these six components:
 //
 //   Page        ContactPage.astro       the document, header, trail and h1
 //   Breadcrumb  ContactBreadcrumb.astro ABSORBED into Route/Trail.astro
+//   Shell       ContactShell.astro      the 4 / 1px / 8 record-and-form workspace
 //   Hub         index.astro             the fourteen-card grid and its close
 //   Form        DynamicContactForm.tsx  the request form's anatomy
 //   Sale        Sale.astro              the two-thirds / one-third enterprise page
@@ -13,8 +14,8 @@
 // artifact, not a Contact detail (`DESIGN.md` §9 Q3). `Breadcrumb` is still
 // wired below: its rules are kept, and they are idle.
 //
-// `Shell` has no partial: `ContactShell.astro` composes `Page` and `Form` and
-// publishes no class of its own.
+// `Shell` now publishes its own partial: the request routes are composed as a
+// record beside their form, and that composition is the shell's.
 //
 // This file is the one line the shared `System/Component/_Index.scss` needs:
 //
@@ -23,6 +24,7 @@
 // It is wired there as `Contact/Index` - the shared file's page-surface block.
 @use "Breadcrumb";
 @use "Page";
+@use "Shell";
 @use "Hub";
 @use "Form";
 @use "Sale";

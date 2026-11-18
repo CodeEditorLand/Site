@@ -197,7 +197,10 @@ export default ({
 					defaultValue: StateLabel.Loading,
 				})}
 				Loading
-				Sentence={T("loading", { defaultValue: "Loading..." })}
+				Sentence={T("loading", {
+					defaultValue:
+						"Reading the session from the identity provider. The account rows appear as soon as it answers.",
+				})}
 				Action={
 					<a href="/" className="auth-shell__alternate">
 						{T("auth.signIn.leave", {
@@ -218,7 +221,11 @@ export default ({
 				})}
 				Sentence={
 					<>
-						{T("error", { defaultValue: "Authentication error" })}:{" "}
+						{T("error", {
+							defaultValue:
+								"The identity provider did not return a session",
+						})}
+						{":"}{" "}
 						{Error.message}
 					</>
 				}
@@ -226,7 +233,7 @@ export default ({
 					<DynamicButton
 						Content={{
 							Text: T("tryAgain", {
-								defaultValue: "Try again",
+								defaultValue: "RETRY",
 							}),
 							Variant: "default",
 							ClassName: "auth-shell__primary",
@@ -312,7 +319,8 @@ export default ({
 			})}
 			Loading
 			Sentence={T("redirecting", {
-				defaultValue: "Redirecting to sign in...",
+				defaultValue:
+					"The sign-in page opens next. This route has no session to show, and the identity provider is the only place one is written.",
 			})}
 			Action={
 				<a href="/" className="auth-shell__alternate">

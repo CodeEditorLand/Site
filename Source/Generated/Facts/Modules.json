@@ -1,0 +1,2665 @@
+{
+	"_Generated": {
+		"By": "Source/Script/Register.ts",
+		"From": [
+			"Source/**"
+		],
+		"Transform": [
+			"Facts"
+		],
+		"Note": "One row per module outside the bulk trees: what it carries, how many files read it, and whether the build reaches it.",
+		"Rule": "Generated. Change the tree or the page, then run `node Source/Script/Register.ts` - never this file."
+	},
+	"Modules": [
+		{
+			"Path": "Background.astro",
+			"Kind": "other",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 174,
+			"Readers": 1,
+			"ReadBy": [
+				"Layout/Base.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Background.tsx",
+			"Kind": "other",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 92,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "content.config.ts",
+			"Kind": "other",
+			"Carries": "content.config.ts - the entry point Astro loads.",
+			"Lines": 14,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Artifact/Inset.ts",
+			"Kind": "content",
+			"Carries": "Inset - the margin's figures, derived from the page they annotate.",
+			"Lines": 158,
+			"Readers": 2,
+			"ReadBy": [
+				"pages/Blog/[Slug].astro",
+				"pages/Doc/[...Slug].astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Artifact/Plate.ts",
+			"Kind": "content",
+			"Carries": "Plate - the copy behind the two plate artifacts, as data.",
+			"Lines": 297,
+			"Readers": 3,
+			"ReadBy": [
+				"pages/Contents.astro",
+				"pages/Doc/[...Slug].astro",
+				"pages/Download.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Artifact/Session.ts",
+			"Kind": "content",
+			"Carries": "Session - the two transcripts the document can honestly print.",
+			"Lines": 241,
+			"Readers": 2,
+			"ReadBy": [
+				"pages/Doc/[...Slug].astro",
+				"pages/Download.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Artifact/Stamp.ts",
+			"Kind": "content",
+			"Carries": "Stamp - the two marks the document issues, as data.",
+			"Lines": 89,
+			"Readers": 2,
+			"ReadBy": [
+				"pages/Contents.astro",
+				"pages/Download.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Config.ts",
+			"Kind": "content",
+			"Carries": "Config - the two content collections, defined once.",
+			"Lines": 68,
+			"Readers": 1,
+			"ReadBy": [
+				"content.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Element/Working.ts",
+			"Kind": "content",
+			"Carries": "The working behind each element record - the facts a claim is checked against.",
+			"Lines": 472,
+			"Readers": 3,
+			"ReadBy": [
+				"Content/Artifact/Plate.ts",
+				"Content/Home/Architecture.ts",
+				"Content/Home/Working.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Home/Architecture.ts",
+			"Kind": "content",
+			"Carries": "The architecture band: all fifteen elements, one record card each.",
+			"Lines": 220,
+			"Readers": 1,
+			"ReadBy": [
+				"Component/Home/ArchitectureBand.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Home/Band.ts",
+			"Kind": "content",
+			"Carries": "The five bands' openings, in the order the page prints them.",
+			"Lines": 91,
+			"Readers": 5,
+			"ReadBy": [
+				"Component/Home/ArchitectureBand.astro",
+				"Component/Home/FeatureBand.astro",
+				"Component/Home/PlatformBand.astro",
+				"Component/Home/RoadmapBand.astro",
+				"Component/Home/WorkingBand.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Home/Feature.ts",
+			"Kind": "content",
+			"Carries": "The features band: six element records, one card each.",
+			"Lines": 71,
+			"Readers": 1,
+			"ReadBy": [
+				"Component/Home/FeatureBand.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Home/Platform.ts",
+			"Kind": "content",
+			"Carries": "The download band: three platform records, one card each.",
+			"Lines": 104,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Home/PlatformBand.astro",
+				"Content/More/Status.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Home/Roadmap.ts",
+			"Kind": "content",
+			"Carries": "The roadmap band: two release records, one card each.",
+			"Lines": 213,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Home/RoadmapBand.astro",
+				"Content/More/Status.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Home/Stack.ts",
+			"Kind": "content",
+			"Carries": "The hero's tech-stack strip: the eight technologies the editor is made of.",
+			"Lines": 25,
+			"Readers": 1,
+			"ReadBy": [
+				"Component/Dynamic/DynamicHeroSection.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Home/Type.ts",
+			"Kind": "content",
+			"Carries": "The homepage bands, as data.",
+			"Lines": 228,
+			"Readers": 13,
+			"ReadBy": [
+				"Component/Home/Band.astro",
+				"Component/Home/ElementCard.astro",
+				"Component/Home/FeatureCard.astro",
+				"Component/Home/PlatformCard.astro",
+				"Component/Home/RecordAnatomy.astro",
+				"Component/Home/ReleaseCard.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Home/Working.ts",
+			"Kind": "content",
+			"Carries": "The working band - the mechanism, its release, and what stops it.",
+			"Lines": 199,
+			"Readers": 1,
+			"ReadBy": [
+				"Component/Home/WorkingBand.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Index/Chapters.ts",
+			"Kind": "content",
+			"Carries": "Chapters - how the document is divided, for the index's route register.",
+			"Lines": 128,
+			"Readers": 1,
+			"ReadBy": [
+				"Library/Index/Register.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Index/Declared.ts",
+			"Kind": "content",
+			"Carries": "Declared - why a module nothing reads still exists.",
+			"Lines": 115,
+			"Readers": 1,
+			"ReadBy": [
+				"Library/Index/Register.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Index/Forms.ts",
+			"Kind": "content",
+			"Carries": "Forms - the artifact set: one information type, one physical form.",
+			"Lines": 261,
+			"Readers": 2,
+			"ReadBy": [
+				"Content/Index/Page.ts",
+				"pages/Contents.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Index/Page.ts",
+			"Kind": "content",
+			"Carries": "Page - the index's copy, and nothing else.",
+			"Lines": 295,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/Contents.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Layout/Account.ts",
+			"Kind": "content",
+			"Carries": "Account - the account workspace, as data.",
+			"Lines": 224,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/Account/index.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Layout/NotFound.ts",
+			"Kind": "content",
+			"Carries": "NotFound - the copy for the 404's plate and its adverse states.",
+			"Lines": 96,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/404.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Layout/OAuth.ts",
+			"Kind": "content",
+			"Carries": "OAuth - the callback's four outcomes, as copy.",
+			"Lines": 155,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/OAuth/Success.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Layout/Rust.ts",
+			"Kind": "content",
+			"Carries": "Rust - the API surface's workspace copy.",
+			"Lines": 118,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/Doc/Rust.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Layout/Verify.ts",
+			"Kind": "content",
+			"Carries": "Verify - the verification route, as an audit.",
+			"Lines": 250,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/Verify.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Layout/Visit.ts",
+			"Kind": "content",
+			"Carries": "Visit - the tombstone the catch-all route prints when it cannot send the reader on.",
+			"Lines": 86,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/Visit.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/More/Compare.ts",
+			"Kind": "content",
+			"Carries": "Compare - Land against the editor it replaces, in the site's own words.",
+			"Lines": 444,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/Compare.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/More/Glossary.ts",
+			"Kind": "content",
+			"Carries": "Glossary - the document's own words, in three runs.",
+			"Lines": 633,
+			"Readers": 4,
+			"ReadBy": [
+				"Component/More/Lexicon.astro",
+				"Component/More/LexiconEntry.astro",
+				"Component/UI/Palette/Data.ts",
+				"pages/Glossary.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/More/Page.ts",
+			"Kind": "content",
+			"Carries": "Page - the copy the three \"more\" surfaces share: the onward register, and the one sentence each register opens on.",
+			"Lines": 242,
+			"Readers": 5,
+			"ReadBy": [
+				"Component/More/Onward.astro",
+				"pages/404.astro",
+				"pages/Compare.astro",
+				"pages/Glossary.astro",
+				"pages/Status.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/More/Status.ts",
+			"Kind": "content",
+			"Carries": "Status - the status board's data: every record the site files with a state, grouped by the state it states, and the facts the board is read against.",
+			"Lines": 535,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/More/StatusBoard.astro",
+				"pages/Status.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Motion/Page.ts",
+			"Kind": "content",
+			"Carries": "Page - the motion register's copy: bands, facts, sequences, arms, refusals.",
+			"Lines": 682,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/Motion.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Motion/Register.ts",
+			"Kind": "content",
+			"Carries": "Register - the site's interaction classes, as data.",
+			"Lines": 324,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/Motion.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Record/Air.ts",
+			"Kind": "content",
+			"Carries": "Exports Air.",
+			"Lines": 48,
+			"Readers": 6,
+			"ReadBy": [
+				"Component/Dynamic/Architecture/Data.ts",
+				"Content/Artifact/Plate.ts",
+				"Content/Home/Architecture.ts",
+				"Content/Home/Feature.ts",
+				"Content/More/Glossary.ts",
+				"Content/More/Status.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Record/Cocoon.ts",
+			"Kind": "content",
+			"Carries": "Exports Cocoon.",
+			"Lines": 48,
+			"Readers": 6,
+			"ReadBy": [
+				"Component/Dynamic/Architecture/Data.ts",
+				"Content/Artifact/Plate.ts",
+				"Content/Home/Architecture.ts",
+				"Content/Home/Feature.ts",
+				"Content/More/Glossary.ts",
+				"Content/More/Status.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Record/Common.ts",
+			"Kind": "content",
+			"Carries": "Exports Common.",
+			"Lines": 48,
+			"Readers": 5,
+			"ReadBy": [
+				"Component/Dynamic/Architecture/Data.ts",
+				"Content/Artifact/Plate.ts",
+				"Content/Home/Architecture.ts",
+				"Content/More/Glossary.ts",
+				"Content/More/Status.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Record/Echo.ts",
+			"Kind": "content",
+			"Carries": "Exports Echo.",
+			"Lines": 48,
+			"Readers": 6,
+			"ReadBy": [
+				"Component/Dynamic/Architecture/Data.ts",
+				"Content/Artifact/Plate.ts",
+				"Content/Home/Architecture.ts",
+				"Content/Home/Feature.ts",
+				"Content/More/Glossary.ts",
+				"Content/More/Status.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Record/FieldRecord.ts",
+			"Kind": "content",
+			"Carries": "Exports RecordCategory, RecordStatus, StatusTone, FieldRecord.",
+			"Lines": 81,
+			"Readers": 28,
+			"ReadBy": [
+				"Component/Brand/FieldRecord/Type.ts",
+				"Component/Brand/SpecimenLabel.tsx",
+				"Component/Dynamic/Architecture/Data.ts",
+				"Component/Surface/State.ts",
+				"Component/Surface/StateBadge.tsx",
+				"Component/Surface/SurfaceChips.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Record/Grove.ts",
+			"Kind": "content",
+			"Carries": "Exports Grove.",
+			"Lines": 60,
+			"Readers": 5,
+			"ReadBy": [
+				"Component/Dynamic/Architecture/Data.ts",
+				"Content/Artifact/Plate.ts",
+				"Content/Home/Architecture.ts",
+				"Content/More/Glossary.ts",
+				"Content/More/Status.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Record/Land.ts",
+			"Kind": "content",
+			"Carries": "Exports Land.",
+			"Lines": 54,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Dynamic/Architecture/Data.ts",
+				"pages/OpenGraph.svg.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Record/Maintain.ts",
+			"Kind": "content",
+			"Carries": "Exports Maintain.",
+			"Lines": 48,
+			"Readers": 5,
+			"ReadBy": [
+				"Component/Dynamic/Architecture/Data.ts",
+				"Content/Artifact/Plate.ts",
+				"Content/Home/Architecture.ts",
+				"Content/More/Glossary.ts",
+				"Content/More/Status.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Record/Mist.ts",
+			"Kind": "content",
+			"Carries": "Exports Mist.",
+			"Lines": 48,
+			"Readers": 5,
+			"ReadBy": [
+				"Component/Dynamic/Architecture/Data.ts",
+				"Content/Artifact/Plate.ts",
+				"Content/Home/Architecture.ts",
+				"Content/More/Glossary.ts",
+				"Content/More/Status.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Record/Mountain.ts",
+			"Kind": "content",
+			"Carries": "Exports Mountain.",
+			"Lines": 48,
+			"Readers": 6,
+			"ReadBy": [
+				"Component/Dynamic/Architecture/Data.ts",
+				"Content/Artifact/Plate.ts",
+				"Content/Home/Architecture.ts",
+				"Content/Home/Feature.ts",
+				"Content/More/Glossary.ts",
+				"Content/More/Status.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Record/Output.ts",
+			"Kind": "content",
+			"Carries": "Exports Output.",
+			"Lines": 48,
+			"Readers": 5,
+			"ReadBy": [
+				"Component/Dynamic/Architecture/Data.ts",
+				"Content/Artifact/Plate.ts",
+				"Content/Home/Architecture.ts",
+				"Content/More/Glossary.ts",
+				"Content/More/Status.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Record/Rest.ts",
+			"Kind": "content",
+			"Carries": "Exports Rest.",
+			"Lines": 48,
+			"Readers": 5,
+			"ReadBy": [
+				"Component/Dynamic/Architecture/Data.ts",
+				"Content/Artifact/Plate.ts",
+				"Content/Home/Architecture.ts",
+				"Content/More/Glossary.ts",
+				"Content/More/Status.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Record/SideCar.ts",
+			"Kind": "content",
+			"Carries": "Exports SideCar.",
+			"Lines": 48,
+			"Readers": 5,
+			"ReadBy": [
+				"Component/Dynamic/Architecture/Data.ts",
+				"Content/Artifact/Plate.ts",
+				"Content/Home/Architecture.ts",
+				"Content/More/Glossary.ts",
+				"Content/More/Status.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Record/Sky.ts",
+			"Kind": "content",
+			"Carries": "Exports Sky.",
+			"Lines": 48,
+			"Readers": 6,
+			"ReadBy": [
+				"Component/Dynamic/Architecture/Data.ts",
+				"Content/Artifact/Plate.ts",
+				"Content/Home/Architecture.ts",
+				"Content/Home/Feature.ts",
+				"Content/More/Glossary.ts",
+				"Content/More/Status.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Record/Vine.ts",
+			"Kind": "content",
+			"Carries": "Exports Vine.",
+			"Lines": 48,
+			"Readers": 5,
+			"ReadBy": [
+				"Component/Dynamic/Architecture/Data.ts",
+				"Content/Artifact/Plate.ts",
+				"Content/Home/Architecture.ts",
+				"Content/More/Glossary.ts",
+				"Content/More/Status.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Record/Wind.ts",
+			"Kind": "content",
+			"Carries": "Exports Wind.",
+			"Lines": 48,
+			"Readers": 6,
+			"ReadBy": [
+				"Component/Dynamic/Architecture/Data.ts",
+				"Content/Artifact/Plate.ts",
+				"Content/Home/Architecture.ts",
+				"Content/Home/Feature.ts",
+				"Content/More/Glossary.ts",
+				"Content/More/Status.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Record/Worker.ts",
+			"Kind": "content",
+			"Carries": "Exports Worker.",
+			"Lines": 48,
+			"Readers": 5,
+			"ReadBy": [
+				"Component/Dynamic/Architecture/Data.ts",
+				"Content/Artifact/Plate.ts",
+				"Content/Home/Architecture.ts",
+				"Content/More/Glossary.ts",
+				"Content/More/Status.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Surface/Dashboard.ts",
+			"Kind": "content",
+			"Carries": "Dashboard - the dashboard page's content table.",
+			"Lines": 543,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/Dashboard.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Surface/Portal.ts",
+			"Kind": "content",
+			"Carries": "Portal - the portal page's content table.",
+			"Lines": 583,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/Portal.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "env.d.ts",
+			"Kind": "type",
+			"Carries": "/ <reference path=\"../.astro/types.d.ts\" /> / <reference types=\"astro/client\" /> `.astro` components as modules.",
+			"Lines": 75,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Footer.tsx",
+			"Kind": "other",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 100,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Function/Configuration/Auth.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 4,
+			"Readers": 5,
+			"ReadBy": [
+				"Component/Contact/ContactShell.astro",
+				"pages/Account/SignIn.astro",
+				"pages/Account/SignUp.astro",
+				"pages/Account/index.astro",
+				"pages/Dashboard.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Auth0ClientIdentifier.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 4,
+			"Readers": 2,
+			"ReadBy": [
+				"Function/Configuration/Auth.ts",
+				"pages/OAuth/Success.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Auth0Domain.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 4,
+			"Readers": 2,
+			"ReadBy": [
+				"Function/Configuration/Auth.ts",
+				"pages/OAuth/Success.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/BuildConcurrency.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 2,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/ClientPrerender.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 2,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Compress.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 4,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/CompressHTML.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 4,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/ContentIntellisense.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 2,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/CSSMinify.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 4,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/CSSTransformer.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 2,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/DevToolbar.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 4,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Environment.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 22,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/InlineCSS.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 4,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Interface/Load.ts",
+			"Kind": "function",
+			"Carries": "Exports Interface.",
+			"Lines": 4,
+			"Readers": 1,
+			"ReadBy": [
+				"Function/Configuration/Load.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Interface/Override.ts",
+			"Kind": "function",
+			"Carries": "Exports Interface.",
+			"Lines": 4,
+			"Readers": 1,
+			"ReadBy": [
+				"Function/Configuration/Override.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Interface/Parse/Boolean.ts",
+			"Kind": "function",
+			"Carries": "Exports Interface.",
+			"Lines": 4,
+			"Readers": 1,
+			"ReadBy": [
+				"Function/Configuration/Parse/Boolean.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Interface/Parse/Number.ts",
+			"Kind": "function",
+			"Carries": "Exports Interface.",
+			"Lines": 4,
+			"Readers": 1,
+			"ReadBy": [
+				"Function/Configuration/Parse/Number.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Load.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 44,
+			"Readers": 1,
+			"ReadBy": [
+				"Function/Configuration/Resolve.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Manifest.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 2,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Minify.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 4,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Noise.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 33,
+			"Readers": 1,
+			"ReadBy": [
+				"Function/Noise/Staccato.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/On.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 2,
+			"Readers": 11,
+			"ReadBy": [
+				"Function/Configuration/CSSMinify.ts",
+				"Function/Configuration/Compress.ts",
+				"Function/Configuration/CompressHTML.ts",
+				"Function/Configuration/DevToolbar.ts",
+				"Function/Configuration/Environment.ts",
+				"Function/Configuration/InlineCSS.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Override.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 120,
+			"Readers": 1,
+			"ReadBy": [
+				"Function/Configuration/Resolve.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Parse/Boolean.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 14,
+			"Readers": 1,
+			"ReadBy": [
+				"Function/Configuration/Override.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Parse/Number.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 10,
+			"Readers": 1,
+			"ReadBy": [
+				"Function/Configuration/Override.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Port.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 2,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/PrefetchAll.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 2,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/PrefetchStrategy.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 2,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/PreserveSymlinks.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 2,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Preset.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 40,
+			"Readers": 1,
+			"ReadBy": [
+				"Function/Configuration/Resolve.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Resolve.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 24,
+			"Readers": 18,
+			"ReadBy": [
+				"Function/Configuration/BuildConcurrency.ts",
+				"Function/Configuration/CSSMinify.ts",
+				"Function/Configuration/CSSTransformer.ts",
+				"Function/Configuration/ClientPrerender.ts",
+				"Function/Configuration/Compress.ts",
+				"Function/Configuration/CompressHTML.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Schema.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 23,
+			"Readers": 3,
+			"ReadBy": [
+				"Function/Configuration/Load.ts",
+				"Function/Configuration/Resolve.ts",
+				"Function/Configuration/Type/Configuration.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Schema/CSSMinification.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 4,
+			"Readers": 2,
+			"ReadBy": [
+				"Function/Configuration/Override.ts",
+				"Function/Configuration/Schema.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Schema/CSSTransformation.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 2,
+			"Readers": 2,
+			"ReadBy": [
+				"Function/Configuration/Override.ts",
+				"Function/Configuration/Schema.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Schema/Environment.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 8,
+			"Readers": 2,
+			"ReadBy": [
+				"Function/Configuration/Environment.ts",
+				"Function/Configuration/Type/Environment.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Schema/Minification.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 4,
+			"Readers": 2,
+			"ReadBy": [
+				"Function/Configuration/Override.ts",
+				"Function/Configuration/Schema.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Schema/Prefetch.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 10,
+			"Readers": 2,
+			"ReadBy": [
+				"Function/Configuration/Override.ts",
+				"Function/Configuration/Schema.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/ServiceWorker.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 4,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Site.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 4,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Sourcemap.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 4,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Type/Configuration.ts",
+			"Kind": "function",
+			"Carries": "Exports Type.",
+			"Lines": 8,
+			"Readers": 2,
+			"ReadBy": [
+				"Function/Configuration/Preset.ts",
+				"Function/Configuration/Resolve.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Type/Environment.ts",
+			"Kind": "function",
+			"Carries": "Exports Type.",
+			"Lines": 8,
+			"Readers": 1,
+			"ReadBy": [
+				"Function/Configuration/Environment.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Doc/BuildDocIndex.ts",
+			"Kind": "function",
+			"Carries": "BuildDocIndex - the documentation index's complete data.",
+			"Lines": 463,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/Doc.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Doc/BuildDocSidebar.ts",
+			"Kind": "function",
+			"Carries": "Exports SectionOrder, Slugify.",
+			"Lines": 96,
+			"Readers": 4,
+			"ReadBy": [
+				"Component/UI/Palette/Palette.astro",
+				"Function/Doc/BuildDocIndex.ts",
+				"pages/Doc.astro",
+				"pages/Doc/[...Slug].astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Doc/BuildDocStrip.ts",
+			"Kind": "function",
+			"Carries": "BuildDocStrip - the mono metadata strip above documentation prose.",
+			"Lines": 96,
+			"Readers": 3,
+			"ReadBy": [
+				"pages/Doc.astro",
+				"pages/Doc/Rust.astro",
+				"pages/Doc/[...Slug].astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Doc/BuildDocToc.ts",
+			"Kind": "function",
+			"Carries": "BuildDocToc - the in-page table of contents, from the page's own `##` headings.",
+			"Lines": 93,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/Doc/[...Slug].astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Markdown/Callout.ts",
+			"Kind": "function",
+			"Carries": "Exports remarkCallout.",
+			"Lines": 88,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Markdown/CodeMentions.ts",
+			"Kind": "function",
+			"Carries": "The AST-level code-mention pass for markdown content - the Aphrodite/Site pattern wired as a remark plugin (alongside Callout.ts / Mermaid.ts in this directory).",
+			"Lines": 220,
+			"Readers": 2,
+			"ReadBy": [
+				"Test/Markdown/CodeMentions.test.ts",
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Markdown/Heading.ts",
+			"Kind": "function",
+			"Carries": "remarkHeading - the page owns the level-one heading, and the markdown never renders a second one.",
+			"Lines": 59,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Markdown/Mermaid.ts",
+			"Kind": "function",
+			"Carries": "Exports remarkMermaid.",
+			"Lines": 133,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Noise/Attention.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 526,
+			"Readers": 1,
+			"ReadBy": [
+				"Component/Dynamic/DynamicPortal.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Noise/Parallax.ts",
+			"Kind": "function",
+			"Carries": "─── Scroll progress cache ──────────────────────────────────────────────────── Reading scrollTop / scrollHeight / clientHeight inside rAF after setProperty calls (which invalida...",
+			"Lines": 38,
+			"Readers": 1,
+			"ReadBy": [
+				"Function/Noise/Staccato.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Noise/Staccato.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 146,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Dynamic/DynamicPortal.tsx",
+				"Component/Dynamic/DynamicTransparency.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Noise/Turbulence.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 57,
+			"Readers": 1,
+			"ReadBy": [
+				"Function/Noise/Staccato.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/OpenGraph.ts",
+			"Kind": "function",
+			"Carries": "OpenGraph SVG template generator - the Daylight Field Record artifact card.",
+			"Lines": 240,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/OpenGraph/[...Slug].svg.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/OpenGraph/Ink.ts",
+			"Kind": "function",
+			"Carries": "OpenGraph ink - the share image's copy of the design tokens.",
+			"Lines": 185,
+			"Readers": 3,
+			"ReadBy": [
+				"Function/OpenGraph.ts",
+				"Function/OpenGraph/Run.ts",
+				"pages/OpenGraph.svg.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/OpenGraph/PageMetadata.ts",
+			"Kind": "function",
+			"Carries": "Static page metadata for OpenGraph image generation.",
+			"Lines": 463,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/OpenGraph/[...Slug].svg.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/OpenGraph/Run.ts",
+			"Kind": "function",
+			"Carries": "OpenGraph runs - the record grammar as SVG text runs.",
+			"Lines": 113,
+			"Readers": 2,
+			"ReadBy": [
+				"Function/OpenGraph.ts",
+				"pages/OpenGraph.svg.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Route/Integration.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 570,
+			"Readers": 1,
+			"ReadBy": [
+				"astro.config.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Route/Interface/RouteMap.ts",
+			"Kind": "function",
+			"Carries": "Exports RouteMap.",
+			"Lines": 12,
+			"Readers": 1,
+			"ReadBy": [
+				"Function/Route/Map.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Route/Map.ts",
+			"Kind": "function",
+			"Carries": "Exports CanonicalPath, PascalCaseCanonical, SemanticAlias, GeneratePathVariant.",
+			"Lines": 538,
+			"Readers": 7,
+			"ReadBy": [
+				"Function/Route/Integration.ts",
+				"Layout/Base.astro",
+				"Test/Route/Blog.test.ts",
+				"Test/Route/EndToEnd.test.ts",
+				"Test/Route/Integration.test.ts",
+				"Test/Route/Map.test.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Route/Normalize.ts",
+			"Kind": "function",
+			"Carries": "Path normalization shared between service worker, 404 page, and build-time route map generation.",
+			"Lines": 57,
+			"Readers": 1,
+			"ReadBy": [
+				"Test/Route/Register.test.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Route/Policy.ts",
+			"Kind": "function",
+			"Carries": "Exports RouteWorkerPolicy, PublicRoutes.",
+			"Lines": 139,
+			"Readers": 2,
+			"ReadBy": [
+				"Function/Route/Register.ts",
+				"Layout/Base.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Route/Redirect.ts",
+			"Kind": "function",
+			"Carries": "Layer 3 fallback - client-side redirect for 404 page.",
+			"Lines": 66,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Route/Register.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 225,
+			"Readers": 1,
+			"ReadBy": [
+				"Layout/Base.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Route/ServiceWorker.ts",
+			"Kind": "function",
+			"Carries": "ServiceWorker - route redirector, auth gate, and cache manager.",
+			"Lines": 1125,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Scroll/Code.tsx",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 166,
+			"Readers": 1,
+			"ReadBy": [
+				"Function/Scroll/Layout.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Scroll/Code/Pixel.tsx",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 141,
+			"Readers": 1,
+			"ReadBy": [
+				"Function/Scroll/Code.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Scroll/Code/Pixel/Animation.ts",
+			"Kind": "function",
+			"Carries": "Exports Noise, Lerp, Layer, Spectrum.",
+			"Lines": 49,
+			"Readers": 3,
+			"ReadBy": [
+				"Function/Scroll/Code/Pixel.tsx",
+				"Function/Scroll/Code/Pixel/Dimensional.ts",
+				"Function/Scroll/Code/Pixel/Style.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Scroll/Code/Pixel/Animation/Constant.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 30,
+			"Readers": 4,
+			"ReadBy": [
+				"Function/Scroll/Code/Pixel.tsx",
+				"Function/Scroll/Code/Pixel/Animation.ts",
+				"Function/Scroll/Code/Pixel/Dimensional.ts",
+				"Function/Scroll/Code/Pixel/Style.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Scroll/Code/Pixel/Dimensional.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 132,
+			"Readers": 1,
+			"ReadBy": [
+				"Function/Scroll/Code/Pixel.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Scroll/Code/Pixel/Style.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 401,
+			"Readers": 1,
+			"ReadBy": [
+				"Function/Scroll/Code/Pixel.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Scroll/Layout.astro",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 12,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Scroll/Type.ts",
+			"Kind": "function",
+			"Carries": "Exports Mouse, MovementDimensional, MatrixType, PixelComponent.",
+			"Lines": 58,
+			"Readers": 5,
+			"ReadBy": [
+				"Function/Scroll/Code.tsx",
+				"Function/Scroll/Code/Pixel.tsx",
+				"Function/Scroll/Code/Pixel/Animation.ts",
+				"Function/Scroll/Code/Pixel/Dimensional.ts",
+				"Function/Scroll/Code/Pixel/Style.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Theme/SemanticColor.ts",
+			"Kind": "function",
+			"Carries": "C17 semantic color system (Daylight Field Record).",
+			"Lines": 375,
+			"Readers": 3,
+			"ReadBy": [
+				"Component/Brand/FieldRecordStatus.tsx",
+				"Component/Brand/SemanticLedger.tsx",
+				"Component/Dynamic/Interface/Card/Jelly.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Utility/CN.ts",
+			"Kind": "function",
+			"Carries": "Exports CN.",
+			"Lines": 11,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Utility/CopyCommand.ts",
+			"Kind": "function",
+			"Carries": "─── Copy command blocks ───────────────────────────────────────────────────── Wires <jelly-icon-button data-copy> buttons (each sitting next to a <pre> in a flex row) to copy th...",
+			"Lines": 160,
+			"Readers": 3,
+			"ReadBy": [
+				"Layout/Base.astro",
+				"pages/Contributing.astro",
+				"pages/License.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Generated/Facts/Forms.json",
+			"Kind": "other",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 280,
+			"Readers": 1,
+			"ReadBy": [
+				"Library/Index/Register.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Generated/Facts/Modules.json",
+			"Kind": "other",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 2591,
+			"Readers": 1,
+			"ReadBy": [
+				"Library/Index/Register.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Generated/Facts/Records.json",
+			"Kind": "other",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 1045,
+			"Readers": 1,
+			"ReadBy": [
+				"Library/Index/Register.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Generated/Facts/Routes.json",
+			"Kind": "other",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 570,
+			"Readers": 1,
+			"ReadBy": [
+				"Library/Index/Register.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Layout/Base.astro",
+			"Kind": "layout",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 252,
+			"Readers": 27,
+			"ReadBy": [
+				"Component/Contact/ContactPage.astro",
+				"pages/404.astro",
+				"pages/Account/ForgotPassword.astro",
+				"pages/Account/ResetPassword.astro",
+				"pages/Account/SignIn.astro",
+				"pages/Account/SignUp.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/API/Analytics.ts",
+			"Kind": "library",
+			"Carries": "Exports AnalyticsAPI.",
+			"Lines": 264,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Library/API/Authentication.ts",
+			"Kind": "library",
+			"Carries": "Exports AuthAPI.",
+			"Lines": 137,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Dynamic/AccountPage.tsx",
+				"Component/Dynamic/VerifyPage.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/API/Download.ts",
+			"Kind": "library",
+			"Carries": "Exports DownloadsAPI.",
+			"Lines": 210,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Library/API/Status.ts",
+			"Kind": "library",
+			"Carries": "Exports StatusCheck, StatusResponse, StatusAPI.",
+			"Lines": 174,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Library/CodeMentions.ts",
+			"Kind": "library",
+			"Carries": "The code-mention pass for the CodeEditorLand site - the Aphrodite/Site pattern adapted to the C15 link registry (Source/Library/Links.ts).",
+			"Lines": 125,
+			"Readers": 2,
+			"ReadBy": [
+				"pages/Contributing.astro",
+				"pages/Doc/Rust.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Contact/Data.ts",
+			"Kind": "library",
+			"Carries": "Data - the Contact hub's index, derived from the request registry.",
+			"Lines": 135,
+			"Readers": 5,
+			"ReadBy": [
+				"Component/Contact/ContactPage.astro",
+				"Component/Contact/ContactShell.astro",
+				"Component/Contact/Register.ts",
+				"pages/Contact/Sale.astro",
+				"pages/Contact/index.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Contact/Request.ts",
+			"Kind": "library",
+			"Carries": "Exports IncomeCode, FormField, RequestConfig, Requests.",
+			"Lines": 1545,
+			"Readers": 7,
+			"ReadBy": [
+				"Component/Contact/ContactShell.astro",
+				"Component/Contact/Register.ts",
+				"Component/Dashboard/Data.ts",
+				"Component/Dynamic/DynamicContactForm.tsx",
+				"Function/OpenGraph/PageMetadata.ts",
+				"Library/Contact/Data.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Document/Contributing/Data.ts",
+			"Kind": "library",
+			"Carries": "Contributing - the Contributing page's own rows.",
+			"Lines": 132,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/Contributing.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Document/License/Data.ts",
+			"Kind": "library",
+			"Carries": "License - the License page's own rows.",
+			"Lines": 52,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/License.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Document/Privacy/Data.ts",
+			"Kind": "library",
+			"Carries": "Privacy - the Privacy Policy page's own rows.",
+			"Lines": 70,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/Legal/Privacy.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Document/Term/Data.ts",
+			"Kind": "library",
+			"Carries": "Term - the Terms of Service page's own rows.",
+			"Lines": 101,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/Legal/Term.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Document/WireWells.ts",
+			"Kind": "library",
+			"Carries": "Wire the copy control inside RecordWell blocks.",
+			"Lines": 105,
+			"Readers": 3,
+			"ReadBy": [
+				"Component/Doc/Well.ts",
+				"Component/Record/RecordTranscript.astro",
+				"Component/Record/RecordWell.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/I18n/Client.ts",
+			"Kind": "library",
+			"Carries": "I18n Client - browser-side i18next initialization with lazy namespace loading.",
+			"Lines": 682,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Layout/LocaleSwitcher.tsx",
+				"Layout/Base.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/I18n/Server.ts",
+			"Kind": "library",
+			"Carries": "Exports GetI18n.",
+			"Lines": 175,
+			"Readers": 32,
+			"ReadBy": [
+				"Component/Doc/DocIndex.astro",
+				"Component/Doc/DocLayout.astro",
+				"Component/Home/ArchitectureBand.astro",
+				"Component/Home/FeatureBand.astro",
+				"Component/Home/PlatformBand.astro",
+				"Component/Home/RoadmapBand.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Index/Register.ts",
+			"Kind": "library",
+			"Carries": "Register - the reader for the generated facts behind `/Contents`.",
+			"Lines": 259,
+			"Readers": 3,
+			"ReadBy": [
+				"Component/UI/Palette/Data.ts",
+				"Content/Index/Page.ts",
+				"pages/Contents.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Interface/AnalyticsEvent.ts",
+			"Kind": "library",
+			"Carries": "Exports AnalyticsEvent.",
+			"Lines": 14,
+			"Readers": 2,
+			"ReadBy": [
+				"Library/API/Analytics.ts",
+				"Library/WorkerClient.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Interface/APIResponse.ts",
+			"Kind": "library",
+			"Carries": "Exports APIResponse.",
+			"Lines": 10,
+			"Readers": 2,
+			"ReadBy": [
+				"Library/Interface/PaginatedResponse.ts",
+				"Library/WorkerClient.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Interface/Download.ts",
+			"Kind": "library",
+			"Carries": "Exports Download.",
+			"Lines": 24,
+			"Readers": 2,
+			"ReadBy": [
+				"Library/API/Download.ts",
+				"Library/WorkerClient.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Interface/DownloadEvent.ts",
+			"Kind": "library",
+			"Carries": "Exports DownloadEvent.",
+			"Lines": 20,
+			"Readers": 2,
+			"ReadBy": [
+				"Library/API/Download.ts",
+				"Library/WorkerClient.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Interface/GitHubActionRun.ts",
+			"Kind": "library",
+			"Carries": "Exports GitHubActionRun.",
+			"Lines": 38,
+			"Readers": 2,
+			"ReadBy": [
+				"Library/API/Status.ts",
+				"Library/WorkerClient.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Interface/GitHubCommit.ts",
+			"Kind": "library",
+			"Carries": "Exports GitHubCommit.",
+			"Lines": 30,
+			"Readers": 2,
+			"ReadBy": [
+				"Library/API/Status.ts",
+				"Library/WorkerClient.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Interface/GitHubIssue.ts",
+			"Kind": "library",
+			"Carries": "Exports GitHubIssue.",
+			"Lines": 38,
+			"Readers": 2,
+			"ReadBy": [
+				"Library/API/Status.ts",
+				"Library/WorkerClient.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Interface/PaginatedResponse.ts",
+			"Kind": "library",
+			"Carries": "Exports PaginatedResponse.",
+			"Lines": 12,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Library/Interface/Session.ts",
+			"Kind": "library",
+			"Carries": "Exports Session.",
+			"Lines": 12,
+			"Readers": 2,
+			"ReadBy": [
+				"Library/API/Authentication.ts",
+				"Library/WorkerClient.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Interface/User.ts",
+			"Kind": "library",
+			"Carries": "Exports User.",
+			"Lines": 22,
+			"Readers": 2,
+			"ReadBy": [
+				"Library/API/Authentication.ts",
+				"Library/WorkerClient.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/LinkIndex.ts",
+			"Kind": "library",
+			"Carries": "The runtime link index for the markdown pass - the full term -> URL map, split (Phase 3f) into one granular file per unique composed URL under ./LinkIndex/, NESTED by repo famil...",
+			"Lines": 76,
+			"Readers": 3,
+			"ReadBy": [
+				"Function/Markdown/CodeMentions.ts",
+				"Library/CodeMentions.ts",
+				"Library/LinkMatcher.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/LinkMatcher.ts",
+			"Kind": "library",
+			"Carries": "The compiled matcher cache for the link passes - the \"cache inside ./WebSite/\".",
+			"Lines": 145,
+			"Readers": 3,
+			"ReadBy": [
+				"Function/Markdown/CodeMentions.ts",
+				"Library/CodeMentions.ts",
+				"Test/Markdown/CodeMentions.test.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Links.ts",
+			"Kind": "library",
+			"Carries": "The canonical link registry for the CodeEditorLand site - the single source for every internal route and external URL the pages emit.",
+			"Lines": 253,
+			"Readers": 1336,
+			"ReadBy": [
+				"Content/Record/Air.ts",
+				"Content/Record/Cocoon.ts",
+				"Content/Record/Common.ts",
+				"Content/Record/Echo.ts",
+				"Content/Record/Grove.ts",
+				"Content/Record/Land.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Theme/index.ts",
+			"Kind": "library",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 8,
+			"Readers": 5,
+			"ReadBy": [
+				"Component/Dynamic/DynamicAccountProfile.tsx",
+				"Component/Dynamic/DynamicDashboardUser.tsx",
+				"Component/Dynamic/DynamicLocalFirstScan.tsx",
+				"Component/Dynamic/DynamicPortal.tsx",
+				"Footer.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Theme/ThemeIcon.tsx",
+			"Kind": "library",
+			"Carries": "Exports ThemeIconProps, ThemeIcon.",
+			"Lines": 40,
+			"Readers": 1,
+			"ReadBy": [
+				"Library/Theme/index.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Theme/ThemeImage.tsx",
+			"Kind": "library",
+			"Carries": "Exports ThemeImageProps, ThemeImage.",
+			"Lines": 46,
+			"Readers": 1,
+			"ReadBy": [
+				"Library/Theme/index.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/WorkerClient.ts",
+			"Kind": "library",
+			"Carries": "WorkerClient - typed HTTP client for all Cloudflare Worker APIs.",
+			"Lines": 1142,
+			"Readers": 6,
+			"ReadBy": [
+				"Component/Provider/AnalyticsProvider.tsx",
+				"Library/API/Analytics.ts",
+				"Library/API/Authentication.ts",
+				"Library/API/Download.ts",
+				"Library/API/Status.ts",
+				"Test/Library/WorkerClient.test.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "pages/404.astro",
+			"Kind": "route",
+			"Carries": "The 404: the canonical small record (`DesignSystem-Pages.md` §3), and the site's second plate page.",
+			"Lines": 208,
+			"Readers": 1,
+			"ReadBy": [
+				"Test/Page/NotFound.test.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Account/ForgotPassword.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 43,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Account/index.astro",
+			"Kind": "route",
+			"Carries": "Account - the account workspace.",
+			"Lines": 177,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Account/ResetPassword.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 43,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Account/SignIn.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 54,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Account/SignUp.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 52,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Blog.astro",
+			"Kind": "route",
+			"Carries": "The blog index: what exists, newest first.",
+			"Lines": 131,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Blog/[Slug].astro",
+			"Kind": "route",
+			"Carries": "One article, on the reading surface.",
+			"Lines": 149,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Compare.astro",
+			"Kind": "route",
+			"Carries": "Compare - Land against the editor it replaces, in the site's own words.",
+			"Lines": 242,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Contact/Amend.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 6,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Contact/Claim.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 6,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Contact/Deals.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 6,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Contact/Erase.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 6,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Contact/Guard.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 6,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Contact/Hails.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 6,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Contact/index.astro",
+			"Kind": "route",
+			"Carries": "The Contact hub - the desk's register: one index of request routes.",
+			"Lines": 145,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Contact/Leave.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 6,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Contact/Legal.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 6,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Contact/Lodge.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 6,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Contact/Pause.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 6,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Contact/Query.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 6,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Contact/Reach.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 6,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Contact/Sale.astro",
+			"Kind": "route",
+			"Carries": "Enterprise inquiries - the sale route, read as a READING page.",
+			"Lines": 329,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Contact/Scout.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 6,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Contents.astro",
+			"Kind": "route",
+			"Carries": "Contents - the index.",
+			"Lines": 428,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Contributing.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 584,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Dashboard.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 506,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Doc.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 189,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Doc/[...Slug].astro",
+			"Kind": "route",
+			"Carries": "Exports getStaticPaths.",
+			"Lines": 336,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Doc/Rust.astro",
+			"Kind": "route",
+			"Carries": "The Rust API surface, composed as a WORKSPACE.",
+			"Lines": 226,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Download.astro",
+			"Kind": "route",
+			"Carries": "Download - the installation contract: can I install this today, and if not, what can I do instead? The page is one artifact, opened by the keeper masthead: 1.",
+			"Lines": 207,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Glossary.astro",
+			"Kind": "route",
+			"Carries": "Glossary - the document's own words: the fifteen elements, the grammar's nouns, and the five words this site retired.",
+			"Lines": 202,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/index.astro",
+			"Kind": "route",
+			"Carries": "The home page - the opening spread of the dossier, and four parts after it.",
+			"Lines": 267,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Legal/Privacy.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 884,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Legal/Term.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 961,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/License.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 406,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Motion.astro",
+			"Kind": "route",
+			"Carries": "Motion - the register: what this paper moves, why, and what it refuses to.",
+			"Lines": 450,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/OAuth/Success.astro",
+			"Kind": "route",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 342,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/OpenGraph.svg.ts",
+			"Kind": "route",
+			"Carries": "Home page OpenGraph SVG endpoint.",
+			"Lines": 240,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/OpenGraph/[...Slug].svg.ts",
+			"Kind": "route",
+			"Carries": "OpenGraph SVG image endpoint.",
+			"Lines": 208,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Portal.astro",
+			"Kind": "route",
+			"Carries": "Portal - the authentication gateway, composed as an AUDIT.",
+			"Lines": 476,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Status.astro",
+			"Kind": "route",
+			"Carries": "Status - the status board.",
+			"Lines": 261,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Verify.astro",
+			"Kind": "route",
+			"Carries": "Verify - the verification link, composed as an AUDIT.",
+			"Lines": 227,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Visit.astro",
+			"Kind": "route",
+			"Carries": "─── Visit - Universal Dispatch Center ─────────────────────────────────────── This page is the catch-all landing target for ALL unresolved paths on Cloudflare Pages.",
+			"Lines": 278,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "Script/Firebase.ts",
+			"Kind": "script",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 13,
+			"Readers": 1,
+			"ReadBy": [
+				"Layout/Base.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Script/Motion/Handover.ts",
+			"Kind": "script",
+			"Carries": "Handover - the direction of a page change, printed on `<html>`.",
+			"Lines": 72,
+			"Readers": 1,
+			"ReadBy": [
+				"Script/Motion/Index.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Script/Motion/Index.ts",
+			"Kind": "script",
+			"Carries": "Motion - the client half of the motion layer.",
+			"Lines": 60,
+			"Readers": 1,
+			"ReadBy": [
+				"Layout/Base.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Script/Motion/Origin.ts",
+			"Kind": "script",
+			"Carries": "Origin - the command palette's lean, from the direction it was invoked.",
+			"Lines": 116,
+			"Readers": 1,
+			"ReadBy": [
+				"Script/Motion/Index.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Script/Motion/Sort.ts",
+			"Kind": "script",
+			"Carries": "Sort - a matrix re-ordering, as a view transition.",
+			"Lines": 124,
+			"Readers": 1,
+			"ReadBy": [
+				"Script/Motion/Index.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Script/Register.ts",
+			"Kind": "script",
+			"Carries": "Register - the index's generator.",
+			"Lines": 839,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Type/JellyUI.d.ts",
+			"Kind": "type",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 278,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Variable/JellyUIVersion.ts",
+			"Kind": "variable",
+			"Carries": "Auto-generated by BuildJellyUIVendor.sh - do not edit.",
+			"Lines": 3,
+			"Readers": 1,
+			"ReadBy": [
+				"pages/Contents.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Variable/Scroll/Matrix.ts",
+			"Kind": "variable",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 520,
+			"Readers": 1,
+			"ReadBy": [
+				"Function/Scroll/Code.tsx"
+			],
+			"Reached": true
+		}
+	],
+	"Orphans": [
+		{
+			"Path": "Background.tsx",
+			"Kind": "other",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 92,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "content.config.ts",
+			"Kind": "other",
+			"Carries": "content.config.ts - the entry point Astro loads.",
+			"Lines": 14,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "Footer.tsx",
+			"Kind": "other",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 100,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Function/Configuration/ServiceWorker.ts",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 4,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Route/Redirect.ts",
+			"Kind": "function",
+			"Carries": "Layer 3 fallback - client-side redirect for 404 page.",
+			"Lines": 66,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Route/ServiceWorker.ts",
+			"Kind": "function",
+			"Carries": "ServiceWorker - route redirector, auth gate, and cache manager.",
+			"Lines": 1125,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Scroll/Layout.astro",
+			"Kind": "function",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 12,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Utility/CN.ts",
+			"Kind": "function",
+			"Carries": "Exports CN.",
+			"Lines": 11,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "Library/API/Analytics.ts",
+			"Kind": "library",
+			"Carries": "Exports AnalyticsAPI.",
+			"Lines": 264,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Library/API/Download.ts",
+			"Kind": "library",
+			"Carries": "Exports DownloadsAPI.",
+			"Lines": 210,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Library/API/Status.ts",
+			"Kind": "library",
+			"Carries": "Exports StatusCheck, StatusResponse, StatusAPI.",
+			"Lines": 174,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Library/Interface/PaginatedResponse.ts",
+			"Kind": "library",
+			"Carries": "Exports PaginatedResponse.",
+			"Lines": 12,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Script/Register.ts",
+			"Kind": "script",
+			"Carries": "Register - the index's generator.",
+			"Lines": 839,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		}
+	],
+	"Totals": {
+		"Files": 2286,
+		"Routes": 42,
+		"Documents": 81,
+		"Entries": 8,
+		"Elements": 16,
+		"Blocks": 21,
+		"Modules": 221,
+		"Read": 163,
+		"Declared": 13
+	}
+}

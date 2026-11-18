@@ -1,0 +1,82 @@
+---
+/**
+ * TrustContents - the clause rail: the document's own index, beside the text
+ * rather than above it, and marked as the reader moves.
+ *
+ * Two registers, one data shape, and the register is the only thing a caller
+ * chooses:
+ *
+ * - **`rail`** - the sticky column in the page margin at >= 1024px. It carries
+ *   the count (`CLAUSES 26`), the reader's position (`§07`), and every clause
+ *   as a `§NN  name` row. The rail is bounded to the viewport and scrolls
+ *   itself, so a 26-clause document never pushes the page.
+ * - **`disclosure`** - a CSS-only `<details>` above the document below 1024px,
+ *   where the rail is not painted at all. Collapsed by default: the reading
+ *   column stays the first thing on the screen, and the whole contents list is
+ *   one tap away.
+ *
+ * The list is rendered from `index` - the document's own `ReadingIndexItem[]` -
+ * so a rail row and the clause it names cannot disagree. The marking is
+ * `Trust/TrustContents.ts`: `aria-current="location"`, the ink, the weight and
+ * a 2px rule on the row's leading edge. With JavaScript off the list is still a
+ * working jump list; only the marking and the position figure are absent, which
+ * is why the position cell reserves its width instead of printing a guess.
+ *
+ * Both registers carry `data-trust-contents`, so the wiring finds one behaviour
+ * and which of the two is painted is the CSS's business, not the script's.
+ */
+import TrustContentsList from "./TrustContentsList.astro";
+import type { ReadingIndexItem } from "../Reading/Type.js";
+
+interface Props {
+	/** The document's clauses, in document order. */
+	items: readonly ReadingIndexItem[];
+
+	/** The list's visible label and its accessible name (`Clauses`, `Parts`). */
+	label: string;
+
+	/** `rail` in the margin at >= 1024px; `disclosure` above the document below it. */
+	variant?: "rail" | "disclosure";
+
+	/** Extra classes from the caller, appended after the block's own. */
+	class?: string;
+}
+
+const { items, label, variant = "rail", class: Class } = Astro.props;
+---
+
+{
+	variant === "disclosure" ? (
+		<details
+			class:list={["trust-contents", "trust-contents--disclosure", Class]}
+			data-trust-contents
+		>
+			<summary class="trust-contents__summary">
+				<span class="trust-contents__label">{label}</span>
+				<span class="trust-contents__count">{items.length}</span>
+				<span class="trust-contents__toggle" aria-hidden="true">
+					&#8595;
+				</span>
+			</summary>
+			<TrustContentsList items={items} />
+		</details>
+	) : (
+		<nav
+			class:list={["trust-contents", "trust-contents--rail", Class]}
+			data-trust-contents
+			aria-label={label}
+		>
+			<p class="trust-contents__head">
+				<span class="trust-contents__label">{label}</span>
+				<span class="trust-contents__count">{items.length}</span>
+				{/*
+				 * The reader's position. Empty in the server HTML on purpose: before
+				 * the first clause is reached there is no clause to name, and a guess
+				 * printed here would be a number the reader is not standing on.
+				 */}
+				<span class="trust-contents__position" data-trust-position />
+			</p>
+			<TrustContentsList items={items} />
+		</nav>
+	)
+}

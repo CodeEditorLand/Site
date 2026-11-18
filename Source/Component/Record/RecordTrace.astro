@@ -1,0 +1,100 @@
+---
+/**
+ * RecordTrace - the path a claim can be checked along: a numbered run of files,
+ * routes or commands, each with the one thing it carries, closed by the source
+ * the trace itself was read out of.
+ *
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  provenance: where a claim can be checked, in the order the
+ *                   source names it. Not a process (that is RecordStage, which
+ *                   is an order in time) and not an archive (that is a set of
+ *                   records) - a trace is the shortest reading that ends in the
+ *                   reader seeing the thing for themselves.
+ * RANK              set.
+ * SLOT CONTRACT     steps[]    -> one step each: index, path, note, href?
+ *                   label?     -> the `/LABEL` after the marker: `BUILD`
+ *                   source     -> required; the page or file the trace is from
+ *                   state?     -> `rest` (default) or `loading`
+ *                   empty?     -> the composed sentence for a trace with no steps
+ * MAY HOLD          steps only.
+ * MAY NOT HOLD      prose, a figure, a second trace.
+ * NARROW            the note moves under the path and the index holds its 2ch
+ *                   column, so a long path wraps inside its own line rather than
+ *                   pushing the note off it.
+ * WIDE (>=768)      the path takes the left measure and the note a 20ch column at
+ *                   its right, so fifteen traces down a page align on the note.
+ * DENSE             none. A trace is a reading; a compressed reading is a list of
+ *                   links, and a list of links is not evidence. `state="loading"`
+ *                   is not a density either - it is the same trace with its paths
+ *                   not yet in.
+ *
+ * ─── THE MARKS ───────────────────────────────────────────────────────────
+ * `01 →` is the step's own index and the grammar's direction mark; `↳` prefixes
+ * the note, because a note is a proposition about the path above it. The index
+ * is printed exactly as the caller writes it and is never renumbered - a trace
+ * whose steps are `A`, `B`, `C` keeps them.
+ *
+ * No script and no client directive: a trace is a list. Nothing here is
+ * interactive, so nothing here hydrates.
+ */
+import type { Trace } from "./Type.js";
+
+interface Props {
+	/** The trace's data. */
+	trace: Trace;
+}
+
+const { trace } = Astro.props;
+
+const { steps, label, source, state = "rest", empty } = trace;
+
+/** `# TRACE / BUILD␁06 STEPS` - the count is the steps' own length. */
+const Count = String(steps.length).padStart(2, "0");
+
+const Marker =
+	state === "loading" ? "LOADING" : `${Count} STEPS`;
+
+/** The marker line: the block's own name, then the caller's label, then the count. */
+const MarkerLine = label === undefined ? `TRACE\u2001${Marker}` : `TRACE / ${label}\u2001${Marker}`;
+---
+
+<div class="record-trace" data-state={state}>
+	<p class="record-trace__marker"># {MarkerLine}</p>
+
+	{
+		state === "empty" || steps.length === 0 ? (
+			empty && <p class="record-trace__empty">{empty}</p>
+		) : (
+			<ol class="record-trace__steps">
+				{steps.map((Step) => (
+					<li class="record-trace__step">
+						<span class="record-trace__index">{Step.index}</span>
+						<span class="record-trace__arrow" aria-hidden="true">
+							→
+						</span>
+						<span class="record-trace__path">
+							{Step.href === undefined ? (
+								<code>{Step.path}</code>
+							) : (
+								<a class="record-trace__link" href={Step.href}>
+									<code>{Step.path}</code>
+								</a>
+							)}
+						</span>
+						<span class="record-trace__note">
+							<span class="record-trace__note-mark" aria-hidden="true">
+								↳
+							</span>
+							{Step.note}
+						</span>
+					</li>
+				))}
+			</ol>
+		)
+	}
+
+	<p class="record-trace__source">
+		<span class="record-trace__source-key">SOURCE:</span>
+		{source}
+	</p>
+</div>

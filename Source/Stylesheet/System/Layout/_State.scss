@@ -1,0 +1,290 @@
+// ShellState - the nine adverse states' one surface.
+//
+// Publishes:
+//   .ShellState                 the white information box: one condition, stated
+//   .ShellState__register       `# REGISTER / 00`
+//   .ShellState__status         `STATUS: WORD` in the word's own tone
+//   .ShellState__rows           the labelled rows (KEY: value)
+//   .ShellState__skeleton       the loading arm: keys with barred values
+//   .ShellState__facts          the last-known set, as a compact ledger
+//
+// ─── ONE BOX, NINE CONDITIONS ─────────────────────────────────────────────
+// The state is a record of a condition, so it is the site's one white
+// information box lying on the creme field (`emphasis-standard`'s treatment,
+// declared here rather than included, because this block owns its own fill and a
+// caller must not be able to put it on a card). It is never a card inside a card:
+// the caller puts it where the record would have been.
+//
+// ─── THE SKELETON IS IN THE RECORD GRAMMAR ────────────────────────────────
+// The bars are static. The site has no gradient to shimmer with and no spinner to
+// turn; a loading state that animates is a loading state that has decided motion
+// explains waiting, and motion here explains nothing. What the skeleton does
+// instead is print the SCHEMA - the keys are known before the values are - so the
+// reader learns the shape of the record while it arrives. The bars are
+// `aria-hidden`; the STATUS row is the announcement.
+//
+// ─── THE CLIPPED VALUE ────────────────────────────────────────────────────
+// `too-long` prints the value as far as it goes, with an ellipsis in the
+// grammar's own spirit (a printed truncation, not a CSS one that hides the rest
+// from a screen reader), the full length as `FULL:`, and the measure it cannot
+// fit as `LIMIT:`. The layout never breaks because the value is clipped, and the
+// reader can always see how much was clipped.
+@use "../Mixin" as *;
+
+.ShellState {
+	container: state / inline-size;
+	display: grid;
+	gap: var(--space-reading);
+	background: var(--Card);
+	padding: var(--space-group);
+
+	@include hairline;
+	@include flat;
+}
+
+// A state printed inside a card: no fill, no frame, no padding of its own. The
+// card is the surface; the state is a section of it. This is the one variant,
+// and it exists because a white box inside a white card is a card in a card.
+.ShellState--bare {
+	background: transparent;
+	border: 0;
+	padding: 0;
+}
+
+.ShellState__register {
+	@include mono-meta;
+	@include track(var(--track-row));
+	display: flex;
+	align-items: baseline;
+	gap: 0.35em;
+	margin: 0;
+	color: var(--MuteForeground);
+}
+
+.ShellState__mark {
+	color: var(--Accent);
+}
+
+.ShellState__index {
+	color: var(--Foreground);
+}
+
+// ─── THE STATUS ROW ───────────────────────────────────────────────────────
+
+.ShellState__status {
+	@include mono-meta;
+	@include track(var(--track-row));
+	display: flex;
+	align-items: baseline;
+	gap: 0.45em;
+	margin: 0;
+	color: var(--Foreground);
+}
+
+.ShellState__status-mark {
+	inline-size: 0.4rem;
+	block-size: 0.4rem;
+	background: currentColor;
+	translate: 0 -0.1em;
+}
+
+.ShellState__status--specimen {
+	color: var(--Accent);
+}
+
+.ShellState__status--quiet {
+	color: var(--MuteForeground);
+}
+
+.ShellState__status-key {
+	color: var(--MuteForeground);
+}
+
+.ShellState__status-word {
+	color: inherit;
+}
+
+// ─── THE ROWS ─────────────────────────────────────────────────────────────
+
+.ShellState__rows {
+	display: grid;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.ShellState__row {
+	display: grid;
+	grid-template-columns: 9.5rem minmax(0, 1fr);
+	gap: var(--space-tight);
+	align-items: baseline;
+	padding-block: 0.45rem;
+
+	@include hairline(bottom);
+}
+
+.ShellState__key {
+	@include mono-meta;
+	@include track(var(--track-name));
+	color: var(--MuteForeground);
+}
+
+.ShellState__value {
+	margin: 0;
+	color: var(--Foreground);
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+	text-wrap: pretty;
+}
+
+.ShellState__value--figure {
+	font-variant-numeric: tabular-nums;
+}
+
+.ShellState__of {
+	margin-inline: 0.4em;
+	color: var(--MuteForeground);
+}
+
+.ShellState__age {
+	margin-inline-start: 0.6em;
+	color: var(--MuteForeground);
+}
+
+.ShellState__clip {
+	display: block;
+	overflow-wrap: anywhere;
+}
+
+.ShellState__clip-meta {
+	display: block;
+	margin-block-start: 0.2rem;
+	color: var(--MuteForeground);
+	font-size: var(--type-caption);
+	letter-spacing: var(--track-name);
+}
+
+.ShellState__clip-key {
+	color: var(--MuteForeground);
+}
+
+.ShellState__action {
+	color: var(--Foreground);
+	text-decoration: underline;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 0.12em;
+	text-decoration-color: color-mix(
+		in srgb,
+		var(--Foreground) 20%,
+		transparent
+	);
+
+	&:hover {
+		color: var(--Accent);
+		text-decoration-color: var(--Accent);
+	}
+}
+
+// ─── THE SKELETON ─────────────────────────────────────────────────────────
+// Keys at their label register, values as bars. Static on purpose.
+
+.ShellState__skeleton {
+	display: grid;
+	gap: 0;
+}
+
+.ShellState__skeleton-row {
+	display: grid;
+	grid-template-columns: 9.5rem minmax(0, 1fr);
+	gap: var(--space-tight);
+	align-items: center;
+	margin: 0;
+	padding-block: 0.45rem;
+
+	@include hairline(bottom);
+}
+
+.ShellState__skeleton-key {
+	@include mono-meta;
+	@include track(var(--track-name));
+	color: var(--MuteForeground);
+}
+
+.ShellState__bar {
+	display: block;
+	inline-size: var(--bar, 50%);
+	block-size: 0.55rem;
+	background: var(--Mute);
+	border: 1px solid var(--Border);
+}
+
+// ─── THE LAST-KNOWN SET ───────────────────────────────────────────────────
+// A compact ledger under the state's rows: the stale reading's values, or the
+// facts a partial state does have. Two columns at the wide container, because a
+// set of facts is read across.
+
+.ShellState__facts {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	margin: 0;
+	padding: 0;
+
+	@include hairline(top);
+}
+
+.ShellState__fact {
+	display: grid;
+	grid-template-columns: 9.5rem minmax(0, 1fr);
+	gap: var(--space-tight);
+	align-items: baseline;
+	padding-block: 0.4rem;
+
+	@include hairline(bottom);
+}
+
+.ShellState__fact-key {
+	@include mono-meta;
+	@include track(var(--track-name));
+	color: var(--MuteForeground);
+}
+
+.ShellState__fact-value {
+	margin: 0;
+	color: var(--Foreground);
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+	font-variant-numeric: tabular-nums;
+}
+
+.ShellState__fact-value--code {
+	overflow-wrap: anywhere;
+}
+
+.ShellState__note {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--MuteForeground);
+	max-inline-size: var(--MeasureOpening);
+	text-wrap: pretty;
+}
+
+// ─── NARROW ───────────────────────────────────────────────────────────────
+// The key column folds above its value rather than squeezing to four characters.
+// The query is the state's OWN width, not the page's: a state printed in a
+// margin or a rail is narrow at every viewport, and one printed across a band is
+// wide at every viewport. That is why the block is a container.
+
+@container state (max-width: 26rem) {
+	.ShellState__row,
+	.ShellState__skeleton-row,
+	.ShellState__fact {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0.15rem;
+	}
+}

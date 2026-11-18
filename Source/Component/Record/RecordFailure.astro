@@ -1,0 +1,86 @@
+---
+/**
+ * RecordFailure - one documented way the thing breaks: its name, the state word,
+ * what the reader sees, why, and the next step.
+ *
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  a condition: the state a reader is in when an action has
+ *                   failed. Not a record (RecordEntry), not a fact
+ *                   (RecordLedger) and not a process (RecordStage) - a failure
+ *                   has three fixed fields and one vocabulary word, and prose
+ *                   loses the third field, which is the only actionable one.
+ * RANK              leaf.
+ * SLOT CONTRACT     failure    -> index, name, symptom, cause, next, state, source
+ * MAY HOLD          nothing. Three fields and a state word.
+ * MAY NOT HOLD      a stack trace, a well of commands, a second failure. A
+ *                   failure that needs a command block is a failure beside a
+ *                   RecordWell, not a failure holding one.
+ * NARROW            the keys move above their values, one field per line; the
+ *                   next step wraps inside its own value column and keeps its
+ *                   leading mark.
+ * WIDE (>=640)      the key takes a 7rem column and the value the rest, so three
+ *                   failures side by side align on SYMPTOM, CAUSE and NEXT.
+ * DENSE             none, and deliberately: the three fields are the density. A
+ *                   failure with a shorter cause is a failure that stopped
+ *                   explaining itself.
+ *
+ * ─── THE STATE WORD ──────────────────────────────────────────────────────
+ * `STATUS:` prints the fixed eight-word vocabulary and nothing else, in the tone
+ * the one state table resolves (`Surface/State.ts`). `INTERRUPTED` is ink, not
+ * red: the site has no second alarm colour, and a failure that shouts in a hue
+ * the palette does not own would be the only thing on the page pretending.
+ *
+ * The three fields are a `<dl>`: they are facts about one condition, and the
+ * grammar's `:` label belongs to the key.
+ */
+import { Tone } from "../Surface/State.js";
+
+import type { Failure } from "./Type.js";
+
+interface Props {
+	/** The failure's data. */
+	failure: Failure;
+}
+
+const { failure } = Astro.props;
+
+const { index, name, symptom, cause, next, state, source } = failure;
+
+const ToneOf = Tone(state) ?? "ink";
+---
+
+<div class="record-failure" data-tone={ToneOf} role="group">
+	<p class="record-failure__marker">
+		<span class="record-failure__hash" aria-hidden="true">#</span>
+		{index}
+		<span class="record-failure__slash" aria-hidden="true">/</span>
+		<span class="record-failure__name">{name}</span>
+	</p>
+
+	<p class="record-failure__status">
+		<span class="record-failure__status-key">STATUS:</span>
+		<span class="record-failure__status-value" data-tone={ToneOf}>
+			{state}
+		</span>
+	</p>
+
+	<dl class="record-failure__fields">
+		<div class="record-failure__field">
+			<dt class="record-failure__key">SYMPTOM:</dt>
+			<dd class="record-failure__value">{symptom}</dd>
+		</div>
+		<div class="record-failure__field">
+			<dt class="record-failure__key">CAUSE:</dt>
+			<dd class="record-failure__value">{cause}</dd>
+		</div>
+		<div class="record-failure__field record-failure__field--next">
+			<dt class="record-failure__key">NEXT:</dt>
+			<dd class="record-failure__value">{next}</dd>
+		</div>
+	</dl>
+
+	<p class="record-failure__source">
+		<span class="record-failure__source-key">SOURCE:</span>
+		{source}
+	</p>
+</div>

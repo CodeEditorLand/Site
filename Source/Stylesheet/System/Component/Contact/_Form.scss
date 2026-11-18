@@ -6,9 +6,9 @@
 //   .contact-form__open             the chip row, the h1, its sentence, the handler
 //   .contact-form__title            the page's only h1 - the request title
 //   .contact-form__standfirst       the registry's subtitle under it
-//   .contact-form__meta             the pair reference, legal basis and window
+//   .contact-form__meta             the pair reference and the state word
 //   .contact-form__pair             the CODE-XXXXX reference
-//   .contact-form__tag              one fact chip beside it
+//   .contact-form__tag              a counted fact chip (the receipt's field count)
 //   .contact-form__state            the form's state word (PREPARING/READY/INTERRUPTED)
 //   .contact-form__handler          who the request is sent to
 //   .contact-form__handler-value    that address, at full ink
@@ -35,14 +35,28 @@
 //   .contact-form__note             the pair reference explanation
 //   .contact-form__mono             a code inside running prose
 //   .contact-form__mono--strong     that code, at medium weight
+//   .contact-form__errors           the interrupted receipt, above the fields
+//   .contact-form__errors-head      `INTERRUPTED` and the field count
+//   .contact-form__errors-list      one line per interrupted field
+//   .contact-form__errors-link      that line, as a control that focuses its field
+//   .contact-form__errors-field     the field's name, at medium weight
+//   .contact-form__receipt          the copied receipt, under the actions
+//   .contact-form__receipt-word     `COPIED`
+//   .contact-form__receipt-ref      the pair reference that was copied
+//   .contact-form__receipt-note     what to do with it
 //
-// Three decisions worth knowing:
+// Four decisions worth knowing:
 //
 // - A control sits on `--Card` with a hairline and square corners. The canvas is
 //   creme, so a white field is the one place the eye can type. The field block
 //   sits on one `jelly-card` - HEAD's card around the fields, restored as a
 //   design-system surface (`DESIGN.md` §1.7, §6.5) - and a field is told apart
 //   from that card by its hairline, never by a second fill.
+// - Every state is a real state. A field carries `aria-invalid` and points at
+//   its own hint and error; an error draws on the control's edge and is
+//   repeated once in a receipt at the head of the block; the primary action is
+//   armed only at `READY` and is `aria-disabled` before that; a copy success
+//   prints a receipt under the actions. None of these is a coloured `<div>`.
 // - The primary action is the published `.emphasis-expressive` tier, and it is
 //   the only expressive element in the form. A destructive request keeps the
 //   tier and swaps its ink to `--Destruct`, so ERASE still reads as the request
@@ -92,7 +106,7 @@
 	font-size: var(--type-sub);
 	line-height: var(--type-sub-line);
 	font-weight: 500;
-	letter-spacing: -0.02em;
+	letter-spacing: var(--track-join);
 	color: var(--Foreground);
 }
 
@@ -277,7 +291,7 @@
 
 .contact-form__actions-label {
 	@include mono-meta;
-	@include track(0.08em);
+	@include track(var(--track-row));
 	margin: 0;
 }
 
@@ -374,4 +388,174 @@
 
 .contact-form__mono--strong {
 	font-weight: 500;
+}
+
+// ─── The interrupted state: the receipt ───────────────────────────────────
+//
+// A refusal is an artifact, not a colour: `INTERRUPTED`, the number of fields,
+// and one line per field that moves the cursor to it. It sits at the head of
+// the field block, above the first control, because an error a reader has to
+// hunt for is a decoration.
+//
+// The alarm is one 2px leading rule in `--Destruct` - the site's marker idiom,
+// the same weight the state word carries - and the words themselves stay in
+// ink: five red sentences is not an error state, it is a shout, and the field
+// under the control already carries the destructive ink for the one sentence
+// that belongs to it.
+
+.contact-form__errors {
+	padding: var(--space-reading);
+	margin-block-end: var(--space-group);
+
+	background: var(--Mute);
+
+	@include hairline;
+
+	border-inline-start: 2px solid var(--Destruct);
+}
+
+.contact-form__errors-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0;
+}
+
+.contact-form__errors-list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+
+	margin: var(--space-tight) 0 0;
+	padding: 0;
+
+	list-style: none;
+}
+
+.contact-form__errors-item {
+	margin: 0;
+}
+
+// The line is a control: a refusal that names a field and does not take the
+// reader there is a refusal the reader has to act on twice.
+.contact-form__errors-link {
+	display: block;
+	inline-size: 100%;
+	padding: 0;
+
+	background: none;
+	border: 0;
+
+	color: var(--Foreground);
+
+	font: inherit;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	text-align: start;
+
+	cursor: pointer;
+}
+
+.contact-form__errors-link:hover,
+.contact-form__errors-link:focus-visible {
+	text-decoration: underline;
+	text-underline-offset: 0.25em;
+}
+
+.contact-form__errors-link:focus-visible {
+	outline: var(--BorderWidth) var(--BorderStyle) var(--Primary);
+	outline-offset: 2px;
+}
+
+.contact-form__errors-field {
+	font-weight: 500;
+}
+
+// ─── The copied state: the receipt ────────────────────────────────────────
+//
+// What was copied and the reference it was filed under. A state that stays on
+// the page, not a toast that leaves before it is read: the note under it then
+// explains what the reference is for.
+
+.contact-form__receipt {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 var(--space-tight);
+
+	margin: 0;
+	padding: var(--space-tight) var(--space-reading);
+
+	background: var(--Mute);
+
+	@include hairline;
+
+	@include mono-meta;
+}
+
+.contact-form__receipt-word {
+	@include track;
+
+	color: var(--Foreground);
+}
+
+.contact-form__receipt-ref {
+	color: var(--Foreground);
+}
+
+.contact-form__receipt-note {
+	color: var(--MuteForeground);
+}
+
+// ─── The armed / unarmed action ───────────────────────────────────────────
+//
+// The primary action is armed only at `READY`. While `PREPARING` it keeps the
+// shape of an action - the same box, the same note, the same size - and loses
+// its fill and its ink: a control that is not yet available is quieter, not
+// absent, and it still answers when it is pressed (with the receipt, and with
+// the cursor in the first field that needs a value).
+//
+// `[aria-disabled]` outranks `.emphasis-expressive` on specificity, so the
+// expressive tier needs no modifier of its own here.
+
+.contact-form__action[aria-disabled="true"] {
+	background: transparent;
+	border: 1px solid var(--Border);
+	color: var(--MuteForeground);
+	cursor: not-allowed;
+}
+
+.contact-form__action[aria-disabled="true"] .contact-form__action-note {
+	color: var(--MuteForeground);
+}
+
+/* An unarmed destructive request keeps its warning: the box is quiet, but its
+   edge and its title still carry the ink the action will take when it arms.
+   ERASE should not read as a request for a copy of your data just because the
+   form is not filled in yet. */
+.contact-form__action--destructive[aria-disabled="true"] {
+	border-color: color-mix(in srgb, var(--Destruct) 40%, transparent);
+}
+
+.contact-form__action--destructive[aria-disabled="true"]
+	.contact-form__action-title {
+	color: var(--Destruct);
+}
+
+// ─── Control states ───────────────────────────────────────────────────────
+//
+// A control that carries an error draws the error's ink on its own edge, so the
+// eye finds the field before it reads the sentence. A disabled control keeps
+// its place and its label and loses its fill.
+
+.contact-form__input[aria-invalid="true"] {
+	border-color: var(--Destruct);
+}
+
+.contact-form__input:disabled {
+	background: var(--Mute);
+	color: var(--MuteForeground);
+	cursor: not-allowed;
 }

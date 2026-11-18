@@ -913,6 +913,15 @@
 	--type-sub: 1.125rem;
 	--type-sub-line: 1.4;
 
+	/* The S heading - the role the tree kept improvising at 20-30px, which is
+	   neither S (<=18) nor L (>=32) and is therefore a fourth tier the
+	   identity forbids. "A heading that is not XL or L is S with tracking"
+	   (DESIGN.md §2.4) is the identity's own sentence: this is it as a role.
+	   18px at 500 and leading 1.25 - a heading's leading, not a standfirst's,
+	   because the two are the same size and must not read the same. */
+	--type-heading: 1.125rem;
+	--type-heading-line: 1.25;
+
 	/* S - running prose at 16px, line-height 1.25-1.65 (DESIGN.md §2.4). */
 	--type-body: 1rem;
 	--type-body-line: 1.65;
@@ -930,6 +939,26 @@
 	/* S - commands, config blocks, transcripts at 14px. */
 	--type-code: 0.875rem;
 	--type-code-line: 1.55;
+
+	/* TRACKING - five registers and one law: tracking is inverse to size, and
+	   grows with the label's distance from what it names.
+
+	     join  -0.02em  L and XL: a large setting joins its letters
+	     set    0       a sentence - body, standfirst, caption, code
+	     name  +0.04em  a label BESIDE its value (`TARGET:`)
+	     row   +0.08em  a label ACROSS a row (nav, chip, a control's caption)
+	     rule  +0.18em  a label ABOVE a region (`/KICKER`, the action)
+
+	   Beside -> across -> above is 0.04 -> 0.08 -> 0.18. Before this layer the
+	   tree carried twenty distinct letter-spacing values across sixty partials
+	   - 0.025, 0.05, 0.06, 0.1, 0.12, 0.14, 0.15, 0.2, 0.25 and their
+	   negatives - because every card tuned the same three decisions by eye. A
+	   partial reads a register; it does not write a sixth value. */
+	--track-join: -0.02em;
+	--track-set: 0;
+	--track-name: 0.04em;
+	--track-row: 0.08em;
+	--track-rule: 0.18em;
 
 	/* SPACING - one role per relationship, on the documented scale
 	   (design_system.md §Spacing tokens 4/8/12/20/32/52/84 px; the 4px grid of

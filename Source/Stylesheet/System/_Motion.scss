@@ -8,9 +8,33 @@
 // obscure the final status, substitute for text - and it names the
 // relationships rather than the values.
 //
-// So this file is two things and no more: the vocabulary (durations, easings
-// and distances as tokens named for the relationship they express) and the four
-// places on the site where a CSS-visible state change exists to carry it.
+// ── THE REGISTER LAW ──────────────────────────────────────────────────────
+// Motion is a property of ONE of the paper's three registers (`_Type.scss`):
+// TABULATE - a name and a value, the only thing on the page whose state can
+// change. A sentence (SET) and a claim (ANNOUNCE) carry no transition, because
+// neither has a state to transition between: a paragraph is not loading, and a
+// section heading is not being hovered. That is why the seal does not move and
+// the ledger row does, and it is the rule a new rule in this file is tested
+// against: **name the state change, or do not write the rule.**
+//
+// ── THE VOCABULARY: SEVEN RELATIONSHIPS, THREE INTERVALS, THREE CURVES ─────
+// The relationship names the state change; the interval and the curve belong to
+// the site. Seven relationships run on three intervals and three curves, so a
+// block cannot invent a fourth duration:
+//
+//   INTERVALS            CURVES
+//   quick   150ms        arrive  out of rest (fast start, soft stop)
+//   speak   200ms        line    a rule drawn straight
+//   settle  320ms        return  back to rest
+//
+//   enter      speak  / arrive   an affordance arrives (hover, focus)
+//   press      quick  / arrive   input registration
+//   trace      speak  / line     a hairline drawn across its name
+//   settle     settle / return   the return to rest, and completion
+//   resolve    settle / return   one printed state giving way to another
+//   interrupt  quick  / arrive   the action was refused
+//   reveal     speak  / arrive   a disclosure opens
+//   crop       settle / return   closer inspection of evidence
 //
 // ── WHERE THE VALUES COME FROM ────────────────────────────────────────────
 // The document gives no millisecond and no curve. It gives relationships -
@@ -25,10 +49,16 @@
 //      320ms cubic-bezier(.4,0,.5,1) to settle, 150ms ease-in to press and
 //      340ms cubic-bezier(.3,1.7,.5,1) for its one overshoot. The site's
 //      motion is that physics at those numbers, so a record block and a Jelly
-//      button cannot drift apart.
+//      button cannot drift apart. `arrive` IS Jelly's shape-spring curve, and
+//      `return` IS its settle curve; only the 420ms spring interval is not
+//      adopted, because a state that takes 420ms to resolve arrives after the
+//      work it reports has already finished.
 //   2. The intervals the record layer already chose - 180ms for the archive
 //      row's disclosure, 220ms for its trace - which are kept rather than
-//      re-tuned, because they are already in front of the reader.
+//      re-tuned, because they are already in front of the reader. They are
+//      `speak` at 200ms: two intervals four hundredths of a second apart are
+//      not two relationships, and a vocabulary that kept both would invite a
+//      third.
 //
 // Jelly's 340ms overshoot is deliberately NOT adopted as a token: the
 // document's Land row asks for "precise press, elastic acknowledgement, quick
@@ -36,98 +66,153 @@
 // frame is the corner marks (C19), which own it in their own partial.
 //
 // ── FIRST PAINT ───────────────────────────────────────────────────────────
-// Nothing here animates on load, and that is structural rather than a promise:
-// this file declares no `@keyframes` and no `animation` - only `transition`,
-// and only on properties whose value changes when a state selector matches. A
-// transition cannot fire at first paint: the element is created with the
-// computed value it will keep, so there is no change for an interval to run
-// between. "Motion must not decorate static content" and "do not animate
-// anything on page load" are the same rule, and both are satisfied by there
-// being no entrance animation to skip.
+// The file's two `@keyframes` are the interrupt's and the reveal's, and neither
+// can fire at first paint: the interrupt is bound to
+// `[aria-invalid="true"]:not(:focus)`, an attribute no control carries when the
+// document is parsed, and the reveal to `details[open] > :not(summary)`, where
+// no `<details>` on the site carries `open` in its markup. Every other rule is a
+// `transition`, and a transition cannot fire at first paint either - the element
+// is created with the computed value it will keep, so there is no change for an
+// interval to run between. "Motion must not decorate static content" and "do not
+// animate anything on page load" are the same rule, and both are satisfied by
+// there being no entrance animation to skip.
 //
 // ── REDUCED MOTION ────────────────────────────────────────────────────────
-// Every mixin in `System/_Mixin.scss` carries both branches. The interval lives
-// in `prefers-reduced-motion: no-preference`; `reduce` writes `transition:
-// none`. The *state* is declared below unconditionally, so a reader who asked
-// for less motion gets the end state in one frame - the offset, the trace, the
-// crop - never the reverse.
+// First-class, in two layers. Every mixin in `System/_Mixin.scss` carries both
+// branches: the interval lives in `prefers-reduced-motion: no-preference`,
+// `reduce` writes `transition: none`, and the *state* is declared below
+// unconditionally - so a reader who asked for less motion gets the end state in
+// one frame, never the reverse. Under that, one root reset (the last block in
+// this file) catches what the mixins cannot: a hand-rolled transition in a
+// partial, the kit's `transition-all`, and `scroll-smooth` on `html`. A
+// transition nobody declared through the vocabulary is still motion, and the
+// contract is the reader's, not the partial's.
 //
 // ── WHAT THIS FILE MAY TOUCH ──────────────────────────────────────────────
-// `transform` and `opacity` only. A transition on `width`, `height`, `top` or
-// padding reflows the page it means to acknowledge, and the document forbids
-// layout motion as plainly as it forbids decoration. The one existing layout
-// animation the record layer carries - the archive row's `padding-inline` - is
-// left in `Record/_Archive.scss`, where its owner can decide; this file
-// converts only the trace, which is a width animation, and which had to become
-// a transform for the "trace" relationship to be expressible at all.
+// `transform`, `opacity` and - for `resolve` only - `color`. A transition on
+// `width`, `height`, `top` or padding reflows the page it means to acknowledge,
+// and the document forbids layout motion as plainly as it forbids decoration.
+// The one existing layout animation the record layer carries - the archive row's
+// `padding-inline` - is left in `Record/_Archive.scss`, where its owner can
+// decide; this file converts only the trace, which is a width animation, and
+// which had to become a transform for the "trace" relationship to be expressible
+// at all. `color` joins the list for one reason: a printed state resolving is an
+// INK change (see the copy rule below), and an ink change that snaps is not a
+// resolve.
 //
 // ── WHERE EACH RULE POINTS ────────────────────────────────────────────────
-// The four families were written against `RecordEntry`, `RecordArchive`,
-// `RecordBand` and `RecordHero`. Two of those blocks had no importer when this
-// file was written, so the rules could not fire. Each family now names a block
-// that renders: the entry arrow (live: the Portal's tier feature set), the
-// ledger's key and value (live: the footer, the reading document, the surface
-// shell and the Dashboard's build cards), and the evidence frame (live: the
-// Portal hero). The selectors changed; the relationships, the tokens and the
-// two-leg structure did not.
+// A rule here is dead unless a live block answers it, so each family names its
+// block and the element that answers it, measured on the working tree rather
+// than assumed:
+//
+//   enter     `.record-entry__arrow`      a *linked* record name. Zero sites
+//             before this card's `Properties/Grid` landed - the Portal's tier
+//             rows carry no `href`, so no arrow rendered - and three on
+//             `/Specimen`'s plate 07 now.
+//             `.record-entry__glyph`      the direction mark of a card that is
+//             the link: `Doc/DocIndex` wraps a bare entry in
+//             `.doc-card__link` and passes `→`/`↗` as the glyph, 93 cards on
+//             `/Doc`. This is the second live end of one relationship, not a
+//             second relationship.
+//   trace     `.record-ledger__key`       a ledger row whose value leads
+//             somewhere. `RecordLedger` prints `.record-ledger__link` whenever a
+//             row carries `links`, and five ledgers do (the footer's, the
+//             trust facts', the index page's, `/Compare`'s, the element card's).
+//             `RecordArchive`'s own row trace is NOT here: it lives in
+//             `Record/_Archive.scss`, which is its block's partial.
+//   press     `.record-ledger__value`     the same rows, at the moment of the
+//             press.
+//   crop      `.portal-hero__evidence img` `pages/Portal.astro:291` - the frame
+//             is `overflow: hidden`, so the image crops inside a box that stays
+//             put.
+//   resolve   `jelly-icon-button[data-copy]` every Shiki block on the site:
+//             `Function/Utility/CopyCommand.ts:118` creates the button and sets
+//             `data-copy`, and writes `label="Copied"` for 1800ms.
+//   reveal    `details[open] > :not(summary)` eleven `<details>` in ten files
+//             (Doc's layer and contents, Trust, Download's previous releases,
+//             the Dashboard's two, `RecordAside`, `ShellPanes`, the Motion
+//             specimens, `UI/Fold`).
+//   interrupt `[aria-invalid="true"]`     `Dynamic/DynamicInput.tsx:67` and the
+//             contact form's four fields.
+//
+// The seal is where motion stops, and that is its implementation.
 //
 // What the document asks for that CSS cannot do is reported on the card rather
 // than simulated here: the four canonical state sequences (download, checksum,
 // copy, expand) are runtime state machines, and a transition needs a state to
-// transition between.
+// transition between. Copy and expand now have one; download and checksum have
+// no markup that sets a state, so they are not simulated.
 
 @use "Mixin" as *;
 
 /* ─── THE VOCABULARY ─────────────────────────────────────────────────────── */
 
-/* One entry per relationship the document names, in the order a reader meets
-   them: the affordance arrives (enter), the press registers (press), the line
-   is drawn (trace), the surface returns (settle), the state resolves
-   (resolve), the action is refused (interrupt), and the evidence is inspected
-   (crop). The name is the relationship; the value is the evidence for it. */
-
+/* Three intervals, three curves, and the seven relationships expressed as
+   pairs of them. The relationship tokens keep their names because every partial
+   reads them (`UI/_Slip.scss`, `UI/_Palette.scss`, `Download/_Releases.scss`):
+   what changed is that a relationship no longer carries a duration of its own. */
 @layer theme {
 	:root {
+		/* THE INTERVALS - how long the site takes to say a thing. */
+		--motion-interval-quick: 150ms;
+		--motion-interval-speak: 200ms;
+		--motion-interval-settle: 320ms;
+
+		/* THE CURVES - where the movement is spent. `arrive` puts it at the
+		   start (a thing that is arriving must be seen arriving), `return`
+		   spreads it (a thing going back to rest is not in a hurry), `line`
+		   is nearly linear (a rule drawn at speed reads as a glitch). */
+		--motion-curve-arrive: cubic-bezier(0.16, 0.82, 0.28, 1);
+		--motion-curve-line: cubic-bezier(0.2, 0.7, 0.2, 1);
+		--motion-curve-return: cubic-bezier(0.4, 0, 0.5, 1);
+
 		/* ENTER - "Hover reveals affordance": the acknowledgement that a thing
-		   can be touched, and the pull toward it. 180ms is the interval the
-		   archive row already discloses on. */
-		--motion-enter-duration: 180ms;
-		--motion-enter-easing: cubic-bezier(0.16, 0.82, 0.28, 1);
+		   can be touched, and the pull toward it. */
+		--motion-enter-duration: var(--motion-interval-speak);
+		--motion-enter-easing: var(--motion-curve-arrive);
 		--motion-enter-lift: 0.125rem; /* 2px - a pull, not a jump */
 
 		/* PRESS - "Press reveals input registration": compression on press, the
-		   smallest movement that survives a raster at any density. */
-		--motion-press-duration: 150ms;
-		--motion-press-easing: ease-in;
+		   smallest movement that survives a raster at any density. It runs on
+		   `arrive`, not `ease-in`: a press that starts slowly is a press that
+		   feels ignored. */
+		--motion-press-duration: var(--motion-interval-quick);
+		--motion-press-easing: var(--motion-curve-arrive);
 		--motion-press-travel: 1px;
 
 		/* TRACE - "Expansion reveals hierarchy": a hairline drawn across the
-		   name it belongs to. 220ms is the interval the archive trace already
-		   uses; 1px is the weight of the rule it is. */
-		--motion-trace-duration: 220ms;
-		--motion-trace-easing: cubic-bezier(0.2, 0.7, 0.2, 1);
+		   name it belongs to. 1px is the weight of the rule it is. */
+		--motion-trace-duration: var(--motion-interval-speak);
+		--motion-trace-easing: var(--motion-curve-line);
 		--motion-trace-weight: 1px;
 
 		/* SETTLE - "Success reveals completion", and the return to rest: Land's
-		   "quick settlement". 320ms, the interval Jelly settles on. */
-		--motion-settle-duration: 320ms;
-		--motion-settle-easing: cubic-bezier(0.4, 0, 0.5, 1);
+		   "quick settlement". */
+		--motion-settle-duration: var(--motion-interval-settle);
+		--motion-settle-easing: var(--motion-curve-return);
 
-		/* RESOLVE - the largest state change the system has: one printed status
-		   word becoming another. The longest interval on purpose, so a status
-		   never arrives before the work it reports. 420ms, Jelly's shape-spring
-		   interval. */
-		--motion-resolve-duration: 420ms;
-		--motion-resolve-easing: cubic-bezier(0.16, 0.82, 0.28, 1);
+		/* RESOLVE - the largest state change the system has: one printed thing
+		   giving way to another (a copy completing, a word changing). It takes
+		   the settle interval because a resolution IS a settlement - and it is
+		   the one relationship allowed to move an ink. */
+		--motion-resolve-duration: var(--motion-interval-settle);
+		--motion-resolve-easing: var(--motion-curve-return);
 
 		/* INTERRUPT - "Error reveals interruption": "a short interrupted
 		   offset - NOT a playful shake". It takes the press interval, because
 		   an interruption must never be slower than the press it interrupts,
 		   and 2px, because that is the smallest offset that reads as an offset
 		   and the largest that reads as an accident. */
-		--motion-interrupt-duration: 150ms;
-		--motion-interrupt-easing: ease-in;
+		--motion-interrupt-duration: var(--motion-interval-quick);
+		--motion-interrupt-easing: var(--motion-curve-arrive);
 		--motion-interrupt-offset: 0.125rem; /* 2px */
+
+		/* REVEAL - "Expansion reveals hierarchy" at the block level: a
+		   disclosure's body arriving when the reader opens it. The body fades
+		   on `arrive` and does not move, because a body that slides is a body
+		   that reflows the page under the reader's eye. */
+		--motion-reveal-duration: var(--motion-interval-speak);
+		--motion-reveal-easing: var(--motion-curve-arrive);
 
 		/* CROP - closer inspection of evidence: `further_design_system.md`
 		   asks for "a 1-2% crop shift"; 1.5% is the middle of that range. */
@@ -135,21 +220,31 @@
 	}
 }
 
-/* ─── THE RECORD BLOCK ───────────────────────────────────────────────────── */
+/* ─── THE RECORD BLOCK - THE ENTER ───────────────────────────────────────── */
 
-/* "Can I interact with this?" - the arrow in front of a linked record name is
-   the block's statement of direction ("Navigation reveals direction"), so it is
-   the part that moves: 2px inline on hover and on keyboard focus, and back to
-   its own place on the settle curve when the pointer leaves.
+/* "Can I interact with this?" - the direction mark of a record that leads
+   somewhere is the block's statement of direction ("Navigation reveals
+   direction"), so it is the part that moves: 2px inline on hover and on keyboard
+   focus, and back to its own place on the settle curve when the pointer leaves.
 
-   The block is live: the Portal's four tier cards render their feature sets as
-   `RecordEntry` rows, so the anatomy below paints on a real surface. An entry
-   that carries no `href` renders no arrow - the rule's subject is a *linked*
-   record name, and a feature row is a fact rather than a destination.
+   TWO LIVE ENDS, ONE RELATIONSHIP. `RecordEntry` prints the mark in two
+   anatomies, and both are on the site:
+
+   1. `.record-entry__arrow` - inside `.record-entry__link`, in front of the
+      name, when the entry is handed an `href`. Measured before this card:
+      **zero sites**. The Portal's tier cards render feature sets as entries
+      without an `href` (a feature row is a fact, not a destination), and
+      `DocIndex` wraps the entry in its own anchor instead, so the rule below
+      parsed and never fired. `Dynamic/Properties/Grid` is the block that gives
+      the anatomy a destination: three claim records on `/Specimen` plate 07.
+   2. `.record-entry__glyph` - the mark at the record's own end, when the card
+      is the link. `Doc/DocIndex.astro:100` prints it for 93 cards on `/Doc`,
+      as `→` for a document and `↗` for a destination off the site.
 
    `display: inline-block` is what gives the arrow a box to transform. A span is
    `inline`, and `transform` is ignored on an inline box, so without it the
-   declaration below would parse and do nothing.
+   declaration below would parse and do nothing. The glyph needs no display
+   change: it is a grid item, and a grid item is already blockified.
 
    Two legs, two mixins: the arrival runs on the enter tokens, the return on the
    settle tokens. One `transition` cannot express both, which is why the
@@ -163,18 +258,49 @@
 	@include motion-settle;
 }
 
-.record-entry__link:is(:hover, :focus-visible) .record-entry__arrow {
+.record-entry__glyph {
+	transform: none;
+
+	@include motion-settle;
+}
+
+.record-entry__link:is(:hover, :focus-visible) .record-entry__arrow,
+.doc-card__link:is(:hover, :focus-visible) .record-entry__glyph {
 	transform: translateX(var(--motion-enter-lift));
 
 	@include motion-enter;
 }
 
+/* ─── THE JELLY DISCLOSURE - WHAT ITS STATE IS, AND WHAT IT IS NOT ───────── */
+
+/* `DESIGN-COMPLETE.md` §4.2 states the contract in one line: "A block's
+   interaction state is CSS. The Jelly disclosure is `:hover` / `:focus-visible`
+   on `RecordEntry`; the no-JS fallback is the state itself." This file is where
+   that sentence becomes true, so it is worth saying exactly what it does and
+   does not license.
+
+   The *state* is the block's: `_Entry.scss` moves the link's underline ink to
+   `--Primary` on hover and draws a 1px `--Primary` outline on `:focus-visible`,
+   and both are declared unconditionally - they are the same with JavaScript off,
+   which is the fallback the sentence names. The *motion* is the arrow above: the
+   one thing that travels, on the one relationship that means "this leads
+   somewhere".
+
+   What is deliberately absent is a transition on the entry's shell. The block's
+   partial says why in its own words - "Hover is flat: the link's underline ink
+   moves to `--Primary` and nothing else moves - no lift, no elevation, no border
+   colour, no corner change" - and the baseline never gave the shell one. A card
+   that lifted on hover would be decoration, and "MOTION MUST NOT decorate static
+   content" is the first line of the document's prohibition list. The disclosure
+   is `:hover` / `:focus-visible`; it is not a hover *effect*. */
+
 /* ─── THE LEDGER ROW - THE TRACE ─────────────────────────────────────────── */
 
-/* The trace under a record's name, drawn rather than widened. It was written
-   for `RecordArchive`, which has no importer; the ledger is the block that
-   renders, and its `<dt>` is the record's name, so the line is re-pointed
-   there.
+/* The trace under a record's name, drawn rather than widened. The baseline
+   wrote it for `RecordArchive`, which had no importer when this file was
+   re-pointed; the archive is live again (`/Doc`, `/Contents`), but its row
+   draws its own trace in its own partial - see THE ARCHIVE ROW below - so this
+   family's live end is the ledger, whose `<dt>` is the record's name.
 
    `scaleX` on a hairline is the whole trick: the line is always the full width
    of the key, and the disclosure changes only its scale. Nothing about the box
@@ -242,6 +368,41 @@
 	@include motion-press;
 }
 
+/* ─── THE ARCHIVE ROW - THE TRACE, AND WHERE IT LIVES ────────────────────── */
+
+/* `DESIGN-COMPLETE.md` §5.2 row 6 pairs `Record/_Archive.scss` with
+   `_Motion.scss:171-190` as the archive hover trace, and row 13 asks this card
+   to re-point the families here. Both halves are now true, and the split
+   between them is the block's:
+
+   `RecordArchive` is live again - two importers, `/Doc` (`Doc.astro:175`) and
+   `/Contents` (`Contents.astro:483`) - and every rule its row needs is in
+   `Record/_Archive.scss`: the padding stretch on
+   `:is(:hover, :focus-visible, :active)` at :298, the accent ink and the
+   hairline at :302-:308, the trace's own geometry at :263, and the
+   reduced-motion branch at :319-:326. The partial lacks nothing, so this card
+   adds no rule for it - the archive is the one block whose interaction state was
+   never removed, only unmounted.
+
+   What the partial does NOT do is run on this file's vocabulary, and that is
+   recorded here rather than repaired there, because `_Archive.scss` belongs to
+   the block's own card: it animates `padding-inline` at 180ms and the trace's
+   `inline-size` at 220ms, both `ease`, both chosen before the intervals
+   existed - this file's own header explains why they are kept ("the intervals
+   the record layer already chose ... they are already in front of the reader").
+   Two consequences a later card should know:
+
+   1. the archive's trace is a LAYOUT animation (`inline-size`, `padding-inline`)
+      on a pre-vocabulary interval, where this file expresses the same
+      relationship as a `transform` on the trace interval; and
+   2. the reduced-motion branch in the partial and the root reset at the foot of
+      this file say the same thing twice, which is harmless - the reset wins
+      either way, and the state survives both.
+
+   Nothing is lost by waiting: the relationship is named here (trace, `line`,
+   `speak`), so the partial can be brought onto it without a second vocabulary
+   being invented for it. */
+
 /* ─── THE EVIDENCE ───────────────────────────────────────────────────────── */
 
 /* "For an evidence image, a hover should feel like closer inspection, not
@@ -272,6 +433,119 @@
 	@include motion-enter;
 }
 
+/* ─── THE COPY AFFORDANCE - THE RESOLVE ──────────────────────────────────── */
+
+/* The one completion the site performs in place: `WireCodeBlockCopyButtons`
+   attaches a Jelly icon button to every Shiki block, and on click it swaps the
+   icon for a check and sets `label="Copied"` for 1800ms (`Function/Utility/
+   CopyCommand.ts`). That attribute IS the state, and the icon is drawn with
+   `color: var(--jelly-label)`, so the host's custom property is the whole
+   treatment: while the label lives, the check is the accent.
+
+   Why the accent, and not a green dot or a "success" tint: a copied command is
+   an action that finished, and the identity gives the one accent to exactly
+   that - "it authenticates: a seal, a link, a focus ring, the active route".
+   The colour is user-initiated, momentary, and appears on nothing that is not a
+   completed action, so the page cannot end up with five greens.
+
+   `--motion-resolve` is the relationship because two printed states give way to
+   each other, and it is the one transition allowed to move `color`. Reduced
+   motion loses the fade and keeps the check and its ink, which is the state. */
+
+jelly-icon-button[data-copy] > svg {
+	@include motion-resolve;
+}
+
+/* `!important` is the only tool that outranks an INLINE custom property, and the
+   host carries one: `WireCodeBlockCopyButtons` writes
+   `--jelly-label: var(--Foreground)` into the element's `style` attribute when
+   it creates the button (`Function/Utility/CopyCommand.ts`), so a stylesheet
+   rule - however specific - loses to it. The important declaration is scoped to
+   the transient Copied state (1800ms, user-initiated) and touches one property,
+   the same way the radius pins in `_Global.scss` outrank Jelly's `:host`. */
+jelly-icon-button[data-copy][label="Copied"] {
+	--jelly-label: var(--Accent) !important;
+}
+
+/* ─── THE DISCLOSURE - THE REVEAL ────────────────────────────────────────── */
+
+/* The site's five disclosures are CSS-only `<details>` (Doc's layer and
+   contents, Trust's contents, Download's previous releases, the Dashboard's
+   request history): the summary is the closed state and the body is the open
+   one. Opening is a state change, so it is the one thing a disclosure may
+   animate - the body arrives on `reveal`, in OPACITY ONLY, because a body that
+   slides would move the page under the reader's hand.
+
+   It is the one relationship implemented as an ANIMATION rather than a
+   transition, and the reason is the reader's, not the engine's. The first
+   construction used `@starting-style` with a transition; measured in the
+   browser, an interval that never runs leaves the start value in place, and the
+   start value was `opacity: 0` - a disclosure that opens onto nothing. An
+   animation with no fill mode cannot do that: it runs from 0 to the element's
+   OWN opacity (1), and if it never runs at all the body is simply there. The
+   interval is a courtesy; the body is the design.
+
+   It cannot fire at first paint either, which is the other half of the law: no
+   `<details>` on the site carries `open` in its markup (the Download matrix
+   prints open, and print is not a paint), so the selector cannot match until a
+   reader opens one. */
+
+@keyframes reveal-in {
+	from {
+		opacity: 0;
+	}
+}
+
+details[open] > :not(summary) {
+	animation: reveal-in var(--motion-reveal-duration) var(--motion-reveal-easing);
+
+	@media (prefers-reduced-motion: reduce) {
+		animation: none;
+	}
+}
+
+/* ─── THE REFUSED CONTROL - THE INTERRUPT ────────────────────────────────── */
+
+/* "Error reveals interruption: a short interrupted offset - NOT a playful
+   shake." The site's refused action is a form control carrying
+   `aria-invalid="true"` (`DynamicInput`, the contact form's four fields), and
+   until now the refusal was stated in ink only - the kit's destructive border -
+   with nothing that registers as an event.
+
+   `:not(:focus)` is the whole design of this rule. A control that is invalid and
+   still focused is being corrected; the reader is inside it and a moving field
+   is an obstacle. The offset plays once, when the reader leaves a field that is
+   still refused - which is the moment the action was refused, not the moment it
+   was noticed. It cannot loop while typing, because the selector stops matching
+   the instant the field takes focus.
+
+   `transform` and not `margin`: an offset that reflows would move every field
+   under it, and the document forbids layout motion. The animation is one
+   iteration with no fill, so the control returns to its own place and the ink
+   carries the state afterwards - which is why reduced motion loses nothing:
+   with the interval off, the field is still marked invalid, in the same place,
+   by the same ink. */
+
+@keyframes interrupt-offset {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+
+	35% {
+		transform: translateX(var(--motion-interrupt-offset));
+	}
+}
+
+:where(input, textarea, select)[aria-invalid="true"]:not(:focus) {
+	animation: interrupt-offset var(--motion-interrupt-duration)
+		var(--motion-interrupt-easing) 1;
+
+	@media (prefers-reduced-motion: reduce) {
+		animation: none;
+	}
+}
+
 /* ─── THE SEAL ───────────────────────────────────────────────────────────── */
 
 /* The seal is where motion stops, and that is its implementation.
@@ -290,3 +564,88 @@
    runtime state to exist first. Nothing in the markup sets one and this card
    may not add one, so it is reported as out of scope rather than simulated with
    a permanent offset. */
+
+/* ─── WHAT IS DELIBERATELY NOT HERE ──────────────────────────────────────── */
+
+/* `animate-in`, `fade-in-0`, `zoom-in-95` and `animate-caret-blink` are written
+   in the shadcn kit under `Component/UI/` and generate no rule, because
+   `tailwindcss-animate` is not installed. They are NOT implemented here, and the
+   reason is the register law rather than effort: a keyframe set is CSS that must
+   have an element to run on, and these have none.
+
+   MEASURED, not assumed. A walk of every `.tsx` / `.ts` / `.astro` import from
+   `Source/pages/**` reaches 30 `Component/UI/` modules, and eight of them still
+   carry the names:
+
+     Drawer, InputOTP, HoverCard, Menubar, AlertDialog, Tooltip, Sheet,
+     NavigationMenu                                       - all unreachable.
+
+   The four that used to carry them and are reachable - `Dialog`, `Popover`,
+   `Select`, `DropdownMenu` - were rewritten and now print no animate class at
+   all, so the list shrank by half and the half that is left is the half no page
+   mounts. This card records the family as WAITING rather than deleting it: the
+   moment a page mounts one of those eight, the keyframe set becomes a real
+   deliverable and the ledger says which files ask for it (card 8's comment on
+   this card, `.hermes/tmp/stitch/ledger/t_87543f14.md` §3.4).
+
+   `animate-caret-blink` would not be implemented even where it is reached: a
+   looping blink is motion that continues without a state change, which is the
+   first line of the document's prohibition list. The reveal the site actually
+   performs is the disclosure above, and the controls the site actually opens
+   (the slip, the palette, the menu) carry their own enter interval in their own
+   partials.
+
+   ── THE STACCATO FAMILY: A JS ENGINE THAT IS NOT IN THE TREE ──────────────
+
+   `System/Component/_Noise.scss` is a 710-line motion system whose channels
+   (`--Staccato`, `--StaccatoRaw`, `--StaccatoRhythm`, ...) are documented as
+   "updated every frame by Staccato.ts". There is no `Staccato.ts` in
+   `Source/Script/` and nothing imports one, so every channel sits at its `:root`
+   default of 0 and every `calc()` on it resolves to a constant. What is left is
+   not motion; it is static declarations named after motion, and four of them
+   dim a live element:
+
+     .StaccatoBadge      opacity .93    printed by DynamicBadge (this card's)
+     .StaccatoDot        opacity .5     printed by DynamicBadge (this card's)
+     .StaccatoRhythmDot  opacity .5     printed by DynamicBadge (this card's)
+     .StaccatoSpinner    opacity .65    printed by DynamicButton (this card's)
+     .StaccatoBreath     opacity .9     printed by DynamicCard (this card's)
+     .StaccatoVisible    1s entrance    printed by nothing
+
+   This card removes those five hooks from its own three adapters - the Jelly
+   badge and button take their ink from the element, not from a dead pulse - and
+   records the rest rather than editing `_Noise.scss`, which is not this card's
+   file and whose other classes (`.StaccatoNavLink`, `.StaccatoCard`,
+   `.StaccatoPrice`, `.StaccatoButton`) are still printed by other cards' markup.
+   `.StaccatoButton` in particular is a live hover lift on every `DynamicButton`
+   at `0.5s ease`, and `DynamicButton` has no page importer - so the lift is
+   latent, not live. The whole family is a card of its own: it is the one motion
+   system on the site that is neither CSS-first nor on the vocabulary. */
+
+/* ─── THE REDUCED-MOTION ROOT ────────────────────────────────────────────── */
+
+/* The first-class path, and the last word. Every rule above declares its state
+   unconditionally and gates only its interval, so this block cannot take a state
+   away - it takes the intervals away, including the ones no mixin wrote: a
+   hand-rolled transition in a partial, the kit's `transition-all`, a Jelly
+   element's own animation, and `scroll-smooth` on `html` (`_Base.scss`), which
+   is motion the reader did not ask for and the one place where "reduce" is
+   about the whole document rather than one element.
+
+   `0.01ms` rather than `none` on purpose: a transition of no duration still
+   fires `transitionend`, and a script that waits for one (the copy affordance's
+   label swap is a timeout, but a disclosure's height sync is not) must not be
+   left waiting forever. The element still lands on its end state in one frame,
+   which is the whole contract. */
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		transition-delay: 0ms !important;
+		scroll-behavior: auto !important;
+	}
+}

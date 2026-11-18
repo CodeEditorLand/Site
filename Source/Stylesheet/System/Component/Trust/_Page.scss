@@ -1,0 +1,52 @@
+// The trust page - the container the four legal documents are read in.
+//
+// Publishes:
+//   .trust-page          the page's one container and its vertical air
+//   .trust-page__trail   the breadcrumb's distance from the document
+//   .trust-page__close   the back-to-top rule that closes the page
+//
+// Why this exists at all: the four documents opened in a Tailwind container
+// (`container mx-auto max-w-4xl px-4 py-16`) while every other surface on the
+// site opens in `.band-inner`. The legal pages are the site's back matter, not a
+// separate product, so they take the site's one container - same max width, same
+// gutter clamp - and the rail composition gets the width it needs without a
+// second, narrower page frame.
+//
+// The air is the dossier's: a chapter's distance above the trail (this is a new
+// subject after the chrome) and the group's distance below the closing rule,
+// because the page ends on a link, not on a band.
+
+@use "../../Mixin" as *;
+
+.trust-page {
+	@include band-inner;
+
+	padding-block: var(--space-chapter) var(--space-group);
+}
+
+.trust-page__trail {
+	margin-block-end: var(--space-group);
+}
+
+// `border-t mt-12 pt-8`: one rule, then the way back to the top - the same
+// closing gesture the Contact hub makes, so the back matter closes the same way
+// on both halves of the surface.
+.trust-page__close {
+	@include hairline(top);
+
+	margin-block-start: 3rem;
+	padding-block-start: var(--space-group);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+}
+
+.trust-page__close a {
+	color: var(--Primary);
+	text-decoration: none;
+}
+
+.trust-page__close a:hover,
+.trust-page__close a:focus-visible {
+	text-decoration: underline;
+	text-underline-offset: 0.25em;
+}

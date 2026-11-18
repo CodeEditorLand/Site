@@ -1,0 +1,202 @@
+// SpecimenPage - the sheet's own composition: the states wall, the absences, the
+// register.
+//
+// Publishes:
+//   .specimen-page              the sheet's bands
+//   .specimen-page__states      the nine states, as a ruled wall
+//   .specimen-page__state       one state's cell
+//   .specimen-page__legend      the vocabulary, as chips, above the wall
+//   .specimen-page__absences    the parts that are not printed
+//   .specimen-page__register    the figures the sheet counted
+//   .specimen-page__note        one line under a band's body
+//
+// ─── THE STATES WALL IS NINE RULED CELLS, NOT NINE BOXES ──────────────────
+// `ShellState` ships as the site's one white information box, and nine white
+// boxes in a grid would be a dashboard of dashboards. Every cell here is the
+// block's own `bare` variant - no fill, no frame, no padding of its own - and the
+// wall draws the rules: one above each cell, at `--Border`, the ink the sheet
+// uses for its grid. The block is unchanged; the page composes it.
+//
+// ─── NINE IS NOT A ROW OF THREE, AND THAT IS THE POINT ────────────────────
+// Three across at 1280, two at 768, one below. The ninth cell starts the third
+// row alone at the narrow end, which is what a wall of nine does. A grid that
+// forced nine into three even rows at every width would be a matrix of states,
+// and the states are not being compared - they are being filed.
+//
+// ─── THE ABSENCES ARE TWO ACROSS, NOT THREE ───────────────────────────────
+// Three absences at three across would read as a set of three equal conditions.
+// They are not equal: each is one part's own reason, and the two-across grid
+// leaves the third on its own line where a reader gives it its own attention.
+@use "../../Mixin" as *;
+
+.specimen-page {
+	margin: 0;
+	min-inline-size: 0;
+}
+
+// ─── THE STATES WALL ──────────────────────────────────────────────────────
+
+.specimen-page__legend {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+	margin-block-end: var(--space-group);
+}
+
+.specimen-page__legend-key {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	margin: 0;
+	padding-inline-end: var(--space-tight);
+}
+
+.specimen-page__states {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-group);
+
+	@include bp(768px) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	@include bp(1280px) {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.specimen-page__state {
+	min-inline-size: 0;
+	padding-block-start: var(--space-group);
+
+	@include hairline(top);
+}
+
+// ─── THE ABSENCES ─────────────────────────────────────────────────────────
+
+.specimen-page__absences {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-group);
+
+	@include bp(1024px) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.specimen-page__absence {
+	min-inline-size: 0;
+}
+
+// ─── THE REGISTER ─────────────────────────────────────────────────────────
+
+.specimen-page__register {
+	max-inline-size: var(--Measure);
+	margin: 0;
+}
+
+// ─── THE NOTE ─────────────────────────────────────────────────────────────
+
+.specimen-page__note {
+	max-inline-size: var(--Measure);
+	margin: var(--space-group) 0 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+// ─── THE TRAIL ────────────────────────────────────────────────────────────
+// The shell prints the head, and the trail is the one thing that belongs above
+// it: the sheet sits under the index, and the crumb says so. It takes the band's
+// own inner container, because everything else on the page does.
+.specimen-page__trail {
+	@include band-inner;
+
+	padding-block: var(--space-group) 0;
+}
+
+// ─── A PLATE'S LIVE CONTENT ───────────────────────────────────────────────
+// The specimens inside a stage are laid out by the page, not by the part: a part
+// is a component, and a component does not know it is on a sheet. These three
+// rules are the only layout the parts get, and they are all one row or one
+// column of two.
+
+.specimen-page__row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-tight) var(--space-group);
+}
+
+.specimen-page__field-set {
+	display: grid;
+	gap: var(--space-group);
+	max-inline-size: 32rem;
+}
+
+.specimen-page__field-row {
+	display: grid;
+	gap: 0.35rem;
+}
+
+// The specimen field. It is a real input, because a label specimen with no
+// control would be a label pointing at nothing - and it is `readonly`, because
+// nothing on this sheet submits anywhere.
+.specimen-page__input {
+	inline-size: 100%;
+	padding: 0.55rem 0.65rem;
+	font-family: var(--FontMono);
+	font-size: var(--type-body);
+	line-height: 1.4;
+	letter-spacing: var(--track-set);
+	color: var(--Foreground);
+	background: var(--Card);
+
+	@include flat;
+	border: 1px solid var(--Border);
+}
+
+.specimen-page__input:disabled {
+	color: var(--MuteForeground);
+	background: var(--Mute);
+}
+
+// The prose specimen. `RichText` emits paragraphs and code spans with no classes
+// of its own, so the plate gives them the body's measure and rhythm.
+.specimen-page__prose {
+	max-inline-size: var(--Measure);
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--Foreground);
+}
+
+.specimen-page__prose p {
+	margin: 0 0 var(--space-reading);
+}
+
+.specimen-page__prose p:last-child {
+	margin-block-end: 0;
+}
+
+.specimen-page__prose code {
+	font-family: var(--FontMono);
+	font-size: var(--type-code);
+	color: var(--Foreground);
+	background: var(--Mute);
+	padding: 0.1em 0.3em;
+}
+
+// ─── THE PLATES' OWN RHYTHM ───────────────────────────────────────────────
+// Six plates inside one band: the first has no rule above it (the band's own
+// head is the boundary), and each plate after it draws its own. The band's
+// footnote closes the set, so the last plate leaves the space the footnote uses.
+.specimen-page__plates {
+	display: grid;
+	gap: var(--space-group);
+	margin-block-end: var(--space-group);
+}

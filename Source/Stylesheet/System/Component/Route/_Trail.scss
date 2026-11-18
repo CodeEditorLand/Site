@@ -44,7 +44,7 @@
 .trail__link {
 	color: var(--MuteForeground);
 	text-decoration: none;
-	transition: color 0.2s ease;
+	transition: color var(--motion-interval-speak) var(--motion-enter-easing);
 }
 
 .trail__link:hover,

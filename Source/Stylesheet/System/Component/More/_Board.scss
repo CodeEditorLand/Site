@@ -1,0 +1,260 @@
+// StatusBoard - a set of records partitioned by the state each one states.
+//
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// Publishes:
+//   .status-board              the board shell
+//   .status-board__shelves     the columns' grid
+//   .status-board__column      one column: head, note, rows
+//   .status-board__head        the register head: `#`, label, count
+//   .status-board__mark        the `#`
+//   .status-board__label       the column's name, at 500
+//   .status-board__count       the column's figure
+//   .status-board__words       the vocabulary words the column groups
+//   .status-board__note        one line: what the column answers
+//   .status-board__rows        the rows
+//   .status-board__row         one record
+//   .status-board__link        the row's whole click target
+//   .status-board__row-mark    the record's marker
+//   .status-board__row-body    name and one line
+//   .status-board__row-name    the record's name
+//   .status-board__row-meta    what the record is
+//   .status-board__row-state   the state word, in its tone
+//   .status-board__row-note    a qualification under the row
+//   .status-board__empty       the composed empty column
+//   .status-board__caption     the provenance line
+//
+// ─── THE COLUMNS ARE SHELVES, NOT CARDS ───────────────────────────────────
+// A column is a head, a rule, and rows - no fill, no frame, no radius. Four
+// white cards side by side would be a dashboard of dashboards, and the site's
+// one white box is the information surface a record lies on, not a container for
+// a list. The rule under the head is `--Divider` (20% ink) because it is the
+// only thing defining the column's top edge; the rules between rows are
+// `--Border` (8%) because a row is a repetition, not a boundary.
+//
+// ─── THE COUNT IS THE COLUMN'S FIGURE ─────────────────────────────────────
+// The head prints the number of rows at the sub tier, at 500, in ink. It is the
+// one figure in the column and the reason a reader can read the board's shape
+// without reading a row: sixteen, four, none, one.
+//
+// ─── THE STATE WORD SURVIVES ITS COLUMN ───────────────────────────────────
+// Every row prints its word in the word's tone, even though the column already
+// says it. The row is the thing that gets quoted, copied and read out of
+// context, so it carries its own state - and the tone comes from
+// `Component/Surface/State.ts`, never from a colour chosen here.
+@use "../../Mixin" as *;
+
+.status-board {
+	display: block;
+	min-inline-size: 0;
+}
+
+.status-board__shelves {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-group);
+}
+
+@include bp(640px) {
+	.status-board__shelves {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		column-gap: var(--space-group);
+	}
+}
+
+@include bp(1024px) {
+	.status-board__shelves {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+.status-board__column {
+	min-inline-size: 0;
+}
+
+// The head's rule is the divider ink: it is the column's only boundary.
+.status-board__head {
+	border-block-start: 1px solid var(--Divider);
+	padding-block-start: var(--space-tight);
+}
+
+.status-board__register {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 0.4em;
+	margin: 0;
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+}
+
+.status-board__mark {
+	color: var(--Accent);
+}
+
+.status-board__label {
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+	font-weight: 500;
+}
+
+// The column's figure. `--type-sub` is the 18px S step - a figure is a
+// different material from the label beside it, not a louder one, so it takes the
+// step and not a weight above 500.
+.status-board__count {
+	margin-inline-start: auto;
+	font-size: var(--type-sub);
+	line-height: 1;
+	font-weight: 500;
+	color: var(--Foreground);
+}
+
+.status-board__words {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	margin: 0;
+	margin-block-start: 0.25rem;
+	color: var(--MuteForeground);
+}
+
+.status-board__note {
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+	margin: 0;
+	margin-block-start: var(--space-tight);
+	max-inline-size: 34ch;
+	text-wrap: pretty;
+}
+
+.status-board__rows {
+	list-style: none;
+	margin: 0;
+	margin-block-start: var(--space-reading);
+	padding: 0;
+}
+
+.status-board__row {
+	border-block-start: 1px solid var(--Border);
+	padding-block: 0;
+}
+
+.status-board__row:last-child {
+	border-block-end: 1px solid var(--Border);
+}
+
+// The row's whole width is the target: a 13px word in a column of four is not a
+// link a reader should have to aim at.
+.status-board__link {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	align-items: baseline;
+	gap: 0.5rem;
+	padding-block: var(--space-tight);
+	padding-inline: 0.25rem;
+	margin-inline: -0.25rem;
+	color: var(--Foreground);
+	text-decoration: none;
+	@include motion-enter;
+}
+
+.status-board__link:hover {
+	background: var(--Mute);
+}
+
+.status-board__link--statement:hover {
+	background: transparent;
+}
+
+.status-board__row-mark {
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+	color: var(--MuteForeground);
+	white-space: nowrap;
+}
+
+.status-board__row-body {
+	display: flex;
+	flex-direction: column;
+	gap: 0.125rem;
+	min-inline-size: 0;
+}
+
+.status-board__row-name {
+	font-size: var(--type-body);
+	line-height: 1.25;
+	letter-spacing: var(--track-set);
+	overflow-wrap: anywhere;
+}
+
+.status-board__row-meta {
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+	color: var(--MuteForeground);
+	overflow-wrap: anywhere;
+}
+
+.status-board__row-state {
+	@include track(var(--track-name));
+
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	white-space: nowrap;
+}
+
+.status-board__row-state--ink {
+	color: var(--Foreground);
+}
+
+.status-board__row-state--specimen {
+	color: var(--Accent);
+}
+
+.status-board__row-state--quiet {
+	color: var(--MuteForeground);
+}
+
+.status-board__row-note {
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	color: var(--MuteForeground);
+	margin: 0;
+	padding-block-end: var(--space-tight);
+	overflow-wrap: anywhere;
+}
+
+// The composed empty column. `◎` is the grammar's fallback mark and it is the
+// honest one here: this column holds a thing the vocabulary has no record for.
+.status-board__empty {
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+	margin: 0;
+	margin-block-start: var(--space-reading);
+	padding-block-start: var(--space-reading);
+	border-block-start: 1px solid var(--Border);
+	max-inline-size: 34ch;
+	text-wrap: pretty;
+}
+
+.status-board__empty::before {
+	content: "◎";
+	display: block;
+	margin-block-end: 0.5rem;
+	color: var(--MuteForeground);
+}
+
+.status-board__caption {
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	color: var(--MuteForeground);
+	margin: 0;
+	margin-block-start: var(--space-group);
+	padding-block-start: var(--space-tight);
+	border-block-start: 1px solid var(--Divider);
+	max-inline-size: 82ch;
+	text-wrap: pretty;
+}

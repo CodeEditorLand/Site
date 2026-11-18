@@ -756,7 +756,7 @@ const PortalTierRow = ({
 
 	const StatusLabel =
 		Content.Status === "ComingSoon"
-			? "Coming Soon"
+			? "PLANNED"
 			: Content.Status === "WIP"
 				? "WIP"
 				: undefined;
@@ -1218,7 +1218,7 @@ const PortalTierRow = ({
 												{(Feature.Status ??
 													Content.Status) === "WIP"
 													? "WIP"
-													: "Coming Soon"}
+													: "PLANNED"}
 											</jelly-badge>
 										)}
 								</span>

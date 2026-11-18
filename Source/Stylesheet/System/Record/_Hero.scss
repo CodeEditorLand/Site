@@ -2,28 +2,41 @@
 // evidence, one hairline between them, and the record's mandatory blank
 // interval inside the card.
 //
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  what this page is - the artifact, one per page.
+// RANK              artifact; the only block that prints an `h1`.
+// SLOT CONTRACT     .record-hero                the artifact's shell
+//                   .record-hero__pair          the pair - record left, evidence right
+//                   .record-hero__pair--single  the record alone, no evidence
+//                   .record-hero__record        the field record panel
+//                   .record-hero__card          the data card's box
+//                   .record-hero__inset         the card's own inset
+//                   .record-hero__mark          the index, and the seal when there is one
+//                   .record-hero__seal          the artifact's one seal
+//                   .record-hero__claim         the runtime claim - the page's only `h1`
+//                   .record-hero__route         the record's one `/ROUTE:VALUE` line
+//                   .record-hero__status        the state line
+//                   .record-hero__facts         the record's facts, before the interval
+//                   .record-hero__blank         THE BLANK INTERVAL - aria-hidden, 15-25% of the card
+//                   .record-hero__relation      the nameplate at section weight (`LAND:`)
+//                   .record-hero__proposition   the `↳` line the interval gives weight to
+//                   .record-hero__action        the artifact's one action
+//                   .record-hero__gutter        the 1px hairline between the panels
+//                   .record-hero__evidence      the evidence panel
+//                   .record-hero__plate         the image filling that panel
+// MAY HOLD          RecordLedger (facts), RecordFigure or a chart (evidence),
+//                   RecordStage (trace foot), one RecordBand at tone="bare".
+// MAY NOT HOLD      a second hero, seal, `h1`, or a band that paints a fill.
+// NARROW            record first, evidence second, gutter hidden; the interval
+//                   falls back to its floor token (no card height to resolve a
+//                   percentage against).
+// WIDE (>=768)      `49fr 1px 51fr`, the gutter drawing `--Divider`.
+// DENSE             none - the artifact gets the screen.
+//
 // It is NOT a `.band`. A band follows another band and carries the chapter
 // rhythm; the hero opens a page and is a single artifact, so it owns its own
 // height, its own gutter and its own padding, and it takes no rule from
 // `.band` or `.record-band`.
-//
-// Publishes:
-//   .record-hero                the artifact's shell
-//   .record-hero__pair          the pair - record left, evidence right
-//   .record-hero__pair--single  the record alone, when the artifact carries no evidence
-//   .record-hero__record        the field record panel
-//   .record-hero__card          the data card's box
-//   .record-hero__inset         the card's own inset
-//   .record-hero__mark          the index, and the seal when the artifact has one
-//   .record-hero__seal          the artifact's one seal
-//   .record-hero__claim         the runtime claim - the page's only `h1`
-//   .record-hero__status        the state line
-//   .record-hero__blank         THE BLANK INTERVAL - `aria-hidden`, 15-25% of the card
-//   .record-hero__facts         the record's metadata rows
-//   .record-hero__action        the artifact's one action
-//   .record-hero__gutter        the 1px hairline between the panels
-//   .record-hero__evidence      the evidence panel
-//   .record-hero__plate         the image filling that panel
 //
 // THE RATIO. `design_system.md`'s ratio blueprint sizes the pair, and these are
 // the declarations that carry it:
@@ -42,10 +55,10 @@
 // share - so the artifact fills the first screen and the evidence panel has a
 // height to be full-height of.
 //
-// THE BLANK INTERVAL. 15-25% of the card's height, between the state line and
-// the record's closing block, `aria-hidden` because it is a reserved region
-// rather than content. "Delete, don't shrink" (`DESIGN.md` §2.7): the band is
-// an element with a floor, not a margin that collapses.
+// THE BLANK INTERVAL. 15-25% of the card's height, between the record's facts
+// and the thing the record asks of the reader, `aria-hidden` because it is a
+// reserved region rather than content. "Delete, don't shrink" (`DESIGN.md`
+// §2.7): the band is an element with a floor, not a margin that collapses.
 //
 // Tokens only: no literal colour, no box-shadow, no border-radius, no gradient.
 // The ink of the card, the seal, the status line, the ledger and the action
@@ -139,12 +152,50 @@
 	margin: var(--space-group) 0 0;
 	font-family: var(--FontMono);
 	font-weight: 500;
-	letter-spacing: -0.02em;
+	letter-spacing: var(--track-join);
 	text-wrap: balance;
 }
 
 .record-hero__status {
 	margin-block-start: var(--space-reading);
+}
+
+// The record's one `/ROUTE:VALUE` line: directly under the claim, at tight
+// distance, because it is a qualifier of the claim rather than a new part. Its
+// per-keyword ink belongs to `RouteText`.
+.record-hero__route {
+	margin: var(--space-tight) 0 0;
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+}
+
+// The nameplate the interval gives weight to, and the proposition under it. Both
+// sit below the blank, so neither carries a top margin of its own: the interval
+// is the space.
+.record-hero__relation {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-section);
+	font-weight: 500;
+	line-height: var(--type-section-line);
+	letter-spacing: var(--track-join);
+	color: var(--CardForeground);
+}
+
+.record-hero__proposition {
+	margin: var(--space-tight) 0 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-sub);
+	font-weight: 500;
+	line-height: var(--type-sub-line);
+	letter-spacing: var(--track-name);
+	color: var(--CardForeground);
+}
+
+// The `↳` is drawn, not spoken: the line is read as "return to index", and the
+// mark is the grammar's, so it is muted and `aria-hidden` in the markup.
+.record-hero__proposition-mark {
+	color: var(--MuteForeground);
 }
 
 /*
@@ -228,4 +279,27 @@
 	flex: 1 1 auto;
 	min-block-size: 40dvh;
 	inline-size: 100%;
+}
+
+/* ─── COMPOSED EVIDENCE ────────────────────────────────────────────────── */
+
+// A `RecordFigure` in the evidence panel: the panel gives the figure its height,
+// the plate fills what the caption leaves, and the caption sits on the panel's
+// floor. That is the one place a figure's caption is allowed to share a column
+// with the picture rather than sit under the band - the evidence column is the
+// figure's column, and the caption is the provenance that makes the plate
+// evidence instead of decoration.
+.record-hero__evidence > .record-figure {
+	flex: 1 1 auto;
+	min-block-size: 0;
+}
+
+.record-hero__evidence .record-figure__media {
+	flex: 1 1 auto;
+	min-block-size: 40dvh;
+}
+
+.record-hero__evidence .record-figure__caption {
+	max-width: none;
+	padding-block: var(--space-tight) 0;
 }

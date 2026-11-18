@@ -1,0 +1,164 @@
+// RecordFailure - one documented way the thing breaks.
+//
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  a condition: the state a reader is in when an action failed,
+//                   with its cause and its next step.
+// RANK              leaf.
+// SLOT CONTRACT     .record-failure                 the failure shell - one hairline, no fill
+//                   .record-failure__marker        `# FAILURE_01 / BLANK WORKBENCH`
+//                   .record-failure__hash          `#`, aria-hidden
+//                   .record-failure__slash         `/`, aria-hidden
+//                   .record-failure__name          the failure's name, ink
+//                   .record-failure__status        `STATUS:` and the vocabulary's word
+//                   .record-failure__status-value  the word, tinted by its tone
+//                   .record-failure__fields        the three fields as a `<dl>`
+//                   .record-failure__field         one field
+//                   .record-failure__field--next   the field the reader acts on
+//                   .record-failure__key           `SYMPTOM:`, `CAUSE:`, `NEXT:`
+//                   .record-failure__value         the field's text
+//                   .record-failure__source        `SOURCE:` and where it is documented
+// MAY HOLD          nothing.
+// NARROW            the key moves above its value, one field per line; the next
+//                   step wraps in its own column and keeps its leading mark.
+// WIDE (>=640)      the key takes a 7rem column and the value the rest, so three
+//                   failures side by side align on SYMPTOM, CAUSE and NEXT.
+// DENSE             none, deliberately: the three fields are the density. A
+//                   failure with a shorter cause is a failure that stopped
+//                   explaining itself.
+//
+// The frame is one hairline on the top edge, the same rule a ledger row uses, so
+// a row of three failures reads as one ruled strip of conditions rather than as
+// three cards. There is no fill and no border on the other three edges: a failure
+// is a state of the thing the page is about, not a separate object on the page.
+//
+// `NEXT:` is the only field that carries an emphasis, and it is a rule rather
+// than a colour: the last field's own value takes a 2px leading mark. The ink
+// palette has one accent and it authenticates; a failure does not get it.
+
+@use "../Mixin" as *;
+
+.record-failure {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+	margin: 0;
+	padding-block: var(--space-reading);
+}
+
+.record-failure__marker {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.6ch;
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--MuteForeground);
+	overflow-wrap: anywhere;
+}
+
+.record-failure__hash,
+.record-failure__slash {
+	color: var(--MuteForeground);
+}
+
+.record-failure__name {
+	color: var(--Foreground);
+	@include track(var(--track-name));
+}
+
+// The state line: `STATUS:` in the muted register and the word in its own tone.
+// `INTERRUPTED` is ink, never a second alarm colour - the site has one accent and
+// it authenticates rather than warns.
+.record-failure__status {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.record-failure__status-value {
+	color: var(--Foreground);
+}
+
+.record-failure__status-value[data-tone="specimen"] {
+	color: var(--Accent);
+}
+
+.record-failure__status-value[data-tone="quiet"] {
+	color: var(--MuteForeground);
+}
+
+.record-failure__fields {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.record-failure__field {
+	@include hairline(top);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	margin: 0;
+	padding-block: var(--space-tight);
+}
+
+.record-failure__field:first-child {
+	border-block-start: 0;
+}
+
+.record-failure__key {
+	@include mono-meta;
+	@include track(var(--track-row));
+	margin: 0;
+}
+
+.record-failure__value {
+	margin: 0;
+	min-inline-size: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--Foreground);
+	overflow-wrap: anywhere;
+}
+
+// The next step is the field the reader acts on: a 2px leading rule on the value
+// and the value at the body role. It is emphasis by rule and size, never by hue.
+.record-failure__field--next .record-failure__value {
+	padding-inline-start: var(--space-tight);
+	border-inline-start: 2px solid var(--Divider);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+}
+
+@include bp(640px) {
+	.record-failure__field {
+		flex-direction: row;
+		align-items: baseline;
+		gap: var(--space-reading);
+	}
+
+	.record-failure__key {
+		flex: 0 0 auto;
+		inline-size: 7rem;
+	}
+}
+
+.record-failure__source {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+	overflow-wrap: anywhere;
+}
+
+.record-failure__source-key {
+	@include track(var(--track-row));
+}

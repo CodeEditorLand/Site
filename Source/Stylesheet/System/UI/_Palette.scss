@@ -1,0 +1,236 @@
+@use "../Mixin" as *;
+
+// ─── THE PALETTE ────────────────────────────────────────────────────────────
+//
+// The slip at modal scale. One white insert, one `--Divider` frame, no shadow,
+// no radius, no blur, no glass - and it is the same object a menu is, which is
+// the point: the palette is not a new surface, it is the surface the site already
+// has, opened wide.
+//
+// ─── WHY IT IS A MODAL ──────────────────────────────────────────────────────
+//
+// `Select.tsx` carries a warning that Radix Select's scroll lock resets
+// `window.scrollY` and must not be used on a sticky-header page - which is why
+// `LocaleSwitcher` opens a non-modal menu. The palette is the other case: a
+// modal by nature. It is the reader's whole attention for as long as it is open,
+// the scrim states that, and Radix Dialog's lock is correct here. The two
+// decisions are recorded together so the next card does not read one as a bug in
+// the other.
+//
+// ─── THE QUERY LINE IS THE REGISTER LINE ────────────────────────────────────
+//
+// `# FIND / 03  [ a part, a section, a page ]  ALL DOC SITE`
+//
+// The head of a slip prints its own record header. Here the count is LIVE: it is
+// the number of rows the current query and scope match, printed in the grammar's
+// two digits. A palette that says "3 results" is a search box; a palette that
+// says `# FIND / 03` is this document's index. It is the composition's best
+// moment and it costs one span.
+//
+// ─── THE FOOT ───────────────────────────────────────────────────────────────
+//
+// `〈↑↓〉 MOVE   〈ENTER〉 OPEN   〈ESC〉 CLOSE`. The control states its own keyboard
+// path in the grammar's own caps, which is why a reader who has never used it can
+// use it.
+
+.Palette[data-slot="dialog-content"] {
+	position: fixed;
+	inset-block-start: 12vh;
+	inset-inline: 0;
+
+	margin-inline: auto;
+
+	inline-size: min(46rem, calc(100vw - 2rem));
+	max-inline-size: none;
+	max-block-size: min(34rem, 76vh);
+
+	display: block;
+
+	padding: 0;
+	gap: 0;
+
+	background: var(--Card);
+	border: 1px solid var(--Divider);
+	border-radius: 0;
+
+	color: var(--CardForeground);
+
+	transform: none;
+
+	overflow: hidden;
+
+	@include flat;
+
+	z-index: 80;
+}
+
+// The panel is the slip, so it arrives like one.
+.Palette[data-slot="dialog-content"][data-state="open"] {
+	@media (prefers-reduced-motion: no-preference) {
+		animation: PaletteArrive 140ms var(--motion-enter-easing) both;
+	}
+}
+
+@keyframes PaletteArrive {
+	from {
+		opacity: 0;
+		translate: 0 -4px;
+	}
+
+	to {
+		opacity: 1;
+		translate: 0 0;
+	}
+}
+
+.Palette__Command {
+	display: flex;
+	flex-direction: column;
+
+	max-block-size: min(34rem, 76vh);
+}
+
+// ─── the query line ─────────────────────────────────────────────────────────
+
+.Palette__Head {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	flex: 0 0 auto;
+
+	padding: var(--space-tight) var(--space-reading);
+
+	background: var(--Card);
+
+	@include hairline(bottom);
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition: border-color 90ms linear;
+	}
+}
+
+// The head is where the query is, so the head carries the focus state: one accent
+// rule under the whole line, never a ring inside a ring.
+.Palette__Head:focus-within {
+	border-block-end-color: var(--Accent);
+}
+
+.Palette__Input {
+	flex: 1 1 auto;
+
+	min-inline-size: 0;
+
+	padding-inline: var(--space-tight);
+
+	background: none;
+	border: 0;
+	border-radius: 0;
+
+	color: var(--Foreground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+
+	outline: none;
+}
+
+.Palette__Input::placeholder {
+	color: var(--MuteForeground);
+
+	opacity: 1;
+}
+
+.Palette__Scope {
+	flex: 0 0 auto;
+}
+
+// ─── the list ───────────────────────────────────────────────────────────────
+
+.Palette__List {
+	flex: 1 1 auto;
+
+	min-block-size: 0;
+	max-block-size: 60vh;
+
+	padding-block: var(--space-tight);
+
+	overflow-x: hidden;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+}
+
+// ─── the trigger ────────────────────────────────────────────────────────────
+//
+// The document's second focus-revealed control; the skip link is the first, so
+// the pattern is the site's own rather than a floating widget's. It sits where
+// the skip link sits and replaces it on the second Tab, so the two never fight
+// for the corner: `FIND A RECORD 〈⌘K〉`.
+//
+// A reader who never tabs reaches the same place through the rail's filter, which
+// hands off to the palette when the manual has no match. Two doors, one room.
+
+.PaletteTrigger {
+	position: fixed;
+	inset-block-start: 0.5rem;
+	inset-inline-start: 0.5rem;
+	z-index: 90;
+
+	display: inline-flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	padding: var(--space-tight) var(--space-reading);
+
+	background: var(--Card);
+	border: 1px solid var(--Divider);
+	border-radius: 0;
+
+	color: var(--Foreground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-row);
+	text-transform: uppercase;
+
+	cursor: pointer;
+
+	translate: 0 calc(-100% - 1rem);
+
+	@include flat;
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition: translate 120ms var(--motion-enter-easing);
+	}
+}
+
+.PaletteTrigger:focus-visible {
+	outline: 2px solid var(--Accent);
+	outline-offset: 2px;
+
+	translate: 0 0;
+}
+
+.PaletteTrigger:hover {
+	translate: 0 0;
+}
+
+// ─── the live count ─────────────────────────────────────────────────────────
+//
+// The count is the one number in the control, so it is the one thing allowed to
+// be at ink: a figure with a fact behind it.
+
+.Palette__Count {
+	color: var(--Foreground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+.Palette__Count[data-empty="true"] {
+	color: var(--MuteForeground);
+}

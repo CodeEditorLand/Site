@@ -1,0 +1,67 @@
+---
+/**
+ * TrustClause - one clause of a legal document, and the fact that its number is
+ * a place you can link to.
+ *
+ * A legal document is cited by number: "the Terms, §07". A number that lives
+ * only in a CSS `::before` cannot be cited - it is not in the markup, so it is
+ * not in the text, not in the search index, and not a target anyone can copy.
+ * This block moves the number into the markup and makes it the anchor:
+ *
+ *   <h2 class="reading-clause reading-clause--cited trust-clause" id="fee-changes">
+ *     <a class="trust-clause__cite" href="#fee-changes">§07</a>
+ *     <span class="trust-clause__name">Fee Changes</span>
+ *   </h2>
+ *
+ * Four rules this file keeps, and a caller must not break:
+ *
+ * - **The number is the document's own.** `number` is the value the document's
+ *   index already prints (`Library/Document/<Name>/Data.ts`), passed verbatim -
+ *   this block derives nothing, so the rail and the heading cannot disagree
+ *   about which clause is §07.
+ * - **The id is the id the clause already carried.** Every inbound
+ *   `#governing-law` keeps working, because the heading's id is not re-derived
+ *   from the label.
+ * - **The heading is an `h2` and only an `h2`.** The page's one `h1` is the
+ *   document's title; a clause that opened a second level-one heading is the
+ *   defect the reading surface exists to remove.
+ * - **The name is the slot, untouched.** No clause's words are edited here -
+ *   the block wraps the sentence the page already carried.
+ *
+ * `reading-clause` is still worn, so the clause role (1.5rem, weight 500,
+ * balanced wrapping, the anchor offset) stays in one place; the `--cited`
+ * marker is what tells that role's counter to stand down, because two
+ * numbering mechanisms on one heading is a defect.
+ */
+interface Props {
+	/** The clause's number as the document's index prints it: `07`. */
+	number: string;
+
+	/** The id the clause already carried, so every inbound anchor still lands. */
+	id: string;
+
+	/** Extra classes from the page - Contributing's first clause is `sr-only`. */
+	class?: string;
+}
+
+const { number, id, class: Class } = Astro.props;
+---
+
+<h2
+	class:list={[
+		"reading-clause",
+		"reading-clause--cited",
+		"trust-clause",
+		Class,
+	]}
+	id={id}
+>
+	<a
+		class="trust-clause__cite"
+		href={`#${id}`}
+		aria-label={`Clause ${Number(number)}`}
+	>
+		<span class="trust-clause__mark" aria-hidden="true">&#167;</span>{number}
+	</a>
+	<span class="trust-clause__name"><slot /></span>
+</h2>

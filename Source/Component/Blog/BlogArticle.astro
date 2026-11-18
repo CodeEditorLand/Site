@@ -2,35 +2,56 @@
 /**
  * BlogArticle - the reading surface an article is read on.
  *
- * The shell owns four things an article must not re-decide in markdown:
+ * ─── THE COMPOSITION (the margin channel) ────────────────────────────────
+ * The piece is the page; its apparatus is printed in the margin beside it. The
+ * workspace is three tracks - the piece at 8, a 1px divider, the margin at 4 -
+ * and the margin carries four things in reading order:
  *
+ *   1. the summary (`RecordLedger`, pinned): who filed it, when, how long it
+ *      takes, what it is tagged, how many sections it has;
+ *   2. the section register (`ON THIS PAGE`), the article's own `##` headings;
+ *   3. the margin notes (`RecordMargin`): the date, the manual page that keeps
+ *      the subject current, and where a correction goes;
+ *   4. the folded aside (`RecordAside`): what the piece does not cover.
+ *
+ * This is the first page on the site composed this way. The legal documents put
+ * their clause rail on the *left* and it is navigation; the manual's rail is
+ * navigation too. This margin is *annotation*: nothing in it moves the reader
+ * somewhere else except the notes' own destinations, and the summary stays with
+ * the reader while the piece scrolls past it. A page whose margin is apparatus
+ * reads as a document someone marked up, which is the whole brief.
+ *
+ * Below 1024px the channel is re-composed, not squeezed: the piece takes the
+ * full measure, the margin becomes a ruled section under it (summary, register,
+ * notes, aside), and the pinned summary stands still. Nothing is hidden and
+ * nothing is reduced - the same four things, in the same order, one column.
+ *
+ * ─── THE SHELL'S FOUR RULES ──────────────────────────────────────────────
  * - **One `h1`.** The title is the page's only level-one heading. The article's
  *   markdown therefore opens at `##`: a file that carries its own `# ` line
- *   produces a second `h1` the moment the shell renders the title, and two
- *   level-one headings on one page is the defect this shell exists to prevent.
- *   (The baseline rendered the title twice - once in the header, once as the
- *   prose body's first line - and the duplicate is deliberately not restored.)
+ *   produces a second `h1` the moment the shell renders the title.
  * - **The opening is the baseline's opening.** A row of tag chips, the title,
  *   the summary as a standfirst, and one mono metadata row: the author, the
- *   publication date and the reading time, separated by U+2001 EM QUAD. That
- *   row is the baseline's own; a key/value ledger was the shape it replaced.
- * - **One measure.** The body is capped at `72ch` and the opening at `62ch`, so
- *   the standfirst ends before the prose does and neither runs the full width of
- *   the container. The container itself is `band-inner`, the same gutters every
- *   band on the site uses, so an article lines up with the index that led to it.
- * - **The contents list.** `toc` is `null` for an article below the heading
- *   floor, and a `null` contents list renders no nav at all - never an empty one.
+ *   publication date and the reading time, separated by U+2001 EM QUAD. The
+ *   summary ledger in the margin *repeats* those facts on purpose - the opening
+ *   is what a reader meets, the ledger is what stays with them - and the two
+ *   print from one source, so they cannot disagree.
+ * - **One measure.** The body is capped at `72ch` and the opening at `62ch`.
+ * - **The contents list is generated, never hand-written.** `BuildToc` reads the
+ *   pipeline's own slugs, so an anchor can never drift from its heading, and an
+ *   article below the heading floor gets no register at all - it gets the
+ *   sentence that says why, which is the composed empty state.
  *
  * The body is `.prose-flow`: the site's one paragraph rhythm, opening on a
- * hairline the way the baseline's `border-t pt-8` did. The markdown's own
- * elements are styled in this component's partial, except the code blocks, which
- * the markdown pipeline renders and this surface deliberately does not restyle.
- *
- * No script and no hydration directive. The diagram renderer, when an article
- * needs one, is the page's to mount.
+ * hairline. No script and no hydration directive.
  */
 import ContactBreadcrumb from "../Contact/ContactBreadcrumb.astro";
+import RecordAside from "../Record/RecordAside.astro";
+import RecordInset from "../Record/RecordInset.astro";
+import RecordLedger from "../Record/RecordLedger.astro";
+import RecordMargin from "../Record/RecordMargin.astro";
 
+import type { Aside, Inset, LedgerRow, MarginNote } from "../Record/Type.js";
 import type { BlogToc, BlogTrailItem } from "./Type.js";
 
 interface Props {
@@ -63,6 +84,36 @@ interface Props {
 
 	/** Its target. */
 	backHref: string;
+
+	/**
+	 * The margin's summary: the article's own facts as ledger rows. The page
+	 * derives them from the same frontmatter the opening prints, so the two
+	 * cannot disagree.
+	 */
+	summaryRows: readonly LedgerRow[];
+
+	/** The register line above the summary, e.g. `SUMMARY / 05`. */
+	summaryRegister: string;
+
+	/** The margin notes, in the order they hang. */
+	notes: readonly MarginNote[];
+
+	/**
+	 * The margin's figures: the piece's own extent, drawn. They hang above the
+	 * notes because a figure is evidence and a note is a claim about it - and
+	 * because an inset is the taller object, so the margin's reading order is
+	 * tallest first, exactly as the column's is.
+	 */
+	insets?: readonly Inset[];
+
+	/** The folded aside: what the piece does not cover. Absent, no aside prints. */
+	aside?: Aside | null;
+
+	/**
+	 * What the register says when the article has too few sections to list. A
+	 * `null` toc prints this instead of an empty list.
+	 */
+	registerEmpty: string;
 }
 
 const {
@@ -76,6 +127,12 @@ const {
 	trail,
 	backLabel,
 	backHref,
+	summaryRows,
+	summaryRegister,
+	notes,
+	insets = [],
+	aside,
+	registerEmpty,
 } = Astro.props;
 
 /**
@@ -137,28 +194,55 @@ const Meta = [
 		</p>
 	</header>
 
-	{
-		toc ? (
-			<nav class="blog-article__toc" aria-label={toc.label}>
-				<p class="blog-article__toc-label">{toc.label}</p>
-				<ol class="blog-article__toc-list">
-					{toc.items.map((Item) => (
-						<li class="blog-article__toc-item">
-							<a class="blog-article__toc-link" href={Item.href}>
-								{Item.label}
-							</a>
-						</li>
-					))}
-				</ol>
-			</nav>
-		) : null
-	}
+	<div class="blog-article__workspace">
+		<div class="blog-article__main">
+			<div class="blog-article__body prose-flow">
+				<slot />
+			</div>
 
-	<div class="blog-article__body prose-flow">
-		<slot />
+			<p class="blog-article__back">
+				<a href={backHref}>{backLabel}<span aria-hidden="true"> ←</span></a>
+			</p>
+		</div>
+
+		<div class="blog-article__gutter" aria-hidden="true"></div>
+
+		<aside class="blog-article__margin" aria-label="Margin: summary and notes">
+			<RecordLedger
+				rows={summaryRows}
+				register={summaryRegister}
+				pinned={true}
+			/>
+
+			{
+				toc ? (
+					<nav class="blog-article__register" aria-label={toc.label}>
+						<p class="blog-article__register-label">{toc.label}</p>
+						<ol class="blog-article__register-list">
+							{toc.items.map((Item) => (
+								<li class="blog-article__register-item">
+									<a class="blog-article__register-link" href={Item.href}>
+										{Item.label}
+									</a>
+								</li>
+							))}
+						</ol>
+					</nav>
+				) : (
+					<p class="blog-article__register-empty">
+						<span class="blog-article__register-mark" aria-hidden="true">
+							&#9678;
+						</span>
+						{registerEmpty}
+					</p>
+				)
+			}
+
+			{insets.map((Inset) => <RecordInset inset={Inset} />)}
+
+			{notes.map((Note) => <RecordMargin note={Note} />)}
+
+			{aside ? <RecordAside aside={aside} /> : null}
+		</aside>
 	</div>
-
-	<p class="blog-article__back">
-		<a href={backHref}>{backLabel}<span aria-hidden="true"> ←</span></a>
-	</p>
 </article>

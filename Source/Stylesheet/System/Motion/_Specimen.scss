@@ -1,0 +1,494 @@
+@use "../Mixin" as *;
+
+// ─── THE SPECIMEN ─────────────────────────────────────────────────────────
+//
+// One motion, stated and then shown: the register on one side of a hairline, a
+// live artifact on the other. This is the composition a *specimen sheet* uses -
+// the form a manual takes when the thing it documents is a behaviour rather than
+// an object - and no page on the site used it before this one.
+//
+// ─── THE REGISTER IS THE ARGUMENT, THE STAGE IS THE PROOF ─────────────────
+// The left column answers four questions in the order a reader asks them: which
+// motion (`# FOLD / 08`), what it is called, what it explains (`↳`), and what it
+// costs. The duration is a *bar* - a hairline whose length is the interval
+// against the longest interval the site has - so 150ms and 320ms are visibly
+// different without a reader doing arithmetic. The curve is printed as its own
+// literal, because a curve is a value and this site prints values.
+//
+// ─── FOUR RATIOS, BECAUSE A SHEET OF EQUAL ROWS IS A TABLE ────────────────
+//   (base)  4fr | 1px | 7fr   the register leads, the artifact is wide
+//   --flip  7fr | 1px | 4fr   the artifact leads, the register is a caption
+//   --wide  1 column          the artifact needs the whole measure (a page
+//                             handover cannot be shown in a column)
+//   --pair  two stages        two arms of one motion, one hairline between
+//   --trio  three stages      three sizes of one artifact (a fold's short, long
+//                             and empty arms) with hairlines between
+// Alternating `base` and `--flip` down a page is what stops nine specimens
+// reading as nine rows of a table: the eye changes side, and the hairline gutter
+// stays in the same place only half the time.
+//
+// ─── THE STAGE IS A WHITE INSERT, AND NOTHING INSIDE IT IS A CARD ─────────
+// The stage is the site's one information box lying on the creme field - white,
+// one hairline, radius 0. What it holds is a disclosure, a register or a run:
+// artifacts, not cards, so the page never becomes a card inside a card. A
+// specimen that needed a card would be a specimen of the wrong thing.
+//
+// ─── NARROW IS STACKED, AND THE REGISTER STAYS FIRST ──────────────────────
+// Below 1024 the gutter rotates: the register sits above the stage, the hairline
+// becomes horizontal, and `--flip` loses its flip - an artifact cannot lead a
+// column that has only one track. The bar keeps its scale, so the durations are
+// still comparable at 390.
+
+.MotionSpecimen {
+	display: grid;
+	grid-template-columns: minmax(0, 4fr) 1px minmax(0, 7fr);
+
+	align-items: start;
+
+	gap: 0;
+
+	padding-block: var(--space-group);
+
+	border-block-start: 1px solid var(--Divider);
+}
+
+.MotionSpecimen:first-child {
+	border-block-start: 0;
+}
+
+// ─── the register ─────────────────────────────────────────────────────────
+
+.MotionSpecimen__Register {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+
+	min-inline-size: 0;
+
+	padding-inline-end: var(--space-group);
+}
+
+.MotionSpecimen__Mark {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0;
+}
+
+.MotionSpecimen__Name {
+	margin: 0;
+
+	@include track(var(--track-row));
+
+	font-size: var(--type-heading);
+	line-height: var(--type-heading-line);
+	font-weight: 500;
+
+	color: var(--Foreground);
+}
+
+.MotionSpecimen__Explains {
+	margin: 0;
+
+	max-inline-size: 38ch;
+
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+
+	color: var(--Foreground);
+}
+
+.MotionSpecimen__ExplainsMark {
+	margin-inline-end: 0.375rem;
+
+	color: var(--MuteForeground);
+}
+
+// ─── the duration bar ─────────────────────────────────────────────────────
+
+.MotionSpecimen__Measure {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	gap: var(--space-tight);
+
+	margin-block-start: var(--space-tight);
+}
+
+.MotionSpecimen__Track {
+	position: relative;
+
+	display: block;
+
+	block-size: 2px;
+
+	background-color: var(--Border);
+}
+
+.MotionSpecimen__Bar {
+	position: absolute;
+	inset-block: 0;
+	inset-inline-start: 0;
+
+	inline-size: var(--span, 0%);
+
+	background-color: var(--Foreground);
+}
+
+.MotionSpecimen__Interval {
+	@include mono-meta;
+
+	color: var(--Foreground);
+
+	white-space: nowrap;
+}
+
+// ─── the register's ledger ────────────────────────────────────────────────
+
+.MotionSpecimen__Ledger {
+	display: flex;
+	flex-direction: column;
+
+	margin: var(--space-tight) 0 0;
+}
+
+.MotionSpecimen__Row {
+	display: grid;
+	grid-template-columns: 6.5rem minmax(0, 1fr);
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	padding-block: 0.375rem;
+
+	border-block-start: 1px solid var(--Border);
+}
+
+.MotionSpecimen__Key {
+	@include mono-meta;
+}
+
+.MotionSpecimen__Value {
+	min-inline-size: 0;
+
+	overflow-wrap: anywhere;
+
+	margin: 0;
+
+	@include mono-meta;
+
+	color: var(--Foreground);
+}
+
+.MotionSpecimen__Value code {
+	font-size: var(--type-meta);
+
+	color: var(--MuteForeground);
+}
+
+// ─── the gutter ───────────────────────────────────────────────────────────
+
+.MotionSpecimen__Gutter {
+	align-self: stretch;
+
+	inline-size: 1px;
+	block-size: 100%;
+
+	background-color: var(--Divider);
+}
+
+// ─── the stage ────────────────────────────────────────────────────────────
+
+.MotionSpecimen__Stage {
+	min-inline-size: 0;
+
+	padding: var(--space-group);
+
+	border: 1px solid var(--Border);
+
+	border-radius: 0;
+
+	background-color: var(--Card);
+
+	color: var(--CardForeground);
+}
+
+.MotionSpecimen__StageNote {
+	margin: var(--space-group) 0 0;
+	padding-block-start: var(--space-tight);
+
+	border-block-start: 1px solid var(--Border);
+
+	@include mono-meta;
+
+	overflow-wrap: anywhere;
+}
+
+// ─── the act ──────────────────────────────────────────────────────────────
+//
+// A specimen that is performed rather than watched: the handover stage holds a
+// real link, and pressing it is the motion. The action is the site's ink action -
+// a rule under it, a `→` in front of it, no fill - because the inverted surface
+// belongs to the thing the reader clicks, and this is a demonstration, not a
+// call to action.
+
+.MotionSpecimen__Act {
+	display: inline-flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	padding-block: var(--space-tight);
+
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+
+	color: var(--Foreground);
+
+	text-decoration: underline;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 0.3em;
+	text-decoration-color: color-mix(
+		in srgb,
+		var(--CardForeground) 20%,
+		transparent
+	);
+
+	&:hover,
+	&:focus-visible {
+		text-decoration-color: var(--Accent);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--Ring);
+		outline-offset: 4px;
+	}
+}
+
+.MotionSpecimen__ActMark {
+	color: var(--MuteForeground);
+}
+
+.MotionSpecimen__Ledger--stage {
+	margin-block-start: var(--space-group);
+}
+
+// ─── the origin specimen's trigger and its slip ───────────────────────────
+
+.MotionOrigin__Trigger {
+	display: inline-flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	padding: 0.5rem 0.75rem;
+
+	border: 1px solid var(--Divider);
+
+	border-radius: 0;
+
+	background-color: var(--Card);
+
+	color: var(--CardForeground);
+
+	cursor: pointer;
+
+	&:focus-visible {
+		outline: 2px solid var(--Ring);
+		outline-offset: 2px;
+	}
+}
+
+.MotionOrigin__Label {
+	@include mono-meta;
+}
+
+.MotionOrigin__Value {
+	@include track(var(--track-row));
+
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+
+	color: var(--Foreground);
+}
+
+.MotionOrigin__Mark {
+	@include mono-meta;
+
+	color: var(--Foreground);
+}
+
+.MotionOrigin__Rows {
+	display: flex;
+	flex-direction: column;
+
+	margin: 0;
+	padding: 0;
+
+	list-style: none;
+}
+
+.MotionOrigin__Row {
+	display: grid;
+	grid-template-columns: 1.25rem minmax(0, 1fr) auto;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	padding-block: 0.375rem;
+
+	border-block-start: 1px solid var(--Border);
+}
+
+.MotionOrigin__RowMark {
+	@include mono-meta;
+
+	color: var(--MuteForeground);
+}
+
+.MotionOrigin__RowLabel {
+	@include mono-meta;
+
+	color: var(--Foreground);
+}
+
+.MotionOrigin__RowMeta {
+	@include mono-meta;
+
+	white-space: nowrap;
+}
+
+.MotionOrigin__Note {
+	margin: var(--space-tight) 0 0;
+	padding-block-start: var(--space-tight);
+
+	border-block-start: 1px solid var(--Border);
+
+	max-inline-size: 44ch;
+
+	@include mono-meta;
+
+	white-space: normal;
+}
+
+// ─── the ratios ───────────────────────────────────────────────────────────
+
+.MotionSpecimen--flip {
+	grid-template-columns: minmax(0, 7fr) 1px minmax(0, 4fr);
+}
+
+.MotionSpecimen--flip .MotionSpecimen__Register {
+	order: 3;
+
+	padding-inline: var(--space-group) 0;
+}
+
+.MotionSpecimen--flip .MotionSpecimen__Gutter {
+	order: 2;
+}
+
+.MotionSpecimen--flip .MotionSpecimen__Stage {
+	order: 1;
+}
+
+.MotionSpecimen--wide {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+/* A plate: no register, no gutter - the artifact at container width with its
+   note. Used by a band whose motion has already been stated above it, so the
+   second appearance is a *variant* of the artifact rather than a second reading
+   of the same register. */
+.MotionSpecimen--plate {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.MotionSpecimen--wide .MotionSpecimen__Gutter {
+	display: none;
+}
+
+.MotionSpecimen--wide .MotionSpecimen__Register {
+	padding-inline-end: 0;
+
+	margin-block-end: var(--space-group);
+}
+
+.MotionSpecimen--wide .MotionSpecimen__Explains {
+	max-inline-size: var(--MeasureOpening);
+}
+
+// ─── two and three arms of one artifact ──────────────────────────────────
+
+.MotionSpecimen--pair .MotionSpecimen__Stage {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: 0;
+}
+
+.MotionSpecimen--pair .MotionSpecimen__Stage > * + * {
+	padding-inline-start: var(--space-group);
+
+	border-inline-start: 1px solid var(--Divider);
+}
+
+.MotionSpecimen--trio .MotionSpecimen__Stage {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0;
+}
+
+.MotionSpecimen--trio .MotionSpecimen__Stage > * + * {
+	padding-inline-start: var(--space-group);
+
+	border-inline-start: 1px solid var(--Divider);
+}
+
+// ─── narrow ───────────────────────────────────────────────────────────────
+
+@media (max-width: 1023px) {
+	.MotionSpecimen,
+	.MotionSpecimen--flip {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.MotionSpecimen__Register,
+	.MotionSpecimen--flip .MotionSpecimen__Register {
+		order: 1;
+
+		padding-inline: 0;
+
+		margin-block-end: var(--space-group);
+	}
+
+	.MotionSpecimen__Gutter,
+	.MotionSpecimen--flip .MotionSpecimen__Gutter {
+		display: none;
+	}
+
+	.MotionSpecimen__Stage,
+	.MotionSpecimen--flip .MotionSpecimen__Stage {
+		order: 2;
+	}
+
+	.MotionSpecimen--pair .MotionSpecimen__Stage,
+	.MotionSpecimen--trio .MotionSpecimen__Stage {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.MotionSpecimen--pair .MotionSpecimen__Stage > * + *,
+	.MotionSpecimen--trio .MotionSpecimen__Stage > * + * {
+		margin-block-start: var(--space-group);
+		padding-block-start: var(--space-group);
+		padding-inline-start: 0;
+
+		border-inline-start: 0;
+		border-block-start: 1px solid var(--Divider);
+	}
+}
+
+@media (max-width: 639px) {
+	.MotionSpecimen__Stage {
+		padding: var(--space-reading);
+	}
+
+	.MotionSpecimen__Row {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0.125rem;
+	}
+}

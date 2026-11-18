@@ -1,40 +1,13 @@
-import { defineCollection, z } from "astro:content";
-
-import { glob } from "astro/loaders";
-
-const PreserveFileName = ({ entry }: { entry: string }): string =>
-	entry.replace(/\.md$/, "");
-
-const Blog = defineCollection({
-	loader: glob({
-		pattern: "**/*.md",
-		base: "Source/Content/blog",
-		generateId: PreserveFileName,
-	}),
-	schema: z.object({
-		title: z.string(),
-		summary: z.string(),
-		publishedAt: z.string(),
-		tags: z.array(z.string()),
-		author: z.string(),
-		readTime: z.number(),
-	}),
-});
-
-const Doc = defineCollection({
-	loader: glob({ pattern: "**/*.md", base: "Source/Content/doc" }),
-	schema: z.object({
-		title: z.string(),
-		section: z.string(),
-		order: z.number(),
-		description: z.string(),
-		// Short label shown in the sidebar instead of the full title
-		// (e.g. "User Dotfile" instead of "Filesystem Footprint - User Dotfile").
-		navTitle: z.string().optional(),
-		// Mid-level sidebar heading nesting entries within the same section
-		// (e.g. every "Filesystem Footprint - *" page shares group "Filesystem Footprint").
-		group: z.string().optional(),
-	}),
-});
-
-export const collections = { blog: Blog, doc: Doc };
+/**
+ * content.config.ts - the entry point Astro loads.
+ *
+ * Astro resolves this file by name, so nothing in `Source/` imports it: it is the
+ * framework's door, not a module. The collections themselves are defined in
+ * `Content/Config.ts`, which carried an unused second copy of both until this
+ * file started re-exporting it. Two definitions of one collection is a second
+ * place for a schema to drift, and the drift was real - this file set
+ * `generateId` (a blog entry's id is its filename) and the other did not.
+ *
+ * One definition, one door.
+ */
+export { collections } from "./Content/Config.js";

@@ -1,0 +1,77 @@
+---
+/**
+ * See - the cross-reference: `↳ SEE`, then a route and why it is worth following.
+ *
+ * ─── WHY THIS BLOCK EXISTS ────────────────────────────────────────────────
+ * A printed document says "see §7" and means it. This site prints `/` routes on
+ * every page and had no device for saying "the rest of this subject is over
+ * there, and here is why you would go": the related-links row it did have was a
+ * row of labels with no reason, which is a widget. A reference with a reason is
+ * a fact about the document, so it is a register.
+ *
+ * ─── THE GRAMMAR IT KEEPS ─────────────────────────────────────────────────
+ * - The route is printed in the grammar's route form, `/PRIVACY`, uppercase, as
+ *   given - the block never re-cases it and never invents the slash.
+ * - Every reference carries its reason, at the caption's size and the opening
+ *   measure. A reference without one is not printed: the block refuses the row
+ *   rather than printing a bare link.
+ * - No references at all renders nothing - not an empty frame, not a "no
+ *   related pages" sentence. A see-also with nothing to see is noise.
+ *
+ * ─── NO SCRIPT ────────────────────────────────────────────────────────────
+ * No `<script>`, no `client:*`. The block is a `<nav>` of anchors.
+ */
+import type { SeeItem } from "./Type.js";
+
+interface Props {
+	/** The references, in the order they are worth following. */
+	items: readonly SeeItem[];
+
+	/** The register's own label. Defaults to `SEE`, printed under the `↳` mark. */
+	label?: string;
+
+	/** The `<nav>`'s accessible name. */
+	ariaLabel?: string;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const {
+	items,
+	label = "SEE",
+	ariaLabel = "Cross-references",
+	class: Class,
+} = Astro.props;
+
+/**
+ * A reference without a reason is not a reference. The block drops the row
+ * rather than printing a bare link, so a caller that forgot the reason sees the
+ * row missing instead of a widget appearing.
+ */
+const References = items.filter((Item) => Item.reason.trim().length > 0);
+---
+
+{
+	References.length > 0 && (
+		<nav class:list={["detail-see", Class]} aria-label={ariaLabel}>
+			<p class="detail-see__register">
+				<span class="detail-see__mark" aria-hidden="true">
+					↳
+				</span>
+				{label}
+			</p>
+
+			<ul class="detail-see__list">
+				{References.map((Item) => (
+					<li class="detail-see__row">
+						<a class="detail-see__route" href={Item.href}>
+							{Item.route}
+						</a>
+						<span class="detail-see__reason">{Item.reason}</span>
+					</li>
+				))}
+			</ul>
+		</nav>
+	)
+}

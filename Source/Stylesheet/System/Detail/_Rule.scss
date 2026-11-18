@@ -1,0 +1,84 @@
+// RULE - a hairline has two inks, one clearance, and one edge.
+//
+// ─── THE TWO INKS ─────────────────────────────────────────────────────────
+// The site has one hairline value (`--Border`, 8 % ink) and one divider value
+// (`--Divider`, 20 % ink), and the difference is not decorative - it is a
+// question about the rule's job:
+//
+//   --Border    the rule is a SEPARATOR. The fill on either side already
+//               separates the two things, and the rule is a seam inside a
+//               surface: a ledger row, a matrix cell, a card frame.
+//   --Divider   the rule is an EDGE. It is the only thing defining the
+//               boundary - a chapter, a gutter, the foot of a band, the end of
+//               the document - and at 8 % ink an edge is a rumour (1.18:1).
+//
+// Two rules in the tree drew an edge at the separator's ink. They are corrected
+// here, in the layer whose whole job is this distinction, rather than in the
+// partials that own the surfaces - because the partials were each right about
+// their own seam and wrong about the boundary they were drawing.
+//
+// ─── THE CLEARANCE ────────────────────────────────────────────────────────
+// A rule never sits closer than `--space-tight` to the text it introduces, and
+// never closer than `--space-group` to the block above it. A rule with text
+// crowding it reads as an underline that slipped; a rule with text floating
+// away from it reads as a mistake. The band's footnote and index strip already
+// hold this; the band foot (below) is held to the same value.
+//
+// ─── THE EDGE ─────────────────────────────────────────────────────────────
+// A rule that closes a band runs to the BAND's edge, not to the measure's. The
+// band's inner container is 72rem with the page gutter inside it, so a rule
+// drawn inside that container stops where the text stops - and a page whose
+// closing rules all stop at the text reads as a column of boxes. The foot rule
+// cancels the container's inset with a negative gutter margin, so it meets the
+// paper exactly where the band does.
+@use "../Mixin" as *;
+
+// ─── THE EDGES CORRECTED ──────────────────────────────────────────────────
+
+// The document's last boundary. The footer opens on a separator's hairline and
+// then, 32px below, on the record's own accent rule; the outer line is the
+// page's end and it is an edge, so it takes the edge's ink.
+.Footer {
+	border-block-start-color: var(--Divider);
+}
+
+// The band foot is an edge: one rule, from the band's left edge to its right,
+// closing the band's own reading. The negative gutter margin is the whole
+// mechanism - it is what makes the rule meet the paper instead of the measure.
+.detail-foot {
+	margin-block-start: var(--space-group);
+	margin-inline: calc(var(--Gutter) * -1);
+	padding-block-start: var(--space-reading);
+	padding-inline: var(--Gutter);
+	border-block-start: 1px solid var(--Divider);
+}
+
+// On a white card the foot is an inset, not a page edge: the card's frame is
+// already the boundary, so the foot draws the separator's ink and stays inside
+// the card's own padding.
+.detail-foot[data-surface="card"] {
+	margin-inline: 0;
+	padding-inline: 0;
+	border-block-start-color: var(--Border);
+}
+
+// ─── THE CLEARANCE, RESTATED WHERE IT WAS A LITERAL ───────────────────────
+
+// A ruled line that introduces one register is a caption's line: 8px above its
+// text. Both of these already hold the value; the rules here keep a later card
+// from tuning one of them by eye.
+.record-band__footnote,
+.record-band__index {
+	padding-block-start: var(--space-tight);
+}
+
+// ─── PRINT ────────────────────────────────────────────────────────────────
+
+// On paper there is no band edge to bleed to: the page is the edge, and a
+// negative margin would push the rule into the margin the printer cannot set.
+@media print {
+	.detail-foot {
+		margin-inline: 0;
+		padding-inline: 0;
+	}
+}

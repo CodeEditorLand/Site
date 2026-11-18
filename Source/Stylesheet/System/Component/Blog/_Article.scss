@@ -10,37 +10,41 @@
 //   .blog-article__standfirst    the summary, at body size
 //   .blog-article__meta          the author / date / reading-time row
 //   .blog-article__date          the row's `<time>` element
-//   .blog-article__toc           the in-page contents list
-//   .blog-article__toc-label     its label, in the meta face
-//   .blog-article__toc-list      the list, two columns above 768px
-//   .blog-article__toc-item      one entry
-//   .blog-article__toc-link      the entry's anchor
+//   .blog-article__workspace     the 8 / 1px / 4 composition
+//   .blog-article__main          the piece: prose and the way back
+//   .blog-article__gutter        the 1px divider between the piece and the margin
+//   .blog-article__margin        the margin channel: summary, register, notes, aside
+//   .blog-article__register      the article's own sections, as a register
+//   .blog-article__register-label  its label (`ON THIS PAGE`)
+//   .blog-article__register-list the section list
+//   .blog-article__register-item one section
+//   .blog-article__register-link its anchor
+//   .blog-article__register-empty  the composed empty state, below the heading floor
 //   .blog-article__body          the prose, on the reading measure
 //   .blog-article__back          the way back to the index
 //
-// Four decisions this file makes:
+// Six decisions this file makes:
 //
 // - **The shell owns the container.** `band-inner` gives the article the same
 //   gutters every band on the site uses, so an article lines up with the index
 //   that led to it and with the footer under it. Nothing inside adds a second
 //   gutter.
+// - **The workspace is 8 / 1px / 4, and the 1px is a real track.** The margin is
+//   not a float and not a second container: it is the third column of one grid,
+//   divided from the piece by the site's `--Divider` (20 % ink, 1.50:1) - the
+//   same rule the keeper hero pair and the legal clause rail use. An 8 % hairline
+//   between a piece and its annotations is a rumour of a division.
 // - **Two measures, on purpose.** The opening reads at `--MeasureOpening`
 //   (62ch) and the prose at `--Measure` (72ch): a standfirst is one sentence and
-//   a line of it should be short, while a paragraph is a paragraph. The contents
-//   list follows the prose measure. Both are tokens, so the article cannot drift
-//   from the reading surfaces beside it.
-// - **No bold.** Every heading in the body renders at `font-weight: 500`, the
-//   site's ceiling (`DESIGN.md` §1.4, §5 C1): hierarchy comes from scale,
-//   spacing and tracking, never from weight. `h3` and `h4` carried 600, which is
-//   the one weight the system forbids.
-// - **The body's own elements are styled here, not by a utility class.** The
-//   markdown arrives as bare `h2`/`p`/`ul`/`table`, and this partial is where
-//   they get the site's type roles. Code blocks are the exception and are
-//   deliberately not restyled: the markdown pipeline renders them, and a
-//   `pre` rule here would fight the highlighter's inline styles.
-// - **A rule separates the metadata from the prose.** The ledger ends the
-//   article's opening, and the body opens under a hairline, so the reader can
-//   see where the apparatus stops and the piece starts.
+//   a line of it should be short, while a paragraph is a paragraph. The margin
+//   is 30ch and is not a measure at all - it is a channel.
+// - **No bold.** Every heading in the body renders at `font-weight: 500`.
+// - **The body's own elements are styled here, not by a utility class.** Code
+//   blocks are the exception and are deliberately not restyled.
+// - **The register replaces the contents list.** The list is the same list, the
+//   same generated anchors, the same order - it has moved from a two-column block
+//   above the prose into the margin, where a register belongs, and it is one
+//   column there because a margin is one column.
 
 @use "../../Mixin" as *;
 
@@ -80,16 +84,22 @@
 }
 
 .blog-article__title {
-	margin: 0 0 0.75rem;
+	margin: 0 0 var(--space-tight);
 
-	font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+	font-size: var(--type-section);
 	font-weight: 500;
 	line-height: 1.15;
-	letter-spacing: -0.01em;
+	letter-spacing: var(--track-join);
 
 	color: var(--Foreground);
 
 	text-wrap: balance;
+
+	/* A title that will not fit must not push the page wide: a 90-character
+	   compound word breaks rather than setting a scrollbar. The margin column
+	   makes this worse than it was - the piece is 8fr, not the whole page - so
+	   the guard is here, at the one element a title can arrive in. */
+	overflow-wrap: anywhere;
 }
 
 .blog-article__standfirst {
@@ -127,70 +137,147 @@
 	font-variant-numeric: tabular-nums;
 }
 
-/* ─── THE CONTENTS LIST ─────────────────────────────────────────────────── */
+/* ─── THE WORKSPACE: 8 / 1px / 4 ────────────────────────────────────────── */
 
-.blog-article__toc {
-	margin-block-start: var(--space-group);
-
-	max-width: var(--Measure);
-
-	padding-block: var(--space-reading);
-
-	@include hairline(top);
-
-	@include hairline(bottom);
+/* The composition. One grid, three tracks, and the middle one is the divider -
+   the keeper hero pair's model (49fr 1px 51fr) turned on its side and made
+   asymmetric for a reading surface: the piece takes two thirds, its annotations
+   one third, and the 1px between them is `--Divider` rather than `--Border`
+   because it is the only thing that says "this is beside the piece". */
+.blog-article__workspace {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	row-gap: var(--space-chapter);
 }
 
-.blog-article__toc-label {
+.blog-article__main {
+	min-inline-size: 0;
+}
+
+.blog-article__gutter {
+	display: none;
+}
+
+/* Below 1024px the margin is a ruled section under the piece. The rule is the
+   divider, and the section opens at the chapter distance: the margin is a new
+   subject when it is stacked, not a footnote to the prose. */
+.blog-article__margin {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-group);
+	min-inline-size: 0;
+	padding-block-start: var(--space-group);
+	border-block-start: 1px solid var(--Divider);
+}
+
+@include bp(1024px) {
+	.blog-article__workspace {
+		grid-template-columns: minmax(0, 8fr) 1px minmax(0, 4fr);
+		column-gap: var(--space-group);
+		row-gap: 0;
+		align-items: start;
+	}
+
+	.blog-article__gutter {
+		display: block;
+		grid-column: 2;
+		inline-size: 1px;
+		block-size: 100%;
+		background: var(--Divider);
+	}
+
+	.blog-article__margin {
+		grid-column: 3;
+		padding-block-start: 0;
+		border-block-start: 0;
+	}
+
+	/* The pinned summary stays with the reader while the piece scrolls. It is
+	   pinned only here: in the stacked composition it would pin over the piece
+	   it belongs to. */
+	.blog-article__margin .record-ledger-block--pinned {
+		position: sticky;
+		inset-block-start: calc(var(--HeaderHeight) + var(--space-group));
+	}
+}
+
+/* A ledger in a channel stacks its keys above its values at every width. The
+   ledger's own wide rule gives the key `min(14rem, 40%)`, which is right in a
+   band and wrong in a 30ch margin: at 21rem the key column would take half the
+   row and the value would wrap under a label it no longer sits beside. The
+   override is scoped to the channel, so no ledger in a band changes. */
+.blog-article__margin .record-ledger__row {
+	flex-direction: column;
+	align-items: start;
+	gap: var(--space-tight);
+}
+
+.blog-article__margin .record-ledger__key {
+	inline-size: auto;
+}
+
+/* ─── THE REGISTER ──────────────────────────────────────────────────────── */
+
+/* The article's own sections, in the margin: a register, not a table of
+   contents block. It carries no fill and no frame - the margin's own hairlines
+   and its position are the separation. */
+.blog-article__register {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	max-inline-size: 30ch;
+	padding-block-start: var(--space-tight);
+	border-block-start: 1px solid var(--Divider);
+}
+
+.blog-article__register-label {
 	margin: 0;
-
 	@include mono-meta;
-
-	@include track(0.08em);
+	@include track(var(--track-row));
+	color: var(--Foreground);
 }
 
-.blog-article__toc-list {
+.blog-article__register-list {
 	margin: 0;
 	padding: 0;
-
 	list-style: none;
 }
 
-.blog-article__toc-label + .blog-article__toc-list {
-	margin-block-start: var(--space-tight);
-}
-
-.blog-article__toc-item {
-	@include mono-meta;
-
+.blog-article__register-item {
 	margin: 0;
-
+	@include mono-meta;
 	line-height: var(--type-body-line);
 }
 
-/* The underline itself is the global link rule's. This names only the ink, at
-   muted weight so a contents list reads as apparatus rather than as eight
-   claims, and moves it to --Primary on hover. */
-.blog-article__toc-link {
+/* The underline is the global link rule's; this names only the ink, so the
+   register reads as apparatus rather than as eight claims. */
+.blog-article__register-link {
 	color: var(--MuteForeground);
 }
 
-.blog-article__toc-link:hover {
+.blog-article__register-link:hover {
 	color: var(--Primary);
 }
 
-/* Two columns above 768px: an eleven-heading article would otherwise push the
-   prose most of a screen down. The list flows in document order down the first
-   column and then the second, which is how an index reads. */
-@include bp(768px) {
-	.blog-article__toc-list {
-		columns: 2;
-		column-gap: var(--space-group);
-	}
+/* The empty state: an article below the heading floor has no register, and says
+   so in the same grammar - `◎` and one sentence - rather than printing an empty
+   list or nothing at all. */
+.blog-article__register-empty {
+	display: flex;
+	gap: var(--space-tight);
+	margin: 0;
+	max-inline-size: 30ch;
+	padding-block-start: var(--space-tight);
+	border-block-start: 1px solid var(--Divider);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--MuteForeground);
+}
 
-	.blog-article__toc-item {
-		break-inside: avoid;
-	}
+.blog-article__register-mark {
+	flex: 0 0 auto;
+	color: var(--Foreground);
 }
 
 /* ─── THE PROSE ─────────────────────────────────────────────────────────── */
@@ -218,8 +305,6 @@
 .blog-article__body > h2,
 .blog-article__body > h3,
 .blog-article__body > h4 {
-	scroll-margin-block-start: calc(var(--HeaderHeight) + var(--space-tight));
-
 	margin-block-start: var(--space-group);
 	margin-block-end: var(--space-tight);
 
@@ -234,20 +319,16 @@
 }
 
 .blog-article__body > h2 {
-	font-size: var(--type-sub);
 	font-weight: 500;
-	line-height: var(--type-sub-line);
-	letter-spacing: -0.01em;
+	letter-spacing: var(--track-join);
 }
 
 .blog-article__body > h3 {
-	font-size: var(--type-body);
 	font-weight: 500;
-	line-height: var(--type-body-line);
 }
 
 .blog-article__body > h4 {
-	@include track(0.08em);
+	@include track(var(--track-row));
 
 	font-size: var(--type-caption);
 	font-weight: 500;
@@ -360,7 +441,7 @@
 
 	@include mono-meta;
 
-	@include track(0.08em);
+	@include track(var(--track-row));
 }
 
 .blog-article__back a {

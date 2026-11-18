@@ -1,0 +1,206 @@
+// RecordMargin - one annotation, printed in the margin of the record it belongs
+// to. A marker, a claim, a destination and a source, hung on a hairline.
+//
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  an annotation on the record beside it - the shape of a piece,
+//                   the date its figures were taken, where a correction goes. Not
+//                   a callout, not a disclosure (RecordAside folds), not a card.
+// RANK              leaf.
+// SLOT CONTRACT     .record-margin               the note: the hairline and the block
+//                   .record-margin__head         the register line: marker and /LABEL
+//                   .record-margin__index        `# NOTE_01`
+//                   .record-margin__label        `/ THE SHAPE`
+//                   .record-margin__state        `STATUS: <word>` when the note is not simply present
+//                   .record-margin__state--ink|--specimen|--quiet   the word's vocabulary tone
+//                   .record-margin__marker       the state's specimen mark
+//                   .record-margin__body         the claim, after the `↳`
+//                   .record-margin__arrow        the `↳` that opens the claim
+//                   .record-margin__link         the destination the note names
+//                   .record-margin__gone         the tombstone: `◎ TARGET GONE`
+//                   .record-margin__source       `SOURCE: ...` - always printed
+//                   .record-margin__source--absent   `SOURCE: UNAVAILABLE`
+// MAY HOLD          nothing. A note is a marker, a claim, a destination and a
+//                   source; a block in the margin is a second claim in a place
+//                   too narrow to read it.
+// MAY NOT HOLD      a figure, a well, a heading, another note.
+// NARROW            the hairline rotates from the left edge to the top and the
+//                   note takes the column's measure - one note, not a card.
+// WIDE (>=1024)     a 1px `--Divider` rule at the left, a 30ch measure, and the
+//                   block hanging off the rule at `--space-reading`.
+// DENSE             none. A note is already the densest thing that can carry a
+//                   source; compressing it would remove the source.
+//
+// THE RULE IS `--Divider`, NOT `--Border`. The note's left rule is the only
+// thing that says "this is beside the record, not in it", so it is a structural
+// divider (20 % ink, 1.50:1) rather than the sitewide hairline (8 %, 1.18:1).
+// A note hanging on an 8 % rule is a note that reads as part of the paragraph.
+//
+// THE SOURCE ROW ALWAYS PRINTS, including when there is no source: the absence
+// is printed as `UNAVAILABLE` rather than skipped, because a note that omits its
+// provenance is a claim the reader cannot check. It is the one place in the
+// layer where a missing field is printed, and the margin is exactly where an
+// unsourced claim does the most damage.
+//
+// The note never carries motion. It is not a thing that changes state - the
+// state word it may print is a fact about the note, not a transition.
+
+@use "../Mixin" as *;
+
+.record-margin {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+	max-inline-size: 30ch;
+	margin: 0;
+	padding: 0;
+	padding-block-start: var(--space-tight);
+	border-block-start: 1px solid var(--Divider);
+}
+
+@include bp(1024px) {
+	.record-margin {
+		padding-block-start: 0;
+		padding-inline-start: var(--space-reading);
+		border-block-start: 0;
+		border-inline-start: 1px solid var(--Divider);
+	}
+}
+
+// The register line: the marker takes the ink, the label the muted register.
+// Two spans on one line, and the line wraps as a line - never one span per row.
+.record-margin__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 var(--space-tight);
+	margin: 0;
+}
+
+.record-margin__index {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.record-margin__label {
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+// The state line borrows the surface register's shape - a specimen mark and the
+// word in its tone - because a state is the same object wherever it is printed.
+.record-margin__state {
+	display: flex;
+	align-items: center;
+	gap: var(--space-tight);
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.record-margin__state-key {
+	color: var(--MuteForeground);
+}
+
+// The mark is a 4px square: the site's one specimen glyph, at the one size a
+// margin can hold. Its ink is the tone's, never a second colour.
+.record-margin__marker {
+	display: block;
+	flex: 0 0 auto;
+	inline-size: 4px;
+	block-size: 4px;
+	background: currentColor;
+}
+
+.record-margin__state--specimen {
+	color: var(--Accent);
+}
+
+.record-margin__state--quiet {
+	color: var(--MuteForeground);
+}
+
+.record-margin__state--ink {
+	color: var(--Foreground);
+}
+
+// The claim: set register at the caption step, which is the smallest type the
+// site sets a sentence in. The `↳` is the grammar's proposition mark and it is
+// inline, so the sentence reads as one sentence rather than as a list item.
+.record-margin__body {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.record-margin__arrow {
+	margin-inline-end: 0.35em;
+	color: var(--MuteForeground);
+}
+
+.record-margin__link {
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.record-margin__link a {
+	color: var(--Primary);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.25em;
+}
+
+.record-margin__link a:hover {
+	color: var(--Accent);
+}
+
+// The tombstone: a record whose target is gone. It prints the mark, the label
+// the note named and the route it used to have, at the muted register - a
+// missing record is a fact, not an alarm, and the note above it still stands.
+.record-margin__gone {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 var(--space-tight);
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-name));
+	color: var(--MuteForeground);
+}
+
+.record-margin__gone-mark {
+	color: var(--Foreground);
+}
+
+.record-margin__gone-label {
+	color: var(--Foreground);
+}
+
+.record-margin__gone-route {
+	color: var(--MuteForeground);
+	text-decoration: line-through;
+	text-decoration-thickness: 1px;
+}
+
+.record-margin__source {
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-name));
+	overflow-wrap: anywhere;
+}
+
+.record-margin__source-key {
+	color: var(--MuteForeground);
+}
+
+// The partial state: the row prints its own key and the vocabulary's word, in
+// the same muted ink as the label. It is not dimmed into invisibility - the
+// reader must be able to see that the note has no source.
+.record-margin__source--absent {
+	color: var(--Foreground);
+}

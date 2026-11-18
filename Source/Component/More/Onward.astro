@@ -1,0 +1,93 @@
+---
+/**
+ * Onward - the routing register: what the reader wanted, and where it is.
+ *
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  routing: a reader is at a page that cannot answer them, and
+ *                   this is the set of places that can, filed by the intent they
+ *                   arrived with. Not an archive (which files records by name),
+ *                   not a trail (which says where the reader is), and not a nav
+ *                   (which lists the site).
+ * RANK              leaf.
+ * SLOT CONTRACT     rows[]   -> mark, want, where, href, note?
+ *                   copy     -> index, label, statement, note?, empty
+ * MAY HOLD          rows. A row is an intent and a destination.
+ * MAY NOT HOLD      a block, a figure, a record's facts.
+ * WIDE              the intent column is the measure's own and the destination
+ *                   sits at the row's right end, after a `→`, so a reader reads
+ *                   "I wanted X, it is at Y" in one pass.
+ * NARROW            the destination goes under the intent and keeps its arrow.
+ *                   The row does not become two columns of two words each.
+ * DENSE             none.
+ *
+ * ─── WHY THE INTENT IS THE ROW'S TITLE ────────────────────────────────────
+ * Every routing list on this site was a list of destinations, which asks a
+ * reader to translate their question into the site's vocabulary before they can
+ * use it. This register is written the other way round: the row's heading is the
+ * sentence the reader would say, and the destination is the answer to it. That is
+ * the difference between a sitemap and a way out.
+ *
+ * ─── THE REGISTER IS A NAV, NOT A SECTION ─────────────────────────────────
+ * It is an `<nav aria-label>` with an `<ol>`, because it is a set of
+ * destinations and the order is the reading order. It prints no `h2`: a page
+ * that has told a reader their address is wrong does not need a heading to say
+ * "here are some links", and a heading would make the way out a subject.
+ *
+ * ─── THE EMPTY ARM IS REQUIRED ────────────────────────────────────────────
+ * A routing register with nothing to route to is the one state this block must
+ * be able to state, because it is the state a site reaches when it is one page.
+ * `empty` is a field of the copy, not an optional prop.
+ *
+ * No script and no hydration: a register is printed.
+ */
+import type { OnwardCopy, OnwardRow } from "../../Content/More/Page.js";
+
+interface Props {
+	/** The rows, in the order they print. The block sorts nothing. */
+	rows: readonly OnwardRow[];
+
+	/** The register's copy: its head, its sentence, its provenance, its empty arm. */
+	copy: OnwardCopy;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const { rows, copy, class: Class } = Astro.props;
+---
+
+<nav class:list={["onward", Class]} aria-label={copy.label.replace(/^\//, "")}>
+	<p class="onward__register">
+		<span class="onward__mark" aria-hidden="true">#</span>
+		<span class="onward__index">{copy.index}</span>
+		<span class="onward__label">{copy.label}</span>
+	</p>
+
+	<p class="onward__statement">{copy.statement}</p>
+
+	{
+		rows.length > 0 ? (
+			<ol class="onward__rows">
+				{rows.map((Row) => (
+					<li class="onward__row">
+						<a class="onward__link" href={Row.href}>
+							<span class="onward__row-mark" aria-hidden="true">
+								{Row.mark}
+							</span>
+							<span class="onward__want">{Row.want}</span>
+							<span class="onward__arrow" aria-hidden="true">
+								&rarr;
+							</span>
+							<span class="onward__where">{Row.where}</span>
+						</a>
+						{Row.note ? <p class="onward__note">{Row.note}</p> : null}
+					</li>
+				))}
+			</ol>
+		) : (
+			<p class="onward__empty">{copy.empty}</p>
+		)
+	}
+
+	{copy.note ? <p class="onward__source">{copy.note}</p> : null}
+</nav>

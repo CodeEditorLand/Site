@@ -1,0 +1,67 @@
+// ─── THE SORT ─────────────────────────────────────────────────────────────
+//
+// A matrix re-ordering under the reader's own hand. The facet field narrows a
+// table, the match field re-ranks it, the step control pages it - and until now
+// every one of those changes replaced the rows in one frame. The set did not
+// change; only its order did. That is a settlement, and a settlement is the one
+// thing the vocabulary already has a name for.
+//
+// ─── WHY THIS IS A VIEW TRANSITION AND NOT A TRANSITION ───────────────────
+// A row that moves from position 9 to position 2 has to *travel*, and CSS cannot
+// animate a position it was never told about. The View Transition API can: the
+// browser snapshots the table before the change, applies it, snapshots again, and
+// animates each named row from where it was to where it is - a FLIP with no
+// measurement in our code. `Script/Motion/Sort.ts` supplies the two things the
+// browser needs: the mutation inside `startViewTransition`, and one
+// `view-transition-name` per visible row.
+//
+// ─── THE ROOT IS NOT ANIMATED, THE ROWS ARE ───────────────────────────────
+// Named rows are lifted out of the page snapshot, so the two root images are the
+// table's own frame and header - identical on both sides - and their crossfade is
+// invisible. What the reader sees is rows moving. The root's animation is
+// therefore cut to the quick interval rather than left at the browser's default,
+// which would leave a 250ms wash over the whole table for no reason.
+//
+// ─── `data-sort` IS THE SCOPE ─────────────────────────────────────────────
+// `::view-transition-group(*)` matches every group in the document, and the page
+// handover has its own durations (`Motion/_Handover.scss`). The script writes
+// `data-sort="running"` on `<html>` for the length of a sort transition and these
+// rules only apply then, so a sort can never re-time a page change and a page
+// change can never re-time a sort.
+//
+// ─── REDUCED MOTION, AND THE 60-ROW CAP ───────────────────────────────────
+// The script refuses to start a transition under `prefers-reduced-motion`, and
+// this file removes the animations as well: two independent refusals, because a
+// re-sort that arrives in one frame is the correct answer for that reader. The
+// script also caps named rows at sixty - a two-hundred-row table would create two
+// hundred groups, and the animation would cost more than the order it explains.
+// Beyond the cap the table still re-sorts; it simply does it in one frame, which
+// is what it did before this file existed.
+
+html[data-sort="running"] ::view-transition-group(*) {
+	animation-duration: var(--motion-sort-duration);
+	animation-timing-function: var(--motion-sort-easing);
+}
+
+html[data-sort="running"] ::view-transition-old(root),
+html[data-sort="running"] ::view-transition-new(root) {
+	animation-duration: var(--motion-interval-quick);
+	animation-timing-function: var(--motion-curve-return);
+}
+
+/* A row leaving the set does not travel: it is not in the new snapshot, so the
+   browser fades its old image in place. Shortened to the press interval so a
+   narrowed table settles before the arriving rows have finished moving. */
+html[data-sort="running"] ::view-transition-old(*) {
+	animation-duration: var(--motion-interval-quick);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html[data-sort="running"] ::view-transition-group(*),
+	html[data-sort="running"] ::view-transition-old(*),
+	html[data-sort="running"] ::view-transition-new(*),
+	html[data-sort="running"] ::view-transition-old(root),
+	html[data-sort="running"] ::view-transition-new(root) {
+		animation: none;
+	}
+}

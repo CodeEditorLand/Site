@@ -1,0 +1,175 @@
+// RecordInstrument - a measured panel: figures with their sources.
+//
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  a measurement. `LABEL:` names what is measured, the figure
+//                   is the value, the unit follows it, `SOURCE:` says where the
+//                   number came from.
+// RANK              set. A panel is a set of measures; one measure alone is a
+//                   set of one and still prints its own source.
+// SLOT CONTRACT     .record-instrument            the panel shell - no fill, no frame
+//                   .record-instrument__label     the panel's `/LABEL` opening
+//                   .record-instrument__panel     the strip: one cell per measure
+//                   .record-instrument__measure   one measure, ruled from above
+//                   .record-instrument__measure--lead  the panel's one leading figure
+//                   .record-instrument__key       `LABEL:`, meta weight, tracked
+//                   .record-instrument__figure    the figure's line: value + unit, or the state word
+//                   .record-instrument__value     the figure, tabular, verbatim
+//                   .record-instrument__unit      the unit after it, at meta weight
+//                   .record-instrument__source    `SOURCE:` and the provenance, at caption weight
+//                   .record-instrument__as-of     `AS OF:` when the figure has an age
+//                   .record-instrument__caption   one sentence under the panel
+//                   .record-instrument__empty     what the panel says with no measures
+// MAY HOLD          nothing.
+// NARROW            the strip reflows: two cells to a line at 640, one below; the
+//                   label moves above the figure and the figure keeps its size.
+// WIDE (>=1024)     one cell per measure across the band, `auto-fit` at 13rem, so
+//                   three figures read as three instruments and five read as five.
+// DENSE             none. A measure is four fields in one cell; a block that
+//                   needs tighter than this needs fewer measures, not smaller type.
+//
+// The figure's size is a role, never a value: the lead measure takes
+// `--type-section` and the rest take `--type-sub`, both inside the L and S tiers.
+// Nothing here reaches `--type-display`: the page's one XL is its claim, and a
+// number that outsizes the claim is a poster.
+//
+// One hairline per measure, on its top edge - the strip is read as one ruled
+// panel, not as five boxes. No fill, no frame, no radius: an instrument panel
+// lies on whatever surface it is given, which is why it works on the creme field
+// and inside a white card without a second rule.
+
+@use "../Mixin" as *;
+
+.record-instrument {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	min-inline-size: 0;
+	margin: 0;
+}
+
+.record-instrument__label {
+	@include mono-meta;
+	@include track(var(--track-row));
+	margin: 0;
+	padding-block-end: var(--space-tight);
+}
+
+// The strip. One column until there is room for two, then for as many as the
+// width allows: `auto-fit` is what makes a panel of three and a panel of six
+// both read as one row of instruments instead of a table with empty cells.
+.record-instrument__panel {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	column-gap: var(--space-group);
+	row-gap: 0;
+	min-inline-size: 0;
+}
+
+@include bp(640px) {
+	.record-instrument__panel {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@include bp(1024px) {
+	.record-instrument__panel {
+		grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+	}
+}
+
+// One measure. The rule is on the top edge and the space is above the label, so
+// a wrapped strip keeps its rules between the rows rather than under the last
+// one - the panel closes on its caption, not on a stray line.
+.record-instrument__measure {
+	@include hairline(top);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+	margin: 0;
+	padding-block: var(--space-reading);
+}
+
+.record-instrument__key {
+	@include mono-meta;
+	@include track(var(--track-row));
+	margin: 0;
+}
+
+// The figure's line: the value and its unit on one baseline, or the state word
+// where the value would be. `baseline` is what keeps a 13px unit on the figure's
+// own baseline at either size.
+.record-instrument__figure {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+	margin: 0;
+	min-inline-size: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-sub);
+	font-weight: 500;
+	line-height: var(--type-sub-line);
+	color: var(--Foreground);
+}
+
+.record-instrument__value {
+	font-variant-numeric: tabular-nums;
+	letter-spacing: var(--track-join);
+	overflow-wrap: anywhere;
+}
+
+.record-instrument__unit {
+	@include mono-meta;
+	@include track(var(--track-row));
+	white-space: nowrap;
+}
+
+// The one leading figure. A scale step inside the L tier, not a weight step and
+// not a colour: the panel says which number matters by how big it is set.
+.record-instrument__measure--lead .record-instrument__figure {
+	font-size: var(--type-section);
+	line-height: var(--type-section-line);
+	letter-spacing: var(--track-join);
+}
+
+.record-instrument__source {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+	overflow-wrap: anywhere;
+}
+
+.record-instrument__source-key {
+	@include track(var(--track-row));
+}
+
+.record-instrument__as-of {
+	font-variant-numeric: tabular-nums;
+}
+
+.record-instrument__caption {
+	margin: var(--space-tight) 0 0;
+	max-width: 62ch;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+}
+
+// The empty panel: the fallback mark and one sentence, at the panel's own top
+// rule so it occupies the same place a strip would. No frame - an empty panel is
+// not a box waiting to be filled.
+.record-instrument__empty {
+	@include hairline(top);
+	margin: 0;
+	padding-block: var(--space-reading);
+	max-width: 62ch;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--MuteForeground);
+}
+
+.record-instrument__empty-mark {
+	color: var(--MuteForeground);
+}

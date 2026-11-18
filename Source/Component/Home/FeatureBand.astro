@@ -1,29 +1,26 @@
 ---
 /**
- * FeatureBand - `#features`: the six element records that carry the claim.
+ * FeatureBand - `# OBSERVATION_01`: the six element records that carry the claim.
  *
- * One grid, three columns from `lg`, two from `md`, one below - the same
- * distribution the baseline used, so the six cards read as two rows of three
- * rather than as a stack.
+ * The six are one **matrix**, not six cards: three columns from `lg`, two from
+ * `md`, one below, flush against each other with a 1px seam of the creme field
+ * between them. The seam is the whole composition - six records read as one
+ * filed plate, the way a patch panel's cells are one panel and not six boxes -
+ * and it is why the cells carry no border of their own: the paper is the rule.
  *
- * Below the grid the band prints the two blocks the record layer carries and a
- * card cannot hold:
+ * The band used to print the runtime rail under the grid as well. That rail is
+ * now the hero's foot (`RUNTIME PATH`, under the pair), because it is the proof
+ * of the claim the hero makes and it belongs under that claim, not one band
+ * down. The four steps are unchanged and printed once; two copies of one rail on
+ * one page is a habit, not a proof.
  *
- * 1. **The one architecture proof.** The four-element runtime path the hero's
- *    claim asserts - Mountain → Cocoon → Sky → Wind - one line per element,
- *    mounted as a `RecordStage`: the block layer's own ordered rail, not a
- *    hand-composed `<ol>`. The steps are `HeroBandFor(T).steps`, the same four
- *    rows the hero's data module has always resolved and nothing consumed; the
- *    label is `RailLabel`, the string the proof band used before the band was
- *    rebuilt.
- * 2. **The specimen observation.** `SPECIES:` / `TEMP:` / `WIND:`, the second
- *    metadata block the field record has always printed beside its facts,
- *    mounted as a `RecordLedger`. It is printed here and never inside the hero
- *    card: `DesignSystem-Components.md` §1 gives a hero record `TARGET:` /
- *    `LICENSE:` / `SIGNAL:` and caps it at four metadata rows, so a fourth block
- *    in the card would break the template and read as a card row it is not.
+ * The specimen observation stays here. `DESIGN-COMPLETE.md` §2.3 H11 files it
+ * under the features grid and it is a `keep`: `SPECIES:` / `TEMP:` / `WIND:` are
+ * the second metadata block the field record has always carried, and the hero
+ * card is capped at three rows (`TARGET:` / `LICENSE:` / `SIGNAL:`), so the
+ * observation is filed below the matrix as a strip in the ledger's own voice.
  *
- * Both are *imports*, not class copies: the specimen strip used to carry
+ * It is a *block import*, not a class copy: the strip used to carry
  * `record-ledger` classes it never imported, which is why it drifted from the
  * block's own anatomy. A borrowed class is not a block.
  */
@@ -32,10 +29,9 @@ import { FeatureCards } from "../../Content/Home/Feature.js";
 import { GetI18n } from "../../Library/I18n/Server";
 
 import { HeroBandFor } from "../Dynamic/Hero/Data.js";
-import { ObservationLabel, RailLabel } from "../Dynamic/Properties/Data.js";
+import { ObservationLabel } from "../Dynamic/Properties/Data.js";
 
 import RecordLedger from "../Record/RecordLedger.astro";
-import RecordStage from "../Record/RecordStage.astro";
 
 import Band from "./Band.astro";
 import FeatureCard from "./FeatureCard.astro";
@@ -44,22 +40,13 @@ const T = GetI18n();
 
 const Head = BandOf(HomeBands(T), "features");
 
-/** The band's data, resolved once: the rail and the observation both live on it. */
-const Hero = HeroBandFor(T);
-
 /** The hero record's specimen observation: `SPECIES:` / `TEMP:` / `WIND:`. */
-const Observation = Hero.observation;
+const Observation = HeroBandFor(T).observation;
 ---
 
-<Band head={Head}>
+<Band head={Head} series="OBSERVATION" rhythm="wide">
 	<div class="home-feature__grid">
 		{FeatureCards.map((Card) => <FeatureCard card={Card} />)}
-	</div>
-
-	<div class="home-feature__rail">
-		<p class="home-feature__rail-label">{RailLabel}</p>
-
-		<RecordStage stages={Hero.steps} orientation="row" />
 	</div>
 
 	<div class="home-feature__specimen">

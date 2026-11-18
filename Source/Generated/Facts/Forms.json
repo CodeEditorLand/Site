@@ -1,0 +1,283 @@
+{
+	"_Generated": {
+		"By": "Source/Script/Register.ts",
+		"From": [
+			"Source/pages/**",
+			"Source/Component/Record/**"
+		],
+		"Transform": [
+			"Facts"
+		],
+		"Note": "The artifact set, measured: for each of the fourteen blocks, the routes whose import tree mounts it.",
+		"Rule": "Generated. Change the tree or the page, then run `node Source/Script/Register.ts` - never this file."
+	},
+	"Forms": [
+		{
+			"Block": "RecordHero",
+			"Routes": [
+				"/404",
+				"/Compare",
+				"/Contents"
+			],
+			"Count": 3
+		},
+		{
+			"Block": "RecordBand",
+			"Routes": [
+				"/Compare",
+				"/Contents",
+				"/Doc",
+				"/Glossary",
+				"/Motion",
+				"/Status"
+			],
+			"Count": 6
+		},
+		{
+			"Block": "RecordPair",
+			"Routes": [
+				"/Download"
+			],
+			"Count": 1
+		},
+		{
+			"Block": "RecordAside",
+			"Routes": [
+				"/Account",
+				"/Blog/:Slug",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Scout",
+				"/Download"
+			],
+			"Count": 16
+		},
+		{
+			"Block": "RecordArchive",
+			"Routes": [
+				"/Contents",
+				"/Doc"
+			],
+			"Count": 2
+		},
+		{
+			"Block": "RecordMatrix",
+			"Routes": [
+				"/Compare",
+				"/Contents",
+				"/Download",
+				"/Motion",
+				"/Portal",
+				"/Verify"
+			],
+			"Count": 6
+		},
+		{
+			"Block": "RecordCompare",
+			"Routes": [
+				"/Compare",
+				"/Download",
+				"/Portal",
+				"/Status"
+			],
+			"Count": 4
+		},
+		{
+			"Block": "RecordStage",
+			"Routes": [
+				"/",
+				"/Contact",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Scout",
+				"/Contents",
+				"/Status"
+			],
+			"Count": 17
+		},
+		{
+			"Block": "RecordInstrument",
+			"Routes": [
+				"/Contents",
+				"/Download",
+				"/Status"
+			],
+			"Count": 3
+		},
+		{
+			"Block": "RecordPlateSet",
+			"Routes": [
+				"/Contents",
+				"/Download"
+			],
+			"Count": 2
+		},
+		{
+			"Block": "RecordEntry",
+			"Routes": [
+				"/Doc",
+				"/Portal"
+			],
+			"Count": 2
+		},
+		{
+			"Block": "RecordLedger",
+			"Routes": [
+				"/",
+				"/404",
+				"/Account",
+				"/Account/ForgotPassword",
+				"/Account/ResetPassword",
+				"/Account/SignIn",
+				"/Account/SignUp",
+				"/Blog",
+				"/Blog/:Slug",
+				"/Compare",
+				"/Contact",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Sale",
+				"/Contact/Scout",
+				"/Contents",
+				"/Contributing",
+				"/Dashboard",
+				"/Doc",
+				"/Doc/:Slug",
+				"/Doc/Rust",
+				"/Download",
+				"/Glossary",
+				"/Legal/Privacy",
+				"/Legal/Term",
+				"/License",
+				"/Motion",
+				"/OAuth/Success",
+				"/Portal",
+				"/Status",
+				"/Verify"
+			],
+			"Count": 41
+		},
+		{
+			"Block": "RecordTrace",
+			"Routes": [
+				"/",
+				"/Compare",
+				"/Status"
+			],
+			"Count": 3
+		},
+		{
+			"Block": "RecordFailure",
+			"Routes": [
+				"/"
+			],
+			"Count": 1
+		},
+		{
+			"Block": "RecordWell",
+			"Routes": [
+				"/Compare",
+				"/Download",
+				"/License",
+				"/Status",
+				"/Verify"
+			],
+			"Count": 5
+		},
+		{
+			"Block": "RecordFigure",
+			"Routes": [
+				"/404",
+				"/Blog"
+			],
+			"Count": 2
+		},
+		{
+			"Block": "RecordMargin",
+			"Routes": [
+				"/Blog/:Slug",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Scout",
+				"/Doc/:Slug",
+				"/Glossary",
+				"/Motion"
+			],
+			"Count": 17
+		},
+		{
+			"Block": "RecordPlate",
+			"Routes": [
+				"/Doc",
+				"/Doc/:Slug",
+				"/Doc/Rust",
+				"/Download"
+			],
+			"Count": 4
+		},
+		{
+			"Block": "RecordStamp",
+			"Routes": [
+				"/Contents",
+				"/Download"
+			],
+			"Count": 2
+		},
+		{
+			"Block": "RecordInset",
+			"Routes": [
+				"/Blog/:Slug",
+				"/Doc/:Slug"
+			],
+			"Count": 2
+		},
+		{
+			"Block": "RecordTranscript",
+			"Routes": [
+				"/Doc/:Slug",
+				"/Download"
+			],
+			"Count": 2
+		}
+	]
+}

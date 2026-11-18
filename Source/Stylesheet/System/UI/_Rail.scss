@@ -1,0 +1,199 @@
+@use "../Mixin" as *;
+
+// ─── THE RAIL'S FILTER ──────────────────────────────────────────────────────
+//
+// The documentation rail is the one control a reader uses on eighty-one pages,
+// and until now it had no way to find a page in it: no hover, no focus beyond the
+// base ring, no filter, and no statement of how many pages sit behind a closed
+// section. Those four gaps are what make a tree a mockup instead of a control.
+//
+// This partial adds them and touches nothing the rail already had. The current
+// page keeps its three signals (aria-current, ink, weight) and its leading rule
+// goes 1px `--Primary` to 2px `--Accent` in `Doc/_Sidebar.scss` - the same marker
+// the header's active route draws, so the site has one active-state vocabulary
+// rather than three.
+//
+// ─── THE FILTER IS THE PALETTE'S INPUT ──────────────────────────────────────
+//
+// Same `.SlipField` box, same `.SlipInput` query line, same `FILTER:` label. A
+// reader who has used the palette recognises the rail's filter on sight, and the
+// reverse. Two controls, one input.
+//
+// ─── THE HANDOFF ────────────────────────────────────────────────────────────
+//
+// When the rail has no match, the rail does not say "no results" and stop. It
+// prints `→ FIND ALL RECORDS 〈⌘K〉`, which opens the palette pre-filled with the
+// same query. A local index that hands off to the global one is what an editor
+// does when a file filter finds nothing - and it is how the palette becomes
+// discoverable from the one place a lost reader actually is.
+
+.RailFilter {
+	display: flex;
+	align-items: center;
+	gap: var(--space-tight);
+
+	padding-block-end: var(--space-tight);
+}
+
+.RailFilter__Box {
+	flex: 1 1 auto;
+
+	min-inline-size: 0;
+}
+
+.RailFilter__Clear {
+	flex: 0 0 auto;
+
+	padding: 0 var(--space-tight);
+
+	background: none;
+	border: 0;
+
+	color: var(--MuteForeground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+
+	cursor: pointer;
+}
+
+.RailFilter__Clear:hover {
+	color: var(--Foreground);
+}
+
+.RailFilter__Clear:focus-visible {
+	outline: 2px solid var(--Accent);
+	outline-offset: 2px;
+}
+
+// ─── the section's own count ────────────────────────────────────────────────
+//
+// A closed disclosure prints how many pages are behind it. It is a fact, not a
+// decoration: it is the difference between "there is more" and "there are twelve
+// more", and it is what lets a reader decide whether to open it.
+
+.doc-sidebar__count {
+	flex: 0 0 auto;
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+	letter-spacing: var(--track-row);
+}
+
+.doc-sidebar__trigger--active .doc-sidebar__count {
+	color: var(--MuteForeground);
+}
+
+// ─── the handoff row ────────────────────────────────────────────────────────
+//
+// The rail's empty state: `◎ NO PAGE` then `→ FIND ALL RECORDS 〈⌘K〉`. It is a row
+// in the item grammar, not a message, because a message in a control is a dead
+// end and a row is a way out.
+
+.doc-sidebar__handoff {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	inline-size: 100%;
+
+	padding: var(--space-tight) 0 var(--space-tight) var(--space-tight);
+
+	background: none;
+	border: 0;
+
+	color: var(--Foreground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+	text-align: start;
+
+	cursor: pointer;
+}
+
+.doc-sidebar__handoff:hover {
+	background: var(--Mute);
+}
+
+.doc-sidebar__handoff:focus-visible {
+	outline: 2px solid var(--Accent);
+	outline-offset: -2px;
+}
+
+.doc-sidebar__handoff-mark {
+	color: var(--MuteForeground);
+}
+
+.doc-sidebar__handoff-chord {
+	margin-inline-start: auto;
+
+	color: var(--MuteForeground);
+}
+
+// ─── the rail's own empty state ─────────────────────────────────────────────
+
+.doc-sidebar__empty {
+	display: grid;
+	gap: var(--space-tight);
+
+	padding: var(--space-reading) 0 var(--space-reading) var(--space-tight);
+}
+
+.doc-sidebar__empty-mark {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.doc-sidebar__empty-mark b {
+	color: var(--MuteForeground);
+
+	font-weight: 400;
+}
+
+.doc-sidebar__empty-line {
+	color: var(--MuteForeground);
+
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+}
+
+// ─── rows: hover, focus, and the mark column ────────────────────────────────
+//
+// The rail's rows are anchors and disclosure buttons, not kit items, so they take
+// the same three states the item grammar defines: a `--Mute` wash on hover, the
+// inset accent ring on focus, and the reserved leading column so labels align
+// across three levels of nesting.
+
+.doc-sidebar__link,
+.doc-sidebar__trigger {
+	position: relative;
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition:
+			background-color 90ms linear,
+			color 90ms linear;
+	}
+}
+
+.doc-sidebar__link:hover,
+.doc-sidebar__trigger:hover {
+	background: var(--Mute);
+
+	color: var(--Foreground);
+}
+
+.doc-sidebar__link:focus-visible,
+.doc-sidebar__trigger:focus-visible,
+.doc-sidebar__toggle:focus-visible {
+	outline: 2px solid var(--Accent);
+	outline-offset: -2px;
+}

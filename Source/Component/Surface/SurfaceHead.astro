@@ -1,0 +1,102 @@
+---
+/**
+ * SurfaceHead - the instrument's nameplate, designed once for every app surface.
+ *
+ * The frame card turned the site ribbon into a running head. This block is that
+ * ribbon made page-local, and it is what makes the account, verify, portal and
+ * dashboard pages read as one instrument in four readings: the same left `#`
+ * marker, the same right status, the same declaration row under it.
+ *
+ * Anatomy, in reading order:
+ *
+ *   1. the nameplate row - `# ID` left, the surface's own mark right (`mark` slot);
+ *   2. the page's only `h1`, bracketed `〈 〉` in the partial, at L;
+ *   3. the `↳` proposition - one line, muted, never a paragraph;
+ *   4. the surface's own opening content (`slot`) - a programme run, a protocol
+ *      line, a badge strip - between the title and the readout;
+ *   5. the status line (`SurfaceStatusLine`) - `STATUS:` and its declarations;
+ *   6. the facts ledger (`RecordLedger`, two columns) - the surface's own facts.
+ *
+ * Two rules this file keeps so a page cannot get them wrong:
+ *
+ * - **The `h1` is L, not XL.** The token contract names L the functional `h1`
+ *   (`_Token.scss`, "a route command, a record title, a functional `h1`"); XL is
+ *   the homepage's one claim. Nothing else on these surfaces reaches L, so the
+ *   `h1` is still the largest thing on the page at every width.
+ * - **States are not facts.** The status line lifts them out of the ledger, so a
+ *   state never renders as a row that merely looks like one (`State.ts`).
+ *
+ * The head paints no fill: it lies on the creme field, and a surface that needs
+ * the white information box (the portal's two-panel opening) composes this block
+ * inside it. No script and no hydration: the head is static.
+ */
+import RecordLedger from "../Record/RecordLedger.astro";
+import SurfaceStatusLine from "./SurfaceStatusLine.astro";
+
+import type { LedgerRow } from "../Record/Type.js";
+import type { Declaration, SurfaceState as State } from "./State.js";
+
+interface Props {
+	/** `# PORTAL_01` - the surface's record marker, printed verbatim. */
+	index: string;
+
+	/** The page's `h1`. */
+	title: string;
+
+	/** The `↳` line: one proposition, never a paragraph. */
+	proposition?: string;
+
+	/** The surface's states, in the order they are read. */
+	states?: readonly State[];
+
+	/** The declarations that make those states auditable. */
+	declarations?: readonly Declaration[];
+
+	/** The surface's facts, in the order they are read. */
+	rows?: readonly LedgerRow[];
+
+	/**
+	 * Print the `h1` at XL instead of L.
+	 *
+	 * One page in the family spends its one XL on the `h1` (the portal, whose
+	 * opening is the site's two-panel claim); the other three are tools whose
+	 * `h1` is L by the token contract. XL is never a second heading's size.
+	 */
+	display?: boolean;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const {
+	index,
+	title,
+	proposition,
+	states = [],
+	declarations = [],
+	rows = [],
+	display = false,
+	class: ClassName,
+} = Astro.props;
+---
+
+<header class:list={["surface-head", ClassName]}>
+	<div class="surface-head__inner">
+		<div class="surface-head__plate">
+			<p class="surface-head__index">{index}</p>
+			<slot name="mark" />
+		</div>
+
+		<h1 class:list={["surface-head__title", display && "surface-head__title--display"]}>
+			{title}
+		</h1>
+
+		{proposition ? <p class="surface-head__proposition">{proposition}</p> : null}
+
+		<slot />
+
+		<SurfaceStatusLine states={states} declarations={declarations} />
+
+		{rows.length ? <RecordLedger class="surface-head__facts" rows={rows} columns={2} /> : null}
+	</div>
+</header>

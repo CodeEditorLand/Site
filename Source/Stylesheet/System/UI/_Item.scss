@@ -1,0 +1,288 @@
+@use "../Mixin" as *;
+
+// ─── THE ITEM GRAMMAR ───────────────────────────────────────────────────────
+//
+// One row, three cells: `[mark] [label ……………] [meta]`.
+//
+//   mark   `→` an action   `/` a route   `✓` the current value   `◎` unavailable
+//   label  the row's words, ink
+//   meta   right, muted: a chord, a section, a STATUS word
+//
+// The mark and the meta are PSEUDO-ELEMENTS driven by `data-mark` / `data-meta`,
+// not spans. That is a decision, not a shortcut: Radix's `asChild` items put the
+// caller's own `<a>` where the item would be, so a wrapper cannot inject children
+// without forking the primitive - and the alternative, asking every call site to
+// hand-write two spans in the right order, is how five controls drift into five
+// grammars. One attribute, one cell, alignment guaranteed by the stylesheet.
+//
+// The reserved mark column is `1.25rem` of padding-inline-start on every row,
+// whether or not the row prints a mark, so eighty-one labels line up at one x.
+//
+// ─── THE FIVE STATES ────────────────────────────────────────────────────────
+//
+//   rest        no fill, ink label, muted mark
+//   hover       `--Mute` wash - the site's deeper creme, flat, no hue
+//   keyboard    the same wash, and the mark goes ink: the row the reader is on
+//               is never ambiguous between pointer and keyboard
+//   focus       the site's 2px accent ring, INSET by 2px. This is the one place
+//               the 4px offset cannot survive: a slip clips its overflow, and a
+//               ring drawn outside the row is a ring nobody sees. The variant is
+//               named here so it is not rediscovered as a bug.
+//   current     a 2px accent rule on the leading edge + ink + weight 500 - the
+//               same marker the header's active route and the rail's current page
+//               use. One marker vocabulary, three surfaces.
+//
+// ─── DISABLED IS NOT DIMMED ─────────────────────────────────────────────────
+//
+// The kit writes `data-[disabled]:opacity-50`, which is the exact failure
+// `DESIGN-COMPLETE.md` §0.3 names: present in the DOM, invisible to the eye. A
+// disabled row here keeps full legibility, loses only its ink, takes `◎`, and its
+// meta cell prints the reason from the STATUS vocabulary. An honest `UNAVAILABLE`
+// beats a row the reader cannot read and cannot explain.
+
+// ─── the selector list ──────────────────────────────────────────────────────
+//
+// `:is()` and not a comma list: `a, b[data-mark]` attaches the attribute to `b`
+// alone, which would style one control out of eight and look like it worked.
+// `:is()` applies the compound to every member and keeps the specificity of the
+// most specific argument - 0,1,0 here, the same as a class, so a row still loses
+// to nothing it should not.
+
+$Item: ':is([data-slot="dropdown-menu-item"], [data-slot="dropdown-menu-checkbox-item"], [data-slot="dropdown-menu-radio-item"], [data-slot="dropdown-menu-sub-trigger"], [data-slot="select-item"], [data-slot="context-menu-item"], [data-slot="context-menu-checkbox-item"], [data-slot="context-menu-radio-item"], [data-slot="context-menu-sub-trigger"], [data-slot="menubar-item"], [data-slot="menubar-sub-trigger"], [data-slot="command-item"], .Slip__Row)';
+
+#{$Item} {
+	position: relative;
+
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	inline-size: 100%;
+	min-block-size: 2rem;
+
+	// The mark column is reserved on every row, marked or not.
+	padding: 0.375rem var(--space-reading) 0.375rem
+		calc(var(--space-reading) + 1.25rem);
+
+	background: none;
+	border: 0;
+	border-inline-start: 0 solid transparent;
+
+	color: var(--Foreground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+	text-align: start;
+	text-decoration: none;
+
+	cursor: default;
+	user-select: none;
+
+	// Replaced by the inset ring below; the base layer's 4px-offset ring would be
+	// clipped by the slip.
+	outline: none;
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition:
+			background-color 90ms linear,
+			color 90ms linear;
+	}
+}
+
+// ─── the mark cell ──────────────────────────────────────────────────────────
+
+#{$Item}[data-mark]::before {
+	content: attr(data-mark);
+
+	position: absolute;
+	inset-inline-start: var(--space-reading);
+	inline-size: 1.25rem;
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+	text-align: start;
+}
+
+// ─── the meta cell ──────────────────────────────────────────────────────────
+
+#{$Item}[data-meta]::after {
+	content: attr(data-meta);
+
+	margin-inline-start: auto;
+	padding-inline-start: var(--space-reading);
+
+	color: var(--MuteForeground);
+
+	letter-spacing: var(--track-row);
+	text-transform: uppercase;
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+}
+
+// ─── states ─────────────────────────────────────────────────────────────────
+
+#{$Item}:hover,
+#{$Item}[data-highlighted],
+#{$Item}[data-state="open"] {
+	background: var(--Mute);
+}
+
+#{$Item}:hover[data-mark]::before,
+#{$Item}[data-highlighted][data-mark]::before,
+#{$Item}[data-state="open"][data-mark]::before {
+	color: var(--Foreground);
+}
+
+#{$Item}:focus-visible {
+	outline: 2px solid var(--Accent);
+	outline-offset: -2px;
+}
+
+// The current value: the leading rule, and the label at 500. The 2px rule is paid
+// for out of the reserved mark column so the label does not shift by 2px when a
+// row becomes current - alignment is the whole point of the column.
+#{$Item}[data-state="checked"],
+#{$Item}[data-current="true"],
+#{$Item}[aria-current="true"] {
+	border-inline-start: 2px solid var(--Accent);
+
+	padding-inline-start: calc(var(--space-reading) + 1.25rem - 2px);
+
+	color: var(--Foreground);
+	font-weight: 500;
+}
+
+#{$Item}[data-state="checked"]::before,
+#{$Item}[data-current="true"]::before,
+#{$Item}[aria-current="true"]::before {
+	content: "✓";
+
+	color: var(--Accent);
+}
+
+// ─── disabled: legible, and it says why ─────────────────────────────────────
+
+#{$Item}[data-disabled],
+#{$Item}[aria-disabled="true"] {
+	color: var(--MuteForeground);
+	background: none;
+
+	cursor: not-allowed;
+	pointer-events: none;
+}
+
+#{$Item}[data-disabled]::before,
+#{$Item}[aria-disabled="true"]::before {
+	content: "◎";
+
+	color: var(--MuteForeground);
+}
+
+// ─── destructive: the label keeps its ink, the wash is the destructive surface
+
+#{$Item}[data-variant="destructive"] {
+	color: var(--DestructFore);
+}
+
+#{$Item}[data-variant="destructive"]:hover,
+#{$Item}[data-variant="destructive"][data-highlighted] {
+	background: var(--DestructSurface);
+	color: var(--DestructFore);
+}
+
+#{$Item}[data-variant="destructive"][data-highlighted]::before {
+	color: var(--DestructFore);
+}
+
+// ─── the rules between rows ─────────────────────────────────────────────────
+//
+// Full-bleed and one value: the kit's separators are `-mx-1 my-1 bg-border`, a
+// 4px inset that reads as a mistake at this density.
+
+[data-slot="dropdown-menu-separator"],
+[data-slot="select-separator"],
+[data-slot="context-menu-separator"],
+[data-slot="command-separator"],
+.Slip__Rule-H {
+	block-size: 1px;
+	inline-size: auto;
+
+	margin: 0;
+	padding: 0;
+
+	background: var(--Border);
+	border: 0;
+}
+
+// ─── hand-built rows ────────────────────────────────────────────────────────
+//
+// The rail and the palette's own rows are anchors and buttons the kit does not
+// own. They take `.Slip__Row` plus the same attributes, and the two spans below
+// are for the one case a pseudo-element cannot serve: a row whose meta cell is
+// composed rather than a single string.
+
+.Slip__Label {
+	flex: 1 1 auto;
+
+	min-inline-size: 0;
+
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.Slip__Meta {
+	margin-inline-start: auto;
+	padding-inline-start: var(--space-reading);
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+}
+
+// ─── the row action ────────────────────────────────────────────────────────
+//
+// The way out of a state, drawn as a row rather than as a button: a mark and a
+// label, no fill, no frame. It is used by the palette's empty state and by the
+// matrix band's note line, so a reader who learns the gesture in one control
+// recognises it in the other. Underline on hover and the site's ring on focus -
+// nothing else, because an action that arrived with the error must not look like
+// a new kind of object.
+
+.SlipAction {
+	display: inline-flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	padding: 0;
+
+	background: none;
+	border: 0;
+
+	color: var(--Foreground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-row);
+	text-transform: uppercase;
+	text-align: start;
+
+	cursor: pointer;
+}
+
+.SlipAction:hover {
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.25em;
+}
+
+.SlipAction:focus-visible {
+	outline: 2px solid var(--Accent);
+	outline-offset: 2px;
+}

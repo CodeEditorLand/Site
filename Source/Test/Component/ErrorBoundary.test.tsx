@@ -54,11 +54,16 @@ describe("ErrorBoundary", () => {
 			</ErrorBoundary>,
 		);
 
-		const ErrorHeading = screen.getByText("Something went wrong");
+		const ErrorHeading = screen.getByRole("heading", {
+			level: 2,
+			name: /FAILURE \/ 01/,
+		});
 
 		const ErrorDescription = screen.getByText("Test error message");
 
-		const RetryButton = screen.getByRole("button", { name: "Try again" });
+		const RetryButton = screen.getByRole("button", {
+			name: /RELOAD THE REGION/,
+		});
 
 		expect(ErrorHeading).toBeInTheDocument();
 
@@ -81,7 +86,7 @@ describe("ErrorBoundary", () => {
 		expect(CustomErrorDisplay).toBeInTheDocument();
 
 		expect(
-			screen.queryByText("Something went wrong"),
+			screen.queryByRole("heading", { level: 2 }),
 		).not.toBeInTheDocument();
 	});
 
@@ -107,7 +112,7 @@ describe("ErrorBoundary", () => {
 		render(<TestWrapper />);
 
 		// Error boundary should show the default fallback
-		expect(screen.getByText("Something went wrong")).toBeInTheDocument();
+		expect(screen.getByRole("heading", { level: 2 })).toBeInTheDocument();
 
 		// Fix the error source first
 		const FixButton = screen.getByRole("button", { name: "Fix Error" });
@@ -115,7 +120,9 @@ describe("ErrorBoundary", () => {
 		await User.click(FixButton);
 
 		// Click retry
-		const RetryButton = screen.getByRole("button", { name: "Try again" });
+		const RetryButton = screen.getByRole("button", {
+			name: /RELOAD THE REGION/,
+		});
 
 		await User.click(RetryButton);
 
@@ -123,7 +130,7 @@ describe("ErrorBoundary", () => {
 		expect(screen.getByText("Normal content")).toBeInTheDocument();
 
 		expect(
-			screen.queryByText("Something went wrong"),
+			screen.queryByRole("heading", { level: 2 }),
 		).not.toBeInTheDocument();
 	});
 
@@ -154,6 +161,6 @@ describe("ErrorBoundary", () => {
 			</ErrorBoundary>,
 		);
 
-		expect(screen.getByText("Something went wrong")).toBeInTheDocument();
+		expect(screen.getByRole("heading", { level: 2 })).toBeInTheDocument();
 	});
 });

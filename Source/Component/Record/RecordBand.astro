@@ -29,7 +29,7 @@ const { band } = Astro.props;
 const tone = band.tone ?? "canvas";
 ---
 
-<section class={`record-band record-band--${tone}`}>
+<section class={`record-band record-band--${tone}`} id={band.id}>
 	<div class="record-band__inner">
 		<p class="record-band__kicker">{band.kicker}</p>
 		<h2 class="record-band__heading">{band.heading}</h2>
@@ -53,5 +53,12 @@ const tone = band.tone ?? "canvas";
 			<slot />
 		</div>
 		{band.footnote ? <p class="record-band__footnote">{band.footnote}</p> : null}
+		{
+			Astro.slots.has("foot") ? (
+				<div class="record-band__foot">
+					<slot name="foot" />
+				</div>
+			) : null
+		}
 	</div>
 </section>

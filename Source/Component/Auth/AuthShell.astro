@@ -44,9 +44,9 @@
  * A second `<main>` here would be a second landmark and a duplicate ID.
  */
 import Trail from "../Route/Trail.astro";
-import SurfaceState from "../Surface/SurfaceState.astro";
+import SurfaceStatusLine from "../Surface/SurfaceStatusLine.astro";
 import type { TrailItem } from "../Route/Type.js";
-import type { SurfaceState as StateRow } from "../Surface/State.js";
+import type { Declaration, SurfaceState as StateRow } from "../Surface/State.js";
 import type { AuthFrame } from "./Type.js";
 
 interface Props {
@@ -80,6 +80,16 @@ interface Props {
 	 */
 	States?: readonly StateRow[];
 
+	/**
+	 * The declarations that make the route's state auditable, printed in the same
+	 * row as the word (`SurfaceStatusLine`): where the route is read, what
+	 * produced the state, and the date of this reading.
+	 *
+	 * Additive: a route that has nothing to declare passes nothing and the
+	 * register renders exactly as it did before this prop existed.
+	 */
+	Declarations?: readonly Declaration[];
+
 	/** `narrow` is the form's 28rem; `wide` is the account index's 64rem. */
 	Measure?: "narrow" | "wide";
 
@@ -109,6 +119,7 @@ const {
 	Label,
 	Trail: Crumbs,
 	States = [],
+	Declarations = [],
 	Measure = "narrow",
 	Frame,
 	Center = false,
@@ -152,9 +163,9 @@ const Surface = {
 									{Frame.sentence}
 								</p>
 							) : null}
-							{States.length ? (
+							{States.length || Declarations.length ? (
 								<div class="auth-shell__states">
-									<SurfaceState states={States} />
+									<SurfaceStatusLine states={States} declarations={Declarations} />
 								</div>
 							) : null}
 						</header>

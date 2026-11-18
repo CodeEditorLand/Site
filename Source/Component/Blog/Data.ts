@@ -12,6 +12,8 @@
  * missing data, because a missing field is the schema's job to reject, not this
  * module's.
  */
+import type { Aside, LedgerRow, MarginNote } from "../Record/Type.js";
+
 import type { BlogRow, BlogToc, BlogTocItem } from "./Type.js";
 
 /**
@@ -125,3 +127,171 @@ export const BuildToc = (
  */
 export const HasDiagram = (Body: string | undefined): boolean =>
 	Body?.includes("```mermaid") ?? false;
+
+// ─── THE MARGIN ───────────────────────────────────────────────────────────
+//
+// The article's apparatus, derived from the article itself. Nothing here is a
+// second copy of a fact the opening already prints: the summary is built from
+// the same frontmatter the opening renders, and the notes are built from the
+// article's own id, date and section count. That is why the margin can repeat
+// the opening's facts without the two ever disagreeing.
+
+/**
+ * The manual page that keeps each article's subject current.
+ *
+ * A blog piece is dated; the manual is not. Every article on this site describes
+ * something the documentation also describes, and the margin's third note points
+ * at that page - so a reader who needs the current version knows where it is.
+ *
+ * The map is by article id rather than by tag because two articles can share a
+ * tag and need different pages. An article with no entry prints no manual note
+ * at all: a note that guessed a destination would be a claim the site cannot
+ * back.
+ */
+const ManualFor: Readonly<Record<string, string>> = {
+	ApplicationStartupHandshake: "architecture",
+	BuildSystemDesign: "build-pipeline",
+	CC0OpenSource: "why-cc0",
+	EffectTypeScriptArchitecture: "why-effect-ts",
+	ExtensionHostDeepDive: "cocoon",
+	LocalFirstPhilosophy: "local-first-protocol",
+	TauriDesktopIntegration: "why-tauri",
+	VSCodeCompatibility: "vscode-api-coverage",
+};
+
+/** The note's destination: its printed label, its route and whether it resolves. */
+export interface ManualTarget {
+	readonly label: string;
+	readonly href: string;
+	readonly state: "ok" | "gone";
+}
+
+/**
+ * The manual note's destination, resolved against the doc collection the page
+ * already loaded.
+ *
+ * `state` is the point: a note that names a page the build does not contain
+ * prints the tombstone (`◎ TARGET GONE` with the route struck through) rather
+ * than an anchor that leads to the 404. The page resolves it at build time, so
+ * the note can never claim a destination the manual has dropped.
+ */
+export const ManualTargetFor = (
+	ArticleId: string,
+	DocIds: readonly string[],
+): ManualTarget | undefined => {
+	const Doc = ManualFor[ArticleId];
+
+	if (Doc === undefined) return undefined;
+
+	return {
+		label: `/DOC/${Doc.toUpperCase()}`,
+		href: `/Doc/${Doc}`,
+		state: DocIds.includes(Doc) ? "ok" : "gone",
+	};
+};
+
+/**
+ * The margin's summary: the article's own facts, as ledger rows.
+ *
+ * Five rows, and every one of them is printed somewhere in the opening above -
+ * the author, the date, the reading time and the tags. The fifth, `SECTIONS`, is
+ * the one fact the opening does not carry, and it is the one a reader deciding
+ * whether to start needs: a nine-section piece and a two-section piece are
+ * different commitments.
+ */
+export const BuildSummary = (
+	Entry: BlogEntry,
+	Sections: number,
+	ReadTime: string,
+): readonly LedgerRow[] => [
+	{ key: "AUTHOR:", value: Entry.data.author },
+	{ key: "FILED:", value: Entry.data.publishedAt },
+	{ key: "READ:", value: ReadTime },
+	{ key: "TAGS:", value: Entry.data.tags.join("\u2001") },
+	{ key: "SECTIONS:", value: String(Sections) },
+];
+
+/**
+ * The margin's notes: three annotations, in the order they hang.
+ *
+ * A note is a claim with a source, and all three are true of every article by
+ * construction - which is the only kind of copy a shared surface may carry. The
+ * shape note changes with the article (a piece with no sections has no
+ * register, and says so); the date note carries the article's own date; the
+ * manual note is omitted when the article names no manual page.
+ */
+export const BuildNotes = (
+	Entry: BlogEntry,
+	Sections: number,
+	Manual: ManualTarget | undefined,
+	HasRegister: boolean,
+): readonly MarginNote[] => {
+	const Notes: MarginNote[] = [
+		{
+			index: "NOTE_01",
+			label: "THE DATE",
+			body: `Every figure quoted in this piece is as of ${Entry.data.publishedAt}. The piece is not revised after publication; the manual is.`,
+			source: `Source/Content/blog/${Entry.id}.md`,
+		},
+		{
+			index: "NOTE_02",
+			label: "THE SHAPE",
+			body: HasRegister
+				? `The piece opens at \`##\`: its title is the page's only \`h1\`, and the ${Sections} sections under it are what the register in this margin lists.`
+				: Sections > 0
+					? `The piece has ${Sections} sections, below the five-section floor, so this margin prints no register: it is short enough to read in one run.`
+					: "The piece opens at `##` and runs without sections, which is why this margin prints no register: there is nothing to list, and an empty list would be a lie about the piece's shape.",
+			source: "Source/Component/Blog/BlogArticle.astro",
+		},
+	];
+
+	if (Manual !== undefined) {
+		Notes.push({
+			index: "NOTE_03",
+			label: "THE MANUAL",
+			body:
+				Manual.state === "ok"
+					? "The subject has a page in the manual, which is the version kept current. Read that page before relying on this one."
+					: "The manual page this piece names is not in this build. The note keeps the route so the gap stays visible instead of becoming a link that lands on the 404.",
+			link: Manual,
+			source: "/DOC",
+		});
+	}
+
+	return Notes;
+};
+
+/**
+ * The margin's folded aside: what the piece does not cover.
+ *
+ * Three rows, and the third is an honest `UNAVAILABLE`: the site publishes one
+ * language, so there are no translations to point at, and a blank cell would
+ * read as "translations exist and are being prepared".
+ */
+export const BuildAside = (Entry: BlogEntry): Aside => ({
+	index: "ASIDE_01",
+	label: "WHAT THIS PIECE DOES NOT COVER",
+	line: "This is an article, not a specification.",
+	rows: [
+		{
+			key: "ERRATA:",
+			value: "Filed through the amendment route. The piece is not edited in place.",
+		},
+		{
+			key: "VERSIONS:",
+			value: `The piece describes the tree as it stood on ${Entry.data.publishedAt}.`,
+		},
+		{
+			key: "TRANSLATIONS:",
+			value: "UNAVAILABLE - the site publishes one language.",
+		},
+	],
+	source: `Source/Content/blog/${Entry.id}.md`,
+});
+
+/**
+ * The register's empty sentence: what the margin says when the article has too
+ * few sections to list.
+ */
+export const RegisterEmpty =
+	"No register: this piece has fewer than five sections, so it is read in one run rather than navigated. The heading floor is five because two or three headings read as a document that happens to have sections.";

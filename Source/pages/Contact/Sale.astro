@@ -1,30 +1,36 @@
 ---
-// Enterprise inquiries - the sale route.
+// Enterprise inquiries - the sale route, read as a READING page.
 //
-// The page is a two-thirds / one-third split under one page opening. The left
-// two columns are a single card: a block with the site's one heavy left rule
-// carrying `How to Reach Us` and the sentence that explains why the route is a
-// GitHub issue, the issue action, the `h2` that names it, the prose under it,
-// and an inset listing what the issue should contain. The right column is a
-// stack of three cards: what an enterprise plan adds, the direct contact, and
-// the licence reminder.
+// ─── WHAT CHANGED, AND WHY ────────────────────────────────────────────────
+// The page was a two-thirds / one-third split: one large card beside a stack of
+// three. That is a marketing layout, and this page is not marketing - it is a
+// letter with a desk behind it, and a reader reads it top to bottom before
+// deciding. So it is composed in the site's reading language: a rail of its own
+// five sections in the margin, the letter on the 72ch measure, and the three
+// pieces of apparatus (what the plan includes, the direct contact, the licence)
+// as one ruled row under the letter.
 //
-// `How to Reach Us` is a label, not a heading: the baseline prints it as a
-// paragraph inside the rule block, and the page's heading count is `h1` 1,
-// `h2` 1, `h3` 3. Promoting it would invert the levels, which is exactly the
-// defect this restore removes.
+// Nothing is dropped. The large card is still one white panel with the site's
+// one 4px left rule, `How to Reach Us` is still a label and not a heading, the
+// page is still `h1` 1 / `h2` 1 / `h3` 3, the GitHub issue is still the page's
+// one `.emphasis-expressive` action, and the address is still a link rather than
+// an action (`DESIGN.md` §5 A6, §7 DR-13). The six features, the direct contact
+// and the licence reminder keep their cards and their words; only the grid they
+// sat in is the shell's now.
 //
-// The page's one expressive element is the GitHub issue action. The
-// `Community@PlayForm.Cloud` address is a link, not an action, so it keeps ink
-// and an underline on hover only (`DESIGN.md` §5 A6, §7 DR-13).
-//
-// No record header: the baseline renders no `# SALE` / `〈 〉` / `/CONTACT`
-// line here.
+// ─── THE ONE ADVERSE STATE ────────────────────────────────────────────────
+// An enterprise page that prints no price has a hole in it, and the hole is the
+// honest fact. The `partial` state says so in the site's grammar - WHAT IT COSTS
+// is `UNAVAILABLE`, never `0`, because a zero would be a claim that the plan is
+// free - and gives the reader the way to ask.
 //
 // Every string still comes through `T` with its key, so the locale files keep
 // their copy. The GitHub issue URL, the DEALS route and the PlayForm line are
 // unchanged.
 import ContactPage from "../../Component/Contact/ContactPage.astro";
+import PageShell from "../../Component/Shell/PageShell.astro";
+import ShellRail from "../../Component/Shell/ShellRail.astro";
+import ShellState from "../../Component/Shell/ShellState.astro";
 import { GetI18n } from "../../Library/I18n/Server";
 import type { ContactTrailItem } from "../../Library/Contact/Data.js";
 
@@ -45,7 +51,7 @@ const PageTitle = T("common.sales.pageTitle", {
 
 const PageSubtitle = T("common.sales.pageSubtitle", {
 	defaultValue:
-		"Deploying Land across your organization? Get in touch and we'll work out the details together.",
+		"Enterprise adds support, an SLA and custom development. The code stays CC0. A request is filed as a GitHub issue, so the whole team reads it and the answer is public.",
 });
 
 /**
@@ -99,7 +105,7 @@ const HowToReachUs = T("common.sales.contact.heading", {
 const GithubNote = OneLine(
 	T("common.sales.contact.githubNote", {
 		defaultValue:
-			"We handle enterprise inquiries through GitHub Issues.\n\nThis ensures your request is tracked, visible to the full team, and responded to.",
+			"Enterprise requests are filed as GitHub issues: the thread is the record, the whole team reads it, and the answer stays public.",
 	}),
 );
 
@@ -110,7 +116,7 @@ const OpenIssueHeading = T("common.sales.contact.openIssueHeading", {
 const OpenIssueDescription = OneLine(
 	T("common.sales.contact.openIssueDescription", {
 		defaultValue:
-			"Create an issue on our GitHub repository describing your organization's needs.\n\nInclude your company name, team size, use case, and deployment requirements.\n\nWe review issues regularly.",
+			"Open an issue on the Land repository with the organisation, the team size, the use case and the deployment target.\n\nA request that names those four can be answered in one reply; one that does not needs a thread.",
 	}),
 );
 
@@ -145,49 +151,129 @@ const OpenSourceDescription = OneLine(
 			"Enterprise plans add support, SLA, and custom development.\n\nThe code itself remains CC0. Fork it, read it, ship it.",
 	}),
 );
+
+/**
+ * The rail: the letter's own five parts, in the order it reads them. The marks
+ * are positions, because a letter has an order and the reader may want to skip
+ * to the part that answers their question.
+ */
+const SaleRail = [
+	{
+		mark: "01",
+		label: T("common.sales.contact.heading", {
+			defaultValue: "How to Reach Us",
+		}).toUpperCase(),
+		href: "#reach",
+	},
+	{
+		mark: "02",
+		label: OpenIssueHeading.toUpperCase(),
+		href: "#open-issue",
+	},
+	{
+		mark: "03",
+		label: T("common.sales.features.heading", {
+			defaultValue: "What Enterprise Includes",
+		}).toUpperCase(),
+		href: "#includes",
+	},
+	{
+		mark: "04",
+		label: DirectContactHeading.toUpperCase(),
+		href: "#direct",
+	},
+	{
+		mark: "05",
+		label: OpenSourceHeading.toUpperCase(),
+		href: "#open-source",
+	},
+];
 ---
 
 <ContactPage
 	metaTitle={MetaTitle}
 	metaDescription={MetaDescription}
 	trail={Trail}
+	record={{ code: "SALE", article: "ENTERPRISE", route: "/CONTACT" }}
 	heading={PageTitle}
 	standfirst={PageSubtitle}
-	width="narrow"
+	width="wide"
 >
-	<div class="contact-sale">
-		<div class="contact-sale__grid">
-			<div class="contact-sale__main">
-				<div class="contact-sale__panel StaccatoBorderShimmer StaccatoCard">
-					<div class="contact-sale__rule">
-						<p class="contact-sale__rule-label">{HowToReachUs}</p>
-						<p class="contact-sale__prose">{GithubNote}</p>
-					</div>
+	<PageShell
+		index="# READING_04"
+		label="THE ENTERPRISE DESK"
+		class="PageShell--inset"
+	>
+		<ShellRail
+			slot="rail"
+			label="ON THIS PAGE"
+			count={SaleRail.length}
+			items={SaleRail}
+		/>
 
-					<a
-						class="contact-sale__action emphasis-expressive"
-						href="https://github.com/CodeEditorLand/Land/issues/new?title=Enterprise+Inquiry&labels=enterprise"
-						target="_blank"
-						rel="noopener noreferrer"
-						>{T("common.sales.contact.openIssueButton", {
-							defaultValue: "Open GitHub Issue",
-						})}<span class="InlineSeparator">→</span></a
-					>
+		<ShellState
+			kind="partial"
+			index="TERMS / 01"
+			slot="margin"
+			statement={T("layout.sale.partial.statement", {
+				defaultValue:
+					"The plan's terms are agreed per agreement: what an enterprise deployment costs, and what its SLA states in figures, are not published on this page.",
+			})}
+			cause={T("layout.sale.partial.cause", {
+				defaultValue:
+					"COST is UNAVAILABLE rather than 0. A published zero would be a claim that the plan is free, and an invented figure would be the one number on this page with no source.",
+			})}
+			next={{
+				label: T("layout.sale.partial.next", {
+					defaultValue: "OPEN AN ENTERPRISE ISSUE",
+				}),
+				href: "https://github.com/CodeEditorLand/Land/issues/new?title=Enterprise+Inquiry&labels=enterprise",
+			}}
+			rows={[
+				{ key: "COST:", value: "UNAVAILABLE" },
+				{ key: "SLA:", value: "AGREED PER AGREEMENT" },
+				{ key: "LICENCE:", value: "CC0 1.0", code: true },
+				{ key: "DESK:", value: DirectAddress, code: true },
+			]}
+			note="SOURCE: THIS PAGE'S OWN COPY"
+		/>
 
-					<h2 class="contact-sale__heading">{OpenIssueHeading}</h2>
+		<div class="contact-sale">
+			<div
+				class="contact-sale__panel StaccatoBorderShimmer StaccatoCard"
+				id="reach"
+			>
+				<div class="contact-sale__rule">
+					<p class="contact-sale__rule-label">{HowToReachUs}</p>
+					<p class="contact-sale__prose">{GithubNote}</p>
+				</div>
 
-					<p class="contact-sale__prose">{OpenIssueDescription}</p>
+				<a
+					class="contact-sale__action emphasis-expressive"
+					href="https://github.com/CodeEditorLand/Land/issues/new?title=Enterprise+Inquiry&labels=enterprise"
+					target="_blank"
+					rel="noopener noreferrer"
+					>{T("common.sales.contact.openIssueButton", {
+						defaultValue: "Open GitHub Issue",
+					})}<span class="InlineSeparator">→</span></a
+				>
 
-					<div class="contact-sale__inset">
-						<p class="contact-sale__inset-text">
-							<strong>{IssueIncludeLabel}</strong>{" "}{IssueIncludeText}
-						</p>
-					</div>
+				<h2 class="contact-sale__heading" id="open-issue">{OpenIssueHeading}</h2>
+
+				<p class="contact-sale__prose">{OpenIssueDescription}</p>
+
+				<div class="contact-sale__inset">
+					<p class="contact-sale__inset-text">
+						<strong>{IssueIncludeLabel}</strong>{" "}{IssueIncludeText}
+					</p>
 				</div>
 			</div>
 
-			<div class="contact-sale__aside">
-				<div class="contact-sale__card StaccatoBorderShimmer StaccatoCard">
+			<div class="PageShell__row" style="--row-tracks:3">
+				<div
+					class="contact-sale__card StaccatoBorderShimmer StaccatoCard"
+					id="includes"
+				>
 					<h3 class="contact-sale__subheading">
 						{T("common.sales.features.heading", {
 							defaultValue: "What Enterprise Includes",
@@ -199,7 +285,10 @@ const OpenSourceDescription = OneLine(
 					</ul>
 				</div>
 
-				<div class="contact-sale__card StaccatoBorderShimmer StaccatoCard">
+				<div
+					class="contact-sale__card StaccatoBorderShimmer StaccatoCard"
+					id="direct"
+				>
 					<a class="contact-sale__route" href="/Contact/Deals"
 						>{T("common.sales.contact.dealsButton", {
 							defaultValue: "Enterprise Sales form (DEALS)",
@@ -219,18 +308,21 @@ const OpenSourceDescription = OneLine(
 					<p class="contact-sale__prose">{OperatedBy}</p>
 				</div>
 
-				<div class="contact-sale__card StaccatoBorderShimmer StaccatoCard">
+				<div
+					class="contact-sale__card StaccatoBorderShimmer StaccatoCard"
+					id="open-source"
+				>
 					<h3 class="contact-sale__subheading">{OpenSourceHeading}</h3>
 
 					<p class="contact-sale__prose">{OpenSourceDescription}</p>
 				</div>
 			</div>
-		</div>
 
-		<div class="contact-sale__top">
-			<a class="StaccatoButton" href="#top"
-				>{BackToTop}<span class="InlineSeparator">↑</span></a
-			>
+			<div class="contact-sale__top">
+				<a class="StaccatoButton" href="#top"
+					>{BackToTop}<span class="InlineSeparator">↑</span></a
+				>
+			</div>
 		</div>
-	</div>
+	</PageShell>
 </ContactPage>

@@ -61,7 +61,7 @@ const SpecimenLabel: React.FC<SpecimenLabelProps> = ({
 		<div className={cn("flex flex-col", className)}>
 			{showHeader && (
 				<div className="flex items-start justify-between gap-3">
-					<span className="font-mono text-sm font-medium uppercase tracking-[0.2em] text-card-foreground">
+					<span className="font-mono text-sm font-medium uppercase tracking-rule text-card-foreground">
 						# {Index}
 					</span>
 					<FieldRecordSeal
@@ -80,7 +80,7 @@ const SpecimenLabel: React.FC<SpecimenLabelProps> = ({
 						<p
 							key={Line}
 
-							className="font-mono text-sm font-medium uppercase leading-none tracking-[0.15em] text-card-foreground"
+							className="font-mono text-sm font-medium uppercase leading-none tracking-rule text-card-foreground"
 						>
 							<StampText Line={Line} />
 						</p>
@@ -94,7 +94,7 @@ const SpecimenLabel: React.FC<SpecimenLabelProps> = ({
 						<p
 							key={Line}
 
-							className="font-mono text-sm uppercase leading-none tracking-[0.15em]"
+							className="font-mono text-sm uppercase leading-none tracking-rule"
 						>
 							<RouteText Line={Line} />
 						</p>
@@ -104,7 +104,7 @@ const SpecimenLabel: React.FC<SpecimenLabelProps> = ({
 
 			{record.Program?.length ? (
 				<div className="mt-3 border-t border-border pt-3">
-					<p className="font-mono text-xs uppercase tracking-[0.25em] text-card-foreground opacity-60">
+					<p className="font-mono text-meta uppercase tracking-rule text-card-foreground opacity-60">
 						{record.Program.join("\u2001")}
 					</p>
 				</div>
@@ -118,7 +118,7 @@ const SpecimenLabel: React.FC<SpecimenLabelProps> = ({
 
 							target="_blank"
 							rel="noopener noreferrer"
-							className="inline-flex items-center gap-1.5 font-mono text-lg font-medium uppercase leading-tight tracking-[0.1em] text-card-foreground hover:underline"
+							className="inline-flex items-center gap-1.5 font-mono text-lg font-medium uppercase leading-tight tracking-row text-card-foreground hover:underline"
 						>
 							{record.Title}:
 							<ExternalLink
@@ -127,7 +127,7 @@ const SpecimenLabel: React.FC<SpecimenLabelProps> = ({
 							/>
 						</a>
 					) : (
-						<p className="font-mono text-lg font-medium uppercase leading-tight tracking-[0.1em] text-card-foreground">
+						<p className="font-mono text-lg font-medium uppercase leading-tight tracking-row text-card-foreground">
 							{record.Title}:
 						</p>
 					)}
@@ -141,7 +141,7 @@ const SpecimenLabel: React.FC<SpecimenLabelProps> = ({
 			)}
 
 			<div className="mt-3 border-t border-border pt-3">
-				<p className="font-mono text-sm font-medium uppercase tracking-[0.2em]">
+				<p className="font-mono text-sm font-medium uppercase tracking-rule">
 					<StatusText
 						value={record.Status.Value}
 						active={
@@ -156,10 +156,10 @@ const SpecimenLabel: React.FC<SpecimenLabelProps> = ({
 				<div className="mt-3 border-t border-border pt-3">
 					{record.Metadata.map((Row) => (
 						<div key={Row.Label} className="flex gap-3 py-0.5">
-							<span className="w-28 shrink-0 whitespace-nowrap font-mono text-sm uppercase tracking-[0.1em] text-card-foreground opacity-60">
+							<span className="w-28 shrink-0 whitespace-nowrap font-mono text-sm uppercase tracking-row text-card-foreground opacity-60">
 								{Row.Label}:
 							</span>
-							<span className="font-mono text-sm font-medium uppercase tracking-[0.15em] text-card-foreground">
+							<span className="font-mono text-sm font-medium uppercase tracking-rule text-card-foreground">
 								{Row.Value}
 							</span>
 						</div>

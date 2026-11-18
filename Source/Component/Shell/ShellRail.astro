@@ -1,0 +1,184 @@
+---
+/**
+ * ShellRail - the rail primitive: a register line and rows, in a track beside the
+ * page's main column.
+ *
+ * Every page that has a rail on this site grew its own: the manual's tree, the
+ * legal clause list, the dashboard's ten regions, the contact record column. They
+ * print the same three things - a name, a count, and rows of `[mark] [label]
+ * [meta]` - and they were five implementations of one object. This is the object.
+ *
+ * ─── THE ROW GRAMMAR ──────────────────────────────────────────────────────
+ * A row is `[mark] [label] [meta]`, and the mark column is reserved on every row
+ * so the labels align whether or not a row carries one. The marks are the
+ * grammar's own: `§07` for a clause, `03` for a position, `/` for a destination,
+ * `✓` for the row in force, `◎` for one that is gone. A row without a mark is a
+ * row whose label is the whole fact, and it still gets the column.
+ *
+ * ─── CURRENT IS NOT A HUE ─────────────────────────────────────────────────
+ * The row in force carries `aria-current="location"` (or `"page"`), a 2px accent
+ * rule on its leading edge - the same marker the header's active route uses - and
+ * ink at 500. Three signals, one of them a colour, so the state survives
+ * greyscale and a screen reader.
+ *
+ * ─── NARROW IS RE-COMPOSITION ─────────────────────────────────────────────
+ * Below the shell's rail breakpoint the rail does not shrink into a column of
+ * ellipses: it becomes a ruled register *above* the main track, at the main's own
+ * measure, with its rows still in reading order. The `order` property moves it;
+ * nothing is hidden and nothing is folded away. A rail of five to fourteen rows
+ * is short enough to print, and a disclosure that hides the only navigation on a
+ * phone is a worse answer than a list.
+ *
+ * ─── WHAT IT DOES NOT DO ──────────────────────────────────────────────────
+ * - It does not scroll-spy. The current row is printed by the page, from the same
+ *   data the content is built from - the site's rule since the frame: position is
+ *   printed, not computed, so it is right at first paint and with JavaScript off.
+ * - It does not paint a surface. The rail lies on the creme field; its hairlines
+ *   are `--Divider` (20% ink), the site's one rule ink.
+ * - It holds no blocks. A rail is a register of destinations; a card in a rail is
+ *   a second page in the margin.
+ *
+ * No script and no hydration.
+ */
+interface RailItem {
+	/** The mark column: `§07`, `03`, `/`, `✓`, `◎`. Optional, the column stays. */
+	readonly mark?: string;
+
+	/** The row's label, printed as given (the rail never re-cases it). */
+	readonly label: string;
+
+	/** The value cell: a count, a state word, a window, a source. */
+	readonly meta?: string;
+
+	/** Where the row goes. Absent, the row is a statement rather than a link. */
+	readonly href?: string;
+
+	/** Whether this row is the reader's position. */
+	readonly current?: boolean;
+
+	/** One line under the label, when the row needs a qualification. */
+	readonly note?: string;
+}
+
+interface Props {
+	/** The rail's accessible name and its printed register word: `ON THIS PAGE`. */
+	label: string;
+
+	/** The register line's count, printed after the label: `07`, `26`, `UNAVAILABLE`. */
+	count?: string | number;
+
+	/** The rows, in reading order. */
+	items: readonly RailItem[];
+
+	/** The rail's closing row: a destination the rail itself does not list. */
+	foot?: {
+		readonly label: string;
+		readonly href: string;
+	};
+
+	/**
+	 * `location` for a rail of positions inside this page, `page` for a rail of
+	 * destinations between pages. It decides the `aria-current` value, and
+	 * nothing else.
+	 */
+	current?: "location" | "page";
+
+	/** Stick the rail under the running head at the wide container. Default true. */
+	sticky?: boolean;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const {
+	label,
+	count,
+	items,
+	foot,
+	current = "location",
+	sticky = true,
+	class: ClassName,
+} = Astro.props;
+
+const Count = count === undefined ? null : String(count);
+---
+
+<nav
+	class:list={["ShellRail", sticky ? "ShellRail--sticky" : null, ClassName]}
+	aria-label={label}
+>
+	<p class="ShellRail__head">
+		<span class="ShellRail__mark" aria-hidden="true">#</span>
+		<span class="ShellRail__label">{label}</span>
+		{
+			Count !== null ? (
+				<>
+					<span class="ShellRail__sep" aria-hidden="true">
+						{"\u2001"}
+					</span>
+					<span class="ShellRail__count">{Count}</span>
+				</>
+			) : null
+		}
+	</p>
+
+	<ol class="ShellRail__list">
+		{
+			items.map((Item) => (
+				<li class="ShellRail__item">
+					{Item.href ? (
+						<a
+							class="ShellRail__row"
+							href={Item.href}
+							aria-current={Item.current ? current : undefined}
+						>
+							<span class="ShellRail__row-mark" aria-hidden="true">
+								{Item.mark ?? ""}
+							</span>
+							<span class="ShellRail__row-body">
+								<span class="ShellRail__row-label">{Item.label}</span>
+								{Item.note ? (
+									<span class="ShellRail__row-note">{Item.note}</span>
+								) : null}
+							</span>
+							{Item.meta ? (
+								<span class="ShellRail__row-meta">{Item.meta}</span>
+							) : null}
+						</a>
+					) : (
+						<span
+							class="ShellRail__row ShellRail__row--statement"
+							aria-current={Item.current ? current : undefined}
+						>
+							<span class="ShellRail__row-mark" aria-hidden="true">
+								{Item.mark ?? ""}
+							</span>
+							<span class="ShellRail__row-body">
+								<span class="ShellRail__row-label">{Item.label}</span>
+								{Item.note ? (
+									<span class="ShellRail__row-note">{Item.note}</span>
+								) : null}
+							</span>
+							{Item.meta ? (
+								<span class="ShellRail__row-meta">{Item.meta}</span>
+							) : null}
+						</span>
+					)}
+				</li>
+			))
+		}
+	</ol>
+
+	{
+		foot ? (
+			<p class="ShellRail__foot">
+				<a class="ShellRail__foot-link" href={foot.href}>
+					{foot.label}
+					<span class="ShellRail__foot-arrow" aria-hidden="true">
+						&rarr;
+					</span>
+				</a>
+			</p>
+		) : null
+	}
+</nav>

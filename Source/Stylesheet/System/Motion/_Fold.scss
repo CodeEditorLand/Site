@@ -1,0 +1,364 @@
+@use "../Mixin" as *;
+
+// ─── THE FOLD ──────────────────────────────────────────────────────────────
+//
+// A disclosure with content behind it: `<details>`, a register line as the
+// summary, and a run of leaves. The site already has two disclosures - the
+// contents `Fold` (`UI/_Fold.scss`, a page's own sections) and the rail's tree -
+// and both of them are *navigation*. This one is the general case: anything that
+// was written down and is being kept closed until asked for.
+//
+// ─── THE FOLD DOES NOT GROW. IT UNFOLDS. ──────────────────────────────────
+// The obvious implementation is a box that grows: `grid-template-rows: 0fr` to
+// `1fr`, or a `block-size` transition. Both are layout animations, and a layout
+// animation reflows every band under the disclosure while the reader watches -
+// which `_Motion.scss` forbids and which is also simply the wrong picture. A
+// sheet of paper does not get taller when you open it.
+//
+// So the space is claimed in one frame, when `[open]` flips, and the motion is
+// in the leaves: each one lifts 6px into its own place, 24ms after the one above
+// it. The eye follows the content arriving, not the box edge moving, and the
+// reflow happens at the exact moment the reader asked for it. Nothing animates
+// on load, because no `<details>` on the site carries `open` in its markup.
+//
+// ─── THE STAGGER STOPS AT SIX ─────────────────────────────────────────────
+// A fold of forty rows that staggered forty times would take a second to open,
+// and the last row would arrive after the reader had already started reading the
+// first. Six leaves carry the gesture; the seventh and every one after it share
+// the sixth's delay, so a long fold opens as a gesture and a run.
+//
+// ─── THE TWO WORDS AND THE TWO GLYPHS ARE A RESOLVE ───────────────────────
+// The summary prints the action (`OPEN`) and, once open, the action that
+// reverses it (`CLOSE`). Both are always in the markup, in the same grid cell,
+// and one fades out as the other fades in - a printed state giving way to
+// another, which is `resolve` and not a swap. The glyphs do the same with the
+// grammar's two marks: `→` is progression (there is more this way), `↳` is
+// relation (this belonged to the line above). Reduced motion keeps both end
+// states and loses only the crossfade.
+//
+// ─── THE ADVERSE ARMS ─────────────────────────────────────────────────────
+// empty     the fold opens onto a `◎` line that says what would be here and why
+//           it is not. A fold that opened onto nothing would be indistinguishable
+//           from a fold that failed.
+// loading   the leaves are the keys at their label register with their values
+//           barred (`MotionSkeleton__Bar`). No spinner: a spinner says something
+//           is happening, a skeleton says what.
+// too much  `--long` caps the run at 60vh with its own scroll; the count in the
+//           summary still prints the whole number, so the fold is honest about
+//           being bigger than its frame.
+// too long  a label wraps inside its own cell and never pushes the meta off the
+//           row; `overflow-wrap: anywhere` is the only rule needed because the
+//           grid column is `minmax(0, 1fr)`.
+// missing   a leaf whose target is gone keeps its row, takes `◎`, muted ink and
+//           no link, and prints `WAS:` in the meta cell. A dead link is not a
+//           tombstone.
+
+.MotionFold {
+	display: block;
+
+	min-inline-size: 0;
+
+	padding-block: 0;
+
+	border-block-start: 1px solid var(--Divider);
+}
+
+// ─── the summary ──────────────────────────────────────────────────────────
+
+.MotionFold__Summary {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	padding-block: var(--space-tight);
+
+	cursor: pointer;
+
+	list-style: none;
+
+	&::-webkit-details-marker {
+		display: none;
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--Ring);
+		outline-offset: 2px;
+	}
+}
+
+.MotionFold__Mark {
+	@include mono-meta;
+
+	flex: none;
+}
+
+.MotionFold__Name {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.MotionFold__Rule {
+	@include mono-meta;
+
+	flex: none;
+}
+
+.MotionFold__Count {
+	@include mono-meta;
+
+	color: var(--Foreground);
+	font-weight: 500;
+}
+
+// The words and the glyphs share one cell each, so the swap costs no width and
+// the summary cannot jump when the state changes.
+.MotionFold__Words,
+.MotionFold__Glyphs {
+	display: inline-grid;
+
+	margin-inline-start: auto;
+
+	place-items: center;
+}
+
+.MotionFold__Word,
+.MotionFold__Glyph {
+	grid-area: 1 / 1;
+
+	@include motion-resolve;
+}
+
+.MotionFold__Word {
+	@include mono-meta;
+	@include track(var(--track-rule));
+}
+
+.MotionFold__Glyph {
+	@include mono-meta;
+
+	color: var(--Foreground);
+}
+
+.MotionFold__Word--close,
+.MotionFold__Glyph--open {
+	opacity: 0;
+}
+
+.MotionFold[open] {
+	& .MotionFold__Word--open,
+	& .MotionFold__Glyph--closed {
+		opacity: 0;
+	}
+
+	& .MotionFold__Word--close,
+	& .MotionFold__Glyph--open {
+		opacity: 1;
+	}
+}
+
+// ─── the leaves ───────────────────────────────────────────────────────────
+
+.MotionFold__Leaves {
+	display: flex;
+	flex-direction: column;
+
+	margin: 0;
+	padding: 0 0 var(--space-tight);
+
+	list-style: none;
+}
+
+.MotionFold__Leaves--long {
+	max-block-size: 60vh;
+
+	overflow-y: auto;
+
+	overscroll-behavior: contain;
+}
+
+.MotionFold__Leaf {
+	display: grid;
+	grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	min-inline-size: 0;
+
+	padding-block: var(--space-tight);
+
+	border-block-start: 1px solid var(--Border);
+}
+
+.MotionFold__Leaf:first-child {
+	border-block-start: 0;
+}
+
+.MotionFold__LeafIndex {
+	@include mono-meta;
+
+	color: var(--MuteForeground);
+}
+
+.MotionFold__Label {
+	min-inline-size: 0;
+
+	overflow-wrap: anywhere;
+
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+
+	color: var(--Foreground);
+}
+
+.MotionFold__Link {
+	color: inherit;
+
+	text-decoration: none;
+
+	&:hover,
+	&:focus-visible {
+		text-decoration: underline;
+		text-decoration-thickness: 2px;
+		text-underline-offset: 0.25em;
+		text-decoration-color: color-mix(
+			in srgb,
+			var(--CardForeground) 20%,
+			transparent
+		);
+	}
+}
+
+.MotionFold__Note {
+	display: block;
+
+	margin-block-start: 0.125rem;
+
+	@include mono-meta;
+
+	overflow-wrap: anywhere;
+}
+
+.MotionFold__Meta {
+	@include mono-meta;
+
+	justify-self: end;
+
+	white-space: nowrap;
+}
+
+.MotionFold__Leaf--gone {
+	& .MotionFold__Label,
+	& .MotionFold__Meta {
+		color: var(--MuteForeground);
+	}
+}
+
+.MotionFold__Leaf--gone .MotionFold__LeafIndex {
+	color: var(--MuteForeground);
+}
+
+// ─── the arrival ──────────────────────────────────────────────────────────
+
+/* The generic disclosure reveal in `System/_Motion.scss` fades every child of an
+   open `<details>`. On this block that would fade the whole body *and* let the
+   leaves stagger inside it, which flattens the one gesture the class exists for:
+   the body would arrive as a block and the leaves would look like they came with
+   it. So the block stands the generic rule down for its own body and keeps the
+   per-leaf arrival below - the same relationship (`reveal`), aimed at the leaves
+   instead of the box. */
+.MotionFold[open] > .MotionFold__Leaves,
+.MotionFold[open] > .MotionFold__Empty {
+	animation: none;
+}
+
+/* `both` is what makes the stagger a stagger: a leaf holds its start value
+   during its own delay instead of appearing early. The end keyframe is implicit
+   (the element's own opacity and transform), so an animation that never runs -
+   reduced motion, or a browser that drops it - leaves the leaf exactly where the
+   design puts it. */
+@keyframes fold-leaf-in {
+	from {
+		opacity: 0;
+
+		transform: translateY(calc(var(--motion-fold-leaf-travel) * -1));
+	}
+}
+
+.MotionFold[open] .MotionFold__Leaf {
+	@media (prefers-reduced-motion: no-preference) {
+		animation: fold-leaf-in var(--motion-fold-duration)
+			var(--motion-fold-easing) both;
+
+		animation-delay: calc(
+			var(--fold-index, 0) * var(--motion-fold-leaf-step)
+		);
+	}
+}
+
+@for $Leaf from 1 through 6 {
+	.MotionFold__Leaf:nth-child(#{$Leaf}) {
+		--fold-index: #{$Leaf - 1};
+	}
+}
+
+/* The cap: leaf seven and beyond inherit the sixth delay. Written as one rule
+   after the loop so it wins on order, and it is the only place the number six
+   appears outside the token. */
+.MotionFold__Leaf:nth-child(n + 7) {
+	--fold-index: 5;
+}
+
+// ─── the empty arm ────────────────────────────────────────────────────────
+
+.MotionFold__Empty {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+
+	padding-block: var(--space-reading);
+
+	border-block-start: 1px solid var(--Border);
+}
+
+.MotionFold__EmptyMark {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0;
+
+	color: var(--Foreground);
+
+	& b {
+		font-weight: 400;
+	}
+}
+
+.MotionFold__EmptyLine {
+	margin: 0;
+
+	max-inline-size: var(--MeasureOpening);
+
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+
+	color: var(--MuteForeground);
+}
+
+// ─── narrow ───────────────────────────────────────────────────────────────
+
+@media (max-width: 639px) {
+	.MotionFold__Leaf {
+		grid-template-columns: 2.25rem minmax(0, 1fr);
+	}
+
+	.MotionFold__Meta {
+		grid-column: 2;
+		grid-row: 2;
+
+		justify-self: start;
+
+		white-space: normal;
+	}
+}

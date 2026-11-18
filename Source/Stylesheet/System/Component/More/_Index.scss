@@ -1,0 +1,13 @@
+// The "more" surfaces' stylesheet loader.
+//
+// Four partials, one subject each: the pages' own rules (`Page`), the board
+// (`Board`), the lexicon (`Lexicon`) and the routing register (`Onward`). Loaded
+// from `System/Component/_Index.scss` in the same block as the other page
+// surfaces, because these are page surfaces and not a new layer.
+//
+// Order matters once: `Page` writes the shell adjustment the other three are
+// composed inside, so it loads first.
+@use "Page";
+@use "Board";
+@use "Lexicon";
+@use "Onward";

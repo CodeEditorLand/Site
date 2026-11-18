@@ -1,43 +1,51 @@
 ---
 /**
- * BlogIndex - the blog's archive page: a centred header and the articles in a
- * three-column grid.
+ * BlogIndex - the blog's archive page: a centred header, a full-bleed plate of
+ * the archive's extent, and the articles in a three-column grid.
  *
- * The shape is the baseline render's, and the baseline is the acceptance
- * criterion here:
+ * ─── THE COMPOSITION ─────────────────────────────────────────────────────
+ * Three gears, and the page changes gear between them:
  *
- *   breadcrumb
- *   header          the page's only h1, centred, and one line under it
- *   grid            8 cards in `1 / 2 / 3` columns, each a whole-card link
- *   back to top
+ *   open     the trail and the centred header (the baseline's, unchanged)
+ *   plate    a full-bleed instrument: `# BLOG / 08 ENTRIES` and four measured
+ *            facts, edge to edge, with the caption in a channel beside it
+ *   archive  the eight-card grid, on the baseline's measure
  *
- * The grid is deliberately not a row ledger. A row per article was this page's
- * previous shape, on the argument that eight articles in a three-across grid
- * leave a hole in the last row; the page a reader remembers is the grid, the
- * hole included, and the design document's preference for rows is reported as a
- * conflict rather than applied (see the card's fidelity rule: the baseline wins).
+ * The plate is the one full-width element on any page of the site that is not a
+ * hero: its rules run to the viewport edge, its content stays on the container's
+ * gutters, and its caption sits in a channel at the right rather than under it.
+ * That is the gear change - a centred poster head, then a wide ruled plate, then
+ * the grid - and it is why this page no longer reads as a header with cards
+ * under it.
  *
- * Four decisions inside the card:
+ * The plate is a `RecordFigure` with its composed arm: the media is the page's
+ * own register (a label and four `dt`/`dd` rows), not a picture. The information
+ * type is evidence - *what this archive is, measured* - and a figure whose
+ * evidence is its own figures is exactly what the block's caption channel was
+ * built for. When the collection is empty the same plate prints the tombstone
+ * (`STATUS: UNAVAILABLE`) instead of four zeroes: a zero is a claim, and an
+ * empty archive is not zero entries of something.
  *
- * - **The whole card is the link.** The anchor wraps the article, so a click
- *   anywhere in the card opens it - the baseline's own behaviour, and the reason
- *   the title is not a second nested link.
- * - **The title is the card's `h3`.** Eight titles under one `h1` are the page's
- *   third level, not its second: the grid has no heading of its own, so an `h2`
- *   per card would invent a section that does not exist.
- * - **The tags are `jelly-badge` elements on a transparent fill.** The baseline
- *   printed them as plain ink chips; the Jelly element carries the same ink and
- *   the same quiet padding, and it is the site's one form for a term badge.
- * - **The footer row carries the author, the date and the reading time.** The
- *   baseline printed the author at the left and the reading time at the right;
- *   the date sits between them, because it is a fact this archive carries and the
- *   baseline's own article pages print.
+ * ─── THE GRID IS THE KEEPER ──────────────────────────────────────────────
+ * Eight cards in `1 / 2 / 3` columns, each a whole-card link, the last row's
+ * hole included. Nothing about the grid changed. The plate is added above it and
+ * the header keeps its `mb-24`, so the first screen still shows the heading and
+ * the top edge of the first row.
  *
  * No script and no hydration directive: the index is static.
  */
+import RecordFigure from "../Record/RecordFigure.astro";
 import ContactBreadcrumb from "../Contact/ContactBreadcrumb.astro";
 
 import type { BlogRow, BlogTrailItem } from "./Type.js";
+import type { FieldRecordStatusState } from "../Brand/FieldRecordStatus";
+
+/** One measure on the plate: a label, a figure and its unit. */
+interface PlateMeasure {
+	readonly label: string;
+	readonly value: string;
+	readonly unit?: string;
+}
 
 interface Props {
 	/** The trail above the opening. The last crumb is this page. */
@@ -63,6 +71,21 @@ interface Props {
 
 	/** Its target - the page's own top. */
 	backHref: string;
+
+	/**
+	 * The plate's register line: `# BLOG / 08 ENTRIES`. The count is the page's,
+	 * derived from the collection - the block prints it verbatim.
+	 */
+	plateLabel: string;
+
+	/** The plate's four measures, each counted from the collection. */
+	plateMeasures: readonly PlateMeasure[];
+
+	/** What the plate is the extent of, at caption weight. */
+	plateCaption: string;
+
+	/** Where the figures came from. */
+	plateSource: string;
 }
 
 const {
@@ -74,10 +97,22 @@ const {
 	emptyNote,
 	backLabel,
 	backHref,
+	plateLabel,
+	plateMeasures,
+	plateCaption,
+	plateSource,
 } = Astro.props;
 
 /** The one heading id the grid's `aria-labelledby` points at. */
 const HeadingID = "BlogPostsHeading";
+
+/**
+ * The plate's state. An empty archive is not a plate of zeroes: it is evidence
+ * that is not there, so the figure prints the vocabulary's word instead of four
+ * figures that would each be a claim.
+ */
+const PlateState: FieldRecordStatusState | undefined =
+	rows.length === 0 ? "unavailable" : undefined;
 
 /**
  * The card's seed scatter: the baseline's cards sat very slightly rotated and
@@ -90,65 +125,101 @@ const Seed = (Position: number): string =>
 ---
 
 <div class="blog-index">
-	<ContactBreadcrumb trail={trail} class="blog-index__trail" />
+	<div class="blog-index__open">
+		<ContactBreadcrumb trail={trail} class="blog-index__trail" />
 
-	<header class="blog-index__head">
-		<h1 class="blog-index__heading" id={HeadingID}>{heading}</h1>
-		{standfirst ? <p class="blog-index__standfirst">{standfirst}</p> : null}
-	</header>
+		<header class="blog-index__head">
+			<h1 class="blog-index__heading" id={HeadingID}>{heading}</h1>
+			{standfirst ? <p class="blog-index__standfirst">{standfirst}</p> : null}
+		</header>
+	</div>
 
-	{
-		rows.length === 0 ? (
-			<div class="blog-index__empty">
-				<p class="blog-index__empty-title">{emptyTitle}</p>
-				<p class="blog-index__empty-note">{emptyNote}</p>
-			</div>
-		) : (
-			<section class="blog-index__archive" aria-labelledby={HeadingID}>
-				<ul class="blog-index__grid">
-					{rows.map((Row, Position) => (
-						<li class="blog-index__item">
-							<a class="blog-index__link" href={Row.href}>
-								<article
-									class="blog-index__card StaccatoCard"
-									style={Seed(Position)}
-								>
-									{Row.tags.length > 0 ? (
-										<ul class="blog-index__tags">
-											{Row.tags.map((Tag) => (
-												<li class="blog-index__tag">
-													<jelly-badge
-														variant="platinum"
-														shape="square"
-														style="--jelly-fill:transparent;--jelly-label:var(--CardForeground);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
-													>
-														{Tag}
-													</jelly-badge>
-												</li>
-											))}
-										</ul>
-									) : null}
+	<div class="blog-index__plate">
+		<div class="blog-index__plate-inner">
+			<RecordFigure
+				caption={plateCaption}
+				provenance={plateSource}
+				captionPlacement="channel"
+				state={PlateState}
+			>
+				<div class="blog-index__register">
+					<p class="blog-index__register-label"># {plateLabel}</p>
+					<dl class="blog-index__register-rows">
+						{
+							plateMeasures.map((Measure) => (
+								<div class="blog-index__register-row">
+									<dt class="blog-index__register-key">{Measure.label}:</dt>
+									<dd class="blog-index__register-value">
+										{Measure.value}
+										{Measure.unit ? (
+											<span class="blog-index__register-unit">
+												{Measure.unit}
+											</span>
+										) : null}
+									</dd>
+								</div>
+							))
+						}
+					</dl>
+				</div>
+			</RecordFigure>
+		</div>
+	</div>
 
-									<h3 class="blog-index__title">{Row.title}</h3>
-									<p class="blog-index__summary">{Row.summary}</p>
+	<div class="blog-index__archive-wrap">
+		{
+			rows.length === 0 ? (
+				<div class="blog-index__empty">
+					<p class="blog-index__empty-title">{emptyTitle}</p>
+					<p class="blog-index__empty-note">{emptyNote}</p>
+				</div>
+			) : (
+				<section class="blog-index__archive" aria-labelledby={HeadingID}>
+					<ul class="blog-index__grid">
+						{rows.map((Row, Position) => (
+							<li class="blog-index__item">
+								<a class="blog-index__link" href={Row.href}>
+									<article
+										class="blog-index__card StaccatoCard"
+										style={Seed(Position)}
+									>
+										{Row.tags.length > 0 ? (
+											<ul class="blog-index__tags">
+												{Row.tags.map((Tag) => (
+													<li class="blog-index__tag">
+														<jelly-badge
+															variant="platinum"
+															shape="square"
+															style="--jelly-fill:transparent;--jelly-label:var(--CardForeground);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
+														>
+															{Tag}
+														</jelly-badge>
+													</li>
+												))}
+											</ul>
+										) : null}
 
-									<p class="blog-index__foot">
-										<span class="blog-index__author">{Row.author}</span>
-										<time class="blog-index__date" datetime={Row.date}>
-											{Row.date}
-										</time>
-										<span class="blog-index__read">{Row.readTime}</span>
-									</p>
-								</article>
-							</a>
-						</li>
-					))}
-				</ul>
-			</section>
-		)
-	}
+										<h3 class="blog-index__title">{Row.title}</h3>
+										<p class="blog-index__summary">{Row.summary}</p>
 
-	<p class="blog-index__back">
-		<a href={backHref}>{backLabel}<span aria-hidden="true"> ↑</span></a>
-	</p>
+										<p class="blog-index__foot">
+											<span class="blog-index__author">{Row.author}</span>
+											<time class="blog-index__date" datetime={Row.date}>
+												{Row.date}
+											</time>
+											<span class="blog-index__read">{Row.readTime}</span>
+										</p>
+									</article>
+								</a>
+							</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+
+		<p class="blog-index__back">
+			<a href={backHref}>{backLabel}<span aria-hidden="true"> ↑</span></a>
+		</p>
+	</div>
 </div>

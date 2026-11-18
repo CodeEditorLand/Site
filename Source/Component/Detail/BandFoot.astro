@@ -1,0 +1,97 @@
+---
+/**
+ * BandFoot - the band's colophon: one rule, the references, the folio.
+ *
+ * ─── WHY THIS COMPOSITION EXISTS ──────────────────────────────────────────
+ * No page closed a band this way. A band ended on a footnote (a source line) or
+ * on the next band's air, and the two things a printed document puts at the foot
+ * of a subject - what else says this, and where you have got to - were printed
+ * nowhere. This is one rule at the band's own edge, the cross-references at its
+ * left end and the folio at its right: the smallest composition on the site, and
+ * the one that makes a band read as a page of a document.
+ *
+ * ─── WHY IT IS NOT A FOOTNOTE ─────────────────────────────────────────────
+ * A footnote is one muted caption about the block above it. The foot is two
+ * registers, one of them interactive, at the band's two ends. A band may print
+ * both: the footnote for provenance, the foot for apparatus. What it may not do
+ * is print the foot twice - one foot per band, at the band's end.
+ *
+ * ─── THE SURFACE SWITCH ───────────────────────────────────────────────────
+ * `band` (the default) is the paper: the rule bleeds to the band's edge. `card`
+ * is inside a white information box, where the card's frame is already the
+ * boundary - the rule then draws the separator's ink and stays inside the card's
+ * own inset, because a rule that ran to the card's edge would be a second frame.
+ *
+ * ─── NO SCRIPT ────────────────────────────────────────────────────────────
+ * No `<script>`, no `client:*`. The composition is three printed things.
+ */
+import Folio from "./Folio.astro";
+import See from "./See.astro";
+
+import type { DetailFigure, SeeItem } from "./Type.js";
+
+interface Props {
+	/** The band's ordinal, as a two-digit string: `03`. */
+	index: string;
+
+	/** The part of the document: `/LEGAL`, `/THE EDITION`. */
+	part: string;
+
+	/** The cross-references. Absent, the foot is a folio alone. */
+	see?: readonly SeeItem[];
+
+	/** The `See` register's label. Defaults to `SEE`. */
+	seeLabel?: string;
+
+	/** What the band holds, as a figure with its unit. */
+	figure?: DetailFigure;
+
+	/** What the band holds, when it is not a number. */
+	count?: string;
+
+	/** The date the band's facts were read (`YYYY-MM-DD`). */
+	asOf?: string;
+
+	/** The file the facts were read from. */
+	source?: string;
+
+	/** `band` bleeds the rule to the paper; `card` keeps it inside a white box. */
+	surface?: "band" | "card";
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const {
+	index,
+	part,
+	see,
+	seeLabel,
+	figure,
+	count,
+	asOf,
+	source,
+	surface = "band",
+	class: Class,
+} = Astro.props;
+---
+
+<div class:list={["detail-foot", Class]} data-surface={surface}>
+	<div class="detail-foot__row">
+		{
+			see && see.length > 0 && (
+				<See class="detail-foot__see" items={see} label={seeLabel} />
+			)
+		}
+
+		<Folio
+			class="detail-foot__folio"
+			index={index}
+			part={part}
+			figure={figure}
+			count={count}
+			asOf={asOf}
+			source={source}
+		/>
+	</div>
+</div>

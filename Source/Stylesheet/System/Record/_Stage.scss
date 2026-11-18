@@ -2,6 +2,47 @@
 // index, a label, one line and a hairline connector. A stage that needs a
 // paragraph is not a stage.
 //
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  an ordered process: in what order this happens, one line per
+//                   step. A step that needs a paragraph is not a step.
+// RANK              set.
+// SLOT CONTRACT (the `Publishes:` list below is the class API; this is what a
+// caller hands in):
+//   stages[]      -> one step each: `index` (verbatim), `label`, `line`, `href?`
+//   orientation?  -> `row` (the rail runs across the band) or `stack` (down its
+//                    left edge). Below 1024 it is a stack whatever this says.
+// MAY HOLD          nothing. A step is three fields.
+// MAY NOT HOLD      a well, a ledger or a figure per step. A process whose steps
+//                   each carry a command is a `RecordStage` of labels and a
+//                   `RecordWell` per step beside it - not a stage of blocks.
+// NARROW            the rail is a stack: the index holds a fixed 4rem column on
+//                   the left edge, the label and the line read beside it, and the
+//                   hairline separates the steps. That is the base case, not a
+//                   fallback - `--stack` carries no rules of its own.
+// WIDE (>=1024)     `--row` lays the steps side by side and the gutter between
+//                   two of them is the connector's whole length, drawn as each
+//                   item's `::before` hairline. A rail longer than the band holds
+//                   columns wraps into a second row and the connector leads into
+//                   it, rather than squeezing six steps into four columns.
+// DENSE             `orientation="stack"` is the dense reading (one line per step,
+//                   at `--space-tight`). A process with more than six steps is a
+//                   stack, never a smaller row. `variant="plates"` is not a
+//                   density: it is the same steps read as a field rather than as
+//                   a sequence.
+//
+// ─── THE PLATES ───────────────────────────────────────────────────────────
+// The second variant of the same data: each step is its own small instrument,
+// framed, with its number in the corner and its label and line inside. Plates
+// tile two across on wide screens and one across below 768px. They are the right
+// shape when the reader is being told a process and may need to refer back to one
+// step (what happens after a request is sent); the rail is right when the reader
+// follows it (a build).
+//
+// The number is at the `--type-heading` step and the rule register, in a fixed
+// 2.5rem cell: it is a marker, not a title, so it never takes a tier the page's
+// own heading has not earned. The plate's frame is one hairline and no fill -
+// plates on a creme field, or inside a white card, never a card in a card.
+//
 // Publishes:
 //   .record-stage               the stage shell - a markerless list, one column
 //   .record-stage--row          the rail runs across the band (the default)
@@ -10,6 +51,12 @@
 //   .record-stage__index        the rail number, printed as the caller wrote it
 //   .record-stage__label        the step's name - an anchor when the step has an href
 //   .record-stage__line         one line under the label
+//   .record-stage--plates       the same steps as a field of framed instruments
+//   .record-stage__plate        one plate: number cell, label, line
+//   .record-stage__plate-index  the number, printed as the caller wrote it
+//   .record-stage__plate-body   the plate's label and line
+//   .record-stage__plate-label  the step's name inside the plate
+//   .record-stage__plate-line   one line under it
 //
 // Mobile first, and the switch is the `bp()` mixin: below 1024px the rail is a
 // stack whatever the modifier says, because four columns of a sentence are
@@ -69,12 +116,12 @@
 
 .record-stage__index {
 	@include mono-meta;
-	@include track(0.12em);
+	@include track(var(--track-rule));
 }
 
 .record-stage__label {
 	@include mono-meta;
-	@include track(0.1em);
+	@include track(var(--track-row));
 	grid-column: 2;
 	margin: 0;
 	font-size: var(--type-sub);
@@ -132,4 +179,70 @@
 	.record-stage--row .record-stage__item:first-child::before {
 		content: none;
 	}
+}
+
+// ─── THE PLATES ───────────────────────────────────────────────────────────
+// A field of framed instruments: one across, two across from 768px. Each plate
+// is a hairline frame with a 2.5rem number cell at its head, and the label and
+// line under it. No fill: a plate on the creme field is a ruled area, and a
+// plate inside a white card stays unfilled so it is not a card in a card.
+.record-stage--plates {
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-tight);
+}
+
+@include bp(768px) {
+	.record-stage--plates {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--space-reading);
+	}
+}
+
+.record-stage__plate {
+	@include hairline;
+	display: grid;
+	grid-template-columns: 2.5rem minmax(0, 1fr);
+	column-gap: var(--space-reading);
+	align-items: start;
+	min-inline-size: 0;
+	margin: 0;
+	padding: var(--space-reading);
+	list-style: none;
+}
+
+.record-stage__plate-index {
+	@include mono-meta;
+	@include track(var(--track-rule));
+	display: block;
+	padding-block-start: 0.15em;
+	color: var(--Foreground);
+	font-size: var(--type-heading);
+	line-height: 1;
+	letter-spacing: var(--track-rule);
+}
+
+.record-stage__plate-body {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+}
+
+.record-stage__plate-label {
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-row));
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	font-weight: 500;
+	color: var(--Foreground);
+}
+
+.record-stage__plate-line {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
 }

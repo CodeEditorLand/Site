@@ -1,0 +1,11 @@
+// The Trust surface's partials - the site's back matter.
+//
+// One line per file, and the order is the order a reader meets them: the page
+// container, then the clause rail that sits inside it, then the clause itself.
+// The legal reading surface's own rules stay in `Reading/_Document.scss`, which
+// this surface composes; the three files here are the artifacts the back matter
+// adds to it.
+
+@use "Page";
+@use "Contents";
+@use "Clause";

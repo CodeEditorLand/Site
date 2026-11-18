@@ -30,24 +30,35 @@
  *   grid and the Rust page's viewer need the full column, the header still
  *   reads at one measure.
  *
- * What the shell deliberately does NOT render: **a generated contents list.**
- * The one table of contents the baseline rendered was the document's own
- * (`## Table of Contents` in the markdown, which the prose renders in place). A
- * second list above it was the shell's, the baseline article carried none, and
- * it stays gone.
+ * The shell renders the page's own contents in one place: a CSS-only
+ * `<details>` between the strip and the paper, **below** the rail's breakpoint.
+ * Above it the sticky rail carries the same list (`DocLayout`), so the page never
+ * prints two contents lists side by side; below it the rail is not painted at
+ * all, and this is the only signpost the reading column has. The list itself is
+ * `BuildDocToc`'s - the headings `render()` reported, never a second slug
+ * function - and a page with fewer than two sections, or one that carries its own
+ * `## Table of Contents`, passes nothing and renders nothing.
  *
  * The container contract: the shell adds no gutter and no max width of its own:
  * the page owns the one container (`DocLayout` on the rail pages, the page's own
  * class on a page without a rail).
  *
  * The kicker is the section's own name, printed as the caller wrote it and
- * upper-cased by the type role - `Deep Dive` on the page, `DEEP DIVE` on screen.
- * A page with no section (the index itself) passes no kicker at all and renders
- * no paragraph.
+ * upper-cased by the type role - `/Deep Dive` on the page, `/DEEP DIVE` on
+ * screen. A page with no section (the index itself) passes no kicker at all and
+ * renders no paragraph.
  *
- * No script and no hydration directive.
+ * One script, no hydration: `Well.ts` wraps the body's fenced blocks in the
+ * site's own well anatomy and hands them to `WireWells`. It runs after the
+ * markup, it only adds, and with JavaScript off the blocks stay the framed mono
+ * they were.
  */
-import type { DocStripItem } from "./Type.js";
+import type { DocStripItem, DocToc } from "./Type.js";
+import DocContents from "./DocContents.astro";
+
+import RecordPlate from "../Record/RecordPlate.astro";
+
+import type { Plate } from "../Record/Type.js";
 
 interface Props {
 	/** The section's name, e.g. `Deep Dive`. Printed verbatim; upper-cased in CSS. */
@@ -74,8 +85,25 @@ interface Props {
 	 */
 	strip?: readonly DocStripItem[];
 
+	/**
+	 * The page's own contents, for the disclosure between the strip and the
+	 * paper. The shell renders it once, below the rail's breakpoint, where the
+	 * sticky rail is not painted; above it the rail carries the same list and
+	 * this one is hidden. Absent means the page has no sections of its own to
+	 * list (`BuildDocToc` said so), and then nothing is rendered at all.
+	 */
+	contents?: DocToc | null;
+
 	/** Cap the body at the reading measure. Defaults to `true`. */
 	measure?: boolean;
+
+	/**
+	 * The page's plate, when the page is about something the build has a capture
+	 * of (or a manifest for). It prints between the metadata strip and the paper:
+	 * the evidence comes after the page has said what it is and before the prose
+	 * argues it. Absent, the shell renders no plate at all - never an empty frame.
+	 */
+	plate?: Plate | null;
 
 	/**
 	 * The page's position, as a page-level nav. Position is the kicker's job
@@ -95,7 +123,9 @@ const {
 	standfirst,
 	standfirstHtml,
 	strip,
+	contents,
 	measure = true,
+	plate,
 	crumbs,
 	class: Class,
 } = Astro.props;
@@ -161,6 +191,22 @@ const {
 		) : null
 	}
 
+	{
+		plate ? (
+			<div class="doc-article__plate">
+				<RecordPlate plate={plate} />
+			</div>
+		) : null
+	}
+
+	{
+		contents && contents.Items.length > 0 ? (
+			<div class="doc-article__contents">
+				<DocContents toc={contents} variant="disclosure" />
+			</div>
+		) : null
+	}
+
 	<div
 		class:list={[
 			"doc-article__body",
@@ -170,3 +216,9 @@ const {
 		<slot />
 	</div>
 </article>
+
+<script>
+	import { WireDocument } from "./Well.js";
+
+	WireDocument();
+</script>

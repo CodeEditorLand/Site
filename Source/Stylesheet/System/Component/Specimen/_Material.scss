@@ -1,0 +1,185 @@
+// SpecimenMaterial - the stock and the inks, printed as specimens.
+//
+// Publishes:
+//   .specimen-material                the strip
+//   .specimen-material__register      `# MATERIAL 06`
+//   .specimen-material__strip         the six specimens
+//   .specimen-material__swatch        the swatch column: a fill, a word, a rule
+//   .specimen-material__fill          a fill specimen, painted with its own token
+//   .specimen-material__type          an ink specimen: the word set in the ink
+//   .specimen-material__rule          a rule specimen: 1px of --Divider
+//   .specimen-material__name          the specimen's name
+//   .specimen-material__token         the custom property
+//   .specimen-material__value         the value, as the token sheet states it
+//   .specimen-material__use           what it is for
+//
+// ─── AN INK IS SHOWN AS A WORD, NOT AS A CHIP ─────────────────────────────
+// A colour chip proves that a value exists; a word set in the ink proves what the
+// ink does to type. Every specimen therefore uses the same swatch height and
+// prints its own name in its own ink, at the section tier - which is exactly what
+// a printer's specimen sheet does with a second ink.
+//
+// ─── THE WHITE INSERT NEEDS ITS HAIRLINE ──────────────────────────────────
+// `--Card` on `--Background` is 1.09:1 - a fill that is present and invisible,
+// the defect this programme keeps finding. The insert's swatch carries one
+// hairline so the reader can see the edge of the box that the document calls a
+// box. The creme field's swatch carries none: it is the paper, and paper has no
+// edge.
+//
+// ─── SIX COLUMNS, THEN THREE, THEN TWO ────────────────────────────────────
+// Material is scanned, so the strip is dense at the wide container. It reflows
+// to three at 640 and two below it, and it never becomes a single column: a
+// column of six swatches is a palette, and a palette is what this is not.
+@use "../../Mixin" as *;
+
+.specimen-material {
+	margin: 0;
+	min-inline-size: 0;
+}
+
+.specimen-material__register {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	display: flex;
+	align-items: baseline;
+	gap: 0.4em;
+	margin: 0;
+	padding-block-end: 0.5rem;
+
+	@include hairline(bottom);
+}
+
+.specimen-material__register-mark {
+	color: var(--Accent);
+}
+
+.specimen-material__register-word,
+.specimen-material__register-count {
+	color: var(--Foreground);
+}
+
+.specimen-material__strip {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	@include hairline(top);
+
+	@include bp(640px) {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.specimen-material__empty {
+	grid-column: 1 / -1;
+	max-inline-size: var(--Measure);
+	margin: 0;
+	padding-block: var(--space-group);
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.specimen-material__item {
+	display: flex;
+	flex-direction: column;
+	gap: 0.3rem;
+	min-inline-size: 0;
+	padding: var(--space-reading) var(--space-reading) var(--space-group) 0;
+
+	@include hairline(left);
+
+	padding-inline-start: var(--space-reading);
+}
+
+.specimen-material__swatch {
+	display: flex;
+	align-items: flex-end;
+	// Every swatch is as tall as the display tier, so the one XL specimen and
+	// the five section specimens share a baseline across the strip. A ragged row
+	// of swatches would be six specimens that are not being compared.
+	min-block-size: var(--type-display);
+	margin-block-end: var(--space-tight);
+}
+
+.specimen-material__fill {
+	display: block;
+	inline-size: 100%;
+	block-size: 100%;
+
+	@include hairline;
+}
+
+// The insert is the only fill whose edge is drawn: on creme it is otherwise
+// invisible (1.09:1). The field's swatch keeps the hairline off.
+.specimen-material__item[data-kind="fill"]:first-child
+	.specimen-material__fill {
+	border: 0;
+}
+
+.specimen-material__type {
+	display: block;
+	font-family: var(--FontMono);
+	font-size: var(--type-section);
+	line-height: 1;
+	letter-spacing: var(--track-join);
+	font-weight: 500;
+	overflow-wrap: anywhere;
+}
+
+// The page's one XL. It belongs to the primary ink, because the largest type on
+// a specimen sheet should be the material showing itself rather than a title.
+.specimen-material__item[data-scale="display"] .specimen-material__type {
+	font-size: var(--type-display);
+	line-height: var(--type-display-line);
+}
+
+.specimen-material__rule {
+	display: block;
+	inline-size: 100%;
+	block-size: 1px;
+	margin-block-end: 1.6rem;
+	background: var(--Divider);
+}
+
+.specimen-material__name {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-row);
+	text-transform: uppercase;
+	font-weight: 500;
+	color: var(--Foreground);
+}
+
+.specimen-material__token {
+	@include mono-meta;
+
+	margin: 0;
+	letter-spacing: var(--track-set);
+	overflow-wrap: anywhere;
+}
+
+.specimen-material__value {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-body);
+	line-height: 1.2;
+	letter-spacing: var(--track-name);
+	color: var(--Foreground);
+}
+
+.specimen-material__use {
+	margin: var(--space-tight) 0 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.5;
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}

@@ -9,11 +9,16 @@
 //   .hero-band__stack-icon   the tile's glyph, in the tile's own ink
 //   .hero-band__stack-name   the technology's name
 //
-// The strip sits inside `#hero` and after the pair, at the narrower `max-w-5xl`
-// measure: it is a caption under the artifact, not a second band, so it does not
-// get the band rhythm. It is `aria-hidden` in the markup - eight technology names
-// under a hero are decoration for a reader who is being shown what the thing is
-// made of, and every one of the eight is named again, in a record, further down.
+// The strip sits inside `#hero` and after the trace, at the pair's own measure:
+// it is the panel's legend, not a second band, so it does not get the band
+// rhythm. It is `aria-hidden` in the markup - eight technology names under a
+// hero are decoration for a reader who is being shown what the thing is made of,
+// and every one of the eight is named again, in a record, further down.
+//
+// It used to open 5rem below the pair and close 5rem after itself, which made a
+// 227px block of it - a third movement under a two-movement artifact. At 2rem
+// and no tail it is what a legend is: a labelled row of eight chips, read in the
+// margin of the thing it explains.
 //
 // The tile is the one place on the homepage with a hover state: it is the only
 // element in the strip that a pointer can find, and the border is the whole of
@@ -29,29 +34,22 @@
 @use "../../Mixin" as *;
 
 .hero-band__stack {
-	max-inline-size: 64rem;
-	margin-inline: auto;
-	margin-block-start: 5rem;
-	padding-block-end: 5rem;
-	padding-inline: var(--Gutter);
+	padding-inline: clamp(2rem, 5vw, 5rem);
+	margin-block-start: var(--space-group);
 }
 
 .hero-band__stack-label {
 	@include mono-meta;
-	@include track(0.25em);
-	margin: 0 0 0.75rem;
+	@include track(var(--track-rule));
+	margin: 0 0 0.625rem;
 }
 
 .hero-band__stack-grid {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 0.75rem;
+	gap: 0.5rem;
 
 	@include bp(640px) {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-	}
-
-	@include bp(1024px) {
 		grid-template-columns: repeat(4, minmax(0, 1fr));
 	}
 }
@@ -60,11 +58,19 @@
 	display: flex;
 	align-items: center;
 	block-size: 100%;
-	padding: 1rem;
+	padding: 0.625rem 0.75rem;
 	background: var(--Background);
-	border: 1px solid
-		color-mix(in srgb, var(--CardForeground) 20%, transparent);
-	transition: border-color 160ms ease;
+	/* The tile's fill IS the card's fill, so this frame is the only thing that
+	   defines the tile: `--Divider` (20 % ink, 1.50:1), never `--Border`
+	   (8 %, 1.18:1), which reads as a rumour on the same-coloured field
+	   (LOST.md top-ten #1). */
+	border: 1px solid var(--Divider);
+	/* The hover was a hand-rolled 160ms `ease` - a sixth interval and a fourth
+	   curve no relationship named. It is the ENTER pair: the affordance
+	   arriving. */
+	transition-property: border-color;
+	transition-duration: var(--motion-enter-duration);
+	transition-timing-function: var(--motion-enter-easing);
 }
 
 .hero-band__stack-tile:hover {
@@ -88,7 +94,7 @@
 	font-family: var(--FontMono);
 	font-size: var(--type-meta);
 	text-transform: uppercase;
-	letter-spacing: 0.05em;
+	letter-spacing: var(--track-row);
 	color: var(--Foreground);
 	overflow: hidden;
 	text-overflow: ellipsis;

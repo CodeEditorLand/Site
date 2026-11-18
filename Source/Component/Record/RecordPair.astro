@@ -2,38 +2,89 @@
 /**
  * RecordPair - two things read against each other.
  *
- * Two pods of equal height, each a title bar over a body, under one caption
- * shared by both: the shared floor, or the verdict. Use it only where the two
- * sides are read against each other - a pair is one comparison, and two cards
- * that happen to sit side by side are not one.
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  a comparison of two - two readings of one offer, two
+ *                   states of one thing, what a minimum needs against what is
+ *                   recommended. Not a set (that is an Archive or a Matrix) and
+ *                   not two cards that happen to sit side by side: a pair is
+ *                   ONE artifact with two columns.
+ * RANK              frame. The layer's only two-up block.
+ * SLOT CONTRACT     pair.left / pair.right -> one pod each: a title-bar `label`,
+ *                   a `body` (prose) OR a named slot holding one block, and at
+ *                   most one pod marked `subject`
+ *                   pair.caption?          -> the one statement made about both
+ *                   pair.heading?          -> the pod labels' level, when the
+ *                                             pair is a section of a page
+ *                   slot="left" / "right"  -> the pod's body when it is a block
+ *                   surface?               -> `card` (the pair's own white box,
+ *                                             the default) or `bare` (the pair
+ *                                             is structure inside a surface that
+ *                                             is already painted)
+ * MAY HOLD          exactly two pods. Each pod holds prose OR one leaf block
+ *                   (a ledger, a well, a figure, an entry) - never both, never
+ *                   two, never a third pod.
+ * MAY NOT HOLD      a third thing. A pair with three sides is a set, and a set
+ *                   is an Archive, a Matrix or a Stage.
+ * WIDE (>=768)      two columns and a 1px hairline gutter - the keeper hero's
+ *                   own model at block scale: one frame, two panels, one rule
+ *                   between them.
+ * NARROW            the gutter rotates: it becomes a horizontal hairline and
+ *                   the pods stack inside the same frame. The pair stays one
+ *                   artifact when it stacks - it does not become two cards with
+ *                   a gap, which is what "squeezed" would look like.
+ * DENSE             none. Two things are the minimum a comparison can be.
  *
- * One subject per pair: the pod the other is read against. It is marked on the
- * frame (`.record-pair__pod--subject`), never restated in the label. A caller
- * that marks both pods gets the left one and a build-time warning, because two
- * subjects would be two claims and no comparison.
+ * THE SUBJECT IS A BORDER WEIGHT, NOT AN INVERSION. One pod per pair is the one
+ * the other is read against. It is marked by the weight of its own title-bar
+ * rule and by its label's ink - never by an ink-inverted fill, because the
+ * identity reserves the inverted surface for the thing the reader clicks, and a
+ * pod is not an action. A caller that marks both pods gets the left one and a
+ * build-time warning: two subjects are two claims and no comparison.
+ *
+ * THE CAPTION IS THE VERDICT. It is the one statement made about the pair as a
+ * pair - the shared floor, or the conclusion. It spans both columns and sits on
+ * the frame's floor, at caption weight, never at the pods' size: it is a note
+ * about the comparison, not a third pod.
+ *
+ * THE TWO PODS ARE WRITTEN OUT, not mapped. A slot's name is static in Astro, so
+ * the left pod asks for `slot="left"` and the right for `slot="right"` in the
+ * markup; a loop with a computed name would compile and then never render the
+ * block it was handed.
+ *
+ * No `<script>` and no `client:*`: a pair is printed.
  */
-import type { Pair } from "./Type.js";
+import type { Pair, PairPod } from "./Type.js";
 
 interface Props {
 	/** The two pods and the caption they share. */
 	pair: Pair;
+
+	/**
+	 * `card` (the default) paints the pair's own white box and hairline frame -
+	 * one artifact, two columns. `bare` paints nothing: the pair is structure
+	 * inside a surface that is already painted, and a second fill inside a card
+	 * would be a card in a card.
+	 */
+	surface?: "card" | "bare";
+
+	/** Extra classes from the page, appended after the block's own. */
+	class?: string;
 }
 
-const { pair } = Astro.props;
+const { pair, surface = "card", class: Class } = Astro.props;
 
 /**
- * The pair's pods, left first. The order is the component's, not the caller's:
- * the left pod is the one that takes the subject mark when both are marked.
+ * The pod label's element. A pair that is a section of a page prints its labels
+ * at that section's heading level, so the page's outline keeps its count; a pair
+ * that is an artifact prints them as labels. Never an `h1`.
  */
-const Pods = [
-	{ Side: "left", Pod: pair.left },
-	{ Side: "right", Pod: pair.right },
-] as const;
+const LabelTag = pair.heading ?? "span";
 
-/** The subject pod, left first. `null` when the caller marks neither. */
-const Subject = Pods.find(({ Pod }) => Pod.subject)?.Side ?? null;
-
-if (Pods.filter(({ Pod }) => Pod.subject).length > 1) {
+/**
+ * The subject pod. The left pod wins when both are marked, and the block says so
+ * at build time: two subjects are two claims and no comparison.
+ */
+if (pair.left.subject && pair.right.subject) {
 	console.warn(
 		"RecordPair: both pods are marked subject - only the left one renders as the subject.",
 	);
@@ -44,27 +95,93 @@ const Paragraphs = (Body: string): readonly string[] =>
 	Body.split(/\n{2,}/)
 		.map((Paragraph) => Paragraph.trim())
 		.filter(Boolean);
+
+/**
+ * Whether a pod's body is a block (a slot) or prose. Both is a pod with two
+ * claims under one label, and the block reports it rather than picking one.
+ */
+const BodyOf = (Side: "left" | "right", Pod: PairPod) => {
+	const HasSlot = Astro.slots.has(Side);
+	const HasProse = (Pod.body ?? "") !== "";
+
+	if (HasSlot && HasProse) {
+		console.warn(
+			`RecordPair: the ${Side} pod carries both prose and a block - the block renders and the prose is dropped.`,
+		);
+	}
+
+	return { HasSlot, HasProse };
+};
+
+const Left = BodyOf("left", pair.left);
+const Right = BodyOf("right", pair.right);
 ---
 
-<div class="record-pair">
-	{
-		Pods.map(({ Side, Pod }) => (
-			<div
-				class:list={[
-					"record-pair__pod",
-					{ "record-pair__pod--subject": Side === Subject },
-				]}
-			>
-				<div class="record-pair__bar">
-					<span class="record-pair__label">{Pod.label}</span>
-				</div>
-				<div class="record-pair__body">
-					{Paragraphs(Pod.body).map((Paragraph) => (
-						<p>{Paragraph}</p>
-					))}
-				</div>
+<div class:list={["record-pair", `record-pair--${surface}`, Class]}>
+	<div class="record-pair__pods">
+		<div
+			class:list={[
+				"record-pair__pod",
+				"record-pair__pod--left",
+				pair.left.subject ? "record-pair__pod--subject" : null,
+			]}
+		>
+			<div class="record-pair__bar">
+				<LabelTag
+					class:list={[
+						"record-pair__label",
+						pair.heading ? "record-pair__label--heading" : null,
+					]}
+				>
+					{pair.left.label}
+				</LabelTag>
 			</div>
-		))
-	}
+			<div class="record-pair__body">
+				{
+					Left.HasSlot ? (
+						<slot name="left" />
+					) : Left.HasProse ? (
+						Paragraphs(pair.left.body ?? "").map((Paragraph) => (
+							<p>{Paragraph}</p>
+						))
+					) : null
+				}
+			</div>
+		</div>
+
+		<div class="record-pair__gutter" aria-hidden="true"></div>
+
+		<div
+			class:list={[
+				"record-pair__pod",
+				"record-pair__pod--right",
+				!pair.left.subject && pair.right.subject
+					? "record-pair__pod--subject"
+					: null,
+			]}
+		>
+			<div class="record-pair__bar">
+				<LabelTag
+					class:list={[
+						"record-pair__label",
+						pair.heading ? "record-pair__label--heading" : null,
+					]}
+				>
+					{pair.right.label}
+				</LabelTag>
+			</div>
+			<div class="record-pair__body">
+				{
+					Right.HasSlot ? (
+						<slot name="right" />
+					) : Right.HasProse ? (
+						Paragraphs(pair.right.body ?? "").map((Paragraph) => (
+							<p>{Paragraph}</p>
+						))
+					) : null
+				}
+			</div>
+		</div>
+	</div>
 	{pair.caption ? <p class="record-pair__caption">{pair.caption}</p> : null}
 </div>

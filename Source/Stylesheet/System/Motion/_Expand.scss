@@ -1,0 +1,386 @@
+@use "../Mixin" as *;
+
+// ─── THE EXPANDING RECORD ─────────────────────────────────────────────────
+//
+// A record that opens in place: the row stays exactly where it is, and the facts
+// it was summarising arrive underneath it. This is not a modal, not a drawer and
+// not a route - a reader checking one record's provenance should not lose the
+// eight records around it.
+//
+// ─── THE RECORD DOES NOT MOVE. IT GETS DEEPER. ────────────────────────────
+// The temptation is to lift the open row, or to grow it out of the list. Both
+// would tell the reader that the record *became* something else. It did not: the
+// row was always this record, and opening it reveals what the row was a summary
+// of. So the summary's box is identical in both states - same columns, same
+// padding, same rule above it - and the only things that move are the facts
+// arriving under it, 4px and 20ms apart, on the settle curve.
+//
+// ─── THE MARKER IS A STATE, NOT A TRANSITION ──────────────────────────────
+// The open record takes the site's 2px leading rule (the same marker the header's
+// active route and the rail's current row use), drawn by `scaleY` from its own
+// top edge. That is a transform, so it costs no layout, and it is the third place
+// on the site where the same marker means the same thing: *this is the one you
+// are in*.
+//
+// ─── THE GLYPHS ARE THE GRAMMAR'S OWN ─────────────────────────────────────
+// `→` closed - there is more this way. `↳` open - what follows belongs to the row
+// above it. Both in one cell, crossfading on `resolve`, so the summary's width
+// never changes.
+//
+// ─── THE ADVERSE ARMS ─────────────────────────────────────────────────────
+// partial   a fact the record does not have prints `UNAVAILABLE` in the value
+//           cell, at muted ink, and never a zero: zero is a measurement.
+// missing   a record whose target is gone keeps its row as a tombstone - `◎`, the
+//           name at muted ink, `WAS:` and what it was - and is not a `<details>`,
+//           because there is nothing behind it to open.
+// empty     the set prints one composed line: what would be listed here and why
+//           it is not.
+// too long  a value wraps inside its own cell; the key column is fixed and the
+//           value column is `minmax(0, 1fr)`, so a path with no spaces cannot
+//           push the row wider than the band.
+
+.MotionExpand {
+	display: block;
+
+	min-inline-size: 0;
+}
+
+.MotionExpand__Marker {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0 0 var(--space-tight);
+}
+
+// ─── one record ───────────────────────────────────────────────────────────
+
+.MotionExpand__Record {
+	position: relative;
+
+	display: block;
+
+	min-inline-size: 0;
+
+	border-block-start: 1px solid var(--Border);
+}
+
+.MotionExpand__Record::before {
+	content: "";
+
+	position: absolute;
+	inset-block: 0;
+	inset-inline-start: 0;
+
+	inline-size: 2px;
+
+	background-color: var(--Foreground);
+
+	transform: scaleY(0);
+	transform-origin: top center;
+
+	@include motion-settle;
+}
+
+.MotionExpand__Record[open]::before {
+	transform: scaleY(1);
+
+	@include motion-enter;
+}
+
+// ─── the row ──────────────────────────────────────────────────────────────
+
+.MotionExpand__Row {
+	display: grid;
+	grid-template-columns: 2.25rem minmax(0, 1fr) auto 1.25rem;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	padding-block: var(--space-reading);
+	padding-inline-start: var(--space-tight);
+
+	cursor: pointer;
+
+	list-style: none;
+
+	&::-webkit-details-marker {
+		display: none;
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--Ring);
+		outline-offset: -2px;
+	}
+}
+
+.MotionExpand__Index {
+	@include mono-meta;
+
+	color: var(--MuteForeground);
+}
+
+.MotionExpand__Name {
+	min-inline-size: 0;
+
+	overflow-wrap: anywhere;
+
+	font-size: var(--type-heading);
+	line-height: var(--type-heading-line);
+	font-weight: 500;
+
+	letter-spacing: var(--track-name);
+
+	color: var(--Foreground);
+}
+
+.MotionExpand__Fact {
+	@include mono-meta;
+
+	justify-self: end;
+
+	white-space: nowrap;
+}
+
+.MotionExpand__Glyphs {
+	display: inline-grid;
+
+	justify-self: end;
+
+	place-items: center;
+}
+
+.MotionExpand__Glyph {
+	grid-area: 1 / 1;
+
+	@include mono-meta;
+
+	color: var(--Foreground);
+
+	@include motion-resolve;
+}
+
+.MotionExpand__Glyph--open {
+	opacity: 0;
+}
+
+.MotionExpand__Record[open] {
+	& .MotionExpand__Glyph--closed {
+		opacity: 0;
+	}
+
+	& .MotionExpand__Glyph--open {
+		opacity: 1;
+	}
+}
+
+// ─── the facts ────────────────────────────────────────────────────────────
+
+.MotionExpand__Body {
+	padding-block-end: var(--space-reading);
+	padding-inline-start: calc(2.25rem + var(--space-tight));
+}
+
+.MotionExpand__Register {
+	display: flex;
+	flex-direction: column;
+
+	margin: 0;
+}
+
+.MotionExpand__Fact-row {
+	display: grid;
+	grid-template-columns: minmax(9rem, 14rem) minmax(0, 1fr);
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	padding-block: var(--space-tight);
+
+	border-block-start: 1px solid var(--Border);
+}
+
+.MotionExpand__Key {
+	@include mono-meta;
+
+	color: var(--MuteForeground);
+}
+
+.MotionExpand__Value {
+	min-inline-size: 0;
+
+	overflow-wrap: anywhere;
+
+	margin: 0;
+
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+
+	color: var(--Foreground);
+}
+
+.MotionExpand__Value--unknown {
+	color: var(--MuteForeground);
+}
+
+.MotionExpand__Note {
+	display: block;
+
+	margin-block-start: 0.125rem;
+
+	@include mono-meta;
+}
+
+.MotionExpand__Source {
+	margin: var(--space-tight) 0 0;
+
+	@include mono-meta;
+
+	overflow-wrap: anywhere;
+}
+
+// ─── the facts arrive ─────────────────────────────────────────────────────
+
+/* The generic disclosure reveal fades every child of an open `<details>`; here
+   the body would fade as one block and the register rows would lose their
+   stagger. The block owns its own arrival, so the generic rule stands down for
+   this body only. */
+.MotionExpand__Record[open] > .MotionExpand__Body {
+	animation: none;
+}
+
+@keyframes expand-fact-in {
+	from {
+		opacity: 0;
+
+		transform: translateY(var(--motion-expand-row-travel));
+	}
+}
+
+.MotionExpand__Record[open] .MotionExpand__Fact-row {
+	@media (prefers-reduced-motion: no-preference) {
+		animation: expand-fact-in var(--motion-expand-duration)
+			var(--motion-expand-easing) both;
+
+		animation-delay: calc(
+			var(--fact-index, 0) * var(--motion-expand-row-step)
+		);
+	}
+}
+
+@for $Fact from 1 through 8 {
+	.MotionExpand__Fact-row:nth-child(#{$Fact}) {
+		--fact-index: #{$Fact - 1};
+	}
+}
+
+.MotionExpand__Fact-row:nth-child(n + 9) {
+	--fact-index: 7;
+}
+
+// ─── the tombstone ────────────────────────────────────────────────────────
+
+.MotionExpand__Gone {
+	display: grid;
+	grid-template-columns: 2.25rem minmax(0, 1fr);
+	gap: var(--space-tight);
+
+	padding-block: var(--space-reading);
+	padding-inline-start: var(--space-tight);
+
+	border-block-start: 1px solid var(--Border);
+}
+
+.MotionExpand__GoneMark {
+	@include mono-meta;
+
+	color: var(--MuteForeground);
+}
+
+.MotionExpand__GoneName {
+	min-inline-size: 0;
+
+	overflow-wrap: anywhere;
+
+	font-size: var(--type-heading);
+	line-height: var(--type-heading-line);
+	font-weight: 500;
+
+	letter-spacing: var(--track-name);
+
+	color: var(--MuteForeground);
+}
+
+.MotionExpand__GoneNote {
+	display: block;
+
+	margin-block-start: 0.125rem;
+
+	@include mono-meta;
+
+	overflow-wrap: anywhere;
+}
+
+// ─── the empty set ────────────────────────────────────────────────────────
+
+.MotionExpand__Empty {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+
+	padding-block: var(--space-reading);
+
+	border-block-start: 1px solid var(--Border);
+}
+
+.MotionExpand__EmptyMark {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0;
+
+	color: var(--Foreground);
+
+	& b {
+		font-weight: 400;
+	}
+}
+
+.MotionExpand__EmptyLine {
+	margin: 0;
+
+	max-inline-size: var(--MeasureOpening);
+
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+
+	color: var(--MuteForeground);
+}
+
+// ─── narrow ───────────────────────────────────────────────────────────────
+
+@media (max-width: 767px) {
+	.MotionExpand__Row {
+		grid-template-columns: 2.25rem minmax(0, 1fr) 1.25rem;
+	}
+
+	.MotionExpand__Fact {
+		grid-column: 2;
+		grid-row: 2;
+
+		justify-self: start;
+
+		white-space: normal;
+	}
+
+	.MotionExpand__Glyphs {
+		grid-column: 3;
+		grid-row: 1;
+	}
+
+	.MotionExpand__Body {
+		padding-inline-start: var(--space-tight);
+	}
+
+	.MotionExpand__Fact-row {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0.125rem;
+	}
+}

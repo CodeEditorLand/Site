@@ -21,7 +21,7 @@ const Head = BandOf(HomeBands(T), "testimonials");
 const Cards = ElementCards(T);
 ---
 
-<Band head={Head}>
+<Band head={Head} series="CLASSIFICATION" rhythm="tight">
 	<div class="home-element__grid">
 		{Cards.map((Card) => <ElementCard card={Card} />)}
 	</div>

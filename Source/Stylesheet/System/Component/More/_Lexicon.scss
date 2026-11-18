@@ -1,0 +1,352 @@
+// Lexicon and LexiconEntry - a vocabulary read as a dictionary.
+//
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// Publishes:
+//   .lexicon                   one run: head, letter index, groups
+//   .lexicon__head             the run's own opening, when it opens itself
+//   .lexicon__register         `# RUN_01`
+//   .lexicon__heading          the run's `h2`, at the S heading step
+//   .lexicon__note             one sentence: what kind of word this run holds
+//   .lexicon__letters          the letters the run actually uses, as links
+//   .lexicon__letter-link      one letter
+//   .lexicon__groups           the letter groups
+//   .lexicon__group            one letter and its entries
+//   .lexicon__letter           the letter, in the margin
+//   .lexicon__entries          the entries under that letter
+//   .lexicon__empty            the composed empty run
+//   .lexicon-entry             one word
+//   .lexicon-entry__term       the term column
+//   .lexicon-entry__name       the word, at the S heading step
+//   .lexicon-entry__expansion  what it is short for
+//   .lexicon-entry__state      a vocabulary word, in its tone
+//   .lexicon-entry__body       the definition column
+//   .lexicon-entry__definition the sense
+//   .lexicon-entry__rows       the `WAS:` / `WHY NOT:` / `NOW:` facts
+//   .lexicon-entry__foot       `RECORD:` / `WHERE:` / `SOURCE:`
+//
+// ─── THE TERM SITS IN ITS DEFINITION'S MARGIN ─────────────────────────────
+// `16rem | 1fr` at 768px and up. That is the dictionary's own setting and it is
+// the reason the page can be scanned by word: the left edge of every definition
+// is one straight line, and every term is a short capitalised word hanging to
+// its left. A glossary set as a stack of headings over paragraphs reads as a list
+// of articles, which is what this page is not.
+//
+// Below 768px the term goes above its definition and keeps its rule. The column
+// does not shrink: a 4rem term column is a hanging indent, and a hanging indent
+// with a 13-character word in it is a broken line.
+//
+// ─── THE LETTER IS A RULE DOWN THE EDGE ───────────────────────────────────
+// The letter sits in a 3rem column at the group's head, at the sub tier in muted
+// ink, and the group's entries run beside it. It is not a heading - a heading
+// level per letter would push every term to `h4` and make the alphabet louder
+// than the words - so it is a register mark with its own rule above it, and its
+// accessible text says "Terms beginning with" for a reader who cannot see that
+// it is standing in a margin.
+//
+// ─── THE LETTER INDEX IS THE RUN'S OWN ────────────────────────────────────
+// Only the letters this run uses, as links to the first group of each. A full
+// A-Z would print eighteen dead letters, and a link that goes nowhere is a lie
+// told in the margin - the site's own rule for a navigation element.
+@use "../../Mixin" as *;
+
+// ─── ONE RUN ──────────────────────────────────────────────────────────────
+
+.lexicon {
+	display: block;
+	min-inline-size: 0;
+}
+
+.lexicon__head {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+}
+
+.lexicon__register {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0;
+}
+
+.lexicon__register-mark {
+	color: var(--Accent);
+}
+
+// The run's `h2` - on the ladder, which is what an `h2` is: L, the section
+// head's tier. It was the S heading (18px) on the argument that an L run
+// heading under an L `h1` would be a second title; the ladder's answer is that
+// the two share a tier and the chapter boundary is what separates them. The
+// alphabetical run is the page's structure, so its head is a section head.
+.lexicon__heading {
+	margin: 0;
+	text-wrap: balance;
+}
+
+.lexicon__note {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--MuteForeground);
+	margin: 0;
+	max-inline-size: 62ch;
+	text-wrap: pretty;
+}
+
+// ─── THE LETTER INDEX ─────────────────────────────────────────────────────
+
+.lexicon__letters {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 0.75rem;
+	margin-block: var(--space-group);
+	padding-block: var(--space-tight);
+	border-block: 1px solid var(--Divider);
+}
+
+.lexicon__letter-link {
+	@include track(var(--track-name));
+
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	color: var(--Foreground);
+	text-decoration: none;
+	padding-inline: 0.125rem;
+	@include motion-enter;
+}
+
+.lexicon__letter-link:hover {
+	color: var(--Accent);
+}
+
+// ─── THE GROUPS ───────────────────────────────────────────────────────────
+
+.lexicon__groups {
+	display: block;
+}
+
+.lexicon__group {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	row-gap: var(--space-tight);
+	padding-block: var(--space-group);
+	border-block-start: 1px solid var(--Border);
+}
+
+.lexicon__group:first-child {
+	border-block-start: 0;
+	padding-block-start: 0;
+}
+
+@include bp(768px) {
+	.lexicon__group {
+		grid-template-columns: 3rem minmax(0, 1fr);
+		column-gap: var(--space-group);
+	}
+}
+
+.lexicon__letter {
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	color: var(--MuteForeground);
+	margin: 0;
+	font-weight: 500;
+	position: sticky;
+	inset-block-start: calc(5.25rem + var(--space-tight));
+}
+
+.lexicon__entries {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-group);
+	min-inline-size: 0;
+}
+
+.lexicon__empty {
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+	margin: 0;
+	padding-block: var(--space-reading);
+	border-block: 1px solid var(--Border);
+	max-inline-size: 62ch;
+	text-wrap: pretty;
+}
+
+.lexicon__empty::before {
+	content: "◎";
+	display: block;
+	margin-block-end: 0.5rem;
+}
+
+// ─── ONE WORD ─────────────────────────────────────────────────────────────
+
+.lexicon-entry {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	row-gap: var(--space-tight);
+	min-inline-size: 0;
+}
+
+@include bp(768px) {
+	.lexicon-entry {
+		grid-template-columns: 12rem minmax(0, 1fr);
+		column-gap: var(--space-group);
+		align-items: start;
+	}
+}
+
+.lexicon-entry__term {
+	min-inline-size: 0;
+}
+
+.lexicon-entry__name {
+	font-size: var(--type-heading);
+	line-height: var(--type-heading-line);
+	font-weight: 500;
+	letter-spacing: var(--track-set);
+	margin: 0;
+	overflow-wrap: anywhere;
+}
+
+.lexicon-entry__expansion {
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+	color: var(--MuteForeground);
+	margin: 0;
+	margin-block-start: 0.25rem;
+	text-wrap: pretty;
+}
+
+// A state word on a term is the retired run's mark: the word is `ARCHIVED`, and
+// the marker is the same 2px rule at the word's own ink that every other state
+// register uses, so the state survives greyscale.
+.lexicon-entry__state {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4em;
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+	margin: 0;
+	margin-block-start: var(--space-tight);
+}
+
+.lexicon-entry__state-mark {
+	display: inline-block;
+	inline-size: 2px;
+	block-size: 0.875em;
+	background: currentColor;
+}
+
+.lexicon-entry__state--ink {
+	color: var(--Foreground);
+}
+
+.lexicon-entry__state--specimen {
+	color: var(--Accent);
+}
+
+.lexicon-entry__state--quiet {
+	color: var(--MuteForeground);
+}
+
+.lexicon-entry__body {
+	min-inline-size: 0;
+}
+
+.lexicon-entry__definition {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	letter-spacing: var(--track-set);
+	margin: 0;
+	max-inline-size: 68ch;
+	text-wrap: pretty;
+}
+
+// ─── THE RETIRED RUN'S FACTS ──────────────────────────────────────────────
+// Three rows, the ledger's grammar at the entry's own scale. Not a
+// `RecordLedger`: an entry is a leaf and a leaf holds no block.
+
+.lexicon-entry__rows {
+	margin: 0;
+	margin-block-start: var(--space-reading);
+	border-block-start: 1px solid var(--Border);
+	max-inline-size: 68ch;
+}
+
+.lexicon-entry__row {
+	display: grid;
+	grid-template-columns: 6rem minmax(0, 1fr);
+	column-gap: var(--space-reading);
+	padding-block: var(--space-tight);
+	border-block-end: 1px solid var(--Border);
+}
+
+.lexicon-entry__row-key {
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+	color: var(--MuteForeground);
+}
+
+.lexicon-entry__row-value {
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	color: var(--Foreground);
+	margin: 0;
+	overflow-wrap: anywhere;
+}
+
+.lexicon-entry__row-note {
+	display: block;
+	color: var(--MuteForeground);
+}
+
+// ─── THE CITATIONS ────────────────────────────────────────────────────────
+
+.lexicon-entry__foot {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem 1.5rem;
+	margin-block-start: var(--space-reading);
+	padding-block-start: var(--space-tight);
+	border-block-start: 1px solid var(--Border);
+	max-inline-size: 68ch;
+}
+
+.lexicon-entry__fact {
+	display: flex;
+	align-items: baseline;
+	gap: 0.4em;
+	margin: 0;
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	min-inline-size: 0;
+}
+
+.lexicon-entry__fact-key {
+	@include track(var(--track-name));
+
+	color: var(--MuteForeground);
+	white-space: nowrap;
+}
+
+.lexicon-entry__fact-value {
+	color: var(--MuteForeground);
+	overflow-wrap: anywhere;
+}
+
+.lexicon-entry__link {
+	color: var(--Foreground);
+	text-decoration: none;
+	border-block-end: 1px solid var(--Divider);
+	overflow-wrap: anywhere;
+	@include motion-enter;
+}
+
+.lexicon-entry__link:hover {
+	color: var(--Accent);
+	border-block-end-color: var(--Accent);
+}

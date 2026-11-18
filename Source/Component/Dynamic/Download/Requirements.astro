@@ -6,14 +6,24 @@
  * into the Download surface's own directory and merged with the form it
  * replaced. The merge is additive and it is the point of the file:
  *
- * - From the recovered `.astro`: the `download-requirements` grid, the
- *   `jelly-card.download-requirements__group` card anatomy, the case-preserving
- *   panel heading, and the source-build toolchain as a card of its own.
+ * - From the recovered `.astro`: the `download-requirements` grid, the panel
+ *   anatomy, the case-preserving panel heading, and the source-build toolchain
+ *   as a card of its own.
  * - From the `.tsx` island that came before it: the two-panel split - "Minimum
  *   Requirements" beside "Recommended for the Best Experience", the second one
- *   marked `border-primary` - and the strip of one chip per supported OS.
+ *   marked - and the strip of one chip per supported OS.
  * - From neither, because both lost them: the two icon-tooltip sentences, which
  *   the `.astro` demoted to the region's footnote and the region still prints.
+ *
+ * THE TWO PANELS ARE ONE `RecordPair`. Minimum and recommended are not two
+ * options and not two cards: they are the same three keys answered twice, which
+ * is the comparison the block layer's frame exists for. The pair gives them one
+ * frame, one hairline gutter and one caption that says what the reader is
+ * comparing - and the recommended side keeps its mark, now as a 2px rule under
+ * its title rather than a 1px outline around its box: the same claim, stated by
+ * border weight in the place the eye already is. The pair is a section of this
+ * region, so its pod labels print at the region's heading level (`h4`), and the
+ * page's outline keeps its count.
  *
  * Nothing was dropped to make the merge fit. The per-platform OS, arch and
  * installer values the recovered cards carried as three repeating ledgers now
@@ -27,6 +37,7 @@
  * them into ledgers and nothing else.
  */
 import RecordLedger from "../../Record/RecordLedger.astro";
+import RecordPair from "../../Record/RecordPair.astro";
 
 import type { LedgerRow } from "../../Record/Type.js";
 
@@ -53,6 +64,23 @@ const { panels, osLabel, operatingSystems, toolchain, toolchainLabel } =
 	Astro.props;
 
 /**
+ * The pair's two sides, in the order the page hands them in. The recommended
+ * panel is the subject: the one the other is read against. A pair is two-sided
+ * by definition, so the region renders the pair only when both sides exist; the
+ * data owns the list, and a third panel would be a third claim that the
+ * caption's comparison could not describe.
+ */
+const [Minimum, Recommended] = panels;
+
+/**
+ * The pair's caption: what the reader is comparing, and where the figures come
+ * from. It is the one statement made about both panels, so it names the shared
+ * keys rather than repeating either column.
+ */
+const Caption =
+	"The same three keys in both columns; only the figures differ. Values from Download/Data.ts.";
+
+/**
  * The card's Jelly custom properties, the same box the manifest's platform
  * groups use: white on the creme field, square, the documented inset, and
  * `font-size: inherit` so the card never resets type to Jelly's 15px default.
@@ -63,19 +91,20 @@ const Card =
 
 <div class="download-requirements">
 	{
-		panels.map((panel) => (
-			<jelly-card
-				class={`download-requirements__group${
-					panel.recommended
-						? " download-requirements__group--recommended"
-						: ""
-				}`}
-				style={Card}
+		Minimum && Recommended ? (
+			<RecordPair
+				class="download-requirements__pair"
+				pair={{
+					left: { label: Minimum.label },
+					right: { label: Recommended.label, subject: true },
+					caption: Caption,
+					heading: "h4",
+				}}
 			>
-				<h4 class="download-requirements__platform">{panel.label}</h4>
-				<RecordLedger rows={panel.rows} />
-			</jelly-card>
-		))
+				<RecordLedger slot="left" rows={Minimum.rows} />
+				<RecordLedger slot="right" rows={Recommended.rows} />
+			</RecordPair>
+		) : null
 	}
 
 	<div class="download-requirements__os">

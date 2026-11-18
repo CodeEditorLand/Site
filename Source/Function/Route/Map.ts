@@ -1,4 +1,5 @@
 import type { RouteMap } from "./Interface/RouteMap.js";
+import { CanonicalRoute, RouteByCase } from "./Registry.js";
 
 // Pre-import at module evaluation time (while Vite module runner is alive).
 // GenerateRouteMap runs in astro:build:done AFTER Vite closes.
@@ -8,44 +9,21 @@ const { join: Join, relative: Relative } = await import("node:path");
 
 // ─── Canonical paths ───
 // Authoritative set of PascalCase canonical URLs.
-// Page files are named PascalCase, so Astro builds these paths directly.
+//
+// The set is DERIVED, not typed here: `Function/Route/Registry.ts` lists every
+// page entry and marks the hand-listed PascalCase pages `Canonical`, so a page
+// that is added to the registry in the same change that adds it under
+// `Source/pages` cannot be missing from the redirect table. Before this, the
+// list was maintained by hand and drifted: `/Motion` and `/Specimen` were added
+// by the cards that built those pages, and `/Contact`, `/Compare`, `/Contents`,
+// `/Glossary` and `/Status` were never added at all.
+//
 // Everything else (variants, aliases, redirects) is derived from this set.
 
-export const CanonicalPath: Set<string> = new Set([
-	"/Download",
+export const CanonicalPath: Set<string> = new Set(
+	CanonicalRoute.map((Entry) => Entry.Path),
+);
 
-	"/Doc",
-
-	"/Blog",
-
-	"/Portal",
-
-	"/Dashboard",
-
-	"/Contributing",
-
-	"/License",
-
-	"/Verify",
-
-	"/Contact/Sale",
-
-	"/Account",
-
-	"/Account/SignIn",
-
-	"/Account/SignUp",
-
-	"/Account/ForgotPassword",
-
-	"/Account/ResetPassword",
-
-	"/Legal/Term",
-
-	"/Legal/Privacy",
-
-	"/OAuth/Success",
-]);
 
 // ─── Built-path → PascalCase mapping ───
 // Maps what Astro historically built (lowercase) to PascalCase canonical.
@@ -237,6 +215,36 @@ export const SemanticAlias: Record<string, string> = {
 
 	"/auth-callback": "/OAuth/Success",
 };
+
+// ─── Canonicalisation ───
+// The one function that turns whatever path a request carried into the canonical
+// path the site publishes. Three readers, one answer:
+//
+//   - `Layout/Base.astro` writes it into `<link rel="canonical">` and `og:url`,
+//     so a page served at a variant URL advertises the canonical one;
+//   - the redirect table (`Integration.ts`) resolves a variant to the same path;
+//   - the dispatch page (`Visit.astro`) resolves an unknown path the same way.
+//
+// The order is the precedence: a PascalCase page's own lowercase form first
+// (`/download` → `/Download`), then a curated alias (`/login` → `/Account/SignIn`),
+// then the path as given. Collection paths (`/Doc/sky`, `/Blog/<Slug>`) are
+// canonical as built - their slugs are the content collection's, not this
+// module's - so they pass through unchanged.
+export const CanonicalizePath = (Path: string): string => {
+	const Clean = Path === "/" ? "/" : Path.replace(/\/+$/, "");
+
+	const Lower = Clean.toLowerCase();
+
+	return (
+		PascalCaseCanonical[Clean] ??
+		PascalCaseCanonical[Lower] ??
+		SemanticAlias[Clean] ??
+		SemanticAlias[Lower] ??
+		RouteByCase(Clean)?.Path ??
+		Clean
+	);
+};
+
 
 // ─── Simplified variant generation ───
 // Generates the practically useful URL variants:

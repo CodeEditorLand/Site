@@ -1,20 +1,113 @@
-// Record layer - the ten blocks. S1 and B1-B8 own every rule in this
-// directory; the partials below are declared and documented, not yet written,
-// so the load order is fixed before the first block lands.
+// The Record layer - the site's sentence, made of blocks.
 //
-// `Hero` loads last: it is the one block that composes the others (the ledger
-// inside the card, the evidence beside it), so nothing it reads may land after
-// it.
+// ─── THE GRAMMAR ──────────────────────────────────────────────────────────
+// A page is not a stack of components. It is a sequence of artifacts, and an
+// artifact is a sequence of blocks, and a block is the smallest thing that
+// answers one kind of information. This file is the layer's routing table and
+// its containment law: what answers what, and what may sit inside what.
 //
-// `Archive` follows `Entry`: the two are the block for one record and the block
-// for a set of them, and neither composes the other.
+// ─── THE ROUTING TABLE ────────────────────────────────────────────────────
+// One information type, one block. When two blocks could answer, the narrower
+// one wins - a fact that fits a ledger row never gets a matrix, a set that fits
+// an archive never becomes a band of entries, one figure never becomes a
+// one-row ledger.
+//
+//   ARTIFACT  RecordHero        what this page is, in one record beside its evidence
+//   SECTION   RecordBand        which subject this part of the page opens
+//   FRAME     RecordPair        how two things read against each other
+//             RecordAside       what the record keeps and does not lead with (one pod, folded)
+//   SET       RecordArchive     which records are filed here
+//             RecordMatrix      how one state compares across columns
+//             RecordCompare     where these things sit on one axis, and which are reached
+//             RecordStage       in what order this happens
+//             RecordInstrument  how much, and where the figure came from
+//             RecordPlateSet    many figures of one subject, read as a field
+//   LEAF      RecordEntry       which one record this is
+//             RecordLedger      what is true of this one object
+//             RecordTrace       where this claim can be checked, and in what order
+//             RecordFailure     what a reader sees when it has failed, and the next step
+//             RecordWell        what you type
+//             RecordFigure      what the evidence shows
+//             RecordMargin      what is worth saying beside the record, and where it is sourced
+//             RecordPlate       the evidence the record is of, at plate scale
+//             RecordStamp       what makes this record what it claims to be
+//             RecordInset       the annotation that had to carry a figure
+//             RecordTranscript  the session, with its turns and speakers
+//
+// ─── THE TWO ARTIFACT LAYERS ──────────────────────────────────────────────
+// A printed manual uses two kinds of object and this layer now does too. The
+// *records* answer what is true (`Entry`, `Ledger`, `Instrument`, `Archive`,
+// `Matrix`, `Stage`, `Trace`); the *apparatus* answers how the document proves
+// it (`Plate`, `PlateSet`, `Stamp`, `Transcript`, `Inset`, `Figure`, `Margin`,
+// `Failure`, `Well`, `Aside`). The routing table is one table because the reader
+// does not know the difference - but a block is chosen by the information type
+// first and the register second, and the narrower block still wins.
+//
+// ─── THE CONTAINMENT LAW ──────────────────────────────────────────────────
+// 1. A container (Hero, Band, Pair, Aside) holds blocks; a leaf holds none. A
+//    set holds data, never blocks - its items are rows, not components.
+// 2. A frame is a title bar over a body. The pair has two pods; the aside has
+//    one, and it folds. A pod holds prose OR one leaf block, never both and
+//    never two: a pair is one comparison, and a third thing in it is a third
+//    claim. The pair's caption is the one statement made about both.
+// 3. At most ONE sectioning level between the artifact and its leaves:
+//    `Hero > Band(bare) > leaves`, or `Band > leaves`. Never `Band > Band`.
+// 4. A block never paints a Jelly surface. `.emphasis-standard` is the block's
+//    own white panel; Jelly is the page's surface and the block lives inside it.
+// 5. One `h1` per page, and it is the Hero's claim. `h2` belongs to the Band and
+//    the Archive. `h3` belongs to the Entry. A leaf never prints above `h3`.
+// 6. A block renders what it is given: it sorts nothing, derives nothing,
+//    renumbers nothing, re-cases nothing, and invents no slash, colon or figure.
+//
+// ─── DENSITY ──────────────────────────────────────────────────────────────
+// Density is one axis per block and it is never type size. Band has none (a band
+// is air); Entry's `surface="bare"` is the dense reading of a record inside a
+// card; Ledger has `columns` for layout and `density="register"` for the reading
+// that turns the same facts into a table; Matrix has `density="dense"`; Stage
+// uses `orientation` and `variant`; Archive is dense by construction; Compare has
+// none (a rail that compresses becomes a table, and a table is the matrix);
+// Well, Pair, Aside, Margin, Figure, Hero, Trace, Failure, Instrument, Plate,
+// Stamp, Inset, Transcript and PlateSet have none - a command must not compress,
+// evidence gets its size, a disclosure that is compressed cannot be opened, a
+// figure that is shrunk is a smaller claim, a trace compressed is a list of
+// links, a failure that is compressed has stopped explaining itself, a plate
+// shrunk to fit is a thumbnail, a stamp is four lines and a mark, an inset's
+// figure is the reason it exists, a transcript is verbatim and a set of figures
+// is scanned at one size.
+//
+// ─── NARROW ───────────────────────────────────────────────────────────────
+// Every block states its own narrow behaviour in its partial, and "squeezed" is
+// not one of them. The two that needed work: the matrix pins its row label so a
+// comparison is read one row at a time with the row's name still attached, and
+// the pair rotates its gutter so two things read against each other stay one
+// frame when they stack.
+//
+// ─── LOAD ORDER ───────────────────────────────────────────────────────────
+// Declared once, in dependency order. `Hero` loads last: it is the one block
+// that composes the others (the ledger inside the card, the figure beside it),
+// so nothing it reads may land after it. `Archive` follows `Entry`: the two are
+// the block for one record and the block for a set of them, and neither
+// composes the other. `Instrument` follows `Ledger`: the two are the block for
+// facts and the block for figures, and a figure is not a fact.
 @use "Band";
 @use "Entry";
 @use "Archive";
 @use "Ledger";
+@use "Instrument";
 @use "Matrix";
+@use "Compare";
 @use "Stage";
 @use "Well";
 @use "Pair";
+@use "Aside";
+@use "Margin";
 @use "Figure";
+@use "Trace";
+@use "Failure";
+@use "Plate";
+@use "Stamp";
+@use "Inset";
+@use "Transcript";
+@use "PlateSet";
+@use "Compose";
 @use "Hero";

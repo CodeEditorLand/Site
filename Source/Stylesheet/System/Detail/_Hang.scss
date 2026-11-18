@@ -1,0 +1,100 @@
+// HANG - punctuation and marks hang in the margin.
+//
+// ─── THE LAW ──────────────────────────────────────────────────────────────
+// A sentence opens on its first letter. A quotation mark, a bullet, a section
+// sign or the grammar's `↳` is a mark ABOUT the text, not the text, so it sits
+// in the margin and the first letter stays on the measure. Every paragraph on
+// this site currently starts its first line one or two characters in, which is
+// the difference between a page set by a machine and a page set by a hand.
+//
+// Two mechanisms, in this order:
+//
+// 1. **`hanging-punctuation`**, where the engine implements it. It is one
+//    declaration and it does exactly the right thing for quotes and full stops;
+//    it is not supported everywhere, which is why it is the first of two and
+//    not the only one.
+// 2. **A negative inline-start margin on the mark itself**, which every engine
+//    implements. It is applied only to marks this site prints as their own
+//    element - the three `↳` propositions - because hanging needs to know the
+//    mark's width, and a mark that is part of a string cannot be measured.
+//
+// The margin is guarded at 640px. Below it the page gutter is 16px and the
+// hanging mark would sit outside the paper; above it there is always room.
+//
+// ─── THE WRAP RULES ───────────────────────────────────────────────────────
+// A paragraph's last line is a short line by nature; a paragraph's last WORD
+// alone on a line is a defect. `text-wrap: pretty` and a widow floor of three
+// lines are the two declarations that make the difference, and they cost
+// nothing where they are unsupported.
+//
+// ─── THE MARKERS ──────────────────────────────────────────────────────────
+// A list marker is a label, not content: it takes the muted ink so the item's
+// first word is the first thing read.
+@use "../Mixin" as *;
+
+// ─── 1. HANGING PUNCTUATION ───────────────────────────────────────────────
+
+// The reading surfaces: the markdown prose, the flow composition, the legal
+// card and the reading document's body. `first` hangs an opening quote,
+// `allow-end` hangs a closing one, `last` hangs a final full stop.
+:where(.prose, .prose-flow, .LegalCard, .reading-document__body)
+	:is(p, li, blockquote, dd) {
+	hanging-punctuation: first allow-end last;
+}
+
+// ─── 2. THE MARKS THAT HANG ───────────────────────────────────────────────
+
+// The record hero's `↳` is an inline span: the mark plus its space is two
+// characters, so the sentence moves to the card's content edge and the mark
+// hangs two characters into the card's padding. The guard is 768px because the
+// hang must fit inside the surface's own inset - 2ch at the sub role is ~22px,
+// and below 768px neither the card's padding nor the page gutter is reliably
+// wider than that.
+@include bp(768px) {
+	.record-hero__proposition-mark {
+		margin-inline-start: -2ch;
+	}
+
+	// The quiet head's `↳` is a flex item with a 0.4em gap, so the hang is the
+	// mark's own width plus that gap - 1.6ch at the mono face's ratio.
+	.quiet-head__proposition-mark {
+		margin-inline-start: -1.6ch;
+	}
+}
+
+// ─── 3. THE WRAP ──────────────────────────────────────────────────────────
+
+:where(.prose, .prose-flow, .LegalCard, .reading-document__body) :is(p) {
+	text-wrap: pretty;
+	orphans: 3;
+	widows: 3;
+}
+
+// A short last line is only a defect when it is one word. `pretty` handles the
+// common case; the floor above handles the print case, where a page break can
+// strand a line no algorithm can see coming.
+
+// ─── 4. THE MARKERS ───────────────────────────────────────────────────────
+
+:where(.prose, .prose-flow, .LegalCard, .reading-document__body)
+	:is(ul, ol)
+	> li::marker {
+	color: var(--MuteForeground);
+}
+
+// The marker column is part of the measure: a list that indents its text by a
+// value its prose does not share makes the page's right edge ragged for one
+// block. 1.75rem is the legal card's own list inset, so the two agree.
+:where(.LegalCard) :is(ol.LegalList, ol.LegalListRoman) {
+	padding-inline-start: 1.75rem;
+}
+
+// ─── 5. THE QUOTES ────────────────────────────────────────────────────────
+
+// The site's copy is written in straight quotes, and a straight quote in a mono
+// face is a vertical tick at the cap height - it reads as a prime mark, not as
+// speech. `quotes` only affects generated quotation marks (`<q>`), so it cannot
+// change a word of the copy; it makes the one element that quotes do it right.
+:where(.prose, .prose-flow) q {
+	quotes: "\201C" "\201D" "\2018" "\2019";
+}

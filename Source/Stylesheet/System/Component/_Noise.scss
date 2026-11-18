@@ -551,7 +551,10 @@
 	display: inline-flex;
 	align-items: center;
 	vertical-align: middle;
-	font-size: 1.15em;
+	/* 1em, not 1.15em: the separator is part of the line it separates, so it is
+	   set at the line's own size. At 1.15em it rendered 18.4px in body text and
+	   20.7px in a standfirst - two sizes no role owns, produced by a glyph. */
+	font-size: 1em;
 	line-height: 1;
 }
 

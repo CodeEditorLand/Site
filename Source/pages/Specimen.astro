@@ -1,0 +1,469 @@
+---
+/**
+ * The specimen sheet: the document's own parts, printed.
+ *
+ * ─── WHY THIS ROUTE EXISTS ────────────────────────────────────────────────
+ * Every surface of this site was composed page by page, and each page reached
+ * for the blocks its subject needed. The result is a document that reads as one
+ * thing - and a layer underneath it that nothing asked for: nine `Dynamic*`
+ * adapters and `Surface` blocks that render, that are typed, and that no page
+ * ever mounted. A file nothing reads is not a part of a document; it is a file
+ * waiting for someone.
+ *
+ * This page is that someone. It is a specimen sheet in the printer's sense: the
+ * parts of a document, printed at their own size, each beside its contract - what
+ * it takes, what it prints, which stylesheet draws it, and who asks for it. Where
+ * a part cannot honestly be printed, the sheet states an absence in the same
+ * grammar the dashboard uses for its one absent record.
+ *
+ * ─── THE COMPOSITION: A HEAD, A SHEET, PLATES, STATES, MATERIAL, A REGISTER ─
+ * The page wears `SurfaceShell` - the shell the app surfaces wear - because a
+ * sheet is a tool rather than a chapter: one head, then bands. It does not wear
+ * `PageShell`, because it has no rail and no margin: the sheet at the top *is*
+ * the index, and a rail of twelve parts beside a grid of twelve parts would be
+ * the same register twice.
+ *
+ *   head       # SPECIMEN_01, the h1 at L, the `↳` proposition, STATUS: VERIFIED
+ *   /THE SHEET one cell per part, four across, equal, ruled - the index
+ *   /THE PLATES seven parts live at 1:1, each with a pinned contract
+ *   /THE ABSENCES three parts stated, each with what would be here and why not
+ *   /THE STATES nine conditions, composed, each naming where it happens
+ *   /THE MATERIAL the six things the document is printed with
+ *   /THE REGISTER what the sheet counted, and the file it counted from
+ *
+ * ─── THE ONE XL IS A SPECIMEN ─────────────────────────────────────────────
+ * The head's `h1` is L, by the shell family's contract. The page's single XL is
+ * spent inside `/THE MATERIAL`: the primary ink is printed as its own name at
+ * the display tier, so the largest type on this sheet is the material showing
+ * itself rather than a title. A specimen sheet that did not print its own
+ * largest type would be a list of parts.
+ *
+ * ─── THE ADVERSE STATES ARE THE PAGE'S ARGUMENT ───────────────────────────
+ * Three of them are structural here, not hypothetical: a part that cannot be
+ * printed (`/THE ABSENCES`), a sheet with no parts and a material strip with no
+ * specimens (both composed empty arms), and the nine conditions the document's
+ * own surfaces survive, printed as a wall with the surface each one occurs on.
+ *
+ * ─── NO NUMBER IS WRITTEN HERE ────────────────────────────────────────────
+ * Every count on this page is derived at build time: the parts from
+ * `Content/Specimen/Parts.ts`, the longest title from the blog collection, the
+ * one dated measurement from `/Compare`'s own table, the route count from the
+ * generated register. A figure typed into this file would be the one number on
+ * the sheet that could disagree with the sheet.
+ */
+import { getCollection } from "astro:content";
+
+import { DynamicBadge } from "../Component/Dynamic/DynamicBadge";
+import { DynamicBlogCard } from "../Component/Dynamic/DynamicBlogCard";
+import { DynamicCard } from "../Component/Dynamic/DynamicCard";
+import { DynamicLabel } from "../Component/Dynamic/DynamicLabel";
+import { DynamicRichText } from "../Component/Dynamic/DynamicRichText";
+import { DynamicTable } from "../Component/Dynamic/DynamicTable";
+import PortalData from "../Component/Dynamic/Interface/Content/Page/PortalData.js";
+import Grid from "../Component/Dynamic/Properties/Grid.astro";
+import { ItemsOf } from "../Component/Dynamic/Properties/Data.js";
+import { Header } from "../Component/Layout/Header";
+import Onward from "../Component/More/Onward.astro";
+import RecordBand from "../Component/Record/RecordBand.astro";
+import RecordLedger from "../Component/Record/RecordLedger.astro";
+import Trail from "../Component/Route/Trail.astro";
+import ShellState from "../Component/Shell/ShellState.astro";
+import SpecimenMaterial from "../Component/Specimen/SpecimenMaterial.astro";
+import SpecimenPlate from "../Component/Specimen/SpecimenPlate.astro";
+import SpecimenSheet from "../Component/Specimen/SpecimenSheet.astro";
+import SurfaceAbsent from "../Component/Surface/SurfaceAbsent.astro";
+import SurfaceChips from "../Component/Surface/SurfaceChips.astro";
+import SurfaceShell from "../Component/Surface/SurfaceShell.astro";
+import { Row } from "../Component/Surface/State.js";
+import {
+	AbsentCount,
+	FoldedCount,
+	Kinds,
+	PartCount,
+	Parts,
+	PrintedCount,
+	PrintedParts,
+	SheetRows,
+} from "../Content/Specimen/Parts.js";
+import {
+	Bands,
+	Head,
+	Material,
+	Onward as OnwardCopy,
+	Register,
+} from "../Content/Specimen/Page.js";
+import { States, Vocabulary } from "../Content/Specimen/States.js";
+import { Measurements } from "../Content/More/Compare.js";
+import { GetI18n } from "../Library/I18n/Server";
+import { Totals } from "../Library/Index/Register.js";
+import Base from "../Layout/Base.astro";
+
+const MetaTitle = "Specimen | Code Editor Land";
+
+const MetaDescription =
+	"The document's own parts, printed: twelve components at 1:1 with their contracts, three stated absences, the nine adverse states composed, and the six things the site is printed with.";
+
+/* ─── THE PARTS, BY DISPOSITION ────────────────────────────────────────── */
+
+/** The seven parts that stand on a plate, in the sheet's order. */
+const Printed = PrintedParts;
+
+/** The parts the sheet states an absence for. */
+const Absent = Parts.filter((Part) => Part.disposition === "absent");
+
+/** The register's rows, computed once and printed by one ledger. */
+const RegisterRows = Register({
+	Parts: PartCount,
+	Printed: PrintedCount,
+	Absent: AbsentCount,
+	Folded: FoldedCount,
+	Kinds: Kinds.length,
+});
+
+/* ─── THE MEASUREMENTS ONLY THIS PAGE CAN TAKE ─────────────────────────── */
+
+const Entries = await getCollection("blog");
+
+/**
+ * The newest entry, as the article card's specimen.
+ *
+ * The card is fed from the collection rather than written here, so the plate
+ * cannot describe an article that does not exist - and if the collection is
+ * empty the plate states that instead of printing a card made of nothing.
+ */
+const Newest = [...Entries].sort((A, B) =>
+	A.data.publishedAt.localeCompare(B.data.publishedAt),
+).at(-1);
+
+/** The longest title filed, which is the `too-long` arm's specimen value. */
+const LongestTitle = Entries.reduce(
+	(Longest, Entry) =>
+		Entry.data.title.length > Longest.length ? Entry.data.title : Longest,
+	Entries[0]?.data.title ?? "UNAVAILABLE",
+);
+
+/** The one dated measurement on `/Compare`, and how old it is at build time. */
+const Dated = Measurements.find((Row) => Row.asOf !== undefined)?.asOf ?? "UNAVAILABLE";
+
+const AgeInDays = (AsOf: string): string => {
+	const Then = new Date(`${AsOf}T00:00:00Z`).getTime();
+	const Now = Date.now();
+
+	if (Number.isNaN(Then)) return "UNAVAILABLE";
+
+	return `${Math.max(0, Math.round((Now - Then) / 86_400_000))} DAYS`;
+};
+
+const StateCells = States({
+	LongestTitle,
+	AsOf: Dated,
+	Age: AgeInDays(Dated),
+	RouteCount: Totals.Routes,
+});
+
+/* ─── THE TABLE'S SPECIMEN: THE FOUR CONNECTION TIERS ──────────────────── */
+
+const Tiers = [
+	PortalData.Cloud,
+	PortalData.Provider,
+	PortalData.LocalFirst,
+	PortalData.Enterprise,
+].flatMap((Tier) => (Tier ? [Tier] : []));
+
+const TierRows = Tiers.map((Tier) => ({
+	tier: Tier.Title,
+	protocol: Tier.Protocol ?? "UNAVAILABLE",
+	badge: Tier.Badge ?? "UNAVAILABLE",
+	features: String(Tier.Feature.length),
+}));
+
+const TierColumns = [
+	{ Header: "TIER", Key: "tier" },
+	{ Header: "PROTOCOL", Key: "protocol" },
+	{ Header: "BADGE", Key: "badge" },
+	{ Header: "FEATURES", Key: "features" },
+];
+
+/* ─── THE PROPERTIES' SPECIMEN: THE SIX CLAIMS ─────────────────────────── */
+
+/**
+ * The six properties, resolved from the copy.
+ *
+ * `ItemsOf` reads `home:features.item.*` and shapes the six into the records the
+ * grid prints; the three-claim budget (`DesignSystem-Grammar` §8) is applied by
+ * the block, not here, so this page hands over the whole set and the part
+ * decides which three it keeps and which three it files. The six are content
+ * that no other page prints - the homepage's features band prints the six
+ * *elements* as records - which is why the part stands on a plate.
+ */
+const Properties = ItemsOf(GetI18n());
+
+/* ─── THE SHEET'S OWN FACTS ────────────────────────────────────────────── */
+
+/** The trail: the index, then this sheet. A crumb is a place, not a route. */
+const TrailItems = [
+	{ label: "/HOME", href: "/" },
+	{ label: "/SPECIMEN" },
+];
+---
+
+<Base Title={MetaTitle} Description={MetaDescription} Url={Astro.url.href} lang="en">
+	<Header client:load slot="Header" />
+
+	{/* The crumb sits above the shell, the way the dashboard's does: the trail is
+	    a route statement about the page, and the head is the page's own opening.
+	    A crumb printed under a title reads as a footnote to it. */}
+	<Trail trail={TrailItems} class="specimen-page__trail" />
+
+	<SurfaceShell
+		index={Head.index}
+		title={Head.title}
+		standfirst={Head.proposition}
+		states={[Row("SHEET", "VERIFIED")]}
+	>
+		{/* ─── THE SHEET ─────────────────────────────────────────────── */}
+		<RecordBand band={Bands.Sheet}>
+			<SpecimenSheet
+				rows={SheetRows}
+				label="SHEET"
+				count={`${PartCount} PARTS`}
+				empty="No part is filed, so there is nothing on this sheet. A specimen sheet with no parts is a document that has not been written yet, not a page that failed to load."
+			/>
+
+			<p class="specimen-page__note">
+				The sheet is the page's index and its adverse state at once: a part that
+				cannot be printed keeps its cell, and the cell says so.
+				{` ${PartCount} `} cells, {` ${PrintedCount} `} of them printed and
+				{` ${AbsentCount} `} of them stated.
+			</p>
+		</RecordBand>
+
+		{/* ─── THE PLATES ────────────────────────────────────────────── */}
+		<RecordBand band={Bands.Plates}>
+			{
+				PrintedCount === 0 ? (
+					<ShellState
+						kind="empty"
+						index="PLATES / 00"
+						statement="No part on this sheet can be printed, so the band holds no plate."
+						cause="Every part is either absent or folded, and the sheet states each one's reason in THE ABSENCES below rather than printing a stage with nothing on it."
+						next={{ label: "READ THE ABSENCES", href: "#absences" }}
+						note="SOURCE: CONTENT/SPECIMEN/PARTS.TS"
+					/>
+				) : (
+					<div class="specimen-page__plates">
+						<SpecimenPlate
+							part={Printed[0]!}
+							caption="Two of the badge's four variants. The `default` variant is the inverted one, and an inverted surface on this site belongs to the thing the reader clicks - so the sheet prints the two light variants and leaves the inverted one to the pages that have an action."
+							source="SOURCE/COMPONENT/DYNAMIC/DYNAMICBADGE.TSX"
+						>
+							<div class="specimen-page__row">
+								<DynamicBadge Content={{ Text: "PROTOCOL: gRPC", Variant: "secondary" }} />
+								<DynamicBadge Content={{ Text: "LICENSE: CC0", Variant: "outline" }} />
+							</div>
+						</SpecimenPlate>
+
+						<SpecimenPlate
+							part={Printed[1]!}
+							caption="The label states its own two conditions on itself: `aria-required` and `aria-disabled` travel with the label, not only with the control it names. The field beside it is a specimen field, not a form - nothing here submits anywhere."
+							source="SOURCE/COMPONENT/DYNAMIC/DYNAMICLABEL.TSX"
+						>
+							<div class="specimen-page__field-set">
+								<div class="specimen-page__field-row">
+									<DynamicLabel
+										Content={{ Text: "EMAIL", Required: true }}
+										HTMLFor="specimen-field"
+									/>
+									<input
+										class="specimen-page__input"
+										id="specimen-field"
+										type="email"
+										value="reader@editor.land"
+										readonly
+									/>
+								</div>
+								<div class="specimen-page__field-row">
+									<DynamicLabel
+										Content={{ Text: "HANDLE", Disabled: true }}
+										HTMLFor="specimen-field-disabled"
+									/>
+									<input
+										class="specimen-page__input"
+										id="specimen-field-disabled"
+										type="text"
+										value="UNAVAILABLE"
+										disabled
+										readonly
+									/>
+								</div>
+							</div>
+						</SpecimenPlate>
+
+						<SpecimenPlate
+							part={Printed[2]!}
+							caption="Three sections on one Jelly card, on the creme field - where a card lies on a page. The stage is the field rather than the white insert, because a white card on a white stage is a card inside a box."
+							source="SOURCE/COMPONENT/DYNAMIC/DYNAMICCARD.TSX"
+							stage="field"
+						>
+							<DynamicCard
+								Sections={{
+									Header: {
+										title: "RELEASE_01",
+										description: "One card, three sections, and a state at its foot.",
+									},
+									Body: {
+										title: "WHAT IT CARRIES",
+										description:
+											"A header with a title and a description, a body with a second title and its prose, and a footer for the one thing the card is for.",
+									},
+									Footer: {
+										content: "STATUS: UNAVAILABLE\u2001CHANNEL: PUBLIC",
+									},
+								}}
+							/>
+						</SpecimenPlate>
+
+						<SpecimenPlate
+							part={Printed[3]!}
+							caption="The four connection tiers, read across. The protocol spines are the only place in the tree that states them, and until this plate no page printed them - the portal reads the tiers one per band, and this plate reads them as a set."
+							source="SOURCE/COMPONENT/DYNAMIC/INTERFACE/CONTENT/PAGE/PORTALDATA.TS"
+						>
+							<DynamicTable Content={{ Columns: TierColumns, Data: TierRows }} />
+						</SpecimenPlate>
+
+						<SpecimenPlate
+							part={Printed[4]!}
+							caption="One string, parsed: a blank line is a paragraph and a backtick is code. The island ships only where the parser is read, so the plate mounts it lazily rather than on every visit to the sheet."
+							source="SOURCE/COMPONENT/DYNAMIC/DYNAMICRICHTEXT.TSX"
+						>
+							<DynamicRichText
+								client:visible
+								Text={"A record states what it is before it states what it wants.\n\nThe second paragraph is the proposition, and `TARGET:` is a field label."}
+								ClassName="specimen-page__prose"
+							/>
+						</SpecimenPlate>
+
+						<SpecimenPlate
+							part={Printed[5]!}
+							caption="The newest entry in the collection, as a card. The card is fed by the collection rather than written here, so it cannot describe an article that does not exist."
+							source="SOURCE/COMPONENT/DYNAMIC/DYNAMICBLOGCARD.TSX"
+							stage="field"
+						>
+							{
+								Newest ? (
+									<DynamicBlogCard
+										Post={{
+											Slug: Newest.id,
+											Title: Newest.data.title,
+											Summary: Newest.data.summary,
+											PublishedAt: Newest.data.publishedAt,
+											Tags: Newest.data.tags,
+											Author: Newest.data.author,
+											ReadTime: Newest.data.readTime,
+										}}
+									/>
+								) : (
+									<ShellState
+										kind="empty"
+										index="ARTICLE / 00"
+										statement="The collection holds no entry, so the article card has nothing to print."
+										cause="A card fed by a collection prints what the collection holds. With no entries there is no card, and the plate says so rather than printing a card made of placeholders."
+										next={{ label: "READ THE ARCHIVE", href: "/Blog" }}
+										surface="bare"
+									/>
+								)
+							}
+						</SpecimenPlate>
+
+						<SpecimenPlate
+							part={Printed[6]!}
+							caption="The six properties the proof band carries, as records: three claimed, three filed against the pages that argue them. The homepage prints the six *elements* one band down and prints them as records of their own, so the claim grid has no page of its own - it is printed here, at 1:1, the way every part on this sheet is."
+							source="SOURCE/COMPONENT/DYNAMIC/PROPERTIES/GRID.ASTRO"
+							stage="field"
+						>
+							<Grid entries={Properties} />
+						</SpecimenPlate>
+					</div>
+				)
+			}
+		</RecordBand>
+
+		{/* ─── THE ABSENCES ──────────────────────────────────────────── */}
+		<RecordBand band={{ ...Bands.Absences, id: "absences" }}>
+			<div class="specimen-page__absences">
+				{
+					Absent.map((Part) =>
+						Part.absence === undefined ? null : (
+							<div class="specimen-page__absence">
+								<SurfaceAbsent
+									status={Part.absence.status}
+									wouldBe={Part.absence.wouldBe}
+									whyNot={Part.absence.whyNot}
+									next={Part.absence.next}
+									note={Part.absence.note}
+								/>
+							</div>
+						),
+					)
+				}
+			</div>
+		</RecordBand>
+
+		{/* ─── THE STATES ────────────────────────────────────────────── */}
+		<RecordBand band={{ ...Bands.States, id: "states" }}>
+			<div class="specimen-page__legend">
+				<p class="specimen-page__legend-key">THE EIGHT WORDS:</p>
+				<SurfaceChips chips={Vocabulary} />
+			</div>
+
+			<div class="specimen-page__states">
+				{
+					StateCells.map((Cell) => (
+						<div class="specimen-page__state">
+							<ShellState
+								kind={Cell.kind}
+								index={Cell.index}
+								statement={Cell.statement}
+								cause={Cell.cause}
+								next={Cell.next}
+								rows={Cell.rows}
+								shown={Cell.shown}
+								total={Cell.total}
+								value={Cell.value}
+								limit={Cell.limit}
+								asOf={Cell.asOf}
+								age={Cell.age}
+								keys={Cell.keys}
+								note={Cell.note}
+								surface="bare"
+							/>
+						</div>
+					))
+				}
+			</div>
+		</RecordBand>
+
+		{/* ─── THE MATERIAL ──────────────────────────────────────────── */}
+		<RecordBand band={Bands.Material}>
+			<SpecimenMaterial
+				items={Material}
+				label="MATERIAL"
+				count={`${Material.length} SPECIMENS`}
+				empty="No specimen is filed, so the strip prints nothing. The material is not a preference that can be missing: it is read from the token sheet, and a strip with no rows is a build that lost the file."
+			/>
+		</RecordBand>
+
+		{/* ─── THE REGISTER ──────────────────────────────────────────── */}
+		<RecordBand band={Bands.Register}>
+			<div class="specimen-page__register">
+				<RecordLedger
+					rows={RegisterRows}
+					columns={2}
+					register={`# REGISTER / 0${RegisterRows.length}`}
+				/>
+			</div>
+
+			<Onward slot="foot" rows={OnwardCopy.rows} copy={OnwardCopy.copy} />
+		</RecordBand>
+	</SurfaceShell>
+</Base>

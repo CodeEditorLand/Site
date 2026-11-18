@@ -1,4 +1,3 @@
-
 html {
 	@apply m-0 h-full w-full p-0;
 	background-color: var(--Background);
@@ -22,9 +21,46 @@ jelly-badge {
 	--jelly-badge-radius: 0 !important;
 }
 
+/* ─── THE TWO RULES A VENDORED SHADOW DOM CANNOT BE ASKED TO KEEP ──────────
+ * Jelly's `:host` defaults are its own design language, not this site's: a
+ * `jelly-badge` renders at 10.14px and 640 weight, and every `jelly-button`
+ * at 640. That breaks the two floors the identity is judged on - nothing
+ * renders below 13px, weight never exceeds 500 - and it broke them on every
+ * page, invisibly, because the declarations live in the vendored shadow tree
+ * where no stylesheet grep can reach them. Measured in the rendered homepage:
+ * 19 badges at 10.14px, 75 elements at 640.
+ *
+ * The host element is the one place the document can speak: an author rule on
+ * the host outranks the shadow's `:host` block, and the label inside inherits
+ * or reads the custom property. So the floor is set as the badge's own
+ * `--jelly-badge-font-size` (the property the download masthead's keeper
+ * already sets per instance) and the ceiling as `font-weight` on the host.
+ * Buttons keep their own sizes - Jelly's 14/16/18px are inside the S tier - and
+ * lose only the weight. */
+jelly-badge,
+jelly-button,
+jelly-icon-button {
+	font-weight: 500;
+}
+
+jelly-badge {
+	--jelly-badge-font-size: var(--type-meta);
+
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+}
+
 /* White jelly-card: ink text on the card surface (single daylight theme) */
 jelly-card {
 	--jelly-card-color: var(--CardForeground);
+
+	/* Jelly's card host default is 15px - inside the S tier, but a seventh step
+	   no role owns, so any text in a card that carries no role rendered at 15
+	   rather than at the body's 16 (measured on /License). The card sets the
+	   body role; every role inside it still overrides. */
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
 }
 
 /* Platform download jelly-buttons: keep the long "Download for <OS>" label
@@ -70,7 +106,7 @@ jelly-badge:not(:defined) {
 	align-items: center;
 	border: 1px solid transparent;
 	padding: 0.125rem 0.625rem;
-	font-size: 0.875rem;
+	font-size: var(--TypeScaleS);
 	line-height: 1rem;
 	font-weight: 500;
 	background: var(--Secondary);
@@ -105,6 +141,45 @@ jelly-badge:not(:defined) {
 	--jelly-toast-radius: 0;
 	--jelly-tooltip-radius: 0;
 }
+
+/* ─── THE JELLY OVERRIDES' HOME: WHAT IS HERE, AND WHAT IS NOT ─────────────
+ *
+ * `DESIGN-COMPLETE.md` §4.4 puts every Jelly override in this file, and §4.3
+ * makes a lane class that repaints a Jelly element a defect. Measured on the
+ * working tree, in three parts:
+ *
+ * 1. WHAT THIS FILE PINS. The radius (the element `!important` pins and the
+ *    twenty-two `--jelly-*-radius` properties below), the weight ceiling and the
+ *    type floor, the card's ink and body role, the platform button's nowrap, the
+ *    copy button's two surface-aware pairs, and the pre-hydration fallbacks
+ *    (`:not(:defined)`). All of it is a HOST-level pin: the vendored shadow tree
+ *    cannot be reached by a stylesheet, so the host element is the one place the
+ *    document can speak.
+ *
+ * 2. WHAT IS NOT HERE, AND WHY. `--jelly-label` and `--jelly-ring` are `:root`
+ *    defaults in `_Token.scss:986-987` (`var(--Foreground)` and `var(--Ring)`),
+ *    and `--Ring` and `--Accent` are the same ink (`#1e742a`), so a Jelly focus
+ *    ring and an anchor focus ring are one colour by value and there is nothing
+ *    to correct here. A fill is never sitewide: a bare element carries its own
+ *    `--jelly-fill` per instance (§1.7), which is why no `--jelly-fill` appears
+ *    in this file.
+ *
+ * 3. WHAT A LANE CLASS DOES INSTEAD. Four partials set `--jelly-*` on the host
+ *    element itself - `.home-card` (`Home/_Record.scss`), `.home-manifest`
+ *    (`Home/_Release.scss`), `.home-platform__manifest` (`Home/_Platform.scss`),
+ *    `.home-element` (`Home/_Element.scss`) - and a class ON the element is a
+ *    per-element property, not a repaint. No partial selects a Jelly element as
+ *    its subject anywhere else in `System/Component/`: the one compound selector
+ *    is `Dynamic/_Properties.scss`'s
+ *    `jelly-card > .record-entry.properties-entry`, which paints the RECORD (its
+ *    own fill and frame) so that the card stays the only surface.
+ *
+ * Motion is not here either - `_Motion.scss` owns it, including the copy
+ * affordance's `--jelly-label` swap, which is the one place a Jelly property is
+ * written from a stylesheet at all. It is written with `!important` because the
+ * host carries the property inline (`Function/Utility/CopyCommand.ts:133`), and
+ * it is scoped to the transient Copied state.
+ */
 
 /* Emoji and symbol fallback fonts for special characters like ★☆ */
 body,
@@ -179,52 +254,45 @@ body > astro-island {
 	contain-intrinsic-block-size: 800px;
 }
 
-/* ─── Vertical rhythm: breathing room between headings & paragraphs ─── */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-	margin-top: 0;
+/* ─── Vertical rhythm: the fallback, at zero specificity ────────────────────
+   A block's rhythm belongs to its flow container (`_Space.scss`). This is the
+   fallback for prose that carries no flow class, and it is written inside
+   `:where()` so its specificity is ZERO: every block class, every role class and
+   every utility outranks it by cascade law, and no partial needs `!important` or
+   a margin reset to escape it. The values are the rhythm's roles, never
+   distances - a heading sits CLOSE to what follows it (`--space-tight`) and FAR
+   from what precedes it (`--space-group`), because a heading belongs to its
+   body. That is the same asymmetry `.prose-flow` states, said once here as the
+   fallback. */
+:where(h1, h2, h3, h4, h5, h6) {
+	margin-block: 0 var(--space-tight);
 }
 
-h1 {
-	margin-bottom: 2rem;
+:where(p) {
+	margin-block: 0 var(--space-reading);
 }
 
-h2 {
-	margin-bottom: 2rem;
+:where(* + h1, * + h2, * + h3, * + h4, * + h5, * + h6) {
+	margin-block-start: var(--space-group);
 }
 
-h3 {
-	margin-bottom: 1.5rem;
+:where(
+	h1:last-child,
+	h2:last-child,
+	h3:last-child,
+	h4:last-child,
+	h5:last-child,
+	h6:last-child,
+	p:last-child
+) {
+	margin-block-end: 0;
 }
 
-h4,
-h5,
-h6 {
-	margin-bottom: 1.25rem;
-}
-
-p {
-	margin-bottom: 1.5rem;
-}
-
-h1:last-child,
-h2:last-child,
-h3:last-child,
-h4:last-child,
-h5:last-child,
-h6:last-child,
-p:last-child {
-	margin-bottom: 0;
-}
-
-/* Shared "// Eyebrow" + <h2> + subtitle heading block */
+/* Shared "// Eyebrow" + <h2> + subtitle heading block. A page-level heading
+   block, so its closing interval is the reserved emptiness (`--space-blank`),
+   not a 64px literal that was on no scale. */
 .mx-auto.mb-10.max-w-2xl.text-center {
-	margin-bottom: 4rem;
+	margin-bottom: var(--space-blank);
 }
 
 /* Text Selection Highlighting */
@@ -253,7 +321,7 @@ img {
 
 ::-webkit-scrollbar-thumb {
 	background: rgba(7, 7, 7, 0.18);
-	border-radius: 99px;
+	border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -283,14 +351,30 @@ html {
 
 /* ─────────────────────────────────────────────────────────────── */
 /* Accessibility: links must be distinguishable by more than color alone. */
+/* The underline IS the non-colour marker, so it draws at `--Divider` (20 % ink,
+   1.50:1), not at `--Border` (8 %, 1.18:1): an underline a reader cannot see is
+   not a second signal, it is the colour alone with extra steps. Hover takes the
+   link's own ink. */
+/* `HeaderRecord` is excluded because the frame's running head prints the record
+   name with its own 2px/20% resting underline - the nav label's treatment - and
+   an 8% prose underline under it would weaken it to nothing. */
 a:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not(
 		[class*="Social"]
 	):not([class*="StaccatoLogo"]):not([class*="StaccatoSocial"]):not(
 		[class*="NavLink"]
-	):not([class*="StaccatoCard"]):not([class*="Footer"]):not([aria-label]) {
+	):not([class*="StaccatoCard"]):not([class*="Footer"]):not(
+		[class*="HeaderRecord"]
+	):not([aria-label]) {
 	text-decoration: underline;
-	text-decoration-color: var(--Border);
-	text-underline-offset: 2px;
+	text-decoration-color: var(--Divider);
+	/* The underline's metrics are a fraction of the type size, not a distance:
+	   2px sits inside a 13px label's descenders and floats under a 52px heading,
+	   and the ladder has both. 0.22em holds at every step, and 1px keeps the
+	   underline a hairline instead of a second rule. `System/Detail/_Ink.scss`
+	   states the same two values for the artifacts that live on the detail
+	   layer, so a change here is a change there. */
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.22em;
 }
 
 a:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not(
@@ -298,7 +382,7 @@ a:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not(
 	):not([class*="StaccatoLogo"]):not([class*="StaccatoSocial"]):not(
 		[class*="NavLink"]
 	):not([class*="StaccatoCard"]):not([class*="Footer"]):not(
-		[aria-label]
-	):hover {
+		[class*="HeaderRecord"]
+	):not([aria-label]):hover {
 	text-decoration-color: var(--Primary);
 }

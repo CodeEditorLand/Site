@@ -1,0 +1,130 @@
+---
+/**
+ * MotionSpecimen - one motion, stated on one side of a hairline and shown on the
+ * other.
+ *
+ * ─── WHAT IT IS ───────────────────────────────────────────────────────────
+ * The composition a specimen sheet uses: a register column that answers *which
+ * motion, what it is called, what it explains, what it costs* - and a stage that
+ * holds the live artifact. The stage is the site's one white information box;
+ * what sits in it is a disclosure, a register or a run, never a card.
+ *
+ * ─── THE DURATION IS A BAR, NOT A NUMBER ──────────────────────────────────
+ * `200 MS` is a figure; a bar of 62% of the longest interval the site has is a
+ * *comparison*. The bar's length is derived here from the caller's milliseconds
+ * so every specimen on a page shares one scale - a page cannot print 320ms as
+ * full width on one row and half on the next.
+ *
+ * ─── FIVE RATIOS, AND WHY ─────────────────────────────────────────────────
+ * A sheet of nine equal rows is a table. `base` (4 | 7) and `flip` (7 | 4)
+ * alternate the side the register sits on, `wide` gives an artifact the whole
+ * measure, and `pair` / `trio` put two or three arms of one artifact inside a
+ * single stage with hairlines between them. Alternating them down a page is what
+ * makes the sheet read as a composed document rather than a list of rows.
+ *
+ * ─── NO SCRIPT ────────────────────────────────────────────────────────────
+ * The stage holds whatever the page slots in. Nothing here is interactive; the
+ * artifacts inside carry their own disclosures.
+ */
+import type { SpecimenMotion } from "./Type.js";
+
+interface Props {
+	/**
+	 * The motion, as the register states it. Omitted, the specimen is a *plate*:
+	 * the artifact at container width with its note, and no register - for a band
+	 * whose motion has already been stated above it.
+	 */
+	motion?: SpecimenMotion;
+
+	/** The ratio. `base` unless the artifact needs another. */
+	variant?: "base" | "flip" | "wide" | "pair" | "trio";
+
+	/** One line under the stage: what the specimen is, or what it cannot show. */
+	note?: string;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const {
+	motion: Motion,
+	variant: Variant = "base",
+	note: Note,
+	class: Class,
+} = Astro.props;
+
+/**
+ * The bar's length: the interval against the longest interval the site has
+ * (320ms, `--motion-interval-settle`). Rounded to whole percent so the printed
+ * width is stable, and floored at 2% so a very short interval is still a bar
+ * rather than a hairline that looks like a missing value.
+ */
+const Span = Motion
+	? Math.max(2, Math.round((Motion.interval / 320) * 100))
+	: 0;
+---
+
+<article
+	class:list={[
+		"MotionSpecimen",
+		Variant !== "base" && `MotionSpecimen--${Variant}`,
+		!Motion && "MotionSpecimen--plate",
+		Class,
+	]}
+	data-motion="specimen"
+>
+	{
+		Motion ? (
+			<div class="MotionSpecimen__Register">
+				<p class="MotionSpecimen__Mark">
+					# {Motion.name} / {Motion.index}
+				</p>
+				<h3 class="MotionSpecimen__Name">{Motion.name}</h3>
+				<p class="MotionSpecimen__Explains">
+					<span
+						class="MotionSpecimen__ExplainsMark"
+						aria-hidden="true"
+					>
+						↳
+					</span>{Motion.explains}
+				</p>
+
+				<div class="MotionSpecimen__Measure">
+					<span class="MotionSpecimen__Track" aria-hidden="true">
+						<span
+							class="MotionSpecimen__Bar"
+							style={`--span: ${Span}%`}
+						/>
+					</span>
+					<span class="MotionSpecimen__Interval">
+						{Motion.intervalText}
+					</span>
+				</div>
+
+				<dl class="MotionSpecimen__Ledger">
+					<div class="MotionSpecimen__Row">
+						<dt class="MotionSpecimen__Key">CURVE:</dt>
+						<dd class="MotionSpecimen__Value">
+							{Motion.curve} <code>{Motion.curveValue}</code>
+						</dd>
+					</div>
+					<div class="MotionSpecimen__Row">
+						<dt class="MotionSpecimen__Key">MOVES:</dt>
+						<dd class="MotionSpecimen__Value">{Motion.moves}</dd>
+					</div>
+					<div class="MotionSpecimen__Row">
+						<dt class="MotionSpecimen__Key">KEEPS:</dt>
+						<dd class="MotionSpecimen__Value">{Motion.keeps}</dd>
+					</div>
+				</dl>
+			</div>
+		) : null
+	}
+
+	{Motion ? <div class="MotionSpecimen__Gutter" aria-hidden="true"></div> : null}
+
+	<div class="MotionSpecimen__Stage">
+		<slot />
+		{Note ? <p class="MotionSpecimen__StageNote">{Note}</p> : null}
+	</div>
+</article>

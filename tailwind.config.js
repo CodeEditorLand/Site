@@ -20,6 +20,23 @@ export default {
 				Ease: "cubic-bezier(0.21, 0.1, 0.21, 1)",
 			},
 
+			/* The tracking registers (`_Token.scss`). `tracking-join|set|name|row|
+			 * rule` are the five values the system has; the three names the kit
+			 * already used are aliased onto them so a component written against
+			 * Tailwind's scale resolves to a register instead of to Tailwind's
+			 * own number (tight -0.025em, wider 0.05em, widest 0.1em). One law,
+			 * five values, no sixth - including in markup. */
+			letterSpacing: {
+				join: "var(--track-join)",
+				set: "var(--track-set)",
+				name: "var(--track-name)",
+				row: "var(--track-row)",
+				rule: "var(--track-rule)",
+				tight: "var(--track-join)",
+				wider: "var(--track-row)",
+				widest: "var(--track-rule)",
+			},
+
 			fontFamily: {
 				sans: ["var(--FontSans)", ...fontFamily.sans],
 
@@ -81,6 +98,78 @@ export default {
 							"font-weight": "400",
 						},
 
+						// ── THE LADDER, AT THE PROSE LAYER ──
+						// The typography plugin's own scale is a fourth-tier
+						// generator: h1 2.25em (36px), h2 1.5em (24px), h3 1.25em
+						// (20px) - and 20-24px is neither S (<=18) nor L (>=32).
+						// A markdown body must set the same ladder the rest of the
+						// site does, or every Doc and Blog article reintroduces the
+						// tier the identity forbids. h1/h2 are L (a section head),
+						// h3 is the S heading (18px, 500), h4 is a run-in at body
+						// size. Nothing here is a new value: each reads a token.
+						h1: {
+							"font-size": "var(--type-section)",
+							"line-height": "var(--type-section-line)",
+							"letter-spacing": "var(--track-join)",
+							"font-weight": "500",
+							strong: { "font-weight": "500" },
+						},
+
+						h2: {
+							"font-size": "var(--type-section)",
+							"line-height": "var(--type-section-line)",
+							"letter-spacing": "var(--track-join)",
+							"font-weight": "500",
+							strong: { "font-weight": "500" },
+						},
+
+						h3: {
+							"font-size": "var(--type-heading)",
+							"line-height": "var(--type-heading-line)",
+							"letter-spacing": "var(--track-set)",
+							"font-weight": "500",
+							strong: { "font-weight": "500" },
+						},
+
+						h4: {
+							"font-size": "var(--type-sub)",
+							"line-height": "var(--type-sub-line)",
+							"letter-spacing": "var(--track-set)",
+							"font-weight": "500",
+							strong: { "font-weight": "500" },
+						},
+
+						// The weight ceiling, at the prose layer: the plugin's
+						// defaults are 600-900 (strong 600, dt 600, code 600, and
+						// 700-900 on a heading's own strong), and the identity's
+						// ceiling is 500 (DesignSystem.md §5; System/_Type.scss).
+						// The elements keep their semantic emphasis - the emphasis
+						// is the element's, the weight is the system's.
+						//
+						// One residue this API cannot reach: the plugin emits its
+						// own `h1 strong`…`h4 strong` (700-900) AFTER the nested
+						// `strong` above, at the same specificity, so its value
+						// wins inside `.prose`. It is inert - no element on the
+						// site carries the `prose` class; the markdown surfaces are
+						// `doc-prose` and `blog-article__body`, and they read the
+						// roles in `_Type.scss`. Recorded rather than silenced with
+						// an `!important` that would outrank a keeper's weight.
+						strong: {
+							"font-weight": "500",
+						},
+
+						b: {
+							"font-weight": "500",
+						},
+
+						dt: {
+							"font-weight": "500",
+						},
+
+						code: {
+							"font-weight": "400",
+						},
+
 						// Tables: block + overflow-x-auto so they scroll on mobile
 						// instead of blowing out the layout.
 						table: {
@@ -99,17 +188,21 @@ export default {
 							"border-bottom-color": "var(--Border)",
 						},
 
-						// Headers: mono, uppercase, tracked, muted.
+						// Headers: mono, uppercase, tracked, muted. The size is
+						// the meta role, not a literal: 0.75rem (12px) sat below
+						// the site's 13px floor, and a table head is the one
+						// place the floor was broken outside the token layer
+						// (D2-TOKENS §7.7).
 						"thead th": {
 							color: "var(--MuteForeground)",
 
 							"font-family": "var(--FontMono)",
 
-							"font-size": "0.75rem",
+							"font-size": "var(--type-meta)",
 
 							"font-weight": "500",
 
-							"letter-spacing": "0.2em",
+							"letter-spacing": "var(--track-row)",
 
 							"text-transform": "uppercase",
 

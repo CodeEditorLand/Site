@@ -74,7 +74,7 @@ const Frame = ["h-full", className, Class].filter(Boolean).join(" ");
 			record.Stamp?.length ? (
 				<div class="mt-8">
 					{record.Stamp.map((Line) => (
-						<p class="text-field-l font-mono font-normal leading-[1.0] tracking-[-0.02em] text-card-foreground">
+						<p class="text-field-l font-mono font-normal leading-[1.0] tracking-join text-card-foreground">
 							<StampText Line={Line} />
 						</p>
 					))}
@@ -96,7 +96,7 @@ const Frame = ["h-full", className, Class].filter(Boolean).join(" ");
 
 		{
 			record.Program?.length ? (
-				<p class="text-field-s mt-6 font-mono uppercase tracking-[0.25em] text-card-foreground opacity-60">
+				<p class="text-field-s mt-6 font-mono uppercase tracking-rule text-card-foreground opacity-60">
 					{record.Program.join("\u2001")}
 				</p>
 			) : null

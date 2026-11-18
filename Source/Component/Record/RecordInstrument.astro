@@ -1,0 +1,131 @@
+---
+/**
+ * RecordInstrument - a measured panel: figures with their sources.
+ *
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  a measurement - how much of something, and where the
+ *                   figure came from. Not a fact about an object (that is
+ *                   RecordLedger) and not evidence of a picture (RecordFigure).
+ * RANK              set. A panel is a set of measures; one measure alone is a
+ *                   set of one and still prints its own source.
+ * SLOT CONTRACT     measures[]  -> one cell per measure: `LABEL:`, the figure,
+ *                                 its unit, `SOURCE:` and `AS OF:`
+ *                   label?      -> the panel's `/LABEL` opening
+ *                   caption?    -> one sentence under the panel
+ *                   empty?      -> what the panel says when it has no measures
+ *                   measure.state -> the figure is not known; the state word is
+ *                                 printed in the figure's place, never a zero
+ *                   measure.lead  -> the panel's one leading figure (section
+ *                                 role; the rest take the sub role). Never the
+ *                                 display role: the page's one XL is its claim.
+ * MAY HOLD          nothing. A measure is four fields; a block inside one would
+ *                   be a second claim under one label.
+ * MAY NOT HOLD      any block. May not sit inside another instrument, and may
+ *                   not be the body of a pair pod (a pair compares two things,
+ *                   not two panels of figures).
+ * WIDE (>=1024)     one column per measure on the band's grid, ruled by one
+ *                   hairline above the whole strip.
+ * NARROW            the same strip, reflowed: two measures to a line, then one;
+ *                   the label moves above the figure and the figure keeps its
+ *                   size. A figure is a figure at any width - it is never
+ *                   shrunk to fit, because a shrunken number is a smaller claim.
+ * DENSE             none, and that is a decision: an instrument is already the
+ *                   densest reading of a figure (four fields in one cell). A
+ *                   block that needs tighter than this needs fewer measures.
+ *
+ * THE PROVENANCE IS NOT OPTIONAL. `Measure.provenance` is a required field, so
+ * a figure cannot be built without its source - the brief's rule is "every claim
+ * carries a figure and every figure carries a source", and the block is where
+ * that rule is enforced rather than remembered.
+ *
+ * THE STATE IS THE PRIMITIVE'S. An unknown figure prints `FieldRecordStatus`,
+ * the one implementation of the STATUS vocabulary and its inks. The block never
+ * decides that green means good; a state the vocabulary has no ink for is a
+ * state this block cannot print.
+ *
+ * No `<script>` and no `client:*`: a panel of printed figures is static.
+ */
+import { FieldRecordStatus } from "../Brand/FieldRecordStatus.js";
+
+import type { Instrument, Measure } from "./Type.js";
+
+type Props = Instrument & {
+	/** Extra classes from the page, appended after the block's own. */
+	readonly class?: string;
+};
+
+const { measures, label, caption, empty, class: Class } = Astro.props;
+
+/**
+ * A measure's figure: the state word when the figure is not known, otherwise the
+ * value and its unit. The unit is dropped for a state word - `UNAVAILABLE
+ * ENTRIES` would read as a figure with a unit, which is exactly what it is not.
+ */
+const HasFigure = (measure: Measure): boolean =>
+	measure.state === undefined;
+---
+
+<section class:list={["record-instrument", Class]}>
+	{label ? <p class="record-instrument__label">{label}</p> : null}
+
+	{
+		measures.length > 0 ? (
+			<div class="record-instrument__panel">
+				{measures.map((measure) => (
+					<div
+						class:list={[
+							"record-instrument__measure",
+							measure.lead ? "record-instrument__measure--lead" : null,
+						]}
+					>
+						<p class="record-instrument__key">{measure.label}:</p>
+
+						<p
+							class="record-instrument__figure"
+							data-figure={HasFigure(measure) ? "value" : "state"}
+						>
+							{HasFigure(measure) ? (
+								<>
+									<span class="record-instrument__value">
+										{measure.value}
+									</span>
+									{measure.unit ? (
+										<span class="record-instrument__unit">
+											{measure.unit}
+										</span>
+									) : null}
+								</>
+							) : (
+								<FieldRecordStatus status={measure.state!} />
+							)}
+						</p>
+
+						<p class="record-instrument__source">
+							<span class="record-instrument__source-key">SOURCE:</span>{" "}
+							{measure.provenance}
+							{measure.asOf ? (
+								<>
+									<span class="record-instrument__separator">
+										{"\u2001"}
+									</span>
+									<span class="record-instrument__as-of">
+										AS OF: {measure.asOf}
+									</span>
+								</>
+							) : null}
+						</p>
+					</div>
+				))}
+			</div>
+		) : empty ? (
+			<p class="record-instrument__empty">
+				<span class="record-instrument__empty-mark" aria-hidden="true">
+					◎
+				</span>{" "}
+				{empty}
+			</p>
+		) : null
+	}
+
+	{caption ? <p class="record-instrument__caption">{caption}</p> : null}
+</section>

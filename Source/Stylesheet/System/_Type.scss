@@ -1,102 +1,224 @@
 @use "Mixin" as *;
 
 /* ═══════════════════════════════════════════════════════════════════════════
- * TYPE ROLES - three tiers, hard jumps, one weight ceiling
+ * TYPE ROLES - three registers, three tiers, one weight ceiling
  *
  * THE CONTRACT. Every page and every component composes from these names, so a
  * name here is API: change a value if you must, never a name.
  *
- * The documents define three usable tiers - S 13-18px, L 32-52px, XL 48-72px -
- * with hard jumps between them, nothing below 13px, and no fourth size for a
- * heading (DesignSystem.md §5). The seven names below are roles *inside* those
- * tiers, not seven sizes:
+ * ─── THE THREE REGISTERS ──────────────────────────────────────────────────
+ * A page prints in one of three registers, and the register decides type,
+ * space AND motion together. This is the one axis the whole paper is set on:
  *
+ *   ANNOUNCE  the claim, the section head
+ *             L/XL . join tracking . leading <= 1.05
+ *             blank above, group below . NO motion (a claim is not a state)
+ *   SET       a sentence: prose, standfirst, caption
+ *             S 16/18 . set tracking . leading 1.4-1.65
+ *             reading between paragraphs, group before a figure . NO motion
+ *   TABULATE  a name and a value: labels, ledger rows, records, controls
+ *             S 13/14 . name tracking . leading 1.15
+ *             tight between rows, group around the set . ALL the motion
+ *
+ * The law behind it: a thing that can change state is tabulated; a thing that
+ * cannot is set or announced. It is why the ledger row moves and the seal does
+ * not, why a paragraph carries no transition and a control carries six, and why
+ * a band is air by construction while a record row is density by construction -
+ * the difference is the register, never a padding value.
+ *
+ * ─── THE TIERS ────────────────────────────────────────────────────────────
+ * Six steps in three tiers (DesignSystem.md §5; DESIGN.md §2.4), and rank
+ * lives only at the tier boundaries:
+ *
+ *   XL 48-72px   the page's one claim, at most once a page
+ *   L  32-52px   a section head, a functional `h1`, a record title
+ *   S  13/14/16/18px  four MATERIALS, not four ranks
+ *
+ * The hard jump is 18 -> 32 (1.78x). Inside S the four steps are materials: a
+ * 16px sentence is not louder than a 14px command, it is a different kind of
+ * thing. So the law a page is judged by is:
+ *
+ *   rank is expressed only at a tier boundary. An S step never makes one thing
+ *   bigger than another S thing - only a different material.
+ *
+ * A page uses one XL, one L and at most two S steps per artifact: four sizes on
+ * a page, not six. There is no tier between S and L, which is why `.type-heading`
+ * exists: the tree rendered twelve headings at 20-30px - neither S nor L - and
+ * they were not wrong sizes, they were an unstated role.
+ *
+ * ─── THE ROLES ────────────────────────────────────────────────────────────
  *   .type-display   XL  the one claim the page is about (at most once a page)
  *   .type-section   L   the heading of an artifact
+ *   .type-heading   S   a heading under an artifact head: 18px, 500, 1.25
  *   .type-sub       S   the standfirst: one sentence, at most two lines
  *   .type-body      S   running prose and record bodies
- *   .type-caption   S   a figure caption or a provenance line
- *   .type-meta      S   /LABEL kickers, # markers, table heads (13px floor)
+ *   .type-caption   S   a sentence about a figure, measure-capped
+ *   .type-meta      S   a label: /LABEL kickers, # markers, table heads, keys
  *   .type-code      S   commands, config blocks, transcripts
  *
- * Weight never exceeds 500 anywhere: hierarchy comes from scale, spacing and
- * tracking, never from weight (DesignSystem.md §5). The `-line` companions are
- * unitless line-heights, so they inherit and scale with the role's size.
+ * The roles are classes; the TIER belongs to the element (see THE ELEMENT
+ * LADDER below). A partial composes `.type-*` for a role on a non-heading
+ * element - a `p` standfirst, a `span` label - and never restates a heading's
+ * size.
  *
- * SPACING - one role per relationship, never one per distance:
- *   --space-tight   label -> its value; a heading -> its own context
- *   --space-reading paragraph -> paragraph
- *   --space-group   explanation -> figure; figure -> caption
- *   --space-blank   the card's mandatory blank band (15-25% of its area)
- *   --space-chapter a genuinely new subject, i.e. a page-level boundary only
+ * A LABEL IS NOT A CAPTION, and they are the same size. Both 13px, both muted;
+ * the difference is shape, not a step:
  *
- * BLOCKS - .band is the page-level wrapper at the group rhythm, never a chapter
- * by default: a genuinely new subject opts into .band--chapter, and a section
- * that merely groups content paints no boundary. .band-inner is the one inner
- * container, so no page re-invents the gutters. .prose-flow owns the vertical
- * rhythm of a prose block: it exists to replace the compounding of
- * `flex flex-col gap-*` PLUS `mb-*` on one block.
+ *   label    names a value      one line, name tracking, leading 1.15, carries `:`
+ *   caption  says of a figure   set tracking, leading 1.5, capped at 62ch, wraps
  *
- * EMPHASIS - three tiers, all flat (radius 0, no shadow):
- *   .emphasis-quiet       hairline rule only, no fill
- *   .emphasis-standard    white information box plus hairline
- *   .emphasis-expressive  ink-inverted action (--Primary fill, creme text)
- * RULE: ONE .emphasis-expressive PER ARTIFACT, and only on the thing the user
- * clicks. It is never a decoration, never an address block, and never a second
- * one in the same region (DESIGN.md §4.3; §5 A6).
+ * That is why the site needs no fifth size - the two 13px jobs are told apart by
+ * tracking and leading.
+ *
+ * ─── TRACKING ─────────────────────────────────────────────────────────────
+ * Every role reads a register from the token layer (`--track-*`): join for L/XL,
+ * set for a sentence, name for a label beside its value. The other two registers
+ * - row and rule - belong to labels that are not roles: a label across a row of
+ * labels, and a label above a region. Five values, one law, no sixth.
+ *
+ * ─── WEIGHT ───────────────────────────────────────────────────────────────
+ * Weight never exceeds 500 anywhere: hierarchy comes from scale, space and
+ * tracking, never from weight (DesignSystem.md §5; `_Base.scss` enforces the
+ * ceiling on `strong`/`b`). The `-line` companions are unitless line-heights, so
+ * they inherit and scale with the role's size.
  * ═══════════════════════════════════════════════════════════════════════════ */
 
-/* ─── TYPE ROLE CLASSES ────────────────────────────────────────────────── */
+/* ─── ANNOUNCE ─────────────────────────────────────────────────────────── */
 
 .type-display {
 	font-size: var(--type-display);
 	line-height: var(--type-display-line);
-	letter-spacing: -0.02em;
+	letter-spacing: var(--track-join);
 }
 
 .type-section {
 	font-size: var(--type-section);
 	line-height: var(--type-section-line);
-	letter-spacing: -0.02em;
+	letter-spacing: var(--track-join);
 }
+
+/* .type-heading - the S heading. Same size as the standfirst and deliberately
+   a different setting: a heading is set tight (1.25) at 500, a standfirst is
+   set open (1.4) at 400. Without this role the fourth tier keeps coming back. */
+.type-heading {
+	font-size: var(--type-heading);
+	line-height: var(--type-heading-line);
+	font-weight: 500;
+	letter-spacing: var(--track-set);
+	text-wrap: balance;
+}
+
+/* ─── SET ──────────────────────────────────────────────────────────────── */
 
 .type-sub {
 	font-size: var(--type-sub);
 	line-height: var(--type-sub-line);
+	letter-spacing: var(--track-set);
 }
 
 .type-body {
 	font-size: var(--type-body);
 	line-height: var(--type-body-line);
+	letter-spacing: var(--track-set);
 }
 
+/* .type-caption - the sentence role. Set plain (no tracking), open (1.5), and
+   capped at the opening measure so a caption never runs wider than the prose it
+   belongs to. The cap is the class's, not the caller's: a caption that has to
+   be told to be 62ch wide is a caption that will one day be 72ch. */
 .type-caption {
 	font-size: var(--type-caption);
 	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	max-width: var(--MeasureOpening);
+	text-wrap: pretty;
 }
 
-/* .type-meta - the 13px floor plus micro tracking, so a label reads as a label
-   without a second class (DesignSystem.md §5: micro tracking 0em-0.04em). */
+/* ─── TABULATE ─────────────────────────────────────────────────────────── */
+
+/* .type-meta - the label role: the 13px floor, name tracking, leading 1.15, so
+   a label reads as a label without a second class (DesignSystem.md §5: micro
+   tracking 0em-0.04em). */
 .type-meta {
 	font-size: var(--type-meta);
 	line-height: var(--type-meta-line);
-	letter-spacing: 0.04em;
+	letter-spacing: var(--track-name);
 }
 
 .type-code {
 	font-size: var(--type-code);
 	line-height: var(--type-code-line);
+	letter-spacing: var(--track-set);
 }
 
-/* ─── KICKER, PROSE FLOW, FIGURE CAPTION ───────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+ * THE ELEMENT LADDER - the tier a heading gets before any class is written
+ *
+ * The roles above are the API a surface composes from, but a role class only
+ * applies where a surface remembers to write it. The tree showed what that
+ * costs: `h2` rendered at 18px on six surfaces and `h3` at 13 and 16 on three,
+ * and every one of those partials carried a paragraph of reasoning for its own
+ * step. A heading's tier is not a surface's decision. It is the ladder's - and
+ * it is the SAME ladder the markdown body already sets (the prose layer in
+ * `tailwind.config.js`), so an article and a page cannot disagree about what an
+ * `h2` is.
+ *
+ *   h1, h2   L    a page's title and a section's head share one tier, because
+ *                 the hard jump means a section head is not a quieter title but
+ *                 a different thing - a title opens a page, a section head opens
+ *                 a chapter under a boundary rule
+ *   h3       S    the S heading: 18px, 500, 1.25 - the heading under an artifact
+ *   h4-h6    S    a run-in: the same 18px step at the open leading, because
+ *                 below `h3` the system has no further size, and a fourth-level
+ *                 heading is a label with a sentence after it
+ *
+ * A surface keeps every local decision - ink, weight, tracking register,
+ * measure, margin, `text-wrap` - and gives up exactly one: `font-size` (and the
+ * leading that belongs to it). A heading rule in a partial that sets a size is
+ * re-deciding the ladder one page at a time, and that is the defect this block
+ * ends. The one heading a surface may still size is the page's single `h1`,
+ * where L is the ladder's own answer and XL (`.type-display`) is the page's one
+ * claim; `h2` down to `h6` are the ladder's. Weight is not the ladder's either:
+ * it stays the surface's, because a heading at L reads as a heading at 400 (the
+ * homepage) or at 500 (a record band) and the difference is ink, never rank.
+ * ═══════════════════════════════════════════════════════════════════════════ */
 
-/* .prose-flow, .prose-flow--group and .figure-caption from this group live in
-   Space.scss, beside the bands they space. */
+h1,
+h2 {
+	font-size: var(--type-section);
+	line-height: var(--type-section-line);
+	letter-spacing: var(--track-join);
+	text-wrap: balance;
+}
 
-/* .section-kicker - the /SECTION LABEL opening a band: the meta role at wide
-   label tracking. Type and colour only - no border, no fill, no shadow - so it
-   never competes with the heading. */
+h3 {
+	font-size: var(--type-heading);
+	line-height: var(--type-heading-line);
+	font-weight: 500;
+	letter-spacing: var(--track-set);
+	text-wrap: balance;
+}
+
+h4,
+h5,
+h6 {
+	font-size: var(--type-heading);
+	line-height: var(--type-sub-line);
+	font-weight: 500;
+	letter-spacing: var(--track-set);
+}
+
+/* ─── KICKER ───────────────────────────────────────────────────────────── */
+
+/* .prose-flow and .figure-caption live in Space.scss, beside the bands they
+   space. */
+
+/* .section-kicker - the /SECTION LABEL opening a band: the label role at the
+   `rule` register, because this label is not beside a value and not across a
+   row - it is above a region, and it must be findable while scanning. Type and
+   colour only - no border, no fill, no shadow - so it never competes with the
+   heading under it. */
 .section-kicker {
 	@include mono-meta;
-	letter-spacing: 0.18em;
+	letter-spacing: var(--track-rule);
 }

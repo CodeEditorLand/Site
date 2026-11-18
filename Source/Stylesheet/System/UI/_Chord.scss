@@ -1,0 +1,53 @@
+@use "../Mixin" as *;
+
+// ─── THE CHORD CAP ──────────────────────────────────────────────────────────
+//
+// `〈⌘K〉`, `〈ESC〉`, `〈↑↓〉`, `〈ENTER〉`.
+//
+// The record grammar already owns a bracket for *a literal*: `〈 〉` is containment,
+// and the site prints `〈RUST + TAURI〉`, `〈NO ELECTRON〉`, `〈MACOS / AARCH64〉` in
+// it. A key chord is a literal - the exact characters the reader presses - so the
+// bracket is not a new mark, it is the existing one used for the thing it was
+// always for. That is the whole invention: no new glyph, no key-cap drawing, no
+// rounded box with a drop shadow pretending to be a keyboard.
+//
+// The brackets are muted and the key is ink, so the chord reads as a stamp with
+// one word inked - the same character-level ink the semantic ledger gives a
+// `〈STAMP〉`. 13px, the floor, tabular, never wrapped.
+//
+// It is used in three places and only three: a menu row's meta cell (the shortcut
+// that does the same thing), the palette's foot (the path through the control),
+// and the palette's trigger (the way in). A chord printed anywhere else is
+// decoration, and a decoration that claims a key does nothing is a lie.
+
+.Chord {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.1em;
+
+	color: var(--MuteForeground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+}
+
+.Chord__Bracket {
+	color: var(--MuteForeground);
+}
+
+.Chord__Key {
+	color: var(--Foreground);
+
+	letter-spacing: var(--track-row);
+}
+
+// In a muted context (a foot, a meta cell) the key keeps its ink; on the trigger,
+// where the control is the thing being named, the whole cap goes ink.
+.Chord--ink .Chord__Bracket,
+.Chord--ink .Chord__Key {
+	color: var(--Foreground);
+}

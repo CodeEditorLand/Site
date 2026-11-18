@@ -43,6 +43,8 @@
 import RecordBand from "../Record/RecordBand.astro";
 import RecordEntry from "../Record/RecordEntry.astro";
 
+import { GetI18n } from "../../Library/I18n/Server";
+
 import type { DocSection } from "./Type.js";
 
 interface Props {
@@ -52,13 +54,22 @@ interface Props {
 
 const { section } = Astro.props;
 
+const T = GetI18n();
+
 /**
- * The chapter's route label, in the `/LABEL` voice the band's kicker prints.
- * The block never invents the leading slash and never re-cases the text, so
- * the page supplies both - and the label is the chapter's own name, not a
- * second name for it.
+ * The chapter's route label, in the `/LABEL` voice the band's kicker prints, plus
+ * the one fact that makes a wall of eighty-one cards scannable: how many pages
+ * the chapter holds.
+ *
+ * The block never invents the leading slash and never re-cases the text, so the
+ * page supplies both. The count is the length of the rows this component is about
+ * to print - not a number typed anywhere - and it is the same count the closing
+ * archive prints per section, in the same word, so the top of the chapter and the
+ * map at the foot cannot disagree.
  */
-const Kicker = `/${section.Heading.toUpperCase()}`;
+const Pages = T("archive.pages", { defaultValue: "PAGES" });
+
+const Kicker = `/${section.Heading.toUpperCase()}\u2001${section.Rows.length}\u2001${Pages}`;
 
 /**
  * The card's marker: its position in the chapter, two digits. The block prints

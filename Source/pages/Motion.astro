@@ -1,0 +1,443 @@
+---
+/**
+ * Motion - the register: what this paper moves, why, and what it refuses to.
+ *
+ * ─── WHY THIS PAGE EXISTS ─────────────────────────────────────────────────
+ * The site had a motion layer and no way to read it. `System/_Motion.scss` names
+ * eight relationships and `System/Motion/` names thirteen occasions, but a reader
+ * - or the next card - met both of them as comments in a stylesheet. A design
+ * system whose motion is only legible in its own source is a system that will be
+ * contradicted by the next component that needs a transition.
+ *
+ * ─── THE COMPOSITION: A SPECIMEN SHEET ────────────────────────────────────
+ * A manual documents a *behaviour* differently from an object: it states the
+ * rule, then it shows the thing doing it. So the page's centre is six specimens -
+ * a register column on one side of a hairline, the live artifact on the other -
+ * alternating sides so nine rows do not read as a table, and one of them wide
+ * because a page handover cannot be shown inside a column. The artifact is never
+ * a picture: the fold is a real `<details>`, the expand is a real record set, the
+ * sort is the real matrix control, the origin is a real popover, and the handover
+ * is a real link that performs the navigation.
+ *
+ * ─── THE LANGUAGE: READING ────────────────────────────────────────────────
+ * `Language.ts` files this route as `reading`, and the contract is a rail, a
+ * measure and a margin:
+ *
+ *   rail     the page's seven registers, with their counts - the same list the
+ *            contents fold prints below 1024
+ *   measure  the register ledger, the specimens, the sequences, the fold gallery,
+ *            the adverse arms and the refusals
+ *   margin   the apparatus: the three intervals, the three curves, and the one
+ *            class that is switched off rather than shortened
+ *
+ * ─── WHAT THE PAGE DOES NOT DO ────────────────────────────────────────────
+ * It does not animate. Every rule on this page is the rule being described, and a
+ * page that performed a demonstration on scroll would be the one thing the
+ * register forbids: motion without a state change. The specimens move when the
+ * reader moves them, and nowhere else.
+ */
+import { Header } from "../Component/Layout/Header";
+import QuietHead from "../Component/More/QuietHead.astro";
+import MotionExpand from "../Component/Motion/MotionExpand.astro";
+import MotionFold from "../Component/Motion/MotionFold.astro";
+import MotionOrigin from "../Component/Motion/MotionOrigin.astro";
+import MotionSequence from "../Component/Motion/MotionSequence.astro";
+import MotionSkeleton from "../Component/Motion/MotionSkeleton.astro";
+import MotionSpecimen from "../Component/Motion/MotionSpecimen.astro";
+import RecordBand from "../Component/Record/RecordBand.astro";
+import RecordLedger from "../Component/Record/RecordLedger.astro";
+import RecordMargin from "../Component/Record/RecordMargin.astro";
+import RecordMatrix from "../Component/Record/RecordMatrix.astro";
+import Trail from "../Component/Route/Trail.astro";
+import PageShell from "../Component/Shell/PageShell.astro";
+import ShellRail from "../Component/Shell/ShellRail.astro";
+import Fold from "../Component/UI/Fold/Fold.astro";
+import MatrixControl from "../Component/UI/Matrix/MatrixControl.astro";
+import Base from "../Layout/Base.astro";
+
+import {
+	ArmsColumns,
+	ArmsRows,
+	Bands,
+	ExpandRecords,
+	Facts,
+	FoldRules,
+	Gallery,
+	HandoverRows,
+	Refusals,
+	RecordRows,
+	SequenceCaption,
+	Sequences,
+	SkeletonArrived,
+	SkeletonSpec,
+	SortColumns,
+	SortFacets,
+	SortRows,
+	SpecimenNotes,
+} from "../Content/Motion/Page.js";
+import {
+	ClassCount,
+	ClassOf,
+	Classes,
+	Curves,
+	Intervals,
+} from "../Content/Motion/Register.js";
+
+/** U+2001 - the site's only separator. */
+const Quad = "\u2001";
+
+const MetaTitle = "Motion | Code Editor Land";
+
+const MetaDescription =
+	"The paper's motion register: thirteen interaction classes, three intervals, three curves, the artifact each one is for, and the nine adverse states this document prints without moving at all.";
+
+/**
+ * The register as a ledger: one row per class. The key is the class's position
+ * and name, the value is what it explains, and the note is what it costs - so a
+ * reader scanning the band learns the vocabulary, and a reader reading it learns
+ * the argument.
+ */
+const RegisterRows = Classes.map((Entry) => ({
+	key: `${Entry.index} ${Entry.name}`,
+	value: Entry.explains,
+	note: `${Entry.intervalText}${Quad}${Entry.curve}${Quad}${Entry.relationship}${Quad}MOVES: ${Entry.moves}`,
+}));
+
+/** The page's seven registers, as both the rail and the contents fold print them. */
+const Registers = [
+	{
+		mark: "01",
+		label: "THE REGISTER",
+		href: "#register",
+		meta: `${String(ClassCount).padStart(2, "0")} CLASSES`,
+	},
+	{
+		mark: "02",
+		label: "THE SPECIMENS",
+		href: "#specimens",
+		meta: "06 LIVE",
+	},
+	{
+		mark: "03",
+		label: "THE SEQUENCES",
+		href: "#sequences",
+		meta: `${String(Sequences.length).padStart(2, "0")} DRAWN`,
+	},
+	{
+		mark: "04",
+		label: "THE FOLD",
+		href: "#fold",
+		meta: "03 SIZES",
+	},
+	{
+		mark: "05",
+		label: "THE ARMS",
+		href: "#arms",
+		meta: `${String(ArmsRows.length).padStart(2, "0")} STATES`,
+	},
+	{
+		mark: "06",
+		label: "THE REFUSALS",
+		href: "#refusals",
+		meta: `${String(Refusals.length).padStart(2, "0")} RULES`,
+	},
+	{
+		mark: "07",
+		label: "THE RECORD",
+		href: "#record",
+		meta: `${String(RecordRows.length).padStart(2, "0")} FILES`,
+	},
+];
+
+const RailRows = Registers.map((Register) => ({
+	mark: Register.mark,
+	label: Register.label,
+	href: Register.href,
+	meta: Register.meta,
+}));
+
+const Contents = Registers.map((Register) => ({
+	Index: Register.mark,
+	Label: Register.label,
+	Href: Register.href,
+	Meta: Register.meta,
+}));
+
+const TrailItems = [
+	{ label: "/HOME", href: "/" },
+	{ label: "/MOTION" },
+];
+
+/** The margin's note: the one class that is switched off rather than shortened. */
+const ReducedNote = {
+	index: "NOTE_01",
+	label: "REDUCED MOTION",
+	body: "Every rule in the family declares its end state unconditionally and gates only its interval, so a reader who asked for less motion gets the same document in one frame. The page handover is the one exception and it is not an exception to the promise: it is switched off at the source (`navigation: none`), because a snapshot transition that runs in 0.01ms still paints two documents in one frame, and that reader is better served by the navigation they already know.",
+	source: "SOURCE/STYLESHEET/SYSTEM/MOTION/",
+};
+---
+
+<Base Title={MetaTitle} Description={MetaDescription}>
+	<Header client:load Mode="functional" slot="Header" />
+
+	<PageShell
+		index="# READING_10"
+		label="THE MOTION REGISTER"
+		class="PageShell--more"
+		measure="full"
+		railLabel="The page's registers"
+		marginLabel="Apparatus"
+	>
+		<Trail slot="head" trail={TrailItems} />
+
+		<QuietHead
+			slot="head"
+			index="MOTION_01"
+			label="/STATE CHANGES WORTH WATCHING"
+			title="What the paper moves, and what it refuses to"
+			proposition={`${ClassCount} interaction classes, three intervals and three curves. Each one is here with the artifact it is for, the interval it costs and the state change it explains - and the nine adverse states this document prints without moving at all.`}
+			rows={Facts}
+		/>
+
+		<Fold
+			slot="head"
+			Items={Contents}
+			Name="THE REGISTERS"
+			Empty="This page prints one subject and seven registers, so there is nothing to list. Read it top to bottom: the register, the specimens, the sequences, the fold, the arms, the refusals, the record."
+		/>
+
+		<ShellRail
+			slot="rail"
+			class="more-rail"
+			label="THE REGISTERS"
+			count={Registers.length}
+			items={RailRows}
+			sticky={false}
+			foot={{ label: "THE INDEX", href: "/Contents" }}
+		/>
+
+		<RecordBand
+			band={{
+				...Bands.Register,
+				id: "register",
+			}}
+		>
+			<RecordLedger rows={RegisterRows} columns={1} />
+		</RecordBand>
+
+		<RecordBand
+			band={{
+				kicker: Bands.Specimens.kicker,
+				heading: Bands.Specimens.heading,
+				standfirst: Bands.Specimens.standfirst,
+				footnote: Bands.Specimens.footnote,
+				tone: Bands.Specimens.tone,
+				id: "specimens",
+			}}
+		>
+			<MotionSpecimen
+				motion={ClassOf("FOLD")}
+				note={SpecimenNotes.Fold}
+			>
+				<MotionFold
+					name="THE FOLD, IN FOUR RULES"
+					label="KEPT"
+					leaves={FoldRules.map((Leaf) => ({
+						...Leaf,
+					}))}
+					empty="This fold has no rules behind it, which would mean the stylesheet had not been written."
+				/>
+			</MotionSpecimen>
+
+			<MotionSpecimen
+				motion={ClassOf("EXPAND")}
+				variant="flip"
+				note={SpecimenNotes.Expand}
+			>
+				<MotionExpand
+					marker="# EXPAND / 03"
+					records={ExpandRecords.map((Record) => ({
+						...Record,
+						rows: [...Record.rows],
+					}))}
+					empty="No record in this set carries provenance, which would mean the set was a list of claims rather than a set of records."
+				/>
+			</MotionSpecimen>
+
+			<MotionSpecimen
+				motion={ClassOf("HANDOVER")}
+				variant="wide"
+				note={SpecimenNotes.Handover}
+			>
+				<a class="MotionSpecimen__Act" href="/Doc">
+					<span class="MotionSpecimen__ActMark" aria-hidden="true"
+						>→</span
+					>
+					<span>HAND OVER TO /DOC</span>
+				</a>
+				<RecordLedger
+					rows={HandoverRows.map((Row) => ({ ...Row }))}
+					register="# THE TWO IMAGES / 04"
+					class="MotionSpecimen__Ledger--stage"
+				/>
+			</MotionSpecimen>
+
+			<MotionSpecimen
+				motion={ClassOf("SORT")}
+				variant="flip"
+				note={SpecimenNotes.Sort}
+			>
+				<MatrixControl
+					Target="motion-sort"
+					Facets={SortFacets}
+					Name="THE SORT"
+					Total={SortRows.length}
+				/>
+				<RecordMatrix
+					id="motion-sort"
+					columns={SortColumns}
+					rows={SortRows}
+					caption="Eight classes, three columns. Narrow the facet or type in the match field: the rows travel to their new places and the table itself does not crossfade."
+				/>
+			</MotionSpecimen>
+
+			<MotionSpecimen
+				motion={ClassOf("ORIGIN")}
+				note={SpecimenNotes.Origin}
+			>
+				<MotionOrigin />
+			</MotionSpecimen>
+
+			<MotionSpecimen
+				motion={ClassOf("SKELETON")}
+				variant="pair"
+				note={SpecimenNotes.Skeleton}
+			>
+				<div>
+					<MotionSkeleton
+						marker={SkeletonSpec.marker}
+						keys={SkeletonSpec.keys}
+						waiting={SkeletonSpec.waiting}
+						age={SkeletonSpec.age}
+					/>
+				</div>
+				<div>
+					<RecordLedger
+						rows={SkeletonArrived.map((Row) => ({ ...Row }))}
+						register="# THE SAME RECORD, ARRIVED / 05"
+					/>
+				</div>
+			</MotionSpecimen>
+		</RecordBand>
+
+		<RecordBand
+			band={{
+				...Bands.Sequences,
+				id: "sequences",
+			}}
+		>
+			<div class="motion-sequences">
+				{Sequences.map((Sequence) => (
+					<MotionSequence sequence={{ ...Sequence, nodes: [...Sequence.nodes], edges: [...Sequence.edges] }} />
+				))}
+			</div>
+			<p class="motion-sequences__caption">
+				{SequenceCaption}
+			</p>
+		</RecordBand>
+
+		<RecordBand
+			band={{
+				...Bands.Fold,
+				id: "fold",
+			}}
+		>
+			<MotionSpecimen
+				variant="trio"
+				note="Three sizes of one band: three leaves, fourteen leaves with four below the frame, and none at all. The empty fold is not a failure state - it is a fold that says what it would have held."
+			>
+				<div>
+					<MotionFold
+						name={Gallery.Short.name}
+						leaves={Gallery.Short.leaves.map((Leaf) => ({
+							...Leaf,
+						}))}
+						empty={Gallery.Short.empty}
+					/>
+				</div>
+				<div>
+					<MotionFold
+						name={Gallery.Long.name}
+						leaves={Gallery.Long.leaves.map((Leaf) => ({
+							...Leaf,
+						}))}
+						empty={Gallery.Long.empty}
+						long
+						more={Gallery.Long.more}
+					/>
+				</div>
+				<div>
+					<MotionFold
+						name={Gallery.Empty.name}
+						leaves={[]}
+						empty={Gallery.Empty.empty}
+					/>
+				</div>
+			</MotionSpecimen>
+		</RecordBand>
+
+		<RecordBand
+			band={{
+				...Bands.Arms,
+				id: "arms",
+			}}
+		>
+			<RecordMatrix
+				columns={ArmsColumns}
+				rows={ArmsRows}
+				caption="Nine adverse states and the motion each one gets. Seven of them get none, which is the design: an absence, a stale reading and a refusal are facts, and a fact that moved would be a claim the page cannot support."
+				density="dense"
+			/>
+		</RecordBand>
+
+		<RecordBand
+			band={{
+				...Bands.Refusals,
+				id: "refusals",
+			}}
+		>
+			<RecordLedger rows={Refusals} columns={1} />
+		</RecordBand>
+
+		<RecordBand
+			band={{
+				...Bands.Record,
+				id: "record",
+			}}
+		>
+			<RecordLedger rows={RecordRows} columns={2} />
+		</RecordBand>
+
+		<div slot="margin">
+			<RecordLedger
+				rows={Intervals.map((Interval) => ({
+					key: Interval.key,
+					value: Interval.value,
+					note: Interval.note,
+				}))}
+				register="# THE INTERVALS / 03"
+			/>
+			<RecordLedger
+				rows={Curves.map((Curve) => ({
+					key: Curve.key,
+					value: Curve.value,
+					note: Curve.note,
+					code: true,
+				}))}
+				register="# THE CURVES / 03"
+				class="MotionMargin__Curves"
+			/>
+			<RecordMargin note={ReducedNote} />
+		</div>
+	</PageShell>
+</Base>

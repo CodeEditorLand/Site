@@ -40,9 +40,14 @@
 @use "../../Mixin" as *;
 
 .reading-document {
-	/* One knob for the anchor offset. The header is not sticky today, so the
-	   offset is reading air; a sticky header repoints this one value. */
-	--reading-anchor-offset: var(--space-group);
+	/* One knob for the anchor offset. It is ZERO because the frame already
+	   clears the sticky header: `System/_Base.scss` sets
+	   `scroll-padding-block-start: calc(var(--HeaderHeight) + var(--space-tight))`
+	   on `html` for every route, and a scroll-margin here would add to it - the
+	   clause would land two header heights down. The knob stays because a
+	   container that scrolls on its own (a drawer, a rail) repoints this one
+	   value rather than re-deriving the header's height. */
+	--reading-anchor-offset: 0rem;
 }
 
 .reading-document__head {
@@ -57,9 +62,9 @@
 }
 
 .reading-document__heading {
-	font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+	font-size: var(--type-section);
 	line-height: 1.15;
-	letter-spacing: -0.01em;
+	letter-spacing: var(--track-join);
 	font-weight: 500;
 	text-wrap: balance;
 
@@ -172,10 +177,10 @@
    because the page already has one and a document that opens with a second
    level-one heading is the defect this surface exists to remove. */
 .reading-document__title {
-	font-size: clamp(1.75rem, 3vw, 2.25rem);
+	font-size: var(--type-section);
 	line-height: 1.15;
 	font-weight: 500;
-	letter-spacing: -0.01em;
+	letter-spacing: var(--track-join);
 
 	@include hairline(bottom);
 
@@ -217,11 +222,14 @@
 	}
 }
 
+/* A clause is an `h2`, so it is L - the section head's tier (`_Type.scss`, THE
+   ELEMENT LADDER). It rendered at 18px for a while, the same size as the
+   sentence under it, which is the demotion the ladder exists to undo: a legal
+   document's twenty-six clauses are its twenty-six sections, and a section head
+   that is not larger than its paragraph is a row label wearing an `h2`. */
 .reading-clause {
 	scroll-margin-block-start: var(--reading-anchor-offset);
 
-	font-size: 1.5rem;
-	line-height: 1.25;
 	font-weight: 500;
 
 	text-wrap: balance;
@@ -237,4 +245,87 @@
 	@include mono-meta;
 
 	margin-block-end: var(--space-tight);
+}
+
+/* A clause whose number is written in the markup (a `TrustClause`) prints its
+   own §NN, and the counter stands down here: two numbering mechanisms on one
+   heading is a defect, and a number that lives only in a `::before` cannot be
+   cited - it is not in the text, not in the index, and not a target anyone can
+   copy. The role above is untouched, so a heading that is not cited still
+   counts itself. */
+.reading-clause--cited::before {
+	content: none;
+}
+
+/* ─── The rail composition ────────────────────────────────────────────────
+   `layout="rail"` moves the index out of the flow and into the margin beside
+   the document. The head and the facts strip keep the full width - they are the
+   page's front matter, and a facts strip squeezed into the document column
+   would read as the rail's caption - and the document takes the wide column
+   with the clause rail pinned beside it.
+
+   The measure is unchanged: `--prose` still caps the body at 72ch, so the white
+   card hugs its own text instead of stretching to the column and leaving a dead
+   band of white on the right. What the rail takes is margin, not measure. */
+.reading-document--rail {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.reading-document--rail .reading-document__head,
+.reading-document--rail .reading-document__ledger,
+.reading-document--rail .reading-document__contents-narrow {
+	grid-column: 1 / -1;
+}
+
+@include bp(1024px) {
+	.reading-document--rail {
+		grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+		column-gap: var(--space-group);
+		align-items: start;
+	}
+
+	.reading-document--rail .reading-document__contents {
+		grid-column: 1;
+	}
+
+	.reading-document--rail .reading-document__body {
+		grid-column: 2;
+
+		/* The body's own top margin is the stack composition's separation from
+		   the index above it. In the rail composition the rail and the document
+		   start on the same line, so the margin would drop the document 2rem
+		   below the rail's head and misalign the two columns' first line. */
+		margin-block-start: 0;
+	}
+}
+
+/* The rail is a workspace column, not a scroll target: it pins under the running
+   head and scrolls itself when a document has more clauses than the viewport has
+   rows, so a 26-clause document never pushes the page and the rail never runs
+   off the bottom of the screen. */
+.reading-document--rail .reading-document__contents {
+	position: sticky;
+	inset-block-start: calc(var(--HeaderHeight) + var(--space-reading));
+	max-block-size: calc(100dvh - var(--HeaderHeight) - 2 * var(--space-group));
+	overflow-y: auto;
+	overscroll-behavior: contain;
+}
+
+/* Below the rail's breakpoint the list is the disclosure above the document and
+   the rail is not painted at all - one contents list is drawn at any width. */
+.reading-document--rail .reading-document__contents-narrow {
+	margin-block-start: var(--space-group);
+}
+
+@include bp(1024px) {
+	.reading-document--rail .reading-document__contents-narrow {
+		display: none;
+	}
+}
+
+@media (max-width: 1023.98px) {
+	.reading-document--rail .reading-document__contents {
+		display: none;
+	}
 }

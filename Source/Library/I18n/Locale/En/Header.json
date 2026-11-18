@@ -17,10 +17,25 @@
 		"editorPortal": "Editor Portal",
 		"getStarted": "Get Land",
 		"logout": "Sign Out",
-		"loading": "Loading\u2026"
+		"loading": "Reading the session"
 	},
 	"status": {
 		"value": "STATUS: ACTIVE\u2001PRE-RELEASE"
+	},
+	"index": {
+		"label": "Dossier index",
+		"field": "INDEX:",
+		"home": "HOME",
+		"download": "DOWNLOAD",
+		"doc": "DOCUMENTATION",
+		"blog": "BLOG",
+		"contact": "CONTACT",
+		"license": "LICENSE",
+		"contributing": "CONTRIBUTING",
+		"legal": "LEGAL",
+		"portal": "PORTAL",
+		"account": "ACCOUNT",
+		"unfiled": "UNFILED"
 	},
 	"user": {
 		"avatarAlt": "User menu",

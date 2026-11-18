@@ -1,0 +1,1070 @@
+{
+	"_Generated": {
+		"By": "Source/Script/Register.ts",
+		"From": [
+			"Source/**"
+		],
+		"Transform": [
+			"Facts"
+		],
+		"Note": "One row per record head the tree prints: the `# NAME_NN` literal, the modules that print it, and the routes whose import tree reaches them.",
+		"Rule": "Generated. Change the tree or the page, then run `node Source/Script/Register.ts` - never this file."
+	},
+	"Records": [
+		{
+			"Id": "ACCESS_01",
+			"File": "pages/Account/index.astro",
+			"Files": [
+				"pages/Account/index.astro"
+			],
+			"Routes": [
+				"/Account"
+			]
+		},
+		{
+			"Id": "ACCOUNT_01",
+			"File": "pages/Account/index.astro",
+			"Files": [
+				"pages/Account/index.astro"
+			],
+			"Routes": [
+				"/Account"
+			]
+		},
+		{
+			"Id": "AIR_01",
+			"File": "Content/Record/Air.ts",
+			"Files": [
+				"Content/Record/Air.ts"
+			],
+			"Routes": [
+				"/",
+				"/404",
+				"/Account",
+				"/Account/ForgotPassword",
+				"/Account/ResetPassword",
+				"/Account/SignIn",
+				"/Account/SignUp",
+				"/Blog",
+				"/Blog/:Slug",
+				"/Compare",
+				"/Contact",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Sale",
+				"/Contact/Scout",
+				"/Contents",
+				"/Contributing",
+				"/Dashboard",
+				"/Doc",
+				"/Doc/:Slug",
+				"/Doc/Rust",
+				"/Download",
+				"/Glossary",
+				"/Legal/Privacy",
+				"/Legal/Term",
+				"/License",
+				"/Motion",
+				"/OAuth/Success",
+				"/Portal",
+				"/Status",
+				"/Verify"
+			]
+		},
+		{
+			"Id": "ARCHIVE_01",
+			"File": "Component/Record/RecordArchive.astro",
+			"Files": [
+				"Component/Record/RecordArchive.astro"
+			],
+			"Routes": [
+				"/Contents",
+				"/Doc"
+			]
+		},
+		{
+			"Id": "AUDIT_02",
+			"File": "pages/Verify.astro",
+			"Files": [
+				"pages/Verify.astro"
+			],
+			"Routes": [
+				"/Verify"
+			]
+		},
+		{
+			"Id": "AUDIT_04",
+			"File": "pages/Portal.astro",
+			"Files": [
+				"pages/Portal.astro"
+			],
+			"Routes": [
+				"/Portal"
+			]
+		},
+		{
+			"Id": "AUDIT_05",
+			"File": "pages/Status.astro",
+			"Files": [
+				"pages/Status.astro"
+			],
+			"Routes": [
+				"/Status"
+			]
+		},
+		{
+			"Id": "COCOON_01",
+			"File": "Content/Record/Cocoon.ts",
+			"Files": [
+				"Content/Record/Cocoon.ts"
+			],
+			"Routes": [
+				"/",
+				"/404",
+				"/Account",
+				"/Account/ForgotPassword",
+				"/Account/ResetPassword",
+				"/Account/SignIn",
+				"/Account/SignUp",
+				"/Blog",
+				"/Blog/:Slug",
+				"/Compare",
+				"/Contact",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Sale",
+				"/Contact/Scout",
+				"/Contents",
+				"/Contributing",
+				"/Dashboard",
+				"/Doc",
+				"/Doc/:Slug",
+				"/Doc/Rust",
+				"/Download",
+				"/Glossary",
+				"/Legal/Privacy",
+				"/Legal/Term",
+				"/License",
+				"/Motion",
+				"/OAuth/Success",
+				"/Portal",
+				"/Status",
+				"/Verify"
+			]
+		},
+		{
+			"Id": "COMMON_01",
+			"File": "Content/Record/Common.ts",
+			"Files": [
+				"Content/Record/Common.ts"
+			],
+			"Routes": [
+				"/",
+				"/404",
+				"/Account",
+				"/Account/ForgotPassword",
+				"/Account/ResetPassword",
+				"/Account/SignIn",
+				"/Account/SignUp",
+				"/Blog",
+				"/Blog/:Slug",
+				"/Compare",
+				"/Contact",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Sale",
+				"/Contact/Scout",
+				"/Contents",
+				"/Contributing",
+				"/Dashboard",
+				"/Doc",
+				"/Doc/:Slug",
+				"/Doc/Rust",
+				"/Download",
+				"/Glossary",
+				"/Legal/Privacy",
+				"/Legal/Term",
+				"/License",
+				"/Motion",
+				"/OAuth/Success",
+				"/Portal",
+				"/Status",
+				"/Verify"
+			]
+		},
+		{
+			"Id": "DASHBOARD_02",
+			"File": "pages/Dashboard.astro",
+			"Files": [
+				"pages/Dashboard.astro"
+			],
+			"Routes": [
+				"/Dashboard"
+			]
+		},
+		{
+			"Id": "ECHO_01",
+			"File": "Content/Record/Echo.ts",
+			"Files": [
+				"Content/Record/Echo.ts"
+			],
+			"Routes": [
+				"/",
+				"/404",
+				"/Account",
+				"/Account/ForgotPassword",
+				"/Account/ResetPassword",
+				"/Account/SignIn",
+				"/Account/SignUp",
+				"/Blog",
+				"/Blog/:Slug",
+				"/Compare",
+				"/Contact",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Sale",
+				"/Contact/Scout",
+				"/Contents",
+				"/Contributing",
+				"/Dashboard",
+				"/Doc",
+				"/Doc/:Slug",
+				"/Doc/Rust",
+				"/Download",
+				"/Glossary",
+				"/Legal/Privacy",
+				"/Legal/Term",
+				"/License",
+				"/Motion",
+				"/OAuth/Success",
+				"/Portal",
+				"/Status",
+				"/Verify"
+			]
+		},
+		{
+			"Id": "FRAME_01",
+			"File": "Content/Layout/Rust.ts",
+			"Files": [
+				"Content/Layout/Rust.ts"
+			],
+			"Routes": [
+				"/Doc/Rust"
+			]
+		},
+		{
+			"Id": "GROVE_01",
+			"File": "Content/Record/Grove.ts",
+			"Files": [
+				"Content/Record/Grove.ts"
+			],
+			"Routes": [
+				"/",
+				"/404",
+				"/Account",
+				"/Account/ForgotPassword",
+				"/Account/ResetPassword",
+				"/Account/SignIn",
+				"/Account/SignUp",
+				"/Blog",
+				"/Blog/:Slug",
+				"/Compare",
+				"/Contact",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Sale",
+				"/Contact/Scout",
+				"/Contents",
+				"/Contributing",
+				"/Dashboard",
+				"/Doc",
+				"/Doc/:Slug",
+				"/Doc/Rust",
+				"/Download",
+				"/Glossary",
+				"/Legal/Privacy",
+				"/Legal/Term",
+				"/License",
+				"/Motion",
+				"/OAuth/Success",
+				"/Portal",
+				"/Status",
+				"/Verify"
+			]
+		},
+		{
+			"Id": "LAND_01",
+			"File": "Component/Dynamic/Hero/Data.ts",
+			"Files": [
+				"Component/Dynamic/Hero/Data.ts",
+				"Component/Record/RecordHero.astro",
+				"Component/Record/Type.ts",
+				"Content/Record/Land.ts",
+				"Library/I18n/Locale/En/Home.json"
+			],
+			"Routes": [
+				"/",
+				"/404",
+				"/Account",
+				"/Account/ForgotPassword",
+				"/Account/ResetPassword",
+				"/Account/SignIn",
+				"/Account/SignUp",
+				"/Blog",
+				"/Blog/:Slug",
+				"/Compare",
+				"/Contact",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Sale",
+				"/Contact/Scout",
+				"/Contents",
+				"/Contributing",
+				"/Dashboard",
+				"/Doc",
+				"/Doc/:Slug",
+				"/Doc/Rust",
+				"/Download",
+				"/Glossary",
+				"/Legal/Privacy",
+				"/Legal/Term",
+				"/License",
+				"/Motion",
+				"/OAuth/Success",
+				"/Portal",
+				"/Status",
+				"/Verify"
+			]
+		},
+		{
+			"Id": "MAINTAIN_01",
+			"File": "Content/Record/Maintain.ts",
+			"Files": [
+				"Content/Record/Maintain.ts"
+			],
+			"Routes": [
+				"/",
+				"/404",
+				"/Account",
+				"/Account/ForgotPassword",
+				"/Account/ResetPassword",
+				"/Account/SignIn",
+				"/Account/SignUp",
+				"/Blog",
+				"/Blog/:Slug",
+				"/Compare",
+				"/Contact",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Sale",
+				"/Contact/Scout",
+				"/Contents",
+				"/Contributing",
+				"/Dashboard",
+				"/Doc",
+				"/Doc/:Slug",
+				"/Doc/Rust",
+				"/Download",
+				"/Glossary",
+				"/Legal/Privacy",
+				"/Legal/Term",
+				"/License",
+				"/Motion",
+				"/OAuth/Success",
+				"/Portal",
+				"/Status",
+				"/Verify"
+			]
+		},
+		{
+			"Id": "MIST_01",
+			"File": "Content/Record/Mist.ts",
+			"Files": [
+				"Content/Record/Mist.ts"
+			],
+			"Routes": [
+				"/",
+				"/404",
+				"/Account",
+				"/Account/ForgotPassword",
+				"/Account/ResetPassword",
+				"/Account/SignIn",
+				"/Account/SignUp",
+				"/Blog",
+				"/Blog/:Slug",
+				"/Compare",
+				"/Contact",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Sale",
+				"/Contact/Scout",
+				"/Contents",
+				"/Contributing",
+				"/Dashboard",
+				"/Doc",
+				"/Doc/:Slug",
+				"/Doc/Rust",
+				"/Download",
+				"/Glossary",
+				"/Legal/Privacy",
+				"/Legal/Term",
+				"/License",
+				"/Motion",
+				"/OAuth/Success",
+				"/Portal",
+				"/Status",
+				"/Verify"
+			]
+		},
+		{
+			"Id": "MOUNTAIN_01",
+			"File": "Component/Dynamic/Architecture/Type.ts",
+			"Files": [
+				"Component/Dynamic/Architecture/Type.ts",
+				"Component/Record/Type.ts",
+				"Content/Record/Mountain.ts"
+			],
+			"Routes": [
+				"/",
+				"/404",
+				"/Account",
+				"/Account/ForgotPassword",
+				"/Account/ResetPassword",
+				"/Account/SignIn",
+				"/Account/SignUp",
+				"/Blog",
+				"/Blog/:Slug",
+				"/Compare",
+				"/Contact",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Sale",
+				"/Contact/Scout",
+				"/Contents",
+				"/Contributing",
+				"/Dashboard",
+				"/Doc",
+				"/Doc/:Slug",
+				"/Doc/Rust",
+				"/Download",
+				"/Glossary",
+				"/Legal/Privacy",
+				"/Legal/Term",
+				"/License",
+				"/Motion",
+				"/OAuth/Success",
+				"/Portal",
+				"/Status",
+				"/Verify"
+			]
+		},
+		{
+			"Id": "OUTPUT_01",
+			"File": "Content/Record/Output.ts",
+			"Files": [
+				"Content/Record/Output.ts"
+			],
+			"Routes": [
+				"/",
+				"/404",
+				"/Account",
+				"/Account/ForgotPassword",
+				"/Account/ResetPassword",
+				"/Account/SignIn",
+				"/Account/SignUp",
+				"/Blog",
+				"/Blog/:Slug",
+				"/Compare",
+				"/Contact",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Sale",
+				"/Contact/Scout",
+				"/Contents",
+				"/Contributing",
+				"/Dashboard",
+				"/Doc",
+				"/Doc/:Slug",
+				"/Doc/Rust",
+				"/Download",
+				"/Glossary",
+				"/Legal/Privacy",
+				"/Legal/Term",
+				"/License",
+				"/Motion",
+				"/OAuth/Success",
+				"/Portal",
+				"/Status",
+				"/Verify"
+			]
+		},
+		{
+			"Id": "PANE_01",
+			"File": "pages/Compare.astro",
+			"Files": [
+				"pages/Compare.astro"
+			],
+			"Routes": [
+				"/Compare"
+			]
+		},
+		{
+			"Id": "PANE_02",
+			"File": "pages/Compare.astro",
+			"Files": [
+				"pages/Compare.astro"
+			],
+			"Routes": [
+				"/Compare"
+			]
+		},
+		{
+			"Id": "PLATE_01",
+			"File": "pages/404.astro",
+			"Files": [
+				"pages/404.astro"
+			],
+			"Routes": [
+				"/404"
+			]
+		},
+		{
+			"Id": "PLATE_03",
+			"File": "pages/OAuth/Success.astro",
+			"Files": [
+				"pages/OAuth/Success.astro"
+			],
+			"Routes": [
+				"/OAuth/Success"
+			]
+		},
+		{
+			"Id": "PROFILE_01",
+			"File": "pages/Account/index.astro",
+			"Files": [
+				"pages/Account/index.astro"
+			],
+			"Routes": [
+				"/Account"
+			]
+		},
+		{
+			"Id": "READING_04",
+			"File": "pages/Contact/Sale.astro",
+			"Files": [
+				"pages/Contact/Sale.astro"
+			],
+			"Routes": [
+				"/Contact/Sale"
+			]
+		},
+		{
+			"Id": "READING_09",
+			"File": "pages/Glossary.astro",
+			"Files": [
+				"pages/Glossary.astro"
+			],
+			"Routes": [
+				"/Glossary"
+			]
+		},
+		{
+			"Id": "READING_10",
+			"File": "pages/Motion.astro",
+			"Files": [
+				"pages/Motion.astro"
+			],
+			"Routes": [
+				"/Motion"
+			]
+		},
+		{
+			"Id": "REGISTER_01",
+			"File": "Content/Layout/Rust.ts",
+			"Files": [
+				"Content/Layout/Rust.ts"
+			],
+			"Routes": [
+				"/Doc/Rust"
+			]
+		},
+		{
+			"Id": "RELEASE_01",
+			"File": "Component/Dynamic/Roadmap/Type.ts",
+			"Files": [
+				"Component/Dynamic/Roadmap/Type.ts",
+				"Component/Home/ReleaseCard.astro",
+				"Content/Home/Platform.ts",
+				"Content/Home/Roadmap.ts"
+			],
+			"Routes": [
+				"/",
+				"/Status"
+			]
+		},
+		{
+			"Id": "RELEASE_02",
+			"File": "Content/Home/Roadmap.ts",
+			"Files": [
+				"Content/Home/Roadmap.ts"
+			],
+			"Routes": [
+				"/",
+				"/Status"
+			]
+		},
+		{
+			"Id": "REST_01",
+			"File": "Content/Record/Rest.ts",
+			"Files": [
+				"Content/Record/Rest.ts"
+			],
+			"Routes": [
+				"/",
+				"/404",
+				"/Account",
+				"/Account/ForgotPassword",
+				"/Account/ResetPassword",
+				"/Account/SignIn",
+				"/Account/SignUp",
+				"/Blog",
+				"/Blog/:Slug",
+				"/Compare",
+				"/Contact",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Sale",
+				"/Contact/Scout",
+				"/Contents",
+				"/Contributing",
+				"/Dashboard",
+				"/Doc",
+				"/Doc/:Slug",
+				"/Doc/Rust",
+				"/Download",
+				"/Glossary",
+				"/Legal/Privacy",
+				"/Legal/Term",
+				"/License",
+				"/Motion",
+				"/OAuth/Success",
+				"/Portal",
+				"/Status",
+				"/Verify"
+			]
+		},
+		{
+			"Id": "SIDECAR_01",
+			"File": "Content/Record/SideCar.ts",
+			"Files": [
+				"Content/Record/SideCar.ts"
+			],
+			"Routes": [
+				"/",
+				"/404",
+				"/Account",
+				"/Account/ForgotPassword",
+				"/Account/ResetPassword",
+				"/Account/SignIn",
+				"/Account/SignUp",
+				"/Blog",
+				"/Blog/:Slug",
+				"/Compare",
+				"/Contact",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Sale",
+				"/Contact/Scout",
+				"/Contents",
+				"/Contributing",
+				"/Dashboard",
+				"/Doc",
+				"/Doc/:Slug",
+				"/Doc/Rust",
+				"/Download",
+				"/Glossary",
+				"/Legal/Privacy",
+				"/Legal/Term",
+				"/License",
+				"/Motion",
+				"/OAuth/Success",
+				"/Portal",
+				"/Status",
+				"/Verify"
+			]
+		},
+		{
+			"Id": "SKY_01",
+			"File": "Content/Record/Sky.ts",
+			"Files": [
+				"Content/Record/Sky.ts"
+			],
+			"Routes": [
+				"/",
+				"/404",
+				"/Account",
+				"/Account/ForgotPassword",
+				"/Account/ResetPassword",
+				"/Account/SignIn",
+				"/Account/SignUp",
+				"/Blog",
+				"/Blog/:Slug",
+				"/Compare",
+				"/Contact",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Sale",
+				"/Contact/Scout",
+				"/Contents",
+				"/Contributing",
+				"/Dashboard",
+				"/Doc",
+				"/Doc/:Slug",
+				"/Doc/Rust",
+				"/Download",
+				"/Glossary",
+				"/Legal/Privacy",
+				"/Legal/Term",
+				"/License",
+				"/Motion",
+				"/OAuth/Success",
+				"/Portal",
+				"/Status",
+				"/Verify"
+			]
+		},
+		{
+			"Id": "STATUS_01",
+			"File": "pages/Status.astro",
+			"Files": [
+				"pages/Status.astro"
+			],
+			"Routes": [
+				"/Status"
+			]
+		},
+		{
+			"Id": "VERIFY_01",
+			"File": "pages/Verify.astro",
+			"Files": [
+				"pages/Verify.astro"
+			],
+			"Routes": [
+				"/Verify"
+			]
+		},
+		{
+			"Id": "VINE_01",
+			"File": "Content/Record/Vine.ts",
+			"Files": [
+				"Content/Record/Vine.ts"
+			],
+			"Routes": [
+				"/",
+				"/404",
+				"/Account",
+				"/Account/ForgotPassword",
+				"/Account/ResetPassword",
+				"/Account/SignIn",
+				"/Account/SignUp",
+				"/Blog",
+				"/Blog/:Slug",
+				"/Compare",
+				"/Contact",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Sale",
+				"/Contact/Scout",
+				"/Contents",
+				"/Contributing",
+				"/Dashboard",
+				"/Doc",
+				"/Doc/:Slug",
+				"/Doc/Rust",
+				"/Download",
+				"/Glossary",
+				"/Legal/Privacy",
+				"/Legal/Term",
+				"/License",
+				"/Motion",
+				"/OAuth/Success",
+				"/Portal",
+				"/Status",
+				"/Verify"
+			]
+		},
+		{
+			"Id": "WIND_01",
+			"File": "Content/Record/Wind.ts",
+			"Files": [
+				"Content/Record/Wind.ts"
+			],
+			"Routes": [
+				"/",
+				"/404",
+				"/Account",
+				"/Account/ForgotPassword",
+				"/Account/ResetPassword",
+				"/Account/SignIn",
+				"/Account/SignUp",
+				"/Blog",
+				"/Blog/:Slug",
+				"/Compare",
+				"/Contact",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Sale",
+				"/Contact/Scout",
+				"/Contents",
+				"/Contributing",
+				"/Dashboard",
+				"/Doc",
+				"/Doc/:Slug",
+				"/Doc/Rust",
+				"/Download",
+				"/Glossary",
+				"/Legal/Privacy",
+				"/Legal/Term",
+				"/License",
+				"/Motion",
+				"/OAuth/Success",
+				"/Portal",
+				"/Status",
+				"/Verify"
+			]
+		},
+		{
+			"Id": "WORKER_01",
+			"File": "Content/Record/Worker.ts",
+			"Files": [
+				"Content/Record/Worker.ts"
+			],
+			"Routes": [
+				"/",
+				"/404",
+				"/Account",
+				"/Account/ForgotPassword",
+				"/Account/ResetPassword",
+				"/Account/SignIn",
+				"/Account/SignUp",
+				"/Blog",
+				"/Blog/:Slug",
+				"/Compare",
+				"/Contact",
+				"/Contact/Amend",
+				"/Contact/Claim",
+				"/Contact/Deals",
+				"/Contact/Erase",
+				"/Contact/Guard",
+				"/Contact/Hails",
+				"/Contact/Leave",
+				"/Contact/Legal",
+				"/Contact/Lodge",
+				"/Contact/Pause",
+				"/Contact/Query",
+				"/Contact/Reach",
+				"/Contact/Sale",
+				"/Contact/Scout",
+				"/Contents",
+				"/Contributing",
+				"/Dashboard",
+				"/Doc",
+				"/Doc/:Slug",
+				"/Doc/Rust",
+				"/Download",
+				"/Glossary",
+				"/Legal/Privacy",
+				"/Legal/Term",
+				"/License",
+				"/Motion",
+				"/OAuth/Success",
+				"/Portal",
+				"/Status",
+				"/Verify"
+			]
+		},
+		{
+			"Id": "WORKSPACE_03",
+			"File": "pages/Account/index.astro",
+			"Files": [
+				"pages/Account/index.astro"
+			],
+			"Routes": [
+				"/Account"
+			]
+		},
+		{
+			"Id": "WORKSPACE_05",
+			"File": "pages/Doc/Rust.astro",
+			"Files": [
+				"pages/Doc/Rust.astro"
+			],
+			"Routes": [
+				"/Doc/Rust"
+			]
+		},
+		{
+			"Id": "WORKSPACE_06",
+			"File": "pages/Compare.astro",
+			"Files": [
+				"pages/Compare.astro"
+			],
+			"Routes": [
+				"/Compare"
+			]
+		}
+	],
+	"Totals": {
+		"Records": 40
+	}
+}

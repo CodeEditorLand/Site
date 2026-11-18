@@ -1,0 +1,361 @@
+// RecordInset - a marginal note that can hold a figure: the claim the margin
+// could not hold, because the claim is not the whole of it.
+//
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  an annotation with its evidence - the shape of a piece, the
+//                   extent of a page, the capture that qualifies a claim. Not a
+//                   margin note (a claim, no figure) and not a figure in the
+//                   column (evidence with no note).
+// RANK              leaf.
+// SLOT CONTRACT     .record-inset                    the note and its figure
+//                   .record-inset--figure             the figure is present
+//                   .record-inset__figure             the figure block
+//                   .record-inset__frame              a framed capture (or the tombstone)
+//                   .record-inset__picture            the fitted capture
+//                   .record-inset__frame--absent      `◎ STATUS: <word>`
+//                   .record-inset__frame--composed    composed media in the slot
+//                   .record-inset__bars               the measure figure
+//                   .record-inset__bar                one labelled bar
+//                   .record-inset__bar-track          the bar's 1px bed
+//                   .record-inset__bar-fill           the bar, sized by --bar-share
+//                   .record-inset__figure-caption     `FIGURE:` / `SOURCE:` / `AS OF:`
+//                   .record-inset__head               `# INSET_01 / LABEL`
+//                   .record-inset__index|__label
+//                   .record-inset__state              `STATUS: <word>` in its tone
+//                   .record-inset__body               the claim, after the `↳`
+//                   .record-inset__link|__gone        the destination, or its tombstone
+//                   .record-inset__source             `SOURCE: ...` - always printed
+//                   .record-inset__empty              the composed empty state
+// MAY HOLD          a capture, a measure figure, or composed media - one figure,
+//                   never a second note and never a block.
+// NARROW            the rule rotates from the left edge to the top, the inset
+//                   takes the column's measure, and the figure prints *first*:
+//                   an inset in the flow is read after the paragraph it
+//                   annotates, and a figure under a claim is a footnote.
+// WIDE (>=1280)     the note hangs in the margin at 28ch on a `--Divider` rule,
+//                   with the figure above the claim at the margin's measure.
+// DENSE             none. The figure is the reason the block exists; a
+//                   compressed inset is a margin note with a squashed picture.
+//
+// THE MEASURE FIGURE. A margin has no room for a photograph and does have room
+// for a bar. `SECTIONS 09`, `WORDS 1,240`, `MINUTES 6` drawn as three rules whose
+// lengths are their shares is a figure in the record grammar: no axis, no legend,
+// no colour, one ink - and it survives with CSS off, because the label and the
+// number are text and the bar is the only part that disappears.
+//
+// `--bar-share` IS THE PAGE'S ARITHMETIC. The block clamps it to 0-1 and draws
+// it; it never divides, counts or normalises. A bar whose length the block
+// invented would be a chart that lies in proportion, which is the one thing a
+// figure may not do.
+//
+// THE SOURCE ROW ALWAYS PRINTS, as the margin note's does: a note with no
+// provenance prints `SOURCE: UNAVAILABLE`, because the margin is where an
+// unsourced claim does the most damage.
+
+@use "../Mixin" as *;
+
+.record-inset {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+	max-inline-size: 34ch;
+	margin: 0;
+	padding-block-start: var(--space-tight);
+	border-block-start: 1px solid var(--Divider);
+}
+
+@include bp(1280px) {
+	.record-inset {
+		max-inline-size: 28ch;
+		padding-block-start: 0;
+		padding-inline-start: var(--space-reading);
+		border-block-start: 0;
+		border-inline-start: 1px solid var(--Divider);
+	}
+}
+
+// ─── THE FIGURE ───────────────────────────────────────────────────────────
+.record-inset__figure {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	margin: 0 0 var(--space-tight);
+}
+
+.record-inset__frame {
+	@include hairline;
+	position: relative;
+	display: block;
+	inline-size: 100%;
+	aspect-ratio: 4 / 3;
+	overflow: hidden;
+	background: var(--Mute);
+}
+
+.record-inset__picture {
+	display: block;
+	inline-size: 100%;
+	block-size: 100%;
+}
+
+.record-inset__frame--absent {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: var(--space-group);
+	padding: var(--space-reading);
+}
+
+.record-inset__absent-mark {
+	font-size: var(--type-heading);
+	line-height: 1;
+	color: var(--MuteForeground);
+}
+
+.record-inset__absent-state {
+	display: flex;
+	align-items: center;
+	gap: var(--space-tight);
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.record-inset__absent-key {
+	color: var(--MuteForeground);
+}
+
+.record-inset__absent-state--specimen {
+	color: var(--Accent);
+}
+
+.record-inset__absent-state--quiet {
+	color: var(--MuteForeground);
+}
+
+.record-inset__frame--composed {
+	aspect-ratio: auto;
+	overflow-x: auto;
+}
+
+// ─── THE MEASURE FIGURE ───────────────────────────────────────────────────
+.record-inset__bars {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	padding-block: var(--space-tight);
+	border-block: 1px solid var(--Border);
+}
+
+.record-inset__bar {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+}
+
+.record-inset__bar-head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-tight);
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-name));
+}
+
+.record-inset__bar-value {
+	color: var(--Foreground);
+}
+
+// The track is a 1px bed at the hairline's ink, and the fill is a 6px rule of
+// divider ink over it: two printed rules, one above the other - which is how a
+// bar reads as ink rather than as a coloured chart.
+.record-inset__bar-track {
+	position: relative;
+	display: block;
+	inline-size: 100%;
+	block-size: 6px;
+	background: var(--Mute);
+	border-block-end: 1px solid var(--Border);
+}
+
+.record-inset__bar-fill {
+	position: absolute;
+	inset-block: 0;
+	inset-inline-start: 0;
+	display: block;
+	inline-size: calc(var(--bar-share, 0) * 100%);
+	background: var(--Divider);
+}
+
+.record-inset__figure-caption {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	margin: 0;
+}
+
+.record-inset__figure-row {
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+}
+
+.record-inset__figure-key {
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.record-inset__figure-text {
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.record-inset__figure-source {
+	@include mono-meta;
+	@include track(var(--track-name));
+	overflow-wrap: anywhere;
+}
+
+// ─── THE NOTE ─────────────────────────────────────────────────────────────
+.record-inset__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 var(--space-tight);
+	margin: 0;
+}
+
+.record-inset__index {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.record-inset__label {
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.record-inset__state {
+	display: flex;
+	align-items: center;
+	gap: var(--space-tight);
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.record-inset__state-key {
+	color: var(--MuteForeground);
+}
+
+.record-inset__state-marker {
+	display: block;
+	flex: 0 0 auto;
+	inline-size: 4px;
+	block-size: 4px;
+	background: currentColor;
+}
+
+.record-inset__state--specimen {
+	color: var(--Accent);
+}
+
+.record-inset__state--quiet {
+	color: var(--MuteForeground);
+}
+
+.record-inset__state--ink {
+	color: var(--Foreground);
+}
+
+.record-inset__body {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--Foreground);
+	text-wrap: pretty;
+	overflow-wrap: anywhere;
+}
+
+.record-inset__arrow {
+	margin-inline-end: 0.35em;
+	color: var(--MuteForeground);
+}
+
+.record-inset__link {
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.record-inset__link a {
+	color: var(--Primary);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.25em;
+}
+
+.record-inset__link a:hover {
+	color: var(--Accent);
+}
+
+.record-inset__gone {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 var(--space-tight);
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-name));
+	color: var(--MuteForeground);
+}
+
+.record-inset__gone-mark,
+.record-inset__gone-key {
+	color: var(--Foreground);
+}
+
+.record-inset__gone-route {
+	text-decoration: line-through;
+	text-decoration-thickness: 1px;
+}
+
+.record-inset__source {
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-name));
+	overflow-wrap: anywhere;
+}
+
+.record-inset__source-key {
+	color: var(--MuteForeground);
+}
+
+.record-inset__source--absent {
+	color: var(--Foreground);
+}
+
+.record-inset__empty {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.record-inset__empty-mark {
+	font-size: var(--type-heading);
+	line-height: 1;
+	color: var(--MuteForeground);
+}

@@ -1,96 +1,180 @@
-// RecordPair - two things read against each other: two pods of equal height,
-// each with a title bar and a body, under one shared caption. One column on a
-// phone, two columns from 768px - the pods stack rather than shrink.
+// RecordPair - two things read against each other: one artifact, two columns,
+// one hairline gutter between them, one caption on the floor.
 //
-// Publishes:
-//   .record-pair                the pair shell - the two pods and the shared caption
-//   .record-pair__pod           one pod; the two are equal height
-//   .record-pair__pod--subject  the pod the other one is read against
-//   .record-pair__bar           a pod's title bar
-//   .record-pair__label         the title-bar label
-//   .record-pair__body          the pod's body
-//   .record-pair__caption       the caption shared below both pods
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  a comparison of two. One artifact with two readings - never
+//                   two cards that happen to sit side by side.
+// RANK              frame; the layer's only two-up block.
+// SLOT CONTRACT     .record-pair                 the artifact: the frame and the caption
+//                   .record-pair--card           the pair's own white box and hairline
+//                   .record-pair--bare           no fill, no frame - structure inside a surface
+//                   .record-pair__pods           the two pods and the gutter between them
+//                   .record-pair__pod            one pod: title bar over body
+//                   .record-pair__pod--subject   the pod the other is read against
+//                   .record-pair__bar            a pod's title bar
+//                   .record-pair__label          the title-bar label
+//                   .record-pair__body           the pod's body - prose, or one block
+//                   .record-pair__gutter         the 1px rule between the pods
+//                   .record-pair__caption        the one statement made about both
+// MAY HOLD          exactly two pods; each holds prose or one leaf block.
+// NARROW            the gutter rotates to a horizontal hairline and the pods
+//                   stack inside the same frame - the pair stays one artifact.
+// WIDE (>=768)      two columns and the 1px gutter, the keeper hero's model at
+//                   block scale.
+// DENSE             none.
 //
-// Equal height is the grid's own stretch, not a matched value: the two pods are
+// EQUAL HEIGHT is the grid's own stretch, not a matched value: the two pods are
 // items of one row, neither sets a height, and the body grows to fill the pod so
 // its text sits at the top of whatever height the row takes. Nothing is
 // vertically centred - a centred body reads as a card, not as a record.
 //
-// The subject is the ink-inverted pod, one per pair. The inverted ink carries
-// into the frame and the title-bar rule, because `--Border` is a creme-canvas
-// hairline and would vanish on the fill. The fill is the whole difference: flat,
-// no radius, no lift.
+// THE SUBJECT IS A BORDER WEIGHT. Its title-bar rule is 2px and, when the label
+// is a label rather than a heading, it also takes the full ink while the other
+// stays muted. The fill never changes: the inverted surface belongs to the thing
+// the reader clicks, and a pod is not an action.
 //
-// Owned by B7. S1 publishes the skeleton; B7 refines the values, never the
-// names.
+// THE GUTTER IS PLACED, NOT ORDERED. Both pods and the gutter are children of one
+// grid, and each of the three sets its own track at both widths - so the gutter
+// keeps the middle track whatever the markup order is, and a stacked pair puts
+// it between the rows.
 
 @use "../Mixin" as *;
 
 .record-pair {
-	display: grid;
-	grid-template-columns: 1fr;
-	align-items: stretch;
+	display: flex;
+	flex-direction: column;
 	gap: var(--space-reading);
 	margin: 0;
 	padding: 0;
-	list-style: none;
+	min-inline-size: 0;
+}
 
-	@include bp(768px) {
-		grid-template-columns: 1fr 1fr;
+// The pair's own surface: one white information box, square, one hairline. The
+// two pods are columns inside it, which is the whole difference between a pair
+// and two cards.
+.record-pair--card {
+	@include hairline;
+	background: var(--Card);
+	color: var(--Foreground);
+	padding: var(--space-reading);
+}
+
+// Structure inside a surface that is already painted: no fill, no frame, no
+// inset of its own.
+.record-pair--bare {
+	padding: 0;
+}
+
+.record-pair__pods {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	grid-template-rows: auto 1px auto;
+	align-items: stretch;
+	column-gap: 0;
+	row-gap: 0;
+	min-inline-size: 0;
+}
+
+// Narrow: the pods stack and the gutter lies between them as a horizontal rule.
+.record-pair__pod--left {
+	grid-column: 1;
+	grid-row: 1;
+}
+
+.record-pair__pod--right {
+	grid-column: 1;
+	grid-row: 3;
+}
+
+.record-pair__gutter {
+	grid-column: 1;
+	grid-row: 2;
+	inline-size: auto;
+	block-size: 1px;
+	background-color: var(--Divider);
+}
+
+.record-pair__pod {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+	min-block-size: 0;
+	padding: 0;
+}
+
+@include bp(768px) {
+	.record-pair__pods {
+		grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+		grid-template-rows: auto;
+	}
+
+	.record-pair__pod--left {
+		grid-column: 1;
+		grid-row: 1;
+	}
+
+	.record-pair__gutter {
+		grid-column: 2;
+		grid-row: 1;
+		inline-size: 1px;
+		block-size: auto;
+	}
+
+	.record-pair__pod--right {
+		grid-column: 3;
+		grid-row: 1;
 	}
 }
 
-// `.emphasis-standard` reproduced here rather than applied as a class, so the
-// block stays self-contained: `--Card` fill plus a hairline frame. Radius is
-// left unwritten - its initial value is already the 0 this identity wants.
-.record-pair__pod {
-	@include hairline;
-	display: flex;
-	flex-direction: column;
-	min-width: 0;
-	background: var(--Card);
-	color: var(--Foreground);
-}
-
-.record-pair__pod--subject {
-	@include ink-invert;
-	border-color: currentColor;
-}
-
-.record-pair__pod--subject .record-pair__bar {
-	border-bottom-color: currentColor;
-}
-
-// `mono-meta` and the body both carry `--Foreground`; on the inverted fill the
-// pod's own ink is the readable one.
-.record-pair__pod--subject .record-pair__label,
-.record-pair__pod--subject .record-pair__body {
-	color: inherit;
-}
-
+// The title bar: the pod's label and the rule that carries its weight. The
+// subject's rule is twice as heavy and its label takes the full ink, which is
+// the whole mark - no badge, no fill, no second surface.
 .record-pair__bar {
 	@include hairline(bottom);
 	display: flex;
 	align-items: baseline;
 	justify-content: space-between;
 	gap: var(--space-tight);
-	padding: var(--space-tight) var(--space-reading);
+	padding-block-end: var(--space-tight);
 }
 
 .record-pair__label {
 	@include mono-meta;
 	@include track;
 	margin: 0;
+}
+
+// A label that is a heading: the pair is a section of a page, so its pod titles
+// are that section's headings and print at the sub role in the pod's own ink -
+// the same treatment a section's panel title had before the pair held it. The
+// label's tracking and uppercase stand down here: a title is not a label, and
+// `Minimum Requirements` is written in its own case.
+.record-pair__label--heading {
+	margin: 0;
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	font-weight: 500;
+	letter-spacing: var(--track-set);
+	text-transform: none;
+	color: inherit;
+}
+
+.record-pair__pod--subject .record-pair__bar {
+	border-bottom-width: 2px;
+	border-bottom-color: var(--Foreground);
+}
+
+.record-pair__pod--subject .record-pair__label {
 	color: var(--Foreground);
 }
 
 .record-pair__body {
 	flex: 1 1 auto;
-	margin: 0;
-	padding: var(--space-reading);
+	min-inline-size: 0;
 	font-size: var(--type-body);
 	line-height: var(--type-body-line);
-	color: var(--Foreground);
+	color: inherit;
 }
 
 .record-pair__body p {
@@ -98,15 +182,22 @@
 }
 
 .record-pair__body p + p {
-	margin-top: var(--space-reading);
+	margin-block-start: var(--space-reading);
 }
 
-// The caption spans both columns: it is the one statement made about the pair
-// as a pair - the shared floor, or the verdict.
+// A pod that holds a block: the block is the pod's body, so the pod contributes
+// no prose rhythm around it and the block's own rules stay its own.
+.record-pair__body > * {
+	min-inline-size: 0;
+}
+
+// The caption spans the whole frame: it is the one statement made about the pair
+// as a pair - the shared floor, or the verdict. Caption weight, full ink, never
+// the pods' size.
 .record-pair__caption {
-	grid-column: 1 / -1;
 	margin: 0;
+	max-inline-size: 62ch;
 	font-size: var(--type-caption);
 	line-height: var(--type-caption-line);
-	color: var(--Foreground);
+	color: var(--MuteForeground);
 }

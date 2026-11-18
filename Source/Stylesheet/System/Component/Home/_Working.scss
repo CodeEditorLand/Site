@@ -1,0 +1,145 @@
+// WorkingBand - the method band: the build's trace, the release's register and
+// the three documented failures.
+//
+// Publishes:
+//   .home-working              the band's composition
+//   .home-working__split       the two-density split: 7fr / 1px / 5fr at 1024
+//   .home-working__trace       the spacious column: the build's six stages
+//   .home-working__gutter      the 1px divider track between the columns
+//   .home-working__register    the tight column: twelve facts, two across
+//   .home-working__failures    the ruled strip of three conditions
+//   .home-working__failure     one condition in the strip
+//   .home-working__footnote    the band's provenance line
+//
+// THE COMPOSITION IS A SPLIT, NOT A PAIR. A pair is two pods of one frame with
+// one subject; this is two columns read at two densities - a sequence on the left
+// and a register on the right - and the failures below are a third thing that
+// belongs to both. So the band does not borrow RecordPair: a pair would have
+// titled the two columns as peers, and they are not peers.
+//
+// The gutter is the same 1px `--Divider` the hero, the portal pair and the
+// blog's margin channel use. It is the site's one divider ink at 20 %: a rule at
+// `--Border` (8 %) is present and invisible, which the programme has already had
+// to fix once.
+//
+// Below 1024 the split becomes a stack: the trace first (it is the subject), then
+// the register under a top hairline, then the failures one across. Nothing is
+// squeezed and nothing is dropped - the register keeps both of its columns' facts
+// and simply prints them in one column.
+//
+// The failures strip is three cells with a leading hairline each, so the row
+// reads as one ruled plate of conditions. At narrow the rules rotate to the top
+// edge and the strip becomes a list, which is the same recomposition the pair's
+// gutter makes.
+
+@use "../../Mixin" as *;
+
+.home-working {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	min-inline-size: 0;
+}
+
+.home-working__split {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	column-gap: 0;
+	row-gap: var(--space-group);
+	min-inline-size: 0;
+}
+
+.home-working__trace {
+	min-inline-size: 0;
+}
+
+.home-working__gutter {
+	display: none;
+	min-inline-size: 0;
+}
+
+.home-working__register {
+	min-inline-size: 0;
+	padding-block-start: var(--space-group);
+	border-block-start: 1px solid var(--Border);
+}
+
+@include bp(1024px) {
+	.home-working__split {
+		grid-template-columns: minmax(0, 7fr) 1px minmax(0, 5fr);
+		row-gap: 0;
+	}
+
+	.home-working__gutter {
+		display: block;
+		background: var(--Divider);
+	}
+
+	.home-working__trace {
+		padding-inline-end: var(--space-group);
+	}
+
+	.home-working__register {
+		padding-block-start: 0;
+		padding-inline-start: var(--space-group);
+		border-block-start: 0;
+	}
+}
+
+// ─── THE CONDITIONS ───────────────────────────────────────────────────────
+// Three failures as one ruled strip. The rule is the cell's leading hairline at
+// 768 and up and its top hairline below, so the strip rotates rather than
+// squeezing three columns into a phone.
+.home-working__failures {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	column-gap: 0;
+	row-gap: 0;
+	margin-block-start: var(--space-group);
+	border-block-start: 1px solid var(--Divider);
+	min-inline-size: 0;
+}
+
+.home-working__failure {
+	min-inline-size: 0;
+	padding-inline: 0;
+	border-block-start: 1px solid var(--Border);
+}
+
+.home-working__failure:first-child {
+	border-block-start: 0;
+}
+
+@include bp(768px) {
+	.home-working__failures {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.home-working__failure {
+		border-block-start: 0;
+		border-inline-start: 1px solid var(--Border);
+		padding-inline: var(--space-group);
+	}
+
+	.home-working__failure:first-child {
+		border-inline-start: 0;
+		padding-inline-start: 0;
+	}
+
+	.home-working__failure:last-child {
+		padding-inline-end: 0;
+	}
+}
+
+// The band's provenance line: where every figure above it was read from. It is
+// the last thing on the band and the quietest, because a source is not a claim.
+.home-working__footnote {
+	margin: var(--space-group) 0 0;
+	padding-block-start: var(--space-tight);
+	border-block-start: 1px solid var(--Border);
+	max-inline-size: 92ch;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+	overflow-wrap: anywhere;
+}

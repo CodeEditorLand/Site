@@ -14,4 +14,399 @@
 //
 // It is not added there by this card - that file is shared and V1 wires every
 // page partial into it in one pass before the build.
+@use "../../Mixin" as *;
 @use "PrivacyRequests";
+
+/* ─── THE DASHBOARD'S REGIONS ───────────────────────────────────────────────
+ *
+ * The page is ten regions on one rail, and each region's records are one of
+ * five shapes: a route strip (quick links), a numbered record stack
+ * (telemetry), a three-column instrument (build), a set of destinations
+ * (tiers), or an attributed row set (partners, settings). Each shape is a band
+ * inside a region, never a card inside a card - a `.surface-panel` holds rows
+ * and ledgers, and nothing below this line paints a second panel.
+ */
+
+/* Quick links: a route strip. Three destinations, one hairline row each. */
+.surface-links {
+	display: grid;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	@include hairline(top);
+}
+
+.surface-links__item {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-reading);
+	padding-block: var(--space-tight);
+	color: var(--Foreground);
+	text-decoration: none;
+	@include hairline(bottom);
+}
+
+.surface-links__item:hover,
+.surface-links__item:focus-visible {
+	color: var(--Accent);
+}
+
+.surface-links__arrow {
+	color: var(--MuteForeground);
+}
+
+/* Telemetry: three paths, each a record with its own marker. */
+.surface-telemetry {
+	display: grid;
+}
+
+.surface-telemetry__row {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	gap: var(--space-reading);
+	padding-block: var(--space-group);
+	@include hairline(top);
+}
+
+.surface-telemetry__row:first-child {
+	border-top: 0;
+	padding-block-start: 0;
+}
+
+.surface-telemetry__row:last-child {
+	padding-block-end: 0;
+}
+
+.surface-telemetry__index {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0;
+}
+
+.surface-telemetry__badges {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
+}
+
+.surface-telemetry__heading {
+	font-weight: 500;
+	margin: var(--space-tight) 0 0;
+}
+
+/* Build configuration: one instrument, three columns of four rows. The three
+   cards the baseline printed are three ledgers here, so the facts read across
+   instead of as three boxes side by side. */
+.surface-build {
+	display: grid;
+}
+
+.surface-build__column {
+	padding-block: var(--space-group);
+	@include hairline(top);
+}
+
+.surface-build__column:first-child {
+	border-top: 0;
+	padding-block-start: 0;
+}
+
+.surface-build__column:last-child {
+	padding-block-end: 0;
+}
+
+.surface-build__head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: var(--space-tight) var(--space-reading);
+	margin-block-end: var(--space-tight);
+}
+
+.surface-build__title {
+	font-weight: 500;
+	margin: 0;
+}
+
+.surface-build__ledger {
+	margin-block-start: var(--space-tight);
+}
+
+@include bp(768px) {
+	.surface-build {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		column-gap: var(--space-group);
+	}
+
+	.surface-build__column {
+		padding-block: 0;
+		padding-inline-start: var(--space-group);
+		border-top: 0;
+		border-inline-start: 1px solid var(--Border);
+	}
+
+	.surface-build__column:first-child {
+		padding-inline-start: 0;
+		border-inline-start: 0;
+	}
+}
+
+/* Authentication tiers: four destinations, equal because the four modes are
+   equal. The pastel tile, the name, the protocol and the badge are the
+   baseline's and stay; the card is a hairline row, not a rotated slip. */
+.surface-tiers {
+	display: grid;
+	gap: var(--space-reading);
+}
+
+@include bp(640px) {
+	.surface-tiers {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@include bp(1024px) {
+	.surface-tiers {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+.surface-tier {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	grid-template-areas:
+		"tile body"
+		"badge badge";
+	align-items: center;
+	gap: var(--space-tight) var(--space-reading);
+	padding: var(--space-reading);
+	color: var(--Foreground);
+	text-decoration: none;
+	@include hairline;
+}
+
+.surface-tier:hover,
+.surface-tier:focus-visible {
+	border-color: var(--TierEdge);
+}
+
+.surface-tier__tile {
+	grid-area: tile;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	inline-size: var(--space-group);
+	block-size: var(--space-group);
+	background: var(--TierWash);
+	border: 1px solid var(--TierLine);
+	color: var(--TierInk);
+	font-size: var(--type-body);
+}
+
+.surface-tier__body {
+	grid-area: body;
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+	min-width: 0;
+}
+
+.surface-tier__title {
+	font-weight: 500;
+	margin: 0;
+}
+
+.surface-tier__protocol {
+	@include mono-meta;
+
+	margin: 0;
+}
+
+.surface-tier jelly-badge {
+	grid-area: badge;
+	justify-self: start;
+}
+
+/* Editor connection: the head and the prose on the field, the absent record in
+   the one white box. The box is the panel here, so the region does not wrap it
+   in a second one. */
+.surface-editor__head {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--space-reading);
+}
+
+.surface-editor__glyph {
+	inline-size: var(--space-group);
+	block-size: var(--space-group);
+	flex: 0 0 auto;
+}
+
+.surface-editor__body {
+	min-width: 0;
+}
+
+.surface-editor__name {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
+}
+
+.surface-editor__title {
+	font-weight: 500;
+	margin: 0;
+}
+
+.surface-editor__absent {
+	margin-block-start: var(--space-group);
+}
+
+.surface-editor__note {
+	@include mono-meta;
+
+	align-self: center;
+}
+
+/* Partners: three attributed organisations. */
+.surface-partners {
+	display: grid;
+	gap: var(--space-reading);
+}
+
+@include bp(768px) {
+	.surface-partners {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@include bp(1024px) {
+	.surface-partners {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+.surface-partner {
+	display: flex;
+	align-items: center;
+	gap: var(--space-reading);
+	padding: var(--space-reading);
+	color: var(--Foreground);
+	text-decoration: none;
+	@include hairline;
+}
+
+.surface-partner:hover,
+.surface-partner:focus-visible {
+	border-color: var(--Primary);
+}
+
+.surface-partner__logo {
+	inline-size: var(--space-group);
+	block-size: var(--space-group);
+	flex: 0 0 auto;
+}
+
+.surface-partner__tile {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	inline-size: var(--space-group);
+	block-size: var(--space-group);
+	background: var(--Mute);
+	font-size: var(--type-meta);
+	flex: 0 0 auto;
+}
+
+.surface-partner__body {
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+	min-width: 0;
+}
+
+.surface-partner__name {
+	font-size: var(--type-body);
+	font-weight: 500;
+}
+
+.surface-partner__line {
+	@include mono-meta;
+
+	margin: 0;
+}
+
+/* Settings: three rows, each with its state or its action. */
+.surface-settings {
+	display: grid;
+}
+
+.surface-settings__row {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: var(--space-reading);
+	padding-block: var(--space-reading);
+	@include hairline(top);
+}
+
+.surface-settings__row:first-child {
+	border-top: 0;
+	padding-block-start: 0;
+}
+
+.surface-settings__row:last-child {
+	padding-block-end: 0;
+}
+
+.surface-settings__body {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--space-tight);
+}
+
+.surface-settings__title {
+	font-weight: 500;
+	margin: 0;
+}
+
+.surface-settings__line {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	margin: 0;
+	max-width: var(--MeasureOpening);
+}
+
+/* ─── The build/tier matrix ────────────────────────────────────────────────
+ *
+ * The comparison under the three build columns. It is a chapter of the same
+ * panel, so it opens on the divider ink (20 %) rather than the 8 % surface
+ * hairline: the rule separates two blocks of one instrument, which is what a
+ * divider is for. The register line above the table names the three axes and
+ * is a label, not a heading - the page's heading sequence is the baseline's
+ * ten `h2` and seventeen `h3`, and a table does not earn an `h3` it did not
+ * have.
+ */
+.surface-build__matrix {
+	margin-block-start: var(--space-group);
+	padding-block-start: var(--space-group);
+	border-top: 1px solid
+		color-mix(in srgb, var(--CardForeground) 20%, transparent);
+}
+
+.surface-build__matrix-register {
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-rule);
+	text-transform: uppercase;
+	color: var(--MuteForeground);
+	margin: 0 0 var(--space-tight);
+}

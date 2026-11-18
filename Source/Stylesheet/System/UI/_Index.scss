@@ -1,0 +1,36 @@
+// The control layer - the kit's behaviour, the site's surface.
+//
+// `Source/Component/UI/` is 49 untouched shadcn/Radix files: correct behaviour,
+// no surface. Every one of them publishes `data-slot` on every part, and that
+// attribute is the kit's own stable contract - so the site's control surface is
+// applied HERE, keyed on those slots, instead of being restated as a Tailwind
+// string at each call site. One surface, one grammar, five controls, and no fork
+// of a primitive.
+//
+// Read in this order:
+//
+//   Slip       the one popover surface - a white insert lying on the creme field
+//   Item       the one row grammar - mark / label / meta, and its five states
+//   Field      the control that opens a slip - trigger, input, label, value
+//   Chord      the invented cap for a key chord: `〈⌘K〉`
+//   Segmented  the invented scope control: three cells on one track
+//   Palette    the command palette - the slip at modal scale
+//   Rail       the documentation rail's filter, counts and handoff row
+//   Matrix     the band above a matrix: facet, match, density, copy receipt
+//   Fold       a page's own contents, closed until asked for
+//   Copy       the copy affordance and its five states
+//
+// The order is the cascade: the slip first (its frame and motion), the rows it
+// contains, then the two controls that are themselves surfaces, then the three
+// that are bands and receipts rather than inserts.
+
+@use "Slip";
+@use "Item";
+@use "Field";
+@use "Chord";
+@use "Segmented";
+@use "Palette";
+@use "Rail";
+@use "Matrix";
+@use "Fold";
+@use "Copy";

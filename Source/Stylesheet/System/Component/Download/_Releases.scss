@@ -1,36 +1,97 @@
-// PreviousReleases - the releases before this one.
+// PreviousReleases - the releases before this one, as a disclosure.
 //
 // Publishes:
-//   .download-releases__empty    the empty state's stack: its label and its sentence
-//   .download-releases__label    §7's coded label for it, `RECORD: EMPTY`
-//   .download-releases__sentence the plain-language sentence under that label
+//   .download-releases           the <details> block: one rule, one closed row
+//   .download-releases__summary  the closed row: `RECORD: EMPTY` and the way in
+//   .download-releases__label    §7's coded label, `RECORD: EMPTY`
+//   .download-releases__marker   the disclosure glyph - the only motion here
+//   .download-releases__body     the opened panel
+//   .download-releases__sentence the plain-language sentence under the label
+//   .download-releases__matrix   the empty (or populated) matrix under it
 //
-// Owned by P7. The populated state renders RecordMatrix, whose anatomy is the
-// block's; this partial only gives the empty state a voice, so it publishes the
-// three classes that voice needs and nothing else.
+// The disclosure is one row when closed: a hairline above and below, the coded
+// label at the reading edge, and a `↳` at the far edge that turns to point down
+// when the record opens. That turn is the only motion on the page besides the
+// jelly elements' own press, and it explains a change of state - closed to open
+// - rather than decorating a static row. `motion-enter` writes the interval only;
+// reduced motion keeps the end state and loses the interval.
 //
-// The empty state is text and not a card: `DesignSystem-Components.md` §7 asks
-// for a coded label followed by a plain-language explanation, and a box with no
-// claim inside it would be the blank panel the rule exists to prevent.
-//
-// Recovered verbatim from `3480853ac^` at K6. Its consumer is
-// `Download/PreviousReleases.astro`, restored in the same pass.
+// The open panel holds the sentence and the matrix. The matrix is a real table
+// with its header row and its caption even when it has no rows: the header is
+// the shape of the record the day it exists, and the caption says what will fill
+// it. A blank box would be the defect the empty-state rule exists to prevent;
+// a headed table with a caption is a record waiting for its first row.
 
 @use "../../Mixin" as *;
 
-.download-releases__empty {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-tight);
+.download-releases {
+	@include hairline(top);
+
+	border-block-end: 1px solid var(--Border);
+	inline-size: 100%;
 }
 
-// The label is the meta role at wide tracking, in the muted ink: it classifies
-// the state, it does not compete with the sentence that explains it.
+.download-releases__summary {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-group);
+	padding-block: var(--space-tight);
+	list-style: none;
+	cursor: pointer;
+
+	// The native marker is the platform's triangle; the record's is a `→` that
+	// turns. Both are removed here rather than by a wrapper element, so the
+	// summary is the whole control and the whole row is clickable.
+	&::-webkit-details-marker {
+		display: none;
+	}
+
+	&::marker {
+		content: "";
+	}
+
+	// The control's two states: the ink answers the pointer, and the focus ring
+	// is the site's one ring token, offset so it never sits on the hairline.
+	&:hover .download-releases__marker {
+		color: var(--Foreground);
+	}
+
+	&:focus-visible {
+		outline: 1px solid var(--Ring);
+		outline-offset: 2px;
+	}
+}
+
+// The label is the meta role at wide tracking, in the ink: it classifies the
+// state, and it is the row's key rather than its caption.
 .download-releases__label {
 	@include mono-meta;
 	@include track;
 
 	margin: 0;
+	color: var(--Foreground);
+}
+
+// The marker sits at the far edge and turns from right to down when the record
+// opens. Transform only: the glyph is at its full size in both states, so the
+// row cannot reflow.
+.download-releases__marker {
+	@include motion-enter;
+
+	margin-inline-start: auto;
+	color: var(--MuteForeground);
+	line-height: 1;
+}
+
+.download-releases[open] .download-releases__marker {
+	transform: rotate(90deg);
+}
+
+.download-releases__body {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-group);
+	padding-block: var(--space-reading) var(--space-tight);
 }
 
 .download-releases__sentence {
@@ -40,4 +101,8 @@
 	line-height: var(--type-body-line);
 	color: var(--MuteForeground);
 	text-wrap: pretty;
+}
+
+.download-releases__matrix {
+	inline-size: 100%;
 }

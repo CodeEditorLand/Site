@@ -1,74 +1,157 @@
 // Band - the homepage's four content bands.
 //
 // Publishes:
-//   .home-band            one band: its rhythm and its inner measure
-//   .home-band__inner     the container every band shares
-//   .home-band__head      the centred opening block
-//   .home-band__kicker    the eyebrow above the heading
-//   .home-band__heading   the band's h2
-//   .home-band__standfirst  the one line under the heading
-//   .home-band__stamp     the mono block that replaces the standfirst
+//   .home-band              one band: its rhythm and its inner measure
+//   .home-band--wide        the air a subject opens on
+//   .home-band--tight       the air an appendix gets
+//   .home-band__inner       the container every band shares
+//   .home-band__head        the record head: marker line, heading, note
+//   .home-band__kicker      the marker line, ruled to the right margin
+//   .home-band__marker      `# OBSERVATION_01`
+//   .home-band__route       the `/` between the marker and the part's name
+//   .home-band__name        the part's name - the baseline's eyebrow
+//   .home-band__heading     the band's h2
+//   .home-band__standfirst  the sentence that qualifies the heading
+//   .home-band__stamp       the mono block that replaces the standfirst
 //   .home-band__stamp-line  one line of that block
-//   .home-band__body      the band's cards
+//   .home-band__body        the band's records
 //
-// The four bands are equal-weight movements, not a hero plus subordinates: they
-// all carry the same block padding and the same heading size, and no band paints
-// a rule between itself and its neighbour. That is the baseline's rhythm and it
-// is why nothing here alternates a surface down the page.
+// THE RHYTHM IS THE PAGE'S, and it is nameable: wide / wide / tight / tight /
+// wide. The four bands used to carry the same `clamp(4rem, 5vw, 5rem)` padding
+// and the same heading size, which is a page where every band has the same
+// weight - the definition of a poster sequence. A subject now opens at ~6rem
+// and the appendix packs at ~2.75rem, so the reader can feel where one subject
+// ends and the next begins without a rule telling them.
+//
+// THE HEAD IS A RECORD HEAD. Centred, it was four posters; left, with a marker
+// line that rules to the margin and a 7/5 pair under it, it is four parts of one
+// document - the same anatomy as the frame's running head.
 
 @use "../../Mixin" as *;
 
 .home-band {
 	inline-size: 100%;
-	padding-block: clamp(4rem, 5vw, 5rem);
+	padding-block: var(--band-air);
+}
+
+.home-band--wide {
+	--band-air: clamp(4.5rem, 6vw, 6rem);
+}
+
+.home-band--tight {
+	--band-air: clamp(2.25rem, 3vw, 3rem);
 }
 
 .home-band__inner {
 	@include band-inner;
 }
 
-.home-band__head {
-	max-inline-size: 42rem;
-	margin-inline: auto;
-	margin-block-end: 2.5rem;
-	text-align: center;
+// ─── THE BANDS DECLARE THEIR REAL HEIGHT ────────────────────────────────────
+//
+// `_Global.scss` gives these four ids `content-visibility: auto` with an 800px
+// intrinsic placeholder. That is a fine trade for four bands of about 900px; it
+// is the wrong trade for this page, where the architecture wall is 4,300px. The
+// placeholder made the document's scroll height an estimate that was 5,000px
+// short, the scrollbar moved while the reader scrolled, and the two bands after
+// the wall were laid out on top of it - the download manifest and the closing
+// marks painted over the appendix.
+//
+// A dossier's page count is a fact, not an estimate. The override is scoped to
+// the four ids this surface owns; the rule itself stays where it is, for the
+// surfaces it was written for.
+#features,
+#pricing,
+#testimonials,
+#method,
+#download {
+	content-visibility: visible;
+	contain-intrinsic-block-size: none;
 }
 
+/* ─── THE RECORD HEAD ──────────────────────────────────────────────────── */
+
+.home-band__head {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	row-gap: 1.25rem;
+	margin-block-end: clamp(1.75rem, 2.5vw, 2.5rem);
+}
+
+// The marker line: `# OBSERVATION_01␁/␁FEATURES`, then a rule that runs to the
+// right margin. A printed form's field label is followed by the rule that
+// carries the entry; here the rule carries the reader into the band.
 .home-band__kicker {
-	@include mono-meta;
-	@include track(0.25em);
-	margin: 0 0 1rem;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin: 0;
+	font-family: var(--FontMono);
 	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	text-transform: uppercase;
+	letter-spacing: var(--track-rule);
+}
+
+.home-band__kicker::after {
+	content: "";
+	flex: 1 1 auto;
+	block-size: 1px;
+	min-inline-size: 2rem;
+	background-color: color-mix(
+		in srgb,
+		var(--CardForeground) 20%,
+		transparent
+	);
+}
+
+.home-band__marker {
+	color: var(--CardForeground);
+	font-weight: 500;
+}
+
+.home-band__route {
+	color: var(--MuteForeground);
+}
+
+.home-band__name {
+	color: var(--MuteForeground);
 }
 
 .home-band__heading {
 	margin: 0;
 	font-family: var(--FontMono);
 	font-weight: 400;
-	font-size: clamp(2.25rem, 5vw, 3.25rem);
-	line-height: 1.05;
-	letter-spacing: -0.01em;
+	// L tier (32-52px). At the top of the tier a fifty-character heading set
+	// in a 7/12 column ran to four lines; 40px is the same tier's middle and
+	// sets the longest band heading on two. The hero's claim (56px) is the
+	// page's only XL and stays a clear step above every band.
+	font-size: clamp(2rem, 2.8vw, 2.5rem);
+	line-height: 1.08;
+	letter-spacing: var(--track-join);
 	color: var(--Foreground);
+	text-wrap: balance;
 }
 
 .home-band__standfirst {
-	margin: 0.75rem 0 0;
+	margin: 0;
+	max-inline-size: 46ch;
+	font-size: var(--type-sub);
+	line-height: 1.45;
 	color: var(--MuteForeground);
 }
 
 /* The stamp is the roadmap's opening: a mono block where every other band has a
-   sentence. It keeps the heading's centred measure and reads as telemetry under
-   the claim rather than as prose. */
+   sentence. It sits in the note column and reads as telemetry beside the claim
+   rather than as prose under it. */
 .home-band__stamp {
 	display: flex;
 	flex-direction: column;
 	gap: 0.25rem;
-	margin-block-start: 0.75rem;
 	font-family: var(--FontMono);
 	font-size: var(--type-meta);
 	line-height: var(--type-meta-line);
 	text-transform: uppercase;
-	letter-spacing: 0.2em;
+	letter-spacing: var(--track-rule);
 	font-weight: 500;
 	color: var(--MuteForeground);
 }
@@ -77,23 +160,58 @@
 	display: block;
 }
 
-.home-band__stamp-line + .home-band__stamp-line {
-	opacity: 1;
+@include bp(1024px) {
+	.home-band__head {
+		// The heading takes the wider column: it is the band's claim, and a
+		// claim set in five twelfths is a claim that wraps four times.
+		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+		column-gap: clamp(2rem, 4vw, 4rem);
+		row-gap: 1.5rem;
+		align-items: end;
+	}
+
+	.home-band__kicker {
+		grid-column: 1 / -1;
+	}
+
+	.home-band__heading {
+		grid-column: 1;
+	}
+
+	.home-band__standfirst,
+	.home-band__stamp {
+		grid-column: 2;
+		align-self: end;
+	}
 }
 
-// The closing strip: the six badges the page stops on.
+/* ─── THE CLOSING MARKS ────────────────────────────────────────────────── */
+
+// The six badges the page stops on.
 //
-// It is not a band - no kicker, no heading, no measure of its own - so it does
-// not use `.home-band`. It is the page's last line, centred on the creme field,
-// and it is the only place on the page where the badges appear.
+// It is not a band - no heading, no measure of its own - so it does not use
+// `.home-band`. It is the page's last line: a ruled row at the band's measure
+// with its own label at the left and the six marks flowing after it, which is
+// how a dossier closes a record - the stamps, in a row, under a rule - rather
+// than a centred strip of badges floating in the creme.
 .home-close {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	justify-content: center;
 	gap: 0.75rem;
-	padding-block: 2.5rem;
-	padding-inline: 1rem;
+	padding-block: clamp(3rem, 4vw, 4.5rem) clamp(2.5rem, 3vw, 3.5rem);
+	color: var(--MuteForeground);
+	border-block-start: 1px solid
+		color-mix(in srgb, var(--CardForeground) 20%, transparent);
+}
+
+.home-close__label {
+	margin: 0 0.5rem 0 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	text-transform: uppercase;
+	letter-spacing: var(--track-rule);
 	color: var(--MuteForeground);
 }
 
@@ -103,6 +221,10 @@
 	block-size: 0.375rem;
 }
 
-.home-close__action {
-	cursor: pointer;
+// The two marks that are destinations are anchors, not badges with a click
+// handler: the badge is the surface, the anchor is the control, and a reader
+// with a keyboard or a screen reader gets the destination the rest of us get.
+.home-close__link {
+	display: inline-flex;
+	text-decoration: none;
 }

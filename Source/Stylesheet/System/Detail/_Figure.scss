@@ -1,0 +1,105 @@
+// FIGURE - a number is set as a figure.
+//
+// ─── THE LAW ──────────────────────────────────────────────────────────────
+// A figure is not a word set in digits. Four things follow, and every rule in
+// this file is one of them:
+//
+// 1. **One column.** Every figure in a set occupies the same horizontal slot as
+//    the figure above it, so a reader can compare two rows without reading
+//    either. `tabular-nums` is the request; IBM Plex Mono already answers it,
+//    and the declaration is here so a fallback face cannot answer differently.
+//    `slashed-zero` is the second half of the same request: in a column of
+//    figures, `0` and `O` are the same width and almost the same shape.
+//
+// 2. **A figure is not tracked as a word.** The ladder's join register
+//    (-0.02em) is the setting a large WORD needs: two letters of a word are
+//    meant to be read as one shape. Digits are already spaced in a mono face,
+//    and pulling them together narrows the column a figure is measured in. So a
+//    figure takes the set register at every size - including the two roles that
+//    step up the scale (`__strong`, the lead measure), which inherited the join
+//    register from their size.
+//
+// 3. **The unit is bound to its figure.** A figure and its unit are one object:
+//    they never separate across a line, and the space between them is a thin
+//    space (0.4ch), not a word space. The instrument printed them with an 8px
+//    gap at every size, which at 32px reads as two things.
+//
+// 4. **An unknown figure is a word.** `UNAVAILABLE` is not a value with a unit;
+//    it is the vocabulary's statement that there is no value. It takes the name
+//    register (a label's tracking), not the figure's, so a reader's eye stops on
+//    it instead of reading it as a magnitude. A known absence prints `0` and is
+//    a figure like any other.
+//
+// ─── WHERE THE HOOKS ARE ──────────────────────────────────────────────────
+// The classes below are the artifacts that already print figures. The
+// `[data-figure]` attribute is the hook a newer block uses when it cannot be
+// found by class - `value` is a figure, `state` is the vocabulary's word.
+@use "../Mixin" as *;
+
+// ─── 1. ONE COLUMN ────────────────────────────────────────────────────────
+
+.record-ledger__value,
+.record-ledger__strong,
+.record-ledger__code,
+.record-ledger-block__register,
+.record-matrix__cell,
+.record-archive__marker,
+.record-archive__count,
+.record-instrument__value,
+.record-instrument__as-of,
+.detail-leader__meta,
+.detail-folio__figure,
+.detail-folio__count,
+[data-figure="value"],
+time[datetime] {
+	font-variant-numeric: tabular-nums slashed-zero;
+}
+
+// ─── 2. A FIGURE IS NOT TRACKED AS A WORD ─────────────────────────────────
+
+// The two roles that step up the scale inherit the join register from their
+// size; a figure takes the set register at every size. `.record-instrument__value`
+// and `.record-ledger__strong` are the live cases.
+.record-ledger__strong,
+.record-ledger__row--lead .record-ledger__value,
+.record-instrument__value,
+.record-instrument__measure--lead .record-instrument__figure,
+.record-instrument__figure[data-figure="state"] {
+	letter-spacing: var(--track-set);
+}
+
+// A tracked FIGURE - a register's count, a folio - keeps its register; only the
+// digits inside it are tabular. That is the point of separating the two axes.
+
+// ─── 3. THE UNIT IS BOUND TO ITS FIGURE ───────────────────────────────────
+
+// The gap between a figure and its unit is a thin space, not the 8px role that
+// separates two facts. 0.4ch is proportional to the figure's own size, so the
+// binding holds at the sub role and at the lead role without a second value.
+.record-instrument__figure {
+	gap: 0.4ch;
+}
+
+// The unit is set at the name register, which adds its letter-space after the
+// last letter as well as between them. Cancelling exactly that much on the
+// right edge is what makes the unit's optical edge flush with the column the
+// measure ends on - the difference between "RUST " and "RUST".
+.record-instrument__unit {
+	margin-inline-end: calc(var(--track-row) * -1);
+	white-space: nowrap;
+}
+
+// A figure and its unit are one object: they never break across a line.
+.record-instrument__figure > * {
+	min-inline-size: 0;
+}
+
+// ─── 4. AN UNKNOWN FIGURE IS A WORD ───────────────────────────────────────
+
+// The instrument marks its own figure with `data-figure`: `value` when the
+// figure is known, `state` when the vocabulary's word stands in its place. The
+// word keeps the vocabulary's ink (FieldRecordStatus owns it) and takes the
+// name register, because a word is tracked and a figure is not.
+.record-instrument__figure[data-figure="state"] {
+	gap: 0;
+}

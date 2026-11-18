@@ -81,7 +81,7 @@
 /* The alternate action: a plain hairline link, never a second button. */
 .auth-shell__alternate {
 	@include mono-meta;
-	@include track(0.08em);
+	@include track(var(--track-row));
 	align-self: flex-start;
 	padding-block-end: var(--space-tight);
 	color: var(--MuteForeground);
@@ -118,7 +118,7 @@
    layout decision this partial owns - no markup outside this card changes. */
 .auth-shell__field label {
 	@include mono-meta;
-	@include track(0.08em);
+	@include track(var(--track-row));
 	order: -1;
 }
 
@@ -292,7 +292,7 @@
 	font-size: var(--type-meta);
 	font-weight: 500;
 	line-height: var(--type-meta-line);
-	letter-spacing: 0.18em;
+	letter-spacing: var(--track-rule);
 	text-transform: uppercase;
 	cursor: pointer;
 }
@@ -339,7 +339,7 @@
 	font-family: var(--FontMono);
 	font-size: var(--type-sub);
 	line-height: var(--type-sub-line);
-	letter-spacing: 0.08em;
+	letter-spacing: var(--track-row);
 	text-transform: uppercase;
 	color: var(--Foreground);
 }
@@ -355,6 +355,12 @@
 
 .auth-shell__states .surface__states {
 	text-align: start;
+}
+
+/* The status line owns its own rules and rhythm; the wrapper only places it
+   under the frame's sentence, so the two margins do not compound. */
+.auth-shell__states .surface__statusline {
+	margin-block-start: 0;
 }
 
 .auth-shell__report-sentence {

@@ -1,0 +1,78 @@
+// MOTION TOKENS - the interaction classes' own numbers.
+//
+// ─── WHY A SECOND TOKEN FILE ──────────────────────────────────────────────
+// `System/_Motion.scss` names the *state change* (eight relationships) and the
+// three intervals and three curves every relationship is built from. That file
+// is the law, and this one does not add a fourth interval: every value below is
+// `var(--motion-interval-*)` or `var(--motion-curve-*)`, restated under the name
+// of the *occasion* it belongs to.
+//
+// The distinction matters because a relationship and an occasion are not the
+// same thing. `enter` is a relationship - an affordance arriving - and it is
+// used by a ledger row, a nav link and a seal that never moves. `fold` is an
+// occasion: a disclosure opening. An occasion needs numbers a relationship does
+// not carry (how far a leaf travels, how far apart two leaves are, how many of
+// them stagger), and those numbers belong to the occasion, not to the curve.
+//
+// So: an interaction class = a relationship + the geometry of its one occasion.
+// A class never invents an interval; it inherits one and states its distances.
+//
+// ─── THE DISTANCES ARE THE DESIGN, NOT THE TIMES ──────────────────────────
+// The site already had three intervals, so what a new class can actually
+// decide is *how far* something moves and *what* moves. Every distance below is
+// small on purpose: 6px is the most a leaf lifts, 4px the most a register row,
+// 8px the most a slip leaves its control by. A distance large enough to be
+// noticed as travel is a distance that has to be waited out, and motion here is
+// gone the moment it has explained itself.
+
+@layer theme {
+	:root {
+		/* FOLD - a disclosure opening. The leaves are the motion: each one lifts
+		   6px into its own place, 24ms after the one above it, and the stagger
+		   stops at six so a fold of forty rows arrives as six and a run rather
+		   than as a forty-step queue. */
+		--motion-fold-duration: var(--motion-interval-speak);
+		--motion-fold-easing: var(--motion-curve-arrive);
+		--motion-fold-leaf-travel: 0.375rem; /* 6px */
+		--motion-fold-leaf-step: 24ms;
+		--motion-fold-leaves: 6;
+
+		/* EXPAND - a record opening in place. The record does not move: its
+		   register rows arrive under it, 4px and 20ms apart, so what changed is
+		   how deep the record is read, not where it sits. */
+		--motion-expand-duration: var(--motion-interval-settle);
+		--motion-expand-easing: var(--motion-curve-return);
+		--motion-expand-row-travel: 0.25rem; /* 4px */
+		--motion-expand-row-step: 20ms;
+
+		/* HANDOVER - one page giving way to another. The body moves one step in
+		   the direction of travel (8px) while the record name stays put, so the
+		   reader sees the same document change page rather than two documents
+		   replacing each other. */
+		--motion-handover-duration: var(--motion-interval-settle);
+		--motion-handover-easing: var(--motion-curve-line);
+		--motion-handover-travel: 0.5rem; /* 8px */
+
+		/* SORT - a set re-ordered. The rows travel to their new places on the
+		   return curve, because a re-sort is a settlement: nothing arrived, the
+		   same rows are simply elsewhere. */
+		--motion-sort-duration: var(--motion-interval-settle);
+		--motion-sort-easing: var(--motion-curve-return);
+
+		/* ORIGIN - a control's surface arriving from the control. The distance
+		   is capped at 8px: a slip that flew across the page would be a thing
+		   arriving, not a thing opening where it was asked for. */
+		--motion-origin-duration: var(--motion-interval-speak);
+		--motion-origin-easing: var(--motion-curve-arrive);
+		--motion-origin-travel: 0.5rem; /* 8px */
+
+		/* SKELETON - data that has not arrived. The shape arrives (one interval,
+		   no loop); the values do not. `--motion-skeleton-ink` is the bar's
+		   opacity, which is a rule and not a colour: a bar is a rule whose value
+		   is not yet known. */
+		--motion-skeleton-duration: var(--motion-interval-speak);
+		--motion-skeleton-easing: var(--motion-curve-arrive);
+		--motion-skeleton-bar: 0.5rem; /* 8px - one rule's height */
+		--motion-skeleton-ink: 0.24;
+	}
+}

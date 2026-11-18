@@ -1,0 +1,144 @@
+---
+/**
+ * MotionSequence - a state change drawn: the states a record moves through, and
+ * the motion that carries it from one to the next.
+ *
+ * ─── WHAT IT IS ───────────────────────────────────────────────────────────
+ * An ordered run of state nodes with one edge between each pair. The node prints
+ * its position and its state word; the edge prints the motion's name above a
+ * hairline and its interval below it, with the grammar's `→` sitting on the line.
+ * The reading is one sentence per edge: *this state, by this motion, in this
+ * time, becomes that state*.
+ *
+ * ─── WHY IT IS A NEW FORM AND NOT A STAGE ─────────────────────────────────
+ * `RecordStage` is a process a person follows - measure, write, read - and it has
+ * no field for a duration because a process does not cost a measured interval.
+ * `RecordTrace` is provenance - where a claim can be checked - and its steps are
+ * files, not conditions. A sequence is the third thing: a state machine whose
+ * edges are *named motions with measured intervals*. That is a different
+ * information type (TRANSITION), and the record layer's routing table says a new
+ * type gets a new form rather than a variant of one that means something else.
+ *
+ * ─── THE EDGES CARRY THE HONESTY ──────────────────────────────────────────
+ * An interval nobody has measured prints `UNAVAILABLE` at muted ink. Never `0 MS`
+ * - which would be a measurement - and never a blank, which would be a design
+ * that had not decided. A motion with no name prints `◎ UNNAMED` under the run,
+ * because the site has transitions whose state nothing in the markup sets, and
+ * pretending they have a name would be the one thing the motion layer forbids.
+ *
+ * ─── NO SCRIPT ────────────────────────────────────────────────────────────
+ * A sequence is printed. Nothing here is a stepper, nothing animates on scroll,
+ * and the only motion the block ever shows is the motion it is describing - which
+ * is why the `→` marks are `aria-hidden` and the words carry the meaning.
+ */
+import type { Sequence } from "./Type.js";
+
+interface Props {
+	/** The sequence's data. */
+	sequence: Sequence;
+}
+
+const { sequence: SequenceData } = Astro.props;
+
+const { name: Name, nodes: Nodes, edges: Edges, source: Source, empty: Empty } =
+	SequenceData;
+
+/** The count is the nodes' own length; the edges are one fewer. */
+const Count = String(Nodes.length).padStart(2, "0");
+
+/** An edge that has no interval states it rather than printing a zero. */
+const IntervalOf = (Value: string | undefined): string =>
+	Value === undefined || Value.trim().length === 0 ? "UNAVAILABLE" : Value;
+
+const UnknownInterval = (Value: string | undefined): boolean =>
+	IntervalOf(Value) === "UNAVAILABLE";
+
+/** A drawn sequence needs at least two nodes and the edges between them. */
+const Drawable = Nodes.length > 1 && Edges.length === Nodes.length - 1;
+
+/** The steps, interleaved: node, edge, node, edge, node. */
+const Steps: (
+	| { kind: "node"; index: string; state: string; note?: string }
+	| {
+			kind: "edge";
+			motion: string;
+			interval?: string;
+			explains?: string;
+	  }
+)[] = [];
+
+Nodes.forEach((Node, Position) => {
+	Steps.push({ kind: "node", ...Node });
+
+	const Edge = Edges[Position];
+
+	if (Edge) Steps.push({ kind: "edge", ...Edge });
+});
+---
+
+<div class="MotionSequence" data-motion="sequence">
+	<p class="MotionSequence__Marker">
+		# SEQUENCE / {Name}<span aria-hidden="true">{"\u2001"}</span>{Count} STATES
+	</p>
+
+	{
+		Drawable ? (
+			<ol class="MotionSequence__Run">
+				{Steps.map((Step) =>
+					Step.kind === "node" ? (
+						<li class="MotionSequence__Step MotionSequence__Step--node">
+							<span
+								class="MotionSequence__Index"
+								aria-hidden="true"
+							>
+								{Step.index}
+							</span>
+							<span class="MotionSequence__State">
+								{Step.state}
+							</span>
+							{Step.note ? (
+								<span class="MotionSequence__Note">
+									{Step.note}
+								</span>
+							) : null}
+						</li>
+					) : (
+						<li class="MotionSequence__Step MotionSequence__Step--edge">
+							<span class="MotionSequence__Motion">
+								{Step.motion}
+							</span>
+							<span class="MotionSequence__Line">
+								<span
+									class="MotionSequence__Mark"
+									aria-hidden="true"
+								>
+									→
+								</span>
+							</span>
+							<span
+								class:list={[
+									"MotionSequence__Interval",
+									UnknownInterval(Step.interval) &&
+										"MotionSequence__Interval--unknown",
+								]}
+							>
+								{IntervalOf(Step.interval)}
+							</span>
+						</li>
+					),
+				)}
+			</ol>
+		) : (
+			<div class="MotionSequence__Empty">
+				<p class="MotionSequence__EmptyMark">
+					<b aria-hidden="true">◎</b> NO TRANSITION
+				</p>
+				<p class="MotionSequence__EmptyLine">
+					<span aria-hidden="true">↳</span> {Empty}
+				</p>
+			</div>
+		)
+	}
+
+	<p class="MotionSequence__Source">SOURCE: {Source}</p>
+</div>

@@ -24,6 +24,7 @@
 import type { TFunction } from "i18next";
 
 import type { FieldRecordElement } from "../../Component/Brand/FieldRecordSeal.js";
+import { Row } from "../../Component/Surface/State.js";
 import type { SurfaceState as StateRow } from "../../Component/Surface/State.js";
 
 /** The field-record separator: U+2001, never U+00B7. */
@@ -33,17 +34,13 @@ const Quad = "\u2001";
  * One state of this surface, in the register's own shape: the key it is stated
  * under, the word, and the tone §1.5 gives that word.
  *
- * The tone is written here rather than looked up, because a surface states the
- * tone it means: `PLANNED` and `PREPARING` are both work-not-yet-done, and
- * §1.5 gives both the `quiet` tone. `--Accent` authenticates a live state
- * (ACTIVE, VERIFIED) and never a plan, which is what the hero printed before
- * this table carried a tone at all.
+ * The tone is looked up by `Row()` and never written here: a surface states a
+ * word from the eight, and the table decides its tone. `PLANNED` used to be
+ * written in this position with a hand-set `quiet` tone, which is how a plan
+ * came to render as a state the vocabulary does not own - it is a `PLAN:`
+ * declaration now, beside the real state.
  */
-const State = (Key: string, Word: string): StateRow => ({
-	key: Key,
-	value: Word,
-	tone: "quiet",
-});
+const State = (Key: string, Word: string): StateRow => Row(Key, Word);
 
 /** One feature row: a name, and the one sentence that qualifies it. */
 export interface PortalFeature {
@@ -195,8 +192,10 @@ const TierInk: Record<string, string> = {
 	Enterprise: "MuteForeground",
 };
 
-/** The status every tier carries today: planned, never shipped. */
-const TierStatus = "PLANNED";
+/** The status every tier carries today: planned, never shipped. The word is
+ *  §1.5's `PREPARING` (quiet); the plan itself prints as the `PLAN:` declaration
+ *  beside it, because `PLANNED` is not a state in the fixed vocabulary. */
+const TierStatus = "PREPARING";
 
 /** The label a tier's sign-in button carried: `ENTER CLOUD`. */
 const ActionLabel = (Identifier: string): string =>

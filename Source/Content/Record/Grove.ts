@@ -20,7 +20,7 @@ export const Grove: FieldRecord = {
 	Status: {
 		Label: "STATUS",
 
-		Value: "STABILIZING",
+		Value: "ACTIVE",
 
 		Tone: "ink",
 	},
@@ -33,6 +33,18 @@ export const Grove: FieldRecord = {
 		{ Label: "SYNC", Value: "ASYNC" },
 
 		{ Label: "DENSITY", Value: "LOW" },
+
+		/*
+		 * `STABILIZING` was this record's status word, and it is not one of the
+		 * eight (`ACTIVE`, `PREPARING`, `LOADING`, `READY`, `VERIFIED`,
+		 * `INTERRUPTED`, `UNAVAILABLE`, `ARCHIVED`), so every printer that asked
+		 * the state table for its tone fell back to ink and no reader could
+		 * compare Grove with the other fourteen elements. The word is not lost:
+		 * it is a phase, which is a declaration, so it prints as one - exactly
+		 * the way the portal's tiers state `STATUS: PREPARING` and print
+		 * `PLAN: PLANNED` beneath it.
+		 */
+		{ Label: "PHASE", Value: "STABILIZING" },
 	],
 
 	Evidence: {

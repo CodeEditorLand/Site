@@ -1,0 +1,14 @@
+---
+/**
+ * MotionOrigin - the server half of the origin specimen.
+ *
+ * `client:visible`, because a popover is only worth hydrating when it is on
+ * screen: a page with six specimens should not pay for a menu two thousand
+ * pixels above the fold. What a reader with JavaScript off gets is the trigger
+ * button, which is a control that does nothing - and the specimen's own note in
+ * the register column says what it would have opened.
+ */
+import { MotionOrigin } from "./MotionOrigin";
+---
+
+<MotionOrigin client:visible />

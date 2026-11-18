@@ -1,0 +1,173 @@
+// DocLayer - the layer this page belongs to, printed at the foot of the article
+// as a closed disclosure.
+//
+// Publishes:
+//   .doc-layer            the <details> block, at chapter distance from the prose
+//   .doc-layer__summary   the closed row: label, layer, size, marker
+//   .doc-layer__label     "LAYER:", in the meta voice
+//   .doc-layer__value     the section's name
+//   .doc-layer__count     the layer's size
+//   .doc-layer__marker    the disclosure glyph
+//   .doc-layer__body      the opened panel
+//   .doc-layer__list      the rows, in columns when there is room
+//   .doc-layer__item      one row
+//   .doc-layer__link      one page: marker, then name
+//   .doc-layer__name      the page's name
+//   .doc-layer__link--current  the page the reader is on
+//
+// ─── WHY A ROW AND NOT A PANEL ────────────────────────────────────────────
+//
+// Closed, this block is one line of mono on the creme field. It is not a band and
+// it does not get a card: the article above it is the surface, and the pager below
+// it opens with the page's last hairline. Printing fifteen rows open would put a
+// second wall at the end of a long read, which is the one thing a manual's last
+// screen must not be.
+//
+// ─── ONE ROW GRAMMAR, TWO BLOCKS ──────────────────────────────────────────
+//
+// The row is the contents row: a 3ch marker column, the name hanging on one edge,
+// a 1px leading rule reserved on every row and inked only on the current one. The
+// two blocks are different artifacts - one is pinned navigation, one is a map at
+// the foot - so they are two partials, but a reader should not be able to tell
+// their rows apart.
+@use "../../Mixin" as *;
+
+.doc-layer {
+	/* The pager's measure, so the layer's row and the pager's cards share one
+	   right edge with the prose card above them. */
+	max-inline-size: calc(72ch + 2 * clamp(1rem, 4vw, 2.5rem));
+
+	margin-block-start: var(--space-chapter);
+}
+
+.doc-layer__summary {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	padding-block: var(--space-tight);
+
+	cursor: pointer;
+
+	list-style: none;
+
+	&::-webkit-details-marker {
+		display: none;
+	}
+}
+
+.doc-layer__label {
+	@include mono-meta;
+	@include track;
+
+	flex: 0 0 auto;
+}
+
+.doc-layer__value {
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+
+	color: var(--Foreground);
+}
+
+.doc-layer__count {
+	@include mono-meta;
+
+	flex: 0 0 auto;
+}
+
+/* The glyph sits at the far end of the row, so the eye finds the control in the
+   same place on every page. The state is declared unconditionally; only the
+   interval is motion's. */
+.doc-layer__marker {
+	/* the disclosure glyph: far end of the summary row */
+	@include mono-meta;
+
+	flex: 0 0 auto;
+
+	margin-inline-start: auto;
+
+	display: inline-block;
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition: transform 150ms ease;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
+}
+
+.doc-layer[open] > .doc-layer__summary .doc-layer__marker {
+	transform: rotate(90deg);
+}
+
+.doc-layer__body {
+	padding-block-start: var(--space-reading);
+}
+
+/* The map. One column on a narrow viewport, two from 768 and three from 1280: a
+   layer of fifteen is a block of rows a reader scans, not a list they read down. */
+.doc-layer__list {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 0 var(--space-group);
+
+	list-style: none;
+
+	margin: 0;
+	padding: 0;
+
+	@include bp(768px) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	@include bp(1280px) {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.doc-layer__item {
+	min-inline-size: 0;
+}
+
+.doc-layer__link {
+	display: grid;
+	grid-template-columns: 3ch minmax(0, 1fr);
+	column-gap: var(--space-tight);
+	align-items: baseline;
+
+	padding: var(--space-tight) 0 var(--space-tight) var(--space-tight);
+
+	border-inline-start: 1px solid transparent;
+
+	color: var(--MuteForeground);
+
+	text-decoration: none;
+
+	&:hover,
+	&:focus-visible {
+		color: var(--Foreground);
+	}
+}
+
+.doc-layer__index {
+	@include mono-meta;
+}
+
+.doc-layer__name {
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	text-wrap: pretty;
+}
+
+.doc-layer__link--current {
+	color: var(--Foreground);
+
+	border-inline-start-color: var(--Primary);
+
+	.doc-layer__name {
+		font-weight: 500;
+	}
+}

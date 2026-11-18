@@ -2,7 +2,11 @@
 import AuthShell from "../../Component/Auth/AuthShell.astro";
 import Auth0CallbackHandler from "../../Component/Dynamic/Auth0CallbackHandler";
 import { AuthFrameFor } from "../../Component/Auth/Data";
+import { OAuthResult, type OAuthFailureCode } from "../../Content/Layout/OAuth.js";
 import { Header } from "../../Component/Layout/Header";
+import PageShell from "../../Component/Shell/PageShell.astro";
+import ShellPlate from "../../Component/Shell/ShellPlate.astro";
+import ShellState from "../../Component/Shell/ShellState.astro";
 import { Row } from "../../Component/Surface/State";
 import SurfaceState from "../../Component/Surface/SurfaceState.astro";
 import Auth0ClientIdentifier from "../../Function/Configuration/Auth0ClientIdentifier.js";
@@ -33,24 +37,35 @@ const MetaDescription = T("meta.oauth.successDescription", {
 	defaultValue: "You have been authenticated successfully.",
 });
 
+/* The three live arms' words. Each one is a state of the record, not a toast:
+   the loading arm says what is being read, the success arm says what was
+   written and for how long, and the failure arms are the register below. */
 const CompletingText = T("common.oauth.completing", {
-	defaultValue: "Completing sign-in...",
+	defaultValue:
+		"The provider has returned you here. The code in the query string is being exchanged for a session.",
 });
 const SuccessTitle = T("common.oauth.success.title", {
-	defaultValue: "You're signed in",
+	defaultValue: "Session Written",
 });
 const SuccessRedirect = T("common.oauth.success.redirect", {
-	defaultValue: "Redirecting to your dashboard...",
-});
-const ErrorGenericText = T("common.oauth.errorGeneric", {
-	defaultValue: "Something went wrong during sign-in. Please try again.",
-});
-const BackToSignInText = T("common.oauth.backToSignIn", {
-	defaultValue: "Back to Sign In",
+	defaultValue: "The dashboard opens next. The session lasts seven days.",
 });
 const GoToDashboardText = T("common.oauth.goToDashboard", {
-	defaultValue: "Go to Dashboard",
+	defaultValue: "OPEN THE DASHBOARD",
 });
+
+/* The four failure arms, resolved once. Every arm is printed into the document
+   at build time and the script reveals the one the provider named - so the copy
+   is server-rendered, translatable and readable with the script off, and no
+   sentence is assembled in the browser. */
+const Failure = OAuthResult(T);
+
+const FailureCodes: readonly OAuthFailureCode[] = [
+	"expired",
+	"provider",
+	"absent",
+	"unknown",
+];
 
 /* The three states' words, from `State.ts`'s table through `Row()`: LOADING
    while the callback is read, ACTIVE once the session is written, INTERRUPTED
@@ -87,19 +102,32 @@ const ErrorWords = [Row("STATUS", "INTERRUPTED")];
 		each state carries its word through `SurfaceState`, so the state is a
 		state of the record and not a spinner that happens to be on screen.
 	-->
-	<AuthShell Label="Sign-in result" Frame={Frame}>
+	<PageShell index="# PLATE_03" label="THE EXCHANGE">
+		<AuthShell Label="Sign-in result" Frame={Frame}>
 		<div
 			id="LoadingState"
 			class="flex flex-col items-center gap-4 p-8 text-center"
 		>
 			<SurfaceState states={LoadingWords} />
 
-			<div
-				class="h-8 w-8 animate-spin rounded-none border-2 border-current border-t-transparent"
-			>
-			</div>
-
-			<p class="text-card-foreground">{CompletingText}</p>
+			{/*
+				The loading arm, in the record grammar. It used to be a
+				`animate-spin` div: a spinner says something is happening, and a
+				skeleton says *what* is happening, because it prints the schema.
+				The keys are known before the values are. `surface="bare"` because
+				this state is printed inside the route's card - a white box inside
+				a white card is a card in a card.
+			*/}
+			<ShellState
+				surface="bare"
+				kind="loading"
+				index="EXCHANGE / 00"
+				statement={CompletingText}
+				cause={T("layout.oauth.loading.cause", {
+					defaultValue: "The callback's query string, read in the browser.",
+				})}
+				keys={["CODE:", "STATE:", "SESSION:"]}
+			/>
 		</div>
 
 		<div
@@ -127,7 +155,7 @@ const ErrorWords = [Row("STATUS", "INTERRUPTED")];
 				</svg>
 			</div>
 
-			<h2 class="text-2xl font-medium">{SuccessTitle}</h2>
+			<h3 class="type-heading">{SuccessTitle}</h3>
 
 			<p class="text-card-foreground">{SuccessRedirect}</p>
 
@@ -142,25 +170,70 @@ const ErrorWords = [Row("STATUS", "INTERRUPTED")];
 			</a>
 		</div>
 
-		<div id="ErrorState" class="hidden p-8 text-center">
+		<div id="ErrorState" class="hidden p-8">
 			<SurfaceState states={ErrorWords} />
 
-			<h2 class="mt-4 mb-2 text-2xl font-medium">Sign-In Failed</h2>
+			<h3 class="type-heading mt-4 mb-6">{Failure.heading}</h3>
 
-			<p id="ErrorMessage" class="mb-6 text-card-foreground">
-				{ErrorGenericText}
-			</p>
-
-			<a
-				href="/Account/SignIn"
-				class="StaccatoButton flat inline-flex h-10 items-center justify-center bg-primary px-4 py-2 font-medium text-primary-fg transition-all hover:opacity-90 focus:outline-2 focus:outline-[var(--Primary)] focus:outline-offset-2"
-			>
-				{BackToSignInText}
-				{"\u2001"}
-				<span aria-hidden="true">&rarr;</span>
-			</a>
+			{/*
+				THE FAILURE REGISTER. Four arms, each a composed `error` state:
+				`WHAT FAILED:` / `CAUSE:` / `RETRY:` and the three facts the callback
+				actually holds. The script reveals the arm the provider named; the
+				other three stay in the document, hidden, so the page states every
+				way the exchange can end rather than the one that happened today.
+				`surface="bare"` because this is printed inside the route's card.
+			*/}
+			{FailureCodes.map((Code, Position) => (
+				<div class="oauth-failure" data-failure={Code} hidden>
+					<ShellState
+						surface="bare"
+						kind="error"
+						index={`FAILURE / ${String(Position + 1).padStart(2, "0")}`}
+						statement={Failure.arms[Code].statement}
+						cause={Failure.arms[Code].cause}
+						note={Failure.arms[Code].note}
+						rows={[
+							{ key: "ARM:", value: Code.toUpperCase() },
+							{ key: "EXCHANGE:", value: "/OAUTH/SUCCESS", code: true },
+							{ key: "SESSION:", value: "NOT WRITTEN" },
+						]}
+						next={Failure.next}
+					/>
+				</div>
+			))}
 		</div>
-	</AuthShell>
+		</AuthShell>
+
+		{/*
+			The page's one artifact, as a plate: the callback route the provider
+			returns to. The card above reports what the exchange answered; this
+			plate says where the answer arrives and who produced it, which is the
+			one fact a reader looking at a sign-in result cannot otherwise check.
+
+			`STATE: READY` is the honest word: the route is ready to receive the
+			callback at build time, and the exchange itself is the browser's.
+		*/}
+		<ShellPlate
+			index="01"
+			figure={T("layout.oauth.plate.figure", {
+				defaultValue: "THE CALLBACK ROUTE",
+			})}
+			source="AUTH0"
+			state="READY"
+			proposition={T("layout.oauth.plate.proposition", {
+				defaultValue:
+					"The provider returns here with a code; the exchange runs in the browser and the card above is its receipt.",
+			})}
+			trace={{
+				mark: "\u2192",
+				value: "/OAuth/Success",
+				note: T("layout.oauth.plate.note", {
+					defaultValue: "THE PROVIDER RETURNS HERE",
+				}),
+			}}
+			height="clamp(11rem, 24vh, 17rem)"
+		/>
+	</PageShell>
 </Base>
 
 <script>
@@ -176,19 +249,29 @@ const ErrorWords = [Row("STATUS", "INTERRUPTED")];
 		const LoadingState = document.getElementById("LoadingState");
 		const SuccessState = document.getElementById("SuccessState");
 		const ErrorState = document.getElementById("ErrorState");
-		const ErrorMessage = document.getElementById("ErrorMessage");
 
 		if (ErrorParameter || !Token) {
 			if (LoadingState) LoadingState.classList.add("hidden");
 			if (ErrorState) ErrorState.classList.remove("hidden");
-			if (ErrorMessage) {
-				ErrorMessage.textContent =
-					ErrorParameter === "invalid_state"
-						? "Authentication session expired. Please try again."
-						: ErrorParameter === "oauth_failed"
-							? "OAuth provider returned an error. Please try again."
-							: "No authentication token received.";
-			}
+
+			// The arm the provider named, from the same mapping the page was
+			// built with: `invalid_state` is a spent state parameter,
+			// `oauth_failed` is the provider refusing, any other error is
+			// unnamed, and no error with no token is an empty callback.
+			const Arm = ErrorParameter
+				? ErrorParameter === "invalid_state"
+					? "expired"
+					: ErrorParameter === "oauth_failed"
+						? "provider"
+						: "unknown"
+				: "absent";
+
+			document
+				.querySelectorAll<HTMLElement>("[data-failure]")
+				.forEach((Element) => {
+					Element.hidden = Element.dataset.failure !== Arm;
+				});
+
 			return;
 		}
 

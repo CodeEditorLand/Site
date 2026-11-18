@@ -1,0 +1,82 @@
+// Detail/Foot - the band's colophon: one rule, two registers, one row.
+//
+// ─── THE COMPOSITION ──────────────────────────────────────────────────────
+// This is the one composition on this layer, and it is deliberately only three
+// things read together:
+//
+//   the rule    from the band's left edge to its right (Detail/_Rule.scss)
+//   See         what else in the document says this
+//   Folio       where in the document the reader has got to
+//
+// No page used it before: bands closed on a footnote (a source line) or on
+// nothing. A band that closes on its references and its folio reads as a page of
+// a document rather than the end of a card - and it costs one rule.
+//
+// ─── WHY IT IS NOT A FOOTNOTE ─────────────────────────────────────────────
+// A footnote is a caption about the block above it: one line, at the caption's
+// size, muted, and it is the band's own last word. The foot is a REGISTER: two
+// small artifacts at the band's two ends, at the label's register, one of them
+// interactive. They are different information types, so they are different
+// blocks, and a band may print both - the footnote for provenance, the foot for
+// the document's apparatus.
+//
+// ─── NARROW ───────────────────────────────────────────────────────────────
+// Below 768px the two registers stack: See first (it is the useful one), then
+// the folio at the band's left. The rule stays where it is - a rule that moves
+// is not an edge.
+@use "../Mixin" as *;
+
+.detail-foot__row {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-reading);
+	min-inline-size: 0;
+}
+
+@include bp(768px) {
+	.detail-foot__row {
+		flex-direction: row;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: var(--space-group);
+	}
+
+	// The references take what they need and the folio takes its own width, so
+	// a two-line reference never pushes the folio off the band's right edge.
+	.detail-foot__see {
+		flex: 1 1 auto;
+		min-inline-size: 0;
+	}
+
+	.detail-foot__folio {
+		flex: 0 0 auto;
+	}
+}
+
+// On a white card the foot is inside the card's own inset: the See and the Folio
+// keep the measure they had and the rule above them is the card's separator.
+.detail-foot[data-surface="card"] .detail-foot__row {
+	gap: var(--space-tight);
+}
+
+// Where the surface already owns its rhythm, the foot does not add one. The
+// Download record is a flex column at `--space-group`; a foot with its own top
+// margin there would sit at 64px from the colophon, which is a chapter distance
+// inside one artifact. The band's foot slot is the other case and does not need
+// this rule: the band's inner has no gap, so the foot's margin is the only one.
+.download-record__inner > .detail-foot {
+	margin-block-start: 0;
+}
+
+// ─── PRINT ────────────────────────────────────────────────────────────────
+
+// A printed page numbers itself. The folio's as-of is still a fact worth having
+// on paper; its ordinal is the printer's job, so the two are treated differently
+// rather than the whole foot being hidden. The ink is the token's, not a literal:
+// `_Base.scss` already sets the page's print ink, and a second black here would
+// be a second decision.
+@media print {
+	.detail-foot__folio {
+		color: var(--Foreground);
+	}
+}

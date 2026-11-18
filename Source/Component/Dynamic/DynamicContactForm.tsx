@@ -148,6 +148,15 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 		SetValues((Prev) => ({ ...Prev, [Id]: Value }));
 
 		SetErrors((Prev) => ({ ...Prev, [Id]: "" }));
+
+		/*
+		 * Editing a field invalidates the copy: the text in the clipboard no
+		 * longer matches the form, so the receipt that says it does has to go.
+		 * This is the only thing that clears it - the receipt stays on the page
+		 * until it stops being true, rather than leaving after three seconds
+		 * the way a toast does.
+		 */
+		SetCopyState("idle");
 	};
 
 	const HandleCheckboxGroup = (Id: string, Option: string) => {
@@ -160,7 +169,16 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 		HandleChange(Id, Next);
 	};
 
-	const Validate = (): boolean => {
+	/**
+	 * Every missing required field, and the sentence that says what is missing.
+	 *
+	 * A pure read: it returns the errors and touches no state, so a caller can
+	 * ask "is this fileable?" without committing an interruption - which is what
+	 * lets the primary action decide whether to arm itself, explain itself, or
+	 * open the mail client, and lets the error receipt name the first field to
+	 * fix without a second pass over the rules.
+	 */
+	const ComputeErrors = (): Record<string, string> => {
 		const NewErrors: Record<string, string> = {};
 
 		for (const Field of Config.Fields) {
@@ -184,13 +202,84 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 			}
 		}
 
-		SetErrors(NewErrors);
+		return NewErrors;
+	};
 
-		return Object.keys(NewErrors).length === 0;
+	/** Commit an interruption, and say whether the form is fileable. */
+	const ApplyErrors = (Next: Record<string, string>): boolean => {
+		SetErrors(Next);
+
+		return Object.keys(Next).length === 0;
+	};
+
+	/** Put the cursor where the fix is. The controls all carry their field's id. */
+	const Focus = (Id: string): void => {
+		const Control = document.getElementById(Id);
+
+		if (!Control) return;
+
+		Control.focus({ preventScroll: true });
+
+		/*
+		 * The site scrolls smoothly, which is right for a link and wrong for a
+		 * refusal: the reader pressed a control and has to be taken to the
+		 * problem now, not in 300ms. The root's behaviour is `auto` for the one
+		 * call and restored afterwards, so no other scroll on the page changes.
+		 */
+		const Root = document.documentElement;
+
+		const Behavior = Root.style.scrollBehavior;
+
+		Root.style.scrollBehavior = "auto";
+
+		Control.scrollIntoView({ block: "center" });
+
+		Root.style.scrollBehavior = Behavior;
+	};
+
+	/**
+	 * The primary action, in three states.
+	 *
+	 * `READY` - every required field carries a value: the link follows its
+	 * `mailto:` and the reader's mail client opens with the request in it.
+	 *
+	 * `PREPARING` - something is missing: the action is `aria-disabled`, and
+	 * activating it does not open a half-written message. It files the errors,
+	 * renders the receipt, and moves the cursor to the first field that needs a
+	 * value. An action that refuses has to say why in the same gesture, which is
+	 * the whole reason the refusal is a state rather than a `disabled` attribute
+	 * on an anchor that no longer responds at all.
+	 */
+	const HandlePrimary = (
+		Event: React.MouseEvent<HTMLAnchorElement>,
+	): void => {
+		const Next = ComputeErrors();
+
+		if (Object.keys(Next).length === 0) {
+			SetErrors({});
+
+			return;
+		}
+
+		Event.preventDefault();
+
+		SetErrors(Next);
+
+		const First = Config.Fields.find((Field) => Next[Field.id]);
+
+		if (First) Focus(First.id);
 	};
 
 	const HandleCopy = async () => {
-		if (!Validate()) return;
+		const Next = ComputeErrors();
+
+		if (!ApplyErrors(Next)) {
+			const First = Config.Fields.find((Field) => Next[Field.id]);
+
+			if (First) Focus(First.id);
+
+			return;
+		}
 
 		const Body = BuildEmailBody(Config, Values, Year, PairId);
 
@@ -202,8 +291,6 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 			await navigator.clipboard.writeText(Full);
 
 			SetCopyState("copied");
-
-			setTimeout(() => SetCopyState("idle"), 3000);
 		} catch {
 			// Clipboard not available
 		}
@@ -228,6 +315,11 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 	 * It reads the same `Values` and `Errors` the controls read, so the word
 	 * cannot disagree with the form it describes. No `LOADING` or `VERIFIED`
 	 * exists here: the form posts nothing, it hands the reader a message.
+	 *
+	 * The test is whether any message has words in it, not whether `Errors` has
+	 * keys: a field that is edited after a refusal is cleared to an empty
+	 * string rather than deleted from the record, and counting keys left the
+	 * form interrupted for the rest of its life from the first keystroke.
 	 */
 	const Complete = Config.Fields.every((Field) => {
 		if (!Field.required) return true;
@@ -242,23 +334,34 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 		return typeof Value === "string" && Value.trim() !== "";
 	});
 
-	const FormState =
-		Object.keys(Errors).length > 0
-			? "INTERRUPTED"
-			: Complete
-				? "READY"
-				: "PREPARING";
+	const HasErrors = Object.values(Errors).some(
+		(Message) => typeof Message === "string" && Message !== "",
+	);
+
+	const FormState = HasErrors
+		? "INTERRUPTED"
+		: Complete
+			? "READY"
+			: "PREPARING";
+
+	/** The interrupted fields, in the order the form prints them. */
+	const Interrupted = Config.Fields.filter((Field) => Errors[Field.id]);
+
+	/** The primary action is armed only when the request is fileable. */
+	const Armed = FormState === "READY";
 
 	/** The required marker every label shares, so it is written once. */
 
 	return (
 		<div className="contact-form">
 			<div className="contact-form__inner">
-				{/* The request's own opening: the pair reference, the legal basis,
-				    the response window and the form's state as chips; then the
-				    page's only `h1` - the request title, at the mono label scale
-				    rather than the display scale; then its sentence; then the
-				    address it is sent to. */}
+				{/* The request's own opening: the pair reference and the form's
+				    state as chips, then the page's only `h1` - the request
+				    title, at the mono label scale rather than the display
+				    scale; then its sentence; then the address it is sent to.
+				    The code, the statutory basis and the window are not here:
+				    they are the route's facts and the page's record head
+				    prints them once, above this form. */}
 				<div className="contact-form__open">
 					<div className="contact-form__meta">
 						<span
@@ -266,14 +369,6 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 							title="Pair reference - income code + instance ID. Quote this in all replies."
 						>
 							{Config.Code}-{PairId}
-						</span>
-						{Config.Article && (
-							<span className="contact-form__tag">
-								{Config.Article}
-							</span>
-						)}
-						<span className="contact-form__tag">
-							{Config.ResponseDays}d SLA
 						</span>
 						<span
 							className="contact-form__state"
@@ -300,11 +395,77 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 
 				{/* Form - the field block, on the form's one Jelly surface */}
 				<jelly-card style={Surface}>
+					{/*
+					 * The interruption receipt: what was refused, how many
+					 * fields, and which ones.
+					 *
+					 * It heads the field block because it describes the fields
+					 * - and because the refusal moves the cursor to the first
+					 * field that needs a value, so the receipt is above the
+					 * field the reader lands on. A receipt printed under the
+					 * actions was the first attempt: it appears where the reader
+					 * pressed, and then the jump leaves it below the fold, which
+					 * makes it an artifact nobody reads.
+					 *
+					 * Each line is a control that takes the cursor to its field,
+					 * and the whole block is one `role="alert"`, so the refusal
+					 * is announced once rather than once per field.
+					 */}
+					{Interrupted.length > 0 && (
+						<div className="contact-form__errors" role="alert">
+							<p className="contact-form__errors-head">
+								<span
+									className="contact-form__state"
+									data-state="INTERRUPTED"
+								>
+									INTERRUPTED
+								</span>
+								<span className="contact-form__tag">
+									{Interrupted.length}{" "}
+									{Interrupted.length === 1
+										? "FIELD"
+										: "FIELDS"}
+								</span>
+							</p>
+							<ul className="contact-form__errors-list">
+								{Interrupted.map((Field) => (
+									<li
+										key={Field.id}
+										className="contact-form__errors-item"
+									>
+										<button
+											type="button"
+											className="contact-form__errors-link"
+											onClick={() => Focus(Field.id)}
+										>
+											<span className="contact-form__errors-field">
+												{Field.label}
+											</span>{" "}
+											{Errors[Field.id]}
+										</button>
+									</li>
+								))}
+							</ul>
+						</div>
+					)}
+
 					<div className="contact-form__fields">
 						{Config.Fields.map((Field) => {
 							const Value = Values[Field.id];
 
 							const Error = Errors[Field.id];
+
+							/**
+							 * The hint and the error, in that order, as one id
+							 * list: a control that carries a sentence must point
+							 * at it, or the sentence is only a colour.
+							 */
+							const DescribedBy = [
+								Field.hint ? `${Field.id}-hint` : null,
+								Error ? `${Field.id}-error` : null,
+							]
+								.filter(Boolean)
+								.join(" ");
 
 							if (Field.type === "checkbox") {
 								return (
@@ -314,9 +475,16 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 									>
 										<label className="contact-form__check">
 											<input
+												id={Field.id}
 												type="checkbox"
 												className="contact-form__checkbox"
 												checked={Value === "true"}
+												aria-invalid={
+													Error ? true : undefined
+												}
+												aria-describedby={
+													DescribedBy || undefined
+												}
 												onChange={(E) =>
 													HandleChange(
 														Field.id,
@@ -332,7 +500,10 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 											</span>
 										</label>
 										{Error && (
-											<p className="contact-form__error">
+											<p
+												className="contact-form__error"
+												id={`${Field.id}-error`}
+											>
 												{Error}
 											</p>
 										)}
@@ -352,7 +523,16 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 											{Field.label}
 											{Field.required && <RequiredMark />}
 										</label>
-										<div className="contact-form__options">
+										<div
+											className="contact-form__options"
+											role="group"
+											aria-invalid={
+												Error ? true : undefined
+											}
+											aria-describedby={
+												DescribedBy || undefined
+											}
+										>
 											{(Field.options || []).map(
 												(Opt) => (
 													<label
@@ -381,7 +561,10 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 											)}
 										</div>
 										{Error && (
-											<p className="contact-form__error">
+											<p
+												className="contact-form__error"
+												id={`${Field.id}-error`}
+											>
 												{Error}
 											</p>
 										)}
@@ -405,6 +588,12 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 										<select
 											id={Field.id}
 											className="contact-form__input"
+											aria-invalid={
+												Error ? true : undefined
+											}
+											aria-describedby={
+												DescribedBy || undefined
+											}
 											value={(Value as string) || ""}
 											onChange={(E) =>
 												HandleChange(
@@ -426,7 +615,10 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 											)}
 										</select>
 										{Error && (
-											<p className="contact-form__error">
+											<p
+												className="contact-form__error"
+												id={`${Field.id}-error`}
+											>
 												{Error}
 											</p>
 										)}
@@ -451,6 +643,12 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 											id={Field.id}
 											rows={4}
 											className="contact-form__input"
+											aria-invalid={
+												Error ? true : undefined
+											}
+											aria-describedby={
+												DescribedBy || undefined
+											}
 											placeholder={Field.placeholder}
 											value={(Value as string) || ""}
 											onChange={(E) =>
@@ -461,12 +659,18 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 											}
 										/>
 										{Field.hint && (
-											<p className="contact-form__hint">
+											<p
+												className="contact-form__hint"
+												id={`${Field.id}-hint`}
+											>
 												{Field.hint}
 											</p>
 										)}
 										{Error && (
-											<p className="contact-form__error">
+											<p
+												className="contact-form__error"
+												id={`${Field.id}-error`}
+											>
 												{Error}
 											</p>
 										)}
@@ -491,6 +695,10 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 										id={Field.id}
 										type={Field.type}
 										className="contact-form__input"
+										aria-invalid={Error ? true : undefined}
+										aria-describedby={
+											DescribedBy || undefined
+										}
 										placeholder={Field.placeholder}
 										value={(Value as string) || ""}
 										onChange={(E) =>
@@ -501,12 +709,18 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 										}
 									/>
 									{Field.hint && (
-										<p className="contact-form__hint">
+										<p
+											className="contact-form__hint"
+											id={`${Field.id}-hint`}
+										>
 											{Field.hint}
 										</p>
 									)}
 									{Error && (
-										<p className="contact-form__error">
+										<p
+											className="contact-form__error"
+											id={`${Field.id}-error`}
+										>
 											{Error}
 										</p>
 									)}
@@ -526,7 +740,8 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 					    the action the form exists for. */}
 					<a
 						href={MailtoHref}
-						onClick={Validate}
+						onClick={HandlePrimary}
+						aria-disabled={Armed ? undefined : true}
 						className={[
 							"contact-form__action",
 							"emphasis-expressive",
@@ -594,6 +809,26 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 						</a>
 					)}
 				</div>
+
+				{/*
+				 * The receipt: the copy succeeded, and the reference it was
+				 * filed under. A state, not a toast - it stays until the reader
+				 * copies again, and it names the pair reference the note below
+				 * then explains. `role="status"` so it is announced once.
+				 */}
+				{CopyState === "copied" && (
+					<p className="contact-form__receipt" role="status">
+						<span className="contact-form__receipt-word">
+							COPIED
+						</span>
+						<span className="contact-form__receipt-ref">
+							{Config.Code}-{PairId}
+						</span>
+						<span className="contact-form__receipt-note">
+							Paste it into any mail or ticket.
+						</span>
+					</p>
+				)}
 
 				{/* Pair reference explanation */}
 				<div className="contact-form__note">

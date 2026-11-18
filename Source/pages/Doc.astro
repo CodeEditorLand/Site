@@ -100,8 +100,32 @@ const MetaDescription = T("meta.docs.description", {
 });
 
 const PageStandfirst = T("common.docs.pageSubtitle", {
-	defaultValue: "Everything you need to install, build, and contribute to Land.",
+	defaultValue:
+		"Eighty-one pages in ten sections, from /START to the deep dives. Each page names the file it describes; the strip above it prints the layer, the order and the count.",
 });
+
+/**
+ * The index's own contents - the map of this page, for the rail's pinned head.
+ *
+ * The sections are the grid's own sections, in the order the grid prints them,
+ * and the appendices are the three closing artifacts; each entry's anchor is the
+ * id the section or the appendix already carries, so a row and its target are the
+ * same string. This is the one place the index's rail learns what the page
+ * contains, which is why the rail cannot disagree with the page it sits beside.
+ */
+const Contents = {
+	Label: T("article.toc", { ns: "doc", defaultValue: "On this page" }),
+	Items: [
+		...Index.Sections.map((Section) => ({
+			Label: Section.Heading,
+			Href: `#${Section.Id}`,
+		})),
+		...Index.Appendices.map((Appendix) => ({
+			Label: Appendix.Heading,
+			Href: `#${Appendix.Id}`,
+		})),
+	],
+};
 
 const Home = T("common.breadcrumb.home", { defaultValue: "Home" });
 
@@ -118,11 +142,12 @@ const BackToTop = T("common.button.backToTop", {
 >
 	<Header client:idle={{ timeout: 2000 }} Mode="functional" slot="Header" />
 
-	<DocLayout sections={SidebarSections} mobile={false}>
+	<DocLayout sections={SidebarSections} mobile={false} contents={Contents}>
 		<DocArticle
 			title={PageTitle}
 			standfirst={PageStandfirst}
 			strip={IndexStrip}
+			contents={Contents}
 			crumbs={[{ label: Home, href: "/" }, { label: PageTitle }]}
 			measure={false}
 		>

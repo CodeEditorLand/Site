@@ -231,9 +231,9 @@ const DynamicResetPassword = ({
 			aria-label="Reset password form"
 		>
 			<div className="flex flex-col space-y-1 text-center">
-				<h2 className="font-mono text-2xl font-medium tracking-tight">
+				<h3 className="type-heading">
 					{Content.Title}
-				</h2>
+				</h3>
 
 				<p className="text-card-foreground text-sm opacity-70">
 					{Content.Description}

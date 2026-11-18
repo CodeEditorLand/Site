@@ -3,6 +3,9 @@ import { Header } from "../../Component/Layout/Header";
 import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
 import ReadingDocument from "../../Component/Reading/ReadingDocument.astro";
+import BandFoot from "../../Component/Detail/BandFoot.astro";
+import TrustClause from "../../Component/Trust/TrustClause.astro";
+import { ComposeFacts } from "../../Component/Trust/Facts.js";
 import Trail from "../../Component/Route/Trail.astro";
 import { Index, Ledger } from "../../Library/Document/Term/Data.js";
 
@@ -27,9 +30,9 @@ const LastUpdated = "May 29, 2026";
 	Url={Astro.url.href}
 	lang="en">
 	<Header client:load Mode="functional" slot="Header" />
-	<div class="container mx-auto max-w-4xl px-4 py-16">
+	<div class="trust-page">
 		<Trail
-			class="LegalPrintHide mb-8"
+			class="LegalPrintHide trust-page__trail"
 			trail={[
 				{ label: "/HOME", href: "/" },
 				{ label: "/TERMS OF SERVICE" },
@@ -40,9 +43,12 @@ const LastUpdated = "May 29, 2026";
 			kicker="/LEGAL"
 			heading="Terms of Service"
 			standfirst="Governing your use of our open-source code editor and related services."
-			rows={Ledger}
+			rows={ComposeFacts(Ledger)}
 			index={Index}
 			indexLabel="Clauses"
+			layout="rail"
+			ledgerSurface="standard"
+			ledgerColumns={2}
 			bodyClass="LegalCard">
 			<p class="reading-document__title" id="terms-of-service"
 				>TERMS OF SERVICE</p
@@ -55,7 +61,7 @@ const LastUpdated = "May 29, 2026";
 				{LastUpdated}
 			</p>
 
-			<h2 class="reading-clause" id="introduction">Introduction</h2>
+			<TrustClause number="01" id="introduction">Introduction</TrustClause>
 
 			<p>
 				Welcome to Code Editor Land (“<strong>Company</strong>”, “<strong
@@ -108,7 +114,7 @@ const LastUpdated = "May 29, 2026";
 
 			<p>Thank you for being responsible.</p>
 
-			<h2 class="reading-clause" id="communications">Communications</h2>
+			<TrustClause number="02" id="communications">Communications</TrustClause>
 
 			<p>
 				By creating an account on our Service, you agree to subscribe to
@@ -124,7 +130,7 @@ const LastUpdated = "May 29, 2026";
 				>.
 			</p>
 
-			<h2 class="reading-clause" id="purchases">Purchases</h2>
+			<TrustClause number="03" id="purchases">Purchases</TrustClause>
 
 			<p>
 				If you wish to purchase any product or service made available
@@ -168,9 +174,9 @@ const LastUpdated = "May 29, 2026";
 				an unauthorized or illegal transaction is suspected.
 			</p>
 
-			<h2 class="reading-clause" id="contests-sweepstakes-and-promotions">
+			<TrustClause number="04" id="contests-sweepstakes-and-promotions">
 				Contests, Sweepstakes and Promotions
-			</h2>
+			</TrustClause>
 
 			<p>
 				Any contests, sweepstakes or other promotions (collectively, “<strong
@@ -182,7 +188,7 @@ const LastUpdated = "May 29, 2026";
 				these Terms of Service, Promotion rules will apply.
 			</p>
 
-			<h2 class="reading-clause" id="subscriptions">Subscriptions</h2>
+			<TrustClause number="05" id="subscriptions">Subscriptions</TrustClause>
 
 			<p>
 				Some parts of Service are billed on a subscription basis (“<strong
@@ -220,7 +226,7 @@ const LastUpdated = "May 29, 2026";
 				corresponding to the billing period as indicated on the invoice.
 			</p>
 
-			<h2 class="reading-clause" id="free-trial">Free Trial</h2>
+			<TrustClause number="06" id="free-trial">Free Trial</TrustClause>
 
 			<p>
 				We may, at our sole discretion, offer a Subscription with a free
@@ -249,7 +255,7 @@ const LastUpdated = "May 29, 2026";
 				<li>cancel such Free Trial offer.</li>
 			</ol>
 
-			<h2 class="reading-clause" id="fee-changes">Fee Changes</h2>
+			<TrustClause number="07" id="fee-changes">Fee Changes</TrustClause>
 
 			<p>
 				We, in our sole discretion and at any time, may modify
@@ -270,7 +276,7 @@ const LastUpdated = "May 29, 2026";
 				Subscription fee amount.
 			</p>
 
-			<h2 class="reading-clause" id="refunds">Refunds</h2>
+			<TrustClause number="08" id="refunds">Refunds</TrustClause>
 
 			<p>
 				We issue refunds for eligible paid contracts, subscriptions, or
@@ -279,7 +285,7 @@ const LastUpdated = "May 29, 2026";
 				in separate written terms for a specific offering.
 			</p>
 
-			<h2 class="reading-clause" id="content">Content</h2>
+			<TrustClause number="09" id="content">Content</TrustClause>
 
 			<p>
 				Our Service allows you to post, link, store, share and otherwise
@@ -348,7 +354,7 @@ const LastUpdated = "May 29, 2026";
 				permitted by the applicable license.
 			</p>
 
-			<h2 class="reading-clause" id="prohibited-uses">Prohibited Uses</h2>
+			<TrustClause number="10" id="prohibited-uses">Prohibited Uses</TrustClause>
 
 			<p>
 				You may use Service only for lawful purposes and in accordance
@@ -452,7 +458,7 @@ const LastUpdated = "May 29, 2026";
 				Service.
 			</p>
 
-			<h2 class="reading-clause" id="no-use-by-minors">No Use by Minors</h2>
+			<TrustClause number="11" id="no-use-by-minors">No Use by Minors</TrustClause>
 
 			<p>
 				Service is intended only for access and use by individuals at
@@ -466,7 +472,7 @@ const LastUpdated = "May 29, 2026";
 				are prohibited from access and usage of Service.
 			</p>
 
-			<h2 class="reading-clause" id="accounts">Accounts</h2>
+			<TrustClause number="12" id="accounts">Accounts</TrustClause>
 
 			<p>
 				When you create an account with us, you guarantee that the
@@ -511,7 +517,7 @@ const LastUpdated = "May 29, 2026";
 				remove or edit content, or cancel orders in our sole discretion.
 			</p>
 
-			<h2 class="reading-clause" id="intellectual-property">Intellectual Property</h2>
+			<TrustClause number="13" id="intellectual-property">Intellectual Property</TrustClause>
 
 			<p>
 				Service and its original content (excluding Content provided by
@@ -546,7 +552,7 @@ const LastUpdated = "May 29, 2026";
 				by the applicable third-party licenses.
 			</p>
 
-			<h2 class="reading-clause" id="copyright-policy">Copyright Policy</h2>
+			<TrustClause number="14" id="copyright-policy">Copyright Policy</TrustClause>
 
 			<p>
 				We respect the intellectual property rights of others. It is our
@@ -578,10 +584,9 @@ const LastUpdated = "May 29, 2026";
 				on your copyright.
 			</p>
 
-			<h2 class="reading-clause"
-				id="dmca-notice-and-procedure-for-copyright-infringement-claims">
+			<TrustClause number="15" id="dmca-notice-and-procedure-for-copyright-infringement-claims">
 				DMCA Notice and Procedure for Copyright Infringement Claims
-			</h2>
+			</TrustClause>
 
 			<p>
 				You may submit a notification pursuant to the Digital Millennium
@@ -632,9 +637,9 @@ const LastUpdated = "May 29, 2026";
 				>.
 			</p>
 
-			<h2 class="reading-clause" id="error-reporting-and-feedback">
+			<TrustClause number="16" id="error-reporting-and-feedback">
 				Error Reporting and Feedback
-			</h2>
+			</TrustClause>
 
 			<p>
 				You may provide us via the <a href="/Contact/Scout"
@@ -674,7 +679,7 @@ const LastUpdated = "May 29, 2026";
 				commercialize) Feedback in any manner and for any purpose.
 			</p>
 
-			<h2 class="reading-clause" id="links-to-other-web-sites">Links To Other Web Sites</h2>
+			<TrustClause number="17" id="links-to-other-web-sites">Links To Other Web Sites</TrustClause>
 
 			<p>
 				Our Service may contain links to third-party web sites or
@@ -703,7 +708,7 @@ const LastUpdated = "May 29, 2026";
 				VISIT.
 			</p>
 
-			<h2 class="reading-clause" id="disclaimer-of-warranty">Disclaimer Of Warranty</h2>
+			<TrustClause number="18" id="disclaimer-of-warranty">Disclaimer Of Warranty</TrustClause>
 
 			<p>
 				THESE SERVICES ARE PROVIDED BY COMPANY ON AN “AS IS” AND “AS
@@ -742,7 +747,7 @@ const LastUpdated = "May 29, 2026";
 				EXCLUDED OR LIMITED UNDER APPLICABLE LAW.
 			</p>
 
-			<h2 class="reading-clause" id="limitation-of-liability">Limitation Of Liability</h2>
+			<TrustClause number="19" id="limitation-of-liability">Limitation Of Liability</TrustClause>
 
 			<p>
 				EXCEPT AS PROHIBITED BY LAW, YOU WILL HOLD US AND OUR OFFICERS,
@@ -775,7 +780,7 @@ const LastUpdated = "May 29, 2026";
 				LIMITATION OR EXCLUSION MAY NOT APPLY TO YOU.
 			</p>
 
-			<h2 class="reading-clause" id="termination">Termination</h2>
+			<TrustClause number="20" id="termination">Termination</TrustClause>
 
 			<p>
 				We may terminate or suspend your account and bar access to
@@ -801,7 +806,7 @@ const LastUpdated = "May 29, 2026";
 				indemnity and limitations of liability.
 			</p>
 
-			<h2 class="reading-clause" id="governing-law">Governing Law</h2>
+			<TrustClause number="21" id="governing-law">Governing Law</TrustClause>
 
 			<p>
 				These Terms shall be governed and construed in accordance with
@@ -819,7 +824,7 @@ const LastUpdated = "May 29, 2026";
 				agreements we might have had between us regarding Service.
 			</p>
 
-			<h2 class="reading-clause" id="changes-to-service">Changes To Service</h2>
+			<TrustClause number="22" id="changes-to-service">Changes To Service</TrustClause>
 
 			<p>
 				We reserve the right to withdraw or amend our Service, and any
@@ -831,7 +836,7 @@ const LastUpdated = "May 29, 2026";
 				including registered users.
 			</p>
 
-			<h2 class="reading-clause" id="amendments-to-terms">Amendments To Terms</h2>
+			<TrustClause number="23" id="amendments-to-terms">Amendments To Terms</TrustClause>
 
 			<p>
 				We may amend Terms at any time by posting the amended terms on
@@ -853,7 +858,7 @@ const LastUpdated = "May 29, 2026";
 				to use Service.
 			</p>
 
-			<h2 class="reading-clause" id="waiver-and-severability">Waiver And Severability</h2>
+			<TrustClause number="24" id="waiver-and-severability">Waiver And Severability</TrustClause>
 
 			<p>
 				No waiver by Company of any term or condition set forth in Terms
@@ -871,7 +876,7 @@ const LastUpdated = "May 29, 2026";
 				provisions of Terms will continue in full force and effect.
 			</p>
 
-			<h2 class="reading-clause" id="acknowledgement">Acknowledgement</h2>
+			<TrustClause number="25" id="acknowledgement">Acknowledgement</TrustClause>
 
 			<p>
 				BY USING SERVICE OR OTHER SERVICES PROVIDED BY US, YOU
@@ -879,7 +884,7 @@ const LastUpdated = "May 29, 2026";
 				TO BE BOUND BY THEM.
 			</p>
 
-			<h2 class="reading-clause" id="contact-us">Contact Us</h2>
+			<TrustClause number="26" id="contact-us">Contact Us</TrustClause>
 
 			<p>
 				Please send your feedback, comments, requests for technical
@@ -914,9 +919,40 @@ const LastUpdated = "May 29, 2026";
 			</p>
 
 			<p>By mail: PlayForm / Code Editor Land, Sofia, Bulgaria.</p>
+
+			{/* The document's foot: the places these terms are said again, and
+			    where in the document the reader has got to. A card's foot, so the
+			    rule draws the separator's ink inside the card's own inset. */}
+			<BandFoot
+				surface="card"
+				index="06"
+				part="/THE BACK MATTER"
+				see={[
+					{
+						route: "/LEGAL/PRIVACY",
+						href: "/Legal/Privacy",
+						reason:
+							"the data these terms do not cover: what is held, and for how long",
+					},
+					{
+						route: "/LICENSE",
+						href: "/License",
+						reason:
+							"the dedication the software is published under, which these terms do not replace",
+					},
+					{
+						route: "/CONTACT/LEGAL",
+						href: "/Contact/Legal",
+						reason: "a question about these terms, raised with the maintainer",
+					},
+				]}
+				figure={{ value: "26", unit: "CLAUSES" }}
+				asOf={LastUpdated}
+				source="SOURCE/PAGES/LEGAL/TERM.ASTRO"
+			/>
 		</ReadingDocument>
 
-		<div class="LegalPrintHide mt-12 border-t pt-8">
+		<div class="LegalPrintHide trust-page__close">
 			<a href="#top" class="StaccatoButton text-primary hover:underline"
 				>Back to top<span class="InlineSeparator">↑</span></a
 			>
@@ -949,3 +985,8 @@ const LastUpdated = "May 29, 2026";
 		}
 	</script>
 </Base>
+
+<script>
+	import { WireTrustContents } from "../../Component/Trust/TrustContents.js";
+	WireTrustContents();
+</script>

@@ -1,0 +1,191 @@
+// SpecimenSheet - the contact sheet of the document's parts.
+//
+// Publishes:
+//   .specimen-sheet                the sheet
+//   .specimen-sheet__register      `# SHEET 11` - the register line
+//   .specimen-sheet__cells         the grid of cells
+//   .specimen-sheet__cell          one cell, and its four lines
+//   .specimen-sheet__mark          the part's number
+//   .specimen-sheet__name          the part's name
+//   .specimen-sheet__note          the one line saying what it is
+//   .specimen-sheet__kind          the layer it belongs to
+//   .specimen-sheet__state         the disposition, with the grammar's mark
+//
+// ─── A SHEET IS A GRID OF RULES, NOT OF BOXES ─────────────────────────────
+// Every cell carries one hairline on its start edge and one on its top edge, and
+// the grid carries the two closing edges. That is a printed contact sheet: a
+// ruled field divided into cells, with no fill anywhere. A cell with a fill and
+// a radius would be a card, and eleven cards would be a page of cards - the one
+// thing the brief says a band must never be.
+//
+// ─── FOUR ACROSS IS THE WHOLE POINT ───────────────────────────────────────
+// Equal columns are wrong almost everywhere on this site and right here: the
+// parts are genuinely equal, and the reader is choosing between them rather than
+// reading them in order. The count is not a multiple of four, so the last row is
+// short - and the sheet keeps the hole, the way the blog index keeps its own,
+// because a sheet with a filled hole is a sheet pretending to be a grid.
+//
+// ─── THE STATE LINE SITS ON THE CELL'S FLOOR ──────────────────────────────
+// `margin-block-start: auto` in a flex column: every disposition line lands on
+// the same baseline across a row, whatever the note above it costs. A row of
+// cells whose fourth lines wander is a row of cards again.
+@use "../../Mixin" as *;
+
+.specimen-sheet {
+	margin: 0;
+	min-inline-size: 0;
+}
+
+.specimen-sheet__register {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	display: flex;
+	align-items: baseline;
+	gap: 0.4em;
+	margin: 0;
+	padding-block-end: 0.5rem;
+
+	@include hairline(bottom);
+}
+
+.specimen-sheet__register-mark {
+	color: var(--Accent);
+}
+
+.specimen-sheet__register-word {
+	color: var(--Foreground);
+}
+
+.specimen-sheet__register-count {
+	color: var(--Foreground);
+}
+
+.specimen-sheet__empty {
+	max-inline-size: var(--Measure);
+	margin: 0;
+	padding-block: var(--space-group);
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.specimen-sheet__cells {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	@include hairline(top);
+	@include hairline(right);
+
+	@include bp(640px) {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	@include bp(1024px) {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+.specimen-sheet__cell {
+	display: flex;
+	min-inline-size: 0;
+
+	@include hairline(left);
+	@include hairline(bottom);
+}
+
+.specimen-sheet__cell-inner {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	inline-size: 100%;
+	min-block-size: 100%;
+	padding: var(--space-reading);
+	color: var(--Foreground);
+	text-decoration: none;
+
+	&:focus-visible {
+		// Inset, because the cell clips: an offset ring would be cut by the
+		// neighbouring cell's hairline.
+		outline: 2px solid var(--Accent);
+		outline-offset: -2px;
+	}
+}
+
+a.specimen-sheet__cell-inner:hover .specimen-sheet__name {
+	text-decoration: underline;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 3px;
+}
+
+.specimen-sheet__mark {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--MuteForeground);
+}
+
+.specimen-sheet__body {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+}
+
+.specimen-sheet__name {
+	font-family: var(--FontMono);
+	font-size: var(--type-body);
+	line-height: 1.25;
+	letter-spacing: var(--track-name);
+	font-weight: 500;
+}
+
+.specimen-sheet__note {
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.5;
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.specimen-sheet__kind {
+	@include mono-meta;
+	@include track(var(--track-rule));
+
+	margin-block-start: var(--space-tight);
+}
+
+.specimen-sheet__state {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	display: flex;
+	align-items: baseline;
+	gap: 0.35em;
+	margin-block-start: auto;
+	padding-block-start: var(--space-tight);
+}
+
+.specimen-sheet__state--printed {
+	color: var(--Foreground);
+}
+
+.specimen-sheet__state--absent {
+	color: var(--MuteForeground);
+}
+
+.specimen-sheet__state--folded {
+	color: var(--MuteForeground);
+}
+
+.specimen-sheet__state-mark {
+	color: var(--Accent);
+}
+
+.specimen-sheet__state--absent .specimen-sheet__state-mark {
+	color: var(--MuteForeground);
+}

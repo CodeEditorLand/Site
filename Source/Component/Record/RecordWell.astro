@@ -32,7 +32,7 @@ interface Props extends Well {
 	class?: string;
 }
 
-const { label, language, lines, copy = true, class: Class } = Astro.props;
+const { label, language, lines, copy = true, source, class: Class } = Astro.props;
 
 /** A shell prompt is chrome, not part of the command a reader copies. */
 const Prompt = /^\$ /;
@@ -101,6 +101,14 @@ const CopyLabel = `Copy ${label} to the clipboard`;
 		}
 	</figcaption>
 	<pre class="record-well__body"><code>{Printed.map((Line) => <span class="record-well__line">{Line}</span>)}</code></pre>
+	{
+		source && (
+			<p class="record-well__source">
+				<span class="record-well__source-key">SOURCE:</span>
+				{source}
+			</p>
+		)
+	}
 </figure>
 
 <script>

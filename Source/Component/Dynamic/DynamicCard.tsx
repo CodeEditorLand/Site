@@ -14,9 +14,20 @@ import type Property from "./Interface/Property/Card.js";
 import type SimpleProperty from "./Interface/Property/Card/Simple.js";
 
 /**
- * Dynamic Card with simplex noise integration.
- * Applies StaccatoCard + StaccatoBorderShimmer + StaccatoShadowLift
- * for organic hover lift and border breathing.
+ * Dynamic Card - a Jelly card with three optional sections.
+ *
+ * The surface is Jelly's: `UI/Card` renders the `jelly-card` host and pins the
+ * four properties the site's cards share (`--jelly-fill`, radius 0, no internal
+ * padding, inherited type). This adapter only composes a header, a body and a
+ * footer into it.
+ *
+ * The body's prose used to carry `StaccatoBreath`, the noise system's live
+ * opacity hook, and the class outlived its engine: `_Noise.scss` reads its
+ * channels from `Staccato.ts`, which is not in the tree, so the declaration
+ * resolved to a constant `opacity: 0.9` under a `1.6s` opacity transition on
+ * static prose - motion with no state to move between, and a second dimming on
+ * top of the `opacity-70` the body already carries. A card's body is a sentence;
+ * a sentence is not loading, and it is not being hovered.
  */
 const DynamicCard = ({ Sections, ClassName, OnClick, Style }: Property) => {
 	const {
@@ -64,7 +75,7 @@ const DynamicCard = ({ Sections, ClassName, OnClick, Style }: Property) => {
 					)}
 
 					{BodySection.description && (
-						<div className="StaccatoBreath mb-4 text-card-foreground opacity-70">
+						<div className="mb-4 text-card-foreground opacity-70">
 							<RichText Text={BodySection.description} />
 						</div>
 					)}

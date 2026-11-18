@@ -2,11 +2,19 @@
 import { getCollection, render } from "astro:content";
 
 import DocArticle from "../../Component/Doc/DocArticle.astro";
+import DocLayer from "../../Component/Doc/DocLayer.astro";
 import DocLayout from "../../Component/Doc/DocLayout.astro";
 import MermaidFallback from "../../Component/Dynamic/MermaidFallback.astro";
 import { Header } from "../../Component/Layout/Header";
+import RecordInset from "../../Component/Record/RecordInset.astro";
+import RecordMargin from "../../Component/Record/RecordMargin.astro";
+import RecordTranscript from "../../Component/Record/RecordTranscript.astro";
+import { PageInset } from "../../Content/Artifact/Inset.js";
+import { ElementPlateForSlug } from "../../Content/Artifact/Plate.js";
+import { SetupSession } from "../../Content/Artifact/Session.js";
 import BuildDocSidebar from "../../Function/Doc/BuildDocSidebar";
 import BuildDocStrip from "../../Function/Doc/BuildDocStrip";
+import BuildDocToc from "../../Function/Doc/BuildDocToc";
 import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
 
@@ -50,7 +58,7 @@ export async function getStaticPaths() {
 }
 
 const { Entry } = Astro.props;
-const { Content } = await render(Entry);
+const { Content, headings } = await render(Entry);
 
 const AllEntries = (await getCollection("doc")).sort(
 	(A, B) => A.data.order - B.data.order,
@@ -106,6 +114,38 @@ const PageStrip = BuildDocStrip(
 	T,
 );
 
+/**
+ * The page's own contents: the `##` sections of this document, as the rail's
+ * pinned head and the narrow-viewport disclosure.
+ *
+ * Two facts the page knows and the builder cannot: a document that opens with
+ * its own `# ` line has that line demoted to the first `##` at the pipeline
+ * (`Function/Markdown/Heading.ts`), and that heading is the page's title - which
+ * the shell already prints as the `h1`. Listing it as section `01` would name the
+ * page twice, so it is dropped here, before the builder sees the list. Everything
+ * else is `BuildDocToc`'s: its id is the pipeline's id, its label the heading's
+ * own words, and its rules (no list under two sections, none on a page that
+ * carries its own table of contents) are the ones this page wants.
+ */
+const OpensWithTitle = /^\s*#\s/.test(Entry.body ?? "");
+
+const Contents = BuildDocToc(
+	OpensWithTitle ? headings.slice(1) : headings,
+	T("article.toc", { ns: "doc", defaultValue: "On this page" }),
+);
+
+/**
+ * The layer this page sits in: every page of the same section, in the order the
+ * collection puts them. The rail prints the short `navTitle` for a destination
+ * (`Sky`, `Overview`), and this list is a list of destinations, so it does too -
+ * the index prints the full `title` because a card is a thing to choose between.
+ */
+const Layer = SectionEntries.map((Page) => ({
+	Id: Page.id,
+	Label: Page.data.navTitle ?? Page.data.title,
+	Href: `/Doc/${Page.id}`,
+}));
+
 const MetaTitle = `${Entry.data.title} | Code Editor Land`;
 const MetaDescription = Entry.data.description;
 
@@ -113,6 +153,67 @@ const Home = T("common.breadcrumb.home", { defaultValue: "Home" });
 const Documentation = T("sidebar.title", {
 	ns: "doc",
 	defaultValue: "Documentation",
+});
+
+/**
+ * The page's apparatus, for the margin channel.
+ *
+ * Three facts about the *page* rather than its subject, which the article had
+ * nowhere to print: which section filed it and at what order, which group it
+ * nests under (when it has one), and where a correction goes. Every value is the
+ * frontmatter's - the margin derives nothing and invents nothing - and each note
+ * carries its own source, because the margin is where an unsourced claim does
+ * the most damage.
+ */
+const Notes = [
+	{
+		index: "NOTE_01",
+		label: "FILED",
+		body: `This page is filed under ${Entry.data.section}, at position ${Entry.data.order} in that section.`,
+		source: `SOURCE: SOURCE/CONTENT/DOC/${Entry.id.toUpperCase()}.MD`,
+	},
+	...(Entry.data.group
+		? [
+				{
+					index: "NOTE_02",
+					label: "GROUP",
+					body: `It nests under ${Entry.data.group}, with every page that shares the group.`,
+					source: "SOURCE: FRONTMATTER `GROUP`",
+				},
+			]
+		: []),
+	{
+		index: Entry.data.group ? "NOTE_03" : "NOTE_02",
+		label: "CORRECTIONS",
+		body: "The prose is a markdown file in the repository. A correction is a pull request against it, not a comment on the page.",
+		source: "SOURCE: THE REPOSITORY",
+		link: {
+			label: "OPEN THE SOURCE TREE",
+			href: "https://github.com/CodeEditorLand/WebSite",
+		},
+	},
+];
+
+/**
+ * The page's plate: the element's evidence, when the page is about one of the
+ * fifteen element records. Fifteen of the manual's documents are; the rest get
+ * no plate at all, because a page about a build flag has no capture to show and a
+ * default plate would be a picture of nothing.
+ */
+const PagePlate = ElementPlateForSlug(Entry.id);
+
+/**
+ * The page's own extent, as the margin's measure figure: sections, words and
+ * minutes, plus the one fact the metadata strip prints without a denominator -
+ * this page's position in its section.
+ */
+const PageExtent = PageInset({
+	body: Entry.body ?? "",
+	sections: Contents?.Items.length ?? 0,
+	order: Entry.data.order,
+	inSection: SectionEntries.length,
+	section: Entry.data.section,
+	file: `SOURCE/CONTENT/DOC/${Entry.id.toUpperCase()}.MD`,
 });
 ---
 
@@ -124,18 +225,20 @@ const Documentation = T("sidebar.title", {
 >
 	<Header client:idle={{ timeout: 2000 }} Mode="functional" slot="Header" />
 
-	<DocLayout sections={SidebarSections} activeId={Entry.id}>
+	<DocLayout sections={SidebarSections} activeId={Entry.id} contents={Contents}>
 		<DocArticle
-			kicker={Entry.data.section}
+			kicker={`/${Entry.data.section}`}
 			title={Entry.data.title}
 			standfirst={Entry.data.description}
 			strip={PageStrip}
+			contents={Contents}
 			crumbs={[
 				{ label: Home, href: "/" },
 				{ label: Documentation, href: "/Doc" },
 				{ label: Entry.data.title },
 			]}
 			measure={false}
+			plate={PagePlate}
 		>
 			<jelly-card
 				class="doc-prose"
@@ -145,9 +248,46 @@ const Documentation = T("sidebar.title", {
 					<Content />
 				</div>
 			</jelly-card>
+
+			{
+				/* The manual's own session, printed on the one page whose subject is
+				   the toolchain. It is the manual's words, marked as the manual's - not
+				   captured output dressed as a recording. */
+				Entry.id === "getting-started" ? (
+					<div class="doc-article__session">
+						<RecordTranscript transcript={SetupSession} />
+					</div>
+				) : null
+			}
 		</DocArticle>
 
 		<MermaidFallback />
+
+		{
+			/* The margin channel: the page's figure first, then its apparatus. An
+			   inset leads because it is the only thing in the margin with evidence
+			   in it; the notes under it are claims about the page. */
+			<div slot="margin">
+				<RecordInset inset={PageExtent} />
+			</div>
+		}
+
+		{
+			/* The margin channel: the page's apparatus, beside the measure. */
+			Notes.map((Note) => (
+				<div slot="margin">
+					<RecordMargin note={Note} />
+				</div>
+			))
+		}
+
+		<DocLayer
+			label={T("strip.layer", { ns: "doc", defaultValue: "LAYER:" })}
+			heading={Entry.data.section}
+			unit={T("archive.pages", { ns: "doc", defaultValue: "PAGES" })}
+			entries={Layer}
+			activeId={Entry.id}
+		/>
 
 		{
 			(PrevEntry || NextEntry) && (

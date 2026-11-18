@@ -1,16 +1,23 @@
-// Feature - the six-card grid in the features band, the runtime rail under it,
-// and the filed observation strip that closes the band.
+// Feature - the six-record matrix in the features band, and the filed
+// observation strip that closes it.
 //
 // Publishes:
-//   .home-feature__grid            one to three columns
-//   .home-feature__rail            the architecture proof: `RUNTIME PATH` + rail
-//   .home-feature__rail-label      the rail's own label
-//   .home-feature__specimen        the filed observation strip below the grid
-//   .home-feature__specimen-label  the strip's `SPECIMEN` label
+//   .home-feature__grid             the matrix: one to three columns, one seam
+//   .home-feature__specimen         the filed observation strip below the matrix
+//   .home-feature__specimen-label   the strip's `SPECIMEN` label
+//   .home-feature__specimen-ledger  its three readings, on one line
 //
-// Three columns from `lg` is what makes the six records read as two rows of
-// three. Two columns from `md` leaves the last row two-thirds full, which is the
-// distribution the baseline chose for a six-item set; one column below that.
+// THE MATRIX. Six element records, three columns from `lg`, two from `md`, one
+// below - the distribution the baseline chose for a six-item set - but flush,
+// with a 1px seam of the creme field between the cells instead of a 2rem gap.
+// The seam is the composition: six records read as one filed plate, the way a
+// patch panel's cells are one panel and not six boxes. It is also why the cells
+// lose their border at the widths where the matrix exists: the paper is the
+// rule, and a hairline on top of a 1px seam draws two.
+//
+// Below `md` the cells stack and take a real gap and their border back: a
+// single column of tinted cells 1px apart is one tinted block with no seams in
+// it, which is not a matrix, it is a smear.
 //
 // The cards are the element's own tint, not white: `FeatureCard` hands each
 // `jelly-card` its `--jelly-fill` from `JellyCardFill(card.SealName)`, the
@@ -19,21 +26,24 @@
 // no fill - it is not the intended colour, and it must stay weaker than the
 // inline property so the per-element identity wins.
 //
-// The rail and the specimen strip are the observation layer's own blocks, so
-// neither is a card: both take the grid's measure, open on the record layer's
-// hairline and keep the block's own anatomy.
+// The specimen strip is the observation layer's own block, so it is not a card:
+// it takes the matrix's measure, opens on the record layer's hairline and keeps
+// the block's own anatomy. Its three rows read across one line, because a
+// specimen label is read as a label - `SPECIES: … TEMP: … WIND: …` - not as a
+// three-storey ledger under six records.
 
 @use "../../Mixin" as *;
 
 .home-feature__grid {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
-	gap: 2rem;
+	gap: 1rem;
 	max-inline-size: 72rem;
 	margin-inline: auto;
 
 	@include bp(768px) {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1px;
 	}
 
 	@include bp(1024px) {
@@ -45,32 +55,28 @@
 	--jelly-fill: var(--Card);
 }
 
-// The architecture proof: the four-step runtime rail, between the six records
-// and the filed observation. It opens on the same hairline the specimen strip
-// opens on, so the band's two blocks below the grid read as two filed strips
-// rather than as two more cards.
-.home-feature__rail {
-	@include hairline(top);
-	max-inline-size: 72rem;
-	margin-block-start: var(--space-group);
-	margin-inline: auto;
-	padding-block-start: var(--space-tight);
-}
-
-// The rail's label is the same mono key the specimen strip's label is - one
-// strip, one voice, whichever block it names.
-.home-feature__rail-label {
-	@include mono-meta;
-	@include track;
-	margin-block-end: var(--space-tight);
+// The cell has no frame of its own inside the matrix: its tint is its edge, and
+// the seam is the paper. The Jelly border property is set to transparent rather
+// than to `none` so the element keeps its declared border box and the cells stay
+// the same size whether or not the matrix is on.
+@include bp(768px) {
+	.home-feature__grid .home-feature {
+		--jelly-color-border-default: transparent;
+	}
 }
 
 // The observation layer's filed strip: the record's `SPECIES:` / `TEMP:` /
-// `WIND:`, below the six cards rather than inside the hero card. It takes the
-// grid's measure so it lines up with the records above it, and opens on the
-// record layer's own hairline so it reads as filed rather than as a seventh card.
+// `WIND:`, below the matrix rather than inside the hero card. It takes the
+// matrix's measure so it lines up with the records above it, and opens on the
+// record layer's own hairline so it reads as filed rather than as a seventh
+// cell.
 .home-feature__specimen {
 	@include hairline(top);
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	column-gap: clamp(1.5rem, 3vw, 3rem);
+	row-gap: var(--space-tight);
 	max-inline-size: 72rem;
 	margin-block-start: var(--space-group);
 	margin-inline: auto;
@@ -82,5 +88,32 @@
 .home-feature__specimen-label {
 	@include mono-meta;
 	@include track;
-	margin-block-end: var(--space-tight);
+	margin: 0;
+}
+
+// The three readings on one line: the block keeps its rows, the strip sets them
+// in a row. Scoped through the strip's own class *and* the block's, because
+// `Record/_Index.scss` loads after this partial and `.record-ledger`'s own
+// `display: grid` would otherwise win on equal specificity.
+.home-feature__specimen .record-ledger {
+	display: flex;
+	flex-wrap: wrap;
+	column-gap: clamp(1.5rem, 3vw, 3rem);
+	row-gap: var(--space-tight);
+}
+
+.home-feature__specimen .record-ledger__row {
+	border-block-start: 0;
+	flex-direction: row;
+	gap: 0.5rem;
+	padding-block: 0;
+}
+
+.home-feature__specimen .record-ledger__key {
+	inline-size: auto;
+}
+
+.home-feature__specimen .record-ledger__value {
+	font-size: var(--type-meta);
+	line-height: 1.4;
 }

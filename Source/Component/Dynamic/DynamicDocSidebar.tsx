@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+
+import { Chord } from "../UI/Slip";
 
 import {
 	Collapsible,
@@ -49,6 +51,25 @@ const Leaf = ({
 	);
 };
 
+/** Every leaf under a section, in reading order - groups flattened. */
+const LeavesOf = (Section: DocSection): DocLeaf[] =>
+	(Section.Children ?? []).flatMap((Item) =>
+		IsDocGroup(Item) ? Item.Children : [Item],
+	);
+
+/**
+ * Does a page answer the reader's filter?
+ *
+ * Label and id, because a reader who knows the title types the title and a reader
+ * who has the address types the slug. Case-insensitive; no fuzzy scoring here -
+ * the rail is a window, and a window that reorders itself under the reader's
+ * hands is worse than one that hides rows.
+ */
+const Matches = (Query: string, Leaf: DocLeaf): boolean =>
+	Query === "" ||
+	Leaf.Label.toLowerCase().includes(Query) ||
+	Leaf.Id.toLowerCase().includes(Query);
+
 interface DynamicDocSidebarProps {
 	Sections: DocSection[];
 
@@ -59,38 +80,85 @@ interface DynamicDocSidebarProps {
 }
 
 /**
- * DynamicDocSidebar - the documentation rail.
+ * DynamicDocSidebar - the documentation rail, as a control.
  *
- * The interaction is unchanged from the version this replaces: one collapsible
- * per section, one per group inside it, the section and group holding the
- * current page opened on load and everything else collapsed, and a single
- * disclosure panel above the content below the rail's breakpoint.
+ * The tree is the manual, and it is the one control a reader uses on eighty-one
+ * pages. It already answered *where am I* (the current page is marked three ways,
+ * only one of them colour) and *what else is here* (one collapsible per section
+ * and per group). This version adds the two things a tree of eighty-one rows
+ * needs before it is a control rather than a list:
  *
- * What changed is the styling contract. Every class is the component's own
- * (`doc-sidebar__*`, owned by `System/Component/Doc/_Sidebar.scss`) instead of a
- * Tailwind string, so the type roles, the nesting rules and the current-page
- * state are one partial's business.
+ * - **A filter.** `FILTER:` at the head of the register, the same `.SlipField`
+ *   the palette's query line is, so the two controls are visibly one input in two
+ *   places. Typing prunes the tree to matching pages and keeps their sections and
+ *   groups as headings - a result with no context is a search result, not a map.
+ *   While a filter is active every matching disclosure is open, because a filter
+ *   that hides its own matches behind a closed disclosure has done nothing.
  *
- * The current page is marked three ways, and only one of them is colour: the
- * `aria-current="page"` attribute, the ink and weight of `--active`, and a
- * hairline rule on the row's leading edge. Its ancestor section and group are
- * marked too (ink and weight, no rule), so a reader never has to hunt for where
- * they are - and a reader who cannot see colour still reads the same three
- * signals.
+ * - **A count per section.** A closed section prints how many pages are behind it.
+ *   That is the difference between "there is more" and "there are twelve more", and
+ *   it is what lets a reader decide whether to open it.
+ *
+ * When the manual has no match, the rail does not stop at "no results": it prints
+ * `◎ NO PAGE` and a `→ FIND ALL RECORDS 〈⌘K〉` row that opens the palette with the
+ * same query. A local index that hands off to the global one is what an editor
+ * does when a file filter finds nothing - and it is how the palette becomes
+ * discoverable from the one place a lost reader actually is.
+ *
+ * The interaction that was here is unchanged: one collapsible per section, one
+ * per group inside it, the section and group holding the current page opened on
+ * load and everything else collapsed, and a single disclosure panel above the
+ * content below the rail's breakpoint. The styling contract is still the
+ * component's own (`doc-sidebar__*`, owned by `Doc/_Sidebar.scss`); the control
+ * states come from `Stylesheet/System/UI/_Rail.scss`, which is where the filter,
+ * the counts and the row states live.
  */
 const DynamicDocSidebar = ({
 	Sections,
 	ActiveId,
 	Mobile = false,
 }: DynamicDocSidebarProps) => {
-	// Auto-expand the section that contains the active page; collapse all others.
-	const ActiveSectionId = Sections.find((S) =>
-		S.Children?.some((Item) =>
-			IsDocGroup(Item)
-				? Item.Children.some((C) => C.Id === ActiveId)
-				: Item.Id === ActiveId,
-		),
-	)?.Id;
+	/**
+	 * The tree is walked once, not once per render.
+	 *
+	 * `Sections` is deserialized once from the island's props, so these three
+	 * answers cannot change while the component is mounted - and before this
+	 * they were recomputed on every keystroke in the filter and every toggle:
+	 * ten sections, eighty-one leaves, three walks each. The rail is a control
+	 * a reader types into; the type-in path should not re-derive the manual.
+	 */
+	const ActiveSectionId = useMemo(
+		() =>
+			Sections.find((S) =>
+				S.Children?.some((Item) =>
+					IsDocGroup(Item)
+						? Item.Children.some((C) => C.Id === ActiveId)
+						: Item.Id === ActiveId,
+				),
+			)?.Id,
+		[Sections, ActiveId],
+	);
+
+	/** How many pages sit behind each section - the count the trigger prints. */
+	const LeafCounts = useMemo(
+		() =>
+			new Map(
+				Sections.map((Section) => [
+					Section.Id,
+					LeavesOf(Section).length,
+				]),
+			),
+		[Sections],
+	);
+
+	/** Every page in the manual, in reading order - the mobile label's index. */
+	const AllLeaves = useMemo(
+		() =>
+			Sections.flatMap((S) => S.Children ?? []).flatMap((Item) =>
+				IsDocGroup(Item) ? Item.Children : [Item],
+			),
+		[Sections],
+	);
 
 	// The index page has no current page to open, and the baseline rail showed
 	// ten closed headings beside its card grid: every section starts collapsed
@@ -125,13 +193,16 @@ const DynamicDocSidebar = ({
 	};
 
 	// Same auto-expand behavior one level deeper, for groups nested inside a section.
-	const AllGroups = Sections.flatMap((S) => S.Children ?? []).filter(
-		IsDocGroup,
+	const AllGroups = useMemo(
+		() =>
+			Sections.flatMap((S) => S.Children ?? []).filter(IsDocGroup),
+		[Sections],
 	);
 
-	const ActiveGroupId = AllGroups.find((G) =>
-		G.Children.some((C) => C.Id === ActiveId),
-	)?.Id;
+	const ActiveGroupId = useMemo(
+		() => AllGroups.find((G) => G.Children.some((C) => C.Id === ActiveId))?.Id,
+		[AllGroups, ActiveId],
+	);
 
 	const [CollapsedGroups, SetCollapsedGroups] = useState<Set<string>>(
 		new Set(
@@ -153,14 +224,154 @@ const DynamicDocSidebar = ({
 		});
 	};
 
+	// ─── The filter ────────────────────────────────────────────────────────
+
+	const [Query, SetQuery] = useState("");
+
+	const Needle = Query.trim().toLowerCase();
+
+	const Filtered = useMemo(() => {
+		if (Needle === "") return Sections;
+
+		return Sections.map((Section) => ({
+			...Section,
+			Children: (Section.Children ?? [])
+				.map((Item) => {
+					if (!IsDocGroup(Item)) {
+						return Matches(Needle, Item) ? Item : null;
+					}
+
+					const Children = Item.Children.filter((Leaf) =>
+						Matches(Needle, Leaf),
+					);
+
+					return Children.length > 0
+						? { ...Item, Children }
+						: null;
+				})
+				.filter((Item): Item is DocItem => Item !== null),
+		})).filter((Section) => (Section.Children ?? []).length > 0);
+	}, [Needle, Sections]);
+
+	const FilteredCount = Filtered.reduce(
+		(Total, Section) => Total + LeavesOf(Section).length,
+		0,
+	);
+
+	/**
+	 * The handoff. The palette owns the chord and the register, so the rail does
+	 * not open anything itself: it announces the reader's words and lets the one
+	 * control that can answer them answer. `detail.query` is the reader's text,
+	 * unchanged - the palette filters it exactly as the rail did.
+	 */
+	const Handoff = () => {
+		window.dispatchEvent(
+			new CustomEvent("palette:open", { detail: { query: Query } }),
+		);
+	};
+
+	/**
+	 * The rail is a window onto eighty-one rows, and the one row that matters is
+	 * the page the reader is on. Without this the window opens at the top of the
+	 * tree and the current page sits below the fold - which is the orientation the
+	 * rail exists to give, lost. Centring the row keeps the section header above it
+	 * in view, so "where am I" arrives with "in what".
+	 *
+	 * It scrolls the nearest scrolling ancestor and nothing else: on a wide
+	 * viewport that is the rail's tree register, and inside the mobile panel the
+	 * panel is not mounted until the reader opens it, so this is a no-op there.
+	 */
+	const NavRef = useRef<HTMLElement>(null);
+
+	useEffect(() => {
+		/**
+		 * Centre the current row - in a frame, and only when it moves.
+		 *
+		 * This used to run synchronously in the mount effect, which put a
+		 * `querySelector`, an ancestor walk that reads `getComputedStyle` at
+		 * every step, two `getBoundingClientRect` calls and a `scrollTop` write
+		 * inside the commit that hydration is already paying for - a forced
+		 * layout before the page's first idle moment, on every doc route. It is
+		 * one deferred frame now, the reads happen before the write so there is
+		 * one layout rather than two, and a row that is already where it belongs
+		 * costs no write at all.
+		 */
+		const Frame = requestAnimationFrame(() => {
+			const Active = NavRef.current?.querySelector<HTMLElement>(
+				'[aria-current="page"]',
+			);
+
+			if (!Active) return;
+
+			let Box: HTMLElement | null = Active.parentElement;
+
+			while (
+				Box &&
+				!(
+					Box.scrollHeight > Box.clientHeight + 1 &&
+					getComputedStyle(Box).overflowY !== "visible"
+				)
+			)
+				Box = Box.parentElement;
+
+			if (!Box || Box === document.body || Box === document.documentElement)
+				return;
+
+			const Row = Active.getBoundingClientRect();
+
+			const FrameBox = Box.getBoundingClientRect();
+
+			const Delta =
+				Row.top - FrameBox.top - (FrameBox.height - Row.height) / 2;
+
+			if (Math.abs(Delta) < 1) return;
+
+			Box.scrollTop += Delta;
+		});
+
+		return () => cancelAnimationFrame(Frame);
+	}, []);
+
 	const Nav = (
-		<nav className="doc-sidebar" aria-label="Documentation sections">
+		<nav
+			ref={NavRef}
+			className="doc-sidebar"
+			aria-label="Documentation sections"
+		>
+			<div className="RailFilter">
+				<label className="RailFilter__Box SlipField">
+					<span className="SlipField__Label">FILTER:</span>
+					<input
+						type="search"
+						className="SlipInput"
+						value={Query}
+						onChange={(Event) => SetQuery(Event.target.value)}
+						placeholder="page name"
+						aria-label="Filter documentation pages"
+					/>
+				</label>
+
+				{Query ? (
+					<button
+						type="button"
+						className="RailFilter__Clear"
+						onClick={() => SetQuery("")}
+						aria-label="Clear the filter"
+					>
+						×
+					</button>
+				) : null}
+			</div>
+
 			<ul role="list" className="doc-sidebar__list">
-				{Sections.map((Section) => {
+				{Filtered.map((Section) => {
 					const HasChildren =
 						Section.Children && Section.Children.length > 0;
 
-					const IsOpen = !CollapsedSections.has(Section.Id);
+					// A filter opens what it matched: a match hidden behind a closed
+					// disclosure is a match the reader cannot see.
+					const IsOpen =
+						Needle !== "" || !CollapsedSections.has(Section.Id);
 
 					const IsCurrent = ActiveSectionId === Section.Id;
 
@@ -195,6 +406,14 @@ const DynamicDocSidebar = ({
 									</span>
 									<span
 										aria-hidden="true"
+										className="doc-sidebar__count"
+									>
+										{String(
+											LeafCounts.get(Section.Id) ?? 0,
+										).padStart(2, "0")}
+									</span>
+									<span
+										aria-hidden="true"
 										className={
 											IsOpen
 												? "doc-sidebar__marker doc-sidebar__marker--open"
@@ -221,6 +440,7 @@ const DynamicDocSidebar = ({
 											}
 
 											const IsGroupOpen =
+												Needle !== "" ||
 												!CollapsedGroups.has(Item.Id);
 
 											const IsGroupCurrent =
@@ -246,6 +466,18 @@ const DynamicDocSidebar = ({
 														>
 															<span className="doc-sidebar__label">
 																{Item.Label}
+															</span>
+															<span
+																aria-hidden="true"
+																className="doc-sidebar__count"
+															>
+																{String(
+																	Item.Children
+																		.length,
+																).padStart(
+																	2,
+																	"0",
+																)}
 															</span>
 															<span
 																aria-hidden="true"
@@ -291,16 +523,45 @@ const DynamicDocSidebar = ({
 					);
 				})}
 			</ul>
+
+			{Needle !== "" && FilteredCount === 0 ? (
+				<div className="doc-sidebar__empty">
+					<p className="doc-sidebar__empty-mark">
+						<b aria-hidden="true">◎</b>
+						<span>NO PAGE</span>
+					</p>
+					<p className="doc-sidebar__empty-line">
+						↳ NOTHING IN THE MANUAL MATCHES 〈{Query.trim()}〉
+					</p>
+					<button
+						type="button"
+						className="doc-sidebar__handoff"
+						onClick={Handoff}
+					>
+						<span
+							className="doc-sidebar__handoff-mark"
+							aria-hidden="true"
+						>
+							→
+						</span>
+						<span>FIND ALL RECORDS</span>
+						<span className="doc-sidebar__handoff-chord">
+							<Chord>⌘K</Chord>
+						</span>
+					</button>
+				</div>
+			) : null}
 		</nav>
 	);
+
+	/* Declared before the mobile early-return: a hook below a conditional
+	   return is a hook React can be asked to skip, and this one used to sit
+	   under `if (!Mobile) return Nav`. */
+	const [MobileOpen, SetMobileOpen] = useState(false);
 
 	if (!Mobile) return Nav;
 
 	// Mobile: wrap in a collapsible panel
-	const AllLeaves = Sections.flatMap((S) => S.Children ?? []).flatMap(
-		(Item) => (IsDocGroup(Item) ? Item.Children : [Item]),
-	);
-
 	// The disclosure's second half names where the reader is: the page they are
 	// on, else the section that holds it. It falls back to the section's LABEL,
 	// never to its id - `ActiveSectionId` is a slug (`deep-dive`), and printing a
@@ -310,8 +571,6 @@ const DynamicDocSidebar = ({
 	const ActiveLabel =
 		AllLeaves.find((C) => C.Id === ActiveId)?.Label ??
 		Sections.find((S) => S.Id === ActiveSectionId)?.Label;
-
-	const [MobileOpen, SetMobileOpen] = useState(false);
 
 	return (
 		<div className="doc-sidebar doc-sidebar--mobile">

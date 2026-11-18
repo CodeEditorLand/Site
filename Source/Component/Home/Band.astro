@@ -1,33 +1,84 @@
 ---
 /**
- * Band - one page band's shell: its id, its opening block, and the body below.
+ * Band - one page band's shell: its record head, and the body below.
  *
  * The shell exists so no band re-invents its own gutters, its own heading level
- * or its own kicker: every band on the homepage opens the same way, and the
+ * or its own marker: every band on the homepage opens the same way, and the
  * heading is an `h2` in every one of them because the baseline's page title is
  * the hero's own record, not a heading.
  *
- * The stamp slot is for the bands whose opening carries a mono block instead of
- * a standfirst (the roadmap prints `FUNDING:` and `PHASE:` there). A band has one
- * or the other, never both, which is why they are two branches of one decision.
+ * THE HEAD IS A RECORD HEAD, not a poster head. It used to be a centred block -
+ * eyebrow, heading, one muted line, all centred in a 42rem measure - four times
+ * down the page, which is what made the bands read as four posters rather than
+ * as parts of one document. The head now opens on a marker line
+ * (`# OBSERVATION_01␁/␁FEATURES`) that rules to the right margin, and then sets
+ * the heading and its note as a 5/7 pair: the claim on the left, the sentence
+ * that qualifies it on the right, separated by the measure instead of by air.
+ *
+ * That is the same anatomy the frame's running head prints above it - a `#`
+ * marker, a `/` part, U+2001 between the series index and its name - so a band
+ * head reads as a part of the dossier, not as a slide.
+ *
+ * The stamp slot is for the bands whose opening carries a mono block as well as
+ * a sentence (the roadmap prints `FUNDING:` and `PHASE:` there). The two slots
+ * are independent: a band with only a sentence prints only the sentence, a band
+ * with only a stamp prints only the stamp, and the roadmap - the one band whose
+ * subject is a schedule - prints both, because the sentence says what the two
+ * cards are and the stamp says who funds the work and which phase it is in.
+ * Neither is a decoration on the other.
+ *
+ * `rhythm` is the page's own alternation, not a per-band taste: `wide` opens a
+ * subject, `tight` packs the band that is an appendix. The page's rhythm is
+ * wide / wide / tight / tight / wide, and it is set here so a band cannot
+ * disagree with the page about where the reader rests.
  */
 import type { BandHead } from "../../Content/Home/Type.js";
 
 interface Props {
 	/** The band's own data, from `Content/Home/Band.ts`. */
 	head: BandHead;
+
+	/**
+	 * The record series this band is - `OBSERVATION`, `CONDITIONS`,
+	 * `CLASSIFICATION`, `ACTION`. Printed as `# <SERIES>_01`; the kicker word
+	 * stays the route after it. A band handed no series keeps its bare kicker,
+	 * so the shell degrades to the baseline's eyebrow rather than inventing a
+	 * marker it was not given.
+	 */
+	series?: string;
+
+	/** `wide` (the default) or `tight`: the page's alternation. */
+	rhythm?: "wide" | "tight";
 }
 
-const { head } = Astro.props;
+const { head, series, rhythm = "wide" } = Astro.props;
 
 /** The one heading id the band's `aria-labelledby` points at. */
 const HeadingID = `${head.ID}Heading`;
 ---
 
-<section id={head.ID} aria-labelledby={HeadingID} class="home-band">
+<section
+	id={head.ID}
+	aria-labelledby={HeadingID}
+	class:list={["home-band", `home-band--${rhythm}`]}
+>
 	<div class="home-band__inner">
 		<div class="home-band__head">
-			<p class="home-band__kicker">{head.Kicker}</p>
+			<p class="home-band__kicker">
+				{
+					series && (
+						<span class="home-band__marker">{`# ${series}_01`}</span>
+					)
+				}
+				{
+					series && (
+						<span class="home-band__route" aria-hidden="true">
+							/
+						</span>
+					)
+				}
+				<span class="home-band__name">{head.Kicker}</span>
+			</p>
 
 			<h2 class="home-band__heading" id={HeadingID}>{head.Heading}</h2>
 

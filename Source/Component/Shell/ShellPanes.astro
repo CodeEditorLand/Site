@@ -1,0 +1,137 @@
+---
+/**
+ * ShellPanes - the workspace's panes: two instruments side by side with the
+ * site's hairline between them, and a drawer for what does not fit either.
+ *
+ * ─── WHY A GUTTER AND NOT A GAP ───────────────────────────────────────────
+ * The endorsed hero pair is 49fr / 1px / 51fr: two panels with one hairline
+ * gutter that is a *track*, not a border on one of them. At pane scale the same
+ * object holds: `5fr 1px 7fr`, asymmetric, one 1px track in `--Divider` ink. Two
+ * panes with a `gap` read as two cards that happen to be near each other; two
+ * panes with a gutter read as one instrument divided - which is the whole
+ * difference between a workspace and a dashboard of dashboards.
+ *
+ * ─── THE DRAWER ───────────────────────────────────────────────────────────
+ * A pane holds one instrument. When the workspace has a third thing - the
+ * transcript, the log, the reference the reader consults rather than reads - it
+ * goes in the drawer: a `<details>` spanning both panes at the foot, closed by
+ * default, its summary a register line. CSS-only, works with JavaScript off, and
+ * found by the browser's own in-page search when closed.
+ *
+ * ─── NARROW ───────────────────────────────────────────────────────────────
+ * The gutter rotates: the two panes stack, and the 1px rule becomes the seam
+ * between them at the same ink. The panes keep their heads, their marks and their
+ * order - the primary pane stays first, because on a phone the reader meets the
+ * instrument they came for before the context beside it.
+ *
+ * No script and no hydration.
+ */
+interface Pane {
+	/** `# PANE_01` - the pane's marker, printed verbatim. */
+	readonly mark: string;
+
+	/** The pane's `h2`/`h3`-level name, printed at heading weight. */
+	readonly label: string;
+
+	/** The value cell at the pane head: a count, a state, a source. */
+	readonly meta?: string;
+
+	/** One sentence under the pane's head, when the pane needs its scope stated. */
+	readonly note?: string;
+}
+
+interface Props {
+	/** The leading pane - the context, the record, the thing beside the work. */
+	primary: Pane;
+
+	/** The trailing pane - the instrument the reader came to operate. */
+	secondary: Pane;
+
+	/**
+	 * The ratio. `5/7` (the default) puts the instrument in the wider pane;
+	 * `7/5` mirrors it for a workspace whose instrument is the record; `1/1` is
+	 * for two panes that are genuinely equal, and it is the only case where
+	 * equal columns are right.
+	 */
+	ratio?: "5/7" | "7/5" | "1/1";
+
+	/** The drawer at the foot: what neither pane holds. Absent, no drawer. */
+	drawer?: {
+		readonly label: string;
+		readonly note?: string;
+		readonly open?: boolean;
+	};
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const {
+	primary,
+	secondary,
+	ratio = "5/7",
+	drawer,
+	class: ClassName,
+} = Astro.props;
+
+const HasDrawer = Astro.slots.has("drawer");
+---
+
+<div
+	class:list={["ShellPanes", `ShellPanes--${ratio.replace("/", "-")}`, ClassName]}
+>
+	<div class="ShellPanes__grid">
+		<section class="ShellPanes__pane ShellPanes__pane--primary">
+			<header class="ShellPanes__head">
+				<p class="ShellPanes__mark">{primary.mark}</p>
+				<p class="ShellPanes__label">{primary.label}</p>
+				{
+					primary.meta ? (
+						<p class="ShellPanes__meta">{primary.meta}</p>
+					) : null
+				}
+			</header>
+			{primary.note ? <p class="ShellPanes__note">{primary.note}</p> : null}
+			<div class="ShellPanes__body">
+				<slot name="primary" />
+			</div>
+		</section>
+
+		<div class="ShellPanes__gutter" aria-hidden="true"></div>
+
+		<section class="ShellPanes__pane ShellPanes__pane--secondary">
+			<header class="ShellPanes__head">
+				<p class="ShellPanes__mark">{secondary.mark}</p>
+				<p class="ShellPanes__label">{secondary.label}</p>
+				{
+					secondary.meta ? (
+						<p class="ShellPanes__meta">{secondary.meta}</p>
+					) : null
+				}
+			</header>
+			{secondary.note ? <p class="ShellPanes__note">{secondary.note}</p> : null}
+			<div class="ShellPanes__body">
+				<slot name="secondary" />
+			</div>
+		</section>
+	</div>
+
+	{
+		drawer && HasDrawer ? (
+			<details class="ShellPanes__drawer" open={drawer.open}>
+				<summary class="ShellPanes__drawer-summary">
+					<span class="ShellPanes__drawer-mark" aria-hidden="true">
+						&rarr;
+					</span>
+					<span class="ShellPanes__drawer-label">{drawer.label}</span>
+					{drawer.note ? (
+						<span class="ShellPanes__drawer-note">{drawer.note}</span>
+					) : null}
+				</summary>
+				<div class="ShellPanes__drawer-body">
+					<slot name="drawer" />
+				</div>
+			</details>
+		) : null
+	}
+</div>

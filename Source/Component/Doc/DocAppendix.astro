@@ -34,7 +34,7 @@ const { appendix } = Astro.props;
 const Panel = appendix.Kind;
 ---
 
-<section class="doc-appendix">
+<section class="doc-appendix" id={appendix.Id}>
 	<h2 class="doc-section__heading">{appendix.Heading}</h2>
 	<div class="doc-appendix__panel">
 		<p class="doc-appendix__lede">{appendix.Lede}</p>

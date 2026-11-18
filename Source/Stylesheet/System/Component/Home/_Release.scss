@@ -1,15 +1,17 @@
-// Release - the two-card roadmap band.
+// Release - the two release records as one manifest plate.
 //
 // Publishes:
-//   .home-release__grid           two columns from `md`
+//   .home-manifest                the plate: two states, one hairline gutter
+//   .home-manifest__gutter        the 1px rule between the states
+//   .home-release                 one state of the one offer
 //   .home-release__head           the stamped header, divided from the body
 //   .home-release__stamp          the mono stamp block
 //   .home-release__index          `# RELEASE_01`
 //   .home-release__stamp-line     one stamped line
-//   .home-release__action         the release's own action row
+//   .home-release__action         the state's own action row
 //   .home-release__anchor         the anchor the Jelly button sits in
-//   .home-release__button         the full-width filled button
-//   .home-release__title          the release's name
+//   .home-release__destination    the second state's action, as a route line
+//   .home-release__title          the state's name
 //   .home-release__body           the two labelled lists
 //   .home-release__section        `Elements`, `Manifest`
 //   .home-release__list           the six element rows
@@ -20,37 +22,63 @@
 //   .home-release__manifest       the six manifest rows
 //   .home-release__manifest-row   one manifest row
 //
-// The card is a record with a body, so its two halves are divided by the one
-// hairline the header draws under itself - the same division the record grammar
-// uses between a record's stamp and its ledger.
+// The plate is the page's second spread: the same 1px gutter the hero's pair
+// draws, at the same divider strength, so the release state reads as a pair of
+// columns on one surface rather than as two cards that happen to sit together.
 //
-// That hairline is the site's *divider* ink at 20%, not the surface hairline at
-// 8%. The card's fill is white and the head sits on it, so an 8% rule measured
-// 1.17:1 and read as no division at all; 20% is the same strength the hero's
-// gutter and the stack tile's border draw, and it is the only thing separating
-// the stamp from the release's two lists.
+// The header's division is the site's *divider* ink at 20%, not the surface
+// hairline at 8%: the head sits on white, so an 8% rule measured 1.17:1 and read
+// as no division at all.
 
 @use "../../Mixin" as *;
 
-.home-release__grid {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr);
-	gap: 3rem;
+.home-manifest {
+	--jelly-fill: var(--Card);
+	--jelly-radius: 0;
+	--jelly-color-border-default: var(--Border);
+	--jelly-card-padding-block: 0;
+	--jelly-card-padding-inline: 0;
+	--jelly-card-font-size: inherit;
 	max-inline-size: 72rem;
 	margin-inline: auto;
+}
 
-	@include bp(768px) {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
+// The grid is a real child of the Jelly surface, not the surface itself: Jelly's
+// shadow `.card` is a block, so a `display: grid` on the host never reaches the
+// slotted columns.
+.home-manifest__grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.home-manifest__gutter {
+	display: none;
+	inline-size: 1px;
+	align-self: stretch;
+	background-color: color-mix(
+		in srgb,
+		var(--CardForeground) 20%,
+		transparent
+	);
+}
+
+@include bp(768px) {
+	.home-manifest__grid {
+		grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+	}
+
+	.home-manifest__gutter {
+		display: block;
 	}
 }
 
 .home-release {
-	--jelly-fill: var(--Card);
+	min-inline-size: 0;
 }
 
 .home-release__head {
 	padding-block-end: 1.5rem;
-	padding-inline: 2rem;
+	padding-inline: clamp(1.25rem, 2vw, 2rem);
 	border-block-end: 1px solid
 		color-mix(in srgb, var(--CardForeground) 20%, transparent);
 }
@@ -64,7 +92,7 @@
 	font-size: var(--type-meta);
 	line-height: 1.3;
 	text-transform: uppercase;
-	letter-spacing: 0.2em;
+	letter-spacing: var(--track-rule);
 	font-weight: 500;
 	color: var(--CardForeground);
 }
@@ -79,6 +107,13 @@
 }
 
 .home-release__action {
+	display: flex;
+	align-items: center;
+	// The two states carry different action shapes - one ink button, one route
+	// line - and the title under them has to sit on the same line in both
+	// columns, or the manifest reads as two records that happen to share a
+	// plate. The row is the button's height whatever it holds.
+	min-block-size: 44px;
 	margin-block-end: 1rem;
 }
 
@@ -87,14 +122,32 @@
 	text-decoration: none;
 }
 
-.home-release__button {
-	inline-size: 100%;
+// The second state's action: the site's route voice, `/TRACK PROGRESS` at the
+// accent. It is the same destination the card always printed; what changed is
+// that one plate may carry one ink action, and this state is not the one a
+// reader can act on today.
+.home-release__destination {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.125rem;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	text-transform: uppercase;
+	letter-spacing: var(--track-rule);
+	font-weight: 500;
+	color: var(--Accent);
+	text-decoration: none;
+}
+
+.home-release__destination:hover {
+	text-decoration: underline;
 }
 
 .home-release__title {
 	margin: 0;
 	font-family: var(--FontMono);
-	font-size: 1.125rem;
+	font-size: var(--type-sub);
 	font-weight: 500;
 	color: var(--CardForeground);
 }
@@ -112,10 +165,16 @@
 	font-size: var(--type-meta);
 	line-height: 1.3;
 	text-transform: uppercase;
-	letter-spacing: 0.05em;
+	letter-spacing: var(--track-row);
 	font-weight: 500;
 	color: var(--CardForeground);
 	opacity: 0.7;
+}
+
+// The second label opens a new list; without the gap it reads as the last row of
+// the first one.
+.home-release__list + .home-release__section {
+	margin-block-start: 1.5rem;
 }
 
 .home-release__list {
@@ -174,7 +233,7 @@
 	font-size: var(--type-meta);
 	line-height: 1.3;
 	text-transform: uppercase;
-	letter-spacing: 0.2em;
+	letter-spacing: var(--track-rule);
 	font-weight: 500;
 	color: var(--CardForeground);
 }

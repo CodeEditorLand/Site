@@ -1,0 +1,38 @@
+@use "../Mixin" as *;
+
+// ─── THE PAGE'S OWN RULES ─────────────────────────────────────────────────
+//
+// `/Motion` composes from blocks, so almost nothing here is a layout: the
+// specimens, sequences, gallery, arms and refusals are all bands and blocks. What
+// the page does own is the rhythm *between* five sequences (a block has no opinion
+// about its neighbours) and the two caption lines that close a band.
+//
+// ─── FIVE SEQUENCES ARE ONE READING ───────────────────────────────────────
+// A sequence is a horizontal run, so two of them side by side would be two runs
+// competing for the same eye. They stack, at the group rhythm, and the caption
+// under the fifth belongs to all five - which is why it is one line and not five.
+
+.motion-sequences {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-group);
+}
+
+.motion-sequences__caption {
+	margin: var(--space-group) 0 0;
+	padding-block-start: var(--space-tight);
+
+	border-block-start: 1px solid var(--Border);
+
+	max-inline-size: var(--Measure);
+
+	@include mono-meta;
+
+	white-space: normal;
+}
+
+// ─── the margin's second ledger ───────────────────────────────────────────
+
+.MotionMargin__Curves {
+	margin-block-start: var(--space-group);
+}

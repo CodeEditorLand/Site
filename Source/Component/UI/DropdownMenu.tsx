@@ -2,11 +2,38 @@
 
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 
-import * as lucide from "lucide-react";
-
 import * as React from "react";
 
+import { SlipRegister, type SlipHead } from "./Slip";
+
 import { cn } from "./Utility";
+
+/**
+ * DropdownMenu - the menu primitive, wearing the slip.
+ *
+ * Behaviour is Radix's and is not restated here: arrow keys, Home/End, typeahead,
+ * Escape, outside-click, focus return to the trigger, the roving tabindex. What
+ * this file decides is the *surface* and the *row grammar*, and it decides them
+ * by handing the site's classes and two data attributes to the primitive:
+ *
+ *   `data-mark`  the row's leading glyph - `→` action, `/` route, `✓` current,
+ *                `◎` unavailable. The stylesheet draws it in the reserved
+ *                1.25rem column, so no caller can misalign a label.
+ *   `data-meta`  the row's trailing cell - a chord, a section, a STATUS word.
+ *
+ * The attributes rather than spans are what let `asChild` keep working: an item
+ * whose body is the caller's own `<a>` cannot have children injected into it, and
+ * forking the primitive to add two spans is how five controls become five
+ * grammars. See `Stylesheet/System/UI/_Item.scss`.
+ */
+
+/**
+ * The register line a slip opens with: `# LOCALE / 05`.
+ *
+ * `SlipRegister` and the `SlipHead` shape live in `./Slip` with the rest of the
+ * grammar's small parts, so the palette, the select and the menu print the same
+ * line from one implementation.
+ */
 
 function DropdownMenu({
 	...props
@@ -39,19 +66,23 @@ function DropdownMenuTrigger({
 function DropdownMenuContent({
 	className,
 	sideOffset = 4,
+	head,
 	...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Content> & {
+	/** The register line the slip opens with. Omitted only by a slip with no rows. */
+	head?: SlipHead | undefined;
+}) {
 	return (
 		<DropdownMenuPrimitive.Portal>
 			<DropdownMenuPrimitive.Content
 				data-slot="dropdown-menu-content"
 				sideOffset={sideOffset}
-				className={cn(
-					"data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 max-h-(--radix-dropdown-menu-content-available-height) origin-(--radix-dropdown-menu-content-transform-origin) flat z-50 min-w-[8rem] overflow-y-auto overflow-x-hidden border bg-popover p-1 text-popover-foreground",
-					className,
-				)}
+				aria-label={head?.Name}
+				className={cn("Slip", className)}
 				{...props}
-			/>
+			>
+				{head ? <SlipRegister head={head} /> : null}
+			</DropdownMenuPrimitive.Content>
 		</DropdownMenuPrimitive.Portal>
 	);
 }
@@ -71,21 +102,38 @@ function DropdownMenuItem({
 	className,
 	inset,
 	variant = "default",
+	mark = "→",
+	meta,
+	current,
 	...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Item> & {
 	inset?: boolean;
 
 	variant?: "default" | "destructive";
+
+	/** The leading glyph. `→` acts, `/` navigates. */
+	mark?: string | undefined;
+
+	/** The trailing cell - a chord, a count, a STATUS word. */
+	meta?: string | undefined;
+
+	/**
+	 * This row is the value in force - the locale the reader is on, the route they
+	 * are at. It draws the leading accent rule and the `✓` the stylesheet owns,
+	 * rather than asking the caller to pick a colour class that only works on a
+	 * white surface.
+	 */
+	current?: boolean;
 }) {
 	return (
 		<DropdownMenuPrimitive.Item
 			data-slot="dropdown-menu-item"
 			data-inset={inset}
 			data-variant={variant}
-			className={cn(
-				"data-[variant=destructive]:[&_svg]:!text-destructive outline-hidden flat relative flex cursor-default select-none items-center gap-2 px-2 py-1.5 focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[inset]:pl-8 data-[variant=destructive]:text-destructive data-[disabled]:opacity-50 data-[variant=destructive]:focus:bg-[color-mix(in_srgb,var(--Destruct)_10%,transparent)] data-[variant=destructive]:focus:text-destructive [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-popover-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
-				className,
-			)}
+			data-mark={mark}
+			data-meta={meta}
+			data-current={current ? "true" : undefined}
+			className={cn("Slip__Row", className)}
 			{...props}
 		/>
 	);
@@ -95,23 +143,22 @@ function DropdownMenuCheckboxItem({
 	className,
 	children,
 	checked,
+	meta,
 	...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.CheckboxItem>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.CheckboxItem> & {
+	meta?: string | undefined;
+}) {
 	return (
 		<DropdownMenuPrimitive.CheckboxItem
 			data-slot="dropdown-menu-checkbox-item"
-			className={cn(
-				"outline-hidden flat relative flex cursor-default select-none items-center gap-2 py-1.5 pl-8 pr-2 focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-				className,
-			)}
+			// No `data-mark`: an unchecked box has no mark, and the reserved column
+			// keeps the label aligned with the rows that do. `✓` is drawn by
+			// `[data-state="checked"]` in the stylesheet.
+			data-meta={meta}
+			className={cn("Slip__Row", className)}
 			checked={checked ?? false}
 			{...props}
 		>
-			<span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
-				<DropdownMenuPrimitive.ItemIndicator>
-					<lucide.CheckIcon className="size-4" />
-				</DropdownMenuPrimitive.ItemIndicator>
-			</span>
 			{children}
 		</DropdownMenuPrimitive.CheckboxItem>
 	);
@@ -131,27 +178,29 @@ function DropdownMenuRadioGroup({
 function DropdownMenuRadioItem({
 	className,
 	children,
+	meta,
 	...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.RadioItem>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.RadioItem> & {
+	meta?: string | undefined;
+}) {
 	return (
 		<DropdownMenuPrimitive.RadioItem
 			data-slot="dropdown-menu-radio-item"
-			className={cn(
-				"outline-hidden flat relative flex cursor-default select-none items-center gap-2 py-1.5 pl-8 pr-2 focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-				className,
-			)}
+			data-meta={meta}
+			className={cn("Slip__Row", className)}
 			{...props}
 		>
-			<span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
-				<DropdownMenuPrimitive.ItemIndicator>
-					<lucide.CircleIcon className="size-2 fill-current" />
-				</DropdownMenuPrimitive.ItemIndicator>
-			</span>
 			{children}
 		</DropdownMenuPrimitive.RadioItem>
 	);
 }
 
+/**
+ * A label *inside* a slip - a register divider, not a row. It is the site's
+ * `Slip__Group`: 13px, tracked, muted, with a rule above it when another group
+ * precedes it. The kit's `font-medium px-2 py-1.5` is a row's metrics applied to
+ * something that is not a row.
+ */
 function DropdownMenuLabel({
 	className,
 	inset,
@@ -163,10 +212,7 @@ function DropdownMenuLabel({
 		<DropdownMenuPrimitive.Label
 			data-slot="dropdown-menu-label"
 			data-inset={inset}
-			className={cn(
-				"px-2 py-1.5 font-medium data-[inset]:pl-8",
-				className,
-			)}
+			className={cn("Slip__Group", className)}
 			{...props}
 		/>
 	);
@@ -179,34 +225,37 @@ function DropdownMenuSeparator({
 	return (
 		<DropdownMenuPrimitive.Separator
 			data-slot="dropdown-menu-separator"
-			className={cn("-mx-1 my-1 h-px bg-border", className)}
+			className={cn("Slip__Rule-H", className)}
 			{...props}
 		/>
 	);
 }
 
+/**
+ * The shortcut cell. A chord is printed in the grammar's containment mark -
+ * `〈⌘K〉` - so it is the same object the palette's foot uses, and a reader learns
+ * the notation once.
+ */
 function DropdownMenuShortcut({
 	className,
+	children,
 	...props
 }: React.ComponentProps<"span">) {
 	return (
 		<span
 			data-slot="dropdown-menu-shortcut"
-			className={cn(
-				"ml-auto tracking-widest text-popover-foreground",
-				className,
-			)}
+			className={cn("Slip__Meta", className)}
 			{...props}
-		/>
+		>
+			〈{children}〉
+		</span>
 	);
 }
 
 function DropdownMenuSub({
 	...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Sub>) {
-	return (
-		<DropdownMenuPrimitive.Sub data-slot="dropdown-menu-sub" {...props} />
-	);
+	return <DropdownMenuPrimitive.Sub data-slot="dropdown-menu-sub" {...props} />;
 }
 
 function DropdownMenuSubTrigger({
@@ -221,14 +270,11 @@ function DropdownMenuSubTrigger({
 		<DropdownMenuPrimitive.SubTrigger
 			data-slot="dropdown-menu-sub-trigger"
 			data-inset={inset}
-			className={cn(
-				"outline-hidden flat flex cursor-default select-none items-center px-2 py-1.5 focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[inset]:pl-8 data-[state=open]:text-accent-foreground",
-				className,
-			)}
+			data-meta="›"
+			className={cn("Slip__Row", className)}
 			{...props}
 		>
 			{children}
-			<lucide.ChevronRightIcon className="ml-auto size-4" />
 		</DropdownMenuPrimitive.SubTrigger>
 	);
 }
@@ -240,10 +286,7 @@ function DropdownMenuSubContent({
 	return (
 		<DropdownMenuPrimitive.SubContent
 			data-slot="dropdown-menu-sub-content"
-			className={cn(
-				"data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-(--radix-dropdown-menu-content-transform-origin) flat z-50 min-w-[8rem] overflow-hidden border bg-popover p-1 text-popover-foreground",
-				className,
-			)}
+			className={cn("Slip", className)}
 			{...props}
 		/>
 	);

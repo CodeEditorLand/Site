@@ -1,0 +1,119 @@
+---
+/**
+ * SpecimenMaterial - the stock and the inks, printed as specimens.
+ *
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  the material a document is printed with, shown rather than
+ *                   described: a fill as a swatch, an ink as a word set in it, a
+ *                   rule as the rule itself. Not a palette (a palette is a
+ *                   design-system artefact with hundreds of values), not a
+ *                   legend (a legend explains marks), and not a figure (nothing
+ *                   here is evidence for a claim - it *is* the material).
+ * RANK              set.
+ * SLOT CONTRACT     items[] -> name, token, value, use, kind
+ * MAY HOLD          six specimens and their four lines each.
+ * MAY NOT HOLD      a seventh value. The identity is six things, and a strip
+ *                   that grew a row would be a second identity.
+ * WIDE              three columns on one ruled strip. Six columns was the first
+ *                   drawing and it broke the specimen: an ink set at the L tier
+ *                   does not fit a sixth of the measure, and a specimen that
+ *                   wraps its own word is not a specimen.
+ * NARROW            two columns. The specimen keeps its swatch, its token and
+ *                   its value at every width; the `use` line is the one thing
+ *                   that may wrap to three lines rather than shrink.
+ * DENSE             the densest band on the page: it is a strip of material,
+ *                   and material is scanned rather than read.
+ *
+ * ─── THE SWATCH IS THE VALUE, NOT A PICTURE OF IT ─────────────────────────
+ * A fill is painted with the token itself (`var(--Background)`), never with the
+ * hex the label prints: the label is a reading, and the swatch is the thing. An
+ * ink specimen is the word set in the ink at the L tier, because that is what a
+ * printer's specimen does with an ink - it shows you a letter, not a chip. A
+ * rule specimen is 1px of `--Divider` at the width the site draws it.
+ *
+ * ─── THE HAIRLINE IS THE ONLY FRAME ───────────────────────────────────────
+ * Each specimen is separated by one hairline and carries no fill, no radius and
+ * no shadow. A swatch inside a bordered box inside a band would be three frames
+ * for one value.
+ *
+ * No script and no hydration: material is printed.
+ */
+import type { MaterialSpecimen } from "../../Content/Specimen/Page.js";
+
+interface Props {
+	/** The specimens, in the strip's order. The block sorts nothing. */
+	items: readonly MaterialSpecimen[];
+
+	/** The register line's word: `MATERIAL`. */
+	label: string;
+
+	/** The register line's count, printed after the label. */
+	count: number | string;
+
+	/**
+	 * What the strip says when it has no specimens. Required, for the same reason
+	 * the sheet's is: six swatches and no words is a page that failed to load.
+	 */
+	empty: string;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const { items, label, count, empty, class: ClassName } = Astro.props;
+
+/** The custom property each specimen paints its swatch with. */
+const Paint = (Token: string): string => `var(${Token})`;
+---
+
+<section class:list={["specimen-material", ClassName]} aria-label={`${label}: ${count} specimens`}>
+	<p class="specimen-material__register">
+		<span class="specimen-material__register-mark" aria-hidden="true">#</span>
+		<span class="specimen-material__register-word">{label}</span>
+		<span class="specimen-material__register-sep" aria-hidden="true">{"\u2001"}</span>
+		<span class="specimen-material__register-count">{count}</span>
+	</p>
+
+	<ul class="specimen-material__strip">
+		{
+			items.length === 0 ? (
+				<li class="specimen-material__empty">{empty}</li>
+			) : null
+		}
+		{
+			items.map((Item) => (
+				<li
+					class="specimen-material__item"
+					data-kind={Item.kind}
+					data-scale={Item.scale ?? "section"}
+				>
+					<span class="specimen-material__swatch" aria-hidden="true">
+						{Item.kind === "fill" ? (
+							<span
+								class="specimen-material__fill"
+								style={`background:${Paint(Item.token)}`}
+							/>
+						) : Item.kind === "ink" ? (
+							<span
+								class="specimen-material__type"
+								style={`color:${Paint(Item.token)}`}
+							>
+								{Item.name}
+							</span>
+						) : (
+							<span class="specimen-material__rule" />
+						)}
+					</span>
+
+					<p class="specimen-material__name">{Item.name}</p>
+
+					<p class="specimen-material__token">{Item.token}</p>
+
+					<p class="specimen-material__value">{Item.value}</p>
+
+					<p class="specimen-material__use">{Item.use}</p>
+				</li>
+			))
+		}
+	</ul>
+</section>

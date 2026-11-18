@@ -6,9 +6,21 @@
  * (about 110 lines twice). They live here once, so a label change lands in
  * one place and the two pages cannot drift apart.
  *
- * The keys and their English defaults are carried over unchanged from the
- * pages and from `Source/Library/I18n/Locale/En/Account.json` /
- * `Verify.json`; nothing here renames a key or rewrites a sentence.
+ * ─── THE SENTENCES, AND WHY THEY WERE REWRITTEN ───────────────────────────
+ * The keys and the structure came over unchanged from the pages; the *sentences*
+ * did not, and this note used to say they had. They were product English -
+ * "we'll send a secure reset link to your inbox", "Email verified!", "please
+ * wait" - on the four surfaces where a reader is most likely to be stuck. The
+ * site's voice is identify, direct, measure, classify, credit, so each of these
+ * strings now says what happens, how long it lasts and what to do next:
+ *
+ * - a reset link opens for one hour and works once (`Account.json`'s own window);
+ * - a verification link opens for 24 hours and is a credential, so it is not
+ *   forwarded;
+ * - a password that changes makes the old one stop working, which is the fact a
+ *   reader actually wants after the success screen.
+ *
+ * No fact was dropped and no label was renamed. The labels stay labels.
  */
 import type AccountContentShape from "../Dynamic/Interface/Content/Page/Account.js";
 import type VerifyContentShape from "../Dynamic/Interface/Content/Page/Verify.js";
@@ -66,7 +78,7 @@ export const AccountContent = (T: Translate): AccountContentShape => ({
 		}),
 		Description: T("account.forgotPassword.subtitle", {
 			defaultValue:
-				"Enter your email and we'll send a secure reset link to your inbox.",
+				"One address. The provider sends a reset link to it, and the link opens for one hour.",
 		}),
 		EmailField: {
 			Label: T("common.label.email", { defaultValue: "Email Address" }),
@@ -84,7 +96,7 @@ export const AccountContent = (T: Translate): AccountContentShape => ({
 			FullWidth: true,
 		},
 		SuccessMessage: T("account.forgotPassword.success.subtitle", {
-			defaultValue: "A password reset link has been sent to",
+			defaultValue: "A reset link was sent to",
 		}),
 	},
 	ResetPassword: {
@@ -92,7 +104,8 @@ export const AccountContent = (T: Translate): AccountContentShape => ({
 			defaultValue: "Set a New Password",
 		}),
 		Description: T("account.resetPassword.subtitle", {
-			defaultValue: "Enter your new password below",
+			defaultValue:
+				"The new password replaces the old one at the provider. Eight characters is the floor.",
 		}),
 		PasswordField: {
 			Label: T("account.resetPassword.passwordLabel", {
@@ -122,18 +135,18 @@ export const AccountContent = (T: Translate): AccountContentShape => ({
 			FullWidth: true,
 		},
 		CheckingMessage: T("account.resetPassword.checkingMessage", {
-			defaultValue: "Validating your reset link, please wait...",
+			defaultValue: "Reading the reset token from the address.",
 		}),
 		InvalidTokenMessage: T(
 			"account.resetPassword.invalidToken.description",
 			{
 				defaultValue:
-					"This password reset link has expired or was already used.",
+					"The reset link has expired or was already used. A link works once and closes after one hour.",
 			},
 		),
 		SuccessMessage: T("account.resetPassword.success.description", {
 			defaultValue:
-				"Your password has been reset.\n\nYou can now sign in with your new credentials.",
+				"The password is changed.\n\nThe old one no longer opens the account; sign in with the new one.",
 		}),
 	},
 	Footer: {},
@@ -144,15 +157,15 @@ export const VerifyContent = (T: Translate): VerifyContentShape => ({
 	Verification: {
 		Pending: {
 			Title: T("verify.pending.title", {
-				defaultValue: "Verify Your Email Address",
+				defaultValue: "Check The Inbox",
 			}),
 			Description: T("verify.pending.description", {
 				defaultValue:
-					"A verification link has been sent to your email address.\nPlease check your inbox and click the link to activate your account.\nThe link is valid for 24 hours.\nIf the email is not received within a few minutes, check the spam or promotions folder.\nFor security, do not share the verification link with anyone.",
+					"A link was sent to the address on the account. It opens for 24 hours and works once.\n\nIf nothing arrives in a few minutes, the spam folder is the next place to look.\n\nThe link is a credential: anyone who opens it verifies the address.",
 			}),
 			ResendButton: {
 				Text: T("verify.pending.resendButton", {
-					defaultValue: "Resend Verification Email",
+					defaultValue: "Send A New Link",
 				}),
 				Variant: "default",
 				FullWidth: true,
@@ -160,14 +173,15 @@ export const VerifyContent = (T: Translate): VerifyContentShape => ({
 		},
 		Success: {
 			Title: T("verify.success.title", {
-				defaultValue: "Email verified!",
+				defaultValue: "Email Verified",
 			}),
 			Description: T("verify.success.description", {
-				defaultValue: "Your email has been successfully verified.",
+				defaultValue:
+					"The address on the account is verified. Signing in is the last step before the workspace opens.",
 			}),
 			ContinueButton: {
 				Text: T("verify.success.continueButton", {
-					defaultValue: "Continue to Homepage",
+					defaultValue: "BACK TO LAND",
 				}),
 				Variant: "default",
 				FullWidth: true,
@@ -175,15 +189,15 @@ export const VerifyContent = (T: Translate): VerifyContentShape => ({
 		},
 		Error: {
 			Title: T("verify.error.title", {
-				defaultValue: "Verification failed",
+				defaultValue: "Verification Interrupted",
 			}),
 			Description: T("verify.error.description", {
 				defaultValue:
-					"This verification link is invalid or has expired.",
+					"The link carried no token the provider recognises, or the token's window has closed. A new link is the only way forward.",
 			}),
 			BackToSignInButton: {
 				Text: T("verify.error.backToSignInButton", {
-					defaultValue: "Back to Sign In",
+					defaultValue: "SIGN IN",
 				}),
 				Variant: "default",
 				FullWidth: true,

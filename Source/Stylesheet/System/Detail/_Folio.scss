@@ -1,0 +1,92 @@
+// Detail/Folio - the band's foot, printed the way a page's foot is printed.
+//
+// ─── WHAT IT IS ───────────────────────────────────────────────────────────
+// A folio is the smallest apparatus a printed document has and the one this site
+// was missing: the ordinal, the part it belongs to, and - because this document
+// measures itself - the count and the as-of. It is not navigation and it is not
+// a footnote. It is the page saying, at the end of a subject, WHERE IN THE
+// DOCUMENT the reader has got to.
+//
+//   〈03〉 /LEGAL␁26 CLAUSES␁AS OF: 2026-11-18
+//
+// Two decisions:
+//
+// - **The ordinal is contained, not parenthesised.** `〈03〉` is the grammar's
+//   containment bracket around a literal, and a folio is exactly that: a
+//   literal figure that identifies a place. Parentheses would be punctuation;
+//   this is a mark.
+// - **Two ends, one line.** The left end is where you are, the right end is what
+//   is here and when it was read. They are two `nowrap` groups, so a narrow
+//   viewport wraps between them and never inside one - a folio that broke
+//   mid-figure would be worse than no folio.
+//
+// ─── THE SLOTS ────────────────────────────────────────────────────────────
+//   .detail-folio             the line
+//   .detail-folio__place      the left end: `〈03〉` and the part
+//   .detail-folio__index      the contained ordinal
+//   .detail-folio__part       `/LEGAL`
+//   .detail-folio__facts      the right end: the count, the as-of, the source
+//   .detail-folio__count      `26 CLAUSES`
+//   .detail-folio__figure     a figure and its unit, when the count is a number
+//   .detail-folio__as-of      `AS OF: 2026-11-18`
+//   .detail-folio__source     `SOURCE:` - printed only when the folio claims one
+@use "../Mixin" as *;
+
+.detail-folio {
+	@include mono-meta;
+	@include track(var(--track-row));
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-tight) var(--space-group);
+	margin: 0;
+	color: var(--MuteForeground);
+}
+
+.detail-folio__place,
+.detail-folio__facts {
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: baseline;
+	gap: 0;
+	min-inline-size: 0;
+}
+
+// The contained ordinal is the folio's one figure in ink: a reader looking for
+// "where am I" should find it before the part's name.
+.detail-folio__index {
+	color: var(--Foreground);
+	white-space: nowrap;
+}
+
+.detail-folio__part {
+	margin-inline-start: 0.5ch;
+	color: var(--Foreground);
+	white-space: nowrap;
+}
+
+// The right end is the quieter half: the count and the as-of are facts about the
+// band, and the band's heading already made the claim.
+.detail-folio__count,
+.detail-folio__as-of,
+.detail-folio__source {
+	white-space: nowrap;
+}
+
+.detail-folio__figure {
+	font-variant-numeric: tabular-nums slashed-zero;
+}
+
+// The separator is the site's one separator and it is drawn, not typed: a
+// template's whitespace around U+2001 becomes a 200px gap, which is the defect
+// the clause rail's head already paid for once.
+.detail-folio__sep {
+	inline-size: 1em;
+	text-align: center;
+	color: var(--MuteForeground);
+}
+
+.detail-folio__sep::before {
+	content: "\2001";
+}

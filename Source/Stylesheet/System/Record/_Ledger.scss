@@ -2,18 +2,40 @@
 // ink value, optional note, with at most one `lead` row at display weight. A
 // ledger has no header row; a card that needs column labels needs RecordMatrix.
 //
-// Publishes:
-//   .record-ledger              the ledger shell
-//   .record-ledger--1           rows in one column (the default, at every width)
-//   .record-ledger--2           rows in two columns at 1024px and up
-//   .record-ledger--3           rows in three columns at 1024px and up
-//   .record-ledger__row         one key/value pair
-//   .record-ledger__row--lead   the one giant figure, at display weight
-//   .record-ledger__key         mono key, e.g. TARGET, LICENSE, SIGNAL
-//   .record-ledger__value       ink value
-//   .record-ledger__code        a value that is a literal, in a `<code>` element
-//   .record-ledger__strong      the one emphasised value in a card
-//   .record-ledger__note        qualifier under the value, at caption weight
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  what is true of one object: its target, its licence, its
+//                   signal. The site's factual spine, and the block that answers
+//                   most often - three surfaces print the footer's five facts
+//                   with it, and every record's facts are one.
+// RANK              leaf.
+// SLOT CONTRACT     .record-ledger              the ledger shell
+//                   .record-ledger--1           rows in one column (the default, at every width)
+//                   .record-ledger--2           rows in two columns at 1024px and up
+//                   .record-ledger--3           rows in three columns at 1024px and up
+//                   .record-ledger__row         one key/value pair
+//                   .record-ledger__row--lead   the one giant figure, at display weight
+//                   .record-ledger__key         mono key, e.g. TARGET, LICENSE, SIGNAL
+//                   .record-ledger__value       ink value
+//                   .record-ledger__code        a value that is a literal, in a `<code>` element
+//                   .record-ledger__strong      the one emphasised value in a card
+//                   .record-ledger__note        qualifier under the value, at caption weight
+// MAY HOLD          nothing. A row is a key, a value and a qualifier; a block in
+//                   a `<dd>` would be a second claim inside a fact.
+// MAY NOT HOLD      a table (that is a Matrix), a figure (that is an Instrument
+//                   or a Figure), or a second lead row - the ledger does not
+//                   police the count, but a card with two emphasised facts has
+//                   none.
+// NARROW            the key moves above its value: one fact per line, key at meta
+//                   weight, value under it. A long path wraps inside the value
+//                   column instead of pushing the key off the line.
+// WIDE (>=640)      the key takes `min(14rem, 40%)` and the value takes the rest,
+//                   so fifty ledgers down a page share one value column.
+// DENSE             `columns` is the layout axis - two facts side by side, never
+//                   a smaller type. `density="register"` is the reading axis:
+//                   the same facts as a table, two columns with a hairline
+//                   between them, key above value, and the count in the register
+//                   line. A ledger that needs tighter than three columns needs a
+//                   Matrix.
 //
 // Surfaces. `quiet` is the default and the shell itself carries no fill: an
 // interior hairline divides the rows and nothing else. `standard` is the
@@ -39,6 +61,37 @@
 	row-gap: 0;
 	margin: 0;
 	padding: 0;
+}
+
+// ─── THE BLOCK ────────────────────────────────────────────────────────────
+// The ledger's outer box, so a ledger can carry a register line above it and be
+// pinned in a page's margin. It is a flex column with one child in the ordinary
+// case, so it changes nothing for the ninety ledgers that set neither prop - and
+// it exists rather than a second block because the information type is unchanged:
+// a summary IS a ledger that names itself and stays with the reader.
+.record-ledger-block {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+	margin: 0;
+}
+
+// Pinned: the ledger stays under the running head while the record it belongs to
+// scrolls past it. `--HeaderHeight` is the header's own height token, so the
+// pinned ledger clears the chrome exactly and never guesses a value.
+.record-ledger-block--pinned {
+	position: sticky;
+	inset-block-start: calc(var(--HeaderHeight) + var(--space-group));
+}
+
+// The register line: `# SUMMARY / 04`. Ink, at the row register - it is the
+// summary's own name, not a label on the facts below it.
+.record-ledger-block__register {
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
 }
 
 // The column count is a wide-screen decision. Below 1024px every ledger is one
@@ -105,12 +158,15 @@
 }
 
 // The one emphasised value in a card. The value role is 500 by default, so the
-// emphasis is one step of weight and nothing else - no ink change, no size
-// change: an emphasised fact is still a fact, and the ledger's ink is already
-// `--Foreground`. `.record-ledger__code` needs no rule of its own: the value is
-// already the mono face, and `<code>` inherits it.
+// emphasis cannot be weight: the identity's ceiling is 500 and hierarchy is
+// scale, spacing and tracking. It is therefore one step up the scale, from the
+// body role to the sub role - both inside the S tier - and nothing else: no ink
+// change, no underline that would read as a link. An emphasised fact is still a
+// fact. (This rule carried `font-weight: 600` and was the layer's one live
+// identity violation; a weight step is not available to it.)
 .record-ledger__strong {
-	font-weight: 600;
+	font-size: var(--type-sub);
+	letter-spacing: var(--track-join);
 }
 
 // Wide enough for a key column: the key takes a fixed `min(14rem, 40%)` and the
@@ -148,11 +204,104 @@
 .record-ledger__row--lead .record-ledger__value {
 	font-size: var(--type-display);
 	line-height: var(--type-display-line);
-	letter-spacing: -0.02em;
+	letter-spacing: var(--track-join);
 }
 
 // The filled surface: the tier supplies the fill and the frame, this supplies
 // the room inside them.
 .record-ledger.emphasis-standard {
 	padding: var(--space-reading);
+}
+
+// ─── THE REGISTER ─────────────────────────────────────────────────────────
+// A register is the ledger read as a table: the key sits above its value at
+// every width (a register's column is the fact's name, and a name beside a value
+// that runs to three lines loses its row), the rows tighten to `--space-tight`,
+// and from 1024px the facts run two across with one hairline between the
+// columns.
+//
+// The count lives in the register line, not in the rows: `# WORKING / 06` is the
+// block's own statement about its extent, and it is derived from the rows so the
+// number and the facts cannot disagree.
+.record-ledger--register {
+	column-gap: var(--space-group);
+}
+
+.record-ledger--register > .record-ledger__row {
+	flex-direction: column;
+	align-items: stretch;
+	gap: var(--space-tight);
+	padding-block: var(--space-tight);
+}
+
+.record-ledger--register > .record-ledger__row > .record-ledger__key {
+	flex: 0 0 auto;
+	inline-size: auto;
+}
+
+// The register's values are the ledger's own value role. Density here is
+// rhythm, not size: 13px is the floor and a fact that needed to go under it
+// would be a fact for a matrix.
+.record-ledger--register > .record-ledger__row > .record-ledger__value {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+}
+
+@include bp(1024px) {
+	.record-ledger--register {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	// The column rule is the second cell's own leading hairline. It is drawn per
+	// row rather than as one tall line so a wrapped register keeps a rule between
+	// every pair of columns it actually prints.
+	.record-ledger--register > .record-ledger__row:nth-child(even) {
+		border-inline-start: 1px solid var(--Border);
+		padding-inline-start: var(--space-group);
+	}
+
+	// A one-row register has no second column to rule, and a register with an odd
+	// count leaves its last cell alone in the right-hand column: neither draws a
+	// rule down an empty half.
+	.record-ledger--register > .record-ledger__row:nth-child(even):last-child {
+		border-inline-start: 0;
+		padding-inline-start: 0;
+	}
+}
+
+// ─── THE ADVERSE STATES ───────────────────────────────────────────────────
+// Loading keeps the keys and bars the values. The labels are the schema and are
+// known before the facts are, so the skeleton is the register itself with its
+// second column not yet in - never a spinner, and never a grey box where a fact
+// belongs.
+.record-ledger__bar {
+	display: block;
+	block-size: 0.5rem;
+	inline-size: 62%;
+	margin-block: 0.3rem;
+	background: color-mix(in srgb, var(--Foreground) 8%, transparent);
+}
+
+.record-ledger__row--skeleton > .record-ledger__value {
+	min-block-size: 1.5rem;
+}
+
+// The register line states the state it is in: `LOADING` in place of the count.
+// It is the vocabulary's word, so it carries the vocabulary's ink - the same
+// muted register as a count, because a register that is still arriving is not a
+// fault.
+.record-ledger-block__register[data-state="loading"] {
+	color: var(--Foreground);
+}
+
+// The empty register: one composed sentence where the facts would be. It takes
+// the register line's voice and the body's measure, and it is never a frame over
+// nothing - the caller supplies the sentence, and a caller that supplies none
+// gets no frame.
+.record-ledger-block__empty {
+	margin: 0;
+	max-inline-size: 62ch;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--MuteForeground);
 }

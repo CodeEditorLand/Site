@@ -16,6 +16,8 @@ import type {
 	FooterTranslate,
 } from "./Type.js";
 
+import { FrameExtent } from "../Frame/Data.js";
+
 /** An off-site destination: the reader leaves this site in a second tab. */
 const Offsite = (Label: string, Href: string): FooterLink => ({
 	Label,
@@ -27,8 +29,18 @@ const Offsite = (Label: string, Href: string): FooterLink => ({
  * The band as data. Every fact, every label and every destination here existed in
  * the hand-written footer this replaces - nothing is added and nothing is
  * dropped.
+ *
+ * The colophon is the one addition: the record's *making* rather than its facts.
+ * Every row is verifiable in this repository and nowhere else - `IBM PLEX MONO` is
+ * the face `Base.astro` loads, `ASTRO STATIC` is the build `astro.config.ts`
+ * declares (no `output` key), `F2EDE3` and `1C1C1E` are `--Background` and
+ * `--Foreground` in `_Token.scss`, and the extent is the length of
+ * `Frame/Data.ts`'s table. A colophon that guessed would be decoration.
  */
-export const FooterData = (T: FooterTranslate): FooterContent => ({
+export const FooterData = (
+	T: FooterTranslate,
+	Year: number = new Date().getFullYear(),
+): FooterContent => ({
 	Ledger: [
 		{
 			key: T("footer:record.source.key", { defaultValue: "SOURCE" }),
@@ -102,6 +114,50 @@ export const FooterData = (T: FooterTranslate): FooterContent => ({
 		},
 	],
 
+	Colophon: [
+		{
+			key: T("footer:colophon.type.key", { defaultValue: "TYPE" }),
+			value: T("footer:colophon.type.value", {
+				defaultValue: "IBM PLEX MONO",
+			}),
+		},
+
+		{
+			key: T("footer:colophon.build.key", { defaultValue: "BUILD" }),
+			value: T("footer:colophon.build.value", {
+				defaultValue: "ASTRO\u2001STATIC",
+			}),
+		},
+
+		{
+			key: T("footer:colophon.field.key", { defaultValue: "FIELD" }),
+			value: T("footer:colophon.field.value", {
+				defaultValue: "F2EDE3",
+			}),
+		},
+
+		{
+			key: T("footer:colophon.ink.key", { defaultValue: "INK" }),
+			value: T("footer:colophon.ink.value", {
+				defaultValue: "1C1C1E",
+			}),
+		},
+
+		{
+			key: T("footer:colophon.extent.key", { defaultValue: "EXTENT" }),
+			value: T("footer:colophon.extent.value", {
+				defaultValue: `${FrameExtent}\u2001SECTIONS`,
+			}),
+		},
+
+		{
+			key: T("footer:colophon.edition.key", { defaultValue: "EDITION" }),
+			value: T("footer:colophon.edition.value", {
+				defaultValue: String(Year),
+			}),
+		},
+	],
+
 	Quick: [
 		{
 			Label: T("footer:record.docs", { defaultValue: "/DOCS" }),
@@ -171,6 +227,24 @@ export const FooterData = (T: FooterTranslate): FooterContent => ({
 				defaultValue: "Enterprise",
 			}),
 			Href: "/Contact/Sale",
+		},
+	],
+
+	/**
+	 * The index, as the band's closing field.
+	 *
+	 * ROUTES and LEGAL name categories of destination; `/Contents` is not another
+	 * category - it is the page that lists every one of them, and the only page a
+	 * reader can arrive at to see the whole document. A printed dossier's last
+	 * line points back at its contents, so this one gets its own `INDEX:` label
+	 * and one door, printed in the rows' own `/LABEL` grammar. It is also the
+	 * placement that makes the index reachable at every width: the rail is
+	 * `display: none` between 1024px and 1280px, the footer never is.
+	 */
+	Index: [
+		{
+			Label: T("footer:record.contents", { defaultValue: "/CONTENTS" }),
+			Href: "/Contents",
 		},
 	],
 });

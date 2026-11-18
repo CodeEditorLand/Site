@@ -7,20 +7,24 @@
 //   .contact-hub__slug         the `/AMEND` address, mono uppercase at 70% ink
 //   .contact-hub__name         the record's `h2`
 //   .contact-hub__note         the one sentence under the name
-//   .contact-hub__direct       the address that is not a form, as one quiet line
-//   .contact-hub__direct-label its label, in muted ink
-//   .contact-hub__address      that address, in ink, underlined on hover only
+//   .contact-hub__foot         the basis and the window, under one hairline
+//   .contact-hub__basis        the statutory basis, in `〈 〉`
+//   .contact-hub__window       `SLA: 30d`, at the card's trailing edge
+//   .contact-hub__direct       the address and the channel, as one quiet line
+//   .contact-hub__direct-label a label, in muted ink
+//   .contact-hub__address      an address, in ink, underlined on hover only
 //   .contact-hub__top          the closing rule and the way back to the top
 //
 // The grid is the page. Fourteen cards in three columns is the baseline's whole
 // density argument: a reader sees every route the site answers on at once, and
 // the last row is two-thirds empty because fourteen does not divide by three.
 //
-// The card is a link and nothing else - `bg-card` on the creme canvas, no
-// hairline, no radius, no shadow - so the repetition of the slash-codes down the
-// left edge is the loudest thing on the page. Its slug is the route it answers
-// on, in the mono face at 70% ink; its name is an `h2` at body size; its
-// sentence is the registry's subtitle at 70% opacity.
+// The card is a link - `bg-card` on the creme canvas, no radius, no shadow - so
+// the repetition of the slash-codes down the left edge is the loudest thing on
+// the page. Its slug is the route it answers on, in the mono face at 70% ink;
+// its name is an `h2` at body size; its sentence is the registry's subtitle at
+// 70% opacity; and its foot is the one hairline on the card, closing the
+// sentence and printing the two facts a reader chooses by.
 //
 // The address is a link, not an action. It carried `.emphasis-expressive` when
 // it opened a band of its own; an ink-inverted postal address is a non-action
@@ -64,7 +68,8 @@
 // `block bg-card hover:bg-secondary px-5 py-4 transition-colors`.
 
 .contact-hub__card {
-	display: block;
+	display: flex;
+	flex-direction: column;
 	padding: 1rem 1.25rem;
 	background: var(--Card);
 	color: var(--CardForeground);
@@ -85,15 +90,14 @@
 	font-size: var(--type-code);
 	line-height: 1.25;
 	font-weight: 500;
-	@include track(0.1em);
+	@include track(var(--track-row));
 	color: color-mix(in srgb, var(--CardForeground) 70%, transparent);
 }
 
-// `font-medium mt-2`: the name sits one step under its slug, at body size.
+// `font-medium mt-2`: the name sits one step under its slug, on the ladder -
+// it is an `h2`, so it is L, and its weight is the card's.
 .contact-hub__name {
 	margin: var(--space-tight) 0 0;
-	font-size: var(--type-body);
-	line-height: 1.5;
 	font-weight: 500;
 	color: var(--CardForeground);
 }
@@ -108,8 +112,53 @@
 	text-wrap: pretty;
 }
 
-// ─── The address ──────────────────────────────────────────────────────────
-// One line under the grid: the label in muted ink, the mailbox in full ink.
+// ─── The card's foot ──────────────────────────────────────────────────────
+// The two facts that separate one request from another: the statutory basis it
+// is filed under and the window it answers in. Both come from the registry, so
+// the card cannot promise a window the form does not.
+//
+// It is a foot, not a chip row: one hairline at 8% ink closes the sentence, the
+// basis sits at muted ink inside `〈 〉`, and the window takes full ink at the
+// card's trailing edge. SALE prints no foot at all - it is the one route that
+// is not a statutory request, and an invented basis on it would be the exact
+// pretending this surface is meant to avoid.
+
+.contact-hub__foot {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	/* The foot sits on the card's floor, not under its last sentence: every card
+	   in a row is the same height, and a rule that floats at a different height
+	   on each card is a rule that stops reading as a register's footer. */
+	margin-block-start: auto;
+	padding-block-start: var(--space-reading);
+
+	@include hairline(top);
+
+	@include mono-meta;
+}
+
+.contact-hub__basis {
+	color: var(--MuteForeground);
+	text-wrap: balance;
+}
+
+/* The window takes the trailing edge whether or not the card has a basis: a
+   card whose only fact is the window must not print it at the leading edge,
+   where it reads as a different kind of fact. */
+.contact-hub__window {
+	margin-inline-start: auto;
+
+	color: var(--Foreground);
+	white-space: nowrap;
+}
+
+// ─── The address and the channel ──────────────────────────────────────────
+// One line under the grid: each label in muted ink, each destination in full
+// ink. Two pairs, not four items - the gap after a destination is what says
+// which label belongs to which address.
 
 .contact-hub__direct {
 	display: flex;
@@ -125,6 +174,8 @@
 }
 
 .contact-hub__address {
+	margin-inline-end: var(--space-group);
+
 	color: var(--Foreground);
 	text-decoration: none;
 	text-wrap: nowrap;
@@ -134,6 +185,50 @@
 .contact-hub__address:focus-visible {
 	text-decoration: underline;
 	text-underline-offset: 0.25em;
+}
+
+// ─── The process band ─────────────────────────────────────────────────────
+//
+// The hub's second gear. The wall of fourteen cards is a register - every route
+// at one density; under it, the desk's process is a *field* of four numbered
+// plates, which is a different rhythm on the same page (wide register, then four
+// framed squares, then the quiet direct line). A band that repeated the wall's
+// density would be a second wall.
+//
+// The band opens on the chapter distance and the divider ink, because it is a
+// new subject: the wall answers "which request is mine", the process answers
+// "what happens then".
+.contact-hub__process {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-reading);
+
+	margin-block-start: var(--space-chapter);
+	padding-block-start: var(--space-chapter);
+	border-block-start: 1px solid var(--Divider);
+}
+
+.contact-hub__process-kicker {
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.contact-hub__process-heading {
+	margin: 0;
+	font-weight: 500;
+	color: var(--Foreground);
+}
+
+.contact-hub__process-note {
+	margin: 0;
+	max-inline-size: var(--MeasureOpening);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
 }
 
 // ─── The close ────────────────────────────────────────────────────────────

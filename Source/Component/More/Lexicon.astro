@@ -1,0 +1,140 @@
+---
+/**
+ * Lexicon - one run of the glossary: a letter index, then the words filed under
+ * each letter.
+ *
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  a vocabulary: words of one kind, filed alphabetically, each
+ *                   defined. Not an archive (which files records by their own
+ *                   names and counts them) and not a matrix (which compares one
+ *                   state across columns).
+ * RANK              set.
+ * SLOT CONTRACT     run      -> key, label, note, empty, terms[]
+ *                   index?   -> the run's marker, `RUN_01`, when the run prints
+ *                               its own head
+ *                   head?    -> whether this run opens itself (default true).
+ *                               A run mounted inside a band passes `false`: the
+ *                               band owns the `h2` and a second one would be two
+ *                               headings for one subject.
+ * MAY HOLD          entries. One entry per word; nothing else.
+ * MAY NOT HOLD      prose between entries (that is a band), a second run, or a
+ *                   figure.
+ * WIDE              the letter sits in a 3rem margin column and the entries run
+ *                   on the measure beside it - so the alphabet is a rule down the
+ *                   page's edge and a reader can scan by letter without reading
+ *                   a word.
+ * NARROW            the letter moves above its group and becomes a rule across
+ *                   it. The margin does not shrink: a 1rem letter column is a
+ *                   hanging indent pretending to be an alphabet.
+ * DENSE             none. The density of a glossary is the number of words, and
+ *                   that is the content's business.
+ *
+ * ─── THE LETTER STRIP IS THE RUN'S OWN ────────────────────────────────────
+ * Each run prints the letters it actually uses, as links to the first group of
+ * each. A full A-Z would print eighteen dead letters in a row, which is the
+ * site's one objection to a navigation element: a link that goes nowhere is a
+ * lie told in the margin. The letters that have no word are simply absent, and
+ * the run's `empty` sentence says what the run would say with none.
+ *
+ * ─── THE EMPTY RUN IS COMPOSED ────────────────────────────────────────────
+ * `empty` is required. A run that rendered nothing would be indistinguishable
+ * from a run that was never built, and this page's whole claim is that it files
+ * every word the document uses.
+ *
+ * No script and no hydration: a lexicon is printed.
+ */
+import LexiconEntry from "./LexiconEntry.astro";
+
+import { LettersOf, type LexiconRun } from "../../Content/More/Glossary.js";
+
+interface Props {
+	/** The run: its words, its note and its empty sentence. */
+	run: LexiconRun;
+
+	/** `RUN_01` - the run's marker, printed only when the run opens itself. */
+	index?: string;
+
+	/** Whether the run prints its own head. `false` inside a band. */
+	head?: boolean;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const { run: Run, index, head = true, class: Class } = Astro.props;
+
+/** The letters this run actually uses, in alphabetical order. */
+const Letters = LettersOf(Run);
+
+/** The label without its leading slash: the band and the head both print it. */
+const Label = Run.label.replace(/^\//, "");
+---
+
+{/*
+	A run is never its own section. It is either the page's body under a band, or -
+	for the first run - a head and a field of entries under the page's `h1`. Both
+	are structure inside a subject the page already opened, and a `<section>` here
+	would be a second sectioning level between the band and its entries.
+*/}
+<div class:list={["lexicon", Class]} id={`run-${Run.key}`}>
+	{
+		head ? (
+			<header class="lexicon__head">
+				{index ? (
+					<p class="lexicon__register">
+						<span class="lexicon__register-mark" aria-hidden="true">
+							#
+						</span>
+						{index}
+					</p>
+				) : null}
+				<h2 class="lexicon__heading">{Label}</h2>
+				<p class="lexicon__note">{Run.note}</p>
+			</header>
+		) : null
+	}
+
+	{
+		Run.terms.length > 0 ? (
+			<>
+				<nav class="lexicon__letters" aria-label={`${Label} letters`}>
+					{Letters.map((Letter) => (
+						<a
+							class="lexicon__letter-link"
+							href={`#letter-${Run.key}-${Letter.toLowerCase()}`}
+						>
+							{Letter}
+						</a>
+					))}
+				</nav>
+
+				<div class="lexicon__groups">
+					{Letters.map((Letter) => {
+						const Terms = Run.terms.filter((Entry) =>
+							Entry.term.toUpperCase().startsWith(Letter),
+						);
+
+						return (
+							<div
+								class="lexicon__group"
+								id={`letter-${Run.key}-${Letter.toLowerCase()}`}
+							>
+								<p class="lexicon__letter">
+									<span class="sr-only">Terms beginning with </span>
+									{Letter}
+								</p>
+								<div class="lexicon__entries">
+									{Terms.map((Entry) => (
+										<LexiconEntry term={Entry} run={Run.key} />
+									))}
+								</div>
+							</div>
+						);
+					})}
+				</div>
+			</>
+		) : (
+			<p class="lexicon__empty">{Run.empty}</p>
+		)
+	}
+</div>

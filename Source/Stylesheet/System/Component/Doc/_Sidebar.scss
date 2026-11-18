@@ -26,9 +26,12 @@
 // THE CURRENT PAGE IS MARKED THREE WAYS, AND ONLY ONE IS COLOUR:
 //
 //   1. `aria-current="page"` on the anchor - the machine-readable state.
-//   2. Ink (`--Foreground`) and weight 600 - the text itself changes.
-//   3. A `1px` rule on the row's leading edge in `--Primary` - a shape, not a
-//      hue: it survives greyscale, a colour-blind reader and a printed page.
+//   2. Ink (`--Foreground`) and weight 500 - the text itself changes.
+//   3. A `2px` rule on the row's leading edge in `--Accent` - a shape, not a
+//      hue: it survives greyscale, a colour-blind reader and a printed page, and
+//      it is the same marker the header gives its active route. The width is
+//      reserved on every row (`border-inline-start: 2px solid transparent`), so a
+//      row becoming current never shifts its label.
 //
 // The section and group that CONTAIN the current page are marked too (ink and
 // weight, no rule), so the reader never has to hunt for where they are. That is
@@ -65,7 +68,6 @@
 .doc-sidebar__trigger {
 	display: flex;
 	align-items: baseline;
-	justify-content: space-between;
 	gap: var(--space-tight);
 
 	inline-size: 100%;
@@ -82,6 +84,19 @@
 	cursor: pointer;
 }
 
+/* The label takes the row, so the count and the marker sit together at its end
+   instead of being spread across it by `space-between`. A count that floats in
+   the middle of a row is a number nobody knows what to do with. */
+.doc-sidebar__label {
+	flex: 1 1 auto;
+
+	min-inline-size: 0;
+
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
 .doc-sidebar__trigger--section {
 	@include mono-meta;
 	@include track;
@@ -94,7 +109,7 @@
 	line-height: var(--type-caption-line);
 	font-weight: 500;
 
-	letter-spacing: 0.04em;
+	letter-spacing: var(--track-name);
 }
 
 .doc-sidebar__trigger--active {
@@ -122,7 +137,12 @@
 
 	color: var(--MuteForeground);
 
-	border-inline-start: 1px solid transparent;
+	/* The current-page rule is 2px and it is reserved on every row, not only on the
+	   current one: a border that appears only when a row becomes current shifts the
+	   label by its own width, and eighty-one rows that jump by 2px as the reader
+	   navigates is the opposite of a rail. The width is always here; only its ink
+	   changes. */
+	border-inline-start: 2px solid transparent;
 }
 
 .doc-sidebar__link--section {
@@ -137,7 +157,9 @@
 
 	font-weight: 500;
 
-	border-inline-start-color: var(--Primary);
+	/* `--Accent`, not `--Primary`: the same 2px accent bar the header gives its
+	   active route. One active-state marker for the whole site. */
+	border-inline-start-color: var(--Accent);
 }
 
 /* ─── MOBILE ────────────────────────────────────────────────────────────── */

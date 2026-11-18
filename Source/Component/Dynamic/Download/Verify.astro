@@ -1,0 +1,47 @@
+---
+/**
+ * Verify - the checksum and signature record.
+ *
+ * The page's third question is "how do I verify it", and today the honest answer
+ * is "there is nothing to check yet". This region says both: the six fields the
+ * first installer will publish, recovered verbatim from the composition's
+ * `Verification()` table, and the check itself as a template well.
+ *
+ * The well prints `<artifact>` where the artifact's name will be. That is not a
+ * command to paste - the region's footnote says so - but it is the shape of the
+ * check, printed before the artifact exists, so a reader can see what
+ * verification will mean here rather than being told it is "planned".
+ *
+ * The ledger is a `RecordLedger`: a key, a value, and a qualifier under it. It
+ * lives on the creme field with no fill - the values are the subject, and a card
+ * around six rows that all say "available at first public release" would be a
+ * box drawn to make an absence look like content.
+ *
+ * No `<script>` beyond `RecordWell`'s own copy wiring, and no `client:*`.
+ */
+import RecordLedger from "../../Record/RecordLedger.astro";
+import RecordWell from "../../Record/RecordWell.astro";
+
+import type { LedgerRow, Well } from "../../Record/Type.js";
+
+interface Props {
+	/** The verification fields, in the order they are read. */
+	rows: readonly LedgerRow[];
+
+	/** The check, as a template well. */
+	well: Well;
+}
+
+const { rows, well } = Astro.props;
+---
+
+<div class="download-verify">
+	<RecordLedger rows={rows} class="download-verify__ledger" />
+
+	<RecordWell
+		label={well.label}
+		language={well.language}
+		lines={well.lines}
+		class="download-verify__well"
+	/>
+</div>

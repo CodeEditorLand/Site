@@ -5,22 +5,31 @@
 // header, a container, a breadcrumb and an `h1` with a standfirst. That is one
 // page opening, so it lives here once and the routes compose it.
 //
-// What the shell owns, in order: the document (`Base`), the site header, the
-// opening container, the trail, and - on the two pages that have one - the
-// page's `h1` and the sentence under it. What it does not own is anything
-// below that: a request route hands in its form, which prints its own `h1` (the
-// request title, inside the form's own chip row), the hub hands in its grid,
-// the sale page its two panels.
+// The shell's opening, in order: the trail, the route's record head, and - on
+// the two pages that have one - the page's `h1` and the sentence under it.
+//
+// The record head is the four facts that are the route's rather than the
+// visit's: `# REACH`, the statutory basis `〈GDPR Art. 15 + 20〉`, the route
+// `/CONTACT`, and the window `SLA: 30d`. The baseline printed them inside the
+// form's chip row; they are the same on every visit, so they belong to the page
+// and the form keeps what changes per visit - the pair reference and the state
+// word. A route with no statutory basis prints no bracket, because an empty
+// `〈 〉` is a claim the page cannot back.
+//
+// What the shell does not own is anything below the opening: a request route
+// hands in its form, which prints its own `h1` (the request title, inside the
+// form's own opening), the hub hands in its grid, the sale page its two panels.
 //
 // The trail is `Component/Route/Trail.astro` - the site's one breadcrumb
 // grammar (`DESIGN.md` §9 Q3), not a Contact detail. It prints each crumb as
 // `/LABEL`, so the page reads `/HOME  /CONTACT` above its heading.
 //
-// The shell prints no record header. The baseline renders no `# CODE` /
-// `〈 〉` / `/CONTACT` line on any contact page, so the facts those three
-// symbols carried are printed by the form's own chip row instead - the pair
-// reference, the statutory basis and the response window, in the baseline's
-// shape.
+// The shell prints the route's record head. The baseline renders no `# CODE` /
+// `〈 〉` / `/CONTACT` line on any contact page, so the card that added one had
+// to justify it; the justification is that the facts already existed as chips
+// inside the form, and a chip row that prints the same route fact on every
+// visit is a page fact wearing the form's clothes. The record head prints them
+// once, where the page's own facts go, and the form keeps the pair reference.
 //
 // `opening` is the one difference between the two shapes: a page opens with the
 // breadcrumb and its heading at `py-16`; a request route opens with the
@@ -37,6 +46,7 @@ import Base from "../../Layout/Base.astro";
 import { Header } from "../Layout/Header";
 import Trail from "../Route/Trail.astro";
 import type { ContactTrailItem } from "../../Library/Contact/Data.js";
+import type { ContactRecord } from "./Type.js";
 
 interface Props {
 	/** The document title. */
@@ -47,6 +57,15 @@ interface Props {
 
 	/** The breadcrumb trail, last crumb being this page. */
 	trail: readonly ContactTrailItem[];
+
+	/**
+	 * The route's record head: `# REACH  〈GDPR Art. 15 + 20〉  /CONTACT  SLA: 30d`.
+	 *
+	 * The four facts are the route's, not the form's - they are the same on every
+	 * visit - so they belong to the page. The form keeps what changes per visit:
+	 * the pair reference and the state word. One screen, one copy of each fact.
+	 */
+	record?: ContactRecord;
 
 	/** The page's only `h1`, when the page opens with one. */
 	heading?: string;
@@ -68,6 +87,7 @@ const {
 	metaTitle,
 	metaDescription,
 	trail,
+	record,
 	heading,
 	standfirst,
 	width = "wide",
@@ -93,6 +113,30 @@ const {
 			]}
 		>
 			<Trail trail={trail} />
+
+			{
+				record && (
+					<p class="contact-page__record">
+						<span class="contact-page__record-code"># {record.code}</span>
+						{record.article ? (
+							<span class="contact-page__record-article">
+								〈{record.article}〉
+							</span>
+						) : null}
+						<span class="contact-page__record-route">{record.route}</span>
+						{record.window ? (
+							<span class="contact-page__record-window">
+								SLA: {record.window}d
+							</span>
+						) : null}
+						{record.count ? (
+							<span class="contact-page__record-count">
+								REGISTER: {record.count} ENTRIES
+							</span>
+						) : null}
+					</p>
+				)
+			}
 
 			{
 				heading && (

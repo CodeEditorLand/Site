@@ -1,0 +1,130 @@
+---
+/**
+ * RecordAside - a folded aside: what the record keeps but does not lead with.
+ *
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  a disclosure: what this record does not carry, what a
+ *                   clause excludes, which assumptions a command makes. Longer
+ *                   than a margin note, shorter than a band, and skippable.
+ * RANK              frame - one pod, not two: a summary bar over a body that
+ *                   holds prose OR one leaf block. The pair is the two-pod
+ *                   frame; this is the folded one, and it obeys the same rule
+ *                   (a body holds one claim, never two).
+ * SLOT CONTRACT     aside.index  -> `# ASIDE_01`
+ *                   aside.label  -> `/ WHAT THIS DOES NOT COVER`, the summary's text
+ *                   aside.line?  -> the `↳` proposition under the summary
+ *                   aside.body?  -> prose; a blank line starts a paragraph
+ *                   aside.rows?  -> the body as a `RecordLedger`, when the
+ *                                   disclosure is a set of facts
+ *                   slot         -> the body as one block, when the caller has
+ *                                   one to hand in (the body is prose OR rows OR
+ *                                   a slot, never two)
+ *                   aside.source?-> `SOURCE: ...` under the body
+ *                   aside.open?  -> open on first paint (default: closed)
+ *                   aside.empty? -> what the aside says when it holds nothing
+ * MAY HOLD          prose, one ledger, or one block through the slot.
+ * MAY NOT HOLD      two claims under one summary, a second summary, or a
+ *                   heading: the summary is the aside's only title.
+ * WIDE              the summary bar is a row: marker, label, disclosure mark.
+ * NARROW            the same row wraps; the mark stays at the line's end so the
+ *                   reader's thumb finds it in the same place.
+ * DENSE             none. An aside is already the compressed form of its subject
+ *                   - folding it further would make it unopenable.
+ *
+ * THE DISCLOSURE MARK IS `→`, ROTATED. The site has no chevron: its grammar has
+ * `→` for progression and nothing for "open". A `→` that turns 90° when the
+ * aside opens is the grammar's own mark acknowledging a change of state, and it
+ * is the only motion this block has. With `prefers-reduced-motion` it snaps and
+ * loses nothing: the body is present or it is not.
+ *
+ * A `<details>` IS THE WHOLE MECHANISM. No script, no `client:*`, no state in
+ * React: the disclosure works with JavaScript off, prints open in a print
+ * stylesheet, and can be found by the browser's own in-page search when it is
+ * closed (the browser opens it to show the match).
+ */
+import RecordLedger from "./RecordLedger.astro";
+
+import type { Aside } from "./Type.js";
+
+interface Props {
+	/** The aside: its marker, its label, and its body in one of three arms. */
+	aside: Aside;
+
+	/** Extra classes from the page, appended after the block's own. */
+	class?: string;
+}
+
+const { aside, class: Class } = Astro.props;
+
+/** The slot arm: a body handed in as one block. */
+const HasSlot = Astro.slots.has("default");
+
+/** The prose arm: a body written as sentences. A blank line starts a paragraph. */
+const Paragraphs = (Body: string): readonly string[] =>
+	Body.split(/\n{2,}/)
+		.map((Paragraph) => Paragraph.trim())
+		.filter(Boolean);
+
+const Prose = (aside.body ?? "") !== "";
+
+/** The rows arm: the body as a set of facts. */
+const Rows = aside.rows !== undefined && aside.rows.length > 0;
+
+/**
+ * Two arms at once is two claims under one summary. The block reports it and
+ * prints the first arm it has, in the order slot -> rows -> prose, rather than
+ * silently dropping one.
+ */
+if ([HasSlot, Rows, Prose].filter(Boolean).length > 1) {
+	console.warn(
+		"RecordAside: the aside carries more than one body - the slot wins, then rows, then prose.",
+	);
+}
+
+/** An aside with no body at all is not drawn: an empty frame is worse than none. */
+const HasBody = HasSlot || Rows || Prose || (aside.empty ?? "") !== "";
+---
+
+{
+	HasBody ? (
+		<details class:list={["record-aside", Class]} open={aside.open}>
+			<summary class="record-aside__summary">
+				<span class="record-aside__index"># {aside.index}</span>
+				<span class="record-aside__label">/ {aside.label}</span>
+				<span class="record-aside__mark" aria-hidden="true">
+					&#8594;
+				</span>
+			</summary>
+
+			<div class="record-aside__body">
+				{aside.line ? (
+					<p class="record-aside__line">
+						<span aria-hidden="true">&#8627;</span>
+						{aside.line}
+					</p>
+				) : null}
+
+				{HasSlot ? (
+					<slot />
+				) : Rows ? (
+					<RecordLedger rows={aside.rows ?? []} />
+				) : Prose ? (
+					Paragraphs(aside.body ?? "").map((Paragraph) => (
+						<p class="record-aside__paragraph">{Paragraph}</p>
+					))
+				) : (
+					<p class="record-aside__empty">
+						<span aria-hidden="true">&#9678;</span> {aside.empty}
+					</p>
+				)}
+
+				{aside.source ? (
+					<p class="record-aside__source">
+						<span class="record-aside__source-key">SOURCE:</span>
+						{aside.source}
+					</p>
+				) : null}
+			</div>
+		</details>
+	) : null
+}

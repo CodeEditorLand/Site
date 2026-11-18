@@ -1,0 +1,523 @@
+---
+/**
+ * Contents - the index. The dossier's table of contents, and the one page that
+ * answers "what is in here, in what form, and where".
+ *
+ * ─── WHY THIS PAGE EXISTS ─────────────────────────────────────────────────
+ * The site had chapters, an edition, instruments, a front desk, back matter and a
+ * colophon (the footer prints paper, type, build and extent). It had no index -
+ * no page that names the document's own parts - and no page that says what shape
+ * each kind of information takes. A dossier that cannot be opened at the index is
+ * a pile of chapters.
+ *
+ * ─── THE COMPOSITION ──────────────────────────────────────────────────────
+ * Four questions, nine movements, and each movement is the form its question
+ * asks for - which is the page's own argument, made by being it:
+ *
+ * 1. **The record** (`RecordHero`) - what this page asserts about itself. The
+ *    claim, the state, the extent as a ledger, and the proposition. No evidence
+ *    panel: an index has no picture of itself, and a figure invented to fill the
+ *    second panel is the one thing this page argues against.
+ * 2. **`/THE CHAPTERS`** (`Leader` + `BandFoot`) - the eight divisions of the
+ *    document as printed index entries, each with the count of addresses the
+ *    build answers in it and the job the reader arrives with hung under the name.
+ *    This is the table of contents in the form a table of contents takes; the
+ *    archive further down files the addresses, and this files the subjects.
+ * 3. **`/THE GRAMMAR`** (`RecordLedger`, two columns) - the eight marks. A legend
+ *    is facts about one object, so it is a ledger and not a comparison.
+ * 4. **`/THE FORMS`** (`RecordMatrix`) - every information type, its form, and
+ *    the measured count of routes that mount each. This is the page's proof: the
+ *    tree does not use one shape for everything, and the numbers say so.
+ * 5. **`/THE PLATES`** (`RecordStamp` beside `RecordPlateSet`, one composition) -
+ *    the mark the index is issued under and the evidence the document does not
+ *    have, cell by cell. A stamp authenticates the reading; a plate-set states
+ *    what the build carries.
+ * 6. **`/THE ROUTES`** (`RecordArchive`) - every address the build emits, filed by
+ *    chapter, with the forms each route mounts in the marker column.
+ * 7. **`/THE REGISTER`** (`RecordInstrument`) - the document's extent, every figure
+ *    with the file it was counted in.
+ * 8. **`/THE DECLARED`** (`RecordLedger`) - the modules nothing reads, each with
+ *    what it carries and why it exists. "Nothing unaccounted for" is a claim this
+ *    band makes checkable.
+ * 9. **`/THE RECORD`** (`RecordStage`) - how the page itself is made, in three
+ *    steps: measure, write, read.
+ *
+ * ─── THE LAW THIS PAGE KEEPS ──────────────────────────────────────────────
+ * It counts nothing. Every figure arrives from `Source/Generated/Facts/`, written
+ * by `Source/Script/Register.ts`, read through `Library/Index/Register.ts`. A
+ * number typed into this file would be a figure with no source, which is the one
+ * thing the brief forbids - so the page cannot drift from the tree even when the
+ * tree changes, and the record band's last step says why.
+ *
+ * The copy lives in `Content/Index/Page.ts`; the chapters in
+ * `Content/Index/Chapters.ts`; the type-to-form table in
+ * `Content/Index/Forms.ts`; the reasons in `Content/Index/Declared.ts`. This file
+ * decides order and nothing else.
+ */
+import { Header } from "../Component/Layout/Header";
+import BandFoot from "../Component/Detail/BandFoot.astro";
+import Leader from "../Component/Detail/Leader.astro";
+import RecordArchive from "../Component/Record/RecordArchive.astro";
+import RecordBand from "../Component/Record/RecordBand.astro";
+import RecordHero from "../Component/Record/RecordHero.astro";
+import RecordInstrument from "../Component/Record/RecordInstrument.astro";
+import RecordLedger from "../Component/Record/RecordLedger.astro";
+import RecordMatrix from "../Component/Record/RecordMatrix.astro";
+import RecordPlateSet from "../Component/Record/RecordPlateSet.astro";
+import RecordStamp from "../Component/Record/RecordStamp.astro";
+import RecordStage from "../Component/Record/RecordStage.astro";
+import Onward from "../Component/More/Onward.astro";
+import Trail from "../Component/Route/Trail.astro";
+import { CountOf, Languages } from "../Component/Shell/Language.js";
+import Fold from "../Component/UI/Fold/Fold.astro";
+import MatrixControl from "../Component/UI/Matrix/MatrixControl.astro";
+import Base from "../Layout/Base.astro";
+
+import { ElementPlateSet } from "../Content/Artifact/Plate.js";
+import { DocumentStamp } from "../Content/Artifact/Stamp.js";
+import { FormsCaption, TypeForms } from "../Content/Index/Forms.js";
+import {
+	Bands,
+	ContentsOnward,
+	DeclaredColumns,
+	FormColumns,
+	IndexRecord,
+	Marks,
+	RecordRows,
+	RegistryFootnote,
+} from "../Content/Index/Page.js";
+import {
+	ChapterFor,
+	DeclaredModules,
+	HrefOf,
+	MarkerOf,
+	NoteOf,
+	Registry,
+	RouteCountFor,
+	RouteGroups,
+	Routes,
+	Totals,
+} from "../Library/Index/Register.js";
+import { JellyUIVersion } from "../Variable/JellyUIVersion.js";
+
+/** The date of this reading: the day the page was rendered. */
+const AsOf = new Date().toISOString().slice(0, 10);
+
+const Record = IndexRecord(Totals);
+
+const MetaTitle = "Contents | Code Editor Land";
+
+const MetaDescription =
+	"The index of this document: every information type and the form it takes, every address the build answers on, the extent of the tree, and the files that exist without a reader.";
+
+/**
+ * The forms matrix: one row per information type, its form, its rank, and the
+ * measured count of routes that mount the block. The count is `◎` for a type that
+ * rides another form - never a zero, because a zero claims the type is nothing.
+ */
+const FormRows = TypeForms.map((Type) => ({
+	label: Type.type,
+	cells: [Type.form, Type.rank, RouteCountFor(Type.block)],
+}));
+
+/**
+ * The chapter index: the eight divisions of the document as leader entries.
+ *
+ * This is the page's table of contents in its proper form - a printed index
+ * entry per chapter, with the chapter's route count at the end of the leader and
+ * the job the reader arrives with hanging under it. It is not a second archive:
+ * the archive files every ADDRESS, and this files the eight SUBJECTS those
+ * addresses belong to. The count is the group's own length, so the two bands
+ * cannot disagree about how many routes a chapter has.
+ */
+const ChapterEntries = RouteGroups.map(({ chapter, routes }) => ({
+	label: chapter.label,
+	meta: `${routes.length}\u2001${routes.length === 1 ? "ROUTE" : "ROUTES"}`,
+	href: HrefOf(routes[0]!.Path),
+	note: chapter.answers,
+}));
+
+/**
+ * The chapters band's references: the two bands on this page that answer the
+ * same question in another form. Each carries its reason, because a reference
+ * without one is a widget.
+ */
+const ChapterSee = [
+	{
+		route: "/ROUTES",
+		href: "#routes",
+		reason: "every address the build emits, filed by the chapter it belongs to",
+	},
+	{
+		route: "/FORMS",
+		href: "#forms",
+		reason: "each information type, the shape it takes, and the routes that mount it",
+	},
+];
+
+/**
+ * The routes archive: one row per address, grouped by chapter. The group label is
+ * the chapter's own, so the archive's runs are the eight divisions in reading
+ * order - and there is no second strip of the same eight names above them, because
+ * a strip would either duplicate the labels or link to anchors the archive does
+ * not print.
+ */
+const RouteEntries = RouteGroups.flatMap(({ chapter, routes }) =>
+	routes.map((Route) => ({
+		title: Route.Path,
+		href: HrefOf(Route.Path),
+		note: NoteOf(Route),
+		marker: MarkerOf(Route),
+		group: chapter.label,
+	})),
+);
+
+/**
+ * The register: the document's extent. Every measure carries the file it was
+ * counted in - a figure without a source is not printed on this site.
+ */
+const Measures = [
+	{
+		label: "ROUTES",
+		value: String(Totals.Routes),
+		unit: "ADDRESSES",
+		provenance: "Source/Generated/Facts/Routes.json",
+		lead: true,
+	},
+	{
+		label: "DOCUMENTS",
+		value: String(Totals.Documents),
+		unit: "ARTICLES",
+		provenance: "Source/Content/doc/**/*.md",
+	},
+	{
+		label: "ENTRIES",
+		value: String(Totals.Entries),
+		unit: "FILED",
+		provenance: "Source/Content/blog/*.md",
+	},
+	{
+		label: "ELEMENTS",
+		value: String(Totals.Elements),
+		unit: "RECORDS",
+		provenance: "Source/Content/Record/*.ts",
+	},
+	{
+		label: "FORMS",
+		value: String(Totals.Blocks),
+		unit: "BLOCKS",
+		provenance: "Source/Component/Record/*.astro",
+	},
+	{
+		label: "MODULES",
+		value: String(Totals.Modules),
+		unit: "OUTSIDE BULK",
+		provenance: "Source/Generated/Facts/Modules.json",
+	},
+	{
+		label: "READ",
+		value: String(Totals.Read),
+		unit: "OF THOSE",
+		provenance: "Source/Generated/Facts/Modules.json",
+	},
+	{
+		label: "DECLARED",
+		value: String(Totals.Declared),
+		unit: "WITH NO READER",
+		provenance: "Source/Generated/Facts/Modules.json",
+	},
+];
+
+/**
+ * The four composition languages, as the index prints them.
+ *
+ * The columns are the language's contract, and the rows are the four answers plus
+ * the fifth (`◎ RECORD`) - because a page that is one artifact is a real answer
+ * and hiding it would make the register look tidier than the site is.
+ *
+ * The ROUTES column is COUNTED from the register, not written here: a language
+ * that gains a page gains a figure, and a figure that drifted from the register
+ * would be the one number on this page with no source.
+ */
+const LanguageColumns = [
+	{ label: "GIVES" },
+	{ label: "MEASURE" },
+	{ label: "ENTRIES", align: "center" as const },
+];
+
+const LanguageRows = (
+	["reading", "workspace", "audit", "plate", "record"] as const
+).map((Key) => {
+	const Spec = Languages[Key];
+
+	return {
+		label: Spec.name,
+		cells: [
+			Spec.gives.replace(/\u2001/g, " / "),
+			Spec.measure,
+			String(CountOf(Key)),
+		],
+	};
+});
+
+/**
+ * What each language asks a page to hand in - one ledger row per language, the
+ * declarations joined by the site's one separator. This is the answer to "what
+ * does a page have to declare to get one", printed in full rather than counted:
+ * a number in a column would say how many, never which.
+ */
+const LanguageContract = (
+	["reading", "workspace", "audit", "plate"] as const
+).map((Key) => ({
+	key: `${Languages[Key].name}:`,
+	value: Languages[Key].declares.join("\u2001"),
+}));
+
+const LanguageCaption =
+	"A page declares its language by being filed in `Source/Component/Shell/Language.ts`, and nowhere else: `Base.astro` writes the answer on `<html>` for the running head, `PageShell` reads the same answer for its grid, and the page prints the declaration strip above its first track. ENTRIES is counted from that register; a prefix entry covers every route under it.";
+
+/**
+ * The declared ledger: one row per module nothing reads. The key is the module's
+ * path - a literal, so it prints as code - the value is why it exists, and the
+ * note is what it carries. A module the reasons table does not describe keeps the
+ * generator's own sentence, which is how a gap in that table stays visible.
+ */
+const DeclaredRows = DeclaredModules.map((Module) => ({
+	key: Module.Path,
+	value: Module.Reason,
+	note: Module.Carries,
+	code: true,
+}));
+
+/**
+ * The closing stage: how this page is made. Three steps, because the process has
+ * three, and the third is the one that matters - the page counts nothing.
+ */
+const Stages = [
+	{
+		index: "01",
+		label: "MEASURE",
+		line: "`Source/Script/Register.ts` walks `Source/`, resolves every import and marks what the pages reach.",
+	},
+	{
+		index: "02",
+		label: "WRITE",
+		line: "It writes three fact files into `Source/Generated/Facts/`, each one naming the tree it read.",
+	},
+	{
+		index: "03",
+		label: "READ",
+		line: "This page reads them through `Library/Index/Register.ts` and prints them. It counts nothing itself.",
+	},
+];
+
+const TrailItems = [
+	{ label: "/HOME", href: "/" },
+	{ label: "/CONTENTS" },
+];
+
+/** The number of addresses the build emits, as the footnote names it. */
+const Built = Routes.length;
+
+/**
+ * The bands' anchors, and the page's own contents.
+ *
+ * The ids are a table rather than a string at each band, so the fold and the
+ * band cannot disagree about where a row goes. The labels come from the bands
+ * themselves - the heading is the band's own words, and a contents row that
+ * paraphrased it would be a second copy of the page's copy.
+ */
+const BandIds = {
+	Marks: "grammar",
+	Forms: "forms",
+	Plates: "plates",
+	Routes: "routes",
+	Register: "extent",
+	Declared: "declared",
+	Record: "record",
+} as const;
+
+const Movements: { Index: string; Label: string; Href: string; Meta?: string }[] =
+	Object.entries(Bands).map(([Key, Entry], Index) => ({
+		Index: String(Index + 1).padStart(2, "0"),
+		Label: Entry.heading.toUpperCase(),
+		Href: `#${BandIds[Key as keyof typeof BandIds]}`,
+	}));
+
+/** The one band this page writes inline (the four languages) has no entry in `Bands`. */
+Movements.push({
+	Index: String(Movements.length + 1).padStart(2, "0"),
+	Label: "FOUR WAYS TO COMPOSE A PAGE",
+	Href: "#languages",
+	Meta: `${Languages.length} LANGUAGES`,
+});
+
+/**
+ * The chapters band, which is also written inline (it is this page's own table of
+ * contents, not a `Bands` entry). It opens the movements, because a reader who
+ * has just read the record wants the index of subjects before the legend of
+ * marks - and the ordinals below are renumbered from the list itself, so a band
+ * added later cannot leave a gap in the numbers.
+ */
+Movements.splice(0, 0, {
+	Index: "01",
+	Label: "THE CHAPTERS",
+	Href: "#chapters",
+	Meta: `${RouteGroups.length} CHAPTERS`,
+});
+
+Movements.forEach((Movement, Position) => {
+	Movement.Index = String(Position + 1).padStart(2, "0");
+});
+
+/** The forms matrix's control: the columns a reader may narrow by. */
+const FormFacets = FormColumns.map((Column, Index) => ({
+	Key: String(Index),
+	Label: Column.label,
+}));
+---
+
+<Base Title={MetaTitle} Description={MetaDescription}>
+	<Header client:load Mode="functional" slot="Header" />
+
+	<div class="mx-auto max-w-5xl">
+		<div class="px-4 pt-6">
+			<Trail trail={TrailItems} />
+
+			{/* The index's own contents. `wide` because this page has no rail at
+			    any width - a table of contents is the document's index, not a
+			    small-screen convenience, and the page about what is in the
+			    document is the last place to hide it. */}
+			<Fold
+				Items={Movements}
+				Name="ON THIS PAGE"
+				Wide
+				Empty="This page prints one subject and no sections, so there is nothing to list. Read it top to bottom - it is nine movements."
+			/>
+		</div>
+
+		<RecordHero {...Record} />
+	</div>
+
+	{/* The chapter index. This is the page's table of contents in its proper
+	    form - a printed leader per chapter, the route count at the end of the
+	    line, and the job the reader arrives with hanging under the name. It is
+	    written inline because it is this page's own contents and not a `Bands`
+	    entry, and it opens the movements because a reader who has just read the
+	    record wants the index of subjects before the legend of marks. */}
+	<RecordBand
+		band={{
+			id: "chapters",
+			kicker: "/THE CHAPTERS",
+			heading: "Eight divisions, in reading order",
+			standfirst:
+				"Each chapter names the job a reader arrives with. The figure at the end of its line is the number of addresses the build answers in that chapter, counted from the same register the archive below files them from.",
+		}}
+	>
+		<Leader items={ChapterEntries} register="CHAPTERS" columns={2} />
+
+		<BandFoot
+			slot="foot"
+			index="08"
+			part="/THE INDEX"
+			see={ChapterSee}
+			figure={{ value: String(RouteGroups.length), unit: "CHAPTERS" }}
+			asOf={AsOf}
+			source="SOURCE/CONTENT/INDEX/CHAPTERS.TS"
+		/>
+	</RecordBand>
+
+	<RecordBand band={{ ...Bands.Marks, id: BandIds.Marks }}>
+		<RecordLedger rows={Marks} columns={2} />
+	</RecordBand>
+
+	<RecordBand band={{ ...Bands.Forms, id: BandIds.Forms }}>
+		<MatrixControl
+			Target="forms-matrix"
+			Facets={FormFacets}
+			Name="THE FORMS"
+			Total={FormRows.length}
+		/>
+		<RecordMatrix
+			id="forms-matrix"
+			columns={FormColumns}
+			rows={FormRows}
+			caption={FormsCaption}
+		/>
+	</RecordBand>
+
+	{/* The stamped register: the mark the index is issued under, hanging in the
+	    left margin beside the set of plates the document does not have. A stamp
+	    and a set, one composition, no band inside a band. */}
+	<RecordBand band={{ ...Bands.Plates, id: BandIds.Plates }}>
+		<div class="record-stamped">
+			<div class="record-stamped__stamp">
+				<RecordStamp stamp={DocumentStamp(Totals, AsOf)} />
+			</div>
+			<div class="record-stamped__register">
+				<RecordPlateSet set={ElementPlateSet} />
+			</div>
+		</div>
+	</RecordBand>
+
+	<RecordBand
+		band={{
+			id: "languages",
+			kicker: "/THE LANGUAGES",
+			heading: "Four ways to compose a page",
+			standfirst:
+				"A page is not a stack of bands. It is read, operated, audited or shown, and each of those is a different set of tracks.",
+			footnote:
+				"SOURCE: SOURCE/COMPONENT/SHELL/LANGUAGE.TS\u2001ROUTES COUNTED FROM THE SAME REGISTER",
+		}}
+	>
+		<RecordMatrix
+			columns={LanguageColumns}
+			rows={LanguageRows}
+			caption={LanguageCaption}
+		/>
+		<RecordLedger rows={LanguageContract} columns={1} />
+	</RecordBand>
+
+	<RecordBand band={{ ...Bands.Routes, id: BandIds.Routes, footnote: RegistryFootnote(Registry.Count, Built, Registry.Missing) }}>
+		<RecordArchive entries={RouteEntries} index="ROUTES_01" />
+	</RecordBand>
+
+	<RecordBand band={{ ...Bands.Register, id: BandIds.Register }}>
+		<RecordInstrument
+			measures={Measures}
+			label="/THE EXTENT"
+			caption="Every figure was taken from the file named under it on the last run of the register. A figure this page could not measure would print UNAVAILABLE, never a zero."
+			empty="The register has not been run against this tree, so there are no figures to print. Run `node Source/Script/Register.ts` and rebuild - this page will not invent a number to fill the panel."
+		/>
+	</RecordBand>
+
+	<RecordBand band={{ ...Bands.Declared, id: BandIds.Declared }}>
+		{
+			DeclaredRows.length > 0 ? (
+				<RecordLedger rows={DeclaredRows} />
+			) : (
+				<RecordLedger
+					rows={[
+						{
+							key: "◎",
+							value:
+								"Every module outside the bulk trees is read by something. There is nothing on this page to explain, which is the state this band exists to reach.",
+						},
+					]}
+				/>
+			)
+		}
+	</RecordBand>
+
+	<RecordBand band={{ ...Bands.Record, id: BandIds.Record }}>
+		<RecordStage stages={Stages} orientation="row" />
+		<RecordLedger rows={RecordRows(Totals, AsOf, JellyUIVersion)} columns={2} />
+
+		<Onward
+			slot="foot"
+			rows={ContentsOnward.rows}
+			copy={ContentsOnward.copy}
+		/>
+	</RecordBand>
+</Base>

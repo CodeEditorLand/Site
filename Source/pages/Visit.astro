@@ -35,6 +35,7 @@ import {
 	GeneratePathVariant,
 	SemanticAlias,
 } from "../Function/Route/Map";
+import { VisitTombstone } from "../Content/Layout/Visit.js";
 
 // Build the full variant map at SSG time - identical logic to Integration.ts
 // so this page and the SW resolve routes the same way.
@@ -62,7 +63,7 @@ const CanonicalList = [...CanonicalPath];
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-		<title>Redirecting...</title>
+		<title>Resolving This Address</title>
 		<meta name="robots" content="noindex,nofollow" />
 		<!-- Instant redirect: if JS is disabled, fall back to home after 3s -->
 		<noscript>
@@ -81,9 +82,139 @@ const CanonicalList = [...CanonicalPath];
 				padding: 0;
 				background: var(--Background, #f2ede3);
 			}
+
+			/* The tombstone. It prints only when the script does not run, so it
+			   is inlined and flat: one field, one hairline, mono type at two
+			   sizes, no shadow, no radius, no accent. The grammar's marks are
+			   text, not images, so the block costs a few hundred bytes. */
+			.visit-record {
+				max-width: 44rem;
+				margin: 14vh auto 0;
+				padding: 0 1.5rem 4rem;
+				color: #1c1c1e;
+				font: 400 14px/1.65 ui-monospace, "IBM Plex Mono", SFMono-Regular,
+					Menlo, monospace;
+			}
+			.visit-record__head {
+				display: flex;
+				justify-content: space-between;
+				gap: 1rem;
+				margin: 0;
+				padding-bottom: 0.5rem;
+				border-bottom: 1px solid rgba(28, 28, 30, 0.2);
+				font-size: 13px;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+			}
+			.visit-record__route {
+				color: #70685b;
+			}
+			.visit-record__state {
+				margin: 1.75rem 0 0;
+				font-size: 13px;
+				letter-spacing: 0.08em;
+			}
+			.visit-record__rows {
+				margin: 1.25rem 0 0;
+				padding: 0;
+			}
+			.visit-record__rows > div {
+				display: grid;
+				grid-template-columns: minmax(0, 9rem) minmax(0, 1fr);
+				gap: 1rem;
+				padding: 0.6rem 0;
+				border-top: 1px solid rgba(28, 28, 30, 0.12);
+			}
+			.visit-record__rows dt {
+				font-size: 13px;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+				color: #70685b;
+			}
+			.visit-record__rows dd {
+				margin: 0;
+			}
+			.visit-record__note {
+				margin: 1.5rem 0 0;
+				font-size: 13px;
+				color: #70685b;
+			}
+			.visit-record__back {
+				margin: 2rem 0 0;
+			}
+			.visit-record a {
+				color: #1c1c1e;
+				text-decoration: underline;
+				text-decoration-thickness: 2px;
+				text-underline-offset: 3px;
+			}
+			@media (max-width: 30rem) {
+				.visit-record__rows > div {
+					grid-template-columns: minmax(0, 1fr);
+					gap: 0.25rem;
+				}
+			}
 		</style>
 	</head>
 	<body>
+		{/*
+			THE MISSING STATE. Without the script this route used to print a blank
+			field and redirect after three seconds. The tombstone says what the
+			address is (nothing), why (the build emits no route and the redirect
+			table carries no entry) and where to go (the index, which names every
+			address the build does emit). It is `<noscript>`-only: a reader whose
+			script runs never sees it, and pays nothing for it.
+		*/}
+		<noscript>
+			<div class="visit-record">
+				<p class="visit-record__head">
+					<span>{VisitTombstone.index}</span>
+					<span class="visit-record__route">{VisitTombstone.route}</span>
+				</p>
+
+				<p class="visit-record__state">
+					<span aria-hidden="true">◎</span>
+					{"\u2001"}STATUS:{"\u2001"}{VisitTombstone.state}
+				</p>
+
+				<dl class="visit-record__rows">
+					<div>
+						<dt>WOULD BE HERE:</dt>
+						<dd>{VisitTombstone.statement}</dd>
+					</div>
+					<div>
+						<dt>WHY NOT:</dt>
+						<dd>{VisitTombstone.cause}</dd>
+					</div>
+					{VisitTombstone.rows.map((Row) => (
+						<div>
+							<dt>{Row.key}</dt>
+							<dd>{Row.value}</dd>
+						</div>
+					))}
+					<div>
+						<dt>NEXT:</dt>
+						<dd>
+							<a href={VisitTombstone.next.href}>
+								{VisitTombstone.next.label}
+								{"\u2001"}
+								<span aria-hidden="true">&rarr;</span>
+							</a>
+						</dd>
+					</div>
+				</dl>
+
+				<p class="visit-record__note">{VisitTombstone.note}</p>
+
+				<p class="visit-record__back">
+					<a href={VisitTombstone.back.href}>
+						{VisitTombstone.back.label}
+						{"\u2001"}
+						<span aria-hidden="true">&rarr;</span>
+					</a>
+				</p>
+			</div>
+		</noscript>
 		<script define:vars={{ VariantMap, CanonicalList }}>
 			(function () {
 				// ── Read the original path ──────────────────────────────────

@@ -1,0 +1,79 @@
+---
+/**
+ * QuietHead - the opening of a reference document: a marker, a bare `h1`, one
+ * proposition, and the extent as a white facts strip.
+ *
+ * ─── WHY A THIRD HEAD ─────────────────────────────────────────────────────
+ * The site has two page openings and both of them make a claim. `RecordHero`
+ * asserts what the page *is* - a record with a seal, a state and one action - and
+ * the instrument head (`SurfaceHead`) states what the page is *doing* - a status
+ * line, declarations and a ledger. A glossary does neither. It asserts nothing
+ * and operates nothing: it is a reference, and its only claim is its extent. So
+ * it opens the way a dictionary opens - a marker, a name, a sentence saying what
+ * is inside, and the count.
+ *
+ * ─── THE `h1` IS BARE, AND IT IS L ────────────────────────────────────────
+ * No `〈 〉`. The containment bracket belongs to a *stamp* - a runtime claim, a
+ * platform, a keyword - and a page title is not a stamp: `DESIGN-COMPLETE.md`
+ * §9 Q7 settles it, and the instrument head's first draft had to be corrected for
+ * exactly this. The size is L (`--type-section`), which is the token contract's
+ * role for a functional `h1`; XL belongs to the one page whose claim is the
+ * homepage's, and this is not it.
+ *
+ * ─── THE FACTS STRIP IS A LEDGER ON THE STANDARD SURFACE ──────────────────
+ * White `#FFFFFF` on the creme field, one hairline, radius 0 - the site's one
+ * information box. It is the same surface the legal documents' facts strip uses,
+ * because it is the same object: the four facts that scope a reference document.
+ * Two columns at 1024px and up, one below, and no fill of its own beyond the
+ * standard tier.
+ *
+ * No script and no hydration: a head is printed.
+ */
+import RecordLedger from "../Record/RecordLedger.astro";
+
+import type { LedgerRow } from "../Record/Type.js";
+
+interface Props {
+	/** `# LEXICON_01` - the document's marker, printed verbatim after the `#`. */
+	index: string;
+
+	/** The `/LABEL` after the marker: `/THE DOCUMENT'S OWN WORDS`. */
+	label: string;
+
+	/** The page's only `h1`. Printed bare - a page title is not a stamp. */
+	title: string;
+
+	/** The `↳` line: one sentence saying what is inside. */
+	proposition: string;
+
+	/** The facts that scope the document, in the order they are read. */
+	rows: readonly LedgerRow[];
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const { index, label, title, proposition, rows, class: Class } = Astro.props;
+---
+
+<header class:list={["quiet-head", Class]}>
+	<p class="quiet-head__register">
+		<span class="quiet-head__mark" aria-hidden="true">#</span>
+		<span class="quiet-head__index">{index}</span>
+		<span class="quiet-head__label">{label}</span>
+	</p>
+
+	<h1 class="quiet-head__title">{title}</h1>
+
+	<p class="quiet-head__proposition">
+		<span class="quiet-head__proposition-mark" aria-hidden="true">↳</span>
+		{proposition}
+	</p>
+
+	<RecordLedger
+		rows={rows}
+		columns={2}
+		surface="standard"
+		class="quiet-head__facts"
+	/>
+</header>

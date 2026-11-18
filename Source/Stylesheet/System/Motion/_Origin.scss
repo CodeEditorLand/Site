@@ -1,0 +1,127 @@
+@use "../Mixin" as *;
+@use "../UI/Slip" as Slip;
+
+// ─── THE ORIGIN ───────────────────────────────────────────────────────────
+//
+// A control's surface arriving from the control that asked for it. The slip
+// (`UI/_Slip.scss`) already arrives by a fade and a 2px rise, and that rise is
+// the right gesture for a menu: it says *here*. What it cannot say is *from
+// there* - and a popover that materialises in place, with no relation to the
+// thing you touched, is a stock menu.
+//
+// ─── THE SIDE IS THE ORIGIN, AND RADIX ALREADY KNOWS IT ───────────────────
+// Radix publishes `data-side` on every positioned content: `bottom` when the
+// content was placed under its trigger, `top` above it, `left` and `right` beside
+// it. That attribute is the direction of the invocation, so the arrival can be
+// aimed without measuring anything: a slip placed below its trigger starts 8px
+// above its own place - that is, at the trigger's edge - and settles down into it.
+// A slip placed above starts 8px below. No script, no `getBoundingClientRect`, no
+// layout read, and it is correct on the first frame because the attribute is
+// written before the content is shown.
+//
+// ─── EIGHT PIXELS, NOT THE WHOLE DISTANCE ─────────────────────────────────
+// Travelling the actual distance from trigger to slip would be a flight: the
+// reader has already moved their eyes to where the surface will be. Eight pixels
+// is the smallest distance that reads as *leaving* rather than *appearing*, and
+// it is the same 8px the popover gap is, so the motion and the geometry agree.
+//
+// ─── THE PALETTE IS A MODAL, AND A MODAL HAS NO ANCHOR ────────────────────
+// The command palette can be invoked from the chord (no origin at all) or from a
+// row in the manual's rail (`→ FIND ALL RECORDS`), which is a real anchor four
+// hundred pixels away. It is centred, so it has no side to come from. The script
+// `Script/Motion/Origin.ts` records the invocation point and writes a capped
+// vector from the centre of the viewport - where the palette lands - toward that
+// point, into `--motion-origin-x` / `--motion-origin-y` on `<html>`. The palette
+// therefore leans in from the direction it was asked for, by at most 24px, and
+// the chord invocation keeps the plain 4px rise it had. A modal that flew across
+// the screen would be the one thing this site does not do: pretend the interface
+// has mass.
+//
+// ─── WHAT DOES NOT GET AN ORIGIN ──────────────────────────────────────────
+// A dialog that replaces the page (the account gate, the auth sheet), a
+// full-screen sheet and the mobile drawer all arrive in place. They are not
+// attached to a control; they are attached to a decision, and a decision does not
+// have a side.
+
+// ─── the slips: from their own control, by its side ──────────────────────
+
+@keyframes slip-from-side-bottom {
+	from {
+		opacity: 0;
+
+		transform: translateY(calc(var(--motion-origin-travel) * -1));
+	}
+}
+
+@keyframes slip-from-side-top {
+	from {
+		opacity: 0;
+
+		transform: translateY(var(--motion-origin-travel));
+	}
+}
+
+@keyframes slip-from-side-left {
+	from {
+		opacity: 0;
+
+		transform: translateX(var(--motion-origin-travel));
+	}
+}
+
+@keyframes slip-from-side-right {
+	from {
+		opacity: 0;
+
+		transform: translateX(calc(var(--motion-origin-travel) * -1));
+	}
+}
+
+/* `:is()` with the suffix applied to every member - the same lesson `_Slip.scss`
+   records: a comma list with a suffix styles its last member only. The selector
+   list itself is read from the slip partial rather than restated, so the eight
+   controls cannot drift apart. */
+#{Slip.$Slip}[data-state="open"][data-side="bottom"] {
+	@media (prefers-reduced-motion: no-preference) {
+		animation: slip-from-side-bottom var(--motion-origin-duration)
+			var(--motion-origin-easing) both;
+	}
+}
+
+#{Slip.$Slip}[data-state="open"][data-side="top"] {
+	@media (prefers-reduced-motion: no-preference) {
+		animation: slip-from-side-top var(--motion-origin-duration)
+			var(--motion-origin-easing) both;
+	}
+}
+
+#{Slip.$Slip}[data-state="open"][data-side="left"] {
+	@media (prefers-reduced-motion: no-preference) {
+		animation: slip-from-side-left var(--motion-origin-duration)
+			var(--motion-origin-easing) both;
+	}
+}
+
+#{Slip.$Slip}[data-state="open"][data-side="right"] {
+	@media (prefers-reduced-motion: no-preference) {
+		animation: slip-from-side-right var(--motion-origin-duration)
+			var(--motion-origin-easing) both;
+	}
+}
+
+// ─── the palette: from the direction it was invoked ──────────────────────
+
+@keyframes palette-from-origin {
+	from {
+		opacity: 0;
+
+		translate: var(--motion-origin-x, 0px) var(--motion-origin-y, -4px);
+	}
+}
+
+.Palette[data-slot="dialog-content"][data-state="open"] {
+	@media (prefers-reduced-motion: no-preference) {
+		animation: palette-from-origin var(--motion-origin-duration)
+			var(--motion-origin-easing) both;
+	}
+}

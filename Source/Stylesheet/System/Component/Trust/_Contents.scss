@@ -1,0 +1,221 @@
+// TrustContents - the clause rail, and its narrow-viewport disclosure.
+//
+// Publishes:
+//   .trust-contents                     the block's shared shape
+//   .trust-contents--rail               the sticky margin column (>= 1024px)
+//   .trust-contents--disclosure         the CSS-only list above the document
+//   .trust-contents__head               CLAUSES / count / position, one line
+//   .trust-contents__label              the list's name, in muted ink
+//   .trust-contents__count              how many clauses the document has
+//   .trust-contents__position           where the reader is: `§07`, or empty
+//   .trust-contents__list               the clauses, in document order
+//   .trust-contents__item               one clause's row
+//   .trust-contents__link               the row's anchor
+//   .trust-contents__link--current      the clause the reader is in
+//   .trust-contents__number             `§NN`, read back by the wiring
+//   .trust-contents__name               the clause's own words
+//   .trust-contents__summary            the disclosure's summary row
+//   .trust-contents__toggle             the disclosure's arrow
+//
+// Three decisions:
+//
+// - The head is a record line, not a heading: `CLAUSES␁26␁§07`. The count is a
+//   fact about the document and the position is a fact about the reader, and
+//   both are printed at the 13px floor in the mono face, because a rail is an
+//   instrument and an instrument does not shout. U+2001 is the site's only
+//   separator, so it is the only one printed here.
+// - The current row is marked the way the manual's rail marks a page: full ink,
+//   weight 500, and a 2px rule on the row's leading edge. Not a fill, not a
+//   colour, not a pill - a rail row that needs a background to be found is a
+//   rail row that was never designed.
+// - The position cell reserves its width and starts empty. Before the first
+//   clause is reached there is no clause to name, and a figure printed there
+//   would be a number the reader is not standing on; the reserved width is what
+//   keeps the head from reflowing when the figure arrives.
+
+@use "../../Mixin" as *;
+
+.trust-contents {
+	--trust-contents-rule: 2px;
+}
+
+// ─── The rail ─────────────────────────────────────────────────────────────
+
+.trust-contents--rail {
+	@include hairline(top);
+
+	padding-block-start: var(--space-reading);
+}
+
+.trust-contents__head {
+	display: flex;
+	align-items: baseline;
+
+	margin: 0 0 var(--space-reading);
+
+	@include mono-meta;
+	@include track;
+}
+
+/* U+2001, the site's only separator, printed between the head's cells. It is a
+   generated character rather than a text node so the template's own newlines
+   cannot become part of the separator - a `white-space: pre` span around a
+   template newline is a 200px-wide space, which is how a record line stops
+   being a record line. */
+.trust-contents__label::after,
+.trust-contents__count::after {
+	content: "\2001";
+}
+
+.trust-contents__label {
+	margin: 0;
+}
+
+.trust-contents__count {
+	color: var(--Foreground);
+}
+
+// `min-inline-size` is the reserved cell: the figure is written by the wiring
+// after the first clause is reached, and the head must not reflow when it lands.
+.trust-contents__position {
+	min-inline-size: 4ch;
+	margin-inline-start: auto;
+
+	color: var(--Foreground);
+
+	text-align: end;
+}
+
+.trust-contents__list {
+	margin: 0;
+	padding: 0;
+
+	list-style: none;
+}
+
+.trust-contents__item {
+	margin: 0;
+}
+
+.trust-contents__link {
+	position: relative;
+
+	display: grid;
+	grid-template-columns: 3.25rem minmax(0, 1fr);
+	column-gap: var(--space-tight);
+	align-items: baseline;
+
+	padding-block: 0.25rem;
+	padding-inline-start: var(--space-reading);
+
+	color: var(--MuteForeground);
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	text-decoration: none;
+
+	/* The leading rule lives on the row at all times and is transparent until
+	   the row is current, so the ink arriving moves nothing. */
+	&::before {
+		content: "";
+
+		position: absolute;
+		inset-block: 0.1rem;
+		inset-inline-start: 0;
+
+		inline-size: var(--trust-contents-rule);
+
+		background: transparent;
+	}
+}
+
+.trust-contents__link:hover,
+.trust-contents__link:focus-visible {
+	color: var(--Foreground);
+}
+
+.trust-contents__link:focus-visible {
+	outline: var(--BorderWidth) var(--BorderStyle) var(--Primary);
+	outline-offset: 0;
+}
+
+.trust-contents__number {
+	font-family: var(--FontMono);
+	color: var(--MuteForeground);
+}
+
+.trust-contents__name {
+	text-wrap: pretty;
+}
+
+.trust-contents__link--current {
+	color: var(--Foreground);
+	font-weight: 500;
+}
+
+.trust-contents__link--current::before {
+	background: var(--Foreground);
+}
+
+.trust-contents__link--current .trust-contents__number {
+	color: var(--Foreground);
+}
+
+// ─── The disclosure (below 1024px) ────────────────────────────────────────
+
+.trust-contents--disclosure {
+	@include hairline;
+
+	background: var(--Card);
+	color: var(--CardForeground);
+}
+
+.trust-contents__summary {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	padding: var(--space-tight) var(--space-reading);
+
+	cursor: pointer;
+
+	@include mono-meta;
+	@include track;
+
+	/* The native triangle is the one piece of chrome the site does not own; the
+	   arrow at the end of the row says the same thing in the site's own hand. */
+	list-style: none;
+
+	&::-webkit-details-marker {
+		display: none;
+	}
+}
+
+.trust-contents__summary .trust-contents__count {
+	color: var(--Foreground);
+}
+
+.trust-contents__toggle {
+	margin-inline-start: auto;
+
+	color: var(--MuteForeground);
+}
+
+.trust-contents--disclosure[open] .trust-contents__toggle {
+	transform: rotate(180deg);
+}
+
+.trust-contents--disclosure .trust-contents__list {
+	padding: 0 var(--space-reading) var(--space-reading);
+}
+
+// ─── Print ────────────────────────────────────────────────────────────────
+// A rail is navigation, and a printed legal document is read as a document: the
+// clauses carry their own numbers, so the contents list is not needed on paper.
+
+@media print {
+	.trust-contents {
+		display: none !important;
+	}
+}

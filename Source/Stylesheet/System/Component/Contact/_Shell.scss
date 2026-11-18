@@ -1,0 +1,124 @@
+// ContactShell - one request route: the request's record beside the form.
+//
+// Publishes:
+//   .contact-shell              the route's workspace
+//   .contact-shell__workspace   the 4 / 1px / 8 composition, on the page measure
+//   .contact-shell__record      the record column: facts, process, note, aside
+//   .contact-shell__gutter      the 1px `--Divider` between the record and the form
+//   .contact-shell__form        the form's column
+//
+// THE SPLIT IS 4 / 1px / 8, the mirror of the blog article's 8 / 1px / 4. Both
+// pages use one language - a record beside its apparatus, divided by the site's
+// divider ink - and they read differently because the *instrument* is on a
+// different side: a reader who came to fill in a form finds it wide on the right,
+// a reader who came to read finds the piece wide on the left. That is variety
+// inside one grammar, which is the whole point.
+//
+// The record column is pinned: the facts stay with the reader while the form
+// scrolls. It is pinned only above 1024px - in the stacked composition it would
+// pin over the form it belongs to.
+//
+// THE FORM KEEPS ITS OWN SURFACE AND LOSES ITS OWN CONTAINER. `.contact-form`
+// carries a `ContainerTwoExtraLarge` measure and the page's gutters, which are
+// correct when the form *is* the page. Inside this workspace the column is the
+// container, so the form's measure and gutters stand down - its card, its
+// fields, its states and its actions are untouched.
+//
+// NARROW: the form comes first and the record follows under a divider. The order
+// is a composition decision, not a DOM one - the DOM keeps the record first so
+// the reading order of the source matches the reading order on a wide screen,
+// and the stacked composition re-orders with `order` because on a phone the form
+// is why the page was opened.
+
+@use "../../Mixin" as *;
+
+.contact-shell {
+	display: block;
+}
+
+.contact-shell__workspace {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	row-gap: var(--space-chapter);
+
+	max-width: var(--ContainerFiveExtraLarge);
+	margin-inline: auto;
+	padding-inline: var(--Gutter);
+	padding-block: var(--space-chapter);
+}
+
+// The stacked composition: the form first, the record under it, divided by the
+// divider ink at the chapter distance.
+.contact-shell__form {
+	order: 1;
+	min-inline-size: 0;
+}
+
+.contact-shell__record {
+	order: 2;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-group);
+	min-inline-size: 0;
+	padding-block-start: var(--space-group);
+	border-block-start: 1px solid var(--Divider);
+}
+
+.contact-shell__gutter {
+	display: none;
+}
+
+/* A ledger in the record column stacks its keys above its values at every width:
+   the column is 4fr, and the ledger's own wide rule would give the key half of a
+   row that is only wide enough for one fact at a time. */
+.contact-shell__record .record-ledger__row {
+	flex-direction: column;
+	align-items: start;
+	gap: var(--space-tight);
+}
+
+.contact-shell__record .record-ledger__key {
+	inline-size: auto;
+}
+
+.contact-shell__form .contact-form {
+	max-width: none;
+	margin-inline: 0;
+	padding-inline: 0;
+	padding-block: 0;
+}
+
+@include bp(1024px) {
+	.contact-shell__workspace {
+		grid-template-columns: minmax(0, 4fr) 1px minmax(0, 8fr);
+		column-gap: var(--space-group);
+		row-gap: 0;
+		align-items: start;
+	}
+
+	.contact-shell__record {
+		order: 0;
+		grid-column: 1;
+		padding-block-start: 0;
+		border-block-start: 0;
+	}
+
+	.contact-shell__gutter {
+		display: block;
+		order: 0;
+		grid-column: 2;
+		inline-size: 1px;
+		block-size: 100%;
+		background: var(--Divider);
+	}
+
+	.contact-shell__form {
+		order: 0;
+		grid-column: 3;
+	}
+
+	.contact-shell__record .record-ledger-block--pinned {
+		position: sticky;
+		inset-block-start: calc(var(--HeaderHeight) + var(--space-group));
+	}
+}

@@ -1,0 +1,96 @@
+@use "../Mixin" as *;
+
+// ─── THE SEGMENTED CONTROL ──────────────────────────────────────────────────
+//
+// Three cells on one track: `ALL ␁ DOC ␁ SITE`. The palette's register is
+// genuinely too much - eighty-one manual leaves and eighteen routes in one
+// list - and *too much* is an adverse state the brief names, so the design has to
+// hold it rather than truncate it. A scope control is how an index holds a large
+// set without hiding any of it.
+//
+// Flat: a `--Mute` track (the deeper creme the site uses for a recessed surface),
+// one `--Divider` frame, 1px rules between the cells, radius 0. The active cell is
+// white - the pulled-out tab, the same figure the Frame rail's active tab draws -
+// with ink at 500 and a 2px accent rule at its foot. That rule is the site's
+// active-state marker; it appears once in the control, on the current scope.
+//
+// A radio group, not a set of buttons: exactly one scope is true, and `aria-checked`
+// says so. Arrow keys move between cells, which is what a reader who has just
+// tabbed into a radio group expects.
+
+.Segmented {
+	display: inline-flex;
+	align-items: stretch;
+
+	background: var(--Mute);
+	border: 1px solid var(--Divider);
+	border-radius: 0;
+
+	@include flat;
+}
+
+.Segmented__Cell {
+	position: relative;
+
+	display: inline-flex;
+	align-items: center;
+
+	min-block-size: 1.5rem;
+
+	padding: 0 var(--space-tight);
+
+	background: none;
+	border: 0;
+	border-radius: 0;
+
+	color: var(--MuteForeground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-row);
+	text-transform: uppercase;
+	white-space: nowrap;
+
+	cursor: pointer;
+
+	outline: none;
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition:
+			background-color 90ms linear,
+			color 90ms linear;
+	}
+}
+
+.Segmented__Cell + .Segmented__Cell {
+	border-inline-start: 1px solid var(--Divider);
+}
+
+.Segmented__Cell:hover {
+	color: var(--Foreground);
+}
+
+.Segmented__Cell:focus-visible {
+	outline: 2px solid var(--Accent);
+	outline-offset: 2px;
+}
+
+.Segmented__Cell[aria-checked="true"] {
+	background: var(--Card);
+
+	color: var(--Foreground);
+	font-weight: 500;
+}
+
+.Segmented__Cell[aria-checked="true"]::after {
+	content: "";
+
+	position: absolute;
+	inset-inline: 0;
+	inset-block-end: -1px;
+
+	block-size: 2px;
+
+	background: var(--Accent);
+}

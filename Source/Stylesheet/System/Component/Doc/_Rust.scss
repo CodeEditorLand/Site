@@ -108,7 +108,7 @@
 
 .doc-rust__tab {
 	@include mono-meta;
-	@include track(0.08em);
+	@include track(var(--track-row));
 
 	padding: var(--space-tight) var(--space-reading);
 
@@ -152,4 +152,28 @@
 
 	margin-block-start: var(--space-chapter);
 	padding-block-start: var(--space-group);
+}
+
+/* ─── The drawer's contract ──────────────────────────────────────────────
+ *
+ * What the frame is, printed in the workspace's drawer above the two gaps. It is
+ * prose at the caption measure - the same voice the well's provenance line uses,
+ * because both are statements *about* an artifact rather than part of it - and
+ * its source row is the file the claim can be checked in.
+ */
+
+.doc-rust__contract {
+	max-inline-size: var(--MeasureOpening);
+	margin: 0;
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	letter-spacing: var(--track-set);
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.doc-rust__contract-source {
+	@include mono-meta;
+	@include track(var(--track-row));
+	margin-block: var(--space-tight) var(--space-group);
 }

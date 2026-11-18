@@ -1,0 +1,229 @@
+// SpecimenPlate - one part, live on a stage, beside its contract.
+//
+// Publishes:
+//   .specimen-plate              the plate (a figure)
+//   .specimen-plate__grid        spec column | stage at the wide container
+//   .specimen-plate__spec        the contract: mark, name, layer, four rows
+//   .specimen-plate__contract    the rows
+//   .specimen-plate__stage       the stage and its register line
+//   .specimen-plate__field       the surface the part is printed on
+//   .specimen-plate__caption     what to look at, and the file it came from
+//
+// ─── THE STAGE HAS A FLOOR, NOT A HEIGHT ──────────────────────────────────
+// A stage is `min-block-size` on the field, never a fixed height: a badge is
+// three lines tall and a table is twenty, and both are 1:1. A plate that scaled a
+// part to fit its frame would be a screenshot, which is the one thing a specimen
+// must not be.
+//
+// ─── TWO STAGE SURFACES, AND WHY ──────────────────────────────────────────
+// `insert` is the white box the document uses for an information object; `field`
+// is the creme page itself. A card or an article card is staged on the field,
+// because that is where a card lies on a page - and a white card on a white stage
+// is a card inside a card, which the identity forbids. The page decides per part;
+// this partial only draws the two.
+//
+// ─── THE SPEC COLUMN IS PINNED, AND NOT AS MOTION ─────────────────────────
+// `position: sticky` at 1024 and up, under the frame's own head: the contract
+// stays beside the part while the reader looks at a tall specimen. It is the
+// device the legal rail and the dashboard rail already use, at a plate's scale,
+// and it is disabled under `prefers-reduced-motion` never - a pinned column is
+// not motion, it is a column that does not scroll away.
+@use "../../Mixin" as *;
+
+.specimen-plate {
+	margin: 0;
+	padding-block-start: var(--space-group);
+	min-inline-size: 0;
+
+	@include hairline(top);
+}
+
+.specimen-plate + .specimen-plate {
+	margin-block-start: var(--space-group);
+}
+
+.specimen-plate__grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-group);
+	min-inline-size: 0;
+
+	@include bp(1024px) {
+		grid-template-columns: 17rem minmax(0, 1fr);
+		gap: 0;
+	}
+}
+
+// ─── THE SPEC COLUMN ──────────────────────────────────────────────────────
+
+.specimen-plate__spec {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+	min-inline-size: 0;
+
+	@include bp(1024px) {
+		position: sticky;
+		top: calc(5.25rem + var(--space-reading));
+		align-self: start;
+		padding-inline-end: var(--space-group);
+		border-inline-end: 1px solid var(--Divider);
+	}
+}
+
+.specimen-plate__mark {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0;
+	color: var(--MuteForeground);
+}
+
+.specimen-plate__mark-hash {
+	color: var(--Accent);
+}
+
+.specimen-plate__name {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-heading);
+	line-height: var(--type-heading-line);
+	letter-spacing: var(--track-name);
+	font-weight: 500;
+	color: var(--Foreground);
+}
+
+.specimen-plate__kind {
+	@include mono-meta;
+	@include track(var(--track-rule));
+
+	margin: 0;
+}
+
+.specimen-plate__contract {
+	display: grid;
+	margin: var(--space-reading) 0 0;
+	padding: 0;
+}
+
+.specimen-plate__row {
+	display: grid;
+	grid-template-columns: 6.5rem minmax(0, 1fr);
+	gap: var(--space-tight);
+	align-items: baseline;
+	padding-block: 0.45rem;
+
+	@include hairline(top);
+}
+
+.specimen-plate__key {
+	@include mono-meta;
+	@include track(var(--track-name));
+}
+
+.specimen-plate__value {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.5;
+	letter-spacing: var(--track-set);
+	color: var(--Foreground);
+	text-wrap: pretty;
+	overflow-wrap: anywhere;
+}
+
+.specimen-plate__value--code {
+	letter-spacing: var(--track-set);
+	color: var(--MuteForeground);
+}
+
+// ─── THE STAGE ────────────────────────────────────────────────────────────
+
+.specimen-plate__stage {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+}
+
+.specimen-plate__stage-head {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.4em;
+	margin: 0;
+	padding-block-end: 0.4rem;
+
+	@include hairline(bottom);
+}
+
+.specimen-plate__stage-mark {
+	color: var(--Accent);
+}
+
+.specimen-plate__stage-word,
+.specimen-plate__stage-scale {
+	color: var(--Foreground);
+}
+
+.specimen-plate__stage-note {
+	color: var(--MuteForeground);
+}
+
+.specimen-plate__field {
+	min-inline-size: 0;
+	min-block-size: 6rem;
+	padding: var(--space-group);
+	overflow-x: auto;
+
+	@include flat;
+	border: 1px solid var(--Border);
+}
+
+.specimen-plate__field[data-stage="insert"] {
+	background: var(--Card);
+}
+
+.specimen-plate__field[data-stage="field"] {
+	background: var(--Background);
+}
+
+// ─── THE CAPTION ──────────────────────────────────────────────────────────
+
+.specimen-plate__caption {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.4em var(--space-reading);
+	margin-block-start: var(--space-reading);
+	padding-block-start: 0.5rem;
+
+	@include hairline(top);
+}
+
+.specimen-plate__caption-key {
+	@include mono-meta;
+	@include track(var(--track-name));
+}
+
+.specimen-plate__caption-value {
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.5;
+	letter-spacing: var(--track-set);
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.specimen-plate__caption-value--code {
+	color: var(--MuteForeground);
+}
+
+.specimen-plate__caption-source {
+	display: flex;
+	align-items: baseline;
+	gap: 0.4em;
+}

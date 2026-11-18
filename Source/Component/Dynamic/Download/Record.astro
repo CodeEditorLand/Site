@@ -1,0 +1,104 @@
+---
+/**
+ * Record - the Download page's one artifact: `# RELEASE_01`.
+ *
+ * The page audits one release, so it prints one record. The record owns the
+ * page's only `h2`; every part after its head is a region (`Download/Region.astro`)
+ * that arrives through this component's `<slot />` and is separated at
+ * `--space-group`, the documented distance between two parts of one subject.
+ * The chapter distance is spent once, between the masthead and this artifact.
+ *
+ * The head is a cover sheet, not a card:
+ *
+ *   # RELEASE_01                              the index, with the seal beside it
+ *   RELEASE MANIFEST                          the band's own name, as the eyebrow
+ *   RELEASE_01 lists three platforms...       the claim, the page's only h2 (L)
+ *   /CHANNEL:PUBLIC                           the release's route line
+ *   STATUS: NO PUBLIC ARTIFACTS               the state, in the site's vocabulary
+ *   Source builds are active for all three... the plain reading of that state
+ *   RELEASED / VERSION / BUILD / LICENSE      the release's own ledger, in 5fr
+ *
+ * The `7fr / 5fr` split is the composition: the claim on the left, the facts it
+ * is a claim about on the right. Below 1024px the two stack, claim first. The
+ * ledger holds only the facts that belong to the release - the channel is the
+ * route line, and the per-platform states are the `/PLATFORMS` region - so no
+ * fact prints twice in the head.
+ *
+ * The colophon closes the artifact after every region: what the record does not
+ * carry, and where every figure in it comes from. A record that does not say
+ * where its numbers came from is a poster.
+ *
+ * No `<script>` and no `client:*`: the record is static.
+ */
+import FieldRecordIndex from "../../Brand/FieldRecordIndex.astro";
+import { FieldRecordSeal } from "../../Brand/FieldRecordSeal.js";
+import { FieldRecordStatus } from "../../Brand/FieldRecordStatus.js";
+import { RouteText } from "../../Brand/SemanticLedger.js";
+import RecordLedger from "../../Record/RecordLedger.astro";
+
+import type { LedgerRow } from "../../Record/Type.js";
+
+import type { ManifestRecord } from "./Type.js";
+
+interface Props {
+	/** The record's own copy: index, eyebrow, claim, channel, state and colophon. */
+	record: ManifestRecord;
+
+	/** The release's own facts - the rows that belong to the release, not a target. */
+	release: readonly LedgerRow[];
+}
+
+const { record, release } = Astro.props;
+---
+
+<section
+	id="release-manifest"
+	class="download-record"
+	aria-labelledby="release-manifest-heading"
+>
+	<div class="download-record__inner">
+		<div class="download-record__head">
+			<div class="download-record__marker">
+				<FieldRecordIndex index={record.index} className="download-record__index" />
+				<FieldRecordSeal element="Land" size={48} />
+			</div>
+
+			<div class="download-record__opening">
+				<p class="download-record__eyebrow">{record.eyebrow}</p>
+				<h2 class="download-record__heading" id="release-manifest-heading">
+					{record.heading}
+				</h2>
+			</div>
+
+			<div class="download-record__head-grid">
+				<div class="download-record__claim">
+					<p class="download-record__channel">
+						<RouteText Line={`/CHANNEL:${record.channel}`} />
+					</p>
+					<p class="download-record__state">
+						<FieldRecordStatus
+							status={record.state.status}
+							tone={record.state.tone}
+							copy={record.state.copy}
+						/>
+					</p>
+					<p class="download-record__note">{record.note}</p>
+				</div>
+
+				<RecordLedger class="download-record__ledger" rows={release} />
+			</div>
+		</div>
+
+		<slot />
+
+		<div class="download-record__colophon">
+			<p class="download-record__footnote">{record.footnote}</p>
+			<p class="download-record__source">{record.source}</p>
+		</div>
+
+		{/* The record's foot: the places this edition is read in another form,
+		    and where in the document the reader has got to. A named slot, so the
+		    page composes it and the record does not decide its own apparatus. */}
+		{Astro.slots.has("foot") ? <slot name="foot" /> : null}
+	</div>
+</section>

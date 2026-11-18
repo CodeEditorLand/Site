@@ -25,7 +25,17 @@
 import { getCollection, render } from "astro:content";
 
 import BlogArticle from "../../Component/Blog/BlogArticle.astro";
-import { BuildToc, HasDiagram, ReadTimeLabel } from "../../Component/Blog/Data.js";
+import {
+	BuildAside,
+	BuildNotes,
+	BuildSummary,
+	BuildToc,
+	HasDiagram,
+	ManualTargetFor,
+	ReadTimeLabel,
+	RegisterEmpty,
+} from "../../Component/Blog/Data.js";
+import { PieceInset } from "../../Content/Artifact/Inset.js";
 import MermaidFallback from "../../Component/Dynamic/MermaidFallback.astro";
 import { Header } from "../../Component/Layout/Header";
 import Base from "../../Layout/Base.astro";
@@ -60,6 +70,40 @@ const Toc = BuildToc(headings, TocLabel);
 const Diagram = HasDiagram(Entry.body);
 
 /**
+ * The margin's four parts, derived from the article and the manual it points at.
+ *
+ * `Sections` counts the `##` headings the pipeline actually emitted, which is
+ * the same list the register prints - so a piece that says "9 sections" has nine
+ * anchors under it. `DocIds` is the manual's own collection, read here so the
+ * note's destination is resolved at build time: a note that names a page the
+ * build no longer contains prints the tombstone instead of a dead link.
+ */
+const Docs = await getCollection("doc");
+const DocIds = Docs.map((Doc) => Doc.id);
+
+const Sections = headings.filter((Heading) => Heading.depth === 2).length;
+const Manual = ManualTargetFor(Entry.id, DocIds);
+const Summary = BuildSummary(Entry, Sections, ReadTime);
+const Notes = BuildNotes(Entry, Sections, Manual, Toc !== null);
+const Aside = BuildAside(Entry);
+
+/**
+ * The margin's figure: the piece's own extent, counted from the file.
+ *
+ * It hangs above the notes because it is the one object in the margin that is
+ * evidence rather than a claim about the piece - and because a reader who wants
+ * to know how long the thing is should not have to scroll to find out.
+ */
+const Extent = PieceInset({
+	title: Entry.data.title,
+	body: Entry.body,
+	sections: Sections,
+	minutes: Entry.data.readTime,
+	readTime: ReadTime,
+	file: `SOURCE/CONTENT/BLOG/${Entry.id}.MD`,
+});
+
+/**
  * The trail above the article: the two surfaces it sits under, then its own
  * title. The crumbs print place names, not routes - the baseline's breadcrumb
  * read `Home / Blog / <title>`.
@@ -90,6 +134,12 @@ const Trail = [
 		trail={Trail}
 		backLabel={PageTitle}
 		backHref="/Blog"
+		summaryRows={Summary}
+		summaryRegister={`SUMMARY / ${String(Summary.length).padStart(2, "0")}`}
+		notes={Notes}
+		insets={[Extent]}
+		aside={Aside}
+		registerEmpty={RegisterEmpty}
 	>
 		<Content />
 	</BlogArticle>

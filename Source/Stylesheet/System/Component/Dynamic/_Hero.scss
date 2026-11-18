@@ -64,8 +64,19 @@
 	grid-template-columns: minmax(0, 1fr);
 	gap: var(--space-group);
 	min-block-size: 80dvh;
-	padding: clamp(2rem, 5vw, 5rem);
+	// The inline padding is the page's own edge (72px at 1440); the block
+	// padding is the plate's inset and is deliberately smaller, because the
+	// pair's height is the screen's and every pixel of it belongs to the
+	// instrument, not to the margin around it.
+	padding: var(--hero-pair-inset) clamp(2rem, 5vw, 5rem);
 	margin-inline: auto;
+	// Published for the record card, which cannot take its height from the
+	// grid: Jelly's shadow `.card` does not stretch to its host, so the inset's
+	// `block-size: 100%` resolved against an auto height and the blank interval
+	// could never take the free space. The two values are declared here, once,
+	// and the inset computes the pair's content box from them.
+	--hero-pair-block: clamp(47.5rem, 88dvh, 52rem);
+	--hero-pair-inset: clamp(2rem, 3vw, 3rem);
 }
 
 @include bp(768px) {
@@ -73,6 +84,31 @@
 		grid-template-columns: minmax(0, 49fr) 1px minmax(0, 51fr);
 		align-items: stretch;
 		gap: 0;
+		// A panel is a panel: at desktop the pair has a height, and both
+		// halves fit inside it. Before this, the pair's height was whatever
+		// the photograph's intrinsic ratio made it - 1075px at 1440 - so the
+		// card stretched to match and the blank interval could never grow
+		// past its floor.
+		//
+		// The clamp is derived from the interval, not from taste: the record's
+		// content is 499px, so the card needs 668-757px for the interval to
+		// land between 15% and 25%, and the pair adds its 86px of block
+		// padding. 47.5rem is the shortest pair that still gives the interval
+		// 15.7%; 52rem is the tallest it may grow before the interval passes
+		// 25%.
+		block-size: var(--hero-pair-block);
+		min-block-size: 0;
+	}
+}
+
+// The card's inset is the pair's content box, computed rather than inherited:
+// see the note on `--hero-pair-block`. Below 768px the pair is a stack with an
+// auto height, so the inset keeps its content height there.
+@include bp(768px) {
+	.hero-band__inset {
+		min-block-size: calc(
+			var(--hero-pair-block) - 2 * var(--hero-pair-inset)
+		);
 	}
 }
 
@@ -96,14 +132,31 @@
 	display: flex;
 	flex-direction: column;
 	block-size: 100%;
-	padding: 2.75rem 1.5rem;
+	// 2.75rem was the old inset. The card no longer has to hold four bands at
+	// three tiers, so it gives 0.75rem of its block padding back to the blank
+	// interval - the one thing in the record that must not shrink.
+	padding: clamp(1.75rem, 2.4vw, 2.5rem) 1.5rem;
 }
 
 // The record is a sequence of anchored bands, not an even distribution: the
-// index and seal, the claim, what it is not, the route, the program, the
-// status, the blank interval, the subject, the metadata, the action.
+// index and seal, the claim, the stamp block, the status, the blank interval,
+// the subject, the metadata, the action.
 .hero-band__inset > * + * {
 	margin-block-start: var(--space-reading);
+}
+
+// The ledger arrives as a slot child, and Astro's slot bridge wraps it in an
+// `<astro-slot>` element. That element is inline and zero-height by default, so
+// the 103px ledger was outside the flex flow: the card sized itself as if the
+// facts were not there and the action sat over them. The wrapper the component
+// puts around it is a block, so the record reserves the ledger's height; this
+// rule keeps the wrapper's own box out of the record's rhythm.
+.hero-band__ledger > * {
+	margin-block-start: 0;
+}
+
+.hero-band__inset > astro-slot {
+	display: contents;
 }
 
 .hero-band__mark {
@@ -121,35 +174,95 @@
 	margin: 0;
 }
 
-// The page's one expressive moment. `--type-display` arrives from the
-// `.type-display` role (XL, 48-72px) - the ceiling the tier sets, never above
-// it. The two stamps are one assertion, so they sit at display size and the
-// engine line follows at the section tier rather than competing with it.
+// The page's one expressive moment: the claim, and the only thing in the record
+// above the S tier.
+//
+// The role is `.type-display` (XL, 48-72px); the value here is the *low* end of
+// that tier, and it is a composition decision, not a scale change. `〈RUST +
+// TAURI〉` is fifteen mono glyphs; at 72px they need 648px and the card's inner
+// measure at 1440 is 581, so the tier's ceiling broke the claim after `RUST +`
+// and made a two-line poster of a one-line assertion. At 48-56px the claim sets
+// on one line at every width the pair is a pair at, and it still outranks the
+// band headings (36-52px) by the hard jump the tier system requires.
 .hero-band__claim {
-	margin: var(--space-group) 0 0;
+	margin: var(--space-reading) 0 0;
 	font-family: var(--FontMono);
+	font-size: clamp(3rem, 4.1vw, 3.5rem);
+	line-height: 1;
 	font-weight: 500;
-	letter-spacing: -0.02em;
+	letter-spacing: var(--track-join);
+	// Below the width where the pair can hold the claim on one line, it is
+	// allowed to break (balanced, never mid-word) rather than overflow the
+	// card. From 1120px up - where the 49% card's inner measure clears the
+	// claim at the tier's floor - it is one line, always.
 	text-wrap: balance;
 }
 
+@include bp(1120px) {
+	.hero-band__claim {
+		white-space: nowrap;
+	}
+}
+
+// THE STAMP BLOCK. `〈NO ELECTRON〉`, `/COMPAT: VS CODE`, what that compatibility
+// means, and the program line - four readings at the S tier under one hairline.
+//
+// They used to be four bands at three tiers (L, L, S, S), which is why the card
+// shouted four times before it said anything. A stamp is read as a stamp because
+// of its containment and its tracking, not because it is 52px tall; at 13px,
+// tracked, under a rule, they read as the record's engraved block - which is
+// what the grammar calls them.
+.hero-band__stamps {
+	margin-block-start: var(--space-reading);
+	padding-block-start: 0.625rem;
+	border-block-start: 1px solid
+		color-mix(in srgb, var(--CardForeground) 20%, transparent);
+}
+
+.hero-band__stamps > * {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+}
+
+.hero-band__stamps > * + * {
+	margin-block-start: 0.375rem;
+}
+
+// The two stamps on one line: `〈NO ELECTRON〉` and `/COMPAT: VS CODE`, in the
+// order the record prints them, separated by the measure's own gap.
+.hero-band__stamp-pair {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	column-gap: 2rem;
+	row-gap: 0.375rem;
+}
+
 .hero-band__engine {
-	margin: var(--space-tight) 0 0;
+	text-transform: uppercase;
+	letter-spacing: var(--track-rule);
 }
 
 .hero-band__route {
-	margin: var(--space-group) 0 0;
+	text-transform: uppercase;
+	letter-spacing: var(--track-rule);
 }
 
 .hero-band__compat {
-	margin: var(--space-tight) 0 0;
 	color: var(--MuteForeground);
+	text-transform: uppercase;
+	letter-spacing: var(--track-rule);
 }
 
 .hero-band__program {
-	margin: var(--space-group) 0 0;
 	text-transform: uppercase;
-	letter-spacing: 0.25em;
+	// The program line is one line in the card's measure at the meta tier:
+	// 0.14em tracking pushed it to two, and a two-line stamp reads as a
+	// sentence. The em quads already separate the phrases; the tracking only
+	// has to keep the letters from touching.
+	letter-spacing: var(--track-name);
 	color: var(--MuteForeground);
 }
 
@@ -174,6 +287,11 @@
 
 .hero-band__subject {
 	margin: 0;
+	// The subject is the L tier, at the middle of it: at 52px it sat 4px under
+	// the claim's 56 and the two loud lines read as one size. At 44 the ladder
+	// is 56 / 44 / 13 - three tiers, three jumps, and the claim is unmistakably
+	// the page's only XL.
+	font-size: clamp(2rem, 2.8vw, 2.75rem);
 }
 
 .hero-band__relation {
@@ -182,7 +300,19 @@
 }
 
 .hero-band__facts {
-	margin: var(--space-group) 0 0;
+	margin: 0;
+}
+
+// The record's ledger is read as three facts, not as three paragraphs: the
+// block's own 8px row padding and 1.65 value leading are right on a reading
+// page and 141px of the card here. Scoped to the hero's ledger only - the block
+// keeps its anatomy everywhere else.
+.hero-band__facts .record-ledger__row {
+	padding-block: 0.375rem;
+}
+
+.hero-band__facts .record-ledger__value {
+	line-height: 1.35;
 }
 
 .hero-band__action {
@@ -190,7 +320,7 @@
 	flex-wrap: wrap;
 	align-items: center;
 	gap: var(--space-reading) var(--space-group);
-	margin-block-start: var(--space-group);
+	margin-block-start: var(--space-reading);
 }
 
 .hero-band__action-label {
@@ -199,7 +329,7 @@
 	line-height: var(--type-code-line);
 	font-weight: 500;
 	text-transform: uppercase;
-	letter-spacing: 0.05em;
+	letter-spacing: var(--track-row);
 }
 
 // The site's action grammar is `/LABEL` at the accent ink, and the global link
@@ -208,6 +338,44 @@
 .hero-band__destination {
 	color: var(--Accent);
 	text-decoration: none;
+}
+
+/* ─── THE TRACE - THE PANEL'S WIRING BUS ──────────────────────────────── */
+
+// The pair's foot: the four-step runtime path, across the whole measure, under
+// both panels. It opens on the divider ink (20%), because it separates two
+// registers - the instrument above and its legend below - and an 8% rule
+// between a photograph and the creme field is the defect this programme keeps
+// finding.
+//
+// The steps keep the block's anatomy (index, label, one line) and take the
+// surface's density: the line is the meta tier here, not the body tier, because
+// four body paragraphs under a hero would be a second band.
+.hero-band__trace {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	padding-inline: clamp(2rem, 5vw, 5rem);
+	margin-block-start: var(--space-group);
+	padding-block-start: 0.75rem;
+	border-block-start: 1px solid
+		color-mix(in srgb, var(--CardForeground) 20%, transparent);
+}
+
+.hero-band__trace-label {
+	@include mono-meta;
+	@include track(var(--track-rule));
+	margin: 0;
+}
+
+.hero-band__trace-stage {
+	min-inline-size: 0;
+}
+
+.hero-band__trace .record-stage__line {
+	max-width: none;
+	font-size: var(--type-meta);
+	line-height: 1.45;
 }
 
 /* ─── THE HAIRLINE GUTTER ──────────────────────────────────────────────── */
@@ -251,9 +419,19 @@
 }
 
 .hero-band__plate {
-	flex: 1 1 auto;
+	flex: 1 1 0;
+	// Below `md` the pair is a stack, so the plate has no sibling to take its
+	// height from: without a floor it collapsed to nothing and left the caption
+	// describing an image that was not there. 40dvh is the height the baseline
+	// gave the photograph on a phone.
 	min-block-size: 40dvh;
 	inline-size: 100%;
+}
+
+@include bp(768px) {
+	.hero-band__plate {
+		min-block-size: 0;
+	}
 }
 
 .hero-band__caption {

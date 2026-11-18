@@ -1,0 +1,281 @@
+// RecordTranscript - a session, printed as it happened: turn markers, speakers,
+// and what each answered.
+//
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  a session - what was typed, what answered, in order. Not a
+//                   well (one command, copied as a block) and not a stage (an
+//                   order abstracted out of any particular run).
+// RANK              leaf.
+// SLOT CONTRACT     .record-transcript                the frame
+//                   .record-transcript--loading       the skeleton arm
+//                   .record-transcript--empty         the composed empty state
+//                   .record-transcript__bar           the register bar: marker, date, count, copy
+//                   .record-transcript__index|__label the `# TRANSCRIPT_01 / BUILD`
+//                   .record-transcript__asof          `AS OF: ...`
+//                   .record-transcript__count         `08 TURNS`
+//                   .record-transcript__copy          the copy control (Jelly's, placed)
+//                   .record-transcript__turns         the session
+//                   .record-transcript__turn          one turn: mark, speaker, line, stamp
+//                   .record-transcript__mark          `→`, `↳`, `#`, `◎`
+//                   .record-transcript__speaker       who spoke
+//                   .record-transcript__line          what was said, verbatim
+//                   .record-transcript__stamp         the turn's own stamp or its state word
+//                   .record-transcript__skeleton      a hairline bar where the line would be
+//                   .record-transcript__foot          `SHOWING: 12 OF 240` and the note
+//                   .record-transcript__source        `SOURCE: ...` - always printed
+// MAY HOLD          turns only.
+// NARROW            the turn is two rows - mark and speaker, then the line under
+//                   the speaker with the stamp at its right. The mark column is
+//                   2ch and never moves: it is the one thing that makes a
+//                   transcript readable.
+// WIDE (>=1024)     one row per turn, four columns: `2ch | 9ch | 1fr | auto`.
+//                   The speaker column is fixed so a reader can read one speaker
+//                   down the page.
+// DENSE             none. A transcript is verbatim; a compressed session has
+//                   dropped the line that mattered.
+//
+// THE BODY IS WHITE AND THE BAR IS `--Mute` - the inverse of the well. A well is
+// a command cut into the page (recessed body, white bar); a transcript is a
+// session laid on the page (white body, ruled turns) with its register band at
+// the top. Two objects that both hold mono text must not look the same, and this
+// is the difference that costs nothing.
+//
+// THE LINE WRAPS, AND THE WELL'S DOES NOT. A command that wrapped could not be
+// copied correctly; a session's output must wrap, because the alternative is a
+// horizontal scroll through a paragraph of build output. `pre-wrap` keeps the
+// leading whitespace a stack trace needs and lets the line break where the column
+// ends.
+//
+// THE SKELETON IS THE LOADING STATE. Mark and speaker print in ink, the line is a
+// hairline bar, and the count still prints - a session being read still shows how
+// many turns it has. There is no spinner in this layer.
+
+@use "../Mixin" as *;
+
+.record-transcript {
+	@include hairline;
+	display: flex;
+	flex-direction: column;
+	min-inline-size: 0;
+	margin: 0;
+	background: var(--Card);
+}
+
+// ─── THE BAR ──────────────────────────────────────────────────────────────
+.record-transcript__bar {
+	@include hairline(bottom);
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-tight) var(--space-reading);
+	padding: var(--space-tight) var(--space-reading);
+	background: var(--Mute);
+}
+
+.record-transcript__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 var(--space-tight);
+	flex: 1 1 auto;
+	min-inline-size: 0;
+}
+
+.record-transcript__index {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.record-transcript__label {
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.record-transcript__asof {
+	@include mono-meta;
+	@include track(var(--track-name));
+	white-space: nowrap;
+}
+
+.record-transcript__asof-key {
+	color: var(--MuteForeground);
+}
+
+.record-transcript__count {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+	white-space: nowrap;
+}
+
+.record-transcript__count-unit {
+	margin-inline-start: 0.5ch;
+	color: var(--MuteForeground);
+}
+
+.record-transcript__copy {
+	flex: 0 0 auto;
+	--jelly-icon-button-size: var(--space-group);
+	--jelly-icon-button-icon-size: var(--space-reading);
+}
+
+.record-transcript__copy[hidden] {
+	display: none;
+}
+
+// ─── THE TURNS ────────────────────────────────────────────────────────────
+.record-transcript__turns {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.record-transcript__turn {
+	display: grid;
+	grid-template-columns: 2ch minmax(0, 1fr) auto;
+	grid-template-areas:
+		"mark speaker stamp"
+		"mark line line";
+	column-gap: var(--space-tight);
+	row-gap: 0.15rem;
+	padding: var(--space-tight) var(--space-reading);
+	border-block-start: 1px solid var(--Border);
+}
+
+.record-transcript__turns > .record-transcript__turn:first-child {
+	border-block-start: 0;
+}
+
+@include bp(1024px) {
+	.record-transcript__turn {
+		grid-template-columns: 2ch minmax(0, 9ch) minmax(0, 1fr) auto;
+		grid-template-areas: "mark speaker line stamp";
+		row-gap: 0;
+	}
+}
+
+.record-transcript__mark {
+	grid-area: mark;
+	font-family: var(--FontMono);
+	font-size: var(--type-code);
+	line-height: var(--type-code-line);
+	color: var(--Foreground);
+}
+
+.record-transcript__speaker {
+	grid-area: speaker;
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+	overflow-wrap: anywhere;
+}
+
+.record-transcript__line {
+	grid-area: line;
+	min-inline-size: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-code);
+	line-height: var(--type-code-line);
+	letter-spacing: var(--track-set);
+	color: var(--Foreground);
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+}
+
+.record-transcript__stamp {
+	grid-area: stamp;
+	@include mono-meta;
+	@include track(var(--track-name));
+	text-align: end;
+	white-space: nowrap;
+}
+
+// A turn that carries a state prints its word where its stamp would be, in ink:
+// a failure is not a second colour, it is a word in the register.
+.record-transcript__turn--state .record-transcript__stamp {
+	color: var(--Foreground);
+}
+
+.record-transcript__turn--state .record-transcript__mark {
+	color: var(--MuteForeground);
+}
+
+// The loading skeleton: a hairline bar at the line's own baseline. It is drawn
+// from `--Divider` and its width is fixed, so the session's shape is stable
+// while the text arrives and nothing reflows when it does.
+.record-transcript__skeleton {
+	display: block;
+	inline-size: 62%;
+	block-size: 0.65em;
+	margin-block: 0.3em;
+	background: var(--Divider);
+}
+
+// ─── THE FOOT ─────────────────────────────────────────────────────────────
+.record-transcript__foot {
+	@include hairline(top);
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight) var(--space-group);
+	margin: 0;
+	padding: var(--space-tight) var(--space-reading);
+	background: var(--Mute);
+}
+
+.record-transcript__window {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+	white-space: nowrap;
+}
+
+.record-transcript__window-key {
+	color: var(--MuteForeground);
+}
+
+.record-transcript__window-of {
+	margin-inline: 0.75ch;
+	color: var(--MuteForeground);
+}
+
+.record-transcript__note {
+	@include mono-meta;
+	@include track(var(--track-name));
+	overflow-wrap: anywhere;
+}
+
+.record-transcript__source {
+	@include hairline(top);
+	margin: 0;
+	padding: var(--space-tight) var(--space-reading);
+	@include mono-meta;
+	@include track(var(--track-name));
+	overflow-wrap: anywhere;
+}
+
+.record-transcript__source-key {
+	color: var(--MuteForeground);
+}
+
+// ─── THE EMPTY STATE ──────────────────────────────────────────────────────
+.record-transcript__empty {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	margin: 0;
+	padding: var(--space-group) var(--space-reading);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.record-transcript__empty-mark {
+	font-size: var(--type-heading);
+	line-height: 1;
+	color: var(--MuteForeground);
+}

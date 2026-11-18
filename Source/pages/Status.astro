@@ -1,0 +1,260 @@
+---
+/**
+ * Status - the status board. What is live, what is on the way, what is retired,
+ * and what is claimed but not yet measured.
+ *
+ * ─── WHY THIS PAGE EXISTS ─────────────────────────────────────────────────
+ * The site states a status on fifteen element records, two releases, three
+ * platform records and one absent artifact - and a reader could only find them
+ * by opening four surfaces and holding the answers in their head. This is the
+ * page that answers the question in one reading, and it answers it by *reading*
+ * the four modules rather than by restating them: the board imports the same
+ * `Content/Record/*.ts`, `Content/Home/Roadmap.ts` and `Content/Home/Platform.ts`
+ * the homepage and the Download page print.
+ *
+ * ─── THE LANGUAGE: AUDIT ──────────────────────────────────────────────────
+ * `Source/Component/Shell/Language.ts` files this route as `audit`, and the
+ * contract is a ledger, a matrix and wells:
+ *
+ *   ledger   the scope: four facts at the head of the main track (records,
+ *            columns, vocabulary, as-of), each one read from the board below it
+ *   matrix   the board - a set read across four columns of one state each
+ *   wells    the command that re-reads the board, in the reading band
+ *
+ * The rail is not used, and that is a measured decision rather than an omission:
+ * four shelves need the page's full measure, and the audit's nineteen-rem rail
+ * would leave four columns of a hundred and eighty pixels. The four columns are
+ * still reachable - from the board band's own index strip, which is the site's
+ * navigation grammar and not a second rail.
+ *
+ * ─── THE OPENING IS THE INSTRUMENT HEAD, NOT A HERO ───────────────────────
+ * A status board is an instrument: it states what it is doing (`STATUS:`), what
+ * it is read from, and when. `SurfaceHead` is that head, and it is the same one
+ * the portal, the dashboard, the account and verify wear - so this page reads as
+ * a fifth reading of one instrument rather than as a manual page wearing a
+ * record. It is the first *manual* route to use it, which is why the page is
+ * composed as a shell rather than as a stack of bands.
+ *
+ * ─── THE ADVERSE STATES ARE IN THE SAME BAND AS THE BOARD ─────────────────
+ * The page's last band is three conditions the board knows it cannot answer:
+ * the evidence the records do not carry, the dates the records do not have, and
+ * the three targets whose artifacts do not exist. They are composed in the
+ * site's nine-state grammar (`ShellState`), in the same band rhythm as every
+ * other subject on the page - a status board that printed only its successes
+ * would be a poster.
+ */
+import { Header } from "../Component/Layout/Header";
+import Onward from "../Component/More/Onward.astro";
+import StatusBoard from "../Component/More/StatusBoard.astro";
+import RecordBand from "../Component/Record/RecordBand.astro";
+import RecordCompare from "../Component/Record/RecordCompare.astro";
+import RecordInstrument from "../Component/Record/RecordInstrument.astro";
+import RecordLedger from "../Component/Record/RecordLedger.astro";
+import RecordStage from "../Component/Record/RecordStage.astro";
+import RecordTrace from "../Component/Record/RecordTrace.astro";
+import RecordWell from "../Component/Record/RecordWell.astro";
+import Trail from "../Component/Route/Trail.astro";
+import PageShell from "../Component/Shell/PageShell.astro";
+import ShellState from "../Component/Shell/ShellState.astro";
+import SurfaceHead from "../Component/Surface/SurfaceHead.astro";
+import Base from "../Layout/Base.astro";
+
+import {
+	Bands,
+	Board,
+	Check,
+	Measures,
+	Publication,
+	Reading,
+	Stages,
+	TotalRows,
+	Vocabulary,
+} from "../Content/More/Status.js";
+import { StatusOnward } from "../Content/More/Page.js";
+
+import type { LedgerRow } from "../Component/Record/Type.js";
+import type { SurfaceState } from "../Component/Surface/State.js";
+
+/** The date of this reading: the day the page was rendered. */
+const AsOf = new Date().toISOString().slice(0, 10);
+
+const MetaTitle = "Status | Code Editor Land";
+
+const MetaDescription =
+	"Every record this site files with a state, under the four columns of the state vocabulary: what is in force, what is on the way, what is retired, and what is claimed but not yet measured.";
+
+/** The column's count, from the same rows the board prints. */
+const CountOf = (Key: string): number =>
+	Board.find((Column) => Column.key === Key)?.rows.length ?? 0;
+
+/** The band's index strip: the four columns, as destinations inside the page. */
+const ColumnLinks = Board.map((Column) => ({
+	label: `${Column.label} ${Column.rows.length}`,
+	href: `#board-${Column.key}`,
+}));
+
+/** The facts that scope the audit, in the ledger at the head of the main track. */
+const Scope: readonly LedgerRow[] = [
+	{ key: "RECORDS:", value: String(TotalRows), note: "on the board" },
+	{ key: "COLUMNS:", value: String(Board.length), note: "of the eight words" },
+	{ key: "VOCABULARY:", value: String(Vocabulary.length), note: "words, closed" },
+	{ key: "AS OF:", value: AsOf, note: "this build" },
+];
+
+/**
+ * The head's states. Two words from the vocabulary and nothing else: the board
+ * is `ACTIVE` because the records it reads are, and its evidence is
+ * `UNAVAILABLE` because eight of the fifteen manifests are placeholders.
+ */
+const States: readonly SurfaceState[] = [
+	{ key: "STATUS", value: "ACTIVE", tone: "specimen" },
+	{ key: "EVIDENCE", value: "UNAVAILABLE", tone: "ink" },
+];
+
+/** The declarations that make those two words auditable. */
+const Declarations = [
+	{ key: "ROUTE", value: "/STATUS" },
+	{ key: "SOURCE", value: "SOURCE/CONTENT/RECORD/*.TS" },
+	{ key: "AS OF", value: AsOf },
+	{ key: "VOCABULARY", value: "EIGHT WORDS" },
+];
+
+/** The head's facts, derived from the board rather than typed. */
+const Facts: readonly LedgerRow[] = [
+	{ key: "IN FORCE:", value: String(CountOf("in-force")) },
+	{ key: "ON THE WAY:", value: String(CountOf("on-the-way")) },
+	{ key: "RETIRED:", value: String(CountOf("retired")) },
+	{ key: "NOT MEASURED:", value: String(CountOf("not-measured")) },
+];
+
+const TrailItems = [
+	{ label: "/HOME", href: "/" },
+	{ label: "/STATUS" },
+];
+---
+
+<Base Title={MetaTitle} Description={MetaDescription}>
+	<Header client:load Mode="functional" slot="Header" />
+
+	<PageShell
+		index="# AUDIT_05"
+		label="THE STATUS BOARD"
+		class="PageShell--more"
+	>
+		<Trail slot="head" trail={TrailItems} />
+
+		<SurfaceHead
+			slot="head"
+			index="# STATUS_01"
+			title="The state of every record"
+			proposition="Twenty-one records, four columns, and the one word each record states about itself. This page decides no state: it reads the modules that do."
+			states={States}
+			declarations={Declarations}
+			rows={Facts}
+		/>
+
+		{/*
+			THE LEDGER, THEN THE MATRIX, THEN THE WELL.
+
+			The audit's three parts are on the page; the rail is not. A board of
+			four shelves needs roughly a thousand pixels - four columns of a
+			hundred and eighty are four columns of a squeezed row - and the
+			shell's audit rail takes nineteen rems of a seventy-two rem measure.
+			So the ledger that scopes the audit sits at the head of the main
+			track, and the four columns are reachable from the band's own index
+			strip, which is the site's navigation grammar rather than a second
+			rail. The declaration strip still prints `LEDGER MATRIX WELLS`, and
+			all three are below it.
+		*/}
+		<RecordLedger
+			register="# SCOPE / 04"
+			rows={Scope}
+			columns={2}
+		/>
+
+		<RecordBand band={{ ...Bands.Board, index: ColumnLinks }}>
+			<StatusBoard
+				columns={Board}
+				caption={`Every row was read from the module named in its band's footnote. A column that held nothing prints the sentence saying so, because "nothing is retired" and "retirement is not recorded" are different claims.`}
+			/>
+		</RecordBand>
+
+		<RecordBand band={Bands.Axis}>
+			<RecordCompare compare={Publication} />
+		</RecordBand>
+
+		<RecordBand band={Bands.Vocabulary}>
+			<RecordLedger rows={Vocabulary} columns={2} />
+		</RecordBand>
+
+		<RecordBand band={Bands.Figures}>
+			<RecordInstrument
+				measures={Measures(AsOf)}
+				caption="Every figure is computed from the rows on this page, and every figure names the file it was counted in. A figure the page could not compute would print UNAVAILABLE, never a zero."
+				empty="The board has no rows, so there is nothing to count. That is a state this page cannot reach while the element records exist, and it is stated rather than left as an empty panel."
+			/>
+		</RecordBand>
+
+		<RecordBand band={Bands.Reading}>
+			<RecordTrace trace={Reading} />
+			<RecordStage stages={Stages} orientation="row" />
+			<RecordWell
+				label={Check.label}
+				language={Check.language}
+				lines={Check.lines}
+				source={Check.source}
+			/>
+		</RecordBand>
+
+		<RecordBand band={Bands.Limits}>
+			<div class="more-states">
+				<ShellState
+					kind="partial"
+					index="LIMIT / 01"
+					statement="Every element record states ACTIVE. Eight of the fifteen also carry a manifest in the build, and every one of those manifests is a placeholder with no plate beside it."
+					cause="The record's status is a claim about the code. The evidence is a claim about the capture, and the capture has not been made."
+					next={{ label: "READ THE PLATE SET", href: "/Contents" }}
+					rows={[
+						{ key: "KNOWN:", value: "15 RECORDS, 15 STATUSES" },
+						{ key: "UNAVAILABLE:", value: "8 PLATES, 7 MANIFESTS" },
+					]}
+					note="SOURCE: SOURCE/CONTENT/ELEMENT/WORKING.TS"
+				/>
+
+				<ShellState
+					kind="stale"
+					index="LIMIT / 02"
+					statement="The last reading of these records is the build this page was rendered in."
+					cause="The records carry no date of their own."
+					asOf={AsOf}
+					age="THIS BUILD"
+					rows={[
+						{ key: "LAST KNOWN:", value: AsOf },
+						{ key: "RECORD DATES:", value: "UNAVAILABLE" },
+					]}
+					note="SOURCE: SOURCE/CONTENT/RECORD/*.TS"
+				/>
+
+				<ShellState
+					kind="missing"
+					index="LIMIT / 03"
+					statement="Three platform records point at the Download page, and the Download page has no artifact for any of them."
+					cause="Every platform row's action leads to a record whose VERSION and SIZE print UNAVAILABLE."
+					next={{ label: "BUILD FROM SOURCE", href: "/Doc/installation" }}
+					rows={[
+						{ key: "TARGETS:", value: "3" },
+						{ key: "ARTIFACTS:", value: "0" },
+						{ key: "ROUTE:", value: "/DOWNLOAD", code: true },
+					]}
+					note="SOURCE: SOURCE/COMPONENT/DYNAMIC/DOWNLOAD/DATA.TS"
+				/>
+			</div>
+		</RecordBand>
+
+		<Onward
+			slot="foot"
+			rows={StatusOnward.rows}
+			copy={StatusOnward.copy}
+		/>
+	</PageShell>
+</Base>

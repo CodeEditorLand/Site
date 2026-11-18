@@ -1,0 +1,95 @@
+---
+/**
+ * Folio - where in the document the reader has got to, and what is here.
+ *
+ * ─── WHY THIS BLOCK EXISTS ────────────────────────────────────────────────
+ * The site had no folio. Every band ends and the reader is nowhere: the running
+ * head says which part of the document they are in, and nothing says which band,
+ * how much of it there is, or when it was read. A printed page answers all three
+ * at its foot, in one line, and that line is the cheapest apparatus a document
+ * has.
+ *
+ *   〈03〉 /LEGAL␁26 CLAUSES␁AS OF: 2026-11-18
+ *
+ * ─── THE GRAMMAR IT KEEPS ─────────────────────────────────────────────────
+ * - The ordinal is CONTAINED: `〈03〉` is the grammar's containment bracket
+ *   around a literal. A folio is a literal that identifies a place.
+ * - The part is a `/ROUTE`-form label, because a part of the document is a place
+ *   in the document.
+ * - The separators are U+2001 and they are drawn by the stylesheet, never typed
+ *   into the template: a template's newline beside U+2001 becomes a 200px gap,
+ *   which the clause rail's head already paid for once.
+ * - The as-of is printed only when the caller has one. A folio that invented a
+ *   date would be the one figure on the page with no source.
+ *
+ * ─── NO SCRIPT ────────────────────────────────────────────────────────────
+ * No `<script>`, no `client:*`. A folio is printed.
+ */
+import type { DetailFigure } from "./Type.js";
+
+interface Props {
+	/** The band's ordinal, as a two-digit string: `03`. */
+	index: string;
+
+	/** The part of the document: `/LEGAL`, `/THE EDITION`. */
+	part: string;
+
+	/** What the band holds, as a figure with its unit: `26` / `CLAUSES`. */
+	figure?: DetailFigure;
+
+	/** What the band holds, when it is not a number: `UNPUBLISHED`. */
+	count?: string;
+
+	/** The date the band's facts were read (`YYYY-MM-DD`). */
+	asOf?: string;
+
+	/** The file the facts were read from. */
+	source?: string;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const {
+	index,
+	part,
+	figure,
+	count,
+	asOf,
+	source,
+	class: Class,
+} = Astro.props;
+
+/**
+ * The right end's fields, in the order they are read. Each is its own span so
+ * the stylesheet can set the figure tabular without touching the words.
+ */
+const Facts = [
+	count,
+	figure ? `${figure.value} ${figure.unit}` : undefined,
+	asOf ? `AS OF: ${asOf}` : undefined,
+	source ? `SOURCE: ${source}` : undefined,
+].filter((Entry): Entry is string => Entry !== undefined);
+---
+
+<p class:list={["detail-folio", Class]}>
+	<span class="detail-folio__place">
+		<span class="detail-folio__index">{`〈${index}〉`}</span>
+		<span class="detail-folio__part">{part}</span>
+	</span>
+
+	{
+		Facts.length > 0 && (
+			<span class="detail-folio__facts">
+				{Facts.map((Entry, Position) => (
+					<>
+						{Position > 0 && (
+							<span class="detail-folio__sep" aria-hidden="true" />
+						)}
+						<span class="detail-folio__count">{Entry}</span>
+					</>
+				))}
+			</span>
+		)
+	}
+</p>

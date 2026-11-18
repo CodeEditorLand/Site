@@ -1,0 +1,46 @@
+---
+/**
+ * DocContentsList - the rows of the page's own contents: one anchor per section,
+ * its position in the page as the marker column, its heading as the name.
+ *
+ * The list is the same in both registers (`DocContents`'s rail and its
+ * disclosure), so the anatomy lives here once: a two-digit marker, the heading's
+ * own text, and the id the markdown pipeline wrote. Nothing is re-slugified and
+ * nothing is re-cased - `Href` is `#` + the id `render()` reported, which is what
+ * makes an entry unable to point at a heading that is not there.
+ *
+ * The marker is the page's own order, printed as written (`01`, not `1`), the
+ * same two-digit convention the index cards and the rail's tree already use. It
+ * is `aria-hidden`: the link's text is the heading, and "01" read aloud before
+ * every entry is noise, not orientation.
+ */
+import type { DocTocItem } from "./Type.js";
+
+interface Props {
+	items: readonly DocTocItem[];
+
+	/** Extra classes from the caller, appended after the list's own. */
+	class?: string;
+}
+
+const { items, class: Class } = Astro.props;
+
+/** The entry's position in the page, two digits, as the record grammar writes it. */
+const Marker = (Position: number): string =>
+	String(Position + 1).padStart(2, "0");
+---
+
+<ol class:list={["doc-contents__list", Class]}>
+	{
+		items.map((Item, Position) => (
+			<li class="doc-contents__item">
+				<a class="doc-contents__link" href={Item.Href}>
+					<span class="doc-contents__marker" aria-hidden="true">
+						{Marker(Position)}
+					</span>
+					<span class="doc-contents__name">{Item.Label}</span>
+				</a>
+			</li>
+		))
+	}
+</ol>

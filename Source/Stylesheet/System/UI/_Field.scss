@@ -1,0 +1,161 @@
+@use "../Mixin" as *;
+
+// ─── THE FIELD ──────────────────────────────────────────────────────────────
+//
+// The control that opens a slip. A select trigger is a field; the palette's query
+// line is a field; the rail's filter is the same field. Three places, one object:
+// a white box with one `--Divider` frame, 32px tall, a `:` label, the value, and
+// the disclosure mark at the far end.
+//
+// The label is a compact field label in the record grammar's sense - `SCOPE:`,
+// `FILTER:` - and it is printed, not placeheld. A placeholder disappears the
+// moment the reader types; a label is a fact about the control and stays.
+//
+// The trigger is white, not `--Mute`. `--Mute` is the deeper creme the kit puts
+// behind an input, and on a white slip it reads as a disabled field. White on
+// creme with a divider frame is the site's one information-box convention.
+
+// `:is()` for the same reason the item list uses it: a comma list would attach
+// `[data-state="open"]` to the last selector only.
+$Field: ':is([data-slot="select-trigger"], .SlipField)';
+
+#{$Field} {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	inline-size: 100%;
+	min-block-size: 2rem;
+
+	padding: 0.375rem var(--space-reading);
+
+	background: var(--Card);
+	border: 1px solid var(--Divider);
+	border-radius: 0;
+
+	color: var(--Foreground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+	text-align: start;
+
+	cursor: pointer;
+
+	outline: none;
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition:
+			background-color 90ms linear,
+			border-color 90ms linear;
+	}
+}
+
+#{$Field}:hover {
+	background: color-mix(in srgb, var(--Card) 60%, var(--Background));
+}
+
+#{$Field}:focus-visible,
+#{$Field}[data-state="open"] {
+	border-color: var(--Accent);
+}
+
+#{$Field}:focus-visible {
+	outline: 2px solid var(--Accent);
+	outline-offset: 2px;
+}
+
+#{$Field}[data-disabled],
+#{$Field}:disabled {
+	color: var(--MuteForeground);
+
+	cursor: not-allowed;
+}
+
+// The `:` label inside the field - a compact field label, ink, with the colon
+// that makes it a label rather than a word.
+.SlipField__Label {
+	flex: 0 0 auto;
+
+	color: var(--MuteForeground);
+
+	@include track(var(--track-row));
+}
+
+.SlipField__Value {
+	flex: 1 1 auto;
+
+	min-inline-size: 0;
+
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+
+	color: var(--Foreground);
+}
+
+.SlipField__Value[data-placeholder] {
+	color: var(--MuteForeground);
+}
+
+// The disclosure mark: `›` rotated open, the same glyph the rail's disclosures
+// use, so one mark means "there is more behind this" everywhere on the site.
+.SlipField__Mark {
+	flex: 0 0 auto;
+
+	color: var(--MuteForeground);
+
+	font-size: var(--type-meta);
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition: transform 150ms ease;
+	}
+}
+
+#{$Field}[data-state="open"] .SlipField__Mark {
+	transform: rotate(90deg);
+}
+
+// ─── THE QUERY LINE ─────────────────────────────────────────────────────────
+//
+// The palette's input and the rail's filter. No frame of its own: it lives inside
+// a slip's head or a field's box, and a second border there would be a card
+// inside a card. 13px, ink, and a placeholder in the muted ink - the only place
+// this layer allows muted as the *only* thing said, because an empty query has no
+// value to print.
+
+.SlipInput {
+	flex: 1 1 auto;
+
+	min-inline-size: 0;
+	inline-size: 100%;
+
+	padding: 0;
+	margin: 0;
+
+	background: none;
+	border: 0;
+	border-radius: 0;
+
+	color: var(--Foreground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+
+	outline: none;
+}
+
+.SlipInput::placeholder {
+	color: var(--MuteForeground);
+
+	opacity: 1;
+}
+
+// The input's own focus is drawn by the surface that holds it (the head's bottom
+// rule goes accent), so the ring never draws twice.
+.SlipInput:focus-visible {
+	outline: none;
+}

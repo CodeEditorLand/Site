@@ -1,39 +1,49 @@
 ---
+/**
+ * The Rust API surface, composed as a WORKSPACE.
+ *
+ * ─── WHY A WORKSPACE ──────────────────────────────────────────────────────
+ * The page was a crate grid over a frame. But a reader here is operating: nine
+ * documentation hosts are destinations, the frame is the instrument, and what the
+ * frame *is* - generated output, from another host, with no as-of date - is a
+ * fact the page never printed. That is a workspace: a rail of destinations, panes
+ * that hold the register and the instrument, and a drawer for the contract.
+ *
+ * ─── THE FOUR PARTS ───────────────────────────────────────────────────────
+ *   head    the page's own documentation header (breadcrumb, `h1`, standfirst,
+ *           the metadata strip) - `DocArticle`'s, unchanged
+ *   rail    `CRATES / 09` - the nine hosts, each a destination, in tab order
+ *   panes   `# REGISTER_01` (the crate tiles, kept) beside `# FRAME_01` (the
+ *           viewer, kept), 5fr / 1px / 7fr
+ *   drawer  what the frame is, and the two honest gaps: the rustdoc's as-of is
+ *           not recorded, and a crate with no published site prints a tombstone
+ *
+ * ─── WHAT SURVIVES ────────────────────────────────────────────────────────
+ * The sequence is still the baseline's: breadcrumb, header, strip, crates,
+ * viewer, way back. The nine tiles are the same nine tiles with the same URLs,
+ * labels and descriptions, printed by the same `doc-crate` markup; the viewer is
+ * the same component with the same tabs and the same frame. What is added is the
+ * rail, the panes' heads and the drawer - and the two states the page could not
+ * previously say.
+ *
+ * Every crate URL, label and description is in `Component/Doc/Rust/Data.ts` and
+ * is the string the page has always printed. The rail reads the same array, so a
+ * crate cannot appear in one place and not the other.
+ */
 import DocArticle from "../../Component/Doc/DocArticle.astro";
 import { RustCrates } from "../../Component/Doc/Rust/Data";
 import RustViewer from "../../Component/Doc/RustViewer.astro";
 import { Header } from "../../Component/Layout/Header";
+import PageShell from "../../Component/Shell/PageShell.astro";
+import ShellPanes from "../../Component/Shell/ShellPanes.astro";
+import ShellRail from "../../Component/Shell/ShellRail.astro";
+import ShellState from "../../Component/Shell/ShellState.astro";
+import { RustWorkspace } from "../../Content/Layout/Rust.js";
 import BuildDocStrip from "../../Function/Doc/BuildDocStrip";
 import Base from "../../Layout/Base.astro";
 import { LinkMentions } from "../../Library/CodeMentions";
 import { GetI18n } from "../../Library/I18n/Server";
 
-/**
- * The Rust API surface: the crate grid, then the frame that reads one.
- *
- * The sequence is the baseline's, and the baseline is unusually specific here
- * because this page has no rail:
- *
- * 1. **The breadcrumb** - `Home / Documentation / Rust API`.
- * 2. **The header** - one `h1` and one standfirst. No kicker: the baseline gave
- *    this page none, and the crumb already names where it sits.
- * 3. **The metadata strip** - the same five fields every documentation surface
- *    carries (`DesignSystem-Pages.md` §5, built by `BuildDocStrip`), plus the
- *    crate count. Recovered from `8b58843c5^`, where the removal took it with
- *    the strip on every other doc surface: the layer is the page's own subject
- *    (`RUST API`), the source is the rustdoc output the viewer frames, and the
- *    count is the one number a reader can check against the grid below.
- * 4. **The crate grid** - nine tiles, two across on a narrow viewport and five
- *    across from 768px, each tile a name with its `↗` and one line saying what
- *    the crate is. The tiles are the only navigation this page needs.
- * 5. **The viewer** - the tab bar and the rustdoc frame, one surface.
- * 6. **The way back** - `Documentation ←`, closed by a hairline.
- *
- * What is NOT here, because the baseline had none: a section kicker, and the
- * two band headings (`Rust crates`, `Read it here`) an earlier pass wrapped the
- * list and the frame in. Every crate URL, label and description is in
- * `Component/Doc/Rust/Data.ts` and is the string the page has always printed.
- */
 const T = GetI18n();
 
 const MetaTitle = T("meta.docs.rust.title", {
@@ -59,7 +69,7 @@ const Documentation = T("common.docs.pageTitle", {
 });
 const Crumb = T("rust.crumb", { ns: "doc", defaultValue: "Rust API" });
 
-/** The page's metadata strip - see the sequence above for what each field says. */
+/** The page's metadata strip - the five documented fields plus the crate count. */
 const PageStrip = BuildDocStrip(
 	{
 		Layer: Crumb,
@@ -73,6 +83,21 @@ const PageStrip = BuildDocStrip(
 	},
 	T,
 );
+
+/** The workspace copy: the rail's words, the panes' heads, the two gaps. */
+const Surface = RustWorkspace(T);
+
+/**
+ * The rail's nine rows. The mark is the crate's position in tab order, which is
+ * the order the viewer's tabs are in - so the rail and the frame agree about
+ * which crate is first without either being told.
+ */
+const CrateRail = RustCrates.map((Crate, Position) => ({
+	mark: String(Position + 1).padStart(2, "0"),
+	label: Crate.Label.toUpperCase(),
+	meta: "↗",
+	href: Crate.Url,
+}));
 ---
 
 <Base
@@ -83,56 +108,118 @@ const PageStrip = BuildDocStrip(
 >
 	<Header client:idle={{ timeout: 2000 }} Mode="functional" slot="Header" />
 
-	<div class="doc-rust">
-		<DocArticle
-			title={Heading}
-			standfirstHtml={LinkMentions(Standfirst)}
-			strip={PageStrip}
-			crumbs={[
-				{ label: Home, href: "/" },
-				{ label: Documentation, href: "/Doc" },
-				{ label: Crumb },
-			]}
-			measure={false}
-		>
-			<ul class="doc-crates">
-				{
-					RustCrates.map((Crate) => (
-						<li class="doc-crates__item">
-							<a
-								class="doc-crate"
-								href={Crate.Url}
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								<span class="doc-crate__label">
-									{Crate.Label}
-									<span class="doc-crate__arrow" aria-hidden="true">
-										↗
-									</span>
-								</span>
-								<span class="doc-crate__note">{Crate.Description}</span>
-							</a>
-						</li>
-					))
-				}
-			</ul>
+	<PageShell index="# WORKSPACE_05" label="THE RUST API">
+		<ShellRail
+			slot="rail"
+			label={Surface.railLabel}
+			count={RustCrates.length}
+			items={CrateRail}
+			current="page"
+			foot={Surface.railFoot}
+		/>
 
-			<RustViewer
-				crates={RustCrates}
-				label={T("rust.viewer.label", {
-					ns: "doc",
-					defaultValue: "Rust crate group",
-				})}
-				title={T("rust.viewer.title", {
-					ns: "doc",
-					defaultValue: "Rust API Documentation",
-				})}
-			/>
+		<div class="doc-rust">
+			<DocArticle
+				title={Heading}
+				standfirstHtml={LinkMentions(Standfirst)}
+				strip={PageStrip}
+				crumbs={[
+					{ label: Home, href: "/" },
+					{ label: Documentation, href: "/Doc" },
+					{ label: Crumb },
+				]}
+				measure={false}
+			>
+				<ShellPanes
+					ratio="5/7"
+					primary={{
+						mark: Surface.panes.index.mark,
+						label: Surface.panes.index.label,
+						meta: `${RustCrates.length}\u2001HOSTS`,
+					}}
+					secondary={{
+						mark: Surface.panes.frame.mark,
+						label: Surface.panes.frame.label,
+						meta: "RUSTDOC",
+					}}
+					drawer={{
+						label: Surface.drawer.label,
+						note: Surface.drawer.note,
+					}}
+				>
+					<div slot="primary">
+						<ul class="doc-crates">
+							{
+								RustCrates.map((Crate) => (
+									<li class="doc-crates__item">
+										<a
+											class="doc-crate"
+											href={Crate.Url}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											<span class="doc-crate__label">
+												{Crate.Label}
+												<span class="doc-crate__arrow" aria-hidden="true">
+													↗
+												</span>
+											</span>
+											<span class="doc-crate__note">{Crate.Description}</span>
+										</a>
+									</li>
+								))
+							}
+						</ul>
+					</div>
 
-			<p class="doc-rust__back">
-				<a href="/Doc">{Documentation}<span aria-hidden="true"> ←</span></a>
-			</p>
-		</DocArticle>
-	</div>
+					<div slot="secondary">
+						<RustViewer
+							crates={RustCrates}
+							label={T("rust.viewer.label", {
+								ns: "doc",
+								defaultValue: "Rust crate group",
+							})}
+							title={T("rust.viewer.title", {
+								ns: "doc",
+								defaultValue: "Rust API Documentation",
+							})}
+						/>
+					</div>
+
+					<div slot="drawer">
+						<p class="doc-rust__contract">{Surface.drawer.statement}</p>
+						<p class="doc-rust__contract-source">{Surface.drawer.source}</p>
+
+						<div class="PageShell__row" style="--row-tracks:2">
+							<ShellState
+								kind="partial"
+								index="GAP / 01"
+								statement={Surface.partial.statement}
+								cause={Surface.partial.cause}
+								next={Surface.partial.next}
+								rows={[
+									{ key: "SOURCE:", value: "RUSTDOC" },
+									{ key: "AS OF:", value: "UNAVAILABLE" },
+									{ key: "CRATES:", value: String(RustCrates.length) },
+								]}
+								note="SOURCE: THE BUILD RECORDS NO RUSTDOC DATE"
+							/>
+							<ShellState
+								kind="empty"
+								index="GAP / 02"
+								statement={Surface.empty.statement}
+								cause={Surface.empty.cause}
+								next={Surface.empty.next}
+								note="SOURCE: REGISTER POLICY"
+							/>
+						</div>
+					</div>
+				</ShellPanes>
+
+				<p class="doc-rust__back">
+					<a href="/Doc">{Documentation}<span aria-hidden="true"> ←</span></a>
+				</p>
+			</DocArticle>
+		</div>
+	</PageShell>
 </Base>

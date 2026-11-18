@@ -1,0 +1,142 @@
+---
+/**
+ * RecordStamp - the mark that says this record is what it claims to be.
+ *
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  authentication: an edition's mark, a document's version
+ *                   stamp, a route's own seal. One mark, the route it is issued
+ *                   under, the facts that bound it, and the authority that makes
+ *                   it true. Not a ledger (facts about an object) and not a
+ *                   badge (a tint with no field behind it).
+ * RANK              leaf.
+ * SLOT CONTRACT     stamp.index     -> `# STAMP_01`
+ *                   stamp.label?    -> `/ EDITION`, after the marker
+ *                   stamp.mark      -> `〈EDITION 01〉` at section size
+ *                   stamp.route?    -> `/CHANNEL:PUBLIC` under the mark
+ *                   stamp.rows[]    -> `ISSUED:`, `HOLDING:`, `REACHES:`
+ *                   stamp.authority -> `AUTHORITY: ...` - required
+ *                   stamp.state?    -> `STATUS: <word>` in its vocabulary tone
+ *                   stamp.revoked?  -> the tombstone: `◎ WITHDRAWN: <reason>`
+ *                   stamp.note?     -> one line: what the mark does not cover
+ * MAY HOLD          nothing. A stamp is a mark and its register.
+ * MAY NOT HOLD      prose, a figure, a second mark - a record carries one seal
+ *                   and one stamp, and two of either is a record arguing with
+ *                   itself.
+ * WIDE (>=1024)     a hairline frame at the container's measure; the mark at
+ *                   the section role, the route beneath it, the rows in two
+ *                   columns under a rule, the authority on the frame's floor.
+ * NARROW            one column; the rows stack; the mark steps to the heading
+ *                   role so it cannot overflow a 320px measure. The frame, the
+ *                   route and the authority are untouched - a stamp that loses
+ *                   its authority on a phone has lost the only field it has.
+ * DENSE             none. A stamp is four lines and a mark; there is nothing to
+ *                   compress, and a compressed stamp is a badge.
+ *
+ * THE MARK IS SET, NOT DRAWN. There is no rotated plate, no rubber-stamp texture,
+ * no double rule and no shadow: the identity forbids all four, and a stamp that
+ * pretends to be ink on paper is the one thing this site's paper does not do.
+ * What makes it a stamp is the *form of the claim*: one mark, the route it was
+ * issued under, and the authority that verifies it - which is exactly what a
+ * stamp says and a card does not.
+ *
+ * THE WITHDRAWN ARM IS THE ADVERSE STATE. A mark that was true and is not any
+ * more keeps its rows (it is still the record of what was issued), loses its
+ * route, and prints `◎ WITHDRAWN:` with the reason in ink. A stamp that simply
+ * disappeared when it stopped being true would leave a page making a claim with
+ * no mark under it.
+ *
+ * No `<script>` and no `client:*`: a stamp is printed once and never changes.
+ */
+import { Tone } from "../Surface/State.js";
+
+import type { Stamp } from "./Type.js";
+
+interface Props {
+	/** The mark, its route, its rows and its authority. */
+	stamp: Stamp;
+
+	/** Extra classes from the page, appended after the block's own. */
+	class?: string;
+}
+
+const { stamp, class: Class } = Astro.props;
+
+/** The state word's tone, from the one table that decides tones. */
+const StateTone = stamp.state
+	? (Tone(stamp.state.toUpperCase()) ?? "ink")
+	: undefined;
+
+/** A withdrawn mark keeps its register and loses its route. */
+const Withdrawn = stamp.revoked !== undefined;
+
+/** The frame's accessible name: the mark is the thing it names. */
+const Id = `stamp-${stamp.index.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+---
+
+<aside
+	class:list={["record-stamp", Withdrawn && "record-stamp--withdrawn", Class]}
+	aria-labelledby={`${Id}-mark`}
+	id={Id}
+>
+	<p class="record-stamp__head">
+		<span class="record-stamp__index"># {stamp.index}</span>
+		{stamp.label ? <span class="record-stamp__label">/ {stamp.label}</span> : null}
+		{
+			stamp.state ? (
+				<span
+					class:list={[
+						"record-stamp__state",
+						`record-stamp__state--${StateTone}`,
+					]}
+				>
+					<span class="record-stamp__state-marker" aria-hidden="true" />
+					<span class="record-stamp__state-key">STATUS:</span>
+					{stamp.state.toUpperCase()}
+				</span>
+			) : null
+		}
+	</p>
+
+	<p class="record-stamp__mark" id={`${Id}-mark`}>{stamp.mark}</p>
+
+	{
+		Withdrawn ? (
+			<p class="record-stamp__revoked">
+				<span class="record-stamp__revoked-mark" aria-hidden="true">
+					&#9678;
+				</span>
+				<span class="record-stamp__revoked-key">WITHDRAWN:</span>
+				{stamp.revoked}
+			</p>
+		) : stamp.route ? (
+			<p class="record-stamp__route">{stamp.route}</p>
+		) : null
+	}
+
+	{
+		stamp.rows.length > 0 ? (
+			<dl class="record-stamp__rows">
+				{stamp.rows.map((Row) => (
+					<div class="record-stamp__row">
+						<dt class="record-stamp__row-key">{Row.key}:</dt>
+						<dd
+							class:list={[
+								"record-stamp__row-value",
+								Row.code && "record-stamp__row-value--code",
+							]}
+						>
+							{Row.value}
+						</dd>
+					</div>
+				))}
+			</dl>
+		) : null
+	}
+
+	<p class="record-stamp__authority">
+		<span class="record-stamp__authority-key">AUTHORITY:</span>
+		{stamp.authority}
+	</p>
+
+	{stamp.note ? <p class="record-stamp__note">{stamp.note}</p> : null}
+</aside>

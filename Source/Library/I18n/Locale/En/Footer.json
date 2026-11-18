@@ -32,9 +32,10 @@
 		"linkedin": "LinkedIn"
 	},
 	"bottomBar": {
-		"copyright": "\u00a9 {{year}} Code Editor Land. All rights reserved.",
+		"copyright": "© {{year}} Code Editor Land. CC0 1.0 Universal: no rights reserved.",
 		"builtBy": "Built by the Code Editor Land team",
-		"madeWith": "Made with"
+		"madeWith": "Made with",
+		"top": "Back to top \u2191"
 	},
 	"funding": {
 		"prefix": "This project has been funded through the ",
@@ -71,6 +72,38 @@
 		"download": "/DOWNLOAD",
 		"github": "/GITHUB",
 		"contact": "/CONTACT",
-		"blog": "/BLOG"
+		"blog": "/BLOG",
+		"contents": "/CONTENTS"
+	},
+	"field": {
+		"facts": "FACTS:",
+		"colophon": "COLOPHON:",
+		"routes": "ROUTES:",
+		"legal": "LEGAL:",
+		"index": "INDEX:"
+	},
+	"colophon": {
+		"type": {
+			"key": "TYPE",
+			"value": "IBM PLEX MONO"
+		},
+		"build": {
+			"key": "BUILD",
+			"value": "ASTRO\u2001STATIC"
+		},
+		"field": {
+			"key": "FIELD",
+			"value": "F2EDE3"
+		},
+		"ink": {
+			"key": "INK",
+			"value": "1C1C1E"
+		},
+		"extent": {
+			"key": "EXTENT"
+		},
+		"edition": {
+			"key": "EDITION"
+		}
 	}
 }

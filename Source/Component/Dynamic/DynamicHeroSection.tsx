@@ -27,6 +27,8 @@ import { StackLabel, StackTiles } from "../../Content/Home/Stack.js";
 
 import { HeroBandDefault } from "./Hero/Data.js";
 
+import { RailLabel } from "./Properties/Data.js";
+
 import type Property from "./Interface/Property/Hero.js";
 
 /**
@@ -40,17 +42,25 @@ import type Property from "./Interface/Property/Hero.js";
  *   │ FIELD RECORD (warm-white)  │ EVIDENCE (full-bleed, text-  │
  *   │  # LAND_01          [SEAL] │ free image, object-fit:cover) │
  *   │  〈RUST + TAURI〉          │                              │
+ *   │  ── hairline ──            │                              │
  *   │  〈NO ELECTRON〉           │                              │
  *   │  /COMPAT: VS CODE          │                              │
  *   │  EXTENSIONS / UNMODIFIED   │                              │
- *   │  NATIVE␁OPEN␁CROSS-PLATFORM │                              │
+ *   │  WALK␁LISTEN␁SIGNAL …      │                              │
  *   │  STATUS: SOURCE ACTIVE     │                              │
  *   │  [MAJOR BLANK BAND 15-25%] │                              │
  *   │  LAND:                     │                              │
  *   │  ↳EDITOR WITHOUT CHROMIUM  │                              │
- *   │  TARGET / LICENSE / SIGNAL │                              │
+ *   │  TARGET / LICENSE / SIGNAL │ caption ␁ provenance         │
  *   │  [BUILD FROM SOURCE] /READ │                              │
  *   └────────────────────────────┴──────────────────────────────┘
+ *   RUNTIME PATH  01 MOUNTAIN ─ 02 COCOON ─ 03 SKY ─ 04 WIND
+ *   TECH STACK    eight chips, one row
+ *
+ * The shape is a **panel with a foot**, and the foot is the composition's
+ * argument: the pair is the instrument (a claim beside its evidence), the trace
+ * is its wiring, and the stack is its legend. All three are one artifact and one
+ * screen.
  *
  * What each panel carries, and why the split is not decoration:
  *
@@ -97,11 +107,11 @@ import type Property from "./Interface/Property/Hero.js";
  *
  * The four-element rail is the one that came back, and it is restored where the
  * evidence is: Mountain → Cocoon → Sky → Wind is the hero's ordered process, so
- * it is printed as the evidence plate's `RecordStage` (`DESIGN-COMPLETE.md`
- * §5.2 row 3), above the plate and never on it. `FeatureBand` still prints its
- * own copy of the same four steps in the `#features` band; that duplication is
- * reported rather than removed, because removing a band's treatment is not this
- * file's decision to take.
+ * it is printed as the panel's `RecordStage` (`DESIGN-COMPLETE.md` §5.2 row 3) -
+ * across the foot of the pair, never on the plate. `FeatureBand` used to print
+ * its own copy of the same four steps; that copy is gone, because the proof now
+ * sits under the claim it proves, and two copies of one rail on one page is not
+ * a proof, it is a habit. The steps themselves are unchanged and printed once.
  *
  * Every one of those is a move, not a deletion: the strings are the same
  * strings, printed by the band whose layer owns them.
@@ -330,7 +340,17 @@ const DynamicHeroSection = ({
 								<FieldRecordSeal element="Land" size={48} />
 							</div>
 
-							{/* 2-3. The oversized runtime claim, then what it is not. */}
+							{/*
+							 * 2. THE CLAIM - the page's one XL, on one line.
+							 *
+							 * The tier is XL (48-72px); the value is the low end
+							 * of it because the claim is fifteen glyphs wide and
+							 * the card is 49% of the pair. At the top of the
+							 * tier it broke after `RUST +`, which turned the
+							 * record's assertion into a two-line poster. A
+							 * claim that cannot be read as one sentence is not
+							 * a claim.
+							 */}
 							<h1
 								id="hero-claim"
 								className="type-display hero-band__claim"
@@ -338,23 +358,49 @@ const DynamicHeroSection = ({
 								<StampText Line={Hero.claim.runtime} />
 							</h1>
 
-							<p className="type-section hero-band__engine">
-								<StampText Line={Hero.claim.engine} />
-							</p>
+							{/*
+							 * 3-6. THE STAMP BLOCK - what it is not, what it is
+							 * compatible with, what that compatibility means,
+							 * and the program line.
+							 *
+							 * These four were four separate bands at three
+							 * different tiers (L, L, S, S), which is what made
+							 * the card shout four times before it said
+							 * anything. They are one block now, at S, under one
+							 * hairline: a stamp is read as a stamp because of
+							 * its containment and its tracking, not because it
+							 * is 52px tall. The jump from the claim to this
+							 * block is the page's hardest tier jump and it is
+							 * deliberate - the reader should meet one assertion
+							 * and then a block of readings.
+							 */}
+							<div className="hero-band__stamps">
+								{/*
+								 * The two stamps sit on one line: they are the
+								 * record's pair of qualifiers - what it is not,
+								 * and what it is compatible with - and a stamp
+								 * row is how a field record prints two
+								 * independent qualifications. Stacked, they
+								 * read as two more sentences.
+								 */}
+								<p className="hero-band__stamp-pair">
+									<span className="hero-band__engine">
+										<StampText Line={Hero.claim.engine} />
+									</span>
 
-							{/* 4-5. The compatibility route and what it means. */}
-							<p className="type-section hero-band__route">
-								<RouteText Line={Hero.claim.route} />
-							</p>
+									<span className="hero-band__route">
+										<RouteText Line={Hero.claim.route} />
+									</span>
+								</p>
 
-							<p className="type-meta hero-band__compat">
-								{Hero.claim.compat}
-							</p>
+								<p className="type-meta hero-band__compat">
+									{Hero.claim.compat}
+								</p>
 
-							{/* 6. The program line, em-quad separated. */}
-							<p className="type-meta hero-band__program">
-								{Hero.program}
-							</p>
+								<p className="type-meta hero-band__program">
+									{Hero.program}
+								</p>
+							</div>
 
 							{/* 7. The release state. */}
 							<div className="hero-band__status">
@@ -391,34 +437,34 @@ const DynamicHeroSection = ({
 							 * `RecordLedger` by the route (`slot="ledger"`):
 							 * the block is `.astro` and this island is `.tsx`,
 							 * so the page imports it and this file places it.
-							 * The labels arrive with their colons - `TARGET:`,
-							 * `LICENSE:`, `SIGNAL:` - because `Hero/Data.ts`
-							 * prints the colon as grammar.
 							 *
-							 * The fallback below renders the same rows from
-							 * `Hero.facts` for a render that hands no slot (the
-							 * unit test, or a page that passes none); the route
-							 * always passes the block, so the live page never
-							 * prints this copy.
+							 * The slot arrives wrapped in `<astro-slot>`, an
+							 * inline zero-height element: left as a direct
+							 * child of the flex column it takes no space and
+							 * the action rides over the facts. The wrapper
+							 * below is a real block, so the ledger's height is
+							 * the height the record reserves for it.
 							 */}
-							{ledger ?? (
-								<dl className="record-ledger record-ledger--1 hero-band__facts">
-									{Hero.facts.map((Fact) => (
-										<div
-											className="record-ledger__row"
-											key={Fact.key}
-										>
-											<dt className="record-ledger__key">
-												{Fact.key}
-											</dt>
+							<div className="hero-band__ledger">
+								{ledger ?? (
+									<dl className="record-ledger record-ledger--1 hero-band__facts">
+										{Hero.facts.map((Fact) => (
+											<div
+												className="record-ledger__row"
+												key={Fact.key}
+											>
+												<dt className="record-ledger__key">
+													{Fact.key}
+												</dt>
 
-											<dd className="record-ledger__value">
-												{Fact.value}
-											</dd>
-										</div>
-									))}
-								</dl>
-							)}
+												<dd className="record-ledger__value">
+													{Fact.value}
+												</dd>
+											</div>
+										))}
+									</dl>
+								)}
+							</div>
 
 							{/* 12. One action, and the routes beside it. */}
 							<div className="hero-band__action">
@@ -461,16 +507,6 @@ const DynamicHeroSection = ({
 
 				{/* ══ PANEL 2 - THE EVIDENCE ═════════════════════════════════ */}
 				<figure className="hero-band__evidence">
-					{/*
-					 * The plate's proof: the hero's ordered process, mounted
-					 * as `RecordStage` by the route (`slot="stage"`) - the
-					 * four-element runtime path the claim above asserts,
-					 * printed as a Signal Trace. It sits ABOVE the plate and
-					 * never on it: the image stays text-free, which is what
-					 * makes it evidence rather than a poster.
-					 */}
-					{stage}
-
 					<FieldRecordEvidence
 						alt={Hero.plate.alt}
 						className="hero-band__plate"
@@ -486,15 +522,49 @@ const DynamicHeroSection = ({
 				</figure>
 			</div>
 
-			{/* ══ THE TECH-STACK STRIP ═══════════════════════════════════ */}
+			{/*
+			 * ══ THE TRACE - the panel's wiring bus ════════════════════════
+			 *
+			 * The hero's ordered process, mounted as `RecordStage` by the
+			 * route (`slot="stage"`): the four-element runtime path the
+			 * claim above asserts, printed as a Signal Trace across the
+			 * whole measure, under both panels.
+			 *
+			 * It used to sit inside the evidence panel, above the plate,
+			 * and it took 405 of that panel's 1368px - which turned the
+			 * evidence plate into a rail with a photograph under it and
+			 * pushed the pair to 1512px. An instrument's wiring runs
+			 * under the panel, not over the display: here the trace spans
+			 * the pair, the plate is full height again, and the four
+			 * steps read left to right in the order they happen.
+			 *
+			 * Same block, same four steps, same label. A move, not a
+			 * deletion - and a strengthening, because a four-across rail
+			 * at the full measure can print each step's one line on one
+			 * line, which the 655px column could not.
+			 */}
+			<div
+				aria-labelledby="hero-trace-label"
+				className="hero-band__trace"
+				role="group"
+			>
+				<p className="hero-band__trace-label" id="hero-trace-label">
+					{RailLabel}
+				</p>
+
+				{stage}
+			</div>
+
+			{/* ══ THE TECH-STACK STRIP - THE PANEL'S LEGEND ══════════════════ */}
 			<div className="hero-band__stack">
 				<p className="hero-band__stack-label">{StackLabel}</p>
 
 				<div aria-hidden="true" className="hero-band__stack-grid">
 					{StackTiles.map((Tile) => {
 						const Glyph =
-							StackGlyphs[Tile.Icon as keyof typeof StackGlyphs] ??
-							Cpu;
+							StackGlyphs[
+								Tile.Icon as keyof typeof StackGlyphs
+							] ?? Cpu;
 
 						return (
 							<div

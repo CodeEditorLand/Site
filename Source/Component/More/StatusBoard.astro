@@ -1,0 +1,168 @@
+---
+/**
+ * StatusBoard - a set of records partitioned by the state each one states.
+ *
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  a set read by condition: which records are live, which are
+ *                   announced, which are retired, which are waiting on a
+ *                   measurement - and how many sit under each.
+ * RANK              set.
+ * SLOT CONTRACT     columns[]  -> one column each: key, label, words[], note,
+ *                                empty, rows[] (mark, label, meta, href?, state)
+ *                   caption?   -> the provenance line under the board
+ *                   empty?     -> what the board says with no columns at all
+ * MAY HOLD          rows. A row is a record's marker, its name, its word and one
+ *                   line - never a block, never prose.
+ * MAY NOT HOLD      a matrix (that is a comparison across columns of the *same*
+ *                   row set), an archive (that is one list, unfiled), or a
+ *                   second board.
+ * WIDE (>=1024)     four columns on the band's measure, each a shelf: a register
+ *                   head, a count, a hairline, then rows separated by hairlines.
+ *                   The columns are not equal - `IN FORCE` holds sixteen rows and
+ *                   `RETIRED` holds none - so they are `auto` tracks that share
+ *                   the measure by content, and the empty one keeps its width.
+ * NARROW            the shelves stack in reading order and keep their heads,
+ *                   counts and rules. A board that folded its columns into a
+ *                   disclosure would hide the empty one, which is the column the
+ *                   board most needs to be trusted about.
+ * DENSE             none. A board compresses by counting, not by shrinking: the
+ *                   count is in the head, so a reader who wants the number does
+ *                   not read the rows.
+ *
+ * ─── WHY A BOARD AND NOT FOUR ARCHIVES ────────────────────────────────────
+ * Four archives stacked would read as four lists that happen to sit near each
+ * other; the reader would have to hold the counts in their head to see the shape
+ * of the site's state. The board puts the shape in the layout: one column is
+ * tall, one is short, one is empty, and that *is* the answer to "what is live".
+ *
+ * ─── THE ROW CARRIES ITS OWN WORD ─────────────────────────────────────────
+ * A row prints the state word it was filed under, in that word's tone, even
+ * though the column head already says it. That is deliberate: a row read out of
+ * its column - by a screen reader, by a reader on a phone, by a search result -
+ * must still say what it is. The column is a grouping, and a grouping that is
+ * the only place a fact lives is a grouping that loses the fact.
+ *
+ * ─── THE EMPTY COLUMN IS COMPOSED, NOT HIDDEN ─────────────────────────────
+ * `empty` is a required field of every column. A board that dropped an empty
+ * column would make "nothing is retired" indistinguishable from "retirement is
+ * not recorded", which is the one distinction a status board exists to make.
+ *
+ * No script and no hydration: a board is a printed page.
+ */
+import { Tone } from "../Surface/State.js";
+
+import type { BoardColumn, BoardRow } from "../../Content/More/Status.js";
+
+interface Props {
+	/** The columns, in reading order. The block sorts nothing. */
+	columns: readonly BoardColumn[];
+
+	/** The provenance line under the board. */
+	caption?: string;
+
+	/**
+	 * What the board says when it has no columns at all: what would be here, why
+	 * it is not, and what to do. Absent, an empty board renders nothing - never a
+	 * frame over nothing.
+	 */
+	empty?: string;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const { columns, caption, empty, class: Class } = Astro.props;
+
+/** The word's ink, from the one table that decides tones. */
+const ToneOf = (State: string): string => Tone(State.toUpperCase()) ?? "ink";
+
+/** A row's index inside its column, for the row's own id. */
+const RowId = (Column: BoardColumn, Row: BoardRow, Index: number): string =>
+	`board-${Column.key}-${Index + 1}`;
+---
+
+<section class:list={["status-board", Class]}>
+	{
+		columns.length > 0 ? (
+			<div class="status-board__shelves">
+				{columns.map((Column) => (
+					<section
+						class="status-board__column"
+						id={`board-${Column.key}`}
+						aria-labelledby={`board-${Column.key}-head`}
+					>
+						<header class="status-board__head">
+							<p class="status-board__register">
+								<span class="status-board__mark" aria-hidden="true">
+									#
+								</span>
+								<span class="status-board__label" id={`board-${Column.key}-head`}>
+									{Column.label}
+								</span>
+								<span class="status-board__count">
+									{Column.rows.length}
+								</span>
+							</p>
+							<p class="status-board__words">
+								{Column.words.join("\u2001")}
+							</p>
+						</header>
+
+						<p class="status-board__note">{Column.note}</p>
+
+						{Column.rows.length > 0 ? (
+							<ol class="status-board__rows">
+								{Column.rows.map((Row, RowIndex) => (
+									<li class="status-board__row" id={RowId(Column, Row, RowIndex)}>
+										{Row.href ? (
+											<a class="status-board__link" href={Row.href}>
+												<span class="status-board__row-mark">{Row.mark}</span>
+												<span class="status-board__row-body">
+													<span class="status-board__row-name">{Row.label}</span>
+													<span class="status-board__row-meta">{Row.meta}</span>
+												</span>
+												<span
+													class:list={[
+														"status-board__row-state",
+														`status-board__row-state--${ToneOf(Row.state)}`,
+													]}
+												>
+													{Row.state}
+												</span>
+											</a>
+										) : (
+											<span class="status-board__link status-board__link--statement">
+												<span class="status-board__row-mark">{Row.mark}</span>
+												<span class="status-board__row-body">
+													<span class="status-board__row-name">{Row.label}</span>
+													<span class="status-board__row-meta">{Row.meta}</span>
+												</span>
+												<span
+													class:list={[
+														"status-board__row-state",
+														`status-board__row-state--${ToneOf(Row.state)}`,
+													]}
+												>
+													{Row.state}
+												</span>
+											</span>
+										)}
+										{Row.note ? (
+											<p class="status-board__row-note">{Row.note}</p>
+										) : null}
+									</li>
+								))}
+							</ol>
+						) : (
+							<p class="status-board__empty">{Column.empty}</p>
+						)}
+					</section>
+				))}
+			</div>
+		) : (
+			<p class="status-board__empty">{empty}</p>
+		)
+	}
+
+	{caption ? <p class="status-board__caption">{caption}</p> : null}
+</section>

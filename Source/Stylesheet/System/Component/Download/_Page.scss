@@ -1,44 +1,212 @@
-// Download - the page's own composition rules.
+// Download - the page's own composition rules: the two regions whose bodies the
+// page composes itself, and the one component it does not own.
 //
 // Publishes:
-//   .download-transparency  the disclosure island, with its own block padding removed
-//                           and the page's closing distance after it
+//   .download-install           the install region's body: two steps, three targets
+//   .download-install__steps    the two build wells, side by side when there is room
+//   .download-install__well     one step's well
+//   .download-install__runs     the three targets' run entries
+//   .download-install__run      one entry: its stamp and status, then its command
+//   .download-install__identity the entry's left column
+//   .download-install__stamp    `〈MACOS〉`, with its per-glyph inks
+//   .download-install__state    the platform's STATUS line
+//   .download-install__command  the run well, in the entry's right column
+//   .download-install__absence  the `↳` line a platform with no documented command prints
+//   .download-install__action   the record's one ink-filled control
+//   .download-verify            the verification region's body: the record, then the check
+//   .download-verify__ledger    the six verification fields
+//   .download-verify__well      the check, as a template
+//   .download-transparency      the disclosure island, with its own block padding removed
 //
-// Owned by P7. The page owns one thing about a component it does not own: the
-// spacing it hands it. `DynamicTransparency` is a `.tsx` island that still pads
-// its own section at `py-20`; the manifest band above it already pays the
-// chapter that opens the page's second section, so the island's own padding
-// would print two rhythms in a row. The page zeroes it and the band's padding
-// owns the distance.
+// The two bodies are page compositions, not blocks: the steps and the run
+// entries are placed here, and every command inside them is `RecordWell`'s
+// object. The install region is asymmetric on purpose - the target's identity
+// takes 4fr and the command 8fr, so the command is the widest thing in the
+// region and the eye lands on what the reader has to copy.
 //
-// Recovered verbatim from `3480853ac^` at K6. It is live again: the island
-// renders as the page's second section, directly after the band that closes the
-// `# RELEASE_01` record, so its own `py-20` would double that band's
-// `padding-block`. The page hands it the `download-transparency` class and this
-// rule takes the padding off. The disclosure keeps its own centred heading, its
-// three sub-blocks and its `#Transparency` anchor - the baseline's section, with
-// the page owning the distance around it.
+// The island is the one component the page does not own. It pads its own section
+// at `py-20`, and the record's column already separates its regions at
+// `--space-group`, so that padding would print a chapter inside a region. The
+// page zeroes it and hands the island the record's rhythm. It keeps its body,
+// its three sub-blocks and its `#Transparency` anchor; its heading and
+// standfirst are the region's now.
 
 @use "../../Mixin" as *;
 
-.download-transparency {
-	padding-block: 0;
+// ─── /INSTALL ─────────────────────────────────────────────────────────────
 
-	// Zeroing the island's block padding takes its bottom padding with it, and
-	// the page still owes one distance after the last line it prints: the close,
-	// at the chapter value, so the footer never sits on the disclosure.
-	margin-block-end: var(--space-chapter);
+.download-install {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-group);
+	min-inline-size: 0;
 }
 
-// ─── The record's continuation ─────────────────────────────────────────────
-// The two regions and the platform entries are parts of the one artifact the
-// manifest band opens, so the page no longer wraps them in a container of its
-// own: they are handed to `ManifestBand` as children and arrive through its
-// `<slot />`, inside the band's own inner column. `Download/_Manifest.scss` owns
-// that column's separation (`--space-group`, the documented distance between two
-// parts of one subject) and the band's `padding-block` owns the boundary between
-// the record and the disclosure.
+// The two steps are sequential, so they read left to right at desktop width and
+// stack below it. They are not forced to equal height: Step 1 has six lines and
+// Step 2 has three, and pretending otherwise would be a box drawn to tidy a
+// fact.
+.download-install__steps {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-group);
+	align-items: start;
+	min-inline-size: 0;
+}
+
+@include bp(1024px) {
+	.download-install__steps {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.download-install__well {
+	min-inline-size: 0;
+}
+
+// ─── The run entries ──────────────────────────────────────────────────────
+// One entry per target: its stamp and status on the left, the command it
+// documents on the right. The asymmetry is the point - the command is the widest
+// thing in the region.
+
+.download-install__runs {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-group);
+	min-inline-size: 0;
+}
+
+.download-install__run {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-tight) var(--space-group);
+	align-items: start;
+	min-inline-size: 0;
+}
+
+@include bp(768px) {
+	.download-install__run {
+		grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+	}
+}
+
+.download-install__identity {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+}
+
+// The stamp keeps its per-glyph inks (`StampText`): here the platform is the
+// subject of the entry, not a row key, so the containment mark is printed in the
+// record's own voice.
+.download-install__stamp {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	font-weight: 500;
+	letter-spacing: var(--track-join);
+	color: var(--Foreground);
+}
+
+.download-install__state {
+	margin: 0;
+}
+
+.download-install__command {
+	min-inline-size: 0;
+}
+
+// The absence is a `↳` line, not a well: there is no command to copy, and a
+// framed empty box would be the blank panel the record grammar exists to
+// prevent. The mark carries the arrow, the sentence carries the fact.
+.download-install__absence {
+	display: flex;
+	gap: var(--space-tight);
+	margin: 0;
+	padding-block: var(--space-tight);
+	max-inline-size: var(--MeasureOpening);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.download-install__absence-mark {
+	flex: none;
+	color: var(--MuteForeground);
+}
+
+.download-install__action {
+	margin: 0;
+}
+
+// ─── /VERIFY ──────────────────────────────────────────────────────────────
+
+.download-verify {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-group);
+	min-inline-size: 0;
+}
+
+.download-verify__ledger {
+	inline-size: 100%;
+}
+
+.download-verify__well {
+	inline-size: 100%;
+}
+
+// ─── /TRANSPARENCY ────────────────────────────────────────────────────────
+// The island is the region's body. Zeroing its block padding is the whole of
+// what the page owns about it: the record's column already pays the distance
+// between regions, and the island's `py-20` would be a chapter inside one.
 //
-// That is the whole of what `_Page.scss` is for on this surface: the page's own
-// composition is the order it hands the band, and the one component it does not
-// own is the only thing here that needs a rule.
+// Three page-level rules follow, and each one makes the island keep the record's
+// rhythm rather than print its own:
+//
+// 1. Its block gaps are the record's group distance. The island spaces its three
+//    sub-blocks at `mb-16` (64px), which is a chapter rhythm; inside a region the
+//    distance between two parts of one subject is `--space-group` (32px).
+// 2. Its cards take the hairline every white information box on this site
+//    carries. They are `bg-card` boxes with no boundary, and on the creme field
+//    an unbounded white box is a floating panel rather than an insert.
+// 3. Its status dots print in the muted ink, and its badges do not breathe. The
+//    dot stays a mark - it is not removed - but the page's green remains the seal
+//    and the one `STATUS: SOURCE ACTIVE`, and a static row does not need a
+//    micro-scale to be read.
+//
+// The island's markup, its words and its body are untouched. It is a component
+// this surface does not own; these are the four things the page hands it.
+
+.download-transparency {
+	padding-block: 0;
+}
+
+.download-transparency .mb-16 {
+	margin-block-end: var(--space-group);
+}
+
+.download-transparency .TransparencyCard {
+	border: 1px solid var(--Border);
+}
+
+.download-transparency .StaccatoDot {
+	background-color: var(--MuteForeground);
+}
+
+.download-transparency .StaccatoBadge {
+	transform: none;
+	opacity: 1;
+	transition: none;
+}
+
+// 4. Its three sub-headings are `h3`s, so they are the S heading - 18px, 500,
+//    1.25 - and the ladder sets them (`_Type.scss`, THE ELEMENT LADDER). This
+//    rule used to put them in the meta voice (13px, tracked, muted) on the
+//    reading that inside the record they are section labels. A label is not a
+//    heading: the test is that a heading is larger than the body it introduces,
+//    and 13px under a 16px paragraph is the demotion the ladder exists to undo.
+//    Their words are unchanged - only the tier.

@@ -1,18 +1,41 @@
 ---
-// RecordStage - an ordered process: a rail of numbered steps.
+// RecordStage - an ordered process: a rail of numbered steps, or a field of
+// numbered plates.
 //
 // The site describes several sequences in prose (Mountain starts the native
 // process, Cocoon hosts extensions, Sky renders the interface, Wind applies
 // configuration). Prose is the wrong shape for an order a reader must hold, so
-// a stage is one step of a rail: an index, a label and one line. A step that
-// needs a paragraph is not a step.
+// a stage is one step: an index, a label and one line. A step that needs a
+// paragraph is not a step.
+//
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  a process: the order a thing happens in.
+// RANK              set.
+// SLOT CONTRACT     stages[]        -> one step each: index, label, line, href?
+//                   orientation?    -> `row` (across the band) or `stack` (down its edge)
+//                   variant?        -> `rail` (the default) or `plates`
+// MAY HOLD          steps only.
+// MAY NOT HOLD      prose, a figure, a second process.
+// NARROW            the rail stacks at any orientation; the plates go one across.
+// WIDE              the rail runs across the measure; the plates tile two across.
+// DENSE             `orientation` and `variant` are the two axes - a rail reads as
+//                   a sequence, plates read as a field of numbered instruments.
+//
+// THE TWO VARIANTS ANSWER TWO DIFFERENT READINGS OF THE SAME DATA. A rail is
+// read left to right: *then, then, then*. Plates are read as a field: each step
+// is its own small instrument with its number in the corner, so a reader can
+// enter at any plate and still see where it sits. The rail is right for a
+// process the reader follows (a build); plates are right for a process the
+// reader is being told about and may need to refer back to (what happens after a
+// request is sent). Same data, same grammar, two compositions - which is the
+// difference between a variant and a second block.
 //
 // The index is printed exactly as the caller writes it - `01`, `02`, or `A`,
 // `B`. The block never renumbers and never derives a number from the position,
 // because the caller's numbering is itself a fact (a `01`-prefixed rail and an
 // `A`-prefixed one are two different processes).
 //
-// No script and no client directive: the rail is a list, not a stepper. There
+// No script and no client directive: the stage is a list, not a stepper. There
 // is nothing to click through, so there is nothing to hydrate.
 import type { Stage } from "./Type.js";
 
@@ -26,25 +49,51 @@ interface Props {
 	 * that switch, so a page never has to know the breakpoint.
 	 */
 	orientation?: "row" | "stack";
+
+	/**
+	 * `rail` is the sequence (the default); `plates` is the same steps as a field
+	 * of numbered instruments, two across on wide screens.
+	 */
+	variant?: "rail" | "plates";
 }
 
-const { stages, orientation } = Astro.props;
+const { stages, orientation, variant = "rail" } = Astro.props;
 ---
 
-<ol class={`record-stage record-stage--${orientation ?? "row"}`}>
-	{
-		stages.map((stage) => (
-			<li class="record-stage__item">
-				<span class="record-stage__index">{stage.index}</span>
-				{stage.href ? (
-					<a class="record-stage__label" href={stage.href}>
-						{stage.label}
-					</a>
-				) : (
-					<span class="record-stage__label">{stage.label}</span>
-				)}
-				<span class="record-stage__line">{stage.line}</span>
-			</li>
-		))
-	}
-</ol>
+{
+	variant === "plates" ? (
+		<ol class="record-stage record-stage--plates">
+			{stages.map((stage) => (
+				<li class="record-stage__plate">
+					<span class="record-stage__plate-index">{stage.index}</span>
+					<div class="record-stage__plate-body">
+						{stage.href ? (
+							<a class="record-stage__plate-label" href={stage.href}>
+								{stage.label}
+							</a>
+						) : (
+							<span class="record-stage__plate-label">{stage.label}</span>
+						)}
+						<span class="record-stage__plate-line">{stage.line}</span>
+					</div>
+				</li>
+			))}
+		</ol>
+	) : (
+		<ol class={`record-stage record-stage--${orientation ?? "row"}`}>
+			{stages.map((stage) => (
+				<li class="record-stage__item">
+					<span class="record-stage__index">{stage.index}</span>
+					{stage.href ? (
+						<a class="record-stage__label" href={stage.href}>
+							{stage.label}
+						</a>
+					) : (
+						<span class="record-stage__label">{stage.label}</span>
+					)}
+					<span class="record-stage__line">{stage.line}</span>
+				</li>
+			))}
+		</ol>
+	)
+}

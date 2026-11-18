@@ -81,11 +81,29 @@
 	margin-block-start: var(--space-chapter);
 }
 
+/* ─── THE CHAPTER TIER ──────────────────────────────────────────────────── */
+//
+// A section's heading is a chapter title, and a chapter title is an `h2` - L,
+// the section head's tier (`_Type.scss`, THE ELEMENT LADDER). This page used to
+// step it to S (18px) because at 1440 the `h1` and the ten section headings
+// both rendered at 52px and the page read as eleven equal claims. That
+// measurement was right about the symptom and wrong about the cause: eleven
+// headings of one size is what a page of eleven chapters looks like when the
+// title is also a functional `h1` at L (§2.4 gives a functional `h1` L, and this
+// page's title is one). What separates the title from the chapters is the
+// chapter boundary - the `--space-chapter` air, the kicker and the rule - not a
+// size between the tiers, which the identity forbids. So the chapter takes the
+// ladder, and the step down is gone.
+//
+// The kicker above it keeps the label voice (`/ELEMENTS␁16 PAGES`, tracked,
+// muted), so a chapter still reads as filed, not as loose.
+.doc-section .record-band__heading {
+	letter-spacing: var(--track-join);
+}
+
 .doc-section__heading {
-	font-size: var(--type-sub);
-	line-height: var(--type-sub-line);
 	font-weight: 500;
-	letter-spacing: -0.01em;
+	letter-spacing: var(--track-join);
 
 	text-wrap: balance;
 
@@ -153,8 +171,6 @@ jelly-card.doc-card__surface {
 }
 
 .doc-card__title {
-	font-size: var(--type-body);
-	line-height: var(--type-body-line);
 	font-weight: 500;
 
 	text-wrap: balance;
@@ -172,14 +188,9 @@ jelly-card.doc-card__surface {
 }
 
 /* The three ways in are the page's one larger card: their title is the card's
-   `h2`, so it steps up to the sub tier and the card takes the group inset. */
+   `h2`, so it takes the ladder's L and the card takes the group inset. */
 .doc-card--feature .doc-card__link {
 	padding: var(--space-group);
-}
-
-.doc-card--feature .doc-card__title {
-	font-size: var(--type-sub);
-	line-height: var(--type-sub-line);
 }
 
 /* ─── THE CLOSING ARTIFACTS ─────────────────────────────────────────────── */

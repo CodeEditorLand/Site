@@ -4,11 +4,20 @@
  * content column, and the same navigation collapsed into a panel above it on
  * narrow viewports.
  *
+ * **The rail carries two registers, and they answer two questions.** Its head is
+ * the page's own contents (`DocContents`, pinned): *which part of this page am I
+ * in*. Under a hairline, the tree takes the rail's scroll: *which page of the
+ * manual am I on*. Before this, the rail only ever answered the second - and a
+ * nine-hundred-line article never changed the answer while the reader was
+ * reading it. The pinned head is bounded (it never takes more than half the rail)
+ * and scrolls on its own if a document has more sections than fit; the tree is
+ * what scrolls, because it is the list a reader walks.
+ *
  * Both pages that have a sidebar render this instead of retyping the aside, so
- * the rail's width, its sticky behaviour, its own scroll area and the mobile
+ * the rail's width, its sticky behaviour, its two scroll areas and the mobile
  * panel are one decision in one file.
  *
- * Three notes on what this file does NOT do:
+ * Four notes on what this file does NOT do:
  *
  * - **It does not render `<main>`.** `Base.astro` already owns the page's one
  *   `<main id="main-content">`, and a `<main>` inside a `<main>` is invalid
@@ -20,6 +29,9 @@
  * - **It does not wrap the content in a container of its own.** `.doc-layout`
  *   carries the page's one container and gutter; a second one inside the column
  *   would indent the content away from the rail it is read beside.
+ * - **It does not build the contents.** `contents` is the page's `DocToc` - the
+ *   same object `DocArticle` renders as its narrow-viewport disclosure - so the
+ *   two registers cannot disagree about what this page contains.
  *
  * `id="top"` is here because the documentation pages link back to `#top` and
  * nothing on the page defined it.
@@ -40,7 +52,10 @@
 import { GetI18n } from "../../Library/I18n/Server";
 import { DynamicDocSidebar } from "../Dynamic/DynamicDocSidebar";
 
+import DocContents from "./DocContents.astro";
+
 import type { DocSection } from "../Dynamic/Interface/Content/Page/Doc.js";
+import type { DocToc } from "./Type.js";
 
 interface Props {
 	sections: DocSection[];
@@ -55,9 +70,26 @@ interface Props {
 	 * navigation and the baseline showed no panel at all.
 	 */
 	mobile?: boolean;
+
+	/**
+	 * The page's own contents, pinned at the head of the rail. Absent on a page
+	 * that has no sections to list, and then the rail is the tree alone.
+	 */
+	contents?: DocToc | null;
 }
 
-const { sections, activeId, mobile = true } = Astro.props;
+const { sections, activeId, mobile = true, contents } = Astro.props;
+
+/**
+ * The margin channel.
+ *
+ * The manual's article had two tracks - the rail and the measure - and no place
+ * for apparatus: the facts about the page itself (which section filed it, which
+ * group it nests under, where a correction goes). A third track exists only when
+ * a page hands one in, so the 34 pages that need none keep the two-track grid
+ * they had, and the article that does gets the reading language's full three.
+ */
+const HasMargin = Astro.slots.has("margin");
 
 const T = GetI18n();
 
@@ -68,15 +100,28 @@ const SidebarTitle = T("sidebar.title", {
 ---
 
 <div class="doc-layout" id="top">
-	<div class="doc-layout__shell">
+	<div
+		class:list={["doc-layout__shell", HasMargin && "doc-layout__shell--margin"]}
+	>
 		<aside class="doc-layout__aside" aria-label="Documentation navigation">
 			<div class="doc-layout__sticky">
-				<p class="doc-layout__title">{SidebarTitle}</p>
-				<DynamicDocSidebar
-					Sections={sections}
-					ActiveId={activeId}
-					client:media="(min-width:1024px)"
-				/>
+				{
+					contents && contents.Items.length > 0 ? (
+						<div class="doc-layout__head">
+							<DocContents toc={contents} variant="rail" />
+						</div>
+					) : null
+				}
+
+				<div class="doc-layout__tree">
+					<p class="doc-layout__title">{SidebarTitle}</p>
+					<DynamicDocSidebar
+						Sections={sections}
+						ActiveId={activeId}
+						client:media="(min-width:1024px)"
+					/>
+				</div>
+
 				<div class="doc-layout__foot">
 					<a class="doc-layout__rust" href="/Doc/Rust"
 						>Rust API <span aria-hidden="true">↗</span></a
@@ -98,5 +143,13 @@ const SidebarTitle = T("sidebar.title", {
 			}
 			<slot />
 		</div>
+
+		{
+			HasMargin ? (
+				<aside class="doc-layout__margin" aria-label="Page apparatus">
+					<slot name="margin" />
+				</aside>
+			) : null
+		}
 	</div>
 </div>

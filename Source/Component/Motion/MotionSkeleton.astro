@@ -1,0 +1,89 @@
+---
+/**
+ * MotionSkeleton - the loading arm, printed in the record grammar.
+ *
+ * ─── WHAT IT IS ───────────────────────────────────────────────────────────
+ * A register line (`# LOADING / 04`), the keys the arriving record will print,
+ * their values barred, and `WAITING ON:` naming what has not arrived. No spinner.
+ *
+ * ─── WHY A SKELETON AND NOT A SPINNER ─────────────────────────────────────
+ * A spinner says *something is happening*. A skeleton says *what*: the keys are
+ * the record's own field names, so a reader waiting learns the schema while they
+ * wait, and a reader whose connection dies is left with a legible statement of
+ * what did not arrive rather than a hole. This is the site's rule everywhere -
+ * print the fact, never the feeling.
+ *
+ * ─── IT DOES NOT ANIMATE, AND THAT IS DELIBERATE ──────────────────────────
+ * A pulse is a loop (motion without a state change, which the layer forbids) and
+ * a fade-in is an entrance animation (which would fire at first paint, when this
+ * block is server-rendered). So the loading state is *printed*. The motion that
+ * belongs to loading is the one that ends it, and it lives on whatever replaces
+ * this block: `.MotionResolve` in `System/Motion/_Skeleton.scss`.
+ *
+ * ─── THE BAR'S LENGTH IS A GUESS, AND IT SAYS SO ──────────────────────────
+ * `--bar` is the caller's estimate of the value's shape - a word is short, a path
+ * is long - because a bar of uniform width would be a claim that every value is
+ * the same size. The bars are `aria-hidden` and the keys are not, so a screen
+ * reader hears one state and four field names, not four rectangles.
+ *
+ * ─── NO SCRIPT ────────────────────────────────────────────────────────────
+ * `aria-busy` is the state, the word `LOADING` is the state, and neither needs
+ * JavaScript. A page that renders this block is a page that knows it is waiting.
+ */
+interface Props {
+	/** The register line: `# LOADING / 04`. */
+	marker: string;
+
+	/** The keys the arriving record will print, in its own order. */
+	keys: readonly string[];
+
+	/** What has not arrived. Printed as `WAITING ON:`. Required. */
+	waiting: string;
+
+	/** How long it has been waiting, when that is known: `318 DAYS`. */
+	age?: string;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const { marker: Marker, keys: Keys, waiting: Waiting, age: Age, class: Class } = Astro.props;
+
+/**
+ * A bar's width per key, derived from the key's own name length so a page does
+ * not have to invent one per field: a long key tends to name a long value
+ * (`SOURCE:`, `CHECKSUM:`) and a short key a short one. Clamped to 24-72% so no
+ * bar is a dot or a full rule.
+ */
+const WidthOf = (Key: string): number =>
+	Math.min(72, Math.max(24, 24 + Key.length * 3));
+---
+
+<div
+	class:list={["MotionSkeleton", Class]}
+	data-motion="skeleton"
+	aria-busy="true"
+>
+	<p class="MotionSkeleton__Marker">{Marker}</p>
+
+	<dl class="MotionSkeleton__Rows">
+		{
+			Keys.map((Key) => (
+				<div class="MotionSkeleton__Row">
+					<dt class="MotionSkeleton__Key">{Key}</dt>
+					<dd class="MotionSkeleton__Value" aria-hidden="true">
+						<span
+							class="MotionSkeleton__Bar"
+							style={`--bar: ${WidthOf(Key)}%`}
+						/>
+					</dd>
+				</div>
+			))
+		}
+	</dl>
+
+	<p class="MotionSkeleton__Wait">
+		<span aria-hidden="true">↳</span> WAITING ON: {Waiting}
+		{Age ? <span class="MotionSkeleton__Age"> / {Age}</span> : null}
+	</p>
+</div>

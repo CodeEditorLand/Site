@@ -1,0 +1,148 @@
+---
+/**
+ * MotionExpand - a record that opens in place, revealing the facts its row was
+ * summarising.
+ *
+ * ─── WHAT IT IS ───────────────────────────────────────────────────────────
+ * A set of records, each a `<details>`: the row prints `[index] [name] [one
+ * fact]`, and opening it reveals the record's register - `KEY: value` rows and
+ * the source they were read out of - directly underneath, without moving the row
+ * or the eight records around it.
+ *
+ * ─── WHY NOT A ROUTE, AND WHY NOT A DRAWER ────────────────────────────────
+ * A reader checking one record's provenance is not leaving the set. A route would
+ * take the eight records away; a drawer would cover them; a modal would interrupt.
+ * Expanding in place says the true thing: the row was always this record, and the
+ * register was always behind it. It is also the only one of the four that a
+ * reader can do eight times in a row without losing their position.
+ *
+ * ─── THE ADVERSE ARMS ─────────────────────────────────────────────────────
+ * partial   a fact the record does not have prints `UNAVAILABLE` in the value
+ *           cell at muted ink. Never a zero: zero is a measurement.
+ * missing   a record whose target is gone is not a disclosure. It keeps its row
+ *           as a tombstone (`◎`, muted name, `WAS:` and what it was) because
+ *           there is nothing behind it to open, and a `<details>` that opens onto
+ *           nothing is a lie about the state of the world.
+ * empty     the set prints one composed line: what would be listed and why it is
+ *           not.
+ *
+ * ─── NO SCRIPT ────────────────────────────────────────────────────────────
+ * `details` again: keyboard operable, announced, and searchable while closed. The
+ * motion is `System/Motion/_Expand.scss`; the state is the `open` attribute.
+ */
+import type { ExpandRecord } from "./Type.js";
+
+interface Props {
+	/** The set's register line: `# EXPAND / 04`. Printed above the records. */
+	marker: string;
+
+	/** The records, in reading order. */
+	records: readonly ExpandRecord[];
+
+	/** What the set says with no records. Required. */
+	empty: string;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const { marker: Marker, records: Records, empty: Empty, class: Class } = Astro.props;
+
+/** A value the record does not have is an absence, and the site has a word for it. */
+const Unknown = (Value: string): boolean => Value.trim() === "UNAVAILABLE";
+---
+
+<div class:list={["MotionExpand", Class]} data-motion="expand">
+	<p class="MotionExpand__Marker">{Marker}</p>
+
+	{
+		Records.length > 0 ? (
+			Records.map((Record) =>
+				Record.missing ? (
+					<div class="MotionExpand__Gone">
+						<span class="MotionExpand__GoneMark" aria-hidden="true">
+							◎
+						</span>
+						<span>
+							<span class="MotionExpand__GoneName">
+								{Record.name}
+							</span>
+							<span class="MotionExpand__GoneNote">
+								<span aria-hidden="true">↳</span> WAS:{" "}
+								{Record.missing}
+							</span>
+						</span>
+					</div>
+				) : (
+					<details class="MotionExpand__Record" data-state="record">
+						<summary class="MotionExpand__Row">
+							<span class="MotionExpand__Index" aria-hidden="true">
+								{Record.index}
+							</span>
+							<span class="MotionExpand__Name">
+								{Record.name}
+							</span>
+							{Record.fact ? (
+								<span class="MotionExpand__Fact">
+									{Record.fact}
+								</span>
+							) : null}
+							<span
+								class="MotionExpand__Glyphs"
+								aria-hidden="true"
+							>
+								<span class="MotionExpand__Glyph MotionExpand__Glyph--closed">
+									→
+								</span>
+								<span class="MotionExpand__Glyph MotionExpand__Glyph--open">
+									↳
+								</span>
+							</span>
+						</summary>
+
+						<div class="MotionExpand__Body">
+							<dl class="MotionExpand__Register">
+								{Record.rows.map((Fact) => (
+									<div class="MotionExpand__Fact-row">
+										<dt class="MotionExpand__Key">
+											{Fact.key}
+										</dt>
+										<dd
+											class:list={[
+												"MotionExpand__Value",
+												Unknown(Fact.value) &&
+													"MotionExpand__Value--unknown",
+											]}
+										>
+											{Fact.value}
+											{Fact.note ? (
+												<span class="MotionExpand__Note">
+													<span aria-hidden="true">
+														↳
+													</span>{" "}
+													{Fact.note}
+												</span>
+											) : null}
+										</dd>
+									</div>
+								))}
+							</dl>
+							<p class="MotionExpand__Source">
+								SOURCE: {Record.source}
+							</p>
+						</div>
+					</details>
+				),
+			)
+		) : (
+			<div class="MotionExpand__Empty">
+				<p class="MotionExpand__EmptyMark">
+					<b aria-hidden="true">◎</b> NO RECORD
+				</p>
+				<p class="MotionExpand__EmptyLine">
+					<span aria-hidden="true">↳</span> {Empty}
+				</p>
+			</div>
+		)
+	}
+</div>

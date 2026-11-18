@@ -83,18 +83,12 @@
 // card slugs, never the title.
 .contact-page__heading {
 	margin: 0;
-	font-size: 1.5rem;
+	font-size: var(--type-section);
 	font-weight: 500;
-	line-height: 1.25;
-	letter-spacing: -0.02em;
+	line-height: 1.15;
+	letter-spacing: var(--track-join);
 	color: var(--Foreground);
 	text-wrap: balance;
-}
-
-@include bp(640px) {
-	.contact-page__heading {
-		font-size: 1.875rem;
-	}
 }
 
 // One muted sentence at body size, flush under the heading - the baseline prints
@@ -106,4 +100,48 @@
 	line-height: var(--type-body-line);
 	color: var(--MuteForeground);
 	text-wrap: pretty;
+}
+
+// ─── The route's record head ──────────────────────────────────────────────
+//
+// `# REACH  〈GDPR Art. 15 + 20〉  /CONTACT  SLA: 30d` - one line, at the 13px
+// floor in the mono face, with U+2001 between the cells (the site's only
+// separator). It sits under the trail and above the page's heading, because it
+// is the page's own record: the code and the basis do not change between two
+// visits to the same route.
+//
+// The code takes full ink and the rest stays muted: the code is the thing a
+// reader quotes, and a record line where every cell shouts is a line where none
+// does. The article keeps its own case - `GDPR Art. 15` is a citation, and
+// uppercasing a citation is a typographic opinion the site does not have.
+
+.contact-page__record {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+
+	margin-block: var(--space-group) var(--space-reading);
+
+	@include mono-meta;
+}
+
+.contact-page__record > * + *::before {
+	content: "\2001";
+}
+
+.contact-page__record-code,
+.contact-page__record-route,
+.contact-page__record-count {
+	@include track;
+}
+
+.contact-page__record-code {
+	color: var(--Foreground);
+}
+
+/* The window keeps its own case: `30d` is a duration, and uppercasing a unit is
+   a typographic opinion the site does not have. It keeps the tracking, so the
+   cell still reads as part of the record line. */
+.contact-page__record-window {
+	letter-spacing: var(--track-rule);
 }

@@ -84,7 +84,9 @@ describe("Auth0AccountGate", () => {
 		// (`DesignSystem-Components.md` §7).
 		expect(screen.getByText("STATUS: LOADING")).toBeInTheDocument();
 
-		expect(screen.getByText("Loading...")).toBeInTheDocument();
+		expect(
+			screen.getByText(/Reading the session from the identity provider/),
+		).toBeInTheDocument();
 
 		expect(
 			screen.getByRole("link", { name: "Back to the editor" }),
@@ -96,11 +98,13 @@ describe("Auth0AccountGate", () => {
 
 		render(<Auth0AccountGate Route="signin" />);
 
-		const ErrorText = screen.getByText(/Authentication error/);
+		const ErrorText = screen.getByText(
+			/The identity provider did not return a session/,
+		);
 
 		const ErrorMessage = screen.getByText(/Connection failed/);
 
-		const RetryButton = screen.getByText("Try again");
+		const RetryButton = screen.getByText("RETRY");
 
 		expect(ErrorText).toBeInTheDocument();
 
@@ -120,7 +124,7 @@ describe("Auth0AccountGate", () => {
 		// Clear the mock so we can assert only the retry button click.
 		LoginWithRedirectMock.mockClear();
 
-		const RetryButton = screen.getByText("Try again");
+		const RetryButton = screen.getByText("RETRY");
 
 		await User.click(RetryButton);
 
@@ -197,7 +201,9 @@ describe("Auth0AccountGate", () => {
 
 		render(<Auth0AccountGate Route="signin" />);
 
-		const RedirectingText = screen.getByText("Redirecting to sign in...");
+		const RedirectingText = screen.getByText(
+			/The sign-in page opens next/,
+		);
 
 		expect(RedirectingText).toBeInTheDocument();
 	});

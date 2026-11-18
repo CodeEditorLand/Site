@@ -1,10 +1,18 @@
 ---
 /**
- * PlatformBand - `#download`: the three platform records, side by side.
+ * PlatformBand - `# ACTION_01`: the three platform artefacts, as one manifest.
  *
- * Three columns from `md` and one below, on the narrower `max-w-5xl` measure the
- * baseline gave this band: the three cards are the page's last content, so they
- * sit at the closing width rather than at the reading width the bands above use.
+ * The band is the page's last content, and it is the one artifact the design
+ * system names for exactly this: a **Manifest** - verified facts plus the
+ * available artifacts, read as rows (`DESIGN.md` §1.8). Three poster cards in
+ * three equal columns was the obvious layout and the wrong one: a reader
+ * choosing where to build is comparing three rows of the same facts, not
+ * admiring three objects.
+ *
+ * So: one white plate, three rows, a hairline between them, the platform's own
+ * ink on its own name, and one action per row. Every string the three cards
+ * printed is still printed - the marker, the name, the `〈 〉` architecture, the
+ * channel, version, size, signing, the action and the status.
  */
 import { BandOf, HomeBands } from "../../Content/Home/Band.js";
 import { PlatformCards } from "../../Content/Home/Platform.js";
@@ -18,8 +26,8 @@ const T = GetI18n();
 const Head = BandOf(HomeBands(T), "download");
 ---
 
-<Band head={Head}>
-	<div class="home-platform__grid">
+<Band head={Head} series="ACTION" rhythm="tight">
+	<jelly-card class="home-platform__manifest">
 		{PlatformCards.map((Card) => <PlatformCard card={Card} />)}
-	</div>
+	</jelly-card>
 </Band>

@@ -1,0 +1,115 @@
+---
+/**
+ * WorkingBand - `# METHOD_01`: how the claim on this page is checked.
+ *
+ * The band is three artifacts in one composition, and the composition is the
+ * point: a **spacious** trace at 7 (the build's six stages, one line each, the
+ * path on the left and what it carries on the right), a **tight** register at 5
+ * (twelve facts about what the build produces, two columns of key-over-value at
+ * 1024 and one below), and a **ruled strip of three failures** across the whole
+ * measure under both.
+ *
+ * That is the page's first 7/1px/5 split, and its first band whose two columns
+ * are read at two different densities on purpose: the trace is read left to
+ * right as a sequence, the register is consulted, and the failures are read as a
+ * row of conditions. A band where all three parts had the same air would be the
+ * fourth poster on a page that has stopped making them.
+ *
+ * THE FAILURES ARE THE ADVERSE STATE, COMPOSED. They are not a placeholder for
+ * an error: each is a documented failure with its symptom, its cause and the
+ * next step, in the same grammar as the rest of the band, under the same band
+ * head. The band is the one place on the site where the world being unkind is
+ * the subject.
+ *
+ * Every string comes from `Content/Home/Working.ts`; nothing is authored here.
+ * The band's copy is the only prose, and it counts what it shows.
+ */
+import {
+	BuildTrace,
+	Failures,
+	ReleaseRegister,
+	WorkingBandCopy,
+} from "../../Content/Home/Working.js";
+import { BandOf, HomeBands } from "../../Content/Home/Band.js";
+import { GetI18n } from "../../Library/I18n/Server";
+
+import RecordFailure from "../Record/RecordFailure.astro";
+import RecordLedger from "../Record/RecordLedger.astro";
+import RecordTrace from "../Record/RecordTrace.astro";
+
+import Band from "./Band.astro";
+
+const T = GetI18n();
+
+const Head = BandOf(HomeBands(T), "method");
+
+/** The register's rows, in the ledger's shape: the key carries its colon. */
+const RegisterRows = ReleaseRegister.map((Row) => ({
+	key: `${Row.Label}:`,
+	value: Row.Value,
+	note: Row.Note,
+	code: Row.Code,
+}));
+
+/** The failures, in the block's own shape. */
+const FailureNotes = Failures.map((Failure) => ({
+	index: Failure.Index,
+	name: Failure.Name,
+	symptom: Failure.Symptom,
+	cause: Failure.Cause,
+	next: Failure.Next,
+	state: Failure.State,
+	source: Failure.Source,
+}));
+
+/**
+ * The trace in the block's own shape.
+ *
+ * The content module writes its fields capitalised (`Index`, `Path`, `Note`)
+ * because it is a record table; the block's `TraceStep` is lower camel case like
+ * every other prop shape in the Record layer. The map is the seam, and it is here
+ * rather than in the block so the block keeps one vocabulary.
+ */
+const TraceSteps = BuildTrace.map((Step) => ({
+	index: Step.Index,
+	path: Step.Path,
+	note: Step.Note,
+}));
+---
+
+<Band head={Head} series="METHOD" rhythm="wide">
+	<div class="home-working">
+		<div class="home-working__split">
+			<div class="home-working__trace">
+				<RecordTrace
+					trace={{
+						steps: TraceSteps,
+						label: WorkingBandCopy.TraceLabel,
+						source: "/DOC/BUILD-PIPELINE",
+					}}
+				/>
+			</div>
+
+			<div class="home-working__gutter" aria-hidden="true"></div>
+
+			<div class="home-working__register">
+				<RecordLedger
+					rows={RegisterRows}
+					density="register"
+					register={WorkingBandCopy.RegisterLabel}
+					empty="THE RELEASE RECORD IS NOT WRITTEN YET: NO ARTIFACT EXISTS TO DESCRIBE."
+				/>
+			</div>
+		</div>
+
+		<div class="home-working__failures">
+			{FailureNotes.map((Failure) => (
+				<div class="home-working__failure">
+					<RecordFailure failure={Failure} />
+				</div>
+			))}
+		</div>
+
+		<p class="home-working__footnote">{WorkingBandCopy.Footnote}</p>
+	</div>
+</Band>

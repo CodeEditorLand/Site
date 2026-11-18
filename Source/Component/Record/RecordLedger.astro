@@ -19,7 +19,7 @@
  * `surface` changes only whether the shell wears the `.emphasis-standard` tier,
  * and each row's `note`/`lead` change only that row's own markup.
  */
-import type { LedgerRow } from "./Type.js";
+import type { LedgerRow, LedgerDensity, RegisterState } from "./Type.js";
 
 interface Props {
 	/** The facts, in the order they are read. */
@@ -38,11 +38,60 @@ interface Props {
 	 */
 	surface?: "quiet" | "standard";
 
+	/**
+	 * A register line printed above the rows: `# SUMMARY / 04`. The ledger is
+	 * then a *register* rather than a bare list - the shape a summary takes when
+	 * it sits in a page's margin and has to name itself.
+	 */
+	register?: string;
+
+	/**
+	 * The ledger stays with the reader: it is pinned under the header while the
+	 * record it belongs to scrolls. Only a ledger in a page's margin or rail sets
+	 * this - a pinned ledger inside a band would pin a fact the band is already
+	 * saying.
+	 */
+	pinned?: boolean;
+
+	/**
+	 * `rest` (the default) is the list. `register` is the same facts read as a
+	 * table: two columns at 1024px and up, a hairline between the columns, keys
+	 * at the row register and values under them, and the count after the
+	 * register line's name. The type step does not change - a fact that needs
+	 * 12px to fit needs a matrix, not a denser ledger.
+	 */
+	density?: LedgerDensity;
+
+	/**
+	 * `rest` prints the rows. `loading` prints the same keys with their values
+	 * barred - a skeleton in the record grammar, never a spinner: the labels are
+	 * the schema and are known before the facts are. `empty` prints the composed
+	 * sentence instead of the frame.
+	 */
+	state?: RegisterState;
+
+	/**
+	 * What the register says when it has nothing in it: what would be here, why
+	 * it is not, and what to do. Absent, an empty register renders nothing at
+	 * all - never a frame over nothing.
+	 */
+	empty?: string;
+
 	/** Extra classes from the page, appended after the block's own. */
 	class?: string;
 }
 
-const { rows, columns = 1, surface = "quiet", class: Class } = Astro.props;
+const {
+	rows,
+	columns = 1,
+	surface = "quiet",
+	register,
+	pinned = false,
+	density = "rest",
+	state = "rest",
+	empty,
+	class: Class,
+} = Astro.props;
 
 /**
  * The shell's classes. `quiet` contributes none: the tier class is the only
@@ -52,14 +101,64 @@ const { rows, columns = 1, surface = "quiet", class: Class } = Astro.props;
 const Shell = [
 	"record-ledger",
 	`record-ledger--${columns}`,
+	`record-ledger--${density}`,
 	surface === "standard" ? "emphasis-standard" : null,
 	Class,
 ];
+
+/** The count is the rows' own length: the register and its rows cannot disagree. */
+const Count = String(rows.length).padStart(2, "0");
+
+/** The register line: the caller's name, then the count the block owns. */
+const RegisterLine =
+	register === undefined
+		? undefined
+		: `${register} / ${state === "loading" ? "LOADING" : Count}`;
+
+/**
+ * The rows a skeleton prints. A loading register keeps the keys it was handed -
+ * they are the schema - and prints one bar where each value will be; handed no
+ * rows at all, it prints six, because a register with no shape would say nothing
+ * about what is coming.
+ */
+const SkeletonRows: readonly LedgerRow[] =
+	rows.length > 0
+		? rows
+		: Array.from({ length: 6 }, (_, Index) => ({
+				key: `FACT_${String(Index + 1).padStart(2, "0")}`,
+				value: "",
+			}));
 ---
 
-<dl class:list={Shell}>
+<div
+	class:list={[
+		"record-ledger-block",
+		pinned && "record-ledger-block--pinned",
+		`record-ledger-block--${density}`,
+	]}>
 	{
-		rows.map((Row) => (
+		RegisterLine && (
+			<p class="record-ledger-block__register" data-state={state}>
+				# {RegisterLine}
+			</p>
+		)
+	}
+	{
+		state === "empty" ? (
+			empty && <p class="record-ledger-block__empty">{empty}</p>
+		) : (
+	<dl class:list={Shell} aria-busy={state === "loading" ? "true" : undefined}>
+	{
+		state === "loading" ? (
+			SkeletonRows.map((Row) => (
+				<div class="record-ledger__row record-ledger__row--skeleton">
+					<dt class="record-ledger__key">{Row.key}</dt>
+					<dd class="record-ledger__value">
+						<span class="record-ledger__bar" aria-hidden="true" />
+					</dd>
+				</div>
+			))
+		) : rows.map((Row) => (
 			<div
 				class:list={[
 					"record-ledger__row",
@@ -110,4 +209,6 @@ const Shell = [
 			</div>
 		))
 	}
-</dl>
+	</dl>
+	)}
+</div>

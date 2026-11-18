@@ -3,29 +3,66 @@ import "@Stylesheet/System.scss";
 
 import Background from "../Background.astro";
 import Footer from "../Component/Layout/Footer.astro";
+import { FrameSectionOf } from "../Component/Layout/Frame/Data.js";
+import { LanguageOf } from "../Component/Shell/Language.js";
+import Palette from "../Component/UI/Palette/Palette.astro";
 import { AnalyticsProvider } from "../Component/Provider/AnalyticsProvider";
 import { PageviewTracker } from "../Component/Provider/PageviewTracker";
 import MetaTags from "../Component/Social/MetaTags";
-import { PascalCaseCanonical } from "../Function/Route/Map";
+import PageMetadata from "../Function/OpenGraph/PageMetadata";
+import { CanonicalizePath } from "../Function/Route/Map";
+import { ClaimsPath } from "../Function/Route/Registry";
 import { GetI18n } from "../Library/I18n/Server";
 
+/**
+ * THE FRAME'S CONTRACT. `Base.astro` owns the document shell and nothing else:
+ *
+ *   <html>    the language, the direction, and the two attributes the shell's
+ *             CSS inks a page with (`data-section`, `data-layout`)
+ *   <head>    the one canonical URL, the one title pattern, the one description,
+ *             the OpenGraph card, the fonts, the icons and the two structured-
+ *             data nodes (see `Component/Social/MetaTags.tsx`)
+ *   <body>    the skip link, the palette trigger, the header slot, ONE `<main>`,
+ *             the footer and the route scripts
+ *
+ * A page renders its content in the default slot, which lands inside `<main>`.
+ * A page that needs a full-bleed band gets it from a band inside `main`; there is
+ * no second `<main>` and no content beside it, because a section outside the
+ * landmark is content a reader who skips to main never reaches.
+ *
+ * The header is a SLOT, not a child of `main`: a page passes `<Header slot="Header">`
+ * and the banner landmark lands before the main landmark in document order. The
+ * footer is the frame's own (`Component/Layout/Footer.astro`), because the record
+ * ledger is the same five facts on every route.
+ *
+ * The anchor offset is NOT here and not on any page: it is one rule in
+ * `Stylesheet/System/_Base.scss` (`html { scroll-padding-block-start }`), fed by
+ * the header's published heights. A page that added `scroll-margin-top` would
+ * stack a second header height under the first.
+ */
 const RawPath =
 	Astro.url.pathname === "/" ? "/" : Astro.url.pathname.replace(/\/$/, "");
-const CanonicalPath = PascalCaseCanonical[RawPath] ?? RawPath;
-const DefaultURL = Astro.url.href;
-const OpenGraphSlug =
-	CanonicalPath === "/" ? "" : CanonicalPath.replace(/^\//, "");
-const DefaultOpenGraphImage = OpenGraphSlug
-	? `/OpenGraph/${OpenGraphSlug}.svg`
-	: "/OpenGraph.svg";
+
+/**
+ * The canonical path this request is about.
+ *
+ * `CanonicalizePath` resolves a variant (`/download`, `/login`, `/gdpr`) to the
+ * path the site publishes, using the same registry the redirect table and the
+ * dispatch page read. The canonical URL, `og:url` and `twitter:url` are all
+ * built from this one answer, so a page can never advertise a URL the site
+ * redirects away from.
+ */
+const CanonicalPath = CanonicalizePath(RawPath);
+
+const SiteOrigin = Astro.site ?? Astro.url.origin;
 
 const {
 	Title,
 	Description,
 	Language = "en",
 	Direction = "ltr",
-	Image = DefaultOpenGraphImage,
-	Url = DefaultURL,
+	Image,
+	Url,
 	Type = "website",
 	NoIndex = false,
 } = Astro.props;
@@ -39,19 +76,96 @@ interface Props {
 	Type?: "website" | "article";
 	NoIndex?: boolean;
 }
+
+/**
+ * One canonical URL per route.
+ *
+ * A registered route canonicalises to its own path on the configured site
+ * origin - not to whatever URL the request arrived on. A page that is not in
+ * the registry (a draft, a page added before it was filed) keeps the URL it
+ * passed, so an unregistered route advertises itself rather than a path the
+ * build does not emit.
+ */
+const CanonicalURL = ClaimsPath(CanonicalPath)
+	? new URL(CanonicalPath, SiteOrigin).href
+	: (Url ?? Astro.url.href);
+
+/**
+ * The OpenGraph card a route advertises.
+ *
+ * The card endpoints (`pages/OpenGraph.svg.ts`, `pages/OpenGraph/[...Slug].svg.ts`)
+ * build one image per registered slug, per blog entry and per doc entry. A route
+ * whose slug is not one of those would advertise an image the build never emits,
+ * so the frame asks the metadata register whether the route has its own card and
+ * falls back to the section's card - `/Contact/Amend` shows the front desk's card,
+ * `/404` shows the home card - rather than a 404 image. Adding the fourteen
+ * request routes to `Function/OpenGraph/PageMetadata.ts` is the better fix and
+ * needs a card of its own; until then the fallback is the honest one.
+ */
+const OpenGraphSlug =
+	CanonicalPath === "/" ? "" : CanonicalPath.replace(/^\//, "");
+
+const SectionSlug = OpenGraphSlug.includes("/")
+	? OpenGraphSlug.slice(0, OpenGraphSlug.indexOf("/"))
+	: "";
+
+const HasOwnCard =
+	OpenGraphSlug === "" ||
+	OpenGraphSlug in PageMetadata ||
+	CanonicalPath.startsWith("/Doc/") ||
+	CanonicalPath.startsWith("/Blog/");
+
+const DefaultOpenGraphImage = HasOwnCard
+	? OpenGraphSlug
+		? `/OpenGraph/${OpenGraphSlug}.svg`
+		: "/OpenGraph.svg"
+	: SectionSlug && SectionSlug in PageMetadata
+		? `/OpenGraph/${SectionSlug}.svg`
+		: "/OpenGraph.svg";
+
+const ResolvedImage = Image ?? DefaultOpenGraphImage;
+
 const T = GetI18n();
+
+/**
+ * The part of the record this page is open at.
+ *
+ * The frame's position is printed, not computed: the running head and the rail
+ * render every part once and CSS inks the one that matches this attribute, so the
+ * head is right at first paint and cannot shift when the header island hydrates.
+ * The route is only known here, at server render - which is why this attribute is
+ * the frame's one piece of shell state.
+ */
+const FrameSection = FrameSectionOf(RawPath);
+
+/**
+ * The composition language this page is filed under.
+ *
+ * The register is `Component/Shell/Language.ts`, and this attribute is the only
+ * place the frame learns it. It is written here because this is the only place
+ * the route is known at server render - the same reason `data-section` is here -
+ * so the running head can print the language beside the part without a prop
+ * threaded through every page, and `PageShell` reads the same register for its
+ * own grid. One answer, two readers, no drift.
+ */
+const LayoutSpec = LanguageOf(RawPath);
 ---
 
 <!doctype html>
-<html lang={Language} dir={Direction}>
+<html
+	lang={Language}
+	dir={Direction}
+	data-section={FrameSection.Key}
+	data-layout={LayoutSpec.key}
+>
 	<head>
 		<meta charset="utf-8" />
 		<MetaTags
 			title={Title || T("meta.title", { defaultValue: "Land" })}
 			description={Description ||
 				T("meta.description", { defaultValue: "Code Editor" })}
-			image={Image}
-			url={Url}
+			image={ResolvedImage}
+			url={CanonicalURL}
 			type={Type}
 			lang={Language}
 			noIndex={NoIndex}
@@ -87,6 +201,25 @@ const T = GetI18n();
 			   overrides (var(--CardForeground) / var(--Card)) - no invert
 			   filter on the daylight canvas. */
 		</style>
+		<script is:inline>
+			/*
+			 * Density, before first paint.
+			 *
+			 * The matrix control writes `data-density` on <html> and remembers the
+			 * choice in localStorage; this line applies the remembered value before
+			 * the sheet paints, so a reader who chose compact never sees a page
+			 * arrive comfortable and then jump. Five lines, no framework, and the
+			 * page is complete without it: the attribute's absence is the
+			 * comfortable default the site is built at.
+			 */
+			try {
+				var Density = localStorage.getItem("land:density");
+				if (Density === "compact")
+					document.documentElement.setAttribute("data-density", "compact");
+			} catch (Error) {
+				/* Storage refused: the density holds for this visit, in the control. */
+			}
+		</script>
 		<script>
 			import "@/Library/I18n/Client.js";
 		</script>
@@ -136,16 +269,28 @@ const T = GetI18n();
 			class="text-primary-fg sr-only fixed left-2 top-2 z-[100] -translate-y-full bg-primary px-4 py-2 font-medium transition-transform focus:not-sr-only focus:translate-y-0 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Ring)]"
 			>Skip to main content</a
 		>
+		<!--
+			The document's second focus-revealed control. The palette's trigger is
+			server-rendered inside this island, so it is in the HTML and in the tab
+			order before hydration; the chord starts answering on idle. It sits in the
+			same corner as the skip link and replaces it on the second Tab, so the two
+			never fight for it.
+		-->
+		<Palette />
 		<jelly-theme id="JellyTheme" mode="light">
 			<Background />
 			<AnalyticsProvider>
 				<PageviewTracker />
 				<!--
-					The shell's band order is header -> main -> footer. A page that hands
-					its header to this slot keeps <header> outside <main>, where it is a
-					real banner landmark; a page that renders <Header> as the default
-					slot's first child still works, because the header carries an
-					explicit role="banner" and lands first in the document.
+					The shell's band order is header -> main -> footer, and the header
+					is a SLOT for that reason: a page passes `<Header slot="Header">`
+					and the banner landmark lands before the main landmark in document
+					order. All 43 page entries do this. A page that put the header in
+					the default slot instead would render it INSIDE `<main>`, where it
+					is no longer a banner - the role attribute would say `banner` and
+					the landmark tree would disagree. The frame cannot refuse the
+					markup, so the rule is stated here: content goes in `main`, chrome
+					goes in the slots.
 				-->
 				<slot name="Header" />
 				<main id="main-content" class="grow" tabindex="-1">
@@ -177,6 +322,7 @@ const T = GetI18n();
 		<script>
 			import "@Script/Firebase";
 			import "@/Function/Utility/CopyCommand";
+			import "@Script/Motion/Index";
 		</script>
 		<script>
 			await import("@Function/Route/Policy.js");

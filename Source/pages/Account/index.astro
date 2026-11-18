@@ -1,8 +1,43 @@
 ---
-import AuthShell from "../../Component/Auth/AuthShell.astro";
+/**
+ * Account - the account workspace.
+ *
+ * ─── WHY A WORKSPACE ──────────────────────────────────────────────────────
+ * The route was a frame over a column of cards. But a reader on `/Account` is
+ * not reading a document - they are operating something: checking what the
+ * profile holds, which session it came from, and which of the five ways into the
+ * account they are on. That is a workspace: a rail of destinations, panes that
+ * hold the instrument, and a drawer for what neither pane holds.
+ *
+ * ─── THE FOUR PARTS ───────────────────────────────────────────────────────
+ *   head    `# ACCOUNT_01` + the page's `h1` + the proposition + declarations
+ *   rail    the seven destinations: the account's five routes, the dashboard,
+ *           the portal - with the current row marked
+ *   panes   `# PROFILE_01` (the island, the instrument) beside `# ACCESS_01`
+ *           (the ledger of what the record is and is not), 5fr / 1px / 7fr
+ *   drawer  the folded disclosure: what the profile does not carry, and which
+ *           route does carry it
+ *
+ * ─── WHAT SURVIVES FROM THE AUTH FRAME ────────────────────────────────────
+ * The frame's copy is read, not retyped: `AuthFrameFor("account")` still owns
+ * the kicker, the `h1`, the sentence and the alternate action, and this page
+ * prints them through `SurfaceHead` and the trail. The profile island is
+ * untouched and still `client:load` - it is the only hydrating thing on the
+ * page. `AuthShell`'s `Bare` exception is kept in spirit: the shell paints no
+ * card around a column that is already cards (`DESIGN.md` §1.3).
+ */
 import { AccountCrumbs, AuthFrameFor } from "../../Component/Auth/Data";
 import DynamicAccountProfile from "../../Component/Dynamic/DynamicAccountProfile";
 import DynamicAuthHeader from "../../Component/Dynamic/DynamicAuthHeader";
+import RecordAside from "../../Component/Record/RecordAside.astro";
+import RecordLedger from "../../Component/Record/RecordLedger.astro";
+import Trail from "../../Component/Route/Trail.astro";
+import PageShell from "../../Component/Shell/PageShell.astro";
+import ShellPanes from "../../Component/Shell/ShellPanes.astro";
+import ShellRail from "../../Component/Shell/ShellRail.astro";
+import ShellState from "../../Component/Shell/ShellState.astro";
+import SurfaceHead from "../../Component/Surface/SurfaceHead.astro";
+import { AccountWorkspace } from "../../Content/Layout/Account.js";
 import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
 
@@ -23,13 +58,25 @@ const MetaDescription = T("meta.account.description", {
    that is a loading state until the profile island answers. Both survive: the
    trail is the site's one grammar and the column is the island's own, unchanged.
 
-   What is added is the frame - `/ACCOUNT`, the page's `h1`, one sentence and one
-   alternate action - because one `h1` per page is identity (`DESIGN.md` §2.1,
-   `DESIGN-COMPLETE.md` §6 X10) and this route had none. `Bare` is the shell's
-   one exception: the profile column is already a stack of cards, so the shell
-   does not put a card around it (`DESIGN.md` §1.3 forbids cards-within-cards). */
+   The frame is `/ACCOUNT`, the page's `h1`, one sentence and one alternate
+   action, because one `h1` per page is identity (`DESIGN.md` §2.1,
+   `DESIGN-COMPLETE.md` §6 X10) and this route had none. */
 const Frame = AuthFrameFor("account", T);
 const Crumbs = AccountCrumbs(T);
+
+/* The head's declarations. The profile's state belongs to the island - it is
+   client state and a static claim would go stale the moment it answers - so the
+   shell prints what it does know: that this surface is a profile record, where
+   it is read, who produces it, and the date of the reading. */
+const Declarations = [
+	{ key: "RECORD", value: "PROFILE" },
+	{ key: "ROUTE", value: Astro.url.pathname.toUpperCase() },
+	{ key: "SOURCE", value: "AUTH0" },
+	{ key: "AS OF", value: new Date().toISOString().slice(0, 10) },
+];
+
+/** The workspace: the rail, the access ledger, the disclosure and the denial. */
+const Workspace = AccountWorkspace(T);
 ---
 
 <Base
@@ -45,11 +92,85 @@ const Crumbs = AccountCrumbs(T);
 		ClientIdentifier={Auth0ClientIdentifier}
 	/>
 
-	<AuthShell Label="Account" Measure="wide" Bare Frame={Frame} Trail={Crumbs}>
-		<DynamicAccountProfile
-			client:load
-			Domain={Auth0Domain}
-			ClientIdentifier={Auth0ClientIdentifier}
+	<PageShell index="# WORKSPACE_03" label="THE ACCOUNT">
+		<Trail slot="head" trail={Crumbs} />
+
+		<SurfaceHead
+			slot="head"
+			index="# ACCOUNT_01"
+			title={Frame.heading}
+			proposition={Frame.sentence}
+			declarations={Declarations}
+			rows={[
+				{ key: "RECORD:", value: "PROFILE" },
+				{ key: "SESSION:", value: "AUTH0" },
+				{ key: "ROUTES:", value: String(Workspace.rail.length) },
+				{ key: "ALTERNATE:", value: Frame.action.label },
+			]}
 		/>
-	</AuthShell>
+
+		<ShellRail
+			slot="rail"
+			label={Workspace.railLabel}
+			count={Workspace.rail.length}
+			items={Workspace.rail}
+			current="page"
+			foot={{
+				label: T("layout.account.rail.foot", {
+					defaultValue: "ALL DESTINATIONS",
+				}),
+				href: "/Contents",
+			}}
+		/>
+
+		<ShellPanes
+			ratio="7/5"
+			primary={{
+				mark: "# PROFILE_01",
+				label: T("layout.account.pane.profile", { defaultValue: "PROFILE" }),
+				meta: "AUTH0",
+			}}
+			secondary={{
+				mark: "# ACCESS_01",
+				label: T("layout.account.pane.access", { defaultValue: "ACCESS" }),
+				meta: `${Workspace.access.length}\u2001ROWS`,
+			}}
+			drawer={{
+				label: T("layout.account.drawer", {
+					defaultValue: "WHAT THE PROFILE DOES NOT CARRY",
+				}),
+				note: T("layout.account.drawer.note", { defaultValue: "FOLDED" }),
+			}}
+		>
+			<div slot="primary">
+				<DynamicAccountProfile
+					client:load
+					Domain={Auth0Domain}
+					ClientIdentifier={Auth0ClientIdentifier}
+				/>
+			</div>
+
+			<div slot="secondary">
+				<RecordLedger
+					register={Workspace.accessRegister}
+					rows={Workspace.access}
+					columns={1}
+				/>
+			</div>
+
+			<div slot="drawer">
+				<RecordAside aside={Workspace.aside} />
+			</div>
+		</ShellPanes>
+
+		<ShellState
+			kind="denied"
+			index="ACCESS / 00"
+			statement={Workspace.denied.statement}
+			cause={Workspace.denied.cause}
+			next={Workspace.denied.next}
+			note="SOURCE: AUTH0 SESSION"
+			slot="foot"
+		/>
+	</PageShell>
 </Base>

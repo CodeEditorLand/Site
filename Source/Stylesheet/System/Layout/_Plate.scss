@@ -1,0 +1,223 @@
+// ShellPlate - the full-bleed plate and its caption channel.
+//
+// Publishes:
+//   .ShellPlate                 the figure
+//   .ShellPlate__grid           plate | channel at the wide container
+//   .ShellPlate__media          the framed plate
+//   .ShellPlate__image          the image arm
+//   .ShellPlate__channel        the caption channel: register, rows, proposition
+//   .ShellPlate__rows           `FIGURE:` / `SOURCE:` / `STATE:`
+//
+// ─── A PLATE HAS A HEIGHT OF ITS OWN ──────────────────────────────────────
+// A figure that is as tall as its content is a figure that disappears when its
+// content is short. The media track is floored at `--PlateHeight` (set by the
+// page) or at a clamp of the viewport, so a plate is always a plate - and the
+// content inside it is centred in the field rather than deciding the field's
+// size.
+//
+// ─── THE CHANNEL IS THE PROVENANCE ────────────────────────────────────────
+// `FIGURE:` names it, `SOURCE:` cites it, `STATE:` says whether it is the current
+// reading. The channel sits in a 20rem track beside the plate at the wide
+// container and under it at the narrow one - never overlaying it, never a
+// caption floating on the image. A channel that overlays its plate is a poster.
+//
+// ─── BLEED ────────────────────────────────────────────────────────────────
+// `container` bleeds to the page's gutters (the plate is as wide as the page);
+// `viewport` bleeds to the window's edges and is clipped by the shell's
+// `overflow-x: clip`, so a plate can be wider than the measure without ever
+// widening the document.
+@use "../Mixin" as *;
+
+.ShellPlate {
+	container: plate / inline-size;
+	margin: 0;
+	min-inline-size: 0;
+}
+
+.ShellPlate__grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	align-items: stretch;
+}
+
+.ShellPlate__media {
+	position: relative;
+	display: grid;
+	place-items: center;
+	min-block-size: var(--PlateHeight, clamp(16rem, 38vh, 30rem));
+	overflow: hidden;
+	background: var(--Card);
+
+	@include hairline;
+	@include flat;
+}
+
+.ShellPlate__image {
+	display: block;
+	inline-size: 100%;
+	block-size: 100%;
+	object-fit: cover;
+	border-radius: 0;
+}
+
+// ─── THE CHANNEL ──────────────────────────────────────────────────────────
+
+.ShellPlate__channel {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-reading);
+	margin: 0;
+	padding-block-start: var(--space-reading);
+}
+
+.ShellPlate__register {
+	@include mono-meta;
+	@include track(var(--track-row));
+	display: flex;
+	align-items: baseline;
+	gap: 0.4em;
+	margin: 0;
+	color: var(--MuteForeground);
+}
+
+.ShellPlate__mark {
+	color: var(--Accent);
+}
+
+.ShellPlate__word,
+.ShellPlate__index {
+	color: var(--Foreground);
+}
+
+.ShellPlate__rows {
+	display: grid;
+	margin: 0;
+	padding: 0;
+}
+
+.ShellPlate__row {
+	display: grid;
+	grid-template-columns: 5.25rem minmax(0, 1fr);
+	gap: var(--space-tight);
+	align-items: baseline;
+	padding-block: 0.4rem;
+
+	@include hairline(bottom);
+}
+
+.ShellPlate__key {
+	@include mono-meta;
+	@include track(var(--track-name));
+	color: var(--MuteForeground);
+}
+
+.ShellPlate__value {
+	margin: 0;
+	color: var(--Foreground);
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+	text-wrap: pretty;
+}
+
+.ShellPlate__value--specimen {
+	color: var(--Accent);
+}
+
+.ShellPlate__value--quiet {
+	color: var(--MuteForeground);
+}
+
+.ShellPlate__proposition {
+	display: flex;
+	align-items: baseline;
+	gap: 0.4em;
+	margin: 0;
+	color: var(--Foreground);
+	font-family: var(--FontMono);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	letter-spacing: var(--track-set);
+	text-wrap: pretty;
+}
+
+.ShellPlate__proposition-mark {
+	color: var(--Accent);
+}
+
+// ─── THE WIDE PLATE ───────────────────────────────────────────────────────
+// The channel takes a 20rem track and a hairline gutter - the keeper hero pair's
+// model at plate scale: the plate, one 1px rule, the channel.
+
+@container plate (min-width: 48rem) {
+	.ShellPlate__grid {
+		grid-template-columns: minmax(0, 1fr) 20rem;
+		align-items: end;
+	}
+
+	.ShellPlate__channel {
+		align-self: stretch;
+		padding-block-start: 0;
+		padding-inline-start: var(--space-group);
+		border-inline-start: 1px solid var(--Divider);
+	}
+}
+
+// ─── THE TRACE ARM ────────────────────────────────────────────────────────
+// A plate whose evidence is a printed value. The mark sits above the value at
+// the muted ink, the value prints at the L tier in ink, and one line under it
+// says what the reader is looking at. The value wraps inside the field: a path
+// of two hundred characters makes the plate taller, never wider.
+
+.ShellPlate__trace {
+	display: grid;
+	justify-items: start;
+	gap: var(--space-reading);
+	inline-size: 100%;
+	max-inline-size: 100%;
+	padding: var(--space-chapter) var(--space-group);
+	text-align: start;
+}
+
+.ShellPlate__trace-mark {
+	margin: 0;
+	color: var(--MuteForeground);
+	font-family: var(--FontMono);
+	font-size: var(--type-section);
+	line-height: 1;
+	letter-spacing: var(--track-set);
+}
+
+.ShellPlate__trace-value {
+	margin: 0;
+	max-inline-size: 100%;
+	overflow-wrap: anywhere;
+	color: var(--Foreground);
+	font-family: var(--FontMono);
+	font-size: var(--type-section);
+	line-height: var(--type-section-line);
+	letter-spacing: var(--track-join);
+	text-wrap: balance;
+}
+
+.ShellPlate__trace-note {
+	@include mono-meta;
+	@include track(var(--track-row));
+	margin: 0;
+}
+
+// ─── BLEED ────────────────────────────────────────────────────────────────
+
+.ShellPlate[data-bleed="container"] {
+	margin-inline: calc(-1 * var(--Gutter));
+}
+
+.ShellPlate[data-bleed="container"] .ShellPlate__grid {
+	padding-inline: 0;
+}
+
+.ShellPlate[data-bleed="viewport"] {
+	inline-size: 100vw;
+	margin-inline: calc(50% - 50vw);
+}

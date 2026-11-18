@@ -99,7 +99,11 @@ const AccountPage = ({
 
 			SetCurrentUser(UserData);
 
-			toast.success(`Welcome back, ${UserData.username}!`);
+			toast.success(
+				UserData.username
+					? `Session written: ${UserData.username}`
+					: "Session written",
+			);
 
 			OnSignIn?.(Email, Password);
 

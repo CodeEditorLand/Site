@@ -4,27 +4,44 @@
  * beside its evidence, one hairline between them, and the record's mandatory
  * blank interval inside the card.
  *
- * The composition is the one `DESIGN.md` §3.1 and
- * `DesignSystem-Components.md` §1 "Two-panel composition rules" describe, and
- * it had been hand-assembled on every surface that shows it: the 404 renders
- * it, the homepage rebuilt it inside its own island, and Portal lost it. This
- * file is the one place it is written, so a surface that wants the artifact
- * hands over a record instead of rebuilding a grid.
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  what this page is. One artifact per page, and it opens the
+ *                   page - the record's identity, its claim, its state and its
+ *                   facts, beside the evidence the claim rests on.
+ * RANK              artifact. The only block that prints an `h1`.
+ * SLOT CONTRACT     index        -> `# MARKER` (the `#` is the block's to print)
+ *                   claim        -> the artifact's one `h1`, in the stamp grammar
+ *                   route?       -> the record's one `/ROUTE:VALUE` line
+ *                   status       -> `STATUS:` and a word from the vocabulary
+ *                   metadata     -> the record's facts, as a RecordLedger
+ *                   relation?    -> the nameplate at section weight (`LAND:`)
+ *                   proposition? -> the `↳` line under the blank interval
+ *                   evidence?    -> the plate (FieldRecordEvidence)
+ *                   seal?        -> the artifact's one seal
+ *                   action?      -> the artifact's one action
+ *                   default slot -> composed evidence instead of a picture
+ *                                  (a RecordFigure with its caption)
+ * MAY HOLD          a RecordLedger (the facts), a RecordFigure or a chart (the
+ *                   evidence), a RecordStage (the trace foot), and at most one
+ *                   RecordBand at `tone="bare"` as a sectioning level.
+ * MAY NOT HOLD      a second hero, a second seal, a second `h1`, or a band that
+ *                   paints its own fill or chapter padding.
+ * WIDE (>=768)      `49fr / 1px / 51fr`: the record, the hairline gutter, the
+ *                   evidence. The gutter draws `--Divider`, never `--Border` -
+ *                   the hairline dissolves against a photograph and this is the
+ *                   one rule M1 restored twice.
+ * NARROW            the record first, the evidence second, the gutter gone: the
+ *                   information arrives before the illustration, and the
+ *                   interval falls back to its floor token because a percentage
+ *                   has no card height to resolve against.
+ * DENSE             none. The artifact gets the screen - that is what makes it
+ *                   the artifact.
  *
- * What it renders, in order:
- *
- * 1. **The data card** - `FieldRecordDataCard` frames it, `FieldRecordIndex`
- *    prints `# LAND_01`, the claim is the artifact's `h1` in the stamp grammar
- *    (`StampText`), `FieldRecordStatus` prints the state line, and
- *    `RecordLedger` prints the facts. No part is re-implemented here.
- * 2. **The blank interval** - `aria-hidden`, 15-25 % of the card's height,
- *    between the state line and the record's closing block. It is an element
- *    with a floor rather than a margin, because "delete, don't shrink" is only
- *    a rule about something that exists.
- * 3. **The evidence panel** - `FieldRecordEvidence` at the documented ratio,
- *    or the default slot for composed evidence (a `RecordFigure`, a chart, a
- *    rendered element).
- * 4. **The seal** - `FieldRecordSeal`, one per artifact, never two.
+ * THE ORDER IS THE GRAMMAR. Mark, claim, route, state, facts - then the blank
+ * interval - then the relation, the proposition and the action. The interval
+ * separates what the record *is* from what it *asks*, which is what gives the
+ * proposition the weight of a second headline. A hero whose facts came after the
+ * interval would spend its silence on a list.
  *
  * Three things this file does NOT do, and why:
  *
@@ -33,14 +50,9 @@
  *   rest of the site renders.
  * - **No JavaScript.** Every part is an `.astro` block or a React component
  *   rendered on the server with no `client:*`, so the artifact ships as HTML
- *   and CSS. Nothing in it is interactive - the action's motion is the Jelly
- *   element's own CSS.
+ *   and CSS.
  * - **No page conversion.** The surfaces that consume this block move in their
  *   own cards, one at a time.
- *
- * The claim is the artifact's `h1`: the hero opens a page, so its claim is the
- * document's level-one heading. A page that already carries an `h1` elsewhere
- * is not a page with a hero on it.
  */
 import FieldRecordAction from "../Brand/FieldRecordAction.astro";
 import FieldRecordDataCard from "../Brand/FieldRecordDataCard.astro";
@@ -48,7 +60,7 @@ import FieldRecordIndex from "../Brand/FieldRecordIndex.astro";
 import { FieldRecordEvidence } from "../Brand/FieldRecordEvidence";
 import { FieldRecordSeal } from "../Brand/FieldRecordSeal";
 import { FieldRecordStatus } from "../Brand/FieldRecordStatus";
-import { StampText } from "../Brand/SemanticLedger";
+import { RouteText, StampText } from "../Brand/SemanticLedger";
 
 import RecordLedger from "./RecordLedger.astro";
 
@@ -62,7 +74,10 @@ type Props = Hero & {
 const {
 	index,
 	claim,
+	route,
 	status,
+	relation,
+	proposition,
 	metadata,
 	evidence,
 	seal,
@@ -125,6 +140,14 @@ const SEAL = 48;
 						<StampText Line={claim} />
 					</h1>
 
+					{
+						route && (
+							<p class="record-hero__route">
+								<RouteText Line={route} />
+							</p>
+						)
+					}
+
 					<div class="record-hero__status">
 						<FieldRecordStatus
 							status={status.state}
@@ -133,9 +156,26 @@ const SEAL = 48;
 						/>
 					</div>
 
+					<RecordLedger rows={metadata} class="record-hero__facts" />
+
 					<div class="record-hero__blank" aria-hidden="true"></div>
 
-					<RecordLedger rows={metadata} class="record-hero__facts" />
+					{
+						relation && (
+							<p class="record-hero__relation">{relation}</p>
+						)
+					}
+
+					{
+						proposition && (
+							<p class="record-hero__proposition">
+								<span class="record-hero__proposition-mark" aria-hidden="true">
+									↳
+								</span>
+								{proposition}
+							</p>
+						)
+					}
 
 					{
 						action && (

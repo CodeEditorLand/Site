@@ -51,7 +51,7 @@
 
 .surface__index {
 	@include mono-meta;
-	@include track(0.08em);
+	@include track(var(--track-row));
 
 	margin: 0;
 }
@@ -66,7 +66,7 @@
 	line-height: var(--type-section-line);
 	font-family: var(--FontMono);
 	font-weight: 400;
-	letter-spacing: -0.02em;
+	letter-spacing: var(--track-join);
 	margin: 0;
 	text-wrap: balance;
 }
@@ -238,7 +238,7 @@
 
 .surface__action {
 	@include mono-meta;
-	@include track(0.08em);
+	@include track(var(--track-row));
 
 	text-decoration: none;
 	color: var(--Foreground);
@@ -251,5 +251,432 @@
 @include bp(640px) {
 	.surface__head-inner {
 		gap: var(--space-reading);
+	}
+}
+
+/* ─── THE INSTRUMENT HEAD ─────────────────────────────────────────────────── */
+// The head every app surface opens on: nameplate, `h1` at L, `↳` proposition,
+// then the status line and the facts. It paints no fill - a surface that needs
+// the white information box composes this block inside it (the portal does).
+//
+// The `h1` is L and not XL: `_Token.scss` names L the functional `h1`, and XL
+// belongs to the homepage's one claim. Nothing else on these surfaces reaches L,
+// so the `h1` is still the largest thing on the page.
+.surface-head {
+	padding-block: var(--space-chapter) 0;
+}
+
+.surface-head__inner {
+	@include band-inner;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-reading);
+}
+
+.surface-head__plate {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: var(--space-group);
+}
+
+.surface-head__index {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0;
+}
+
+.surface-head__title {
+	font-family: var(--FontMono);
+	font-size: var(--type-section);
+	font-weight: 400;
+	line-height: var(--type-section-line);
+	letter-spacing: var(--track-join);
+	margin: 0;
+	text-wrap: balance;
+}
+
+// A page title prints bare: `〈 〉` contains a runtime stamp, a claim or a
+// platform, never a title (`DESIGN.md` §9 Q7). The brackets this head first
+// carried were the shell's, not the grammar's.
+.surface-head__title--display {
+	font-size: var(--type-display);
+	line-height: var(--type-display-line);
+}
+
+.surface-head__proposition {
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	color: var(--MuteForeground);
+	margin: 0;
+	max-width: var(--MeasureOpening);
+	text-wrap: pretty;
+}
+
+// The `↳` is the grammar's own mark for the one-line proposition under a title.
+.surface-head__proposition::before {
+	content: "↳";
+}
+
+.surface-head__facts {
+	margin-block-start: var(--space-group);
+}
+
+/* ─── THE STATUS LINE ─────────────────────────────────────────────────────── */
+// One row, one order, four surfaces: `STATUS: WORD` and the declarations that
+// make it auditable. This is the block that makes two different pages read as
+// the same instrument.
+//
+// It borrows the register's anatomy rather than restating it: the rows inside
+// `.surface__states` turn inline here, so a state keeps its key, its marker and
+// its tone and loses only the ledger's vertical rhythm.
+.surface__statusline {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	column-gap: var(--space-group);
+	row-gap: var(--space-tight);
+	margin-block-start: var(--space-group);
+	padding-block: var(--space-tight);
+	border-block: 1px solid var(--Border);
+}
+
+.surface__statusline .surface__states {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight) var(--space-group);
+}
+
+.surface__statusline .surface__state-row {
+	flex-direction: row;
+	align-items: baseline;
+	gap: var(--space-tight);
+	border-top: 0;
+	padding-block: 0;
+}
+
+.surface__statusline .surface__state-key {
+	flex: 0 0 auto;
+	inline-size: auto;
+}
+
+// The declarations. A `dl` of pairs, separated by the group rhythm - never a
+// second ledger: these are the provenance of one word, not the page's facts.
+.surface__declares {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight) var(--space-group);
+	margin: 0;
+	padding: 0;
+}
+
+.surface__declare {
+	display: flex;
+	gap: var(--space-tight);
+}
+
+.surface__declare-key {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0;
+}
+
+.surface__declare-value {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+	margin: 0;
+}
+
+/* ─── THE ABSENT STATE ────────────────────────────────────────────────────── */
+// The one white information box on these surfaces, and the composition every
+// region uses when it has no record: what would be here, why it is not, what to
+// do. It borrows the ledger's key column, so an absent record reads like a
+// record with three facts instead of a placeholder with none.
+.surface-absent {
+	display: grid;
+	gap: var(--space-reading);
+	background: var(--Card);
+	padding: var(--space-group);
+	@include hairline;
+}
+
+.surface-absent__status {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	display: flex;
+	align-items: baseline;
+	gap: 0.45em;
+	color: var(--Foreground);
+	margin: 0;
+}
+
+.surface-absent__status--specimen {
+	color: var(--Accent);
+}
+
+.surface-absent__status--quiet {
+	color: var(--MuteForeground);
+}
+
+.surface-absent__status-key {
+	color: var(--MuteForeground);
+}
+
+.surface-absent__rows {
+	display: grid;
+	margin: 0;
+	padding: 0;
+}
+
+.surface-absent__row {
+	display: grid;
+	gap: var(--space-tight);
+	padding-block: var(--space-tight);
+	@include hairline(top);
+}
+
+.surface-absent__row:first-child {
+	border-top: 0;
+	padding-block-start: 0;
+}
+
+.surface-absent__key {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0;
+}
+
+.surface-absent__value {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	margin: 0;
+	max-width: var(--MeasureOpening);
+}
+
+.surface-absent__action {
+	color: var(--Foreground);
+	text-decoration: none;
+	@include hairline(bottom);
+}
+
+.surface-absent__action:hover {
+	color: var(--Accent);
+	border-bottom-color: var(--Accent);
+}
+
+.surface-absent__note {
+	@include mono-meta;
+
+	margin: 0;
+}
+
+@include bp(640px) {
+	.surface-absent__row {
+		grid-template-columns: min(14rem, 40%) minmax(0, 1fr);
+		gap: var(--space-reading);
+		align-items: baseline;
+	}
+}
+
+/* ─── THE REGION RAIL ─────────────────────────────────────────────────────── */
+// The dashboard is ten regions, not ten cards. The rail is its table of
+// contents and its position readout: sticky from 1024px, a `<details>` drawer
+// below it, with the active region marked by ink and a 2px accent rule - the
+// same marker the header draws at the foot of the current destination.
+.surface-regions {
+	@include band-inner;
+
+	display: grid;
+	gap: var(--space-group);
+	padding-block: var(--space-chapter) 0;
+}
+
+.surface-regions__rail {
+	display: none;
+}
+
+.surface-regions__drawer {
+	@include hairline(top);
+	@include hairline(bottom);
+}
+
+.surface-regions__summary {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-reading);
+	padding-block: var(--space-tight);
+	cursor: pointer;
+	list-style: none;
+}
+
+.surface-regions__summary::-webkit-details-marker {
+	display: none;
+}
+
+.surface-regions__summary-mark {
+	color: var(--MuteForeground);
+}
+
+.surface-regions__list {
+	display: grid;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.surface-regions__link {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	display: flex;
+	gap: var(--space-tight);
+	padding-block: var(--space-tight);
+	padding-inline-start: var(--space-tight);
+	color: var(--MuteForeground);
+	text-decoration: none;
+	border-inline-start: 2px solid transparent;
+}
+
+.surface-regions__link:hover,
+.surface-regions__link:focus-visible {
+	color: var(--Foreground);
+}
+
+.surface-regions__link[aria-current="true"] {
+	color: var(--Foreground);
+	border-inline-start-color: var(--Accent);
+}
+
+.surface-regions__index {
+	color: var(--MuteForeground);
+}
+
+.surface-regions__main {
+	display: grid;
+	min-width: 0;
+}
+
+// A region is a band: separated by space and one hairline, never by a box. The
+// heading is S with tracking, not a fourth size - a region label on an
+// instrument, not a chapter of a document.
+.surface-region {
+	padding-block: var(--space-group);
+	@include hairline(top);
+}
+
+.surface-region:first-child {
+	border-top: 0;
+	padding-block-start: 0;
+}
+
+.surface-region__head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: var(--space-tight) var(--space-reading);
+	margin-block-end: var(--space-reading);
+}
+
+/* A region's title is an `h2`, so it is L - the section head's tier
+   (`_Type.scss`, THE ELEMENT LADDER). It used to be the sub step on the
+   argument that a region label is not a chapter; the ladder's answer is that a
+   region IS the section of a functional page, and a section head is L whether
+   the page has one of them or ten. What stays local is the register: a region
+   title is tracked as a name, because it sits beside its own index marker. */
+.surface-region__title {
+	@include track(var(--track-name));
+
+	font-weight: 500;
+	margin: 0;
+}
+
+.surface-region__index {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0;
+}
+
+.surface-region__standfirst {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--MuteForeground);
+	margin: 0 0 var(--space-reading);
+	max-width: var(--MeasureOpening);
+	text-wrap: pretty;
+}
+
+// A surface's claims, under the proposition: the badge run the dashboard has
+// always carried. One run, one rhythm, no second block.
+.surface-head__marks {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
+}
+
+// The trail above a surface's head. The head owns the chapter's top distance,
+// so the trail contributes only its own step.
+.surface-trail {
+	@include band-inner;
+
+	padding-block-start: var(--space-group);
+}
+
+// The emphasis-expressive action of a surface: ink fill, creme label, one per
+// artifact, and only on the thing the reader clicks (`_Type.scss`, §5 A6).
+.surface-button {
+	@include ink-invert;
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-tight);
+	padding: var(--space-tight) var(--space-reading);
+	color: var(--PrimaryForeground);
+	text-decoration: none;
+}
+
+.surface-button:hover,
+.surface-button:focus-visible {
+	text-decoration: underline;
+}
+
+// The white information box a region's records lie on. Never nested: a panel
+// holds rows and ledgers, never another panel.
+.surface-panel {
+	background: var(--Card);
+	padding: var(--space-group);
+	@include hairline;
+}
+
+@include bp(1024px) {
+	.surface-regions {
+		grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+		column-gap: var(--space-group);
+	}
+
+	.surface-regions__rail {
+		display: block;
+		position: sticky;
+		top: calc(var(--HeaderHeight) + var(--space-group));
+		align-self: start;
+	}
+
+	.surface-regions__drawer {
+		display: none;
 	}
 }

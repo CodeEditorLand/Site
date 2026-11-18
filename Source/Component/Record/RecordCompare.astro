@@ -1,0 +1,165 @@
+---
+/**
+ * RecordCompare - one axis, its stops, and where each thing sits on it.
+ *
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  a position on one axis: along *this* line, in what order do
+ *                   these things sit, and which of them is reached today? The
+ *                   four authentication tiers on who holds the identity; a
+ *                   release's artifacts on what is published.
+ * RANK              set.
+ * SLOT CONTRACT     compare.label?   -> `/POSITION`, the rail's opening
+ *                   compare.from     -> the axis's left end
+ *                   compare.to       -> the axis's right end
+ *                   compare.stops[]  -> one position each: label, value, note?,
+ *                                       state?, href?
+ *                   compare.caption? -> the one statement made about the rail
+ *                   compare.empty?   -> what the rail says with no stops
+ *                   compare.state?   -> `rest` (default) or `loading`
+ * MAY HOLD          stops. A stop is a position with one value - not a cell with
+ *                   a column of facts (that is a Matrix) and not a step in an
+ *                   order (that is a Stage).
+ * MAY NOT HOLD      a nested set, a figure, a well. A rail is one line.
+ * WIDE (>=768)      one line across the measure; each stop is a column whose top
+ *                   edge is the rail, with a 7px tick at its head - filled when
+ *                   the position is reached, hollow when it is not.
+ * NARROW            the rail rotates: the line runs down the left edge and the
+ *                   stops stack along it, each keeping its tick and its state.
+ *                   The axis's two ends print above the stack, so the direction
+ *                   survives the rotation.
+ * DENSE             none. A rail with more than six stops needs a Matrix; the
+ *                   block does not compress, it refuses to be a table.
+ *
+ * WHY NOT A MATRIX. The matrix answers "what is true in each column" and has no
+ * ends. The rail answers "how far along this one axis", and its ends are the
+ * point: `LOCAL-FIRST → ENTERPRISE` and `SOURCE → SIGNED ARTIFACT` are two
+ * different orders, and the axis label is what makes the order a claim instead
+ * of a layout. A rail without `from` and `to` is a row of columns pretending to
+ * be a progression, which is why both are required.
+ *
+ * THE STATE IS THE POSITION'S, NOT THE STOP'S OPINION. A stop marked
+ * `UNAVAILABLE` prints the vocabulary's word in its tone and its tick is hollow:
+ * the rail still shows the position (the order is a fact) and says plainly that
+ * nothing has arrived there yet. That is the partial state as a shape - not a
+ * greyed-out column and never a zero.
+ *
+ * THE LOADING STATE IS A SKELETON IN THE GRAMMAR, NOT A SPINNER. `state:
+ * "loading"` prints the axis and three hollow stops with hairline bars where the
+ * labels and values will be. A spinner says "wait"; this says what the reader is
+ * waiting for and where it will appear - which is the only thing a skeleton can
+ * do that a spinner cannot. It is mounted only on a region whose values genuinely
+ * arrive after paint; a prerendered page never renders it.
+ *
+ * No `<script>` and no `client:*`: the rail is printed.
+ */
+import { Tone } from "../Surface/State.js";
+
+import type { Comparison } from "./Type.js";
+
+interface Props {
+	/** The axis, its stops, its caption and its state. */
+	compare: Comparison;
+
+	/** Extra classes from the page, appended after the block's own. */
+	class?: string;
+}
+
+const { compare, class: Class } = Astro.props;
+
+const Loading = compare.state === "loading";
+
+const Empty = !Loading && compare.stops.length === 0;
+
+/**
+ * The stop's state tone, from the one table that decides tones. A word outside
+ * the vocabulary prints in ink and is not a state, which is the same rule every
+ * other register follows.
+ */
+const StopTone = (State: string | undefined): string =>
+	State ? (Tone(State.toUpperCase()) ?? "ink") : "ink";
+
+/** The skeleton's three columns: the shape of a rail whose stops have not arrived. */
+const Skeleton = [0, 1, 2];
+---
+
+<div
+	class:list={[
+		"record-compare",
+		Loading && "record-compare--loading",
+		Empty && "record-compare--empty",
+		Class,
+	]}
+	role="group"
+	aria-label={compare.label ?? `${compare.from} to ${compare.to}`}
+	aria-busy={Loading ? "true" : undefined}
+>
+	{compare.label ? <p class="record-compare__label">{compare.label}</p> : null}
+
+	<p class="record-compare__axis">
+		<span class="record-compare__end">{compare.from}</span>
+		<span class="record-compare__axis-mark" aria-hidden="true">&#8594;</span>
+		<span class="record-compare__end">{compare.to}</span>
+	</p>
+
+	{
+		Loading ? (
+			<ol class="record-compare__rail" style="--CompareStops:3">
+				{Skeleton.map(() => (
+					<li class="record-compare__stop record-compare__stop--skeleton">
+						<span class="record-compare__tick" aria-hidden="true" />
+						<span class="record-compare__bar record-compare__bar--label" aria-hidden="true" />
+						<span class="record-compare__bar record-compare__bar--value" aria-hidden="true" />
+					</li>
+				))}
+			</ol>
+		) : Empty ? (
+			<p class="record-compare__empty">
+				<span aria-hidden="true">&#9678;</span>{" "}
+				{compare.empty ??
+					"No position is recorded on this axis yet. The rail prints its ends rather than a blank line, so a reader can see which order is being asked about."}
+			</p>
+		) : (
+			<ol
+				class="record-compare__rail"
+				style={`--CompareStops:${compare.stops.length}`}
+			>
+				{compare.stops.map((Stop) => (
+					<li
+						class:list={[
+							"record-compare__stop",
+							Stop.state && "record-compare__stop--unreached",
+						]}
+					>
+						<span class="record-compare__tick" aria-hidden="true" />
+						<span class="record-compare__stop-label">{Stop.label}</span>
+						{Stop.state ? (
+							<span
+								class:list={[
+									"record-compare__stop-state",
+									`record-compare__stop-state--${StopTone(Stop.state)}`,
+								]}
+							>
+								<span class="record-compare__stop-mark" aria-hidden="true" />
+								STATUS: {Stop.state.toUpperCase()}
+							</span>
+						) : null}
+						<span class="record-compare__stop-value">
+							{Stop.href ? <a href={Stop.href}>{Stop.value}</a> : Stop.value}
+						</span>
+						{Stop.note ? (
+							<span class="record-compare__stop-note">{Stop.note}</span>
+						) : null}
+					</li>
+				))}
+			</ol>
+		)
+	}
+
+	{
+		Loading ? (
+			<p class="record-compare__state">STATUS: LOADING</p>
+		) : compare.caption ? (
+			<p class="record-compare__caption">{compare.caption}</p>
+		) : null
+	}
+</div>

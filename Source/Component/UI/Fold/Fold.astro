@@ -1,0 +1,112 @@
+---
+/**
+ * Fold - a page's own contents, in a disclosure that costs nothing until asked.
+ *
+ * ─── WHAT IT IS ───────────────────────────────────────────────────────────
+ * A `<details>` whose summary is a register line (`# ON THIS PAGE / 07`) and
+ * whose body is the page's sections as rows: `[index] [label] [meta]`. No
+ * script, no hydration, no scroll observer - a printed table of contents, in the
+ * one form HTML has for "there is more behind this".
+ *
+ * ─── WHY IT EXISTS ON THIS SITE ───────────────────────────────────────────
+ * The rail and the trust documents both have a contents register, and both of
+ * them belong to a *rail*. A page composed with no rail - `/Contents`, the
+ * lexicon - had no way to say what it contains at a narrow measure. This is that
+ * register, at the scale a page without furniture can carry: one line, closed.
+ *
+ * ─── NARROW BY DEFAULT, WIDE ON REQUEST ───────────────────────────────────
+ * Hidden at >=1024 unless `wide`. A page with a rail has the rail; a page without
+ * one keeps its fold at every width, because a table of contents is the
+ * document's own index and not a phone affordance.
+ *
+ * ─── THE EMPTY FOLD IS COMPOSED ───────────────────────────────────────────
+ * `empty` is required. A page with no sections opens its fold and says what
+ * would be here and why it is not - a fold that rendered nothing would be
+ * indistinguishable from contents that failed to build.
+ *
+ * ─── A ROW'S `meta` IS A FACT, NOT DECORATION ─────────────────────────────
+ * The right-hand cell carries the section's own count (`13 ROWS`, `07 BANDS`) or
+ * its form. A row that cannot state one prints nothing rather than a dash: the
+ * site has no dash in its grammar and an empty cell is not a zero.
+ */
+
+export interface FoldItem {
+	/** The section's series number, two digits: `"01"`. */
+	Index: string;
+
+	/** The section's own heading, as the page prints it. */
+	Label: string;
+
+	/** The anchor the row goes to: `#forms`. */
+	Href: string;
+
+	/** An optional fact about the section - a count, a form, a state. */
+	Meta?: string;
+}
+
+interface Props {
+	/** The page's sections, in reading order. */
+	Items: readonly FoldItem[];
+
+	/** The register line's `/` name. `ON THIS PAGE` unless the page says otherwise. */
+	Name?: string;
+
+	/** Keep the fold at every width. For a page with no rail. */
+	Wide?: boolean;
+
+	/** What the fold says with no sections. Required. */
+	Empty: string;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const {
+	Items,
+	Name = "ON THIS PAGE",
+	Wide = false,
+	Empty,
+	class: Class,
+} = Astro.props;
+
+/** The count in the grammar's two digits. */
+const Count = String(Items.length).padStart(2, "0");
+---
+
+<details class:list={["Fold", Wide && "Fold--wide", Class]}>
+	<summary class="Fold__Summary">
+		<span class="Fold__Mark" aria-hidden="true">#</span>
+		<span class="Fold__Name">{Name}</span>
+		<span class="Fold__Rule" aria-hidden="true">/</span>
+		<span class="Fold__Count">{Count}</span>
+		<span class="Fold__Word Fold__Word--open">OPEN</span>
+		<span class="Fold__Word Fold__Word--close">CLOSE</span>
+		<span class="Fold__Disclosure" aria-hidden="true">›</span>
+	</summary>
+
+	{
+		Items.length > 0 ? (
+			<ol class="Fold__List">
+				{Items.map((Item) => (
+					<li>
+						<a class="Fold__Row" href={Item.Href}>
+							<span class="Fold__Index">{Item.Index}</span>
+							<span class="Fold__Label">{Item.Label}</span>
+							{Item.Meta ? <span class="Fold__Meta">{Item.Meta}</span> : null}
+						</a>
+					</li>
+				))}
+			</ol>
+		) : (
+			<div class="Fold__Empty">
+				<p class="Fold__EmptyMark">
+					<b aria-hidden="true">◎</b>
+					<span>NO SECTION</span>
+				</p>
+				<p class="Fold__EmptyLine">
+					<span aria-hidden="true">↳</span> {Empty}
+				</p>
+			</div>
+		)
+	}
+</details>

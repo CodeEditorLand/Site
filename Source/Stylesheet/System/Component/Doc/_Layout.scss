@@ -6,19 +6,28 @@
 //   .doc-layout            the page container (one gutter, one max width)
 //   .doc-layout__shell     the rail/content grid
 //   .doc-layout__aside     the rail's landmark, hidden below 1024px
-//   .doc-layout__sticky    the rail's own scroll area under the sticky header
-//   .doc-layout__title     the rail's visible label
+//   .doc-layout__sticky    the rail's own box under the sticky header
+//   .doc-layout__head      the rail's pinned register - the page's own contents
+//   .doc-layout__tree      the rail's scrolling register - the manual's tree
+//   .doc-layout__title     the tree's visible label
 //   .doc-layout__foot      the rail's closing block, opened by a hairline
 //   .doc-layout__rust      the one link that leaves the documentation tree
 //   .doc-layout__main      the content column
 //
-// Two decisions worth knowing:
+// Three decisions worth knowing:
 //
 // - The container is HERE, once. The rail and the content column share one
 //   gutter, so content never indents away from the rail it is read beside, and
 //   no page that renders this shell wraps its content in a second container.
-// - The rail scrolls, the page does not. `.doc-layout__sticky` is pinned under
-//   the header with its own `overflow-y`, so a 78-entry tree never stretches the
+// - The rail is TWO REGISTERS, not one list. Its head is the page's own
+//   contents, pinned: it answers "where am I in this page" and does not move
+//   while the reader reads. Under a hairline the tree takes the rail's scroll:
+//   it answers "where am I in the manual". The head is capped at 55% of the rail
+//   so a document with twenty sections can never push the tree off the screen,
+//   and each register scrolls on its own - `overscroll-behavior: contain` keeps a
+//   gesture inside the register it started in.
+// - The rail scrolls, the page does not. The sticky box is pinned under the
+//   header with its own bounded height, so a 78-entry tree never stretches the
 //   page - and below the breakpoint the rail is not rendered as a column at all,
 //   it is the collapsed panel the island draws above the content. That is the
 //   whole reason the page never scrolls horizontally on a narrow viewport.
@@ -45,6 +54,40 @@
 	}
 }
 
+// ─── The margin channel ───────────────────────────────────────────────────
+// A third track, only when a page hands apparatus in (`doc-layout__shell--margin`).
+// It appears at 1280px and not at 1024: at 1024 the container cannot hold a rail,
+// a 72ch measure and an 18rem margin without narrowing the prose, and the measure
+// is the page. Below 1280 the margin prints under the measure as a ruled block -
+// the same notes, one column, in the same order.
+
+.doc-layout__margin {
+	padding-block-start: var(--space-group);
+	border-block-start: 1px solid var(--Divider);
+}
+
+// The margin owns the rhythm of its notes: one mechanism, at the group distance,
+// so two notes never touch and never need a margin of their own.
+.doc-layout__margin > * + * {
+	margin-block-start: var(--space-group);
+}
+
+@include bp(1280px) {
+	.doc-layout__shell--margin {
+		grid-template-columns: minmax(0, 26ch) minmax(0, 1fr) minmax(0, 18rem);
+	}
+
+	.doc-layout__margin {
+		position: sticky;
+		top: calc(var(--HeaderHeight) + var(--space-tight));
+
+		padding-block-start: 0;
+		padding-inline-start: var(--space-reading);
+		border-block-start: 0;
+		border-inline-start: 1px solid var(--Divider);
+	}
+}
+
 .doc-layout__aside {
 	display: none;
 
@@ -56,21 +99,85 @@
 .doc-layout__sticky {
 	position: sticky;
 	top: calc(var(--HeaderHeight) + var(--space-tight));
-	max-block-size: calc(100dvh - var(--HeaderHeight) - var(--space-group));
-	overflow-y: auto;
-	overscroll-behavior: contain;
+
+	display: flex;
+	flex-direction: column;
+
+	/* A definite height, not a cap: the two registers are flex items, and a
+	   `max-block-size` leaves the column's height to its content - which gives a
+	   `flex-basis: 0` tree nothing to grow into and collapses it to its border.
+	   The rail is a viewport-height workspace; its foot sits on the floor. */
+	block-size: calc(100dvh - var(--HeaderHeight) - var(--space-group));
+
+	overflow: hidden;
+
 	padding-block-end: var(--space-group);
 	padding-inline-end: var(--space-tight);
 }
 
+// The pinned register. It takes its own height up to 55% of the rail and then
+// scrolls, so the tree always keeps the larger half: a reader who is lost in a
+// page is looking for a section, and a reader who is lost in the manual is
+// looking for a page - but the section is the nearer question.
+.doc-layout__head {
+	flex: 0 1 auto;
+
+	max-block-size: 50%;
+
+	overflow-x: hidden;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+
+	/* The register scrolls by rows, not by pixels: a section list that stops
+	   halfway through a row reads as damage at its own edge. Proximity, not
+	   mandatory - a reader who is scrolling fast is not fought. */
+	scroll-snap-type: y proximity;
+
+	padding-block-end: var(--space-group);
+
+	@include hairline(bottom);
+}
+
+// The scrolling register. `flex-basis: 0` and `min-block-size: 0` are what let
+// it absorb every pixel the head does not take instead of growing the sticky box
+// past its cap.
+.doc-layout__tree {
+	flex: 1 1 0;
+
+	min-block-size: 0;
+
+	overflow-x: hidden;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+
+	/* No top padding: the label is sticky at this register's top edge, and padding
+	   on the scroll box is a band content scrolls through instead of under. The
+	   label carries the gap itself. */
+	padding-block-start: 0;
+}
+
+/* The tree's label stays at the top of its own register as the tree scrolls: both
+   registers name themselves, and a rail whose second half is an unlabelled list of
+   eighty-one rows is the thing this shell replaced. The fill is the field's, so a
+   row scrolling under the label is covered rather than read through. */
 .doc-layout__title {
 	@include mono-meta;
 	@include track;
 
-	margin: 0 0 var(--space-tight);
+	position: sticky;
+	inset-block-start: 0;
+	z-index: 1;
+
+	background: var(--Background);
+
+	padding-block: var(--space-reading) var(--space-tight);
+
+	margin: 0;
 }
 
 .doc-layout__foot {
+	flex: 0 0 auto;
+
 	@include hairline(top);
 
 	margin-block-start: var(--space-group);

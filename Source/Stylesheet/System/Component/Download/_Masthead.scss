@@ -52,7 +52,7 @@
 	font-size: var(--type-display);
 	font-weight: 500;
 	line-height: var(--type-display-line);
-	letter-spacing: -0.03em;
+	letter-spacing: var(--track-join);
 	color: var(--Foreground);
 	text-wrap: balance;
 }

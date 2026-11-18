@@ -1,0 +1,236 @@
+// RecordStamp - the mark that says this record is what it claims to be: one
+// mark, the route it was issued under, the facts that bound it, its authority.
+//
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  authentication - an edition's mark, a document's version
+//                   stamp, a route's seal. Not a ledger (facts about an object)
+//                   and not a badge (a tint with no field behind it).
+// RANK              leaf.
+// SLOT CONTRACT     .record-stamp                  the frame: a white insert
+//                   .record-stamp--withdrawn       the tombstone arm
+//                   .record-stamp__head            `# STAMP_01 / EDITION ␁ STATUS:`
+//                   .record-stamp__index           the marker, in ink
+//                   .record-stamp__label           the `/LABEL`
+//                   .record-stamp__state           `STATUS: <word>` in its tone
+//                   .record-stamp__state-marker    the 4px specimen mark
+//                   .record-stamp__mark            `〈EDITION 01〉` at the section role
+//                   .record-stamp__route           `/CHANNEL:PUBLIC`
+//                   .record-stamp__revoked         `◎ WITHDRAWN: <reason>`
+//                   .record-stamp__rows            the facts that bound the mark
+//                   .record-stamp__row-key|__row-value
+//                   .record-stamp__authority       `AUTHORITY: ...` on the floor
+//                   .record-stamp__note            what the mark does not cover
+// MAY HOLD          nothing. A mark and its register.
+// NARROW            the mark steps from the section role to the heading role and
+//                   the rows stack. The route and the authority never move: a
+//                   stamp that loses its authority on a phone has lost the only
+//                   field it has.
+// WIDE (>=1024)     the mark at the section role between two `--Divider` rules -
+//                   the impression band - with the rows in one column beneath it
+//                   and the authority on the frame's floor.
+// DENSE             none. Four lines and a mark; there is nothing to compress,
+//                   and a compressed stamp is a badge.
+//
+// THE BAND IS THE IMPRESSION. Two 20% rules above and below the mark are what
+// make the block read as a stamp rather than as a small card: a stamp is a band
+// of ink with a word in it, and the site's one way to draw a band is a pair of
+// structural rules. There is no rotation, no texture, no double frame and no
+// shadow - the identity forbids all four, and a stamp that pretends to be ink on
+// paper is the one thing this paper does not do.
+//
+// THE WITHDRAWN ARM KEEPS ITS ROWS. A mark that was true and is not any more
+// loses its route, gains `◎ WITHDRAWN:` with the reason, and keeps every fact it
+// was issued with - the block is a record of what was stamped, and a withdrawn
+// stamp that erased its own facts would erase the record with it.
+
+@use "../Mixin" as *;
+
+.record-stamp {
+	@include hairline;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+	margin: 0;
+	padding: var(--space-group);
+	background: var(--Card);
+}
+
+.record-stamp__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 var(--space-tight);
+	margin: 0;
+}
+
+.record-stamp__index {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.record-stamp__label {
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.record-stamp__state {
+	display: flex;
+	align-items: center;
+	gap: var(--space-tight);
+	margin-inline-start: auto;
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.record-stamp__state-key {
+	color: var(--MuteForeground);
+}
+
+.record-stamp__state-marker {
+	display: block;
+	flex: 0 0 auto;
+	inline-size: 4px;
+	block-size: 4px;
+	background: currentColor;
+}
+
+.record-stamp__state--specimen {
+	color: var(--Accent);
+}
+
+.record-stamp__state--quiet {
+	color: var(--MuteForeground);
+}
+
+.record-stamp__state--ink {
+	color: var(--Foreground);
+}
+
+// ─── THE IMPRESSION BAND ──────────────────────────────────────────────────
+.record-stamp__mark {
+	margin: 0;
+	padding-block: var(--space-reading);
+	border-block: 1px solid var(--Divider);
+	font-size: var(--type-section);
+	line-height: var(--type-section-line);
+	letter-spacing: var(--track-rule);
+	text-transform: uppercase;
+	color: var(--Foreground);
+	overflow-wrap: anywhere;
+}
+
+.record-stamp__route {
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+	overflow-wrap: anywhere;
+}
+
+.record-stamp__revoked {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 var(--space-tight);
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.record-stamp__revoked-mark {
+	color: var(--Foreground);
+}
+
+.record-stamp__revoked-key {
+	color: var(--Foreground);
+}
+
+// ─── THE FACTS ────────────────────────────────────────────────────────────
+// The ledger's row, one step tighter: a stamp's facts are read as a register
+// under the mark, so the key column is narrow and every row carries its own rule.
+.record-stamp__rows {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	padding-block-start: var(--space-tight);
+}
+
+.record-stamp__row {
+	display: grid;
+	grid-template-columns: minmax(0, 11ch) minmax(0, 1fr);
+	gap: var(--space-tight);
+	padding-block: var(--space-tight);
+	border-block-start: 1px solid var(--Border);
+}
+
+.record-stamp__row-key {
+	@include mono-meta;
+	@include track(var(--track-name));
+}
+
+.record-stamp__row-value {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+	color: var(--Foreground);
+	overflow-wrap: anywhere;
+}
+
+.record-stamp__row-value--code {
+	letter-spacing: var(--track-set);
+}
+
+// ─── THE FLOOR ────────────────────────────────────────────────────────────
+// The authority is the stamp's reason to exist, so it is printed at the frame's
+// floor on its own rule and in ink - never in the muted register the facts use.
+.record-stamp__authority {
+	margin: 0;
+	padding-block-start: var(--space-tight);
+	border-block-start: 1px solid var(--Divider);
+	@include mono-meta;
+	@include track(var(--track-name));
+	color: var(--Foreground);
+	overflow-wrap: anywhere;
+}
+
+.record-stamp__authority-key {
+	color: var(--MuteForeground);
+}
+
+.record-stamp__note {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+	overflow-wrap: anywhere;
+}
+
+@include bp(640px) {
+	.record-stamp {
+		padding: var(--space-group);
+	}
+}
+
+// Below 640 the mark steps down one role: at the section size `〈TERMS 2026-11〉`
+// is wider than a 320px measure, and a mark that overflows its frame is not a
+// stamp - it is a broken word.
+@media (max-width: 639px) {
+	.record-stamp__mark {
+		font-size: var(--type-heading);
+		line-height: var(--type-heading-line);
+		letter-spacing: var(--track-row);
+	}
+
+	.record-stamp__row {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0;
+	}
+}

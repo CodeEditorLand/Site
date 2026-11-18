@@ -32,7 +32,7 @@
 
 .requests__label {
 	@include mono-meta;
-	@include track(0.08em);
+	@include track(var(--track-row));
 
 	margin: 0;
 }

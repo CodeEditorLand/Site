@@ -1,39 +1,32 @@
 ---
 /**
- * SurfaceShell - the one shell both app surfaces wear: portal and dashboard.
+ * SurfaceShell - the shell both app surfaces wear: the instrument head, then the
+ * page's own bands.
  *
- * Both pages are tools, not marketing pages, so they open the same way: a
- * record marker, the page's only `h1` at `--type-section` (the L tier, so it
- * can never render under L), one sentence of context, the page's states with
- * their §7 markers, and a status ledger that states the page's own facts before
- * any band explains them. Everything after the shell is a stack of bands, and
- * the page supplies those through the slot.
+ * The head itself is `SurfaceHead` (nameplate, `h1`, `↳` proposition, status
+ * line, facts ledger). This file only adds the two things a *page* needs and a
+ * head does not:
  *
- * Five decisions this file makes, so a page cannot get them wrong:
+ * - the `.surface` wrapper on the creme field, so the page's bands inherit the
+ *   canvas and the ink instead of each section restating them;
+ * - the `slot`, which is where the page's regions go. The shell owns the opening
+ *   and nothing below it - a region is a band, and bands belong to the page.
  *
- * - It renders a `<div>`, not a `<main>`. `Layout/Base.astro` already owns
- *   `<main id="main-content">`, and a second one nested inside it was a
- *   duplicate landmark with a duplicate id.
- * - The `h1` is the only level-one heading the shell emits, and it is the
- *   only place either page gets one.
- * - The `〈 〉` brackets around the title are the shell's own, drawn at
- *   `--MuteForeground` in the partial. They were inline-styled spans before;
- *   the keyword ink they asked for resolved to the card foreground anyway, so
- *   nothing is lost and the markup stops carrying colour.
- * - States are lifted out of the ledger into `SurfaceState`, because a state
- *   that renders exactly like an ordinary fact has lost its state
- *   (`DesignSystem-Components.md` §7). The page hands the two lists separately;
- *   the shell never guesses which of its facts is a state.
- * - The ledger is `RecordLedger`, never a second `<dl>`: the remaining status
- *   facts on both pages are key/value facts, which is the ledger's job.
+ * It renders a `<div>`, not a `<main>`: `Layout/Base.astro` already owns
+ * `<main id="main-content">`, and a second one nested inside it was a duplicate
+ * landmark with a duplicate id.
+ *
+ * The `h1` is the only level-one heading the shell emits, and `SurfaceHead`
+ * prints it at L with the `〈 〉` brackets drawn by the partial. States are
+ * lifted out of the ledger into the status line, so a state never renders as a
+ * row that merely looks like a fact.
  *
  * No script and no hydration directive: the shell is static.
  */
-import RecordLedger from "../Record/RecordLedger.astro";
-import SurfaceState from "./SurfaceState.astro";
+import SurfaceHead from "./SurfaceHead.astro";
 
 import type { LedgerRow } from "../Record/Type.js";
-import type { SurfaceState as State } from "./State.js";
+import type { Declaration, SurfaceState as State } from "./State.js";
 
 interface Props {
 	/** `# PORTAL_01` - the surface's record marker, printed verbatim. */
@@ -42,18 +35,17 @@ interface Props {
 	/** The page's `h1`. */
 	title: string;
 
-	/** One sentence of context under the title. */
+	/** The `↳` line: one proposition or one sentence of context. */
 	standfirst?: string;
 
-	/**
-	 * The page's states, in the order they are read. Each carries its §7 tone
-	 * and renders with its specimen marker; a page that has none omits the
-	 * prop rather than passing an empty string.
-	 */
+	/** The page's states, in the order they are read. */
 	states?: readonly State[];
 
+	/** The declarations that make those states auditable. */
+	declarations?: readonly Declaration[];
+
 	/** The status facts, in the order they are read. */
-	rows: readonly LedgerRow[];
+	rows?: readonly LedgerRow[];
 
 	/** Extra classes from the page. */
 	class?: string;
@@ -64,22 +56,20 @@ const {
 	title,
 	standfirst,
 	states = [],
-	rows,
+	declarations = [],
+	rows = [],
 	class: ClassName,
 } = Astro.props;
 ---
 
 <div class:list={["surface", ClassName]}>
-	<header class="surface__head">
-		<div class="surface__head-inner">
-			<p class="surface__index">{index}</p>
-			<h1 class="surface__title">{title}</h1>
-			{standfirst ? <p class="surface__standfirst">{standfirst}</p> : null}
-			<div class="surface__status">
-				{states.length ? <SurfaceState states={states} /> : null}
-				{rows.length ? <RecordLedger rows={rows} columns={2} /> : null}
-			</div>
-		</div>
-	</header>
+	<SurfaceHead
+		index={index}
+		title={title}
+		proposition={standfirst}
+		states={states}
+		declarations={declarations}
+		rows={rows}
+	/>
 	<slot />
 </div>

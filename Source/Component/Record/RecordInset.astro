@@ -1,0 +1,250 @@
+---
+/**
+ * RecordInset - a marginal note that can hold a figure.
+ *
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  an annotation *with its evidence*: the shape of a piece, the
+ *                   extent of a page, the one capture that qualifies a claim.
+ *                   Not a margin note (a claim with no figure - that is
+ *                   `RecordMargin`) and not a figure in the column (that is
+ *                   `RecordFigure`): an inset is the note the margin could not
+ *                   hold because the note is not the whole of it.
+ * RANK              leaf.
+ * SLOT CONTRACT     inset.index      -> `# INSET_01`
+ *                   inset.label?     -> `/ THE SHAPE`, after the marker
+ *                   inset.figure?    -> the figure: a capture, or bars
+ *                   inset.figure.caption -> `FIGURE:` - required with a figure
+ *                   inset.figure.source  -> `SOURCE:` under the figure
+ *                   inset.figure.bars[]  -> labelled bars, drawn in the grammar
+ *                   inset.body       -> the claim, after the `↳`
+ *                   inset.link?      -> `→ LABEL`, or the tombstone
+ *                   inset.source?    -> `SOURCE: ...`, or `SOURCE: UNAVAILABLE`
+ *                   inset.state?     -> `STATUS: <word>` in its vocabulary tone
+ * MAY HOLD          the figure prop, or composed media in the slot (a rendered
+ *                   diagram). Never a second note and never a block.
+ * MAY NOT HOLD      a ledger, a well, a heading. An inset is the smallest object
+ *                   in the layer that carries a figure and a claim together.
+ * WIDE (>=1280)     the note hangs in the margin at 28ch, on a `--Divider` rule
+ *                   at its left; the figure prints above the claim at the
+ *                   margin's own measure.
+ * NARROW            the rule rotates to the top, the inset takes the column's
+ *                   measure, and the figure goes *first* - an inset in the flow
+ *                   is read after the paragraph it annotates, and a figure under
+ *                   a claim is a footnote.
+ * DENSE             none. The figure is the reason the block exists; a
+ *                   compressed inset is a margin note with a squashed picture.
+ *
+ * THE MEASURE FIGURE IS THE POINT. A margin has no room for a photograph, but it
+ * has room for a bar: `SECTIONS 09`, `WORDS 1,240`, `MINUTES 6`, drawn as three
+ * rules whose lengths are their shares. That is a figure in the record grammar -
+ * no chart library, no axis, no colour, one ink - and it is how the margin can
+ * hold evidence about the page it annotates without becoming a second column.
+ *
+ * THE BARS ARE NOT DECORATION. Each one prints its label and its value in the
+ * same line, so the figure survives with CSS off (the bar collapses, the numbers
+ * do not), and `share` is the page's arithmetic, never the block's: the block
+ * draws what it is given and derives nothing.
+ *
+ * No `<script>` and no `client:*`: an inset is printed.
+ */
+import { FieldRecordEvidence } from "../Brand/FieldRecordEvidence";
+import { Tone } from "../Surface/State.js";
+
+import type { Inset } from "./Type.js";
+
+interface Props {
+	/** The note, its figure, its destination and its source. */
+	inset: Inset;
+
+	/** Extra classes from the page, appended after the block's own. */
+	class?: string;
+}
+
+const { inset, class: Class } = Astro.props;
+
+/** The state word's tone, from the one table that decides tones. */
+const StateTone = inset.state
+	? (Tone(inset.state.toUpperCase()) ?? "ink")
+	: undefined;
+
+/** The figure's own state, when the capture is not there. */
+const FigureStateTone = inset.figure?.state
+	? (Tone(inset.figure.state.toUpperCase()) ?? "ink")
+	: undefined;
+
+/** Composed media: the page handed the inset its own figure. */
+const Composed = Astro.slots.has("default");
+
+/** A figure is present when the caller passed one or composed media. */
+const HasFigure = inset.figure !== undefined || Composed;
+
+/** The bars, when the figure is a measure figure rather than a capture. */
+const Bars = inset.figure?.bars ?? [];
+
+/** The figure's capture, when it has one. */
+const Picture =
+	inset.figure?.src !== undefined && inset.figure.alt !== undefined
+		? { src: inset.figure.src, alt: inset.figure.alt }
+		: undefined;
+
+/** The claim is printed unless the inset is its empty state. */
+const Empty = inset.empty !== undefined && !inset.body;
+---
+
+<aside
+	class:list={[
+		"record-inset",
+		HasFigure && "record-inset--figure",
+		Class,
+	]}
+	role="note"
+	aria-label={`Inset ${inset.index}${inset.label ? `: ${inset.label}` : ""}`}
+>
+	{
+		Empty ? (
+			<p class="record-inset__empty">
+				<span class="record-inset__empty-mark" aria-hidden="true">
+					&#9678;
+				</span>
+				{inset.empty}
+			</p>
+		) : (
+			<>
+				{
+					HasFigure ? (
+						<figure class="record-inset__figure">
+							{inset.figure?.state ? (
+								<div class="record-inset__frame record-inset__frame--absent">
+									<span class="record-inset__absent-mark" aria-hidden="true">
+										&#9678;
+									</span>
+									<span
+										class:list={[
+											"record-inset__absent-state",
+											`record-inset__absent-state--${FigureStateTone}`,
+										]}
+									>
+										<span class="record-inset__absent-key">STATUS:</span>
+										{inset.figure.state.toUpperCase()}
+									</span>
+								</div>
+							) : Picture ? (
+								<div class="record-inset__frame">
+									<FieldRecordEvidence
+										src={Picture.src}
+										alt={Picture.alt}
+										className="record-inset__picture"
+									/>
+								</div>
+							) : Bars.length > 0 ? (
+								<div class="record-inset__bars">
+									{Bars.map((Bar) => (
+										<div class="record-inset__bar">
+											<p class="record-inset__bar-head">
+												<span class="record-inset__bar-label">{Bar.label}</span>
+												<span class="record-inset__bar-value">{Bar.value}</span>
+											</p>
+											<span class="record-inset__bar-track" aria-hidden="true">
+												<span
+													class="record-inset__bar-fill"
+													style={`--bar-share: ${Math.max(0, Math.min(1, Bar.share))}`}
+												/>
+											</span>
+										</div>
+									))}
+								</div>
+							) : (
+								<div class="record-inset__frame record-inset__frame--composed">
+									<slot />
+								</div>
+							)}
+
+							{
+								inset.figure ? (
+									<figcaption class="record-inset__figure-caption">
+										<span class="record-inset__figure-row">
+											<span class="record-inset__figure-key">FIGURE:</span>
+											<span class="record-inset__figure-text">
+												{inset.figure.caption}
+											</span>
+										</span>
+										<span class="record-inset__figure-row">
+											<span class="record-inset__figure-key">SOURCE:</span>
+											<span class="record-inset__figure-source">
+												{inset.figure.source}
+											</span>
+										</span>
+										{inset.figure.asOf ? (
+											<span class="record-inset__figure-row">
+												<span class="record-inset__figure-key">AS OF:</span>
+												<span class="record-inset__figure-source">
+													{inset.figure.asOf}
+												</span>
+											</span>
+										) : null}
+									</figcaption>
+								) : null
+							}
+						</figure>
+					) : null
+				}
+
+				<p class="record-inset__head">
+					<span class="record-inset__index"># {inset.index}</span>
+					{inset.label ? <span class="record-inset__label">/ {inset.label}</span> : null}
+				</p>
+
+				{
+					inset.state ? (
+						<p
+							class:list={[
+								"record-inset__state",
+								`record-inset__state--${StateTone}`,
+							]}
+						>
+							<span class="record-inset__state-marker" aria-hidden="true" />
+							<span class="record-inset__state-key">STATUS:</span>
+							{inset.state.toUpperCase()}
+						</p>
+					) : null
+				}
+
+				<p class="record-inset__body">
+					<span class="record-inset__arrow" aria-hidden="true">&#8627;</span>{inset.body}
+				</p>
+
+				{
+					inset.link ? (
+						inset.link.state === "gone" ? (
+							<p class="record-inset__gone">
+								<span class="record-inset__gone-mark" aria-hidden="true">
+									&#9678;
+								</span>
+								<span class="record-inset__gone-key">TARGET GONE:</span>
+								{inset.link.label}
+								<span class="record-inset__gone-route">{inset.link.href}</span>
+							</p>
+						) : (
+							<p class="record-inset__link">
+								<a href={inset.link.href}>
+									<span aria-hidden="true">&#8594;</span>
+									{inset.link.label}
+								</a>
+							</p>
+						)
+					) : null
+				}
+
+				<p
+					class:list={[
+						"record-inset__source",
+						!inset.source && "record-inset__source--absent",
+					]}
+				>
+					<span class="record-inset__source-key">SOURCE:</span>
+					{inset.source ?? "UNAVAILABLE"}
+				</p>
+			</>
+		)
+	}
+</aside>

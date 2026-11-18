@@ -3,9 +3,19 @@ import { Badge } from "../UI/Badge";
 import type Property from "./Interface/Property/Badge.js";
 
 /**
- * Dynamic Badge with simplex noise integration.
- * Wraps the base Badge with StaccatoBadge for breathing scale.
- * The status dot pulses with StaccatoRhythm for a heartbeat effect.
+ * Dynamic Badge - one word in a Jelly badge, with an optional protocol dot.
+ *
+ * The badge is a Jelly element and takes its two inks from the host's own
+ * properties (`--jelly-fill`, `--jelly-label`, set per instance by `UI/Badge`);
+ * this adapter adds nothing to the surface, it only places the text and the dot.
+ *
+ * The dot is a MARK, not a pulse. It used to carry `StaccatoDot
+ * StaccatoRhythmDot`, the noise system's live-opacity hooks, and the classes
+ * outlived their engine: `_Noise.scss` documents its channels as "updated every
+ * frame by Staccato.ts", no such script is in the tree, and the two classes were
+ * therefore resolving to `opacity: 0.5` and `scale(0.9)` on a dot that never
+ * moved - a mark rendered at half ink by a pulse that had stopped. The ink it
+ * carries is `DotColor`'s protocol token, and that is the whole state.
  */
 const DynamicBadge = ({ Content, ClassName }: Property) => {
 	const {
@@ -43,7 +53,7 @@ const DynamicBadge = ({ Content, ClassName }: Property) => {
 					{"\u2001"}
 
 					<span
-						className="StaccatoDot StaccatoRhythmDot flat h-2 w-2"
+						className="flat h-2 w-2"
 						style={{
 							backgroundColor:
 								DotColorTokenMap[DotColor] ??

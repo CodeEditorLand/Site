@@ -26,19 +26,38 @@
 	box-shadow: none;
 }
 
-/// track - uppercase plus letter-spacing, the tracking a label needs to read as a label.
-@mixin track($space: 0.18em) {
+/// track - uppercase plus letter-spacing, the tracking a label needs to read as
+/// a label. `$space` is a REGISTER (`var(--track-name|row|rule)`), never a
+/// literal: the five registers are the whole tracking system (`_Token.scss`),
+/// and a caller that passes a value is writing a sixth.
+@mixin track($space: var(--track-rule)) {
 	text-transform: uppercase;
 	letter-spacing: $space;
 }
 
-/// mono-meta - the meta type role in the mono face at muted ink: kickers, markers, table heads.
+/// mono-meta - the meta type role in the mono face at muted ink: kickers,
+/// markers, table heads. It carries the `name` register by default - a label
+/// beside its value - and a caller that needs another register overrides the
+/// tracking it was given rather than restating the size and ink.
 @mixin mono-meta {
 	font-size: var(--type-meta);
 	line-height: var(--type-meta-line);
 	font-family: var(--FontMono);
+	letter-spacing: var(--track-name);
 	color: var(--MuteForeground);
 }
+
+/// chapter-boundary - the page-level boundary of a genuinely new subject: the
+/// chapter rhythm and the one rule that marks it. Included by `.band--chapter`
+/// and `.record-band--chapter`, so the two blocks that can open a chapter draw
+/// the same boundary at the same ink. `--Divider` (20 %, 1.50:1), not
+/// `--Border` (8 %, 1.18:1): the rule is the only thing defining the edge, and
+/// below 1.2:1 a rule is a rumour (LOST.md scan 3).
+@mixin chapter-boundary {
+	padding-block: var(--space-chapter);
+	border-block-start: 1px solid var(--Divider);
+}
+
 
 /// band-inner - the one inner container every band uses, so no band re-invents its gutters.
 @mixin band-inner {
@@ -153,13 +172,15 @@
 
 /// motion-resolve - one printed state giving way to another. Opacity leads: the
 /// outgoing word fades before the incoming one is at full ink, so two states are
-/// never both fully legible in the same place.
+/// never both fully legible in the same place. It is the one relationship that
+/// also moves `color`: a resolution is an INK change (the copy affordance's
+/// check taking the accent), and an ink change that snaps is not a resolve.
 @mixin motion-resolve(
 	$duration: var(--motion-resolve-duration),
 	$easing: var(--motion-resolve-easing)
 ) {
 	@media (prefers-reduced-motion: no-preference) {
-		transition-property: opacity, transform;
+		transition-property: opacity, transform, color;
 		transition-duration: $duration;
 		transition-timing-function: $easing;
 	}
@@ -168,6 +189,12 @@
 		transition: none;
 	}
 }
+
+/// motion-reveal is NOT a mixin, and that is deliberate: the reveal is the one
+/// relationship implemented as an ANIMATION (`_Motion.scss`), because an
+/// animation with no fill mode lands on the element's own state even when the
+/// interval never runs, and a transition does not. Its tokens are
+/// `--motion-reveal-duration` / `--motion-reveal-easing`.
 
 /// motion-interrupt - the refused action: "a short interrupted offset - NOT a
 /// playful shake". Transform-only, because an interruption moves the thing away

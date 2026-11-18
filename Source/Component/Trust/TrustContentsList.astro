@@ -1,0 +1,34 @@
+---
+/**
+ * TrustContentsList - the clause list itself: one row per clause, `§NN  name`.
+ *
+ * Split out so the rail and the narrow disclosure render the same list from the
+ * same data rather than each writing its own `<ol>` - two copies of a contents
+ * list is two places for a clause to go missing.
+ *
+ * The row is one anchor; the number is its own span so the wiring can read it
+ * back and print the reader's position without re-deriving the number.
+ */
+import type { ReadingIndexItem } from "../Reading/Type.js";
+
+interface Props {
+	items: readonly ReadingIndexItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<ol class="trust-contents__list">
+	{
+		items.map((Item) => (
+			<li class="trust-contents__item">
+				<a class="trust-contents__link" href={Item.href}>
+					<span class="trust-contents__number" data-trust-number>
+						&#167;{Item.number}
+					</span>
+					<span class="trust-contents__name">{Item.label}</span>
+				</a>
+			</li>
+		))
+	}
+</ol>

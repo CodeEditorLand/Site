@@ -7,6 +7,14 @@
 @use "System/Type";
 @use "System/Space";
 @use "System/Emphasis";
+@use "System/UI/Index" as Control;
 @use "System/Component/Index" as Component;
 @use "System/Record/Index" as Record;
+@use "System/Layout/Index" as Layout;
+// The detail layer loads after every layer it refines: it changes values a
+// partial already wrote (a literal interval, an edge drawn at the separator's
+// ink, a figure tracked as a word) and source order is the mechanism. See
+// `System/Detail/_Index.scss` before moving this line.
+@use "System/Detail/Index" as Detail;
 @use "System/Motion";
+@use "System/Motion/Index" as Interaction;

@@ -1,0 +1,345 @@
+---
+/**
+ * ShellState - the nine adverse states, composed in the record grammar.
+ *
+ * The brief is explicit (`Design-Brief.md` §7): every surface has a second
+ * design, and these are compositions, not placeholders. Nine conditions, one
+ * block, one grammar - a register head, a STATUS row from the fixed vocabulary,
+ * and a short set of labelled rows in the same `KEY: value` shape a ledger uses.
+ *
+ *   empty      nothing exists yet          WOULD BE HERE / WHY NOT / NEXT
+ *   loading    no spinner, a skeleton      the keys, their values barred
+ *   partial    some facts unknown          KNOWN / UNAVAILABLE / NEXT
+ *   error      an action failed            CAUSE / NEXT / RETRY
+ *   stale      older than its as-of        AS OF / AGE / LAST KNOWN
+ *   too much   200 where 6 were designed   SHOWING n OF m / ORDER / ALL
+ *   too long   a value that will not fit   the clipped value / FULL / LIMIT
+ *   missing    the target is gone          WAS / TARGET / NEXT
+ *   denied     the reader may not see it   WHAT / WHY / NEXT
+ *
+ * ─── THE LOADING ARM IS THE ONE THAT MATTERS ──────────────────────────────
+ * No spinner. A spinner says "something is happening"; a skeleton says *what* is
+ * happening, because it prints the schema. The keys are known before the values
+ * are - they are the record's own field names - so the loading state renders the
+ * keys at their label register with their values barred. The bars are static:
+ * the site has no gradient and no shimmer, and a pulse is motion that explains
+ * nothing. The STATUS row carries the word `LOADING`; the bars are `aria-hidden`,
+ * so a screen reader hears one state, not nine rectangles.
+ *
+ * ─── THE RULES EVERY ARM KEEPS ────────────────────────────────────────────
+ * - **A word from the eight.** `status` is one of `READY`, `ACTIVE`, `LOADING`,
+ *   `PREPARING`, `VERIFIED`, `UNAVAILABLE`, `INTERRUPTED`, `ARCHIVED`; the tone
+ *   is looked up in `Surface/State.ts` and never chosen here.
+ * - **An honest absence, never a zero.** A partial state prints `UNAVAILABLE`
+ *   for the fact it does not have. A known absence prints `0`. The difference is
+ *   the whole point: zero is a measurement, `UNAVAILABLE` is the truth about not
+ *   having one.
+ * - **A next step.** Every arm but `loading` and `too-long` carries one action,
+ *   and it is a link - a reader who has been told why something is missing is
+ *   owed a way forward, not a disabled button.
+ * - **Same band, same artifacts.** The block is one white information box lying
+ *   on the field (`emphasis-standard`), the site's only "this is a record of a
+ *   condition" surface. It is never a card inside a card: the caller puts it
+ *   where a record would have been.
+ *
+ * No script and no hydration: an adverse state is printed.
+ */
+import { Tone } from "../Surface/State.js";
+
+import type { LedgerRow } from "../Record/Type.js";
+
+/** The nine conditions. */
+export type AdverseKind =
+	| "empty"
+	| "loading"
+	| "partial"
+	| "error"
+	| "stale"
+	| "too-much"
+	| "too-long"
+	| "missing"
+	| "denied";
+
+interface Props {
+	/** Which condition this is. It decides the rows and the default status word. */
+	kind: AdverseKind;
+
+	/** `# REGISTER / 00` - the register head, printed above the state. */
+	index: string;
+
+	/** The state word. Omitted, the kind's own word is used. */
+	status?: string;
+
+	/**
+	 * The one sentence the arm is about: what would be here, what failed, what
+	 * this surface is. Printed at body weight under the status row.
+	 */
+	statement: string;
+
+	/** Why it is so - the cause, not an apology. */
+	cause?: string;
+
+	/** The way forward. A label and a destination; never a disabled control. */
+	next?: {
+		readonly label: string;
+		readonly href: string;
+	};
+
+	/** Provenance under the rows, when the cause has a source. */
+	note?: string;
+
+	/**
+	 * The facts this arm prints as a set: the last known values of a stale
+	 * reading, the facts that *are* known in a partial one.
+	 */
+	rows?: readonly LedgerRow[];
+
+	/** `too-much`: how many are shown, and how many exist. */
+	shown?: number;
+
+	/** `too-much`: the size of the whole set. */
+	total?: number;
+
+	/** `too-long`: the value as it stands, which will not fit. */
+	value?: string;
+
+	/** `too-long`: the measure it cannot fit, e.g. `72CH`, `3 ROWS`. */
+	limit?: string;
+
+	/** `stale`: the date the reading was taken (`YYYY-MM-DD`). */
+	asOf?: string;
+
+	/** `stale`: how old that is, in words (`318 DAYS`). */
+	age?: string;
+
+	/**
+	 * `loading`: the keys being read, in the order the record prints them. The
+	 * values are unknown; the schema is not.
+	 */
+	keys?: readonly string[];
+
+	/**
+	 * The surface the state is printed on. `box` (the default) is the site's one
+	 * white information box lying on the creme field. `bare` drops the fill and
+	 * the frame for a state printed *inside* a card - a white box inside a white
+	 * card is a card in a card, which the identity forbids.
+	 */
+	surface?: "box" | "bare";
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const {
+	kind,
+	index,
+	status,
+	statement,
+	cause,
+	next,
+	note,
+	rows = [],
+	shown,
+	total,
+	value,
+	limit,
+	asOf,
+	age,
+	keys = [],
+	surface = "box",
+	class: ClassName,
+} = Astro.props;
+
+/** The word each condition states when the caller does not state one. */
+const DefaultStatus: Readonly<Record<AdverseKind, string>> = {
+	empty: "PREPARING",
+	loading: "LOADING",
+	partial: "UNAVAILABLE",
+	error: "INTERRUPTED",
+	stale: "ARCHIVED",
+	"too-much": "READY",
+	"too-long": "READY",
+	missing: "UNAVAILABLE",
+	denied: "UNAVAILABLE",
+};
+
+/** The key each arm states its `statement` under - the row's own label. */
+const StatementKey: Readonly<Record<AdverseKind, string>> = {
+	empty: "WOULD BE HERE:",
+	loading: "READING:",
+	partial: "KNOWN:",
+	error: "WHAT FAILED:",
+	stale: "LAST KNOWN:",
+	"too-much": "SET:",
+	"too-long": "VALUE:",
+	missing: "WAS:",
+	denied: "WHAT:",
+};
+
+/** The key each arm states its `cause` under. */
+const CauseKey: Readonly<Record<AdverseKind, string>> = {
+	empty: "WHY NOT:",
+	loading: "WAITING ON:",
+	partial: "UNAVAILABLE:",
+	error: "CAUSE:",
+	stale: "AGE:",
+	"too-much": "ORDER:",
+	"too-long": "LIMIT:",
+	missing: "TARGET:",
+	denied: "WHY:",
+};
+
+const Word = status ?? DefaultStatus[kind];
+const Resolved = Tone(Word) ?? "ink";
+
+const IsStale = kind === "stale";
+const IsTooMuch = kind === "too-much";
+const IsTooLong = kind === "too-long";
+const IsLoading = kind === "loading";
+---
+
+<aside
+	class:list={[
+		"ShellState",
+		`ShellState--${kind}`,
+		surface === "bare" ? "ShellState--bare" : null,
+		ClassName,
+	]}
+	data-state={kind}
+	data-surface={surface}
+	aria-label={`${Word}: ${statement}`}
+>
+	<p class="ShellState__register">
+		<span class="ShellState__mark" aria-hidden="true">#</span>
+		<span class="ShellState__index">{index}</span>
+	</p>
+
+	<p class:list={["ShellState__status", `ShellState__status--${Resolved}`]}>
+		<span class="ShellState__status-mark" aria-hidden="true"></span>
+		<span class="ShellState__status-key">STATUS:</span>
+		<span class="ShellState__status-word">{Word}</span>
+	</p>
+
+	<dl class="ShellState__rows">
+		<div class="ShellState__row">
+			<dt class="ShellState__key">{StatementKey[kind]}</dt>
+			<dd class="ShellState__value">
+				{
+					IsTooLong && value ? (
+						<>
+							<span class="ShellState__clip" title={value}>
+								{value.length > 72 ? `${value.slice(0, 72)}…` : value}
+							</span>
+							<span class="ShellState__clip-meta">
+								<span class="ShellState__clip-key">FULL:</span>
+								{`${value.length} CHARACTERS`}
+							</span>
+						</>
+					) : (
+						statement
+					)
+				}
+			</dd>
+		</div>
+
+		{
+			cause ? (
+				<div class="ShellState__row">
+					<dt class="ShellState__key">{CauseKey[kind]}</dt>
+					<dd class="ShellState__value">{cause}</dd>
+				</div>
+			) : null
+		}
+
+		{
+			IsTooMuch && shown !== undefined && total !== undefined ? (
+				<div class="ShellState__row">
+					<dt class="ShellState__key">SHOWING:</dt>
+					<dd class="ShellState__value ShellState__value--figure">
+						{shown}
+						<span class="ShellState__of">OF</span>
+						{total}
+					</dd>
+				</div>
+			) : null
+		}
+
+		{
+			IsStale && asOf ? (
+				<div class="ShellState__row">
+					<dt class="ShellState__key">AS OF:</dt>
+					<dd class="ShellState__value">
+						{asOf}
+						{age ? <span class="ShellState__age">{age}</span> : null}
+					</dd>
+				</div>
+			) : null
+		}
+
+		{
+			IsTooLong && limit ? (
+				<div class="ShellState__row">
+					<dt class="ShellState__key">LIMIT:</dt>
+					<dd class="ShellState__value">{limit}</dd>
+				</div>
+			) : null
+		}
+
+		{
+			next ? (
+				<div class="ShellState__row">
+					<dt class="ShellState__key">
+						{kind === "error" ? "RETRY:" : "NEXT:"}
+					</dt>
+					<dd class="ShellState__value">
+						<a class="ShellState__action" href={next.href}>
+							{next.label}
+							{"\u2001"}
+							<span aria-hidden="true">&rarr;</span>
+						</a>
+					</dd>
+				</div>
+			) : null
+		}
+	</dl>
+
+	{
+		IsLoading ? (
+			<div class="ShellState__skeleton" aria-hidden="true">
+				{(keys.length > 0 ? keys : ["RECORD", "ROUTE", "STATE"]).map(
+					(Key, Index) => (
+						<p class="ShellState__skeleton-row">
+							<span class="ShellState__skeleton-key">{Key}:</span>
+							<span
+								class="ShellState__bar"
+								style={`--bar:${[64, 42, 78, 55, 36, 70][Index % 6]}%`}
+							/>
+						</p>
+					),
+				)}
+			</div>
+		) : null
+	}
+
+	{
+		rows.length > 0 ? (
+			<dl class="ShellState__facts">
+				{rows.map((Row) => (
+					<div class="ShellState__fact">
+						<dt class="ShellState__fact-key">{Row.key}</dt>
+						<dd
+							class:list={[
+								"ShellState__fact-value",
+								Row.code ? "ShellState__fact-value--code" : null,
+							]}
+						>
+							{Row.value}
+						</dd>
+					</div>
+				))}
+			</dl>
+		) : null
+	}
+
+	{note ? <p class="ShellState__note">{note}</p> : null}
+</aside>

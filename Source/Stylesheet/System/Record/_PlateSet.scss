@@ -1,0 +1,301 @@
+// RecordPlateSet - many figures of one subject, read as a field.
+//
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  evidence as a set - the fifteen element captures, the three
+//                   platform captures. Not a matrix (values across columns) and
+//                   not a stage's plates (steps of a process): cells are
+//                   pictures, compared by being seen at one size.
+// RANK              set.
+// SLOT CONTRACT     .record-plate-set                  the set: head, field, foot
+//                   .record-plate-set--2|--3           cells across on wide screens
+//                   .record-plate-set--loading         the skeleton arm
+//                   .record-plate-set--empty           the composed empty state
+//                   .record-plate-set__head            `# PLATES_01 / LABEL ␁ 15 PLATES`
+//                   .record-plate-set__index|__label
+//                   .record-plate-set__count           the set's own count
+//                   .record-plate-set__field           the field of cells
+//                   .record-plate-set__cell            one cell: number, frame, subject, note
+//                   .record-plate-set__cell-index      the cell's position, verbatim
+//                   .record-plate-set__cell-state      `UNAVAILABLE` in its tone
+//                   .record-plate-set__frame           the 4:3 frame
+//                   .record-plate-set__frame--absent   the cell's tombstone bed
+//                   .record-plate-set__picture         the fitted capture
+//                   .record-plate-set__subject         the cell's claim, after the `↳`
+//                   .record-plate-set__note            the cell's reason or next step
+//                   .record-plate-set__foot            the set's caption, window and source
+//                   .record-plate-set__empty           the composed empty state
+// MAY HOLD          cells only. A cell is a number, a figure, a claim and a reason.
+// NARROW            one across; two at 640. The frame keeps 4:3 at every width:
+//                   a plate that changes shape with the viewport is a different
+//                   plate.
+// WIDE (>=1024)     three across at `--space-group` (or two, when the set says
+//                   so). No rules between the cells - the framed figures are the
+//                   structure, and a grid of boxes inside a band is a grid of
+//                   cards.
+// DENSE             none. A set of figures is scanned at one size; a denser set
+//                   is a smaller claim about each picture.
+//
+// THE HEAD IS A REGISTER LINE, NOT A TITLE. `# PLATES_01 / ELEMENT EVIDENCE` on
+// the left and `15 PLATES` on the right, over a `--Divider` rule: the set states
+// what it is and how many, and the cells under it are the answer. A set that
+// opened with a centred heading would be a section; this is an object.
+//
+// THE EMPTY CELL KEEPS THE FRAME. Eight of fifteen element manifests are
+// `placeholder` and seven have no manifest at all, so most of this set's cells
+// are absent. Each absent cell prints its own state and reason *in the frame it
+// would have filled*, which makes the set one register of fifteen attempts. A
+// set that drew empty white rectangles would be a gallery of holes.
+//
+// THE FOOT CARRIES THE WINDOW. `SHOWING: 12 OF 240` is printed where the caption
+// is, so a set that had to stop says so once, at the same weight as the caption
+// it replaces - never a truncated list that pretends to be complete.
+
+@use "../Mixin" as *;
+
+.record-plate-set {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-group);
+	min-inline-size: 0;
+	margin: 0;
+}
+
+.record-plate-set__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-tight) var(--space-group);
+	padding-block-end: var(--space-tight);
+	border-block-end: 1px solid var(--Divider);
+}
+
+.record-plate-set__head-main {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 var(--space-tight);
+}
+
+.record-plate-set__index {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.record-plate-set__label {
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.record-plate-set__count {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+	white-space: nowrap;
+}
+
+.record-plate-set__count-unit {
+	margin-inline-start: 0.5ch;
+	color: var(--MuteForeground);
+}
+
+// ─── THE FIELD ────────────────────────────────────────────────────────────
+.record-plate-set__field {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-group);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+@include bp(640px) {
+	.record-plate-set__field {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@include bp(1024px) {
+	.record-plate-set--3 .record-plate-set__field {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.record-plate-set__cell {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+}
+
+.record-plate-set__cell-head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-tight);
+	margin: 0;
+}
+
+.record-plate-set__cell-index {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.record-plate-set__cell-state {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+	white-space: nowrap;
+}
+
+.record-plate-set__cell-marker {
+	display: block;
+	flex: 0 0 auto;
+	inline-size: 4px;
+	block-size: 4px;
+	background: currentColor;
+}
+
+.record-plate-set__cell-state--specimen {
+	color: var(--Accent);
+}
+
+.record-plate-set__cell-state--quiet {
+	color: var(--MuteForeground);
+}
+
+.record-plate-set__cell-state--ink {
+	color: var(--Foreground);
+}
+
+.record-plate-set__frame {
+	@include hairline;
+	position: relative;
+	display: block;
+	inline-size: 100%;
+	aspect-ratio: 4 / 3;
+	overflow: hidden;
+	background: var(--Mute);
+}
+
+.record-plate-set__frame--absent {
+	background: var(--Mute);
+}
+
+.record-plate-set__picture {
+	display: block;
+	inline-size: 100%;
+	block-size: 100%;
+}
+
+// The cell's absent mark sits where the capture would be centred, at the same
+// weight on every absent cell - so fifteen absent cells read as one field and not
+// as fifteen different failures.
+.record-plate-set__absent {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: var(--type-section);
+	line-height: 1;
+	color: var(--MuteForeground);
+}
+
+.record-plate-set__skeleton {
+	position: absolute;
+	inset-block: 35%;
+	inset-inline: 20%;
+	background: var(--Divider);
+}
+
+.record-plate-set__subject {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--Foreground);
+	text-wrap: pretty;
+	overflow-wrap: anywhere;
+}
+
+.record-plate-set__arrow {
+	margin-inline-end: 0.35em;
+	color: var(--MuteForeground);
+}
+
+.record-plate-set__note {
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-name));
+	overflow-wrap: anywhere;
+}
+
+// ─── THE FOOT ─────────────────────────────────────────────────────────────
+.record-plate-set__foot {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	margin: 0;
+	padding-block-start: var(--space-tight);
+	border-block-start: 1px solid var(--Border);
+}
+
+.record-plate-set__caption {
+	max-inline-size: 72ch;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.record-plate-set__window {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.record-plate-set__window-key {
+	color: var(--MuteForeground);
+}
+
+.record-plate-set__window-of {
+	margin-inline: 0.75ch;
+	color: var(--MuteForeground);
+}
+
+.record-plate-set__source {
+	@include mono-meta;
+	@include track(var(--track-name));
+	overflow-wrap: anywhere;
+}
+
+.record-plate-set__source-key {
+	color: var(--MuteForeground);
+}
+
+// ─── THE EMPTY STATE ──────────────────────────────────────────────────────
+.record-plate-set__empty {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	margin: 0;
+	padding-block: var(--space-group);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.record-plate-set__empty-mark {
+	font-size: var(--type-section);
+	line-height: 1;
+	color: var(--MuteForeground);
+}

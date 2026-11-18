@@ -1,0 +1,226 @@
+---
+/**
+ * Glossary - the document's own words: the fifteen elements, the grammar's
+ * nouns, and the five words this site retired.
+ *
+ * ─── WHY THIS PAGE EXISTS ─────────────────────────────────────────────────
+ * This project names its parts after weather and landscape, and it uses ordinary
+ * English words - record, form, band, ledger, matrix - in senses that are not
+ * ordinary. A reader arriving from the manual meets fifteen capitalised nouns and
+ * twenty lower-case ones that look like English and are not, and until this page
+ * there was nowhere to look either up.
+ *
+ * ─── THE LANGUAGE: READING ────────────────────────────────────────────────
+ * `Language.ts` files this route as `reading`, and the contract is a rail, a
+ * measure and a margin:
+ *
+ *   rail     the three runs, then the five retired words - the two registers a
+ *            reader navigates a lexicon by
+ *   measure  the entries, set as a dictionary: the term in its definition's
+ *            margin, the definition on the measure
+ *   margin   the apparatus: the note that says where the definitions come from,
+ *            and the state that says what this lexicon does not cover
+ *
+ * ─── THE OPENING IS THE QUIET HEAD ────────────────────────────────────────
+ * A glossary asserts nothing and operates nothing; its only claim is its extent.
+ * `RecordHero` would give it a seal, a state and an action it does not have, and
+ * the instrument head would give it a status line it cannot state. `QuietHead` is
+ * the reference document's opening - marker, bare `h1` at L, one `⇢` proposition,
+ * and the extent as the site's one white facts strip.
+ *
+ * ─── THE ADVERSE STATES ARE THE PAGE'S OWN COVERAGE ───────────────────────
+ * The margin states the gap this page knows about: `LAND` and `FIDDEE` are words
+ * the document uses, and the element run covers the fifteen *parts* rather than
+ * the product or its binary. The retired band states the other: a word whose
+ * target is gone from the build. A reference work that only listed what it had
+ * would be a list, not a reference.
+ */
+import { Header } from "../Component/Layout/Header";
+import BandFoot from "../Component/Detail/BandFoot.astro";
+import Lexicon from "../Component/More/Lexicon.astro";
+import Onward from "../Component/More/Onward.astro";
+import QuietHead from "../Component/More/QuietHead.astro";
+import RecordBand from "../Component/Record/RecordBand.astro";
+import RecordMargin from "../Component/Record/RecordMargin.astro";
+import Trail from "../Component/Route/Trail.astro";
+import PageShell from "../Component/Shell/PageShell.astro";
+import ShellRail from "../Component/Shell/ShellRail.astro";
+import ShellState from "../Component/Shell/ShellState.astro";
+import Fold from "../Component/UI/Fold/Fold.astro";
+import Base from "../Layout/Base.astro";
+
+import {
+	Bands,
+	Facts,
+	Lexicon as Runs,
+	RailRows,
+	TermCount,
+} from "../Content/More/Glossary.js";
+import { GlossaryOnward } from "../Content/More/Page.js";
+
+const MetaTitle = "Glossary | Code Editor Land";
+
+const MetaDescription =
+	"The document's own words: the fifteen elements, the grammar's nouns - record, form, band, ledger, matrix - and the five words this site used and retired.";
+
+/** The three runs' sizes, as the head and the margin state them. */
+const Elements = Runs[0]!.terms.length;
+const Words = Runs[1]!.terms.length;
+const Retired = Runs[2]!.terms.length;
+
+/** The margin's note: where every definition on this page comes from. */
+const Note = {
+	index: "NOTE_01",
+	label: "THE DEFINITIONS",
+	body: "An element's definition is its own record's description, printed whole rather than shortened. The grammar's words are defined as the layer defines them, and each entry's `WHERE:` row names a page where the thing itself is printed. Nothing here is a paraphrase, and a word the tree does not define prints `UNAVAILABLE` rather than a guess.",
+	source: "SOURCE/CONTENT/MORE/GLOSSARY.TS",
+};
+
+const TrailItems = [
+	{ label: "/HOME", href: "/" },
+	{ label: "/GLOSSARY" },
+];
+
+/**
+ * The lexicon's own contents, for a measure that has no rail.
+ *
+ * The three runs are the page's body, and their labels and counts come from
+ * `Runs` - the same data the rail and the entries read. The fourth row is the
+ * band of limits, which is the one section that is not a run: it says what this
+ * lexicon does not cover, and a contents list that omitted it would promise a
+ * completeness the page is careful to deny.
+ */
+const Sections = [
+	...Runs.map((Run, Index) => ({
+		Index: String(Index + 1).padStart(2, "0"),
+		Label: Run.label.replace(/^\//, ""),
+		Href: `#run-${Run.key}`,
+		Meta: `${Run.terms.length} TERMS`,
+	})),
+	{
+		Index: String(Runs.length + 1).padStart(2, "0"),
+		Label: "THE LIMITS",
+		Href: "#limits",
+		Meta: "02 STATES",
+	},
+];
+---
+
+<Base Title={MetaTitle} Description={MetaDescription}>
+	<Header client:load Mode="functional" slot="Header" />
+
+	<PageShell
+		index="# READING_09"
+		label="THE LEXICON"
+		class="PageShell--more"
+		measure="full"
+		railLabel="The runs and the retired words"
+		marginLabel="Apparatus"
+	>
+		<Trail slot="head" trail={TrailItems} />
+
+		<QuietHead
+			slot="head"
+			index="LEXICON_01"
+			label="/THE DOCUMENT'S OWN WORDS"
+			title="The words this document uses"
+			proposition={`${Elements} named parts, ${Words} nouns the grammar gives a job, and ${Retired} words the site used and does not any more. Every definition cites the file it came from.`}
+			rows={Facts}
+		/>
+
+		{/* The lexicon's contents, for the measure that has no rail. Above 1024
+		    the rail already prints these four registers; below it, this line is
+		    the only map the page has. */}
+		<Fold
+			slot="head"
+			Items={Sections}
+			Name="THE REGISTERS"
+			Empty="This lexicon files no run, so there is nothing to list. A glossary with no words is a page that has not been written yet."
+		/>
+
+		<ShellRail
+			slot="rail"
+			class="more-rail"
+			label="THE REGISTERS"
+			count={RailRows.length}
+			items={RailRows}
+			current="page"
+			sticky={false}
+			foot={{ label: "ALL RECORDS", href: "/Contents" }}
+		/>
+
+		<Lexicon run={Runs[0]!} index="RUN_01" />
+		<RecordBand band={Bands.Words}>
+			<Lexicon run={Runs[1]!} head={false} />
+		</RecordBand>
+
+		<RecordBand band={Bands.Retired}>
+			<Lexicon run={Runs[2]!} head={false} />
+		</RecordBand>
+
+		<RecordBand band={{ ...Bands.Limits, id: "limits" }}>
+			<div class="more-states">
+				<ShellState
+					kind="missing"
+					index="RETIRED / 06"
+					statement="`VERSION: vPre-release` was printed on every platform card, and no file in this build prints it."
+					cause="The word was replaced by `UNAVAILABLE`, which states the same fact without claiming that a version exists."
+					next={{ label: "READ THE EDITION", href: "/Download" }}
+					rows={[
+						{ key: "WAS:", value: "VERSION: vPre-release", code: true },
+						{ key: "NOW:", value: "UNAVAILABLE" },
+						{ key: "FILES:", value: "0 PRINT IT" },
+					]}
+					note="SOURCE: SOURCE/CONTENT/HOME/PLATFORM.TS"
+				/>
+
+				<ShellState
+					kind="partial"
+					index="COVERAGE / 01"
+					statement="Two words the document uses are not in this lexicon: `LAND`, the repository and project name, and `FIDDEE`, the product name for the compiled application."
+					cause="The element run covers the fifteen parts, not the product or its binary. A definition invented for either would be this page's own prose in a run that promises the records'."
+					next={{ label: "READ THE INTRODUCTION", href: "/Doc/introduction" }}
+					rows={[
+						{ key: "KNOWN:", value: `${TermCount} TERMS, 3 RUNS` },
+						{ key: "UNAVAILABLE:", value: "LAND, FIDDEE" },
+					]}
+					note="SOURCE: SOURCE/CONTENT/DOC/INTRODUCTION.MD"
+				/>
+			</div>
+
+			{/* The band's foot: where a word that is not here is defined, and
+			    where in the document the reader has got to. The figure is the
+			    lexicon's own term count - the same number the head prints - so
+			    the foot cannot disagree with the opening. */}
+			<BandFoot
+				slot="foot"
+				index="02"
+				part="/THE DOCUMENT"
+				see={[
+					{
+						route: "/CONTENTS",
+						href: "/Contents",
+						reason: "every information type, every address, and the form each one takes",
+					},
+					{
+						route: "/DOC/INTRODUCTION",
+						href: "/Doc/introduction",
+						reason: "`LAND` and `FIDDEE` defined in prose, where the document first uses them",
+					},
+				]}
+				figure={{ value: String(TermCount), unit: "TERMS" }}
+				source="SOURCE/CONTENT/MORE/GLOSSARY.TS"
+			/>
+		</RecordBand>
+
+		<div slot="margin">
+			<RecordMargin note={Note} />
+		</div>
+
+		<Onward
+			slot="foot"
+			rows={GlossaryOnward.rows}
+			copy={GlossaryOnward.copy}
+		/>
+	</PageShell>
+</Base>

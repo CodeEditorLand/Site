@@ -1,0 +1,121 @@
+---
+/**
+ * Grid - the six properties as records: three claims, and the three the layer
+ * files against the pages that argue them.
+ *
+ * ─── WHAT IT IS ───────────────────────────────────────────────────────────
+ * `DesignSystem-Grammar.md` §8 gives the proof layer three source-backed
+ * claims. The content carries six properties, so the block prints the first
+ * three as `RecordEntry` records in `.properties-grid` - one record per Jelly
+ * card, the card's fill the property's own tint - and files the other three as
+ * a titled strip of destinations. That split is `Data.ts`'s (`ClaimsOf`,
+ * `FiledOf`), not this file's: the block renders the set it is handed and never
+ * decides which half of it a property belongs to.
+ *
+ * ─── THE JELLY SURFACE ────────────────────────────────────────────────────
+ * Each claim sits on a `jelly-card`, and the record inside it is the block's own
+ * anatomy (`RecordEntry`), never a second card: `_Properties.scss` strips the
+ * entry's fill and frame because the canvas is the surface now. The fill is
+ * handed to the host as `--jelly-fill` - set per element, never repainted from
+ * outside - and it is resolved from the property's own id, so a reordered grid
+ * keeps each property's colour.
+ *
+ * ─── WHAT IT DOES NOT DO ──────────────────────────────────────────────────
+ * No script, no `client:*`, no DOM access: the block is static, and its
+ * interaction state is CSS (`:hover` / `:focus-visible` on the record's link,
+ * which is where the motion layer's arrow pull lives). No heading: a block is
+ * structure, and the band or plate that mounts it owns the level above it. No
+ * empty grid: with no records it prints the one sentence `Empty` carries,
+ * because six empty columns are a page that failed to load.
+ */
+import RecordEntry from "../../Record/RecordEntry.astro";
+
+import { JellyCardFill } from "../Interface/Card/Jelly.js";
+
+import { ClaimsOf, ElementOrder, Empty, FiledLabel, FiledOf } from "./Data.js";
+
+import type { PropertyEntry } from "./Type.js";
+
+interface Props {
+	/**
+	 * The six properties, in the content's order. `ItemsOf(T)` resolves them
+	 * from `home:features.item.*`; `EntriesOf(Items)` adapts a `FeatureItem[]`.
+	 */
+	readonly entries: readonly PropertyEntry[];
+
+	/** Extra classes from the page, appended after the block's own. */
+	readonly class?: string;
+}
+
+const { entries, class: ClassName } = Astro.props;
+
+/** The three the layer claims, and the three it files. Positional, per §8. */
+const Claims = ClaimsOf(entries);
+const Filed = FiledOf(entries);
+
+/**
+ * The host's four pins, in one string.
+ *
+ * `--jelly-fill` is the claim's tint, resolved from its POSITION in the set: the
+ * six claims are the six elements' arguments in the baseline's order, and
+ * `Data.ts` recovers that order rather than hashing the property's id (which can
+ * put two of three claims on one colour). The other three pins are the site's
+ * standing card shape - `Card.tsx`, `DocCard.astro` and the homepage's cards all
+ * write the same four - and they are inline because they are per-element values,
+ * and a lane class repainting a Jelly element is the defect §4.3 names.
+ */
+const Surface = (Index: number): string => {
+	const Element = ElementOrder[Index % ElementOrder.length] ?? ElementOrder[0];
+
+	return [
+		`--jelly-fill:${JellyCardFill(Element)}`,
+		"--jelly-radius:0",
+		"--jelly-card-padding-block:0",
+		"--jelly-card-padding-inline:0",
+		"--jelly-card-font-size:inherit",
+	].join(";");
+};
+---
+
+<div class:list={["properties", ClassName]}>
+	{
+		Claims.length === 0 ? (
+			<p class="properties-empty">{Empty}</p>
+		) : (
+			<div class="properties-grid">
+				{Claims.map((Entry, Index) => (
+					<jelly-card style={Surface(Index)}>
+						<RecordEntry
+							class="properties-entry"
+							index={Entry.index}
+							name={Entry.name}
+							body={Entry.body}
+							href={Entry.href}
+						/>
+					</jelly-card>
+				))}
+			</div>
+		)
+	}
+
+	{
+		Filed.length > 0 && (
+			<nav class="properties-filed" aria-label={FiledLabel}>
+				<p class="properties-filed__label">{FiledLabel}</p>
+				<ul class="properties-filed__list">
+					{Filed.map((Entry) => (
+						<li class="properties-filed__item">
+							{Entry.href ? (
+								<a class="properties-filed__link" href={Entry.href}>
+									{Entry.name}
+								</a>
+							) : (
+								<span class="properties-filed__name">{Entry.name}</span>
+							)}
+						</li>
+					))}
+				</ul>
+			</nav>
+		)
+	}
+</div>

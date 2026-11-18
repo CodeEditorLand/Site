@@ -4,7 +4,7 @@
 	},
 	"brand": {
 		"name": "Code Editor Land",
-		"tagline": "Rust and Tauri editor stack. VS Code API compatibility in progress. Free forever."
+		"tagline": "Rust and Tauri editor stack. VS Code API compatibility in progress. CC0 1.0 Universal: no restrictions, no attribution."
 	},
 	"breadcrumb": {
 		"account": "Account",
@@ -19,10 +19,10 @@
 		"signIn": "Sign In to Your Account",
 		"signUp": "Create Your Free Account"
 	},
-	"comingSoon": "Coming Soon",
+	"comingSoon": "PLANNED",
 	"error": {
-		"404": "404 - Page Not Found",
-		"pageNotFound": "The page you're looking for doesn't exist or has been moved.\n\nCheck the URL for typos, or return to the home page and start fresh.\n\nIf you believe this is an error, open a GitHub issue and we'll help you find what you need."
+		"404": "404: No Record At This Address",
+		"pageNotFound": "No record is filed at this address, and no redirect covers it. The address is well formed; nothing was ever filed under it.\n\n/Contents lists every route the build emits, so a link that used to work can be found there by name.\n\nIf a page of this site sent you here, /Contact takes the report and the path you came from."
 	},
 	"label": {
 		"email": "Email Address",
@@ -35,7 +35,7 @@
 	},
 	"docs": {
 		"pageTitle": "Documentation",
-		"pageSubtitle": "Everything you need to install, build, and contribute to Land.",
+		"pageSubtitle": "Eighty-one pages in ten sections, from /START to the deep dives. Each page names the file it describes; the strip above it prints the layer, the order and the count.",
 		"gettingStarted": {
 			"title": "Get Started in Minutes",
 			"description": "The README walks you through installation, first build, and the fifteen-element architecture. No prior Rust or Tauri knowledge required."
@@ -99,14 +99,14 @@
 		"upcomingTopicsHeading": "Upcoming Topics"
 	},
 	"contact": {
-		"pageSubtitle": "Data requests, technical support, legal, and enterprise inquiries - each contact carries a 5-letter income code.",
+		"pageSubtitle": "Fourteen routes, one register: data requests, technical support, legal and enterprise. Each prints its five-letter code and the window it answers in; the four statutory routes name the article they answer under.",
 		"pageTitle": "Contact"
 	},
 	"contributing": {
 		"indexLabel": "Parts",
 		"kicker": "/CONTRIBUTING",
 		"pageTitle": "Contributing",
-		"pageSubtitle": "Land is open source and built in public.\n\nEvery contribution - code, docs, tests, or design - ships to real users.",
+		"pageSubtitle": "Land is CC0 and built in public.\n\nA change is a branch, a test and one sentence about why. The guide names the files, the toolchain and the branch convention; the four ways in are code, documentation, testing and design.",
 		"guide": {
 			"title": "Contributing Guide",
 			"description": "Read CONTRIBUTING.md on GitHub for the full setup walkthrough: environment, branch conventions, and how to submit changes."
@@ -184,7 +184,7 @@
 	},
 	"sales": {
 		"pageTitle": "Enterprise Inquiries",
-		"pageSubtitle": "Deploying Land across your organization? Get in touch and we'll work out the details together.",
+		"pageSubtitle": "Enterprise adds support, an SLA and custom development. The code stays CC0. A request is filed as a GitHub issue, so the whole team reads it and the answer is public.",
 		"features": {
 			"heading": "What Enterprise Includes",
 			"prioritySupport": "Priority support and SLA",
@@ -198,9 +198,9 @@
 			"heading": "How to Reach Us",
 			"directHeading": "Direct Contact",
 			"description": "Prefer email? Reach us directly:",
-			"githubNote": "We handle enterprise inquiries through GitHub Issues.\n\nThis ensures your request is tracked, visible to the full team, and responded to.",
+			"githubNote": "Enterprise requests are filed as GitHub issues: the thread is the record, the whole team reads it, and the answer stays public.",
 			"openIssueHeading": "Open a GitHub Issue",
-			"openIssueDescription": "Create an issue on our GitHub repository describing your organization's needs.\n\nInclude your company name, team size, use case, and deployment requirements.\n\nWe review issues regularly.",
+			"openIssueDescription": "Open an issue on the Land repository with the organisation, the team size, the use case and the deployment target.\n\nA request that names those four can be answered in one reply; one that does not needs a thread.",
 			"openIssueButton": "Open GitHub Issue",
 			"issueIncludeLabel": "What to include in your issue:",
 			"issueIncludeText": "Company name, team size, intended use case, deployment environment, timeline, and any specific support or compliance requirements.",
@@ -212,17 +212,31 @@
 		}
 	},
 	"oauth": {
-		"completing": "Completing sign-in...",
-		"failed": "Sign-In Failed",
-		"errorGeneric": "Something went wrong during sign-in. Please try again.",
-		"errorExpired": "Your sign-in session expired.\n\nPlease try again.",
-		"errorProvider": "The OAuth provider returned an error.\n\nPlease try again.",
-		"errorNoToken": "No authentication token received. Please try again.",
-		"backToSignIn": "Back to Sign In",
-		"goToDashboard": "Go to Dashboard",
+		"completing": "The provider has returned you here. The code in the query string is being exchanged for a session.",
+		"failed": "Sign-In Interrupted",
+		"errorGeneric": "The exchange did not complete, and the provider named no reason.",
+		"errorExpired": "The sign-in session expired before the provider returned.",
+		"errorProvider": "The provider returned an error instead of a code.",
+		"errorNoToken": "The callback carried no token and no code.",
+		"failure": {
+			"expired": {
+				"cause": "The state parameter in the callback no longer matches the session that started the sign-in: the window closed, or the attempt was started in a second tab."
+			},
+			"provider": {
+				"cause": "The identity provider refused the request before it reached Land: a cancelled consent screen, a disabled connection, or a tenant rule."
+			},
+			"absent": {
+				"cause": "The address reached this page without the query string the exchange reads, so there was nothing to exchange."
+			},
+			"unknown": {
+				"cause": "The callback was read and produced neither a session nor an error parameter. The account is not the fault: the attempt can be repeated."
+			}
+		},
+		"backToSignIn": "SIGN IN AGAIN",
+		"goToDashboard": "OPEN THE DASHBOARD",
 		"success": {
-			"title": "You're signed in",
-			"redirect": "Redirecting to your dashboard..."
+			"title": "Session Written",
+			"redirect": "The dashboard opens next. The session lasts seven days."
 		}
 	},
 	"dashboard": {

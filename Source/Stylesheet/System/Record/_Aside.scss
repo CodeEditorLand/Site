@@ -1,0 +1,150 @@
+// RecordAside - a folded aside: a summary bar in the record grammar over a body
+// that opens without JavaScript.
+//
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  a disclosure - what this record does not carry, what a clause
+//                   excludes, which assumptions a command makes. The claim the
+//                   record keeps and does not lead with.
+// RANK              frame (one pod): a summary bar over a body that holds prose,
+//                   one ledger, or one block.
+// SLOT CONTRACT     .record-aside              the `<details>`: two hairlines and the fold
+//                   .record-aside__summary      the `<summary>`: marker, label, mark
+//                   .record-aside__index        `# ASIDE_01`
+//                   .record-aside__label        `/ WHAT THIS DOES NOT COVER`
+//                   .record-aside__mark         the `→` that turns 90° when open
+//                   .record-aside__body         the folded body
+//                   .record-aside__line         the `↳` proposition under the summary
+//                   .record-aside__paragraph    one paragraph of prose
+//                   .record-aside__empty        the composed empty state
+//                   .record-aside__source       `SOURCE: ...`
+// MAY HOLD          prose, one ledger, or one block.
+// MAY NOT HOLD      two claims under one summary, a second summary, a heading.
+// NARROW            the summary row wraps; the mark stays at the row's end.
+// WIDE              the summary is one row: marker, label, mark.
+// DENSE             none - an aside is already the compressed form of its subject.
+//
+// THE SUMMARY IS A ROW, NOT A BUTTON. It carries no fill, no radius and no
+// hover colour: the two hairlines above and below it are the whole affordance,
+// and the `→` at the row's end is the only mark. On hover the label takes the
+// full ink and the mark moves 2px right - the same "pull toward the reader" the
+// site's links use - because a summary that changed its background would be the
+// one filled surface in the layer.
+//
+// THE BODY IS INDENTED TO THE LABEL, NOT TO THE MARKER: a folded body belongs to
+// the label, and indenting to `#` would hang it under the index number.
+
+@use "../Mixin" as *;
+
+.record-aside {
+	margin: 0;
+	padding: 0;
+	border-block: 1px solid var(--Divider);
+	background: transparent;
+}
+
+.record-aside__summary {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 var(--space-tight);
+	padding-block: var(--space-tight);
+	margin: 0;
+	cursor: pointer;
+	list-style: none;
+	@include motion-enter;
+}
+
+// The browser's own triangle, removed on both engines. The `→` is the mark.
+.record-aside__summary::-webkit-details-marker {
+	display: none;
+}
+
+.record-aside__summary::marker {
+	content: "";
+}
+
+.record-aside__index {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.record-aside__label {
+	@include mono-meta;
+	@include track(var(--track-row));
+	flex: 1 1 auto;
+	color: var(--MuteForeground);
+}
+
+// The mark is the row's end. Closed it points along the row (`→`, "there is more
+// this way"); open it points down (`↓`, "this is what is under the row").
+.record-aside__mark {
+	@include mono-meta;
+	flex: 0 0 auto;
+	color: var(--Foreground);
+	@include motion-enter;
+}
+
+.record-aside[open] > .record-aside__summary > .record-aside__mark {
+	transform: rotate(90deg);
+}
+
+.record-aside__summary:hover > .record-aside__label {
+	color: var(--Foreground);
+}
+
+.record-aside__summary:hover > .record-aside__mark {
+	transform: translateX(2px);
+}
+
+.record-aside[open] > .record-aside__summary:hover > .record-aside__mark {
+	transform: rotate(90deg) translateX(2px);
+}
+
+.record-aside__summary:focus-visible {
+	outline: 2px solid var(--Accent);
+	outline-offset: 2px;
+}
+
+.record-aside__body {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-reading);
+	padding-block: 0 var(--space-reading);
+	padding-inline-start: calc(var(--space-reading) + 0.6em);
+	max-inline-size: var(--Measure);
+}
+
+.record-aside__line {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--MuteForeground);
+}
+
+.record-aside__paragraph {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--Foreground);
+}
+
+.record-aside__empty {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+}
+
+.record-aside__source {
+	margin: 0;
+	@include mono-meta;
+	@include track(var(--track-name));
+	overflow-wrap: anywhere;
+}
+
+.record-aside__source-key {
+	color: var(--MuteForeground);
+}

@@ -1,0 +1,191 @@
+---
+/**
+ * RecordPlate - the evidence the record is about, at plate scale.
+ *
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  the evidence a record is *of*: a capture, numbered, at the
+ *                   width of its container, with its manifest facts printed in
+ *                   a caption channel beside it. Not a figure (evidence inside a
+ *                   record's column) and not a hero (a claim beside its plate).
+ * RANK              leaf.
+ * SLOT CONTRACT     plate.index     -> `# PLATE_01`
+ *                   plate.label?    -> `/ THE WORKBENCH`, after the marker
+ *                   plate.subject   -> the `FIGURE:` claim: what it shows
+ *                   plate.caption?  -> the reading: what to look for
+ *                   plate.src+alt?  -> the capture (or the slot, composed)
+ *                   plate.facts[]?  -> the manifest's own rows (`MODE`, `CROP`)
+ *                   plate.source    -> `SOURCE: ...` - required
+ *                   plate.asOf?     -> `AS OF: ...` in the register line
+ *                   plate.state?    -> the tombstone, in its vocabulary tone
+ *                   plate.next?     -> `NEXT: ...`, only in the tombstone
+ * MAY HOLD          a composed capture in the slot (a diagram, a rendered
+ *                   element). Never another plate and never a figure.
+ * MAY NOT HOLD      prose, a ledger, a second caption.
+ * WIDE (>=1024)     the plate takes its container's width; the channel is a
+ *                   20-26ch column at the right, on a `--Divider` rule, with
+ *                   the facts stacked under the claim.
+ * NARROW            the channel drops under the plate at the column's measure;
+ *                   the frame keeps its ratio and the facts become one column.
+ * DENSE             none. A plate is the size it is: a plate shrunk to fit is a
+ *                   thumbnail, and a thumbnail is not evidence.
+ *
+ * WHY THIS IS NOT RecordFigure. The figure answers "what does this paragraph
+ * show" and lives at the paragraph's measure. The plate answers "what does this
+ * page have a picture of", and the answer is a numbered object with a manifest
+ * behind it: `PLATE_01`, a channel, the capture's own `MODE`/`CROP`/`STATUS`
+ * rows and the file they were read out of. Two blocks, two information types -
+ * the routing table's rule, applied.
+ *
+ * THE TOMBSTONE IS THE DEFAULT STATE OF THIS SITE'S EVIDENCE. One capture of the
+ * fifteen the element records name is in the build (`Public/Evidence/Land/
+ * NightGlass-01.png`); the rest are declared in manifests with `status:
+ * placeholder` and no plate. A plate that prints its manifest's facts and the
+ * word `UNAVAILABLE` is a record of a missing capture; a plate that prints an
+ * empty frame is a hole. The frame therefore stays in both arms, and `next` says
+ * what a reader can do about it.
+ *
+ * No `<script>` and no `client:*`: a plate is printed. No lightbox, no zoom, no
+ * hover treatment - the site has one image primitive and this block frames it.
+ */
+import { FieldRecordEvidence } from "../Brand/FieldRecordEvidence";
+import { Tone } from "../Surface/State.js";
+
+import type { Plate } from "./Type.js";
+
+/** The image arm: `src` and `alt` are one indivisible pair. */
+type Picture = { readonly src: string; readonly alt: string };
+
+/** The media arm - an image, or composed children, never a half-set pair. */
+type Media =
+	| Picture
+	| { readonly src?: never; readonly alt?: never };
+
+type Props = Omit<Plate, "src" | "alt"> &
+	Media & {
+		/** Extra classes from the page, appended after the block's own. */
+		readonly class?: string;
+	};
+
+const { plate, class: Class } = Astro.props;
+
+/** The image, when the caller set one. */
+const Image: Picture | undefined =
+	plate.src !== undefined && plate.alt !== undefined
+		? { src: plate.src, alt: plate.alt }
+		: undefined;
+
+/** Composed capture: the page handed the block its own media. */
+const Composed = Astro.slots.has("default");
+
+/** The channel's placement, the plate's span, and the frame's ratio. */
+const Channel = (plate.placement ?? "channel") === "channel";
+const Wide = (plate.span ?? "wide") === "wide";
+
+const Ratio =
+	plate.ratio ?? (Wide ? "21 / 9" : "16 / 9");
+
+/** The state word's tone, from the one table that decides tones. */
+const StateTone = plate.state
+	? (Tone(plate.state.toUpperCase()) ?? "ink")
+	: undefined;
+
+/** The tombstone replaces the capture: the plate is not in the build. */
+const Absent = plate.state !== undefined;
+
+/** The register line's own id, so the figure's caption can name it. */
+const Id = `plate-${plate.index.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+---
+
+<figure
+	class:list={[
+		"record-plate",
+		Channel && "record-plate--channel",
+		Wide && "record-plate--wide",
+		Absent && "record-plate--absent",
+		Class,
+	]}
+	id={Id}
+	style={`--plate-ratio: ${Ratio}`}
+>
+	<div class="record-plate__frame">
+		{
+			Absent ? (
+				<div class="record-plate__tombstone">
+					<span class="record-plate__tombstone-mark" aria-hidden="true">
+						&#9678;
+					</span>
+					<span
+						class:list={[
+							"record-plate__tombstone-state",
+							`record-plate__tombstone-state--${StateTone}`,
+						]}
+					>
+						<span class="record-plate__tombstone-key">STATUS:</span>
+						{plate.state?.toUpperCase()}
+					</span>
+					{
+						plate.next ? (
+							<span class="record-plate__tombstone-next">
+								<span class="record-plate__tombstone-key">NEXT:</span>
+								{plate.next}
+							</span>
+						) : null
+					}
+				</div>
+			) : Image ? (
+				<FieldRecordEvidence
+					src={Image.src}
+					alt={Image.alt}
+					position={plate.position}
+					className="record-plate__picture"
+				/>
+			) : Composed ? (
+				<div class="record-plate__composed">
+					<slot />
+				</div>
+			) : null
+		}
+	</div>
+
+	<figcaption class="record-plate__channel">
+		<p class="record-plate__head">
+			<span class="record-plate__index"># {plate.index}</span>
+			{plate.label ? <span class="record-plate__label">/ {plate.label}</span> : null}
+			{
+				plate.asOf ? (
+					<span class="record-plate__asof">
+						<span class="record-plate__asof-key">AS OF:</span>
+						{plate.asOf}
+					</span>
+				) : null
+			}
+		</p>
+
+		<p class="record-plate__row">
+			<span class="record-plate__key">FIGURE:</span>
+			<span class="record-plate__subject">
+				<span class="record-plate__arrow" aria-hidden="true">&#8627;</span>{plate.subject}
+			</span>
+		</p>
+
+		{plate.caption ? <p class="record-plate__caption">{plate.caption}</p> : null}
+
+		{
+			plate.facts && plate.facts.length > 0 ? (
+				<dl class="record-plate__facts">
+					{plate.facts.map((Fact) => (
+						<div class="record-plate__fact">
+							<dt class="record-plate__fact-key">{Fact.key}:</dt>
+							<dd class="record-plate__fact-value">{Fact.value}</dd>
+						</div>
+					))}
+				</dl>
+			) : null
+		}
+
+		<p class="record-plate__source">
+			<span class="record-plate__source-key">SOURCE:</span>
+			{plate.source}
+		</p>
+	</figcaption>
+</figure>

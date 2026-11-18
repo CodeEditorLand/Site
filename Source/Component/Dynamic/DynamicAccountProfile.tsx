@@ -591,7 +591,7 @@ const AccountProfileInner = ({
 							className="flat h-20 w-20 object-cover"
 						/>
 					) : (
-						<div className="bg-mute flex h-20 w-20 items-center justify-center text-2xl font-medium text-muted-foreground">
+						<div className="bg-mute flex h-20 w-20 items-center justify-center text-sub font-medium text-muted-foreground">
 							{DisplayName.slice(0, 2).toUpperCase()}
 						</div>
 					)}

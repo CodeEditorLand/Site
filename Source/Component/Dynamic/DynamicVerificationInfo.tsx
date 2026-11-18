@@ -182,7 +182,7 @@ const DynamicVerificationInfo = ({
 					{(Title || Description) && (
 						<div className="mb-12 text-center">
 							{Title && (
-								<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
+								<h2 className="type-section mb-4">
 									{Title}
 								</h2>
 							)}

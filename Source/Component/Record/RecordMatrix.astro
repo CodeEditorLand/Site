@@ -3,6 +3,34 @@
  * RecordMatrix - comparison across columns: a header row carrying one ink per
  * column, hairline rows and an optional caption.
  *
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  a comparison of one state across N columns - three
+ *                   platforms against five artifact fields, releases against
+ *                   their dates. Not two things (that is a Pair) and not a set
+ *                   of records (that is an Archive).
+ * RANK              set.
+ * SLOT CONTRACT     columns[] -> one header cell per column: label, ink token
+ *                   rows[]    -> the row label, then one cell per column
+ *                   caption?  -> the provenance line under the matrix
+ *                   density?  -> `rest` (default) or `dense` (halved row rhythm
+ *                                for a long comparison)
+ * MAY HOLD          nothing. Cells are values, not blocks.
+ * MAY NOT HOLD      a block in a cell. A cell that needs a block needs a
+ *                   different artifact.
+ * WIDE              the table takes its container; the row label column is the
+ *                   first cell and every cell refuses to wrap.
+ * NARROW            THE ROW LABEL PINS. The shell scrolls sideways and the
+ *                   label column stays on the left edge, over a `--Card` fill
+ *                   and under a hairline seam, so a five-column comparison on a
+ *                   phone is read one row at a time with the row's name still
+ *                   attached to its cells. That is the difference between a
+ *                   comparison that survives a narrow column and a table that
+ *                   is merely squeezed into one.
+ * DENSE             `density="dense"` halves the row rhythm and nothing else -
+ *                   never the type, never the rules. For a long comparison
+ *                   (every previous release) where the rows are read as a scan
+ *                   rather than as five facts each.
+ *
  * This is tabular data, so it is a real table element, not a grid of divs. A
  * grid can be made to look identical, but only a table gives every cell its
  * column header and every row its label without a script - which is the one
@@ -18,7 +46,7 @@
  *
  * No script, no hydration: a printed table that happens to be markup.
  */
-import type { MatrixColumn } from "./Type.js";
+import type { MatrixColumn, MatrixDensity } from "./Type.js";
 
 /**
  * One row: the label in the first column, then one value per column.
@@ -51,12 +79,37 @@ interface Props {
 	 * Additive: the block owns `record-matrix`, the page owns the rest.
 	 */
 	class?: string;
+
+	/**
+	 * The shell's id, when a control drives this table.
+	 *
+	 * `MatrixControl` adopts the table it was pointed at, so the page has to be
+	 * able to point at it. The id belongs on the shell rather than on the
+	 * `<table>`: the caption, the scroll container and the density modifier are
+	 * all the shell's, and a control that found only the table would drive a
+	 * table whose frame it could not reach.
+	 */
+	id?: string;
+
+	/**
+	 * The row rhythm. `rest` (the default) is the reading rhythm; `dense` halves
+	 * it for a long comparison, where the rows are scanned rather than read. The
+	 * type and the rules never change - a dense matrix is a tighter ledger, not
+	 * a smaller one.
+	 */
+	density?: MatrixDensity;
 }
 
-const { columns, rows, caption, class: Class } = Astro.props;
+const { columns, rows, caption, density = "rest", class: Class, id } = Astro.props;
 
-/** The shell's classes: the block's own, then whatever the page adds. */
-const shellClass = `record-matrix${Class ? ` ${Class}` : ""}`;
+/** The shell's classes: the block's own, its density, then whatever the page adds. */
+const shellClass = [
+	"record-matrix",
+	density === "dense" ? "record-matrix--dense" : null,
+	Class,
+]
+	.filter(Boolean)
+	.join(" ");
 
 /**
  * The value a row carries at a column index.
@@ -98,7 +151,7 @@ const cellClass = (column: MatrixColumn, value: string): string =>
 	}${markOf(value)}`;
 ---
 
-<div class={shellClass}>
+<div class={shellClass} id={id}>
 	<table class="record-matrix__table">
 		{
 			caption && (
@@ -107,7 +160,7 @@ const cellClass = (column: MatrixColumn, value: string): string =>
 		}
 		<thead>
 			<tr class="record-matrix__head">
-				<td></td>
+				<td class="record-matrix__corner"></td>
 				{
 					columns.map((column) => (
 						<th

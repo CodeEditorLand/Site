@@ -1,0 +1,111 @@
+---
+/**
+ * Install - the only install path that exists today: the source build.
+ *
+ * `Documentation/GitHub/Building.md` calls the build a two-step linear flow, and
+ * the region is split where the document splits it: Step 1 compiles the VS Code
+ * source in the submodule, Step 2 builds the Land application. Each step is a
+ * `RecordWell` - a command is an object the reader copies, not a paragraph in
+ * monospace - and the well prints every line as the document writes it.
+ *
+ * Under the steps are the three targets, each with the run command the document
+ * gives it:
+ *
+ *   〈MACOS〉  STATUS: SOURCE ACTIVE          the .app bundle
+ *   〈WINDOWS〉 STATUS: RELEASE PREPARATION  no run command documented yet
+ *   〈LINUX〉  STATUS: RELEASE PREPARATION   the binary
+ *
+ * The asymmetry is the point. The document documents a run path for macOS and
+ * Linux and none for Windows, so the Windows entry prints a `↳` line instead of
+ * a well - an absence stated in the record grammar, not a path this page would
+ * have to invent. The stamp keeps its per-glyph inks here, where the platform is
+ * the subject of the entry rather than a row key in the matrix.
+ *
+ * The record's one action closes the region: the source builds live on the
+ * repository's releases page, and that is where a reader goes next.
+ *
+ * No `<script>` beyond `RecordWell`'s own copy wiring, and no `client:*`.
+ */
+import FieldRecordAction from "../../Brand/FieldRecordAction.astro";
+import { FieldRecordStatus } from "../../Brand/FieldRecordStatus.js";
+import { StampText } from "../../Brand/SemanticLedger.js";
+import RecordWell from "../../Record/RecordWell.astro";
+
+import type { Well } from "../../Record/Type.js";
+
+import type { PlatformTarget } from "./Type.js";
+
+interface Props {
+	/** The two documented build steps, in the document's order. */
+	steps: readonly Well[];
+
+	/** The three targets, in the manifest's order. */
+	platforms: readonly PlatformTarget[];
+
+	/** The record's one action: where the source builds live. */
+	action: { readonly label: string; readonly href: string };
+}
+
+const { steps, platforms, action } = Astro.props;
+---
+
+<div class="download-install">
+	<div class="download-install__steps">
+		{
+			steps.map((step) => (
+				<RecordWell
+					label={step.label}
+					language={step.language}
+					lines={step.lines}
+					source={step.source}
+					class="download-install__well"
+				/>
+			))
+		}
+	</div>
+
+	<div class="download-install__runs">
+		{
+			platforms.map((platform) => (
+				<div class="download-install__run">
+					<div class="download-install__identity">
+						<p class="download-install__stamp">
+							<StampText Line={platform.name.toUpperCase()} />
+						</p>
+						<p class="download-install__state">
+							<FieldRecordStatus
+								status={platform.state.status}
+								tone={platform.state.tone}
+								copy={platform.state.copy}
+							/>
+						</p>
+					</div>
+
+					{platform.run ? (
+						<RecordWell
+							label={platform.run.label}
+							language={platform.run.language}
+							lines={platform.run.lines}
+							class="download-install__command"
+						/>
+					) : (
+						<p class="download-install__absence">
+							<span class="download-install__absence-mark" aria-hidden="true">
+								↳
+							</span>
+							{platform.absence}
+						</p>
+					)}
+				</div>
+			))
+		}
+	</div>
+
+	<p class="download-install__action">
+		<FieldRecordAction
+			variant="button"
+			label={action.label}
+			href={action.href}
+		/>
+	</p>
+</div>

@@ -1,0 +1,104 @@
+@use "../Mixin" as *;
+
+// ─── THE COPY RECEIPT ──────────────────────────────────────────────────────
+//
+// `[mark] [label] [meta]`, the same row grammar as every control on the site,
+// in five states. It is not an icon button: a 24px clipboard glyph has room to
+// say "copied" and no room to say "denied, and the clipboard is unavailable" -
+// and the reason is the half of the affordance that matters when the world is
+// unkind.
+//
+// ─── THE MARK IS THE STATE, AND ONLY ONE OF THEM IS INKED ──────────────────
+//
+//   →  rest        muted
+//   ✓  copied      the accent - the one place this control spends it, because
+//                  a completed write is a fact that authenticates itself
+//   ◎  denied      muted; the meta cell carries `CLIPBOARD UNAVAILABLE`
+//   ◎  interrupted muted; the meta cell carries `TRY AGAIN`
+//   ◎  empty       muted, and the control is inert
+//
+// The label keeps its ink in every state but `denied` and `empty`: a failure
+// must not dim the words that say what failed. That is `DESIGN-COMPLETE.md`
+// §0.3 read at control scale - a state present in the DOM and invisible to the
+// eye is not a state.
+//
+// ─── THE RECEIPT IS NOT A TOAST ───────────────────────────────────────────
+//
+// No fill, no frame, no scrim, no motion beyond the mark's own ink change. It
+// stands where the control is until the payload changes, so a reader who looks
+// back still knows what the clipboard holds.
+
+.Copy {
+	display: inline-flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	padding: 0.375rem 0;
+
+	background: none;
+	border: 0;
+
+	color: var(--Foreground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-row);
+	text-transform: uppercase;
+	white-space: nowrap;
+
+	cursor: pointer;
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition: color 90ms linear;
+	}
+}
+
+// The mark column is reserved at one character so a state change does not shift
+// the label by a glyph's width.
+.Copy__Mark {
+	inline-size: 1ch;
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+.Copy__Label {
+	color: var(--Foreground);
+}
+
+.Copy__Meta {
+	color: var(--MuteForeground);
+
+	@include track(var(--track-row));
+}
+
+// ─── states ────────────────────────────────────────────────────────────────
+
+.Copy[data-state="copied"] .Copy__Mark {
+	color: var(--Accent);
+}
+
+.Copy[data-state="denied"] .Copy__Label,
+.Copy[data-state="empty"] .Copy__Label {
+	color: var(--MuteForeground);
+}
+
+.Copy[data-state="denied"],
+.Copy[data-state="empty"] {
+	cursor: not-allowed;
+}
+
+.Copy:hover .Copy__Mark {
+	color: var(--Foreground);
+}
+
+.Copy[data-state="copied"]:hover .Copy__Mark {
+	color: var(--Accent);
+}
+
+.Copy:focus-visible {
+	outline: 2px solid var(--Accent);
+	outline-offset: 2px;
+}

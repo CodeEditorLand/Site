@@ -3,6 +3,9 @@ import { Header } from "../Component/Layout/Header";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 import ReadingDocument from "../Component/Reading/ReadingDocument.astro";
+import BandFoot from "../Component/Detail/BandFoot.astro";
+import TrustClause from "../Component/Trust/TrustClause.astro";
+import { ComposeFacts } from "../Component/Trust/Facts.js";
 import Trail from "../Component/Route/Trail.astro";
 import RecordWell from "../Component/Record/RecordWell.astro";
 import { Index, Ledger } from "../Library/Document/License/Data.js";
@@ -157,10 +160,10 @@ const Note =
 	Url={Astro.url.href}
 	lang="en">
 	<Header client:load Mode="functional" slot="Header" />
-	<div class="container mx-auto max-w-4xl px-4 py-16">
+	<div class="trust-page">
 		<!-- Breadcrumbs -->
 		<Trail
-			class="LegalPrintHide mb-8"
+			class="LegalPrintHide trust-page__trail"
 			trail={[
 				{ label: "/HOME", href: "/" },
 				{ label: "/LICENSE" },
@@ -172,9 +175,12 @@ const Note =
 			kicker="/LICENSE"
 			heading="License"
 			standfirst="Code Editor Land is open source software dedicated to the public domain."
-			rows={Ledger}
+			rows={ComposeFacts(Ledger)}
 			index={Index}
 			indexLabel="Parts"
+			layout="rail"
+			ledgerSurface="standard"
+			ledgerColumns={2}
 			bodyClass="LegalCard">
 			{/* The first screen: what CC0 means for a reader, before the legal text. */}
 			<div class="reading-document__part">
@@ -195,7 +201,7 @@ const Note =
 			</div>
 
 			<section class="reading-document__part">
-				<h2 class="reading-clause" id="cc0-1-0-universal">CC0 1.0 Universal</h2>
+				<TrustClause number="01" id="cc0-1-0-universal">CC0 1.0 Universal</TrustClause>
 				<p class="mb-4">
 					The Code Editor Land project, including all source code,
 					documentation, and related materials, is dedicated to the
@@ -209,7 +215,7 @@ const Note =
 			</section>
 
 			<section class="reading-document__part">
-				<h2 class="reading-clause" id="full-license-text">Full License Text</h2>
+				<TrustClause number="02" id="full-license-text">Full License Text</TrustClause>
 				<RecordWell
 					label="Creative Commons Legal Code"
 					language="text"
@@ -218,7 +224,7 @@ const Note =
 			</section>
 
 			<section class="reading-document__part">
-				<h2 class="reading-clause" id="key-points">Key Points</h2>
+				<TrustClause number="03" id="key-points">Key Points</TrustClause>
 				<ul class="mb-4 list-disc space-y-2 pl-8">
 					<li>
 						<strong>No copyright restrictions:</strong> To the fullest
@@ -247,9 +253,7 @@ const Note =
 			</section>
 
 			<section class="reading-document__part">
-				<h2 class="reading-clause" id="third-party-licenses"
-					>Third-Party Licenses</h2
-				>
+				<TrustClause number="04" id="third-party-licenses">Third-Party Licenses</TrustClause>
 				<p class="mb-4">
 					The Code Editor Land project incorporates numerous
 					third-party open-source components. Each component retains
@@ -280,7 +284,7 @@ const Note =
 			</section>
 
 			<section class="reading-document__part">
-				<h2 class="reading-clause" id="why-cc0">Why CC0?</h2>
+				<TrustClause number="05" id="why-cc0">Why CC0?</TrustClause>
 				<p class="mb-4">
 					We believe that foundational software tools should be freely
 					available to everyone, without barriers or restrictions. By
@@ -331,15 +335,45 @@ const Note =
 						></a
 					>
 				</div>
-				<h2 class="reading-clause" id="contact">Contact</h2>
+				<TrustClause number="06" id="contact">Contact</TrustClause>
 				<p>
 					If you have questions about the license, feel free to
 					contact us.
 				</p>
 			</section>
+
+			{/* The document's foot: what the licence does not govern, and where in
+			    the document the reader has got to. No as-of: this document carries
+			    no revision date, and a folio that invented one would be the one
+			    figure on the page with no source. */}
+			<BandFoot
+				surface="card"
+				index="06"
+				part="/THE BACK MATTER"
+				see={[
+					{
+						route: "/LEGAL/PRIVACY",
+						href: "/Legal/Privacy",
+						reason: "what the site itself collects, which this licence does not govern",
+					},
+					{
+						route: "/CONTRIBUTING",
+						href: "/Contributing",
+						reason:
+							"how to contribute to a work that is already in the public domain",
+					},
+					{
+						route: "/CONTACT/LEGAL",
+						href: "/Contact/Legal",
+						reason: "a licensing question, raised with the maintainer",
+					},
+				]}
+				figure={{ value: "06", unit: "CLAUSES" }}
+				source="SOURCE/PAGES/LICENSE.ASTRO"
+			/>
 		</ReadingDocument>
 
-		<div class="LegalPrintHide mt-12 border-t pt-8">
+		<div class="LegalPrintHide trust-page__close">
 			<a href="#top" class="StaccatoButton text-primary hover:underline"
 				>Back to top<span class="InlineSeparator">↑</span></a
 			>
@@ -394,4 +428,9 @@ const Note =
 <script>
 	import { WireCopyButtons } from "../Function/Utility/CopyCommand";
 	WireCopyButtons();
+</script>
+
+<script>
+	import { WireTrustContents } from "../Component/Trust/TrustContents.js";
+	WireTrustContents();
 </script>

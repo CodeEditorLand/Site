@@ -1,1 +1,0 @@
-import{t}from"./LocaleSwitcher.DQttFNax.js";export{t as LocaleSwitcher,t as default};

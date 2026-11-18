@@ -18,7 +18,7 @@
 .home-element__grid {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
-	gap: 1.5rem;
+	gap: 1rem;
 	max-inline-size: 80rem;
 	margin-inline: auto;
 
@@ -39,4 +39,79 @@
 	@include bp(1024px) {
 		grid-column: span var(--masonry-col, 6);
 	}
+}
+
+// THE TIGHT BAND. The wall is the dossier's appendix: fifteen records the reader
+// consults rather than reads, so it packs - 1rem of card padding instead of
+// 1.25, 0.5rem between a record's row groups instead of 0.75, and a 1.4 body
+// lead instead of 1.5. The band's own air is `home-band--tight`; this is the
+// same decision applied inside the record.
+.home-element .home-record {
+	padding: 1rem;
+}
+
+.home-element .home-record > * + * {
+	margin-block-start: 0.5rem;
+	padding-block-start: 0.5rem;
+}
+
+.home-element .home-record__body {
+	line-height: 1.4;
+}
+
+.home-element .home-record__chips {
+	gap: 0.375rem;
+}
+
+/* ─── THE WORKING ──────────────────────────────────────────────────────── */
+
+// The register every record now carries, and the trace the four plates add.
+// The working is the card's evidence, so it is separated from the record's
+// prose by the same rule the card uses between its other parts - one hairline,
+// no fill, no second frame.
+.home-record__working {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+}
+
+// A card is one column wide whatever the viewport is. The register's two-column
+// reading is a page-width decision, and inside a 4-column card it would halve a
+// 300px measure into two 130px ones - so the card's register stays one column at
+// every width and the band's register gets the two.
+.home-element .record-ledger--register {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.home-element .record-ledger--register > .record-ledger__row:nth-child(even) {
+	border-inline-start: 0;
+	padding-inline-start: 0;
+}
+
+// The card's register line is the card's own: `# WORKING / 06` at the same
+// weight as the card's other markers, so a reader can count the facts before
+// reading them.
+.home-element .record-ledger-block__register {
+	padding-block-end: 0.125rem;
+}
+
+// The trace inside a card is read in the card's measure: the path takes the
+// line and the note goes under it, at every viewport. The wide reading belongs
+// to the band, where the trace has 7 columns of the page rather than 4 of a
+// card.
+.home-element .record-trace__step {
+	grid-template-columns: 2ch 1ch minmax(0, 1fr);
+}
+
+.home-element .record-trace__note {
+	grid-column: 3 / -1;
+}
+
+// The four plates. A plate is a record whose evidence is printed in full, and it
+// says so with a 2px rule over its working - the same border-weight mark the
+// pair gives its subject, never an ink inversion and never a colour.
+.home-element[data-depth="plate"] .home-record__working {
+	padding-block-start: 0.75rem;
+	border-block-start: 2px solid var(--Divider);
 }

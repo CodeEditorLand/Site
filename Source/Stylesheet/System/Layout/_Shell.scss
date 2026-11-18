@@ -1,0 +1,328 @@
+// PageShell - the four languages' grids and the declaration strip.
+//
+// Publishes:
+//   .PageShell                 the query container and the page's one outer measure
+//   .PageShell__declaration    `# LAYOUT / READING␁GIVES: …` - one printed line
+//   .PageShell__head           the slot above the grid (a plate's record head)
+//   .PageShell__grid           the tracks
+//   .PageShell__rail           the leading column
+//   .PageShell__main           the page's own column
+//   .PageShell__margin         the trailing column
+//   .PageShell__foot           the full-width row under the grid (an audit's wells)
+//
+// ─── THE DECLARATION STRIP ────────────────────────────────────────────────
+// One line at the meta tier, under a hairline, above the page's own head. It
+// prints the language, the tracks it gives and the page's own marker. The long
+// form (`DECLARES: …`) is hidden below the wide container: it is the contract in
+// full, and a contract belongs at the width where a reader is reading structure
+// rather than prose. Nothing is lost at the narrow width - `GIVES:` already
+// names the tracks.
+//
+// ─── THE TRACKS ───────────────────────────────────────────────────────────
+// Reading is asymmetric on purpose: a 13rem rail, the measure itself, and a
+// 15rem margin. The measure track is `minmax(0, var(--Measure))` and the margin
+// absorbs the rest, so the prose never widens to fill a wider page - the page
+// gets more margin instead, which is what a document does.
+//
+// A shell with no margin slot drops its margin track (`:has()`), because an
+// empty 15rem track is a column of nothing holding the measure off-centre.
+@use "../Mixin" as *;
+
+// The sticky offset: the header's two bands (56px masthead + 28px running head)
+// plus one tight step. The header is a viewport fact, so this is the layer's one
+// viewport-shaped number; everything else is a container query.
+$ShellStickyTop: calc(5.25rem + var(--space-tight));
+
+.PageShell {
+	container: shell / inline-size;
+	inline-size: 100%;
+	max-inline-size: var(--ContainerSixExtraLarge);
+	margin-inline: auto;
+	padding-inline: var(--Gutter);
+	padding-block-end: var(--space-chapter);
+}
+
+// A shell inside a surface that owns a narrower opening container (the contact
+// pages cap at 64rem): the shell matches the page's opening rather than widening
+// past it, so the declaration strip and the `h1` share one left edge.
+.PageShell--inset {
+	max-inline-size: var(--ContainerFiveExtraLarge);
+}
+
+// ─── THE DECLARATION STRIP ────────────────────────────────────────────────
+
+.PageShell__declaration {
+	@include mono-meta;
+	@include track(var(--track-row));
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 0.4em;
+	margin: 0;
+	padding-block: var(--space-tight);
+	color: var(--MuteForeground);
+
+	@include hairline(bottom);
+}
+
+.PageShell__mark {
+	color: var(--Accent);
+}
+
+.PageShell__name {
+	color: var(--Foreground);
+}
+
+.PageShell__tracks {
+	color: var(--Foreground);
+}
+
+.PageShell__index,
+.PageShell__label {
+	color: var(--Foreground);
+}
+
+.PageShell__key {
+	color: var(--MuteForeground);
+}
+
+// The full contract, at the width where structure is being read.
+.PageShell__declares {
+	display: none;
+}
+
+@container shell (min-width: 56rem) {
+	.PageShell__declares {
+		display: inline;
+		margin-inline-start: auto;
+		text-align: end;
+		color: var(--MuteForeground);
+	}
+}
+
+// ─── THE GRID ─────────────────────────────────────────────────────────────
+
+.PageShell__head {
+	padding-block-start: var(--space-group);
+}
+
+.PageShell__grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-group);
+	padding-block-start: var(--space-group);
+}
+
+.PageShell__main {
+	min-inline-size: 0;
+}
+
+// The rail owns the rhythm of its registers: a rail may hold a destination list
+// and the ledger that scopes it, and the two separate at the group distance.
+.PageShell__rail > * + * {
+	margin-block-start: var(--space-group);
+}
+
+// The main track owns the rhythm of its children - one mechanism, per the space
+// layer's contract. A page hands in bands and the track spaces them at the
+// group distance (an artifact to an artifact); a block inside a band keeps its
+// own flow. Nothing inside the track sets a margin to escape this.
+.PageShell__main > * + * {
+	margin-block-start: var(--space-group);
+}
+
+.PageShell__foot {
+	padding-block-start: var(--space-group);
+}
+
+// ─── A ROW OF ARTIFACTS ───────────────────────────────────────────────────
+// The shell's one horizontal arrangement: N equal tracks at the wide container,
+// one column below it. It exists because a register of states, a pair of wells
+// and a run of marks all ask the same question - "these things are equal, put
+// them side by side" - and each page was answering it with its own grid.
+//
+// `--row-tracks` is the count (2 by default). Equal tracks are right here and
+// nowhere else: a row of artifacts is a set, and a set has no subject.
+
+.PageShell__row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-group);
+}
+
+@container shell (min-width: 48rem) {
+	.PageShell__row {
+		grid-template-columns: repeat(var(--row-tracks, 2), minmax(0, 1fr));
+		align-items: start;
+	}
+}
+
+// ─── AN INSTRUMENT AT ITS OWN MEASURE ─────────────────────────────────────
+// A card, a form or a single-column widget that keeps its own width inside a
+// wider track: capped at the form measure and centred, never stretched to the
+// matrix's width. This is what stops a 28rem card from becoming a 70rem band
+// the moment it is placed in an audit.
+
+.PageShell__instrument {
+	max-inline-size: var(--ContainerMedium);
+	margin-inline: auto;
+}
+
+// ─── A SURFACE'S OWN CONTAINER INSIDE A TRACK ─────────────────────────────
+// Two surfaces (`doc-rust`, `contact-sale`) bring their own `band-inner`
+// container. Inside a shell track that container would double the gutter and
+// narrow the measure the track just set, so it is cancelled here - the shell is
+// the outer container by definition. This is the layer's one reach into a
+// surface's class name, and it is named so it can be removed when those two
+// surfaces are migrated onto the shell.
+
+.PageShell__main :is(.doc-rust, .contact-sale) {
+	max-inline-size: none;
+	margin-inline: 0;
+	padding-inline: 0;
+}
+
+// ─── READING ──────────────────────────────────────────────────────────────
+// rail | measure | margin. The rail is a register of the document's own
+// sections; the margin is apparatus (facts, notes, an aside).
+//
+// The margin takes a track only at 64rem of container, and that threshold is a
+// measurement, not a preference: rail (13rem) + margin (16rem) + two gaps is
+// 32rem of furniture, so at 58rem the measure would be under 50ch - narrower than
+// the prose this language exists to protect. Between 58rem and 64rem the margin
+// prints under the measure as a ruled block (the same notes, one column, in the
+// same order); above 64rem it takes its own sticky track beside it.
+//
+// At the narrow container the rail prints above the measure as a ruled register,
+// because a document's contents list is short enough to print and a reader on a
+// phone is still owed the structure.
+
+@container shell (min-width: 58rem) {
+	.PageShell[data-layout="reading"] .PageShell__grid {
+		grid-template-columns: 13rem minmax(0, var(--Measure));
+		align-items: start;
+	}
+
+	.PageShell[data-layout="reading"]
+		.PageShell__grid:not(:has(.PageShell__rail)) {
+		grid-template-columns: minmax(0, var(--Measure));
+	}
+
+	.PageShell[data-layout="reading"] .PageShell__rail {
+		position: sticky;
+		inset-block-start: $ShellStickyTop;
+		padding-inline-end: var(--space-reading);
+		border-inline-end: 1px solid var(--Divider);
+	}
+
+	// The margin, below the measure, when there is no room for a third track.
+	.PageShell[data-layout="reading"] .PageShell__margin {
+		grid-column: 2;
+		padding-block-start: var(--space-group);
+		border-block-start: 1px solid var(--Divider);
+	}
+}
+
+@container shell (min-width: 64rem) {
+	.PageShell[data-layout="reading"] .PageShell__grid:has(.PageShell__margin) {
+		grid-template-columns: 13rem minmax(0, 1fr) minmax(0, 16rem);
+	}
+
+	.PageShell[data-layout="reading"]
+		.PageShell__grid:not(:has(.PageShell__rail)):has(.PageShell__margin) {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 16rem);
+	}
+
+	.PageShell[data-layout="reading"] .PageShell__margin {
+		grid-column: 3;
+		position: sticky;
+		inset-block-start: $ShellStickyTop;
+		padding-block-start: 0;
+		padding-inline-start: var(--space-reading);
+		border-block-start: 0;
+		border-inline-start: 1px solid var(--Divider);
+	}
+}
+
+// ─── WORKSPACE ────────────────────────────────────────────────────────────
+// rail | panes. The panes' own gutter is `ShellPanes`'; the shell only decides
+// where the rail ends. A workspace reads at no measure: a pane is as wide as the
+// instrument inside it.
+
+@container shell (min-width: 56rem) {
+	.PageShell[data-layout="workspace"] .PageShell__grid {
+		grid-template-columns: 14rem minmax(0, 1fr);
+		align-items: start;
+	}
+
+	.PageShell[data-layout="workspace"]
+		.PageShell__grid:not(:has(.PageShell__rail)) {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.PageShell[data-layout="workspace"] .PageShell__rail {
+		position: sticky;
+		inset-block-start: $ShellStickyTop;
+		padding-inline-end: var(--space-reading);
+		border-inline-end: 1px solid var(--Divider);
+	}
+}
+
+// ─── AUDIT ────────────────────────────────────────────────────────────────
+// ledger | matrix, and the wells at the foot. The ledger is the narrow column
+// that scopes the audit; the matrix is the audit; the wells are the commands
+// that make it repeatable. The matrix gets every pixel the ledger does not,
+// because a comparison read at 30rem is a comparison read one column at a time.
+
+@container shell (min-width: 58rem) {
+	.PageShell[data-layout="audit"] .PageShell__grid {
+		grid-template-columns: 19rem minmax(0, 1fr);
+		align-items: start;
+	}
+
+	.PageShell[data-layout="audit"]
+		.PageShell__grid:not(:has(.PageShell__rail)) {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.PageShell[data-layout="audit"] .PageShell__rail {
+		position: sticky;
+		inset-block-start: $ShellStickyTop;
+		padding-inline-end: var(--space-reading);
+		border-inline-end: 1px solid var(--Divider);
+	}
+}
+
+// ─── PLATE ────────────────────────────────────────────────────────────────
+// One track: the plate and its channel are one object (`ShellPlate` owns the
+// split). The shell adds the record head above it and nothing else. The overflow
+// clip is for the `viewport` bleed: a plate wider than the window clips at the
+// window's edge instead of widening the document.
+
+.PageShell[data-layout="plate"] {
+	overflow-x: clip;
+}
+
+.PageShell[data-layout="plate"] .PageShell__grid {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+// ─── NARROW ───────────────────────────────────────────────────────────────
+// Below the rail breakpoint every language prints its rail as a ruled register
+// above the main track. One rule for all four, because the behaviour is the
+// same behaviour: the register is structure, and structure goes first.
+
+@container shell (max-width: 57.99rem) {
+	.PageShell__rail {
+		padding-block-end: var(--space-reading);
+		border-block-end: 1px solid var(--Divider);
+	}
+}
+
+// ─── ◎ RECORD ─────────────────────────────────────────────────────────────
+// A one-artifact page gets the container and the declaration strip, and no
+// tracks. Its own composition is the page.
+
+.PageShell[data-layout="record"] .PageShell__grid {
+	grid-template-columns: minmax(0, 1fr);
+}

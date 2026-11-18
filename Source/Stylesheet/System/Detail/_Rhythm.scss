@@ -1,0 +1,75 @@
+// RHYTHM - the gaps inside a record, and the two places a block may not space
+// itself.
+//
+// ─── THE LAW ──────────────────────────────────────────────────────────────
+// The space roles are five and they are the whole vertical system
+// (`--space-tight` 8, `--space-reading` 16, `--space-group` 32, `--space-blank`
+// 52, `--space-chapter` 84). A band is air, so the band owns its own rhythm; a
+// block inside a band does not get to open or close the band with a margin of
+// its own. That is one law, and it is the one that breaks first: a block with a
+// `margin-block-start` looks correct on the page where it was written and
+// doubles the band's distance on the page where it is composed second.
+//
+// The two enforcement rules below are the whole of the fix, and they are
+// `:first-child`/`:last-child` rather than a reset because a block in the MIDDLE
+// of a band may space itself against its sibling - that is the composition's
+// decision, and it is the one the block can see.
+//
+// ─── THE MEASURE ──────────────────────────────────────────────────────────
+// Two caps, no third: `--MeasureOpening` (62ch) for anything that opens a
+// surface - a standfirst, a caption, an empty state's sentence - and `--Measure`
+// (72ch) for running prose. A third value is a fourth decision, and the page's
+// right edge goes ragged in a way no reader can name.
+//
+// ─── THE CLOSING ──────────────────────────────────────────────────────────
+// A record closes on its last fact, not on a rule it did not earn: the ledger
+// ends on its last row (its rules are the rows' own top edges), the archive ends
+// on its body's closing rule, and a band ends on `--space-group`. The band foot
+// is the exception, and it is an exception because it is a composition, not a
+// block - it brings its own rule and states why (`Detail/_Foot.scss`).
+@use "../Mixin" as *;
+
+// ─── 1. A BLOCK MAY NOT OPEN OR CLOSE A BAND ──────────────────────────────
+
+.record-band__body > :first-child {
+	margin-block-start: 0;
+}
+
+.record-band__body > :last-child {
+	margin-block-end: 0;
+}
+
+// The reading document's body has the same rule for the same reason: the first
+// part sits under the head's own rhythm, and the last part is followed by the
+// surface's padding - never by a block's guess at it.
+.reading-document__body > :first-child {
+	margin-block-start: 0;
+}
+
+.reading-document__body > :last-child {
+	margin-block-end: 0;
+}
+
+// ─── 2. THE TWO MEASURES ──────────────────────────────────────────────────
+
+// A sentence that opens a surface is capped at the opening measure, and it is
+// capped by the sentence's own class rather than by the caller. The list is
+// restated here because these three artifacts were each given 62ch by hand and
+// a later block should not have to rediscover the value.
+.detail-foot__see,
+.detail-leader__note,
+.detail-see__reason {
+	max-inline-size: var(--MeasureOpening);
+}
+
+// ─── 3. THE ROW'S OWN RHYTHM ──────────────────────────────────────────────
+
+// A ruled row's padding is symmetric: the rule above a row belongs to the row,
+// so 8px of it is above the text and 8px below, and two consecutive rows read
+// as two rows rather than as one row with a line under it. The archive's group
+// LABEL is the one deliberate exception in the tree - it is 16px above and 8px
+// below, because a label belongs to the list under it and not to the rule above
+// it - and it is named here so a later card does not "correct" it.
+.record-archive__label {
+	padding-block: var(--space-reading) var(--space-tight);
+}

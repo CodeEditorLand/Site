@@ -2,11 +2,25 @@
 
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
 
-import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react";
-
 import * as React from "react";
 
+import { SlipRegister, type SlipHead } from "./Slip";
+
 import { cn } from "./Utility";
+
+/**
+ * ContextMenu - the menu a right-click opens, and the same slip a left-click
+ * opens.
+ *
+ * A context menu is where a site most often stops being software: it is the
+ * surface with no visible trigger, so the only thing that tells the reader it
+ * belongs to this document is what it looks like. It is the same `.Slip` a
+ * dropdown is - same register line, same row grammar, same states - because it is
+ * the same object arriving by a different gesture.
+ *
+ * Radix owns the behaviour: the pointer position, arrow keys, Escape, focus
+ * return. Nothing about it is restated here.
+ */
 
 function ContextMenu({
 	...props
@@ -73,14 +87,11 @@ function ContextMenuSubTrigger({
 		<ContextMenuPrimitive.SubTrigger
 			data-slot="context-menu-sub-trigger"
 			data-inset={inset}
-			className={cn(
-				"outline-hidden flat flex cursor-default select-none items-center px-2 py-1.5 focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[inset]:pl-8 data-[state=open]:text-accent-foreground [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-				className,
-			)}
+			data-meta="›"
+			className={cn("Slip__Row", className)}
 			{...props}
 		>
 			{children}
-			<ChevronRightIcon className="ml-auto" />
 		</ContextMenuPrimitive.SubTrigger>
 	);
 }
@@ -92,10 +103,7 @@ function ContextMenuSubContent({
 	return (
 		<ContextMenuPrimitive.SubContent
 			data-slot="context-menu-sub-content"
-			className={cn(
-				"data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-(--radix-context-menu-content-transform-origin) flat z-50 min-w-[8rem] overflow-hidden border bg-popover p-1 text-popover-foreground",
-				className,
-			)}
+			className={cn("Slip", className)}
 			{...props}
 		/>
 	);
@@ -103,18 +111,24 @@ function ContextMenuSubContent({
 
 function ContextMenuContent({
 	className,
+	head,
+	children,
 	...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.Content>) {
+}: React.ComponentProps<typeof ContextMenuPrimitive.Content> & {
+	/** The register line the slip opens with - `# RECORD / 04`. */
+	head?: SlipHead | undefined;
+}) {
 	return (
 		<ContextMenuPrimitive.Portal>
 			<ContextMenuPrimitive.Content
 				data-slot="context-menu-content"
-				className={cn(
-					"data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 max-h-(--radix-context-menu-content-available-height) origin-(--radix-context-menu-content-transform-origin) flat z-50 min-w-[8rem] overflow-y-auto overflow-x-hidden border bg-popover p-1 text-popover-foreground",
-					className,
-				)}
+				aria-label={head?.Name}
+				className={cn("Slip", className)}
 				{...props}
-			/>
+			>
+				{head ? <SlipRegister head={head} /> : null}
+				{children}
+			</ContextMenuPrimitive.Content>
 		</ContextMenuPrimitive.Portal>
 	);
 }
@@ -123,21 +137,28 @@ function ContextMenuItem({
 	className,
 	inset,
 	variant = "default",
+	mark = "→",
+	meta,
 	...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Item> & {
 	inset?: boolean;
 
 	variant?: "default" | "destructive";
+
+	/** The leading glyph. `→` acts, `/` navigates. */
+	mark?: string | undefined;
+
+	/** The trailing cell - a chord, a count, a STATUS word. */
+	meta?: string | undefined;
 }) {
 	return (
 		<ContextMenuPrimitive.Item
 			data-slot="context-menu-item"
 			data-inset={inset}
 			data-variant={variant}
-			className={cn(
-				"data-[variant=destructive]:[&_svg]:!text-destructive outline-hidden flat relative flex cursor-default select-none items-center gap-2 px-2 py-1.5 focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[inset]:pl-8 data-[variant=destructive]:text-destructive data-[disabled]:opacity-50 data-[variant=destructive]:focus:bg-[color-mix(in_srgb,var(--Destruct)_10%,transparent)] data-[variant=destructive]:focus:text-destructive [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-popover-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
-				className,
-			)}
+			data-mark={mark}
+			data-meta={meta}
+			className={cn("Slip__Row", className)}
 			{...props}
 		/>
 	);
@@ -147,23 +168,19 @@ function ContextMenuCheckboxItem({
 	className,
 	children,
 	checked,
+	meta,
 	...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.CheckboxItem>) {
+}: React.ComponentProps<typeof ContextMenuPrimitive.CheckboxItem> & {
+	meta?: string | undefined;
+}) {
 	return (
 		<ContextMenuPrimitive.CheckboxItem
 			data-slot="context-menu-checkbox-item"
-			className={cn(
-				"outline-hidden flat relative flex cursor-default select-none items-center gap-2 py-1.5 pl-8 pr-2 focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-				className,
-			)}
+			data-meta={meta}
+			className={cn("Slip__Row", className)}
 			checked={checked ?? false}
 			{...props}
 		>
-			<span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
-				<ContextMenuPrimitive.ItemIndicator>
-					<CheckIcon className="size-4" />
-				</ContextMenuPrimitive.ItemIndicator>
-			</span>
 			{children}
 		</ContextMenuPrimitive.CheckboxItem>
 	);
@@ -172,22 +189,18 @@ function ContextMenuCheckboxItem({
 function ContextMenuRadioItem({
 	className,
 	children,
+	meta,
 	...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.RadioItem>) {
+}: React.ComponentProps<typeof ContextMenuPrimitive.RadioItem> & {
+	meta?: string | undefined;
+}) {
 	return (
 		<ContextMenuPrimitive.RadioItem
 			data-slot="context-menu-radio-item"
-			className={cn(
-				"outline-hidden flat relative flex cursor-default select-none items-center gap-2 py-1.5 pl-8 pr-2 focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-				className,
-			)}
+			data-meta={meta}
+			className={cn("Slip__Row", className)}
 			{...props}
 		>
-			<span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
-				<ContextMenuPrimitive.ItemIndicator>
-					<CircleIcon className="size-2 fill-current" />
-				</ContextMenuPrimitive.ItemIndicator>
-			</span>
 			{children}
 		</ContextMenuPrimitive.RadioItem>
 	);
@@ -204,10 +217,7 @@ function ContextMenuLabel({
 		<ContextMenuPrimitive.Label
 			data-slot="context-menu-label"
 			data-inset={inset}
-			className={cn(
-				"px-2 py-1.5 font-medium text-popover-foreground data-[inset]:pl-8",
-				className,
-			)}
+			className={cn("Slip__Group", className)}
 			{...props}
 		/>
 	);
@@ -220,7 +230,7 @@ function ContextMenuSeparator({
 	return (
 		<ContextMenuPrimitive.Separator
 			data-slot="context-menu-separator"
-			className={cn("-mx-1 my-1 h-px bg-border", className)}
+			className={cn("Slip__Rule-H", className)}
 			{...props}
 		/>
 	);
@@ -228,17 +238,17 @@ function ContextMenuSeparator({
 
 function ContextMenuShortcut({
 	className,
+	children,
 	...props
 }: React.ComponentProps<"span">) {
 	return (
 		<span
 			data-slot="context-menu-shortcut"
-			className={cn(
-				"ml-auto tracking-widest text-popover-foreground",
-				className,
-			)}
+			className={cn("Slip__Meta", className)}
 			{...props}
-		/>
+		>
+			〈{children}〉
+		</span>
 	);
 }
 

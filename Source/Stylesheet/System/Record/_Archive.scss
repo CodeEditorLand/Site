@@ -7,6 +7,34 @@
 // need it - the blog index and the doc index - had each been built by hand,
 // differently, twice.
 //
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  a filed set: which records are in this archive, and how many.
+// RANK              set. The block that prints a page's `h2` when the page *is*
+//                   an index.
+// SLOT CONTRACT (the `Publishes:` list below is the class API; this is what a
+// caller hands in):
+//   entries  -> one row each: `title` (the link text), `note?`, `marker?`,
+//               `group?`. Consecutive entries with one `group` print it once.
+//   index?   -> the record's `# MARKER`
+//   heading? -> the archive's name, the block's one `h2`
+//   count?   -> the count at the far end; absent, it is the length of `entries`
+// MAY HOLD          nothing. A row is data; a block in a row would be a record
+//                   inside a record.
+// MAY NOT HOLD      an entry block per row (that is a band of entries, not an
+//                   archive), a second `h2`, or a count the page did not give and
+//                   the list cannot derive.
+// NARROW            the row re-composes: the marker stacks above the title and
+//                   the note follows, so a dated archive is read one record at a
+//                   time. The marker is not dropped and not moved to the end -
+//                   a date under a summary is not a marker column.
+// WIDE (>=768)      one line per record: marker column (12ch), title column
+//                   (26ch), note taking the rest. The `ch` measures are exact
+//                   because the site has one mono stack.
+// DENSE             none needed - the archive is the layer's densest block by
+//                   construction (a row is a rule, not a card, at
+//                   `--space-tight` padding). A denser archive is a smaller
+//                   archive, which is a different artifact.
+//
 // Publishes:
 //   .record-archive             the section shell
 //   .record-archive--marked     the block reserves a marker column (any entry carries one)
@@ -85,14 +113,18 @@
 	min-inline-size: 0;
 }
 
-/* The archive's name in the record header's nameplate voice: mono, uppercase,
-   tracked, at label size - the same voice the marker beside it prints in, so
-   `# ARCHIVE_01 DOCUMENTATION ARCHIVE` reads as one line of identity rather
-   than a marker with a heading stuck to it. The ink is inherited from the
-   shell, because the card this may sit in owns the surface. */
+/* The archive's name - an `h2`, so it is L, the ladder's section-head tier
+   (`_Type.scss`, THE ELEMENT LADDER). It used to print in the marker's own voice
+   (13px, uppercase, tracked) so that `# ARCHIVE_01 DOCUMENTATION ARCHIVE 52
+   ENTRIES` read as one line of identity; the name is a heading, though, and a
+   heading at label size is the demotion the ladder undoes. It keeps the
+   nameplate's uppercase and its tracking - that is the record's voice - and
+   takes the tier. The ink is inherited from the shell, because the card this may
+   sit in owns the surface. */
 .record-archive__heading {
-	@include mono-meta;
-	@include track(0.08em);
+	font-weight: 500;
+	letter-spacing: var(--track-row);
+	text-transform: uppercase;
 
 	margin: 0;
 
@@ -101,7 +133,7 @@
 
 .record-archive__count {
 	@include mono-meta;
-	@include track(0.08em);
+	@include track(var(--track-row));
 
 	margin: 0;
 
@@ -126,7 +158,7 @@
 
 .record-archive__label {
 	@include mono-meta;
-	@include track(0.08em);
+	@include track(var(--track-row));
 	@include hairline(top);
 
 	margin: 0;
@@ -222,7 +254,7 @@
 	font-size: var(--type-sub);
 	font-weight: 500;
 	line-height: var(--type-sub-line);
-	letter-spacing: -0.01em;
+	letter-spacing: var(--track-join);
 
 	color: inherit;
 
@@ -271,7 +303,8 @@
 	padding-inline: var(--space-reading);
 }
 
-.record-archive__link:is(:hover, :focus-visible, :active) .record-archive__title {
+.record-archive__link:is(:hover, :focus-visible, :active)
+	.record-archive__title {
 	color: var(--Accent);
 }
 

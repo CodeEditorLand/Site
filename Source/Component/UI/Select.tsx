@@ -6,6 +6,8 @@ import * as lucide from "lucide-react";
 
 import * as React from "react";
 
+import { SlipRegister, type SlipHead } from "./Slip";
+
 import { cn } from "./Utility";
 
 // ─── Scroll-lock Warning ─────────────────────────────────────────────────────
@@ -18,7 +20,25 @@ import { cn } from "./Utility";
 // DO NOT use this component in sticky-header pages or anywhere the user may
 // have scrolled before interacting. Use DropdownMenu with modal={false} instead
 // (see LocaleSwitcher.tsx for the established pattern).
+//
+// The command palette is the one place the lock is correct: it is a modal by
+// nature, the reader's whole attention for as long as it is open, and it does not
+// open from a scrolled reading position the way a header menu does. The two
+// decisions are recorded together so neither reads as a bug in the other.
 // ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Select - a field that opens a slip, with one true value.
+ *
+ * The trigger is the site's `.SlipField`: white, one `--Divider` frame, a printed
+ * `:` label, the value, and the disclosure `›` at the far end - the same glyph the
+ * rail's sections use, because both mean "there is more behind this". The list is
+ * the same `.Slip` a menu is, with the same register line at its head and the same
+ * row grammar, so a select and a menu are visibly the same object at two sizes.
+ *
+ * Radix owns the behaviour: typeahead, arrow keys, Home/End, Escape, focus return.
+ * Nothing about it is restated here.
+ */
 
 function Select({
 	...props
@@ -35,30 +55,40 @@ function SelectGroup({
 function SelectValue({
 	...props
 }: React.ComponentProps<typeof SelectPrimitive.Value>) {
-	return <SelectPrimitive.Value data-slot="select-value" {...props} />;
+	return (
+		<SelectPrimitive.Value
+			data-slot="select-value"
+			className="SlipField__Value"
+			{...props}
+		/>
+	);
 }
 
 function SelectTrigger({
 	className,
 	size = "default",
+	label,
 	children,
 	...props
 }: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
 	size?: "sm" | "default";
+
+	/** The compact field label - printed as `LABEL:`, with its colon. */
+	label?: string | undefined;
 }) {
 	return (
 		<SelectPrimitive.Trigger
 			data-slot="select-trigger"
 			data-size={size}
-			className={cn(
-				"aria-invalid:ring-[color-mix(in_srgb,var(--Destruct)_20%,transparent)] bg-mute flex w-full items-center justify-between gap-2 whitespace-nowrap px-3 py-2 outline-none transition-[color,box-shadow] focus-visible:ring-[2px] focus-visible:ring-[color-mix(in_srgb,var(--Ring)_40%,transparent)] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 data-[placeholder]:text-muted *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted [&_svg]:pointer-events-none [&_svg]:shrink-0",
-				className,
-			)}
+			className={cn("SlipField", className)}
 			{...props}
 		>
+			{label ? <span className="SlipField__Label">{label}:</span> : null}
 			{children}
 			<SelectPrimitive.Icon asChild>
-				<lucide.ChevronDown className="size-4 opacity-50" />
+				<span className="SlipField__Mark" aria-hidden="true">
+					›
+				</span>
 			</SelectPrimitive.Icon>
 		</SelectPrimitive.Trigger>
 	);
@@ -68,28 +98,25 @@ function SelectContent({
 	className,
 	children,
 	position = "popper",
+	head,
 	...props
-}: React.ComponentProps<typeof SelectPrimitive.Content>) {
+}: React.ComponentProps<typeof SelectPrimitive.Content> & {
+	/** The register line the slip opens with - `# SCOPE / 03`. */
+	head?: SlipHead | undefined;
+}) {
 	return (
 		<SelectPrimitive.Portal>
 			<SelectPrimitive.Content
 				data-slot="select-content"
-				className={cn(
-					"data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 max-h-(--radix-select-content-available-height) origin-(--radix-select-content-transform-origin) text-popover-fg relative z-50 min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-none bg-popover",
-					position === "popper" &&
-						"data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
-					className,
-				)}
+				aria-label={head?.Name}
+				className={cn("Slip", className)}
 				position={position}
 				{...props}
 			>
+				{head ? <SlipRegister head={head} /> : null}
 				<SelectScrollUpButton />
 				<SelectPrimitive.Viewport
-					className={cn(
-						"p-1",
-						position === "popper" &&
-							"h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)] scroll-my-1",
-					)}
+					className={cn(position === "popper" && "Slip__Viewport")}
 				>
 					{children}
 				</SelectPrimitive.Viewport>
@@ -106,7 +133,7 @@ function SelectLabel({
 	return (
 		<SelectPrimitive.Label
 			data-slot="select-label"
-			className={cn("px-2 py-1.5 text-popover-foreground", className)}
+			className={cn("Slip__Group", className)}
 			{...props}
 		/>
 	);
@@ -115,22 +142,29 @@ function SelectLabel({
 function SelectItem({
 	className,
 	children,
+	mark,
+	meta,
 	...props
-}: React.ComponentProps<typeof SelectPrimitive.Item>) {
+}: React.ComponentProps<typeof SelectPrimitive.Item> & {
+	/**
+	 * The leading mark cell: `✓` the value in force, `/` a route, `◎` a value
+	 * that cannot be chosen. Drawn by the stylesheet's pseudo-element from
+	 * `data-mark`, exactly as the dropdown's items are - a select that could not
+	 * print a mark would be the one control in the kit outside the row grammar.
+	 */
+	mark?: string | undefined;
+
+	/** The trailing cell - a count, a code, a STATUS word. */
+	meta?: string | undefined;
+}) {
 	return (
 		<SelectPrimitive.Item
 			data-slot="select-item"
-			className={cn(
-				"outline-hidden [&>span:last-child]:flex [&>span:last-child]:items-center [&>span:last-child]:gap-2 relative flex w-full cursor-default select-none items-center gap-2 rounded-none py-1.5 pl-2 pr-8 focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-popover-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
-				className,
-			)}
+			data-mark={mark}
+			data-meta={meta}
+			className={cn("Slip__Row", className)}
 			{...props}
 		>
-			<span className="absolute right-2 flex size-3.5 items-center justify-center">
-				<SelectPrimitive.ItemIndicator>
-					<lucide.Check className="size-4" />
-				</SelectPrimitive.ItemIndicator>
-			</span>
 			<SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
 		</SelectPrimitive.Item>
 	);
@@ -143,15 +177,18 @@ function SelectSeparator({
 	return (
 		<SelectPrimitive.Separator
 			data-slot="select-separator"
-			className={cn(
-				"pointer-events-none -mx-1 my-1 h-px bg-border",
-				className,
-			)}
+			className={cn("Slip__Rule-H", className)}
 			{...props}
 		/>
 	);
 }
 
+/**
+ * The two scroll buttons are the slip's own edges: a hairline and a `›` turned on
+ * its side, not a pair of icon rows. They only exist when the list is taller than
+ * its box, which is the one case a slip's frame is not enough to say "there is
+ * more".
+ */
 function SelectScrollUpButton({
 	className,
 	...props
@@ -159,13 +196,10 @@ function SelectScrollUpButton({
 	return (
 		<SelectPrimitive.ScrollUpButton
 			data-slot="select-scroll-up-button"
-			className={cn(
-				"flex cursor-default items-center justify-center py-1",
-				className,
-			)}
+			className={cn("Slip__Scroll", className)}
 			{...props}
 		>
-			<lucide.ChevronUp className="size-4" />
+			<lucide.ChevronUp className="Slip__ScrollIcon" aria-hidden="true" />
 		</SelectPrimitive.ScrollUpButton>
 	);
 }
@@ -177,13 +211,13 @@ function SelectScrollDownButton({
 	return (
 		<SelectPrimitive.ScrollDownButton
 			data-slot="select-scroll-down-button"
-			className={cn(
-				"flex cursor-default items-center justify-center py-1",
-				className,
-			)}
+			className={cn("Slip__Scroll", className)}
 			{...props}
 		>
-			<lucide.ChevronDown className="size-4" />
+			<lucide.ChevronDown
+				className="Slip__ScrollIcon"
+				aria-hidden="true"
+			/>
 		</SelectPrimitive.ScrollDownButton>
 	);
 }

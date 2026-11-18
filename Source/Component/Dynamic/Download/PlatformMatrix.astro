@@ -1,0 +1,87 @@
+---
+/**
+ * PlatformMatrix - the record's platform ledger: three targets under the
+ * architecture and the four artifact fields a public release fills in.
+ *
+ * This is the comparison the three platform cards never gave. Each card printed
+ * the whole record again - index, seal, channel and six fields - so three cards
+ * read as three releases; the matrix prints the index once (in the record's
+ * head) and compares one state across three targets. Its uniformity is the
+ * finding: every artifact column says the same thing on every row.
+ *
+ * The block is `RecordMatrix`, so the table is a real `<table>` with column
+ * headers and row labels, hairline rules and no fill. The caption under it names
+ * where the cells come from - a figure without a source is a poster.
+ *
+ * ABOVE IT IS THE REGION'S `RecordInstrument`. The page's claim is
+ * `STATUS: NO PUBLIC ARTIFACTS`; the instrument is that claim as figures -
+ * `ARTIFACTS: 0` and `TARGETS: 3` - each with the source it was counted from. A
+ * status is a word and a count is a figure, and the reader deciding whether the
+ * thing is real is owed both: the word in the record's head, the figures over
+ * the table they can check them against.
+ *
+ * A row label is plain text (`〈MACOS〉`), not `StampText`: a table cell cannot
+ * carry the per-glyph inks. The stamp is not lost - each platform's run entry in
+ * `/INSTALL` prints it with its inks, where the platform is the subject rather
+ * than a key.
+ *
+ * No `<script>` and no `client:*`: the matrix is static.
+ */
+import RecordInstrument from "../../Record/RecordInstrument.astro";
+import RecordMatrix from "../../Record/RecordMatrix.astro";
+
+import type { Instrument } from "../../Record/Type.js";
+
+import type { PlatformMatrix } from "./Type.js";
+
+interface Props {
+	/** The resolved matrix: columns, rows and the provenance caption. */
+	matrix: PlatformMatrix;
+}
+
+const { matrix } = Astro.props;
+
+/**
+ * The region's figures, counted from the matrix this component is about to
+ * print. `TARGETS` is its row count; `ARTIFACTS` is the number of published
+ * artifact rows it carries, which today is none - and that is a known zero, not
+ * an unknown figure: the release exists, its artifacts do not.
+ *
+ * The two provenance lines name where each number came from, so a reader can
+ * check the figure against the table directly under it.
+ */
+const Measured: Instrument = {
+	label: "/MEASURED",
+	measures: [
+		{
+			label: "ARTIFACTS",
+			value: "0",
+			unit: "PUBLISHED",
+			provenance: "NO PUBLIC RELEASE EXISTS; THE RELEASE MANIFEST CARRIES NONE",
+			lead: true,
+		},
+		{
+			label: "TARGETS",
+			value: String(matrix.rows.length),
+			unit: "PLATFORMS",
+			provenance: "THE MATRIX BELOW, ONE ROW PER TARGET",
+		},
+	],
+	caption:
+		"Both figures are counted from the table under them, so a count and the rows it counts cannot disagree.",
+};
+---
+
+<div class="download-matrix">
+	<RecordInstrument
+		measures={Measured.measures}
+		label={Measured.label}
+		caption={Measured.caption}
+		class="download-matrix__measured"
+	/>
+	<RecordMatrix
+		columns={matrix.columns}
+		rows={matrix.rows}
+		caption={matrix.caption}
+	/>
+</div>

@@ -1,0 +1,102 @@
+// Detail/See - the cross-reference.
+//
+// ─── WHAT IT IS ───────────────────────────────────────────────────────────
+// `↳ SEE` then a short register of the places a subject is said again, each with
+// the reason it is worth following. A printed document says "see §7" and means
+// it; this site had `/` routes everywhere and no device for saying "the rest of
+// this is over there, and this is why you would go".
+//
+// Two rules make it a record rather than a link list:
+//
+// - **A route is printed as a route.** `/PRIVACY`, uppercase, in the grammar's
+//   route form - not a sentence-shaped label. The reader learns one shape for a
+//   destination everywhere on the site.
+// - **Every reference carries its reason.** A cross-reference without a reason
+//   is a related-links widget, and this document does not have those. The reason
+//   is a caption (13px, muted, opening measure), so the route stays the figure
+//   the eye lands on.
+//
+// ─── THE SLOTS ────────────────────────────────────────────────────────────
+//   .detail-see              the strip
+//   .detail-see__register    `↳ SEE`
+//   .detail-see__list        the rows
+//   .detail-see__row         one reference: route, then reason
+//   .detail-see__route       the `/ROUTE` (an anchor, always)
+//   .detail-see__reason      why it is worth following
+//
+// ─── NARROW ───────────────────────────────────────────────────────────────
+// The route sits above its reason below 640px. The route column is a fixed
+// `min(12rem, 40%)` above it, so a reader scanning the strip finds every route
+// on one vertical line - the same rule the ledger's key column keeps.
+@use "../Mixin" as *;
+
+.detail-see {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	min-inline-size: 0;
+	margin: 0;
+}
+
+.detail-see__register {
+	@include mono-meta;
+	@include track(var(--track-row));
+	margin: 0;
+	margin-block-end: var(--space-tight);
+	color: var(--Foreground);
+}
+
+// The mark is the grammar's, drawn not spoken.
+.detail-see__mark {
+	margin-inline-end: 0.5ch;
+	color: var(--MuteForeground);
+}
+
+.detail-see__list {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.detail-see__row {
+	display: flex;
+	flex-direction: column;
+	gap: calc(var(--space-tight) / 2);
+	min-inline-size: 0;
+	margin: 0;
+	padding-block: calc(var(--space-tight) / 2);
+}
+
+@include bp(640px) {
+	.detail-see__row {
+		flex-direction: row;
+		align-items: baseline;
+		gap: var(--space-reading);
+		padding-block: calc(var(--space-tight) / 2);
+	}
+
+	.detail-see__route {
+		flex: 0 0 auto;
+		inline-size: min(12rem, 40%);
+	}
+}
+
+.detail-see__route {
+	@include mono-meta;
+	@include track(var(--track-name));
+	color: var(--Foreground);
+	white-space: nowrap;
+}
+
+// The reason: a caption, not a label. It sits at the caption's own leading so a
+// two-line reason does not crowd the route above it.
+.detail-see__reason {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}

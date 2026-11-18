@@ -1,0 +1,108 @@
+// INK - a hover is ink; the accent authenticates and never decorates.
+//
+// ─── THE LAW ──────────────────────────────────────────────────────────────
+// The palette has one accent and it is rationed on purpose: it marks a seal, a
+// link's active route, a focus ring, a copied value, the record's opening rule.
+// Every one of those is an AUTHENTICATION - the page saying "this is real, this
+// is where you are, this is the thing you asked for". A hover is not an
+// authentication. It is the page saying "yes, this is a thing you can press",
+// and the ink says that better: the label darkens to its own ink and takes an
+// underline. A green hover spends the accent on a mouse position, and after
+// five of them a reader has stopped reading green as a seal.
+//
+// So: a hover changes the RULE and the INK, never the hue. A focus keeps the
+// accent ring, because a focus ring is an authentication - it says where the
+// keyboard is, and the reader did not choose it with a pointer.
+//
+// ─── THE UNDERLINE'S METRICS ──────────────────────────────────────────────
+// An underline's offset is not a fixed distance; it is a fraction of the type
+// size. At a 13px label a 2px offset sits inside the descender of `p` and `g`;
+// at a 52px heading the same 2px floats in the gap. `0.22em` holds at every size
+// the ladder has, and 1px thickness keeps the underline a hairline rather than
+// a rule. The sitewide rule in `System/_Global.scss` now states the same two
+// values - this layer repeats them for the artifacts that live here so the
+// detail does not depend on a selector list it does not own.
+//
+// ─── SELECTION ────────────────────────────────────────────────────────────
+// The browser's default selection is a blue that appears nowhere in this
+// palette. It is the one place the page's ink is decided by the operating
+// system, and a reader who selects a sentence to quote it sees a colour the
+// document does not have. The selection is ink at 14 % - the same wash a hover
+// uses - so the text stays the text.
+@use "../Mixin" as *;
+
+// ─── SELECTION ────────────────────────────────────────────────────────────
+
+::selection {
+	background: color-mix(in srgb, var(--Foreground) 14%, transparent);
+	color: var(--Foreground);
+}
+
+// A selection inside an inverted action (the one ink fill on the page) has to
+// invert with it, or the label disappears into the wash.
+.emphasis-expressive ::selection,
+[data-ink] ::selection {
+	background: color-mix(in srgb, var(--Background) 24%, transparent);
+	color: var(--Background);
+}
+
+// ─── THE UNDERLINE'S METRICS ──────────────────────────────────────────────
+
+.detail-leader__label,
+.detail-see__route,
+.detail-folio__link {
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.22em;
+}
+
+// ─── THE TRACKED LABEL'S OPTICAL EDGE ─────────────────────────────────────
+
+// `letter-spacing` is added after the last letter as well as between letters, so
+// a tracked label ends one register short of where its box ends. On a label set
+// flush right - a leader's figure, a reference's route - that is a visible
+// indent the eye reads as a mistake. Cancelling exactly one register on the
+// right edge is the whole fix, and it is why these three are a group: each one
+// has an edge the reader can see.
+.detail-leader__meta,
+.detail-see__route,
+.detail-folio__part {
+	margin-inline-end: calc(var(--track-row) * -1);
+}
+
+// ─── HOVER IS INK ─────────────────────────────────────────────────────────
+
+// The index entry: the label takes its own ink and the leader follows it. A
+// leader that stays at the separator's ink while its label darkens reads as two
+// objects; the whole row is one.
+.detail-leader__row:hover .detail-leader__dots,
+.detail-leader__row:focus-within .detail-leader__dots {
+	border-block-end-color: var(--Primary);
+}
+
+// The cross-reference: the reason under the route is muted at rest and takes the
+// ink with the route, so the row moves as one.
+.detail-see__row:hover .detail-see__reason,
+.detail-see__row:focus-within .detail-see__reason {
+	color: var(--Foreground);
+}
+
+// ─── ONE OFF-REGISTER INTERVAL ────────────────────────────────────────────
+
+// The archive row's disclosure slide was declared at 180ms with the browser's
+// `ease` - a fourth interval and a fourth curve, in the one partial that
+// predates the motion layer. It is the same movement as `motion-enter` (a pull
+// toward the reader), so it takes that relationship's two tokens and its
+// reduced-motion contract, and the row's geometry does not change by a pixel.
+//
+// It does not take the `motion-enter` mixin: that relationship names `transform`
+// and `opacity`, and this row's movement is its own inset - the title steps in
+// and the rule above it stays put. So the interval is written here with the
+// tokens, and the interval is the only thing that is gated: with motion reduced
+// the row still opens by the same 8px, in one frame.
+.record-archive__link {
+	@media (prefers-reduced-motion: no-preference) {
+		transition-property: padding-inline-start, padding-inline-end;
+		transition-duration: var(--motion-enter-duration);
+		transition-timing-function: var(--motion-enter-easing);
+	}
+}

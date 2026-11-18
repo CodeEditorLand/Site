@@ -1,33 +1,45 @@
 ---
 /**
- * The home page - five bands, in the order the site has always printed them.
+ * The home page - the opening spread of the dossier, and four parts after it.
  *
- *   hero        `# LAND_01`   the two-panel record: the card beside the evidence
- *   #features                 the six element records that carry the claim
- *   #pricing                  the two release records: what is out, what is next
- *   #testimonials             all fifteen element records, as a wall
- *   #download                 the three platform records
- *   close                     the six badges the page stops on
+ *   hero        `# LAND_01`   the two-panel record: the card beside the evidence,
+ *                             with the runtime trace and the stack as its foot
+ *   #features   `# OBSERVATION_01`      the six element records, as one matrix
+ *   #pricing    `# CONDITIONS_01`       the two release states, as one manifest
+ *   #testimonials `# CLASSIFICATION_01` all fifteen element records, as a wall
+ *   #method     `# METHOD_01`           how the claim is checked: the build's
+ *                                       trace beside the release's register, and
+ *                                       the three documented failures under both
+ *   #download   `# ACTION_01`           the three platform artefacts, as a manifest
+ *   close       `/MARKS`                the six marks the page stops on
  *
  * The order is the page's meaning and it is not free: the claim comes first, then
  * what is released, then what the thing is made of, then where it runs. A page
  * that prints the architecture before the release state answers a question the
  * reader has not asked yet.
  *
+ * THE RHYTHM IS WIDE / WIDE / TIGHT / WIDE / TIGHT / WIDE, and each band declares
+ * its own step (`Band`'s `rhythm` prop). The spread is one screen; the proof and
+ * the release state open a subject; the wall packs; the method opens again,
+ * because a reader who has just read fifteen records needs air before the
+ * mechanism; the action closes. The method band is the one this page gained
+ * after the wall: a page of six bands with three tight ones in a row is a page
+ * that never lets the reader rest.
+ *
+ * The page has ONE `h1`, and it is the hero record's claim - the baseline printed
+ * no `h1` at all, and the fidelity wave's own composition gave the claim that
+ * role. The four band headings are `h2`s, a full tier below it.
+ *
  * The hero is the one band that hydrates: it is a React island
  * (`DynamicHeroSection`) because it carries the record's seal, its status and its
  * evidence as components. The four bands below it are static `.astro` - they are
  * printed records with no state, so they ship no JavaScript at all.
- *
- * There is no `h1` on this page, and that is the baseline's own composition: the
- * page's opening statement is the hero's record, not a heading, and the loudest
- * type above the fold is the mono runtime claim inside the card. The first
- * heading a reader meets is the features band's `h2`.
  */
 import ArchitectureBand from "../Component/Home/ArchitectureBand.astro";
 import FeatureBand from "../Component/Home/FeatureBand.astro";
 import PlatformBand from "../Component/Home/PlatformBand.astro";
 import RoadmapBand from "../Component/Home/RoadmapBand.astro";
+import WorkingBand from "../Component/Home/WorkingBand.astro";
 import { DynamicHeroSection } from "../Component/Dynamic/DynamicHeroSection";
 import { HeroBandFor } from "../Component/Dynamic/Hero/Data.js";
 import RecordLedger from "../Component/Record/RecordLedger.astro";
@@ -142,12 +154,8 @@ const HeroContent = { PrimaryCTA: { Href: "/Download" } };
 			class="hero-band__facts"
 		/>
 
-		<div
-			slot="stage"
-			class="hero-band__proof"
-			style="margin-block-end: var(--space-group)"
-		>
-			<RecordStage stages={HeroBand.steps} orientation="stack" />
+		<div slot="stage" class="hero-band__trace-stage">
+			<RecordStage stages={HeroBand.steps} orientation="row" />
 		</div>
 	</DynamicHeroSection>
 
@@ -157,10 +165,15 @@ const HeroContent = { PrimaryCTA: { Href: "/Download" } };
 
 	<ArchitectureBand />
 
+	<WorkingBand />
+
 	<PlatformBand />
 
-	<div class="home-close">
-		<img
+	<div class="home-band__inner">
+		<div class="home-close">
+			<p class="home-close__label">/MARKS</p>
+
+			<img
 			alt="Code Editor Land logo"
 			title="Code Editor Land"
 			src="/Asset/Logo/Glyph/Land.svg"
@@ -222,28 +235,32 @@ const HeroContent = { PrimaryCTA: { Href: "/Download" } };
 			VS Code API In Progress
 		</jelly-badge>
 
-		<jelly-badge
-			variant="platinum"
-			shape="square"
-			outline
-			class="home-close__action"
-			tabindex="0"
-			style="--jelly-label:var(--Foreground);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
-			onclick="window.open('https://PlayForm.Cloud','_blank','noopener noreferrer')"
+		<a
+			class="home-close__link"
+			href="https://PlayForm.Cloud"
+			target="_blank"
+			rel="noopener noreferrer"
 		>
-			PlayForm
-		</jelly-badge>
+			<jelly-badge
+				variant="platinum"
+				shape="square"
+				outline
+				style="--jelly-label:var(--Foreground);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
+			>
+				PlayForm
+			</jelly-badge>
+		</a>
 
-		<jelly-badge
-			variant="platinum"
-			shape="square"
-			outline
-			class="home-close__action"
-			tabindex="0"
-			style="--jelly-label:var(--Foreground);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
-			onclick="location.href='/'"
-		>
-			CodeEditorLand
-		</jelly-badge>
+		<a class="home-close__link" href="/">
+			<jelly-badge
+				variant="platinum"
+				shape="square"
+				outline
+				style="--jelly-label:var(--Foreground);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
+			>
+				CodeEditorLand
+			</jelly-badge>
+		</a>
+		</div>
 	</div>
 </Base>

@@ -19,6 +19,9 @@
 import { FieldRecordSeal } from "../Brand/FieldRecordSeal";
 import type { FieldRecordElement } from "../Brand/FieldRecordSeal";
 
+import RecordLedger from "../Record/RecordLedger.astro";
+import RecordTrace from "../Record/RecordTrace.astro";
+
 import Arrow from "./Arrow.astro";
 import RecordAnatomy from "./RecordAnatomy.astro";
 
@@ -33,10 +36,47 @@ const { card } = Astro.props;
 const Seal = card.SealName as FieldRecordElement;
 
 const Href = card.Source ?? card.Href;
+
+/**
+ * The working register, in the ledger's own row shape.
+ *
+ * The keys carry their colon here because a register row is a compact label
+ * (`MANUAL:`), and the ledger prints a key verbatim - it never appends a mark the
+ * caller did not write. The `MANUAL` row is the one row that leads somewhere, so
+ * it becomes an anchor with the same text it prints as a fact.
+ */
+const RegisterRows = card.Register.map((Row) => ({
+	key: `${Row.Label}:`,
+	value: Row.Value,
+	note: Row.Note,
+	code: Row.Code,
+	links:
+		Row.Href === undefined
+			? undefined
+			: [{ text: Row.Value, href: Row.Href }],
+}));
+
+/** The trace's provenance is the register's own `MANUAL` row: one page, cited twice. */
+const ManualRoute =
+	card.Register.find((Row) => Row.Label === "MANUAL")?.Value ?? "UNAVAILABLE";
+
+/**
+ * The card's trace in the block's own shape.
+ *
+ * `Content/Element/Working.ts` writes a record table with capitalised fields;
+ * the Record layer's props are lower camel case. The map is the seam, and it is
+ * here so the block never grows a second vocabulary for the same three fields.
+ */
+const TraceSteps = card.Trace.map((Step) => ({
+	index: Step.Index,
+	path: Step.Path,
+	note: Step.Note,
+}));
 ---
 
 <jelly-card
 	class="home-card home-element"
+	data-depth={card.Depth}
 	style={`--masonry-col:${card.Span}`}
 >
 	<article class="home-record">
@@ -114,6 +154,29 @@ const Href = card.Source ?? card.Href;
 
 		<RecordAnatomy card={card}>
 			<p class="home-record__body">{card.Body}</p>
+
+			<div class="home-record__working">
+				<RecordLedger
+					rows={RegisterRows}
+					density="register"
+					register="WORKING"
+					state={RegisterRows.length === 0 ? "empty" : "rest"}
+					empty="NO WORKING IS RECORDED FOR THIS ELEMENT YET: THE RECORD PRINTS ITS OWN FACTS AND NAMES NO SOURCE."
+				/>
+
+				{
+					card.Depth === "plate" && (
+						<RecordTrace
+							trace={{
+								steps: TraceSteps,
+								label: card.Title,
+								source: ManualRoute,
+								empty: "NO TRACE IS RECORDED FOR THIS ELEMENT: ITS MANUAL PAGE NAMES NO FILE.",
+							}}
+						/>
+					)
+				}
+			</div>
 		</RecordAnatomy>
 	</article>
 </jelly-card>

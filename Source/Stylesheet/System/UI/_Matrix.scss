@@ -1,0 +1,282 @@
+@use "../Mixin" as *;
+
+// ─── THE MATRIX CONTROL BAND ───────────────────────────────────────────────
+//
+// The bar that sits directly above a matrix and narrows it, re-weighs it and
+// takes it away. It is the first control on the site that is a *band* rather
+// than a slip: the palette and the rail's filter are things that open, and this
+// one is always open, because a filter a reader has to open before they can see
+// that filtering exists is a filter nobody uses.
+//
+// ─── THE COMPOSITION: A HEAD ROW FOR THE TABLE ─────────────────────────────
+//
+// `# FILTER / 13 OF 13 ................ THE FORMS`
+// `[FACET: ALL COLUMNS ▾] [MATCH: ....]   ROWS: COMPACT ␁ COMFORTABLE  → COPY ROWS`
+// `─────────────────────────────────────────────────────────────────────────`
+// the table
+//
+// The register line is the table's own head - the same `# NAME / NN` a slip
+// opens with - and the hairline under the bar is the table's top rule, so the
+// control and the matrix read as one artifact rather than as a widget parked
+// above a table. That is the whole composition, and it is why the bar is not
+// sticky: a sticky bar would detach the head from its table.
+//
+// ─── ONE HAIRLINE, NO SHADOW ──────────────────────────────────────────────
+//
+// `--Border` (8 % ink) here and not `--Divider`: this rule is drawn on the
+// creme field with nothing behind it, which is exactly the case the sitewide
+// hairline is for. The slip's 20 % `--Divider` is for a floating insert whose
+// frame is the only thing defining it - this bar is not floating.
+//
+// ─── THE FACET FIELD IS THE SLIP'S FIELD ──────────────────────────────────
+//
+// `.MatrixControl__Trigger` is a `select-trigger`, so `_Field.scss` already
+// draws it: white, one `--Divider` frame, 32px, the `:` label, the value, the
+// disclosure mark. Nothing about the field is restated here. What is added is
+// its measure - a facet value can be a long status word, and a field that grew
+// with its value would push the copy control off the bar.
+
+.MatrixControl {
+	display: grid;
+
+	margin-block-end: var(--space-tight);
+}
+
+// ─── the bar ───────────────────────────────────────────────────────────────
+
+.MatrixControl__Bar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-tight) var(--space-group);
+
+	padding-block: var(--space-tight);
+
+	@include hairline(bottom);
+}
+
+// ─── the register line ─────────────────────────────────────────────────────
+//
+// Two figures, and they are different facts: the first is what the reader can
+// see now, the second is what the matrix holds. `13 OF 13` is the honest form
+// because the first number moves and the second does not.
+
+.MatrixControl__Register {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0;
+
+	flex: 1 1 auto;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.MatrixControl__Mark {
+	color: var(--Accent);
+}
+
+.MatrixControl__Name {
+	color: var(--Foreground);
+}
+
+.MatrixControl__Rule,
+.MatrixControl__Of {
+	color: var(--MuteForeground);
+}
+
+.MatrixControl__Count {
+	color: var(--Foreground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+// The matrix's own name, at the far end: a reader who scrolled past the band's
+// heading still knows which table this bar belongs to.
+.MatrixControl__RegisterEnd {
+	margin-inline-start: auto;
+
+	color: var(--MuteForeground);
+
+	@include track(var(--track-rule));
+
+	white-space: nowrap;
+}
+
+// ─── the tools ─────────────────────────────────────────────────────────────
+
+.MatrixControl__Tools {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-tight);
+}
+
+.MatrixControl__Facet {
+	flex: 0 1 16rem;
+
+	min-inline-size: 10rem;
+}
+
+.MatrixControl__Trigger {
+	// The kit's trigger is `inline-size: 100%`; the bar decides the measure and
+	// the value ellipsizes inside it.
+	min-inline-size: 0;
+}
+
+// The query box is the field, minus the disclosure mark: a white box with one
+// `--Divider` frame and the `:` label printed, never placeheld.
+.MatrixControl__Box {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	flex: 1 1 14rem;
+
+	min-inline-size: 10rem;
+	min-block-size: 2rem;
+
+	padding: 0.375rem var(--space-reading);
+
+	background: var(--Card);
+	border: 1px solid var(--Divider);
+	border-radius: 0;
+
+	cursor: text;
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition: border-color 90ms linear;
+	}
+}
+
+.MatrixControl__Box:focus-within {
+	border-color: var(--Accent);
+}
+
+// The search input's own clear affordance is the browser's; the site's is the
+// bar's, and two clear buttons in one field is one too many.
+.MatrixControl__Box input::-webkit-search-cancel-button {
+	appearance: none;
+}
+
+// ─── the state cell: density, then the receipt ────────────────────────────
+
+.MatrixControl__State {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-tight);
+
+	margin-inline-start: auto;
+}
+
+.MatrixControl__FieldLabel {
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.MatrixControl__Density {
+	flex: 0 0 auto;
+}
+
+// The facet's list: four columns of values is a long slip, so it is bounded and
+// scrolls inside its own frame rather than growing past the control that opened
+// it. `--SlipMaxBlock` is the slip's own token (`_Slip.scss`).
+.MatrixControl__Slip {
+	--SlipMaxBlock: 20rem;
+}
+
+// ─── the note line ─────────────────────────────────────────────────────────
+//
+// The band's adverse states, in the same grammar as the register line above
+// them: a mark, a word, a sentence, then the way out. It is not a toast and it
+// is not an alert: it is a row of the bar, so a state that appears does not
+// move the table and a state that clears does not leave a hole.
+
+.MatrixControl__Note {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight) var(--space-reading);
+
+	margin: 0;
+	padding-block: var(--space-tight);
+
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	@include hairline(bottom);
+}
+
+.MatrixControl__NoteMark {
+	color: var(--MuteForeground);
+}
+
+.MatrixControl__NoteWord {
+	color: var(--Foreground);
+
+	@include track(var(--track-row));
+}
+
+.MatrixControl__NoteLine {
+	color: var(--MuteForeground);
+}
+
+.MatrixControl__NoteNext {
+	margin-inline-start: auto;
+
+	color: var(--MuteForeground);
+}
+
+// A state's own action is `.SlipAction` from `_Item.scss` - the row grammar's
+// way out, shared with the palette's empty state so the gesture is one gesture.
+
+// ─── the void row, inside the table ───────────────────────────────────────
+//
+// When the reader's own filter matches nothing, the table prints the void as a
+// row of itself: one cell across every column, the mark and the sentence. The
+// table keeps its head, its rules and its width, so the band does not collapse
+// into a message where a table was - and the bar above carries only the way out,
+// which is why the sentence is printed once.
+
+.MatrixControl__Void > .MatrixControl__VoidCell {
+	padding-block: var(--space-group);
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	text-align: start;
+}
+
+// ─── DENSITY ──────────────────────────────────────────────────────────────
+//
+// The switch writes `data-density` on `<html>`; these four rules answer it.
+// They change block padding only - never type, never a rule, never an ink. A
+// compact matrix is a tighter ledger, which is the density axis the Record layer
+// already named (`record-matrix--dense` halves the same token); this control is
+// that axis exposed to the reader and applied to the whole document at once.
+//
+// `comfortable` needs no rule: it is the site as built.
+
+:root[data-density="compact"] .record-matrix__label,
+:root[data-density="compact"] .record-matrix__cell {
+	padding-block: calc(var(--space-tight) / 2);
+}
+
+:root[data-density="compact"] .record-matrix__column {
+	padding-block: calc(var(--space-tight) / 2);
+}
+
+:root[data-density="compact"] .record-ledger__row {
+	padding-block: calc(var(--space-tight) / 2);
+}
+
+// The archive's and the board's padding lives on the link, not on the row: the
+// `li` is a rule and the anchor is the target, so the density axis has to reach
+// the element that owns the rhythm or it would add padding to a rule.
+:root[data-density="compact"] .record-archive__link,
+:root[data-density="compact"] .status-board__link {
+	padding-block: var(--space-tight);
+}

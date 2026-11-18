@@ -22,15 +22,15 @@
 }
 
 .PortalTitle {
-	font-size: clamp(1.75rem, 4vw, 3rem);
+	font-size: var(--type-section);
 	font-weight: 500;
-	letter-spacing: -0.02em;
+	letter-spacing: var(--track-join);
 	color: var(--Foreground);
 	margin-bottom: 1rem;
 }
 
 .PortalSubtitle {
-	font-size: 1.125rem;
+	font-size: var(--type-sub);
 	color: var(--MuteForeground);
 	max-width: 40rem;
 	margin: 0 auto;
@@ -87,14 +87,21 @@
 .PortalTierLogin {
 	padding: 0;
 	background: var(--Card);
-	border-right: var(--BorderWidth) solid var(--Border);
+	/* A structural column split inside a white tier row: this rule is the only
+	   thing separating the login column from the description column, so it is a
+	   divider, not a surface edge. `var(--Border)` is 8 % ink (1.19:1 on the
+	   card) and the split disappears; `--CardForeground` at 20 % is the site's
+	   one divider value (1.50:1). Card 8 measured the rule and handed it here. */
+	border-right: var(--BorderWidth) solid
+		color-mix(in srgb, var(--CardForeground) 20%, transparent);
 	min-width: 0;
 }
 
 @media (max-width: 768px) {
 	.PortalTierLogin {
 		border-right: none;
-		border-bottom: var(--BorderWidth) solid var(--Border);
+		border-bottom: var(--BorderWidth) solid
+			color-mix(in srgb, var(--CardForeground) 20%, transparent);
 	}
 }
 
@@ -117,7 +124,11 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border: var(--BorderWidth) solid var(--Border);
+	/* The frame is the entire icon tile - there is no fill to separate it - so
+	   it takes the divider ink (20 %, 1.50:1), not the 8 % surface hairline
+	   (1.19:1). Card 8 measured it and handed it here. */
+	border: var(--BorderWidth) solid
+		color-mix(in srgb, var(--CardForeground) 20%, transparent);
 	margin-bottom: 0.5rem;
 }
 
@@ -136,15 +147,15 @@
 }
 
 .PortalTierDescriptionTitle {
-	font-size: 1.25rem;
+	font-size: var(--type-heading);
 	font-weight: 500;
-	letter-spacing: -0.01em;
+	letter-spacing: var(--track-join);
 	overflow-wrap: break-word;
 	word-break: break-word;
 }
 
 .PortalTierDescriptionSubtitle {
-	font-size: 0.875rem;
+	font-size: var(--TypeScaleS);
 	color: var(--MuteForeground);
 	line-height: 1.5;
 	white-space: pre-line;
@@ -159,10 +170,10 @@
 }
 
 .PortalTierFeatureHeading {
-	font-size: 0.875rem;
+	font-size: var(--TypeScaleS);
 	font-weight: 500;
 	text-transform: uppercase;
-	letter-spacing: 0.08em;
+	letter-spacing: var(--track-row);
 	color: var(--MuteForeground);
 	margin-bottom: 0.5rem;
 }
@@ -225,9 +236,9 @@
 
 .PortalTierProtocolCode {
 	font-family: var(--FontMono);
-	font-size: 0.875rem;
+	font-size: var(--type-code);
 	font-weight: 500;
-	letter-spacing: 0.02em;
+	letter-spacing: var(--track-name);
 	overflow-wrap: break-word;
 	word-break: break-word;
 }
@@ -333,6 +344,173 @@
 	}
 
 	.PortalTierRow:hover .PortalTierDescriptionTitle {
-		letter-spacing: -0.01em;
+		letter-spacing: var(--track-join);
 	}
+}
+
+/* ─── The instrument head, composed into the two-panel card ────────────────
+ *
+ * `SurfaceHead` is built for the page field: it carries the band's gutters and
+ * the chapter's top distance. Inside the portal's white data card both belong
+ * to the card - the card is already inset, and the card already sits in the
+ * chapter's opening - so the head loses exactly those two distances and keeps
+ * its anatomy. Nothing else is overridden: the `h1` stays XL, the status line
+ * keeps its rules, and the ledger keeps its key column.
+ *
+ * The claim line and the protocol line are the page's own: `〈FOUR MODES〉` is a
+ * claim at L under the `h1`, `/PROTOCOL:HTTPS` is a route line at L, and the
+ * programme and banner runs are the two compact strings beneath them.
+ */
+.portal-head {
+	padding-block: 0;
+}
+
+.portal-head .surface-head__inner {
+	gap: var(--space-tight);
+	padding-inline: 0;
+}
+
+.portal-head__claim {
+	font-family: var(--FontMono);
+	font-size: var(--type-section);
+	font-weight: 400;
+	line-height: 1;
+	letter-spacing: var(--track-join);
+	margin: var(--space-reading) 0 0;
+}
+
+.portal-head__protocol {
+	font-family: var(--FontMono);
+	font-size: var(--type-section);
+	font-weight: 400;
+	line-height: 1.05;
+	margin: 0;
+}
+
+.portal-head__program {
+	font-family: var(--FontMono);
+	font-size: var(--type-body);
+	line-height: 1.1;
+	letter-spacing: var(--track-name);
+	text-transform: uppercase;
+	color: var(--MuteForeground);
+	margin: var(--space-tight) 0 0;
+}
+
+.portal-head__banner {
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-rule);
+	text-transform: uppercase;
+	color: var(--MuteForeground);
+	margin: var(--space-reading) 0 0;
+}
+
+/* ─── A tier's status line, one scale down ─────────────────────────────────
+ *
+ * The tier card opens with the same readout the page opens with. Inside a card
+ * the line drops its rules and its top distance - the card's own divider is the
+ * rule above it - and keeps the order: state, then the plan.
+ */
+.portal-tier__status .surface__statusline {
+	margin-block-start: 0;
+	padding-block: 0;
+	border-block: 0;
+}
+
+.portal-tier__status .surface__state-word {
+	font-size: var(--type-meta);
+	letter-spacing: var(--track-row);
+}
+
+.portal-tier__status .surface__declare-key,
+.portal-tier__status .surface__declare-value {
+	font-size: var(--type-meta);
+}
+
+/* ─── A tier's capability run, as a ledger ─────────────────────────────────
+ *
+ * The capabilities used to be a flex run of muted spans, which read as an
+ * unlabelled paragraph. They are facts about the tier, one per row, so they get
+ * the record's hairline rows and the body ink - the same rhythm the feature
+ * entries above them use, one step tighter.
+ */
+.portal-tier__capabilities {
+	display: grid;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.portal-tier__capability {
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	padding-block: var(--space-tight);
+	border-top: 1px solid
+		color-mix(in srgb, var(--CardForeground) 20%, transparent);
+}
+
+.portal-tier__capability:first-child {
+	border-top: 0;
+}
+
+/* ─── A tier's feature records ─────────────────────────────────────────────
+ *
+ * A feature is one record of the tier's set: a marker, a name, and the one
+ * sentence that qualifies it. The rebuild turned each of these into a headed
+ * chip, which cost the sentence and added 28 `h3`s to a page the baseline
+ * printed with none. They are rows again - the marker in the margin, the name
+ * at the label register, the sentence under it - so the page's heading
+ * sequence is one `h1` and four `h2`, and every description survives.
+ *
+ * The rule between rows is the divider ink (20 %), the same value the
+ * capability run below uses: a row rule inside a card is a divider, not a
+ * surface edge.
+ */
+.portal-tier__features {
+	display: grid;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.portal-tier__feature {
+	display: grid;
+	grid-template-columns: 2.25rem minmax(0, 1fr);
+	column-gap: var(--space-tight);
+	padding-block: var(--space-tight);
+	border-top: 1px solid
+		color-mix(in srgb, var(--CardForeground) 20%, transparent);
+}
+
+.portal-tier__feature:first-child {
+	border-top: 0;
+}
+
+.portal-tier__feature-index {
+	grid-row: 1 / span 2;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-rule);
+	color: var(--MuteForeground);
+}
+
+.portal-tier__feature-name {
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: var(--track-row);
+	color: var(--CardForeground);
+}
+
+.portal-tier__feature-description {
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
 }

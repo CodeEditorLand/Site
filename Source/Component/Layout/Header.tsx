@@ -6,6 +6,9 @@ import { useTranslation } from "react-i18next";
 
 import { Button } from "../UI/Button";
 
+import { Rail } from "./Frame/Rail";
+import { RunningHead } from "./Frame/RunningHead";
+
 import {
 	HeaderLinkAttributes,
 	HeaderLinkState,
@@ -53,8 +56,16 @@ const Navigate = (Action: HeaderAction): void => {
  * the panel collapses behind the toggle; above it the panel is the bar's own
  * second half. Nothing about the labels is typed twice.
  *
- * The status strip under the bar states the product status on every page, so a
- * reader who lands anywhere learns the same fact the homepage prints.
+ * The frame is read as a document, not as a bar. The bar is the masthead; the
+ * strip under it is the running head, and it states two things on every page -
+ * which record this is (`# LAND / 03␁DOCUMENTATION`, printed by
+ * `Frame/RunningHead`) and what state the project is in
+ * (`STATUS: ACTIVE␁PRE-RELEASE`, the keeper line). Between them sits the
+ * reader's own status: where this page stands in the ten-part document.
+ *
+ * The parts themselves are the thumb index (`Frame/Rail`): rows in this panel
+ * below 1024px, a fixed margin column at 1280px and up. Both are one element, and
+ * both are marked by shape and weight - never by colour alone.
  *
  * `Mode` picks the surface only: `minimal` sits on the page canvas (the
  * default), `functional` is the card surface. It does not change the anatomy.
@@ -297,6 +308,8 @@ const Header = ({ Content, AuthSlot, Mode = "minimal" }: HeaderProps) => {
 						})}
 					</nav>
 
+					<Rail Translate={T} />
+
 					<div className="HeaderAux">
 						<LocaleSwitcher />
 
@@ -351,14 +364,27 @@ const Header = ({ Content, AuthSlot, Mode = "minimal" }: HeaderProps) => {
 			</div>
 
 			{/*
-			 * The status strip: one line under the bar, on every page, in the meta
-			 * role. It is the record grammar's compact field label - `STATUS:`
-			 * keeps its colon and the em quad is the only separator - and the
-			 * accent square beside it marks the line as a live state rather than
-			 * a sentence. The styles are `.HeaderStrip` / `.HeaderStatus` in
-			 * `_Header.scss`, and `--HeaderStrip` is the band's own height.
+			 * The running head: one 28px band, two statuses.
+			 *
+			 * Left, the record and the part it is open at - `# LAND /
+			 * 03␁DOCUMENTATION` - printed by CSS from the `data-section`
+			 * attribute `Base.astro` writes on `<html>`, so it is correct at
+			 * first paint and never shifts when this island hydrates. Then the
+			 * reader's position in the document (`03␁/␁10`).
+			 *
+			 * Right, the keeper line: `STATUS: ACTIVE␁PRE-RELEASE`, unchanged
+			 * from K4 - the element, the class and the string are the ones
+			 * `KEEPERS.md` records, and `.HeaderStatus` still carries the accent
+			 * square that marks it as a live state rather than a sentence.
+			 *
+			 * `--HeaderStrip` is the band's height and part of `--HeaderHeight`,
+			 * so an anchored heading clears the bar *and* the head. Below 640px
+			 * the band prints two lines and reserves `3.25rem` - the same value
+			 * on every page, so the head still never jumps between pages.
 			 */}
 			<div className="HeaderStrip">
+				<RunningHead Logo={View.Logo} Translate={T} />
+
 				<p className="HeaderStatus">{Status}</p>
 			</div>
 		</header>

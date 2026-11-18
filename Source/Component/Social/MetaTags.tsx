@@ -1,3 +1,26 @@
+/**
+ * The document head - the one place a route's metadata is written.
+ *
+ * ─── THE CONTRACT ─────────────────────────────────────────────────────────
+ * `Layout/Base.astro` owns the shell and passes four facts here: the title, the
+ * description, the canonical URL and the OpenGraph card. This module is the only
+ * writer of `<title>`, `<meta name="description">`, `<link rel="canonical">` and
+ * the `og:` / `twitter:` families, and it writes each of them ONCE:
+ *
+ *   - one canonical, and it is the canonical path, not the request URL;
+ *   - one title, in one pattern (`<page> | Code Editor Land`), normalised here so
+ *     a page cannot invent a second pattern by passing its own suffix;
+ *   - one description per route, from the page or the frame's default;
+ *   - one `og:` pair per fact - `og:title`/`og:description`/`og:url`/`og:image`
+ *     each appear once, and `og:image:*` describes the one image;
+ *   - NO `<meta name="viewport">`: the frame writes it (`Base.astro`), and a
+ *     second copy in the head is the duplicate this module used to ship.
+ *
+ * The two `og:locale:alternate` rows are the languages the site publishes, not
+ * duplicates of `og:locale` (which is the page's own language).
+ */
+import { NormalizeTitle } from "./Title";
+
 interface MetaTagsProperty {
 	title: string;
 
@@ -32,13 +55,23 @@ export default ({
 	author,
 	noIndex = false,
 }: MetaTagsProperty) => {
-	const SafeTitle = title || siteName;
+	/**
+	 * One title pattern for the site - see `Social/Title.ts`.
+	 *
+	 * The module owns the rule (strip a suffix the page appended in any
+	 * separator, then print `| Code Editor Land`) and is idempotent, so a page
+	 * that already built its own suffix keeps exactly one.
+	 */
+	const SafeTitle = NormalizeTitle(title || siteName, siteName);
 
 	const SafeDescription =
 		description ||
 		"Rust and Tauri editor stack with VS Code API compatibility in progress.";
 
-	// url is always Astro.url.href (absolute) when passed from Base.astro.
+	// `url` is the CANONICAL url the frame resolved for this route - absolute,
+	// on the configured site origin (`Layout/Base.astro:89`). It feeds the
+	// canonical link, `og:url`, `twitter:url` and the WebSite node below, so the
+	// four cannot disagree.
 	const SiteURL = url;
 
 	// Origin (scheme + host) for absolutising relative asset paths.
@@ -136,10 +169,11 @@ export default ({
 			<meta name="twitter:site" content="@CodeEditorLand" />
 			<meta name="twitter:creator" content="@CodeEditorLand" />
 
-			<meta
-				name="viewport"
-				content="width=device-width, initial-scale=1.0"
-			/>
+			{/*
+				No `<meta name="viewport">` here. `Layout/Base.astro` writes it once,
+				before this block; a second copy is a duplicate the validator flags
+				and the browser ignores.
+			*/}
 			<meta property="og:locale:alternate" content="bg" />
 			<meta property="og:locale:alternate" content="de" />
 			<meta name="format-detection" content="telephone=no" />

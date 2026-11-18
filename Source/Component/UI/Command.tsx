@@ -2,8 +2,6 @@
 
 import { Command as CommandPrimitive } from "cmdk";
 
-import * as lucide from "lucide-react";
-
 import * as React from "react";
 
 import {
@@ -14,7 +12,25 @@ import {
 	DialogTitle,
 } from "./Dialog";
 
+import { SlipEmpty } from "./Slip";
+
 import { cn } from "./Utility";
+
+/**
+ * Command - cmdk's engine in the slip's clothes.
+ *
+ * cmdk owns the hard part and none of it is restated here: the roving selection
+ * over rendered items, ArrowUp/ArrowDown, Home/End, Enter, the `data-selected`
+ * flag the row grammar reads, and the scroll-into-view of the selected row. This
+ * file decides what a command row *is* - the same `[mark] [label] [meta]` row a
+ * menu item is, with the same five states - so a palette result and a menu item
+ * are visibly the same object.
+ *
+ * `shouldFilter` is left to the caller. The palette filters its own register (it
+ * matches a page against its section and its slug as well as its label, which
+ * cmdk's flat string match cannot), and cmdk still owns the selection over
+ * whatever is rendered - which is the whole reason to use it.
+ */
 
 function Command({
 	className,
@@ -23,59 +39,28 @@ function Command({
 	return (
 		<CommandPrimitive
 			data-slot="command"
-			className={cn(
-				"flat flex h-full w-full flex-col overflow-hidden bg-popover text-popover-foreground",
-				className,
-			)}
+			className={cn("Palette__Command", className)}
 			{...props}
 		/>
 	);
 }
 
-function CommandDialog({
-	title = "Command Palette",
-	description = "Search for a command to run...",
-	children,
-	...props
-}: React.ComponentProps<typeof Dialog> & {
-	title?: string;
-
-	description?: string;
-}) {
-	return (
-		<Dialog {...props}>
-			<DialogHeader className="sr-only">
-				<DialogTitle>{title}</DialogTitle>
-				<DialogDescription>{description}</DialogDescription>
-			</DialogHeader>
-			<DialogContent className="overflow-hidden p-0">
-				<Command className="[&_[data-slot=command-input-wrapper]]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-popover-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
-					{children}
-				</Command>
-			</DialogContent>
-		</Dialog>
-	);
-}
-
+/**
+ * The query input. It renders bare - no wrapper, no magnifier icon, no bottom
+ * rule - because in this site the input lives *inside* the slip's register line,
+ * and a second frame there would be a card inside a card. The head draws the
+ * focus state for the whole line.
+ */
 function CommandInput({
 	className,
 	...props
 }: React.ComponentProps<typeof CommandPrimitive.Input>) {
 	return (
-		<div
-			data-slot="command-input-wrapper"
-			className="flex h-9 items-center gap-2 border-b px-3"
-		>
-			<lucide.Search className="size-4 shrink-0 opacity-50" />
-			<CommandPrimitive.Input
-				data-slot="command-input"
-				className={cn(
-					"outline-hidden flat flex h-10 w-full bg-transparent py-3 placeholder:text-popover-foreground disabled:cursor-not-allowed disabled:opacity-50",
-					className,
-				)}
-				{...props}
-			/>
-		</div>
+		<CommandPrimitive.Input
+			data-slot="command-input"
+			className={cn("Palette__Input", className)}
+			{...props}
+		/>
 	);
 }
 
@@ -86,40 +71,56 @@ function CommandList({
 	return (
 		<CommandPrimitive.List
 			data-slot="command-list"
-			className={cn(
-				"max-h-[300px] scroll-py-1 overflow-y-auto overflow-x-hidden",
-				className,
-			)}
+			className={cn("Palette__List", className)}
 			{...props}
 		/>
 	);
 }
 
+/**
+ * The empty state. `◎` is the grammar's fallback mark and `↳` is its
+ * proposition: *nothing here*, then *here is what to do*. A palette that prints
+ * "No results found" and stops is a dead end; this one names the way out.
+ */
 function CommandEmpty({
+	Mark = "NO RECORD",
+	Line = "TRY A PART, A SECTION, OR A PAGE NAME",
+	children,
+	className,
 	...props
-}: React.ComponentProps<typeof CommandPrimitive.Empty>) {
+}: React.ComponentProps<typeof CommandPrimitive.Empty> & {
+	Mark?: string;
+	Line?: string;
+}) {
 	return (
 		<CommandPrimitive.Empty
 			data-slot="command-empty"
-			className="py-6 text-center"
+			className={cn("Slip__Empty", className)}
 			{...props}
-		/>
+		>
+			{children ?? <SlipEmpty Mark={Mark} Line={Line} />}
+		</CommandPrimitive.Empty>
 	);
 }
 
 function CommandGroup({
 	className,
+	heading,
+	children,
 	...props
-}: React.ComponentProps<typeof CommandPrimitive.Group>) {
+}: React.ComponentProps<typeof CommandPrimitive.Group> & {
+	/** The register's name - `ROUTES`, `DOCUMENTATION`, `ACTIONS`. */
+	heading?: string;
+}) {
 	return (
 		<CommandPrimitive.Group
 			data-slot="command-group"
-			className={cn(
-				"overflow-hidden p-1 text-popover-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:[&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-popover-foreground",
-				className,
-			)}
+			className={cn("Slip__Section", className)}
 			{...props}
-		/>
+		>
+			{heading ? <p className="Slip__Group">{heading}</p> : null}
+			{children}
+		</CommandPrimitive.Group>
 	);
 }
 
@@ -130,7 +131,7 @@ function CommandSeparator({
 	return (
 		<CommandPrimitive.Separator
 			data-slot="command-separator"
-			className={cn("-mx-1 h-px bg-border", className)}
+			className={cn("Slip__Rule-H", className)}
 			{...props}
 		/>
 	);
@@ -138,15 +139,22 @@ function CommandSeparator({
 
 function CommandItem({
 	className,
+	mark = "/",
+	meta,
 	...props
-}: React.ComponentProps<typeof CommandPrimitive.Item>) {
+}: React.ComponentProps<typeof CommandPrimitive.Item> & {
+	/** The leading glyph. `/` navigates, `→` acts. */
+	mark?: string | undefined;
+
+	/** The trailing cell - the section a page belongs to, a chord. */
+	meta?: string | undefined;
+}) {
 	return (
 		<CommandPrimitive.Item
 			data-slot="command-item"
-			className={cn(
-				"outline-hidden flat relative flex cursor-default select-none items-center gap-2 px-2 py-1.5 data-[disabled=true]:pointer-events-none data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-popover-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
-				className,
-			)}
+			data-mark={mark}
+			data-meta={meta}
+			className={cn("Slip__Row", className)}
 			{...props}
 		/>
 	);
@@ -154,17 +162,47 @@ function CommandItem({
 
 function CommandShortcut({
 	className,
+	children,
 	...props
 }: React.ComponentProps<"span">) {
 	return (
 		<span
 			data-slot="command-shortcut"
-			className={cn(
-				"ml-auto tracking-widest text-popover-foreground",
-				className,
-			)}
+			className={cn("Slip__Meta", className)}
 			{...props}
-		/>
+		>
+			〈{children}〉
+		</span>
+	);
+}
+
+/**
+ * The modal arm: a scrim and a slip. `SlipScrim` is the site's overlay - ink at
+ * 12 %, no blur - and the panel is the palette's own size, not the dialog's
+ * generic one, because a palette is a document index opened wide and a centred
+ * card is not that shape.
+ */
+function CommandDialog({
+	title = "Find a record",
+	description = "Search the site's parts, sections and pages.",
+	children,
+	...props
+}: React.ComponentProps<typeof Dialog> & {
+	title?: string;
+	description?: string;
+}) {
+	return (
+		<Dialog {...props}>
+			<DialogHeader className="sr-only">
+				<DialogTitle>{title}</DialogTitle>
+				<DialogDescription>{description}</DialogDescription>
+			</DialogHeader>
+			<DialogContent className="Palette" close={false}>
+				<Command label={title} shouldFilter={false}>
+					{children}
+				</Command>
+			</DialogContent>
+		</Dialog>
 	);
 }
 

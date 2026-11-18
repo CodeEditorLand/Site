@@ -1,0 +1,163 @@
+// The "more" surfaces' page-level composition helpers.
+//
+// ─── WHAT THIS FILE IS ────────────────────────────────────────────────────
+// Two things the three pages needed and no existing partial provides: the quiet
+// head (`QuietHead.astro`), and a row of adverse states.
+//
+// ─── THE ROW OF STATES ────────────────────────────────────────────────────
+// `.more-states` is the shell's `.PageShell__row` at band scale - two equal
+// tracks at the wide container, one column below it - and two, never three: a
+// state is a box with a register line, a status row and three or four facts, and
+// three of them across a 736px track is three boxes of 224px, which is a state
+// squeezed until it stops explaining itself. Equal tracks are right here and
+// nowhere else: a set of states has no subject.
+//
+// ─── THE QUIET HEAD ───────────────────────────────────────────────────────
+// `.quiet-head` is the reference document's opening: a marker, a bare `h1` at L,
+// one `↳` proposition, and the extent as a white facts strip. It paints no fill
+// of its own - the facts strip is the one white box, and it is a `RecordLedger`
+// at the standard tier, so the head cannot become a second surface.
+@use "../../Mixin" as *;
+
+// ─── THE SHELL THE THREE PAGES OPT INTO ───────────────────────────────────
+//
+// A band is its own container: `.record-band__inner` is 72rem on the `--Gutter`.
+// Inside a shell track that container is already supplied - the shell IS the
+// outer container at the same measure - so leaving it in place insets every band
+// body by a second gutter and the page's `h1` and its first band no longer share
+// a left edge. The shell already reaches into two surfaces this way and names the
+// reach; this is the same reach, scoped to the class these three pages opt into.
+//
+// The band keeps its `padding-block` and its tone: a paper band is the site's
+// white information box and the page decides which bands are one. Only the
+// container is the shell's.
+
+.PageShell--more .record-band__inner {
+	max-inline-size: none;
+	padding-inline: 0;
+}
+
+// A paper band is the white information box, and a box has an inset: its body
+// keeps the band's own gutter so the text sits inside the white edge. The box's
+// left edge still lands on the track's edge, which is the head's left edge - so
+// the page has one left margin and the box is drawn on it, not beside it.
+.PageShell--more .record-band--paper .record-band__inner {
+	padding-inline: var(--Gutter);
+}
+
+// ─── THE BAND HEADING, ON THE LADDER ──────────────────────────────────────
+// These pages' `h1`s are L - the token contract's role for a functional `h1` -
+// and their band headings are L too, because that is what an `h2` is
+// (`_Type.scss`, THE ELEMENT LADDER). The earlier reading here was that an L
+// band heading under an L title would be "a second title", so the heading
+// stepped to the S role; the ladder's answer is that a section head and a page
+// title share a tier on purpose - what separates them is the chapter boundary,
+// the rule and the space, never a size between the tiers, which the identity
+// forbids. Only the width is this page's: a band heading is free to run wider
+// than the record bands' capped measure.
+.PageShell--more .record-band__heading {
+	max-width: none;
+}
+
+// ─── THE QUIET HEAD ───────────────────────────────────────────────────────
+
+.quiet-head {
+	display: block;
+	padding-block-start: var(--space-group);
+}
+
+.quiet-head__register {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 0.4em;
+	margin: 0;
+}
+
+.quiet-head__mark {
+	color: var(--Accent);
+}
+
+.quiet-head__index {
+	color: var(--Foreground);
+}
+
+.quiet-head__label {
+	color: var(--MuteForeground);
+}
+
+// The page's only `h1`, bare and at L. `--type-section` IS the L tier
+// (`_Token.scss`), so the floor is L's 32px at every width and this declaration
+// is the one place the size is decided. A literal here would be the fourth place
+// a tier is spelled.
+.quiet-head__title {
+	font-size: var(--type-section);
+	line-height: var(--type-section-line);
+	font-family: var(--FontMono);
+	font-weight: 400;
+	letter-spacing: var(--track-join);
+	margin: 0;
+	margin-block-start: var(--space-tight);
+	max-inline-size: 28ch;
+	text-wrap: balance;
+}
+
+.quiet-head__proposition {
+	display: flex;
+	align-items: baseline;
+	gap: 0.4em;
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	color: var(--MuteForeground);
+	margin: 0;
+	margin-block-start: var(--space-reading);
+	max-inline-size: 62ch;
+	text-wrap: pretty;
+}
+
+.quiet-head__proposition-mark {
+	color: var(--Accent);
+}
+
+.quiet-head__facts {
+	margin-block-start: var(--space-group);
+}
+
+// ─── A ROW OF ADVERSE STATES ──────────────────────────────────────────────
+
+.more-states {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-group);
+}
+
+@include bp(1024px) {
+	.more-states {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		align-items: start;
+	}
+}
+
+// ─── THE COMPARISON'S SECOND TABLE ────────────────────────────────────────
+//
+// The measured table sits under the panes at the matrix's own measure. It is not
+// a pane: the panes are the comparison, and this is the table that says how
+// little of the comparison can be measured. Giving it the full track is the
+// point - an absence read at 40% width reads as a footnote.
+
+.more-measured {
+	min-inline-size: 0;
+}
+
+// ─── THE LEXICON'S RAIL ───────────────────────────────────────────────────
+//
+// The rail prints the three runs and the five retired words; the retired rows are
+// statements about words rather than destinations, so they carry a `◎` mark and
+// no note. The shell's rail owns the rhythm.
+
+.more-rail .ShellRail__row-note {
+	display: none;
+}

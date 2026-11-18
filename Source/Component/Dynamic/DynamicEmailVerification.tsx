@@ -81,7 +81,7 @@ const DynamicEmailVerification = ({
 				SetErrorMessage(
 					T("errorGeneric", {
 						defaultValue:
-							"An error occurred during verification.\nPlease try again.",
+							"The check did not complete: the provider returned no answer for this token. Requesting a new link is the next step.",
 					}),
 				);
 			}
@@ -147,7 +147,8 @@ const DynamicEmailVerification = ({
 		} catch {
 			SetErrorMessage(
 				T("resendFailed", {
-					defaultValue: "Failed to resend email.\nPlease try again.",
+					defaultValue:
+						"The resend did not go out: the provider rejected the request. The existing link still works until it expires.",
 				}),
 			);
 		}

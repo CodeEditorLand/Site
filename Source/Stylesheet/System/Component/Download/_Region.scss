@@ -23,9 +23,19 @@
 .download-region {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-tight);
+	/* No `gap`: the region's rhythm belongs to its children, one mechanism and
+	   on the ladder. The gap was 8px under a head whose parts carried no margin,
+	   so the kicker-to-heading distance was a gap and the head-to-body distance
+	   was a margin - two mechanisms in one block, and a body that measured 24px
+	   (8 gap + 16 margin), a value on no step of the scale. */
 	min-inline-size: 0;
 }
+
+/* The head's tight rhythm, now stated where it belongs - on the elements that
+   have it, after their own `margin: 0`, so the cascade cannot out-rank it: a
+   heading sits one `tight` step under its kicker, and the standfirst one `tight`
+   step under the heading. The body keeps its `reading` margin and the footnote
+   its `group`. */
 
 .download-region__kicker {
 	@include mono-meta;
@@ -33,25 +43,25 @@
 	margin: 0;
 }
 
-// A region heading is not a chapter heading. The record's own h2 is the
-// artifact's one L line, so the region takes S with tracking and the mono face -
-// the step §2.4 asks for where a heading is neither XL nor L. It is deliberately
-// not --type-sub: that token is the standfirst's alias and may never set a
-// heading (§2.4, §9 Q4).
+// A region heading is an `h3`, so it is the S heading - 18px, 500, 1.25
+// (`_Type.scss`, THE ELEMENT LADDER) - and it is deliberately NOT `--type-sub`:
+// that token is the standfirst's alias and may never set a heading (§2.4, §9
+// Q4). It rendered at body size for a while, on the reading that a region head
+// is not a chapter head; body size is exactly what an `h3` may not be, because
+// the test a heading is judged by is that it is larger than the body it
+// introduces.
 .download-region__heading {
-	margin: 0;
+	margin: var(--space-tight) 0 0;
 	max-inline-size: var(--MeasureOpening);
 	font-family: var(--FontMono);
-	font-size: var(--type-body);
 	font-weight: 500;
-	line-height: var(--type-body-line);
-	letter-spacing: -0.01em;
+	letter-spacing: var(--track-join);
 	color: var(--Foreground);
 	text-wrap: balance;
 }
 
 .download-region__standfirst {
-	margin: 0;
+	margin: var(--space-tight) 0 0;
 	max-inline-size: var(--MeasureOpening);
 	font-size: var(--type-sub);
 	line-height: var(--type-sub-line);
@@ -62,6 +72,15 @@
 .download-region__body {
 	margin-block-start: var(--space-reading);
 	min-inline-size: 0;
+}
+
+/* The apparatus a region carries under its record: the session below the wells
+   it quotes, the stamp below the verification record it authenticates. One group
+   step, because they are parts of the same subject and not a new one - and
+   stated here rather than as a `> * + *` rule, which would have re-spaced every
+   region on the page to fix two. */
+.download-region__apparatus {
+	margin-block-start: var(--space-group);
 }
 
 .download-region__footnote {

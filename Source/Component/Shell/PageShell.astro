@@ -1,0 +1,190 @@
+---
+/**
+ * PageShell - the shell every composed page wears, in one of four languages.
+ *
+ * The shell is the same object four times. It prints a declaration strip, then a
+ * grid whose tracks are the language's, then a foot. What changes between the
+ * languages is *which tracks exist and what they are called*, and that is
+ * decided in `Language.ts` - this file only lays them out.
+ *
+ *   reading     rail | measure | margin
+ *   workspace   rail | panes (the default slot holds a `ShellPanes`)
+ *   audit       ledger | matrix | wells
+ *   plate       head over a full-bleed plate | caption channel
+ *
+ * ─── THE DECLARATION STRIP ────────────────────────────────────────────────
+ * Every page on the site now opens with one printed line:
+ *
+ *   # LAYOUT / READING␁GIVES: RAIL␁MEASURE␁MARGIN␁DECLARES: RAIL, MEASURE, MARGIN
+ *
+ * It is the answer to the card's question ("what does a page have to declare to
+ * get one") printed on the page that got it. It is one line, at the meta tier, in
+ * the muted ink, under a hairline: a colophon, not a banner. A page that is one
+ * artifact prints `◎ RECORD` and no tracks, because that is what is true.
+ *
+ * ─── CONTAINER QUERIES, NOT VIEWPORT QUERIES ──────────────────────────────
+ * The shell is a query container (`container: shell / inline-size`). Every track
+ * decision below is a `@container shell (...)` rule, so a shell inside a narrower
+ * slot re-composes instead of overflowing - which is what makes it possible to
+ * put a reading shell inside a workspace pane, or a plate inside an audit, and
+ * have both behave.
+ *
+ * ─── WHAT IT DOES NOT DO ─────────────────────────────────────────────────
+ * - It renders no `<main>`: `Layout/Base.astro` owns the document's one
+ *   `<main id="main-content">`, and a second one is a duplicate landmark.
+ * - It renders no `<h1>`: the page's head does, once.
+ * - It does not decide the language. `LanguageOf(route)` does, and `Base.astro`
+ *   writes the same answer on `<html>`, so the frame's running head and the
+ *   shell's grid cannot disagree.
+ * - It paints no surface of its own. The field is creme; the tracks are creme;
+ *   a white box inside a track is a Record block's business, never the shell's.
+ *
+ * No script and no hydration: a shell is structure.
+ */
+import { LanguageOf, Languages } from "./Language.js";
+
+import type { LayoutAnswer } from "./Language.js";
+
+interface Props {
+	/**
+	 * The shell's own record marker, printed at the head of the declaration
+	 * strip's second half - e.g. `# READING_01`. A page writes its own, because
+	 * only the page knows which reading of the language it is.
+	 */
+	index?: string;
+
+	/**
+	 * The language. Omitted, the shell reads the route's filing - the normal
+	 * case. Set, it is an *inner* shell: a plate inside a reading page, a
+	 * reading shell inside a workspace pane. The page's own declaration is still
+	 * the register's, and the inner one is labelled as such by `label`.
+	 */
+	language?: LayoutAnswer;
+
+	/** What this shell is for, printed after the tracks: `FOR: THE SALE LETTER`. */
+	label?: string;
+
+	/**
+	 * The reading measure. `prose` caps the main track at `--Measure` (72ch);
+	 * `full` leaves it open for a page that also carries grids. Ignored by the
+	 * languages that do not read at a measure.
+	 */
+	measure?: "prose" | "full";
+
+	/** The rail's accessible name. A rail without one is a list, not a landmark. */
+	railLabel?: string;
+
+	/** The margin's accessible name, when the margin is a landmark of its own. */
+	marginLabel?: string;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const {
+	index,
+	language,
+	label,
+	measure = "prose",
+	railLabel,
+	marginLabel,
+	class: ClassName,
+} = Astro.props;
+
+const Spec = language ? Languages[language] : LanguageOf(Astro.url.pathname);
+
+const HasRail = Astro.slots.has("rail");
+const HasMargin = Astro.slots.has("margin");
+const HasHead = Astro.slots.has("head");
+const HasFoot = Astro.slots.has("foot");
+
+/** The declaration strip's tracks, as one printable string. */
+const Tracks = Spec.gives.split("\u2001").join("\u2001");
+const Declares = Spec.declares.join("\u2001");
+---
+
+<div
+	class:list={["PageShell", ClassName]}
+	data-layout={Spec.key}
+	data-measure={measure}
+>
+	<p class="PageShell__declaration">
+		<span class="PageShell__mark" aria-hidden="true">#</span>
+		<span class="PageShell__word">LAYOUT</span>
+		<span class="PageShell__slash" aria-hidden="true">/</span>
+		<span class="PageShell__name">{Spec.name}</span>
+		{
+			Spec.key !== "record" ? (
+				<>
+					<span class="PageShell__sep" aria-hidden="true">
+						{"\u2001"}
+					</span>
+					<span class="PageShell__key">GIVES:</span>
+					<span class="PageShell__tracks">{Tracks}</span>
+				</>
+			) : (
+				<>
+					<span class="PageShell__sep" aria-hidden="true">
+						{"\u2001"}
+					</span>
+					<span class="PageShell__key">DECLARES:</span>
+					<span class="PageShell__tracks">NOTHING</span>
+				</>
+			)
+		}
+		{
+			index ? (
+				<>
+					<span class="PageShell__sep" aria-hidden="true">
+						{"\u2001"}
+					</span>
+					<span class="PageShell__index">{index}</span>
+				</>
+			) : null
+		}
+		{
+			label ? (
+				<>
+					<span class="PageShell__sep" aria-hidden="true">
+						{"\u2001"}
+					</span>
+					<span class="PageShell__key">FOR:</span>
+					<span class="PageShell__label">{label}</span>
+				</>
+			) : null
+		}
+		<span class="PageShell__declares">{Declares}</span>
+	</p>
+
+	{HasHead ? <div class="PageShell__head"><slot name="head" /></div> : null}
+
+	<div class="PageShell__grid">
+		{
+			HasRail ? (
+				<aside
+					class="PageShell__rail"
+					aria-label={railLabel ?? `${Spec.name} rail`}
+				>
+					<slot name="rail" />
+				</aside>
+			) : null
+		}
+
+		<div class="PageShell__main">
+			<slot />
+		</div>
+
+		{
+			HasMargin ? (
+				<div
+					class="PageShell__margin"
+					aria-label={marginLabel ?? `${Spec.name} margin`}
+				>
+					<slot name="margin" />
+				</div>
+			) : null
+		}
+	</div>
+
+	{HasFoot ? <div class="PageShell__foot"><slot name="foot" /></div> : null}
+</div>

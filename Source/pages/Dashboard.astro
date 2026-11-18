@@ -4,11 +4,19 @@ import DynamicDashboardUser from "../Component/Dynamic/DynamicDashboardUser";
 import DynamicLocalFirstScan from "../Component/Dynamic/DynamicLocalFirstScan";
 import PrivacyRequests from "../Component/Dashboard/PrivacyRequests.astro";
 import RecordLedger from "../Component/Record/RecordLedger.astro";
+import RecordMatrix from "../Component/Record/RecordMatrix.astro";
+import Trail from "../Component/Route/Trail.astro";
+import SurfaceAbsent from "../Component/Surface/SurfaceAbsent.astro";
 import SurfaceBadge from "../Component/Surface/SurfaceBadge.astro";
+import SurfaceHead from "../Component/Surface/SurfaceHead.astro";
+import SurfaceRegion from "../Component/Surface/SurfaceRegion.astro";
 import { RichText } from "../Component/UI/RichText";
+import { Row } from "../Component/Surface/State";
 import { DashboardPage } from "../Content/Surface/Dashboard.js";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
+
+import type { MatrixColumn } from "../Component/Record/Type.js";
 
 const T = GetI18n();
 
@@ -32,6 +40,37 @@ const MetaDescription = T("meta.dashboard.description", {
 // know at render time.
 const Page = DashboardPage(T);
 
+/* The status line's declarations: where this surface is read, what produces the
+   state, and which environment the reading is from. `?mode=local` is the one
+   thing that changes the environment, and it is a fact of the request. */
+const Declarations = [
+	{ key: "ROUTE", value: Astro.url.pathname.toUpperCase() },
+	{ key: "SOURCE", value: "SESSION" },
+	{ key: "ENV", value: IsLocalMode ? "LOCAL" : "WEB" },
+	{ key: "AS OF", value: new Date().toISOString().slice(0, 10) },
+];
+
+/* The page's own state. The surface is up; who is signed in is the account
+   island's state and it prints its own. A page that claimed `ACTIVE` here would
+   be claiming a session it cannot see. */
+const States = [Row("STATUS", "READY")];
+
+/* The ten regions, in the order they are read. The rail, the drawer and the
+   region headings all read this one list, so a region cannot be added to the
+   page and missing from the rail. */
+const Regions = [
+	{ id: "account", index: "01", label: "Account" },
+	{ id: "downloads", index: "02", label: "Downloads" },
+	{ id: "quick-links", index: "03", label: "Quick Links" },
+	{ id: "telemetry", index: "04", label: Page.telemetry.heading },
+	{ id: "build", index: "05", label: Page.build.heading },
+	{ id: "tiers", index: "06", label: Page.tiers.heading },
+	{ id: "editor", index: "07", label: Page.editor.heading },
+	{ id: "partners", index: "08", label: Page.partners.heading },
+	{ id: "privacy", index: "09", label: Page.privacy.heading },
+	{ id: "settings", index: "10", label: Page.settings.heading },
+] as const;
+
 /**
  * The card the local-mode scan island sits on. `?mode=local` is not in the
  * baseline render, so the island keeps the surface it already had: a
@@ -41,8 +80,50 @@ const Page = DashboardPage(T);
 const CardStyle =
 	"--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:var(--space-group);--jelly-card-padding-inline:var(--space-group)";
 
-/** The classes every card on this page wears. */
-const Panel = "bg-card StaccatoCard StaccatoBorderShimmer";
+/* ─── The build/tier matrix ────────────────────────────────────────────────
+ *
+ * The page states one build and four tiers. A reader comparing them needs the
+ * comparison, not four cards read from memory, and the block for that is
+ * card 1's `RecordMatrix` - a real table with a header per column - not a
+ * table hand-drawn here.
+ *
+ * The columns are the four tiers; the rows are the three axes the page names
+ * (PROFILE, MODE, TIER) plus the badge each tier reports. Every cell is a
+ * value `Content/Surface/Dashboard.ts` already states: the profile and the
+ * deployment mode are the active build's own rows, the tier cell is the
+ * protocol each card prints, and the badge is the word each card carries. The
+ * matrix invents no fifth fact and states no arrival: the tiers are planned.
+ */
+const ProfileValue =
+	Page.build.cards[0]?.rows.find((Fact) => Fact.key === "Profile")?.value ??
+	"UNAVAILABLE";
+const ModeValue =
+	Page.build.cards[1]?.rows.find((Fact) => Fact.key === "Mode")?.value ??
+	"UNAVAILABLE";
+
+const MatrixColumns: readonly MatrixColumn[] = Page.tiers.cards.map((Card) => ({
+	label: Card.title.toUpperCase(),
+	ink: `${Card.token}Fore`,
+}));
+
+const MatrixRows = [
+	{
+		label: "PROFILE:",
+		cells: Page.tiers.cards.map(() => ProfileValue),
+	},
+	{
+		label: "MODE:",
+		cells: Page.tiers.cards.map(() => ModeValue),
+	},
+	{
+		label: "TIER:",
+		cells: Page.tiers.cards.map((Card) => Card.protocol),
+	},
+	{
+		label: "BADGE:",
+		cells: Page.tiers.cards.map((Card) => Card.badge.label),
+	},
+];
 ---
 
 <Base
@@ -58,109 +139,123 @@ const Panel = "bg-card StaccatoCard StaccatoBorderShimmer";
 		ClientIdentifier={Auth0ClientIdentifier}
 	/>
 
-	<div class="bg-background">
-		<div class="mx-auto container px-4 max-w-5xl py-16">
-			<nav class="mb-8" aria-label="Breadcrumb">
-				<ol class="flex items-center flex-wrap text-muted-foreground space-x-2">
-					<li>
-						<a class="transition-colors hover:text-foreground" href="/">Home</a>
-					</li>
-					<li class="mx-2">/</li>
-					<li>
-						<span class="font-medium text-foreground">Dashboard</span>
-					</li>
-				</ol>
-			</nav>
+	<div class="surface-trail">
+		<Trail trail={[{ label: "/HOME", href: "/" }, { label: "/DASHBOARD" }]} />
+	</div>
 
-			<header class="mb-12" aria-label="Dashboard page header">
-				<div class="flex items-center gap-4 mb-4">
-					<img
-						src="/Asset/Logo/Glyph/Land.svg"
-						alt="Code Editor Land logo"
-						title="Code Editor Land"
-						width="40"
-						height="40"
-					/>
-					<div class="flex flex-col">
-						<h1 class="font-medium text-4xl tracking-tight">{Page.title}</h1>
-						<p class="text-muted">{Page.standfirst}</p>
-					</div>
-				</div>
-				<div class="flex items-center gap-3 flex-wrap text-muted-foreground">
-					{
-						Page.badges.map((Badge) => (
-							<SurfaceBadge
-								label={Badge.label}
-								tone={Badge.tone}
-								dot={Badge.dot}
-							/>
-						))
-					}
-				</div>
-			</header>
+	<!-- The instrument head: `# DASHBOARD_02`, the page's only `h1`, one
+	 sentence, the four claims the page has always carried, then the status line
+	 with its declarations. Nothing is stated twice and nothing is stated below
+	 the fold that belongs here. -->
+	<SurfaceHead
+		index="# DASHBOARD_02"
+		title={Page.title}
+		proposition={Page.standfirst}
+		states={States}
+		declarations={Declarations}
+	>
+		<div class="surface-head__marks">
+			{
+				Page.badges.map((Badge) => (
+					<SurfaceBadge label={Badge.label} tone={Badge.tone} dot={Badge.dot} />
+				))
+			}
+		</div>
+	</SurfaceHead>
 
-			<!-- The opening grid: the account island, the download, and the three
-			 links a reader needs before anything else. Three panels, three
-			 columns, one row. -->
-			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-				<div class={`${Panel} p-6`}>
-					<h2 class="text-card-foreground font-medium text-lg mb-4">Account</h2>
+	<!-- Ten regions, one rail. The rail is the page's table of contents and its
+	 position readout: sticky from 1024px, a `<details>` drawer below it. The
+	 script at the foot of the page marks the region being read. -->
+	<div class="surface-regions">
+		<nav class="surface-regions__rail" aria-label="Dashboard regions">
+			<ul class="surface-regions__list">
+				{
+					Regions.map((Region) => (
+						<li>
+							<a class="surface-regions__link" href={`#${Region.id}`}>
+								<span class="surface-regions__index">{Region.index}</span>
+								{Region.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<details class="surface-regions__drawer">
+			<summary class="surface-regions__summary">
+				<span>REGIONS: {Regions.length}</span>
+				<span class="surface-regions__summary-mark" aria-hidden="true">↳ OPEN</span>
+			</summary>
+			<ul class="surface-regions__list">
+				{
+					Regions.map((Region) => (
+						<li>
+							<a class="surface-regions__link" href={`#${Region.id}`}>
+								<span class="surface-regions__index">{Region.index}</span>
+								{Region.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</details>
+
+		<div class="surface-regions__main">
+			<!-- 01 Account. The identity record. Who is signed in is client state,
+			 so the island prints the record and its own loading report; the
+			 region states nothing it cannot see. -->
+			<SurfaceRegion index="# 01" id="account" title="Account">
+				<div class="surface-panel">
 					<DynamicDashboardUser
 						client:load
 						Domain={Auth0Domain}
 						ClientIdentifier={Auth0ClientIdentifier}
 					/>
 				</div>
+			</SurfaceRegion>
 
-				<div class={`${Panel} p-6`}>
-					<h2 class="text-card-foreground font-medium text-lg mb-4">
-						Downloads
-					</h2>
-					<a
-						class="font-medium items-center inline-flex justify-center StaccatoButton px-4 transition-all focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)] bg-primary hover:opacity-90 mb-3 text-primary-fg"
-						href={Page.downloads.href}>{Page.downloads.label}</a
-					>
-					<p class="text-card-foreground">{Page.downloads.line}</p>
+			<!-- 02 Downloads. One fact and the one action that acts on it. -->
+			<SurfaceRegion index="# 02" id="downloads" title="Downloads">
+				<div class="surface-panel">
+					<p class="surface-region__standfirst">{Page.downloads.line}</p>
+					<div class="surface__actions">
+						<a class="surface-button" href={Page.downloads.href}>
+							{Page.downloads.label}
+							<span aria-hidden="true">→</span>
+						</a>
+					</div>
 				</div>
+			</SurfaceRegion>
 
-				<div class={`${Panel} p-6`}>
-					<h2 class="text-card-foreground font-medium text-lg mb-4">
-						Quick Links
-					</h2>
-					<ul class="space-y-2">
-						{
-							Page.quickLinks.map((Link) => (
-								<li>
-									<a
-										class="text-card-foreground hover:underline"
-										href={Link.href}>
-										{Link.label}
-									</a>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			</div>
+			<!-- 03 Quick Links. A route strip: three destinations, one row each. -->
+			<SurfaceRegion index="# 03" id="quick-links" title="Quick Links">
+				<ul class="surface-links">
+					{
+						Page.quickLinks.map((Link) => (
+							<li>
+								<a class="surface-links__item" href={Link.href}>
+									<span>{Link.label}</span>
+									<span class="surface-links__arrow" aria-hidden="true">→</span>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</SurfaceRegion>
 
-			<!-- Telemetry: one wide card, three hairline rows. Each row states its
-			 state in badges, names the path in its h3, and then says what it does
-			 with its terms badged inline. -->
-			<section class="mt-12">
-				<h2 class="font-medium text-2xl mb-6">{Page.telemetry.heading}</h2>
-				<div class={Panel}>
+			<!-- 04 Telemetry. Three paths, each a record: its marker, its state
+			 badges, its heading and the sentence that qualifies it. -->
+			<SurfaceRegion index="# 04" id="telemetry" title={Page.telemetry.heading}>
+				<div class="surface-panel surface-telemetry">
 					{
 						Page.telemetry.paths.map((Path, Position) => (
-							<div
-								class:list={[
-									"pb-5 pt-8 px-5",
-									Position < Page.telemetry.paths.length - 1
-										? "flex items-center justify-between border-[var(--Border)] border-b"
-										: null,
-								]}
-							>
-								<div class="flex-1">
-									<div class="flex items-center gap-3">
+							<div class="surface-telemetry__row">
+								<p class="surface-telemetry__index">
+									{String(Position + 1).padStart(2, "0")}
+								</p>
+								<div class="surface-telemetry__body">
+									<div class="surface-telemetry__badges">
 										{Path.badges.map((Badge) => (
 											<SurfaceBadge
 												label={Badge.label}
@@ -169,9 +264,7 @@ const Panel = "bg-card StaccatoCard StaccatoBorderShimmer";
 											/>
 										))}
 									</div>
-									<h3 class="text-card-foreground font-medium mt-3">
-										{Path.heading}
-									</h3>
+									<h3 class="surface-telemetry__heading">{Path.heading}</h3>
 									<RichText
 										client:load
 										Text={Path.text}
@@ -183,21 +276,25 @@ const Panel = "bg-card StaccatoCard StaccatoBorderShimmer";
 						))
 					}
 				</div>
-			</section>
+			</SurfaceRegion>
 
-			<!-- Build configuration: one sentence, then three cards of four
-			 justified rows each. -->
-			<section class="mt-12">
-				<h2 class="font-medium mb-2 text-2xl">{Page.build.heading}</h2>
-				<p class="mb-6 text-muted-foreground">{Page.build.subtitle}</p>
-				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+			<!-- 05 Build Configuration. One instrument, three columns: the three
+			 cards the baseline printed become one panel of three ledgers, so the
+			 facts read across instead of as three boxes side by side - and under
+			 them the build/tier matrix, the comparison the three cards cannot
+			 make between themselves. -->
+			<SurfaceRegion
+				index="# 05"
+				id="build"
+				title={Page.build.heading}
+				standfirst={Page.build.subtitle}
+			>
+				<div class="surface-panel surface-build">
 					{
 						Page.build.cards.map((Card) => (
-							<div class={`${Panel} p-6`}>
-								<div class="flex items-center justify-between">
-									<h3 class="text-card-foreground font-medium text-lg">
-										{Card.title}
-									</h3>
+							<div class="surface-build__column">
+								<div class="surface-build__head">
+									<h3 class="surface-build__title">{Card.title}</h3>
 									<SurfaceBadge
 										label={Card.badge.label}
 										tone={Card.badge.tone}
@@ -210,43 +307,62 @@ const Panel = "bg-card StaccatoCard StaccatoBorderShimmer";
 								 value), and `code`/`strong` keep the two distinctions the
 								 rows already carried. */}
 								<RecordLedger
-									class="mt-4"
-									rows={Card.rows.map((Row) => ({
-										key: Row.key,
-										value: Row.value,
-										code: Row.mono,
-										strong: Row.strong,
+									class="surface-build__ledger"
+									rows={Card.rows.map((Fact) => ({
+										key: `${Fact.key}:`,
+										value: Fact.value,
+										code: Fact.mono,
+										strong: Fact.strong,
 									}))}
 								/>
 							</div>
 						))
 					}
 				</div>
-			</section>
 
-			<!-- Authentication tiers: four link cards, each with its pastel icon
-			 tile, its name, its protocol line and its state badge. -->
-			<section class="mt-12">
-				<h2 class="font-medium mb-2 text-2xl">{Page.tiers.heading}</h2>
-				<p class="mb-6 text-muted-foreground">{Page.tiers.subtitle}</p>
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-4">
+				{/* The matrix: the build's own profile and mode read across the four
+				 tiers. It is card 1's block - a real table with one header per
+				 column - because a comparison of one state across four columns is
+				 what `RecordMatrix` is, and a page that drew its own grid here
+				 would be a second, divergent implementation of it. */}
+				<div class="surface-build__matrix">
+					<p class="surface-build__matrix-register">MATRIX: PROFILE / MODE / TIER</p>
+					<RecordMatrix
+						id="build-tier-matrix"
+						columns={MatrixColumns}
+						rows={MatrixRows}
+						caption={T("common.dashboard.buildLog.matrix.caption", {
+							defaultValue:
+								"One build read across four tiers. PROFILE and MODE are the active build's own rows; TIER is what each tier speaks and BADGE is the word each one reports. The four tiers are planned, so the matrix states no arrival.",
+						})}
+					/>
+				</div>
+			</SurfaceRegion>
+
+			<!-- 06 Authentication Tiers. Four destinations, equal because the four
+			 modes are equal; each keeps its pastel tile, its protocol and its
+			 badge. -->
+			<SurfaceRegion
+				index="# 06"
+				id="tiers"
+				title={Page.tiers.heading}
+				standfirst={Page.tiers.subtitle}
+			>
+				<div class="surface-tiers">
 					{
 						Page.tiers.cards.map((Card) => (
 							<a
-								class="flex items-center StaccatoBorderShimmer StaccatoCard bg-card transition-all gap-4 p-5 hover:border-[color:var(--TierEdge)]"
+								class="surface-tier"
 								style={`--TierWash:var(--${Card.token}Surface);--TierLine:var(--${Card.token}Mute);--TierInk:var(--${Card.token}Fore);--TierEdge:var(--${Card.token})`}
 								href="/Portal"
 							>
-								<div
-									class="flex items-center justify-center shrink-0 border h-10 w-10 flat"
-									style="background-color:var(--TierWash);border-color:var(--TierLine);color:var(--TierInk)"
-								>
-									<span class="text-lg">{Card.glyph}</span>
-								</div>
-								<div>
-									<h3 class="text-card-foreground font-medium">{Card.title}</h3>
-									<p class="text-card-foreground">{Card.protocol}</p>
-								</div>
+								<span class="surface-tier__tile" aria-hidden="true">
+									{Card.glyph}
+								</span>
+								<span class="surface-tier__body">
+									<h3 class="surface-tier__title">{Card.title}</h3>
+									<p class="surface-tier__protocol">{Card.protocol}</p>
+								</span>
 								<SurfaceBadge
 									label={Card.badge.label}
 									tone={Card.badge.tone}
@@ -256,14 +372,18 @@ const Panel = "bg-card StaccatoCard StaccatoBorderShimmer";
 						))
 					}
 				</div>
-			</section>
+			</SurfaceRegion>
 
-			<!-- Editor connection: one card. `?mode=local` swaps the card body for
-			 the Air Daemon scan island; every other visitor sees the absent-daemon
-			 state and its two exits. -->
-			<section class="mt-12">
-				<h2 class="font-medium mb-2 text-2xl">{Page.editor.heading}</h2>
-				<p class="mb-6 text-muted-foreground">{Page.editor.subtitle}</p>
+			<!-- 07 Editor Connection. The absent record, composed: what would be
+			 here, why it is not, what to do - then the prose that explains it and
+			 the second exit. `?mode=local` swaps the panel body for the scan
+			 island. -->
+			<SurfaceRegion
+				index="# 07"
+				id="editor"
+				title={Page.editor.heading}
+				standfirst={Page.editor.subtitle}
+			>
 				{
 					IsLocalMode ? (
 						<jelly-card style={CardStyle}>
@@ -274,19 +394,18 @@ const Panel = "bg-card StaccatoCard StaccatoBorderShimmer";
 							/>
 						</jelly-card>
 					) : (
-						<div class={`${Panel} p-6`}>
-							<div class="flex items-center gap-4">
-								<img src="/Asset/Logo/Glyph/Land.svg" alt="Land" />
-								<div class="flex-1">
-									<div class="flex items-center gap-3">
-										<h3 class="text-card-foreground font-medium">
-											{Page.editor.name}
-										</h3>
-										{/* The state word is a badge, not a pill with a literal grey
-										 dot: `Not Connected` is one of the twelve words
-										 `BadgeInk` tints, and the Instrument Panel rule is that
-										 every state word carries its tone and its marker
-										 (`DESIGN.md` §3.8, §7 DR-14). */}
+						<div class="surface-editor">
+							<div class="surface-editor__head">
+								<img
+									class="surface-editor__glyph"
+									src="/Asset/Logo/Glyph/Land.svg"
+									alt="Land"
+									width="32"
+									height="32"
+								/>
+								<div class="surface-editor__body">
+									<div class="surface-editor__name">
+										<h3 class="surface-editor__title">{Page.editor.name}</h3>
 										<SurfaceBadge
 											label={Page.editor.status}
 											tone="mute"
@@ -301,98 +420,154 @@ const Panel = "bg-card StaccatoCard StaccatoBorderShimmer";
 									/>
 								</div>
 							</div>
-							<div class="flex items-center gap-3 flex-wrap mt-6">
-								<a
-									class="font-medium items-center inline-flex justify-center StaccatoButton px-4 transition-all focus:outline-2 focus:outline-offset-2 bg-[var(--TierLocalFirstSurface)] border border-[color:var(--TierLocalFirstMute)] focus:outline-[var(--TierLocalFirst)] hover:bg-[var(--TierLocalFirstMute)] py-2 text-[color:var(--TierLocalFirstFore)]"
-									href={Page.editor.scan.href}
-								>
-									{Page.editor.scan.label}
-									<span class="InlineSeparator">→</span>
-								</a>
-								<a
-									class="font-medium items-center inline-flex justify-center StaccatoButton px-4 transition-all bg-card hover:bg-secondary border border-transparent py-2"
-									href={Page.editor.connect.href}
-								>
+
+							<SurfaceAbsent
+								class="surface-editor__absent"
+								status="UNAVAILABLE"
+								wouldBe="Build logs, telemetry and configuration from a running Land editor, over WebSocket."
+								whyNot="No Air Daemon is listening on this machine: the editor is not running, or its daemon is not connected."
+								next={{
+									label: Page.editor.scan.label,
+									href: Page.editor.scan.href,
+								}}
+							/>
+
+							<div class="surface__actions">
+								<a class="surface__action" href={Page.editor.connect.href}>
 									{Page.editor.connect.label}
-									<span class="InlineSeparator">→</span>
+									<span aria-hidden="true">→</span>
 								</a>
-								<span class="text-card-foreground">{Page.editor.note}</span>
+								<span class="surface-editor__note">{Page.editor.note}</span>
 							</div>
 						</div>
 					)
 				}
-			</section>
+			</SurfaceRegion>
 
-			<!-- Partners: three attributed organisations in a four-column grid. -->
-			<section class="mt-12">
-				<h2 class="font-medium text-2xl mb-6">{Page.partners.heading}</h2>
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-4">
+			<!-- 08 Partners. Three attributed organisations. -->
+			<SurfaceRegion index="# 08" id="partners" title={Page.partners.heading}>
+				<div class="surface-partners">
 					{
 						Page.partners.cards.map((Card) => (
-							<a
-								class="flex items-center gap-3 StaccatoBorderShimmer StaccatoCard bg-card hover:border-[var(--Primary)] p-4 transition-all"
-								href={Card.href}
-							>
+							<a class="surface-partner" href={Card.href}>
 								{Card.logo ? (
-									<img class="h-8 w-8" src={Card.logo} alt={Card.name} />
+									<img
+										class="surface-partner__logo"
+										src={Card.logo}
+										alt={Card.name}
+										width="32"
+										height="32"
+									/>
 								) : (
-									<div class="flex items-center justify-center shrink-0 flat bg-mute font-medium h-8 w-8">
-										{Card.tile}
-									</div>
+									<span class="surface-partner__tile">{Card.tile}</span>
 								)}
-								<div>
-									<span class="font-medium">{Card.name}</span>
-									<p class="text-card-foreground">{Card.line}</p>
-								</div>
+								<span class="surface-partner__body">
+									<span class="surface-partner__name">{Card.name}</span>
+									<span class="surface-partner__line">{Card.line}</span>
+								</span>
 							</a>
 						))
 					}
 				</div>
-			</section>
+			</SurfaceRegion>
 
-			<!-- Privacy and data rights: the six statutory rights, the four support
-			 channels, and the one entry that ends the account. -->
-			<section class="mt-12">
-				<h2 class="font-medium mb-2 text-2xl">{Page.privacy.heading}</h2>
-				<p class="mb-6 text-muted-foreground">{Page.privacy.subtitle}</p>
+			<!-- 09 Privacy & Data Rights. The directory keeps its own composition:
+			 six statutory rights, four support channels, and the one entry that
+			 ends the account. -->
+			<SurfaceRegion
+				index="# 09"
+				id="privacy"
+				title={Page.privacy.heading}
+				standfirst={Page.privacy.subtitle}
+			>
 				<PrivacyRequests />
-			</section>
+			</SurfaceRegion>
 
-			<!-- Settings: three rows in one card. The two planned settings state
-			 their state; the live one states its action. -->
-			<section class="mt-12">
-				<h2 class="font-medium text-2xl mb-6">{Page.settings.heading}</h2>
-				<div class={Panel}>
+			<!-- 10 Settings. Three rows; the two planned settings state their
+			 state, the live one states its action. -->
+			<SurfaceRegion index="# 10" id="settings" title={Page.settings.heading}>
+				<div class="surface-panel surface-settings">
 					{
-						Page.settings.rows.map((Row, Position) => (
-							<div
-								class:list={[
-									"p-5",
-									Position < Page.settings.rows.length - 1
-										? "flex items-center justify-between border-[var(--Border)] border-b"
-										: null,
-								]}
-							>
-								<div>
-									{Row.action ? (
-										<a
-											class="font-medium items-center inline-flex justify-center StaccatoButton px-4 transition-all focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)] bg-card hover:bg-secondary"
-											href={Row.action.href}>{Row.action.label}</a
-										>
+						Page.settings.rows.map((Setting) => (
+							<div class="surface-settings__row">
+								<div class="surface-settings__body">
+									{Setting.badge ? (
+										<SurfaceBadge
+											label={Setting.badge.label}
+											tone={Setting.badge.tone}
+										/>
 									) : null}
-									{Row.badge ? (
-										<SurfaceBadge label={Row.badge.label} tone={Row.badge.tone} />
-									) : null}
-									<h3 class="text-card-foreground font-medium mt-2">
-										{Row.title}
-									</h3>
-									<p class="text-card-foreground mt-1">{Row.body}</p>
+									<h3 class="surface-settings__title">{Setting.title}</h3>
+									<p class="surface-settings__line">{Setting.body}</p>
 								</div>
+								{Setting.action ? (
+									<a class="surface__action" href={Setting.action.href}>
+										{Setting.action.label}
+										<span aria-hidden="true">→</span>
+									</a>
+								) : null}
 							</div>
 						))
 					}
 				</div>
-			</section>
+			</SurfaceRegion>
 		</div>
 	</div>
+
+	<script>
+		/* The region readout. Ten regions is more than one screen, so the rail
+		   marks the one being read - the header's own `aria-current` rule, turned
+		   to stand beside a list.
+		
+		   Three ways the mark is set, in order of certainty: the first region is
+		   marked on load (so the rail is never mute), a click marks its own
+		   destination immediately (so the rail answers before the scroll settles),
+		   and an IntersectionObserver refines it while scrolling. No scroll
+		   listener, no layout thrash, and the rail is fully usable with the script
+		   off - every link still goes where it says. */
+		const Links = Array.from(
+			document.querySelectorAll<HTMLAnchorElement>(".surface-regions__link"),
+		);
+		const RegionsRead = Array.from(
+			document.querySelectorAll<HTMLElement>("[data-region]"),
+		);
+
+		if (Links.length > 0 && RegionsRead.length > 0) {
+			const Mark = (Id: string): void => {
+				for (const Link of Links) {
+					if (Link.hash === `#${Id}`) {
+						Link.setAttribute("aria-current", "true");
+					} else {
+						Link.removeAttribute("aria-current");
+					}
+				}
+			};
+
+			Mark(RegionsRead[0].id);
+
+			for (const Link of Links) {
+				Link.addEventListener("click", () => {
+					Mark(Link.hash.slice(1));
+				});
+			}
+
+			const Watcher = new IntersectionObserver(
+				(Entries) => {
+					const Reading = Entries.filter((Entry) => Entry.isIntersecting).sort(
+						(Left, Right) =>
+							Left.boundingClientRect.top - Right.boundingClientRect.top,
+					)[0];
+
+					if (Reading) {
+						Mark(Reading.target.id);
+					}
+				},
+				{ rootMargin: "-120px 0px -55% 0px", threshold: 0 },
+			);
+
+			for (const Region of RegionsRead) {
+				Watcher.observe(Region);
+			}
+		}
+	</script>
 </Base>

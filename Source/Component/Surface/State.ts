@@ -122,6 +122,23 @@ export const Row = (Key: string, Term: string): SurfaceState => ({
 });
 
 /**
+ * One `KEY: value` declaration beside a surface's status word.
+ *
+ * A state says *what* the surface is doing; a declaration says *where the claim
+ * comes from* - the route it is read at, the source that produced it, the date
+ * the page was built. The instrument head prints the two in one row, so a
+ * status is always auditable without a second block. `key` is printed with its
+ * colon by the renderer, the same rule the register follows.
+ */
+export interface Declaration {
+	/** `ROUTE`, `SOURCE`, `BUILT`, `ENV`. */
+	readonly key: string;
+
+	/** The value, verbatim. */
+	readonly value: string;
+}
+
+/**
  * A set of facts, split into the states §1.5 asks for a marker on and the facts
  * that stay facts. Order is preserved on both sides, so a page never has to
  * re-sort what its content table wrote in reading order. Generic over the row

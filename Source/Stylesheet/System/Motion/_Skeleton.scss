@@ -1,0 +1,146 @@
+@use "../Mixin" as *;
+
+// ─── THE SKELETON ─────────────────────────────────────────────────────────
+//
+// The loading arm, in the record grammar: a register line, the keys the record
+// will print, and their values barred. No spinner.
+//
+// ─── A SPINNER SAYS SOMETHING IS HAPPENING. A SKELETON SAYS WHAT. ─────────
+// The keys are known before the values are - they are the record's own field
+// names, which the page's data module already carries - so the loading state
+// prints the schema and withholds only the answers. A reader waiting on a matrix
+// learns what the matrix is while they wait, and a reader whose connection dies
+// is left with a legible statement of what did not arrive.
+//
+// ─── THE SKELETON DOES NOT MOVE, AND THAT IS THE DESIGN ───────────────────
+// Two obvious motions are both refused here, for the same reason:
+//
+//   a pulse     a loop. Motion that continues without a state change is the
+//               first line of the register law's prohibition list, and a bar
+//               that breathes is decoration.
+//   a fade-in   an entrance animation. A skeleton can be in the server HTML, so
+//               a fade would fire at first paint - which is the one thing the
+//               layer promises not to do.
+//
+// The loading state is therefore *printed*: the word `LOADING`, the keys at their
+// label register, the bars at a fixed ink. What moves is the moment it ends, and
+// that motion belongs to the arriving record - `resolve`, one printed state giving
+// way to another, 320ms, opacity. `.MotionResolve` is exported for exactly that
+// and for nothing else: mount it on a block that replaces a skeleton at runtime,
+// never on content that was in the HTML.
+//
+// ─── THE BAR IS A RULE WHOSE VALUE IS NOT KNOWN ───────────────────────────
+// `--motion-skeleton-bar` is one rule's height and `--motion-skeleton-ink` is a
+// rule's ink at low opacity - not a grey, which would be a sixth colour in a
+// palette that has four. The bar's *length* is the caller's (`--bar`), because a
+// length is a guess about the value's shape and the caller is the only one who
+// knows whether the value is a word, a path or a figure.
+//
+// ─── THE ADVERSE ARM OF THE ADVERSE ARM ───────────────────────────────────
+// A skeleton that has been waiting too long states it: `WAITING ON:` names what
+// has not arrived, and `--stale` adds the age. A skeleton with no keys at all is
+// not a skeleton - it is an empty state, and `ShellState kind="empty"` is the
+// block for that.
+
+.MotionSkeleton {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+
+	min-inline-size: 0;
+
+	padding-block: var(--space-reading);
+}
+
+.MotionSkeleton__Marker {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0;
+
+	color: var(--Foreground);
+}
+
+.MotionSkeleton__Rows {
+	display: flex;
+	flex-direction: column;
+
+	margin: 0;
+}
+
+.MotionSkeleton__Row {
+	display: grid;
+	grid-template-columns: minmax(9rem, 14rem) minmax(0, 1fr);
+	align-items: center;
+	gap: var(--space-tight);
+
+	padding-block: var(--space-tight);
+
+	border-block-start: 1px solid var(--Border);
+}
+
+.MotionSkeleton__Key {
+	@include mono-meta;
+
+	color: var(--MuteForeground);
+}
+
+.MotionSkeleton__Value {
+	min-inline-size: 0;
+
+	margin: 0;
+}
+
+.MotionSkeleton__Bar {
+	display: block;
+
+	block-size: var(--motion-skeleton-bar);
+	inline-size: var(--bar, 40%);
+
+	background-color: var(--Foreground);
+
+	opacity: var(--motion-skeleton-ink);
+}
+
+.MotionSkeleton__Wait {
+	margin: var(--space-tight) 0 0;
+
+	@include mono-meta;
+
+	overflow-wrap: anywhere;
+}
+
+.MotionSkeleton__Age {
+	color: var(--MuteForeground);
+}
+
+// ─── the one motion this class owns: the end of it ────────────────────────
+
+/* Mount on the block that REPLACES a skeleton. One animation, no fill mode, so
+   a block that never plays it is simply present - the same construction the
+   disclosure's reveal uses, and for the same reason. */
+@keyframes resolve-in {
+	from {
+		opacity: 0;
+	}
+}
+
+.MotionResolve {
+	@media (prefers-reduced-motion: no-preference) {
+		animation: resolve-in var(--motion-resolve-duration)
+			var(--motion-resolve-easing);
+	}
+}
+
+// ─── narrow ───────────────────────────────────────────────────────────────
+
+@media (max-width: 639px) {
+	.MotionSkeleton__Row {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0.375rem;
+	}
+
+	.MotionSkeleton__Bar {
+		inline-size: var(--bar, 60%);
+	}
+}

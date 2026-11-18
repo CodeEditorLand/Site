@@ -1,0 +1,143 @@
+---
+/**
+ * LexiconEntry - one word, defined: the term in the margin, the definition on
+ * the measure, and the citations under it.
+ *
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  a definition: one word, what it means *here*, and where that
+ *                   meaning comes from. Not an entry (that is a record with a
+ *                   body and a chip row) and not a ledger row (that is a fact
+ *                   with a value, not a word with a sense).
+ * RANK              leaf.
+ * SLOT CONTRACT     term        -> the word, at heading weight
+ *                   expansion?  -> what it is short for, under the word
+ *                   definition  -> the sense, one to three sentences
+ *                   state?      -> a vocabulary word, in its tone
+ *                   record?     -> the record the word names, `# AIR_01`
+ *                   route?      -> where the thing itself can be seen
+ *                   source?     -> where the definition comes from
+ *                   rows?       -> extra `WAS:` / `WHY NOT:` / `NOW:` facts
+ * MAY HOLD          its own facts. It holds no block: a ledger inside an entry
+ *                   would be a leaf inside a leaf, and the containment law has
+ *                   one sectioning level for a reason.
+ * MAY NOT HOLD      a figure, a well, a second definition.
+ * WIDE (>=768)      the term column is 16rem and the definition takes the rest.
+ *                   The term is *in the margin of its own definition*, which is
+ *                   how a dictionary has been set for four hundred years and how
+ *                   this page can be scanned by word rather than read.
+ * NARROW            the term goes above its definition and keeps its rule. The
+ *                   column does not shrink to a stub: a 4rem term column on a
+ *                   phone is a hanging indent pretending to be a margin.
+ * DENSE             none. A definition that is compressed is a definition that
+ *                   has stopped saying what the word means.
+ *
+ * ─── THE TERM IS THE ID ───────────────────────────────────────────────────
+ * The entry's id is derived from the term, not passed in, so the rail's link to a
+ * retired word and the entry's own anchor cannot disagree - both compute the same
+ * string from the same word. A page that supplied the id would be the second place
+ * the word's address is spelled.
+ *
+ * ─── A DEFINITION WITHOUT A SOURCE IS STILL PRINTED ───────────────────────
+ * `source` is optional, and its absence is printed as `SOURCE: UNAVAILABLE`
+ * rather than omitted. That is the honest partial state: a word the tree does
+ * not define is a word this page is paraphrasing, and the reader is owed the
+ * difference between a citation and a summary.
+ *
+ * No script and no hydration: a definition is printed.
+ */
+import { Tone } from "../Surface/State.js";
+
+import { TermId, type Term } from "../../Content/More/Glossary.js";
+
+interface Props {
+	/** The word and everything the entry prints about it. */
+	term: Term;
+
+	/** The run's key, so two runs can hold a word with the same first letter. */
+	run: string;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const { term: Entry, run: Run, class: Class } = Astro.props;
+
+/** The anchor: the run, the letter and the word, from the one function that owns it. */
+const Id = TermId(Run, Entry.term);
+
+/** The state word's ink, from the one table that decides tones. */
+const StateTone = Entry.state ? (Tone(Entry.state.toUpperCase()) ?? "ink") : undefined;
+---
+
+<article class:list={["lexicon-entry", Class]} id={Id}>
+	<div class="lexicon-entry__term">
+		<h3 class="lexicon-entry__name">{Entry.term}</h3>
+		{
+			Entry.expansion ? (
+				<p class="lexicon-entry__expansion">{Entry.expansion}</p>
+			) : null
+		}
+		{
+			Entry.state && StateTone ? (
+				<p
+					class:list={[
+						"lexicon-entry__state",
+						`lexicon-entry__state--${StateTone}`,
+					]}
+				>
+					<span class="lexicon-entry__state-mark" aria-hidden="true" />
+					{Entry.state}
+				</p>
+			) : null
+		}
+	</div>
+
+	<div class="lexicon-entry__body">
+		<p class="lexicon-entry__definition">{Entry.definition}</p>
+
+		{
+			Entry.rows?.length ? (
+				<dl class="lexicon-entry__rows">
+					{Entry.rows.map((Row) => (
+						<div class="lexicon-entry__row">
+							<dt class="lexicon-entry__row-key">{Row.key}</dt>
+							<dd class="lexicon-entry__row-value">
+								{Row.code ? <code>{Row.value}</code> : Row.value}
+								{Row.note ? (
+									<span class="lexicon-entry__row-note">{Row.note}</span>
+								) : null}
+							</dd>
+						</div>
+					))}
+				</dl>
+			) : null
+		}
+
+		<footer class="lexicon-entry__foot">
+			{
+				Entry.record ? (
+					<p class="lexicon-entry__fact">
+						<span class="lexicon-entry__fact-key">RECORD:</span>
+						<span class="lexicon-entry__fact-value">{Entry.record}</span>
+					</p>
+				) : null
+			}
+			{
+				Entry.route ? (
+					<p class="lexicon-entry__fact">
+						<span class="lexicon-entry__fact-key">WHERE:</span>
+						<a class="lexicon-entry__link" href={Entry.route.href}>
+							{Entry.route.label}
+						</a>
+					</p>
+				) : null
+			}
+			<p class="lexicon-entry__fact">
+				<span class="lexicon-entry__fact-key">SOURCE:</span>
+				<span class="lexicon-entry__fact-value">
+					{Entry.source ?? "UNAVAILABLE"}
+				</span>
+			</p>
+		</footer>
+	</div>
+</article>

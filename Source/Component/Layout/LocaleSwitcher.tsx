@@ -91,18 +91,20 @@ const LocaleSwitcher = () => {
 					</span>
 				</jelly-button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent align="end" className="min-w-[8rem]">
+			<DropdownMenuContent
+				align="end"
+				head={{
+					Name: "LOCALE",
+					Count: SupportedLocaleList.length,
+				}}
+			>
 				{SupportedLocaleList.map((Locale) => (
 					<DropdownMenuItem
 						key={Locale}
 
 						onClick={() => HandleChange(Locale)}
 
-						className={
-							Locale === CurrentLocale
-								? "font-medium text-accent"
-								: "text-card-foreground opacity-70"
-						}
+						current={Locale === CurrentLocale}
 					>
 						{LocaleLabel[Locale]}
 					</DropdownMenuItem>

@@ -18,6 +18,8 @@
  */
 import type { CardRecord } from "../../Content/Home/Type.js";
 
+import { ToneOf } from "./Tone.js";
+
 interface Props {
 	card: CardRecord;
 }
@@ -56,7 +58,9 @@ const { card } = Astro.props;
 
 <div class="home-record__status">
 	<span class="home-record__status-key">{card.Status.Label}:</span>
-	<span class="home-record__status-value">{card.Status.Value}</span>
+	<span class="home-record__status-value" data-tone={ToneOf(card.Status.Value)}>
+		{card.Status.Value}
+	</span>
 </div>
 
 <dl class="home-record__meta">

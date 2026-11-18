@@ -4,9 +4,37 @@
 // opts into the chapter separator (`--chapter`). Surface follows the artifact -
 // a white band is an information box, never an alternation down the page.
 //
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  a subject: which part of the page this is and what it is
+//                   about. One band per subject, one `h2` per band.
+// RANK              section. The block that carries a page's structure.
+// SLOT CONTRACT (the `Publishes:` list below is the class API; this is what a
+// caller hands in):
+//   kicker      -> the `/SECTION LABEL` opening the band
+//   heading     -> the band's single `h2`
+//   standfirst? -> one sentence, at most two lines
+//   index?      -> the strip of `/MARKER` links above the body
+//   footnote?   -> provenance, caveat or source line
+//   tone?       -> `canvas` (default), `paper` (white information box), `flush`
+//                  (first band after the header), `bare` (structure inside a
+//                  Jelly surface: no fill, no frame, no inset, no ink)
+//   default slot-> the band's body
+// MAY HOLD          any leaf block and one set block; at most one sectioning
+//                   level between the band and its leaves.
+// MAY NOT HOLD      another band (`Band > Band` is a second subject pretending
+//                   to be a section), a hero, or a second `h2`.
+// NARROW            the gutters clamp, the index strip wraps and drops its
+//                   inter-cell rules (a leading rule at the start of every
+//                   second line reads as damage, not as a strip), and the
+//                   heading's `text-wrap: balance` keeps a three-word claim off
+//                   a single orphaned line.
+// WIDE              `--band-inner` (72rem, `--Gutter`) and the chapter rhythm.
+// DENSE             none, and that is the point: a band is air. Density belongs
+//                   to the block in its body.
+//
 // Publishes:
 //   .record-band                the band shell: full width, the group rhythm, no rule of its own
-//   .record-band--chapter       the opt-in chapter separator: chapter spacing and a top hairline
+//   .record-band--chapter       the opt-in chapter separator: chapter spacing and the boundary rule
 //   .record-band--paper         white card surface
 //   .record-band--canvas        the creme canvas (default)
 //   .record-band--flush         first band after the header - cancels the chapter's top rule
@@ -38,11 +66,14 @@
 }
 
 // The chapter separator, opt-in: a genuinely new subject opens at the
-// page-boundary value, --space-chapter (84px, the poster scale's largest
-// step), under a hairline rule (DESIGN.md §2.3; §5 A4; §9 Q5).
+// page-boundary value, --space-chapter (84px, the poster scale's largest step),
+// under the one boundary rule (DESIGN.md §2.3; §5 A4; §9 Q5). The rule is the
+// `chapter-boundary` mixin's - the same one `.band--chapter` includes - so the
+// two blocks that can open a chapter draw the same boundary at the same ink
+// (`--Divider`, 20 %, 1.50:1; a hairline at 8 % measures 1.18:1 and is not a
+// boundary, it is a rumour - LOST.md scan 3).
 .record-band--chapter {
-	@include hairline(top);
-	padding-block: var(--space-chapter);
+	@include chapter-boundary;
 }
 
 // The white card surface. The fill bounds it against the creme canvas; the
@@ -126,7 +157,7 @@
 	font-size: var(--type-section);
 	font-weight: 500;
 	line-height: var(--type-section-line);
-	letter-spacing: -0.02em;
+	letter-spacing: var(--track-join);
 	color: var(--Foreground);
 	text-wrap: balance;
 }
@@ -147,7 +178,7 @@
 // every second line reads as damage rather than as a strip.
 .record-band__index {
 	@include mono-meta;
-	@include track(0.08em);
+	@include track(var(--track-row));
 	@include hairline(top);
 	display: flex;
 	flex-wrap: wrap;

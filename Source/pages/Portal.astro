@@ -1,12 +1,47 @@
 ---
+/**
+ * Portal - the authentication gateway, in the baseline's three movements.
+ *
+ * ─── THE COMPOSITION ──────────────────────────────────────────────────────
+ *   one    the two-panel opening: the white data card (`# PORTAL_01`, the
+ *          page's only `h1`, the `〈 FOUR MODES 〉` claim, the protocol line,
+ *          the programme run, `STATUS: PREPARING`, the facts ledger) beside
+ *          the evidence plate, one divider-ink gutter between them
+ *   two    the four tier bands, on the creme field, outlined and unfilled -
+ *          the one place on the site a card is drawn without a white fill
+ *   three  the credit strip, the page's only centred block
+ *
+ * The two bands a rebuild added here (`CodeEditorLand Portal Roadmap`, `What
+ * you can do from here`) are gone: they were additions, and the four tier
+ * bands are the page (`DESIGN-COMPLETE.md` §3.9). Nothing else was removed -
+ * the 23 feature rows keep their name *and* their one-sentence description.
+ *
+ * ─── THE RULES THIS FILE KEEPS ────────────────────────────────────────────
+ * - **One `h1`, bare.** The page title is not a runtime stamp, so the `〈 〉`
+ *   around it are gone (§9 Q7); the `# PORTAL_01` marker is identity and
+ *   stays. The claim under it, `〈 FOUR MODES 〉`, is a claim and keeps its
+ *   brackets (§1.5).
+ * - **`h2` count is four, and each is a containment stamp.** The four plan
+ *   names print as `〈 CLOUD PLAN 〉` … `〈 ENTERPRISE PLAN 〉`, as the baseline
+ *   printed them (Appendix B).
+ * - **Features are record rows, not headings.** A feature is a marker, a name
+ *   and the sentence that qualifies it - never an `h3`, so the page's heading
+ *   sequence stays `h1` + four `h2` and the 28 headed chips the rebuild
+ *   introduced do not come back.
+ * - **States print through the register.** `STATUS:` is card 6's
+ *   `SurfaceState`, on one of §1.5's eight words with the tone the table
+ *   gives it; `PLAN: PLANNED` is a declaration beside it, because `PLANNED`
+ *   is not a state.
+ * - **U+2001 is the only separator.** No middle dot anywhere on the page.
+ */
 import FieldRecordAction from "../Component/Brand/FieldRecordAction.astro";
 import FieldRecordDataCard from "../Component/Brand/FieldRecordDataCard.astro";
-import FieldRecordIndex from "../Component/Brand/FieldRecordIndex.astro";
-import FieldRecordMetadata from "../Component/Brand/FieldRecordMetadata.astro";
 import { FieldRecordEvidence } from "../Component/Brand/FieldRecordEvidence";
 import { FieldRecordSeal } from "../Component/Brand/FieldRecordSeal";
 import { Header } from "../Component/Layout/Header";
-import RecordEntry from "../Component/Record/RecordEntry.astro";
+import SurfaceBadge from "../Component/Surface/SurfaceBadge.astro";
+import SurfaceHead from "../Component/Surface/SurfaceHead.astro";
+import SurfaceStatusLine from "../Component/Surface/SurfaceStatusLine.astro";
 import { PortalPage } from "../Content/Surface/Portal.js";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
@@ -23,9 +58,27 @@ const MetaDescription = T("meta.portal.description", {
 
 // Every fact on the page comes from this table: the hero record, the four
 // tiers with their protocols and their feature and capability copy, and the
-// two credit lines the page closes on. The page owns the three movements and
-// their order, nothing else.
+// two credit lines the page closes on. The page owns the movements and their
+// order, nothing else.
 const Page = PortalPage(T);
+
+/* The status line's declarations. Three facts the page knows at request time and
+   no more: where it is read, what produced the state, and the date of this
+   reading. Nothing is invented to fill a fourth column. */
+const Declarations = [
+	{ key: "ROUTE", value: Astro.url.pathname.toUpperCase() },
+	{ key: "SOURCE", value: "RELEASE RECORD" },
+	{ key: "AS OF", value: new Date().toISOString().slice(0, 10) },
+];
+
+/* The hero's facts, as the ledger prints them: the key carries its colon
+   (`DESIGN-COMPLETE.md` §1.5 - the colon is part of the label). */
+const Facts = Page.metadata.map((Row) => ({ key: `${Row.label}:`, value: Row.value }));
+
+/* The plan beside each tier's state. `PLANNED` is not one of §1.5's eight
+   states, so it is a declaration in the same row as `STATUS: PREPARING` -
+   the plan, stated as a fact, next to the condition, stated as a state. */
+const Plan = [{ key: "PLAN", value: "PLANNED" }];
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription}>
@@ -35,210 +88,223 @@ const Page = PortalPage(T);
 	 Auth0AccountGate (which auto-calls loginWithRedirect() on mount). -->
 	<Header client:load Mode="functional" slot="Header" />
 
-	<div class="bg-background">
-		<!-- Movement one: the hero record. The opening type is the page's h1,
-		 the metadata list carries the three facts the card always carried,
-		 and the evidence panel is the night-glass crop, hidden below md. -->
-		<section class="w-full overflow-hidden relative" aria-label="Portal Hero">
-			<div
-				class="absolute inset-0 pointer-events-none"
-				style="background-color: var(--Background);"
-			>
-			</div>
-			<div
-				class="flex flex-col md:flex-row min-h-[60dvh] mx-auto relative"
-				style="padding: clamp(2rem, 5vw, 5rem); gap: clamp(0.5rem, 1.5vw, 1.875rem);"
-			>
-				<div class="flex flex-col flex-1 justify-center">
-					<FieldRecordDataCard className="h-full">
-						<div class="flex flex-col h-full justify-between">
-							<div class="flex justify-between items-start">
-								<FieldRecordIndex index={Page.index} />
-								<FieldRecordSeal element="Land" size={64} />
-							</div>
+	<!-- Movement one: the gateway's nameplate. The two-panel opening is the
+	 keeper - the white data card beside the evidence plate, one gutter at the
+	 divider ink - and the card's interior is the instrument head: `# PORTAL_01`,
+	 the page's only `h1`, the claim, the protocol line, the programme run, the
+	 status line with its declarations, the facts. The blank interval between
+	 the head and the `LAND:` proposition is the card's own and is not to be
+	 filled. -->
+	<section class="w-full overflow-hidden relative" aria-label="Portal Hero">
+		<div
+			class="absolute inset-0 pointer-events-none"
+			style="background-color: var(--Background);"
+		>
+		</div>
+		<div
+			class="flex flex-col md:flex-row min-h-[60dvh] mx-auto relative"
+			style="padding: clamp(2rem, 5vw, 5rem); gap: clamp(0.5rem, 1.5vw, 1.875rem);"
+		>
+			<div class="flex flex-col flex-1 justify-center">
+				<FieldRecordDataCard className="h-full">
+					<div class="flex flex-col h-full justify-between">
+						<SurfaceHead
+							class="portal-head"
+							index={`# ${Page.index}`}
+							title={Page.heading}
+							display
+							states={Page.states}
+							declarations={Declarations}
+							rows={Facts}
+						>
+							<FieldRecordSeal slot="mark" element="Land" size={64} />
 
-							<div class="mt-10">
-								{/* A page title is not a runtime stamp, a claim or a platform,
-								 so it prints without `〈 〉` (`DESIGN.md` §9 Q7). The ink is
-								 still the tier's semantic token, and the XL clamp is the
-								 page's own opening type. */}
-								<h1
-									class="font-mono text-card-foreground font-normal tracking-[-0.02em] leading-[0.95] text-field-xl"
-									style={`color:var(--${Page.headingInk})`}
-								>
-									{Page.heading}
-								</h1>
-								<p
-									class="font-mono text-card-foreground font-normal text-field-l leading-[1.0] mt-2 tracking-[-0.02em]"
-								>
-									<span style="color:var(--MuteForeground)">〈</span><span style={`color:var(--${Page.subheadingInk})`}>{Page.subheading}</span><span style="color:var(--MuteForeground)">〉</span>
-								</p>
-							</div>
-
-							<div class="mt-10">
-								<p
-									class="font-mono text-card-foreground font-normal text-field-l leading-[1.05]"
-								>
-									<span style="color:var(--MuteForeground)">/</span><span style="color:var(--SemanticSky)">PROTOCOL</span><span style="color:var(--CardForeground)">:{Page.protocol}</span>
-								</p>
-								<p
-									class="font-mono text-card-foreground font-normal leading-[1.1] opacity-70 text-field-s mt-1"
-								>
-									{Page.program.join("\u2001")}
-								</p>
-							</div>
-
-							<p
-								class="font-mono text-card-foreground opacity-60 uppercase tracking-[0.25em] mt-6 text-field-s"
-							>
-								{Page.banner.join("\u2001")}
+							{/* A claim, not a title: `〈 〉` is allowed here (§9 Q7). It
+							    is the page's one claim at L, under the `h1` at XL. */}
+							<p class="portal-head__claim">
+								<span style="color:var(--MuteForeground)">〈</span><span
+									style={`color:var(--${Page.subheadingInk})`}
+									>{Page.subheading}</span
+								><span style="color:var(--MuteForeground)">〉</span>
 							</p>
 
-							<div class="mt-3">
-								<span class="font-mono text-field-s uppercase tracking-wider"><span style="color:var(--CardForeground)">STATUS:</span><span style="color:var(--Accent)">{Page.status}</span></span>
-							</div>
+							<p class="portal-head__protocol">
+								<span style="color:var(--MuteForeground)">/</span><span
+									style="color:var(--SemanticSky)">PROTOCOL</span
+								><span style="color:var(--CardForeground)">:{Page.protocol}</span>
+							</p>
+							<p class="portal-head__program">{Page.program.join("\u2001")}</p>
+							<p class="portal-head__banner">{Page.banner.join("\u2001")}</p>
+						</SurfaceHead>
 
-							<div class="flex-1 my-12" aria-hidden="true"></div>
+						<div class="flex-1 my-12" aria-hidden="true"></div>
 
-							<div>
-								<p
-									class="font-mono text-card-foreground font-normal text-field-l leading-[1.08]"
-								>
-									{Page.title}:
-								</p>
-								<p
-									class="font-mono text-card-foreground font-normal leading-[1.1] opacity-70 text-field-s mt-3"
-								>
-									↳{Page.relation}
-								</p>
-							</div>
-
-							<div class="mt-10">
-								<FieldRecordMetadata rows={Page.metadata} />
-							</div>
+						<div>
+							<p
+								class="font-mono text-card-foreground font-normal text-field-l leading-[1.08]"
+							>
+								{Page.title}:
+							</p>
+							<p
+								class="font-mono text-card-foreground font-normal leading-[1.1] opacity-70 text-field-s mt-3"
+							>
+								↳{Page.relation}
+							</p>
 						</div>
-					</FieldRecordDataCard>
-				</div>
-
-				<div
-					class="hidden md:block w-px"
-					style="background-color: var(--Background);"
-				>
-				</div>
-
-				<div class="flex items-center justify-center flex-1">
-					<FieldRecordEvidence
-						src={Page.evidence.src}
-						alt={Page.evidence.alt}
-						position={Page.evidence.position}
-						className="portal-hero__evidence h-full w-full min-h-[40dvh]"
-					/>
-				</div>
+					</div>
+				</FieldRecordDataCard>
 			</div>
-		</section>
 
-		<!-- Movement two: the four tiers. Outlined on the canvas, not white
-		 cards - the border is the surface. Each card states its marker, its
-		 seal, its bracketed title, its protocol, its status and badge, its
-		 feature rows with their descriptions, its capability run, and its one
-		 sign-in action. -->
-		<section class="w-full py-16 sm:py-20" aria-label="Authentication Tiers">
-			<div class="px-4 container mx-auto">
-				<div class="mx-auto gap-6 grid grid-cols-1 max-w-5xl md:grid-cols-2">
-					{
-						Page.tiers.map((Tier) => (
-							<div class="flex flex-col border-border border h-full p-5">
-								<div class="flex gap-3 items-start justify-between">
-									<span class="font-mono text-sm uppercase font-medium text-accent tracking-[0.2em]"># {Tier.index}</span>
-									<FieldRecordSeal element={Tier.seal} size={32} />
-								</div>
+			<!-- The gutter is the keeper's: the site's divider ink, not the creme
+			 field. At `var(--Background)` the rule was present in the DOM and
+			 invisible to the eye - the exact weakness KEEPERS.md names. -->
+			<div
+				class="hidden md:block w-px"
+				style="background-color: color-mix(in srgb, var(--CardForeground) 20%, transparent);"
+			>
+			</div>
 
-								<div class="PortalTierRule mt-3 pt-3">
-									<h2 class="font-mono text-card-foreground font-medium uppercase text-xl tracking-[0.1em]">
-										<span style="color:var(--MuteForeground)">〈</span><span style={`color:var(--${Tier.ink})`}>{Tier.title}</span><span style="color:var(--MuteForeground)">〉</span>
-									</h2>
-									<p class="font-mono text-card-foreground text-sm uppercase tracking-[0.15em] mt-1">
-										<span style="color:var(--MuteForeground)">/</span><span style="color:var(--SemanticSky)">PROTOCOL</span><span style="color:var(--CardForeground)">: {Tier.protocol}</span>
-									</p>
-								</div>
+			<div class="flex items-center justify-center flex-1">
+				<FieldRecordEvidence
+					src={Page.evidence.src}
+					alt={Page.evidence.alt}
+					position={Page.evidence.position}
+					className="portal-hero__evidence h-full w-full min-h-[40dvh]"
+				/>
+			</div>
+		</div>
+	</section>
 
-								<div class="PortalTierRule mt-3 pt-3">
-									<div class="flex gap-3 py-0.5">
-										<span class="font-mono text-card-foreground text-sm uppercase tracking-[0.15em] shrink-0 w-20">STATUS: </span>
-										<span
-											class="font-mono text-sm uppercase font-medium tracking-[0.15em]"
-											style="color:var(--CardForeground)">{Tier.status}</span
-										>
-									</div>
-									<div class="flex gap-3 py-0.5">
-										<span class="font-mono text-card-foreground text-sm uppercase tracking-[0.15em] shrink-0 w-20 opacity-60">BADGE: </span>
-										<span class="font-mono text-card-foreground text-sm uppercase font-medium tracking-[0.15em]">{Tier.badge}</span>
-									</div>
-								</div>
+	<!-- Movement two: the four tier bands. Outlined and unfilled - the one
+	 place a card is drawn on the field (`DESIGN-COMPLETE.md` §3.9, build 3).
+	 Each band is the baseline's: the `#` marker and the seal, the bracketed
+	 plan name, the protocol line, the two status rows, the feature records,
+	 the capability run, and the one action. -->
+	<section id="portal-tiers" aria-label="Authentication Tiers" class="w-full py-16 sm:py-20">
+		<div class="container mx-auto px-4">
+			<div class="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-2">
+				{
+					Page.tiers.map((Tier) => (
+						<article
+							id={`tier-${Tier.index.split("_")[0].toLowerCase()}`}
+							class="flex h-full flex-col border border-border p-5"
+						>
+							<div class="flex items-start justify-between gap-3">
+								<span class="font-mono type-meta uppercase tracking-rule text-accent">
+									# {Tier.index}
+								</span>
+								<FieldRecordSeal element={Tier.seal} size={32} />
+							</div>
 
-								<div class="PortalTierRule mt-3 pt-3">
-									<p class="font-mono text-card-foreground opacity-60 text-xs tracking-[0.25em] uppercase">FEATURES:</p>
-									{/* A feature is one record of the tier's set: a marker, a
-									 name and the one sentence that qualifies it. That is
-									 `RecordEntry`'s whole anatomy, so the list imports the
-									 block instead of re-drawing its rows inline. `surface="bare"`
-									 because the entry is structure inside the tier card - the
-									 card is the surface, and a filled entry inside it would be a
-									 card inside a card. */}
-									<div class="mt-2">
-										{Tier.features.map((Feature) => (
-											<RecordEntry
-												surface="bare"
-												index={Feature.marker}
-												name={Feature.name}
-												body={Feature.description}
-											/>
-										))}
-									</div>
-								</div>
+							{/* The plan name is a containment stamp: `〈 CLOUD PLAN 〉`,
+							    as the baseline printed it (Appendix B). */}
+							<div class="PortalTierRule mt-3 pt-3">
+								<h2 class="font-mono text-card-foreground font-medium uppercase tracking-row">
+									<span style="color:var(--MuteForeground)">〈</span>
+									<span style={`color:var(--${Tier.ink})`}>{Tier.title}</span>
+									<span style="color:var(--MuteForeground)">〉</span>
+								</h2>
+								<p class="font-mono text-card-foreground type-meta uppercase tracking-rule mt-1">
+									<span style="color:var(--MuteForeground)">/</span>
+									<span style="color:var(--SemanticSky)">PROTOCOL</span>
+									<span style="color:var(--CardForeground)">: {Tier.protocol}</span>
+								</p>
+							</div>
 
-								<div class="PortalTierRule mt-3 pt-3">
-									<p class="font-mono text-card-foreground opacity-60 text-xs tracking-[0.25em] uppercase">CAPABILITIES:</p>
-									<div class="flex flex-wrap gap-x-4 gap-y-1 mt-2">
-										{Tier.capabilities.map((Capability) => (
-											<span class="font-mono text-card-foreground text-sm opacity-60">{Capability}</span>
-										))}
-									</div>
-								</div>
+							{/* The register, one scale down: `STATUS: PREPARING` from the
+							    state table, `PLAN: PLANNED` as its declaration. */}
+							<div class="PortalTierDivider" aria-hidden="true"></div>
+							<div class="portal-tier__status">
+								<SurfaceStatusLine states={Tier.states} declarations={Plan} />
+							</div>
 
-								<div class="PortalTierRule mt-3 pt-3">
-									<FieldRecordAction
-										label={Tier.action.label}
-										href={Tier.action.href}
-										variant="button"
-									/>
+							<div class="PortalTierDivider" aria-hidden="true"></div>
+							<div>
+								<p class="font-mono type-meta text-muted-foreground tracking-rule uppercase">
+									BADGE:
+								</p>
+								<div class="mt-2">
+									<SurfaceBadge label={Tier.badge} tone="mute" />
 								</div>
 							</div>
+
+							{/* A feature is one record of the tier's set: a marker, a
+							    name and the one sentence that qualifies it. It is a
+							    row, not an `h3` - the rebuild turned each of these into
+							    a headed chip, which cost the sentence and added 28
+							    headings to a page that had none. */}
+							<div class="PortalTierDivider" aria-hidden="true"></div>
+							<div>
+								<p class="font-mono type-meta text-muted-foreground tracking-rule uppercase">
+									FEATURES:
+								</p>
+								<ul class="portal-tier__features mt-2">
+									{Tier.features.map((Feature) => (
+										<li class="portal-tier__feature">
+											<span class="portal-tier__feature-index" aria-hidden="true">
+												{Feature.marker}
+											</span>
+											<span class="portal-tier__feature-name">{Feature.name}</span>
+											<span class="portal-tier__feature-description">
+												{Feature.description}
+											</span>
+										</li>
+									))}
+								</ul>
+							</div>
+
+							<div class="PortalTierDivider" aria-hidden="true"></div>
+							<div>
+								<p class="font-mono type-meta text-muted-foreground tracking-rule uppercase">
+									CAPABILITIES:
+								</p>
+								<ul class="portal-tier__capabilities mt-2">
+									{Tier.capabilities.map((Capability) => (
+										<li class="portal-tier__capability">{Capability}</li>
+									))}
+								</ul>
+							</div>
+
+							<div class="PortalTierDivider" aria-hidden="true"></div>
+							<div class="mt-auto pt-3">
+								<FieldRecordAction
+									label={Tier.action.label}
+									href={Tier.action.href}
+									variant="button"
+								/>
+							</div>
+						</article>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<!-- Movement three: the credits. The page's only centred block. -->
+	<section
+		id="portal-footer"
+		aria-label="Portal Credits"
+		class="w-full py-12"
+		style="border-top: var(--BorderWidth) solid color-mix(in srgb, var(--CardForeground) 20%, transparent);"
+	>
+		<div class="container mx-auto px-4">
+			<div class="mx-auto max-w-3xl">
+				<div class="flex flex-col items-center gap-4 text-center">
+					{
+						Page.credits.map((Line) => (
+							<p class="font-mono text-field-s uppercase tracking-wider text-muted-foreground">
+								{Line}
+							</p>
 						))
 					}
-				</div>
-			</div>
-		</section>
-
-		<!-- Movement three: the credits. The page's only centred block. -->
-		<section class="border-border border-t py-12 w-full" aria-label="Portal Credits">
-			<div class="px-4 container mx-auto">
-				<div class="mx-auto max-w-3xl">
-					<div class="flex flex-col gap-4 items-center text-center">
-						{
-							Page.credits.map((Line) => (
-								<p class="font-mono text-field-s uppercase tracking-wider text-muted-foreground">{Line}</p>
-							))
-						}
-						<div class="flex items-center gap-4 mt-4">
-							<a
-								class="font-mono text-field-s uppercase tracking-wider hover:underline text-accent underline-offset-4"
-								href={Page.returnHref}>{Page.returnLabel}</a
-							>
-						</div>
+					<div class="flex items-center gap-4 mt-4">
+						<a
+							class="font-mono text-field-s uppercase tracking-wider hover:underline text-accent underline-offset-4"
+							href={Page.returnHref}>{Page.returnLabel}</a
+						>
 					</div>
 				</div>
 			</div>
-		</section>
-	</div>
+		</div>
+	</section>
 </Base>

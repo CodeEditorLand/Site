@@ -1,39 +1,50 @@
 ---
-// ContactShell - one request route, in one file.
+// ContactShell - one request route, in one file, composed as a record beside its
+// form.
 //
-// Thirteen routes repeated the same fifty-five lines: the document, the header,
-// a breadcrumb with the request title hard-coded into it, the Auth0 identifiers,
-// and the form. The only two things that differed were the request code and the
-// breadcrumb leaf, which is a sign that the file was a config lookup written out
-// thirteen times.
+// ─── THE COMPOSITION (the rail-and-record split) ─────────────────────────
+// The route used to be a page with a form on it. It is now a workspace: the
+// request's *record* in the left column and the *form* in the right, divided by
+// the site's 1px `--Divider`, in the mirror image of the blog article's margin
+// channel (there the piece is left and the apparatus right; here the apparatus is
+// left and the instrument - the form - right, because a form is what the reader
+// came to operate).
 //
-// A route now names its code and nothing else. Everything the shell renders -
-// the trail, the document title and description, the form and the form's own
-// `h1` - is read out of `Requests[code]`, so a route cannot disagree with the
-// registry and a title is written once.
+// The record column carries four things, in reading order:
 //
+//   1. the request's facts (`RecordLedger`, pinned): its code, its statutory
+//      basis, its route, its window and the mailbox it reaches;
+//   2. the process (`RecordStage`, stacked): what happens after the reader sends;
+//   3. the margin note (`RecordMargin`): why this route's window is what it is;
+//   4. the folded aside (`RecordAside`): what this route does not do, with the
+//      route that does it.
+//
+// Nothing in the record column is the form's: the code, basis, route and window
+// are the route's (the same on every visit), and the form keeps what changes per
+// visit - the pair reference and the state word. One screen, one copy of each
+// fact, and the two columns cannot disagree because both read `Requests[code]`.
+//
+// Below 1024px the split is re-composed: the record column becomes a ruled
+// section *under* the form, so the reader meets the instrument first and the
+// apparatus second - which is the right order on a phone, where the form is the
+// reason the page was opened.
+//
+// ─── WHAT THE SHELL KEEPS ────────────────────────────────────────────────
 // The trail keeps the three destinations the routes already had: `/`, then
-// `/Dashboard`, then this request's own title. The grammar is the site's one
-// breadcrumb form (`DESIGN.md` §9 Q3): each crumb prints as `/LABEL`, the
-// leading slash is the only separator, and the label is the request's title -
-// which the form then repeats as the page's `h1`, exactly as the baseline does.
-//
-// The opening is the trail alone: a request route's `h1` is the request title,
-// and the baseline prints it inside the form's chip row rather than in a page
-// header above the form. `ContactPage` therefore gets no `heading`, and
-// `DynamicContactForm` prints the title, the standfirst and the handler address
-// itself.
-//
-// The Auth0 identifiers are read the same way the routes read them - a dynamic
-// import of `Function/Configuration/Auth.js`, which reads the environment at
-// build time. No auth behaviour is changed here.
-//
-// The form is the only island: `DynamicContactForm` hydrates because it holds
-// form state and the Auth0 context. Nothing else in this file needs JavaScript.
+// `/Dashboard`, then this request's own title. The opening is the trail and the
+// route's record head. The Auth0 identifiers are read the same way the routes
+// read them. The form is the only island.
 import ContactPage from "./ContactPage.astro";
 import DynamicContactForm from "../Dynamic/DynamicContactForm";
+import RecordAside from "../Record/RecordAside.astro";
+import RecordLedger from "../Record/RecordLedger.astro";
+import RecordMargin from "../Record/RecordMargin.astro";
+import RecordStage from "../Record/RecordStage.astro";
+import { ContactProcess } from "./Register.js";
 import { Requests, type IncomeCode } from "../../Library/Contact/Request.js";
 import type { ContactTrailItem } from "../../Library/Contact/Data.js";
+
+import type { Aside, LedgerRow, MarginNote, Stage } from "../Record/Type.js";
 
 interface Props {
 	/** The income code whose configuration this route renders. */
@@ -54,18 +65,121 @@ const trail: readonly ContactTrailItem[] = [
 	{ label: "/DASHBOARD", href: "/Dashboard" },
 	{ label: `/${Config.Title.toUpperCase()}` },
 ];
+
+/**
+ * The route's facts. Every row is the registry's own value: `BASIS:` prints
+ * `UNAVAILABLE` for a route with no statutory basis rather than printing nothing,
+ * because "this request is not filed under an article" is a fact a reader is
+ * entitled to and a blank row would hide it.
+ */
+const Record: readonly LedgerRow[] = [
+	{ key: "CODE:", value: Config.Code },
+	{ key: "BASIS:", value: Config.Article ?? "UNAVAILABLE" },
+	{ key: "ROUTE:", value: "/CONTACT", code: true },
+	{ key: "SLA:", value: `${Config.ResponseDays} DAYS` },
+	{ key: "MAILBOX:", value: Config.To, code: true },
+];
+
+/**
+ * What happens after the reader sends, in four steps.
+ *
+ * The steps are the desk's one process (`Register.ts`), read here with the
+ * route's own window in place of the generic sentence - so a 30-day route and a
+ * 7-day route describe the same process and cannot disagree about how long it
+ * takes. Nothing else about the process is restated.
+ */
+const Process: readonly Stage[] = ContactProcess.map((Step) =>
+	Step.index === "03"
+		? {
+				...Step,
+				line: `The answer arrives within ${Config.ResponseDays} days, at the address you gave.`,
+			}
+		: { ...Step },
+);
+
+/** The note in the margin: why this route's window is this route's. */
+const Note: MarginNote = {
+	index: "NOTE_01",
+	label: "THE WINDOW",
+	body: `The ${Config.ResponseDays}-day window belongs to this route, not to the desk: a different request answers in a different window, and the route's record prints its own.`,
+	source: "Source/Library/Contact/Request.ts",
+};
+
+/**
+ * The folded aside: what this route does not do.
+ *
+ * The three rows are the three things a reader most often assumes a request route
+ * does. Each names the route that does it, so the aside is a way forward rather
+ * than a refusal - and the erasure row is only printed when this route is not
+ * already the erasure route.
+ */
+const Aside: Aside = {
+	index: "ASIDE_01",
+	label: "WHAT THIS ROUTE DOES NOT DO",
+	line: "One route, one request.",
+	rows: [
+		{
+			key: "DELETE:",
+			value:
+				Config.Code === "ERASE"
+					? "This is the erasure route: it removes the record it can identify and answers with what was removed."
+					: "Not this route. Erasure is /CONTACT/ERASE, which answers in its own window.",
+		},
+		{
+			key: "EXPORT:",
+			value:
+				Config.Code === "REACH"
+					? "This is the export route: the copy is structured and machine-readable."
+					: "Not this route. A copy of your data is /CONTACT/REACH.",
+		},
+		{
+			key: "URGENT:",
+			value:
+				"UNAVAILABLE - the desk has no priority channel. The window is the commitment, and it is printed above.",
+		},
+	],
+	source: "Source/Library/Contact/Request.ts",
+};
 ---
 
 <ContactPage
 	metaTitle={`${Config.Title} | Code Editor Land`}
 	metaDescription={Config.Subtitle}
 	trail={trail}
+	record={{
+		code: Config.Code,
+		article: Config.Article,
+		route: "/CONTACT",
+		window: Config.ResponseDays,
+	}}
 	opening="trail"
 >
-	<DynamicContactForm
-		client:load
-		Config={Config}
-		Domain={Auth0Domain}
-		ClientIdentifier={Auth0ClientIdentifier}
-	/>
+	<div class="contact-shell">
+		<div class="contact-shell__workspace">
+			<aside class="contact-shell__record" aria-label="Request record">
+				<RecordLedger
+					rows={Record}
+					register={`REQUEST / ${String(Record.length).padStart(2, "0")}`}
+					pinned={true}
+				/>
+
+				<RecordStage stages={Process} orientation="stack" />
+
+				<RecordMargin note={Note} />
+
+				<RecordAside aside={Aside} />
+			</aside>
+
+			<div class="contact-shell__gutter" aria-hidden="true"></div>
+
+			<div class="contact-shell__form">
+				<DynamicContactForm
+					client:load
+					Config={Config}
+					Domain={Auth0Domain}
+					ClientIdentifier={Auth0ClientIdentifier}
+				/>
+			</div>
+		</div>
+	</div>
 </ContactPage>

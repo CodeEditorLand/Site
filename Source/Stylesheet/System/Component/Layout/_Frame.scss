@@ -1,0 +1,385 @@
+// Frame - the running head's cells and the dossier's thumb index.
+//
+// The frame is a document, so it has three registers, and this partial owns the
+// two that are new: the cells the running head prints beside the keeper status
+// line, and the rail that puts the ten parts of the record in the margin.
+//
+// ─── Position is printed, not computed ──────────────────────────────────────
+//
+// `Base.astro` writes the route and the part on `<html>` (`data-record`,
+// `data-section`) because that is the only place the route is known at server
+// render. This partial renders *all ten* parts and inks the one that matches, so
+// every page is correct at first paint, correct with JavaScript off, and cannot
+// shift when the header island hydrates. That is the whole requirement of a
+// running head: it never jumps.
+//
+// ─── The rail's three states ────────────────────────────────────────────────
+//
+//   < 1024px   rows of the header's drawer, under an `INDEX:` field label
+//   1024-1280  nothing - an index needs margin to live in, and at this width
+//              the bar carries the /LABEL destinations and the running head
+//              carries the position
+//   >= 1280px  a fixed column at the page's left edge, digits only
+//
+// The active tab is marked three ways and only one of them is a hue: the tab
+// turns white (the pulled-out tab lying on the creme field), the digit goes to
+// ink at weight 500, and a 2px **ink** rule closes its inner edge. The accent is
+// left to the nav's route marker, so the two registers never compete and the
+// state survives greyscale.
+//
+// Publishes:
+//   .HeaderRunningHead     `# LAND / 03␁DOCUMENTATION` - the record and its part
+//   .HeaderRecordMarker    the `#` that opens it
+//   .HeaderRecordName      the record's name, a link home
+//   .HeaderSectionDivider  the `/` before the part
+//   .HeaderSection         one part; exactly one is inked
+//   .HeaderSectionIndex    the part's series index, quieter than its name
+//   .HeaderPosition        `03␁/␁10` - where this page stands
+//   .FrameRail             the index: rows in the drawer, a column in the margin
+//   .FrameRailLabel        `# INDEX:` (the word only in the drawer)
+//   .FrameRailMark         the `#`
+//   .FrameRailWord         `INDEX:`
+//   .FrameRailTab          one part
+//   .FrameRailIndex        its number
+//   .FrameRailName         its name (the column shows numbers only)
+//   .FrameRailTabClosing   the index itself, closing the rail (`↳`) - not a part
+
+@use "../../Mixin" as *;
+
+// The ten parts, as `data-section` keys. This list is the SCSS half of
+// `Component/Layout/Frame/Data.ts`; the keys are the contract between them, so a
+// part added there is added here in the same commit or it prints nothing.
+$FrameSections:
+	home, download, doc, blog, contact, license, contributing, legal, portal,
+	account;
+
+// The closing row - `/Contents` - is the one position in the frame that is not a
+// part. It is kept out of `$FrameSections` (the ten stay ten) and inked by its
+// own two rules below.
+$FrameClosing: contents;
+
+// The pulled-out tab: white fill, ink at 500, and a rule on the inner edge.
+// `--FrameTabRule` moves the rule from the row's leading edge (the drawer) to the
+// column's inner edge (the margin) without a second selector of its own.
+@mixin frame-tab-active {
+	color: var(--Foreground);
+	font-weight: 500;
+	background: var(--Card);
+
+	.FrameRailIndex {
+		color: var(--Foreground);
+	}
+
+	&::before {
+		content: "";
+		position: absolute;
+		inset-block: 0;
+		inset-inline-start: 0;
+		inline-size: 2px;
+		background: var(--Primary);
+		translate: var(--FrameTabRule, 0) 0;
+	}
+}
+
+// ─── The running head's cells ─────────────────────────────────────────────
+// One line, never wrapped: the band's height is `--HeaderStrip`, and a head that
+// wraps on one page and not another is the jump this whole mechanism exists to
+// prevent. Below 640px the band itself becomes two printed lines (see
+// `_Header.scss`), which is a page-independent decision.
+
+.HeaderRunningHead {
+	@include mono-meta;
+	@include track(var(--track-row));
+	display: flex;
+	align-items: baseline;
+	gap: 0.4em;
+	margin: 0;
+	min-inline-size: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	color: var(--HeaderMuted);
+}
+
+.HeaderRecordMarker {
+	color: var(--Accent);
+}
+
+// The record's name wears the nav label's resting underline: 2px at 20% of the
+// mode's ink, offset `0.12em`. It is the same treatment as a `/LABEL` in the bar,
+// so the head's one link reads as a link without becoming a second button.
+.HeaderRecordName {
+	color: var(--HeaderFg);
+	text-decoration: underline;
+	text-decoration-color: color-mix(in srgb, var(--HeaderFg) 20%, transparent);
+	text-decoration-thickness: 2px;
+	text-underline-offset: 0.12em;
+	transition:
+		text-decoration-color 0.15s ease,
+		color 0.15s ease;
+}
+
+.HeaderRecordName:hover {
+	color: var(--Accent);
+	text-decoration-color: var(--Accent);
+}
+
+.HeaderSectionDivider {
+	color: var(--HeaderMuted);
+}
+
+// Every part is rendered; one is inked. The name carries the ink because the
+// name is the fact - the number is its address.
+.HeaderSection {
+	display: none;
+	color: var(--HeaderFg);
+}
+
+.HeaderSectionIndex {
+	color: var(--HeaderMuted);
+}
+
+// The reader's position in the document. Hidden below 640px: the band prints two
+// lines there and the section's own index already states the same number.
+.HeaderPosition {
+	display: none;
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-row);
+	color: var(--HeaderMuted);
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+
+	> span {
+		display: none;
+	}
+}
+
+@include bp(640px) {
+	.HeaderPosition {
+		display: block;
+	}
+}
+
+@each $Key in $FrameSections {
+	html[data-section="#{$Key}"] .HeaderSection[data-section="#{$Key}"] {
+		display: inline;
+	}
+}
+
+// The unfiled record: a 404 or a visit record belongs to no part, and `◎` is the
+// grammar's mark for a thing with no glyph. It prints the mark and the word
+// instead of pretending to be part of a section it is not in.
+html[data-section="unfiled"] .HeaderSection[data-section="unfiled"] {
+	display: inline;
+}
+
+// The closing row's position. `/Contents` is a place in the frame - the head
+// must say so, or the one page that files everything would print `◎ UNFILED` -
+// but it is not a part, so it is inked by its own rule and never counted.
+html[data-section="contents"] .HeaderSection[data-section="contents"] {
+	display: inline;
+}
+
+@include bp(640px) {
+	html[data-section="unfiled"]
+		.HeaderPosition
+		> span[data-section="unfiled"] {
+		display: inline;
+	}
+
+	html[data-section="contents"]
+		.HeaderPosition
+		> span[data-section="contents"] {
+		display: inline;
+	}
+
+	@each $Key in $FrameSections {
+		html[data-section="#{$Key}"]
+			.HeaderPosition
+			> span[data-section="#{$Key}"] {
+			display: inline;
+		}
+	}
+}
+
+// ─── The composition language, printed after the part ─────────────────────
+//
+// `# LAND / 03␁DOCUMENTATION / READING`. The same mechanism as the part: every
+// answer is rendered, `html[data-layout]` inks the one that matches, and
+// `Base.astro` writes the attribute from `Shell/Language.ts`'s route register.
+// It is hidden below 640px for the same reason `HeaderPosition` is: the band
+// prints two lines there and the part's own name is the fact that matters.
+//
+// `RECORD` is the fifth answer and it is not a failure: a one-artifact page
+// (a credential card, an index, the register wall) has no tracks to distribute,
+// and printing a language it does not have would be the drift this register
+// exists to end.
+
+.HeaderLayoutDivider {
+	display: none;
+	color: var(--HeaderMuted);
+}
+
+.HeaderLayout {
+	display: none;
+	color: var(--HeaderFg);
+}
+
+.HeaderLayoutWord {
+	display: none;
+}
+
+@each $Key in reading, workspace, audit, plate, record {
+	html[data-layout="#{$Key}"] .HeaderLayoutWord[data-layout="#{$Key}"] {
+		display: inline;
+	}
+}
+
+@include bp(640px) {
+	.HeaderLayoutDivider,
+	.HeaderLayout {
+		display: inline;
+	}
+}
+
+// ─── The rail: the drawer's rows ──────────────────────────────────────────
+
+.FrameRail {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+}
+
+.FrameRailLabel {
+	@include mono-meta;
+	@include track(var(--track-row));
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+	margin: 0;
+	padding-block: var(--space-tight);
+
+	@include hairline(top);
+}
+
+.FrameRailMark {
+	color: var(--Accent);
+}
+
+.FrameRailTab {
+	position: relative;
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+	padding-block: var(--space-tight);
+	color: var(--MuteForeground);
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-row);
+	text-decoration: none;
+	transition: color var(--motion-interval-quick) var(--motion-enter-easing);
+
+	@include hairline(bottom);
+}
+
+.FrameRailTab:hover {
+	color: var(--Foreground);
+}
+
+.FrameRailIndex {
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+.FrameRailName {
+	color: var(--Foreground);
+	text-transform: uppercase;
+	letter-spacing: var(--track-row);
+}
+
+// ─── The closing row: the index itself ────────────────────────────────────
+//
+// The ten tabs above are the parts. `/Contents` is the index *of* them, so it
+// closes the rail rather than joining the series: a gap opens it, and the number
+// a part prints is replaced by the grammar's relation mark (`↳`). It rests
+// quieter than a part - both cells at mute, ink on hover - because the ten are
+// the record and this is only where you look them up. On `/Contents` it inks
+// like a tab, because that is the page it opens.
+.FrameRailTabClosing {
+	margin-block-start: var(--space-tight);
+
+	.FrameRailName {
+		color: var(--MuteForeground);
+	}
+
+	&:hover .FrameRailName,
+	&:focus-visible .FrameRailName {
+		color: var(--Foreground);
+	}
+}
+
+@each $Key in $FrameSections {
+	html[data-section="#{$Key}"] .FrameRailTab[data-section="#{$Key}"] {
+		@include frame-tab-active;
+	}
+}
+
+// The closing row is pulled out when the reader is open at the index itself.
+html[data-section="contents"] .FrameRailTab[data-section="contents"] {
+	@include frame-tab-active;
+
+	.FrameRailName {
+		color: var(--Foreground);
+	}
+}
+
+// ─── The rail at 1024px and up ────────────────────────────────────────────
+// The panel stops being a drawer and becomes the bar's second half, so the rail
+// leaves it: at this width there is no margin for an index to live in, and the
+// running head already states the part and the position. It comes back as a
+// column at 1280px, where `band-inner`'s 72rem container leaves 64px of margin
+// either side of the text.
+
+@include bp(1024px) {
+	.FrameRail {
+		display: none;
+	}
+}
+
+@include bp(1280px) {
+	.FrameRail {
+		display: flex;
+		position: fixed;
+		inset-block-start: 50%;
+		inset-inline-start: 0;
+		translate: 0 -50%;
+		z-index: 40;
+		inline-size: 2.25rem;
+		background: var(--HeaderSurface);
+		border-inline-end: 1px solid var(--Border);
+	}
+
+	.FrameRailLabel {
+		justify-content: center;
+	}
+
+	.FrameRailWord {
+		display: none;
+	}
+
+	.FrameRailTab {
+		--FrameTabRule: calc(2.25rem - 2px);
+
+		justify-content: center;
+		block-size: 1.9rem;
+		padding-block: 0;
+		gap: 0;
+	}
+
+	.FrameRailName {
+		display: none;
+	}
+}

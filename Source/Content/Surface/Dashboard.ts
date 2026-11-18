@@ -286,7 +286,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 		Partners: T("common.dashboard.partners.heading", {
 			defaultValue: "Partners & Attribution",
 		}),
-		ComingSoon: T("common.comingSoon", { defaultValue: "Coming Soon" }),
+		ComingSoon: T("common.comingSoon", { defaultValue: "PLANNED" }),
 	};
 
 	return {

@@ -1,0 +1,171 @@
+// RecordTrace - the path a claim can be checked along.
+//
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  provenance: where a claim can be checked, in the order the
+//                   source names it.
+// RANK              set.
+// SLOT CONTRACT     .record-trace                 the trace shell
+//                   .record-trace__marker        `# TRACE / LABEL␁NN STEPS`
+//                   .record-trace__steps         the ordered list
+//                   .record-trace__step          one step: index, arrow, path, note
+//                   .record-trace__index         the caller's own numbering
+//                   .record-trace__arrow         `→`, aria-hidden
+//                   .record-trace__path          the path or command, in `<code>`
+//                   .record-trace__link          the path as an anchor, when it leads somewhere
+//                   .record-trace__note          `↳` and the one thing the step carries
+//                   .record-trace__note-mark     `↳`, aria-hidden
+//                   .record-trace__source        `SOURCE:` and where the trace came from
+//                   .record-trace__empty         what the trace says with no steps
+// MAY HOLD          nothing.
+// NARROW            the note moves under the path, indented past the index column;
+//                   a long path wraps inside its own line and never pushes the
+//                   note off the row.
+// WIDE (>=768)      the path takes the left measure and the note a 20ch column at
+//                   the right, so fifteen traces down a page align on the note.
+// DENSE             none, by design. A trace is a reading: compressing it produces
+//                   a list of links, and a list of links is not evidence.
+//
+// The rule between steps is the row's own top hairline, drawn from the note's
+// edge to the path's, so the trace reads as one ruled run rather than as a set of
+// lines. The first step opens without it: the marker line already ends the run
+// above.
+//
+// The path is set in `<code>` because it is a literal - a file, a command, a
+// route - and the site's one rule for a literal is that the markup says so. The
+// note is muted: it is a proposition about the path, not the path itself.
+
+@use "../Mixin" as *;
+
+.record-trace {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+	margin: 0;
+}
+
+.record-trace__marker {
+	@include mono-meta;
+	@include track(var(--track-row));
+	margin: 0;
+	color: var(--Foreground);
+}
+
+.record-trace__steps {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	min-inline-size: 0;
+}
+
+// One step: the index holds a fixed 2ch column, the arrow a 1ch one, and the
+// path and note share the rest. `baseline` alignment is what keeps a 13px note
+// on the path's own line at the wide setting.
+.record-trace__step {
+	@include hairline(top);
+	display: grid;
+	grid-template-columns: 2ch 1ch minmax(0, 1fr);
+	column-gap: var(--space-tight);
+	align-items: baseline;
+	margin: 0;
+	padding-block: var(--space-tight);
+	min-inline-size: 0;
+}
+
+.record-trace__step:first-child {
+	border-block-start: 0;
+}
+
+.record-trace__index {
+	font-variant-numeric: tabular-nums;
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.record-trace__arrow {
+	@include mono-meta;
+	color: var(--MuteForeground);
+}
+
+.record-trace__path {
+	min-inline-size: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--Foreground);
+	overflow-wrap: anywhere;
+}
+
+.record-trace__path code {
+	font: inherit;
+	letter-spacing: var(--track-set);
+	background: none;
+	padding: 0;
+}
+
+.record-trace__link {
+	color: inherit;
+	text-decoration: none;
+	border-block-end: 1px solid var(--Border);
+}
+
+.record-trace__link:hover {
+	border-block-end-color: var(--Accent);
+}
+
+// The note sits under the path below 768 and in its own column above it. It is
+// the third grid column at every width; at narrow the path and the note stack by
+// spanning both remaining tracks.
+.record-trace__note {
+	grid-column: 3 / -1;
+	display: block;
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+	overflow-wrap: anywhere;
+}
+
+.record-trace__note-mark {
+	margin-inline-end: 0.4ch;
+}
+
+@include bp(768px) {
+	.record-trace__step {
+		grid-template-columns: 2ch 1ch minmax(0, 1fr) minmax(14ch, 20ch);
+	}
+
+	.record-trace__note {
+		grid-column: 4 / -1;
+		text-align: start;
+	}
+}
+
+// `SOURCE:` closes the run at the caption weight: it is the trace's own
+// provenance and never the loudest line on it.
+.record-trace__source {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+	overflow-wrap: anywhere;
+}
+
+.record-trace__source-key {
+	@include track(var(--track-row));
+}
+
+// The empty trace: the marker line still prints, and one composed sentence takes
+// the place of the steps. No frame - an empty trace is not a box waiting.
+.record-trace__empty {
+	margin: 0;
+	max-inline-size: 62ch;
+	padding-block: var(--space-tight);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--MuteForeground);
+}

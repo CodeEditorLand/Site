@@ -3,6 +3,9 @@ import { Header } from "../../Component/Layout/Header";
 import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
 import ReadingDocument from "../../Component/Reading/ReadingDocument.astro";
+import BandFoot from "../../Component/Detail/BandFoot.astro";
+import TrustClause from "../../Component/Trust/TrustClause.astro";
+import { ComposeFacts } from "../../Component/Trust/Facts.js";
 import Trail from "../../Component/Route/Trail.astro";
 import { Index, Ledger } from "../../Library/Document/Privacy/Data.js";
 
@@ -27,9 +30,9 @@ const LastUpdated = "May 29, 2026";
 	Url={Astro.url.href}
 	lang="en">
 	<Header client:load Mode="functional" slot="Header" />
-	<div class="container mx-auto max-w-4xl px-4 py-16">
+	<div class="trust-page">
 		<Trail
-			class="LegalPrintHide mb-8"
+			class="LegalPrintHide trust-page__trail"
 			trail={[
 				{ label: "/HOME", href: "/" },
 				{ label: "/PRIVACY POLICY" },
@@ -40,9 +43,12 @@ const LastUpdated = "May 29, 2026";
 			kicker="/LEGAL"
 			heading="Privacy Policy"
 			standfirst="How we collect, use, and protect your personal data in connection with our website, editor, and related services."
-			rows={Ledger}
+			rows={ComposeFacts(Ledger)}
 			index={Index}
 			indexLabel="Clauses"
+			layout="rail"
+			ledgerSurface="standard"
+			ledgerColumns={2}
 			bodyClass="LegalCard">
 			<p class="reading-document__title" id="privacy-policy"
 				>PRIVACY POLICY</p
@@ -55,7 +61,7 @@ const LastUpdated = "May 29, 2026";
 				{LastUpdated}
 			</p>
 
-			<h2 class="reading-clause" id="introduction">Introduction</h2>
+			<TrustClause number="01" id="introduction">Introduction</TrustClause>
 
 			<p>Welcome to Code Editor Land.</p>
 
@@ -90,7 +96,7 @@ const LastUpdated = "May 29, 2026";
 				with this Privacy Policy constitute your agreement with us.
 			</p>
 
-			<h2 class="reading-clause" id="definitions">Definitions</h2>
+			<TrustClause number="02" id="definitions">Definitions</TrustClause>
 
 			<p>
 				<strong>SERVICE</strong> means the <a
@@ -145,9 +151,9 @@ const LastUpdated = "May 29, 2026";
 				Data.
 			</p>
 
-			<h2 class="reading-clause" id="information-collection-and-use">
+			<TrustClause number="03" id="information-collection-and-use">
 				Information Collection and Use
-			</h2>
+			</TrustClause>
 
 			<p>
 				We collect several different types of information for various
@@ -155,7 +161,7 @@ const LastUpdated = "May 29, 2026";
 				to you.
 			</p>
 
-			<h2 class="reading-clause" id="types-of-data-collected">Types of Data Collected</h2>
+			<TrustClause number="04" id="types-of-data-collected">Types of Data Collected</TrustClause>
 
 			<p><strong>Personal Data</strong></p>
 
@@ -268,7 +274,7 @@ const LastUpdated = "May 29, 2026";
 				our Service.
 			</p>
 
-			<h2 class="reading-clause" id="use-of-data">Use of Data</h2>
+			<TrustClause number="05" id="use-of-data">Use of Data</TrustClause>
 
 			<p>
 				Code Editor Land uses the collected data for various purposes:
@@ -323,7 +329,7 @@ const LastUpdated = "May 29, 2026";
 				<li>for any other purpose with your consent.</li>
 			</ol>
 
-			<h2 class="reading-clause" id="retention-of-data">Retention of Data</h2>
+			<TrustClause number="06" id="retention-of-data">Retention of Data</TrustClause>
 
 			<p>
 				We will retain your Personal Data only for as long as is
@@ -348,7 +354,7 @@ const LastUpdated = "May 29, 2026";
 				processing purposes.
 			</p>
 
-			<h2 class="reading-clause" id="transfer-of-data">Transfer of Data</h2>
+			<TrustClause number="07" id="transfer-of-data">Transfer of Data</TrustClause>
 
 			<p>
 				Your information, including Personal Data, may be transferred to
@@ -384,7 +390,7 @@ const LastUpdated = "May 29, 2026";
 				information.
 			</p>
 
-			<h2 class="reading-clause" id="disclosure-of-data">Disclosure of Data</h2>
+			<TrustClause number="08" id="disclosure-of-data">Disclosure of Data</TrustClause>
 
 			<p>
 				We may disclose personal information that we collect, or you
@@ -438,7 +444,7 @@ const LastUpdated = "May 29, 2026";
 				monetary consideration in this policy.
 			</p>
 
-			<h2 class="reading-clause" id="security-of-data">Security of Data</h2>
+			<TrustClause number="09" id="security-of-data">Security of Data</TrustClause>
 
 			<p>
 				The security of your data is important to us, but remember that
@@ -455,11 +461,10 @@ const LastUpdated = "May 29, 2026";
 				to reduce security risk.
 			</p>
 
-			<h2 class="reading-clause"
-				id="your-data-protection-rights-under-general-data-protection-regulation-gdpr">
+			<TrustClause number="10" id="your-data-protection-rights-under-general-data-protection-regulation-gdpr">
 				Your Data Protection Rights Under General Data Protection
 				Regulation (GDPR)
-			</h2>
+			</TrustClause>
 
 			<p>
 				If you are a resident of the European Union or European Economic
@@ -526,11 +531,10 @@ const LastUpdated = "May 29, 2026";
 				authority.
 			</p>
 
-			<h2 class="reading-clause"
-				id="your-data-protection-rights-under-the-california-privacy-protection-act-caloppa">
+			<TrustClause number="11" id="your-data-protection-rights-under-the-california-privacy-protection-act-caloppa">
 				Your Data Protection Rights under the California Privacy
 				Protection Act (CalOPPA)
-			</h2>
+			</TrustClause>
 
 			<p>
 				CalOPPA requires commercial websites and online services that
@@ -576,11 +580,10 @@ const LastUpdated = "May 29, 2026";
 				Service may not respond uniformly to all such signals.
 			</p>
 
-			<h2 class="reading-clause"
-				id="your-data-protection-rights-under-the-california-consumer-privacy-act-ccpa">
+			<TrustClause number="12" id="your-data-protection-rights-under-the-california-consumer-privacy-act-ccpa">
 				Your Data Protection Rights under the California Consumer
 				Privacy Act (CCPA)
-			</h2>
+			</TrustClause>
 
 			<p>
 				If you are a California resident, you may be entitled to learn
@@ -643,7 +646,7 @@ const LastUpdated = "May 29, 2026";
 				>.
 			</p>
 
-			<h2 class="reading-clause" id="service-providers">Service Providers</h2>
+			<TrustClause number="13" id="service-providers">Service Providers</TrustClause>
 
 			<p>
 				We may employ third-party companies and individuals to
@@ -728,7 +731,7 @@ const LastUpdated = "May 29, 2026";
 									>.
 								</p>
 
-								<h2 class="reading-clause" id="payments">Payments</h2>
+								<TrustClause number="14" id="payments">Payments</TrustClause>
 
 				<p>
 					We may provide paid products and/or services within Service.
@@ -750,7 +753,7 @@ const LastUpdated = "May 29, 2026";
 					time of payment.
 				</p>
 
-				<h2 class="reading-clause" id="links-to-other-sites">Links to Other Sites</h2>
+				<TrustClause number="15" id="links-to-other-sites">Links to Other Sites</TrustClause>
 
 				<p>
 					Our Service may contain links to other sites that are not
@@ -765,7 +768,7 @@ const LastUpdated = "May 29, 2026";
 					sites or services.
 				</p>
 
-				<h2 class="reading-clause" id="childrens-privacy">Children's Privacy</h2>
+				<TrustClause number="16" id="childrens-privacy">Children's Privacy</TrustClause>
 
 				<p>
 					Our Service is not directed to children under the age of 13,
@@ -782,9 +785,9 @@ const LastUpdated = "May 29, 2026";
 					information from our systems.
 				</p>
 
-				<h2 class="reading-clause" id="changes-to-this-privacy-policy">
+				<TrustClause number="17" id="changes-to-this-privacy-policy">
 					Changes to This Privacy Policy
-				</h2>
+				</TrustClause>
 
 				<p>
 					We may update our Privacy Policy from time to time. We will
@@ -805,7 +808,7 @@ const LastUpdated = "May 29, 2026";
 					effective when they are posted on this page.
 				</p>
 
-				<h2 class="reading-clause" id="contact-us">Contact Us</h2>
+				<TrustClause number="18" id="contact-us">Contact Us</TrustClause>
 
 				<p>
 					If you have any questions about this Privacy Policy, please
@@ -839,7 +842,7 @@ const LastUpdated = "May 29, 2026";
 
 				<p>By mail: PlayForm / Code Editor Land, Sofia, Bulgaria.</p>
 
-			<div class="LegalPrintHide mt-12 border-t pt-8">
+			<div class="LegalPrintHide trust-page__close">
 				<a
 					href="#top"
 					class="StaccatoButton text-primary hover:underline"
@@ -871,6 +874,42 @@ const LastUpdated = "May 29, 2026";
 					}
 				}
 			</script>
+
+			{/* The document's foot: the places this policy is answered, and where
+			    in the document the reader has got to. The request routes are the
+			    registry's own, so a reader who has just read a right can act on
+			    it without hunting the front desk. */}
+			<BandFoot
+				surface="card"
+				index="06"
+				part="/THE BACK MATTER"
+				see={[
+					{
+						route: "/LEGAL/TERM",
+						href: "/Legal/Term",
+						reason: "the terms of use that sit beside this policy",
+					},
+					{
+						route: "/CONTACT/REACH",
+						href: "/Contact/Reach",
+						reason:
+							"the request route for access to your data, and for a copy of it (GDPR Art. 15 + 20)",
+					},
+					{
+						route: "/CONTACT/ERASE",
+						href: "/Contact/Erase",
+						reason: "the request route for erasure, when this policy's retention no longer applies",
+					},
+				]}
+				figure={{ value: "18", unit: "CLAUSES" }}
+				asOf={LastUpdated}
+				source="SOURCE/PAGES/LEGAL/PRIVACY.ASTRO"
+			/>
 		</ReadingDocument>
 	</div>
 </Base>
+
+<script>
+	import { WireTrustContents } from "../../Component/Trust/TrustContents.js";
+	WireTrustContents();
+</script>

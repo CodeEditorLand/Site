@@ -101,15 +101,19 @@ describe("DynamicHeroSection", () => {
 			<DynamicHeroSection Content={MinimalContent} />,
 		);
 
-		expect(screen.getByText("TARGET")).toBeInTheDocument();
+		// The colon is part of the label (`DESIGN-COMPLETE.md` §1.5), so the
+		// key is asserted as the record prints it - the earlier assertion here
+		// asked for `TARGET` and had been failing since the colons were
+		// restored by K4.
+		expect(screen.getByText("TARGET:")).toBeInTheDocument();
 
 		expect(screen.getByText("MACOS / WINDOWS / LINUX")).toBeInTheDocument();
 
-		expect(screen.getByText("LICENSE")).toBeInTheDocument();
+		expect(screen.getByText("LICENSE:")).toBeInTheDocument();
 
 		expect(screen.getByText("CC0")).toBeInTheDocument();
 
-		expect(screen.getByText("SIGNAL")).toBeInTheDocument();
+		expect(screen.getByText("SIGNAL:")).toBeInTheDocument();
 
 		expect(screen.getByText("LOCAL-FIRST")).toBeInTheDocument();
 
@@ -191,6 +195,44 @@ describe("DynamicHeroSection", () => {
 		expect(
 			screen.getByRole("link", { name: "/BUILD FROM SOURCE" }),
 		).toContainElement(screen.getByRole("button"));
+	});
+
+	it("carries the runtime path as the pair's foot, not inside the evidence panel", () => {
+		const { container } = render(
+			<DynamicHeroSection Content={MinimalContent} />,
+		);
+
+		// The rail is the panel's wiring: it lives in its own block under the
+		// pair (`hero-band__trace`), and it is not a child of the evidence
+		// figure - which is what kept the plate from being full height.
+		const Trace = container.querySelector(".hero-band__trace");
+
+		expect(Trace).not.toBeNull();
+
+		expect(Trace?.querySelector(".record-stage")).toBeNull();
+
+		// The steps themselves arrive through the `stage` slot, so the unit
+		// render (no slot) prints the label and reserves the block; the route
+		// hands it the `RecordStage` the FeatureBand used to print.
+		expect(Trace).toHaveTextContent("RUNTIME PATH");
+
+		expect(
+			container.querySelector(".hero-band__evidence .record-stage"),
+		).toBeNull();
+	});
+
+	it("reserves the blank interval inside the card, hidden from readers", () => {
+		const { container } = render(
+			<DynamicHeroSection Content={MinimalContent} />,
+		);
+
+		const Blank = container.querySelector(".hero-band__blank");
+
+		expect(Blank).not.toBeNull();
+
+		// It is a reserved region, not content: the system requires 15-25% of
+		// the card and the reader is told nothing by it.
+		expect(Blank).toHaveAttribute("aria-hidden", "true");
 	});
 
 	it("is not a click target and carries no floating cards", () => {

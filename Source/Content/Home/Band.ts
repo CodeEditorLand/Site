@@ -45,16 +45,27 @@ export const HomeBands = (T: HomeTranslate): readonly BandHead[] => [
 		Heading: T("home:roadmap.title", {
 			defaultValue: "The Architecture Is Built. Here Is What Comes Next.",
 		}),
+		Standfirst:
+			"Two releases: the active source today, and v1.0 when signed installers ship. Each card prints the six elements it carries and the six manifest rows it declares.",
 		Stamp: RoadmapStamp,
 	},
 	{
 		ID: "testimonials",
 		Kicker: "Architecture",
-		Heading: T("home:architecture.title", { defaultValue: "Under the Hood" }),
+		Heading: T("home:architecture.title", {
+			defaultValue: "Under the Hood",
+		}),
 		Standfirst: T("home:architecture.subtitle", {
 			defaultValue:
 				"Each element replaces one piece of the Electron stack. All inspectable in source.",
 		}),
+	},
+	{
+		ID: "method",
+		Kicker: "Method",
+		Heading: "How The Claim Is Checked",
+		Standfirst:
+			"Six stages build it, twelve facts describe what comes out, and three documented failures stop it before it opens. The source is public today; the release is not.",
 	},
 	{
 		ID: "download",
@@ -68,10 +79,7 @@ export const HomeBands = (T: HomeTranslate): readonly BandHead[] => [
 ];
 
 /** The band a page section is named for, by id. */
-export const BandOf = (
-	Bands: readonly BandHead[],
-	ID: string,
-): BandHead => {
+export const BandOf = (Bands: readonly BandHead[], ID: string): BandHead => {
 	const Found = Bands.find((Band) => Band.ID === ID);
 
 	if (Found === undefined) {

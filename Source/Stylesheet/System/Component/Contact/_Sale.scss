@@ -117,11 +117,10 @@
 	opacity: 0.9;
 }
 
-// `text-xl font-medium mb-4`: the page's only `h2`, one step over the prose.
+// `text-xl font-medium mb-4`: the page's only `h2` - L, the ladder's tier for a
+// section head, which is what this is.
 .contact-sale__heading {
-	margin: 0 0 1rem;
-	font-size: 1.25rem;
-	line-height: 1.4;
+	margin: 0 0 var(--space-reading);
 	font-weight: 500;
 	color: var(--CardForeground);
 }
@@ -157,11 +156,10 @@
 	color: var(--CardForeground);
 }
 
-// `font-medium mb-3`: a card's title at body size, one step over its own text.
+// `font-medium mb-3`: a card's title - an `h3`, so the S heading, one hard tier
+// over the text it introduces.
 .contact-sale__subheading {
 	margin: 0 0 0.75rem;
-	font-size: var(--type-body);
-	line-height: var(--type-body-line);
 	font-weight: 500;
 	color: var(--CardForeground);
 }

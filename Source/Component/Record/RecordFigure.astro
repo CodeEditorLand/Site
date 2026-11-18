@@ -4,27 +4,69 @@
  * caption weight, and the provenance line that says what the picture is
  * evidence *of*.
  *
- * Three render modes, decided by what the caller hands in:
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  evidence - what a picture, a diagram or a chart shows, and
+ *                   where it came from. Not a measurement (that is
+ *                   RecordInstrument) and not a decoration: an uncaptioned
+ *                   figure is a picture, and a picture is not evidence.
+ * RANK              leaf.
+ * SLOT CONTRACT     caption     -> the sentence at caption weight (required)
+ *                   provenance? -> the source line: file, manifest, measurement
+ *                   src + alt   -> the image arm, framed through
+ *                                  `FieldRecordEvidence` (one field pair: `alt`
+ *                                  is required whenever `src` is set)
+ *                   position?   -> the primitive's `object-position`
+ *                   default slot-> the composed arm: a chart, a diagram, a
+ *                                  rendered element, framed the same way
+ *                   neither     -> the caption alone, no frame drawn around
+ *                                  nothing (a figure whose evidence is its
+ *                                  sentence)
+ *                   captionPlacement? -> `below` (default) or `channel`
+ *                   state?      -> the tombstone: the evidence is not there
+ * MAY HOLD          composed media in the slot. The block never renders Mermaid
+ *                   itself - the caller owns the diagram and its output.
+ * MAY NOT HOLD      another figure, a second caption, a seal or a `SpecimenLabel`
+ *                   (a seal on evidence is a claim about who looked at it).
+ * WIDE              the frame takes the column it is given; the caption is
+ *                   measure-capped at 62ch so it never runs wider than the prose
+ *                   it belongs to. In the `channel` placement the caption takes
+ *                   a 24-28ch column of its own beside the plate.
+ * NARROW            the frame goes full-bleed to its container, the caption
+ *                   stays at caption weight under it, and the provenance wraps
+ *                   to its own line rather than truncating. A diagram wider than
+ *                   the column scrolls inside its frame - the frame is the
+ *                   scroll container, so the page grid never widens. The
+ *                   channel placement stacks: caption under the plate.
+ * DENSE             none. Evidence gets its size; a small figure is a thumbnail,
+ *                   and a thumbnail is a decoration.
  *
- * - `src` + `alt` - an image, framed. The two are one field pair: `alt` is
- *   required whenever `src` is set, so an image without alternative text
- *   cannot compile.
- * - the slot - composed media: a Mermaid diagram, a chart, a rendered element.
- *   Framed the same way. The block never renders Mermaid itself; the caller
- *   owns the diagram and its output.
- * - neither - the caption alone, with no frame. A figure whose evidence is its
- *   sentence (a measured claim, a quoted manifest line) needs no box drawn
- *   around nothing.
+ * THE CHANNEL PLACEMENT is a variant of this block, not a second block: the
+ * information type is the same, and only the caption's position changes. It
+ * exists because a plate as wide as the page and a caption under it are read at
+ * the wrong distance from each other - the caption belongs beside the plate,
+ * where the eye can move between them without crossing the whole width. In the
+ * channel the caption's two parts are printed as labelled rows (`FIGURE:` /
+ * `SOURCE:`), because a channel has no room for the below-placement's stacked
+ * voice and a bare sentence beside a plate reads as a second paragraph.
+ *
+ * THE TOMBSTONE. `state` is the evidence's own state: the image target is gone
+ * (`UNAVAILABLE`), the capture failed (`INTERRUPTED`), the diagram is still
+ * arriving (`LOADING`). The frame then prints the mark, the vocabulary's word
+ * and - through the caption - what the missing evidence would have shown. That
+ * is the difference between a record and a broken image: the browser's own
+ * broken-image glyph is not in the site's grammar.
  *
  * No `<script>` and no `client:*`: this block ships zero JavaScript. No
- * lightbox, no zoom, no hover treatment - `SpecimenLabel` and
- * `FieldRecordSeal` are the caller's decoration, and a figure is not a
- * specimen.
+ * lightbox, no zoom, no hover treatment.
  *
- * The caption is never numbered here. A figure index ("FIGURE 02 · ...")
- * belongs to the caller's caption text, because only the page knows the order
- * its figures appear in.
+ * The caption is never numbered here. A figure index ("FIGURE 02 / ...") belongs
+ * to the caller's caption text, because only the page knows the order its
+ * figures appear in - the `FIGURE:` key in the channel placement names the part,
+ * not the order.
  */
+import { FieldRecordEvidence } from "../Brand/FieldRecordEvidence";
+import { Tone } from "../Surface/State.js";
+
 import type { Figure } from "./Type.js";
 
 /** The image arm: `src` and `alt` are one indivisible pair. */
@@ -49,9 +91,22 @@ type Props = Omit<Figure, "src" | "alt"> &
 	Media & {
 		/** Extra classes from the page, appended after the block's own. */
 		readonly class?: string;
+
+		/**
+		 * The primitive's `object-position`, e.g. `"right"` when the subject of
+		 * the photograph sits off-centre. Defaults to `center`.
+		 */
+		readonly position?: string;
 	};
 
-const { caption, provenance, class: Class } = Astro.props;
+const {
+	caption,
+	provenance,
+	position,
+	captionPlacement = "below",
+	state,
+	class: Class,
+} = Astro.props;
 
 /**
  * The image arm as a value. A type guard rather than a truthiness test because
@@ -71,17 +126,43 @@ const Image = IsPicture(Astro.props)
  * children the image wins - one figure shows one thing.
  */
 const Composed = Astro.slots.has("default");
+
+/** The caption's placement, and whether the plate escapes the container. */
+const Channel = captionPlacement === "channel";
+
+/** The state word's tone, from the one table that decides tones. */
+const StateTone = state ? (Tone(state.toUpperCase()) ?? "ink") : undefined;
+
+/** The tombstone replaces the media: the evidence is not there. */
+const Absent = state !== undefined;
 ---
 
-<figure class:list={["record-figure", Class]}>
+<figure
+	class:list={[
+		"record-figure",
+		Channel && "record-figure--channel",
+		Absent && "record-figure--absent",
+		Class,
+	]}
+>
 	{
-		Image ? (
+		Absent ? (
+			<div class="record-figure__absent">
+				<span class="record-figure__absent-mark" aria-hidden="true">
+					&#9678;
+				</span>
+				<span class:list={["record-figure__absent-state", `record-figure__absent-state--${StateTone}`]}>
+					<span class="record-figure__absent-key">STATUS:</span>
+					{state.toUpperCase()}
+				</span>
+			</div>
+		) : Image ? (
 			<div class="record-figure__media">
-				<img
+				<FieldRecordEvidence
 					src={Image.src}
 					alt={Image.alt}
-					loading="lazy"
-					decoding="async"
+					position={position}
+					className="record-figure__plate"
 				/>
 			</div>
 		) : Composed ? (
@@ -90,11 +171,34 @@ const Composed = Astro.slots.has("default");
 			</div>
 		) : null
 	}
-	<figcaption class="record-figure__caption">
-		<span class="record-figure__caption-text">{caption}</span>
+
+	<figcaption
+		class:list={[
+			"record-figure__caption",
+			Channel && "record-figure__caption--channel",
+		]}
+	>
 		{
-			provenance && (
-				<span class="record-figure__provenance">{provenance}</span>
+			Channel ? (
+				<>
+					<span class="record-figure__row">
+						<span class="record-figure__key">FIGURE:</span>
+						<span class="record-figure__caption-text">{caption}</span>
+					</span>
+					<span class="record-figure__row">
+						<span class="record-figure__key">SOURCE:</span>
+						<span class="record-figure__provenance">
+							{provenance ?? "UNAVAILABLE"}
+						</span>
+					</span>
+				</>
+			) : (
+				<>
+					<span class="record-figure__caption-text">{caption}</span>
+					{provenance && (
+						<span class="record-figure__provenance">{provenance}</span>
+					)}
+				</>
 			)
 		}
 	</figcaption>

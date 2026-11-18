@@ -8,21 +8,29 @@
  * above it, so a figure on the page can be traced back to the file that states
  * it.
  *
- * Three tables, in page order: the masthead's eight marks, the release
- * manifest's three platform entries, and the disclosure section's content. The
- * manifest is ordered by the baseline render - index, platform stamp, channel
- * route, `ARCH:`, `SIGNING:`, `SIZE:`, `CHECKSUM:`, status, action - and not by
- * the design document's longer field list, because a field the tree cannot fill
- * is a field this page would have to invent a value for.
+ * The tables are in the order the record reads them: the masthead's eight
+ * marks, the record's own head, the release-level ledger, the three platform
+ * targets and their matrix, the two build steps, the verification record, and
+ * the six regions the artifact continues into. The record-level facts print
+ * once; the platform-level facts print once per target. That division is the
+ * whole of the recomposition - the baseline printed the same six fields on
+ * three cards.
  */
 import type TransparencyContent from "../Interface/Content/Transparency.js";
 
-import type { LedgerRow, MatrixColumn } from "../../Record/Type.js";
+import type {
+	Aside,
+	Comparison,
+	LedgerRow,
+	MatrixColumn,
+	Well,
+} from "../../Record/Type.js";
 
 import type {
-	ManifestCopy,
-	ManifestPlatform,
+	ManifestRecord,
 	Mark,
+	PlatformMatrix,
+	PlatformTarget,
 	Regions,
 	Release,
 	RequirementsPanel,
@@ -91,147 +99,443 @@ export const Marks: readonly Mark[] = [
 	},
 ];
 
-// ─── The release manifest band's opening ──────────────────────────────────
-// The baseline's band header: the eyebrow and the heading carry the same two
-// words, and the sentence under them states the release's condition without
-// promising a download that does not exist.
+// ─── The record's head: `# RELEASE_01` ────────────────────────────────────
+// One record, one index, one seal, one claim. The eyebrow keeps the band's own
+// name (`Release Manifest`); the claim is the sentence the record actually
+// makes, carried verbatim from `download:manifest.headline`. The state line is
+// §7's `NO PUBLIC ARTIFACTS` and the note under it is the plain-language
+// reading - the band's standfirst restated with every fact it carried, which is
+// why the band no longer prints a second long sentence above the same fields.
 
-export function Manifest(T: Translate): ManifestCopy {
+export function Manifest(T: Translate): ManifestRecord {
 	return {
+		index: "RELEASE_01",
+
 		eyebrow: T("download:manifest.title", {
 			defaultValue: "Release Manifest",
 		}),
 
-		heading: T("download:manifest.heading", {
-			defaultValue: "Release Manifest",
+		heading: T("download:manifest.headline", {
+			defaultValue:
+				"RELEASE_01 lists three platforms and publishes no artifact.",
 		}),
 
-		sentence: T("download:manifest.subtitle", {
+		channel: "PUBLIC",
+
+		state: {
+			copy: T("download:state.noArtifacts", {
+				defaultValue: "STATUS: NO PUBLIC ARTIFACTS",
+			}),
+			status: "unavailable",
+			tone: "ink",
+		},
+
+		note: T("download:state.noArtifactsNote", {
 			defaultValue:
-				"Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
+				"Source builds are active for all three platforms. No installer, checksum or signature has been published yet, so building from source is the only way to run Land right now.",
+		}),
+
+		footnote: T("download:manifest.footnote", {
+			defaultValue:
+				"The manifest carries a release index, a channel and a per-platform status. It carries no published version, no release date and no artifact size - those fields print UNAVAILABLE until a public installer publishes them.",
+		}),
+
+		source: T("download:status.footnote", {
+			defaultValue:
+				"Source build: the two-step build in the Land repository's Documentation/GitHub/Building.md. Installer, signing and checksum status is quoted from this page's release manifest.",
 		}),
 	};
 }
 
 /**
- * The four field labels a platform card prints, with their colons.
+ * The release's own facts, printed once in the record's head.
  *
- * They are labels rather than values, so they live here once and every card
- * reads the same four - a field renamed on one platform and not another is the
- * kind of drift a shared label table makes impossible. The colon is part of the
- * label because the site's grammar writes a field as `KEY:` and a label without
- * one is a word the reader has to interpret.
+ * These are the fields that belong to the release and not to any one of its
+ * three targets: when it shipped, which version and build it is, and the licence
+ * it ships under. A field with no published value prints §7's `UNAVAILABLE`,
+ * never a dash and never a blank cell - the reader has to be able to tell "not
+ * published" from "not thought of".
+ *
+ * The channel is deliberately absent: it is the record's route line
+ * (`/CHANNEL:PUBLIC`), printed under the claim, and a second copy in this ledger
+ * would be the repetition this composition exists to remove.
  */
-export function FieldLabels(T: Translate): {
-	readonly arch: string;
-	readonly signing: string;
-	readonly size: string;
-	readonly checksum: string;
-} {
-	return {
-		arch: T("download:platform.field.arch", { defaultValue: "ARCH:" }),
-		signing: T("download:platform.field.signing", {
-			defaultValue: "SIGNING:",
-		}),
-		size: T("download:platform.field.size", { defaultValue: "SIZE:" }),
-		checksum: T("download:platform.field.checksum", {
-			defaultValue: "CHECKSUM:",
-		}),
-	};
+export function ReleaseFacts(T: Translate): readonly LedgerRow[] {
+	return [
+		{
+			key: "RELEASED:",
+			value: T("download:state.unavailable", {
+				defaultValue: "UNAVAILABLE",
+			}),
+		},
+		{
+			key: "VERSION:",
+			value: T("download:state.unavailable", {
+				defaultValue: "UNAVAILABLE",
+			}),
+		},
+		{
+			key: "BUILD:",
+			value: T("download:state.unavailable", {
+				defaultValue: "UNAVAILABLE",
+			}),
+		},
+		{
+			key: "LICENSE:",
+			value: "CC0",
+		},
+	];
 }
 
 /**
  * The three platforms, in the order the manifest lists them.
  *
- * Every value is the baseline's own: `AARCH64 / X86_64` for macOS and `X86_64`
- * for the other two, `IN PREPARATION` for every signing row, and the baseline's
- * `-` for a size and a checksum that have not been published. The `-` is this
- * page's word for "there is no artifact yet", and it is deliberately not a
- * figure: no version, no checksum and no release date is invented here.
+ * Every value is the record's own: `AARCH64 / X86_64` for macOS and `X86_64` for
+ * the other two, `PREPARING` for every installer, `IN PREPARATION` for every
+ * signature, and §7's `UNAVAILABLE` for a checksum and a size that have not been
+ * published.
  *
- * The state line follows the baseline's own division: the platform with a
- * published source-build path is `ACTIVE` and prints its value in the accent
- * green; the two without one are `PREPARING` and print in ink. Those two then
- * close on a second line, the baseline's plain `STATUS: RELEASE PREPARATION`
- * sentence - the record states its state, and the sentence under it says what
- * that state means for a reader looking for an installer.
+ * `size` is the fourth artifact field and it is a field, not a footnote: the
+ * document prints `SIZE` on every platform beside the checksum, and a field the
+ * page only mentions in prose reads as a field nobody thought of. It prints
+ * `UNAVAILABLE` like the checksum, because neither value exists until an
+ * installer does.
+ *
+ * The status division is the record's own: the platform whose source build the
+ * document walks through is `SOURCE ACTIVE` and prints its value in the accent
+ * green; the other two are `RELEASE PREPARATION` and print in muted ink. Green
+ * is spent once on this page, and this is where.
+ *
+ * `run` is the command `Documentation/GitHub/Building.md` documents for that
+ * platform under "Running the Application"; `absence` is the `↳` line for the
+ * platform the document does not document a run command for. One or the other,
+ * never both - the asymmetry is a fact about the document, and the page prints
+ * it rather than inventing a path.
  */
-export function ManifestPlatforms(T: Translate): readonly ManifestPlatform[] {
-	/** The baseline's word for a field with no published value. */
-	const Pending = "-";
+export function Platforms(T: Translate): readonly PlatformTarget[] {
+	/** §7's word for a field whose value has not been published. */
+	const Unavailable = T("download:state.unavailable", {
+		defaultValue: "UNAVAILABLE",
+	});
 
-	/**
-	 * A platform with no published build path. Windows and Linux differ only in
-	 * their name, so the entry is a function of it: the same `X86_64` target, the
-	 * same unsigned state, the same channel, the same two-line close, and no
-	 * action - because there is nowhere yet to send the reader.
-	 */
-	const Preparing = (name: string): ManifestPlatform => ({
+	/** The two platforms whose release is still being prepared. */
+	const Preparing = (
+		name: string,
+		run?: Well,
+		absence?: string,
+	): PlatformTarget => ({
 		name,
 		arch: "X86_64",
-		signing: "IN PREPARATION",
-		size: Pending,
-		checksum: Pending,
-		channel: "PUBLIC",
+		installer: "PREPARING",
+		signature: "IN PREPARATION",
+		checksum: Unavailable,
+		size: Unavailable,
 		state: {
-			copy: T("download:platform.status.preparing", {
-				defaultValue: "STATUS: PREPARING",
+			copy: T("download:state.preparing", {
+				defaultValue: "STATUS: RELEASE PREPARATION",
 			}),
 			status: "preparing",
-			tone: "ink",
+			tone: "quiet",
 		},
-		note: T("download:platform.note.preparation", {
-			defaultValue: "STATUS: RELEASE PREPARATION",
-		}),
+		...(run ? { run } : {}),
+		...(absence ? { absence } : {}),
 	});
 
 	return [
 		{
 			name: "macOS",
 			arch: "AARCH64 / X86_64",
-			signing: "IN PREPARATION",
-			size: Pending,
-			checksum: Pending,
-			channel: "PUBLIC",
+			installer: "PREPARING",
+			signature: "IN PREPARATION",
+			checksum: Unavailable,
+			size: Unavailable,
 			state: {
-				copy: T("download:platform.status.active", {
-					defaultValue: "STATUS: ACTIVE",
+				copy: T("download:state.active", {
+					defaultValue: "STATUS: SOURCE ACTIVE",
 				}),
 				status: "active",
 				tone: "specimen",
 			},
-			action: {
-				label: "VIEW SOURCE BUILDS",
-				href: "https://github.com/CodeEditorLand/Land/releases",
+			run: {
+				label: "RUN",
+				language: "sh",
+				lines: [
+					"open Element/Mountain/Target/debug/bundle/macos/Mountain.app",
+				],
 			},
 		},
-		Preparing("Windows"),
-		Preparing("Linux"),
+		Preparing(
+			"Windows",
+			undefined,
+			"No run command is documented for Windows yet.",
+		),
+		Preparing("Linux", {
+			label: "RUN",
+			language: "sh",
+			lines: ["./Element/Mountain/Target/debug/Mountain"],
+		}),
 	];
 }
 
 /**
- * The disclosure section's content: six telemetry policy items, nine named build
+ * The platform matrix's columns: the architecture, then the four artifact fields
+ * a public release fills in.
+ *
+ * `RecordMatrix` prints its row labels in an unlabelled first column - a row
+ * header, not a column of data - so the platform is the row's key and the first
+ * column is `ARCH`. Naming that column `TARGET` would put the word over the
+ * architecture values and leave the platform names under a blank header: the
+ * table would say `TARGET: AARCH64 / X86_64` about a row it had already labelled
+ * `〈MACOS〉`.
+ *
+ * `ARCH` leads because it is the only cell that differs between the three
+ * targets today; the other four are the artifact states the release will
+ * publish, and they print `PREPARING` / `IN PREPARATION` / `UNAVAILABLE` /
+ * `UNAVAILABLE` on every row - which is itself the finding the three platform
+ * cards hid.
+ */
+export const PlatformColumns: readonly MatrixColumn[] = [
+	{ label: "ARCH" },
+	{ label: "INSTALLER" },
+	{ label: "SIGNATURE" },
+	{ label: "CHECKSUM" },
+	{ label: "SIZE" },
+];
+
+/** The matrix, resolved: three rows under the columns, with provenance. */
+export function PlatformTable(T: Translate): PlatformMatrix {
+	return {
+		columns: PlatformColumns,
+
+		rows: Platforms(T).map((platform) => ({
+			label: `〈${platform.name.toUpperCase()}〉`,
+			cells: [
+				platform.arch,
+				platform.installer,
+				platform.signature,
+				platform.checksum,
+				platform.size,
+			],
+		})),
+
+		caption: T("download:platform.matrix.caption", {
+			defaultValue:
+				"INSTALLER, SIGNATURE, CHECKSUM and SIZE are this page's release manifest fields. UNAVAILABLE means no public value has been published.",
+		}),
+	};
+}
+
+/**
+ * The source build, as the two steps the document names.
+ *
+ * `Documentation/GitHub/Building.md` calls the build "a two-step linear flow",
+ * and the wells are split where the document splits it: Step 1 compiles the
+ * VS Code source in the submodule, Step 2 builds the Land application. The lines
+ * are the document's own, in its order, including the trailing annotation on the
+ * `cd` line - the well prints it and strips it from the copy payload.
+ *
+ * This is the one action that exists today, so it is the record's install
+ * region rather than a button: there is nothing to download, and a reader who
+ * wants to run Land has to run these.
+ */
+export function BuildSteps(T: Translate): readonly Well[] {
+	return [
+		{
+			label: T("download:install.step.one", {
+				defaultValue: "STEP 01 / COMPILE VS CODE SOURCE",
+			}),
+			language: "sh",
+			lines: [
+				"cd Dependency/Microsoft/Dependency/Editor",
+				"nvm use 24",
+				"export NODE_ENV=development",
+				"npm install",
+				"npm run compile",
+				"npm run compile-extensions-build",
+			],
+			source: "Documentation/GitHub/Building.md - Step 1",
+		},
+		{
+			label: T("download:install.step.two", {
+				defaultValue: "STEP 02 / BUILD LAND APPLICATION",
+			}),
+			language: "sh",
+			lines: [
+				"cd Land # back to repository root",
+				"export Trace=all Record=1 Disable=false",
+				"./Maintain/Debug/Build.sh --profile debug-electron-bundled",
+			],
+			source: "Documentation/GitHub/Building.md - Step 2",
+		},
+	];
+}
+
+/**
+ * The verification record: what the first installer will publish, and how it
+ * will be checked.
+ *
+ * The six rows are the `Verification()` table the download composition carried
+ * before the page was rebuilt, recovered verbatim. Every artifact answers
+ * "Available at first public release" - the honest state today, and a better
+ * answer than an empty cell because it says when the value will exist.
+ *
+ * The check itself is a template, not a command: the artifact's name is not
+ * known until it is published, so the well prints the two checks with
+ * `<artifact>` standing in for it. The page says so in the region's footnote
+ * rather than letting a reader paste a placeholder into a shell and wonder.
+ */
+export function Verification(T: Translate): readonly LedgerRow[] {
+	return [
+		{ key: "SHA-256:", value: "Available at first public release" },
+		{ key: "PGP SIGNATURE:", value: "Available at first public release" },
+		{ key: "SIGNING KEY ID:", value: "Available at first public release" },
+		{
+			key: "PUBLISHED WITH:",
+			value: T("download:verification.description", {
+				defaultValue:
+					"Release downloads will publish checksum and signature material when public installers are available.",
+			}),
+		},
+		{
+			key: "INSTRUCTIONS:",
+			value: "Verification instructions will be published beside the installer, checksum, and signature artifacts.",
+		},
+		{
+			key: "INTEGRITY CHECK:",
+			value: "Available at first public release",
+			note: "Air contains checksum and integrity code. Public release verification material will be published with the installers.",
+		},
+	];
+}
+
+/** The check a published artifact will be held to, as a template well. */
+export const VerificationWell: Well = {
+	label: "VERIFICATION / WHEN PUBLISHED",
+	language: "sh",
+	lines: [
+		"shasum -a 256 <artifact>",
+		"gpg --verify <artifact>.sig <artifact>",
+	],
+	source: "Documentation/GitHub/Building.md - the two checks a published artifact is held to",
+};
+
+/**
+ * The release ladder: one axis from source to signed artifact, and the state of
+ * each position on it.
+ *
+ * The page could already say what is true in each platform column (the matrix)
+ * and what each target needs (the pair). What it could not say is the thing a
+ * sceptic actually asks first: *how far has this got?* Five positions answer it,
+ * and three of them are not reached - which is the honest answer, and the one a
+ * blank column would hide.
+ *
+ * `SOURCE` and `BUILD` carry no state because they are reached; the three
+ * artifacts carry `unavailable` because they do not exist yet. The rail prints
+ * both kinds as positions, so a reader sees the line rather than a gap.
+ */
+export function Ladder(): Comparison {
+	return {
+		label: "/POSITION",
+		from: "SOURCE ONLY",
+		to: "SIGNED ARTIFACT",
+		stops: [
+			{
+				label: "SOURCE",
+				value: "PUBLISHED",
+				note: "The repository is public and the tree is readable today.",
+			},
+			{
+				label: "BUILD",
+				value: "REPRODUCIBLE",
+				note: "The two steps in /INSTALL produce a running application from it.",
+			},
+			{
+				label: "INSTALLER",
+				value: "NOT PUBLISHED",
+				state: "unavailable",
+			},
+			{
+				label: "CHECKSUM",
+				value: "NOT PUBLISHED",
+				state: "unavailable",
+			},
+			{
+				label: "SIGNATURE",
+				value: "NOT PUBLISHED",
+				state: "unavailable",
+			},
+		],
+		caption:
+			"Two of the five positions are reached today. The three that are not print the state vocabulary's word rather than a blank, because an artifact that does not exist yet still has a place on this line - and the place is what tells a reader how far the release has come.",
+		empty: "No position is recorded on this axis. The rail would print the release's path from source to signed artifact; it is empty because the release record it reads is not in this build.",
+	};
+}
+
+/**
+ * The folded aside under the requirements: what a source build assumes.
+ *
+ * The requirements region prints what the machine needs; this says what the
+ * *build* assumes and does not check - the toolchain the scripts expect, the
+ * network they need, and the two facts nobody records (a disk figure and an
+ * offline path). The last two print `UNAVAILABLE`, because a blank cell would
+ * read as "no assumption" and there is one.
+ */
+export const SourceAssumptions: Aside = {
+	index: "ASIDE_01",
+	label: "WHAT A SOURCE BUILD ASSUMES",
+	line: "The two steps in /INSTALL assume a machine that can already build a browser-sized TypeScript tree.",
+	rows: [
+		{
+			key: "NODE:",
+			value: "24, selected with nvm. The first step pins the major version.",
+		},
+		{
+			key: "TOOLCHAIN:",
+			value: "The application's own Rust toolchain, as /REQUIREMENTS lists it.",
+		},
+		{
+			key: "NETWORK:",
+			value: "Required. Both npm install and the extension build fetch.",
+		},
+		{
+			key: "DISK:",
+			value: "UNAVAILABLE - no figure is recorded for a full source build.",
+		},
+		{
+			key: "OFFLINE:",
+			value: "UNAVAILABLE - there is no offline build path today.",
+		},
+	],
+	source: "Documentation/GitHub/Building.md",
+};
+
+/**
+ * The record's one action.
+ *
+ * There is nowhere to download from, so the action goes where the source builds
+ * are: the Land repository's releases page, which is the same destination the
+ * baseline's macOS card offered. It is the only ink-filled control on the page,
+ * and it sits at the end of `/INSTALL` because that is the region that has just
+ * told the reader how to build.
+ */
+export const InstallAction = {
+	label: "VIEW SOURCE BUILDS",
+	href: "https://github.com/CodeEditorLand/Land/releases",
+};
+
+/**
+ * The disclosure section's body: six telemetry policy items, nine named build
  * profiles, sixteen test permutations, four deployment strategies with their
  * commands, and the source URL.
  *
- * It lives here rather than in the page because it is data: the island that
- * renders it (`DynamicTransparency`) is a `.tsx` component this page does not
- * own, and every string below is the copy the page has always carried -
- * unchanged, including the inline code terms the island's `RichText` turns into
- * chips.
+ * `Title` and `Subtitle` are deliberately absent. They are the region's heading
+ * and standfirst now (`Regions().Transparency`), so the island renders its body
+ * without a second `h2` and the record keeps the page's only one. Every string
+ * below is the copy the page has always carried - unchanged, including the
+ * inline code terms the island's `RichText` turns into chips.
  */
-export function Transparency(T: Translate): TransparencyContent {
+export function Transparency(): TransparencyContent {
 	return {
-		Title: T("download:transparency.title", {
-			defaultValue: "Telemetry Is Compile-Gated in Land.",
-		}),
-
-		Subtitle: T("download:transparency.subtitle", {
-			defaultValue:
-				"Telemetry and tracing are behind named Rust feature gates in the native layer. Nothing is emitted by default. Each build profile explicitly lists which paths are compiled in.",
-		}),
-
 		Policy: [
 			{
 				Identifier: "no-telemetry-default",
@@ -545,8 +849,9 @@ export const Toolchain: readonly LedgerRow[] = [
 
 // ─── Previous releases: what has shipped before ───────────────────────────
 // Empty, and that is the fact. The region says so with §7's `RECORD: EMPTY` and
-// one sentence; the columns below are what the matrix becomes the day there is a
-// row to put in it.
+// one sentence inside a closed disclosure; the columns below are what the
+// matrix becomes the day there is a row to put in it, and the disclosure's open
+// state prints them as the shape of that record.
 
 export const PreviousReleases: readonly Release[] = [];
 
@@ -556,20 +861,72 @@ export const ReleaseColumns: readonly MatrixColumn[] = [
 	{ label: "CHANGE" },
 ];
 
+/** The caption the empty matrix prints: the shape of the record to come. */
+export const ReleaseCaption =
+	"One row per release, newest first: the date it published, the platform it shipped for, and what changed.";
+
 // ─── The record's regions ─────────────────────────────────────────────────
-// The `# RELEASE_01` artifact continues past the manifest's own fields into
-// these two regions: what a build needs, and what shipped before this release.
-// Each one is a region of the record - a `/LABEL`, an `h3` and a body - not a
-// chapter of the page. Both sit on the creme field and put their information in
-// white cards, so no region alternates a surface to make a rhythm out of it
-// (§5 A5).
-//
-// The disclosure is the record's third part and deliberately not a region: it
-// keeps its own centred heading, its three sub-blocks and its `#Transparency`
-// anchor, and the page owns only the padding it hands it (`Download/_Page.scss`).
+// The `# RELEASE_01` artifact continues past its own head into these six
+// regions, in the order a sceptic asks: what the platforms are, what a build
+// needs, how it is built and run, how it is verified, what the build discloses,
+// and what shipped before it. Each one is a region of the record - a `/LABEL`,
+// an `h3` and a body - not a chapter of the page, so they separate at
+// `--space-group` and none of them paints a boundary or a fill.
 
 export function Regions(T: Translate): Regions {
 	return {
+		Ladder: {
+			id: "release-ladder",
+			kicker: T("download:ladder.kicker", {
+				defaultValue: "/POSITION",
+			}),
+			heading: T("download:ladder.heading", {
+				defaultValue:
+					"How far along the line from source to signed artifact.",
+			}),
+			standfirst: T("download:ladder.standfirst", {
+				defaultValue:
+					"One axis, five positions, and the state of each. A matrix compares what is true in each column; this line answers a different question - which of these things exists today.",
+			}),
+			footnote: T("download:ladder.footnote", {
+				defaultValue:
+					"The order is the release's, not the page's: source, a build from it, an installer, its checksum, its signature. Positions that are not reached print the state vocabulary's word rather than a blank, so the rail says how far the release has come without claiming it has arrived.",
+			}),
+		},
+
+		Platforms: {
+			id: "release-platforms",
+			kicker: T("download:platforms.kicker", {
+				defaultValue: "/PLATFORMS",
+			}),
+			heading: T("download:platforms.heading", {
+				defaultValue: "What each platform's artifact state is today.",
+			}),
+			standfirst: T("download:platforms.standfirst", {
+				defaultValue:
+					"The release manifest's own fields, one row per target. The artifact columns are the ones a public release fills in; the architecture column is the one that differs today.",
+			}),
+		},
+
+		Evidence: {
+			id: "release-evidence",
+			kicker: T("download:evidence.kicker", {
+				defaultValue: "/EVIDENCE",
+			}),
+			heading: T("download:evidence.heading", {
+				defaultValue:
+					"What the release has a picture of, and what it does not.",
+			}),
+			standfirst: T("download:evidence.standfirst", {
+				defaultValue:
+					"One verified capture, printed at plate scale, beside the three screens the manual documents in full and the capture the build carries for each: none.",
+			}),
+			footnote: T("download:evidence.footnote", {
+				defaultValue:
+					"A plate is not a screenshot. The one capture in the build is a texture study of the Land element's material, and it is printed as evidence of the material rather than of the interface; the set beside it says the same thing cell by cell.",
+			}),
+		},
+
 		Requirements: {
 			id: "release-requirements",
 			kicker: T("download:requirements.kicker", {
@@ -585,6 +942,57 @@ export function Regions(T: Translate): Regions {
 			footnote: T("download:requirements.footnote", {
 				defaultValue:
 					"Minimum requirements, with the recommended figure in the panel beside it. Processor notes: your code runs at native CPU speed (minimum) and span your work across every monitor (recommended).",
+			}),
+		},
+
+		Install: {
+			id: "release-install",
+			kicker: T("download:install.kicker", {
+				defaultValue: "/INSTALL",
+			}),
+			heading: T("download:install.heading", {
+				defaultValue:
+					"The source build is the only install path today.",
+			}),
+			standfirst: T("download:install.standfirst", {
+				defaultValue:
+					"Two steps in the Land repository, then one command to run the app. Every line is copied from the repository's own building document.",
+			}),
+			footnote: T("download:install.footnote", {
+				defaultValue:
+					"Commands are quoted from the Land repository's Documentation/GitHub/Building.md: Step 1, Step 2, and Running the Application. The well prints each line as the document writes it and copies it without the shell prompt or the trailing annotation.",
+			}),
+		},
+
+		Verify: {
+			id: "release-verify",
+			kicker: T("download:verify.kicker", {
+				defaultValue: "/VERIFY",
+			}),
+			heading: T("download:verification.title", {
+				defaultValue: "Verification Will Ship With Public Releases.",
+			}),
+			standfirst: T("download:verify.standfirst", {
+				defaultValue:
+					"There is no artifact to check yet. These are the fields the first installer will publish, and the check that will apply to it.",
+			}),
+			footnote: T("download:verify.footnote", {
+				defaultValue:
+					"The check is the standard one for the artifacts this record promises: the digest the installer publishes, and the PGP signature the masthead marks as planned. On Linux, sha256sum prints the same digest as shasum -a 256.",
+			}),
+		},
+
+		Transparency: {
+			id: "release-transparency",
+			kicker: T("download:transparency.kicker", {
+				defaultValue: "/TRANSPARENCY",
+			}),
+			heading: T("download:transparency.title", {
+				defaultValue: "Telemetry Is Compile-Gated in Land.",
+			}),
+			standfirst: T("download:transparency.subtitle", {
+				defaultValue:
+					"Telemetry and tracing are behind named Rust feature gates in the native layer. Nothing is emitted by default. Each build profile explicitly lists which paths are compiled in.",
 			}),
 		},
 

@@ -73,13 +73,17 @@ jelly-card.download-requirements__group {
 	color: var(--CardForeground);
 }
 
-// The recommendation is a border weight, not a badge: the recovered form marked
-// this panel `border-primary`, which in this token sheet is the ink the rest of
-// the site writes in. The width stays the hairline the other cards carry, so the
-// two panels remain the same size and only one of them is drawn in full ink.
-jelly-card.download-requirements__group--recommended {
-	border-color: var(--Primary);
+// The pair spans the region: minimum and recommended are one comparison, so they
+// take the whole row rather than two of the grid's tracks. The pair's own frame
+// supplies the white surface and the hairline; this file supplies the slot.
+.download-requirements__pair {
+	grid-column: 1 / -1;
 }
+
+// The recommended mark now belongs to `RecordPair`: the subject pod carries a 2px
+// rule under its title and its label takes the full ink. The class this file used
+// to draw a 1px outline around the recommended card is gone with the card - the
+// treatment moved into the block, it was not dropped.
 
 // The toolchain is not a third option beside two - it is what both of them need
 // before the source build runs - so its card takes the whole row.

@@ -1,0 +1,45 @@
+// ═══════════════════════════════════════════════════════════════════════════
+// LAYOUT - four composition languages, one register
+//
+// The site had one column and eight ways of padding it. This directory is the
+// layer that replaces "a stack of bands" with four named languages, each with
+// its own tracks, its own measure and its own narrow behaviour:
+//
+//   READING    13rem rail | 72ch measure | 15rem margin
+//              a document read top to bottom
+//   WORKSPACE  14rem rail | panes (5fr 1px 7fr) + a drawer at the foot
+//              a place the reader operates
+//   AUDIT      19rem ledger | matrix + wells at the foot
+//              a claim being checked
+//   PLATE      full-bleed plate | caption channel, under a record head
+//              one artifact and its provenance
+//
+// ─── THE ONE LAW ──────────────────────────────────────────────────────────
+// A language is a CONTRACT, not a skin. Each one names the tracks a page gets
+// and the things the page must hand the shell to get them (`Shell/Language.ts`).
+// A page that declares `audit` and hands in a matrix with no ledger has not
+// composed an audit - it has a table on a page. The declaration strip prints
+// what the language gives, so the contract is readable on the page itself.
+//
+// ─── CONTAINER QUERIES, NOT VIEWPORT QUERIES ──────────────────────────────
+// Every track decision in this directory is `@container shell (...)`. The shell
+// is the query container, so a shell placed in a narrow slot re-composes instead
+// of overflowing - which is what makes a reading shell inside a workspace pane,
+// or a plate inside an audit, behave. The one viewport query in the layer is the
+// rail's sticky offset, because the header is a viewport fact.
+//
+// ─── NARROW IS RE-COMPOSITION ─────────────────────────────────────────────
+// No track shrinks into ellipses. The rail becomes a ruled register above the
+// main track; the panes stack and their gutter rotates; the ledger column goes
+// under the matrix; the caption channel goes under the plate. Nothing is hidden
+// and nothing is folded away except a pane the reader opens themselves.
+//
+// ─── WHAT THIS LAYER DOES NOT DO ──────────────────────────────────────────
+// It paints no surface (the field is creme and the blocks own their fills), it
+// holds no record blocks (a shell holds tracks; a track holds blocks), and it
+// never chooses a page's language (the route register does, once).
+@use "Shell";
+@use "Rail";
+@use "Panes";
+@use "Plate";
+@use "State";

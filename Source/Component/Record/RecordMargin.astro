@@ -1,0 +1,121 @@
+---
+/**
+ * RecordMargin - one annotation, printed in the margin of the record it belongs
+ * to.
+ *
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  an annotation on the record beside it: the shape of a piece,
+ *                   the date its figures were taken, where a correction goes.
+ *                   Not a callout (a band's standfirst), not a disclosure
+ *                   (RecordAside, which folds), not a card (a note is not a
+ *                   surface). The narrowest thing in the layer that can carry a
+ *                   claim with a source.
+ * RANK              leaf.
+ * SLOT CONTRACT     note.index    -> `# NOTE_01`
+ *                   note.label?   -> `/ THE SHAPE`, printed after the marker
+ *                   note.state?   -> `STATUS: <word>` in its vocabulary tone
+ *                   note.body     -> the claim: one to three sentences
+ *                   note.link?    -> `→ LABEL`, or the tombstone when `gone`
+ *                   note.source?  -> `SOURCE: ...`, or `SOURCE: UNAVAILABLE`
+ * MAY HOLD          nothing. A note is a marker, a claim, a destination and a
+ *                   source. A block in the margin would be a second claim in a
+ *                   place too narrow to read it.
+ * MAY NOT HOLD      a figure, a well, another note, or a heading - the note is
+ *                   printed beside a heading, never as one.
+ * WIDE (>=1024)     the note hangs on a hairline at its left, at a 26ch measure:
+ *                   it is a marginalium, and a marginalium that runs the width
+ *                   of the column is a paragraph that lost its place.
+ * NARROW            the hairline rotates to a top rule and the note takes the
+ *                   column's measure. It stays one note; it does not become a
+ *                   card, and it keeps its marker, its source and its tone.
+ * DENSE             none. A note is already the densest thing that can carry a
+ *                   source; compressing it would remove the source.
+ *
+ * THE SOURCE ROW ALWAYS PRINTS. A note whose claim has no provenance prints
+ * `SOURCE: UNAVAILABLE` - the partial state is a fact about the note, and a note
+ * that quietly omits its source row is a claim the reader cannot check. This is
+ * the one place in the layer where a missing field is printed rather than
+ * skipped, and it is deliberate: the margin is where an unsourced claim would
+ * do the most damage.
+ *
+ * THE TOMBSTONE. `link.state === "gone"` prints `◎ TARGET GONE` with the label
+ * the note named and the route it used to have, instead of an anchor. A record
+ * whose target is gone is a record, not a dead link - the page resolved its own
+ * destinations at build time and is saying so.
+ *
+ * No `<script>` and no `client:*`: a note is printed.
+ */
+import { Tone } from "../Surface/State.js";
+
+import type { MarginNote } from "./Type.js";
+
+interface Props {
+	/** The note: its marker, its claim, its destination and its source. */
+	note: MarginNote;
+
+	/** Extra classes from the page, appended after the block's own. */
+	class?: string;
+}
+
+const { note, class: Class } = Astro.props;
+
+/** The state word's tone, from the one table that decides tones. Never chosen here. */
+const StateTone = note.state
+	? (Tone(note.state.toUpperCase()) ?? "ink")
+	: undefined;
+---
+
+<div
+	class:list={["record-margin", Class]}
+	role="note"
+	aria-label={`Margin note ${note.index}${note.label ? `: ${note.label}` : ""}`}
+>
+	<p class="record-margin__head">
+		<span class="record-margin__index"># {note.index}</span>
+		{note.label ? <span class="record-margin__label">/ {note.label}</span> : null}
+	</p>
+
+	{
+		note.state ? (
+			<p class:list={["record-margin__state", `record-margin__state--${StateTone}`]}>
+				<span class="record-margin__marker" aria-hidden="true" />
+				<span class="record-margin__state-key">STATUS:</span>
+				{note.state.toUpperCase()}
+			</p>
+		) : null
+	}
+
+	<p class="record-margin__body">
+		<span class="record-margin__arrow" aria-hidden="true">&#8627;</span>{note.body}
+	</p>
+
+	{
+		note.link ? (
+			note.link.state === "gone" ? (
+				<p class="record-margin__gone">
+					<span class="record-margin__gone-mark" aria-hidden="true">&#9678;</span>
+					<span class="record-margin__gone-label">TARGET GONE:</span>
+					{note.link.label}
+					<span class="record-margin__gone-route">{note.link.href}</span>
+				</p>
+			) : (
+				<p class="record-margin__link">
+					<a href={note.link.href}>
+						<span aria-hidden="true">&#8594;</span>
+						{note.link.label}
+					</a>
+				</p>
+			)
+		) : null
+	}
+
+	<p
+		class:list={[
+			"record-margin__source",
+			!note.source && "record-margin__source--absent",
+		]}
+	>
+		<span class="record-margin__source-key">SOURCE:</span>
+		{note.source ?? "UNAVAILABLE"}
+	</p>
+</div>

@@ -71,7 +71,7 @@ const All = (
 ): ParsedElement[] => Array.from(Root?.querySelectorAll(Selector) ?? []);
 
 /** The band's release records, in print order. */
-const Cards = (): ParsedElement[] => All("jelly-card.home-release");
+const Cards = (): ParsedElement[] => All(".home-release");
 
 /** One node's text, whitespace collapsed, for a whole-copy assertion. */
 const Text = (Node: ParsedElement | null): string =>
@@ -95,6 +95,33 @@ describe("RoadmapBand", () => {
 		expect(
 			Cards().map((Card) => Text(One(".home-release__title", Card))),
 		).toEqual(["ACTIVE NOW", "V1.0"]);
+	});
+
+	it("prints the two states as one manifest plate, not two cards", () => {
+		// One surface, one gutter, two columns: the release state is a
+		// manifest (`DesignSystem-Grammar.md` §8), and the page's second spread
+		// rhymes with its first - a state beside its successor.
+		expect(All("jelly-card.home-manifest")).toHaveLength(1);
+
+		// And nothing else is a Jelly card in this band: a card inside a card
+		// is the one thing `DESIGN.md` §1.3 forbids.
+		expect(All("jelly-card")).toHaveLength(1);
+
+		expect(All(".home-manifest__gutter")).toHaveLength(1);
+
+		// One ink action in the artifact, and only one: the state a reader can
+		// act on today. The state a reader can watch carries its destination as
+		// the site's route line.
+		expect(All("jelly-button")).toHaveLength(1);
+
+		expect(Text(One(".home-release__destination"))).toBe("/TRACK PROGRESS");
+
+		// Neither action may render in Jelly's default blue: the ink is the
+		// site's, and a bright accent that is in neither the palette nor the
+		// accent is an identity break.
+		expect(Html).not.toMatch(
+			/jelly-color-background-accent:(?!var\(--Foreground\))/,
+		);
 	});
 
 	it("names the band by its own heading, and states the conditions under it", () => {
@@ -130,7 +157,9 @@ describe("RoadmapBand", () => {
 
 		expect(ActiveStamp).toContain("TARGET: NATIVE DESKTOP PATH");
 
-		expect(ActiveStamp).toContain("SIGNAL: NO CHROMIUM / NO ELECTRON / CC0");
+		expect(ActiveStamp).toContain(
+			"SIGNAL: NO CHROMIUM / NO ELECTRON / CC0",
+		);
 
 		// And the phase the state belongs to, in the containment stamp.
 		expect(ActiveStamp).toContain("〈 ACTIVE SOURCE 〉");
@@ -141,7 +170,9 @@ describe("RoadmapBand", () => {
 
 		expect(NextStamp).toContain("TARGET: V1.0");
 
-		expect(NextStamp).toContain("SIGNAL: SIGNED INSTALLERS / VERIFIED DOWNLOADS");
+		expect(NextStamp).toContain(
+			"SIGNAL: SIGNED INSTALLERS / VERIFIED DOWNLOADS",
+		);
 	});
 
 	it("prints each element row as name, role and detail, with the name as a link", () => {
@@ -157,7 +188,9 @@ describe("RoadmapBand", () => {
 
 		expect(Key.getAttribute("href")).toBe("/Doc/mountain");
 
-		expect(Text(One(".home-release__role", Mountain))).toBe("Native Backend");
+		expect(Text(One(".home-release__role", Mountain))).toBe(
+			"Native Backend",
+		);
 
 		// The detail line keeps the sentence and lifts the technology into a
 		// badge of its own.
@@ -171,8 +204,8 @@ describe("RoadmapBand", () => {
 	});
 
 	it("prints each capability under the label the manifest gave it", () => {
-		const Manifest = All(".home-release__manifest-row", Cards()[0]).map((Row) =>
-			Text(Row),
+		const Manifest = All(".home-release__manifest-row", Cards()[0]).map(
+			(Row) => Text(Row),
 		);
 
 		expect(Manifest).toHaveLength(6);

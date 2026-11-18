@@ -47,6 +47,23 @@ const Normalise = (Text: string): string =>
 		.toLowerCase();
 
 /**
+ * A heading's text as the nav's label: trailing decoration dropped.
+ *
+ * Eight of the documents in the collection end a heading with a pictograph
+ * (`## Process Model 🏗️`). In the prose that glyph is the author's; in a
+ * thirteen-pixel mono rail it is a coloured emoji in a page that has one accent
+ * and prints ink, and it pushes the words off the row. So the label is the
+ * heading's words, and the heading keeps its own text - a nav label is a name for
+ * the destination, not a copy of it. Nothing else is touched: the label is not
+ * re-cased, truncated or re-worded, and a heading with no trailing glyph comes
+ * through byte-identical.
+ */
+const Nav = (Text: string): string =>
+	Text.trim()
+		.replace(/\s*[\p{Extended_Pictographic}\uFE0F\u200D]+\s*$/gu, "")
+		.trim();
+
+/**
  * The `##` headings as TOC entries, or `null` when this page needs none.
  *
  * `Label` is the nav's own label (`On this page`), passed in by the page so
@@ -66,7 +83,7 @@ const BuildDocToc = (
 	return {
 		Label,
 		Items: Second.map((Heading) => ({
-			Label: Heading.text,
+			Label: Nav(Heading.text),
 			Href: `#${Heading.slug}`,
 		})),
 	};

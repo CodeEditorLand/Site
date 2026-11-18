@@ -6,6 +6,36 @@
 // labels as written, `WebGPU` stays `WebGPU`). Tracking is a letter-spacing
 // value, not the `track` mixin, for exactly that reason.
 //
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  one record in a set: which element, edition, article or doc
+//                   page this is, and what it claims in one paragraph.
+// RANK              leaf. The only block that prints an `h3`.
+// SLOT CONTRACT (the `Publishes:` list below is the class API; this is what a
+// caller hands in):
+//   index  -> the `# NAME_01` marker, verbatim
+//   name   -> the record's name; the accessible label and the entry's `h3`
+//   glyph? -> a leading glyph (`↳`, `↗`, `→`) when the record carries one
+//   chips? -> short labels, printed in the order given, never re-cased
+//   body   -> one paragraph: the entry's claim
+//   href?  -> where the record leads; the anchor wraps the name and nothing else
+//   surface-> `card` (the entry's own white box, the default) or `bare` (rows
+//             inside a Jelly surface: no fill, no frame, a hairline between)
+// MAY HOLD          nothing. An entry is the smallest record there is.
+// MAY NOT HOLD      a ledger, a well, a figure, or a second anchor - the entry's
+//                   `href` is its one destination.
+// NARROW            one column: the marker and the glyph share the first line,
+//                   the name takes the full width under them, then the chips and
+//                   the body. The rows tighten to `--space-tight` because a
+//                   phone-width column reads denser, and `--space-reading` from
+//                   640 up.
+// WIDE              the marker sits in the entry's first column with the glyph at
+//                   the far end, and the body is measure-capped at 62ch so a wide
+//                   card does not run a paragraph to 900px.
+// DENSE             `surface="bare"` is the dense reading - the same anatomy with
+//                   no fill and no frame, for a set of records inside one card
+//                   (the doc index's card grid, a tier's feature list). Never a
+//                   smaller type.
+//
 // Publishes:
 //   .record-entry               the entry shell - the white card surface
 //   .record-entry--bare         the same anatomy with no fill and no frame, for
@@ -61,7 +91,7 @@
 .record-entry__index {
 	@include mono-meta;
 	grid-area: index;
-	letter-spacing: 0.08em;
+	letter-spacing: var(--track-row);
 	white-space: nowrap;
 }
 
@@ -135,7 +165,7 @@
 .record-entry__chip {
 	@include mono-meta;
 	@include hairline;
-	letter-spacing: 0.08em;
+	letter-spacing: var(--track-row);
 	padding: 0.125rem var(--space-tight);
 	color: var(--MuteForeground);
 }

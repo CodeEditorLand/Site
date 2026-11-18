@@ -1,0 +1,75 @@
+// TrustClause - a clause whose number is a citation.
+//
+// Publishes:
+//   .trust-clause          the heading itself (the role comes from .reading-clause)
+//   .trust-clause__cite    `§07`, the self-link
+//   .trust-clause__mark    the section glyph, set apart from the digits
+//   .trust-clause__name    the clause's own words
+//
+// The number is printed above the words, at the meta role in the mono face -
+// exactly where the counter used to print it - and the only thing that changed
+// is that it is now a link to the clause it numbers. So a reader can cite
+// "§07", follow it, and copy the address of the clause they mean.
+//
+// Nothing here sets the heading's size, weight or wrapping: `.reading-clause`
+// owns the clause role, and a second copy of it would be a second place for the
+// document's headings to drift apart.
+
+@use "../../Mixin" as *;
+
+.trust-clause {
+	/* The heading is the anchor's block context, so the number and the words
+	   stack without either of them needing a wrapper of its own. */
+	display: block;
+}
+
+.trust-clause__cite {
+	display: block;
+
+	inline-size: fit-content;
+
+	margin-block-end: var(--space-tight);
+
+	@include mono-meta;
+
+	color: var(--MuteForeground);
+
+	text-decoration: none;
+}
+
+.trust-clause__cite:hover,
+.trust-clause__cite:focus-visible {
+	color: var(--Foreground);
+
+	text-decoration: underline;
+	text-underline-offset: 0.25em;
+}
+
+.trust-clause__cite:focus-visible {
+	outline: var(--BorderWidth) var(--BorderStyle) var(--Primary);
+	outline-offset: 0;
+}
+
+// The glyph is the grammar's, not the digits': a hair more space after it keeps
+// `§07` reading as one mark instead of two words.
+.trust-clause__mark {
+	margin-inline-end: 0.15em;
+}
+
+.trust-clause__name {
+	display: block;
+}
+
+// ─── Print ────────────────────────────────────────────────────────────────
+// On paper the number is a citation in the text, not a link: the site's print
+// rules underline every anchor inside the legal card, and a clause number that
+// arrives underlined reads as a typographic error. The number stays, the rule
+// goes.
+
+@media print {
+	.LegalCard .trust-clause__cite {
+		color: #000000;
+
+		text-decoration: none;
+	}
+}

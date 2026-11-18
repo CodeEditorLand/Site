@@ -1,8 +1,11 @@
 // Properties - the six-record band.
 //
 // Publishes:
-//   .properties-grid    the six records, one to three columns
-//   .properties-entry   one record, on its own three-part template
+//   .properties           the block's own frame: grid, then the filed strip
+//   .properties-grid      the claims, one to three columns
+//   .properties-entry     one claim, on its own three-part template
+//   .properties-filed     the three the layer files, as one line of meta
+//   .properties-empty     the one sentence a grid with no records prints
 //
 // The entry's anatomy is RecordEntry's own (`System/Record/_Entry.scss`). A
 // property record has three parts - marker, claim, paragraph - and none of the
@@ -61,3 +64,96 @@ jelly-card > .record-entry.properties-entry {
 
 	border: 0;
 }
+
+/* ─── THE FILED THREE, AND THE GRID'S OWN FRAME ────────────────────────────
+ *
+ * The grid prints the claims. The three properties the layer does not claim are
+ * not dropped: `DesignSystem-Grammar.md` §8 files them, with their titles on the
+ * page and their paragraphs one click away (`DocOf`). The baseline filed them
+ * through `RecordBand`'s `record-band__index` classes, which is a borrowed class
+ * on a block that is not a `RecordBand` - `DESIGN-COMPLETE.md` §4.2 calls that
+ * out by name ("a borrowed class is not a block"), and it is why the strip
+ * drifted from the band's own anatomy. These three classes are the strip's own.
+ *
+ * The strip is one line of meta under the grid, separated by the same hairline
+ * the record grid closes on: a label, then the destinations in the site's
+ * tracked mono with the ink the plain-link rule gives them. It carries no fill
+ * and no second frame - it is a footnote to the claims, not a fourth claim.
+ */
+
+.properties {
+	display: grid;
+	gap: var(--space-group);
+}
+
+.properties-filed {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight) var(--space-reading);
+
+	@include hairline(top);
+
+	padding-block-start: var(--space-tight);
+}
+
+.properties-filed__label {
+	@include mono-meta;
+	@include track;
+
+	margin: 0;
+}
+
+.properties-filed__list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight) var(--space-reading);
+
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.properties-filed__item {
+	margin: 0;
+}
+
+/* The destination, in the register the band's own index strip is set in
+   (`Record/_Band.scss` `.record-band__index`: `mono-meta` + `track`, one line of
+   upper-case labels). A filed property is a label rather than a sentence - its
+   paragraph is the page it points at - so the strip keeps the voice the baseline
+   filed it in and does not become six more claims.
+
+   The underline is the site's second signal (never colour alone), at the ink the
+   record's own link uses at rest (`--MuteForeground`), moving to `--Primary` on
+   hover: the rule `_Global.scss` states for every plain anchor. This class only
+   supplies the face, the tracking and the two inks. */
+.properties-filed__link,
+.properties-filed__name {
+	@include mono-meta;
+	@include track;
+
+	font-size: var(--type-meta);
+	color: var(--Foreground);
+}
+
+.properties-filed__link {
+	text-decoration-color: var(--MuteForeground);
+	text-underline-offset: 0.22em;
+}
+
+.properties-filed__link:hover {
+	text-decoration-color: var(--Primary);
+}
+
+/* The one sentence the grid prints when it has no records. It is not an empty
+   grid with six blank columns: a grid whose copy resolved to nothing is a locale
+   file that lost six keys, and saying so is the honest state. */
+.properties-empty {
+	@include mono-meta;
+	@include track;
+
+	max-inline-size: 62ch;
+	margin: 0;
+}
+

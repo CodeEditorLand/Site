@@ -1,0 +1,129 @@
+// ─── THE HANDOVER ─────────────────────────────────────────────────────────
+//
+// A page giving way to another. The site is a document with parts, and moving
+// between them is not a fresh arrival: the reader is in the same dossier, one
+// part along. The transition says so by keeping the one thing that is true on
+// both pages in place - the record's name in the running head - while the body
+// steps.
+//
+// ─── WHY THE BROWSER'S OWN TRANSITION, AND NO ROUTER ──────────────────────
+// `@view-transition { navigation: auto }` is the cross-document View Transition
+// API: the browser snapshots the old page, loads the new one, snapshots that, and
+// animates between them. It needs no client router, no hydration and no
+// intercept of the click - which matters on a site that is prerendered and
+// deliberately ships almost no JavaScript. It also means the handover works on a
+// hard navigation, a back button and a typed URL alike, and that a browser
+// without support simply navigates: the page is complete either way.
+//
+// ─── THE BODY STEPS, THE NAME STAYS ───────────────────────────────────────
+// `::view-transition-old(root)` and `::view-transition-new(root)` are the two
+// page images. They move one step (8px) in the direction of travel - up and out
+// for the page you left, up and in for the page you arrived at - while
+// `LandRecordName` is lifted out of both into its own group and morphs in place.
+// The effect is that the record header is continuous and the content changed
+// under it, which is what the frame's running head has been claiming since it was
+// built.
+//
+// ─── DIRECTION IS A FACT THE DOCUMENT CAN KNOW ────────────────────────────
+// Forward and back are not the same motion: a reader going back is retracing, and
+// a page that steps the same way in both directions is a page that is not paying
+// attention. `Script/Motion/Handover.ts` writes `data-handover="forward|back"` on
+// `<html>` from the navigation API, and the two rules below swap the travel. With
+// no script the attribute is absent and forward is the default, which is the
+// honest guess.
+//
+// ─── REDUCED MOTION SWITCHES IT OFF ───────────────────────────────────────
+// Not shortened - switched off. A snapshot transition that runs in 0.01ms still
+// paints two documents in one frame, and the reader who asked for less motion is
+// better served by the navigation they already know. `navigation: none` is the
+// browser's own off switch, so no animation is created at all.
+//
+// ─── PRINT ────────────────────────────────────────────────────────────────
+// A view transition is a screen event. `@media print` never navigates, so nothing
+// here needs a print arm; the declaration is inert on paper.
+
+@view-transition {
+	navigation: auto;
+}
+
+/* The one element the two pages share. It is the record's name, so the morph is
+   the reader's own position being carried, not a decoration travelling. */
+.HeaderRecordName {
+	view-transition-name: LandRecordName;
+}
+
+::view-transition-group(LandRecordName) {
+	animation-duration: var(--motion-handover-duration);
+	animation-timing-function: var(--motion-handover-easing);
+}
+
+::view-transition-old(LandRecordName) {
+	animation-duration: var(--motion-interval-quick);
+	animation-timing-function: var(--motion-curve-return);
+}
+
+::view-transition-new(LandRecordName) {
+	animation-duration: var(--motion-handover-duration);
+	animation-timing-function: var(--motion-curve-line);
+}
+
+/* The body: out fast, in slow. The outgoing page must not sit at half ink under
+   the incoming one, so it leaves on the quick interval and the arriving page
+   takes the whole settle interval to land. */
+::view-transition-old(root) {
+	animation: handover-out var(--motion-interval-quick)
+		var(--motion-curve-return) both;
+}
+
+::view-transition-new(root) {
+	animation: handover-in var(--motion-handover-duration)
+		var(--motion-handover-easing) both;
+}
+
+@keyframes handover-out {
+	to {
+		opacity: 0;
+
+		transform: translateY(calc(var(--motion-handover-travel) * -1));
+	}
+}
+
+@keyframes handover-in {
+	from {
+		opacity: 0;
+
+		transform: translateY(var(--motion-handover-travel));
+	}
+}
+
+/* Back: the same two movements, reversed. The page you are returning to comes
+   down from above, because that is the direction it left in. */
+html[data-handover="back"] ::view-transition-old(root) {
+	animation-name: handover-out-back;
+}
+
+html[data-handover="back"] ::view-transition-new(root) {
+	animation-name: handover-in-back;
+}
+
+@keyframes handover-out-back {
+	to {
+		opacity: 0;
+
+		transform: translateY(var(--motion-handover-travel));
+	}
+}
+
+@keyframes handover-in-back {
+	from {
+		opacity: 0;
+
+		transform: translateY(calc(var(--motion-handover-travel) * -1));
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	@view-transition {
+		navigation: none;
+	}
+}

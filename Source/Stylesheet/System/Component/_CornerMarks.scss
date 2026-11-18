@@ -19,48 +19,62 @@
  * right (+x), bl-h moves down (+y) / bl-v moves left (-x), br-h moves down
  * (+y) / br-v moves right (+x). The separation from the corner point stays
  * fixed; the whole line moves, giving the expanding-crosshair effect.
+ *
+ * THE TWO NUMBERS ARE NOT THIS FILE'S TO INVENT. The interval is the motion
+ * layer's `enter` relationship (`motion-enter` - `--motion-interval-speak`, the
+ * 200ms the frame always ran at), and the travel is a distance, so it reads a
+ * distance token: `--space-tight`, the site's 8px step, published as
+ * `--corner-travel` so a host that draws a different frame overrides one value
+ * instead of editing eight rules. A literal `200ms ease` and eight literal
+ * `8px` were here before the layers had names for either.
  */
+@use "../Mixin" as *;
 
 .CornerMarkShell {
 	cursor: default;
+
+	/* How far an arm travels on hover. One value for all eight ticks, so the
+	   four corners cannot drift apart. */
+	--corner-travel: var(--space-tight);
+}
+
+/* The interval belongs to the relationship, not to the hover rule: declared
+   once on the tick, and the `reduce` branch the mixin carries sets no
+   transition at all. */
+.CornerMarkTick {
+	@include motion-enter;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-	.CornerMarkTick {
-		transition:
-			transform 200ms ease,
-			opacity 200ms ease;
-	}
-
 	/* Top-left: the L slides toward the corner - left / up. */
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="tl"][data-axis="h"] {
-		transform: translate(0, -8px);
+		transform: translate(0, calc(-1 * var(--corner-travel)));
 	}
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="tl"][data-axis="v"] {
-		transform: translate(-8px, 0);
+		transform: translate(calc(-1 * var(--corner-travel)), 0);
 	}
 
 	/* Top-right: horizontal arm toward the right edge, vertical toward the top. */
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="tr"][data-axis="h"] {
-		transform: translate(0, -8px);
+		transform: translate(0, calc(-1 * var(--corner-travel)));
 	}
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="tr"][data-axis="v"] {
-		transform: translate(8px, 0);
+		transform: translate(var(--corner-travel), 0);
 	}
 
 	/* Bottom-left: horizontal arm toward the left edge, vertical toward the bottom. */
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="bl"][data-axis="h"] {
-		transform: translate(0, 8px);
+		transform: translate(0, var(--corner-travel));
 	}
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="bl"][data-axis="v"] {
-		transform: translate(-8px, 0);
+		transform: translate(calc(-1 * var(--corner-travel)), 0);
 	}
 
 	/* Bottom-right: the L slides toward the corner - right / down. */
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="br"][data-axis="h"] {
-		transform: translate(0, 8px);
+		transform: translate(0, var(--corner-travel));
 	}
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="br"][data-axis="v"] {
-		transform: translate(8px, 0);
+		transform: translate(var(--corner-travel), 0);
 	}
 }

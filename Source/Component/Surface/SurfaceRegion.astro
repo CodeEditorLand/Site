@@ -1,0 +1,51 @@
+---
+/**
+ * SurfaceRegion - one region of an app surface's main column.
+ *
+ * A region is a band, not a card: it is separated from its neighbour by space
+ * and one hairline, it opens on a `#` index and an `h2`, and everything inside
+ * it lies directly on the field or on one `.surface-panel`. That is the whole
+ * difference between an instrument panel and a dashboard of dashboards - the
+ * page has regions, and a region may hold a record, but a region is never a
+ * card and a card is never a region.
+ *
+ * The `id` is the rail's destination and the scroll-spy's key; `data-region`
+ * marks it for the readout script in the page. The `h2` is the only level-two
+ * heading a region emits, and it is deliberately S with tracking rather than a
+ * fourth size: a region label on an instrument, not a chapter of a document.
+ *
+ * No script and no hydration: a region is static.
+ */
+interface Props {
+	/** `# 04` - the region's marker, printed verbatim. */
+	index: string;
+
+	/** The rail's destination and the region's own id. */
+	id: string;
+
+	/** The region's `h2`. */
+	title: string;
+
+	/** One sentence under the heading, when the region needs context. */
+	standfirst?: string;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const { index, id, title, standfirst, class: ClassName } = Astro.props;
+---
+
+<section
+	class:list={["surface-region", ClassName]}
+	id={id}
+	data-region
+	aria-labelledby={`${id}-title`}
+>
+	<div class="surface-region__head">
+		<p class="surface-region__index">{index}</p>
+		<h2 class="surface-region__title" id={`${id}-title`}>{title}</h2>
+	</div>
+	{standfirst ? <p class="surface-region__standfirst">{standfirst}</p> : null}
+	<slot />
+</section>

@@ -24,13 +24,17 @@
 	outline-offset: 2px;
 }
 
-/* ─── TRANSITIONS ──────────────────────────────────────────────────────── */
+/* ─── TRANSITIONS ──────────────────────────────────────────────────────
+ * Bound to the motion vocabulary (`_Motion.scss`), never to a literal: 150ms
+ * `cubic-bezier(0.4,0,0.2,1)` was a fifth interval and a fifth curve that no
+ * relationship named, written inline in a utility sheet. `quick`/`arrive` is
+ * the press pair, which is what a colour or fill change on hover is. */
 .tr-fg {
 	transition-property:
 		color, background-color, border-color, text-decoration-color, fill,
 		stroke;
-	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-	transition-duration: 150ms;
+	transition-timing-function: var(--motion-press-easing);
+	transition-duration: var(--motion-press-duration);
 }
 .tr-fg:hover {
 	color: var(--Foreground);
@@ -40,8 +44,8 @@
 	transition-property:
 		color, background-color, border-color, text-decoration-color, fill,
 		stroke;
-	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-	transition-duration: 150ms;
+	transition-timing-function: var(--motion-press-easing);
+	transition-duration: var(--motion-press-duration);
 }
 
 /* ─── BACKGROUND COLOR VARIABLES ── */
@@ -228,34 +232,50 @@
 	field-sizing: content;
 }
 
-/* ─── TYPOGRAPHY PATTERNS ──────────────────────────────────────────────── */
+/* ─── TYPOGRAPHY PATTERNS ────────────────────────────────────────────────
+ * The role classes live in `_Type.scss`; these are the named patterns a page or
+ * a component asks for by its own name. Every one of them reads its size and
+ * its tracking from the role layer, so no pattern can drift from a role:
+ *
+ *   .eyebrow         a label ABOVE a region        -> `rule` register
+ *   .section-label   a label ACROSS a row          -> `row` register
+ *   .nav-label       a destination in a row        -> `row` register
+ *   .tag-mono        a chip's own name             -> `name` register
+ *   .card-title-mono an S heading inside a card    -> `join` register (18px+)
+ *   .headline        the display role at 400       -> `join` register
+ *
+ * No consumer today: `.section-label`, `.nav-label`, `.card-title-mono`,
+ * `.tag-mono`, `.code-inline`, `.content-subtitle`, `.text-muted-fg`, the four
+ * `.opacity-*`, `.tr-fg`, `.tr-bg`, `.content-section`, `.container-center`,
+ * `.section-intro`, `.subtitle-block`, `.focus-ring` (measured across every
+ * component and page source file). They are kept rather than deleted - a name
+ * here is API and a later card may compose with one - but a card that adds a
+ * use for one is adopting it, not finding it in service.
+ */
 
 /* .eyebrow - section eyebrow label - mono, uppercase, tracked.
-   Size from --type-meta; the wide 0.25em tracking is this class's own voice. */
+   Size from --type-meta; the `rule` register is this class's own voice: a label
+   above a region is the widest tracking the system has. */
 .eyebrow {
 	font-family: var(--FontMono);
 	font-size: var(--type-meta);
 	line-height: var(--type-meta-line);
 	text-transform: uppercase;
-	letter-spacing: 0.25em;
+	letter-spacing: var(--track-rule);
 	color: var(--MuteForeground);
 }
 
 /* .headline - mono display. Size comes from --type-display, which is already a
    fluid clamp, so the old 2.25rem -> 3rem breakpoint ladder is gone: the role
-   governs the scale. */
+   governs the scale. (The `min-width: 640px` block that restated the same two
+   declarations was the ladder's last step; a fluid clamp does not need a
+   breakpoint that changes nothing.) */
 .headline {
 	font-family: var(--FontSans);
 	font-size: var(--type-display);
 	line-height: var(--type-display-line);
 	font-weight: 400;
-	letter-spacing: -0.025em;
-}
-@media (min-width: 640px) {
-	.headline {
-		font-size: var(--type-display);
-		line-height: var(--type-display-line);
-	}
+	letter-spacing: var(--track-join);
 }
 
 /* .section-label - small mono section label */
@@ -265,7 +285,7 @@
 	line-height: var(--type-meta-line);
 	font-weight: 500;
 	text-transform: uppercase;
-	letter-spacing: 0.05em;
+	letter-spacing: var(--track-row);
 	color: var(--MuteForeground);
 }
 
@@ -276,7 +296,7 @@
 	line-height: var(--type-meta-line);
 	font-weight: 500;
 	text-transform: uppercase;
-	letter-spacing: 0.1em;
+	letter-spacing: var(--track-row);
 }
 
 /* .card-title-mono - mono card heading */
@@ -285,7 +305,7 @@
 	font-size: var(--type-sub);
 	line-height: var(--type-sub-line);
 	font-weight: 500;
-	letter-spacing: -0.025em;
+	letter-spacing: var(--track-join);
 }
 
 /* .tag-mono - pill/chip label, mono */
@@ -295,7 +315,7 @@
 	font-family: var(--FontMono);
 	font-size: var(--type-meta);
 	line-height: var(--type-meta-line);
-	letter-spacing: 0.025em;
+	letter-spacing: var(--track-name);
 	color: var(--MuteForeground);
 }
 
@@ -305,12 +325,13 @@
 	background-color: var(--Mute);
 	padding: 0.125rem 0.375rem;
 	font-family: var(--FontMono);
-	font-size: 0.875rem;
+	font-size: var(--type-code);
+	letter-spacing: var(--track-set);
 }
 
 /* .content-subtitle - body subtitle */
 .content-subtitle {
-	margin-top: 0.75rem;
+	margin-top: var(--space-tight);
 	color: var(--MuteForeground);
 }
 
@@ -361,17 +382,12 @@
 
 /* ─── MISCELLANEOUS ────────────────────────────────────────────────────── */
 
-/* .content-section - standard section wrapper */
+/* .content-section - standard section wrapper. A page-level boundary, so it
+   takes the chapter rhythm rather than the 64/80px literals it carried (neither
+   is on the poster scale). */
 .content-section {
 	width: 100%;
-	padding-top: 4rem;
-	padding-bottom: 4rem;
-}
-@media (min-width: 640px) {
-	.content-section {
-		padding-top: 5rem;
-		padding-bottom: 5rem;
-	}
+	padding-block: var(--space-chapter);
 }
 
 /* .container-center - container mx-auto px-4 text-center */
@@ -379,8 +395,8 @@
 	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
-	padding-left: 1rem;
-	padding-right: 1rem;
+	padding-left: var(--space-reading);
+	padding-right: var(--space-reading);
 	text-align: center;
 }
 @media (min-width: 640px) {
@@ -413,13 +429,13 @@
 .section-intro {
 	margin-left: auto;
 	margin-right: auto;
-	margin-bottom: 2.5rem;
+	margin-bottom: var(--space-group);
 	max-width: 42rem;
 	text-align: center;
 }
 
 /* .subtitle-block - subtitle container below a heading */
 .subtitle-block {
-	margin-top: 0.75rem;
+	margin-top: var(--space-tight);
 	color: var(--MuteForeground);
 }

@@ -3,24 +3,40 @@
 // image or composed children, never both, and the caption is required - an
 // uncaptioned figure is decoration.
 //
-// Publishes:
-//   .record-figure                the figure shell
-//   .record-figure__media         the framed body - image or composed children
-//   .record-figure__caption       the caption block: the sentence and its source
-//   .record-figure__caption-text  what the evidence shows, measure-capped
-//   .record-figure__provenance    where it came from: file, manifest, measurement, commit
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  evidence - what a picture, diagram or chart shows, and where
+//                   it came from. A measurement is RecordInstrument.
+// RANK              leaf.
+// SLOT CONTRACT     .record-figure                the figure shell
+//                   .record-figure__media         the framed body - image or composed children
+//                   .record-figure__plate         the fitted image body (FieldRecordEvidence)
+//                   .record-figure__caption       the caption block: the sentence and its source
+//                   .record-figure__caption-text  what the evidence shows, measure-capped
+//                   .record-figure__provenance    where it came from: file, manifest, measurement, commit
+// MAY HOLD          composed media in the slot (a chart, a diagram, a rendered
+//                   element). Never another figure.
+// NARROW            full-bleed to its container, caption under it, provenance
+//                   wrapping to its own line. Composed media wider than the
+//                   column scrolls inside the frame, so the page grid never
+//                   widens.
+// WIDE              the frame takes the column it is given; the caption is
+//                   measure-capped at 62ch.
+// DENSE             none - evidence gets its size.
 //
 // The frame is a hairline and nothing else: square corners, flat, no fill on
 // hover, no elevation. `SpecimenLabel` and `FieldRecordSeal` are the caller's
 // decoration - a seal on evidence is a claim about who looked at it.
 //
+// The image body is `FieldRecordEvidence`, the site's one implementation of the
+// fitted plate (`object-fit: cover`, the radius reset, the `object-position`
+// knob). This partial owns the frame and the caption and never restates the
+// fitting - a second `object-fit` here is the duplication the block layer exists
+// to prevent.
+//
 // The caption and the provenance are one caption block, stacked: the sentence
 // first at caption weight, the source under it at meta weight, uppercase and
 // tracked. That difference is the whole distinction - a reader must be able to
 // tell a claim about the picture from the file the picture came out of.
-//
-// Owned by B8. S1 publishes the skeleton; B8 refines the values, never the
-// names.
 
 @use "../Mixin" as *;
 
@@ -29,6 +45,7 @@
 	flex-direction: column;
 	gap: var(--space-tight);
 	margin: 0;
+	min-inline-size: 0;
 }
 
 // The frame carries the image or the composed diagram. `overflow-x: auto` is
@@ -40,6 +57,14 @@
 	max-width: 100%;
 	overflow-x: auto;
 	background: var(--Card);
+}
+
+// The fitted plate fills the frame it is given: in a band the frame is as tall
+// as the picture, and in a panel (the hero's evidence column) the frame has a
+// height and the plate takes it.
+.record-figure__plate {
+	block-size: 100%;
+	min-block-size: 0;
 }
 
 .record-figure__media img {
@@ -56,6 +81,99 @@
 	margin: 0;
 }
 
+// ─── THE CHANNEL PLACEMENT ────────────────────────────────────────────────
+// A plate as wide as the page and a caption under it are read at the wrong
+// distance: the eye crosses the whole width to reach the sentence. The channel
+// gives the caption a column of its own beside the plate, on a 1px divider, at a
+// 24-28ch measure - the same relationship a margin note has to the record it
+// annotates, one scale up.
+//
+// The channel is a wide-screen composition only. Below 1024px the plate and its
+// caption stack, because a 26ch column beside a plate at 900px is a caption
+// squeezed into a slot rather than a channel.
+@include bp(1024px) {
+	.record-figure--channel {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(18ch, 26ch);
+		column-gap: var(--space-group);
+		row-gap: 0;
+		align-items: start;
+	}
+
+	.record-figure--channel .record-figure__caption {
+		max-inline-size: none;
+		padding-block-start: 0;
+		padding-inline-start: var(--space-reading);
+		border-inline-start: 1px solid var(--Divider);
+	}
+
+	// The caption's first line sits on the plate's own top edge, so the two read
+	// as one row rather than as a plate with a column floating beside it.
+	.record-figure--channel
+		.record-figure__caption
+		> .record-figure__row:first-child {
+		padding-block-start: 0;
+	}
+}
+
+// The channel's two labelled rows: `FIGURE:` and `SOURCE:`. The key is the
+// label register and the value is the caption register, which is how a reader
+// tells a claim about the picture from the file the picture came out of.
+.record-figure__row {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	margin: 0;
+}
+
+.record-figure__key {
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+// ─── THE TOMBSTONE ────────────────────────────────────────────────────────
+// The evidence is not there: the mark, the vocabulary's word, and the caption
+// that says what the missing evidence would have shown. The frame stays - a
+// record whose target is gone is still a record - and it is the one filled
+// surface here, because the plate would have been filled.
+.record-figure__absent {
+	@include hairline;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: var(--space-group);
+	min-block-size: 11rem;
+	padding: var(--space-reading);
+	background: var(--Card);
+}
+
+.record-figure__absent-mark {
+	font-size: var(--type-section);
+	line-height: 1;
+	color: var(--MuteForeground);
+}
+
+.record-figure__absent-state {
+	display: flex;
+	align-items: center;
+	gap: var(--space-tight);
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.record-figure__absent-key {
+	color: var(--MuteForeground);
+}
+
+.record-figure__absent-state--specimen {
+	color: var(--Accent);
+}
+
+.record-figure__absent-state--quiet {
+	color: var(--MuteForeground);
+}
+
 .record-figure__caption-text {
 	font-size: var(--type-caption);
 	line-height: var(--type-caption-line);
@@ -67,6 +185,6 @@
 // rather than as the end of the sentence above it.
 .record-figure__provenance {
 	@include mono-meta;
-	@include track(0.1em);
+	@include track(var(--track-row));
 	margin: 0;
 }

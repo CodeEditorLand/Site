@@ -1,0 +1,300 @@
+// RecordPlate - the evidence the record is about, at plate scale: a numbered
+// capture at the container's width, with its manifest facts in a channel.
+//
+// ─── GRAMMAR ─────────────────────────────────────────────────────────────
+// INFORMATION TYPE  the evidence a record is of - a capture, numbered, with the
+//                   facts its manifest records and the file they were read from.
+//                   Not a figure (evidence inside a column) and not a hero.
+// RANK              leaf.
+// SLOT CONTRACT     .record-plate                     the plate: frame and channel
+//                   .record-plate--channel            the channel beside the plate (>=1024)
+//                   .record-plate--wide               the plate takes its container's width
+//                   .record-plate--absent             the tombstone arm
+//                   .record-plate__frame              the framed capture - ratio from --plate-ratio
+//                   .record-plate__picture            the fitted capture (FieldRecordEvidence)
+//                   .record-plate__composed           composed media in the slot
+//                   .record-plate__tombstone          `◎ STATUS: <word>` + `NEXT:`
+//                   .record-plate__tombstone-state--ink|--specimen|--quiet
+//                   .record-plate__channel            the caption channel
+//                   .record-plate__head               `# PLATE_01 / LABEL ␁ AS OF:`
+//                   .record-plate__index              the marker, in ink
+//                   .record-plate__label              the `/LABEL`
+//                   .record-plate__asof               the capture's date, at the head's far end
+//                   .record-plate__row                one labelled row
+//                   .record-plate__key                `FIGURE:`, `SOURCE:`
+//                   .record-plate__subject            the claim, after the `↳`
+//                   .record-plate__caption            the reading: what to look for
+//                   .record-plate__facts              the manifest's rows
+//                   .record-plate__fact-key|__fact-value
+//                   .record-plate__source             `SOURCE: ...` - always printed
+// MAY HOLD          a composed capture in the slot. Never a second plate.
+// NARROW            the channel drops under the frame at the column's measure and
+//                   the facts become one column. The frame keeps its ratio.
+// WIDE (>=1024)     `1fr | 20-26ch` on a `--Divider` rule at the channel's left,
+//                   with the channel's first line on the plate's own top edge.
+// DENSE             none. A plate shrunk to fit is a thumbnail, and a thumbnail
+//                   is not evidence.
+//
+// THE FRAME'S BED IS `--Mute`, NOT `--Card`. A capture is a recessed thing - it
+// sits in the page the way a photograph sits in a printed plate - and a plate
+// whose bed is white on a white card is a picture floating in a hole. The
+// tombstone inherits the same bed, so an absent plate is a filled frame with a
+// word in it rather than an empty box.
+//
+// THE CHANNEL IS ONE DECISION, MADE ONCE. Under a plate as wide as the page, a
+// caption is read at the wrong distance from the thing it describes; beside it,
+// at 24ch, it is read as apparatus - which is what it is. Below 1024 the channel
+// stacks, because a 20ch column beside a 900px plate is a squeezed slot, not a
+// channel.
+//
+// THE `AS OF:` LINE IS THE STALENESS STATE. A capture with a date prints it in
+// the register line; a capture with no recorded date prints nothing there and
+// says so in its `SOURCE:` line instead - the plate never invents a date, and a
+// date it prints is the manifest's.
+
+@use "../Mixin" as *;
+
+.record-plate {
+	--plate-ratio: 21 / 9;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+	margin: 0;
+}
+
+// `measure` keeps the plate on the column it was given; `wide` (the default)
+// lets it take the container's whole width. A plate the width of the paragraph
+// beside it is a figure, which is the block this one is not.
+.record-plate:not(.record-plate--wide) {
+	max-inline-size: var(--Measure);
+}
+
+.record-plate__frame {
+	@include hairline;
+	position: relative;
+	display: block;
+	inline-size: 100%;
+	aspect-ratio: var(--plate-ratio);
+	overflow: hidden;
+	background: var(--Mute);
+}
+
+.record-plate__picture {
+	display: block;
+	inline-size: 100%;
+	block-size: 100%;
+}
+
+.record-plate__composed {
+	block-size: 100%;
+	overflow-x: auto;
+}
+
+// ─── THE TOMBSTONE ────────────────────────────────────────────────────────
+// The capture is not in the build: the frame keeps its width and its bed, prints
+// the mark and the vocabulary's word at the top and the next step on its floor.
+// A frame that collapsed when the plate was missing would let a missing capture
+// pass for a page that never had one.
+//
+// THE ABSENT FRAME IS A BAND, NOT A PLATE. Reserving a 21:9 plate's area for a
+// picture that does not exist is a hole with a caption under it; the tombstone
+// therefore drops the ratio and takes its height from its own content, floored at
+// nine rem. The record still shows where the evidence would hang - it just does
+// not pretend there is something to look at.
+.record-plate--absent .record-plate__frame {
+	aspect-ratio: auto;
+	min-block-size: 9rem;
+}
+
+.record-plate__tombstone {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: var(--space-group);
+	block-size: 100%;
+	padding: var(--space-group);
+}
+
+.record-plate__tombstone-mark {
+	font-size: var(--type-section);
+	line-height: 1;
+	color: var(--MuteForeground);
+}
+
+.record-plate__tombstone-state {
+	display: flex;
+	align-items: center;
+	gap: var(--space-tight);
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.record-plate__tombstone-next {
+	@include mono-meta;
+	@include track(var(--track-name));
+	color: var(--Foreground);
+	overflow-wrap: anywhere;
+}
+
+.record-plate__tombstone-key {
+	color: var(--MuteForeground);
+}
+
+.record-plate__tombstone-state--specimen {
+	color: var(--Accent);
+}
+
+.record-plate__tombstone-state--quiet {
+	color: var(--MuteForeground);
+}
+
+.record-plate__tombstone-state--ink {
+	color: var(--Foreground);
+}
+
+// ─── THE CHANNEL ──────────────────────────────────────────────────────────
+.record-plate__channel {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+	max-inline-size: 62ch;
+	margin: 0;
+}
+
+.record-plate__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 var(--space-tight);
+	margin: 0;
+}
+
+.record-plate__index {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.record-plate__label {
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+// The date sits at the head's far end when the head is one line, and wraps to
+// its own line when it is not - the register line is a line, never a column.
+.record-plate__asof {
+	@include mono-meta;
+	@include track(var(--track-name));
+	margin-inline-start: auto;
+	white-space: nowrap;
+}
+
+.record-plate__asof-key {
+	color: var(--MuteForeground);
+}
+
+.record-plate__row {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	margin: 0;
+}
+
+.record-plate__key {
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.record-plate__subject {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--Foreground);
+	text-wrap: pretty;
+	overflow-wrap: anywhere;
+}
+
+.record-plate__arrow {
+	margin-inline-end: 0.35em;
+	color: var(--MuteForeground);
+}
+
+.record-plate__caption {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+// The manifest's rows: a key column and a value column, a hairline above each,
+// exactly the ledger's row - because a plate's apparatus is a register and the
+// site has one register grammar.
+.record-plate__facts {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+}
+
+.record-plate__fact {
+	display: grid;
+	grid-template-columns: minmax(0, 9ch) minmax(0, 1fr);
+	gap: var(--space-tight);
+	padding-block: var(--space-tight);
+	border-block-start: 1px solid var(--Border);
+}
+
+.record-plate__fact-key {
+	@include mono-meta;
+	@include track(var(--track-name));
+}
+
+.record-plate__fact-value {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+	color: var(--Foreground);
+	overflow-wrap: anywhere;
+}
+
+.record-plate__source {
+	@include mono-meta;
+	@include track(var(--track-name));
+	margin: 0;
+	overflow-wrap: anywhere;
+}
+
+.record-plate__source-key {
+	color: var(--MuteForeground);
+}
+
+// ─── THE CHANNEL, ON WIDE SCREENS ─────────────────────────────────────────
+@include bp(1024px) {
+	.record-plate--channel {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(20ch, 26ch);
+		column-gap: var(--space-group);
+		row-gap: 0;
+		align-items: start;
+	}
+
+	.record-plate--channel .record-plate__channel {
+		max-inline-size: none;
+		padding-inline-start: var(--space-reading);
+		border-inline-start: 1px solid var(--Divider);
+	}
+
+	// The channel's first line sits on the plate's top edge, so the two read as
+	// one row rather than as a plate with a column floating beside it.
+	.record-plate--channel .record-plate__head {
+		padding-block-start: 0;
+	}
+}

@@ -40,6 +40,15 @@
 // anchored heading from landing under the bar. These four belong in _Token.scss
 // the day a card owns that file - they live here because the header is their only
 // reader, and a second copy of the number is how the offset drifts.
+//
+// The OFFSET itself is not here: `_Base.scss` writes it once, on `html`
+// (`scroll-padding-block-start`), for every route. This partial only publishes
+// the height that rule consumes.
+//
+// Below 640px the running head prints two lines instead of one (the record and
+// its part, then the status), so the band reserves a second line there. The value
+// is a page-independent decision, not a content measurement: every page prints
+// the same two lines, so the head never jumps between pages at any width.
 :root {
 	--HeaderBar: 3.5rem;
 	--HeaderStrip: 1.75rem;
@@ -47,8 +56,10 @@
 	--HeaderHeight: calc(var(--HeaderBar) + var(--HeaderStrip));
 }
 
-html {
-	scroll-padding-block-start: calc(var(--HeaderHeight) + var(--space-tight));
+@media (max-width: 639.98px) {
+	:root {
+		--HeaderStrip: 3.25rem;
+	}
 }
 
 // ─── Shell ────────────────────────────────────────────────────────────────
@@ -80,7 +91,7 @@ html {
 
 .HeaderFunctional {
 	--HeaderFg: var(--CardForeground);
-	--HeaderMuted: #3f3f46;
+	--HeaderMuted: var(--MuteForeground);
 	--HeaderSurface: var(--Card);
 
 	background: var(--HeaderSurface);
@@ -192,16 +203,13 @@ html {
 	position: relative;
 	color: var(--HeaderFg);
 	text-decoration: underline;
-	text-decoration-color: color-mix(
-		in srgb,
-		var(--HeaderFg) 20%,
-		transparent
-	);
+	text-decoration-color: color-mix(in srgb, var(--HeaderFg) 20%, transparent);
 	text-decoration-thickness: 2px;
 	text-underline-offset: 0.12em;
 	transition:
-		text-decoration-color 0.15s ease,
-		color 0.15s ease;
+		text-decoration-color var(--motion-interval-quick)
+			var(--motion-enter-easing),
+		color var(--motion-interval-quick) var(--motion-enter-easing);
 }
 
 // Hover is a measured state change: the label and its rule go to the accent,
@@ -214,7 +222,7 @@ html {
 	background: var(--Accent);
 	opacity: 0;
 	pointer-events: none;
-	transition: opacity 0.12s ease;
+	transition: opacity var(--motion-interval-quick) var(--motion-enter-easing);
 }
 
 .HeaderFunctional .HeaderNavLink::before {
@@ -284,16 +292,31 @@ html {
 
 .HeaderStrip {
 	@include band-inner;
-	display: flex;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
 	align-items: center;
+	row-gap: 2px;
 	min-block-size: var(--HeaderStrip);
+	padding-block: var(--space-tight);
 
 	@include hairline(top);
 }
 
+// One line from 640px up: the running head takes the space, the position figure
+// and the status sit at the right in that order - the reader's state, then the
+// document's. `auto` columns, so the status never truncates: it is the keeper.
+@include bp(640px) {
+	.HeaderStrip {
+		grid-template-columns: minmax(0, 1fr) auto auto;
+		column-gap: var(--space-reading);
+		row-gap: 0;
+		padding-block: 0;
+	}
+}
+
 .HeaderStatus {
 	@include mono-meta;
-	@include track(0.08em);
+	@include track(var(--track-row));
 	display: flex;
 	align-items: center;
 	gap: var(--space-tight);

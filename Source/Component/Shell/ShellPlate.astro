@@ -1,0 +1,190 @@
+---
+/**
+ * ShellPlate - the plate language's one artifact: a full-bleed figure with a
+ * caption channel beside it.
+ *
+ * ─── WHAT A PLATE IS ──────────────────────────────────────────────────────
+ * A plate is the page's argument, printed at the width the page has. It is not a
+ * card and not a band: a card is an information box lying on the field, and a
+ * band is a subject separated by space. A plate is a *figure* - it takes the
+ * container's full width, it is framed by one hairline, and it carries its own
+ * provenance in a channel beside it.
+ *
+ * The channel is the difference between a plate and a picture. `FIGURE:` says
+ * what the thing is, `SOURCE:` says where it came from, `STATE:` says whether it
+ * is the current reading or a tombstone. A plate whose channel is empty is
+ * decoration, and the block refuses to render one: `figure` and `source` are
+ * required props, not optional ones.
+ *
+ * ─── BLEED ────────────────────────────────────────────────────────────────
+ * `container` (the default) bleeds to the shell's gutters: the plate is as wide
+ * as the page's own container, and the channel sits in the trailing track. That
+ * is the honest bleed for a page inside the site's frame - the frame's rail and
+ * the page's gutter still hold the measure.
+ *
+ * `viewport` bleeds past both gutters to the window's edges. It is used once, on
+ * the 404, where the plate *is* the page and there is no measure to hold. It
+ * clips its own overflow so a wide plate can never widen the document.
+ *
+ * ─── THE MEDIA ARM ────────────────────────────────────────────────────────
+ * The composed arm is the normal one: the page passes the plate's content through
+ * the slot (a printed trace, a receipt, a diagram, a rendered element) and the
+ * block frames it. The image arm (`src` + `alt`) exists for a page whose plate is
+ * a photograph, and it is deliberately the same frame - a plate does not change
+ * its shape because its evidence is a picture.
+ *
+ * No script and no hydration: a plate is printed.
+ */
+import { Tone } from "../Surface/State.js";
+
+interface Props {
+	/** `# PLATE / 01` - the plate's marker, printed at the channel's head. */
+	index: string;
+
+	/** `FIGURE:` - what this plate is. Required: a plate without a name is a picture. */
+	figure: string;
+
+	/** `SOURCE:` - where it came from. Required: an uncited plate is decoration. */
+	source: string;
+
+	/**
+	 * `STATE:` - one of §1.5's eight words, or a fact that is not a state. The
+	 * tone is looked up, never chosen here.
+	 */
+	state?: string;
+
+	/** The `↳` proposition under the channel: one line, what the plate argues. */
+	proposition?: string;
+
+	/** The image arm: `src` and `alt` travel together. */
+	media?: {
+		readonly src: string;
+		readonly alt: string;
+		readonly position?: string;
+	};
+
+	/**
+	 * The trace arm: a plate whose evidence is a printed value rather than a
+	 * picture - the path that was asked for, the token that was checked, the
+	 * digest that was computed. The value prints at the display tier, the mark
+	 * above it, and one line under it saying what the reader is looking at. A
+	 * value too long for the plate wraps inside the field and never widens it.
+	 */
+	trace?: {
+		readonly mark: string;
+		readonly value: string;
+		readonly note?: string;
+	};
+
+	/** How far the plate bleeds: to the container's gutters, or to the window. */
+	bleed?: "container" | "viewport";
+
+	/**
+	 * The plate's height, as a CSS length. A plate has a height of its own - a
+	 * figure that is as tall as its content is a figure that disappears when its
+	 * content is short.
+	 */
+	height?: string;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const {
+	index,
+	figure,
+	source,
+	state,
+	proposition,
+	media,
+	trace,
+	bleed = "container",
+	height,
+	class: ClassName,
+} = Astro.props;
+
+const Resolved = state ? Tone(state) : undefined;
+const HasSlot = Astro.slots.has("default");
+---
+
+<figure
+	class:list={["ShellPlate", ClassName]}
+	data-bleed={bleed}
+	style={height ? `--PlateHeight:${height}` : undefined}
+>
+	<div class="ShellPlate__grid">
+		<div class="ShellPlate__media">
+			{
+				trace ? (
+					<div class="ShellPlate__trace">
+						<p class="ShellPlate__trace-mark" aria-hidden="true">
+							{trace.mark}
+						</p>
+						<p class="ShellPlate__trace-value">{trace.value}</p>
+						{trace.note ? (
+							<p class="ShellPlate__trace-note">{trace.note}</p>
+						) : null}
+					</div>
+				) : media ? (
+					<img
+						class="ShellPlate__image"
+						src={media.src}
+						alt={media.alt}
+						style={media.position
+							? `object-position:${media.position}`
+							: undefined}
+					/>
+				) : HasSlot ? (
+					<slot />
+				) : null
+			}
+		</div>
+
+		<figcaption class="ShellPlate__channel">
+			<p class="ShellPlate__register">
+				<span class="ShellPlate__mark" aria-hidden="true">#</span>
+				<span class="ShellPlate__word">PLATE</span>
+				<span class="ShellPlate__slash" aria-hidden="true">/</span>
+				<span class="ShellPlate__index">{index}</span>
+			</p>
+
+			<dl class="ShellPlate__rows">
+				<div class="ShellPlate__row">
+					<dt class="ShellPlate__key">FIGURE:</dt>
+					<dd class="ShellPlate__value">{figure}</dd>
+				</div>
+				<div class="ShellPlate__row">
+					<dt class="ShellPlate__key">SOURCE:</dt>
+					<dd class="ShellPlate__value">{source}</dd>
+				</div>
+				{
+					state ? (
+						<div class="ShellPlate__row">
+							<dt class="ShellPlate__key">STATE:</dt>
+							<dd
+								class:list={[
+									"ShellPlate__value",
+									"ShellPlate__value--state",
+									Resolved ? `ShellPlate__value--${Resolved}` : null,
+								]}
+							>
+								{state}
+							</dd>
+						</div>
+					) : null
+				}
+			</dl>
+
+			{
+				proposition ? (
+					<p class="ShellPlate__proposition">
+						<span class="ShellPlate__proposition-mark" aria-hidden="true">
+							&#8627;
+						</span>
+						{proposition}
+					</p>
+				) : null
+			}
+		</figcaption>
+	</div>
+</figure>

@@ -1,0 +1,386 @@
+@use "../Mixin" as *;
+
+// ─── THE SLIP ───────────────────────────────────────────────────────────────
+//
+// A menu, a select list, a context menu, a popover and the palette are the same
+// object: the smallest white insert that can lie on the creme field. Naming it
+// once is what stops five controls becoming five surfaces.
+//
+// The frame is `--Divider`, not `--Border`. `--Border` is the sitewide hairline
+// (8 % ink) and is right for a frame drawn ON a card whose fill already separates
+// it from the canvas. A slip floats: its frame is the only thing defining it, and
+// 8 % ink at 1.19:1 reads as a rumour rather than an edge. `--Divider` is the
+// 20 % mix `_Utility.scss` names for exactly this case - the rule that IS the
+// element. One hairline, all four sides, radius 0, no shadow, no blur, no glass.
+//
+// The kit ships `data-[state=open]:zoom-in-95` and a `bg-popover`; neither is a
+// surface this site has. The zoom classes emit nothing (no `tailwindcss-animate`
+// in the tree) and the fill is overridden here. A slip does not grow: it fades in
+// over 120 ms and rises 2 px - the arrival of an affordance, which is the one
+// change of state `_Motion.scss` gives a name to. Reduced motion keeps the end
+// state and loses only the interval.
+//
+// ─── WHAT A SLIP IS NOT ─────────────────────────────────────────────────────
+//
+// It is not a card. A card inside a card is never right, and a slip inside a card
+// is the same mistake at popover scale: the slip has no ticks, no corner marks,
+// no seal. Its identity is the register line at its head, which is what makes it
+// read as a record from this document rather than as a stock popover.
+
+// ─── the selector list ──────────────────────────────────────────────────────
+//
+// `:is()` and not a comma list. A comma list with a suffix - `a, b[data-state]` -
+// attaches the suffix to `b` alone, so a state rule written that way would style
+// one control out of eight and look like it worked. `:is()` applies the compound
+// to every member, keeps the specificity of the most specific one (0,1,0 here,
+// the same as a class), and stays one rule.
+
+$Slip: ':is([data-slot="dropdown-menu-content"], [data-slot="dropdown-menu-sub-content"], [data-slot="select-content"], [data-slot="context-menu-content"], [data-slot="context-menu-sub-content"], [data-slot="popover-content"], [data-slot="menubar-content"], [data-slot="hover-card-content"], .Slip)';
+
+@mixin slip-surface {
+	// `@include flat` writes radius 0 and `box-shadow: none` - the design
+	// system's one material rule, declared once instead of retyped.
+	@include flat;
+
+	background: var(--Card);
+
+	border: 1px solid var(--Divider);
+
+	color: var(--CardForeground);
+
+	// The control voice: 13px, the site's floor, never smaller. A popover is
+	// furniture, and furniture speaks in the meta role.
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+
+	min-inline-size: 12rem;
+	max-block-size: var(--SlipMaxBlock, 24rem);
+
+	padding: 0;
+
+	overflow-x: hidden;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+
+	z-index: 60;
+}
+
+#{$Slip} {
+	@include slip-surface;
+}
+
+// ─── MOTION: the arrival, and the return ────────────────────────────────────
+
+#{$Slip}[data-state="open"] {
+	@media (prefers-reduced-motion: no-preference) {
+		animation: SlipArrive 120ms var(--motion-enter-easing) both;
+	}
+}
+
+#{$Slip}[data-state="closed"] {
+	@media (prefers-reduced-motion: no-preference) {
+		animation: SlipReturn 90ms ease-in both;
+	}
+}
+
+@keyframes SlipArrive {
+	from {
+		opacity: 0;
+		translate: 0 -2px;
+	}
+
+	to {
+		opacity: 1;
+		translate: 0 0;
+	}
+}
+
+@keyframes SlipReturn {
+	from {
+		opacity: 1;
+		translate: 0 0;
+	}
+
+	to {
+		opacity: 0;
+		translate: 0 -2px;
+	}
+}
+
+// ─── THE REGISTER LINE ──────────────────────────────────────────────────────
+//
+// Every slip opens with a printed record header: `# LOCALE / 05`. The `#` is the
+// one accent in the control - the same accent the running head and the frame rail
+// give their `#` - and it authenticates the surface as part of this document. The
+// name is a `/` category; the count is two digits, tabular, and it is a fact
+// about the slip's own contents, so a slip can never open as an unlabelled box.
+//
+// It is sticky: a slip that scrolls to eighty-one rows must not scroll its own
+// name away.
+
+.Slip__Head {
+	position: sticky;
+	inset-block-start: 0;
+	z-index: 2;
+
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	padding: var(--space-tight) var(--space-reading);
+
+	background: var(--Card);
+
+	@include hairline(bottom);
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.Slip__Mark {
+	color: var(--Accent);
+
+	font-variant-numeric: tabular-nums;
+}
+
+.Slip__Name {
+	color: var(--Foreground);
+
+	white-space: nowrap;
+}
+
+.Slip__Rule {
+	color: var(--MuteForeground);
+}
+
+.Slip__Count {
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+// ─── GROUP HEADINGS ─────────────────────────────────────────────────────────
+//
+// A slip with registers (the palette) prints a heading per register. It is a
+// label, not a row: no hover, no focus, and the rule above it is what separates
+// the registers, so a group never needs a spacer.
+
+.Slip__Group {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0;
+	padding: var(--space-reading) var(--space-reading) var(--space-tight);
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.Slip__Group + .Slip__Group,
+.Slip__Row + .Slip__Group {
+	border-block-start: 1px solid var(--Border);
+}
+
+// A register is a block that holds one heading and its rows. It is not the
+// heading itself: the heading is a line, and a flex row wrapping twenty results
+// would lay them out side by side.
+.Slip__Section {
+	display: block;
+}
+
+.Slip__Section + .Slip__Section {
+	border-block-start: 1px solid var(--Border);
+}
+
+.Slip__GroupCount {
+	margin-inline-start: auto;
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+// ─── THE FOOT ───────────────────────────────────────────────────────────────
+//
+// The foot prints the slip's own controls as chords, in the grammar's order:
+// what moves, what opens, what closes. It is the one place the site states a
+// keyboard path in words, and it is why the palette reads as software.
+
+.Slip__Foot {
+	position: sticky;
+	inset-block-end: 0;
+	z-index: 2;
+
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-tight) var(--space-reading);
+
+	padding: var(--space-tight) var(--space-reading);
+
+	background: var(--Card);
+
+	@include hairline(top);
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.Slip__FootItem {
+	display: inline-flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	white-space: nowrap;
+}
+
+.Slip__FootEnd {
+	margin-inline-start: auto;
+}
+
+// ─── THE EMPTY STATE ────────────────────────────────────────────────────────
+//
+// An empty list is a composition, not a blank: the slip says what is not here
+// (`◎`), what would be, and what to do about it (`↳`). `◎` is the grammar's mark
+// for a thing with no glyph, and "no record" is exactly that.
+//
+// It is the adverse state the brief asks every surface to design, at the scale a
+// control can carry it: three lines, no illustration, no apology.
+
+.Slip__Empty {
+	display: grid;
+	gap: var(--space-tight);
+
+	padding: var(--space-group) var(--space-reading);
+}
+
+.Slip__EmptyMark {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.Slip__EmptyMark b {
+	color: var(--MuteForeground);
+
+	font-weight: 400;
+}
+
+.Slip__EmptyLine {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	color: var(--Foreground);
+
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-name);
+}
+
+.Slip__EmptyLine span[aria-hidden="true"] {
+	color: var(--MuteForeground);
+}
+
+// ─── THE SCRIM ──────────────────────────────────────────────────────────────
+//
+// The kit's overlay is `bg-black/50` - a scrim heavy enough to read as a shadow,
+// which is the one material the identity refuses. The site's scrim is ink at
+// 12 %: the field darkens, nothing is blurred, and the slip's hairline still does
+// the work of separating it.
+
+.SlipScrim {
+	position: fixed;
+	inset: 0;
+	z-index: 55;
+
+	background: color-mix(in srgb, var(--Foreground) 12%, transparent);
+
+	border: 0;
+}
+
+// The close control a slip draws when it does not state its own dismissal. Muted
+// ink, no fill, no ring of its own beyond the site's focus ring - and the `×` is
+// a glyph in the type, not an icon, so it sits on the baseline like a mark.
+.SlipClose {
+	position: absolute;
+	inset-block-start: var(--space-tight);
+	inset-inline-end: var(--space-tight);
+
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	inline-size: 1.5rem;
+	block-size: 1.5rem;
+
+	padding: 0;
+
+	background: none;
+	border: 0;
+
+	color: var(--MuteForeground);
+
+	cursor: pointer;
+}
+
+.SlipClose:hover {
+	color: var(--Foreground);
+}
+
+.SlipClose:focus-visible {
+	outline: 2px solid var(--Accent);
+	outline-offset: 2px;
+}
+
+.SlipClose svg {
+	inline-size: 0.875rem;
+	block-size: 0.875rem;
+}
+
+// ─── THE PANEL ARM ──────────────────────────────────────────────────────────
+//
+// A slip that holds content instead of rows - a popover. It takes the slip's own
+// inset and no row grammar, because the padding a list gets from its rows would
+// double up here.
+
+.Slip--panel {
+	padding: var(--space-reading);
+}
+
+// ─── THE SELECT'S OWN PARTS ─────────────────────────────────────────────────
+//
+// Radix's select viewport has to be at least as wide as the trigger, or a list of
+// three short labels opens narrower than the field that opened it and the slip
+// looks like it belongs to something else. The scroll buttons are the slip's
+// edges: a `›` turned on its side, muted, on the card fill so rows pass under it.
+
+.Slip__Viewport {
+	padding: 0;
+
+	min-inline-size: var(--radix-select-trigger-width, auto);
+}
+
+.Slip__Scroll {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	block-size: 1.25rem;
+
+	background: var(--Card);
+	border: 0;
+
+	color: var(--MuteForeground);
+
+	cursor: default;
+}
+
+.Slip__ScrollIcon {
+	inline-size: 0.875rem;
+	block-size: 0.875rem;
+}

@@ -84,16 +84,16 @@ describe("FeatureBand", () => {
 		// and the stronger one, because it survives a reorder.
 		expect(Cards()).toHaveLength(6);
 
-		expect(Cards().map((Card) => Text(One(".home-record__index", Card)))).toEqual(
-			[
-				"# MOUNTAIN_01",
-				"# COCOON_01",
-				"# WIND_01",
-				"# SKY_01",
-				"# AIR_01",
-				"# ECHO_01",
-			],
-		);
+		expect(
+			Cards().map((Card) => Text(One(".home-record__index", Card))),
+		).toEqual([
+			"# MOUNTAIN_01",
+			"# COCOON_01",
+			"# WIND_01",
+			"# SKY_01",
+			"# AIR_01",
+			"# ECHO_01",
+		]);
 	});
 
 	it("prints each record's own name, route and facts whole", () => {
@@ -109,15 +109,14 @@ describe("FeatureBand", () => {
 			"https://github.com/CodeEditorLand/Mountain",
 		);
 
-		expect(Text(One(".home-record__service", Mountain))).toBe("RUST SERVICES");
+		expect(Text(One(".home-record__service", Mountain))).toBe(
+			"RUST SERVICES",
+		);
 
 		// The four-row ledger, every key printed with its colon.
-		expect(All(".home-record__key", Mountain).map((Key) => Text(Key))).toEqual([
-			"ROLE:",
-			"BOUNDARY:",
-			"LOAD:",
-			"PHASE:",
-		]);
+		expect(
+			All(".home-record__key", Mountain).map((Key) => Text(Key)),
+		).toEqual(["ROLE:", "BOUNDARY:", "LOAD:", "PHASE:"]);
 
 		expect(
 			All(".home-record__value", Mountain).map((Value) => Text(Value)),
@@ -163,26 +162,24 @@ describe("FeatureBand", () => {
 			"--jelly-fill:var(--SpinegRPCMute)",
 		);
 
-		expect(Fills.get("# SKY_01")).toContain("--jelly-fill:var(--SpineIPCMute)");
+		expect(Fills.get("# SKY_01")).toContain(
+			"--jelly-fill:var(--SpineIPCMute)",
+		);
 
-		expect(Fills.get("# WIND_01")).toContain("--jelly-fill:var(--OSMacOSMute)");
+		expect(Fills.get("# WIND_01")).toContain(
+			"--jelly-fill:var(--OSMacOSMute)",
+		);
 	});
 
-	it("prints the one architecture proof the layer is allowed", () => {
-		// Four steps, in order, as the block's own ordered rail - not a
-		// hand-composed list.
-		const Rail = One(".record-stage");
+	it("does not print the runtime rail a second time", () => {
+		// The four-step rail moved to the hero, where it is the proof of the
+		// claim directly above it (`DynamicHeroSection`'s `hero-band__trace`).
+		// Two copies of one rail on one page is a habit, not a proof, so the
+		// band asserts the move rather than losing the claim: the steps are
+		// still printed, once, one band up.
+		expect(All(".record-stage")).toHaveLength(0);
 
-		const Items = All(".record-stage__item", Rail);
-
-		expect(Items).toHaveLength(4);
-
-		expect(
-			Items.map((Item) => Text(One(".record-stage__label", Item))),
-		).toEqual(["Mountain", "Cocoon", "Sky", "Wind"]);
-
-		// And it opens on its own label, in the ledger key's voice.
-		expect(Text(One(".home-feature__rail-label"))).toBe("RUNTIME PATH");
+		expect(Page.querySelector(".home-feature__rail")).toBeNull();
 	});
 
 	it("prints the specimen observation the record carries", () => {

@@ -1,6 +1,7 @@
 ---
 /**
- * The 404: the canonical small record (`DesignSystem-Pages.md` §3).
+ * The 404: the canonical small record (`DesignSystem-Pages.md` §3), and the
+ * site's second plate page.
  *
  * One artifact, in the shape the document prints:
  *
@@ -8,52 +9,79 @@
  *   〈NOT FOUND〉
  *   /TRACE: [REQUESTED PATH]
  *   STATUS: INTERRUPTED
- *   SIGNAL: ABSENT␁ROUTE: UNRESOLVED
+ *   SIGNAL: ABSENT / ROUTE: UNRESOLVED
  *   [one plain-language sentence]
- *   [major blank interval]
+ *   [the blank interval]
  *   LAND:
  *   ↳RETURN TO INDEX
  *   [ BACK TO LAND ]
+ *
+ * THE RECORD IS THE BLOCK LAYER'S, NOT THIS FILE'S. The page used to assemble
+ * the two-panel record by hand - `FieldRecordDataCard`, `FieldRecordIndex`, a
+ * hand-written `h1`, `FieldRecordStatus`, `FieldRecordEvidence` and a gutter
+ * painted `var(--Background)` (invisible: the exact defect M1 fixed on the live
+ * hero). That composition is `RecordHero`, which had no consumer at all; this
+ * page is the third surface the artifact set allows it (homepage, release
+ * summary, 404), so the page hands over a record and the block prints it.
+ *
+ * The evidence is a `RecordFigure`, not a bare plate: an uncaptioned figure is
+ * decoration (`DESIGN-COMPLETE.md` §4.3), and a 404 has no evidence of its own -
+ * which is exactly what its caption says, with the file it came from under it.
+ *
+ * ─── WHAT THIS CARD ADDS: THE TRACE PLATE ─────────────────────────────────
+ * A 404 is the one page on the site whose whole subject is an absence, so it is
+ * the one page that is honestly a PLATE. Under the record the page now prints
+ * the thing that actually failed - the requested path - at full bleed, in a
+ * `ShellPlate` with a caption channel that names it (`FIGURE:`), cites it
+ * (`SOURCE: REQUEST URL`) and states it (`STATE: UNAVAILABLE`). The record says
+ * `SIGNAL: ABSENT`; the plate shows *what* is absent. Neither decorates the
+ * other: the record is the claim and the plate is its evidence.
+ *
+ * The plate's trace arm is the plate's own variant for a value rather than a
+ * picture: the path prints at the L tier, wraps inside the field, and can never
+ * widen the document. A path long enough to need more than one line also prints
+ * the `too-long` state under it, which says what was clipped and where the limit
+ * is - an adverse state composed in the same band, not a placeholder.
  *
  * Three decisions worth knowing before editing this file:
  *
  * - **The record is two panels, not a centred apology.** A data card beside an
  *   evidence fragment, a hairline gutter between them, `min-h-[80dvh]`: the
  *   composition HEAD rendered and the one `DESIGN.md` §3.5 names as the model
- *   for what "restored" means.
+ *   for what "restored" means. The page caps the artifact's measure so a small
+ *   record stays small; the block owns everything inside the cap.
  * - **The stamp is the page's only `h1`.** It renders `〈NOT FOUND〉` at the XL
  *   tier with the per-keyword ink the grammar gives a stamp's brackets and
- *   keyword (`Function/Theme/SemanticColor`). HEAD printed the same string as a
- *   `p`; a page with no `h1` has no document title, so the level-one heading is
- *   the fix, not a decoration.
+ *   keyword (`RecordHero` prints the stamp through `StampText`). HEAD printed
+ *   the same string as a `p`; a page with no `h1` has no document title, so the
+ *   level-one heading is the fix, not a decoration.
  * - **`INTERRUPTED` is an ink state, not a quiet one.** `DesignSystem-Grammar.md`
  *   §2 fixes the tone per term: `INTERRUPTED` is ink (error, plain explanation +
  *   recovery), and `quiet` is reserved for `PREPARING` and `ARCHIVED`. The value
  *   carried `quiet`, which muted the one word that tells a reader what happened.
  *
- * The blank interval between the state block and the title block is mandatory
+ * The blank interval between the facts and the title block is mandatory
  * (`DesignSystem.md` INVARIANT 06, `DESIGN.md` §2.7): it is what gives `LAND:`
  * the weight of a second headline. Delete it and the record loses its shape.
  */
 import { Header } from "../Component/Layout/Header";
+import Onward from "../Component/More/Onward.astro";
+import RecordFigure from "../Component/Record/RecordFigure.astro";
+import RecordHero from "../Component/Record/RecordHero.astro";
+import PageShell from "../Component/Shell/PageShell.astro";
+import ShellPlate from "../Component/Shell/ShellPlate.astro";
+import ShellState from "../Component/Shell/ShellState.astro";
+import { NotFoundOnward, NotFoundOnwardCopy } from "../Content/More/Page.js";
+import { NotFoundPage } from "../Content/Layout/NotFound.js";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
-import FieldRecordDataCard from "../Component/Brand/FieldRecordDataCard.astro";
-import FieldRecordIndex from "../Component/Brand/FieldRecordIndex.astro";
-import { FieldRecordStatus } from "../Component/Brand/FieldRecordStatus";
-import FieldRecordAction from "../Component/Brand/FieldRecordAction.astro";
-import { FieldRecordEvidence } from "../Component/Brand/FieldRecordEvidence";
 
-import {
-	GLYPH_INK,
-	KeywordInk,
-	ROUTE_KEYWORD_INK,
-} from "../Function/Theme/SemanticColor";
+import type { Hero, LedgerRow } from "../Component/Record/Type.js";
 
 const T = GetI18n();
 
 const MetaTitle = T("common.error.404", {
-	defaultValue: "404 - Page Not Found",
+	defaultValue: "404: No Record At This Address",
 });
 
 /**
@@ -62,7 +90,7 @@ const MetaTitle = T("common.error.404", {
  */
 const NotFoundCopy = T("common.error.pageNotFound", {
 	defaultValue:
-		"The page you're looking for doesn't exist or has been moved.\n\nCheck the URL for typos, or return to the home page and start fresh.\n\nIf you believe this is an error, open a GitHub issue and we'll help you find what you need.",
+		"No record is filed at this address, and no redirect covers it. The address is well formed; nothing was ever filed under it.\n\n/Contents lists every route the build emits, so a link that used to work can be found there by name.\n\nIf a page of this site sent you here, /Contact takes the report and the path you came from.",
 });
 
 const MetaDescription = NotFoundCopy;
@@ -72,103 +100,108 @@ const MetaDescription = NotFoundCopy;
  * the route the reader asked for, so the line stays live rather than fixed.
  */
 const RequestedPath = Astro.url.pathname;
+
+/**
+ * Whether the path will not print on the plate's one line. The plate wraps it
+ * either way - this only decides whether the page also prints the state that
+ * says so, which is the difference between a layout that survives a long value
+ * and a page that acknowledges one.
+ */
+const IsLongPath = RequestedPath.length > 64;
+
+/** The plate's and the states' copy, resolved from the route's own module. */
+const Copy = NotFoundPage(T);
+
+/**
+ * The record. `claim` is the bare keyword - `StampText` draws the `〈 〉` - and
+ * the two facts are ledger rows, which is what they are: the signal is absent and
+ * the route is unresolved. The relation and the proposition sit below the blank
+ * interval, where the interval gives them the weight of a second headline.
+ */
+const Record: Hero = {
+	index: "ROUTE_404",
+	claim: "NOT FOUND",
+	route: `/TRACE:${RequestedPath}`,
+	status: { state: "interrupted", tone: "ink" },
+	seal: "Land",
+	metadata: [
+		{ key: "SIGNAL:", value: "ABSENT" },
+		{ key: "ROUTE:", value: "UNRESOLVED" },
+	] satisfies readonly LedgerRow[],
+	relation: "LAND:",
+	proposition: "RETURN TO INDEX",
+	action: { label: "BACK TO LAND", href: "/", variant: "button" },
+};
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
 	<Header client:load slot="Header" />
-	<section
-		id="NotFoundContent"
-		class="flex min-h-[80dvh] w-full flex-col items-center justify-center py-20"
-		aria-label="Page not found"
-	>
-		<div class="container mx-auto px-4">
-			<div class="mx-auto max-w-3xl">
-				<div class="flex flex-col md:flex-row">
-					<div class="min-w-0 flex-1">
-						<FieldRecordDataCard className="h-full">
-							<div class="flex h-full flex-col gap-4">
-								<FieldRecordIndex index="ROUTE_404" />
 
-								<h1
-									class="text-field-xl font-mono font-normal leading-[0.95] tracking-[-0.02em] text-card-foreground"
-								>
-									<span style={`color:${GLYPH_INK}`}>〈</span><span
-										style={`color:${KeywordInk("NOT FOUND") ?? "var(--CardForeground)"}`}
-										>NOT FOUND</span
-									><span style={`color:${GLYPH_INK}`}>〉</span>
-								</h1>
+	<PageShell index="# PLATE_01" label="THE MISSING RECORD">
+		<RecordHero {...Record} slot="head">
+			<RecordFigure
+				src="/Evidence/Land/NightGlass-01.png"
+				alt="Rain-speckled glass reflecting a green light at night"
+				caption="A 404 has no evidence of its own, so the record prints the site's plate."
+				provenance="/EVIDENCE/LAND/NIGHTGLASS-01.PNG"
+			/>
+		</RecordHero>
 
-								<p
-									class="text-field-s font-mono font-normal leading-[1.1] text-card-foreground"
-								>
-									<span style={`color:${GLYPH_INK}`}>/</span><span
-										style={`color:${ROUTE_KEYWORD_INK}`}>TRACE</span
-									><span style={`color:var(--CardForeground)`}
-										>: {RequestedPath}</span
-									>
-								</p>
+		<ShellPlate
+			index="01"
+			figure={Copy.plate.figure}
+			source={Copy.plate.source}
+			state={Copy.plate.state}
+			proposition={Copy.plate.proposition}
+			trace={{
+				mark: Copy.plate.mark,
+				value: RequestedPath,
+				note: Copy.plate.note,
+			}}
+			bleed="viewport"
+			height="clamp(15rem, 32vh, 24rem)"
+		/>
 
-								<div class="mt-6">
-									<FieldRecordStatus
-										status="interrupted"
-										tone="ink"
-										client:load
-									/>
-								</div>
+		{
+			IsLongPath ? (
+				<ShellState
+					kind="too-long"
+					index="TRACE / 01"
+					value={RequestedPath}
+					limit={Copy.tooLong.limit}
+					statement={Copy.tooLong.statement}
+					cause={Copy.tooLong.cause}
+					next={Copy.tooLong.next}
+					note={`CHARACTERS: ${RequestedPath.length}\u2001LIMIT: ${Copy.tooLong.limit}`}
+				/>
+			) : null
+		}
 
-								<div class="mt-2">
-									<p
-										class="text-field-s font-mono uppercase tracking-wider text-card-foreground opacity-60"
-									>
-										SIGNAL: ABSENT{"\u2001"}ROUTE: UNRESOLVED
-									</p>
-								</div>
+		<ShellState
+			kind="missing"
+			index="RECORD / 01"
+			statement={Copy.missing.statement}
+			cause={Copy.missing.cause}
+			next={Copy.missing.next}
+			rows={[
+				{ key: "WAS:", value: RequestedPath, code: true },
+				{ key: "TARGET:", value: "UNRESOLVED" },
+				{ key: "SIGNAL:", value: "ABSENT" },
+			]}
+			note={"SOURCE: REQUEST URL\u2001FILED: NEVER"}
+		/>
 
-								<div class="my-12 flex-1" aria-hidden="true">
-								</div>
+		{/*
+			The way out. The page used to tell the reader that `/Contents` lists
+			every route the build emits and then not link it - an apology with no
+			handle on it. `Onward` is the routing register: six intents, in the
+			order a reader who typed a wrong address is likely to have meant them,
+			and the first is the index the copy above already names.
 
-								<div>
-									<p
-										class="text-field-l font-mono font-normal leading-[1.08] text-card-foreground"
-									>
-										LAND:
-									</p>
-									<p
-										class="text-field-s mt-3 font-mono font-normal leading-[1.1] text-card-foreground opacity-70"
-									>
-										↳RETURN TO INDEX
-									</p>
-								</div>
-
-								<div class="mt-10">
-									<FieldRecordAction
-										label="BACK TO LAND"
-										href="/"
-										variant="button"
-									/>
-								</div>
-							</div>
-						</FieldRecordDataCard>
-					</div>
-
-					<div
-						class="hidden w-px md:block"
-						style="background-color: var(--Background)"
-						aria-hidden="true"
-					>
-					</div>
-
-					<div class="min-w-0 flex-1">
-						<FieldRecordEvidence
-							src="/Evidence/Land/NightGlass-01.png"
-							alt="Rain-speckled glass reflecting a green light at night"
-							position="center"
-							className="h-full min-h-[40dvh] w-full"
-							client:load
-						/>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+			It is a `<nav>` and not a section: a page that has just said "no record
+			at this address" does not need a heading to introduce its exits, and a
+			heading would make the way out a subject of its own.
+		*/}
+		<Onward rows={NotFoundOnward} copy={NotFoundOnwardCopy} />
+	</PageShell>
 </Base>

@@ -4,6 +4,9 @@ import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 import { LinkMentions } from "../Library/CodeMentions";
 import ReadingDocument from "../Component/Reading/ReadingDocument.astro";
+import BandFoot from "../Component/Detail/BandFoot.astro";
+import TrustClause from "../Component/Trust/TrustClause.astro";
+import { ComposeFacts } from "../Component/Trust/Facts.js";
 import Trail from "../Component/Route/Trail.astro";
 import {
 	Index,
@@ -50,10 +53,10 @@ const Card =
 >
 	<Header client:load slot="Header" />
 
-	<div class="container mx-auto max-w-4xl px-4 py-16">
+	<div class="trust-page">
 		<!-- Breadcrumbs -->
 		<Trail
-			class="mb-8"
+			class="trust-page__trail"
 			trail={[
 				{ label: "/HOME", href: "/" },
 				{ label: "/CONTRIBUTING" },
@@ -68,20 +71,23 @@ const Card =
 			standfirstHtml={LinkMentions(
 				T("common.contributing.pageSubtitle", {
 					defaultValue:
-						"Land is open source and built in public.\n\nEvery contribution - code, docs, tests, or design - ships to real users.",
+						"Land is CC0 and built in public.\n\nA change is a branch, a test and one sentence about why. The guide names the files, the toolchain and the branch convention; the four ways in are code, documentation, testing and design.",
 				}),
 			)}
-			rows={Ledger}
+			rows={ComposeFacts(Ledger)}
 			index={Index}
 			indexLabel="Parts"
+			layout="rail"
+			ledgerSurface="standard"
+			ledgerColumns={2}
 			measure="full">
 		<!-- Quick Links -->
 		<section class="reading-document__part">
-			<h2 class="sr-only reading-clause" id="quick-links">
+			<TrustClause number="01" id="quick-links" class="sr-only">
 				{T("common.contributing.quickLinks.heading", {
 					defaultValue: "Quick Links",
 				})}
-			</h2>
+			</TrustClause>
 			<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 				<a
 					href="https://github.com/CodeEditorLand/Land/tree/Current/CONTRIBUTING.md"
@@ -127,11 +133,11 @@ const Card =
 
 		<!-- How to Contribute -->
 		<section class="reading-document__part">
-			<h2 class="reading-clause" id="how-to-contribute">
+			<TrustClause number="02" id="how-to-contribute">
 				{T("common.contributing.howToContribute.heading", {
 					defaultValue: "How to Contribute",
 				})}
-			</h2>
+			</TrustClause>
 			<div class="contributing-steps">
 				<ol class="contributing-steps__list">
 					{
@@ -191,11 +197,11 @@ const Card =
 
 		<!-- Elements Architecture -->
 		<section class="reading-document__part">
-			<h2 class="reading-clause" id="fifteen-elements-one-editor">
+			<TrustClause number="03" id="fifteen-elements-one-editor">
 				{T("common.contributing.elements.heading", {
 					defaultValue: "Fifteen Elements, One Editor",
 				})}
-			</h2>
+			</TrustClause>
 			<p
 				class="mb-6 whitespace-pre-line text-muted-foreground"
 				set:html={LinkMentions(
@@ -389,11 +395,11 @@ const Card =
 
 		<!-- Ways to Contribute -->
 		<section class="reading-document__part">
-			<h2 class="reading-clause" id="ways-to-contribute">
+			<TrustClause number="04" id="ways-to-contribute">
 				{T("common.contributing.ways.heading", {
 					defaultValue: "Ways to Contribute",
 				})}
-			</h2>
+			</TrustClause>
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 				<jelly-card style={Card}>
 					<h3 class="text-card-foreground mb-2 font-medium" id="code">
@@ -471,11 +477,11 @@ const Card =
 
 		<!-- Funding -->
 		<section class="reading-document__part">
-			<h2 class="reading-clause" id="funding">
+			<TrustClause number="05" id="funding">
 				{T("common.contributing.funding.heading", {
 					defaultValue: "Funding",
 				})}
-			</h2>
+			</TrustClause>
 			<jelly-card style={Card}>
 				<div class="mb-4 flex flex-wrap gap-x-4 gap-y-1">
 					<a
@@ -528,11 +534,11 @@ const Card =
 
 		<!-- Code of Conduct -->
 		<section class="reading-document__part">
-			<h2 class="reading-clause" id="code-of-conduct">
+			<TrustClause number="06" id="code-of-conduct">
 				{T("common.contributing.conduct.heading", {
 					defaultValue: "Code of Conduct",
 				})}
-			</h2>
+			</TrustClause>
 			<jelly-card style={Card}>
 				<a
 					href="https://github.com/CodeEditorLand/Land/tree/Current/CODE_OF_CONDUCT.md"
@@ -553,10 +559,40 @@ const Card =
 				/>
 			</jelly-card>
 		</section>
+
+		{/* The document's foot: what a contributor needs that this guide does not
+		    say, and where in the document they have got to. The clause count is
+		    this page's own, and the as-of is absent on purpose - the guide
+		    carries no revision date, and a folio may not invent one. */}
+		<BandFoot
+			surface="card"
+			index="06"
+			part="/THE BACK MATTER"
+			see={[
+				{
+					route: "/LICENSE",
+					href: "/License",
+					reason:
+						"what a contribution is licensed under: the same public-domain dedication as the code",
+				},
+				{
+					route: "/DOC",
+					href: "/Doc",
+					reason: "the manual a documentation contribution is written against",
+				},
+				{
+					route: "/CONTACT/SCOUT",
+					href: "/Contact/Scout",
+					reason: "technical support, when the question is not a contribution",
+				},
+			]}
+			figure={{ value: "06", unit: "PARTS" }}
+			source="SOURCE/PAGES/CONTRIBUTING.ASTRO"
+		/>
 		</ReadingDocument>
 
 		<!-- Back to top -->
-		<div class="mt-12 border-t pt-8">
+		<div class="trust-page__close">
 			<a href="#top" class="StaccatoButton text-primary hover:underline">
 				{T("common.button.backToTop", {
 					defaultValue: "Back to top",
@@ -570,4 +606,9 @@ const Card =
 <script>
 	import { WireCopyButtons } from "../Function/Utility/CopyCommand";
 	WireCopyButtons();
+</script>
+
+<script>
+	import { WireTrustContents } from "../Component/Trust/TrustContents.js";
+	WireTrustContents();
 </script>

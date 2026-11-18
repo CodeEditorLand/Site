@@ -1,0 +1,84 @@
+---
+/**
+ * SurfaceAbsent - the honest empty state of an app surface.
+ *
+ * An empty region is not a blank: it is a record whose facts are known and
+ * whose subject is missing. The brief asks the same three questions of every
+ * adverse state (`Design-Brief.md` §7): what would be here, why it is not, and
+ * what to do. This block prints exactly those three rows, in the site's own
+ * compact-label grammar, and it is the only white information box on these
+ * surfaces - the creme field carries everything else.
+ *
+ * The status word is one of §1.5's eight (`UNAVAILABLE` for a record the reader
+ * cannot see, `PREPARING` for one not yet built, `INTERRUPTED` for one that
+ * failed); its tone is looked up in `State.ts` and never chosen here. A word
+ * outside the vocabulary prints in ink and is not a state, which is the same
+ * rule the register follows.
+ *
+ * The rows borrow the ledger's key column, so an absent record reads like a
+ * record with three facts instead of a placeholder with none. `NEXT:` carries
+ * the surface's one action - a link, never a disabled button, because a reader
+ * who has been told why the thing is missing is owed a way forward.
+ *
+ * No script and no hydration: an absent state is static.
+ */
+import { Tone } from "./State.js";
+
+interface Props {
+	/** The state word, verbatim: `UNAVAILABLE`, `PREPARING`, `INTERRUPTED`. */
+	status: string;
+
+	/** What the region would hold when it has a record. */
+	wouldBe: string;
+
+	/** Why it holds none - the cause, not an apology. */
+	whyNot: string;
+
+	/** The one way forward. */
+	next: {
+		readonly label: string;
+		readonly href: string;
+	};
+
+	/** One line of provenance under the rows, when the cause has a source. */
+	note?: string;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const { status, wouldBe, whyNot, next, note, class: ClassName } = Astro.props;
+
+const Resolved = Tone(status) ?? "ink";
+---
+
+<aside class:list={["surface-absent", ClassName]} aria-label={`${status}: ${wouldBe}`}>
+	<p class:list={["surface-absent__status", `surface-absent__status--${Resolved}`]}>
+		<span class="surface__mark" aria-hidden="true"></span>
+		<span class="surface-absent__status-key">STATUS:</span>
+		{status}
+	</p>
+
+	<dl class="surface-absent__rows">
+		<div class="surface-absent__row">
+			<dt class="surface-absent__key">WOULD BE HERE:</dt>
+			<dd class="surface-absent__value">{wouldBe}</dd>
+		</div>
+		<div class="surface-absent__row">
+			<dt class="surface-absent__key">WHY NOT:</dt>
+			<dd class="surface-absent__value">{whyNot}</dd>
+		</div>
+		<div class="surface-absent__row">
+			<dt class="surface-absent__key">NEXT:</dt>
+			<dd class="surface-absent__value">
+				<a class="surface-absent__action" href={next.href}>
+					{next.label}
+					{"\u2001"}
+					<span aria-hidden="true">&rarr;</span>
+				</a>
+			</dd>
+		</div>
+	</dl>
+
+	{note ? <p class="surface-absent__note">{note}</p> : null}
+</aside>

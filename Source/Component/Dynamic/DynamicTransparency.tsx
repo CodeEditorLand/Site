@@ -4,8 +4,36 @@
  *
  * Renders categorized items with copy-to-clipboard and expandable
  * details. Content is driven by the Transparency interface.
+ *
+ * **What it costs, and when.** The section is the download page's closing
+ * disclosure: everything in it is below the manifest band, so nothing here is
+ * needed at first paint. Its only client work is four copy-to-clipboard
+ * buttons, and its `client:load` directive is the page's to change (the exact
+ * one-line change is in the card-13 ledger, §4.1).
+ *
+ * Inside the island, two things are this file's: the icon import, which was a
+ * namespace import of the whole icon set and is now eleven named ones, and the
+ * noise engine, which is gated on the section approaching the viewport rather
+ * than on mount. The gate is defensive rather than a saving - see the note on
+ * the effect, which records that the ref it reads is attached to no element,
+ * so the engine has never been fetched at all.
+ *
+ * The markup, the centred heading, the three sub-blocks and the
+ * `Verify in source code` link are unchanged.
  */
-import * as lucide from "lucide-react";
+import {
+	Code,
+	Copy,
+	Cpu,
+	Eye,
+	EyeOff,
+	Layers,
+	Lock,
+	type LucideIcon,
+	Server,
+	Shield,
+	Zap,
+} from "lucide-react";
 
 import { useEffect, useRef } from "react";
 
@@ -15,24 +43,24 @@ import { RichText } from "../UI/RichText";
 
 import type Property from "./Interface/Property/Transparency.js";
 
-const TransparencyIconRegistry: Record<string, lucide.LucideIcon> = {
-	Shield: lucide.Shield,
+const TransparencyIconRegistry: Record<string, LucideIcon> = {
+	Shield: Shield,
 
-	Eye: lucide.Eye,
+	Eye: Eye,
 
-	EyeOff: lucide.EyeOff,
+	EyeOff: EyeOff,
 
-	Lock: lucide.Lock,
+	Lock: Lock,
 
-	Server: lucide.Server,
+	Server: Server,
 
-	Cpu: lucide.Cpu,
+	Cpu: Cpu,
 
-	Code: lucide.Code,
+	Code: Code,
 
-	Layers: lucide.Layers,
+	Layers: Layers,
 
-	Zap: lucide.Zap,
+	Zap: Zap,
 };
 
 const StatusColor: Record<string, string> = {
@@ -98,19 +126,68 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 
 		if (ReducedMotion) return;
 
-		const ApplyNoise = async () => {
-			const StaccatoModule =
-				await import("../../Function/Noise/Staccato.js");
+		let Cancelled = false;
+
+		/**
+		 * The engine is fetched when the section is about to be read, not when
+		 * the island hydrates.
+		 *
+		 * `Function/Noise/Staccato` is three chunks (`Staccato` 1.7 kB,
+		 * `Noise` 0.2 kB, `simplex-noise` 0.9 kB), and it writes CSS custom
+		 * properties from a global frame loop - so it is worth fetching late
+		 * and worth fetching only once. The root margin starts the fetch a
+		 * viewport early, so the drift is already running by the time the
+		 * section is on screen.
+		 *
+		 * **This effect has never run, and this change does not make it run.**
+		 * `SectionReference` is attached to no element - the `<section>` below
+		 * carries no `ref` - so the guard returns on every mount, before and
+		 * after this card. Wiring it is one attribute, and it is deliberately
+		 * not added here: `Staccato` writes to `document.documentElement` from
+		 * its own `requestAnimationFrame` loop, so turning it on would *add* a
+		 * per-frame cost to `/Download` in a card whose subject is removing
+		 * one. The gate is kept because it is the only version of this effect
+		 * that is safe to wire; the finding is recorded in the ledger (§5.6).
+		 */
+		const ApplyNoise = async (): Promise<void> => {
+			const StaccatoModule = await import("../../Function/Noise/Staccato.js");
 
 			const Engine = await StaccatoModule.default;
+
+			if (Cancelled) return;
 
 			Engine.SeedSelector(".TransparencyCard");
 		};
 
-		ApplyNoise();
+		if (typeof IntersectionObserver === "undefined") {
+			void ApplyNoise();
+
+			return;
+		}
+
+		const Observer = new IntersectionObserver(
+			(Entries) => {
+				for (const Entry of Entries) {
+					if (!Entry.isIntersecting) continue;
+
+					Observer.disconnect();
+
+					void ApplyNoise();
+				}
+			},
+			{ rootMargin: "100% 0px" },
+		);
+
+		Observer.observe(Section);
+
+		return () => {
+			Cancelled = true;
+
+			Observer.disconnect();
+		};
 	}, []);
 
-	const GetIcon = (IconName: string): lucide.LucideIcon | null => {
+	const GetIcon = (IconName: string): LucideIcon | null => {
 		return TransparencyIconRegistry[IconName] || null;
 	};
 
@@ -124,7 +201,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 				{(Title || Subtitle) && (
 					<div className="StaccatoBreath mb-16 text-center">
 						{Title && (
-							<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
+							<h2 className="type-section mb-4">
 								{Title}
 							</h2>
 						)}
@@ -139,7 +216,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 
 				{/* Telemetry Policy */}
 				<div className="mb-16">
-					<h3 className="type-sub mb-2 tracking-tight text-foreground">
+					<h3 className="mb-2 text-foreground">
 						Telemetry Policy
 					</h3>
 					<p className="mb-8 text-muted-foreground">
@@ -208,7 +285,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 
 				{/* Build Variants */}
 				<div className="mb-16">
-					<h3 className="type-sub mb-2 tracking-tight text-foreground">
+					<h3 className="mb-2 text-foreground">
 						Build Variants
 					</h3>
 					<p className="mb-8 text-foreground opacity-70">
@@ -220,19 +297,19 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 						<table className="w-full border-collapse">
 							<thead>
 								<tr className="border-b border-[var(--Border)]">
-									<th className="px-4 py-3 text-left font-mono text-sm uppercase tracking-[0.2em] text-muted-foreground">
+									<th className="px-4 py-3 text-left font-mono text-sm uppercase tracking-rule text-muted-foreground">
 										Profile
 									</th>
-									<th className="px-4 py-3 text-left font-mono text-sm uppercase tracking-[0.2em] text-muted-foreground">
+									<th className="px-4 py-3 text-left font-mono text-sm uppercase tracking-rule text-muted-foreground">
 										Tier
 									</th>
-									<th className="px-4 py-3 text-left font-mono text-sm uppercase tracking-[0.2em] text-muted-foreground">
+									<th className="px-4 py-3 text-left font-mono text-sm uppercase tracking-rule text-muted-foreground">
 										Workbench
 									</th>
-									<th className="px-4 py-3 text-left font-mono text-sm uppercase tracking-[0.2em] text-muted-foreground">
+									<th className="px-4 py-3 text-left font-mono text-sm uppercase tracking-rule text-muted-foreground">
 										Features
 									</th>
-									<th className="px-4 py-3 text-left font-mono text-sm uppercase tracking-[0.2em] text-muted-foreground">
+									<th className="px-4 py-3 text-left font-mono text-sm uppercase tracking-rule text-muted-foreground">
 										Status
 									</th>
 								</tr>
@@ -283,7 +360,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 
 				{/* Deployment Strategies */}
 				<div className="mb-16">
-					<h3 className="type-sub mb-2 tracking-tight text-foreground">
+					<h3 className="mb-2 text-foreground">
 						Deployment Strategies
 					</h3>
 					<p className="mb-8 text-foreground opacity-70">
@@ -336,7 +413,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 											title="Copy command"
 											className="flat RichTextCopyButton ml-2 inline-flex h-[1.1em] w-[1.1em] shrink-0 items-center justify-center opacity-50 transition-opacity hover:opacity-100"
 										>
-											<lucide.Copy
+											<Copy
 												className="h-[0.65em] w-[0.65em]"
 												aria-hidden="true"
 											/>
@@ -373,7 +450,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 						>
 							Verify in source code
 							<span className="InlineSeparator">
-								<lucide.Code
+								<Code
 									className="h-4 w-4"
 									aria-hidden="true"
 								/>

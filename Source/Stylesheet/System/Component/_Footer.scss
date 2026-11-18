@@ -16,13 +16,21 @@
 //   .FooterRecordEnd     the end-of-record label
 //   .FooterRecordMarker  its `#`
 //   .FooterRecordLocale  the locale switcher's cell in that row
+//   .FooterBody          the two-ledger register, under a hairline gutter
+//   .FooterFacts         the record's facts (the keeper ledger)
+//   .FooterColophon      the record's making
+//   .FooterField         a register's field label (`FACTS:`, `COLOPHON:`)
 //   .FooterLedger        the facts, as RecordLedger
+//   .FooterColophonLedger the making, as RecordLedger
+//   .FooterRows          the labelled link register
+//   .FooterRow           one labelled line (`ROUTES:`, `LEGAL:`)
 //   .FooterQuickLinks    /DOCS, /DOWNLOAD, /GITHUB, /CONTACT, /BLOG
 //   .FooterQuickLink     one of them
 //   .FooterLegal         Privacy, Terms, License, Contributing, Issues, Blog, Enterprise
 //   .FooterLegalLink     one of them
-//   .FooterBottom        copyright and the runtime badge
+//   .FooterBottom        copyright, the top control and the runtime badge
 //   .FooterCopyright     the copyright line
+//   .FooterTop           `Back to top ↑`
 //   .FooterTauri         the Tauri badge cell
 //   .FooterTauriLink     the badge link
 //
@@ -40,7 +48,10 @@
 	@include band-inner;
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-reading);
+	/* Four movements - the record's opening, its facts, its routes, its imprint -
+	   at group distance. The band was set at reading distance, which made the
+	   five parts one paragraph of ledgers; a colophon's parts are subjects. */
+	gap: var(--space-group);
 	padding-block: var(--space-group);
 }
 
@@ -49,6 +60,41 @@
 	block-size: 1px;
 	background: var(--Accent);
 	opacity: 0.4;
+}
+
+// ─── Facts and colophon ───────────────────────────────────────────────────
+// Two ledgers under one hairline gutter: the record's facts on the left, the
+// record's making on the right. The gutter is the same device the hero pair uses
+// - a single rule between two unequal columns - and 7fr/5fr because the facts are
+// the argument and the colophon is the imprint.
+
+.FooterBody {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	row-gap: var(--space-group);
+}
+
+@include bp(1024px) {
+	.FooterBody {
+		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+		column-gap: var(--space-group);
+	}
+
+	.FooterColophon {
+		padding-inline-start: var(--space-group);
+
+		@include hairline(left);
+	}
+}
+
+// A field label over a ledger: the grammar's compact label, so a reader knows
+// which register they are reading before the first row.
+.FooterField {
+	@include mono-meta;
+	@include track(var(--track-row));
+	margin: 0;
+	margin-block-end: var(--space-tight);
+	color: var(--MuteForeground);
 }
 
 // ─── Linked facts ─────────────────────────────────────────────────────────
@@ -61,11 +107,15 @@
 	color: inherit;
 	text-decoration: underline;
 	text-decoration-color: color-mix(in srgb, currentColor 30%, transparent);
-	text-underline-offset: 0.15em;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.22em;
 }
 
+// Hover is ink, not hue. The fact is a destination and the underline says so at
+// rest; a hover makes the underline the fact's own ink. The accent is spent on
+// the record's marker and the active route, where it authenticates - a pointer
+// resting on a licence name does not.
 .FooterLedger .record-ledger__link:hover {
-	color: var(--Accent);
 	text-decoration-color: currentColor;
 }
 
@@ -74,27 +124,46 @@
 }
 
 // ─── Link rows ────────────────────────────────────────────────────────────
+// Each row is a labelled ledger line, not a run of links: `ROUTES:` then the
+// destinations, `LEGAL:` then the legal set. The hairline belongs to the row, so
+// the two registers are divided the way the ledgers above them are.
+
+.FooterRows {
+	display: flex;
+	flex-direction: column;
+}
+
+.FooterRow {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-reading);
+	padding-block: var(--space-reading);
+
+	@include hairline(top);
+}
 
 .FooterQuickLinks {
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--space-reading);
-	padding-block: var(--space-reading);
-
-	@include hairline(top);
-	@include hairline(bottom);
 }
 
 .FooterQuickLink {
 	@include mono-meta;
-	@include track(0.08em);
+	@include track(var(--track-row));
 	color: var(--Foreground);
 	text-decoration: none;
-	transition: color 0.12s ease;
+	transition: color var(--motion-interval-quick) var(--motion-enter-easing);
 }
 
+// A destination at rest is a label; a hovered one is a link. The marker is the
+// underline (the site's one non-colour affordance), drawn at the link's own ink -
+// not the accent, which belongs to the active route in the bar above.
 .FooterQuickLink:hover {
-	color: var(--Accent);
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.22em;
 }
 
 .FooterLegal {
@@ -107,28 +176,55 @@
 	@include mono-meta;
 	color: var(--MuteForeground);
 	text-decoration: none;
-	transition: color 0.12s ease;
+	transition: color var(--motion-interval-quick) var(--motion-enter-easing);
 }
 
 .FooterLegalLink:hover {
 	color: var(--Foreground);
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.22em;
 }
 
 // ─── Bottom row ───────────────────────────────────────────────────────────
 
+// The imprint row. It opens on a hairline and closes the document on one - the
+// baseline footer ended "above a final hairline", and a colophon that stops
+// without a rule reads as a page that ran out of content rather than one that
+// ended.
 .FooterBottom {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	gap: var(--space-reading);
-	padding-block-start: var(--space-reading);
+	padding-block: var(--space-reading);
 
 	@include hairline(top);
+	@include hairline(bottom);
 }
 
 .FooterCopyright {
 	@include mono-meta;
 	color: var(--MuteForeground);
+}
+
+// The document's own ending. Eight pages in the baseline closed on
+// `Back to top ↑`; the frame now closes every page that way, so the reader who
+// has reached the colophon can leave it without hunting for the bar.
+.FooterTop {
+	@include mono-meta;
+	@include track(var(--track-row));
+	margin-inline-start: auto;
+	color: var(--MuteForeground);
+	text-decoration: none;
+	transition: color var(--motion-interval-quick) var(--motion-enter-easing);
+}
+
+.FooterTop:hover {
+	color: var(--Foreground);
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.22em;
 }
 
 // The runtime badge's cell. It is a fact like the copyright beside it, so it
@@ -146,15 +242,24 @@
 	display: inline-flex;
 	align-items: center;
 	opacity: 0.9;
-	transition: opacity 0.12s ease;
+	border-block-end: 1px solid transparent;
+	transition:
+		opacity var(--motion-interval-quick) var(--motion-enter-easing),
+		border-block-end-color var(--motion-interval-quick)
+			var(--motion-enter-easing);
 
 	img {
 		display: block;
 	}
 }
 
+// The badge is an image, so it cannot take the underline the row's other
+// destinations take. It takes the same affordance the only way an image can: a
+// rule under it, at the divider's ink - which is what the underline is, drawn a
+// little lower.
 .FooterTauriLink:hover {
 	opacity: 1;
+	border-block-end-color: var(--Divider);
 }
 
 // ─── The record header ────────────────────────────────────────────────────
@@ -172,7 +277,7 @@
 
 .FooterRecordEnd {
 	@include mono-meta;
-	@include track(0.08em);
+	@include track(var(--track-row));
 	display: flex;
 	align-items: baseline;
 	gap: var(--space-tight);
