@@ -12,6 +12,11 @@
 // - The kicker is printed exactly as the caller wrote it. The `/LABEL` voice is
 //   the caller's to supply - this block never invents the leading slash and
 //   never re-cases the text.
+// - The kicker is NOT a register. A register counts a set (`# WHAT CHANGES /
+//   08`) and is built with `RegisterLine.ts` by the block that holds the rows; a
+//   band holds a subject, not a set, so its opening is a `/LABEL` with no figure
+//   to state. A page that needs a counted line inside a band mounts the block
+//   that counts - `RecordLedger`, `Leader` - and that block prints it.
 // - The band adds no second expressive element. Exactly one thing per band may
 //   be ink-inverted, and which thing that is belongs to the page, not here.
 //

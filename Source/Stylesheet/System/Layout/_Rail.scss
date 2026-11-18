@@ -138,9 +138,16 @@
 
 // ─── THE ROW IN FORCE ─────────────────────────────────────────────────────
 // Ink at 500, a 2px accent rule on the leading edge, and the mark taking the
-// accent with it so the row reads as one object.
+// accent with it so the row reads as one object. With `aria-current` on the
+// row that is the site's whole convention - four marks, one of them a hue.
+//
+// The attribute is matched by presence with `"false"` excluded, not by a
+// value: `ShellRail` writes `location` or `page` depending on whether its rows
+// are positions inside a page or destinations between pages, and both are the
+// current row. `aria-current="false"` is ARIA's explicit "not current", so it
+// is the one value that must not be marked.
 
-.ShellRail__row[aria-current] {
+.ShellRail__row[aria-current]:not([aria-current="false"]) {
 	color: var(--Foreground);
 	font-weight: 500;
 	background: var(--Card);

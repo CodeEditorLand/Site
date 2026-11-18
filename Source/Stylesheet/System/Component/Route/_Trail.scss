@@ -13,8 +13,12 @@
 // a `/` drawn between two crumbs would print the grammar twice.
 //
 // It is chrome: no fill, no rule, no second type size. The heading below it
-// carries the weight, and the page's own spacing owns the distance to it, so the
-// trail declares none of its own.
+// carries the hierarchy, and the page's own spacing owns the distance to it, so
+// the trail declares none of its own. The one weight it does carry is the current
+// crumb's 500 - the site's state mark, not a hierarchy step: `aria-current`,
+// full ink and weight 500 are three of the four marks every rail row on the site
+// uses, and the fourth, the leading rule, is the one a breadcrumb has no row to
+// draw it on.
 //
 // Absorbed from `System/Component/Contact/_Breadcrumb.scss`, which published the
 // same strip as `.contact-breadcrumb*` with a separate `/` list item. That file
@@ -54,4 +58,9 @@
 
 .trail__current {
 	color: var(--Foreground);
+
+	/* The site's state mark, at the ceiling the system allows: 500, never bold.
+	   `Trail.astro` also writes `aria-current="page"` on this span, so the state
+	   is in the markup as well as in the ink. */
+	font-weight: 500;
 }

@@ -38,6 +38,10 @@ import {
 	RegisterEntries,
 } from "../../Component/Contact/Register.js";
 import RecordStage from "../../Component/Record/RecordStage.astro";
+import {
+	RegisterOf,
+	RegisterText,
+} from "../../Component/Record/RegisterLine.js";
 import { ContactDirect, ContactHubTrail } from "../../Library/Contact/Data.js";
 import { GetI18n } from "../../Library/I18n/Server";
 
@@ -60,6 +64,15 @@ const Standfirst = T("common.contact.pageSubtitle", {
 });
 
 const BackToTop = T("common.button.backToTop", { defaultValue: "Back to top" });
+
+/**
+ * The process band's register: `# PROCESS / 04 STEPS`. Built from the same
+ * `ContactProcess` array the stage below prints, so the figure and the four
+ * steps cannot disagree - the page used to type the `04`.
+ */
+const ProcessRegister = RegisterOf("PROCESS", ContactProcess, {
+	unit: "STEPS",
+});
 ---
 
 <ContactPage
@@ -104,7 +117,7 @@ const BackToTop = T("common.button.backToTop", { defaultValue: "Back to top" });
 			class="contact-hub__process"
 			aria-labelledby="ContactProcessHeading"
 		>
-			<p class="contact-hub__process-kicker"># PROCESS / 04 STEPS</p>
+			<p class="contact-hub__process-kicker">{RegisterText(ProcessRegister)}</p>
 			<h2 class="contact-hub__process-heading" id="ContactProcessHeading">
 				What happens after you send
 			</h2>

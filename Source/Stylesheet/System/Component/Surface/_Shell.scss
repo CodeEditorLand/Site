@@ -561,8 +561,24 @@
 	color: var(--Foreground);
 }
 
-.surface-regions__link[aria-current="true"] {
+// ─── the region in force ──────────────────────────────────────────────────
+// The site's convention in full: `aria-current`, full ink, weight 500, and the
+// 2px accent rule the row reserves on every link (`border-inline-start: 2px
+// solid transparent` above, so the mark arriving moves nothing). This list had
+// three of the four - the attribute, the ink and the rule - and the weight was
+// the one mark missing, and without it a region read as a link that had been
+// clicked rather than as the row the reader is standing in.
+//
+// THE VALUE IS THE EMITTER'S, NOT THE SELECTOR'S. This rule used to be pinned
+// to `[aria-current="true"]`, which is the one value no other surface on the
+// site speaks: a rail of positions inside a page says `location`, a rail of
+// destinations between pages says `page` (`ShellRail`'s `current` prop is
+// exactly that choice). Matching the attribute by presence, minus the one value
+// that means "not current", keeps the marker on the row whatever the emitter
+// says and leaves `"true"` working for anything that still writes it.
+.surface-regions__link[aria-current]:not([aria-current="false"]) {
 	color: var(--Foreground);
+	font-weight: 500;
 	border-inline-start-color: var(--Accent);
 }
 

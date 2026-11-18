@@ -161,13 +161,18 @@
 	color: var(--Foreground);
 }
 
-.doc-sidebar__link--active {
+.doc-sidebar__link--active,
+.doc-sidebar__link[aria-current]:not([aria-current="false"]) {
 	color: var(--Foreground);
 
 	font-weight: 500;
 
 	/* `--Accent`, not `--Primary`: the same 2px accent bar the header gives its
-	   active route. One active-state marker for the whole site. */
+	   active route. One active-state marker for the whole site.
+	   `DynamicDocSidebar.tsx` writes the class and `aria-current="page"` in the
+	   same expression, so the attribute selector is the same row and not a
+	   second state - it is here so the mark cannot be in the DOM and invisible
+	   to the stylesheet. */
 	border-inline-start-color: var(--Accent);
 }
 

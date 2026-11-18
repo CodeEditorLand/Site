@@ -25,9 +25,13 @@
 //   instrument and an instrument does not shout. U+2001 is the site's only
 //   separator, so it is the only one printed here.
 // - The current row is marked the way the manual's rail marks a page: full ink,
-//   weight 500, and a 2px rule on the row's leading edge. Not a fill, not a
-//   colour, not a pill - a rail row that needs a background to be found is a
-//   rail row that was never designed.
+//   weight 500, and a 2px `--Accent` rule on the row's leading edge. Not a fill,
+//   not a pill - a rail row that needs a background to be found is a rail row
+//   that was never designed. The rule was `--Foreground` here, the one rail in
+//   the site whose mark was not the accent; a reader who crosses from the
+//   manual's rail to a legal document's should not have to learn a second
+//   "you are here". Same 2px, same accent, same shape - the ink carries the
+//   text, the rule carries the position.
 // - The position cell reserves its width and starts empty. Before the first
 //   clause is reached there is no clause to name, and a figure printed there
 //   would be a number the reader is not standing on; the reserved width is what
@@ -149,16 +153,23 @@
 	text-wrap: pretty;
 }
 
-.trust-contents__link--current {
+/* The clause the reader is in. `Trust/TrustContents.ts` writes the class and
+   `aria-current="location"` in the same loop; both selectors are declared so the
+   mark cannot be in the DOM and invisible to the stylesheet. */
+.trust-contents__link--current,
+.trust-contents__link[aria-current]:not([aria-current="false"]) {
 	color: var(--Foreground);
 	font-weight: 500;
 }
 
-.trust-contents__link--current::before {
-	background: var(--Foreground);
+.trust-contents__link--current::before,
+.trust-contents__link[aria-current]:not([aria-current="false"])::before {
+	background: var(--Accent);
 }
 
-.trust-contents__link--current .trust-contents__number {
+.trust-contents__link--current .trust-contents__number,
+.trust-contents__link[aria-current]:not([aria-current="false"])
+	.trust-contents__number {
 	color: var(--Foreground);
 }
 

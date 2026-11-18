@@ -59,7 +59,15 @@ export type Tone = "paper" | "canvas" | "flush" | "bare";
  * may close it.
  */
 export interface Band {
-	/** The `/SECTION LABEL` opening the band. */
+	/**
+	 * The `/SECTION LABEL` opening the band. The slash is the caller's: it is the
+	 * route/category mark of the band's voice, and the block never invents it.
+	 *
+	 * It is not a register: a band opens a subject, it does not count a set, so
+	 * there is no figure to print beside the label. A counted line is a
+	 * `Register` (`Component/Record/RegisterLine.ts`), printed by the block that
+	 * holds the rows it counts.
+	 */
 	kicker: string;
 
 	/** The chapter claim. The band's single `h2`. */

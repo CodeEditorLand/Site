@@ -202,10 +202,13 @@
 // The label carries a resting underline at 20% of the mode's own ink, 2px, so
 // the rule reads on the creme field and on the white card without a second
 // value (DesignSystem-Components.md §2). It is a *resting* state, not an
-// indicator: the active destination is still marked by the 2px accent bar at the
-// foot of the link and by nothing else, so the two never compete. The sitewide
-// prose underline in _Global.scss excludes `[class*="NavLink"]`, so this rule is
-// the only underline a nav label gets.
+// indicator - but it is still a line, and under the current destination it
+// would be a second one, so the `[aria-current="page"]` block below stands it
+// down there and leaves the 2px accent bar as the only rule under an active
+// label. The sitewide prose underline in _Global.scss cannot reach this span:
+// that rule is written on `a`, the span is not an anchor, and the anchor itself
+// is dropped by its `:not([class*="NavLink"])` chain, so nothing propagates
+// either. This rule is the only underline a nav label gets, at rest or active.
 .HeaderLinkLabel {
 	@include mono-meta;
 	@include track;
@@ -223,7 +226,9 @@
 
 // Hover is a measured state change: the label and its rule go to the accent,
 // and a 12% accent field sits behind the link. No decoration, no glow, no
-// emitted light.
+// emitted light. On the current destination there is no rule to colour - the
+// bar is that link's line - so hover moves the ink and the wash only, and the
+// active state never grows a second line under the cursor.
 .HeaderNavLink::before {
 	content: "";
 	position: absolute;
@@ -255,9 +260,9 @@
 // derives from the path and the section in view - not an href comparison, which
 // cannot tell an in-page anchor from a route. The marker is ONE 2px specimen
 // rule at the foot of the link: a shape, so the state survives greyscale and is
-// never colour-only (DesignSystem-Components.md §2). It is the only *indicator* -
-// the label's resting underline is at 20% ink and is a resting state, so there
-// is no second accent line to read as a double rule.
+// never colour-only (DesignSystem-Components.md §2). It is the only *indicator*,
+// and on this link it is the only *line* as well - the two rules below stand the
+// other two layers down here and nowhere else.
 .HeaderNavLink[aria-current="page"]::after {
 	content: "";
 	position: absolute;
@@ -266,6 +271,59 @@
 	block-size: 2px;
 	background: var(--Accent);
 	pointer-events: none;
+}
+
+// ─── The current destination: one line, and it is the bar ─────────────────
+// An active link stacks three lines if left alone: the label's resting
+// underline above the baseline, the accent bar at the foot, and - below 1024px,
+// where the bar's `border-bottom: 0` does not apply - the link's own
+// `hairline(bottom)`, which sits immediately under the bar and reads with it as
+// one 3px rule. Two of the three stand down in the active state only, so the
+// resting underline still draws on every other destination and every other
+// drawer row keeps its hairline.
+//
+// WHY THIS IS A STATE RULE AND NOT A DELETION. `editor-land`'s F5 card
+// (t_a8fe0cd1) killed the double rule by removing `.HeaderLinkLabel`'s
+// underline outright. K4 (t_b0ad4000) then restored "the nav resting underline
+// at 20% ink/2px" as part of the design-system union - its own note says it
+// deliberately did not re-add the accent *underline* on `aria-current`, because
+// it read the accent line as the second one. The second line came back anyway:
+// the resting underline is itself a 2px rule, one line above a 2px bar. A
+// removal in the resting state is a removal the next card can undo; a stand-down
+// scoped to the active state survives the resting treatment being restored.
+.HeaderNavLink[aria-current="page"] .HeaderLinkLabel {
+	text-decoration-line: none;
+}
+
+// ─── The second signal: weight ────────────────────────────────────────────
+// The convention the site states in `Doc/_Sidebar.scss`, `UI/_Item.scss` and
+// `Layout/_Rail.scss` is four marks: `aria-current`, ink, weight 500, and a
+// leading rule. The bar has two of them - the attribute and the 2px accent bar
+// above - and was missing the third.
+//
+// INK IS THE ONE MARK THE BAR CANNOT HAVE. Every destination in the ribbon
+// already sits at `--HeaderFg`, which is full ink on both header modes; the
+// only way to make ink a *step* would be to mute the four resting labels, and
+// the header ribbon is a keeper - a bar whose four destinations are grey until
+// one of them is right is a weaker bar, not a louder current route. So the ink
+// signal is declared unavailable here rather than bought at the ribbon's
+// expense, and weight is what closes the gap: 500 on the label, the site's
+// ceiling (`font-bold` is not a design element in this system).
+//
+// THIS IS A WEIGHT, NOT A LINE. t_c27de49b's "one indicator only" is about the
+// three rules that stacked under an active label, and it still holds: this
+// adds no underline, no border and no second bar, so the accent bar remains
+// the only line an active destination draws.
+.HeaderNavLink[aria-current="page"] .HeaderLinkLabel {
+	font-weight: 500;
+}
+
+// The hairline loses its COLOUR, not its width: `border-bottom: 0` here would
+// shorten the active row by 1px in the drawer and move every row under it when
+// the route changes. A transparent 1px keeps the geometry and lets the accent
+// bar be this row's divider.
+.HeaderNavLink[aria-current="page"] {
+	border-bottom-color: transparent;
 }
 
 .HeaderAux {

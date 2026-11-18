@@ -26,10 +26,12 @@
 // ─── ONE ROW GRAMMAR, TWO BLOCKS ──────────────────────────────────────────
 //
 // The row is the contents row: a 3ch marker column, the name hanging on one edge,
-// a 1px leading rule reserved on every row and inked only on the current one. The
+// a 2px leading rule reserved on every row and inked only on the current one. The
 // two blocks are different artifacts - one is pinned navigation, one is a map at
 // the foot - so they are two partials, but a reader should not be able to tell
-// their rows apart.
+// their rows apart. That is why this file moves whenever `Doc/_Contents.scss`
+// moves: the rule was 1px `--Primary` in both, it is 2px `--Accent` in both now,
+// and the invariant only holds if the two are changed together.
 @use "../../Mixin" as *;
 
 .doc-layer {
@@ -139,7 +141,7 @@
 
 	padding: var(--space-tight) 0 var(--space-tight) var(--space-tight);
 
-	border-inline-start: 1px solid transparent;
+	border-inline-start: 2px solid transparent;
 
 	color: var(--MuteForeground);
 
@@ -162,10 +164,16 @@
 	text-wrap: pretty;
 }
 
-.doc-layer__link--current {
+/* The page the reader is on. `DocLayer.astro` writes the class and
+   `aria-current="page"` in the same expression; both selectors are declared so
+   the mark cannot be in the DOM and invisible to the stylesheet. The rule is the
+   contents row's - 2px `--Accent`, reserved on every row - because the two
+   blocks print one row grammar. */
+.doc-layer__link--current,
+.doc-layer__link[aria-current]:not([aria-current="false"]) {
 	color: var(--Foreground);
 
-	border-inline-start-color: var(--Primary);
+	border-inline-start-color: var(--Accent);
 
 	.doc-layer__name {
 		font-weight: 500;

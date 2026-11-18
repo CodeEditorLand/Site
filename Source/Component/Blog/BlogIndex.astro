@@ -35,6 +35,8 @@
  * No script and no hydration directive: the index is static.
  */
 import RecordFigure from "../Record/RecordFigure.astro";
+import Register from "../Record/Register.astro";
+import type { Register as RegisterShape } from "../Record/RegisterLine.js";
 import ContactBreadcrumb from "../Contact/ContactBreadcrumb.astro";
 
 import type { BlogRow, BlogTrailItem } from "./Type.js";
@@ -73,10 +75,12 @@ interface Props {
 	backHref: string;
 
 	/**
-	 * The plate's register line: `# BLOG / 08 ENTRIES`. The count is the page's,
-	 * derived from the collection - the block prints it verbatim.
+	 * The plate's register: `# BLOG / 08 ENTRIES`, built by the page with
+	 * `RegisterOf("BLOG", rows, { unit: "ENTRIES" })`. A `Register`, never a
+	 * string - the shape carries the count, so the plate cannot print a label
+	 * without the extent it names.
 	 */
-	plateLabel: string;
+	register: RegisterShape;
 
 	/** The plate's four measures, each counted from the collection. */
 	plateMeasures: readonly PlateMeasure[];
@@ -97,7 +101,7 @@ const {
 	emptyNote,
 	backLabel,
 	backHref,
-	plateLabel,
+	register,
 	plateMeasures,
 	plateCaption,
 	plateSource,
@@ -147,7 +151,7 @@ const Seed = (Position: number): string =>
 				state={PlateState}
 			>
 				<div class="blog-index__register">
-					<p class="blog-index__register-label"># {plateLabel}</p>
+					<Register register={register} class="blog-index__register-label" />
 					<dl class="blog-index__register-rows">
 						{plateMeasures.map((Measure) => (
 							<div class="blog-index__register-row">

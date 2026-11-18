@@ -18,6 +18,7 @@ import { getCollection } from "astro:content";
 
 import BlogIndex from "../Component/Blog/BlogIndex.astro";
 import { BuildRows } from "../Component/Blog/Data.js";
+import { RegisterOf } from "../Component/Record/RegisterLine.js";
 import { Header } from "../Component/Layout/Header";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
@@ -124,7 +125,7 @@ const Trail = [{ label: Home, href: "/" }, { label: PageTitle }];
 		emptyNote={EmptySubtitle}
 		backLabel={BackToTop}
 		backHref="#top"
-		plateLabel={`BLOG / ${String(Rows.length).padStart(2, "0")} ENTRIES`}
+		register={RegisterOf("BLOG", Rows, { unit: "ENTRIES" })}
 		plateMeasures={PlateMeasures}
 		plateCaption="The archive's extent, counted from the collection: the entries filed, the distinct topics they carry, the dates they span, and the reading time they add up to. A figure this page could not count would print UNAVAILABLE, never a zero."
 		plateSource="Source/Content/blog/*.md"

@@ -144,9 +144,19 @@ $Item: ':is([data-slot="dropdown-menu-item"], [data-slot="dropdown-menu-checkbox
 // The current value: the leading rule, and the label at 500. The 2px rule is paid
 // for out of the reserved mark column so the label does not shift by 2px when a
 // row becomes current - alignment is the whole point of the column.
+//
+// `[aria-current]` IS MATCHED BY PRESENCE, NOT BY `"true"`. The kit's own
+// attribute is `data-current="true"` and the site's is `aria-current` - but the
+// site never writes `"true"`: a destination says `page`, a position inside a
+// page says `location` (`ShellRail`, `Doc/Contents.ts`, `Trust/TrustContents.ts`,
+// the doc rail, the surface region rail). A selector pinned to `[aria-current=
+// "true"]` therefore styled nothing any caller actually emits, and the grammar's
+// current state was unreachable from the vocabulary the rest of the site speaks.
+// `:not([aria-current="false"])` is the one exclusion worth keeping: `"false"`
+// is ARIA's explicit "not current", and a row that says so must not be marked.
 #{$Item}[data-state="checked"],
 #{$Item}[data-current="true"],
-#{$Item}[aria-current="true"] {
+#{$Item}[aria-current]:not([aria-current="false"]) {
 	border-inline-start: 2px solid var(--Accent);
 
 	padding-inline-start: calc(var(--space-reading) + 1.25rem - 2px);
@@ -157,7 +167,7 @@ $Item: ':is([data-slot="dropdown-menu-item"], [data-slot="dropdown-menu-checkbox
 
 #{$Item}[data-state="checked"]::before,
 #{$Item}[data-current="true"]::before,
-#{$Item}[aria-current="true"]::before {
+#{$Item}[aria-current]:not([aria-current="false"])::before {
 	content: "✓";
 
 	color: var(--Accent);

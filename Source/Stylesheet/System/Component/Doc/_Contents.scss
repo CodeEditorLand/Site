@@ -18,11 +18,19 @@
 // ─── THE CURRENT ROW IS MARKED THREE WAYS, AND ONLY ONE IS COLOUR ─────────
 //
 // The rail's tree marks its current page with `aria-current`, ink and weight, and
-// a 1px rule on the row's leading edge; the contents marks its current section
-// with the same three. That is the whole point of putting the two registers in
-// one rail: a reader learns one "you are here" and it works in both lists. The
-// rule is a shape rather than a hue, so it survives greyscale and print, and the
-// ink step means a reader who cannot see the rule still reads the change.
+// a 2px `--Accent` rule on the row's leading edge; the contents marks its current
+// section with the same four. That is the whole point of putting the two
+// registers in one rail: a reader learns one "you are here" and it works in both
+// lists. The rule is a shape rather than a hue, so it survives greyscale and
+// print, and the ink step means a reader who cannot see the rule still reads the
+// change.
+//
+// THE RULE IS 2px `--Accent`, NOT 1px `--Primary`. It was the narrower, darker
+// one - a fourth marker in a site that states one - and beside a 13px row a 1px
+// rule reads as the box's own edge rather than as a mark. Two things had to move
+// together to fix it: the width (reserved on every row, so nothing shifts) and
+// the ink. `Doc/_Layer.scss` draws the identical row and its own head says a
+// reader must not be able to tell the two apart, so it moves with this file.
 //
 // ─── TYPE ─────────────────────────────────────────────────────────────────
 //
@@ -71,7 +79,10 @@
 
 /* The row: a 3ch marker column and the name. The leading rule is reserved on
    every row - transparent at rest, inked when current - so marking a row never
-   moves the text it marks. */
+   moves the text it marks. The reserved width is the marker's width, 2px, not a
+   hairline: a rule that has to grow from 1px to 2px when a row becomes current
+   moves every label in the list by a pixel, which is the thing the reservation
+   exists to prevent. */
 .doc-contents__link {
 	display: grid;
 	grid-template-columns: 3ch minmax(0, 1fr);
@@ -80,7 +91,7 @@
 
 	padding: var(--space-tight) 0 var(--space-tight) var(--space-tight);
 
-	border-inline-start: 1px solid transparent;
+	border-inline-start: 2px solid transparent;
 
 	color: var(--MuteForeground);
 
@@ -103,10 +114,20 @@
 	text-wrap: pretty;
 }
 
-.doc-contents__link--current {
+/* The current section. The class is the styling hook `Doc/Contents.ts` writes;
+   the attribute is the state it writes beside it (`aria-current="location"` -
+   a position inside the page, which is what this list is). Both selectors are
+   declared so the mark cannot exist in the DOM and be invisible to the
+   stylesheet: if a caller ever sets the attribute without the class, the row
+   still draws. */
+.doc-contents__link--current,
+.doc-contents__link[aria-current]:not([aria-current="false"]) {
 	color: var(--Foreground);
 
-	border-inline-start-color: var(--Primary);
+	/* The same 2px `--Accent` bar the rail's tree, the header's active route,
+	   the item grammar and the surface region rail draw. One marker
+	   vocabulary; the width is reserved on every row above. */
+	border-inline-start-color: var(--Accent);
 
 	.doc-contents__name {
 		font-weight: 500;

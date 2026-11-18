@@ -560,6 +560,13 @@ const MatrixRows = [
 		   marks the one being read - the header's own `aria-current` rule, turned
 		   to stand beside a list.
 
+		   The value is `location`, not `true`: this is a position inside the page
+		   the reader is already on, which is exactly what ARIA's `location` token
+		   names, and it is the value every other in-page rail on the site speaks
+		   (`ShellRail`'s `current` prop defaults to it, `Doc/Contents.ts` and
+		   `Trust/TrustContents.ts` both write it). `true` was the odd one out and
+		   it forced the stylesheet to pin its selector to that one value.
+
 		   Three ways the mark is set, in order of certainty: the first region is
 		   marked on load (so the rail is never mute), a click marks its own
 		   destination immediately (so the rail answers before the scroll settles),
@@ -579,7 +586,7 @@ const MatrixRows = [
 			const Mark = (Id: string): void => {
 				for (const Link of Links) {
 					if (Link.hash === `#${Id}`) {
-						Link.setAttribute("aria-current", "true");
+						Link.setAttribute("aria-current", "location");
 					} else {
 						Link.removeAttribute("aria-current");
 					}

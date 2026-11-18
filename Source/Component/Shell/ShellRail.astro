@@ -64,8 +64,12 @@ interface Props {
 	/** The rail's accessible name and its printed register word: `ON THIS PAGE`. */
 	label: string;
 
-	/** The register line's count, printed after the label: `07`, `26`, `UNAVAILABLE`. */
-	count?: string | number;
+	/**
+	 * The register line's count, printed after the label: `07`, `26`,
+	 * `UNAVAILABLE`. Required: a register without its figure is the defect this
+	 * rail's line exists to avoid, and every caller already counts its own items.
+	 */
+	count: string | number;
 
 	/** The rows, in reading order. */
 	items: readonly RailItem[];

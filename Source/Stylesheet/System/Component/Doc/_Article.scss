@@ -85,8 +85,15 @@
 	}
 }
 
+/* The page the reader is on, and the only crumb that is text rather than a link
+   (`DocArticle.astro` prints it as a span with `aria-current="page"`). It carries
+   the site's state mark in full: the attribute, full ink, and weight 500 - three
+   of the four marks a rail row uses. The fourth is the leading rule, and a
+   breadcrumb has no row to draw it on. */
 .doc-article__crumb-current {
 	color: var(--Foreground);
+
+	font-weight: 500;
 }
 
 .doc-article__header {

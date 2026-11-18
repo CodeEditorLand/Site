@@ -400,6 +400,12 @@ html {
    ONE line: the line its own class states, or this default when it states
    nothing - never both. A component states `text-decoration`; it never reaches
    for `!important` to beat a rule this general. */
+/* `a` is the subject of this selector, so a label INSIDE a link can never match
+   it: `_Header.scss`'s `.HeaderLinkLabel` is a `span`, protected by its own
+   class and by its own state rules, not by the exclusion chain below. The
+   chain's only job is to keep the ANCHOR out of the prose default - so if a nav
+   label ever draws a second line, the cause is in the component's state rules
+   and not here, and adding a `span` exclusion here would change nothing. */
 a:where(
 	:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not(
 			[class*="Social"]
