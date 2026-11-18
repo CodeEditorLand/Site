@@ -1,0 +1,1 @@
+import{t}from"./LocaleSwitcher.wCmlV1En.js";export{t as LocaleSwitcher,t as default};

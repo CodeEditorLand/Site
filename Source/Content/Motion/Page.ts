@@ -78,6 +78,8 @@ export const Bands = {
 	Specimens: {
 		kicker: "/THE SPECIMENS",
 
+		interval: "rest",
+
 		heading: "What each motion explains, and the artifact that shows it",
 
 		standfirst:
@@ -90,6 +92,8 @@ export const Bands = {
 
 	Sequences: {
 		kicker: "/THE SEQUENCES",
+
+		interval: "break",
 
 		heading:
 			"Four state changes this document performs, and one it cannot draw",
@@ -105,6 +109,8 @@ export const Bands = {
 	Fold: {
 		kicker: "/THE FOLD",
 
+		interval: "rest",
+
 		heading: "One interaction, three sizes",
 
 		standfirst:
@@ -117,6 +123,8 @@ export const Bands = {
 
 	Arms: {
 		kicker: "/THE ARMS",
+
+		interval: "beat",
 
 		heading: "Which states move, and which must not",
 
@@ -131,6 +139,8 @@ export const Bands = {
 	Refusals: {
 		kicker: "/THE REFUSALS",
 
+		interval: "break",
+
 		heading: "What this layer will not do, and why",
 
 		standfirst:
@@ -143,6 +153,8 @@ export const Bands = {
 
 	Record: {
 		kicker: "/THE RECORD",
+
+		interval: "turn",
 
 		heading: "How this page is made",
 

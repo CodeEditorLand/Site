@@ -39,6 +39,17 @@
  * static list of 86 built paths would be a second copy of the content tree.
  */
 
+/**
+ * The purpose table is the contact library's, and it is read here rather than
+ * restated: one record per `/Contact` route, carrying what the route is for, who
+ * should be sent there and the label a link to it carries
+ * (`Library/Contact/Purpose.ts`).
+ */
+import {
+	ContactPurposeAt,
+	type ContactPurpose,
+} from "../../Library/Contact/Purpose.js";
+
 /** What kind of built path a page entry produces. */
 export type RouteKind = "page" | "collection" | "dispatch";
 
@@ -64,6 +75,16 @@ export interface RouteEntry {
 
 	/** The programme card that owns the page body. */
 	readonly Card: string;
+
+	/**
+	 * What the route is for, on a `/Contact` route.
+	 *
+	 * Required on every contact route and absent elsewhere: a page that links one
+	 * of these reads its label from here (`Library/Contact/Purpose.ts`), so a
+	 * route cannot be reached by slug alone and a link cannot promise a purpose
+	 * the form does not serve.
+	 */
+	readonly Purpose?: ContactPurpose;
 
 	/** For `collection`: the content directory whose entries become paths. */
 	readonly Collection?: string;
@@ -340,6 +361,8 @@ export const Route: readonly RouteEntry[] = [
 		Heading: "Component/Contact/ContactPage.astro",
 
 		Card: "5",
+
+		Purpose: ContactPurposeAt("/Contact"),
 	},
 
 	{
@@ -356,6 +379,8 @@ export const Route: readonly RouteEntry[] = [
 		Heading: "Component/Contact/ContactPage.astro",
 
 		Card: "5",
+
+		Purpose: ContactPurposeAt("/Contact/Sale"),
 	},
 
 	{
@@ -372,6 +397,8 @@ export const Route: readonly RouteEntry[] = [
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
 
 		Card: "5",
+
+		Purpose: ContactPurposeAt("/Contact/Amend"),
 	},
 
 	{
@@ -388,6 +415,8 @@ export const Route: readonly RouteEntry[] = [
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
 
 		Card: "5",
+
+		Purpose: ContactPurposeAt("/Contact/Claim"),
 	},
 
 	{
@@ -404,6 +433,8 @@ export const Route: readonly RouteEntry[] = [
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
 
 		Card: "5",
+
+		Purpose: ContactPurposeAt("/Contact/Deals"),
 	},
 
 	{
@@ -420,6 +451,8 @@ export const Route: readonly RouteEntry[] = [
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
 
 		Card: "5",
+
+		Purpose: ContactPurposeAt("/Contact/Erase"),
 	},
 
 	{
@@ -436,6 +469,8 @@ export const Route: readonly RouteEntry[] = [
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
 
 		Card: "5",
+
+		Purpose: ContactPurposeAt("/Contact/Guard"),
 	},
 
 	{
@@ -452,6 +487,8 @@ export const Route: readonly RouteEntry[] = [
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
 
 		Card: "5",
+
+		Purpose: ContactPurposeAt("/Contact/Hails"),
 	},
 
 	{
@@ -468,6 +505,8 @@ export const Route: readonly RouteEntry[] = [
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
 
 		Card: "5",
+
+		Purpose: ContactPurposeAt("/Contact/Leave"),
 	},
 
 	{
@@ -484,6 +523,8 @@ export const Route: readonly RouteEntry[] = [
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
 
 		Card: "5",
+
+		Purpose: ContactPurposeAt("/Contact/Legal"),
 	},
 
 	{
@@ -500,6 +541,8 @@ export const Route: readonly RouteEntry[] = [
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
 
 		Card: "5",
+
+		Purpose: ContactPurposeAt("/Contact/Lodge"),
 	},
 
 	{
@@ -516,6 +559,8 @@ export const Route: readonly RouteEntry[] = [
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
 
 		Card: "5",
+
+		Purpose: ContactPurposeAt("/Contact/Pause"),
 	},
 
 	{
@@ -532,6 +577,8 @@ export const Route: readonly RouteEntry[] = [
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
 
 		Card: "5",
+
+		Purpose: ContactPurposeAt("/Contact/Query"),
 	},
 
 	{
@@ -548,6 +595,8 @@ export const Route: readonly RouteEntry[] = [
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
 
 		Card: "5",
+
+		Purpose: ContactPurposeAt("/Contact/Reach"),
 	},
 
 	{
@@ -564,6 +613,8 @@ export const Route: readonly RouteEntry[] = [
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
 
 		Card: "5",
+
+		Purpose: ContactPurposeAt("/Contact/Scout"),
 	},
 
 	// ─── The account surfaces ─────────────────────────────────────────────
@@ -777,6 +828,31 @@ export const Route: readonly RouteEntry[] = [
 		Card: "post-baseline",
 	},
 ];
+
+/**
+ * The contact routes, and the rule that keeps them honest.
+ *
+ * A `/Contact` route is the one kind of route whose *meaning* is not visible in
+ * its file name: `Reach` is a subject-access request, `Hails` is the general
+ * inquiry, `Query` is an objection to processing. A page that linked one of them
+ * by slug sent readers to the wrong form - which is the defect this guard exists
+ * to make impossible. Every contact route must therefore carry its purpose, and
+ * a route added without one fails here, at module load, naming itself, rather
+ * than shipping a link that cannot say what it leads to.
+ */
+const ContactRoute = Route.filter(
+	(Entry) => Entry.Path === "/Contact" || Entry.Path.startsWith("/Contact/"),
+);
+
+const Unpurposed = ContactRoute.filter(
+	(Entry) => Entry.Purpose === undefined,
+).map((Entry) => Entry.Path);
+
+if (Unpurposed.length > 0) {
+	throw new Error(
+		`Route/Registry: ${Unpurposed.length} contact route(s) carry no purpose: ${Unpurposed.join(", ")}. Add them to Library/Contact/Purpose.ts.`,
+	);
+}
 
 /** Every canonical path, in registry order. */
 export const RoutePath: readonly string[] = Route.map((Entry) => Entry.Path);

@@ -24,7 +24,7 @@
  * `record-ledger` classes it never imported, which is why it drifted from the
  * block's own anatomy. A borrowed class is not a block.
  */
-import { BandOf, HomeBands } from "../../Content/Home/Band.js";
+import { BandOf, HomeBands, Sequence } from "../../Content/Home/Band.js";
 import { FeatureCards } from "../../Content/Home/Feature.js";
 import { GetI18n } from "../../Library/I18n/Server";
 
@@ -44,7 +44,7 @@ const Head = BandOf(HomeBands(T), "features");
 const Observation = HeroBandFor(T).observation;
 ---
 
-<Band head={Head} series="OBSERVATION" rhythm="wide">
+<Band head={Head} series="OBSERVATION" rhythm={Sequence.features}>
 	<div class="home-feature__grid">
 		{FeatureCards.map((Card) => (
 			<FeatureCard card={Card} />

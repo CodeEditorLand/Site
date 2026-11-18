@@ -63,12 +63,18 @@
 // row, which is an underline, not a boundary.
 //
 // ─── THE REGISTER INSIDE ──────────────────────────────────────────────────
-// A band's inside follows its REGISTER, not its rung: a TIGHT band sets its head
-// at --space-tight and its body at --space-reading; a WIDE band sets its head at
-// --space-reading and its body at --space-group. So the outside is always at
-// least 1.75x the inside - a band never opens at the same distance its own rows
-// are set - and a tight band is tight all the way in, which is where a record
-// tightens: a `rest` band's artifacts sit 16px apart, a `turn` band's 32px.
+// A band's interior has three distances and every default is the value the band
+// already paid, so declaring a rung never re-sets a page's contents by accident:
+//
+//   head    kicker -> heading -> standfirst    reading (16)
+//   body    the head to the body, the footnote group   (32)
+//   gap     one artifact to the next, in the body      reading (16)
+//
+// A `rest` band tightens all three (head 8, body 16): it is a continuation, and
+// the reader is already inside its subject. A WIDE band opens its gap to the
+// group step: a new movement's figures are two artifacts, not two rows. So the
+// outside is always larger than the inside, and the ratio grows with the rung -
+// which is what makes a turn read as a turn rather than as a big beat.
 //
 // ─── A CHAPTER IS A TURN ──────────────────────────────────────────────────
 // `record-band--chapter` is now what a `turn` prints rather than a second
@@ -119,7 +125,7 @@
 //              other body. A rhythm that reacted to them would be decorating
 //              the truth.
 //
-// See `System/Space/_Space.scss` for the five atomic steps these intervals are
+// See `System/_Space.scss` for the five atomic steps these intervals are
 // not: a step names a relationship inside a block, an interval names the
 // distance between two blocks, and a surface that reaches for a sixth of either
 // is writing a number the system does not have.
@@ -131,7 +137,8 @@
 // rung and it never varies with one.
 
 :root {
-	--interval-close: var(--space-group); /*  32px - a band's own closing step */
+	/* 32px - a band's own closing step, not a rung */
+	--interval-close: var(--space-group);
 	--interval-rest: 3.5rem; /*  56px - a continuation                     */
 	--interval-beat: 5rem; /*  80px - a sibling subject                  */
 	--interval-break: 7rem; /* 112px - a new movement                     */
@@ -140,11 +147,11 @@
 
 // ─── THE DEFAULT ──────────────────────────────────────────────────────────
 // A band that declares nothing is a `beat`: the site's ordinary step, and the
-// one value that cannot make a page worse by being assumed. The register's two
+// one value that cannot make a page worse by being assumed. The register's three
 // defaults come with it, because a `margin-block-start: var(--band-head)` with
 // no `--band-head` in scope would resolve to nothing and collapse the head.
 //
-// These three declarations are (0,1,0) on purpose: the rung selectors below are
+// These five declarations are (0,1,0) on purpose: the rung selectors below are
 // the same weight and are written after them, so a declaration on the band always
 // beats the default and no rung needs a specificity trick to win.
 
@@ -152,8 +159,9 @@
 .band,
 .home-band {
 	--band-interval: var(--interval-beat);
-	--band-head: var(--space-tight);
-	--band-body: var(--space-reading);
+	--band-head: var(--space-reading);
+	--band-body: var(--space-group);
+	--band-gap: var(--space-reading);
 }
 
 // ─── THE RUNGS ────────────────────────────────────────────────────────────
@@ -175,20 +183,33 @@
 }
 
 // ─── THE REGISTER, INSIDE ─────────────────────────────────────────────────
-// TIGHT bands are tight all the way in; WIDE bands breathe inside as well. The
-// two rungs of a register share one inside, which is what makes the register
-// readable as a register and the rung readable as a volume.
+// Three values, and each default is exactly what the band paid before the ladder
+// existed - so a band that declares no rung changes nothing about its own
+// interior, and an interval is never a licence to re-set a page.
+//
+//   --band-head   kicker -> heading -> standfirst -> index   reading (16)
+//   --band-body   the head to the body, and the footnote     group   (32)
+//   --band-gap    one artifact to the next, inside the body  reading (16)
+//
+// A `rest` band is the one that tightens: it is a continuation, so its head sits
+// at the row step and its body follows at the reading step - the reader is
+// already inside this subject and does not need to be introduced to it again.
+// A WIDE band is the one that opens: its artifacts separate at the group step,
+// because a new movement's figures are two artifacts and not two rows.
+//
+// So the outside is always the larger of the two distances - a band never opens
+// at the same distance its own contents are set - and the ratio between them
+// grows with the rung, which is what makes a turn read as a turn and not as a
+// big beat.
 
-[data-interval="rest"],
-[data-interval="beat"] {
+[data-interval="rest"] {
 	--band-head: var(--space-tight);
 	--band-body: var(--space-reading);
 }
 
 [data-interval="break"],
 [data-interval="turn"] {
-	--band-head: var(--space-reading);
-	--band-body: var(--space-group);
+	--band-gap: var(--space-group);
 }
 
 // ─── A CHAPTER IS A TURN ──────────────────────────────────────────────────
@@ -199,6 +220,14 @@
 .record-band--chapter,
 .band--chapter {
 	--band-interval: var(--interval-turn);
+}
+
+// The homepage's bands are not `RecordBand`s, so no block adds the class for
+// them: the rule is written here, at the boundary mixin's own ink (`--Divider`,
+// 20 % - a hairline at 8 % measures 1.18:1 and is not a boundary). The page's
+// first band cancels it below, because the hero already ends the page.
+.home-band[data-interval="turn"] {
+	border-block-start: 1px solid var(--Divider);
 }
 
 // ─── THE SEQUENCE GUARD ───────────────────────────────────────────────────
@@ -271,7 +300,7 @@
 }
 
 .record-band:not(.record-band--bare) .record-band__body {
-	gap: var(--band-body);
+	gap: var(--band-gap);
 }
 
 // ─── THE FIRST BAND AFTER THE HEADER ──────────────────────────────────────
@@ -307,23 +336,30 @@
 // ─── THE FLOW THAT READS THE SAME KNOB ────────────────────────────────────
 // Two surfaces space a set of parts inside ONE artifact: the legal documents'
 // parts and the Download record's regions. Their rhythm belongs to the flow
-// container (the `_Space.scss` law), so the container reads each child's
-// declared interval and pays it there - one mechanism, and the artifact's own
-// default is the group step it already used.
+// container (the `_Space.scss` law), so the container pays it - one mechanism,
+// and the artifact's own step is the group distance it already used.
 //
-// A child that declares nothing gets the artifact step, which is why the
-// fallback is `--space-group` and not a rung: inside one subject the page's
-// ladder does not apply, and a `turn` inside a record would be a chapter of a
-// chapter.
+// INSIDE AN ARTIFACT THE LADDER IS THE ATOMIC SCALE, not the page scale: the two
+// TIGHT rungs resolve to the two atomic steps (rest -> --space-reading, beat ->
+// --space-group), and the two WIDE rungs are not legal here at all - a part of a
+// subject is never a chapter of it, and a `break` declared inside a record falls
+// through to the group step rather than opening a movement in the middle of one
+// subject. The names are the same because the reader's sense of "this continues"
+// and "this is a sibling" is the same; only the volume changes.
 
 .reading-document__part,
 .download-record__inner > * {
-	margin-block-start: var(--band-interval, var(--space-group));
+	margin-block-start: var(--space-group);
 }
 
-// The first part of an artifact pays nothing above it: the artifact's own
-// opening already did.
-.reading-document__body > :first-child,
+.reading-document__part[data-interval="rest"],
+.download-record__inner > [data-interval="rest"] {
+	margin-block-start: var(--space-reading);
+}
+
+// The first part of the Download record pays nothing above it: the artifact's own
+// opening already did. The legal documents' parts need no such rule - the first
+// one follows the document's index, which is a real boundary and is paid for.
 .download-record__inner > :first-child {
 	margin-block-start: 0;
 }

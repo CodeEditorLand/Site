@@ -7,6 +7,7 @@ import ReadingDocument from "../Component/Reading/ReadingDocument.astro";
 import BandFoot from "../Component/Detail/BandFoot.astro";
 import TrustClause from "../Component/Trust/TrustClause.astro";
 import { ComposeFacts } from "../Component/Trust/Facts.js";
+import { LinkFor } from "../Library/Contact/Purpose.js";
 import Trail from "../Component/Route/Trail.astro";
 import {
 	Index,
@@ -43,6 +44,21 @@ const MetaDescription = T("meta.contributing.description", {
  */
 const Card =
 	"--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:var(--space-group);--jelly-card-padding-inline:var(--space-group)";
+
+/**
+ * The two doors a contributor leaves this guide by.
+ *
+ * A contributor arrives with one of two reasons: something to ask the people who
+ * maintain the project, or something broken in the toolchain. Those are two
+ * different routes - `HAILS` is the general inquiry and `SCOUT` is technical
+ * support - and this page used to print only the second, so a reader with a
+ * question was handed a technical-support form and a reader who wanted to talk
+ * to the team had no door at all. Both come from the purpose table, so the label
+ * a reader reads and the form they land on cannot disagree.
+ */
+const Talk = LinkFor("talk");
+
+const Support = LinkFor("support");
 ---
 
 <Base
@@ -80,7 +96,7 @@ const Card =
 			measure="full"
 		>
 			<!-- Quick Links -->
-			<section class="reading-document__part">
+			<section class="reading-document__part" data-interval="beat">
 				<TrustClause number="01" id="quick-links" class="sr-only">
 					{T("common.contributing.quickLinks.heading", {
 						defaultValue: "Quick Links",
@@ -139,7 +155,7 @@ const Card =
 			</section>
 
 			<!-- How to Contribute -->
-			<section class="reading-document__part">
+			<section class="reading-document__part" data-interval="rest">
 				<TrustClause number="02" id="how-to-contribute">
 					{T("common.contributing.howToContribute.heading", {
 						defaultValue: "How to Contribute",
@@ -205,7 +221,7 @@ const Card =
 			</section>
 
 			<!-- Elements Architecture -->
-			<section class="reading-document__part">
+			<section class="reading-document__part" data-interval="beat">
 				<TrustClause number="03" id="fifteen-elements-one-editor">
 					{T("common.contributing.elements.heading", {
 						defaultValue: "Fifteen Elements, One Editor",
@@ -411,7 +427,7 @@ const Card =
 			</section>
 
 			<!-- Ways to Contribute -->
-			<section class="reading-document__part">
+			<section class="reading-document__part" data-interval="rest">
 				<TrustClause number="04" id="ways-to-contribute">
 					{T("common.contributing.ways.heading", {
 						defaultValue: "Ways to Contribute",
@@ -511,7 +527,7 @@ const Card =
 			</section>
 
 			<!-- Funding -->
-			<section class="reading-document__part">
+			<section class="reading-document__part" data-interval="beat">
 				<TrustClause number="05" id="funding">
 					{T("common.contributing.funding.heading", {
 						defaultValue: "Funding",
@@ -568,7 +584,7 @@ const Card =
 			</section>
 
 			<!-- Code of Conduct -->
-			<section class="reading-document__part">
+			<section class="reading-document__part" data-interval="rest">
 				<TrustClause number="06" id="code-of-conduct">
 					{T("common.contributing.conduct.heading", {
 						defaultValue: "Code of Conduct",
@@ -596,9 +612,12 @@ const Card =
 			</section>
 
 			{/* The document's foot: what a contributor needs that this guide does not
-		    say, and where in the document they have got to. The clause count is
-		    this page's own, and the as-of is absent on purpose - the guide
-		    carries no revision date, and a folio may not invent one. */}
+			    say, and where in the document they have got to. The clause count is
+			    this page's own, and the as-of is absent on purpose - the guide
+			    carries no revision date, and a folio may not invent one. The two
+			    contact rows are the page's fan-out: a question for the team (HAILS)
+			    is not a broken toolchain (SCOUT), and neither is a statutory
+			    request. */}
 			<BandFoot
 				surface="card"
 				index="06"
@@ -615,9 +634,14 @@ const Card =
 						reason: "the manual a documentation contribution is written against",
 					},
 					{
-						route: "/CONTACT/SCOUT",
-						href: "/Contact/Scout",
-						reason: "technical support, when the question is not a contribution",
+						route: Talk.Route,
+						href: Talk.Href,
+						reason: "a question about contributing that this guide does not answer, put to the team",
+					},
+					{
+						route: Support.Route,
+						href: Support.Href,
+						reason: "technical support, when the build or the editor is what is broken",
 					},
 				]}
 				figure={{ value: "06", unit: "PARTS" }}

@@ -88,6 +88,12 @@ import {
 	RegistryFootnote,
 } from "../Content/Index/Page.js";
 import {
+	IntervalArms,
+	IntervalLaw,
+	IntervalRows,
+	SequenceRows,
+} from "../Content/Index/Rhythm.js";
+import {
 	ChapterFor,
 	DeclaredModules,
 	HrefOf,
@@ -348,16 +354,36 @@ const Built = Routes.length;
  * band cannot disagree about where a row goes. The labels come from the bands
  * themselves - the heading is the band's own words, and a contents row that
  * paraphrased it would be a second copy of the page's copy.
+ *
+ * Every band is an entry in `Bands` now, including the two this page used to
+ * write inline (the chapter index and the four languages), because the interval
+ * register reads each band's rung from that module. The movements are therefore
+ * the module's own order, numbered from the list itself: a band added later
+ * cannot leave a gap in the numbers, and no row can point at an anchor nothing
+ * prints.
  */
 const BandIds = {
+	Chapters: "chapters",
 	Marks: "grammar",
+	Intervals: "intervals",
 	Forms: "forms",
 	Plates: "plates",
+	Languages: "languages",
 	Routes: "routes",
 	Register: "extent",
 	Declared: "declared",
 	Record: "record",
 } as const;
+
+/**
+ * The two movements whose figure is counted on this page rather than read from
+ * the band: the chapter count and the language count. They are facts this page
+ * measures, so they are printed beside the row that names them.
+ */
+const MovementMeta: Partial<Record<keyof typeof BandIds, string>> = {
+	Chapters: `${RouteGroups.length} CHAPTERS`,
+	Languages: `${Languages.length} LANGUAGES`,
+};
 
 const Movements: {
 	Index: string;
@@ -368,33 +394,8 @@ const Movements: {
 	Index: String(Index + 1).padStart(2, "0"),
 	Label: Entry.heading.toUpperCase(),
 	Href: `#${BandIds[Key as keyof typeof BandIds]}`,
+	Meta: MovementMeta[Key as keyof typeof BandIds],
 }));
-
-/** The one band this page writes inline (the four languages) has no entry in `Bands`. */
-Movements.push({
-	Index: String(Movements.length + 1).padStart(2, "0"),
-	Label: "FOUR WAYS TO COMPOSE A PAGE",
-	Href: "#languages",
-	Meta: `${Languages.length} LANGUAGES`,
-});
-
-/**
- * The chapters band, which is also written inline (it is this page's own table of
- * contents, not a `Bands` entry). It opens the movements, because a reader who
- * has just read the record wants the index of subjects before the legend of
- * marks - and the ordinals below are renumbered from the list itself, so a band
- * added later cannot leave a gap in the numbers.
- */
-Movements.splice(0, 0, {
-	Index: "01",
-	Label: "THE CHAPTERS",
-	Href: "#chapters",
-	Meta: `${RouteGroups.length} CHAPTERS`,
-});
-
-Movements.forEach((Movement, Position) => {
-	Movement.Index = String(Position + 1).padStart(2, "0");
-});
 
 /** The forms matrix's control: the columns a reader may narrow by. */
 const FormFacets = FormColumns.map((Column, Index) => ({
@@ -418,7 +419,7 @@ const FormFacets = FormColumns.map((Column, Index) => ({
 				Items={Movements}
 				Name="ON THIS PAGE"
 				Wide
-				Empty="This page prints one subject and no sections, so there is nothing to list. Read it top to bottom - it is nine movements."
+				Empty="This page prints one subject and no sections, so there is nothing to list. Read it top to bottom - it is ten movements."
 			/>
 		</div>
 
@@ -427,19 +428,13 @@ const FormFacets = FormColumns.map((Column, Index) => ({
 
 	{/* The chapter index. This is the page's table of contents in its proper
 	    form - a printed leader per chapter, the route count at the end of the
-	    line, and the job the reader arrives with hanging under the name. It is
-	    written inline because it is this page's own contents and not a `Bands`
-	    entry, and it opens the movements because a reader who has just read the
-	    record wants the index of subjects before the legend of marks. */}
-	<RecordBand
-		band={{
-			id: "chapters",
-			kicker: "/THE CHAPTERS",
-			heading: "Eight divisions, in reading order",
-			standfirst:
-				"Each chapter names the job a reader arrives with. The figure at the end of its line is the number of addresses the build answers in that chapter, counted from the same register the archive below files them from.",
-		}}
-	>
+	    line, and the job the reader arrives with hanging under the name. Its copy
+	    lives in `Content/Index/Page.ts` with every other band's, because the
+	    interval register below reads each band's rung from the same object and a
+	    second copy would be a second place to forget. It opens the movements
+	    because a reader who has just read the record wants the index of subjects
+	    before the legend of marks. */}
+	<RecordBand band={{ ...Bands.Chapters, id: "chapters" }}>
 		<Leader items={ChapterEntries} register={ChaptersRegister} columns={2} />
 
 		<BandFoot
@@ -450,6 +445,34 @@ const FormFacets = FormColumns.map((Column, Index) => ({
 			figure={{ value: String(RouteGroups.length), unit: "CHAPTERS" }}
 			asOf={AsOf}
 			source="SOURCE/CONTENT/INDEX/CHAPTERS.TS"
+		/>
+	</RecordBand>
+
+	{/* The rhythm, printed. Four distances, the law a new band follows, and the
+	    sequence of every page that declares one - read from the bands themselves,
+	    so the register cannot disagree with the pages it describes. This is the
+	    one band in the document whose subject is the document's own setting. */}
+	<RecordBand band={{ ...Bands.Intervals, id: "intervals" }}>
+		<RecordLedger
+			rows={IntervalRows}
+			columns={2}
+			register={RegisterOf("THE LADDER", IntervalRows)}
+		/>
+
+		<RecordLedger
+			rows={IntervalLaw}
+			register={RegisterOf("THE LAW", IntervalLaw)}
+		/>
+
+		<RecordLedger
+			rows={IntervalArms}
+			register={RegisterOf("THE ARMS", IntervalArms)}
+		/>
+
+		<RecordLedger
+			rows={SequenceRows}
+			columns={2}
+			register={RegisterOf("THE SEQUENCES", SequenceRows)}
 		/>
 	</RecordBand>
 
@@ -486,17 +509,7 @@ const FormFacets = FormColumns.map((Column, Index) => ({
 		</div>
 	</RecordBand>
 
-	<RecordBand
-		band={{
-			id: "languages",
-			kicker: "/THE LANGUAGES",
-			heading: "Four ways to compose a page",
-			standfirst:
-				"A page is not a stack of bands. It is read, operated, audited or shown, and each of those is a different set of tracks.",
-			footnote:
-				"SOURCE: SOURCE/COMPONENT/SHELL/LANGUAGE.TS\u2001ROUTES COUNTED FROM THE SAME REGISTER",
-		}}
-	>
+	<RecordBand band={{ ...Bands.Languages, id: "languages" }}>
 		<RecordMatrix
 			columns={LanguageColumns}
 			rows={LanguageRows}

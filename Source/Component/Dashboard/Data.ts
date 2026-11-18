@@ -29,6 +29,8 @@
  */
 import { Requests } from "../../Library/Contact/Request.js";
 
+import { HrefOf } from "../../Library/Contact/Purpose.js";
+
 import type { IncomeCode } from "../../Library/Contact/Request.js";
 
 import type {
@@ -39,8 +41,7 @@ import type {
 } from "./Type.js";
 
 /** `/Contact/Reach` - the route a slug is spelled as on disk. */
-const Route = (Slug: string): string =>
-	`/Contact/${Slug.charAt(0).toUpperCase()}${Slug.slice(1)}`;
+const Route = (Code: IncomeCode): string => HrefOf(Code);
 
 /** One right: the registry's title, article and sentence, over `Open form`. */
 const Right = (Code: IncomeCode): RightsCard => {
@@ -55,7 +56,7 @@ const Right = (Code: IncomeCode): RightsCard => {
 
 		body: Config.Subtitle,
 
-		href: Route(Config.Slug),
+		href: Route(Code),
 	};
 };
 
@@ -72,7 +73,7 @@ const Channel = (Code: IncomeCode): SupportCard => {
 
 		address: Config.To,
 
-		href: Route(Config.Slug),
+		href: Route(Code),
 	};
 };
 
@@ -97,13 +98,24 @@ export const Rights: RequestGrid<RightsCard> = {
 	],
 };
 
-/** The four support channels, in the order the baseline grid printed them. */
+/**
+ * The five support channels: the general inquiry first, then the four that
+ * answer a named kind of trouble.
+ *
+ * `HAILS` was missing. The grid opened on technical support, so a reader whose
+ * reason was "I want to ask the team something" had no card - the only general
+ * door on the site was the one route this grid did not print. The intro names
+ * five kinds now because there are five cards, and a count written beside a list
+ * has to be the list's own.
+ */
 export const Support: RequestGrid<SupportCard> = {
 	label: "Support & Assistance",
 
-	intro: "Direct channels for technical issues, security reports, copyright claims, and legal enquiries. Each form pre-fills your details and generates a plain-text, income-coded email.",
+	intro: "Direct channels for general questions, technical issues, security reports, copyright claims, and legal enquiries. Each form pre-fills your details and generates a plain-text, income-coded email.",
 
 	cards: [
+		Channel("HAILS"),
+
 		Channel("SCOUT"),
 
 		Channel("GUARD"),
@@ -130,5 +142,5 @@ export const Erase: EraseBlock = {
 
 	body: "Opens a structured erasure request form. The generated email includes income code [ERASE] and covers Auth0, PostHog, Cloudflare, and all backup copies - citing GDPR Art. 17 with a 30-day response requirement.",
 
-	href: Route("erase"),
+	href: Route("ERASE"),
 };

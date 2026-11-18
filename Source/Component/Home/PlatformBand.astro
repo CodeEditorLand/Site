@@ -14,7 +14,7 @@
  * printed is still printed - the marker, the name, the `〈 〉` architecture, the
  * channel, version, size, signing, the action and the status.
  */
-import { BandOf, HomeBands } from "../../Content/Home/Band.js";
+import { BandOf, HomeBands, Sequence } from "../../Content/Home/Band.js";
 import { PlatformCards } from "../../Content/Home/Platform.js";
 import { GetI18n } from "../../Library/I18n/Server";
 
@@ -26,7 +26,7 @@ const T = GetI18n();
 const Head = BandOf(HomeBands(T), "download");
 ---
 
-<Band head={Head} series="ACTION" rhythm="tight">
+<Band head={Head} series="ACTION" rhythm={Sequence.download}>
 	<jelly-card class="home-platform__manifest">
 		{PlatformCards.map((Card) => (
 			<PlatformCard card={Card} />

@@ -8,7 +8,7 @@
  * on the page and the reason it is not a plain grid.
  */
 import { ElementCards } from "../../Content/Home/Architecture.js";
-import { BandOf, HomeBands } from "../../Content/Home/Band.js";
+import { BandOf, HomeBands, Sequence } from "../../Content/Home/Band.js";
 import { GetI18n } from "../../Library/I18n/Server";
 
 import Band from "./Band.astro";
@@ -21,7 +21,7 @@ const Head = BandOf(HomeBands(T), "testimonials");
 const Cards = ElementCards(T);
 ---
 
-<Band head={Head} series="CLASSIFICATION" rhythm="tight">
+<Band head={Head} series="CLASSIFICATION" rhythm={Sequence.testimonials}>
 	<div class="home-element__grid">
 		{Cards.map((Card) => (
 			<ElementCard card={Card} />

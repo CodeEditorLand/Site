@@ -30,7 +30,7 @@ import {
 	ReleaseRegister,
 	WorkingBandCopy,
 } from "../../Content/Home/Working.js";
-import { BandOf, HomeBands } from "../../Content/Home/Band.js";
+import { BandOf, HomeBands, Sequence } from "../../Content/Home/Band.js";
 import { GetI18n } from "../../Library/I18n/Server";
 
 import RecordFailure from "../Record/RecordFailure.astro";
@@ -78,7 +78,7 @@ const TraceSteps = BuildTrace.map((Step) => ({
 }));
 ---
 
-<Band head={Head} series="METHOD" rhythm="wide">
+<Band head={Head} series="METHOD" rhythm={Sequence.method}>
 	<div class="home-working">
 		<div class="home-working__split">
 			<div class="home-working__trace">

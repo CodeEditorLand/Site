@@ -14,7 +14,7 @@
  * the baseline printed it: the page states the claim, then what is released,
  * then what the thing is made of, then where it runs.
  */
-import { BandOf, HomeBands } from "../../Content/Home/Band.js";
+import { BandOf, HomeBands, Sequence } from "../../Content/Home/Band.js";
 import { ReleaseCards } from "../../Content/Home/Roadmap.js";
 import { GetI18n } from "../../Library/I18n/Server";
 
@@ -26,7 +26,7 @@ const T = GetI18n();
 const Head = BandOf(HomeBands(T), "pricing");
 ---
 
-<Band head={Head} series="CONDITIONS" rhythm="wide">
+<Band head={Head} series="CONDITIONS" rhythm={Sequence.pricing}>
 	<jelly-card class="home-manifest">
 		{/*
 		 * The grid lives on this div, not on the Jelly surface: Jelly's shadow

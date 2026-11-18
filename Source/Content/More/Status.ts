@@ -641,6 +641,8 @@ export const Bands = {
 	Board: {
 		kicker: "/THE BOARD",
 
+		interval: "turn",
+
 		heading: "Every record, under the word it states",
 
 		standfirst:
@@ -654,6 +656,8 @@ export const Bands = {
 	Axis: {
 		kicker: "/THE AXIS",
 
+		interval: "rest",
+
 		heading: "How far the release has travelled",
 
 		standfirst:
@@ -666,6 +670,8 @@ export const Bands = {
 
 	Vocabulary: {
 		kicker: "/THE VOCABULARY",
+
+		interval: "break",
 
 		heading: "Eight words, and no others",
 
@@ -681,6 +687,8 @@ export const Bands = {
 	Figures: {
 		kicker: "/THE FIGURES",
 
+		interval: "rest",
+
 		heading: "What the board counts",
 
 		standfirst:
@@ -692,6 +700,8 @@ export const Bands = {
 	Reading: {
 		kicker: "/THE READING",
 
+		interval: "beat",
+
 		heading: "Where each state comes from",
 
 		standfirst:
@@ -702,6 +712,8 @@ export const Bands = {
 
 	Limits: {
 		kicker: "/THE LIMITS",
+
+		interval: "turn",
 
 		heading: "What this board cannot tell you",
 

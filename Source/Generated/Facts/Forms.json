@@ -20,9 +20,10 @@
 				"/Doc",
 				"/Glossary",
 				"/Motion",
+				"/Specimen",
 				"/Status"
 			],
-			"Count": 6
+			"Count": 7
 		},
 		{
 			"Block": "RecordPair",
@@ -61,17 +62,17 @@
 			"Routes": [
 				"/Compare",
 				"/Contents",
+				"/Dashboard",
 				"/Download",
 				"/Motion",
-				"/Portal",
 				"/Verify"
 			],
 			"Count": 6
 		},
 		{
 			"Block": "RecordCompare",
-			"Routes": ["/Compare", "/Download", "/Portal", "/Status"],
-			"Count": 4
+			"Routes": ["/Compare", "/Download", "/Status"],
+			"Count": 3
 		},
 		{
 			"Block": "RecordStage",
@@ -108,7 +109,7 @@
 		},
 		{
 			"Block": "RecordEntry",
-			"Routes": ["/Doc", "/Portal"],
+			"Routes": ["/Doc", "/Specimen"],
 			"Count": 2
 		},
 		{
@@ -153,10 +154,11 @@
 				"/Motion",
 				"/OAuth/Success",
 				"/Portal",
+				"/Specimen",
 				"/Status",
 				"/Verify"
 			],
-			"Count": 41
+			"Count": 42
 		},
 		{
 			"Block": "RecordTrace",

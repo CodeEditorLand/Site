@@ -566,6 +566,8 @@ export const Bands = {
 	Rows: {
 		kicker: "/THE SUBSTITUTION",
 
+		interval: "turn",
+
 		heading: "Eight aspects, and what each one became",
 
 		standfirst:
@@ -579,6 +581,8 @@ export const Bands = {
 	Measure: {
 		kicker: "/THE MEASUREMENTS",
 
+		interval: "break",
+
 		heading: "What nobody has measured",
 
 		standfirst:
@@ -591,6 +595,8 @@ export const Bands = {
 
 	Carries: {
 		kicker: "/THE CARRIES",
+
+		interval: "rest",
 
 		heading: "What you keep, and how to check it",
 

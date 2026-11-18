@@ -44,8 +44,9 @@
 // THE TIGHT BAND. The wall is the dossier's appendix: fifteen records the reader
 // consults rather than reads, so it packs - 1rem of card padding instead of
 // 1.25, 0.5rem between a record's row groups instead of 0.75, and a 1.4 body
-// lead instead of 1.5. The band's own air is `home-band--tight`; this is the
-// same decision applied inside the record.
+// lead instead of 1.5. The band's own air is its `rest` interval
+// (`Content/Home/Band.ts` `Sequence.testimonials`); this is the same decision
+// applied inside the record.
 .home-element .home-record {
 	padding: 1rem;
 }

@@ -153,6 +153,8 @@ export const Bands = {
 	Sheet: {
 		kicker: "/THE SHEET",
 
+		interval: "turn",
+
 		heading: "Every part, on one sheet",
 
 		standfirst:
@@ -164,6 +166,8 @@ export const Bands = {
 
 	Plates: {
 		kicker: "/THE PLATES",
+
+		interval: "rest",
 
 		heading: "The parts, printed",
 
@@ -177,6 +181,8 @@ export const Bands = {
 	Absences: {
 		kicker: "/THE ABSENCES",
 
+		interval: "break",
+
 		heading: "The parts that are not printed",
 
 		standfirst:
@@ -188,6 +194,8 @@ export const Bands = {
 
 	States: {
 		kicker: "/THE STATES",
+
+		interval: "rest",
 
 		heading: "What a part has to survive",
 
@@ -201,6 +209,8 @@ export const Bands = {
 	Material: {
 		kicker: "/THE MATERIAL",
 
+		interval: "beat",
+
 		heading: "What the sheet is printed with",
 
 		standfirst:
@@ -212,6 +222,8 @@ export const Bands = {
 
 	Register: {
 		kicker: "/THE REGISTER",
+
+		interval: "turn",
 
 		heading: "What this sheet counted",
 

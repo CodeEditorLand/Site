@@ -14,10 +14,14 @@
  *
  * - **Nothing is invented.** `PlayForm, based in Sofia, Bulgaria, as steward of
  *   the Code Editor Land open-source project` is the sentence the Terms' own
- *   §01 prints; the repository URL is the one the License page links; the two
- *   support routes are routes the site already serves (`/Contact/Reach` is
- *   "Technical Support", `/Contact/Query` is "General Inquiry", `/Contact/Legal`
- *   is "Legal & Compliance" in the registry).
+ *   §01 prints; the repository URL is the one the License page links; the
+ *   `SUPPORT` row's two routes are the ones the contact registry says answer
+ *   support - `SCOUT` (Technical Support) and `HAILS` (General Inquiry) - read
+ *   through `Library/Contact/Purpose.ts`, so the row cannot promise a
+ *   conversation and land on a statutory request. It used to: the row named
+ *   `/Contact/Reach` and `/Contact/Query`, which are the data-access request
+ *   (GDPR Art. 15 + 20) and an objection to processing (Art. 21), and neither of
+ *   them is where a reader with a problem should be sent.
  * - **No document is contradicted.** A row whose key the document already
  *   carries is not added again - the document's own value wins, so the Terms'
  *   `LICENSE` row stays exactly as it was written. Privacy, which carries no
@@ -29,6 +33,21 @@
  *   stands behind it.
  */
 import type { LedgerRow } from "../Record/Type.js";
+
+import { LinkFor } from "../../Library/Contact/Purpose.js";
+
+/**
+ * The two routes that answer support, and the two that answer legal review.
+ *
+ * Read from the purpose table, not written here: the label and the destination
+ * come back together, so a row cannot print `/CONTACT/REACH` over a general
+ * inquiry or send a reader to a statutory form to ask a question.
+ */
+const SupportRoute = LinkFor("support");
+
+const TalkRoute = LinkFor("talk");
+
+const LegalRoute = LinkFor("legal");
 
 /** The one license the project is under. */
 const License: LedgerRow = {
@@ -54,21 +73,21 @@ export const TrustInstitution: readonly LedgerRow[] = [
 	{
 		key: "SUPPORT:",
 
-		value: "/Contact/Reach, /Contact/Query",
+		value: `${SupportRoute.Href}, ${TalkRoute.Href}`,
 
 		links: [
-			{ text: "/CONTACT/REACH", href: "/Contact/Reach" },
+			{ text: SupportRoute.Route, href: SupportRoute.Href },
 
-			{ text: "/CONTACT/QUERY", href: "/Contact/Query" },
+			{ text: TalkRoute.Route, href: TalkRoute.Href },
 		],
 	},
 
 	{
 		key: "LEGAL:",
 
-		value: "/Contact/Legal",
+		value: LegalRoute.Href,
 
-		links: [{ text: "/CONTACT/LEGAL", href: "/Contact/Legal" }],
+		links: [{ text: LegalRoute.Route, href: LegalRoute.Href }],
 	},
 
 	{

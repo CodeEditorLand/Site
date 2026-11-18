@@ -29,8 +29,8 @@ node Source/Script/Register.ts
 | `Modules.json` | what every module outside the bulk trees carries, and who reads it                             |
 | `Records.json` | every record head the tree prints, and the routes a reader can reach it from                   |
 
-Measured at the last run: **42 routes**, **221 modules**,
-**163 read**, **13 declared with no reader**.
+Measured at the last run: **43 routes**, **227 modules**,
+**168 read**, **13 declared with no reader**.
 
 ## How a fact changes
 

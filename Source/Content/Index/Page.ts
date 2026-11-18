@@ -158,8 +158,28 @@ export const Marks: readonly LedgerRow[] = [
 
 /** The bands, in the order the page reads them. */
 export const Bands = {
+	/**
+	 * The page's own table of contents, as a band. It was written inline in
+	 * `pages/Contents.astro` until the interval register needed to read every
+	 * band's rung from one place: a sequence that is restated in a second file
+	 * drifts from the page it claims to describe, and a register that drifts is a
+	 * register of nothing.
+	 */
+	Chapters: {
+		kicker: "/THE CHAPTERS",
+
+		interval: "turn",
+
+		heading: "Eight divisions, in reading order",
+
+		standfirst:
+			"Each chapter names the job a reader arrives with. The figure at the end of its line is the number of addresses the build answers in that chapter, counted from the same register the archive below files them from.",
+	} satisfies Band,
+
 	Marks: {
 		kicker: "/THE GRAMMAR",
+
+		interval: "rest",
 
 		heading: "Eight marks, and no others",
 
@@ -172,8 +192,28 @@ export const Bands = {
 		tone: "canvas",
 	} satisfies Band,
 
+	/**
+	 * The four distances the document opens its bands at, and the rule a new band
+	 * follows. It is a band like any other because the rhythm is a fact about this
+	 * document, and a fact the document states about itself belongs in its index.
+	 */
+	Intervals: {
+		kicker: "/THE INTERVALS",
+
+		interval: "beat",
+
+		heading: "Four distances, and no fifth",
+
+		standfirst:
+			'Every band in this document opens at one of four intervals. They are a ladder at about 1.4 times a rung - the smallest step the eye reads as a different distance - and two of them are wide while two are tight, which is what lets a page say "wide" twice without saying it at the same volume.',
+
+		footnote: `SOURCE: SOURCE/STYLESHEET/SYSTEM/LAYOUT/_INTERVAL.SCSS${Quad}EVERY SEQUENCE BELOW IS READ FROM THE BANDS ITS PAGE DECLARES, NEVER RESTATED`,
+	} satisfies Band,
+
 	Forms: {
 		kicker: "/THE FORMS",
+
+		interval: "break",
 
 		heading: "One information type, one form",
 
@@ -188,6 +228,8 @@ export const Bands = {
 	Plates: {
 		kicker: "/THE PLATES",
 
+		interval: "rest",
+
 		heading: "What the document has a picture of",
 
 		standfirst:
@@ -199,8 +241,28 @@ export const Bands = {
 		tone: "canvas",
 	} satisfies Band,
 
+	/**
+	 * The four composition languages. Written inline on the page until the
+	 * interval register needed every band in one place, for the same reason the
+	 * chapter index moved here.
+	 */
+	Languages: {
+		kicker: "/THE LANGUAGES",
+
+		interval: "beat",
+
+		heading: "Four ways to compose a page",
+
+		standfirst:
+			"A page is not a stack of bands. It is read, operated, audited or shown, and each of those is a different set of tracks.",
+
+		footnote: `SOURCE: SOURCE/COMPONENT/SHELL/LANGUAGE.TS${Quad}ROUTES COUNTED FROM THE SAME REGISTER`,
+	} satisfies Band,
+
 	Routes: {
 		kicker: "/THE ROUTES",
+
+		interval: "break",
 
 		heading: "Every address this document answers on",
 
@@ -213,6 +275,8 @@ export const Bands = {
 	Register: {
 		kicker: "/THE REGISTER",
 
+		interval: "rest",
+
 		heading: "What carries the facts, and what reads it",
 
 		standfirst:
@@ -224,6 +288,8 @@ export const Bands = {
 	Declared: {
 		kicker: "/THE DECLARED",
 
+		interval: "beat",
+
 		heading: "Files that exist for a reason, and no page reads them",
 
 		standfirst:
@@ -234,6 +300,8 @@ export const Bands = {
 
 	Record: {
 		kicker: "/THE RECORD",
+
+		interval: "turn",
 
 		heading: "How this page was made",
 

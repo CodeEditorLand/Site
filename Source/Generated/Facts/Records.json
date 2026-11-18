@@ -63,6 +63,7 @@
 				"/Motion",
 				"/OAuth/Success",
 				"/Portal",
+				"/Specimen",
 				"/Status",
 				"/Verify"
 			]
@@ -78,12 +79,6 @@
 			"File": "pages/Verify.astro",
 			"Files": ["pages/Verify.astro"],
 			"Routes": ["/Verify"]
-		},
-		{
-			"Id": "AUDIT_04",
-			"File": "pages/Portal.astro",
-			"Files": ["pages/Portal.astro"],
-			"Routes": ["/Portal"]
 		},
 		{
 			"Id": "AUDIT_05",
@@ -135,6 +130,7 @@
 				"/Motion",
 				"/OAuth/Success",
 				"/Portal",
+				"/Specimen",
 				"/Status",
 				"/Verify"
 			]
@@ -183,6 +179,7 @@
 				"/Motion",
 				"/OAuth/Success",
 				"/Portal",
+				"/Specimen",
 				"/Status",
 				"/Verify"
 			]
@@ -237,6 +234,7 @@
 				"/Motion",
 				"/OAuth/Success",
 				"/Portal",
+				"/Specimen",
 				"/Status",
 				"/Verify"
 			]
@@ -291,6 +289,7 @@
 				"/Motion",
 				"/OAuth/Success",
 				"/Portal",
+				"/Specimen",
 				"/Status",
 				"/Verify"
 			]
@@ -345,6 +344,7 @@
 				"/Motion",
 				"/OAuth/Success",
 				"/Portal",
+				"/Specimen",
 				"/Status",
 				"/Verify"
 			]
@@ -393,6 +393,7 @@
 				"/Motion",
 				"/OAuth/Success",
 				"/Portal",
+				"/Specimen",
 				"/Status",
 				"/Verify"
 			]
@@ -441,6 +442,7 @@
 				"/Motion",
 				"/OAuth/Success",
 				"/Portal",
+				"/Specimen",
 				"/Status",
 				"/Verify"
 			]
@@ -493,6 +495,7 @@
 				"/Motion",
 				"/OAuth/Success",
 				"/Portal",
+				"/Specimen",
 				"/Status",
 				"/Verify"
 			]
@@ -541,6 +544,7 @@
 				"/Motion",
 				"/OAuth/Success",
 				"/Portal",
+				"/Specimen",
 				"/Status",
 				"/Verify"
 			]
@@ -608,13 +612,13 @@
 				"Content/Home/Platform.ts",
 				"Content/Home/Roadmap.ts"
 			],
-			"Routes": ["/", "/Status"]
+			"Routes": ["/", "/Contents", "/Status"]
 		},
 		{
 			"Id": "RELEASE_02",
 			"File": "Content/Home/Roadmap.ts",
 			"Files": ["Content/Home/Roadmap.ts"],
-			"Routes": ["/", "/Status"]
+			"Routes": ["/", "/Contents", "/Status"]
 		},
 		{
 			"Id": "REST_01",
@@ -660,6 +664,7 @@
 				"/Motion",
 				"/OAuth/Success",
 				"/Portal",
+				"/Specimen",
 				"/Status",
 				"/Verify"
 			]
@@ -708,6 +713,7 @@
 				"/Motion",
 				"/OAuth/Success",
 				"/Portal",
+				"/Specimen",
 				"/Status",
 				"/Verify"
 			]
@@ -756,9 +762,16 @@
 				"/Motion",
 				"/OAuth/Success",
 				"/Portal",
+				"/Specimen",
 				"/Status",
 				"/Verify"
 			]
+		},
+		{
+			"Id": "SPECIMEN_01",
+			"File": "Content/Specimen/Page.ts",
+			"Files": ["Content/Specimen/Page.ts"],
+			"Routes": ["/Contents", "/Specimen"]
 		},
 		{
 			"Id": "STATUS_01",
@@ -816,6 +829,7 @@
 				"/Motion",
 				"/OAuth/Success",
 				"/Portal",
+				"/Specimen",
 				"/Status",
 				"/Verify"
 			]
@@ -864,6 +878,7 @@
 				"/Motion",
 				"/OAuth/Success",
 				"/Portal",
+				"/Specimen",
 				"/Status",
 				"/Verify"
 			]
@@ -912,6 +927,7 @@
 				"/Motion",
 				"/OAuth/Success",
 				"/Portal",
+				"/Specimen",
 				"/Status",
 				"/Verify"
 			]

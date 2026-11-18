@@ -11,7 +11,7 @@
 			"Path": "Background.astro",
 			"Kind": "other",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 174,
+			"Lines": 187,
 			"Readers": 1,
 			"ReadBy": ["Layout/Base.astro"],
 			"Reached": true
@@ -38,7 +38,7 @@
 			"Path": "Content/Artifact/Inset.ts",
 			"Kind": "content",
 			"Carries": "Inset - the margin's figures, derived from the page they annotate.",
-			"Lines": 158,
+			"Lines": 171,
 			"Readers": 2,
 			"ReadBy": ["pages/Blog/[Slug].astro", "pages/Doc/[...Slug].astro"],
 			"Reached": true
@@ -47,7 +47,7 @@
 			"Path": "Content/Artifact/Plate.ts",
 			"Kind": "content",
 			"Carries": "Plate - the copy behind the two plate artifacts, as data.",
-			"Lines": 297,
+			"Lines": 392,
 			"Readers": 3,
 			"ReadBy": [
 				"pages/Contents.astro",
@@ -60,7 +60,7 @@
 			"Path": "Content/Artifact/Session.ts",
 			"Kind": "content",
 			"Carries": "Session - the two transcripts the document can honestly print.",
-			"Lines": 241,
+			"Lines": 362,
 			"Readers": 2,
 			"ReadBy": ["pages/Doc/[...Slug].astro", "pages/Download.astro"],
 			"Reached": true
@@ -69,7 +69,7 @@
 			"Path": "Content/Artifact/Stamp.ts",
 			"Kind": "content",
 			"Carries": "Stamp - the two marks the document issues, as data.",
-			"Lines": 89,
+			"Lines": 111,
 			"Readers": 2,
 			"ReadBy": ["pages/Contents.astro", "pages/Download.astro"],
 			"Reached": true
@@ -87,7 +87,7 @@
 			"Path": "Content/Element/Working.ts",
 			"Kind": "content",
 			"Carries": "The working behind each element record - the facts a claim is checked against.",
-			"Lines": 472,
+			"Lines": 655,
 			"Readers": 3,
 			"ReadBy": [
 				"Content/Artifact/Plate.ts",
@@ -100,7 +100,7 @@
 			"Path": "Content/Home/Architecture.ts",
 			"Kind": "content",
 			"Carries": "The architecture band: all fifteen elements, one record card each.",
-			"Lines": 220,
+			"Lines": 287,
 			"Readers": 1,
 			"ReadBy": ["Component/Home/ArchitectureBand.astro"],
 			"Reached": true
@@ -109,14 +109,15 @@
 			"Path": "Content/Home/Band.ts",
 			"Kind": "content",
 			"Carries": "The five bands' openings, in the order the page prints them.",
-			"Lines": 91,
-			"Readers": 5,
+			"Lines": 138,
+			"Readers": 6,
 			"ReadBy": [
 				"Component/Home/ArchitectureBand.astro",
 				"Component/Home/FeatureBand.astro",
 				"Component/Home/PlatformBand.astro",
 				"Component/Home/RoadmapBand.astro",
-				"Component/Home/WorkingBand.astro"
+				"Component/Home/WorkingBand.astro",
+				"Content/Index/Rhythm.ts"
 			],
 			"Reached": true
 		},
@@ -124,7 +125,7 @@
 			"Path": "Content/Home/Feature.ts",
 			"Kind": "content",
 			"Carries": "The features band: six element records, one card each.",
-			"Lines": 71,
+			"Lines": 82,
 			"Readers": 1,
 			"ReadBy": ["Component/Home/FeatureBand.astro"],
 			"Reached": true
@@ -133,7 +134,7 @@
 			"Path": "Content/Home/Platform.ts",
 			"Kind": "content",
 			"Carries": "The download band: three platform records, one card each.",
-			"Lines": 104,
+			"Lines": 151,
 			"Readers": 2,
 			"ReadBy": [
 				"Component/Home/PlatformBand.astro",
@@ -145,7 +146,7 @@
 			"Path": "Content/Home/Roadmap.ts",
 			"Kind": "content",
 			"Carries": "The roadmap band: two release records, one card each.",
-			"Lines": 213,
+			"Lines": 337,
 			"Readers": 2,
 			"ReadBy": [
 				"Component/Home/RoadmapBand.astro",
@@ -157,7 +158,7 @@
 			"Path": "Content/Home/Stack.ts",
 			"Kind": "content",
 			"Carries": "The hero's tech-stack strip: the eight technologies the editor is made of.",
-			"Lines": 25,
+			"Lines": 32,
 			"Readers": 1,
 			"ReadBy": ["Component/Dynamic/DynamicHeroSection.tsx"],
 			"Reached": true
@@ -166,7 +167,7 @@
 			"Path": "Content/Home/Type.ts",
 			"Kind": "content",
 			"Carries": "The homepage bands, as data.",
-			"Lines": 228,
+			"Lines": 278,
 			"Readers": 13,
 			"ReadBy": [
 				"Component/Home/Band.astro",
@@ -182,7 +183,7 @@
 			"Path": "Content/Home/Working.ts",
 			"Kind": "content",
 			"Carries": "The working band - the mechanism, its release, and what stops it.",
-			"Lines": 199,
+			"Lines": 263,
 			"Readers": 1,
 			"ReadBy": ["Component/Home/WorkingBand.astro"],
 			"Reached": true
@@ -191,7 +192,7 @@
 			"Path": "Content/Index/Chapters.ts",
 			"Kind": "content",
 			"Carries": "Chapters - how the document is divided, for the index's route register.",
-			"Lines": 128,
+			"Lines": 151,
 			"Readers": 1,
 			"ReadBy": ["Library/Index/Register.ts"],
 			"Reached": true
@@ -200,7 +201,7 @@
 			"Path": "Content/Index/Declared.ts",
 			"Kind": "content",
 			"Carries": "Declared - why a module nothing reads still exists.",
-			"Lines": 115,
+			"Lines": 153,
 			"Readers": 1,
 			"ReadBy": ["Library/Index/Register.ts"],
 			"Reached": true
@@ -209,7 +210,7 @@
 			"Path": "Content/Index/Forms.ts",
 			"Kind": "content",
 			"Carries": "Forms - the artifact set: one information type, one physical form.",
-			"Lines": 261,
+			"Lines": 373,
 			"Readers": 2,
 			"ReadBy": ["Content/Index/Page.ts", "pages/Contents.astro"],
 			"Reached": true
@@ -218,7 +219,16 @@
 			"Path": "Content/Index/Page.ts",
 			"Kind": "content",
 			"Carries": "Page - the index's copy, and nothing else.",
-			"Lines": 295,
+			"Lines": 513,
+			"Readers": 2,
+			"ReadBy": ["Content/Index/Rhythm.ts", "pages/Contents.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Index/Rhythm.ts",
+			"Kind": "content",
+			"Carries": "Rhythm - the document's own vertical system, printed.",
+			"Lines": 331,
 			"Readers": 1,
 			"ReadBy": ["pages/Contents.astro"],
 			"Reached": true
@@ -227,7 +237,7 @@
 			"Path": "Content/Layout/Account.ts",
 			"Kind": "content",
 			"Carries": "Account - the account workspace, as data.",
-			"Lines": 224,
+			"Lines": 231,
 			"Readers": 1,
 			"ReadBy": ["pages/Account/index.astro"],
 			"Reached": true
@@ -236,7 +246,7 @@
 			"Path": "Content/Layout/NotFound.ts",
 			"Kind": "content",
 			"Carries": "NotFound - the copy for the 404's plate and its adverse states.",
-			"Lines": 96,
+			"Lines": 106,
 			"Readers": 1,
 			"ReadBy": ["pages/404.astro"],
 			"Reached": true
@@ -245,7 +255,7 @@
 			"Path": "Content/Layout/OAuth.ts",
 			"Kind": "content",
 			"Carries": "OAuth - the callback's four outcomes, as copy.",
-			"Lines": 155,
+			"Lines": 159,
 			"Readers": 1,
 			"ReadBy": ["pages/OAuth/Success.astro"],
 			"Reached": true
@@ -254,7 +264,7 @@
 			"Path": "Content/Layout/Rust.ts",
 			"Kind": "content",
 			"Carries": "Rust - the API surface's workspace copy.",
-			"Lines": 118,
+			"Lines": 127,
 			"Readers": 1,
 			"ReadBy": ["pages/Doc/Rust.astro"],
 			"Reached": true
@@ -263,7 +273,7 @@
 			"Path": "Content/Layout/Verify.ts",
 			"Kind": "content",
 			"Carries": "Verify - the verification route, as an audit.",
-			"Lines": 250,
+			"Lines": 263,
 			"Readers": 1,
 			"ReadBy": ["pages/Verify.astro"],
 			"Reached": true
@@ -272,7 +282,7 @@
 			"Path": "Content/Layout/Visit.ts",
 			"Kind": "content",
 			"Carries": "Visit - the tombstone the catch-all route prints when it cannot send the reader on.",
-			"Lines": 86,
+			"Lines": 95,
 			"Readers": 1,
 			"ReadBy": ["pages/Visit.astro"],
 			"Reached": true
@@ -281,21 +291,26 @@
 			"Path": "Content/More/Compare.ts",
 			"Kind": "content",
 			"Carries": "Compare - Land against the editor it replaces, in the site's own words.",
-			"Lines": 444,
-			"Readers": 1,
-			"ReadBy": ["pages/Compare.astro"],
+			"Lines": 608,
+			"Readers": 3,
+			"ReadBy": [
+				"Content/Index/Rhythm.ts",
+				"pages/Compare.astro",
+				"pages/Specimen.astro"
+			],
 			"Reached": true
 		},
 		{
 			"Path": "Content/More/Glossary.ts",
 			"Kind": "content",
 			"Carries": "Glossary - the document's own words, in three runs.",
-			"Lines": 633,
-			"Readers": 4,
+			"Lines": 876,
+			"Readers": 5,
 			"ReadBy": [
 				"Component/More/Lexicon.astro",
 				"Component/More/LexiconEntry.astro",
 				"Component/UI/Palette/Data.ts",
+				"Content/Index/Rhythm.ts",
 				"pages/Glossary.astro"
 			],
 			"Reached": true
@@ -304,10 +319,11 @@
 			"Path": "Content/More/Page.ts",
 			"Kind": "content",
 			"Carries": "Page - the copy the three \"more\" surfaces share: the onward register, and the one sentence each register opens on.",
-			"Lines": 242,
-			"Readers": 5,
+			"Lines": 284,
+			"Readers": 6,
 			"ReadBy": [
 				"Component/More/Onward.astro",
+				"Content/Index/Page.ts",
 				"pages/404.astro",
 				"pages/Compare.astro",
 				"pages/Glossary.astro",
@@ -319,10 +335,11 @@
 			"Path": "Content/More/Status.ts",
 			"Kind": "content",
 			"Carries": "Status - the status board's data: every record the site files with a state, grouped by the state it states, and the facts the board is read against.",
-			"Lines": 535,
-			"Readers": 2,
+			"Lines": 720,
+			"Readers": 3,
 			"ReadBy": [
 				"Component/More/StatusBoard.astro",
+				"Content/Index/Rhythm.ts",
 				"pages/Status.astro"
 			],
 			"Reached": true
@@ -331,16 +348,16 @@
 			"Path": "Content/Motion/Page.ts",
 			"Kind": "content",
 			"Carries": "Page - the motion register's copy: bands, facts, sequences, arms, refusals.",
-			"Lines": 682,
-			"Readers": 1,
-			"ReadBy": ["pages/Motion.astro"],
+			"Lines": 984,
+			"Readers": 2,
+			"ReadBy": ["Content/Index/Rhythm.ts", "pages/Motion.astro"],
 			"Reached": true
 		},
 		{
 			"Path": "Content/Motion/Register.ts",
 			"Kind": "content",
 			"Carries": "Register - the site's interaction classes, as data.",
-			"Lines": 324,
+			"Lines": 485,
 			"Readers": 1,
 			"ReadBy": ["pages/Motion.astro"],
 			"Reached": true
@@ -605,10 +622,45 @@
 			"Reached": true
 		},
 		{
+			"Path": "Content/Specimen/Page.ts",
+			"Kind": "content",
+			"Carries": "Page - the sheet's copy, and nothing else.",
+			"Lines": 345,
+			"Readers": 3,
+			"ReadBy": [
+				"Component/Specimen/SpecimenMaterial.astro",
+				"Content/Index/Rhythm.ts",
+				"pages/Specimen.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Specimen/Parts.ts",
+			"Kind": "content",
+			"Carries": "Parts - the document's own parts, filed as records.",
+			"Lines": 740,
+			"Readers": 3,
+			"ReadBy": [
+				"Component/Specimen/SpecimenPlate.astro",
+				"Component/Specimen/SpecimenSheet.astro",
+				"pages/Specimen.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Specimen/States.ts",
+			"Kind": "content",
+			"Carries": "States - the nine adverse states, as this sheet's own specimens.",
+			"Lines": 310,
+			"Readers": 1,
+			"ReadBy": ["pages/Specimen.astro"],
+			"Reached": true
+		},
+		{
 			"Path": "Content/Surface/Dashboard.ts",
 			"Kind": "content",
 			"Carries": "Dashboard - the dashboard page's content table.",
-			"Lines": 543,
+			"Lines": 689,
 			"Readers": 1,
 			"ReadBy": ["pages/Dashboard.astro"],
 			"Reached": true
@@ -617,7 +669,7 @@
 			"Path": "Content/Surface/Portal.ts",
 			"Kind": "content",
 			"Carries": "Portal - the portal page's content table.",
-			"Lines": 583,
+			"Lines": 674,
 			"Readers": 1,
 			"ReadBy": ["pages/Portal.astro"],
 			"Reached": true
@@ -626,7 +678,7 @@
 			"Path": "env.d.ts",
 			"Kind": "type",
 			"Carries": "/ <reference path=\"../.astro/types.d.ts\" /> / <reference types=\"astro/client\" /> `.astro` components as modules.",
-			"Lines": 75,
+			"Lines": 74,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": false
@@ -1070,7 +1122,7 @@
 			"Path": "Function/Doc/BuildDocIndex.ts",
 			"Kind": "function",
 			"Carries": "BuildDocIndex - the documentation index's complete data.",
-			"Lines": 463,
+			"Lines": 601,
 			"Readers": 1,
 			"ReadBy": ["pages/Doc.astro"],
 			"Reached": true
@@ -1093,7 +1145,7 @@
 			"Path": "Function/Doc/BuildDocStrip.ts",
 			"Kind": "function",
 			"Carries": "BuildDocStrip - the mono metadata strip above documentation prose.",
-			"Lines": 96,
+			"Lines": 102,
 			"Readers": 3,
 			"ReadBy": [
 				"pages/Doc.astro",
@@ -1106,7 +1158,7 @@
 			"Path": "Function/Doc/BuildDocToc.ts",
 			"Kind": "function",
 			"Carries": "BuildDocToc - the in-page table of contents, from the page's own `##` headings.",
-			"Lines": 93,
+			"Lines": 98,
 			"Readers": 1,
 			"ReadBy": ["pages/Doc/[...Slug].astro"],
 			"Reached": true
@@ -1142,7 +1194,7 @@
 			"Path": "Function/Markdown/Mermaid.ts",
 			"Kind": "function",
 			"Carries": "Exports remarkMermaid.",
-			"Lines": 133,
+			"Lines": 180,
 			"Readers": 1,
 			"ReadBy": ["astro.config.ts"],
 			"Reached": true
@@ -1157,19 +1209,10 @@
 			"Reached": true
 		},
 		{
-			"Path": "Function/Noise/Parallax.ts",
-			"Kind": "function",
-			"Carries": "─── Scroll progress cache ──────────────────────────────────────────────────── Reading scrollTop / scrollHeight / clientHeight inside rAF after setProperty calls (which invalida...",
-			"Lines": 38,
-			"Readers": 1,
-			"ReadBy": ["Function/Noise/Staccato.ts"],
-			"Reached": true
-		},
-		{
 			"Path": "Function/Noise/Staccato.ts",
 			"Kind": "function",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 146,
+			"Lines": 151,
 			"Readers": 2,
 			"ReadBy": [
 				"Component/Dynamic/DynamicPortal.tsx",
@@ -1190,7 +1233,7 @@
 			"Path": "Function/OpenGraph.ts",
 			"Kind": "function",
 			"Carries": "OpenGraph SVG template generator - the Daylight Field Record artifact card.",
-			"Lines": 240,
+			"Lines": 256,
 			"Readers": 1,
 			"ReadBy": ["pages/OpenGraph/[...Slug].svg.ts"],
 			"Reached": true
@@ -1199,7 +1242,7 @@
 			"Path": "Function/OpenGraph/Ink.ts",
 			"Kind": "function",
 			"Carries": "OpenGraph ink - the share image's copy of the design tokens.",
-			"Lines": 185,
+			"Lines": 228,
 			"Readers": 3,
 			"ReadBy": [
 				"Function/OpenGraph.ts",
@@ -1212,9 +1255,9 @@
 			"Path": "Function/OpenGraph/PageMetadata.ts",
 			"Kind": "function",
 			"Carries": "Static page metadata for OpenGraph image generation.",
-			"Lines": 463,
-			"Readers": 1,
-			"ReadBy": ["pages/OpenGraph/[...Slug].svg.ts"],
+			"Lines": 478,
+			"Readers": 2,
+			"ReadBy": ["Layout/Base.astro", "pages/OpenGraph/[...Slug].svg.ts"],
 			"Reached": true
 		},
 		{
@@ -1247,8 +1290,8 @@
 		{
 			"Path": "Function/Route/Map.ts",
 			"Kind": "function",
-			"Carries": "Exports CanonicalPath, PascalCaseCanonical, SemanticAlias, GeneratePathVariant.",
-			"Lines": 538,
+			"Carries": "Exports CanonicalPath, PascalCaseCanonical, SemanticAlias, CanonicalizePath.",
+			"Lines": 543,
 			"Readers": 7,
 			"ReadBy": [
 				"Function/Route/Integration.ts",
@@ -1297,6 +1340,15 @@
 			"Reached": true
 		},
 		{
+			"Path": "Function/Route/Registry.ts",
+			"Kind": "function",
+			"Carries": "The route registry - the site's route set, in one file.",
+			"Lines": 867,
+			"Readers": 2,
+			"ReadBy": ["Function/Route/Map.ts", "Layout/Base.astro"],
+			"Reached": true
+		},
+		{
 			"Path": "Function/Route/ServiceWorker.ts",
 			"Kind": "function",
 			"Carries": "ServiceWorker - route redirector, auth gate, and cache manager.",
@@ -1309,7 +1361,7 @@
 			"Path": "Function/Scroll/Code.tsx",
 			"Kind": "function",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 166,
+			"Lines": 253,
 			"Readers": 1,
 			"ReadBy": ["Function/Scroll/Layout.astro"],
 			"Reached": true
@@ -1318,7 +1370,7 @@
 			"Path": "Function/Scroll/Code/Pixel.tsx",
 			"Kind": "function",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 141,
+			"Lines": 177,
 			"Readers": 1,
 			"ReadBy": ["Function/Scroll/Code.tsx"],
 			"Reached": true
@@ -1363,9 +1415,22 @@
 			"Path": "Function/Scroll/Code/Pixel/Style.ts",
 			"Kind": "function",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 401,
+			"Lines": 501,
 			"Readers": 1,
 			"ReadBy": ["Function/Scroll/Code/Pixel.tsx"],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Scroll/Code/Ticker.ts",
+			"Kind": "function",
+			"Carries": "The field's clock.",
+			"Lines": 96,
+			"Readers": 3,
+			"ReadBy": [
+				"Function/Scroll/Code.tsx",
+				"Function/Scroll/Code/Pixel.tsx",
+				"Function/Scroll/Code/Pixel/Style.ts"
+			],
 			"Reached": true
 		},
 		{
@@ -1381,7 +1446,7 @@
 			"Path": "Function/Scroll/Type.ts",
 			"Kind": "function",
 			"Carries": "Exports Mouse, MovementDimensional, MatrixType, PixelComponent.",
-			"Lines": 58,
+			"Lines": 56,
 			"Readers": 5,
 			"ReadBy": [
 				"Function/Scroll/Code.tsx",
@@ -1431,7 +1496,7 @@
 			"Path": "Generated/Facts/Forms.json",
 			"Kind": "other",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 280,
+			"Lines": 234,
 			"Readers": 1,
 			"ReadBy": ["Library/Index/Register.ts"],
 			"Reached": true
@@ -1440,7 +1505,7 @@
 			"Path": "Generated/Facts/Modules.json",
 			"Kind": "other",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 2591,
+			"Lines": 2525,
 			"Readers": 1,
 			"ReadBy": ["Library/Index/Register.ts"],
 			"Reached": true
@@ -1449,7 +1514,7 @@
 			"Path": "Generated/Facts/Records.json",
 			"Kind": "other",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 1045,
+			"Lines": 958,
 			"Readers": 1,
 			"ReadBy": ["Library/Index/Register.ts"],
 			"Reached": true
@@ -1458,7 +1523,7 @@
 			"Path": "Generated/Facts/Routes.json",
 			"Kind": "other",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 570,
+			"Lines": 538,
 			"Readers": 1,
 			"ReadBy": ["Library/Index/Register.ts"],
 			"Reached": true
@@ -1467,8 +1532,8 @@
 			"Path": "Layout/Base.astro",
 			"Kind": "layout",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 252,
-			"Readers": 27,
+			"Lines": 376,
+			"Readers": 28,
 			"ReadBy": [
 				"Component/Contact/ContactPage.astro",
 				"pages/404.astro",
@@ -1531,7 +1596,7 @@
 			"Path": "Library/Contact/Data.ts",
 			"Kind": "library",
 			"Carries": "Data - the Contact hub's index, derived from the request registry.",
-			"Lines": 135,
+			"Lines": 157,
 			"Readers": 5,
 			"ReadBy": [
 				"Component/Contact/ContactPage.astro",
@@ -1562,7 +1627,7 @@
 			"Path": "Library/Document/Contributing/Data.ts",
 			"Kind": "library",
 			"Carries": "Contributing - the Contributing page's own rows.",
-			"Lines": 132,
+			"Lines": 167,
 			"Readers": 1,
 			"ReadBy": ["pages/Contributing.astro"],
 			"Reached": true
@@ -1571,7 +1636,7 @@
 			"Path": "Library/Document/License/Data.ts",
 			"Kind": "library",
 			"Carries": "License - the License page's own rows.",
-			"Lines": 52,
+			"Lines": 72,
 			"Readers": 1,
 			"ReadBy": ["pages/License.astro"],
 			"Reached": true
@@ -1580,7 +1645,7 @@
 			"Path": "Library/Document/Privacy/Data.ts",
 			"Kind": "library",
 			"Carries": "Privacy - the Privacy Policy page's own rows.",
-			"Lines": 70,
+			"Lines": 106,
 			"Readers": 1,
 			"ReadBy": ["pages/Legal/Privacy.astro"],
 			"Reached": true
@@ -1589,7 +1654,7 @@
 			"Path": "Library/Document/Term/Data.ts",
 			"Kind": "library",
 			"Carries": "Term - the Terms of Service page's own rows.",
-			"Lines": 101,
+			"Lines": 152,
 			"Readers": 1,
 			"ReadBy": ["pages/Legal/Term.astro"],
 			"Reached": true
@@ -1598,7 +1663,7 @@
 			"Path": "Library/Document/WireWells.ts",
 			"Kind": "library",
 			"Carries": "Wire the copy control inside RecordWell blocks.",
-			"Lines": 105,
+			"Lines": 130,
 			"Readers": 3,
 			"ReadBy": [
 				"Component/Doc/Well.ts",
@@ -1624,7 +1689,7 @@
 			"Kind": "library",
 			"Carries": "Exports GetI18n.",
 			"Lines": 175,
-			"Readers": 32,
+			"Readers": 33,
 			"ReadBy": [
 				"Component/Doc/DocIndex.astro",
 				"Component/Doc/DocLayout.astro",
@@ -1639,12 +1704,13 @@
 			"Path": "Library/Index/Register.ts",
 			"Kind": "library",
 			"Carries": "Register - the reader for the generated facts behind `/Contents`.",
-			"Lines": 259,
-			"Readers": 3,
+			"Lines": 298,
+			"Readers": 4,
 			"ReadBy": [
 				"Component/UI/Palette/Data.ts",
 				"Content/Index/Page.ts",
-				"pages/Contents.astro"
+				"pages/Contents.astro",
+				"pages/Specimen.astro"
 			],
 			"Reached": true
 		},
@@ -1842,7 +1908,7 @@
 			"Path": "pages/404.astro",
 			"Kind": "route",
 			"Carries": "The 404: the canonical small record (`DesignSystem-Pages.md` §3), and the site's second plate page.",
-			"Lines": 208,
+			"Lines": 206,
 			"Readers": 1,
 			"ReadBy": ["Test/Page/NotFound.test.ts"],
 			"Reached": true
@@ -1860,7 +1926,7 @@
 			"Path": "pages/Account/index.astro",
 			"Kind": "route",
 			"Carries": "Account - the account workspace.",
-			"Lines": 177,
+			"Lines": 187,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -1896,7 +1962,7 @@
 			"Path": "pages/Blog.astro",
 			"Kind": "route",
 			"Carries": "The blog index: what exists, newest first.",
-			"Lines": 131,
+			"Lines": 134,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -1905,7 +1971,7 @@
 			"Path": "pages/Blog/[Slug].astro",
 			"Kind": "route",
 			"Carries": "One article, on the reading surface.",
-			"Lines": 149,
+			"Lines": 150,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -1914,7 +1980,7 @@
 			"Path": "pages/Compare.astro",
 			"Kind": "route",
 			"Carries": "Compare - Land against the editor it replaces, in the site's own words.",
-			"Lines": 242,
+			"Lines": 275,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -1977,7 +2043,7 @@
 			"Path": "pages/Contact/index.astro",
 			"Kind": "route",
 			"Carries": "The Contact hub - the desk's register: one index of request routes.",
-			"Lines": 145,
+			"Lines": 162,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2040,7 +2106,7 @@
 			"Path": "pages/Contact/Sale.astro",
 			"Kind": "route",
 			"Carries": "Enterprise inquiries - the sale route, read as a READING page.",
-			"Lines": 329,
+			"Lines": 345,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2058,7 +2124,7 @@
 			"Path": "pages/Contents.astro",
 			"Kind": "route",
 			"Carries": "Contents - the index.",
-			"Lines": 428,
+			"Lines": 569,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2067,7 +2133,7 @@
 			"Path": "pages/Contributing.astro",
 			"Kind": "route",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 584,
+			"Lines": 649,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2076,7 +2142,7 @@
 			"Path": "pages/Dashboard.astro",
 			"Kind": "route",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 506,
+			"Lines": 627,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2085,7 +2151,7 @@
 			"Path": "pages/Doc.astro",
 			"Kind": "route",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 189,
+			"Lines": 186,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2094,7 +2160,7 @@
 			"Path": "pages/Doc/[...Slug].astro",
 			"Kind": "route",
 			"Carries": "Exports getStaticPaths.",
-			"Lines": 336,
+			"Lines": 356,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2103,7 +2169,7 @@
 			"Path": "pages/Doc/Rust.astro",
 			"Kind": "route",
 			"Carries": "The Rust API surface, composed as a WORKSPACE.",
-			"Lines": 226,
+			"Lines": 255,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2112,7 +2178,7 @@
 			"Path": "pages/Download.astro",
 			"Kind": "route",
 			"Carries": "Download - the installation contract: can I install this today, and if not, what can I do instead? The page is one artifact, opened by the keeper masthead: 1.",
-			"Lines": 207,
+			"Lines": 238,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2121,7 +2187,7 @@
 			"Path": "pages/Glossary.astro",
 			"Kind": "route",
 			"Carries": "Glossary - the document's own words: the fifteen elements, the grammar's nouns, and the five words this site retired.",
-			"Lines": 202,
+			"Lines": 231,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2130,7 +2196,7 @@
 			"Path": "pages/index.astro",
 			"Kind": "route",
 			"Carries": "The home page - the opening spread of the dossier, and four parts after it.",
-			"Lines": 267,
+			"Lines": 273,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2139,7 +2205,7 @@
 			"Path": "pages/Legal/Privacy.astro",
 			"Kind": "route",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 884,
+			"Lines": 916,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2148,7 +2214,7 @@
 			"Path": "pages/Legal/Term.astro",
 			"Kind": "route",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 961,
+			"Lines": 993,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2157,7 +2223,7 @@
 			"Path": "pages/License.astro",
 			"Kind": "route",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 406,
+			"Lines": 437,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2166,7 +2232,7 @@
 			"Path": "pages/Motion.astro",
 			"Kind": "route",
 			"Carries": "Motion - the register: what this paper moves, why, and what it refuses to.",
-			"Lines": 450,
+			"Lines": 476,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2175,7 +2241,7 @@
 			"Path": "pages/OAuth/Success.astro",
 			"Kind": "route",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 342,
+			"Lines": 348,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2184,7 +2250,7 @@
 			"Path": "pages/OpenGraph.svg.ts",
 			"Kind": "route",
 			"Carries": "Home page OpenGraph SVG endpoint.",
-			"Lines": 240,
+			"Lines": 253,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2201,8 +2267,17 @@
 		{
 			"Path": "pages/Portal.astro",
 			"Kind": "route",
-			"Carries": "Portal - the authentication gateway, composed as an AUDIT.",
-			"Lines": 476,
+			"Carries": "Portal - the authentication gateway, in the baseline's three movements.",
+			"Lines": 356,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": true
+		},
+		{
+			"Path": "pages/Specimen.astro",
+			"Kind": "route",
+			"Carries": "The specimen sheet: the document's own parts, printed.",
+			"Lines": 506,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2211,7 +2286,7 @@
 			"Path": "pages/Status.astro",
 			"Kind": "route",
 			"Carries": "Status - the status board.",
-			"Lines": 261,
+			"Lines": 283,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2220,7 +2295,7 @@
 			"Path": "pages/Verify.astro",
 			"Kind": "route",
 			"Carries": "Verify - the verification link, composed as an AUDIT.",
-			"Lines": 227,
+			"Lines": 228,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2229,7 +2304,7 @@
 			"Path": "pages/Visit.astro",
 			"Kind": "route",
 			"Carries": "─── Visit - Universal Dispatch Center ─────────────────────────────────────── This page is the catch-all landing target for ALL unresolved paths on Cloudflare Pages.",
-			"Lines": 278,
+			"Lines": 285,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2256,7 +2331,7 @@
 			"Path": "Script/Motion/Index.ts",
 			"Kind": "script",
 			"Carries": "Motion - the client half of the motion layer.",
-			"Lines": 60,
+			"Lines": 63,
 			"Readers": 1,
 			"ReadBy": ["Layout/Base.astro"],
 			"Reached": true
@@ -2265,7 +2340,7 @@
 			"Path": "Script/Motion/Origin.ts",
 			"Kind": "script",
 			"Carries": "Origin - the command palette's lean, from the direction it was invoked.",
-			"Lines": 116,
+			"Lines": 119,
 			"Readers": 1,
 			"ReadBy": ["Script/Motion/Index.ts"],
 			"Reached": true
@@ -2274,7 +2349,7 @@
 			"Path": "Script/Motion/Sort.ts",
 			"Kind": "script",
 			"Carries": "Sort - a matrix re-ordering, as a view transition.",
-			"Lines": 124,
+			"Lines": 150,
 			"Readers": 1,
 			"ReadBy": ["Script/Motion/Index.ts"],
 			"Reached": true
@@ -2283,7 +2358,7 @@
 			"Path": "Script/Register.ts",
 			"Kind": "script",
 			"Carries": "Register - the index's generator.",
-			"Lines": 839,
+			"Lines": 847,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": false
@@ -2429,21 +2504,21 @@
 			"Path": "Script/Register.ts",
 			"Kind": "script",
 			"Carries": "Register - the index's generator.",
-			"Lines": 839,
+			"Lines": 847,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": false
 		}
 	],
 	"Totals": {
-		"Files": 2286,
-		"Routes": 42,
+		"Files": 2347,
+		"Routes": 43,
 		"Documents": 81,
 		"Entries": 8,
 		"Elements": 16,
 		"Blocks": 21,
-		"Modules": 221,
-		"Read": 163,
+		"Modules": 227,
+		"Read": 168,
 		"Declared": 13
 	}
 }

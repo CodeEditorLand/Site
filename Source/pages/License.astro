@@ -6,11 +6,26 @@ import ReadingDocument from "../Component/Reading/ReadingDocument.astro";
 import BandFoot from "../Component/Detail/BandFoot.astro";
 import TrustClause from "../Component/Trust/TrustClause.astro";
 import { ComposeFacts } from "../Component/Trust/Facts.js";
+import { LinkFor } from "../Library/Contact/Purpose.js";
 import Trail from "../Component/Route/Trail.astro";
 import RecordWell from "../Component/Record/RecordWell.astro";
 import { Index, Ledger } from "../Library/Document/License/Data.js";
 
 const T = GetI18n();
+
+/**
+ * The two doors a licence question leaves by.
+ *
+ * A question about the licence is not one kind of request. What CC0 permits and
+ * how to credit the project is a general inquiry (`HAILS`); a licensing enquiry
+ * that needs legal review is `LEGAL`, the route whose own form lists "Licensing
+ * enquiry" among its natures. The page printed the legal form alone under a
+ * sentence that promised "contact us", which is a label answering a different
+ * question from the one the reader asked.
+ */
+const Talk = LinkFor("talk");
+
+const Legal = LinkFor("legal");
 
 const MetaTitle = T("meta.license.title", {
 	defaultValue: "License | Code Editor Land",
@@ -200,7 +215,7 @@ const Note =
 				</jelly-card>
 			</div>
 
-			<section class="reading-document__part">
+			<section class="reading-document__part" data-interval="beat">
 				<TrustClause number="01" id="cc0-1-0-universal">CC0 1.0 Universal</TrustClause>
 				<p class="mb-4">
 					The Code Editor Land project, including all source code,
@@ -214,7 +229,7 @@ const Note =
 				</p>
 			</section>
 
-			<section class="reading-document__part">
+			<section class="reading-document__part" data-interval="rest">
 				<TrustClause number="02" id="full-license-text">Full License Text</TrustClause>
 				<RecordWell
 					label="Creative Commons Legal Code"
@@ -223,7 +238,7 @@ const Note =
 				/>
 			</section>
 
-			<section class="reading-document__part">
+			<section class="reading-document__part" data-interval="beat">
 				<TrustClause number="03" id="key-points">Key Points</TrustClause>
 				<ul class="mb-4 list-disc space-y-2 pl-8">
 					<li>
@@ -252,7 +267,7 @@ const Note =
 				</ul>
 			</section>
 
-			<section class="reading-document__part">
+			<section class="reading-document__part" data-interval="rest">
 				<TrustClause number="04" id="third-party-licenses">Third-Party Licenses</TrustClause>
 				<p class="mb-4">
 					The Code Editor Land project incorporates numerous
@@ -283,7 +298,7 @@ const Note =
 				</p>
 			</section>
 
-			<section class="reading-document__part">
+			<section class="reading-document__part" data-interval="beat">
 				<TrustClause number="05" id="why-cc0">Why CC0?</TrustClause>
 				<p class="mb-4">
 					We believe that foundational software tools should be freely
@@ -316,14 +331,17 @@ const Note =
 				</p>
 			</section>
 
-			<section class="reading-document__part">
+			<section class="reading-document__part" data-interval="rest">
 				<div class="mb-4 flex flex-wrap gap-x-6 gap-y-2">
 					<a
-						href="/Contact/Legal"
+						href={Talk.Href}
 						class="StaccatoButton font-medium text-primary hover:underline"
-						>Legal Enquiry form (LEGAL)<span class="InlineSeparator"
-							>&#9993;</span
-						></a
+						>{Talk.Label}<span class="InlineSeparator">&#9993;</span></a
+					>
+					<a
+						href={Legal.Href}
+						class="StaccatoButton font-medium text-primary hover:underline"
+						>{Legal.Label}<span class="InlineSeparator">&#9993;</span></a
 					>
 					<a
 						href="https://github.com/CodeEditorLand/Land"
@@ -338,7 +356,11 @@ const Note =
 				<TrustClause number="06" id="contact">Contact</TrustClause>
 				<p>
 					If you have questions about the license, feel free to
-					contact us.
+					contact us. A general question - what CC0 permits, how to
+					credit the project, whether a use is allowed - goes to the
+					<a href={Talk.Href}>{Talk.Title} form</a> ({Talk.Code}); a
+					licensing enquiry that needs legal review goes to the
+					<a href={Legal.Href}>{Legal.Title} form</a> ({Legal.Code}).
 				</p>
 			</section>
 
@@ -363,8 +385,8 @@ const Note =
 							"how to contribute to a work that is already in the public domain",
 					},
 					{
-						route: "/CONTACT/LEGAL",
-						href: "/Contact/Legal",
+						route: Legal.Route,
+						href: Legal.Href,
 						reason: "a licensing question, raised with the maintainer",
 					},
 				]}

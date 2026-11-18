@@ -836,6 +836,8 @@ export const Bands = {
 	Words: {
 		kicker: "/THE DOCUMENT'S WORDS",
 
+		interval: "break",
+
 		heading: "The nouns this document uses as if they were obvious",
 
 		standfirst:
@@ -849,6 +851,8 @@ export const Bands = {
 	Retired: {
 		kicker: "/THE RETIRED WORDS",
 
+		interval: "rest",
+
 		heading: "Five words this site used, and what replaced them",
 
 		standfirst:
@@ -861,6 +865,8 @@ export const Bands = {
 
 	Limits: {
 		kicker: "/THE LIMITS",
+
+		interval: "turn",
 
 		heading: "What this lexicon does not cover",
 

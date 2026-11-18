@@ -13,6 +13,33 @@
  */
 import type { BandHead, HomeTranslate, StampLine } from "./Type.js";
 
+/**
+ * The page's interval sequence, in reading order, by band id.
+ *
+ * The homepage is the page that taught this document its rhythm, so its sequence
+ * is the reference the four-rung ladder was drawn from: wide, wide, tight, tight,
+ * wide - which on a ladder with two rungs per register is turn, break, rest,
+ * beat, turn. It lives here with the bands' openings rather than in the five
+ * components, for the reason the openings live here: a page's sequence is one
+ * fact, and five literals in five files is five places for it to drift.
+ *
+ * `turn` is the widest interval and the one a chapter prints its rule for; on
+ * this page the first band's rule is cancelled (the hero already ends the page)
+ * and the method band's is drawn, which is why the wall's band - the longest in
+ * the document - is a `rest`: air is what a 4,300px band does not need.
+ */
+export const Sequence = {
+	features: "turn",
+
+	pricing: "break",
+
+	testimonials: "rest",
+
+	method: "turn",
+
+	download: "beat",
+} as const;
+
 /** The roadmap's two-line stamp: the funder, then the phase in three inks. */
 const RoadmapStamp: readonly StampLine[] = [
 	{ Text: "FUNDING: NLNET / NGI0 COMMONS FUND" },

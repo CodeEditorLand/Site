@@ -16,6 +16,8 @@
  */
 import { Requests, type IncomeCode } from "./Request.js";
 
+import { ContactPurposeFor, HrefOf } from "./Purpose.js";
+
 /**
  * One crumb: a label and where it leads. The last crumb is the current page.
  *
@@ -56,11 +58,11 @@ export const ContactHubTrail: readonly TrailItem[] = [
 
 /**
  * The route a code is published on. A request route is a file named for its
- * code in title case (`REACH` -> `Contact/Reach.astro`), so the path is the
- * code rather than a second table that could disagree with the file list.
+ * code in title case (`REACH` -> `Contact/Reach.astro`), and the spelling lives
+ * in the purpose table, so this grid and every link to a route derive the path
+ * the same way instead of each writing `/Contact/${...}` by hand.
  */
-const RouteOf = (code: IncomeCode): string =>
-	`/Contact/${code.charAt(0)}${code.slice(1).toLowerCase()}`;
+const RouteOf = (code: IncomeCode): string => HrefOf(code);
 
 /**
  * The hub prints one sentence per card. A code whose route page carries a
