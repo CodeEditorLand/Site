@@ -23,20 +23,28 @@ import { RemoveLabOutput } from "../../Source/Function/Route/LabOutput.mjs";
 
 const Flag = process.argv.indexOf("--output");
 
+const Requested = Flag === -1 ? undefined : process.argv[Flag + 1];
+
+if (Flag !== -1 && Requested === undefined) {
+	console.error("[RemoveLabRoutes] --output needs a directory.");
+
+	process.exit(1);
+}
+
 const Output =
-	Flag === -1
+	Requested === undefined
 		? resolve(import.meta.dirname, "..", "..", "Target")
-		: resolve(process.argv[Flag + 1] ?? "");
+		: resolve(Requested);
 
 const { Kept, Removed, Absent } = RemoveLabOutput(Output);
 
 if (Kept) {
 	console.log(
-		`[RemoveLabRoutes] This build carries the lab (LAB=1): ${LabRoute.join(", ")} left in place.`,
+		`[RemoveLabRoutes] ${Output}: this build carries the lab (LAB=1), so ${LabRoute.join(", ")} is left in place.`,
 	);
 } else {
 	console.log(
-		`[RemoveLabRoutes] Removed: ${Removed.length > 0 ? Removed.join(", ") : "nothing"}. ` +
-			`Already absent: ${Absent.length > 0 ? Absent.join(", ") : "nothing"}.`,
+		`[RemoveLabRoutes] ${Output}: removed ${Removed.length > 0 ? Removed.join(", ") : "nothing"}; ` +
+			`already absent ${Absent.length > 0 ? Absent.join(", ") : "nothing"}.`,
 	);
 }

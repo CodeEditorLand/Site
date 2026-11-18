@@ -14,9 +14,11 @@
  *
  *   - `Function/Route/Registry.ts` - the route set every derived table reads
  *     (the canonical check, the redirect table, the variant generation);
- *   - `Maintain/Script/RemoveLabRoutes.mjs` - the build step that deletes the
- *     emitted directory, so the page is not in `Target/` at all;
- *   - `astro.config.ts` - the sitemap filter, which reads the emitted pages;
+ *   - `Function/Route/LabOutput.mjs` - the removal that deletes the emitted
+ *     directory, called by `Function/Route/Lab.ts` in `astro:build:done` and by
+ *     `Maintain/Script/RemoveLabRoutes.mjs` from the command line;
+ *   - `astro.config.ts` - the sitemap filter, which decides from the pages Astro
+ *     reports rather than from the output directory;
  *   - every data module that can print an address or count one
  *     (`Content/Index/Page.ts`, `Content/Index/Rhythm.ts`,
  *     `Component/Shell/Language.ts`, `Library/Index/Register.ts`,
@@ -90,8 +92,9 @@ export const Lab =
  * production build.
  *
  * A route listed here is also the entry marked `Lab: true` in
- * `Function/Route/Registry.ts` - the registry reads this list rather than keeping
- * a second one.
+ * `Function/Route/Registry.ts`, and that registry compares the two at module load:
+ * a path in one list and not the other fails the build naming itself, so the list
+ * and the flag cannot drift into "the build removes a page the site still links".
  *
  * @type {readonly string[]}
  */

@@ -84,11 +84,12 @@ export default (await import("astro/config")).defineConfig({
 	},
 
 	integrations: [
-		// The lab runs first, and the order is the mechanism: its
-		// `astro:build:done` removes the exploratory routes from `Target/`
-		// before `@astrojs/sitemap` and `Route/Integration.ts` read that
-		// directory, so a removed route cannot reach the sitemap, the route map,
-		// the service worker or `_redirects`. See `Function/Route/Lab.ts`.
+		// The lab runs first, and the order is the mechanism: `Route/Integration.ts`
+		// scans `Target/` in its own `astro:build:done` to build `RouteMap.json`,
+		// the service worker's route table and `_redirects`, so the directory has
+		// to be gone before that hook runs - otherwise a removed route leaves a
+		// `301 /specimen → /Specimen` rule pointing at nothing. The sitemap is
+		// kept out of the lab by its filter below, not by this hook.
 		LabIntegration(),
 
 		(await import("@astrojs/react")).default({
@@ -120,15 +121,16 @@ export default (await import("astro/config")).defineConfig({
 				// absolute URLs, so the origin comes off first; a path that
 				// arrives relative is already one.
 				const Path =
-					(Page.includes("://") ? new URL(Page).pathname : Page).replace(
-						/\/+$/,
-						"",
-					) || "/";
+					(Page.includes("://")
+						? new URL(Page).pathname
+						: Page
+					).replace(/\/+$/, "") || "/";
 
-				// `@astrojs/sitemap` builds its list from the pages in `Target/`,
-				// so the lab's `astro:build:done` has already removed them by now -
-				// `Served` is the second lock on the same fact, so a build that
-				// skips that step cannot sitemap a hidden page either.
+				// `@astrojs/sitemap` writes its list from the `pages` array Astro
+				// hands the hook, not from a directory scan - so removing the
+				// directory cannot keep a route out of the sitemap on its own.
+				// `Served` is the lock here, and it is the same predicate the
+				// registry and the build step read.
 				return (
 					!Lower.includes("/dashboard") &&
 					!Lower.includes("/account/") &&

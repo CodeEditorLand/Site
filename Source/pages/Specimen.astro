@@ -19,12 +19,13 @@
  * ─── THIS PAGE IS A LAB SURFACE ───────────────────────────────────────────
  * It is a tool for the owner and the agents, not a chapter for a reader, so it is
  * served in development and absent from production: `dum Run` prints every plate
- * exactly as below, and a build removes the route from `Target/` before the
- * sitemap and the route map read the output. `Function/Configuration/Lab.mjs` is
- * the switch, `Function/Route/Lab.ts` the build step, and the registry marks the
- * entry `Lab: true`. Nothing in this file changes between the two states - the
- * page is not a 404, not a `noindex`, and not hidden by a stylesheet; it simply
- * is not emitted for a reader.
+ * exactly as below, and a build removes the route from `Target/` before the route
+ * map and `_redirects` are generated, while the sitemap filter keeps it out of
+ * `sitemap-0.xml`. `Function/Configuration/Lab.mjs` is the switch,
+ * `Function/Route/Lab.ts` the build step, and the registry marks the entry
+ * `Lab: true`. Nothing in this file changes between the two states - the page is
+ * not a 404, not a `noindex`, and not hidden by a stylesheet; it simply is not
+ * emitted for a reader.
  *
  * The sheet exists so that advanced compositions can be assembled from smaller
  * primitives, which is why every plate mounts a live component rather than a

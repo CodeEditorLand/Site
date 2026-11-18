@@ -19,12 +19,13 @@
  * is looked for.
  *
  * ─── WHEN IT RUNS, AND WHY THE ORDER MATTERS ──────────────────────────────
- * The hook fires before `@astrojs/sitemap` writes the sitemap and before
- * `Route/Map.ts` scans the output for `RouteMap.json`, the service worker's route
- * table and the Cloudflare `_redirects`. Removing the directory first is what
- * keeps a removed route out of all three; removing it afterwards would leave a
- * `301 /specimen → /Specimen` rule pointing at a page that is no longer there -
- * a hidden route that still announces itself.
+ * The hook fires before `Route/Map.ts` scans the output for `RouteMap.json`, the
+ * service worker's route table and the Cloudflare `_redirects`. Removing the
+ * directory first is what keeps a removed route out of all three; removing it
+ * afterwards would leave a `301 /specimen → /Specimen` rule pointing at a page that
+ * is no longer there - a hidden route that still announces itself. The sitemap is
+ * filtered separately in `astro.config.ts`, because `@astrojs/sitemap` writes its
+ * list from the pages Astro reports rather than from the directory.
  *
  * Plain ESM rather than TypeScript for the same reason `Configuration/Lab.mjs`
  * is: the command-line script has to read it under Node with no bundler.

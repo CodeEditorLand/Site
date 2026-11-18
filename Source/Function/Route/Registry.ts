@@ -60,7 +60,7 @@ import {
  * decision and the route list live in `Function/Configuration/Lab.mjs`; this
  * file reads the answer once, below, and every derived table inherits it.
  */
-import { Lab } from "../Configuration/Lab.mjs";
+import { Lab, LabRoute } from "../Configuration/Lab.mjs";
 
 /** What kind of built path a page entry produces. */
 export type RouteKind = "page" | "collection" | "dispatch";
@@ -863,6 +863,33 @@ const Declared: readonly RouteEntry[] = [
 		Card: "post-baseline",
 	},
 ];
+
+/**
+ * The lab list and the entries that claim it, and the rule that keeps them equal.
+ *
+ * A lab route is named twice, and the two names do different jobs:
+ * `Function/Configuration/Lab.mjs`'s `LabRoute` is what the build step removes and
+ * what the sitemap filter reads, and `Lab: true` on an entry here is what removes
+ * it from every table derived from this registry. A route in one and not the other
+ * would be a page the build deletes and the site still links (or the reverse), so
+ * the two sets are compared at module load and a disagreement fails the build
+ * naming itself - the same guard, for the same reason, as the contact purposes
+ * below.
+ */
+const LabEntry = Declared.filter((Entry) => Entry.Lab === true).map(
+	(Entry) => Entry.Path,
+);
+
+const LabMismatch = [
+	...LabEntry.filter((Path) => !LabRoute.includes(Path)),
+	...LabRoute.filter((Path) => !LabEntry.includes(Path)),
+];
+
+if (LabMismatch.length > 0) {
+	throw new Error(
+		`Route/Registry: ${LabMismatch.length} lab route(s) disagree between this registry and Function/Configuration/Lab.mjs: ${LabMismatch.join(", ")}. Mark the entry \`Lab: true\` and list the path in \`LabRoute\`.`,
+	);
+}
 
 /**
  * The routes this build serves - the set every derived table reads.
