@@ -282,25 +282,73 @@ $ShellStickyTop: calc(var(--HeaderHeight) + var(--space-tight));
 }
 
 // ─── A ROW OF ARTIFACTS ───────────────────────────────────────────────────
-// The shell's one horizontal arrangement: N equal tracks at the wide container,
-// one column below it. It exists because a register of states, a pair of wells
-// and a run of marks all ask the same question - "these things are equal, put
-// them side by side" - and each page was answering it with its own grid.
+// The shell's one horizontal arrangement: N equal tracks while each track can
+// hold its artifact, fewer when it cannot. It exists because a register of
+// states, a pair of wells and a run of marks all ask the same question - "these
+// things are equal, put them side by side" - and each page was answering it with
+// its own grid.
 //
-// `--row-tracks` is the count (2 by default). Equal tracks are right here and
-// nowhere else: a row of artifacts is a set, and a set has no subject.
+// ─── THE TRACK COUNT IS A CAPACITY, NOT A BREAKPOINT ──────────────────────
+// The old rule printed `repeat(var(--row-tracks), minmax(0, 1fr))` from
+// `@container shell (min-width: 48rem)`. That measured the wrong box twice over:
+// the shell is wider than the track the row sits in (the contact sale's row is a
+// 43.2rem measure inside a 59rem shell), and a shell width says nothing about
+// whether a card can hold its own sentence. What it produced was three 13.07rem
+// tracks, 161px of text - 16.8ch - where the six enterprise features wrapped to
+// one phrase per line and the 25ch address, which is `text-wrap: nowrap`, ran
+// 78.9px past its own card.
+//
+// So the count is a floor now. `--row-tracks` stays the authored maximum (how
+// many artifacts the row is composed for) and `--row-floor` is the width ONE
+// track needs to hold its artifact's own longest fragment. The row is a wrapping
+// flex line whose items cannot shrink below
+//
+//     min(100%, max(--row-floor, (100% - (n - 1) * gap) / n))
+//
+// - the declared share, floored at the artifact's measure. Three tracks while
+// three shares clear the floor, two while two do, one when none does. A short
+// line's items grow to fill it, so a set of three never leaves a hole where a
+// fourth cell would be: it prints two and closes the row with the third at full
+// width. `--row-tracks` is still the cap - the share is derived from it, so a row
+// declared for two can never print three.
+//
+// No container query is needed for this, because the arithmetic IS the query: it
+// reads the row's own inline size, which is the box that has to hold the content.
+// A `@container` on the row could not do it - an element cannot query itself, and
+// the row's parent is a different box on every page (`__main`, `__foot`, a pane).
+//
+// The floor is per row and it is measured, never chosen: `--row-floor` defaults to
+// 18rem, which is the hard minimum rather than a taste - 3rem of card padding plus
+// the 15rem that the widest unbreakable string in this language needs
+// (`Community@PlayForm.Cloud`, 25ch). A narrower track overflows instead of
+// wrapping. A row whose artifacts need more declares it: the contact sale's six
+// features need 45ch of text, so its row sets `--row-floor: 30rem`
+// (`Component/Contact/_Sale.scss`).
 
 .PageShell__row {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr);
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
 	gap: var(--space-group);
 }
 
-@container shell (min-width: 48rem) {
-	.PageShell__row {
-		grid-template-columns: repeat(var(--row-tracks, 2), minmax(0, 1fr));
-		align-items: start;
-	}
+// `flex-basis: 0` and the floor as a `min-inline-size`: the hypothetical main
+// size of every item is its floor, so line breaking is decided by capacity and
+// the free space of a short line is shared equally by `flex-grow`. The 0.02rem
+// is slack for sub-pixel rounding at the exact fit - three shares and two gaps
+// summing to precisely 100% must not wrap on a fractional pixel.
+.PageShell__row > * {
+	flex: 1 1 0;
+	min-inline-size: min(
+		100%,
+		max(
+			var(--row-floor, 18rem),
+			calc(
+				(100% - (var(--row-tracks, 2) - 1) * var(--space-group)) /
+					var(--row-tracks, 2) - 0.02rem
+			)
+		)
+	);
 }
 
 // ─── AN INSTRUMENT AT ITS OWN MEASURE ─────────────────────────────────────
