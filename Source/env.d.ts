@@ -1,6 +1,23 @@
 /// <reference path="../.astro/types.d.ts" />
 /// <reference types="astro/client" />
 
+// `.astro` components as modules.
+//
+// Astro 7's `astro/client` publishes no `*.astro` declaration: the editor's
+// `@astrojs/ts-plugin` resolves a component import and `astro check` type-checks
+// it, but plain `tsc` - and any `.ts`/`.tsx` file that imports a component, as
+// the container-rendered component tests do - sees no module. This is the
+// declaration that makes the import a module for `tsc` too, typed as the
+// factory `astro/container` renders.
+declare module "*.astro" {
+	import type { AstroComponentFactory } from "astro/runtime/server";
+
+	const Component: AstroComponentFactory;
+
+	export default Component;
+}
+
+
 // PUBLIC_* vars - exposed to the browser via import.meta.env
 // Server-only vars (AUTH0_*, SITE_ENVIRONMENT, etc.) - available via
 // import.meta.env on the server only, never included in client bundles.

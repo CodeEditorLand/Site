@@ -11,23 +11,23 @@ import type { LedgerRow } from "../../../Component/Record/Type.js";
 
 export const Ledger: readonly LedgerRow[] = [
 	{
-		key: "EFFECTIVE",
+		key: "EFFECTIVE:",
 		value: "The date CC0 was applied to the Work",
 		note: "CC0 1.0 Universal, 3. Public License Fallback",
 	},
 	{
-		key: "VERSION",
+		key: "VERSION:",
 		value: "CC0 1.0 Universal",
 		note: "Creative Commons Legal Code",
 	},
 	{
-		key: "APPLIES TO",
+		key: "APPLIES TO:",
 		value:
 			"The Code Editor Land project, including all source code, documentation, and related materials",
 		note: "dedicated to the public domain",
 	},
 	{
-		key: "LICENSE",
+		key: "LICENSE:",
 		value: "Creative Commons CC0 1.0 Universal",
 		note: "public domain dedication with a fallback license",
 	},

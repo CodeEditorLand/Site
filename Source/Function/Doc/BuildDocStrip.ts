@@ -21,6 +21,17 @@
  *   more about itself - a page count, an order number, a group - appends it, so
  *   the documented five keep their positions on every surface.
  *
+ * One key this module prints through the pair, not as a field of its own:
+ * `strip.published`. It is the status field's pre-split form - `STATUS:
+ * PUBLISHED` as one string - and it carries the same fact as `strip.status` +
+ * `strip.state`, which print it with the label's muted ink and the value's
+ * surface ink. Printing the combined string as well would print `STATUS:` twice
+ * on every documentation page; printing it instead of the pair would collapse
+ * two inks into one and lose the `UNAVAILABLE`-style tone split. The key stays
+ * in every locale (a key is never deleted) and the fact it carries prints
+ * through the pair. This note is here so a later card does not "fix" the
+ * orphan by duplicating the field.
+ *
  * The items are structured (`Label` + `Value` + optional `Tone`), not one
  * pre-joined string: the shell renders each field as its own element with U+2001
  * between them, so a screen reader announces fields rather than one run-on line,

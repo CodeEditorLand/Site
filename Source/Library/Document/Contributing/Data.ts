@@ -19,12 +19,12 @@ import type { LedgerRow } from "../../../Component/Record/Type.js";
 
 export const Ledger: readonly LedgerRow[] = [
 	{
-		key: "VERSION",
+		key: "VERSION:",
 		value: "Current branch",
 		note: "a pull request targets it",
 	},
 	{
-		key: "APPLIES TO",
+		key: "APPLIES TO:",
 		value: "The Land repository on GitHub",
 		note: "open source and built in public",
 	},

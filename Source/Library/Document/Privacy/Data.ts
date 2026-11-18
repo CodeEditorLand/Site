@@ -13,7 +13,7 @@ export const Ledger: readonly LedgerRow[] = [
 	{ key: "Effective Date:", value: "March 26, 2026" },
 	{ key: "Last Updated:", value: "May 29, 2026" },
 	{
-		key: "APPLIES TO",
+		key: "APPLIES TO:",
 		value: "Code Editor Land, operated by PlayForm in Sofia, Bulgaria",
 		note: "the Code Editor Land project",
 	},

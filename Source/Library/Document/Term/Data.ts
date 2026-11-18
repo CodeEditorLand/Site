@@ -23,12 +23,12 @@ export const Ledger: readonly LedgerRow[] = [
 	{ key: "Effective Date:", value: "March 26, 2026" },
 	{ key: "Last Updated:", value: "May 29, 2026" },
 	{
-		key: "APPLIES TO",
+		key: "APPLIES TO:",
 		value: "editor.land, the desktop application, APIs, Cloudflare Workers, documentation, downloads, account services, synchronization features, and any related services",
 		note: "operated by PlayForm, based in Sofia, Bulgaria",
 	},
 	{
-		key: "LICENSE",
+		key: "LICENSE:",
 		value: "Creative Commons CC0 1.0 Universal",
 		note: "the core editor codebase",
 	},

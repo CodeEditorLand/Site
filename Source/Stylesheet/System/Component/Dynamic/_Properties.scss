@@ -1,0 +1,63 @@
+// Properties - the six-record band.
+//
+// Publishes:
+//   .properties-grid    the six records, one to three columns
+//   .properties-entry   one record, on its own three-part template
+//
+// The entry's anatomy is RecordEntry's own (`System/Record/_Entry.scss`). A
+// property record has three parts - marker, claim, paragraph - and none of the
+// two the block's template reserves for a glyph and a chip row, so the template
+// is restated here rather than left with two empty tracks and their gaps
+// between them. The selector is `.record-entry.properties-entry` on purpose:
+// `System/Record/Index` is loaded after `System/Component/Index`, so a bare
+// `.properties-entry` would lose the cascade to the block it is refining.
+//
+// Recovered verbatim from `8b58843c5^` at K7 - it was deleted whole with the
+// record-shaped homepage, and its subject did not go with it: the six-record
+// band is `Home/FeatureBand` today, and `Dynamic/Properties/Data.ts` still
+// carries the `PropertyEntry` set (`EntriesOf`, `ClaimsOf`, `FiledOf`,
+// `ClaimLimit`, `FiledLabel`).
+//
+// It waits on its component, and the component is card 9's:
+// `Source/Component/Dynamic/Properties/**` owns the band that renders
+// `RecordEntry`s in this grid. The partial is wired in
+// `System/Component/_Index.scss`, so its rules are published the moment that
+// component lands; nothing in the tree prints `.properties-grid` yet, and this
+// note is the handoff that says so. The grid's shape is the one
+// `Home/_Feature.scss` publishes for the six element records - one column, two
+// from 768px, three from 1280px - which is why the capability is not lost while
+// the component is absent.
+
+@use "../../Mixin" as *;
+
+.properties-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-reading);
+
+	@include bp(768px) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	@include bp(1280px) {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.record-entry.properties-entry {
+	grid-template-columns: minmax(0, 1fr);
+	grid-template-areas:
+		"index"
+		"name"
+		"body";
+	row-gap: var(--space-tight);
+}
+
+/* The record sits on a jelly-card: the canvas is the surface now, so the block
+   stops painting a second one - its own hairline and fill - and keeps its
+   anatomy, padding and ink. */
+jelly-card > .record-entry.properties-entry {
+	background: transparent;
+
+	border: 0;
+}
