@@ -28,6 +28,7 @@
 //   .HeaderAux              locale switcher plus action row
 //   .HeaderActions          the action row
 //   .HeaderActionButton     one action
+//   .HeaderActionLabel      the action's label, on one line at every width
 //   .HeaderStrip            the status strip
 //   .HeaderStatus           the status line
 //
@@ -272,6 +273,22 @@
 	gap: var(--space-tight);
 }
 
+// ─── The action: one line, and the width that line needs ──────────────────
+// The label never breaks (the sitewide rule is in `_Global.scss`; it is stated
+// again here, on the host and on the label span, because this is the track that
+// squeezed it). A jelly-button's label is an action name - `Get Land` - and a
+// two-line label inside the control's fixed 40px height is a defect, not a
+// wrap: the box is the height of one line.
+//
+// The padding is tightened per gear, in the bar's own breakpoints below: in a
+// 40px control the `Button` default of 2.1rem a side is 67px of air around a
+// 64px label, and in the bar's track that air was exactly what the label was
+// being asked to give up. In the drawer there is room, so it keeps the default.
+.Header .HeaderActionButton,
+.Header .HeaderActionLabel {
+	white-space: nowrap;
+}
+
 .Header .HeaderActionButton {
 	inline-size: 100%;
 	justify-content: flex-start;
@@ -337,10 +354,24 @@
 // ─── The bar at 1024px and up ─────────────────────────────────────────────
 // The panel stops being a menu and becomes the bar's second half: the nav is a
 // row on the left, the aux row is pushed to the right edge.
+//
+// The track is divided so that only ONE thing can ever give: the nav. The
+// action column is `auto` - `flex: none`, its content's width - because the
+// control's width is its label's width and a 40px control may not be asked for
+// less (that ask is what printed `Get / Land` on two lines). The locale
+// switcher is `auto` for the same reason. What is left over is the nav's, and
+// the nav yields in two steps: its links tighten their padding first, and if
+// the bar still runs short the longest label truncates with an ellipsis - the
+// adverse `too long` state, which keeps the destination (the href and the
+// accessible name are whole) and never breaks a word.
 
 @include bp(1024px) {
 	.HeaderToggle {
 		display: none;
+	}
+
+	.HeaderBar {
+		gap: var(--space-tight);
 	}
 
 	.HeaderPanel {
@@ -349,7 +380,7 @@
 		flex: 1;
 		flex-direction: row;
 		align-items: center;
-		gap: var(--space-reading);
+		gap: var(--space-tight);
 		min-inline-size: 0;
 		max-width: none;
 		margin-inline: 0;
@@ -360,17 +391,34 @@
 	}
 
 	.HeaderNav {
+		flex: 0 1 auto;
 		flex-direction: row;
 		align-items: center;
+		min-inline-size: 0;
 	}
 
 	.HeaderNavLink {
+		min-inline-size: 0;
 		padding-block: var(--space-tight);
-		padding-inline: var(--space-reading);
+		// 6px a side: the tightest the bar's chrome goes. The nav is the part
+		// that pays for the labels, so its air is what closes first - at 1024px
+		// the four destinations and the three actions share 944px of track.
+		padding-inline: 0.375rem;
 		border-bottom: 0;
 	}
 
+	// A nav label is one word, so it cannot break - it truncates. `text-overflow`
+	// needs the block box and the clip, and the ellipsis is the honest mark that
+	// the destination's name did not fit at this width.
+	.HeaderLinkLabel {
+		display: block;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+
 	.HeaderAux {
+		flex: none;
 		flex-direction: row;
 		align-items: center;
 		margin-inline-start: auto;
@@ -378,11 +426,54 @@
 	}
 
 	.HeaderActions {
+		flex: none;
 		flex-direction: row;
 	}
 
 	.Header .HeaderActionButton {
+		flex: none;
 		inline-size: auto;
 		justify-content: center;
+	}
+
+	// The bar's first gear, for the widths where `band-inner` has not yet reached
+	// its 72rem ceiling (1024-1151px). The padding is the bar's lever - it is
+	// what tightens when the track runs short, so the labels never have to. The
+	// ink action keeps 12px a side (a filled control needs its air), the text
+	// actions 8px: they are a word, not a well. `Button` writes the size's
+	// padding inline on the jelly host, so only an important declaration can
+	// tighten it - the same escape the platform download buttons use.
+	.Header jelly-button.HeaderActionButton {
+		--jelly-button-padding-inline: 0.75rem !important;
+	}
+
+	.Header .HeaderActionButton:not(jelly-button) {
+		padding-inline: var(--space-tight);
+	}
+}
+
+// ─── The bar's second gear, at band-inner's ceiling ───────────────────────
+// 1152px is where `band-inner` reaches 72rem: from here up the bar's content
+// box is 1072px at every viewport, so this is the widest the track ever gets and
+// the only place the padding can be given back. 12px a side for the nav links
+// and the text actions, 16px for the ink action, and a 12px gap between the
+// bar's parts - still a bar's air, not a hero's.
+
+@include bp(1152px) {
+	.HeaderBar,
+	.HeaderPanel {
+		gap: 0.75rem;
+	}
+
+	.HeaderNavLink {
+		padding-inline: 0.75rem;
+	}
+
+	.Header jelly-button.HeaderActionButton {
+		--jelly-button-padding-inline: 1rem !important;
+	}
+
+	.Header .HeaderActionButton:not(jelly-button) {
+		padding-inline: 0.75rem;
 	}
 }

@@ -176,10 +176,13 @@ const Plan = [{ key: "PLAN", value: "PLANNED" }];
 
 			<!-- The gutter is the keeper's: the site's divider ink, not the creme
 			 field. At `var(--Background)` the rule was present in the DOM and
-			 invisible to the eye - the exact weakness KEEPERS.md names. -->
+			 invisible to the eye - the exact weakness KEEPERS.md names. It names
+			 `--Divider` now instead of restating the 20 % mix, because the
+			 homepage's hero and the Record layer's hero read the same token and
+			 three restatements of one ink is how they drift apart. -->
 			<div
 				class="hidden md:block w-px"
-				style="background-color: color-mix(in srgb, var(--CardForeground) 20%, transparent);"
+				style="background-color: var(--Divider);"
 			></div>
 
 			<div class="flex items-center justify-center flex-1">

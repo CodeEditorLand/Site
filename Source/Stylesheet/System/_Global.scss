@@ -63,11 +63,32 @@ jelly-card {
 	line-height: var(--type-body-line);
 }
 
-/* Platform download jelly-buttons: keep the long "Download for <OS>" label
-   plus icon on a single line. The host has no nowrap by default, and the
-   2.6rem lg padding leaves too little room for the 44px block button, so
-   the label wraps to two lines inside the card. Scoped to the platform
-   grid only - other lg buttons keep their design padding. */
+/* ─── A JELLY BUTTON'S LABEL IS ONE LINE ───────────────────────────────────
+ * A jelly-button's label is an action name, never a sentence, and the control
+ * has a fixed height (`--jelly-button-height`): a label that breaks at a space
+ * prints two lines inside a 40px box - the `Get / Land` defect in the header,
+ * where the bar's action track ran out of room and the label was the only
+ * shrinkable thing in it.
+ *
+ * `white-space` is inherited, so the host's value reaches both the shadow
+ * `<button>` and the slotted label - the one place a document can speak to a
+ * vendored shadow tree without a `::part` hook. The control then takes its
+ * label's width and cannot be squeezed below it: the container that cannot
+ * give it that room tightens the control's padding (the header does, in
+ * `Component/_Header.scss`) or truncates something else. Never the label.
+ *
+ * This is the rule for every instance, not one caller's fix: any two-word
+ * action label - `Get Land`, `Try again`, `Download for macOS`, `View on
+ * GitHub` - had the same bug the moment its track got tight.
+ */
+jelly-button {
+	white-space: nowrap;
+}
+
+/* Platform download jelly-buttons: the "Download for <OS>" label is long
+   enough that the 2.6rem lg padding leaves too little room for the 44px block
+   button even on one line, so the padding tightens here. Scoped to the
+   platform grid only - other lg buttons keep their design padding. */
 jelly-button.PlatformDownloadButton {
 	white-space: nowrap;
 	--jelly-button-padding-inline: 1rem !important;

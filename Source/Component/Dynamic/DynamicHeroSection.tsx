@@ -81,10 +81,15 @@ import type Property from "./Interface/Property/Hero.js";
  * writes no style. `design_system.md`'s ratio blueprint sizes the pair: a
  * three-track grid, `49fr 1px 51fr`, so the record panel measures 48.95-48.97% and
  * the evidence panel 50.94-50.97% of the pair with the 1px hairline between them;
- * the pair is `80dvh` tall, padded `clamp(2rem, 5vw, 5rem)`, and the card is inset
- * `2.75rem` block / `1.5rem` inline. The blueprint's separate 1.8-2.3% panel gap
- * is not applied - its own panel ranges already sum past 100% with a gap between
- * them, so the ratio and the hairline win. The 15-25% blank band is `flex-grow`
+ * the pair is padded `clamp(2rem, 5vw, 5rem)` on all four sides - the Portal
+ * hero's own outer inset - and the card is inset `2.75rem` block / `1.5rem`
+ * inline, which is the same `--card-padding-*` the Portal's `FieldRecordDataCard`
+ * publishes. The gutter's air comes from the pair's `column-gap`
+ * (`clamp(0.5rem, 1.5vw, 1.875rem)`), so the hairline stands between the panels
+ * rather than against either one, exactly as the Portal hero's does. The
+ * blueprint's separate 1.8-2.3% panel gap is not applied as a track - its own
+ * panel ranges already sum past 100% with a gap between them, so the ratio and
+ * the hairline win and the air is the gap. The 15-25% blank band is `flex-grow`
  * over a floor of `--space-blank` - the token exists for exactly this band.
  *
  * On mobile the stack is card first, evidence second: the record arrives before

@@ -327,6 +327,36 @@
 	gap: var(--space-reading);
 }
 
+/* THE REPORT'S INSET, AND WHY IT BELONGS HERE.
+   The surface hands its inset to its blocks: `AuthShell.astro` sets
+   `--jelly-card-padding-block/inline: 0` because "the baseline's blocks carry
+   their own `p-6`". The report is the whole interior of that card on
+   `/Account/SignIn` and `/Account/SignUp` - every arm of `Auth0AccountGate` is
+   one - so without this rule the badge, the 2px progress rule, the sentence and
+   the alternate link all sit on the card's hairline.
+
+   The value is the card's own inset, `--space-group`: it is what every white
+   box on the site pads by (`.surface-panel`, `.ShellState`, `.surface-absent`,
+   `DynamicContactForm`), and it is the 2rem the OAuth route's three arms
+   already spell as `p-8` inside this same shell - so the two credential cards
+   inset their content by one value. `--space-tight` would leave a badge 8px off
+   the hairline and a primary Jelly button 8px off it on the closed-signup arm.
+
+   The container is padded, never a child: the progress rule spans
+   `inline-size: 100%` of the report, so it now measures the content box and
+   aligns to the sentence and the badge instead of running into the card's
+   edge - its 2px height, 20% track and accent fill are untouched, and it is
+   given no inline size of its own. Nothing is removed, shrunk or re-ordered:
+   badge -> bar -> sentence -> action, `--space-reading` between the groups.
+
+   Scoped to the surface, because the block is not always a card's content: on
+   `/Dashboard` it sits inside `.surface-panel` (already `--space-group`) and on
+   `/Account` inside a `.ShellPanes__body`, where it aligns to the pane head and
+   a second inset would double one pad and break the other alignment. */
+.auth-shell__surface .auth-shell__report {
+	padding: var(--space-group);
+}
+
 /* The OAuth route's three states are toggled by its own script through the
    `hidden` class, so the rule that hides them belongs here: `.hidden` alone
    loses to the `display` above, and all three states would render at once. */

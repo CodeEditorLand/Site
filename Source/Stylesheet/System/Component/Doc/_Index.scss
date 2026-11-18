@@ -46,32 +46,88 @@
 // `--space-chapter` - the documented distance between two subjects - and the
 // page reads as one map rather than as ten panels.
 //
-// ─── THE ADAPTATION MATRIX (§6, and §2.8's four breakpoints) ───────────────
+// ─── THE COLUMN IS THE MEASURE, NOT THE WINDOW ────────────────────────────
 //
-//   < 768px    one column everywhere; the three ways in read as three stacked
-//              cards, the sections as one card per row
-//   768-1023   two columns of pages, three of ways in; the rail is the panel
-//   1024+      three columns of pages, three of ways in; the rail is sticky
+// The three ways in used to go three-across at `bp(768px)` - a viewport query
+// deciding a column count for a row that does not span the viewport. The index
+// sits in the reading shell's main track (26ch of rail out of a 72rem shell),
+// so its column is ~49.4rem (790px) wide at every desktop width while the query
+// said "three across" from 768 up. Measured: three columns of 242px left a
+// feature card 178px of text, and "Report a Bug or Request a Feature" (33
+// characters, L tier 3.25rem = 52px, 1ch = 0.6em = 31.2px) needed six lines in
+// it. The headings are the page's voice and they do not shrink (`DESIGN-BRIEF`
+// §5.1: improve is enhance, never simplify) - the column count moves instead.
 //
-// No step is added at 1280: the grid is already at its widest and a wider
-// viewport buys gutter, not another column.
+// So the row is a `@container doc-index` query, and the container is the body
+// the row sits in. `.doc-article__body` is named only on a page that holds a
+// features list (`:has()`), because containment on every doc body would also
+// change how prose margins settle - this is one page's grid, not the shell's.
+//
+//   the three ways in   1 column below 76.5rem, 2 below 116rem, 3 above
+//
+// The floors are measured, not guessed - one card is its heading's two-line
+// measure plus its own inset:
+//
+//   heading    17ch at 52px                     = 530.4px = 33.15rem
+//   card       530.4px + 2 x --space-group 32px = 594.4px = 37.15rem
+//   2 columns  2 x 37.15rem + 2rem gap          = 76.3rem -> query 76.5rem
+//   3 columns  3 x 37.15rem + 2 x 2rem gap      = 115.45rem -> query 116rem
+//
+// The index's main track tops out at 49.4rem, so the three ways in are three
+// rows at every width the page can reach - what the owner asked for. The two
+// wider steps are the same rule's other answers: they fire only if this list is
+// ever placed in a container that wide, and they cost nothing until then.
+//
+// The ten section grids measure the same container, with a floor of 15rem a
+// card: their cards carry an S-tier title (18px), not a display heading, so
+// their floor is the card's legibility rather than a heading's measure. Three
+// across still fires at the index's 49.4rem track - the baseline's map (§2.4
+// D8) is unchanged at 1280+ - and stops firing at 1024-1279, where the track is
+// 41.4rem and a viewport query used to force three columns of 199px into it.
 @use "../../Mixin" as *;
 
 /* ─── THE WAYS IN ───────────────────────────────────────────────────────── */
 
+/* The query container: the body the row sits in, named only where the row is.
+   An element cannot query itself, so the list measures its parent - and the
+   parent is exactly as wide as the list, because the list is a block child
+   with no inline margin. `:has()` keeps the containment off every other doc
+   page's prose. */
+.doc-article__body:has(> .doc-features) {
+	container: doc-index / inline-size;
+}
+
+/* One column is the default, and it is not a fallback: three large cards that
+   cannot hold their own headings are three rows (the owner's report). The gap
+   is the group distance at every width, so the cards separate the same way
+   whether they sit side by side or under one another; `align-items: stretch`
+   is the grid's default written down, because a card shorter than its
+   neighbours reads as broken. */
 .doc-features {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
-	gap: var(--space-reading);
+	gap: var(--space-group);
+
+	align-items: stretch;
 
 	list-style: none;
 
 	margin: 0;
 	padding: 0;
+}
 
-	@include bp(768px) {
+/* Two columns: each card is at least its heading's two-line measure plus its
+   own inset (37.15rem), with the group gap between them. */
+@container doc-index (min-width: 76.5rem) {
+	.doc-features {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+/* Three columns: the same card, three times, plus two gaps. */
+@container doc-index (min-width: 116rem) {
+	.doc-features {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: var(--space-group);
 	}
 }
 
@@ -112,6 +168,21 @@
 	margin: 0 0 var(--space-group);
 }
 
+/* The ten section grids: the same container decides their columns, because they
+   live in the same track. Their floor is not a display heading's - an S-tier
+   card (18px title over a 13px note) holds from 15rem of card, which is ~19ch
+   of title and ~27ch of note; below that the title sets at four lines and the
+   note at seven, and a card that narrow is a column of words. Three across
+   needs 3 x 15rem + 2 x 1rem = 47rem, two needs 31rem.
+
+   Measured, this is what changes: the index's track is 49.4rem at 1280+ (three
+   across, unchanged - the baseline's map, §2.4 D8) and 41.4rem at 1024-1279,
+   where a viewport query used to force three columns of 199px inside a 662px
+   track. The two-line rule applied to the longest title here (52ch, e.g.
+   "Creating and Interacting with an Integrated Terminal") would ask 19.6rem a
+   card - 60.65rem for three - and would collapse the map to two across at
+   every width; that is a composition change, not a fit fix, so the floor is
+   the card's legibility instead. */
 .doc-grid {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
@@ -121,12 +192,16 @@
 
 	margin: 0;
 	padding: 0;
+}
 
-	@include bp(768px) {
+@container doc-index (min-width: 31rem) {
+	.doc-grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
+}
 
-	@include bp(1024px) {
+@container doc-index (min-width: 47rem) {
+	.doc-grid {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
 }
@@ -184,6 +259,12 @@ jelly-card.doc-card__surface {
 
 	color: var(--MuteForeground);
 
+	/* The caption measure (`DESIGN.md` §2.7: a caption is measure-capped). In a
+	   three-across card the column is already narrower than this; in the stacked
+	   layout the card is ~49rem wide, and a 13px sentence set to 93ch is a line
+	   no reader tracks. The cap changes nothing where the card is narrow. */
+	max-inline-size: 62ch;
+
 	margin: var(--space-tight) 0 0;
 }
 
@@ -191,6 +272,17 @@ jelly-card.doc-card__surface {
    `h2`, so it takes the ladder's L and the card takes the group inset. */
 .doc-card--feature .doc-card__link {
 	padding: var(--space-group);
+}
+
+/* The feature heading's measure, and the number the column floor is built from:
+   17ch is the longest of the three headings ("Report a Bug or Request a
+   Feature", 33 characters) broken into two even lines - `text-wrap: balance`
+   does the breaking, this bounds the line. At the L tier's 3.25rem (52px,
+   1ch = 0.6em = 31.2px) that is 530.4px; the card adds its 2rem inset a side,
+   which is the 37.15rem floor the `@container` steps above are counted in. The
+   size, tracking and leading are the ladder's and are not touched here. */
+.doc-card--feature .doc-card__title {
+	max-inline-size: 17ch;
 }
 
 /* ─── THE CLOSING ARTIFACTS ─────────────────────────────────────────────── */

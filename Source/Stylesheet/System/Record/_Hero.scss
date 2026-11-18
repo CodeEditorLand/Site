@@ -91,7 +91,17 @@
 	.record-hero__pair {
 		grid-template-columns: minmax(0, 49fr) 1px minmax(0, 51fr);
 		align-items: stretch;
-		gap: 0;
+		// THE AIR AROUND THE GUTTER, from the Portal hero's row: a 1px rule with
+		// no gap touches both panels, so the hairline reads as the card's right
+		// border and the evidence's left edge instead of as the object between
+		// them. The Portal's gutter is a child of a flex row carrying
+		// `gap: clamp(0.5rem, 1.5vw, 1.875rem)`; `column-gap` on this
+		// three-track grid is the same air, and it leaves the ratio and the
+		// gutter's ink untouched. This is the one hero on the site whose
+		// opening is the artifact with a photograph beside it (the 404), so it
+		// has to separate the same way the homepage's does.
+		row-gap: 0;
+		column-gap: clamp(0.5rem, 1.5vw, 1.875rem);
 	}
 
 	// Without an evidence panel there is no second track and no hairline to
@@ -177,7 +187,11 @@
 	font-family: var(--FontMono);
 	font-size: var(--type-section);
 	font-weight: 500;
-	line-height: var(--type-section-line);
+	// The reference's leading for a nameplate under a blank interval
+	// (`leading-[1.08]` on the Portal hero's `LAND:`), not the section head's
+	// 1.05: the line is a proposition, and a proposition is set slightly more
+	// open than a heading.
+	line-height: 1.08;
 	letter-spacing: var(--track-join);
 	color: var(--CardForeground);
 }

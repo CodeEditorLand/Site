@@ -335,7 +335,17 @@ const Header = ({ Content, AuthSlot, Mode = "minimal" }: HeaderProps) => {
 											)}
 											onClick={() => SetOpen(false)}
 										>
-											{Action.Label}
+											{/*
+											 * The label is its own box so the
+											 * one-line rule has an element to
+											 * hold it: `white-space: nowrap` on
+											 * `.HeaderActionButton` reaches the
+											 * slotted text, and this span is what
+											 * makes that visible in the markup.
+											 */}
+											<span className="HeaderActionLabel">
+												{Action.Label}
+											</span>
 										</a>
 									</Button>
 								) : (
@@ -356,7 +366,10 @@ const Header = ({ Content, AuthSlot, Mode = "minimal" }: HeaderProps) => {
 											Navigate(Action);
 										}}
 									>
-										{Action.Label}
+										{/* The one-line label: see the plain arm above. */}
+										<span className="HeaderActionLabel">
+											{Action.Label}
+										</span>
 									</Button>
 								),
 							)}

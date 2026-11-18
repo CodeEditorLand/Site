@@ -2,8 +2,19 @@
 //
 // It is NOT a `.band`. A band follows another band and carries the chapter
 // rhythm; the hero opens the page and is a single artifact, so it owns its
-// padding (`clamp(2rem, 5vw, 5rem)`), its own height (`80dvh`) and its own
-// hairline gutter, and it takes no top rule from `.band` or `.record-band`.
+// padding (`clamp(2rem, 5vw, 5rem)` on all four sides, as the Portal hero's row
+// does), its own height and its own hairline gutter, and it takes no top rule
+// from `.band` or `.record-band`.
+//
+// THE SEPARATION AND THE RHYTHM ARE THE PORTAL HERO'S. The owner's reference
+// (`pages/Portal.astro`, `aria-label="Portal Hero"`) separates its two columns
+// with a 1px rule that stands in air - a `w-px` child of a flex row carrying
+// `gap: clamp(0.5rem, 1.5vw, 1.875rem)` - and insets the whole row by
+// `clamp(2rem, 5vw, 5rem)` on every side, inside a card whose own inset is
+// 2.75rem / 1.5rem. This file draws the same rule, the same air and the same
+// insets; what it keeps of its own is the fixed pair height and the reserved
+// blank interval, because this hero is the one that has a foot (the trace and
+// the stack) and a 15-25% silent band to hold.
 //
 // Publishes:
 //   .hero-band                  the artifact's shell
@@ -64,38 +75,66 @@
 	grid-template-columns: minmax(0, 1fr);
 	gap: var(--space-group);
 	min-block-size: 80dvh;
-	// The inline padding is the page's own edge (72px at 1440); the block
-	// padding is the plate's inset and is deliberately smaller, because the
-	// pair's height is the screen's and every pixel of it belongs to the
-	// instrument, not to the margin around it.
-	padding: var(--hero-pair-inset) clamp(2rem, 5vw, 5rem);
+	// THE OUTER INSET. All four sides take the page's own edge - the same
+	// `clamp(2rem, 5vw, 5rem)` the Portal hero's row carries, 72px at 1440 - so
+	// the artifact is inset from the band on every side. The block side used to
+	// be the smaller `clamp(2rem, 3vw, 3rem)`, on the argument that every pixel
+	// of the pair's height belonged to the instrument; the effect was a pair
+	// that had been bled to the viewport's top and foot while the Portal's
+	// floated inside its band, and that difference is most of what the owner
+	// saw. The pair pays the inset back in its own block height, below.
+	padding: var(--hero-pair-inset);
 	margin-inline: auto;
 	// Published for the record card, which cannot take its height from the
 	// grid: Jelly's shadow `.card` does not stretch to its host, so the inset's
 	// `block-size: 100%` resolved against an auto height and the blank interval
 	// could never take the free space. The two values are declared here, once,
 	// and the inset computes the pair's content box from them.
-	--hero-pair-block: clamp(47.5rem, 88dvh, 52rem);
-	--hero-pair-inset: clamp(2rem, 3vw, 3rem);
+	//
+	// The height grows by the inset it gave away. The 5vw block padding took
+	// 58px off the card at 1440 and the card's own inset took another 8, and the
+	// blank interval is a keeper at 15-25% of the card, so the pair takes those
+	// pixels back instead of spending them on the interval: 51rem is the
+	// shortest pair that still leaves the interval above 15% once the card has
+	// paid the 5vw inset and its own 2.75rem of block padding, and 54rem is the
+	// tallest it may grow before the interval passes 25%.
+	--hero-pair-block: clamp(51rem, 89dvh, 54rem);
+	--hero-pair-inset: clamp(2rem, 5vw, 5rem);
 }
 
 @include bp(768px) {
 	.hero-band__pair {
 		grid-template-columns: minmax(0, 49fr) 1px minmax(0, 51fr);
 		align-items: stretch;
-		gap: 0;
+		// THE AIR AROUND THE GUTTER. The rule is the pair's middle track, and
+		// a track with no gap touches both panels - which is why this hero's
+		// gutter read as the card's right border and the photograph's left
+		// edge rather than as the object between them. The Portal hero carries
+		// the same 1px rule as a child of a flex row with
+		// `gap: clamp(0.5rem, 1.5vw, 1.875rem)`, so the hairline stands in air
+		// on both sides and separates the columns at a glance.
+		//
+		// `column-gap` on the three-track grid is that air without moving the
+		// gutter out of its track: the ratio stays 49 : 1px : 51 of what is
+		// left after the air, so the keeper's geometry and its 20% ink are
+		// untouched and only the thing the owner named - the separation - is
+		// strengthened.
+		row-gap: 0;
+		column-gap: clamp(0.5rem, 1.5vw, 1.875rem);
 		// A panel is a panel: at desktop the pair has a height, and both
 		// halves fit inside it. Before this, the pair's height was whatever
 		// the photograph's intrinsic ratio made it - 1075px at 1440 - so the
 		// card stretched to match and the blank interval could never grow
 		// past its floor.
 		//
-		// The clamp is derived from the interval, not from taste: the record's
-		// content is 499px, so the card needs 668-757px for the interval to
-		// land between 15% and 25%, and the pair adds its 86px of block
-		// padding. 47.5rem is the shortest pair that still gives the interval
-		// 15.7%; 52rem is the tallest it may grow before the interval passes
-		// 25%.
+		// The clamp is derived from the interval, not from taste. The record's
+		// content measures ~496px at 1440 and the card pays 2 x 2.75rem of its
+		// own inset, so the card needs ~584px for the interval to land on 15%
+		// and ~661px for 25%; the pair adds 2 x 5vw of outer inset (144px at
+		// 1440). 51rem is the shortest pair that still leaves the interval above
+		// 15% once both insets are paid - it is the value that governs on a
+		// short laptop viewport, where 89dvh falls below it - and 54rem is the
+		// tallest the pair may grow before the interval passes 25%.
 		block-size: var(--hero-pair-block);
 		min-block-size: 0;
 	}
@@ -128,14 +167,26 @@
 }
 
 .hero-band__inset {
+	// THE CARD'S OWN INSET, on the card's own two knobs. 2.75rem block and
+	// 1.5rem inline are the values the Portal hero's `FieldRecordDataCard`
+	// publishes (`--card-padding-block` / `--card-padding-inline`), and they are
+	// the same knobs `.record-hero__inset` reads - so the two heroes' cards can
+	// no longer drift apart, and a host that tightens one tightens the other.
+	//
+	// This rule used to spend `clamp(1.75rem, 2.4vw, 2.5rem)` and give the
+	// 0.75rem it saved to the blank interval. That was the wrong place to buy
+	// the interval: a plate, a claim, a stamp block, a status, a ledger and an
+	// action all sitting in a 40px inset read as a panel with a border, and the
+	// owner's reference is a card with air inside it. The interval is bought
+	// from the pair's block height instead (`--hero-pair-block`).
+	--card-padding-block: 2.75rem;
+	--card-padding-inline: 1.5rem;
+
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	block-size: 100%;
-	// 2.75rem was the old inset. The card no longer has to hold four bands at
-	// three tiers, so it gives 0.75rem of its block padding back to the blank
-	// interval - the one thing in the record that must not shrink.
-	padding: clamp(1.75rem, 2.4vw, 2.5rem) 1.5rem;
+	padding: var(--card-padding-block) var(--card-padding-inline);
 }
 
 // The record is a sequence of anchored bands, not an even distribution: the
@@ -180,10 +231,14 @@
 // The role is `.type-display` (XL, 48-72px); the value here is the *low* end of
 // that tier, and it is a composition decision, not a scale change. `〈RUST +
 // TAURI〉` is fifteen mono glyphs; at 72px they need 648px and the card's inner
-// measure at 1440 is 581, so the tier's ceiling broke the claim after `RUST +`
+// measure at 1440 is 565, so the tier's ceiling broke the claim after `RUST +`
 // and made a two-line poster of a one-line assertion. At 48-56px the claim sets
 // on one line at every width the pair is a pair at, and it still outranks the
-// band headings (36-52px) by the hard jump the tier system requires.
+// band headings (32-52px) by the hard jump the tier system requires.
+//
+// The card's inner measure is 21px narrower than it was before the gutter's air
+// (`column-gap` takes 21.6px a side at 1440, and the card is 49% of the pair),
+// which is why the one-line threshold below moved with it.
 .hero-band__claim {
 	margin: var(--space-reading) 0 0;
 	font-family: var(--FontMono);
@@ -193,12 +248,16 @@
 	letter-spacing: var(--track-join);
 	// Below the width where the pair can hold the claim on one line, it is
 	// allowed to break (balanced, never mid-word) rather than overflow the
-	// card. From 1120px up - where the 49% card's inner measure clears the
-	// claim at the tier's floor - it is one line, always.
+	// card.
 	text-wrap: balance;
 }
 
-@include bp(1120px) {
+// From 1200px up - where the 49% card's inner measure clears the claim at the
+// tier's floor - it is one line, always. The threshold was 1120px until the
+// gutter was given its air: at 1120 the card now offers 429px of inner measure
+// against 418px of type, and eleven pixels of slack is not a fit, it is a
+// coincidence. 1200px keeps 35px of slack at the threshold.
+@include bp(1200px) {
 	.hero-band__claim {
 		white-space: nowrap;
 	}
@@ -285,18 +344,36 @@
 	margin-block-start: 0;
 }
 
+// THE PROPOSITION. `LAND:` and its one `↳` line are the last thing the card
+// says, and the reference prints them as a two-line block: the nameplate at L
+// with a leading of 1.08, then the relation one tier down, 12px under it.
+//
+// The leading is the Portal's (`leading-[1.08]` on `text-field-l`). The size
+// stays capped below the L tier's ceiling for a measured reason, not for taste:
+// `--TypeScaleL` is `clamp(2rem, 5vw, 3.25rem)` and the claim above it is
+// `clamp(3rem, 4.1vw, 3.5rem)`, so the two curves cross at 1270px - at every
+// laptop width the L tier would render the subject LARGER than the page's one
+// XL claim. `2.8vw` keeps the subject under the claim at every width (56 / 44 at
+// 1440), which is the hard jump the tier system requires and the reason this
+// cap exists at all.
 .hero-band__subject {
 	margin: 0;
-	// The subject is the L tier, at the middle of it: at 52px it sat 4px under
-	// the claim's 56 and the two loud lines read as one size. At 44 the ladder
-	// is 56 / 44 / 13 - three tiers, three jumps, and the claim is unmistakably
-	// the page's only XL.
 	font-size: clamp(2rem, 2.8vw, 2.75rem);
+	line-height: 1.08;
 }
 
+// The relation, at the reference's own values: `text-field-s`
+// (`--TypeScaleS`, 14px) at `leading-[1.1]`, in the card's ink at 70%, 12px
+// under the nameplate (`mt-3`). It used to be the 13px meta tier in
+// `--MuteForeground` eight pixels under - a caption hung beneath a headline
+// rather than the second line of one proposition. The ink is stronger than the
+// muted it replaces, so the line reads as part of the claim and not as a note.
 .hero-band__relation {
-	margin: var(--space-tight) 0 0;
-	color: var(--MuteForeground);
+	margin: 0.75rem 0 0;
+	font-size: var(--TypeScaleS);
+	line-height: 1.1;
+	color: var(--CardForeground);
+	opacity: 0.7;
 }
 
 .hero-band__facts {
@@ -385,19 +462,22 @@
 //
 // The ink is the system's divider strength, not the surface hairline: the
 // gutter sits between a warm-white card and a photograph, and `var(--Border)`
-// (8% ink) dissolves on the card side at that contrast. `--CardForeground` at
-// 20% is the same mix the site's other dividers draw (the markdown-alert rule
-// in `_Base.scss`), so this is the record grammar's divider ink, restated for
-// a track that has no card behind it.
+// (8% ink) dissolves on the card side at that contrast. `--Divider` IS that
+// value - `color-mix(in srgb, var(--CardForeground) 20%, transparent)`, the mix
+// the site's other dividers draw (the markdown-alert rule in `_Base.scss`) -
+// and it is the token `Record/_Hero.scss` already reads for its own gutter, so
+// the two heroes cannot drift apart again. The declaration used to restate the
+// mix here; it now names the token that holds it. Same ink, one home.
+//
+// The track is what makes the rule a track; the air around it is the pair's
+// `column-gap` (see `.hero-band__pair`). Together they are the separation the
+// owner endorsed: a hairline standing between two columns, not a border on
+// either.
 .hero-band__gutter {
 	display: none;
 	inline-size: 1px;
 	align-self: stretch;
-	background-color: color-mix(
-		in srgb,
-		var(--CardForeground) 20%,
-		transparent
-	);
+	background-color: var(--Divider);
 }
 
 @include bp(768px) {
