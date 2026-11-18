@@ -24,13 +24,23 @@ const Ink = {
 	Value: "var(--Accent)",
 } as const;
 
-/** One element row's link ink, per element. */
+/** One element row's link ink, per element.
+ *
+ *  A row's `Value` is the destination (the element's manual page), so the
+ *  accent on it is the link's own ink and stays. The per-element inks are the
+ *  fill's -700 shades: Cocoon's card is `--SpinegRPCMute`, so its label ink is
+ *  the spine green and not the site accent (the accent authenticates a
+ *  destination, and this name IS one - but so is every other element's, and a
+ *  green name among four would read as "this one is special" when all it means
+ *  is "gRPC"). Wind's card is `--OSMacOSMute`, so its label ink is that hue's
+ *  -700 and not the muted ink: a muted link label is a destination a reader
+ *  cannot find. */
 const ElementInk: Readonly<Record<string, string>> = {
 	Mountain: "var(--SemanticRed)",
 
-	Cocoon: "var(--Accent)",
+	Cocoon: "var(--SpinegRPCFore)",
 
-	Wind: "var(--MuteForeground)",
+	Wind: "var(--OSMacOSFore)",
 
 	Sky: "var(--SpineIPCFore)",
 };

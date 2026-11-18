@@ -146,10 +146,11 @@
 
 .surface__state-word--specimen {
 	/* The attested tone: the ink, and the marker's size carries the state
-	   (`--state-ink-attested` / `--state-mark-attested` in
+	   (`--state-ink-attested` / `--state-mark-scale-attested` in
 	   `System/State/_Token.scss`). It used to print in the accent, which is the
 	   site's authentication colour and not a state's label ink. */
 	color: var(--state-ink-attested);
+	--state-mark-scale: var(--state-mark-scale-attested);
 }
 
 .surface__state-word--ink {
@@ -166,7 +167,10 @@
 // row and inside a `jelly-badge` chip, so a chip cannot lose its marker.
 .surface__mark {
 	display: inline-block;
-	inline-size: 2px;
+	/* 2px at rest, and a tone may scale it: the attested state's rule is half
+	   again (3px) so a state that authenticates is a SHAPE a reader can see
+	   rather than a hue (`--state-mark-scale`, `System/State/_Token.scss`). */
+	inline-size: calc(2px * var(--state-mark-scale, 1));
 	block-size: 0.9em;
 	margin-inline-end: 0.45em;
 	vertical-align: -0.02em;

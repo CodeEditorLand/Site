@@ -95,12 +95,12 @@ const Indicator = () => (
 		}}
 	>
 		<span
-			className="motion-safe:animate-pulse"
 			style={{
 				display: "block",
-				blockSize: "2px",
+				blockSize: "var(--state-busy-bar)",
 				inlineSize: "33%",
-				background: "var(--Accent)",
+				background: "currentColor",
+				opacity: "var(--state-busy-ink)",
 			}}
 		/>
 	</span>

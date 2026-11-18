@@ -161,27 +161,27 @@ const DashboardUserInner = () => {
 			<>
 				<div className="space-y-3" aria-label="Loading account...">
 					<div
-						className="flat mx-auto h-12 w-12 animate-pulse bg-accent"
+						className="flat bg-mute mx-auto h-12 w-12"
 						data-slot="skeleton"
 					/>
 
 					<div
-						className="flat h-4 w-full animate-pulse bg-accent"
+						className="flat bg-mute h-4 w-full"
 						data-slot="skeleton"
 					/>
 
 					<div
-						className="flat h-4 w-4/5 animate-pulse bg-accent"
+						className="flat bg-mute h-4 w-4/5"
 						data-slot="skeleton"
 					/>
 
 					<div
-						className="flat h-4 w-3/5 animate-pulse bg-accent"
+						className="flat bg-mute h-4 w-3/5"
 						data-slot="skeleton"
 					/>
 
 					<div
-						className="flat h-4 w-2/5 animate-pulse bg-accent"
+						className="flat bg-mute h-4 w-2/5"
 						data-slot="skeleton"
 					/>
 				</div>

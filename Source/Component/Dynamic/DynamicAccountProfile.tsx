@@ -97,7 +97,7 @@ const FieldRow = ({
 					<span className="text-sm font-medium">{label}</span>
 					<SourceBadge label={source} icon={sourceIcon} />
 					{editable ? (
-						<span className="inline-flex items-center border-[color-mix(in_srgb,var(--Accent)_30%,transparent)] bg-[color-mix(in_srgb,var(--Accent)_10%,transparent)] px-1.5 py-0 font-mono text-sm text-[var(--Accent)]">
+						<span className="inline-flex items-center border border-[color:var(--Divider)] bg-[var(--Mute)] px-1.5 py-0 font-mono text-sm text-[var(--Foreground)]">
 							Editable
 						</span>
 					) : (
@@ -413,48 +413,53 @@ const AccountProfileInner = ({
 	};
 
 	if (IsLoading) {
-		/* The baseline's loading shell: a pulsing avatar beside three bars,
-		   then three full-width blocks, in the page's own column. The state's
-		   sentence and its Reload action sit under it, so the skeleton is what
-		   the route shows and the report is what says why. */
+		/* The loading shell: the schema of the record, drawn in the site's own
+		   skeleton - the bars never move (`Motion/_Skeleton.scss`: the interval
+		   belongs to what REPLACES the bar, not to the bar), and the ink is the
+		   muted field, never the accent. It was four `animate-pulse` blocks
+		   filled with `bg-accent`: a green pulsing rectangle where a record
+		   goes, which is both the spinner this site does not have and the one
+		   colour it reserves for authentication. The state's sentence and its
+		   Reload action sit under it, so the skeleton is what the route shows
+		   and the report is what says why. */
 		return (
 			<div className="mx-auto max-w-2xl space-y-6 px-4 py-16">
 				<div className="flex items-center gap-6">
 					<div
-						className="flat h-20 w-20 shrink-0 animate-pulse bg-accent"
+						className="flat bg-mute h-20 w-20 shrink-0"
 						data-slot="skeleton"
 					/>
 
 					<div className="flex-1 space-y-3">
 						<div
-							className="flat h-6 w-48 animate-pulse bg-accent"
+							className="flat bg-mute h-6 w-48"
 							data-slot="skeleton"
 						/>
 
 						<div
-							className="flat h-4 w-64 animate-pulse bg-accent"
+							className="flat bg-mute h-4 w-64"
 							data-slot="skeleton"
 						/>
 
 						<div
-							className="flat h-4 w-32 animate-pulse bg-accent"
+							className="flat bg-mute h-4 w-32"
 							data-slot="skeleton"
 						/>
 					</div>
 				</div>
 
 				<div
-					className="flat h-48 w-full animate-pulse bg-accent"
+					className="flat bg-mute h-48 w-full"
 					data-slot="skeleton"
 				/>
 
 				<div
-					className="flat h-32 w-full animate-pulse bg-accent"
+					className="flat bg-mute h-32 w-full"
 					data-slot="skeleton"
 				/>
 
 				<div
-					className="flat h-24 w-full animate-pulse bg-accent"
+					className="flat bg-mute h-24 w-full"
 					data-slot="skeleton"
 				/>
 
@@ -957,7 +962,7 @@ const AccountProfileInner = ({
 										/>
 										Password
 										<SourceBadge label="Auth0" />
-										<span className="inline-flex items-center border-[color-mix(in_srgb,var(--Accent)_30%,transparent)] bg-[color-mix(in_srgb,var(--Accent)_10%,transparent)] px-1.5 py-0 font-mono text-sm text-[var(--Accent)]">
+										<span className="inline-flex items-center border border-[color:var(--Divider)] bg-[var(--Mute)] px-1.5 py-0 font-mono text-sm text-[var(--Foreground)]">
 											Editable
 										</span>
 									</div>

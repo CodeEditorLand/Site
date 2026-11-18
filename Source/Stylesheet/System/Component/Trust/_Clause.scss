@@ -68,6 +68,11 @@
 
 @media print {
 	.LegalCard .trust-clause__cite {
+		/* A literal, and the only one left in the component layer: on paper the
+		   page is a different medium, and `--Foreground` (#1c1c1e) prints as a
+		   near-black that costs ink and gains nothing. Print is the one place
+		   the palette is not the palette - `System/_Base.scss` states the same
+		   black/white pair for the whole printed document. */
 		color: #000000;
 
 		text-decoration: none;

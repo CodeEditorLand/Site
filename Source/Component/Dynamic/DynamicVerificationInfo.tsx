@@ -72,7 +72,7 @@ const DynamicVerificationInfo = ({
 						</code>
 						<button
 							type="button"
-							className="px-3 py-1 transition-colors hover:bg-accent"
+							className="hover:bg-mute px-3 py-1 transition-colors"
 							aria-label="Copy SHA-256 checksum to clipboard"
 							onClick={() =>
 								CopyToClipboard(
@@ -111,7 +111,7 @@ const DynamicVerificationInfo = ({
 						</code>
 						<button
 							type="button"
-							className="px-3 py-1 transition-colors hover:bg-accent"
+							className="hover:bg-mute px-3 py-1 transition-colors"
 							aria-label="Copy release signature to clipboard"
 							onClick={() =>
 								CopyToClipboard(
