@@ -45,7 +45,6 @@ const Facts = join(Generated, "Facts");
 
 /** Every file under `Source/`, as a posix path relative to `Source/`. */
 const Walk = (Directory: string): string[] => {
-
 	const Files: string[] = [];
 
 	for (const Entry of readdirSync(Directory)) {
@@ -67,7 +66,6 @@ const FileSet = new Set(Files);
 
 /** Read a file, or the empty string when it is binary or unreadable. */
 const Read = (Relative: string): string => {
-
 	try {
 		return readFileSync(join(Source, Relative), "utf8");
 	} catch {

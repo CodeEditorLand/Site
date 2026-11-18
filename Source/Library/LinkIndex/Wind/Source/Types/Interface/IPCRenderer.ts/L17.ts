@@ -14,7 +14,6 @@ import type { LinkSpec } from "../../../../../../Links";
 import type { LinkIndexData } from "../../../../../Type";
 
 export const LinkIndexData: LinkIndexFragment = {
-
 	url: "https://github.com/CodeEditorLand/Wind/tree/Current/Source/Types/Interface/IPCRenderer.ts#L17",
 
 	pages: ["polyfills"],

@@ -33,7 +33,6 @@ import type { PropertyEntry } from "../../Component/Dynamic/Properties/Type.js";
 
 /** The six, as `ItemsOf` resolves them from the locale's own copy. */
 const Copy: Record<string, string> = {
-
 	"home:features.item.designTokens.title":
 		"Native services where they count.",
 
@@ -97,7 +96,6 @@ const All = (Selector: string): ParsedElement[] =>
 
 /** The first element matching a selector. Throws rather than returning null. */
 const One = (Selector: string): ParsedElement => {
-
 	const Found = Page.querySelector(Selector) ?? null;
 
 	if (Found === null) throw new Error(`No element matches ${Selector}`);

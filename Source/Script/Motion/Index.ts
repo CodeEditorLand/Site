@@ -36,7 +36,6 @@ import { Sort } from "./Sort.js";
 
 /** The bridge an island uses: `window.LandMotion?.Sort(shell, mutate)`. */
 declare global {
-
 	interface Window {
 		LandMotion?: {
 			readonly Sort: typeof Sort;
@@ -45,7 +44,6 @@ declare global {
 }
 
 const Mount = (): void => {
-
 	Handover();
 
 	Origin();
@@ -54,7 +52,6 @@ const Mount = (): void => {
 };
 
 if (typeof window !== "undefined") {
-
 	if (document.readyState === "loading") {
 		document.addEventListener("DOMContentLoaded", Mount, { once: true });
 	} else {

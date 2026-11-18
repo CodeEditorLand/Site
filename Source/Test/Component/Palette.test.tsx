@@ -13,7 +13,6 @@ import type { PaletteRegister } from "../../Component/UI/Palette/Type";
 // the test supplies the smallest honest stand-ins rather than skipping the paths
 // that touch them.
 class ResizeObserverStub {
-
 	observe() {}
 
 	unobserve() {}
@@ -45,7 +44,6 @@ Element.prototype.scrollIntoView = () => {};
  */
 
 const Register: PaletteRegister = {
-
 	Routes: [
 		{
 			Id: "part-home",
@@ -117,7 +115,6 @@ const Register: PaletteRegister = {
 };
 
 const Open = async () => {
-
 	const User = UserEvent.setup();
 
 	await User.click(screen.getByRole("button", { name: /find a record/i }));

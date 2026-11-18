@@ -17,7 +17,6 @@ import "@testing-library/jest-dom/vitest";
 // keeps one setup file for both environments instead of a second one that
 // would drift from this comment.
 if (typeof HTMLElement !== "undefined") {
-
 	class JellyButtonStub extends HTMLElement {
 		static get observedAttributes() {
 			return ["disabled", "type", "label"];
@@ -53,10 +52,8 @@ if (typeof HTMLElement !== "undefined") {
 	class JellyIconButtonStub extends JellyButtonStub {}
 
 	if (!customElements.get("jelly-button"))
-
 		customElements.define("jelly-button", JellyButtonStub);
 
 	if (!customElements.get("jelly-icon-button"))
-
 		customElements.define("jelly-icon-button", JellyIconButtonStub);
 }

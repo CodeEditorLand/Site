@@ -21,7 +21,6 @@ import type { DocSection } from "../../Component/Dynamic/Interface/Content/Page/
 
 const Sections: DocSection[] = [
 	{
-
 		Id: "start",
 
 		Label: "Start",
@@ -34,7 +33,6 @@ const Sections: DocSection[] = [
 	},
 
 	{
-
 		Id: "deep-dive",
 
 		Label: "Deep Dive",

@@ -23,7 +23,6 @@ vi.mock("astro:content", () => ({
 }));
 
 const Render = async () => {
-
 	const Container = await AstroContainer.create({
 		// The container takes the loader shape (`{ name, ssr }`), while the
 		// integration exports the SSR value itself - so the value is named once here

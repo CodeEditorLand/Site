@@ -51,7 +51,6 @@ const Clamp = (Value: number): number =>
 const Root = (): HTMLElement => document.documentElement;
 
 const Clear = (): void => {
-
 	Root().style.removeProperty("--motion-origin-x");
 
 	Root().style.removeProperty("--motion-origin-y");
@@ -63,7 +62,6 @@ const Clear = (): void => {
  * point's direction and settles into the centre.
  */
 const Lean = (): void => {
-
 	if (!Last || Date.now() - Last.at > Window) {
 		Clear();
 
@@ -81,13 +79,11 @@ const Lean = (): void => {
 
 /** Record where the pointer was, on every press. */
 const Remember = (Event: PointerEvent): void => {
-
 	Last = { x: Event.clientX, y: Event.clientY, at: Date.now() };
 };
 
 /** Forget it, on every key press: a chord has no origin. */
 const Forget = (Event: KeyboardEvent): void => {
-
 	if (Event.key === "k" || Event.key === "K") {
 		Last = null;
 
@@ -104,7 +100,6 @@ const Forget = (Event: KeyboardEvent): void => {
  * - `keydown` clears it, so the chord keeps the plain rise.
  */
 export const Origin = (): void => {
-
 	if (typeof window === "undefined") return;
 
 	window.addEventListener("pointerdown", Remember, {

@@ -55,7 +55,6 @@ const Seen = new WeakSet<HTMLElement>();
 let Gesture = false;
 
 if (typeof window !== "undefined") {
-
 	const Note = (): void => {
 		Gesture = true;
 	};
@@ -69,7 +68,6 @@ if (typeof window !== "undefined") {
 }
 
 type TransitionDocument = Document & {
-
 	startViewTransition?: (Callback: () => void) => {
 		finished?: Promise<void>;
 	};
@@ -93,7 +91,6 @@ export const Sort = (
 
 	Mutate: () => void,
 ): boolean => {
-
 	if (!Shell) return false;
 
 	/* The mount pass: the control's first application of the rows. Recorded, not
@@ -146,7 +143,6 @@ export const Sort = (
 	};
 
 	if (Transition.finished) Transition.finished.then(Done, Done);
-
 	else Done();
 
 	return true;

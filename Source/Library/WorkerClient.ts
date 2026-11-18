@@ -27,7 +27,6 @@ import type Session from "./Interface/Session.js";
 import type User from "./Interface/User.js";
 
 const IsLocalhost = (): boolean => {
-
 	try {
 		return (
 			typeof window !== "undefined" &&
@@ -40,14 +39,12 @@ const IsLocalhost = (): boolean => {
 };
 
 const LocalDevToken = async (): Promise<{
-
 	Token: string;
 
 	ExpiresAt: number;
 
 	UserId: string;
 } | null> => {
-
 	if (!IsLocalhost()) return null;
 
 	try {
@@ -87,13 +84,11 @@ const LocalDevToken = async (): Promise<{
 };
 
 const PostAuthToServiceWorker = (Token: string, UserId: string): void => {
-
 	try {
 		if (
 			typeof navigator === "undefined" ||
 			!navigator.serviceWorker?.controller
 		)
-
 			return;
 
 		navigator.serviceWorker.controller.postMessage({
@@ -108,13 +103,11 @@ const PostAuthToServiceWorker = (Token: string, UserId: string): void => {
 };
 
 const ClearAuthFromServiceWorker = (): void => {
-
 	try {
 		if (
 			typeof navigator === "undefined" ||
 			!navigator.serviceWorker?.controller
 		)
-
 			return;
 
 		navigator.serviceWorker.controller.postMessage({ Type: "Auth:Clear" });
@@ -124,7 +117,6 @@ const ClearAuthFromServiceWorker = (): void => {
 };
 
 export interface WorkersClient {
-
 	Authentication: {
 		Login(
 			Email: string,
@@ -197,7 +189,6 @@ export interface WorkersClient {
 
 					signatureUrl: string | null;
 				}
-
 			>
 		>;
 
@@ -440,7 +431,6 @@ const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000;
 
 function Delay(Millisecond: number): Promise<void> {
-
 	return new Promise((Resolve) => setTimeout(Resolve, Millisecond));
 }
 
@@ -449,7 +439,6 @@ function WithRetry<T>(
 
 	Retries = MAX_RETRIES,
 ): Promise<APIResponse<T>> {
-
 	return Function().catch(async (Error: Error) => {
 		if (Retries > 0) {
 			console.warn(
@@ -468,7 +457,6 @@ function WithRetry<T>(
 }
 
 function GetAuthToken(): string | null {
-
 	try {
 		const CookieList = document.cookie.split(";");
 
@@ -489,7 +477,6 @@ function GetAuthToken(): string | null {
 }
 
 function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
-
 	const FetchWithAuthentication = async <T>(
 		Endpoint: string,
 
@@ -686,7 +673,6 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 				if (Platform) Parameter.append("platform", Platform);
 
 				if (Architecture)
-
 					Parameter.append("architecture", Architecture);
 
 				const Query = Parameter.toString();
@@ -744,7 +730,6 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 				if (Platform) Parameter.append("platform", Platform);
 
 				if (Architecture)
-
 					Parameter.append("architecture", Architecture);
 
 				const Query = Parameter.toString();
@@ -762,7 +747,6 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 				if (Platform) Parameter.append("platform", Platform);
 
 				if (Architecture)
-
 					Parameter.append("architecture", Architecture);
 
 				const Query = Parameter.toString();
@@ -1105,7 +1089,6 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 let ClientInstance: WorkersClient | null = null;
 
 export function GetWorkersClient(): WorkersClient {
-
 	if (ClientInstance) {
 		return ClientInstance;
 	}
@@ -1147,7 +1130,6 @@ export function GetWorkersClient(): WorkersClient {
 		Status: AnalyticsURL
 			? (CreateWorkerClient(AnalyticsURL)
 					.Status as WorkersClient["Status"])
-
 			: (undefined as any),
 	} as WorkersClient;
 
@@ -1155,6 +1137,5 @@ export function GetWorkersClient(): WorkersClient {
 }
 
 export function ClearWorkersClient(): void {
-
 	ClientInstance = null;
 }

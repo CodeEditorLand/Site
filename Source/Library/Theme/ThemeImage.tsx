@@ -1,5 +1,4 @@
 export interface ThemeImageProps {
-
 	src: string;
 
 	alt?: string;
@@ -31,7 +30,6 @@ export function ThemeImage({
 	className,
 	...props
 }: ThemeImageProps) {
-
 	return (
 		<img
 			src={src}

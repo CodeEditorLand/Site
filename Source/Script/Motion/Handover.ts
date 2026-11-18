@@ -31,7 +31,6 @@
 
 /** The navigation types that mean the reader is retracing. */
 const IsBack = (): boolean => {
-
 	if (typeof performance === "undefined") return false;
 
 	const [Entry] = performance.getEntriesByType(
@@ -43,7 +42,6 @@ const IsBack = (): boolean => {
 
 /** Print the direction, once per page. */
 const Print = (): void => {
-
 	const Root = document.documentElement;
 
 	if (!Root) return;
@@ -61,7 +59,6 @@ const Print = (): void => {
  *   navigation's stylesheet - which is exactly what it is for.
  */
 export const Handover = (): void => {
-
 	Print();
 
 	if (typeof window === "undefined") return;

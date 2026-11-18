@@ -237,7 +237,6 @@ const MockTierBase = (
 });
 
 const MockContent: PortalContent = {
-
 	Title: "Portal",
 
 	Subtitle: "Choose your plan",

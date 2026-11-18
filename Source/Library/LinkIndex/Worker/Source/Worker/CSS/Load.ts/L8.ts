@@ -14,7 +14,6 @@ import type { LinkSpec } from "../../../../../../Links";
 import type { LinkIndexData } from "../../../../../Type";
 
 export const LinkIndexData: LinkIndexFragment = {
-
 	url: "https://github.com/CodeEditorLand/Worker/tree/Current/Source/Worker/CSS/Load.ts#L8",
 
 	pages: [],

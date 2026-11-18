@@ -15,7 +15,6 @@
  */
 
 export interface InternalLink {
-
 	Href: string;
 
 	Label: string;
@@ -23,7 +22,6 @@ export interface InternalLink {
 
 /** A repository entry: the bare clone URL plus the branch segment links compose with. */
 export interface Repo {
-
 	/** The repository's base URL (no branch, no trailing slash). */
 	Base: string;
 
@@ -50,13 +48,11 @@ export const BranchCurrent = "tree/Current";
  * branch rename or scheme change edits this file alone.
  */
 export function Link(Repo: Repo, Path: string): string {
-
 	return `${Repo.Base}/${Repo.Branch}/${Path}`;
 }
 
 /** The Land repository - the product repo and the site's canonical home. */
 export const LandRepo: Repo = {
-
 	Base: "https://github.com/CodeEditorLand/Land",
 
 	Branch: BranchCurrent,
@@ -64,7 +60,6 @@ export const LandRepo: Repo = {
 
 /** The dependency Editor repository - the VS Code fork under the Dependency org. */
 export const EditorRepo: Repo = {
-
 	Base: "https://github.com/DependencyCodeEditorLand/Editor",
 
 	Branch: BranchCurrent,
@@ -72,7 +67,6 @@ export const EditorRepo: Repo = {
 
 /** The Cache element repository (gitlink under Land/Element/Cache). */
 export const CacheRepo: Repo = {
-
 	Base: "https://github.com/CodeEditorLand/Cache",
 
 	Branch: BranchCurrent,
@@ -80,7 +74,6 @@ export const CacheRepo: Repo = {
 
 /** The Ingress dependency repository (gitlink under Dependency/Microsoft/NPM). */
 export const IngressRepo: Repo = {
-
 	Base: "https://github.com/CodeEditorLand/Ingress",
 
 	Branch: BranchCurrent,
@@ -88,7 +81,6 @@ export const IngressRepo: Repo = {
 
 /** The LandSWCDevtools dependency repository. */
 export const LandSWCDevtoolsRepo: Repo = {
-
 	Base: "https://github.com/DependencyCodeEditorLand/LandSWCDevtools",
 
 	Branch: BranchCurrent,
@@ -96,7 +88,6 @@ export const LandSWCDevtoolsRepo: Repo = {
 
 /** The SWC dependency repository (gitlink under Dependency/SWC/Dependency/SWC and NodeSWC/swc). */
 export const SWCRepo: Repo = {
-
 	Base: "https://github.com/DependencyCodeEditorLand/SWC",
 
 	Branch: BranchCurrent,
@@ -104,7 +95,6 @@ export const SWCRepo: Repo = {
 
 /** The SWCProject.github.io dependency repository. */
 export const SWCProjectGithubIoRepo: Repo = {
-
 	Base: "https://github.com/DependencyCodeEditorLand/SWCProject.github.io",
 
 	Branch: BranchCurrent,
@@ -112,7 +102,6 @@ export const SWCProjectGithubIoRepo: Repo = {
 
 /** The SWCDev dependency repository. */
 export const SWCDevRepo: Repo = {
-
 	Base: "https://github.com/DependencyCodeEditorLand/SWCDev",
 
 	Branch: BranchCurrent,
@@ -120,7 +109,6 @@ export const SWCDevRepo: Repo = {
 
 /** The TsParserTestRef dependency repository. */
 export const TsParserTestRefRepo: Repo = {
-
 	Base: "https://github.com/DependencyCodeEditorLand/TsParserTestRef",
 
 	Branch: BranchCurrent,
@@ -128,7 +116,6 @@ export const TsParserTestRefRepo: Repo = {
 
 /** The Tauri dependency repository (gitlink under Dependency/Tauri/Dependency/Tauri). */
 export const TauriRepo: Repo = {
-
 	Base: "https://github.com/DependencyCodeEditorLand/Tauri",
 
 	Branch: BranchCurrent,
@@ -136,7 +123,6 @@ export const TauriRepo: Repo = {
 
 /** The PluginsWorkSpace dependency repository (gitlink under Dependency/Tauri/Dependency/PluginsWorkspace). */
 export const PluginsWorkSpaceRepo: Repo = {
-
 	Base: "https://github.com/DependencyCodeEditorLand/PluginsWorkSpace",
 
 	Branch: BranchCurrent,
@@ -144,7 +130,6 @@ export const PluginsWorkSpaceRepo: Repo = {
 
 /** External canonical URLs, verbatim from the site's documented flows. */
 export const ExternalLinks = {
-
 	/** The Land repository - the product repo and the site's canonical home. */
 	Repository: "https://github.com/CodeEditorLand/Land",
 
@@ -169,7 +154,6 @@ export const ExternalLinks = {
 
 /** Every element repository, keyed by element name, linked at the canonical Current branch. */
 export const ElementRepos = {
-
 	Air: {
 		Base: "https://github.com/CodeEditorLand/Air",
 

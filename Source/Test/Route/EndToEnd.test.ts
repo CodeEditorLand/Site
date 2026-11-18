@@ -1,11 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import GenerateRouteMap, {
-
 	CanonicalPath,
-
 	PascalCaseCanonical,
-
 	SemanticAlias,
 } from "../../Function/Route/Map.js";
 
@@ -32,7 +29,6 @@ const ResolveRoute = (
 
 	VariantMap: Record<string, string>,
 ): string | null => {
-
 	const Cleaned = StripTrailingSlash(RequestPath);
 
 	if (CanonicalSet.has(Cleaned)) {
@@ -78,7 +74,6 @@ const RunRedirect = (
 		Variant: Record<string, string>;
 	},
 ): string | null => {
-
 	const CleanPath = CurrentPath.replace(/\/+$/, "") || "/";
 
 	if (CleanPath === "/") {
