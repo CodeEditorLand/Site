@@ -285,7 +285,8 @@
 }
 
 .FooterRecordMarker {
-	color: var(--Accent);
+	/* A mark is muted, never the accent (`--Mark` in `System/_Token.scss`). */
+	color: var(--Mark);
 }
 
 .FooterRecordLocale {

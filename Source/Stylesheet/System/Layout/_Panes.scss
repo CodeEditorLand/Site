@@ -77,7 +77,7 @@
 	@include mono-meta;
 	@include track(var(--track-row));
 	margin: 0;
-	color: var(--Accent);
+	color: var(--Mark);
 	font-variant-numeric: tabular-nums;
 }
 
@@ -215,7 +215,7 @@
 }
 
 .ShellPanes__drawer-mark {
-	color: var(--Accent);
+	color: var(--Mark);
 	@include motion-enter;
 }
 

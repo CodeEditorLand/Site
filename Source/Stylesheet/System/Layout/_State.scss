@@ -62,7 +62,7 @@
 }
 
 .ShellState__mark {
-	color: var(--Accent);
+	color: var(--Mark);
 }
 
 .ShellState__index {
@@ -89,7 +89,8 @@
 }
 
 .ShellState__status--specimen {
-	color: var(--Accent);
+	color: var(--state-ink-attested);
+	--state-mark: var(--state-mark-scale-attested);
 }
 
 .ShellState__status--quiet {

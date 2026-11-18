@@ -53,7 +53,9 @@
 }
 
 .ShellRail__mark {
-	color: var(--Accent);
+	/* the rail's `#`: a mark, so `--Mark`. The rail's one accent is the current
+	   row's 2px rule (`[aria-current]` below), which is the position. */
+	color: var(--Mark);
 }
 
 .ShellRail__label {
@@ -194,5 +196,5 @@
 }
 
 .ShellRail__foot-arrow {
-	color: var(--Accent);
+	color: var(--Mark);
 }

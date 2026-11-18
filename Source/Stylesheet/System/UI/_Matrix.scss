@@ -75,7 +75,8 @@
 }
 
 .MatrixControl__Mark {
-	color: var(--Accent);
+	/* the `→` before an action's name: a mark, so `--Mark` */
+	color: var(--Mark);
 }
 
 .MatrixControl__Name {

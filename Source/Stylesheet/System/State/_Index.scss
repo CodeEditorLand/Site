@@ -68,15 +68,38 @@
 //
 // ─── THE ACCENT'S BUDGET ────────────────────────────────────────────────────
 //
-// The accent appears on: the focus ring, the current-position rule, the mark of
-// a completed write (`✓ COPIED`), the record's opening rule, the seal, the
-// destination label of a block link under the pointer (and on focus), and the
-// header ribbon's hover - which spends it because there the hover is PREVIEWING
-// the current state and the two must be the same field or the ribbon has two
-// languages. Twelve ROUTE-link hovers that turned a label green were moved to
-// ink by this layer's partials; a block link's destination label keeps the hue.
-// The list of both is in `State/_Link.scss` under "TWO HOVERS", so the next card
-// can find them without a grep.
+// FOUR ROLES, AND A FIFTH THAT IS THE SEAL'S. The accent appears on:
+//
+//   a LINK'S DESTINATION     the label the pointer or the keyboard is on when
+//                            the label IS the destination - a prose link, a
+//                            block link's title, a record entry's name, a
+//                            stage's step name, an archive row's title. This is
+//                            the biggest population and it is legitimate: a
+//                            document's links are the places it can take you.
+//   FOCUS                    the one ring, 2px, 4px off the box.
+//   THE ACTIVE ROUTE         the 2px bar on the current row, and the mark that
+//                            stands in that row (one object, one position).
+//   A COMPLETED WRITE        `✓ COPIED` and nothing else.
+//   THE SEAL                 the frame's status square, the footer record's
+//                            opening rule, the password meter's strong segment -
+//                            the three places the accent says "this is sound"
+//                            rather than "this is where you are".
+//
+// AND NOT ON: a mark (`#`, `/`, `↳`, `→`, `›` - `--Mark`), a state word
+// (`STATUS: ACTIVE` and the `specimen` tone - `--state-ink-attested`), a data
+// cell (a matrix's `YES`), a register's head, a hover's border, a ghost
+// button's fill, a selection, a specimen's value, or a decorative glyph.
+//
+// Those were all accent sites before this layer's partials took them back, and
+// each of them meant the same thing as every other: "something is here". A page
+// that says that seven times says nothing. The count is now stated per surface
+// in the card that made it (t_65c00fc6), and the number a page should read is
+// small enough that a reader can find the green.
+//
+// Twelve ROUTE-link hovers that turned a label green were moved to ink by this
+// layer's partials; a block link's destination label keeps the hue. The list of
+// both is in `State/_Link.scss` under "TWO HOVERS", so the next card can find
+// them without a grep.
 //
 // ─── DISABLED IS NOT DIMMED ─────────────────────────────────────────────────
 //

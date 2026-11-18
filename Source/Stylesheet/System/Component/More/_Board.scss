@@ -88,7 +88,7 @@
 }
 
 .status-board__mark {
-	color: var(--Accent);
+	color: var(--Mark);
 }
 
 .status-board__label {
@@ -210,7 +210,7 @@
 }
 
 .status-board__row-state--specimen {
-	color: var(--Accent);
+	color: var(--state-ink-attested);
 }
 
 .status-board__row-state--quiet {

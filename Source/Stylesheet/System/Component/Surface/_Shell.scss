@@ -145,7 +145,11 @@
 }
 
 .surface__state-word--specimen {
-	color: var(--Accent);
+	/* The attested tone: the ink, and the marker's size carries the state
+	   (`--state-ink-attested` / `--state-mark-attested` in
+	   `System/State/_Token.scss`). It used to print in the accent, which is the
+	   site's authentication colour and not a state's label ink. */
+	color: var(--state-ink-attested);
 }
 
 .surface__state-word--ink {
@@ -424,7 +428,7 @@
 }
 
 .surface-absent__status--specimen {
-	color: var(--Accent);
+	color: var(--state-ink-attested);
 }
 
 .surface-absent__status--quiet {

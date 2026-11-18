@@ -115,7 +115,8 @@
 }
 
 .record-margin__state--specimen {
-	color: var(--Accent);
+	color: var(--state-ink-attested);
+	--state-mark: var(--state-mark-scale-attested);
 }
 
 .record-margin__state--quiet {

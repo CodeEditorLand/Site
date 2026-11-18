@@ -45,6 +45,34 @@
 	/* the ink a state may quiet to, and the ink an unavailable control wears */
 	--state-ink-quiet: var(--MuteForeground);
 
+	/* THE ATTESTED STATE'S INK - and why it is not the accent.
+
+	   Every state line on the site prints a 4px square before its word
+	   (`SurfaceState`, `RecordStamp`, `RecordInset`, `RecordMargin`,
+	   `ShellState`, `RecordCompare`): the square is the state's SHAPE, and it
+	   is what survives greyscale, a photocopy and a reader who cannot see the
+	   accent at all. The tone used to add a hue on top of the shape -
+	   `specimen` was "the green accent" - which meant that a state that
+	   reported itself printed in the one colour the site reserves for
+	   authenticating a route, a link, a focus and a seal. A page with nine
+	   specimen states had nine green things and no way to say where the
+	   reader was.
+
+	   So the attested tone keeps the shape and takes the ink, and the
+	   distinction it needs is carried by SIZE, the second material a state is
+	   allowed: the attested mark is half again the reporting mark. Nothing is
+	   lost - the word, the square, the register line and the key's colon are
+	   all still printed - and the accent goes back to meaning one thing. */
+	--state-ink-attested: var(--Foreground);
+
+	/* the state square's SCALE, not its size: each block states its own base
+	   (`--state-mark-base`, 4px for a record's square, 0.4rem for the shell's)
+	   and a tone scales it. 1 reporting, 1.5 attested - so no block's resting
+	   square moves and the attested one is half again, at every base. */
+	--state-mark-scale: 1;
+	--state-mark-scale-attested: 1.5;
+
+
 	// ─── rules ────────────────────────────────────────────────────────────
 	/* a resting rule: 8 % ink, the sitewide hairline */
 	--state-rule: var(--Border);

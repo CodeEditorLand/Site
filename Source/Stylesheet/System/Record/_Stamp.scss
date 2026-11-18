@@ -98,7 +98,8 @@
 }
 
 .record-stamp__state--specimen {
-	color: var(--Accent);
+	color: var(--state-ink-attested);
+	--state-mark: var(--state-mark-scale-attested);
 }
 
 .record-stamp__state--quiet {

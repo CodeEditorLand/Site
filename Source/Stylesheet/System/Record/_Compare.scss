@@ -144,7 +144,8 @@
 }
 
 .record-compare__stop-state--specimen {
-	color: var(--Accent);
+	color: var(--state-ink-attested);
+	--state-mark: var(--state-mark-scale-attested);
 }
 
 .record-compare__stop-mark {

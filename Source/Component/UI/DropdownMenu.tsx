@@ -63,10 +63,27 @@ function DropdownMenuTrigger({
 	);
 }
 
+/**
+ * `children` is destructured here, and that is load-bearing, not style.
+ *
+ * The register line is written as a JSX child in the element body, and a body
+ * child is a `createElement` argument of its own - React assigns it over the
+ * `children` that `{...props}` carried (`react.development.js`: `if (1 ===
+ * childrenLength) props.children = children;`). So a caller's rows, arriving
+ * through the spread, were silently replaced by the one register line: the
+ * locale slip opened on `# LOCALE / 05` and nothing else, and every other
+ * dropdown on the site (the account menu included) did the same. `PopoverContent`
+ * and `SelectContent` already destructure `children` for exactly this reason;
+ * this one did not.
+ *
+ * Rendering it explicitly, after the head, is also the grammar's order: the
+ * register line is the slip's first line and its rows follow it.
+ */
 function DropdownMenuContent({
 	className,
 	sideOffset = 4,
 	head,
+	children,
 	...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Content> & {
 	/** The register line the slip opens with. Omitted only by a slip with no rows. */
@@ -82,6 +99,7 @@ function DropdownMenuContent({
 				{...props}
 			>
 				{head ? <SlipRegister head={head} /> : null}
+				{children}
 			</DropdownMenuPrimitive.Content>
 		</DropdownMenuPrimitive.Portal>
 	);

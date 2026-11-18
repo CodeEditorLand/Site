@@ -101,7 +101,10 @@ $FrameClosing: contents;
 }
 
 .HeaderRecordMarker {
-	color: var(--Accent);
+	/* `#` in the running head: a mark, so the muted ink (`--Mark`), not the
+	   accent. The head's own register is `--HeaderMuted` and this is the one
+	   glyph inside it that used to be green. */
+	color: var(--Mark);
 }
 
 // The record's name wears the nav label's resting underline: 2px at 20% of the
@@ -292,7 +295,7 @@ html[data-section="contents"] .HeaderSection[data-section="contents"] {
 }
 
 .FrameRailMark {
-	color: var(--Accent);
+	color: var(--Mark);
 }
 
 .FrameRailTab {

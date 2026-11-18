@@ -50,7 +50,7 @@
 }
 
 .specimen-sheet__register-mark {
-	color: var(--Accent);
+	color: var(--Mark);
 }
 
 .specimen-sheet__register-word {
@@ -190,7 +190,7 @@ a.specimen-sheet__cell-inner:hover .specimen-sheet__name {
 }
 
 .specimen-sheet__state-mark {
-	color: var(--Accent);
+	color: var(--state-ink-attested);
 }
 
 .specimen-sheet__state--absent .specimen-sheet__state-mark {

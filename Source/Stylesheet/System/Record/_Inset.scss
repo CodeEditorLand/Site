@@ -127,7 +127,7 @@
 }
 
 .record-inset__absent-state--specimen {
-	color: var(--Accent);
+	color: var(--state-ink-attested);
 }
 
 .record-inset__absent-state--quiet {
@@ -264,7 +264,8 @@
 }
 
 .record-inset__state--specimen {
-	color: var(--Accent);
+	color: var(--state-ink-attested);
+	--state-mark: var(--state-mark-scale-attested);
 }
 
 .record-inset__state--quiet {
