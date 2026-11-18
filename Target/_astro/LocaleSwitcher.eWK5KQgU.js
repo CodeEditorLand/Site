@@ -1,0 +1,1 @@
+import{t}from"./LocaleSwitcher.ZsJokBRI.js";export{t as LocaleSwitcher,t as default};

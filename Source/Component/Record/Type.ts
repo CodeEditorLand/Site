@@ -54,6 +54,31 @@ import type { FieldRecordElement } from "../Brand/FieldRecordSeal";
 export type Tone = "paper" | "canvas" | "flush" | "bare";
 
 /**
+ * The vertical interval a band opens at: how much air separates it from the band
+ * above, and therefore how loudly it speaks in the page's sequence.
+ *
+ * The four are a ladder of about x1.4 and they are grouped into two registers
+ * (`Source/Stylesheet/System/Layout/_Interval.scss`):
+ *
+ *   rest   56px   TIGHT   the band continues the subject above it
+ *   beat   80px   TIGHT   a sibling subject - the default, and the step the
+ *                         site paid at every seam before the ladder existed
+ *   break 112px   WIDE    a new movement
+ *   turn  168px   WIDE    a chapter - and the block prints the boundary rule for
+ *                         it, so a chapter cannot be a chapter without one
+ *
+ * Two adjacent bands may share a register but never a rung: `wide, wide, tight,
+ * tight, wide` is the page's shape, and the second rung inside a register is what
+ * lets a page say "wide" twice at two volumes. A band that declares nothing is a
+ * `beat`, so an interval is an enhancement and never a requirement.
+ *
+ * It is a property of the BAND, in the data, not a class on the page: a page's
+ * sequence is a fact about its subject order, and a fact belongs where the
+ * subjects are declared.
+ */
+export type Interval = "rest" | "beat" | "break" | "turn";
+
+/**
  * RecordBand - the section grammar itself. One subject per band: a kicker and
  * a heading open it, a standfirst and an index strip may follow, a footnote
  * may close it.
@@ -97,6 +122,18 @@ export interface Band {
 	 * points at is an anchor pretending to be a destination.
 	 */
 	id?: string;
+
+	/**
+	 * The interval the band opens at (`Interval`, above). Absent means `beat`,
+	 * the site's ordinary step, so a band that does not care about the page's
+	 * sequence still composes.
+	 *
+	 * It is printed as `data-interval` and the block adds the chapter boundary
+	 * for a `turn`, because a chapter that forgot its rule would be a chapter the
+	 * reader has to be told about. A `bare` band ignores it: a band inside a Jelly
+	 * card is structure, and the card owns the inset.
+	 */
+	interval?: Interval;
 }
 
 /**

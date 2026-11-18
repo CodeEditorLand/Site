@@ -39,7 +39,7 @@
 // loses the ring, because a control that cannot be changed must not advertise
 // that it is waiting for input.
 
-$Field: ':is([data-slot="input"], [data-slot="textarea"], [data-slot="select-trigger"], [data-slot="input-otp-slot"], .SlipField, .SlipInput, .MatrixControl__Box, .contact-form__input, .auth-shell__field input, .auth-shell__field textarea, .search-field, .FieldRecordInput)';
+$Field: ':is([data-slot="input"], [data-slot="textarea"], [data-slot="select-trigger"], [data-slot="input-otp-slot"], .SlipField, .SlipInput, .MatrixControl__Box, .contact-form__input, .auth-shell__field input, .auth-shell__field textarea, .search-field, .FieldRecordInput, .Input, .Textarea)';
 
 // ─── REST ───────────────────────────────────────────────────────────────────
 
@@ -129,7 +129,10 @@ $Field: ':is([data-slot="input"], [data-slot="textarea"], [data-slot="select-tri
 
 	color: var(--state-ink-quiet);
 
-	border-color: var(--state-rule);
+	// The frame is NOT weakened here. A disabled field's edge is what tells the
+	// reader it is still a field rather than a line of text, and dropping it to
+	// the 8 % hairline is the same failure as the 50 % label - present in the DOM,
+	// gone from the page. The wash and the ink are the state; the frame stays.
 
 	cursor: not-allowed;
 }

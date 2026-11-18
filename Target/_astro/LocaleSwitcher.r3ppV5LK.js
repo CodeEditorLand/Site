@@ -1,1 +1,0 @@
-import{t}from"./LocaleSwitcher.CIkYxFUk.js";export{t as LocaleSwitcher,t as default};

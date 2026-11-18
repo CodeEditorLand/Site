@@ -1,1 +1,0 @@
-import{t}from"./RichText.C3Qi8QbO.js";import{Et as r}from"./Vendor/React.CNeZ6mQj.js";var a=r(),o=r=>(0,a.jsx)(t,{...r});export{o as DynamicRichText,o as default};

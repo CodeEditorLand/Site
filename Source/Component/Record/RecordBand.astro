@@ -32,9 +32,24 @@ interface Props {
 
 const { band } = Astro.props;
 const tone = band.tone ?? "canvas";
+
+/**
+ * The band's interval, and the one class it implies.
+ *
+ * `turn` is a chapter, so the block prints `record-band--chapter` for it: the
+ * boundary rule is the turn's, not a second decision a page could forget. A
+ * `bare` band drops both - it is structure inside a Jelly card, and a chapter
+ * rule drawn inside a card would be a boundary of nothing.
+ */
+const interval = tone === "bare" ? undefined : (band.interval ?? "beat");
+const chapter = interval === "turn" ? "record-band--chapter" : undefined;
 ---
 
-<section class={`record-band record-band--${tone}`} id={band.id}>
+<section
+	class:list={["record-band", `record-band--${tone}`, chapter]}
+	id={band.id}
+	data-interval={interval}
+>
 	<div class="record-band__inner">
 		<p class="record-band__kicker">{band.kicker}</p>
 		<h2 class="record-band__heading">{band.heading}</h2>

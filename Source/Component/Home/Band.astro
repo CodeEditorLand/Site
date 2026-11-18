@@ -27,12 +27,21 @@
  * cards are and the stamp says who funds the work and which phase it is in.
  * Neither is a decoration on the other.
  *
- * `rhythm` is the page's own alternation, not a per-band taste: `wide` opens a
- * subject, `tight` packs the band that is an appendix. The page's rhythm is
- * wide / wide / tight / tight / wide, and it is set here so a band cannot
- * disagree with the page about where the reader rests.
+ * `rhythm` is the page's own sequence, not a per-band taste: it is the band's
+ * interval in `Layout/_Interval.scss`'s four-rung ladder, and it is set here so a
+ * band cannot disagree with the page about where the reader rests. The page's
+ * shape is wide / wide / tight / tight / wide, which on a four-rung ladder is
+ * turn / break / rest / beat / turn - two registers, and never the same rung
+ * twice running.
+ *
+ * `wide` and `tight` are kept as aliases (`break` and `beat`) for a band written
+ * before the ladder existed: an alias is the nearest rung of its register, so an
+ * un-updated band still speaks at the right volume rather than at a default.
  */
 import type { BandHead } from "../../Content/Home/Type.js";
+
+/** The page's four intervals, plus the two register names they replaced. */
+type Rhythm = "rest" | "beat" | "break" | "turn" | "wide" | "tight";
 
 interface Props {
 	/** The band's own data, from `Content/Home/Band.ts`. */
@@ -47,11 +56,21 @@ interface Props {
 	 */
 	series?: string;
 
-	/** `wide` (the default) or `tight`: the page's alternation. */
-	rhythm?: "wide" | "tight";
+	/** The band's interval: `rest`, `beat`, `break` or `turn`. Defaults to `beat`. */
+	rhythm?: Rhythm;
 }
 
-const { head, series, rhythm = "wide" } = Astro.props;
+const { head, series, rhythm = "beat" } = Astro.props;
+
+/** The alias map: a register name resolves to its nearest rung. */
+const IntervalOf: Record<Rhythm, string> = {
+	rest: "rest",
+	beat: "beat",
+	break: "break",
+	turn: "turn",
+	wide: "break",
+	tight: "beat",
+};
 
 /** The one heading id the band's `aria-labelledby` points at. */
 const HeadingID = `${head.ID}Heading`;
@@ -60,7 +79,8 @@ const HeadingID = `${head.ID}Heading`;
 <section
 	id={head.ID}
 	aria-labelledby={HeadingID}
-	class:list={["home-band", `home-band--${rhythm}`]}
+	class="home-band"
+	data-interval={IntervalOf[rhythm]}
 >
 	<div class="home-band__inner">
 		<div class="home-band__head">

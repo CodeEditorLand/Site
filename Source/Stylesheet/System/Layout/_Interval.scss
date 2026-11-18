@@ -1,0 +1,337 @@
+// INTERVAL - the page as a sequence of intervals.
+//
+// ─── THE PROBLEM ──────────────────────────────────────────────────────────
+// Every band on this site paid the same distance. `.record-band` opened and
+// closed at --space-group (32px), so every seam was 64px, and the index's nine
+// movements read as nine equal paragraphs. A page where every band is equally
+// important is a page where none is: the reader cannot feel where one subject
+// ends and the next begins, and the document stops being a sequence of subjects
+// and becomes a stack of them.
+//
+// ─── THE FOUR INTERVALS ───────────────────────────────────────────────────
+// The seam between two bands is now one of four named intervals. Each one is a
+// value the whole page can be read against, and each names what the band below
+// it IS:
+//
+//   rest    56px   the band continues the subject above it - the page pauses
+//   beat    80px   a sibling subject - a step inside one movement
+//   break  112px   a new movement - the page changes gear
+//   turn   168px   a chapter - the page turns, under its boundary rule
+//
+// The seam is the distance from the last row of one band to the first row of the
+// next, and it is the named number exactly (THE PAYMENT, below), so a page's
+// rhythm can be read off its markup and checked against this ladder.
+//
+// ─── THE LADDER ───────────────────────────────────────────────────────────
+// The four are a geometric ladder at about x1.4, not four opinions:
+//
+//   56 -> 80 -> 112 -> 168        x1.43, x1.40, x1.50
+//
+// 1.4 is the smallest ratio the eye reliably reads as a different distance;
+// below it two intervals look like one, which is why there are four rungs and
+// not six, and why the ladder is not a ramp. The type scale works the same way:
+// hard jumps, and the jump is the hierarchy.
+//
+// The ladder is grouped into TWO REGISTERS, and the register is what a page's
+// shape is made of:
+//
+//   TIGHT   rest, beat        a band that belongs with its neighbour
+//   WIDE    break, turn       a band that opens something
+//
+// Two adjacent bands may share a REGISTER - `wide, wide, tight, tight, wide` is
+// the page's shape (Design-Brief §2) - but they may never share a RUNG. The
+// second rung inside a register is what lets a page say "wide" twice without
+// saying it at the same volume, and that is the whole difference between a
+// rhythm and an alternation.
+//
+// ─── THE PAYMENT ──────────────────────────────────────────────────────────
+// A band pays its interval in two parts:
+//
+//   closing   --interval-close (32px) under its own content, always
+//   opening   interval - 32 above its content
+//
+// so the seam is the interval exactly, and the SPLIT is the band's own statement
+// about itself: a `rest` band puts 24 above and 32 below (it belongs to what
+// precedes it), a `turn` puts 136 above and 32 below (it belongs to what
+// follows). That is the heading law one scale up - a heading sits close to its
+// body and far from what precedes it - and it is why the air above a band is the
+// number a reader feels.
+//
+// The closing 32 is deliberately NOT part of the ladder: it is the step a white
+// band needs to close its own box, and the step a boundary rule needs above it.
+// Without it the chapter rule would sit flush under the previous band's last
+// row, which is an underline, not a boundary.
+//
+// ─── THE REGISTER INSIDE ──────────────────────────────────────────────────
+// A band's inside follows its REGISTER, not its rung: a TIGHT band sets its head
+// at --space-tight and its body at --space-reading; a WIDE band sets its head at
+// --space-reading and its body at --space-group. So the outside is always at
+// least 1.75x the inside - a band never opens at the same distance its own rows
+// are set - and a tight band is tight all the way in, which is where a record
+// tightens: a `rest` band's artifacts sit 16px apart, a `turn` band's 32px.
+//
+// ─── A CHAPTER IS A TURN ──────────────────────────────────────────────────
+// `record-band--chapter` is now what a `turn` prints rather than a second
+// opinion: `RecordBand.astro` adds the class when the band's interval is `turn`,
+// so a chapter cannot be a chapter without the boundary rule, and the rule
+// cannot appear on a band that is not one. The class keeps its own name and its
+// own ink (`--Divider`); this layer only owns the distance around it.
+//
+// ─── THE SEQUENCE GUARD ───────────────────────────────────────────────────
+// "No two adjacent bands share a rung" is a law, so it is also enforced: two
+// consecutive bands that declare the same rung step the second one up the
+// ladder (rest -> beat -> break -> turn). A page that repeats itself therefore
+// accelerates into a break instead of droning, and the correction is a value the
+// ladder already names rather than a number invented here.
+//
+// A run of THREE identical rungs steps the third a further rung, which is the
+// limit of what a sibling selector can see: a run of four is a composition the
+// page got wrong and this layer will not paper over - the register on /Contents
+// prints each page's sequence so the defect is visible instead of silent.
+//
+// ─── WHAT THIS LAYER DOES NOT DO ──────────────────────────────────────────
+// It paints no surface, adds no block and writes no copy. It does not touch the
+// hero pair, the Download masthead or the header ribbon - keepers, whose rhythm
+// is theirs - and it does not space a bare band: a band inside a Jelly card is
+// structure, and the card owns its inset.
+//
+// ─── THE ADVERSE STATES ───────────────────────────────────────────────────
+// A sequence is a design like any other, so it has a second design:
+//
+//   empty      a page with one band: it is both the first and the last, so it
+//              paints no rule and closes at the rest interval - a page with one
+//              subject is not a chapter of itself.
+//   too much   thirty bands: the guard steps each repeat up a rung, so a run of
+//              identical bands accelerates into a break instead of droning.
+//   partial    a band with no standfirst or no index strip: every part of the
+//              head carries its own distance, so a missing part leaves no hole.
+//   too long   a heading that wraps four times: the interval is padding on the
+//              BOX, so a band's air is measured from its edges and never from
+//              its baseline - the seam does not move when the text does.
+//   loading    a band whose body is a skeleton: the skeleton sits in the same
+//              body slot at the same interval, so the page does not jump when
+//              the facts arrive.
+//   missing    a band whose index strip has no cells prints no strip (never an
+//              empty one) and the body's distance is unchanged.
+//   stale, error, denied
+//              not rhythm states: they live in the block that carries them (an
+//              as-of, a STATUS word, a gate) and a band spaces them like any
+//              other body. A rhythm that reacted to them would be decorating
+//              the truth.
+//
+// See `System/Space/_Space.scss` for the five atomic steps these intervals are
+// not: a step names a relationship inside a block, an interval names the
+// distance between two blocks, and a surface that reaches for a sixth of either
+// is writing a number the system does not have.
+@use "../Mixin" as *;
+
+// ─── THE LADDER ───────────────────────────────────────────────────────────
+// Four rungs and one fixed closing step. `--interval-close` is declared with the
+// ladder because the payment arithmetic needs it in the same place; it is not a
+// rung and it never varies with one.
+
+:root {
+	--interval-close: var(--space-group); /*  32px - a band's own closing step */
+	--interval-rest: 3.5rem; /*  56px - a continuation                     */
+	--interval-beat: 5rem; /*  80px - a sibling subject                  */
+	--interval-break: 7rem; /* 112px - a new movement                     */
+	--interval-turn: 10.5rem; /* 168px - a chapter: the page turns          */
+}
+
+// ─── THE DEFAULT ──────────────────────────────────────────────────────────
+// A band that declares nothing is a `beat`: the site's ordinary step, and the
+// one value that cannot make a page worse by being assumed. The register's two
+// defaults come with it, because a `margin-block-start: var(--band-head)` with
+// no `--band-head` in scope would resolve to nothing and collapse the head.
+//
+// These three declarations are (0,1,0) on purpose: the rung selectors below are
+// the same weight and are written after them, so a declaration on the band always
+// beats the default and no rung needs a specificity trick to win.
+
+.record-band,
+.band,
+.home-band {
+	--band-interval: var(--interval-beat);
+	--band-head: var(--space-tight);
+	--band-body: var(--space-reading);
+}
+
+// ─── THE RUNGS ────────────────────────────────────────────────────────────
+
+[data-interval="rest"] {
+	--band-interval: var(--interval-rest);
+}
+
+[data-interval="beat"] {
+	--band-interval: var(--interval-beat);
+}
+
+[data-interval="break"] {
+	--band-interval: var(--interval-break);
+}
+
+[data-interval="turn"] {
+	--band-interval: var(--interval-turn);
+}
+
+// ─── THE REGISTER, INSIDE ─────────────────────────────────────────────────
+// TIGHT bands are tight all the way in; WIDE bands breathe inside as well. The
+// two rungs of a register share one inside, which is what makes the register
+// readable as a register and the rung readable as a volume.
+
+[data-interval="rest"],
+[data-interval="beat"] {
+	--band-head: var(--space-tight);
+	--band-body: var(--space-reading);
+}
+
+[data-interval="break"],
+[data-interval="turn"] {
+	--band-head: var(--space-reading);
+	--band-body: var(--space-group);
+}
+
+// ─── A CHAPTER IS A TURN ──────────────────────────────────────────────────
+// Written after the rung selectors so the class wins on equal specificity: a
+// band that carries `--chapter` is a turn whether or not its data says so, and a
+// `turn` is what makes the block print that class. The two cannot disagree.
+
+.record-band--chapter,
+.band--chapter {
+	--band-interval: var(--interval-turn);
+}
+
+// ─── THE SEQUENCE GUARD ───────────────────────────────────────────────────
+// A repeat steps the second band one rung up the ladder. The selectors are
+// (0,2,0), so they outrank every rung and the chapter rule above, and they read
+// the declared rung rather than the computed one - which is why the guard is
+// about the page's composition and not about a value this layer produced.
+
+[data-interval="rest"] + [data-interval="rest"] {
+	--band-interval: var(--interval-beat);
+}
+
+[data-interval="beat"] + [data-interval="beat"] {
+	--band-interval: var(--interval-break);
+}
+
+[data-interval="break"] + [data-interval="break"] {
+	--band-interval: var(--interval-turn);
+}
+
+[data-interval="turn"] + [data-interval="turn"] {
+	--band-interval: var(--interval-break);
+}
+
+// The third of a run. A sibling selector cannot see four, so this is the honest
+// limit of the mechanism: past three the page is miscomposed and the register
+// prints it rather than the layer hiding it.
+
+[data-interval="rest"] + [data-interval="rest"] + [data-interval="rest"] {
+	--band-interval: var(--interval-break);
+}
+
+[data-interval="beat"] + [data-interval="beat"] + [data-interval="beat"] {
+	--band-interval: var(--interval-turn);
+}
+
+// ─── THE PAYMENT ──────────────────────────────────────────────────────────
+// One rule, one mechanism: the band's own box pays its interval, the part above
+// the boundary rule as padding (so a chapter's rule keeps its air) and the fixed
+// closing step below it.
+//
+// `:not(.record-band--bare)` is not a preference: a bare band is a section of an
+// artifact that already sits on a Jelly surface, and the card owns the inset. A
+// band that paid an interval inside a card would inset the card's content twice.
+
+.record-band:not(.record-band--bare),
+.band,
+.home-band {
+	padding-block: calc(var(--band-interval) - var(--interval-close))
+		var(--interval-close);
+}
+
+// ─── THE BAND'S INSIDE ────────────────────────────────────────────────────
+// The head's parts and the body's opening read the band's register. The body's
+// `gap` is the distance between two artifacts inside one band, which is the
+// distance a record tightens to in a tight band - and the distance a figure
+// keeps from the figure beside it in a wide one. A figure and its caption are
+// one block, so they are separated by the figure's own tight step and never by
+// this gap (`Record/_Figure.scss`).
+
+.record-band:not(.record-band--bare) .record-band__heading,
+.record-band:not(.record-band--bare) .record-band__standfirst,
+.record-band:not(.record-band--bare) .record-band__index {
+	margin-block-start: var(--band-head);
+}
+
+.record-band:not(.record-band--bare) .record-band__body,
+.record-band:not(.record-band--bare) .record-band__footnote {
+	margin-block-start: var(--band-body);
+}
+
+.record-band:not(.record-band--bare) .record-band__body {
+	gap: var(--band-body);
+}
+
+// ─── THE FIRST BAND AFTER THE HEADER ──────────────────────────────────────
+// The page's first band differs from every other one in the only way that
+// matters: nothing above it is a band, so it has no seam to pay and it must not
+// paint a boundary - the header already ends the page, and a rule under it would
+// be a second header edge. It keeps its interval below, so the opening band is
+// as far from the second as its rung says.
+//
+// `:nth-child(1 of S)` is the only selector that can say "the first band among
+// its siblings" without the page numbering its bands, and it is why the rule
+// holds whether a band sits directly in `main` or behind a wrapper.
+
+.record-band:nth-child(1 of .record-band),
+.band:nth-child(1 of .band),
+.home-band:nth-child(1 of .home-band) {
+	border-block-start: 0;
+}
+
+// ─── THE LAST BAND BEFORE THE FOOTER ──────────────────────────────────────
+// A page decelerates. The last band closes at the rest interval instead of the
+// fixed step, so the page's foot is a settling rather than a stop, and it is a
+// named interval rather than a number this rule invents. The shell's own
+// `padding-block-end` still follows it: the two are different payments - the
+// band's air, then the page's - and the frame owns the second.
+
+.record-band:nth-last-child(1 of .record-band),
+.band:nth-last-child(1 of .band),
+.home-band:nth-last-child(1 of .home-band) {
+	padding-block-end: var(--interval-rest);
+}
+
+// ─── THE FLOW THAT READS THE SAME KNOB ────────────────────────────────────
+// Two surfaces space a set of parts inside ONE artifact: the legal documents'
+// parts and the Download record's regions. Their rhythm belongs to the flow
+// container (the `_Space.scss` law), so the container reads each child's
+// declared interval and pays it there - one mechanism, and the artifact's own
+// default is the group step it already used.
+//
+// A child that declares nothing gets the artifact step, which is why the
+// fallback is `--space-group` and not a rung: inside one subject the page's
+// ladder does not apply, and a `turn` inside a record would be a chapter of a
+// chapter.
+
+.reading-document__part,
+.download-record__inner > * {
+	margin-block-start: var(--band-interval, var(--space-group));
+}
+
+// The first part of an artifact pays nothing above it: the artifact's own
+// opening already did.
+.reading-document__body > :first-child,
+.download-record__inner > :first-child {
+	margin-block-start: 0;
+}
+
+// The Download record's column used a uniform `gap`; with the parts reading
+// their own intervals the gap would compound with the margin. It is set to zero
+// here rather than in the component's partial because the flow container is the
+// one owner of the rhythm and this layer is where that ownership now lives.
+.download-record__inner {
+	gap: 0;
+}

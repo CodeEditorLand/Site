@@ -105,6 +105,8 @@ const DynamicButton = ({ Content, OnAction, IsLoading = false }: Property) => {
 	//
 	// `aria-label` keeps the action's NAME while the label is showing the state, so
 	// a reader who tabs to the control during the wait is still told what it does.
+	// It is spread conditionally rather than assigned, so a caller's own
+	// `aria-label` is untouched at rest.
 	//
 	// The props are spread before the three, so a caller can style and describe the
 	// control but cannot make it claim to be idle while it is working.
@@ -126,29 +128,35 @@ const DynamicButton = ({ Content, OnAction, IsLoading = false }: Property) => {
 			{...props}
 			disabled={Disabled}
 			aria-busy={IsLoading || undefined}
-			// The action's NAME becomes the control's accessible name while the label
-			// is showing the state, so a reader who tabs to it during the wait is
-			// still told what it does. Spread conditionally rather than assigned, so a
-			// caller's own `aria-label` is untouched at rest.
 			{...(IsLoading ? { "aria-label": Text } : {})}
 		>
+			{Text}
+
 			{IsLoading ? (
-				// ─── NO SPINNER ───────────────────────────────────────────────
+				// ─── NO SPINNER, AND THE LABEL STAYS ───────────────────────────
 				// This was `lucide.Loader2` with `animate-spin`: a loop that says
 				// "something is happening" for as long as it spins and nothing else.
 				// The busy arm is printed instead, in the record grammar and from the
 				// skeleton layer's own two tokens - a bar whose value is not known
-				// yet, and the vocabulary's own word. `State/_Busy.scss` states why.
+				// yet, and the vocabulary's own word.
+				//
+				// The action's label is NOT withdrawn: replacing "Sign In" with
+				// "Loading" shrinks the button under the reader's cursor at the exact
+				// moment they pressed it, and it takes away the one word that says
+				// what is being waited for. So the label stays and the readout joins
+				// it, which is why the state is additive here and not a substitution.
 				// The word is uppercased by the layer's tracking register, so it is
-				// written here in sentence case like every other label on the site.
-				<span className="StateBusy">
-					<span className="StateBusy__Bar" aria-hidden="true" />
+				// written in sentence case like every other label on the site.
+				<>
+					{"\u2001"}
 
-					<span className="StateBusy__Word">Loading</span>
-				</span>
-			) : (
-				Text
-			)}
+					<span className="StateBusy">
+						<span className="StateBusy__Bar" aria-hidden="true" />
+
+						<span className="StateBusy__Word">Loading</span>
+					</span>
+				</>
+			) : null}
 
 			{!IsLoading && IconComponent ? (
 				<>

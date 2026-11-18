@@ -46,8 +46,9 @@
 	min-inline-size: 0;
 
 	// The readout never wraps: a button that grew a second line while waiting
-	// would move every control beside it, and the box is the one thing the busy
-	// state promises not to change.
+	// would move every control beside it, and the block size is the one dimension
+	// the busy state holds. The inline extent may grow by this readout - a state
+	// that prints a word cannot also promise its own width (see `_Index.scss`).
 	white-space: nowrap;
 }
 
@@ -115,29 +116,19 @@
 	transform: none;
 }
 
-// A busy row keeps its label and loses its answer. The value cell is where the
-// answer lives, so a row that is busy bars that cell and nothing else - the
-// reader can still read which row is waiting.
-.record-ledger__row[aria-busy="true"] .record-ledger__value,
-.record-entry__value[aria-busy="true"] {
-	color: transparent;
-}
-
-.record-ledger__row[aria-busy="true"] .record-ledger__value::after,
-.record-entry__value[aria-busy="true"]::after {
-	content: "";
-
-	display: block;
-
-	block-size: var(--state-busy-bar);
-	inline-size: var(--bar, 60%);
-
-	margin-block-start: 0.375rem;
-
-	background-color: var(--state-ink);
-
-	opacity: var(--state-busy-ink);
-}
+// ─── THE BLOCK'S SKELETON IS THE BLOCK'S ─────────────────────────────────
+//
+// `RecordLedger`, `RecordCompare`, `Leader`, `MotionSkeleton` and `MotionFold` all
+// print their own loading arm - keys kept, values barred, the schema stated - and
+// they print it themselves because only the block knows which keys it will have.
+// This layer does not restate it: a second bar vocabulary on top of theirs would
+// be two skeletons that can disagree about a height and an ink.
+//
+// What the layer owns is the part every one of them shares: the attribute's
+// cursor, the refusal of a second press, and the readout a CONTROL draws inside
+// itself (`.StateBusy` above). A block that is loading is a block; a control that
+// is busy is a control, and the two are the same object at two scales only
+// because they read the same two tokens.
 
 // ─── THE ONE SPINNER LEFT ON THE SITE ─────────────────────────────────────
 //

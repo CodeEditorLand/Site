@@ -40,7 +40,29 @@
 // padding-inline-start) are the model; the rows that do not are given it below
 // only where they have a leading cell to pay for it from.
 
-$Row: ':is(.record-archive__link, .record-entry__link, .record-ledger__row, .record-band__index-item, .record-trace__link, .status-board__link, .lexicon-entry__link, .onward__link, .trail__link, .doc-sidebar__link, .doc-contents__link, .doc-layer__link, .trust-contents__link, .surface-regions__link, .ShellRail__row, .ShellRail__foot-link, .Fold__Row, .detail-leader__row, .detail-see__row, .doc-crate, .surface-links__item, .home-platform__anchor, .properties-filed__link, .contact-sale__route, .doc-layout__rust, .Slip__Row, [data-slot="dropdown-menu-item"], [data-slot="select-item"], [data-slot="command-item"])';
+$Row: ':is(.record-archive__link, .record-entry__link, .record-band__index-item, .record-trace__link, .status-board__link, .lexicon-entry__link, .onward__link, .trail__link, .doc-sidebar__link, .doc-contents__link, .doc-layer__link, .trust-contents__link, .surface-regions__link, .ShellRail__row, .ShellRail__foot-link, .Fold__Row, .detail-leader__row, .detail-see__row, .doc-crate, .surface-links__item, .home-platform__anchor, .properties-filed__link, .contact-sale__route, .doc-layout__rust, .Slip__Row, [data-slot="dropdown-menu-item"], [data-slot="select-item"], [data-slot="command-item"])';
+
+// ─── THE ROW THAT IS NOT A TARGET ───────────────────────────────────────────
+//
+// A ledger row is a printed fact, not a destination: `.record-ledger__row` is a
+// `<div>` in a `<dl>` and most of them hold no link at all. It is deliberately NOT
+// in `$Row` - a `cursor: pointer` on a row nothing happens under is the same lie
+// as a dimmed label, told with a cursor. The rows that DO hold a link
+// (`.record-ledger__link`) are targets, and they are the ones that answer:
+//
+//   `:has()` is the only selector that can ask a `<div>` whether it contains the
+//   link, and `_Motion.scss` already uses it for the same row's press.
+:where(.record-ledger__row:has(.record-ledger__link)) {
+	cursor: pointer;
+}
+
+:where(.record-ledger__row:has(.record-ledger__link)):hover {
+	background-color: var(--state-field);
+}
+
+:where(.record-ledger__row:has(.record-ledger__link)):active {
+	background-color: var(--state-field-press);
+}
 
 // ─── REST ───────────────────────────────────────────────────────────────────
 //

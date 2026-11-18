@@ -91,10 +91,10 @@ $Bare: ":is(.SlipAction, .Copy, .PaletteTrigger, .RailFilter__Clear, .doc-sideba
 	background-color: var(--state-field-press);
 }
 
-// The kit's scale, stood down. `transform: none` on the resting rule would fight
-// the press's own translate, so the scale is cancelled by the press declaring a
-// transform and the resting state declaring none - which is what the two rules
-// above and below already do between them.
+// The kit's press was `active:scale-[0.97]` - 3 % of a 40px button, and on a mono
+// label a re-render of the text at a second size. `scale: 1` stands it down; the
+// travel above is the press. The two declarations do not fight, because one is the
+// `scale` property and the other is `transform`.
 [data-slot="button"]:active {
 	scale: 1;
 }

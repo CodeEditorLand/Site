@@ -30,7 +30,12 @@
 // returns. The travel is on the link, not the card's own frame, so a `jelly-card`
 // (a keeper surface) is never moved by this layer - only the anchor inside it.
 
-$Card: ":is(.doc-card__link, .doc-tile, .doc-services, .blog-index__link, .contact-hub__card, .hero-band__stack-tile, .home-platform__anchor, .record-stage__plate-label, .record-band__index-item, .surface-partner)";
+// Every member is an ANCHOR and the selector says so: `.record-stage__plate-label`
+// is an `<a>` when its stage has a destination and a `<span>` when it does not,
+// and a span that took this layer's hover would advertise a link that is not
+// there. `a:is(...)` is one character of specificity more than the prose default
+// and exactly the amount needed to state "a block link paints no line".
+$Card: "a:is(.doc-card__link, .doc-tile, .doc-services, .blog-index__link, .contact-hub__card, .hero-band__stack-tile, .home-platform__anchor, .record-stage__plate-label, .record-band__index-item, .surface-partner)";
 
 // ─── REST: NO RULE UNDER THE WORDS ─────────────────────────────────────────
 

@@ -85,14 +85,23 @@
 // prints the reason in its meta cell (`◎ PREPARING`, `◎ NO RECIPIENT`). A
 // reader who cannot read a control cannot understand why it will not work.
 //
-// ─── BUSY KEEPS THE BOX ─────────────────────────────────────────────────────
+// ─── BUSY KEEPS ITS PLACE ───────────────────────────────────────────────────
 //
 // No spinner. A spinner is a loop, and a loop is a state that never resolves -
-// the one thing a state must not be. A busy control keeps its geometry, its
-// label steps to a bar in the record grammar (the same bar
-// `Motion/_Skeleton.scss` draws, from the same two tokens), `WAITING ON:` names
-// what has not arrived, and the control refuses a second press. `DynamicButton`
-// carried a `Loader2` with `animate-spin`; it carries `.StateBusy` now.
+// the one thing a state must not be. A busy control keeps its height, its
+// baseline, its fill and its label; the readout joins the label rather than
+// replacing it, so the button does not shrink under the cursor that just pressed
+// it and the action's name stays on screen. `WAITING ON:` names what has not
+// arrived, which is the half a spinner cannot say.
+//
+// WHAT THE BOX PROMISE ACTUALLY IS, stated precisely because the loose version
+// would be false: the block size, the padding, the position and the label are
+// unchanged, and a control with a fixed or full inline size grows not at all. An
+// auto-width control's inline extent grows by the readout - that is the one
+// dimension a state that prints a word cannot hold, and hiding the word to hold it
+// would be the same trade as the spinner: silence in exchange for geometry.
+// `DynamicButton` carried a `Loader2` with `animate-spin`; it carries
+// `.StateBusy` now.
 //
 // ─── THE READING ORDER ──────────────────────────────────────────────────────
 //

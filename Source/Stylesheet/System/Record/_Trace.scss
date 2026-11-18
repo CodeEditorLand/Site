@@ -117,7 +117,8 @@
 }
 
 .record-trace__link:hover {
-	border-block-end-color: var(--Accent);
+	// The path's rule is its marker, so the state moves that rule to the ink.
+	border-block-end-color: var(--Primary);
 }
 
 // The note sits under the path below 768 and in its own column above it. It is

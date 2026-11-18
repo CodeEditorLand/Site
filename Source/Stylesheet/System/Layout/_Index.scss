@@ -44,3 +44,11 @@
 @use "Panes";
 @use "Plate";
 @use "State";
+// The interval layer loads LAST in this directory: it changes the value of a
+// `padding-block` three partials already wrote (`.record-band`, `.band`,
+// `.home-band`) and it reads the same declarations they read, so source order is
+// the mechanism. It adds the one thing none of them had - the page's vertical
+// sequence as four named intervals - and it owns the distance around a boundary
+// rule the chapter class draws. See `Layout/_Interval.scss` before moving this
+// line.
+@use "Interval";
