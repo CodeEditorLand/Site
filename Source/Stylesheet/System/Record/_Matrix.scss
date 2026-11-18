@@ -157,7 +157,11 @@
 }
 
 .record-matrix__cell--yes {
-	color: var(--Accent);
+	/* A data cell is a value, not a destination. It keeps its weight - the one
+	   emphasis a matrix cell may carry - and takes the ink; the cell's own word
+	   (`YES`) is the fact. Green here made a comparison table look like a
+	   navigation list. */
+	color: var(--Foreground);
 	font-weight: 500;
 }
 

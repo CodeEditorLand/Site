@@ -321,11 +321,17 @@ body > astro-island {
 	margin-bottom: var(--space-blank);
 }
 
-/* Text Selection Highlighting */
+/* Text Selection Highlighting.
+   The selection is the reader's own marking, not the site's authentication, so
+   it is ink at 14 % - the same wash a hover uses - and the text stays the text.
+   It was `--Accent` on `--Card` (green block, white words), which made quoting
+   a sentence the loudest green on the page. `Detail/_Ink.scss` states the value
+   and refines it for an inverted action; this is the base declaration so the
+   rule holds even if the detail layer is ever moved. */
 *::selection,
 ::selection {
-	background: var(--Accent);
-	color: var(--Card);
+	background: color-mix(in srgb, var(--Foreground) 14%, transparent);
+	color: var(--Foreground);
 
 	text-shadow: none;
 }

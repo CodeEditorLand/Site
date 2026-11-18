@@ -145,14 +145,14 @@
 
 .record-compare__stop-state--specimen {
 	color: var(--state-ink-attested);
-	--state-mark: var(--state-mark-scale-attested);
+	--state-mark-scale: var(--state-mark-scale-attested);
 }
 
 .record-compare__stop-mark {
 	display: block;
 	flex: 0 0 auto;
-	inline-size: 4px;
-	block-size: 4px;
+	inline-size: calc(4px * var(--state-mark-scale, 1));
+	block-size: calc(4px * var(--state-mark-scale, 1));
 	background: currentColor;
 }
 

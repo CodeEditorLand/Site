@@ -118,7 +118,10 @@
 }
 
 .hero-band__stack-tile:hover {
-	border-color: var(--Accent);
+	/* A hover is ink (`Detail/_Ink.scss`). The tile's frame is the only thing
+	   defining it, so the state moves that frame to the ink - the accent would
+	   be a hover spending the colour the current route owns. */
+	border-color: var(--Primary);
 }
 
 .hero-band__stack-inner {

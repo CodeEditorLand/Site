@@ -136,9 +136,13 @@
 	}
 
 	.ButtonGhost:hover {
-		background-color: var(--Accent);
+		/* A ghost control's hover is a FIELD, not a hue: the creme step the site
+		   already uses for attention (`--Mute`), with the label at ink. It was a
+		   green fill with a white label, which made the quietest button on the
+		   site the loudest thing in a form. */
+		background-color: var(--Mute);
 
-		color: var(--AccentForeground);
+		color: var(--Foreground);
 	}
 
 	.Card {
@@ -375,13 +379,18 @@
 	justify-content: center;
 }
 
-/* NOTE - blue */
+/* NOTE - blue. The callout family is the only place in this file that carried
+   literal colours (`#0969da`, `rgba(59, 130, 246, 0.06)` ...): five hues, five
+   washes, none of them a token. They are the spine palette now - the wash is the
+   spine's own hue at 6 % and the title is the spine's label ink - so a note,
+   a tip, a warning and a caution read as one family with the badges and the
+   chips that carry the same hues, and the palette has no sixth green. */
 .markdown-alert-note {
-	background-color: rgba(59, 130, 246, 0.06);
+	background-color: color-mix(in srgb, var(--SpineIPC) 6%, transparent);
 }
 
 .markdown-alert-note .markdown-alert-title {
-	color: #0969da;
+	color: var(--SemanticSky);
 }
 
 .markdown-alert-note .markdown-alert-title::before {
@@ -390,11 +399,11 @@
 
 /* TIP - green */
 .markdown-alert-tip {
-	background-color: rgba(34, 197, 94, 0.06);
+	background-color: color-mix(in srgb, var(--SpinegRPC) 6%, transparent);
 }
 
 .markdown-alert-tip .markdown-alert-title {
-	color: #1a7f37;
+	color: var(--SpinegRPCFore);
 }
 
 .markdown-alert-tip .markdown-alert-title::before {
@@ -403,11 +412,11 @@
 
 /* IMPORTANT - purple */
 .markdown-alert-important {
-	background-color: rgba(168, 85, 247, 0.06);
+	background-color: color-mix(in srgb, var(--SpineWASM) 6%, transparent);
 }
 
 .markdown-alert-important .markdown-alert-title {
-	color: #8250df;
+	color: var(--SpineWASMFore);
 }
 
 .markdown-alert-important .markdown-alert-title::before {
@@ -416,11 +425,11 @@
 
 /* WARNING - amber */
 .markdown-alert-warning {
-	background-color: rgba(251, 191, 36, 0.06);
+	background-color: color-mix(in srgb, var(--SemanticYellow) 6%, transparent);
 }
 
 .markdown-alert-warning .markdown-alert-title {
-	color: #9a6700;
+	color: var(--SemanticYellow);
 }
 
 .markdown-alert-warning .markdown-alert-title::before {
@@ -429,11 +438,11 @@
 
 /* CAUTION - red */
 .markdown-alert-caution {
-	background-color: rgba(248, 113, 113, 0.06);
+	background-color: color-mix(in srgb, var(--Destruct) 6%, transparent);
 }
 
 .markdown-alert-caution .markdown-alert-title {
-	color: #cf222e;
+	color: var(--DestructFore);
 }
 
 .markdown-alert-caution .markdown-alert-title::before {

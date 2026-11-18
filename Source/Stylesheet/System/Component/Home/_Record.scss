@@ -189,12 +189,20 @@
 }
 
 .home-record__status-value {
-	color: var(--Accent);
+	/* The state word is a FACT, not an authentication: it takes the ink, and the
+	   three tones below are the whole vocabulary (quiet for a pending or retired
+	   state, ink for everything else, and the block's own state square for the
+	   shape). It printed in the accent before this card, which is why every
+	   element card on the homepage carried a green word. */
+	color: var(--CardForeground);
 }
 
-// The STATUS vocabulary's three tones (`DESIGN-COMPLETE.md` §1.5). The accent
-// authenticates ACTIVE and VERIFIED; a quiet state is muted, and a state the
-// vocabulary does not know is ink - it does not get to authenticate itself.
+// The STATUS vocabulary's three tones (`DESIGN-COMPLETE.md` §1.5). `specimen`
+// means the state is attested - ACTIVE, VERIFIED - and it is carried by the
+// card's 4px state square at half again the size (`--state-mark-scale`), never
+// by a hue: the accent authenticates a route, a link, a focus and a seal, and a
+// value that spent it would leave the page with nothing to point at. A quiet
+// state is muted; a state the vocabulary does not know is ink.
 .home-record__status-value[data-tone="quiet"] {
 	color: var(--MuteForeground);
 }

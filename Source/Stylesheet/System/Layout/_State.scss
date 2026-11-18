@@ -82,15 +82,15 @@
 }
 
 .ShellState__status-mark {
-	inline-size: 0.4rem;
-	block-size: 0.4rem;
+	inline-size: calc(0.4rem * var(--state-mark-scale, 1));
+	block-size: calc(0.4rem * var(--state-mark-scale, 1));
 	background: currentColor;
 	translate: 0 -0.1em;
 }
 
 .ShellState__status--specimen {
 	color: var(--state-ink-attested);
-	--state-mark: var(--state-mark-scale-attested);
+	--state-mark-scale: var(--state-mark-scale-attested);
 }
 
 .ShellState__status--quiet {

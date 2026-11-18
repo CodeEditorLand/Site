@@ -244,8 +244,14 @@
 }
 
 .HeaderNavLink:hover .HeaderLinkLabel {
-	color: var(--Accent);
-	text-decoration-color: var(--Accent);
+	/* HOVER IS A FIELD AND A RULE, NOT A HUE. The label stays at the bar's ink
+	   and its 2px resting rule comes up to full strength; the 12 % wash behind
+	   the link (`.HeaderNavLink::before`) is what says the pointer is on it.
+	   The label used to turn green, which put the accent on a hover - and a
+	   hover is the one state a reader cannot keep, so it should not be spent on
+	   the colour that means "you are here". */
+	color: var(--HeaderFg);
+	text-decoration-color: var(--HeaderFg);
 }
 
 .HeaderNavLink:hover::before {
