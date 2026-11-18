@@ -1,0 +1,162 @@
+@use "../Mixin" as *;
+
+// ─── THE LINK ───────────────────────────────────────────────────────────────
+//
+// An anchor is not a control. It has no press to give, no fill to flatten and no
+// arm to withhold; what it has is a destination, a rule under its words, and the
+// one position marker the site draws. So its vocabulary is shorter, and every
+// state it does have is a line:
+//
+//   rest      one underline at `--Divider` (20 % ink) - the sitewide prose
+//             default, and the reason a link is a link without colour
+//   hover     the same underline at the full ink. The line moves; the words do
+//             not, and nothing gains a hue
+//   focus     the one accent ring, 2px at 4px
+//   current   `aria-current` plus the 2px accent rule and weight 500 - the
+//             site's four marks, and the header's bar is the same marker at the
+//             foot of a nav label
+//   gone      `◎` in the mark position, quiet ink, no rule, no hover: a record
+//             whose target is not in the build, printed rather than linked
+//
+// ─── A LINK PAINTS ONE LINE ────────────────────────────────────────────────
+//
+// `_Global.scss` states the law and its mechanism: prose and route links wear
+// the `--Divider` underline, nav labels wear their own 2px/20 % resting rule,
+// block links wear nothing (a rule under the words says the words are the link
+// and the block is not), and a component that states a `text-decoration` wins
+// because the global rule sits inside `:where()`. This layer does not restate
+// it. What it adds is the states the law did not reach: the ring on every
+// anchor (many had none), the position marks on the anchors whose partial never
+// drew them, and the gone target.
+//
+// ─── THE HOVERS THIS LAYER MOVED ───────────────────────────────────────────
+//
+// Twelve selectors turned a label the accent on hover, which spends the one
+// colour that authenticates on a mouse position. Each one was moved to ink and
+// given a non-colour marker in its own partial - the rule where the row has a
+// rule, the underline where it has none:
+//
+//   Component/Doc/_Index.scss       .doc-card__link, .doc-appendix__link,
+//                                   .doc-appendix__arrow, .doc-services,
+//                                   .doc-tile              -> ink + underline
+//   Component/Doc/_Rust.scss        .doc-crate, .doc-crate__arrow
+//                                                          -> ink + rule
+//   Component/More/_Lexicon.scss    .lexicon__letter-link, .lexicon-entry__link
+//                                                          -> ink + underline
+//   Component/More/_Onward.scss     .onward__where         -> ink + rule
+//   Component/Surface/_Shell.scss   .surface__action, .surface-absent__action
+//                                                          -> ink + rule
+//   Component/Layout/_Frame.scss    .HeaderRecordName      -> ink + rule
+//   Component/Dashboard/_Index.scss .surface-links__item   -> ink + rule
+//   Component/Blog/_Listing.scss    .blog-index__link      -> the title's rule
+//                                   (it answered the pointer by fading to 80 %
+//                                   opacity - a state present in the DOM and
+//                                   gone from the page)
+//
+// Two hovers keep the accent, and both are documented where they live:
+// `.HeaderNavLink:hover` (the ribbon's 12 % field, which previews the current
+// state - C5, a keeper's treatment) and `.hero-band__stack-tile:hover` (the
+// hero pair's tile edge, part of an endorsed surface).
+
+// ─── FOCUS: EVERY ANCHOR GETS THE RING ─────────────────────────────────────
+//
+// The base layer draws `:focus-visible` at the accent already, so this rule is
+// not a new ring - it is the guarantee that no partial's `outline: none` (there
+// are seven) can leave a link with nothing. `:where()` keeps it at zero
+// specificity so a partial that states its own ring still owns it.
+
+:where(a[href]):focus-visible,
+:where(a[href] [tabindex]):focus-visible {
+	outline: var(--state-ring-width) solid var(--state-ring);
+	outline-offset: var(--state-ring-offset);
+}
+
+// ─── PRESSED: WHERE A LINK HAS ROOM FOR IT ─────────────────────────────────
+//
+// A route link inside a row or a band is a target with air around it, so its
+// press is the state field one step below the hover wash - the same answer the
+// row grammar gives, and the same answer a touch device paints natively.
+//
+// A link inside a sentence is not: a fill behind two words of a paragraph is a
+// highlight over someone else's sentence, and the paragraph's own selection
+// already owns that gesture. So prose links are excluded by the `:not()` chain
+// and their press is the navigation itself - the browser paints the next page
+// before a press state could resolve. That is not a missing state; it is a
+// state with nowhere to be drawn.
+
+$Route: ":is(.record-archive__link, .record-entry__link, .record-ledger__link, .record-band__index-item, .record-trace__link, .status-board__link, .lexicon-entry__link, .onward__link, .trail__link, .doc-sidebar__link, .doc-contents__link, .doc-layer__link, .trust-contents__link, .surface-regions__link, .ShellRail__row, .ShellRail__foot-link, .Fold__Row, .detail-leader__row, .detail-see__row, .doc-crate, .surface-links__item, .home-platform__anchor, .properties-filed__link, .contact-sale__route, .doc-layout__rust)";
+
+#{$Route}:active {
+	background-color: var(--state-field-press);
+}
+
+// ─── CURRENT: THE FOUR MARKS, WHEREVER THE ATTRIBUTE LANDS ────────────────
+//
+// The site's convention is stated three times in three partials (`Doc/_Sidebar`,
+// `UI/_Item`, `Layout/_Rail`) and drawn by seven surfaces. This rule is the
+// floor under all of them: an anchor that says `aria-current` and whose partial
+// never drew a marker still reads as the current position. `:where()` again -
+// zero specificity - so a surface with its own marker (the header's bar, the
+// rail's leading rule, the item grammar's `✓`) is untouched.
+//
+// `:not([aria-current="false"])` is the one exclusion: `"false"` is ARIA's
+// explicit "not current", and a link that says so must not be marked.
+
+:where(a[href][aria-current]:not([aria-current="false"])) {
+	font-weight: 500;
+
+	text-decoration-color: var(--state-ink);
+}
+
+// ─── THE GONE TARGET ───────────────────────────────────────────────────────
+//
+// A record whose destination is not in the build is printed as a record, not as
+// a link: `◎`, the quiet ink, no underline, no hover, and the cursor that says
+// the destination is not there. The block layer prefers a tombstone
+// (`WOULD BE HERE / WHY NOT / NEXT`) and should keep preferring it - this is for
+// the one case a list has to print the row it cannot link, where dropping the
+// row would lose the fact that the record exists.
+//
+// No surface mounts it today, and that is the honest state of the vocabulary:
+// every missing destination on the site is currently composed as a tombstone in
+// a block (`RecordFigure`, `RecordMargin`, `RecordPlate`, the /Visit record), so
+// there is no dead link left to style. The rule is declared because a list that
+// gains one would otherwise invent a fifth treatment.
+
+a[data-gone],
+a[aria-disabled="true"]:not([class*="Button"]):not([class*="NavLink"]) {
+	color: var(--state-ink-quiet);
+
+	text-decoration: none;
+
+	cursor: not-allowed;
+
+	pointer-events: none;
+}
+
+a[data-gone]::before,
+a[aria-disabled="true"]:not([class*="Button"]):not([class*="NavLink"])::before {
+	content: "◎";
+
+	margin-inline-end: 0.5ch;
+
+	color: var(--state-ink-quiet);
+}
+
+// ─── THE STATE THAT IS REFUSED: VISITED ────────────────────────────────────
+//
+// The browser colours a visited link by default, and the site has never said
+// otherwise. It is refused here on purpose: a visited link's colour is a fact
+// about the reader's history printed in a palette the document does not own, and
+// on a manual the reader is reading *for the first time* almost every link is
+// unvisited - so the one state that would appear is the one that says "you have
+// already been here", which is exactly the fact a dossier does not need to
+// assert. `:visited` also cannot carry a declaration the document can read, so
+// it could never be drawn as ink, a rule or a mark - only as a hue.
+//
+// If a later card decides the site wants it, it is one rule and this comment is
+// the argument it has to answer.
+
+a:visited {
+	color: inherit;
+}

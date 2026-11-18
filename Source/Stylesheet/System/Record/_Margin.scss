@@ -156,7 +156,10 @@
 }
 
 .record-margin__link a:hover {
-	color: var(--Accent);
+	// A note's destination is a route link: its underline is the state.
+	color: var(--Primary);
+
+	text-decoration-color: var(--Primary);
 }
 
 // The tombstone: a record whose target is gone. It prints the mark, the label

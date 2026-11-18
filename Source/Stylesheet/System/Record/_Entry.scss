@@ -139,9 +139,12 @@
 	text-decoration-color: var(--Primary);
 }
 
+// The site's one ring: 2px of the accent at the identity's 4px offset
+// (`State/_Token.scss`). This was 1px of the ink at 0.15em - a third value for a
+// state the site states once, and at 1px it disappeared against a row's rule.
 .record-entry__link:focus-visible {
-	outline: 1px solid var(--Primary);
-	outline-offset: 0.15em;
+	outline: var(--state-ring-width) solid var(--state-ring);
+	outline-offset: var(--state-ring-offset);
 }
 
 // The arrow is followed by a real space in the markup, so a copied link reads

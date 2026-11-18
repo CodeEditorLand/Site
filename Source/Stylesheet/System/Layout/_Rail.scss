@@ -185,8 +185,11 @@
 		color-mix(in srgb, var(--Foreground) 20%, transparent);
 
 	&:hover {
-		color: var(--Accent);
-		border-block-end-color: var(--Accent);
+		// The foot link rests on the nav label's 2px/20 % rule, so its state moves
+		// that rule to the ink. The accent on this row would spend the marker the
+		// rail's current position owns, on a link that leaves the page.
+		color: var(--Foreground);
+		border-block-end-color: var(--Primary);
 	}
 }
 

@@ -252,14 +252,19 @@
 		transparent
 	);
 
-	&:hover,
-	&:focus-visible {
-		text-decoration-color: var(--Accent);
+	// The act is a block link resting on the nav label's 2px/20 % rule, so its
+	// hover moves that rule to the ink and its focus adds the site's one ring.
+	// The accent on a hover is the register `State/_Link.scss` retires: the accent
+	// authenticates a position, and a pointer is not one.
+	&:hover {
+		text-decoration-color: var(--CardForeground);
 	}
 
 	&:focus-visible {
-		outline: 2px solid var(--Ring);
-		outline-offset: 4px;
+		text-decoration-color: var(--CardForeground);
+
+		outline: var(--state-ring-width) solid var(--state-ring);
+		outline-offset: var(--state-ring-offset);
 	}
 }
 

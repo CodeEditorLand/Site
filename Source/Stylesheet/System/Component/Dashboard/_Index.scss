@@ -52,7 +52,15 @@
 
 .surface-links__item:hover,
 .surface-links__item:focus-visible {
-	color: var(--Accent);
+	// The row's rule and its arrow carry the state; the label keeps its ink.
+	color: var(--Foreground);
+
+	border-block-end-color: var(--Divider);
+}
+
+.surface-links__item:hover .surface-links__arrow,
+.surface-links__item:focus-visible .surface-links__arrow {
+	color: var(--Foreground);
 }
 
 .surface-links__arrow {

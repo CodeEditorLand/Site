@@ -1,0 +1,209 @@
+@use "../Mixin" as *;
+
+// ─── THE ROW ────────────────────────────────────────────────────────────────
+//
+// The row is the site's most repeated interactive object: an archive entry, a
+// ledger row, a status-board record, a lexicon term, an onward destination, a
+// rail position, a fold line. They live in eleven partials and they had eleven
+// answers to the same three questions. This partial is the one answer.
+//
+// ─── HOVER IS A FIELD. SELECTION IS A MARK. CURRENT IS A RULE. ─────────────
+//
+// The composition problem the card names - "decide how a row that is selected
+// differs from a row that is hovered" - is decided here, and the decision is
+// that the two states must not want the same material:
+//
+//   hover      `--Mute`, the attention wash. It arrives with the pointer and
+//              leaves with it. No mark, no geometry, no weight.
+//   selected   the same wash, HELD, plus `✓` in the reserved mark column and the
+//              label at 500. A hover leaves; a selection stays, and the `✓` is
+//              the half of it that survives greyscale and a mouse that moved on.
+//   current    no wash at all. A 2px accent rule on the leading edge and the
+//              label at 500 - "you are here" is a position, and a position is a
+//              rule. This is the site's existing marker (the header's bar, the
+//              rail's leading rule, the item grammar's four marks) and it is
+//              unchanged.
+//   both       a selected row under the pointer deepens to `--Surface2` and
+//              keeps its `✓`; a current row under the pointer takes the wash and
+//              keeps its rule. Nothing is lost because nothing collided.
+//
+// A row can therefore be hovered, selected and current at once and read as three
+// facts, which is what a matrix of choices inside a page you are already on
+// actually is.
+//
+// ─── THE MARK COLUMN IS THE GEOMETRY ───────────────────────────────────────
+//
+// A `✓` that appears when a row becomes selected would shift its label one glyph
+// to the right - so the column is reserved on every row whether or not it prints
+// a mark (`--state-mark-column`), and a state change moves ink and never
+// position. The rows that already reserve it (`UI/_Item.scss`'s 1.25rem of
+// padding-inline-start) are the model; the rows that do not are given it below
+// only where they have a leading cell to pay for it from.
+
+$Row: ':is(.record-archive__link, .record-entry__link, .record-ledger__row, .record-band__index-item, .record-trace__link, .status-board__link, .lexicon-entry__link, .onward__link, .trail__link, .doc-sidebar__link, .doc-contents__link, .doc-layer__link, .trust-contents__link, .surface-regions__link, .ShellRail__row, .ShellRail__foot-link, .Fold__Row, .detail-leader__row, .detail-see__row, .doc-crate, .surface-links__item, .home-platform__anchor, .properties-filed__link, .contact-sale__route, .doc-layout__rust, .Slip__Row, [data-slot="dropdown-menu-item"], [data-slot="select-item"], [data-slot="command-item"])';
+
+// ─── REST ───────────────────────────────────────────────────────────────────
+//
+// The cursor is the one thing a row must state at rest: a row that opens a page
+// is a pointer, a row that only prints is a default arrow, and the site had both
+// on the same list. Every row in this list is a target.
+
+#{$Row} {
+	cursor: pointer;
+
+	touch-action: manipulation;
+	-webkit-tap-highlight-color: transparent;
+}
+
+// ─── HOVER: THE WASH, WHERE THE PARTIAL HAS NOT DRAWN IT ───────────────────
+//
+// Most rows already answer the pointer; the ones that do not (the status board's
+// records, the lexicon's terms, the onward register, the rail's positions) are
+// the ones this rule is for. `:where()` keeps it at zero specificity, so a row
+// that has its own hover - the archive's sliding title, the ledger's travelling
+// value, the item grammar's wash - keeps it and this rule never fires there.
+
+:where(#{$Row}):hover {
+	background-color: var(--state-field);
+}
+
+// The mark cell follows the row: a row whose label darkens while its `→` stays
+// at the separator's ink reads as two objects, and the whole row is one.
+:where(#{$Row}):hover :where(.Fold__Index, .ShellRail__index, .trail__index) {
+	color: var(--state-ink);
+}
+
+// ─── PRESSED: THE FIELD ONE STEP DEEPER ────────────────────────────────────
+//
+// No travel. A control travels because a control is an object the reader presses;
+// a row is a line in a list, and a list whose lines jump 1px under the pointer is
+// a list that flickers. The press is the field, and the field is enough.
+
+:where(#{$Row}):active {
+	background-color: var(--state-field-press);
+}
+
+// ─── SELECTED: A CHOICE THE READER MADE ────────────────────────────────────
+//
+// `aria-selected`, `data-state="checked"` and `aria-pressed` are three ways the
+// same fact is spelled by three families of control (a listbox option, a Radix
+// checkable item, a toggle). One state, three spellings, one treatment.
+//
+// `:where()` again, and for the same reason: the item grammar's selected row is
+// a 2px accent rule plus a `✓` and it must keep it. What this rule adds is the
+// held wash and the weight for every row whose partial never drew a selected
+// state at all - which is most of them, because most of them are links and a
+// link has no notion of being chosen.
+
+:where(
+	#{$Row}[aria-selected="true"],
+	#{$Row}[data-state="checked"],
+	#{$Row}[aria-pressed="true"]
+) {
+	background-color: var(--state-field);
+
+	color: var(--state-ink);
+
+	font-weight: 500;
+}
+
+// ─── CURRENT: THE RULE, WHERE THE PARTIAL HAS NOT DRAWN IT ─────────────────
+//
+// The site's four marks are `aria-current`, full ink, weight 500 and a leading
+// rule. Seven surfaces draw them; the rest rely on this. The rule is drawn with
+// a pseudo-element rather than a border so it costs no geometry - a row that
+// becomes current must not move its own label by 2px, which is the bug the item
+// grammar's reserved mark column was built to avoid.
+//
+// THE WHOLE SELECTOR IS INSIDE `:where()`, so this rule is worth nothing against
+// a partial's own marker. That is the point: seven surfaces already mark the
+// current position and several of them do it with a `border-inline-start` rather
+// than a pseudo-element. A rule at class specificity would draw a second bar
+// beside the first - a 3px marker on the rows that were already correct. At zero
+// specificity it fires only where nothing else does, which is the gap it exists
+// to fill.
+
+:where(
+	:is(a[href], button)#{$Row}:is([aria-current]:not([aria-current="false"]))
+) {
+	position: relative;
+
+	color: var(--state-ink);
+
+	font-weight: 500;
+}
+
+:where(
+	:is(a[href], button)#{$Row}:is([aria-current]:not([aria-current="false"]))
+)::before {
+	content: "";
+
+	position: absolute;
+	inset-block: 0;
+	inset-inline-start: 0;
+
+	inline-size: var(--state-current-width);
+
+	background: var(--state-ring);
+
+	pointer-events: none;
+}
+
+// A row that is current AND selected states both: the rule is the position, the
+// wash and the `✓` are the choice. The rule is drawn above, the wash below, and
+// neither is lost.
+:where(
+	#{$Row}[aria-current]:not([aria-current="false"])[aria-selected="true"]
+) {
+	background-color: var(--state-field);
+}
+
+// ─── DISABLED: STILL A ROW, STILL READABLE, AND IT SAYS WHY ────────────────
+//
+// The item grammar's law, at row scale: no opacity, the label at the quiet ink,
+// `◎` in the mark column, the reason in the meta cell by the component, and a
+// cursor that says the row is not a destination. A row is a fact first and a
+// target second; withdrawing the target must not withdraw the fact.
+
+:where(#{$Row})[aria-disabled="true"],
+:where(#{$Row})[data-disabled] {
+	position: relative;
+
+	background: none;
+
+	color: var(--state-ink-quiet);
+
+	font-weight: 400;
+
+	cursor: not-allowed;
+}
+
+:where(#{$Row})[aria-disabled="true"]::before,
+:where(#{$Row})[data-disabled]::before {
+	content: "◎";
+
+	position: absolute;
+	inset-inline-start: var(--space-reading);
+
+	inline-size: var(--state-mark-column);
+
+	color: var(--state-ink-quiet);
+
+	font-weight: 400;
+}
+
+// ─── FOCUS: THE RING, INSET WHERE THE SURFACE CLIPS ────────────────────────
+//
+// A row inside a slip is clipped by the slip's overflow, so its ring is drawn
+// inside the box. A row on the page has the 4px the identity names. The base
+// layer's ring is already on every focusable thing; this rule exists for the
+// rows whose partial set `outline: none` and never put anything back.
+
+:where(#{$Row}):focus-visible {
+	outline: var(--state-ring-width) solid var(--state-ring);
+	outline-offset: var(--state-ring-offset);
+}
+
+:where(#{$Row}:is(.Slip__Row, [data-slot$="-item"])):focus-visible {
+	outline-offset: var(--state-ring-inset);
+}

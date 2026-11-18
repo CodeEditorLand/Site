@@ -169,7 +169,12 @@
 }
 
 .record-compare__stop-value a:hover {
-	color: var(--Accent);
+	// A stop's value link answers with its rule; the accent stays on the stop's
+	// own reached/unreached mark, which is what the rail is for.
+	color: var(--Primary);
+
+	text-decoration-thickness: 1px;
+	text-decoration-color: var(--Primary);
 }
 
 .record-compare__stop-note {

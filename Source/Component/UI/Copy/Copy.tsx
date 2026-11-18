@@ -151,8 +151,18 @@ export const CopyReceipt = ({
 			type="button"
 			className={cn("Copy", className)}
 			data-state={State}
-			aria-disabled={State === "empty" ? true : undefined}
-			onClick={State === "empty" ? undefined : OnCopy}
+			// Two states are refused, not merely reported. `empty` has nothing to
+			// write; `denied` had the write refused by the browser and the permission
+			// is not coming back this session - so both are `aria-disabled`, both stop
+			// offering the action, and both keep the label readable. `error` is NOT:
+			// the retry is real there, and a control that says it is disabled would
+			// take away the one thing the reader can still do.
+			aria-disabled={
+				State === "empty" || State === "denied" ? true : undefined
+			}
+			onClick={
+				State === "empty" || State === "denied" ? undefined : OnCopy
+			}
 		>
 			<span className="Copy__Mark" aria-hidden="true">
 				{Words.Mark}

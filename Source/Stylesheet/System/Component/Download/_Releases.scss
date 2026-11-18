@@ -51,14 +51,15 @@
 	}
 
 	// The control's two states: the ink answers the pointer, and the focus ring
-	// is the site's one ring token, offset so it never sits on the hairline.
+	// is the site's one ring token - 2px of the accent at the identity's offset.
+	// It was 1px, which is a rule's width and not a ring's.
 	&:hover .download-releases__marker {
 		color: var(--Foreground);
 	}
 
 	&:focus-visible {
-		outline: 1px solid var(--Ring);
-		outline-offset: 2px;
+		outline: var(--state-ring-width) solid var(--state-ring);
+		outline-offset: var(--state-ring-offset);
 	}
 }
 

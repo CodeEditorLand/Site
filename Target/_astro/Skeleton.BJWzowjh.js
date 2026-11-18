@@ -1,0 +1,1 @@
+import{t}from"./Utility.DAOwnvlm.js";import{Et as a}from"./Vendor/React.CNeZ6mQj.js";var s=a();function e({className:a,...e}){return(0,s.jsx)("div",{"data-slot":"skeleton",className:t("flat animate-pulse bg-accent",a),...e})}export{e as t};

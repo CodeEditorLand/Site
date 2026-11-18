@@ -214,16 +214,27 @@
 
 // The anchor wraps the card, so the whole card is one target and the title is
 // not a second nested link.
+//
+// ─── THE CARD ANSWERS WITH ITS TITLE, NOT BY FADING ───────────────────────
+// The hover was `opacity: 0.8`: the card receded from the page under the
+// pointer. That is a state present in the DOM and absent from the page - the
+// failure `DESIGN-COMPLETE.md` §0.3 names - and on a creme field it reads as the
+// card being disabled by the reader's attention rather than offered to it. The
+// block link's marker is the title's rule (`Stylesheet/System/State/_Card.scss`),
+// so the card keeps its ink and gains a line under the words that name it.
 .blog-index__link {
 	display: block;
 	inline-size: 100%;
 	color: inherit;
 	text-decoration: none;
-	transition: opacity 0.2s ease;
 }
 
-.blog-index__link:hover {
-	opacity: 0.8;
+.blog-index__link:hover .blog-index__title,
+.blog-index__link:focus-visible .blog-index__title {
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-decoration-color: var(--CardForeground);
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 .blog-index__card {

@@ -116,7 +116,15 @@
 }
 
 .lexicon__letter-link:hover {
-	color: var(--Accent);
+	// The letter is a one-glyph target, so its state is the rule under it: a
+	// 1px underline in the ink, the same marker a route link wears. The accent
+	// stays on the current position and the focus ring.
+	color: var(--Foreground);
+
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-decoration-color: var(--Foreground);
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 // ─── THE GROUPS ───────────────────────────────────────────────────────────
@@ -349,6 +357,9 @@
 }
 
 .lexicon-entry__link:hover {
-	color: var(--Accent);
-	border-block-end-color: var(--Accent);
+	// The term already rests on a rule, so its state moves that rule to the ink
+	// and to the edge's weight: one line, one state, no hue.
+	color: var(--Foreground);
+
+	border-block-end-color: var(--Primary);
 }

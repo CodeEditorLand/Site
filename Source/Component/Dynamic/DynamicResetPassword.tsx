@@ -153,10 +153,30 @@ const DynamicResetPassword = ({
 						/>
 					</div>
 
+					{/* ─── NO SPINNER ────────────────────────────────────────────
+					    This was a 32px `border-4` ring with `animate-spin`: a loop
+					    that says "something is happening" for as long as it turns
+					    and nothing else. The badge above already prints the word
+					    `LOADING`, so the spinner was the second signal and the
+					    weaker one. The busy arm is printed instead - two bars in the
+					    record grammar, the shape of the sentence that will replace
+					    them, from the skeleton layer's own two tokens. The wait is
+					    named by the paragraph below it. */}
 					<div
-						className="mx-auto h-8 w-8 animate-spin rounded-none border-4 border-primary border-t-transparent"
+						className="StateBusy StateBusy--stack mx-auto w-40"
+						aria-busy="true"
 						aria-hidden="true"
-					></div>
+					>
+						<span
+							className="StateBusy__Bar"
+							style={{ "--bar": "100%" } as React.CSSProperties}
+						/>
+
+						<span
+							className="StateBusy__Bar"
+							style={{ "--bar": "64%" } as React.CSSProperties}
+						/>
+					</div>
 
 					<p className="text-muted-foreground" role="status">
 						{CheckingMessage ||

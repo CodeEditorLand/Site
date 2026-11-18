@@ -1,0 +1,203 @@
+@use "../Mixin" as *;
+
+// ─── THE FIELD ──────────────────────────────────────────────────────────────
+//
+// The input family, as states rather than as anatomy. `UI/_Field.scss` owns the
+// one field the site draws (a white box with one `--Divider` frame, the `:`
+// label, the value); this partial owns what that box does when it is hovered,
+// focused, wrong, unavailable, read-only or waiting.
+//
+// The kit's primitives are the other half. `[data-slot="input"]`,
+// `"textarea"`, `"checkbox"`, `"switch"`, `"radio-group-item"` and
+// `"input-otp-slot"` are the shadcn controls the account, verify and contact
+// surfaces mount, and they carried the kit's own state vocabulary:
+//
+//   disabled:opacity-50        a label present in the DOM and gone from the page
+//   focus-visible:ring-[3px]   a box-shadow glow at 40 % alpha
+//   aria-invalid:ring-...      the same glow, in the destructive hue
+//   data-[state=checked]       a fill the site never named
+//
+// The identity has no shadow and no half-opacity label, so all four are restated
+// here in the vocabulary the rest of the site speaks.
+//
+// ─── THE FIVE REAL STATES OF A FIELD ──────────────────────────────────────
+//
+//   rest      the frame at `--Divider`, the value at ink, the label quiet
+//   hover     the frame holds and the box takes the state field - the reader is
+//             about to type in it and the box says so before the click
+//   focus     the ring (2px accent at 4px), and the frame stays: a field that
+//             swaps its frame for a ring loses its edge at the moment it is most
+//             defined
+//   invalid   a 2px destructive rule on the LEADING edge, the message printed by
+//             the component, and `aria-invalid` on the element so the state
+//             survives a stylesheet that never loaded
+//   disabled  the field flattens, the value steps to the quiet ink, the cursor
+//             says why, and the box keeps its height so the form does not jump
+//
+// Read-only is the sixth and it is not disabled: the reader may read the value,
+// may select it, may copy it, and may not change it. It keeps the full ink and
+// loses the ring, because a control that cannot be changed must not advertise
+// that it is waiting for input.
+
+$Field: ':is([data-slot="input"], [data-slot="textarea"], [data-slot="select-trigger"], [data-slot="input-otp-slot"], .SlipField, .SlipInput, .MatrixControl__Box, .contact-form__input, .auth-shell__field input, .auth-shell__field textarea, .search-field, .FieldRecordInput)';
+
+// ─── REST ───────────────────────────────────────────────────────────────────
+
+#{$Field} {
+	// The kit's fields are Tailwind-classed and several of them still carry a
+	// `rounded-md` from the primitive; the identity is radius 0 and this is the
+	// one place a generic rule can guarantee it.
+	border-radius: 0;
+}
+
+// ─── HOVER ──────────────────────────────────────────────────────────────────
+//
+// Only where the partial has not already answered. `_Field.scss` mixes the card
+// toward the creme field on hover; a kit input has no hover at all, so it takes
+// the wash. `:where()` keeps the site's own field in charge of its own hover.
+
+:where(#{$Field}):hover:not(:disabled):not([aria-disabled="true"]):not(
+		[readonly]
+	) {
+	background-color: var(--state-field);
+}
+
+// ─── FOCUS: THE RING, AND THE FRAME STAYS ──────────────────────────────────
+
+#{$Field}:focus-visible {
+	outline: var(--state-ring-width) solid var(--state-ring);
+	outline-offset: var(--state-ring-offset);
+
+	// The kit's ring utilities are shadows. The identity has none.
+	box-shadow: none;
+}
+
+// A field inside a slip's head is clipped, so its ring is the inset variant; the
+// site's field draws the ring on its own frame instead (the head's bottom rule
+// goes accent) and `UI/_Field.scss` states why the input itself draws nothing.
+.SlipInput:focus-visible,
+.MatrixControl__Box input:focus-visible {
+	outline: none;
+}
+
+// The search box is a frame with an input inside it, and the ring belongs to the
+// frame: an input that rang inside its own box would draw a ring 1px from a rule
+// that already turned accent. The box takes the ring, so keyboard focus is a
+// shape and not only a border colour - which is what it was.
+.MatrixControl__Box:focus-within {
+	outline: var(--state-ring-width) solid var(--state-ring);
+	outline-offset: var(--state-ring-offset);
+}
+
+// ─── INVALID: A RULE, NOT A GLOW ───────────────────────────────────────────
+//
+// The kit drew `aria-invalid` as a 20 % destructive shadow. A failed field is a
+// fact, so it is drawn as the palette's one destructive ink on the field's
+// leading edge - the same 2px the current-position marker uses, in the error's
+// colour, which is the only place the site allows that ink outside a destructive
+// action.
+//
+// `:not(:focus)` is `Motion/_Interrupt.scss`'s condition as well: a field being
+// corrected should not keep shouting while the reader types in it.
+
+#{$Field}[aria-invalid="true"] {
+	border-color: var(--state-error-ink);
+
+	background-color: var(--state-error-field);
+
+	box-shadow: none;
+}
+
+#{$Field}[aria-invalid="true"]:not(:focus) {
+	box-shadow: inset var(--state-current-width) 0 0 0 var(--state-error-ink);
+}
+
+// ─── DISABLED: THE BOX KEEPS ITS HEIGHT ───────────────────────────────────
+//
+// `.Input:disabled` in `_Base.scss` writes `opacity: 0.5`, and the kit's cva
+// writes `disabled:opacity-50` on every primitive. Both are overridden: the field
+// flattens to the wash, the value steps to the quiet ink, and the reader can
+// still read what the field holds - which is the whole reason a disabled field
+// shows its value at all.
+
+#{$Field}:disabled,
+#{$Field}[aria-disabled="true"],
+#{$Field}[data-disabled] {
+	opacity: 1;
+
+	background-color: var(--state-field);
+
+	color: var(--state-ink-quiet);
+
+	border-color: var(--state-rule);
+
+	cursor: not-allowed;
+}
+
+#{$Field}:disabled::placeholder,
+#{$Field}[aria-disabled="true"]::placeholder {
+	color: var(--state-ink-quiet);
+
+	opacity: 1;
+}
+
+// ─── READ-ONLY: READABLE, COPYABLE, NOT EDITABLE ──────────────────────────
+//
+// A read-only field is not an unavailable one. It keeps the full ink (the value
+// is a fact the reader may quote), loses the wash on hover, and refuses the ring
+// - because a ring says "type here" and there is nowhere to type.
+
+#{$Field}[readonly] {
+	background-color: transparent;
+
+	color: var(--state-ink);
+
+	cursor: default;
+}
+
+#{$Field}[readonly]:focus-visible {
+	outline: none;
+}
+
+// ─── THE CHECKABLE CONTROLS ───────────────────────────────────────────────
+//
+// A checkbox, a radio and a switch are not fields with a frame; they are marks
+// with a box. The kit fills them with `data-[state=checked]:bg-primary`, which is
+// the site's ink and therefore right, and dims them at 50 % when disabled, which
+// is not. Their selected state is stated here so a control that carries only the
+// attribute still reads as chosen, and their box keeps the 16px the kit gives it.
+
+$Checkable: ':is([data-slot="checkbox"], [data-slot="radio-group-item"], [data-slot="switch"], [data-slot="toggle"])';
+
+#{$Checkable} {
+	cursor: pointer;
+}
+
+#{$Checkable}:disabled,
+#{$Checkable}[aria-disabled="true"] {
+	opacity: 1;
+
+	background-color: var(--state-field);
+
+	border-color: var(--state-rule-strong);
+
+	color: var(--state-ink-quiet);
+
+	cursor: not-allowed;
+}
+
+// The chosen mark. The kit paints the fill; what it does not paint is the
+// attribute-only case, and a control whose fill failed to load still says it is
+// chosen because the check glyph is drawn in the current ink.
+:where(
+	#{$Checkable}[data-state="checked"],
+	#{$Checkable}[aria-checked="true"],
+	#{$Checkable}[aria-pressed="true"]
+) {
+	color: var(--PrimaryForeground);
+}
+
+#{$Checkable}:focus-visible {
+	outline: var(--state-ring-width) solid var(--state-ring);
+	outline-offset: var(--state-ring-offset);
+}

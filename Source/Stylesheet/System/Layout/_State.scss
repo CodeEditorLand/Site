@@ -188,8 +188,11 @@
 	);
 
 	&:hover {
-		color: var(--Accent);
-		text-decoration-color: var(--Accent);
+		// The link rests on its 2px/20 % rule; the hover moves the rule to the ink.
+		// The ring keeps the accent, because a ring is the keyboard's position and
+		// a hover is the pointer's.
+		color: var(--Foreground);
+		text-decoration-color: var(--Primary);
 	}
 }
 

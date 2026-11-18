@@ -1,0 +1,136 @@
+@use "../Mixin" as *;
+
+// ─── THE ADVERSE STATES, AT CONTROL SCALE ───────────────────────────────────
+//
+// The nine arms of `Design-Brief.md` §7 are composed in the block layer: an empty
+// band, a loading record, a partial manifest, a failure record, a stale as-of, a
+// windowed list, a tombstone, a denied surface. This partial is the other end of
+// the same scale - what happens to a CONTROL, a LABEL, or a LIST when the world
+// is unkind to it. Four arms are a control's business:
+//
+//   denied    the reader may not use it
+//   missing   the thing it points at is not in the build
+//   too long  the label will not fit
+//   too much  the list is longer than the design assumed
+//
+// (Empty and loading belong to the block that holds the control, and the block
+// composes them; partial belongs to the fact, and a fact prints `UNAVAILABLE`;
+// stale belongs to the record's as-of; error is `State/_Control.scss`'s
+// `[aria-invalid]` and the STATUS vocabulary the component prints.)
+//
+// ─── DENIED IS NOT DISABLED ────────────────────────────────────────────────
+//
+// A disabled control exists and is not armed yet. A denied one exists and the
+// reader may never use it - an admin action on a page they can read, a write on a
+// surface they may only see. The difference is the sentence: a disabled control
+// is waiting, a denied one is refused, and a reader who is told which is which
+// stops looking for the button that will arm it.
+//
+// At block scale the denied arm is a `ShellState` naming what the surface is; at
+// control scale it is this: the control keeps its box and its legibility, takes
+// `◎`, and the component prints `DENIED:` and the reason in its meta cell. No
+// opacity, no grey-out, no lock glyph from a second icon set.
+//
+// `[data-denied]` and not `[data-state="denied"]`: the copy receipt owns that
+// spelling and already prints its own `◎` and its own reason (`UI/_Copy.scss`),
+// and a second mark from this rule would put two of them in one control. The
+// attribute here is the one a *block* wears when the reader may not use it at all.
+
+[data-denied] {
+	color: var(--state-ink-quiet);
+
+	background-color: transparent;
+
+	cursor: not-allowed;
+
+	pointer-events: none;
+}
+
+[data-denied]::before {
+	content: "◎";
+
+	margin-inline-end: 0.5ch;
+
+	color: var(--state-ink-quiet);
+}
+
+// ─── TOO LONG: A LABEL THAT WILL NOT FIT ───────────────────────────────────
+//
+// Two answers, and the choice is the component's because only it knows whether
+// the label is a name (which may be cut, and must be recoverable) or a value
+// (which may wrap, and must not be cut).
+//
+//   .StateClip   a name in a fixed column: one line, an ellipsis, `min-inline-size:
+//                0` so the flex or grid item is allowed to shrink at all, and the
+//                full string in a `title` by the component. Used by every row
+//                whose label column is `minmax(0, 1fr)`.
+//   .StateWrap   a value in a sentence or a cell: wraps at the word, and breaks
+//                inside a word only when the word is longer than the column -
+//                which a path or a hash always is. `overflow-wrap: anywhere` is
+//                the one declaration that keeps a 120-character path inside a
+//                200px cell without a horizontal scrollbar.
+//
+// Both are already used piecemeal across the site (the fold's label, the slip's
+// value, the archive's title); this partial is the name for the two behaviours so
+// the next block composes them instead of writing a third.
+
+.StateClip {
+	min-inline-size: 0;
+
+	overflow: hidden;
+
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.StateWrap {
+	min-inline-size: 0;
+
+	overflow-wrap: anywhere;
+	hyphens: auto;
+}
+
+// ─── TOO MUCH: A LIST THAT IS LONGER THAN THE DESIGN ──────────────────────
+//
+// The design assumed six and the data has two hundred. The list must still read
+// as a list: it keeps its grammar, its rules and its count, and it is bounded so
+// it cannot push the page's next band off the screen. `--StateWindow` is the
+// measure - the same 60vh the fold uses for its own contents, because "a list
+// this tall" is one number on this site and not two.
+//
+// The count is the component's job: `SHOWING 24 OF 200` is a figure with a source
+// and it belongs in the register line, not in a stylesheet. What the stylesheet
+// owns is the window and the fact that the window scrolls on its own - never the
+// page.
+
+.StateWindow {
+	max-block-size: var(--StateWindow, 60vh);
+
+	overflow-y: auto;
+	overscroll-behavior: contain;
+
+	// A scroll container that has no focusable child is a container a keyboard
+	// reader cannot scroll; the components that use this put a row inside it, so
+	// the browser's own focus scrolling reaches it.
+	scrollbar-width: thin;
+}
+
+// ─── THE MARK COLUMN, FOR A BLOCK THAT PRINTS ONE ─────────────────────────
+//
+// A block that prints a state mark (a `✓`, a `◎`, a `→`) in a column of its own
+// reserves the column whether or not it prints one, so a state change never
+// shifts the label. Three blocks already do this by hand; this is the token they
+// are all reading.
+
+.StateMarked {
+	padding-inline-start: calc(var(--space-reading) + var(--state-mark-column));
+}
+
+.StateMarked::before {
+	position: absolute;
+	inset-inline-start: var(--space-reading);
+
+	inline-size: var(--state-mark-column);
+
+	text-align: start;
+}

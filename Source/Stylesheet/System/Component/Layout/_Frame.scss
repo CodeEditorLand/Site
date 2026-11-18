@@ -119,8 +119,12 @@ $FrameClosing: contents;
 }
 
 .HeaderRecordName:hover {
-	color: var(--Accent);
-	text-decoration-color: var(--Accent);
+	// The running head's record name rests on the nav label's 2px/20% rule, so its
+	// state is that rule at the ink - the same answer the ribbon's labels give.
+	// The accent here would spend the marker the ribbon's current destination
+	// owns, on a link whose job is to go home.
+	color: var(--HeaderFg);
+	text-decoration-color: var(--HeaderFg);
 }
 
 .HeaderSectionDivider {

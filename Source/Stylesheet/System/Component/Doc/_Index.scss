@@ -253,8 +253,18 @@ jelly-card.doc-card__surface {
 
 	text-decoration: none;
 
-	&:hover {
-		color: var(--Accent);
+	// ─── HOVER IS INK, AND THE CARD ANSWERS WITH ITS TITLE ────────────────
+	// This was `color: var(--Accent)` - every word in the card, including the
+	// note, turned green under the pointer. The accent authenticates a position,
+	// a focus and a completed write; a mouse position is none of the three, and
+	// the note is the card's context rather than its destination. The state is
+	// now the title's rule, which is the block link's marker
+	// (`Stylesheet/System/State/_Card.scss` states it once).
+	&:hover .doc-card__title {
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-decoration-color: var(--CardForeground);
+		text-underline-offset: var(--optical-underline-offset);
 	}
 }
 
@@ -339,10 +349,12 @@ jelly-card.doc-card__surface {
 
 	text-decoration: none;
 
+	// The underline is the state; the hue is not. See `.doc-card__link` above and
+	// `Stylesheet/System/State/_Link.scss` for the register.
 	&:hover {
-		color: var(--Accent);
-
 		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-decoration-color: var(--CardForeground);
 		text-underline-offset: var(--optical-underline-offset);
 	}
 }
@@ -378,8 +390,11 @@ jelly-card.doc-card__surface {
 
 	text-decoration: none;
 
+	// A framed mark answers the pointer with its FRAME, not with a hue: the
+	// hairline steps from the separator's ink to the edge's, which is the one
+	// declaration `State/_Card.scss` gives a card's edge.
 	&:hover {
-		color: var(--Accent);
+		border-color: var(--Divider);
 	}
 }
 
@@ -404,10 +419,11 @@ jelly-card.doc-card__surface {
 
 	text-decoration: none;
 
+	// The underline is the state; the hue is not.
 	&:hover {
-		color: var(--Accent);
-
 		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-decoration-color: var(--CardForeground);
 		text-underline-offset: var(--optical-underline-offset);
 	}
 }
@@ -450,8 +466,17 @@ jelly-card.doc-card__surface {
 
 	text-decoration: none;
 
+	// A tile is a block link: its state is its title's rule and its frame's ink,
+	// not a hue over every word in it. `State/_Card.scss` states the law.
 	&:hover {
-		color: var(--Accent);
+		border-color: var(--Divider);
+	}
+
+	&:hover .doc-tile__label {
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-decoration-color: var(--CardForeground);
+		text-underline-offset: var(--optical-underline-offset);
 	}
 }
 

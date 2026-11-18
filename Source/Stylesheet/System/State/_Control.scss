@@ -1,0 +1,236 @@
+@use "../Mixin" as *;
+
+// ─── THE CONTROL ────────────────────────────────────────────────────────────
+//
+// The button family, in one vocabulary. Four kinds of thing wear it:
+//
+//   the kit's Button     `[data-slot="button"]` - a `jelly-button` for the filled
+//                        variants, a plain `<button>` for `ghost` and `link`
+//   the site's actions   `.SlipAction`, `.Copy`, `.PaletteTrigger`,
+//                        `.RailFilter__Clear`, `.doc-sidebar__handoff`,
+//                        `.auth-shell__reveal`, `.auth-shell__alternate`
+//   the form's action    `.contact-form__action`, `.auth-shell__submit`
+//   the legacy utilities `.StaccatoButton` - a Tailwind-era class pair that
+//                        survives in the mark layer and takes the same press
+//
+// They do not share a fill and they must not: a copy receipt has no frame, a
+// primary action is an ink field, a scope cell is a tab. What they share is the
+// four things a state may do to them - travel 1px, take the ring, flatten when
+// disabled, refuse the second press - and those four are declared here once.
+//
+// ─── THE PRESS IS A TRAVEL, NOT A SCALE ────────────────────────────────────
+//
+// The kit wrote `active:scale-[0.97]`: 3 % of a 40px button is 1.2px, and on a
+// mono label it is a re-render of the text at a second size - the one thing the
+// type layer spends its whole length preventing. A press is a movement, so it is
+// a movement: the box travels `--state-press-travel` (1px) down, the field
+// deepens one step, and it returns. Nothing changes size.
+//
+// ─── THE RING, AND WHY IT IS AN OUTLINE ────────────────────────────────────
+//
+// The kit drew focus as `ring-[2px]` at 40 % accent - a Tailwind `ring` is a
+// `box-shadow`, which is a glow with a radius, and the identity has no shadow.
+// It also drew at 40 % alpha, which is a state you can miss. The site's ring is
+// an `outline`: 2px of the accent at 2px of offset, a shape drawn outside the
+// box, visible at any alpha of the field behind it. One value, everywhere, and
+// `box-shadow: none` so a kit component cannot add its own back.
+//
+// A `jelly-button` is a custom element with a shadow root, so the focus lands on
+// the inner control and `:focus-visible` on the host never matches. `:has()` is
+// the one selector that can see through to it, and it is why the jelly arms of
+// the ring are written separately.
+
+// ─── the selector lists ─────────────────────────────────────────────────────
+//
+// `:is()` and not a comma list, for the reason `UI/_Item.scss` states: a comma
+// list attaches a compound (`:active`, `:disabled`) to its last member only.
+
+$Control: ':is([data-slot="button"], .SlipAction, .Copy, .PaletteTrigger, .RailFilter__Clear, .doc-sidebar__handoff, .auth-shell__reveal, .auth-shell__alternate, .contact-form__action, .contact-form__errors-link, .auth-shell__submit, .StaccatoButton, .StaccatoHeroButton, .ShellState__action, .MotionOrigin__Trigger)';
+
+// The controls with no fill of their own: a row action, a receipt, a word. They
+// are the ones that need a field on hover, because ink alone has nothing to
+// darken - their label is already the full ink.
+$Bare: ":is(.SlipAction, .Copy, .PaletteTrigger, .RailFilter__Clear, .doc-sidebar__handoff, .auth-shell__reveal, .auth-shell__alternate, .contact-form__errors-link, .ShellState__action, .MotionOrigin__Trigger)";
+
+// ─── REST ───────────────────────────────────────────────────────────────────
+
+#{$Control} {
+	// A press that waits 300ms to start is a press the reader repeats. The
+	// browser's double-tap zoom is what the delay is for, and no control here is
+	// a page zoom target.
+	touch-action: manipulation;
+
+	// The blue flash a touch device paints over a tap is a colour the palette
+	// does not have, on a page whose whole argument is that it has four.
+	-webkit-tap-highlight-color: transparent;
+}
+
+// ─── HOVER: THE BARE CONTROL TAKES THE FIELD ───────────────────────────────
+//
+// A control that already has a fill (a primary action, a scope cell, a form's
+// action) answers the pointer with its own hover rule, written by its own
+// partial. A control that has no fill has only ink, and ink cannot darken from
+// ink - so it takes the wash. The two are the same state in the same material:
+// a fill, one step toward the reader.
+
+#{$Bare}:hover:not([aria-disabled="true"]):not(:disabled) {
+	background-color: var(--state-field);
+}
+
+// ─── PRESSED: 1PX, AND THE FIELD ONE STEP DEEPER ───────────────────────────
+
+#{$Control}:active:not([aria-disabled="true"]):not(:disabled):not(
+		[aria-busy="true"]
+	) {
+	transform: translateY(var(--state-press-travel));
+}
+
+#{$Bare}:active:not([aria-disabled="true"]):not(:disabled):not(
+		[aria-busy="true"]
+	) {
+	background-color: var(--state-field-press);
+}
+
+// The kit's scale, stood down. `transform: none` on the resting rule would fight
+// the press's own translate, so the scale is cancelled by the press declaring a
+// transform and the resting state declaring none - which is what the two rules
+// above and below already do between them.
+[data-slot="button"]:active {
+	scale: 1;
+}
+
+// ─── FOCUS: THE ONE RING ───────────────────────────────────────────────────
+
+#{$Control}:focus-visible,
+jelly-button:has(:focus-visible),
+jelly-icon-button:has(:focus-visible) {
+	outline: var(--state-ring-width) solid var(--state-ring);
+	outline-offset: var(--state-ring-offset);
+
+	// The kit's `ring-*` utilities are box-shadows; the identity has none.
+	box-shadow: none;
+}
+
+// A control inside a slip is clipped by the slip's own overflow, so its ring is
+// drawn inside the box - the variant `UI/_Item.scss` already states for rows.
+// The same 2px of the same accent, at the other offset.
+[data-slot="select-trigger"]:focus-visible,
+.SlipField:focus-visible {
+	outline-offset: var(--state-ring-inset);
+}
+
+// ─── DISABLED: LEGIBLE, FLAT, AND IT KEEPS ITS BOX ─────────────────────────
+//
+// One rule for every variant, because the alternative is five and the fifth is
+// always the one that keeps the kit's 50 % opacity. A disabled control is not a
+// faded control: it is a control whose authority has been withdrawn. The fill
+// flattens to the state wash, the label steps to the quiet ink, the cursor says
+// why, and the box does not change size by a pixel - so the layout around it
+// does not move when a form arms itself.
+//
+// `[aria-disabled="true"]` is the same treatment and a different mechanism: a
+// control that must stay focusable (so a keyboard reader can reach it and be
+// told why) cannot use the `disabled` attribute, which removes it from the tab
+// order. Both wear the state.
+
+[data-slot="button"]:disabled,
+[data-slot="button"][aria-disabled="true"],
+#{$Control}:disabled,
+#{$Control}[aria-disabled="true"]:not(.contact-form__action),
+jelly-button[disabled],
+jelly-icon-button[disabled] {
+	opacity: 1;
+
+	color: var(--state-ink-quiet);
+
+	cursor: not-allowed;
+}
+
+// Only the controls that HAVE a fill flatten it. A bare control - a row action, a
+// copy receipt, a word - has no fill to flatten, and giving it one would turn a
+// receipt into a box at the moment it became unavailable.
+[data-slot="button"]:disabled,
+[data-slot="button"][aria-disabled="true"],
+jelly-button[disabled],
+jelly-icon-button[disabled],
+.StaccatoButton[aria-disabled="true"],
+.StaccatoHeroButton[aria-disabled="true"] {
+	background-color: var(--state-field);
+
+	// Every Jelly fill property the Button adapter sets, so a variant that
+	// carries its own fill (`platinum`, `graphite`, `rose`) flattens with the
+	// rest instead of keeping a colour that now says "armed".
+	--jelly-color-background-accent: var(--state-field);
+	--jelly-color-foreground-on-accent: var(--state-ink-quiet);
+	--jelly-color-background-neutral: var(--state-field);
+	--jelly-color-foreground-on-neutral: var(--state-ink-quiet);
+	--jelly-color-background-neutral-emphasis: var(--state-field);
+	--jelly-color-foreground-on-emphasis: var(--state-ink-quiet);
+	--jelly-color-background-rose: var(--state-field);
+	--jelly-color-foreground-on-rose: var(--state-ink-quiet);
+}
+
+// A control removed from the tab order cannot be asked why, so the pointer is
+// refused outright; an `aria-disabled` control stays reachable, and its reason
+// is printed by the component in the meta cell.
+[data-slot="button"]:disabled,
+jelly-button[disabled],
+jelly-icon-button[disabled] {
+	pointer-events: none;
+}
+
+// The contact form's action is the one control whose disabled state is a *gate*
+// with a sentence under it (`PREPARING` / `READY`), and `_Form.scss` already
+// draws it at the full vocabulary: the ink fill held, the note printed. It is
+// excluded above rather than overridden, because a specific treatment that is
+// already right is not improved by a general one.
+
+// ─── BUSY: THE BOX IS UNCHANGED AND THE SECOND PRESS IS REFUSED ────────────
+//
+// A busy control that still travels under the pointer is a control that lies
+// about having heard the first press. It keeps its fill, loses its press, and
+// takes the progress cursor.
+
+#{$Control}[aria-busy="true"] {
+	cursor: progress;
+
+	transform: none;
+}
+
+#{$Control}[aria-busy="true"]:active {
+	transform: none;
+}
+
+// ─── ERROR: THE CONTROL THAT FAILED ────────────────────────────────────────
+//
+// `aria-invalid` is the kit's and the contact form's attribute; it is honoured
+// on a control as well as on a field, because a button can be the thing that
+// failed. The ink is the palette's one destructive colour, and it is drawn as a
+// RULE (a 2px leading edge), not as a fill: a failed action must not look like a
+// destructive one.
+
+#{$Control}[aria-invalid="true"] {
+	color: var(--state-error-ink);
+
+	box-shadow: none;
+}
+
+#{$Control}[aria-invalid="true"]::after {
+	content: "";
+
+	position: absolute;
+	inset-inline-start: 0;
+	inset-block: 0;
+
+	inline-size: var(--state-current-width);
+
+	background: var(--state-error-ink);
+}
+
+// A control that failed and carries no positioning context would hang its rule
+// on the nearest positioned ancestor - which is a band, not a button. The
+// positioning is stated here rather than left to the caller, because the rule is
+// this layer's and so is the box it is drawn on.
+#{$Control}[aria-invalid="true"] {
+	position: relative;
+}

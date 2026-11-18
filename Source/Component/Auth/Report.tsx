@@ -26,7 +26,7 @@
  * block used to destructure `Children` while every call site passed React
  * children, so the action of every report on this surface rendered nowhere.
  */
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 import { CircleAlert, CircleCheck, Loader2, Mail } from "lucide-react";
 
@@ -97,18 +97,40 @@ const AuthReport = ({
 					</div>
 				)}
 
-				{Icon && (
+				{/* ─── THE LOADING GLYPH IS NOT A GLYPH ────────────────────────
+				    `Glyph === "loading"` rendered `Loader2` with `animate-spin` in
+				    the 48px tile. A spinner is a loop: it says "something is
+				    happening" for as long as it turns and nothing else, and the
+				    state's own word is already printed in the badge above it. A
+				    loading report draws the busy arm instead - two bars in the
+				    record grammar, the shape of the answer that has not arrived,
+				    from the skeleton layer's own two tokens. The tile's fill is
+				    kept so the card's anatomy does not change; only what stands
+				    inside it does. */}
+				{Glyph === "loading" ? (
+					<div
+						className="StateBusy StateBusy--stack flat mx-auto mb-4 w-40 justify-center bg-[color-mix(in_srgb,var(--Primary)_10%,transparent)] p-4"
+						aria-busy="true"
+						aria-hidden="true"
+					>
+						<span
+							className="StateBusy__Bar"
+							style={{ "--bar": "100%" } as CSSProperties}
+						/>
+
+						<span
+							className="StateBusy__Bar"
+							style={{ "--bar": "62%" } as CSSProperties}
+						/>
+					</div>
+				) : Icon ? (
 					<div className="flat mx-auto mb-4 flex h-12 w-12 items-center justify-center bg-[color-mix(in_srgb,var(--Primary)_10%,transparent)]">
 						<Icon
 							aria-hidden="true"
-							className={
-								Glyph === "loading"
-									? "h-6 w-6 animate-spin text-primary"
-									: "h-6 w-6 text-primary"
-							}
+							className="h-6 w-6 text-primary"
 						/>
 					</div>
-				)}
+				) : null}
 
 				<h3 className="type-heading">{Title}</h3>
 

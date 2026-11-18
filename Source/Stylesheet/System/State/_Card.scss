@@ -1,0 +1,141 @@
+@use "../Mixin" as *;
+
+// ─── THE CARD ───────────────────────────────────────────────────────────────
+//
+// A card is a block link: the whole surface is the target, so the words inside it
+// must not be underlined (a rule under the title says the title is the link and
+// the card is not) and the state must be drawn on the block.
+//
+// ─── THE CARD ANSWERS WITH ITS TITLE AND ITS EDGE ─────────────────────────
+//
+// The site had two answers, and neither was a state:
+//
+//   a hue      `.doc-card__link:hover { color: var(--Accent) }` - every word in
+//              the card turns green, including the note, which is not the link's
+//              label but the card's context
+//   a fade     `.blog-index__link:hover { opacity: 0.8 }` - the card dims. That
+//              is `DESIGN-COMPLETE.md` §0.3 at card scale: present in the DOM,
+//              receding from the page
+//
+// The state this layer gives them is the same one the row grammar gives a row,
+// translated to a block: **the title takes the underline and the card's edge
+// steps from the separator's ink to the edge's.** Two marks, both ink, both
+// greyscale-safe, and the card's note keeps its own ink because it is context and
+// not the destination.
+//
+// ─── PRESSED: 1PX, BECAUSE A CARD IS AN OBJECT ────────────────────────────
+//
+// Unlike a row, a card is a surface with a frame, so it can travel without
+// looking like a list that flickers. It travels 1px, takes the state field, and
+// returns. The travel is on the link, not the card's own frame, so a `jelly-card`
+// (a keeper surface) is never moved by this layer - only the anchor inside it.
+
+$Card: ":is(.doc-card__link, .doc-tile, .doc-services, .blog-index__link, .contact-hub__card, .hero-band__stack-tile, .home-platform__anchor, .record-stage__plate-label, .record-band__index-item, .surface-partner)";
+
+// ─── REST: NO RULE UNDER THE WORDS ─────────────────────────────────────────
+
+#{$Card} {
+	// A block link paints no line. Stated here rather than left to each partial,
+	// because the sitewide prose underline reaches every anchor whose class does
+	// not opt out, and a card that gained one would underline its title and say
+	// the wrong thing about what the target is.
+	text-decoration: none;
+}
+
+// ─── HOVER: THE TITLE'S RULE AND THE EDGE'S INK ───────────────────────────
+//
+// `:where()` on all three, because two of these blocks carry a treatment this
+// layer must not touch: the hero's stack tile answers the pointer with an accent
+// edge (a keeper's part, and it stays), and the contact hub's card takes a fill.
+// At zero specificity this rule is a floor for the cards that answer with nothing,
+// and the two that already answer keep their own answer.
+
+:where(#{$Card}):hover {
+	// The edge. A card whose frame is a hairline steps it to the edge ink; a card
+	// whose frame is the jelly surface's own keeps its frame and takes the title's
+	// rule, which is why this declaration is a `border-color` and not a border.
+	border-color: var(--state-rule-strong);
+
+	text-decoration: none;
+}
+
+:where(#{$Card}):hover
+	:where(
+		h2,
+		h3,
+		h4,
+		.doc-card__title,
+		.doc-tile__label,
+		.blog-index__title,
+		.contact-hub__name
+	) {
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-decoration-color: var(--state-ink);
+	text-underline-offset: var(--optical-underline-offset);
+}
+
+// The card's own mark - the `→` a doc tile prints, the arrow an appendix row
+// carries - follows the title into the ink, so the block moves as one object.
+:where(#{$Card}):hover
+	:where(
+		.doc-card__arrow,
+		.doc-tile__arrow,
+		.doc-appendix__arrow,
+		.contact-hub__slug
+	) {
+	color: var(--state-ink);
+
+	border-color: var(--state-rule-strong);
+}
+
+// ─── PRESSED ────────────────────────────────────────────────────────────────
+
+#{$Card}:active {
+	transform: translateY(var(--state-press-travel));
+
+	background-color: var(--state-field-press);
+}
+
+// ─── FOCUS: THE RING AROUND THE BLOCK ─────────────────────────────────────
+//
+// A card is focused as a block, so the ring is drawn around the block at the
+// identity's 4px. The inner words must not ring as well - the anchor is the
+// focusable element and nothing inside it is.
+
+#{$Card}:focus-visible {
+	outline: var(--state-ring-width) solid var(--state-ring);
+	outline-offset: var(--state-ring-offset);
+}
+
+#{$Card}:focus-visible :where(h2, h3, h4, span) {
+	outline: none;
+}
+
+// ─── CURRENT: A CARD CAN BE THE PAGE YOU ARE ON ───────────────────────────
+//
+// `/Contents` links the page it is the index of, and a doc card for the article
+// you are reading is a real case. The marker is the row grammar's: a 2px accent
+// rule on the leading edge, no wash, weight unchanged (a card's title is already
+// at 500). `:where()` again, so a band's index item that already marks its own
+// position is not given a second bar.
+
+:where(#{$Card}[aria-current]:not([aria-current="false"])) {
+	position: relative;
+
+	border-color: var(--state-rule-strong);
+}
+
+:where(#{$Card}[aria-current]:not([aria-current="false"]))::before {
+	content: "";
+
+	position: absolute;
+	inset-block: 0;
+	inset-inline-start: 0;
+
+	inline-size: var(--state-current-width);
+
+	background: var(--state-ring);
+
+	pointer-events: none;
+}

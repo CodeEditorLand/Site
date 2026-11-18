@@ -1,0 +1,97 @@
+// ─── THE STATE TOKENS ───────────────────────────────────────────────────────
+//
+// Every value an interaction changes, declared once. A partial that writes
+// `color-mix(in srgb, var(--Accent) 12%, transparent)` in a hover rule is
+// writing a state value the next card will tidy into a different one; the same
+// figure as a token is a decision.
+//
+// The ladder is deliberately short. Four fields, two inks, two rules, one ring,
+// one travel. A fifth field would be a fifth meaning, and the states only have
+// four meanings between them: attention, press, choice, and unavailability.
+//
+// ─── WHY THE FIELDS ARE THE CREME RAMP AND NOT ALPHA OF INK ─────────────────
+//
+// `--Mute` is a *deeper creme*, not black at 8 %. On the creme field a black
+// wash greys the paper; a deeper creme warms it, and the site's whole material
+// argument is that the page is paper with a printed insert on it. So the wash a
+// row takes is the same fill the site already uses for a recessed surface, one
+// step down the ramp - and it reads identically inside a white card, because a
+// white insert darkening toward creme is the same movement in the same
+// direction.
+//
+// `--state-field-nav` is the one exception and it is the accent, because the
+// header ribbon's hover is previewing the current state and both must be the
+// accent or the ribbon speaks two languages. It is 12 % - the value C5 has
+// carried since the ribbon was rebuilt - and it is the only place a pointer may
+// spend the accent.
+
+:root {
+	// ─── fields ───────────────────────────────────────────────────────────
+	/* attention: a hovered row, a chosen row's held wash */
+	--state-field: var(--Mute);
+
+	/* the press: one step deeper than attention, and it is the only field a
+	   pointer-down may use */
+	--state-field-press: var(--Surface2);
+
+	/* the navigation landmark's hover - the accent, and only there */
+	--state-field-nav: color-mix(in srgb, var(--Accent) 12%, transparent);
+	--state-field-nav-press: color-mix(in srgb, var(--Accent) 20%, transparent);
+
+	// ─── inks ─────────────────────────────────────────────────────────────
+	/* the label a state may darken to; never a hue */
+	--state-ink: var(--Foreground);
+
+	/* the ink a state may quiet to, and the ink an unavailable control wears */
+	--state-ink-quiet: var(--MuteForeground);
+
+	// ─── rules ────────────────────────────────────────────────────────────
+	/* a resting rule: 8 % ink, the sitewide hairline */
+	--state-rule: var(--Border);
+
+	/* a rule that is the only thing defining the edge: 20 % ink */
+	--state-rule-strong: var(--Divider);
+
+	/* the current-position marker's weight - a shape, not a colour */
+	--state-current-width: 2px;
+
+	// ─── the ring ─────────────────────────────────────────────────────────
+	/* focus is the one accent ring: 2px, 4px off the box - the identity's own
+	   figure (`DESIGN-COMPLETE.md` §1.6), and the value the sitewide base rule
+	   already draws. Never a glow, never a shadow, never colour alone: the ring
+	   is a shape drawn outside the box. */
+	--state-ring-width: 2px;
+	--state-ring-offset: 4px;
+
+	/* where the surface clips (a row inside a slip, a field inside a clipped
+	   box) the ring is drawn INSIDE the box by 2px instead. Two offsets, one
+	   ring, and the variant is named rather than rediscovered as a bug. */
+	--state-ring-inset: -2px;
+
+	--state-ring: var(--Accent);
+
+	// ─── the press ────────────────────────────────────────────────────────
+	/* the only geometry a state may move, and only while the pointer is down */
+	--state-press-travel: 1px;
+
+	// ─── the mark column ──────────────────────────────────────────────────
+	/* reserved on every row whether or not it prints a mark, so a state change
+	   never shifts a label by a glyph */
+	--state-mark-column: 1.25rem;
+
+	// ─── busy ─────────────────────────────────────────────────────────────
+	/* the bar is a rule whose value is not known yet: the skeleton's own height
+	   and ink, so a busy control and a loading record draw the same bar */
+	--state-busy-bar: var(--motion-skeleton-bar);
+	--state-busy-ink: var(--motion-skeleton-ink);
+
+	/* a bar's length is a guess about the answer's shape, so it is the caller's
+	   (`--bar`) with this as the default */
+	--state-busy-width: 3.5rem;
+
+	// ─── error ────────────────────────────────────────────────────────────
+	/* a failed control is drawn with the palette's one destructive ink, and the
+	   surface pair it already owns - no fifth colour */
+	--state-error-ink: var(--Destruct);
+	--state-error-field: var(--DestructSurface);
+}

@@ -33,3 +33,13 @@
 // page. See `System/Type/_Setting.scss` before moving this line, and note why the
 // family's entry is `Setting` and not `Index`.
 @use "System/Type/Setting" as Setting;
+// The state layer loads LAST, after every layer it refines - the Type layer
+// included - because an interaction state is the last thing that happens to a
+// control: after its type, its spacing, its rule, its motion. Every rule in it
+// either declares a value no partial declared (pressed, busy, disabled, the
+// selected marks) or moves a value a partial declared to the one the vocabulary
+// allows (a hover that spent the accent, a focus ring drawn at 1px, a disabled
+// label at 50 % opacity), and source order is the mechanism. See
+// `System/State/_Index.scss` before moving this line - it is the law, and the
+// reason the layer is a layer.
+@use "System/State/Index" as State;

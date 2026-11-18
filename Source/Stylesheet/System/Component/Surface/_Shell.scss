@@ -246,7 +246,13 @@
 }
 
 .surface__action:hover {
-	color: var(--Accent);
+	// A surface's action is a route link: its rule is the marker, not a hue.
+	color: var(--Foreground);
+
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-decoration-color: var(--Foreground);
+	text-underline-offset: var(--optical-underline-offset);
 }
 
 @include bp(640px) {
@@ -471,8 +477,12 @@
 }
 
 .surface-absent__action:hover {
-	color: var(--Accent);
-	border-bottom-color: var(--Accent);
+	// The rule is already the action's marker, so the state moves that rule to
+	// the ink. The accent on this action would compete with the accent rule the
+	// absent surface draws to say what is missing.
+	color: var(--Foreground);
+
+	border-bottom-color: var(--Primary);
 }
 
 .surface-absent__note {

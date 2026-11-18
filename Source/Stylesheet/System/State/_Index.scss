@@ -1,0 +1,123 @@
+// ─── THE STATE LAYER ────────────────────────────────────────────────────────
+//
+// A control that answers instantly feels like software. A control that answers
+// ambiguously feels like a mock. This layer is the answer: every interactive
+// thing on the site - control, link, row, tab, disclosure, card - states what
+// state it is in, in ink, and states it in a vocabulary that is the same
+// everywhere.
+//
+// It is the last layer. Every rule in it either (a) declares a value no partial
+// declared, or (b) moves a value a partial declared to the one the vocabulary
+// allows. Source order is the mechanism, and the reason it is last is that an
+// interaction state is the last thing that happens to a control - after its
+// type, its spacing, its rule, its motion. See `System.scss` before moving it.
+//
+// ─── THE EIGHT STATES ───────────────────────────────────────────────────────
+//
+//   rest      nothing is happening. The control's own ink and its own rule.
+//   hover     a pointer is on it. It leaves when the pointer does.
+//   pressed   the pointer is down. It travels 1px and returns.
+//   focus     the keyboard is on it. The one ring, and it is the accent.
+//   selected  the reader chose it. It stays after the pointer leaves.
+//   current   the reader is here. It stays until they go somewhere else.
+//   disabled  it exists and cannot be used. It stays legible and says why.
+//   busy      it is working. The box is unchanged and the answer is barred.
+//   error     it failed. The status word, the cause, the next step.
+//
+// (Error is the ninth word and the eighth state: it belongs to a control the
+// same way `INTERRUPTED` belongs to a record.)
+//
+// ─── A STATE CHANGES ONE OF FOUR MATERIALS, AND NOTHING ELSE ────────────────
+//
+//   INK     the label's colour - `--Foreground` or `--MuteForeground`, never a
+//           hue. A hover that spends the accent is a hover that has stopped
+//           authenticating anything.
+//   RULE    a line's colour or weight: `--Border` (8 %) at rest, `--Divider`
+//           (20 %) when the line is the only thing defining the edge, and the
+//           2px accent bar for the current position.
+//   FIELD   a fill: `--Mute` for attention, `--Surface2` for the press, the
+//           12 % accent field for the one navigation landmark.
+//   MARK    a glyph in a reserved column: `✓` chosen, `◎` unavailable, `→` an
+//           action, `#` a register.
+//
+// Never a shadow, never a radius, never a gradient, never an opacity on a label,
+// never a scale on type. Those are five ways to say "state" that the identity
+// does not have, and each of them was on this site before this layer.
+//
+// ─── THE THREE SHAPES: A HOVER IS A FIELD, A SELECTION IS A MARK, A CURRENT
+//     POSITION IS A RULE ─────────────────────────────────────────────────────
+//
+// This is the composition problem's answer, and it is why the three states can
+// coexist on one row instead of fighting for the same declaration:
+//
+//   hovered row    a `--Mute` wash. Transient. No geometry change, no mark.
+//   selected row   the same wash, HELD, plus `✓` in the mark column and the
+//                  label at 500. A hover leaves; a selection stays.
+//   current row    a 2px accent rule on the leading edge, and the label at 500.
+//                  No wash at all, because "you are here" is a position and a
+//                  position is drawn as a rule.
+//   all three      a selected row under the pointer deepens to `--Surface2` and
+//                  keeps its `✓`; a current row under the pointer takes the wash
+//                  and keeps its rule. Nothing is lost, because no two states
+//                  wanted the same material.
+//
+// Every one of the three survives greyscale, which is the test: a reader who
+// cannot see the accent still knows which row is chosen and which is current.
+//
+// ─── THE ACCENT'S BUDGET ────────────────────────────────────────────────────
+//
+// The accent appears on: the focus ring, the current-position rule, the mark of
+// a completed write (`✓ COPIED`), the record's opening rule, the seal, and the
+// header ribbon's hover - the one place a hover may spend it, because there the
+// hover is PREVIEWING the current state and the two must be the same field or
+// the ribbon has two languages. Twelve selectors that turned a label green on
+// hover were moved to ink by this layer's partials; the list is in
+// `State/_Link.scss` under "THE HOVERS THIS LAYER MOVED", so the next card can
+// find them without a grep.
+//
+// ─── DISABLED IS NOT DIMMED ─────────────────────────────────────────────────
+//
+// The kit writes `disabled:opacity-50`. At 50 % a label is present in the DOM and
+// gone from the page - the exact failure `DESIGN-COMPLETE.md` §0.3 names. A
+// disabled control here keeps its box, keeps its size, keeps its legibility,
+// loses only its authority: the field flattens to the state wash, the label
+// steps to the quiet ink, the cursor says `not-allowed`, and the component
+// prints the reason in its meta cell (`◎ PREPARING`, `◎ NO RECIPIENT`). A
+// reader who cannot read a control cannot understand why it will not work.
+//
+// ─── BUSY KEEPS THE BOX ─────────────────────────────────────────────────────
+//
+// No spinner. A spinner is a loop, and a loop is a state that never resolves -
+// the one thing a state must not be. A busy control keeps its geometry, its
+// label steps to a bar in the record grammar (the same bar
+// `Motion/_Skeleton.scss` draws, from the same two tokens), `WAITING ON:` names
+// what has not arrived, and the control refuses a second press. `DynamicButton`
+// carried a `Loader2` with `animate-spin`; it carries `.StateBusy` now.
+//
+// ─── THE READING ORDER ──────────────────────────────────────────────────────
+//
+//   Token        the vocabulary as values - one declaration site
+//   Control      the button family: press, ring, disabled, busy
+//   Link         the anchor: prose, route, navigation, and the gone target
+//   Row          the row grammar: hover, selected, current, pressed
+//   Tab          the one-of-N family: scope cells, crate tabs, rail parts
+//   Disclosure   `<details>`, its summary, and every `aria-expanded` trigger
+//   Card         the block link - a card whose whole surface is the target
+//   Field        the input family: hover, focus, invalid, disabled, read-only
+//   Busy         the busy state, its bar, and the end of it
+//   Adverse      denied, missing, too long, too much - at control scale
+//
+// The order is the cascade: the tokens first, then the smallest control, then
+// the surfaces that hold rows of them. Nothing here paints a surface of its own:
+// a state is a value on a box the partials already drew.
+
+@use "Token";
+@use "Control";
+@use "Link";
+@use "Row";
+@use "Tab";
+@use "Disclosure";
+@use "Card";
+@use "Field";
+@use "Busy";
+@use "Adverse";

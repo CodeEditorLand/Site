@@ -114,14 +114,19 @@
 
 	text-decoration: none;
 
+	// The row answers the pointer with its ink and its rule, not with a hue: the
+	// note under the name is the row's context, and the accent authenticates a
+	// position rather than a mouse (`Stylesheet/System/State/_Link.scss`).
 	&:hover {
-		color: var(--Accent);
+		color: var(--Foreground);
 
 		border-block-end-color: var(--Divider);
+
+		background-color: var(--Mute);
 	}
 
 	&:hover .doc-crate__arrow {
-		color: var(--Accent);
+		color: var(--Foreground);
 	}
 }
 

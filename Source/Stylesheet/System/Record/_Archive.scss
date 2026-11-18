@@ -314,10 +314,12 @@
 }
 
 /* The ring sits inside the row's own box: the rows share hairlines, and a ring
-   offset outward would paint over the row above. */
+   offset outward would paint over the row above. It is the site's one ring at the
+   inset offset - 2px of the accent, not 1px of the ink, which read as a second
+   rule rather than as the keyboard's position. */
 .record-archive__link:focus-visible {
-	outline: 1px solid var(--Primary);
-	outline-offset: -1px;
+	outline: var(--state-ring-width) solid var(--state-ring);
+	outline-offset: var(--state-ring-inset);
 }
 
 /* REDUCED MOTION. The transition goes and the state does not: a reader who

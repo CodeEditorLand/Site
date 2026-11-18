@@ -143,8 +143,10 @@
 }
 
 .auth-shell__field input:focus-visible {
-	outline: 1px solid var(--Primary);
-	outline-offset: 0;
+	// The site's one ring. This was 1px of the ink at 0 offset - a second ring
+	// vocabulary on the surface a reader reaches when they are already uncertain.
+	outline: var(--state-ring-width) solid var(--state-ring);
+	outline-offset: var(--state-ring-offset);
 }
 
 .auth-shell__field input[aria-invalid="true"] {

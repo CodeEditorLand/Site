@@ -143,7 +143,10 @@
 }
 
 .onward__link:hover .onward__where {
-	color: var(--Accent);
+	// The intent word is the row's second cell, so it follows the label into the
+	// ink rather than into the accent: a hover is not an authentication
+	// (`Stylesheet/System/State/_Link.scss`).
+	color: var(--Foreground);
 }
 
 .onward__note {

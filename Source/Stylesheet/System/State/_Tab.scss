@@ -1,0 +1,112 @@
+@use "../Mixin" as *;
+
+// ─── THE TAB ────────────────────────────────────────────────────────────────
+//
+// A tab is the one-of-N control: exactly one is true and the others are not. The
+// site has four of them in three partials and two markup languages:
+//
+//   .Segmented__Cell    a radio group of scopes - `aria-checked`
+//   .doc-rust__tab      the nine crates of the Rust surface - `role="tab"` +
+//                       `aria-selected`
+//   .FrameRailTab       the frame's ten parts - styled by `html[data-section]`,
+//                       the document's own state rather than the row's
+//   [data-slot="tabs-trigger"]   the kit's primitive, unmounted today
+//
+// The three that mount do not agree on how the state is spelled, and one of them
+// (`RustViewer`) writes `aria-selected` in the markup and reads a `--active`
+// class in the stylesheet - two vocabularies that must be kept in step by hand.
+// That is the drift this partial closes: the ARIA attribute is the state, and a
+// class is a convenience that can only ever restate it.
+//
+// ─── THE SELECTED TAB IS THE PULLED-OUT SHEET ─────────────────────────────
+//
+// The site's tab marker is already designed and it is not a colour: the chosen
+// tab turns white - the pulled-out sheet lying on the creme field - the label
+// goes to the ink at 500, and a 2px rule closes its inner edge. Three marks, and
+// greyscale keeps all three. The rule is the accent on the scope control (it is
+// the only one-of-N on a page whose subject is a filter) and the ink on the crate
+// bar (that page's one expressive moment is an inverted fill). Both are the same
+// shape at two inks; neither is restated here.
+
+$Tab: ':is(.Segmented__Cell, .doc-rust__tab, .FrameRailTab, [role="tab"], [data-slot="tabs-trigger"], [data-slot="toggle-group-item"], [data-slot="toggle"])';
+
+// ─── REST ───────────────────────────────────────────────────────────────────
+
+#{$Tab} {
+	cursor: pointer;
+
+	touch-action: manipulation;
+	-webkit-tap-highlight-color: transparent;
+}
+
+// ─── HOVER: INK, AND THE RULE THAT IS NOT THERE YET ────────────────────────
+//
+// An unselected tab is a quiet label on a track, so its hover is the ink - the
+// scope control already does exactly this and the rule is generalised from it.
+// The crate bar's hover also moves its frame to the ink, which its own partial
+// states; this rule leaves that alone because it is at zero specificity.
+
+:where(#{$Tab}):hover:not([aria-selected="true"]):not(
+		[aria-checked="true"]
+	):not([aria-disabled="true"]) {
+	color: var(--state-ink);
+}
+
+// ─── PRESSED: THE FIELD, AND NO TRAVEL ─────────────────────────────────────
+//
+// A tab is pressed to choose it, and the choice is confirmed by the selected
+// state that follows in the same frame. So the press is the field one step down
+// and nothing else: a tab that travelled would move the row of tabs under the
+// reader's finger at the moment they were aiming at it.
+
+:where(#{$Tab}):active:not([aria-selected="true"]):not(
+		[aria-checked="true"]
+	):not([aria-disabled="true"]) {
+	background-color: var(--state-field-press);
+}
+
+// ─── SELECTED: THE ATTRIBUTE IS THE STATE ─────────────────────────────────
+//
+// `aria-checked` (a radio group), `aria-selected` (a tablist) and
+// `data-state="active"` (the kit) are the three spellings. A control that
+// carries any of them is chosen, and it must read as chosen with no class
+// helping it. The declarations are the site's three marks at their quietest
+// common form - white sheet, ink, weight - and a partial that wants the accent
+// rule or the inverted fill adds it at its own specificity, which beats this.
+
+:where(
+	#{$Tab}[aria-selected="true"],
+	#{$Tab}[aria-checked="true"],
+	#{$Tab}[data-state="active"]
+) {
+	background: var(--Card);
+
+	color: var(--state-ink);
+
+	font-weight: 500;
+}
+
+// ─── FOCUS ──────────────────────────────────────────────────────────────────
+
+#{$Tab}:focus-visible {
+	outline: var(--state-ring-width) solid var(--state-ring);
+	outline-offset: var(--state-ring-offset);
+}
+
+// ─── DISABLED: A TAB THAT IS NOT AVAILABLE ────────────────────────────────
+//
+// A tab can be unavailable - a scope with nothing behind it, a crate with no
+// documentation built. It stays on the track, because a track that hides an
+// option is a track that lies about the set; it loses its ink, keeps its size,
+// and the cursor says why.
+
+#{$Tab}:disabled,
+#{$Tab}[aria-disabled="true"] {
+	opacity: 1;
+
+	color: var(--state-ink-quiet);
+
+	background: none;
+
+	cursor: not-allowed;
+}
