@@ -91,8 +91,11 @@ function Walk(
 		if (Child.type === "code" && Child.lang === "mermaid") {
 			const Svg = RenderMermaidBlock(
 				Child,
+
 				AvailableHashes,
+
 				SvgDir,
+
 				Document,
 			);
 
