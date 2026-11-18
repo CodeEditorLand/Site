@@ -58,6 +58,15 @@ function Bind(
 
 	const Icon = Button.innerHTML;
 
+	/*
+	 * The confirmation swaps the glyph and the labels *inside* the control's
+	 * box - it never touches `hidden`, `display` or the host's size. That is a
+	 * hard rule, not a style preference: the pointer is standing on this
+	 * control when it fires, and a control that disappears under the pointer
+	 * takes its hover state (and, on a Jelly element, its place in the shared
+	 * animation loop) with it. The box the reader pressed is the box that says
+	 * "Copied".
+	 */
 	Button.addEventListener("click", async () => {
 		try {
 			await Write(Button.dataset.copyPayload ?? "");
