@@ -464,7 +464,10 @@
 .surface-absent__action {
 	color: var(--Foreground);
 	text-decoration: none;
-	@include hairline(bottom);
+	/* The action's rule is its non-colour marker, so it is `--Divider` (20%),
+	   the value every link marker uses - not the 8% structural hairline. One
+	   line, and it is the visible one. */
+	border-bottom: 1px solid var(--Divider);
 }
 
 .surface-absent__action:hover {

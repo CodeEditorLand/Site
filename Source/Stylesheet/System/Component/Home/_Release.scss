@@ -74,11 +74,31 @@
 
 .home-release {
 	min-inline-size: 0;
+
+	// THE PLATE'S ONE INLINE INSET, declared once and read by both of the parts
+	// that pay it. The head's stamp and the body's first `Elements` label are the
+	// same column of one sheet, so they stand on one left edge; two insets - a
+	// clamp on the head and a literal on the body - put the stamp and the label
+	// three pixels apart at 1440 and twelve at 480, and a step that small reads as
+	// a mistake rather than as a rhythm. This is the pair's `--pair-edge`
+	// mechanism at plate scale: the measure is named where the artifact declares
+	// itself, and no part restates it.
+	--release-inset: clamp(1.25rem, 2vw, 2rem);
 }
 
 .home-release__head {
+	// The plate's own padding is zero (`--jelly-card-padding-block/inline` on
+	// `.home-manifest`), so the head pays the top space itself. The role is
+	// `--space-reading`, not `--space-tight`: this is a card edge, and 16px is
+	// the inset a card's content takes on this site (`Record/_Entry.scss`'s
+	// `.record-entry`, `Doc/_Index.scss`'s `.doc-card__link`), while 8px is the
+	// gap between a label and its value - at the edge it would set the stamp
+	// nearer the paper than any other inset in the box. Read as a whole the head
+	// is 16 above, 24 below and 20-32 inline: the stamp sits pressed at the head
+	// of the sheet and the rule still carries the weight down into the body.
+	padding-block-start: var(--space-reading);
 	padding-block-end: 1.5rem;
-	padding-inline: clamp(1.25rem, 2vw, 2rem);
+	padding-inline: var(--release-inset);
 	border-block-end: 1px solid
 		color-mix(in srgb, var(--CardForeground) 20%, transparent);
 }
@@ -156,7 +176,16 @@
 	display: flex;
 	flex-direction: column;
 	padding-block-start: 1.5rem;
-	padding-inline: 2rem;
+	// THE PLATE'S FLOOR. The head pays the top edge and this pays the bottom one,
+	// because the Jelly surface's own padding is zero (`--jelly-card-padding-*`
+	// on `.home-manifest`) and the body's last row is the manifest's sixth
+	// `KEY: VALUE` line - a body that stopped at its last row left that line
+	// standing on the plate's hairline, which is ink on an edge and the one thing
+	// a card edge may not carry. The role is `--space-reading`, the same step the
+	// head pays at the top, so the plate's two edges are measured by one role and
+	// the sheet reads as inset above and below rather than pressed at the foot.
+	padding-block-end: var(--space-reading);
+	padding-inline: var(--release-inset);
 }
 
 .home-release__section {

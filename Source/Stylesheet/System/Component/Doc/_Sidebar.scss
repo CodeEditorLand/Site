@@ -137,6 +137,15 @@
 
 	color: var(--MuteForeground);
 
+	/* A rail row is a NAV LABEL, not prose: it states its own treatment so the
+	   sitewide prose underline in `System/_Global.scss` never reaches it. Left
+	   unstated, the row painted the 1px prose rule under every page name AND the
+	   2px accent bar on the current one - two markers for one state, and an
+	   underline under a label the reader is meant to scan rather than read.
+	   What marks a row here is what marks it everywhere in the rail: the wash
+	   and the ink on hover, the accent bar when it is the current page. */
+	text-decoration: none;
+
 	/* The current-page rule is 2px and it is reserved on every row, not only on the
 	   current one: a border that appears only when a row becomes current shifts the
 	   label by its own width, and eighty-one rows that jump by 2px as the reader

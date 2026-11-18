@@ -54,11 +54,16 @@
 
 // A sentence that opens a surface is capped at the opening measure, and it is
 // capped by the sentence's own class rather than by the caller. The list is
-// restated here because these three artifacts were each given 62ch by hand and
-// a later block should not have to rediscover the value.
+// restated here because these two artifacts were each given 62ch by hand and a
+// later block should not have to rediscover the value.
+//
+// The cross-reference's reason is deliberately NOT in this list. It is a caption
+// that shares its row with a route, so its measure is its own column's 52ch
+// (`Detail/_See.scss`, where the arithmetic is written): 62ch beside a 15ch route
+// is a cap no strip this site prints can reach, and a cap that is never reached
+// is not a measure.
 .detail-foot__see,
-.detail-leader__note,
-.detail-see__reason {
+.detail-leader__note {
 	max-inline-size: var(--MeasureOpening);
 }
 

@@ -20,11 +20,39 @@
 // blocks, and a band may print both - the footnote for provenance, the foot for
 // the document's apparatus.
 //
-// ─── NARROW ───────────────────────────────────────────────────────────────
-// Below 768px the two registers stack: See first (it is the useful one), then
-// the folio at the band's left. The rule stays where it is - a rule that moves
-// is not an edge.
+// ─── NARROW: THE FOOT IS ITS OWN CONTAINER ────────────────────────────────
+// The foot is printed at a band's edge and inside a white card's inset, so its
+// width is the container's and not the viewport's: 1072px at the widest band and
+// 595.2px inside a card (the card's 72ch body, less its 3rem inset). A viewport
+// breakpoint says "one row" at a 1440px viewport where the foot is 595.2px, so
+// the switch is `@container foot`.
+//
+// The two registers can share a line when the foot holds all three parts:
+//
+//   the See's row floor     41.05ch = 320.2px  (`Detail/_See.scss`, where the
+//                           character arithmetic is written out)
+//   the row gap             `--space-group` = 32px
+//   the folio's floor       its longest `nowrap` group. The widest on the site
+//                           is `/CONTENTS`: `08 CHAPTERS` + `AS OF: 2026-11-18` +
+//                           `SOURCE: SOURCE/CONTENT/INDEX/CHAPTERS.TS` - 69
+//                           glyphs and two U+2001 registers at 13px mono =
+//                           635.96px
+//   ───────────────────────
+//                           320.2 + 32 + 635.96 = 988.16px = 61.76rem
+//
+// so the row is a row from 62rem (992px) of foot and a column below it. At 992px
+// the See gets 324.04px - its row floor with 3.84px to spare - and the folio
+// prints its two ends on two lines. Below 62rem the See takes the foot's whole
+// width and the folio stands under it: a 595.2px card cannot hold a 636px folio
+// beside any See at all, and the row that tried gave the See 0px, which is what
+// printed the reasons one word per line.
+//
+// The rule stays where it is in both forms - a rule that moves is not an edge.
 @use "../Mixin" as *;
+
+.detail-foot {
+	container: foot / inline-size;
+}
 
 .detail-foot__row {
 	display: flex;
@@ -33,7 +61,7 @@
 	min-inline-size: 0;
 }
 
-@include bp(768px) {
+@container foot (min-width: 62rem) {
 	.detail-foot__row {
 		flex-direction: row;
 		align-items: baseline;
@@ -41,22 +69,31 @@
 		gap: var(--space-group);
 	}
 
-	// The references take what they need and the folio takes its own width, so
-	// a two-line reference never pushes the folio off the band's right edge.
+	// The references take what is left after the folio, and `min-inline-size: 0`
+	// lets a long route wrap its reason rather than push the folio off the edge.
 	.detail-foot__see {
 		flex: 1 1 auto;
 		min-inline-size: 0;
 	}
 
+	// The folio YIELDS. `0 1 auto` lets it fall back to its own min-content - its
+	// two ends on two lines - instead of taking its max-content (≈ 839px on the
+	// widest folio) and starving the See. At the widest band that is the
+	// difference between a 404px See with a 271px reason and a 0px See with one
+	// word per line.
 	.detail-foot__folio {
-		flex: 0 0 auto;
+		flex: 0 1 auto;
 	}
 }
 
 // On a white card the foot is inside the card's own inset: the See and the Folio
-// keep the measure they had and the rule above them is the card's separator.
+// keep the measure they had and the rule above them is the card's separator. The
+// gap tightens ACROSS the row and keeps the reading gap DOWN it, because a card
+// foot is a column (595.2px, below the 61rem row) and 8px between the last
+// reason and the folio would read as one paragraph.
 .detail-foot[data-surface="card"] .detail-foot__row {
-	gap: var(--space-tight);
+	column-gap: var(--space-tight);
+	row-gap: var(--space-reading);
 }
 
 // Where the surface already owns its rhythm, the foot does not add one. The

@@ -29,6 +29,19 @@
 //   .doc-archive             the closing RecordArchive, at chapter distance
 //   .doc-index__back         the index's back-to-top line
 //
+// ─── NO `!important` ON A LINK'S LINE ─────────────────────────────────────
+//
+// Every link in this file once wrote `text-decoration: none !important` (and
+// `underline !important` on hover) because it was fighting the sitewide prose
+// underline: that selector was written as a chain of eleven
+// `:not([class*=...])`, scored (0,11,1) and beat every component rule on the
+// site. `System/_Global.scss` now wraps the same exclusion chain in `:where()`,
+// which contributes no specificity, so the prose default is a bare `a` (0,0,1)
+// and any component class (0,1,0) wins without shouting. The `!important`s are
+// gone: they were never about these links, and left in place they would have
+// out-ranked the next card's attempt to state a treatment here. Each link below
+// paints exactly one line - the one its role asks for.
+//
 // ─── WHY A CARD GRID ──────────────────────────────────────────────────────
 //
 // This is what the baseline rendered: ten `<section>`s, each a `h2` over a
@@ -238,7 +251,7 @@ jelly-card.doc-card__surface {
 
 	color: var(--CardForeground);
 
-	text-decoration: none !important;
+	text-decoration: none;
 
 	&:hover {
 		color: var(--Accent);
@@ -324,12 +337,12 @@ jelly-card.doc-card__surface {
 
 	color: var(--CardForeground);
 
-	text-decoration: none !important;
+	text-decoration: none;
 
 	&:hover {
 		color: var(--Accent);
 
-		text-decoration: underline !important;
+		text-decoration: underline;
 	}
 }
 
@@ -362,7 +375,7 @@ jelly-card.doc-card__surface {
 
 	color: var(--CardForeground);
 
-	text-decoration: none !important;
+	text-decoration: none;
 
 	&:hover {
 		color: var(--Accent);
@@ -388,12 +401,12 @@ jelly-card.doc-card__surface {
 
 	color: var(--CardForeground);
 
-	text-decoration: none !important;
+	text-decoration: none;
 
 	&:hover {
 		color: var(--Accent);
 
-		text-decoration: underline !important;
+		text-decoration: underline;
 	}
 }
 
@@ -433,7 +446,7 @@ jelly-card.doc-card__surface {
 
 	color: var(--CardForeground);
 
-	text-decoration: none !important;
+	text-decoration: none;
 
 	&:hover {
 		color: var(--Accent);
@@ -486,9 +499,9 @@ jelly-card.doc-card__surface {
 .doc-index__back a {
 	color: var(--Foreground);
 
-	text-decoration: none !important;
+	text-decoration: none;
 
 	&:hover {
-		text-decoration: underline !important;
+		text-decoration: underline;
 	}
 }

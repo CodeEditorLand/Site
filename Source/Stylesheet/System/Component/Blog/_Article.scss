@@ -257,6 +257,11 @@
 
 .blog-article__register-link:hover {
 	color: var(--Primary);
+
+	/* The line is the link's non-colour marker, so it moves with the ink: a
+	   label that darkens while its rule stays at `--Divider` reads as two
+	   objects, and the reader is left with a line that belongs to nothing. */
+	text-decoration-color: var(--Primary);
 }
 
 /* The empty state: an article below the heading floor has no register, and says

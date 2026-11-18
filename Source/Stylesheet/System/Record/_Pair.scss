@@ -28,6 +28,48 @@
 // its text sits at the top of whatever height the row takes. Nothing is
 // vertically centred - a centred body reads as a card, not as a record.
 //
+// THE POD'S INNER SPACE IS ONE MEASURE, AND THE POD PAYS IT. Its inline inset is
+// `--space-reading` (16px) on both of its edges - the frame's and the gutter's -
+// so the label, the rule under it, the ledger's rows and the rows' own rules all
+// stand on one left edge 16px inside the frame, and the 1px gutter keeps 16px of
+// air on each side. The frame's side of that inset is `--pair-edge`, so a bare
+// pair hands the edge back to the host surface without touching the gutter's
+// air. The inset IS the frame's inline inset: the card pays its block rhythm
+// (the head above the label, the floor under the caption) and leaves the inline
+// measure to the pods, so the frame edge and the gutter are measured once each
+// instead of twice - which is what keeps the label off the gutter without
+// indenting the columns away from the frame.
+//
+// THE BAR AND THE BODY NEED ONE INLINE ROLE BETWEEN THEM, NOT TWO. A bar that
+// indented differently from its body would hang its label's rule over nothing:
+// the rule, the rows and the frame all take `--space-reading` inline because
+// they are one column of one artifact. In block they do differ, and each takes
+// the role that measures it: the bar's foot is `--space-tight` (8px) from the
+// label to the rule - the bar rhythm `Record/_Well.scss` and
+// `Record/_Transcript.scss` already print, so the layer's three bar-over-body
+// frames now agree - while the pod's head and the frame's floor are
+// `--space-reading`. Reading is a paragraph's measure; a label to its rule is a
+// label's.
+//
+// The body pays no inset of its own. The pod's `--space-tight` gap is its head,
+// and a body that holds a block keeps that block's opening rhythm: a ledger's
+// first row stands its own `--space-tight` above the first key, so the key is
+// `--space-reading` under the bar's rule - the air the well also sets under its
+// bar - and a prose body reads one step tighter, which is what a comparison of
+// two sentences wants.
+//
+// THE GUTTER'S AIR IS THE FRAME'S INSET, NOT A BAND'S CHANNEL. `--space-reading`
+// on each side of the 1px rule (16 + 1 + 16) is the same measure the pod keeps
+// from the frame's hairline, so the pair reads as one divided artifact. The
+// band-scale splits put `--space-group` (32px) on each side of their gutter
+// (`Record/_Compose.scss`, `Home/_Working.scss`) because there the rule
+// separates two blocks of different densities, not two readings of one
+// comparison - and a card's channel at that width would read as two panels.
+//
+// NARROW keeps the same air: the pods' grid takes a `--space-reading` row gap,
+// so the rotated gutter is 16px from the body above it and 16px from the bar
+// under it, exactly as it is from the columns beside it at width.
+//
 // THE SUBJECT IS A BORDER WEIGHT. Its title-bar rule is 2px and, when the label
 // is a label rather than a heading, it also takes the full ink while the other
 // stays muted. The fill never changes: the inverted surface belongs to the thing
@@ -41,6 +83,12 @@
 @use "../Mixin" as *;
 
 .record-pair {
+	// The inset a pod keeps from the frame's hairline. The card pays it through
+	// the pods rather than as its own inline padding (see THE POD'S INNER SPACE),
+	// so it is one property and not a value repeated in three rules; a bare pair
+	// sets it to 0 because there the host surface's padding is that edge.
+	--pair-edge: var(--space-reading);
+
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-reading);
@@ -52,16 +100,26 @@
 // The pair's own surface: one white information box, square, one hairline. The
 // two pods are columns inside it, which is the whole difference between a pair
 // and two cards.
+//
+// The frame pays its block inset and nothing inline: the head above the label
+// and the floor under the caption are the frame's, and the inline measure is the
+// pods' (see THE POD'S INNER SPACE above). A frame that paid it as well would
+// inset the label 32px from its own hairline while the caption sat at 16.
 .record-pair--card {
 	@include hairline;
 	background: var(--Card);
 	color: var(--Foreground);
-	padding: var(--space-reading);
+	padding: var(--space-reading) 0;
 }
 
 // Structure inside a surface that is already painted: no fill, no frame, no
-// inset of its own.
+// inset of its own. The pods keep their gutter-side inset - the air around the
+// 1px rule belongs to the pods, not to the frame, and a pair inside a painted
+// card still needs it - but their frame-side inset goes with the frame's, since
+// a second reading inset inside the host's own padding would double it.
 .record-pair--bare {
+	--pair-edge: 0;
+
 	padding: 0;
 }
 
@@ -71,7 +129,7 @@
 	grid-template-rows: auto 1px auto;
 	align-items: stretch;
 	column-gap: 0;
-	row-gap: 0;
+	row-gap: var(--space-reading);
 	min-inline-size: 0;
 }
 
@@ -100,18 +158,26 @@
 	gap: var(--space-tight);
 	min-inline-size: 0;
 	min-block-size: 0;
-	padding: 0;
+	// Narrow, the pod spans the frame: its one inline inset is the frame's, and
+	// the gutter has rotated to a row, where the pods' grid gap is its air.
+	padding-block: 0;
+	padding-inline: var(--pair-edge);
 }
 
 @include bp(768px) {
 	.record-pair__pods {
 		grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
 		grid-template-rows: auto;
+		row-gap: 0;
 	}
 
+	// Wide, each pod has two edges and they are not the same edge: the outer one
+	// is the frame's, the inner one faces the 1px gutter and pays the same
+	// `--space-reading` there, so the rule stands in a 16 + 1 + 16 channel.
 	.record-pair__pod--left {
 		grid-column: 1;
 		grid-row: 1;
+		padding-inline: var(--pair-edge) var(--space-reading);
 	}
 
 	.record-pair__gutter {
@@ -124,12 +190,19 @@
 	.record-pair__pod--right {
 		grid-column: 3;
 		grid-row: 1;
+		padding-inline: var(--space-reading) var(--pair-edge);
 	}
 }
 
 // The title bar: the pod's label and the rule that carries its weight. The
 // subject's rule is twice as heavy and its label takes the full ink, which is
 // the whole mark - no badge, no fill, no second surface.
+//
+// The bar pays only its block foot. An inline padding here would draw the rule
+// at the pod's full width while the label stood inset from it - a rule under
+// nothing - so the inline inset stays on the pod, where the rule and the rows
+// both read it; the foot is `--space-tight` (8px), a label's measure, while the
+// pod's head and the frame's floor are `--space-reading`.
 .record-pair__bar {
 	@include hairline(bottom);
 	display: flex;
@@ -194,8 +267,13 @@
 // The caption spans the whole frame: it is the one statement made about the pair
 // as a pair - the shared floor, or the verdict. Caption weight, full ink, never
 // the pods' size.
+//
+// Its inline inset is the pods' own `--pair-edge` (as a margin, so the 62ch
+// measure stays a text measure rather than losing 32px of itself to padding):
+// the verdict opens on the same left edge as the label above it, which is what
+// makes it read as the pair's floor rather than as a note about the frame.
 .record-pair__caption {
-	margin: 0;
+	margin: 0 var(--pair-edge);
 	max-inline-size: 62ch;
 	font-size: var(--type-caption);
 	line-height: var(--type-caption-line);

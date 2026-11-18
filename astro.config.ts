@@ -425,6 +425,59 @@ export default (await import("astro/config")).defineConfig({
 						);
 				},
 			},
+
+			// Astro's createFileBasedRoutes() walks Source/pages with
+			// readdirSync() and then statSync() per entry, and does not tolerate
+			// an entry vanishing between the two: the stat throws ENOENT, the
+			// rejection is unhandled, and the whole dev server dies mid-edit
+			// (create-manifest.js: `const isDir = fs.statSync(resolved)...`).
+			//
+			// Every atomic writer opens that window: a tool that writes "page"
+			// through "page.<temp>" in the same directory and renames it into
+			// place - dos2unix (d2utmpXXXXXX, fixed in Maintain/Format.sh), an
+			// editor save, or Hermes' own .hermes-tmp.* write. Dot-prefixing the
+			// temp does NOT help: the dot skip in create-manifest.js runs AFTER
+			// the stat. So the dev server tolerates exactly that one rejection
+			// and nothing else.
+			{
+				name: "VanishedPageEntry",
+
+				apply: "serve",
+
+				configureServer() {
+					const Guard = Symbol.for("editor.land/vanished-page-entry");
+
+					// configureServer runs again on every dev-server restart;
+					// install the listener once.
+					if ((process as any)[Guard] === true) {
+						return;
+					}
+
+					(process as any)[Guard] = true;
+
+					process.on("unhandledRejection", (Reason: unknown) => {
+						const Error_ = Reason as {
+							code?: string;
+
+							path?: string;
+						} | null;
+
+						const Vanished = Boolean(
+							Error_ &&
+							Error_.code === "ENOENT" &&
+							typeof Error_.path === "string" &&
+							/[/\\]Source[/\\]pages[/\\]/.test(Error_.path),
+						);
+
+						if (Vanished) {
+							return;
+						}
+
+						// Anything else keeps Node's default: crash loudly.
+						throw Reason;
+					});
+				},
+			},
 		],
 	},
 });

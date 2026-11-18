@@ -308,7 +308,7 @@ const PageExtent = PageInset({
 							href={`/Doc/${PrevEntry.id}`}
 						>
 							<span class="doc-pager__label">
-								<span aria-hidden="true">←</span> Previous
+								<span aria-hidden="true">←</span>{"\u2001"}Previous
 							</span>
 							<span class="doc-pager__title">
 								{PrevEntry.data.title}
@@ -326,7 +326,7 @@ const PageExtent = PageInset({
 							href={`/Doc/${NextEntry.id}`}
 						>
 							<span class="doc-pager__label">
-								Next <span aria-hidden="true">→</span>
+								Next{"\u2001"}<span aria-hidden="true">→</span>
 							</span>
 							<span class="doc-pager__title">
 								{NextEntry.data.title}

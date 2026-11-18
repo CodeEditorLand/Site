@@ -78,7 +78,12 @@
 	padding: 0;
 }
 
-/* The alternate action: a plain hairline link, never a second button. */
+/* The alternate action: a plain hairline link, never a second button.
+   The rule under it is the link's non-colour marker, so it draws at `--Divider`
+   (20% ink, 1.50:1) and not at `--Border` (8%, 1.18:1) - the same value the
+   sitewide prose underline uses. A marker a reader cannot see is not a second
+   signal, it is the colour alone with extra steps. It is also the whole line
+   this link paints: the prose underline is off, so there is exactly one. */
 .auth-shell__alternate {
 	@include mono-meta;
 	@include track(var(--track-row));
@@ -86,7 +91,7 @@
 	padding-block-end: var(--space-tight);
 	color: var(--MuteForeground);
 	text-decoration: none;
-	@include hairline(bottom);
+	border-bottom: 1px solid var(--Divider);
 }
 
 .auth-shell__alternate:hover {
@@ -171,10 +176,12 @@
 }
 
 /* A field plus the control that belongs to it (reveal a password, resend a
-   link). The field itself keeps its own markup; this only groups the two. */
+   link). The field itself keeps its own markup; this only groups the two.
+   The control wears the alternate link's rule - `--Divider`, one line - so the
+   two mono controls of one form read as one family. */
 .auth-shell__reveal {
 	@include mono-meta;
-	@include hairline(bottom);
+	border-bottom: 1px solid var(--Divider);
 	align-self: flex-start;
 	padding-block-end: var(--space-tight);
 	background: none;

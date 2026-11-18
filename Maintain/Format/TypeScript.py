@@ -82,6 +82,9 @@ Exclude = frozenset(
         ".git",
         "dist",
         "build",
+        # Vendored submodule - its formatting belongs to the vendor repo.
+        "Vendor",
+        ".hermes",
     }
 )
 
@@ -452,6 +455,11 @@ def Main() -> None:
             for File in Path(".").rglob("*")
             if File.suffix in Extensions
             and not any(Part in Exclude for Part in File.parts)
+            # Config files belong to Prettier. This blank-line pass and Prettier
+            # disagree about blank lines inside expressions, so including the
+            # Astro config rewrote it on every run - and Astro restarts the dev
+            # server whenever astro.config.* changes.
+            and File.name not in ("astro.config.ts", "prettier.config.js")
         )
     else:
         for Pattern in Args.Files:

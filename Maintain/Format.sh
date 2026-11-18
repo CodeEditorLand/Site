@@ -45,9 +45,34 @@ FormatLineEndings() {
 
 	\cd "$Root"
 
-	# Convert CRLF -> LF on every text file. dos2unix skips binary files
-	# automatically. Exclude build output, caches, and generated paths.
+	# dos2unix rewrites EVERY file it is handed - including one that is already
+	# LF-only - through a temporary file created NEXT TO the target and renamed
+	# over it. The temp is named d2utmpXXXXXX (`strings "$(command -v dos2unix)"`
+	# shows the template), so a single pass creates a transient entry in every
+	# directory of the tree. Two consequences, both of which broke the dev-server
+	# loop while the site was being written (t_b107d9ee):
 	#
+	#   1. A temp file inside Source/pages/ makes Astro's createFileBasedRoutes()
+	#      walk throw an unhandled ENOENT when it stats an entry that has already
+	#      been renamed away - the whole dev server dies mid-edit.
+	#   2. A temp file over tsconfig.json bumps its mtime with byte-identical
+	#      content, and Vite's tsconfig watcher fires on the mtime alone:
+	#      "changed tsconfig file detected" -> "Configuration file updated.
+	#      Restarting...", once for the root config and once for Vendor/JellyUI.
+	#
+	# So: hand dos2unix only the files that actually carry a CRLF line ending
+	# (-I skips binaries), and never let it write inside the routed tree -
+	# Source/pages/ is converted to stdout and landed through a staging file
+	# outside Source/, then renamed into place (the staging dir is on the same
+	# volume, so the rename is atomic).
+	#
+	# Vendor/ is a git submodule: its formatting belongs to the vendor repo, and
+	# a pass over it dirties the submodule and rewrites its tsconfig.
+	CR=$(\printf '\r')
+	List="$Root/.hermes/tmp/format-crlf.txt"
+
+	\mkdir -p "$Root/.hermes/tmp"
+
 	# shellcheck disable=SC2038
 	\find . -type f \
 		-not -path "*/node_modules/*" \
@@ -59,11 +84,48 @@ FormatLineEndings() {
 		-not -path "*/.cache/*" \
 		-not -path "*/.swc/*" \
 		-not -path "*/docs/*" \
-		-not -path "*/Public/Asset/*" |
-		\xargs \dos2unix -q
+		-not -path "*/Public/Asset/*" \
+		-not -path "./Vendor/*" \
+		-not -path "./.hermes/*" \
+		-print0 |
+		\xargs -0 \grep -lI -e "$CR$" -- 2>/dev/null >"$List" || true
+
+	Count=$(\grep -c "" "$List" 2>/dev/null || true)
+	[ -n "$Count" ] || Count=0
+
+	if [ "$Count" -eq 0 ]; then
+		\rm -f "$List"
+		\echo "No CRLF found - nothing written (0 files)."
+		\echo ""
+		\echo "Line ending conversion complete."
+		\echo ""
+		return 0
+	fi
+
+	# Routed tree: staged outside Source/, renamed in. Never a temp inside
+	# Source/pages/ - that is the directory Astro's route manifest walks.
+	Stage="$Root/.hermes/tmp/format-stage"
+	\mkdir -p "$Stage"
+
+	\grep '^\./Source/pages/' "$List" 2>/dev/null | while IFS= \read -r Page; do
+		\dos2unix -q -O -- "$Page" >"$Stage/Page" 2>/dev/null || \continue
+		\chmod "$(\stat -f %Lp "$Page" 2>/dev/null || \stat -c %a "$Page" 2>/dev/null || \echo 644)" "$Stage/Page"
+		\mv -f "$Stage/Page" "$Page"
+		\echo "Converted (staged): $Page"
+	done
+
+	\rm -f "$Stage/Page"
+
+	# Everything else: converted in place.
+	\grep -v '^\./Source/pages/' "$List" >"$List.Rest" 2>/dev/null || true
+	if [ -s "$List.Rest" ]; then
+		while IFS= \read -r File; do \dos2unix -q "$File"; done <"$List.Rest"
+	fi
+
+	\rm -f "$List.Rest" "$List"
 
 	\echo ""
-	\echo "Line ending conversion complete."
+	\echo "Line ending conversion complete ($Count CRLF file(s) converted)."
 	\echo ""
 }
 
@@ -95,7 +157,9 @@ FormatShell() {
 		-not -path "*/Target/*" \
 		-not -path "*/dist/*" \
 		-not -path "*/.turbo/*" \
-		-not -path "*/.cache/*" |
+		-not -path "*/.cache/*" \
+		-not -path "./Vendor/*" \
+		-not -path "./.hermes/*" |
 		\xargs \shfmt -w
 
 	\echo ""

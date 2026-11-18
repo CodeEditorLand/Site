@@ -390,6 +390,16 @@ html {
    not change what matches - so `Button`, `Logo`, `Icon`, `Social`,
    `StaccatoLogo`, `StaccatoSocial`, `NavLink`, `StaccatoCard`, `Footer`,
    `HeaderRecord` and `[aria-label]` are still excluded. */
+/* ONE LINE PER LINK - which line belongs to which role. Prose and route links
+   wear this underline (`--Divider`, 1px, 0.22em). Nav labels never wear it:
+   they wear the rail's wash and the 2px `--Accent` bar when current, or the
+   2px/20% resting underline in the header and the frame rail. Buttons and Jelly
+   actions carry no resting text underline. Block links - a card, a tile, a row
+   whose whole surface is the target - carry none either, because a rule under
+   the words says the words are the link and the block is not. So a link paints
+   ONE line: the line its own class states, or this default when it states
+   nothing - never both. A component states `text-decoration`; it never reaches
+   for `!important` to beat a rule this general. */
 a:where(
 	:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not(
 			[class*="Social"]

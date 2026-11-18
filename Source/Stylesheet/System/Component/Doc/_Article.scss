@@ -70,6 +70,17 @@
 
 .doc-article__crumb-link {
 	color: var(--MuteForeground);
+
+	/* A crumb is a mono route label, so it keeps the prose underline the
+	   sitewide rule gives it (`--Divider`, 1px, 0.22em) - and takes its own ink
+	   on hover. The global hover moves the line's colour and nothing else, so
+	   without this the rule darkened under a label that stayed muted. */
+	&:hover,
+	&:focus-visible {
+		color: var(--Foreground);
+
+		text-decoration-color: var(--Primary);
+	}
 }
 
 .doc-article__crumb-current {
@@ -558,7 +569,7 @@ jelly-card.doc-prose .doc-article__body a {
 	/* The card is the destination; a rule under its two lines would say the
 	   text is the link instead of the card. The baseline's pager was the same
 	   card with a click handler, and carried no rule at all. */
-	text-decoration: none !important;
+	text-decoration: none;
 }
 
 .doc-pager__label {

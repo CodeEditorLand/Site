@@ -15,6 +15,14 @@
 //      `Component/Surface/_Shell.scss`, `Detail/_See.scss`), and the archive's
 //      `12ch / 26ch` columns are the model they were moved onto.
 //
+//      The route column is the one of the three that is a FLOOR and not a width:
+//      its 15ch is the measure of the longest route the register prints, so a
+//      route longer than that grows and a shorter one leaves the reason on the
+//      same edge as every other row's. A column set WIDER than its content is not
+//      an alignment, it is width taken from the thing beside it - 24ch here cost
+//      the reason 9.1ch of its line, which is how it came to print one word per
+//      line.
+//
 //   2. **The space between a label and a display line is a cap distance.** A
 //      heading's line box carries half-leading above the cap - 0.2em at the
 //      section role - so a margin that is right at 32px is 4px too large at 52px,

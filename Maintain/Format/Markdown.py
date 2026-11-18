@@ -62,6 +62,9 @@ Exclude = frozenset(
         ".swc",
         "Archive",
         "Generated",
+        # Vendored submodule - its formatting belongs to the vendor repo.
+        "Vendor",
+        ".hermes",
     }
 )
 

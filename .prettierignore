@@ -11,6 +11,15 @@ docs/
 # Dependencies
 node_modules/
 
+# Vendored submodule (Vendor/JellyUI) - its formatting belongs to the vendor
+# repo. Formatting it dirties the submodule and rewrites its tsconfig.json,
+# which Vite treats as a config change and restarts the dev server over.
+Vendor/
+
+# Hermes scratch (Maintain/Format.sh stages files here so no transient entry
+# ever lands in Source/pages/)
+.hermes/
+
 # Caches
 .cache/
 .turbo/

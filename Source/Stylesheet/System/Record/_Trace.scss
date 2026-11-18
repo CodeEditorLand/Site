@@ -110,7 +110,10 @@
 .record-trace__link {
 	color: inherit;
 	text-decoration: none;
-	border-block-end: 1px solid var(--Border);
+	/* The path's rule is this link's only non-colour marker, so it draws at
+	   `--Divider` (20%) like every other link marker on the site - `--Border`
+	   (8%) is the structural hairline, and at 1.18:1 it is not a marker. */
+	border-block-end: 1px solid var(--Divider);
 }
 
 .record-trace__link:hover {
