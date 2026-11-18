@@ -94,29 +94,29 @@ Located at `Vendor/JellyUI/` (our fork: DependencyCodeEditorLand/Jelly)
 
 ### 7. Files Converted
 
-| File                      | What                                  | Jelly Elements                          |
-| ------------------------- | ------------------------------------- | --------------------------------------- |
-| `UI/Card.tsx`             | Card component                        | `<jelly-card>`                          |
-| `UI/Badge.tsx`            | Badge component                       | `<jelly-badge>`                         |
-| `UI/Button.tsx`           | Height bumps (h-9→h-10)               | `<jelly-button>`                        |
-| `UI/RichText.tsx`         | Term enrichment                       | `<jelly-badge>`                         |
-| `DynamicHeroSection.tsx`  | Protocol cards                        | `<jelly-card squish>`                   |
-| `DynamicFeatures.tsx`     | Feature cards                         | `<jelly-card>`                          |
-| `DynamicTestimonials.tsx` | Both variants                         | `<jelly-card>`                          |
-| `DynamicPricing.tsx`      | Pricing cards + badges                | `<jelly-card>` + `<jelly-badge>`        |
-| `DynamicCard.tsx`         | Generic card wrapper                  | `<Card>` → `<jelly-card>` + Style prop  |
-| `DynamicPlatformGrid.tsx` | Download cards                        | `<DynamicCard>` with jelly border       |
-| `DynamicBadge.tsx`        | Dynamic badge wrapper                 | `<Badge>` → `<jelly-badge>`             |
-| `DynamicPortal.tsx`       | Portal badges                         | `<jelly-badge>`                         |
-| `Auth0AccountGate.tsx`    | Coming Soon badge                     | `<jelly-badge>`                         |
-| `DynamicTransparency.tsx` | Transparency badges                   | `<Badge>` → `<jelly-badge>`             |
-| `Doc.astro`               | Quick links, entry cards, pills       | `<jelly-card squish>` + `<jelly-badge>` |
-| `[...Slug].astro`         | Prev/Next nav                         | `<jelly-card squish>`                   |
-| `Noise/Stylesheet.css`    | Removed card border CSS               | -                                       |
-| `Base.astro`              | Shiki+Mermaid dark CSS, jelly.js path | -                                       |
-| `astro.config.ts`         | Shiki dual-theme                      | -                                       |
-| `Route/Integration.ts`    | `_redirects` pass-through             | -                                       |
-| `BuildJellyUIVendor.sh`   | Builds `Public/Vendor/JellyUI/` (mirror) | gitignored                 |
+| File                      | What                                     | Jelly Elements                          |
+| ------------------------- | ---------------------------------------- | --------------------------------------- |
+| `UI/Card.tsx`             | Card component                           | `<jelly-card>`                          |
+| `UI/Badge.tsx`            | Badge component                          | `<jelly-badge>`                         |
+| `UI/Button.tsx`           | Height bumps (h-9→h-10)                  | `<jelly-button>`                        |
+| `UI/RichText.tsx`         | Term enrichment                          | `<jelly-badge>`                         |
+| `DynamicHeroSection.tsx`  | Protocol cards                           | `<jelly-card squish>`                   |
+| `DynamicFeatures.tsx`     | Feature cards                            | `<jelly-card>`                          |
+| `DynamicTestimonials.tsx` | Both variants                            | `<jelly-card>`                          |
+| `DynamicPricing.tsx`      | Pricing cards + badges                   | `<jelly-card>` + `<jelly-badge>`        |
+| `DynamicCard.tsx`         | Generic card wrapper                     | `<Card>` → `<jelly-card>` + Style prop  |
+| `DynamicPlatformGrid.tsx` | Download cards                           | `<DynamicCard>` with jelly border       |
+| `DynamicBadge.tsx`        | Dynamic badge wrapper                    | `<Badge>` → `<jelly-badge>`             |
+| `DynamicPortal.tsx`       | Portal badges                            | `<jelly-badge>`                         |
+| `Auth0AccountGate.tsx`    | Coming Soon badge                        | `<jelly-badge>`                         |
+| `DynamicTransparency.tsx` | Transparency badges                      | `<Badge>` → `<jelly-badge>`             |
+| `Doc.astro`               | Quick links, entry cards, pills          | `<jelly-card squish>` + `<jelly-badge>` |
+| `[...Slug].astro`         | Prev/Next nav                            | `<jelly-card squish>`                   |
+| `Noise/Stylesheet.css`    | Removed card border CSS                  | -                                       |
+| `Base.astro`              | Shiki+Mermaid dark CSS, jelly.js path    | -                                       |
+| `astro.config.ts`         | Shiki dual-theme                         | -                                       |
+| `Route/Integration.ts`    | `_redirects` pass-through                | -                                       |
+| `BuildJellyUIVendor.sh`   | Builds `Public/Vendor/JellyUI/` (mirror) | gitignored                              |
 
 ### 8. Debugging Tips
 

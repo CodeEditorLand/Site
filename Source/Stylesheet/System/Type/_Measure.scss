@@ -1,0 +1,146 @@
+// MEASURE - the measure is enforced where prose is the subject, and a short line
+// is still a line.
+//
+// ─── THE LAW ──────────────────────────────────────────────────────────────
+// Two measures, and they are the same decision at two distances:
+//
+//   --Measure          72-88ch   the plate: a paragraph's line
+//   --MeasureOpening   62ch      the opening: a standfirst, a caption, a note
+//
+// The reading surfaces already pay both - the doc article's body, the blog
+// article's body and the legal card each cap at `--Measure`, and `.type-caption`
+// and `.figure-caption` carry the opening cap in their own classes. What was
+// missing is the same two caps on the artifacts that set prose OUTSIDE a reading
+// surface: a plate's caption, a margin note, a failure's cause, a board's row.
+// Those ran to whatever their container gave them, which in a five-column band is
+// 88ch and in a two-column band is 160 - a caption longer than the paragraph it
+// belongs to, which is the one thing a caption may not be.
+//
+// ─── WHY THE CAP IS A GUARD AND NOT A LAYOUT ──────────────────────────────
+// Every rule here is `:where()`, so its specificity is zero and every block's own
+// measure wins. On a reading surface the cap is a no-op - the body is already the
+// plate - and the rule does nothing until a `.prose-flow` is placed in a grid
+// that spans two columns, which is the case it exists for: a paragraph that
+// silently doubled its measure because a composition widened around it.
+//
+// ─── THE SHORT LINE ───────────────────────────────────────────────────────
+// A one-word paragraph is the extreme the card asks for, and the answer is that
+// it is not a defect. A paragraph of one word occupies one line; the line is
+// short because the sentence is short, and the only two ways to make it wrong are
+// to justify it (which stretches the word across the measure) and to hyphenate it
+// (which breaks the one word it has). Neither is a browser default, and both are
+// reachable by one declaration on a container three levels up - so this layer
+// states them on prose, where they belong, rather than leaving them to luck.
+//
+// The same paragraph in a LEDGER VALUE keeps its column and never stretches: a
+// value is set at the value column's start and its line is as long as it is. That
+// needs no rule; it needs the column to be a character measure, which
+// `Type/_Pair.scss` is about.
+//
+// ─── THE ADVERSE STATES ───────────────────────────────────────────────────
+// TOO LONG    a paragraph longer than its measure wraps; the cap is a maximum and
+//             never a clip, and `overflow-wrap` (Type/_Break.scss) is the floor
+//             under a token that has no break in it.
+// TOO MUCH    the cap is per element, so the two-hundredth paragraph is set
+//             exactly as the first.
+// EMPTY       an empty paragraph is `display: none` in the flow (Type/_Break.scss
+//             states the `:empty` arm), so it contributes no line and no gap.
+// PARTIAL     `UNAVAILABLE` in a value is a word in a column: it wraps at the
+//             column's edge like any other word and is never stretched.
+
+// ─── 1. THE PLATE ─────────────────────────────────────────────────────────
+// A paragraph's line, on every container that sets one. `dd` is included because
+// a ledger's value is a definition and a definition is prose; `blockquote` and
+// `li` because a quotation and a list item are the same measure as the paragraph
+// they sit beside.
+
+:where(
+		.prose,
+		.prose-flow,
+		.LegalCard,
+		.reading-document__body,
+		.doc-prose,
+		.blog-article__body,
+		.record-aside__body,
+		.record-margin__body,
+		.record-inset__body,
+		.record-band__body,
+		.lexicon-entry__definition,
+		.status-board__row-body
+	)
+	:is(p, li, dd, blockquote) {
+	max-inline-size: var(--Measure);
+}
+
+// ─── 2. THE OPENING ───────────────────────────────────────────────────────
+// A caption, a note and a source line are sentences about something else, so they
+// are capped at the opening measure: a caption never runs wider than the prose it
+// belongs to. `.type-caption` and `.figure-caption` carry this in their own
+// classes; these are the artifact captions that carry their own type and had no
+// cap at all.
+
+:where(
+	.record-archive__note,
+	.record-aside__source,
+	.record-band__footnote,
+	.record-compare__caption,
+	.record-compare__stop-note,
+	.record-figure__caption-text,
+	.record-inset__figure-caption,
+	.record-instrument__caption,
+	.record-ledger__note,
+	.record-margin__body,
+	.record-matrix__caption,
+	.record-pair__caption,
+	.record-plate__caption,
+	.record-plate-set__caption,
+	.record-plate-set__note,
+	.record-stamp__note,
+	.record-trace__note,
+	.record-transcript__note,
+	.detail-leader__note,
+	.detail-see__reason,
+	.lexicon-entry__row-note,
+	.onward__note,
+	.status-board__note
+) {
+	max-inline-size: var(--MeasureOpening);
+}
+
+// ─── 3. THE SHORT LINE ────────────────────────────────────────────────────
+// The two ways a one-word paragraph stops being a paragraph. Both are the
+// browser's default today, which is exactly why they are written down: a
+// `hyphens: auto` on a wrapper three levels up would reach the prose, and a
+// `text-align: justify` anywhere above it would stretch a short line to the
+// measure. Prose is ragged-right and unhyphenated at the plate, always - a hyphen
+// in a 72ch line is a defect, and the margin is where hyphenation is a courtesy
+// (`Type/_Break.scss`).
+
+:where(
+	.prose,
+	.prose-flow,
+	.LegalCard,
+	.reading-document__body,
+	.doc-prose,
+	.blog-article__body
+) {
+	text-align: start;
+	hyphens: manual;
+}
+
+// ─── 4. THE LINE BOX A SKELETON RESERVES ──────────────────────────────────
+// The loading state is a shape, and a shape that is the wrong height is a second
+// defect: `Record/_Ledger.scss` reserves `1.5rem` under a loading value, and the
+// value it stands in for sets at `--type-body` x `--type-body-line` = 26.4px. The
+// register therefore grew 2.4px per row when its facts arrived - a jump no reader
+// could name and every reader would feel, on the one state where the page is
+// admitting it does not know something yet.
+//
+// `1lh` is the line box of the element's own setting, so the skeleton reserves
+// exactly what the value will occupy, at any role and any tier, with no arithmetic
+// to keep in step. Where `lh` is not implemented the earlier `1.5rem` stands and
+// the state is as it was - an enhancement, never a dependency.
+
+.record-ledger__row--skeleton > .record-ledger__value {
+	min-block-size: 1lh;
+}

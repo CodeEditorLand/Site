@@ -5,8 +5,14 @@ html {
 	/* clip (not hidden) so fixed/sticky children don't add horizontal scroll */
 	overflow-x: clip;
 	font-family: var(--FontSans);
-	/* font-size-adjust stabilizes line height across fallback → mono swap */
-	font-size-adjust: 0.48;
+	/* THE PAGE'S OPTICAL SIZE. `font-size-adjust` was declared here as `0.48` -
+	   a guess at the fallback->mono swap - and 0.48 is not any face in the chain:
+	   IBM Plex Mono's x/em is 0.516, so a 0.48 request scales the PRIMARY face by
+	   0.48/0.516 = 0.93 and every documented size rendered 7 % small. The 13px
+	   floor was setting at 12.1px, and the XL tier at 66.9px instead of 72. It is
+	   now `--optical-x-height` (0.516, the face's own ratio), declared by the type
+	   layer in `System/Type/_Figure.scss` - one declaration site, and the layer
+	   that owns type owns the ratio. Nothing else about this rule changed. */
 }
 
 /* Jelly UI: flat corners everywhere per Daylight Field Record */

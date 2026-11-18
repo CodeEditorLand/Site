@@ -1143,3 +1143,48 @@
 	 * (`Detail/_See.scss` carries the arithmetic and the query). */
 	--optical-route-column: 19ch;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * SETTING - the two values the type layer owns
+ *
+ * The layer that reads these is `System/Type/` (its argument is
+ * `Type/_Setting.scss`). Each one is a quantity the eye corrects and the grid
+ * cannot: the x-height of the face the page is set in, and the width of one
+ * space. They are tokens for the same reason the OPTICAL block is: a literal in
+ * a partial is a decision the next card will tidy away.
+ *
+ * The tracking curve needed no token, and that is the curve's finding: see
+ * `Type/_Curve.scss`. In a mono face every glyph advances 0.6em, so the gap
+ * between two glyphs' INK is 0.1em at 13px and at 72px alike - the ratio is
+ * scale-invariant, and there is no display correction to make. The three
+ * registers the role layer already carries (`--track-join` at L and XL,
+ * `--track-set` at S, `--track-name`/`row`/`rule` as a label moves away from
+ * what it names) are the whole curve. What was wrong was which label read
+ * which register, not the values.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+:root {
+	/* THE X-HEIGHT OF THE FACE THE PAGE IS SET IN.
+	 *
+	 * IBM Plex Mono 2.3: unitsPerEm 1000, sxHeight 516, so x/em is 0.516. The
+	 * fallback chain is not the same optical size at the same `font-size` -
+	 * JetBrains Mono is 0.550, SF Mono ~0.53, Menlo ~0.519 - so a 13px label is
+	 * up to 6.6% larger before the webfont arrives, and 6.6% of 13px is 0.86px of
+	 * x-height: a third of the difference between a label and a caption, which
+	 * at this size is the whole difference. `font-size-adjust` reads this and
+	 * holds the x-height constant across the chain, so the meta tier is 13px of
+	 * label in every face and the page does not change size under the reader
+	 * when `display=optional` declines to load the webfont.
+	 */
+	--optical-x-height: 0.516;
+
+	/* ONE SPACE.
+	 *
+	 * A label and its value on one line are separated by one space of the face
+	 * they are set in - 1ch exactly in a mono face, because every glyph advances
+	 * the same. Not 8px: 8px is the row rhythm (`--space-tight`) and it belongs
+	 * between two facts, not inside one. At the 13px floor the two are 0.2px
+	 * apart and the difference is invisible; at the sub role 8px is 0.74ch and
+	 * the pair reads as one word. The pair partial is the only reader.
+	 */
+	--optical-space: 1ch;
+}

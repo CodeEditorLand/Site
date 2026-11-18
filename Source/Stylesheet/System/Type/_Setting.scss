@@ -1,0 +1,118 @@
+// The Type layer - the setting of the page, after every rule that shapes it.
+//
+// ─── WHY A THIRD REFINEMENT LAYER ─────────────────────────────────────────
+// `System/_Type.scss` names the roles and the ladder: what an `h2` is, what a
+// label is, which register a standfirst reads. `Detail/` wrote down what a
+// figure is, where a mark hangs and that a hover is ink. `Optical/` moved a rule
+// by half a pixel, a mark by two characters, a column onto the character grid.
+//
+// All three are about the SYSTEM. None of them is about SETTING - the decisions
+// a compositor makes once the sizes and the margins are already right, and that
+// a machine makes only if someone writes them down. A page can obey every rule
+// in this stylesheet and still read as assembled, because a ledger's key was
+// tracked at the register for a kicker, because a count in a register line was
+// never given tabular figures, because a caption ran to 88 characters, because a
+// heading's last line was one word. None of those is a broken rule. All of them
+// are the difference between type applied and type set.
+//
+// ─── THE SEVEN LAWS ───────────────────────────────────────────────────────
+//   CURVE        tracking is a curve in size and in distance, and a label that
+//                names one value reads the register for a label beside its
+//                value - not the register for a region label.    (_Curve)
+//   REGISTER     the register line is the site's most-printed line and it is
+//                set in four parts: a mark, a name, a separator, a figure.
+//                                                              (_Register)
+//   FIGURE       a figure is a figure at every tier, a hash is data and never a
+//                word, and the page's optical size is the face's x-height.
+//                                                               (_Figure)
+//   PAIR         a label and its value: one space when they share a line, one
+//                character column when they do not, and a colon that belongs to
+//                its label.                                          (_Pair)
+//   PUNCTUATION  a mark hangs in the margin, in every artifact that sets prose -
+//                not in the four that happened to be named first.
+//                                                          (_Punctuation)
+//   MEASURE      the measure is enforced where prose is the subject, and a
+//                caption is capped at the opening measure.        (_Measure)
+//   BREAK        a heading does not orphan a word; a narrow column may
+//                hyphenate; a code value, a key and a title never do. (_Break)
+//
+// ─── WHY THE ENTRY IS `_Setting.scss` AND NOT `_Index.scss` ───────────────
+// It cannot be `_Index.scss`. Sass resolves `@use "System/Type"` against
+// `System/_Type.scss` AND `System/Type/_Index.scss` and refuses the import when
+// both exist - "It's not clear which file to import" - and `System/_Type.scss`
+// is the ladder, which every page composes from and which this layer must not
+// move. So the family's entry is named for what it does, and the ladder stays
+// where it is. A later card that "tidies" this into an index will get a build
+// error, which is the intended outcome: the two files are not two spellings of
+// one thing.
+//
+// ─── WHY IT LOADS LAST ────────────────────────────────────────────────────
+// Every rule here changes a value a partial already wrote - a tracking
+// register, a text-wrap, a hyphenation, a separator's ink - and source order is
+// the mechanism. It loads after the Record layer, the Component families, the
+// Layout frames, the Detail layer, the Optical layer and the Motion tokens
+// (`System.scss` states the same thing at the line). It is the last layer in the
+// stylesheet because setting is the last thing done to a page.
+//
+// ─── WHAT THIS LAYER MAY NOT DO ──────────────────────────────────────────
+// It may not delete a declaration, weaken one into invisibility, repaint a
+// surface, move a keeper or add a name to the block grammar. It changes a
+// register, a break, an ink on a mark, a measure - and it says why in the
+// partial it changes it in.
+//
+// ─── THE NINE ADVERSE STATES, COMPOSED IN TYPE ────────────────────────────
+// The brief's adverse states are part of the design, so each one is answered by
+// a rule below rather than left to the browser. They are the states of a page
+// whose *type* is what is failing:
+//
+//   EMPTY      a register with no rows prints `00` - a figure, because an empty
+//              set is a known figure, and `UNAVAILABLE` is reserved for one that
+//              cannot be known. An empty paragraph prints no gap: `:empty` has
+//              no line box, so the flow pays nothing for it.
+//   LOADING    the skeleton's value bar keeps the *line box* of the value it
+//              replaces (`1lh`), so the register does not jump 2.4px when the
+//              facts arrive. A skeleton in the record grammar is a shape, not a
+//              spinner, and a shape that changes the height of the page is a
+//              second defect.
+//   PARTIAL    `UNAVAILABLE` is set at the name register and never as a figure:
+//              it is the vocabulary's statement that there is no value, so it
+//              must not be tabular, must not be tracked as a number and must not
+//              break. `0` stays a figure, and the two cannot be confused.
+//   ERROR      a failure record's `STATUS:` word is a key and a word: the key
+//              takes the name register like every other key on the site
+//              (`Type/_Pair.scss`), and the word is never hyphenated, because a
+//              hyphenated status word reads as two states.
+//   STALE      an `AS OF:` line is a label, a date and nothing else: the date is
+//              tabular so a column of dates aligns, and the label is a label.
+//   TOO MUCH   a two-hundred-row ledger: `text-wrap: balance` is never set on a
+//              row (balance is a heading's algorithm and it is quadratic per
+//              block); the row's key and value keep the same measure on row 200
+//              as on row 1, because every rule here is per-element and none
+//              accumulates.
+//   TOO LONG   a ninety-character title: `balance` to six lines, then a hard
+//              `overflow-wrap` floor, and `hyphens: none` so a title never
+//              hyphenates. A label longer than its column wraps inside it - the
+//              column is a character measure, not a clip.
+//   MISSING    a tombstone's `WAS:` value is a code value: tabular, un-hyphenated,
+//              tracked at set. A record whose target is gone still sets its type
+//              correctly; that is what makes it a record and not a dead link.
+//   DENIED     not this layer's to compose. The surfaces that deny are the auth
+//              gates and the drawer, and they compose their own state; this
+//              layer only guarantees that the words in it are legible at 13px.
+//
+// Two arms are this layer's own:
+//
+//   NO WEBFONT   `display=optional` may decline the face entirely. The page then
+//                sets in Menlo or SF Mono at a different x-height, and the meta
+//                tier is where that shows first. `font-size-adjust` holds the
+//                x-height, so the tier survives the fallback (`_Figure`).
+//   ON PAPER    a printed page has no hover, no viewport and no scroll. Nothing
+//                here reads a media query except the hyphenation limit, which is
+//                a property of the column and not of the screen.
+@use "Curve";
+@use "Register";
+@use "Figure";
+@use "Pair";
+@use "Punctuation";
+@use "Measure";
+@use "Break";

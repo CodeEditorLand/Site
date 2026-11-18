@@ -25,3 +25,11 @@
 @use "System/Optical/Index" as Optical;
 @use "System/Motion";
 @use "System/Motion/Index" as Interaction;
+// The type layer loads LAST, after every layer it refines - the Record layer,
+// the Component families, the Layout frames, the Detail layer, the Optical layer
+// and the Motion tokens - because every rule in it changes a value a partial
+// already wrote (a tracking register, a text-wrap, a hyphenation, a separator's
+// ink) and source order is the mechanism. Setting is the last thing done to a
+// page. See `System/Type/_Setting.scss` before moving this line, and note why the
+// family's entry is `Setting` and not `Index`.
+@use "System/Type/Setting" as Setting;

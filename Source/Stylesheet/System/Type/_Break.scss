@@ -1,0 +1,181 @@
+// BREAK - a heading does not orphan a word, a narrow column may hyphenate, and a
+// code value, a key and a title never do.
+//
+// ─── THE LAW ──────────────────────────────────────────────────────────────
+// Line breaking is the one typographic decision the browser makes for you, and it
+// makes it badly by default: it fills each line as far as it can, so the last
+// line of a heading is whatever is left over - one word, if the measure is
+// unlucky - and the last line of a paragraph is a stub. Three declarations
+// correct it, and they are chosen by the register the text is in:
+//
+//   balance   a HEADING. Distribute the lines evenly, so a two-line title is two
+//             equal lines and its last line is never one word. Chromium caps the
+//             algorithm at six lines and falls back to `wrap` beyond that; a
+//             heading long enough to exceed six lines at 32px is a heading that
+//             has stopped being a heading, so the cap is the right arm.
+//   pretty    a SENTENCE. Keep the last line from being a stub, without
+//             rebalancing the lines above it. This is what a paragraph wants and
+//             a heading does not: a paragraph's line lengths are the measure's,
+//             and evening them out would make every paragraph look centred.
+//   none      a CODE VALUE, a KEY, a TITLE. Never break inside a token: a hash, a
+//             checksum, a label and a heading are all single objects, and a break
+//             inside one of them changes what it is.
+//
+// ─── HYPHENATION IS OPT-IN, AND ONLY IN A NARROW COLUMN ───────────────────
+// Hyphenation is a courtesy in a narrow measure and a defect in a wide one. At
+// 72-88ch an English line has room to break at a word space, and a hyphen there
+// is a hyphen the reader did not need; at 30ch the same line has no such room, so
+// without hyphenation it sets one long word per line and the column reads as a
+// list. So the site hyphenates exactly the artifacts whose measure is under ~34ch,
+// names them below, and hyphenates nothing else.
+//
+// The limit is `6 3 3`: a word shorter than six characters is never broken, and
+// three characters stay on each side of the break. Without it `a-` and `-ed` are
+// legal breaks, and a margin note starts to look like a Victorian newspaper. The
+// property is honoured where the engine implements it and ignored where it does
+// not - in which case the column still hyphenates, only without the floor, which
+// is the right failure for an enhancement.
+//
+// ─── THE EXTREMES ─────────────────────────────────────────────────────────
+// A NINETY-CHARACTER TITLE. `balance` puts it on three even lines at the section
+// role. If the title is also ONE TOKEN - a path, a slug, a build id used as a
+// name - `overflow-wrap: break-word` is the floor: it breaks only when a single
+// token cannot fit, so it never touches a title that has spaces in it, and the
+// heading can never push the page wider than its band. `hyphens: none` keeps the
+// title from being hyphenated at the break, because a title with a hyphen in it
+// is a different title.
+//
+// A ONE-WORD PARAGRAPH. `pretty` is a no-op on a single line, which is the
+// correct answer: the paragraph is one line because the sentence is one word, and
+// the only thing that could ruin it is a `text-align: justify` above it
+// (`Type/_Measure.scss` states that arm).
+//
+// ─── THE ADVERSE STATES ───────────────────────────────────────────────────
+// EMPTY      an empty paragraph prints no line and no gap: `:empty` inside a prose
+//            container is not rendered, so the flow does not pay `--space-reading`
+//            for a paragraph that has no text.
+// LOADING    a skeleton's bars are elements, not text, so no break rule reaches
+//            them; the register's own skeleton keeps the line box
+//            (`Record/_Ledger.scss`).
+// PARTIAL    `UNAVAILABLE` is one token and takes the `none` arm with the other
+//            code values: a status word broken across two lines reads as two
+//            states.
+// TOO MUCH   `pretty` and `balance` are per block, so the two-hundredth paragraph
+//            costs what the first did. `balance` is never set on a row: it is a
+//            heading's algorithm, it is quadratic in the number of lines, and a
+//            two-hundred-row list that balanced every row would be a page that
+//            takes a second to lay out.
+
+// ─── 1. A HEADING ─────────────────────────────────────────────────────────
+// The two roles that are announcements and had no wrap law: `.type-display` (the
+// page's one claim) and `.type-section` (a section head set by class rather than
+// by element). `h1`-`h3` and `.type-heading` already carry `balance` in
+// `System/_Type.scss`; these are the same law on the two roles that were written
+// after it.
+//
+// `overflow-wrap: break-word` is the ninety-character arm, and `hyphens: none` is
+// the guard beside it.
+
+.type-display,
+.type-section {
+	text-wrap: balance;
+	overflow-wrap: break-word;
+	hyphens: none;
+}
+
+// A standfirst is a sentence under a heading, so it takes the sentence's
+// algorithm, not the heading's - and it is the one S role that had neither.
+
+.type-sub {
+	text-wrap: pretty;
+}
+
+// ─── 2. A SENTENCE ────────────────────────────────────────────────────────
+// The artifact prose list from `Type/_Punctuation.scss`, with the sentence
+// algorithm and the two orphan floors. Detail declared this for four containers;
+// a caption, a margin note, a failure's cause and a board's row are the same
+// sentence at a smaller measure and were left on the browser's fill.
+
+:where(
+		.prose,
+		.prose-flow,
+		.LegalCard,
+		.reading-document__body,
+		.doc-prose,
+		.blog-article__body
+	)
+	:is(p, li, blockquote, dd) {
+	text-wrap: pretty;
+	orphans: 3;
+	widows: 3;
+}
+
+:where(
+	.record-aside__body,
+	.record-aside__paragraph,
+	.record-band__body,
+	.record-band__footnote,
+	.record-compare__caption,
+	.record-compare__stop-note,
+	.record-inset__body,
+	.record-inset__figure-text,
+	.record-margin__body,
+	.record-plate__caption,
+	.record-plate-set__caption,
+	.record-trace__note,
+	.record-transcript__note,
+	.detail-leader__note,
+	.detail-see__reason,
+	.lexicon-entry__definition,
+	.onward__statement,
+	.status-board__row-body,
+	.status-board__note
+) {
+	text-wrap: pretty;
+}
+
+// ─── 3. THE NARROW COLUMNS THAT HYPHENATE ─────────────────────────────────
+// Two artifacts, both documented at 30ch: the record margin's note
+// (`Record/_Margin.scss`: "hangs on a `--Divider` rule at 30ch") and the blog's
+// register sentence (`.blog-article__register-empty`, `max-inline-size: 30ch`).
+// At 30ch of 13px mono a line holds ~30 characters - four or five words - and an
+// unbroken long word takes a quarter of it.
+//
+// `hyphenate-limit-chars: 6 3 3` is the limit that keeps it civilised, and
+// `lang` on `<html>` is what the engine needs to know which patterns to use
+// (`Base.astro` writes it, and every page has it).
+
+.record-margin__body,
+.blog-article__register-empty {
+	hyphens: auto;
+	hyphenate-limit-chars: 6 3 3;
+}
+
+// ─── 4. THE TOKENS THAT NEVER BREAK ───────────────────────────────────────
+// A vocabulary word is a token: `UNAVAILABLE`, `PREPARING`, `INTERRUPTED`. Two
+// lines of a status word is two states. The same declaration covers the counts
+// and the keys that carry a colon, which are labels and not sentences.
+
+:where(
+	.record-compare__state,
+	.record-stamp__state,
+	.record-stamp__revoked,
+	.record-inset__state-key,
+	.record-margin__state-key,
+	.record-plate__tombstone-key,
+	.register-line__count,
+	.register-line__unit
+) {
+	hyphens: none;
+}
+
+// ─── 5. THE EMPTY PARAGRAPH ───────────────────────────────────────────────
+// A paragraph with no text has no line, and a flow container that pays
+// `--space-reading` for it pays for nothing. Scoped to `p` and `li` inside a
+// prose container: an empty `div` in a composition may be a rule or a spacer and
+// is never this rule's business.
+
+:where(.prose, .prose-flow, .doc-prose, .blog-article__body)
+	> :is(p, li):empty {
+	display: none;
+}

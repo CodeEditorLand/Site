@@ -1,0 +1,197 @@
+// FIGURE - a figure at the 13px floor, a hash that is data, and the page's
+// optical size.
+//
+// ─── THE LAW ──────────────────────────────────────────────────────────────
+// Detail's figure law already says what a figure is: one column, tabular, tracked
+// as a figure and not as a word, with its unit bound to it (`Detail/_Figure.scss`
+// names the twelve classes that print one). This partial is the three places that
+// law could not reach:
+//
+//   1. THE FLOOR. Detail's list is made of artifact classes - ledger values,
+//      matrix cells, instrument figures - and all of them are set at 16px or
+//      above. The 13px tier prints figures too: a count in a register line, an
+//      as-of date, a folio. A figure at 13px has the same claim on a column as a
+//      figure at 32px, and it is the tier where a proportional fallback face is
+//      most likely to answer the request differently.
+//
+//   2. THE HASH. A checksum is not a number and not a word. It is 64 characters
+//      of hex that must survive a line break, a text-transform and a hyphenation
+//      pass without one of them altering it, because a checksum that has been
+//      re-cased or hyphenated is no longer the checksum.
+//
+//   3. THE PAGE'S OPTICAL SIZE. The tier is a `font-size`, and a `font-size` is
+//      only an optical size if the face it is set in has the x-height the design
+//      assumed. It does not always: see below.
+//
+// ─── THE PAGE'S OPTICAL SIZE IS THE FACE'S X-HEIGHT ───────────────────────
+// `Base.astro` loads IBM Plex Mono with `display=optional`, which is the honest
+// choice for a page that must not reflow - and it means the fallback chain is a
+// real state, not a theoretical one. That chain is not one optical size:
+//
+//   IBM Plex Mono    x/em 0.516   (upm 1000, sxHeight 516)
+//   Menlo            x/em ~0.519
+//   SF Mono          x/em ~0.53
+//   JetBrains Mono   x/em 0.550
+//
+// At 16px the spread is 0.54px of x-height and nobody sees it. At the 13px floor
+// it is 0.44px - a third of the difference between a label and a caption at that
+// size - and it arrives exactly when the page is being read on a slow connection,
+// which is when a reader is most likely to think the site is badly made.
+//
+// `font-size-adjust` holds the x-height to the face's own ratio, so the meta tier
+// is 13px of label in every face in the chain. It is declared on `html` rather
+// than per role because it is a property of the PAGE's setting, not of a role: a
+// page that adjusts one tier and not the next has two optical scales.
+//
+// ─── AND THE VALUE THAT WAS THERE WAS NOT A RATIO OF ANY FACE ─────────────
+// `_Global.scss` declared `font-size-adjust: 0.48` on `html`, with the note that
+// it "stabilizes line height across fallback -> mono swap". The intent was right
+// and the constant was a guess: 0.48 is the x/em of no face in the chain, and a
+// request for 0.48 on a face whose x/em is 0.516 scales the PRIMARY face by
+// 0.48/0.516 = 0.93. Because the declaration sits on `html`, that 7 % came off
+// every font-relative value on the site - the computed `font-size` is untouched
+// (so `rem` is still 16px) but the USED size, every line box and every `ch`
+// measure scale with it:
+//
+//   the 13px floor        rendered at 12.1px   - under the identity's own floor
+//   the L tier (32-52px)  rendered at 29.8-48.4px
+//   the XL tier (48-72px) rendered at 44.6-66.9px
+//   --Measure 72ch        rendered at 523px    - not the documented 561px
+//
+// So the page did not read as a uniform 93 % zoom: the type, the leading and the
+// measure were 7 % small while every `rem` margin around them stayed at full
+// size, which is 7 % more air per line than the design pays for.
+//
+// A design system that documents 13px and sets 12.1 is the one thing this brief
+// calls pretending. `--optical-x-height` is the face's own 0.516, so a declared
+// size is the size that renders and the fallback is held to it rather than the
+// primary being shrunk to it. It is ONE token: a reader who prefers the 93 %
+// scale sets `--optical-x-height: 0.48` and gets exactly the previous render back.
+//
+// `text-size-adjust: 100%` is the same law for the mobile engine: Chrome on
+// Android inflates text in a wide viewport to keep it "readable", which turns a
+// 13px label into 16px and collapses three tiers into one. The design has a 13px
+// floor because 13px is legible; the engine's opinion of that is not an input.
+
+// ─── 1. THE PAGE'S OPTICAL SIZE ───────────────────────────────────────────
+
+html {
+	/* The legacy number form first, then the keyword form: both mean ex-height,
+	   and a browser that does not parse the second keeps the first. */
+	font-size-adjust: var(--optical-x-height);
+	font-size-adjust: ex-height var(--optical-x-height);
+
+	text-size-adjust: 100%;
+}
+
+// ─── 2. A FIGURE AT THE FLOOR ─────────────────────────────────────────────
+// Every element the site uses to mark machine data, wherever it sits and at
+// whatever tier: `<code>`, `<kbd>`, `<samp>`, a `<time>` with a machine-readable
+// date, a `<data>` with a machine-readable value. The tabular setting is the
+// figure law; `--track-set` is the second half of it (a figure is not tracked as
+// a word, and `code` inherits whatever register its container reads - inside a
+// tracked key that would be 0.18em on a value); `slashed-zero` because `0` and
+// `O` are the same width in a mono face.
+//
+// `hyphens: none` is the hash's first defence: a code value is never hyphenated,
+// so a break inside it can only be a hard break at the column edge.
+
+code,
+kbd,
+samp,
+data[value],
+time[datetime] {
+	font-variant-numeric: tabular-nums slashed-zero;
+	letter-spacing: var(--track-set);
+	hyphens: none;
+}
+
+// ─── 3. THE HASH ──────────────────────────────────────────────────────────
+// A checksum, a digest, a build id: 64 characters with no break opportunity in
+// them. Three declarations make it survive:
+//
+//   text-transform: none   a hash is case-sensitive, and `mono-meta`/`track`
+//                          set uppercase on a dozen containers. A checksum that
+//                          has been uppercased is a different string that will
+//                          not verify - and it would be printed as if it were
+//                          the same one. This is the only rule on the site that
+//                          defends a value against its own container.
+//   word-break: normal     never `break-all`: it breaks at every character even
+//                          when there is room, and a value that breaks mid-token
+//                          with air on the line is unreadable.
+//   overflow-wrap: anywhere  the hard floor. A 64-character token in a value
+//                          column breaks at the column's edge, and `anywhere`
+//                          (rather than `break-word`) also lets the box shrink,
+//                          so a ledger in a margin can be as narrow as its
+//                          column and the hash still fits.
+//
+// The continuation lines are flush with the value column and that is correct: a
+// hash is ONE token, so its second line is not a second fact, and the hairline
+// above the next row is what separates facts. An indent on the continuation would
+// claim the wrapped half was a different field.
+
+.record-ledger__code,
+.record-failure__hash,
+[data-figure="code"] {
+	text-transform: none;
+	word-break: normal;
+	overflow-wrap: anywhere;
+	hyphens: none;
+	font-variant-numeric: tabular-nums slashed-zero;
+	letter-spacing: var(--track-set);
+}
+
+// ─── 4. THE THREE HOMES FOR A LONG TOKEN ──────────────────────────────────
+// A 64-character hash has three possible surfaces and each answers it
+// differently, on purpose. Naming all three here is the composition; only one of
+// them is a rule.
+//
+//   A LEDGER ROW      wraps at the value column's edge (`above`). The row is a
+//                     fact and its value is the fact's whole body, so the value
+//                     is allowed as many lines as it needs.
+//
+//   A WELL            does not wrap at all. `.record-well__body` is
+//                     `white-space: pre` with `overflow-x: auto`: a command or a
+//                     digest keeps the shape it was copied in, and the scroll is
+//                     inside the frame, so the page grid never widens
+//                     (`Record/_Well.scss` states the same law for a command).
+//
+//   A MATRIX CELL     does not wrap either, and this is the one that looks like a
+//                     defect and is not. `.record-matrix__cell` is `nowrap` by
+//                     design - a comparison table whose cells wrapped would stop
+//                     being a table - and the shell is the scroll container
+//                     (`Record/_Matrix.scss`: "the table is the thing that
+//                     overflows, not the page"). A hash in a cell therefore makes
+//                     the TABLE wider and the frame scroll it; the caption, the
+//                     pinned label column and the page measure are untouched.
+//
+// So the hash has no rule in a matrix and does not need one: the answer is that a
+// digest belongs in a ledger row or a well, and a matrix that holds one is a
+// matrix holding the wrong artifact. That is a composition judgement, and it is
+// cheaper to state than to style.
+
+// ─── 5. THE FIGURES DETAIL'S LIST COULD NOT REACH ─────────────────────────
+// Detail's tabular list was written before five of the Record families existed:
+// the plate, the transcript, the stamp, the plate-set and the status board were
+// built by later cards, and every one of them prints figures at the meta role -
+// a capture's size, a session's turn number, a window's count, a board's tally.
+// None of them is in the list, so none of them was tabular.
+//
+// The audit is the argument for the rule: a class is tabular if it prints a
+// figure a reader might compare against the figure above it. These six do, and
+// the ledger's own `--optical-key-column` discipline means a column of plate
+// facts and a column of ledger facts should share an edge.
+//
+// The three that are marks rather than figures stay out: `.record-stage__index`
+// and `.record-inset__bar` are drawn, not measured, and `.record-archive__marker`
+// is already in Detail's list.
+
+.record-trace__index,
+.record-transcript__index,
+.record-compare__stop-value,
+.record-plate__fact-value,
+.record-plate-set__count,
+.record-stamp__index,
+.status-board__count {
+	font-variant-numeric: tabular-nums slashed-zero;
+}

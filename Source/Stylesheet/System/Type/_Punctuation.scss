@@ -1,0 +1,158 @@
+// PUNCTUATION - a mark hangs in the margin, in every artifact that sets prose.
+//
+// ─── THE LAW ──────────────────────────────────────────────────────────────
+// A sentence opens on its first letter. A quotation mark, a bullet, a section
+// sign, the grammar's `↳` or a closing full stop is a mark ABOUT the text, not
+// the text, so it sits in the margin and the first letter stays on the measure.
+//
+// Two mechanisms, in this order, and the order is the argument:
+//
+// 1. **`hanging-punctuation`**, where the engine implements it. One declaration,
+//    and it does exactly the right thing for an opening quote, a closing quote
+//    and a final full stop. It is not implemented everywhere (Blink does not),
+//    which is why it is the first of two and never the only one.
+// 2. **A negative inline-start margin on the mark's own element**, which every
+//    engine implements - and which is why this site's marks are elements. `#`,
+//    `↳`, `/` and `◎` are spans, not characters inside a string, so their width
+//    can be measured and taken back. `Detail/_Hang.scss` and
+//    `Optical/_Hang.scss` carry that half of the law, and they are the half that
+//    works in every browser.
+//
+// ─── WHAT WAS MISSING ─────────────────────────────────────────────────────
+// Mechanism 1 was declared for four containers: `.prose`, `.prose-flow`,
+// `.LegalCard` and `.reading-document__body`. The site has thirty-eight artifacts
+// that set prose - a plate's caption, a margin note, a failure's cause, a
+// lexicon's definition, a status board's row - and every one of them was outside
+// that list, so a quotation opening a margin note sat one character in from the
+// measure its neighbours were set on. This partial is the list, completed.
+//
+// It is `:where()` throughout, so its specificity is zero: a block that wants to
+// set its own hanging or its own quotes still can, and no partial needs
+// `!important` to escape this one.
+//
+// ─── THE QUOTES ───────────────────────────────────────────────────────────
+// The copy is written in straight quotes, and a straight quote in a mono face is
+// a vertical tick at the cap height - it reads as a prime mark, not as speech.
+// `quotes` only affects the marks a `<q>` generates, so it cannot change a word
+// of the copy: it makes the one element that quotes do it right, and the rest is
+// the copy's business, which is not this layer's.
+//
+// ─── THE ADVERSE STATES ───────────────────────────────────────────────────
+// TOO LONG    a hanging mark hangs on the FIRST line only. The second line
+//             returns to the measure, which is what hanging means - a mark that
+//             indented every line of a wrapped paragraph would be an indent, and
+//             the block would read as a quotation.
+// TOO MUCH    the declaration is per block element and accumulates nothing: the
+//             two-hundredth note hangs exactly as the first.
+// EMPTY       an empty paragraph has no line box to hang from, so the state costs
+//             nothing and needs no rule.
+// PARTIAL     `UNAVAILABLE` is a word, and a word does not hang. Nothing here
+//             touches it.
+// MISSING     a tombstone's `WAS:` / `WHY NOT:` / `NEXT:` labels open with a
+//             word, not a mark, so they keep the measure: the rule below is
+//             scoped to elements that set prose, never to a key.
+
+// ─── 1. THE HANGING MARK, IN EVERY ARTIFACT THAT SETS PROSE ───────────────
+// `first` hangs an opening quote, `allow-end` hangs a closing one, `last` hangs a
+// final full stop. The property inherits, so a container is enough for the
+// paragraphs inside it; the leaf list below is the artifacts that ARE the
+// paragraph, where there is no child to inherit into.
+
+:where(
+	.prose,
+	.prose-flow,
+	.LegalCard,
+	.reading-document__body,
+	.doc-prose,
+	.blog-article__body
+) {
+	hanging-punctuation: first allow-end last;
+}
+
+// The same declaration on the paragraphs inside those containers. The property is
+// inherited, so this rule is redundant where inheritance works - and it is the
+// belt to that braces because the four containers Detail named already carry it
+// and `.doc-prose` / `.blog-article__body` are the two that did not. A reader who
+// meets the two rules should read them as one.
+
+:where(
+		.prose,
+		.prose-flow,
+		.LegalCard,
+		.reading-document__body,
+		.doc-prose,
+		.blog-article__body
+	)
+	:is(p, li, blockquote, dd) {
+	hanging-punctuation: first allow-end last;
+}
+
+// The artifacts that ARE the paragraph - a caption, a note, a reason - where
+// there is no child to inherit into. The list is every class in the tree that
+// holds running text, and it is long on purpose: a list of four was the defect,
+// and a list that grows one class at a time is how it stayed at four.
+
+:where(
+	.record-archive__note,
+	.record-aside__body,
+	.record-aside__paragraph,
+	.record-band__body,
+	.record-band__footnote,
+	.record-compare__caption,
+	.record-compare__stop-note,
+	.record-entry__body,
+	.record-figure__caption-text,
+	.record-inset__body,
+	.record-inset__figure-caption,
+	.record-inset__figure-text,
+	.record-instrument__caption,
+	.record-ledger__note,
+	.record-margin__body,
+	.record-matrix__caption,
+	.record-pair__body,
+	.record-pair__caption,
+	.record-plate__caption,
+	.record-plate-set__caption,
+	.record-plate-set__note,
+	.record-stage__plate-body,
+	.record-stamp__note,
+	.record-trace__note,
+	.record-transcript__note,
+	.detail-leader__note,
+	.detail-see__reason,
+	.lexicon-entry__body,
+	.lexicon-entry__definition,
+	.lexicon-entry__row-note,
+	.lexicon__note,
+	.onward__note,
+	.onward__statement,
+	.status-board__caption,
+	.status-board__note,
+	.status-board__row-body,
+	.status-board__row-note
+) {
+	hanging-punctuation: first allow-end last;
+}
+
+// ─── 2. THE QUOTES ────────────────────────────────────────────────────────
+// The same container list as above, because a `<q>` can appear in any of them.
+// Typographic quotes, in the order `<q>` needs them: opening double, closing
+// double, opening single, closing single.
+
+:where(
+		.prose,
+		.prose-flow,
+		.LegalCard,
+		.reading-document__body,
+		.doc-prose,
+		.blog-article__body,
+		.record-aside__body,
+		.record-margin__body,
+		.record-inset__body,
+		.record-band__body,
+		.lexicon-entry__definition,
+		.status-board__row-body
+	)
+	q {
+	quotes: "\201C" "\201D" "\2018" "\2019";
+}

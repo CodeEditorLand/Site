@@ -1,0 +1,113 @@
+// CURVE - tracking is a curve, and every label reads the register its distance
+// from its value has earned.
+//
+// ─── THE LAW ──────────────────────────────────────────────────────────────
+// `_Token.scss` names five registers and one sentence: tracking is inverse to
+// size, and grows with the label's distance from what it names.
+//
+//     join  -0.02em  L and XL: a large setting joins its letters
+//     set    0       a sentence - body, standfirst, caption, code
+//     name  +0.04em  a label BESIDE its value        (`TARGET:`)
+//     row   +0.08em  a label ACROSS a row            (a table head, a chip)
+//     rule  +0.18em  a label ABOVE a region          (`/KICKER`)
+//
+// Five values is the whole curve, and its second axis is distance, not size: the
+// same 13px label takes 0.04em beside its value and 0.18em above a region,
+// because the first is read as part of a line and the second has to be found
+// while scanning. Beside -> across -> above is 0.04 -> 0.08 -> 0.18.
+//
+// ─── WHAT THE CURVE DOES NOT NEED ─────────────────────────────────────────
+// A proportional face needs a display correction: its sidebearings are drawn as
+// a proportion of each glyph's own width, so at 72px the same design leaves a
+// wider gap than at 16px and the display tier joins harder. This page is set in
+// one mono face, and a mono face has one advance - 0.6em for every glyph at
+// every size. The ink of `H` is ~0.5em, so the gap between two glyphs' ink is
+// 0.1em at 13px and 0.1em at 72px: the ratio is scale-invariant, and the
+// display tier needs no correction at all.
+//
+// That is why this layer adds no `--track-display` and moves no role's value.
+// The three registers the role layer already carries ARE the curve, and the
+// tier boundaries (`--track-join` at L/XL, `--track-set` at S) are the only two
+// places it steps. What needed fixing was not the curve but the assignment.
+//
+// ─── WHAT THE CURVE DID GET WRONG: A KEY THAT READ AS A KICKER ────────────
+// `.record-ledger__key` took the `track` mixin's default, which is the `rule`
+// register - 0.18em, the register for a label ABOVE a region. At 13px that is
+// 2.34px of letter-space per glyph, and the cost is not the width but the
+// information type:
+//
+//   `TARGET`   (6 glyphs)  rule 60.8px   name 49.9px   +10.9px
+//   `LICENSE`  (7 glyphs)  rule 71.0px   name 58.2px   +12.8px
+//   `MANIFEST` (8 glyphs)  rule 81.1px   name 66.6px   +14.6px
+//
+// A key set at the rule register reads as a kicker - the label that opens a
+// region - and a ledger row is not a region. It is one fact with a name, which
+// is the definition of a label beside its value, so it reads `--track-name`.
+// The ledger is the block that carries this most widely: fifteen element
+// registers on the homepage, twenty-one rows on `/Status`, every summary in a
+// margin, every field list on a doc page.
+//
+// The stacked form reads the same register, not the row's. A key above its own
+// value is still beside it in the grammar's terms - it names one fact - and a
+// register that changed between the two forms would make one ledger look like
+// two blocks at two widths.
+
+// ─── 1. A KEY BESIDE ITS VALUE ────────────────────────────────────────────
+
+.record-ledger__key {
+	letter-spacing: var(--track-name);
+}
+
+// ─── 2. THE KEY'S TRAILING EDGE ───────────────────────────────────────────
+// A tracked label's last glyph carries the register's letter-space after it, so
+// its box is one step wider than its ink. In a row the key's box is the 28ch
+// column, and the colon - the mark the eye follows from the name to the value -
+// sat half a pixel inside the column's edge, so the colon and the value column
+// did not share a line. Cancelling exactly one step puts the colon on the edge
+// the value starts from, which is the only alignment a ledger row has.
+//
+// It is a margin rather than an indent, so a key longer than its column wraps
+// inside it and never pushes the value (the `too long` arm).
+.record-ledger__key {
+	margin-inline-end: var(--optical-edge-name);
+}
+
+// ─── 3. THE THREE LABELS THAT KEEP THE RULE REGISTER ─────────────────────
+// An audit of every `@include track` in the stylesheet found the rule register
+// on three kinds of label that are not field labels, and each keeps it for a
+// reason that is not typographic:
+//
+//   the header's nav links    `_Header.scss` reads the bare mixin (0.18em). The
+//                             token layer's own note calls a nav a `row` label,
+//                             and it is right - but the header ribbon and the
+//                             nav's 2px accent bar are endorsed keepers, the
+//                             strip is composed as an instrument panel, and a
+//                             card that is not the header's does not re-set it.
+//                             Named here so the next card does not read the
+//                             omission as an oversight.
+//
+//   `.record-stage__index`    `01` is an ordinal MARK, not a field label: the
+//                             wide tracking is what makes two digits read as an
+//                             index rather than as a figure. It is a figure in
+//                             a line, not in a column, so Detail's figure law
+//                             (set register, for column alignment) does not
+//                             reach it.
+//
+//   the matrix control's band  a control's caption across the strip's top rule,
+//                             which is the definition of a label above a region.
+//
+// ─── 4. A FIGURE INSIDE A TRACKED LINE ────────────────────────────────────
+// Detail's figure law says a figure takes the set register at every size,
+// because pulling digits together narrows the column a figure is measured in.
+// That law is about a figure in a COLUMN. A count inside a register line
+// (`# WORKING / 06`) is not in a column - it is the last word of a tracked
+// sentence - so it keeps the line's register and only its digits go tabular.
+// The two axes are separate, and `Type/_Register.scss` is where the count is
+// given its figures.
+//
+// ─── 5. THE FLOOR ─────────────────────────────────────────────────────────
+// No label on this site may read tighter than -0.035em, and nothing does: the
+// tightest register in the system is `--track-join` at -0.02em. The floor is
+// stated in `_Token.scss` beside the registers so a later card that wants a
+// "tighter display setting" finds the number it may not cross and the
+// measurement behind it.

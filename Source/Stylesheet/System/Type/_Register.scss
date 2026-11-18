@@ -1,0 +1,140 @@
+// REGISTER - the site's most-printed line, set in its five parts.
+//
+// ─── THE LAW ──────────────────────────────────────────────────────────────
+// `Register.astro` prints a register as five spans:
+//
+//   <span class="register-line__mark">#</span>{" "}
+//   <span class="register-line__label">WORKING</span>
+//   <span class="register-line__separator"> / </span>
+//   <span class="register-line__count">06</span>
+//   <span class="register-line__unit"> WORDS</span>
+//
+// The line is the grammar's smallest complete statement: a mark, a name, a
+// separator and a figure, with an optional unit bound to the figure. It appears
+// on every band, every ledger, every leader, every plate and every card header -
+// it is the single most-printed line on the site - and until this file no
+// stylesheet targeted any of its five classes. Every one of them inherited
+// whatever its container happened to set: the mark took the line's ink instead
+// of a mark's, the count took the line's tracking as if it were a word, and the
+// separator's width was whatever the glyph happened to advance.
+//
+// ─── TWO INKS, ONE LINE ───────────────────────────────────────────────────
+// A printer sets a register the way a printer sets an index entry: the name and
+// the figure are the information and take the ink; the mark and the separator
+// are punctuation ABOUT the information and take the muted ink. That is the
+// whole of it, and it is what makes `# WORKING / 06` read as a fact rather than
+// as six characters.
+//
+// ─── THE SEPARATOR IS NOT A QUAD IN A MONO FACE ───────────────────────────
+// `RegisterLine.ts` prints U+2001 for `separator: "quad"` and " / " for the
+// default `slash`. The grammar names U+2001 an em quad - one em of air - and in
+// a proportional face that is what it is. In a mono face it is not: every glyph
+// in IBM Plex Mono advances 0.6em, U+2001 included, because a mono face that
+// gave one character a different advance would break its own grid. So the
+// site's quad is 0.6em, 40% narrower than the grammar's name for it, and a
+// quad-separated register reads as a space-separated one.
+//
+// This layer does not re-cut it, and the reason is that the same character is
+// measured elsewhere: `Detail/_Folio.scss` computes the folio's line length in
+// em quads (47.56em for a six-fact folio) and fits it to a card inset. Giving
+// U+2001 a 1em box in the register line would make one character two widths on
+// one page, and the artifact whose arithmetic depends on it would be the one
+// that broke. The correct fix is a renderer change - print the quad as an empty
+// span and let the stylesheet own its width - and it must be made in both
+// artifacts at once. Named here so the next card finds the argument rather than
+// re-deriving it, and so nobody "tidies" the separator into a 3ch box.
+//
+// ─── THE ADVERSE STATES ───────────────────────────────────────────────────
+// EMPTY      `RegisterOf` on no rows prints `00` - Padded(0) - and `00` is a
+//            figure, because an empty set is a known figure. `UNAVAILABLE` is
+//            the other arm and it is a word: the count's tabular setting is a
+//            no-op on it, which is correct - a word has no figures to align.
+// LOADING    `RegisterCountText` prints `LOADING` where the figure will be. The
+//            count keeps `nowrap`, so the word arrives whole and the line does
+//            not reflow when the figure replaces it.
+// PARTIAL    an unknown count is `UNAVAILABLE`, at the line's register, never
+//            tabular and never hyphenated: a status word broken across two
+//            lines reads as two states.
+// TOO LONG   a label longer than its margin wraps inside the line; `balance`
+//            keeps it to two lines and `hyphens: none` keeps a name from
+//            hyphenating. The separator and the count stay whole beside it.
+// TOO MUCH   the line is per-register and accumulates nothing: the two
+//            hundredth register on a page is set exactly as the first.
+
+// ─── 1. THE MARK ──────────────────────────────────────────────────────────
+// `#` says something ABOUT the line; it is not the line's name. Muted, at the
+// line's own register (it inherits), so the eye passes over it and stops on the
+// name. The mark's hang into the margin is the Optical layer's `text-indent` on
+// the container - this rule only changes its ink, never its position.
+
+.register-line__mark {
+	color: var(--MuteForeground);
+}
+
+// ─── 2. THE SEPARATOR ─────────────────────────────────────────────────────
+// A mark, so the muted ink; and `nowrap` so a line can never break inside it.
+// A leading space inside the span (" / ") is a break opportunity in normal
+// white-space handling, and a register that broke there would open its second
+// line with a slash. `nowrap` on the span suppresses that space as a break
+// point, so a wrapped register breaks before the separator - the label ends the
+// line and the mark opens the next, which is the best a middle span can do. (The
+// folio binds its quad to the fact it follows with an `::after`, which is the
+// correct pattern; a register line's separator sits between two spans, so the
+// same device needs a renderer change and is named above, not faked here.)
+
+.register-line__separator {
+	color: var(--MuteForeground);
+	white-space: nowrap;
+}
+
+// ─── 3. THE NAME ──────────────────────────────────────────────────────────
+// The line's own name keeps the ink it inherits and the register it inherits:
+// a register line is a tracked line, and the label is the part that carries the
+// tracking. What it gains is the break law - `hyphens: none` because a name is
+// not a word in a sentence and must never carry a hyphen it did not arrive with.
+//
+// `text-wrap: balance` is on the LINE, not on this span, and that is the whole
+// point of the too-long arm: `text-wrap` applies to a block container, so on an
+// inline `<span>` it would be a declaration that parses and does nothing. Balanced
+// at the line, a register that has to wrap splits into two even lines - `# LABEL`
+// and `/ 06` - instead of a full line and a stub.
+
+.register-line__label {
+	min-inline-size: 0;
+	hyphens: none;
+}
+
+.record-ledger-block__register,
+.detail-leader__register {
+	text-wrap: balance;
+}
+
+// ─── 4. THE FIGURE ────────────────────────────────────────────────────────
+// The count is a figure and this is the rule that says so: tabular, so two
+// registers stacked in a margin have their figures in one column, and
+// `slashed-zero`, because `06` and `OG` are the same width in a mono face and
+// almost the same shape at 13px.
+//
+// It keeps the LINE's register rather than taking the figure register: the count
+// is the last word of a tracked sentence, not a figure in a column, and setting
+// it at 0 would break the line's rhythm exactly where the eye is looking for the
+// number (`Type/_Curve.scss` states the boundary between the two axes).
+//
+// `nowrap` is the loading and partial arms at once: `LOADING` and `UNAVAILABLE`
+// arrive whole, and the line does not reflow when a figure replaces the word.
+
+.register-line__count {
+	font-variant-numeric: tabular-nums slashed-zero;
+	white-space: nowrap;
+}
+
+// ─── 5. THE UNIT ──────────────────────────────────────────────────────────
+// `06 WORDS`: the unit is bound to its figure by the one space the template
+// prints inside the span, and it never separates from it. It keeps the line's
+// register - a unit is part of the line, not a caption on it - and it never
+// hyphenates, because a unit is a word from a closed vocabulary.
+
+.register-line__unit {
+	white-space: nowrap;
+	hyphens: none;
+}

@@ -1,0 +1,131 @@
+// PAIR - a label and its value, set as one object.
+//
+// ─── THE LAW ──────────────────────────────────────────────────────────────
+// The record grammar's compact field label is `:` (`Design-Brief.md` §4). A pair
+// is therefore three decisions and no more:
+//
+//   1. WHEN THEY SHARE A LINE, the separator is ONE SPACE of the face - `1ch`
+//      exactly, because every glyph in a mono face advances the same. Not 8px:
+//      8px is `--space-tight`, the row rhythm, and it belongs between two facts.
+//   2. WHEN THEY DO NOT, the separator is a CHARACTER COLUMN - a `ch` measure,
+//      so the value's first glyph lands on the same edge in every block on the
+//      page and two ledgers in different containers share a grid. A column in
+//      `rem` starts in the middle of a character, which is the worst of both:
+//      close enough to look aligned, far enough to look wrong.
+//   3. THE COLON BELONGS TO THE LABEL. It is the last glyph of the key, it takes
+//      the key's register, and it is never a separate element - a colon that can
+//      be separated from its label is a colon that will one day be.
+//
+// ─── WHAT THE SITE ACTUALLY HAD ───────────────────────────────────────────
+// Five values for one relationship, which is how a system becomes a collection:
+//
+//   `.record-ledger__key`      the 28ch column, key at the RULE register
+//                              (fixed in `Type/_Curve.scss` - a key is not a
+//                              kicker)
+//   `.record-failure__key`     a `7rem` column, key at the ROW register
+//   `.record-plate__fact`      a `9ch` column, key at the name register
+//   `.lexicon-entry__fact`     a `0.4em` gap, key at the name register
+//   `.record-instrument__key`  key above its figure, 8px - a stack, and correct
+//
+// Three of the five are now the law's answer and two were not. The plate and the
+// instrument are left exactly as they are: a `9ch` column is a character
+// measure, and a key above its own figure is a stack and pays the row rhythm
+// between two boxes, not one space inside one.
+//
+// ─── THE COLON IN A STACKED LEDGER ────────────────────────────────────────
+// The card asks for the `:` aligned in stacked ledgers, and this is where the
+// layer has to be honest rather than clever. In the stacked form the key is a
+// full-width line and the value sits under it, so a column of keys prints its
+// colons at the end of labels of different lengths - `TARGET:` and `MANIFEST:`
+// end two characters apart - and no two colons share an edge.
+//
+// There is no CSS-only alignment. A colon is a character inside a string
+// (`key: "TARGET:"` - 154 of them across twenty content modules), so the only
+// ways to put it on an edge are (a) to make the key a two-track grid and print
+// the colon in the second track, which doubles the mark on every key that already
+// carries one, or (b) to strip the colon from the data and print it from the
+// stylesheet, which means every block that prints a key - the ledger, the plate,
+// the failure, the state, the transcript - must gain the same `::after` in the
+// same release. (b) is the right answer and it is a change to the record layer's
+// grammar, not a typographic refinement of it: `LedgerRow.key` would stop being
+// the printed label and become the label's name. That is a card of its own.
+//
+// What this layer does instead is the part that IS a setting:
+//
+//   - a key never hyphenates, so a label can never break inside a word it did
+//     not arrive broken in;
+//   - a key's trailing colon hangs at the end of a wrapped line
+//     (`hanging-punctuation: allow-end`, where the engine implements it), so a
+//     colon is never the last thing on a line flush against the measure;
+//   - and the orphan-colon fear is already answered by the Unicode line-breaking
+//     algorithm: UAX #14 rule LB13 prohibits a break before `:`, so a colon can
+//     never open a line, in any engine, with no declaration from this layer.
+//
+// The alignment itself is named as left, with the reason and the shape of the fix,
+// rather than faked with a margin that would only align the two keys that happen
+// to be the same length.
+@use "../Mixin" as *;
+
+// ─── 1. ONE SPACE BETWEEN A LABEL AND ITS VALUE ───────────────────────────
+// The lexicon's facts are the pair that is set at the sub role on one line:
+// `FORM: ledger`, `BOUNDARY: 1px`, `SOURCE: /Doc/Rust`. Their gap was `0.4em`,
+// which is Detail's UNIT binding - the distance between a figure and its unit
+// (`32 px`), where the two are one object. A key and its value are two objects:
+// the key names, the value answers. They are separated by a space, not by a
+// fraction of one, and at 13px the difference is 5.2px against 7.8px - the
+// difference between `FORM:ledger` and `FORM: ledger`.
+
+.lexicon-entry__fact {
+	gap: var(--optical-space);
+}
+
+// ─── 2. A KEY BESIDE ITS VALUE READS THE NAME REGISTER ────────────────────
+// The failure record's three keys (`SYMPTOM:`, `CAUSE:`, `NEXT:`) and its two
+// inline ones (`STATUS:`, `SOURCE:`) read the ROW register - 0.08em, the
+// register for a label ACROSS a row. They are labels beside their values, which
+// is the definition of the name register, and the same three words in a ledger
+// read 0.04em: a reader who meets `CAUSE:` in a failure record and `CAUSE:` in a
+// ledger should see one setting, not two.
+//
+// The failure record is the block where this matters most, because its whole
+// argument is that a failure is a record like any other - and a record whose
+// keys are tracked differently from every other record's is a failure that looks
+// like a different kind of object.
+
+.record-failure__key,
+.record-failure__status-key,
+.record-failure__source-key {
+	letter-spacing: var(--track-name);
+}
+
+// ─── 3. A KEY COLUMN IS A CHARACTER MEASURE ───────────────────────────────
+// `7rem` is 112px, which at the meta role is 14.36 characters: the value column
+// began in the middle of one, and no other block's value column shared its edge.
+// The longest key the block prints is `SYMPTOM:` - eight glyphs plus eight
+// inter-letter registers at `--track-name` (0.0667ch each) = 8.53ch - so the
+// column is `9ch`: the next whole character, which is what makes it a measure
+// instead of a fit. The value gains the 5.36ch the column was holding as air
+// (42px), which on a five-column band is a line and a half of a symptom.
+//
+// It is a floor on the key and never a width: a longer key grows and its value
+// follows it (`Type/_Setting.scss`, the too-long arm), and every shorter one
+// leaves its value on the same edge as every other row's.
+
+@include bp(640px) {
+	.record-failure__key {
+		inline-size: 9ch;
+	}
+}
+
+// ─── 4. THE KEY'S OWN SETTING ─────────────────────────────────────────────
+// A key is a name: it never hyphenates (a label broken across two lines with a
+// hyphen reads as a different label), and its trailing colon hangs rather than
+// sitting flush at the end of a wrapped line. Both are settings of the pair, not
+// of a block, so they are declared once for the two keys that carry a colon in
+// the data.
+
+.record-ledger__key,
+.record-failure__key {
+	hyphens: none;
+	hanging-punctuation: allow-end;
+}
