@@ -33,7 +33,47 @@
 
 @use "../../Mixin" as *;
 
+// ─── THE ROW IS A CONTAINER QUESTION, NOT A VIEWPORT ONE ──────────────────
+// The strip is a sibling of the pair, not a child of the record card: it spans
+// the band, inset by the same `clamp(2rem, 5vw, 5rem)` the pair pays. So its
+// inline size is never the viewport's - the band less 2 x 5vw is 0.9 x the
+// viewport between 640 and 1600px (less the scrollbar), and the viewport minus
+// 160px above that - and a `@media` step is a guess at a box the query cannot
+// see. The row switches on the STRIP's own content box, `@container hero-stack`,
+// which is the width four tiles divide.
+//
+// The step is a measure, not a guess. One tile spends, inline:
+//
+//   border + padding      1px + 0.75rem, twice   = 26px
+//   icon/name gap         0.75rem                = 12px
+//   icon                  1.25rem                = 20px
+//   ─────────────────────────────────────────────────────
+//   the name's own box                           = tile - 58px
+//
+// The longest name the strip prints, `EFFECT-TS SERVICES`, measures 149px at
+// `--type-meta` (13px) with `--track-row` (0.08em); the eight measured widths
+// are 75 / 66 / 149 / 66 / 116 / 116 / 91 / 124. So a tile needs 207px for that
+// name to print whole, and four of them plus three 0.5rem gaps need
+//
+//   4 x 207 + 3 x 8 = 852px = 53.25rem
+//
+// of strip. The query is 53.5rem (856px) - the exact fit plus 4px, so half a
+// pixel of grid rounding cannot ellipsize the one name that lands on the line.
+// Below it the row is two across: the state a phone already prints, and the only
+// other count that divides eight tiles without leaving a hole in the last row.
+// It is a column-count change, not a composition: the tiles, the icon, the fill
+// and the `--Divider` frame are the same in both states.
+//
+// Four across at `bp(640px)` was the old step, and at that viewport the strip is
+// 565px - 135px a tile, 77px for a name - so five of the eight ellipsized, the
+// longest cut from 149px to 77px, and the row did not clear its last ellipsis
+// until a ~960px viewport. The 13px name is not shrunk to make them fit; the row
+// is allowed one fewer column instead. Under 53.5rem the strip is two across,
+// which at 360px still ellipsizes the five long names (81px for a name) - that
+// is the design brief's `too long` state, and the floor at a phone's width, not
+// a column-count error.
 .hero-band__stack {
+	container: hero-stack / inline-size;
 	padding-inline: clamp(2rem, 5vw, 5rem);
 	margin-block-start: var(--space-group);
 }
@@ -48,8 +88,12 @@
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 0.5rem;
+}
 
-	@include bp(640px) {
+// 4 x 207px + 3 x 8px = 852px of strip; the query is that plus 4px. The
+// arithmetic is in this file's head.
+@container hero-stack (min-width: 53.5rem) {
+	.hero-band__stack-grid {
 		grid-template-columns: repeat(4, minmax(0, 1fr));
 	}
 }
