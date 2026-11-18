@@ -9,6 +9,13 @@
  * yet, and the baseline said so on the card rather than leaving the row out.
  * The three architecture lines are the platform's own - a universal binary on
  * macOS, x64 on Windows, the three Linux package formats.
+ *
+ * `STATUS: PREPARING` is `DESIGN-COMPLETE.md` §1.5's word for this condition
+ * (`quiet`), and §1.5's vocabulary is closed at eight values. The row printed
+ * `RELEASE PREPARATION` - two words, no state among them - so the state table
+ * (`Component/Surface/State.ts`) could not read it and any printer that asked
+ * for its tone fell back to `ink`. "Release" is not lost: the card's own marker
+ * is `# RELEASE_01` and the band it sits in is the release band.
  */
 import type { PlatformCard } from "./Type.js";
 
@@ -25,7 +32,7 @@ export const PlatformCards: readonly PlatformCard[] = [
 		Size: "Coming Soon",
 		Signing: "IN PREPARATION",
 		Action: { Label: "Download for macOS", Href: "/Download" },
-		Status: { Label: "STATUS:", Value: "RELEASE PREPARATION" },
+		Status: { Label: "STATUS:", Value: "PREPARING" },
 	},
 	{
 		Index: "# RELEASE_01",
@@ -38,7 +45,7 @@ export const PlatformCards: readonly PlatformCard[] = [
 		Size: "Coming Soon",
 		Signing: "IN PREPARATION",
 		Action: { Label: "Download for Windows", Href: "/Download" },
-		Status: { Label: "STATUS:", Value: "RELEASE PREPARATION" },
+		Status: { Label: "STATUS:", Value: "PREPARING" },
 	},
 	{
 		Index: "# RELEASE_01",
@@ -51,6 +58,6 @@ export const PlatformCards: readonly PlatformCard[] = [
 		Size: "Coming Soon",
 		Signing: "IN PREPARATION",
 		Action: { Label: "Download for Linux", Href: "/Download" },
-		Status: { Label: "STATUS:", Value: "RELEASE PREPARATION" },
+		Status: { Label: "STATUS:", Value: "PREPARING" },
 	},
 ];
