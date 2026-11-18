@@ -214,15 +214,51 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 	// Always build the full href; validation fires only on user interaction.
 	const MailtoHref = BuildMailtoHref(Config, Values, Year, PairId);
 
+	/**
+	 * The form's state, in the site's fixed STATUS vocabulary (`DESIGN.md` §1.5)
+	 * and no other word:
+	 *
+	 * - `PREPARING` - a required field is still empty, so the request is not
+	 *   yet fileable. Quiet ink, because nothing is wrong.
+	 * - `READY` - every required field carries a value; the request can be
+	 *   filed. Full ink.
+	 * - `INTERRUPTED` - a send was refused by validation; the errors under the
+	 *   fields say which. Full ink, and the errors carry `--Destruct`.
+	 *
+	 * It reads the same `Values` and `Errors` the controls read, so the word
+	 * cannot disagree with the form it describes. No `LOADING` or `VERIFIED`
+	 * exists here: the form posts nothing, it hands the reader a message.
+	 */
+	const Complete = Config.Fields.every((Field) => {
+		if (!Field.required) return true;
+
+		const Value = Values[Field.id];
+
+		if (Field.type === "checkbox") return Value === "true";
+
+		if (Field.type === "checkboxes")
+			return Array.isArray(Value) && Value.length > 0;
+
+		return typeof Value === "string" && Value.trim() !== "";
+	});
+
+	const FormState =
+		Object.keys(Errors).length > 0
+			? "INTERRUPTED"
+			: Complete
+				? "READY"
+				: "PREPARING";
+
 	/** The required marker every label shares, so it is written once. */
 
 	return (
 		<div className="contact-form">
 			<div className="contact-form__inner">
-				{/* The request's own opening: the pair reference, the legal basis and
-				    the response window as chips; then the page's only `h1` - the
-				    request title, at the mono label scale rather than the display
-				    scale; then its sentence; then the address it is sent to. */}
+				{/* The request's own opening: the pair reference, the legal basis,
+				    the response window and the form's state as chips; then the
+				    page's only `h1` - the request title, at the mono label scale
+				    rather than the display scale; then its sentence; then the
+				    address it is sent to. */}
 				<div className="contact-form__open">
 					<div className="contact-form__meta">
 						<span
@@ -238,6 +274,13 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 						)}
 						<span className="contact-form__tag">
 							{Config.ResponseDays}d SLA
+						</span>
+						<span
+							className="contact-form__state"
+							data-state={FormState}
+							role="status"
+						>
+							{FormState}
 						</span>
 					</div>
 

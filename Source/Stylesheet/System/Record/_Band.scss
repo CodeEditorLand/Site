@@ -81,6 +81,16 @@
 	padding-block: 0;
 }
 
+// The bare band's inner container drops the page gutters with the padding: the
+// artifact's Jelly card owns the inset, and a second `--Gutter` inside it would
+// inset the section twice - which is the "no inset" this tone promises
+// (DESIGN.md §4.3). The container's max-width is the page's, already applied by
+// whatever surface the band is nested in.
+.record-band--bare .record-band__inner {
+	max-width: none;
+	padding-inline: 0;
+}
+
 .record-band--bare + .record-band--bare {
 	margin-block-start: var(--space-group);
 }

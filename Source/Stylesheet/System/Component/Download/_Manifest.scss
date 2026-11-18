@@ -1,5 +1,6 @@
-// ManifestBand - the Download page's release manifest band: its centred header
-// and the three platform entries under it.
+// ManifestBand - the Download page's release manifest band: its centred header,
+// the three platform entries under it, and the record's continuation through the
+// band's `<slot />`.
 //
 // Publishes:
 //   .download-manifest              the band: its own block padding
@@ -51,16 +52,28 @@
 	}
 }
 
+// The record's one column: the centred header, the platform grid, then the
+// regions the artifact continues into (the page's `<slot />`). The gap is the
+// group distance, so every part of the one artifact - the regions included - is
+// separated by the documented density and never by a chapter (DESIGN.md §2.3,
+// §7 DR-9). The band's own `padding-block` is what closes the record and opens
+// the page's second section; nothing inside here pays a band's padding.
 .download-manifest__inner {
 	@include band-inner;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-group);
 }
 
 // The header is centred and narrow: the eyebrow, the heading and one sentence,
-// capped at 42rem so the sentence breaks where the heading does.
+// capped at 42rem so the sentence breaks where the heading does. Its distance
+// from the grid is the baseline's `mb-10` - 2.5rem - and the column's 2rem gap
+// already contributes most of it, so the block adds only the half step.
 .download-manifest__head {
 	max-inline-size: 42rem;
 	margin-inline: auto;
-	margin-block-end: 2.5rem;
+	margin-block-end: 0.5rem;
 	text-align: center;
 }
 

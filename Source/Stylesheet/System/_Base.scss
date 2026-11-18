@@ -273,8 +273,10 @@
  ───────────────────────────────────────────────────────────── */
 
 .markdown-alert {
-	border-left: 4px solid
-		color-mix(in srgb, var(--CardForeground) 20%, transparent);
+	/* The callout's rule is a divider, not a hairline: it is the only thing
+	   separating the block from the prose around it, so it draws at
+	   `--Divider` (20 % ink) rather than `--Border` (8 %). */
+	border-left: 4px solid var(--Divider);
 
 	border-radius: 0;
 

@@ -9,6 +9,7 @@
 //   .contact-form__meta             the pair reference, legal basis and window
 //   .contact-form__pair             the CODE-XXXXX reference
 //   .contact-form__tag              one fact chip beside it
+//   .contact-form__state            the form's state word (PREPARING/READY/INTERRUPTED)
 //   .contact-form__handler          who the request is sent to
 //   .contact-form__handler-value    that address, at full ink
 //   .contact-form__fields           the field stack
@@ -128,6 +129,32 @@
 	@include hairline;
 	padding: 0.125rem 0.5rem;
 	background: var(--Mute);
+}
+
+// The form's state word, in the fixed STATUS vocabulary (`DESIGN.md` §1.5), with
+// the site's 2px marker in the word's own ink. It is not a chip: a chip is a
+// value the registry supplies, a state is what the form is doing. `PREPARING`
+// is quiet, `READY` and `INTERRUPTED` take full ink - the errors under the
+// fields carry `--Destruct`, so the word never has to shout.
+.contact-form__state {
+	@include mono-meta;
+	display: inline-flex;
+	align-items: center;
+	margin: 0;
+	color: var(--Foreground);
+}
+
+.contact-form__state::before {
+	content: "";
+	display: inline-block;
+	inline-size: 2px;
+	block-size: 0.9em;
+	margin-inline-end: 0.45em;
+	background: currentColor;
+}
+
+.contact-form__state[data-state="PREPARING"] {
+	color: var(--MuteForeground);
 }
 
 // `text-sm font-mono text-muted-foreground`, with the address itself at full

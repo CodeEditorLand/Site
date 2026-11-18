@@ -16,6 +16,18 @@
  * entry, `Data.ts` supplies the entries, and this file decides only their order
  * and their grid.
  *
+ * The band is also the record's shell. `# RELEASE_01` is one artifact, not the
+ * first of a stack of sections: the artifact continues past its own fields into
+ * the regions that answer the rest of the page's question (`/REQUIREMENTS`,
+ * `/PREVIOUS RELEASES`), and those arrive through `<slot />` at the end of the
+ * band's inner column. `_Manifest.scss` makes that column a flex stack at
+ * `--space-group`, so the header, the grid and every region are separated by the
+ * documented distance between two parts of one subject - never by a chapter
+ * distance, which is what a band boundary would print. The baseline's second
+ * section (`#Transparency`) stays the page's second section and is not slotted
+ * here: it is a new subject that closes the page, so the page composes it beside
+ * this band, not inside the record.
+ *
  * No `<script>` and no `client:*`: the band is static.
  */
 import PlatformCard from "./PlatformCard.astro";
@@ -69,5 +81,7 @@ const { head, platforms, index, labels } = Astro.props;
 				))
 			}
 		</div>
+
+		<slot />
 	</div>
 </section>

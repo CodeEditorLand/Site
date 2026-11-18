@@ -30,6 +30,8 @@ import PlatformBand from "../Component/Home/PlatformBand.astro";
 import RoadmapBand from "../Component/Home/RoadmapBand.astro";
 import { DynamicHeroSection } from "../Component/Dynamic/DynamicHeroSection";
 import { HeroBandFor } from "../Component/Dynamic/Hero/Data.js";
+import RecordLedger from "../Component/Record/RecordLedger.astro";
+import RecordStage from "../Component/Record/RecordStage.astro";
 import { Header } from "../Component/Layout/Header";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
@@ -121,7 +123,33 @@ const HeroContent = { PrimaryCTA: { Href: "/Download" } };
 
 	<Header client:load slot="Header" />
 
-	<DynamicHeroSection client:load Content={HeroContent} Band={HeroBand} />
+	<DynamicHeroSection client:load Content={HeroContent} Band={HeroBand}>
+		{/*
+		 * The two blocks the hero's `.tsx` island cannot import: they are
+		 * `.astro`, and an `.astro` component cannot be imported from a
+		 * `.tsx` file. Astro renders a `slot` child to HTML and hands the
+		 * framework component that HTML as a prop, so the route carries the
+		 * import and the island places it - the facts ledger in the record
+		 * card, the runtime path as the evidence plate's Signal Trace.
+		 *
+		 * `HeroBand.facts` already prints its labels with their colons
+		 * (`TARGET:`, `LICENSE:`, `SIGNAL:`); the block prints the row as it
+		 * is given and the page supplies nothing to it.
+		 */}
+		<RecordLedger
+			slot="ledger"
+			rows={HeroBand.facts}
+			class="hero-band__facts"
+		/>
+
+		<div
+			slot="stage"
+			class="hero-band__proof"
+			style="margin-block-end: var(--space-group)"
+		>
+			<RecordStage stages={HeroBand.steps} orientation="stack" />
+		</div>
+	</DynamicHeroSection>
 
 	<FeatureBand />
 

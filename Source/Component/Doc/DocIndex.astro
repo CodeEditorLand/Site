@@ -1,26 +1,47 @@
 ---
 /**
- * DocIndex - one section of the documentation index: the section name as the
- * heading, then one card per page underneath.
+ * DocIndex - one chapter of the documentation index: a `RecordBand` at
+ * `tone="bare"` wrapping the chapter's card grid, and one `RecordEntry` per
+ * card inside the `jelly-card` that card already had.
  *
  * The baseline rendered ten of these, each a `<section>` whose `h2` was the
- * section name and whose body was a three-column card grid. That is what this
- * file renders, and it is the whole of it: the section's cards arrive already
- * ordered and already filtered (`Function/Doc/BuildDocIndex.ts`), so no
- * decision about content is taken here.
+ * section name and whose body was a three-column card grid. That composition
+ * survives - the grid, the counts, the anchor id - and the section grammar
+ * around it is now the block layer's instead of this file's:
+ *
+ * - **The chapter is a band.** `RecordBand` at `tone="bare"` prints the kicker
+ *   and the chapter's single `h2`; a bare band paints no border, no fill and no
+ *   inset, because the card is the surface and the band is structure inside it
+ *   (`DESIGN-COMPLETE.md` §4.3). The band is a chapter wrapper, never a card:
+ *   the ten grids stay ten grids, which is the baseline composition and the
+ *   reason §5.4 row 23 dropped the row-ledger rewrite.
+ * - **The card is an entry.** `RecordEntry` at `surface="bare"` is the record's
+ *   anatomy - index marker, glyph, name, body - inside the `jelly-card` the
+ *   card already had, so the entry never becomes a second surface.
+ * - **The card is still the way in.** The `jelly-card`'s anchor is the page's,
+ *   not the entry's: it carries the inset, the hover ink and the whole-card
+ *   target the card has always had. The entry therefore takes no `href` - the
+ *   block never renders a second anchor inside one that already leads
+ *   somewhere - and its decorative glyph is the `DocLink.Blank` grammar's own
+ *   arrow: `↗` for a destination that opens in its own tab, `→` for one that
+ *   stays in the page.
+ * - **The index marker is the card's position in its chapter**, two digits,
+ *   printed as written (`01`..`16`). It is passed in, never derived by the
+ *   block: the page knows the order, the block prints it.
  *
  * Two notes a caller should know:
  *
- * - **The `h2` is the section's, the `h3` is the card's.** A card title is a
- *   level below the heading it is filed under, which is why `DocCard` takes a
- *   level and this component passes `3`.
- * - **The anchor id is the section's slug**, so `/Doc#deep-dive` addresses the
- *   same section the sidebar calls `Deep Dive`. It is on the `<section>`, not
- *   on the heading, so the whole grid is the target.
+ * - **The `h2` is the band's, the `h3` is the entry's.** A card title is a
+ *   level below the chapter it is filed under, so the heading order stays
+ *   `h1` (the page) → `h2` (the chapter) → `h3` (the card).
+ * - **The anchor id is the section's slug**, on the chapter wrapper, so
+ *   `/Doc#deep-dive` addresses the same section the sidebar calls `Deep Dive`.
+ *   It is on the wrapper, not on the heading, so the whole grid is the target.
  *
- * No script and no hydration directive: the section is static.
+ * No script and no hydration directive: the chapter is static.
  */
-import DocCard from "./DocCard.astro";
+import RecordBand from "../Record/RecordBand.astro";
+import RecordEntry from "../Record/RecordEntry.astro";
 
 import type { DocSection } from "./Type.js";
 
@@ -30,15 +51,53 @@ interface Props {
 }
 
 const { section } = Astro.props;
+
+/**
+ * The chapter's route label, in the `/LABEL` voice the band's kicker prints.
+ * The block never invents the leading slash and never re-cases the text, so
+ * the page supplies both - and the label is the chapter's own name, not a
+ * second name for it.
+ */
+const Kicker = `/${section.Heading.toUpperCase()}`;
+
+/**
+ * The card's marker: its position in the chapter, two digits. The block prints
+ * it verbatim, so the padding is the page's - a rail number is `01`, not `1`.
+ */
+const Marker = (Position: number): string =>
+	String(Position + 1).padStart(2, "0");
 ---
 
-<section class="doc-section" id={section.Id}>
-	<h2 class="doc-section__heading">{section.Heading}</h2>
-	<ul class="doc-grid">
-		{
-			section.Rows.map((Card) => (
-				<DocCard card={Card} level={3} />
-			))
-		}
-	</ul>
-</section>
+<div class="doc-section" id={section.Id}>
+	<RecordBand
+		band={{ kicker: Kicker, heading: section.Heading, tone: "bare" }}
+	>
+		<ul class="doc-grid">
+			{
+				section.Rows.map((Card, Position) => (
+					<li class="doc-card">
+						<jelly-card
+							class="doc-card__surface"
+							style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
+						>
+							<a
+								class="doc-card__link"
+								href={Card.Href}
+								target={Card.Blank ? "_blank" : undefined}
+								rel={Card.Blank ? "noopener noreferrer" : undefined}
+							>
+								<RecordEntry
+									index={Marker(Position)}
+									name={Card.Label}
+									glyph={Card.Blank ? "↗" : "→"}
+									body={Card.Note ?? ""}
+									surface="bare"
+								/>
+							</a>
+						</jelly-card>
+					</li>
+				))
+			}
+		</ul>
+	</RecordBand>
+</div>

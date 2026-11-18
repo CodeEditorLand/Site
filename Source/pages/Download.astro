@@ -3,23 +3,28 @@
  * Download - the installation contract: can I install this today, and if not,
  * what can I do instead?
  *
- * The page is the baseline render's composition, band for band, with the record
- * it opens finished:
+ * The page is one artifact in two sections, which is the baseline render's
+ * spine, with the record it opens finished:
  *
  *   1. masthead      the page's one h1, its answer in one sentence, eight marks
- *   2. manifest      `#release-manifest` - the centred header and the three
- *                    platform entries
- *   3. record        the `# RELEASE_01` artifact continued past its own fields:
- *                    `/REQUIREMENTS` and `/PREVIOUS RELEASES`, then the
- *                    `#Transparency` disclosure that closes the page
+ *   2. `#release-manifest` - the `# RELEASE_01` artifact, opened by
+ *                    `ManifestBand`: the centred header (`h2` `Release
+ *                    Manifest`), the three platform entries, and then - through
+ *                    the band's `<slot />` - the regions the artifact continues
+ *                    into: `/REQUIREMENTS` and `/PREVIOUS RELEASES`
+ *   3. `#Transparency` - the disclosure that closes the page
  *
  * The third block is the part this page had lost. The manifest band was briefly
  * a single record with its other subjects as regions inside it; that was
  * replaced by the two bands the baseline rendered, and the regions went with it.
- * Both are true at once, so both are here: the two baseline bands keep their
- * centred headers and their counts, and the record continues inside a third
- * block that carries the two content regions the page had stopped making claims
- * about - what a build needs, and what shipped before this release.
+ * Both are true at once, so both are here: the two baseline sections keep their
+ * centred headers and their counts, and the record continues inside the first
+ * one through the band's slot, carrying the two content regions the page had
+ * stopped making claims about - what a build needs, and what shipped before this
+ * release. A region is a part of the record, not a chapter of the page: it is
+ * separated at `--space-group` and never at `--space-chapter`, so the page reads
+ * as one artifact with four parts rather than as five sections stacked under a
+ * masthead.
  *
  * Every row, label and figure lives in `Component/Dynamic/Download/Data.ts`,
  * every card is a component, and this page owns the artifact order and nothing
@@ -29,9 +34,10 @@
  * its markup, its centred heading, its three sub-blocks and the `Verify in
  * source code` link the baseline closed the page on. The page hands it one
  * thing: the `download-transparency` class, so `Download/_Page.scss` can take
- * off the padding it used to give itself when it was a band of its own. It is a
- * new subject inside the record, not another part of it, so it separates at the
- * chapter distance rather than the group distance.
+ * off the padding it used to give itself - the manifest band above it already
+ * pays the chapter that opens it, and a band's padding paid twice is two
+ * rhythms in a row. It is a new subject after the record, not another part of
+ * it, so it stays the page's second section.
  */
 import DownloadMasthead from "../Component/Dynamic/DownloadMasthead.astro";
 import ManifestBand from "../Component/Dynamic/Download/ManifestBand.astro";
@@ -89,9 +95,7 @@ const MetaDescription = T("meta.downloads.description", {
 		platforms={ManifestPlatforms(T)}
 		index="RELEASE_01"
 		labels={FieldLabels(T)}
-	/>
-
-	<div class="download-record">
+	>
 		<Region region={RegionCopy.Requirements}>
 			<Requirements
 				panels={RequirementsData(T)}
@@ -119,11 +123,11 @@ const MetaDescription = T("meta.downloads.description", {
 				})}
 			/>
 		</Region>
+	</ManifestBand>
 
-		<DynamicTransparency
-			Content={Transparency(T)}
-			ClassName="download-transparency"
-			client:load
-		/>
-	</div>
+	<DynamicTransparency
+		Content={Transparency(T)}
+		ClassName="download-transparency"
+		client:load
+	/>
 </Base>

@@ -24,9 +24,26 @@
 import type { TFunction } from "i18next";
 
 import type { FieldRecordElement } from "../../Component/Brand/FieldRecordSeal.js";
+import type { SurfaceState as StateRow } from "../../Component/Surface/State.js";
 
 /** The field-record separator: U+2001, never U+00B7. */
 const Quad = "\u2001";
+
+/**
+ * One state of this surface, in the register's own shape: the key it is stated
+ * under, the word, and the tone §1.5 gives that word.
+ *
+ * The tone is written here rather than looked up, because a surface states the
+ * tone it means: `PLANNED` and `PREPARING` are both work-not-yet-done, and
+ * §1.5 gives both the `quiet` tone. `--Accent` authenticates a live state
+ * (ACTIVE, VERIFIED) and never a plan, which is what the hero printed before
+ * this table carried a tone at all.
+ */
+const State = (Key: string, Word: string): StateRow => ({
+	key: Key,
+	value: Word,
+	tone: "quiet",
+});
 
 /** One feature row: a name, and the one sentence that qualifies it. */
 export interface PortalFeature {
@@ -64,6 +81,9 @@ export interface PortalTier {
 
 	/** `PLANNED` - the only status any tier carries today. */
 	readonly status: string;
+
+	/** The tier's one state, as the register prints it: `STATUS` over `PLANNED`. */
+	readonly states: readonly StateRow[];
 
 	/** `Online`, `OAuth 2.0`, `Local-First`, `Planned`. */
 	readonly badge: string;
@@ -118,6 +138,9 @@ export interface PortalSurface {
 
 	/** `PREPARING` - the page's one state at the top. */
 	readonly status: string;
+
+	/** That state, as the register prints it: `STATUS` over `PREPARING`. */
+	readonly states: readonly StateRow[];
 
 	/** `LAND` - the title block; the template prints the colon. */
 	readonly title: string;
@@ -237,6 +260,7 @@ const Tier = (Content: {
 	ink: TierInk[Content.Identifier] ?? "CardForeground",
 	protocol: Content.Protocol,
 	status: TierStatus,
+	states: [State("STATUS", TierStatus)],
 	badge: Content.Badge,
 	features: Content.Features,
 	capabilities: Content.Capabilities,
@@ -245,6 +269,9 @@ const Tier = (Content: {
 		href: ActionHref(Content.Identifier),
 	},
 });
+
+/** The status the page's hero states: work under way, nothing shipped. */
+const HeroStatus = "PREPARING";
 
 /**
  * The page, as a function of the translator. Nothing here is conditional on a
@@ -527,7 +554,8 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 		protocol: "HTTPS",
 		program: ["CLOUD", "PROVIDER", "LOCAL-FIRST", "ENTERPRISE"],
 		banner: ["NATIVE", "OPEN", "CROSS-PLATFORM"],
-		status: "PREPARING",
+		status: HeroStatus,
+		states: [State("STATUS", HeroStatus)],
 		title: "LAND",
 		relation: "EDITOR WITHOUT CHROMIUM",
 		metadata: [

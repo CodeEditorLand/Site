@@ -63,6 +63,21 @@
 		/* Border → hairline on light surfaces (sitewide) */
 		--Border: rgba(7, 7, 7, 0.08);
 
+		/* Divider → the ink a rule needs when the rule is the only thing that
+		   defines the element. `--Border` is the sitewide hairline: 8 % ink,
+		   1.18:1 on the canvas and 1.19:1 on a white card, correct for a frame
+		   drawn *on* a card whose fill already separates it from the canvas.
+		   A structural divider is the other case - a column split inside a
+		   white row, a gutter between a card and a photograph, a head rule on
+		   a card that has no frame - where 8 % ink measures below the 1.2:1
+		   line and reads as a rumour rather than a shape. This is the 20 % mix
+		   `DESIGN-COMPLETE.md` §5.3 names as the target for the hero gutter and
+		   the Portal tier divider: 1.50:1 on the canvas, 1.51:1 on white.
+		   Named here so the eleven rules that draw a divider stop restating the
+		   mix inline, and so "hairline" and "divider" are two decisions rather
+		   than one value doing both jobs. */
+		--Divider: color-mix(in srgb, var(--CardForeground) 20%, transparent);
+
 		--Input: #ffffff;
 
 		--Ring: #1e742a;

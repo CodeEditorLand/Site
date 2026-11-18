@@ -1,11 +1,17 @@
 import { resolve } from "node:path";
 
-import React from "@vitejs/plugin-react";
+import { getViteConfig } from "astro/config";
 
-import { defineConfig } from "vitest/config";
-
-export default defineConfig({
-	plugins: [React()],
+/**
+ * One config, two kinds of test.
+ *
+ * `getViteConfig` loads `astro.config.ts` itself, so the Astro compiler and the
+ * `@astrojs/react` integration are both present: a `.tsx` test renders React the
+ * way it always did, and a test that imports an `.astro` component gets the
+ * compiled component instead of a parse error. The React plugin is not listed
+ * separately because the integration already installs it.
+ */
+export default getViteConfig({
 	test: {
 		environment: "jsdom",
 		globals: true,

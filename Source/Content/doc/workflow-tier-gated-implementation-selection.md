@@ -228,7 +228,7 @@ and bisect regressions to a specific implementation tier.
       value (env override first, baked const second) is `"Node"`. Dispatch arms
       gate on this:
         ```rust
-        "git:exec" | "git:clone" /* ... */
+        "git:exec" | "git:clone" /* … */
             if tier_routes_to_node(TIER_SCM, "TierSCM") =>
         {
             forward_to_cocoon!("scm", command, Arguments)
@@ -266,10 +266,10 @@ and bisect regressions to a specific implementation tier.
 
 2. **`Utility/Tier.ts` default export**
    ([`Land/Element/Cocoon/Source/Utility/Tier.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Utility/Tier.ts))
-    - The module exposes a single `const Tier = { ... } as const` object whose
+    - The module exposes a single `const Tier = { … } as const` object whose
       keys match the capability names. Reads are synchronous and
       side-effect-free.
-    - Every per-subsystem tier has a `TierXValue` union type. The `Pick<...>(...)`
+    - Every per-subsystem tier has a `TierXValue` union type. The `Pick<…>(…)`
       calls resolve from `__LandTiers` first, then `process.env.TierX`, then the
       baked default.
     - On first import it emits the Cocoon runtime banner via `LandFixLog.Info`
@@ -281,7 +281,7 @@ and bisect regressions to a specific implementation tier.
         - esbuild's `define` substitutions dead-code-eliminate the inactive arm
           in production bundles.
     - **Runtime branch (per-subsystem tiers):**
-      `if (Tier.Storage === "Node") { ... } else { ... }` - used when two arms must
+      `if (Tier.Storage === "Node") { … } else { … }` - used when two arms must
       coexist in the same bundle (every subsystem tier is in this category since
       Mountain ↔ Cocoon routing flips at runtime).
 
@@ -295,7 +295,7 @@ and bisect regressions to a specific implementation tier.
       `import.meta.env.Tier<Capability>` (Vite-substituted at build time),
       falling through to `globalThis.__LandTiers` and finally hard-coded
       defaults.
-    - Identical type-export set and identical `Pick<...>(...)` table - the only
+    - Identical type-export set and identical `Pick<…>(…)` table - the only
       differences are the env source (`import.meta.env` vs. `process.env`) and
       the banner (`console.info` vs. `LandFixLog`).
 
@@ -324,7 +324,7 @@ and bisect regressions to a specific implementation tier.
       cache-invalidating input.
 
 4. **Extend the TypeScript type declarations**
-    - Add a `Tier<Capability>Value` union type and a `Pick<...>(...)` call in
+    - Add a `Tier<Capability>Value` union type and a `Pick<…>(…)` call in
       `Element/Cocoon/Source/Utility/Tier.ts`.
     - Mirror the change in `Element/Wind/Source/Utility/Tier.ts`.
     - Add the `declare const __LandTier_<Name>__: string;` line + matching
@@ -335,7 +335,7 @@ and bisect regressions to a specific implementation tier.
     - In `Mountain/Source/IPC/WindServiceHandlers/mod.rs`, add
       `const TIER_<NAME>: &str = env!("Tier<Name>", "<default>");` near the
       other tier consts, then wrap the relevant command group with
-      `if tier_routes_to_node(TIER_<NAME>, "Tier<Name>") => { forward_to_cocoon!(...) }`.
+      `if tier_routes_to_node(TIER_<NAME>, "Tier<Name>") => { forward_to_cocoon!(…) }`.
 
 6. **Update flavor overlays**
     - Add the tier (with the correct flavor-specific value) to all three overlay
@@ -354,10 +354,10 @@ and bisect regressions to a specific implementation tier.
   `build.rs` falls back to the `EmitTierDefaults` table; `Utility/Tier.ts` falls
   back to the same defaults. All four paths converge on the same baseline.
 - **Typo in `.env.Land`:** Rust build surfaces
-  `cargo:warning=Tier<...>=<...> declared in <file> but has no matching Cargo feature`.
+  `cargo:warning=Tier<…>=<…> declared in <file> but has no matching Cargo feature`.
   TypeScript accepts the value as an opaque string (union literals at the type
   level only); the banner shows the typo verbatim so it is visible at boot.
-- **Banner disagreement:** Compare the three `[LandFix:Tier] ...` lines in the
+- **Banner disagreement:** Compare the three `[LandFix:Tier] …` lines in the
   boot log. If they disagree on a capability, one build tool did not see the
   override - usually because the shell that launched the build did not source
   `.env.Land`. Re-run under `./Maintain/Debug/Build.sh`, which is the sole

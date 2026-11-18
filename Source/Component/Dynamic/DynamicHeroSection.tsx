@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 import { CORNER_GEOMETRY } from "../Brand/CornerMarks/Data.js";
 
@@ -89,23 +89,32 @@ import type Property from "./Interface/Property/Hero.js";
  *   structure, `DesignSystem-Pages.md` §1);
  * - the three status chips    -> `DynamicPricing`, the `# CONDITIONS_01`
  *   manifest's status strip;
- * - the four-element rail     -> `DynamicFeatures`, as that band's one
- *   architecture proof;
  * - `SPECIES` / `TEMP` / `WIND` -> `FeatureBand`, the `#features` band that
  *   succeeded the `# OBSERVATION_01` layer, as its filed specimen ledger
  *   (`Hero/Type.ts` `Metadata.observation`). The card keeps three rows; a
  *   fourth block in it would break `DesignSystem-Components.md` §1's
  *   `TARGET / LICENSE / SIGNAL` template and its four-row cap.
  *
+ * The four-element rail is the one that came back, and it is restored where the
+ * evidence is: Mountain → Cocoon → Sky → Wind is the hero's ordered process, so
+ * it is printed as the evidence plate's `RecordStage` (`DESIGN-COMPLETE.md`
+ * §5.2 row 3), above the plate and never on it. `FeatureBand` still prints its
+ * own copy of the same four steps in the `#features` band; that duplication is
+ * reported rather than removed, because removing a band's treatment is not this
+ * file's decision to take.
+ *
  * Every one of those is a move, not a deletion: the strings are the same
  * strings, printed by the band whose layer owns them.
  *
  * This stays a `.tsx` island because the page's `h1` and its record are one
  * artifact and an `.astro` block cannot be imported from a `.tsx` file: the
- * `Record*` blocks this record's ledger and evidence would otherwise mount are
- * `.astro`, and splitting the hero across two files would split the two-panel
- * pair the person endorsed. The consequence is recorded at the facts ledger
- * below, and `FeatureBand` carries the two blocks this band cannot.
+ * `Record*` blocks this record's ledger and evidence mount are `.astro`, and
+ * splitting the hero across two files would split the two-panel pair the person
+ * endorsed. The blocks therefore arrive as slots - `slot="ledger"` and
+ * `slot="stage"` - which Astro renders to HTML and hands this component as
+ * props (the React renderer's own slot bridge). The route carries the imports;
+ * this file places them. `FeatureBand` mounts the two blocks the hero's card
+ * cannot hold.
  */
 
 /** The card's frame ink: the record panel is a warm-white Jelly surface. */
@@ -244,7 +253,33 @@ const CornerFrame = () => (
 	</div>
 );
 
-const DynamicHeroSection = ({ Content, Band, ClassName }: Property) => {
+/**
+ * The two blocks the hero composes but cannot import.
+ *
+ * `RecordLedger` and `RecordStage` are `.astro` components, and an `.astro`
+ * component cannot be imported from a `.tsx` island (BRIDGE §2.1). The route
+ * therefore renders them and hands them over as slots; Astro renders a
+ * `slot="ledger"` / `slot="stage"` child to HTML and passes the framework
+ * component that HTML as a prop, which is the bridge this file places them
+ * through. `Type.ts` carries no shape for a React child, so the two props are
+ * declared here as the local type `DESIGN.md` §4.2 asks for rather than forced
+ * into the shared prop interface another page already imports.
+ */
+type HeroSlots = {
+	/** The record's facts, mounted as `RecordLedger` by the route. */
+	readonly ledger?: ReactNode;
+
+	/** The runtime path, mounted as `RecordStage` by the route. */
+	readonly stage?: ReactNode;
+};
+
+const DynamicHeroSection = ({
+	Content,
+	Band,
+	ClassName,
+	ledger,
+	stage,
+}: Property & HeroSlots) => {
 	const Hero = Band ?? HeroBandDefault();
 
 	/** The page's own primary action, when it sets one. */
@@ -352,33 +387,38 @@ const DynamicHeroSection = ({ Content, Band, ClassName }: Property) => {
 							</p>
 
 							{/*
-							 * 11. The record's three metadata rows - the
-							 * `RecordLedger` anatomy written by hand, because
-							 * the block is `.astro` and an `.astro` component
-							 * cannot be imported from a `.tsx` island. It
-							 * prints what the block prints (no `note`, no
-							 * `links`, no `lead`), so it can fall behind the
-							 * block but never disagree with it: anything added
-							 * to the ledger's anatomy has to be added here too.
-							 * `FeatureBand` mounts the block itself, for the
-							 * specimen observation and the runtime rail.
+							 * 11. The record's three metadata rows, mounted as
+							 * `RecordLedger` by the route (`slot="ledger"`):
+							 * the block is `.astro` and this island is `.tsx`,
+							 * so the page imports it and this file places it.
+							 * The labels arrive with their colons - `TARGET:`,
+							 * `LICENSE:`, `SIGNAL:` - because `Hero/Data.ts`
+							 * prints the colon as grammar.
+							 *
+							 * The fallback below renders the same rows from
+							 * `Hero.facts` for a render that hands no slot (the
+							 * unit test, or a page that passes none); the route
+							 * always passes the block, so the live page never
+							 * prints this copy.
 							 */}
-							<dl className="record-ledger record-ledger--1 hero-band__facts">
-								{Hero.facts.map((Fact) => (
-									<div
-										className="record-ledger__row"
-										key={Fact.key}
-									>
-										<dt className="record-ledger__key">
-											{Fact.key}
-										</dt>
+							{ledger ?? (
+								<dl className="record-ledger record-ledger--1 hero-band__facts">
+									{Hero.facts.map((Fact) => (
+										<div
+											className="record-ledger__row"
+											key={Fact.key}
+										>
+											<dt className="record-ledger__key">
+												{Fact.key}
+											</dt>
 
-										<dd className="record-ledger__value">
-											{Fact.value}
-										</dd>
-									</div>
-								))}
-							</dl>
+											<dd className="record-ledger__value">
+												{Fact.value}
+											</dd>
+										</div>
+									))}
+								</dl>
+							)}
 
 							{/* 12. One action, and the routes beside it. */}
 							<div className="hero-band__action">
@@ -421,6 +461,16 @@ const DynamicHeroSection = ({ Content, Band, ClassName }: Property) => {
 
 				{/* ══ PANEL 2 - THE EVIDENCE ═════════════════════════════════ */}
 				<figure className="hero-band__evidence">
+					{/*
+					 * The plate's proof: the hero's ordered process, mounted
+					 * as `RecordStage` by the route (`slot="stage"`) - the
+					 * four-element runtime path the claim above asserts,
+					 * printed as a Signal Trace. It sits ABOVE the plate and
+					 * never on it: the image stays text-free, which is what
+					 * makes it evidence rather than a poster.
+					 */}
+					{stage}
+
 					<FieldRecordEvidence
 						alt={Hero.plate.alt}
 						className="hero-band__plate"

@@ -191,10 +191,18 @@
 
 // 1px, the pair's middle track. Hidden below 768px, where the panels stack and
 // a vertical rule would separate nothing.
+//
+// The ink is the system's divider strength, not the surface hairline: the
+// gutter sits between a warm-white card and a photograph, and `var(--Border)`
+// (8 % ink) dissolves on the card side at that contrast. The live hero's
+// identical track was lifted to the 20 % mix and this copy kept the hairline -
+// the defect M1 removed, reintroduced in the Record layer. It draws
+// `var(--Divider)` now, the token `_Token.scss` holds for exactly this case, so
+// the two heroes cannot drift apart again.
 .record-hero__gutter {
 	display: none;
 	inline-size: 1px;
-	background-color: var(--Border);
+	background-color: var(--Divider);
 }
 
 @include bp(768px) {

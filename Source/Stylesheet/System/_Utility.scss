@@ -103,7 +103,26 @@
 .text-fg {
 	color: var(--Foreground);
 }
+
+/* The destructive ink. Two spellings reach the same token and both are API:
+   the house family - `destruct` / `destruct-fg`, the spelling `_Token.scss`
+   uses for `--Destruct` / `--DestructForeground`, and what `ErrorBoundary`,
+   `UI/Button` and `UI/Badge` ask for - and Tailwind's `destructive` key in
+   `tailwind.config.js`, which the shadcn-derived `UI/` kit asks for.
+   This is the house half, and it was the half with a hole in it:
+   `ErrorBoundary.tsx:74` wrote `text-destruct hover:bg-destruct
+   hover:text-destruct-fg` against a sheet that only ever defined the two
+   background names, so the error action's ink and its hover foreground
+   resolved to nothing on the 36 of 37 pages the boundary reaches, and only
+   its `border-[var(--Destruct)]` drew. Completing the family here is the one
+   decision, applied once - not a patch per page. */
+.text-destruct {
+	color: var(--Destruct);
+}
 .text-destruct-fg {
+	color: var(--DestructForeground);
+}
+.hover\:text-destruct-fg:hover {
 	color: var(--DestructForeground);
 }
 .text-secondary-fg {
@@ -131,6 +150,69 @@
 }
 .border-transparent {
 	border-color: transparent;
+}
+
+/* ─── UI-KIT UTILITIES ───────────────────────────────────────────────────
+ * The components under `Source/Component/UI/` are the shadcn kit, written
+ * against Tailwind v4's vocabulary, while this sheet is Tailwind v3.4. Four of
+ * the seven names `LOST.md` measured as Tailwind-shaped-but-ungenerated are
+ * here (`text-destruct`, the fifth, is with its family in the text block
+ * above); `field-sizing-content` is the one real name on the scan's foreign
+ * list. Each is generated once, with the declaration the v4 utility emits, so
+ * the class in the markup is the class the sheet answers - an ungenerated
+ * variant is a state that never renders. Measured in `Target/_astro/Base.*.css`:
+ * none of these resolves there today. (The animation names - `animate-in`,
+ * `fade-in-0`, `zoom-in-95`, `animate-caret-blink` - are not here: they need
+ * `tailwindcss-animate` or a keyframe set, which is `_Motion.scss`'s surface.)
+ */
+
+/* `.aspect-square` / `.aspect-video` - Tailwind v3's named core ratios. The
+   `@tailwindcss/aspect-ratio` plugin in `tailwind.config.js` replaces
+   `theme.aspectRatio` with its numeric 1-16 scale, so the two names emit
+   nothing; its own `aspect-w-*` / `aspect-h-*` classes appear 0 times in
+   `Source/`. `aspect-square` is live: `UI/Avatar` on the Account index and the
+   dashboard. */
+.aspect-square {
+	aspect-ratio: 1 / 1;
+}
+
+.aspect-video {
+	aspect-ratio: 16 / 9;
+}
+
+/* `.origin-top-center` - the popover's transform origin, and not a name
+   Tailwind has ever emitted (`origin-top` is the nearest, and "top center" is
+   what `origin-top` means). */
+.origin-top-center {
+	transform-origin: top center;
+}
+
+/* `.outline-hidden` - v4's focus-ring reset, which is the same pair of
+   declarations as v3's `outline-none` (a transparent 2px ring keeps the
+   forced-colours outline that `outline: none` would drop). 29 sites across 13
+   `UI/` components, 4 of them variant-prefixed. The bare rule is deliberately
+   weaker than `_Base.scss`'s `a:focus-visible` ring, so the ring survives
+   where the base layer puts it. */
+.outline-hidden {
+	outline: 2px solid transparent;
+	outline-offset: 2px;
+}
+
+.focus\:outline-hidden:focus {
+	outline: 2px solid transparent;
+	outline-offset: 2px;
+}
+
+.focus-visible\:outline-hidden:focus-visible {
+	outline: 2px solid transparent;
+	outline-offset: 2px;
+}
+
+/* `.field-sizing-content` - v4's auto-growing textarea. `UI/Textarea` asks for
+   it; the property is a progressive enhancement, so an engine that does not
+   know it keeps the fixed height. */
+.field-sizing-content {
+	field-sizing: content;
 }
 
 /* ─── TYPOGRAPHY PATTERNS ──────────────────────────────────────────────── */

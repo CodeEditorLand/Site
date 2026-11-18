@@ -29,6 +29,14 @@ export type IncomeCode =
 export interface FormField {
 	id: string;
 
+	/**
+	 * The field's label, written as the record grammar's compact field label:
+	 * the `:` is part of the label (`Full Name:`, `Nature of Complaint:`), so
+	 * the control prints it and the email body does not add a second one.
+	 *
+	 * A consent sentence is not a field label and carries no colon - it is the
+	 * sentence the reader agrees to, printed beside its checkbox.
+	 */
 	label: string;
 
 	type: "text" | "email" | "textarea" | "select" | "checkbox" | "checkboxes";
@@ -89,7 +97,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "name",
 
-				label: "Full Name",
+				label: "Full Name:",
 
 				type: "text",
 
@@ -101,7 +109,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "email",
 
-				label: "Email Address",
+				label: "Email Address:",
 
 				type: "email",
 
@@ -113,7 +121,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "sub",
 
-				label: "Account ID",
+				label: "Account ID:",
 
 				type: "text",
 
@@ -127,7 +135,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "format",
 
-				label: "Preferred Export Format",
+				label: "Preferred Export Format:",
 
 				type: "select",
 
@@ -145,7 +153,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "notes",
 
-				label: "Additional Notes",
+				label: "Additional Notes:",
 
 				type: "textarea",
 
@@ -181,7 +189,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "name",
 
-				label: "Full Name",
+				label: "Full Name:",
 
 				type: "text",
 
@@ -193,7 +201,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "email",
 
-				label: "Email Address",
+				label: "Email Address:",
 
 				type: "email",
 
@@ -205,7 +213,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "sub",
 
-				label: "Account ID",
+				label: "Account ID:",
 
 				type: "text",
 
@@ -219,7 +227,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "field",
 
-				label: "Field to Correct",
+				label: "Field to Correct:",
 
 				type: "text",
 
@@ -231,7 +239,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "current",
 
-				label: "Current (Incorrect) Value",
+				label: "Current (Incorrect) Value:",
 
 				type: "text",
 
@@ -243,7 +251,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "correct",
 
-				label: "Correct Value",
+				label: "Correct Value:",
 
 				type: "text",
 
@@ -255,7 +263,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "reason",
 
-				label: "Reason for Correction",
+				label: "Reason for Correction:",
 
 				type: "textarea",
 
@@ -288,7 +296,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "name",
 
-				label: "Full Name",
+				label: "Full Name:",
 
 				type: "text",
 
@@ -300,7 +308,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "email",
 
-				label: "Email Address",
+				label: "Email Address:",
 
 				type: "email",
 
@@ -312,7 +320,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "sub",
 
-				label: "Account ID",
+				label: "Account ID:",
 
 				type: "text",
 
@@ -324,7 +332,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "ground",
 
-				label: "Grounds for Restriction",
+				label: "Grounds for Restriction:",
 
 				type: "select",
 
@@ -344,7 +352,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "activities",
 
-				label: "Processing Activities to Restrict",
+				label: "Processing Activities to Restrict:",
 
 				type: "checkboxes",
 
@@ -364,7 +372,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "details",
 
-				label: "Additional Details",
+				label: "Additional Details:",
 
 				type: "textarea",
 
@@ -398,7 +406,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "name",
 
-				label: "Full Name",
+				label: "Full Name:",
 
 				type: "text",
 
@@ -410,7 +418,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "email",
 
-				label: "Email Address",
+				label: "Email Address:",
 
 				type: "email",
 
@@ -422,7 +430,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "sub",
 
-				label: "Account ID",
+				label: "Account ID:",
 
 				type: "text",
 
@@ -434,7 +442,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "activities",
 
-				label: "Processing Activities I Object To",
+				label: "Processing Activities I Object To:",
 
 				type: "checkboxes",
 
@@ -454,7 +462,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "grounds",
 
-				label: "Grounds for Objection",
+				label: "Grounds for Objection:",
 
 				type: "textarea",
 
@@ -488,7 +496,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "name",
 
-				label: "Full Name",
+				label: "Full Name:",
 
 				type: "text",
 
@@ -500,7 +508,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "email",
 
-				label: "Email Address",
+				label: "Email Address:",
 
 				type: "email",
 
@@ -512,7 +520,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "sub",
 
-				label: "Account ID",
+				label: "Account ID:",
 
 				type: "text",
 
@@ -524,7 +532,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "consent",
 
-				label: "Consent I Am Withdrawing",
+				label: "Consent I Am Withdrawing:",
 
 				type: "checkboxes",
 
@@ -544,7 +552,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "notes",
 
-				label: "Additional Notes",
+				label: "Additional Notes:",
 
 				type: "textarea",
 
@@ -577,7 +585,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "name",
 
-				label: "Full Name",
+				label: "Full Name:",
 
 				type: "text",
 
@@ -589,7 +597,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "email",
 
-				label: "Email Address",
+				label: "Email Address:",
 
 				type: "email",
 
@@ -601,7 +609,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "sub",
 
-				label: "Account ID",
+				label: "Account ID:",
 
 				type: "text",
 
@@ -613,9 +621,11 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "prior",
 
-				label: "Have you contacted us about this before?",
+				label: "Prior Contact:",
 
 				type: "select",
+
+				hint: "Have you contacted us about this before?",
 
 				options: [
 					"No, this is first contact",
@@ -629,7 +639,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "nature",
 
-				label: "Nature of Complaint",
+				label: "Nature of Complaint:",
 
 				type: "textarea",
 
@@ -642,7 +652,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "outcome",
 
-				label: "Desired Outcome",
+				label: "Desired Outcome:",
 
 				type: "textarea",
 
@@ -677,7 +687,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "name",
 
-				label: "Full Name",
+				label: "Full Name:",
 
 				type: "text",
 
@@ -689,7 +699,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "email",
 
-				label: "Email Address",
+				label: "Email Address:",
 
 				type: "email",
 
@@ -701,7 +711,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "sub",
 
-				label: "Account ID",
+				label: "Account ID:",
 
 				type: "text",
 
@@ -715,7 +725,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "provider",
 
-				label: "Identity Provider",
+				label: "Identity Provider:",
 
 				type: "text",
 
@@ -739,7 +749,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "notes",
 
-				label: "Additional Notes",
+				label: "Additional Notes:",
 
 				type: "textarea",
 
@@ -772,7 +782,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "name",
 
-				label: "Full Name",
+				label: "Full Name:",
 
 				type: "text",
 
@@ -784,7 +794,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "email",
 
-				label: "Email Address",
+				label: "Email Address:",
 
 				type: "email",
 
@@ -796,7 +806,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "category",
 
-				label: "Category",
+				label: "Category:",
 
 				type: "select",
 
@@ -822,7 +832,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "platform",
 
-				label: "Platform",
+				label: "Platform:",
 
 				type: "select",
 
@@ -844,7 +854,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "description",
 
-				label: "Description",
+				label: "Description:",
 
 				type: "textarea",
 
@@ -856,7 +866,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "steps",
 
-				label: "Steps to Reproduce",
+				label: "Steps to Reproduce:",
 
 				type: "textarea",
 
@@ -868,7 +878,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "expected",
 
-				label: "Expected vs Actual Behaviour",
+				label: "Expected vs Actual Behaviour:",
 
 				type: "textarea",
 
@@ -901,7 +911,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "name",
 
-				label: "Full Name (optional - anonymous reports accepted)",
+				label: "Full Name (optional - anonymous reports accepted):",
 
 				type: "text",
 
@@ -913,7 +923,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "email",
 
-				label: "Contact Email (optional)",
+				label: "Contact Email (optional):",
 
 				type: "email",
 
@@ -925,7 +935,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "type",
 
-				label: "Vulnerability Type",
+				label: "Vulnerability Type:",
 
 				type: "select",
 
@@ -951,7 +961,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "component",
 
-				label: "Affected Component",
+				label: "Affected Component:",
 
 				type: "select",
 
@@ -975,7 +985,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "severity",
 
-				label: "Estimated Severity",
+				label: "Estimated Severity:",
 
 				type: "select",
 
@@ -987,7 +997,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "description",
 
-				label: "Description",
+				label: "Description:",
 
 				type: "textarea",
 
@@ -1000,7 +1010,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "steps",
 
-				label: "Steps to Reproduce",
+				label: "Steps to Reproduce:",
 
 				type: "textarea",
 
@@ -1041,7 +1051,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "name",
 
-				label: "Full Name (copyright owner or authorised agent)",
+				label: "Full Name (copyright owner or authorised agent):",
 
 				type: "text",
 
@@ -1053,7 +1063,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "email",
 
-				label: "Email Address",
+				label: "Email Address:",
 
 				type: "email",
 
@@ -1065,7 +1075,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "work",
 
-				label: "Description of Copyrighted Work",
+				label: "Description of Copyrighted Work:",
 
 				type: "textarea",
 
@@ -1078,7 +1088,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "location",
 
-				label: "Location of Infringing Material",
+				label: "Location of Infringing Material:",
 
 				type: "text",
 
@@ -1129,7 +1139,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "name",
 
-				label: "Full Name",
+				label: "Full Name:",
 
 				type: "text",
 
@@ -1141,7 +1151,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "email",
 
-				label: "Email Address",
+				label: "Email Address:",
 
 				type: "email",
 
@@ -1153,7 +1163,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "organisation",
 
-				label: "Organisation (if applicable)",
+				label: "Organisation (if applicable):",
 
 				type: "text",
 
@@ -1165,7 +1175,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "nature",
 
-				label: "Nature of Enquiry",
+				label: "Nature of Enquiry:",
 
 				type: "select",
 
@@ -1189,7 +1199,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "subject",
 
-				label: "Subject",
+				label: "Subject:",
 
 				type: "text",
 
@@ -1201,7 +1211,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "description",
 
-				label: "Description",
+				label: "Description:",
 
 				type: "textarea",
 
@@ -1232,7 +1242,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "name",
 
-				label: "Full Name",
+				label: "Full Name:",
 
 				type: "text",
 
@@ -1244,7 +1254,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "email",
 
-				label: "Email Address",
+				label: "Email Address:",
 
 				type: "email",
 
@@ -1256,7 +1266,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "subject",
 
-				label: "Subject",
+				label: "Subject:",
 
 				type: "text",
 
@@ -1268,7 +1278,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "category",
 
-				label: "Category",
+				label: "Category:",
 
 				type: "select",
 
@@ -1290,7 +1300,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "message",
 
-				label: "Message",
+				label: "Message:",
 
 				type: "textarea",
 
@@ -1323,7 +1333,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "name",
 
-				label: "Contact Name",
+				label: "Contact Name:",
 
 				type: "text",
 
@@ -1335,7 +1345,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "email",
 
-				label: "Work Email",
+				label: "Work Email:",
 
 				type: "email",
 
@@ -1347,7 +1357,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "company",
 
-				label: "Company Name",
+				label: "Company Name:",
 
 				type: "text",
 
@@ -1357,7 +1367,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "size",
 
-				label: "Company Size",
+				label: "Company Size:",
 
 				type: "select",
 
@@ -1379,7 +1389,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "usecase",
 
-				label: "Use Case",
+				label: "Use Case:",
 
 				type: "textarea",
 
@@ -1392,7 +1402,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 			{
 				id: "timeline",
 
-				label: "Evaluation Timeline",
+				label: "Evaluation Timeline:",
 
 				type: "select",
 
@@ -1482,7 +1492,7 @@ export const BuildEmailBody = (
 
 		const Display = Array.isArray(Value) ? Value.join(", ") : Value;
 
-		Lines.push(`${Field.label}: ${Display}`);
+		Lines.push(`${Field.label} ${Display}`);
 	}
 
 	Lines.push("", "--- Confirmations ---");

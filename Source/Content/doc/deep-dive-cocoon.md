@@ -267,7 +267,7 @@ Stage 1: Environment
   Reads process.version, platform, arch; logs Node details.
 
 Stage 2: Configuration
-  Parses env vars (MOUNTAIN_GRPC_PORT, COCOON_GRPC_PORT, Trace, ...)
+  Parses env vars (MOUNTAIN_GRPC_PORT, COCOON_GRPC_PORT, Trace, …)
   into globalThis.__cocoonBootstrapConfig.
 
 Stage 3: RPCServer
@@ -449,7 +449,7 @@ activate(ExtId):
   InProgress.add(ExtId)
   for each DepId in extensionDependencies:
     if not activated and not InProgress → activate(DepId)
-  ... load & call activate() ...
+  … load & call activate() …
   ActivatedExtensions.add(ExtId)
   InProgress.delete(ExtId)
 ```
