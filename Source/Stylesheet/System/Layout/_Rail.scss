@@ -30,6 +30,14 @@
 	min-inline-size: 0;
 }
 
+// ─── THE ROW'S AIR, ON FOUR SIDES ─────────────────────────────────────────
+// The hairline runs the rail's full measure and the ink stands `--space-tight`
+// inside it, so a row does not start on the rule that separates it from the one
+// above. The head pays the same inset, because `#` and the mark column are one
+// column. On a current row the leading inset is also what keeps the 2px accent
+// rule off the mark's glyph: the rule marks the row's leading edge, the mark sits
+// inside it.
+
 .ShellRail__head {
 	@include mono-meta;
 	@include track(var(--track-row));
@@ -38,6 +46,7 @@
 	gap: 0.35em;
 	margin: 0;
 	padding-block: var(--space-tight);
+	padding-inline: var(--space-tight);
 	color: var(--MuteForeground);
 
 	@include hairline(bottom);
@@ -70,7 +79,7 @@
 	gap: var(--space-tight);
 	margin: 0;
 	padding-block: 0.45rem;
-	padding-inline-end: var(--space-tight);
+	padding-inline: var(--space-tight);
 	color: var(--MuteForeground);
 	font-family: var(--FontMono);
 	font-size: var(--type-meta);

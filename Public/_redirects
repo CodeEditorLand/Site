@@ -9,7 +9,7 @@
 /Contact                  /Contact/Sale/            200
 /Contact/                 /Contact/Sale/            200
 
-# ── VARIANT REWRITES (200) - 1442 rules ──
+# ── VARIANT REWRITES (200) - 1490 rules ──
 # Case permutations, plurals, aliases → canonical content.
 /account                              /Account/                             200
 /ACCOUNT                              /Account/                             200
@@ -235,6 +235,14 @@
 /change-password/                     /Account/ResetPassword/               200
 /changelog                            /Blog/                                200
 /changelog/                           /Blog/                                200
+/compare                              /Compare/                             200
+/COMPARE                              /Compare/                             200
+/compare/                             /Compare/                             200
+/COMPARE/                             /Compare/                             200
+/compares                             /Compare/                             200
+/COMPARES                             /Compare/                             200
+/compares/                            /Compare/                             200
+/COMPARES/                            /Compare/                             200
 /conditions                           /Legal/Term/                          200
 /conditions/                          /Legal/Term/                          200
 /confirm                              /Verify/                              200
@@ -367,8 +375,20 @@
 /contact/Scout/                       /Contact/Scout/                       200
 /CONTACT/Scout/                       /Contact/Scout/                       200
 /CONTACT/SCOUT/                       /Contact/Scout/                       200
+/contacts                             /Contact/                             200
+/CONTACTS                             /Contact/                             200
+/contacts/                            /Contact/                             200
+/CONTACTS/                            /Contact/                             200
 /contactsale                          /Contact/Sale/                        200
 /contactsale/                         /Contact/Sale/                        200
+/content                              /Contents/                            200
+/CONTENT                              /Contents/                            200
+/content/                             /Contents/                            200
+/CONTENT/                             /Contents/                            200
+/contents                             /Contents/                            200
+/CONTENTS                             /Contents/                            200
+/contents/                            /Contents/                            200
+/CONTENTS/                            /Contents/                            200
 /contribute                           /Contributing/                        200
 /contribute/                          /Contributing/                        200
 /contributing                         /Contributing/                        200
@@ -1279,6 +1299,14 @@
 /gdpr/                                /Legal/Privacy/                       200
 /get                                  /Download/                            200
 /get/                                 /Download/                            200
+/glossary                             /Glossary/                            200
+/GLOSSARY                             /Glossary/                            200
+/glossary/                            /Glossary/                            200
+/GLOSSARY/                            /Glossary/                            200
+/glossarys                            /Glossary/                            200
+/GLOSSARYS                            /Glossary/                            200
+/glossarys/                           /Glossary/                            200
+/GLOSSARYS/                           /Glossary/                            200
 /guide                                /Doc/                                 200
 /guide/                               /Doc/                                 200
 /help                                 /Doc/                                 200
@@ -1349,6 +1377,14 @@
 /manual/                              /Doc/                                 200
 /mit                                  /License/                             200
 /mit/                                 /License/                             200
+/motion                               /Motion/                              200
+/MOTION                               /Motion/                              200
+/motion/                              /Motion/                              200
+/MOTION/                              /Motion/                              200
+/motions                              /Motion/                              200
+/MOTIONS                              /Motion/                              200
+/motions/                             /Motion/                              200
+/MOTIONS/                             /Motion/                              200
 /new-password                         /Account/ResetPassword/               200
 /new-password/                        /Account/ResetPassword/               200
 /news                                 /Blog/                                200
@@ -1429,8 +1465,20 @@
 /sign-in/                             /Account/SignIn/                      200
 /sign-up                              /Account/SignUp/                      200
 /sign-up/                             /Account/SignUp/                      200
+/specimen                             /Specimen/                            200
+/SPECIMEN                             /Specimen/                            200
+/specimen/                            /Specimen/                            200
+/SPECIMEN/                            /Specimen/                            200
+/specimens                            /Specimen/                            200
+/SPECIMENS                            /Specimen/                            200
+/specimens/                           /Specimen/                            200
+/SPECIMENS/                           /Specimen/                            200
 /start                                /                                     200
 /start/                               /                                     200
+/status                               /Status/                              200
+/STATUS                               /Status/                              200
+/status/                              /Status/                              200
+/STATUS/                              /Status/                              200
 /terms-of-service                     /Legal/Term/                          200
 /terms-of-service/                    /Legal/Term/                          200
 /tos                                  /Legal/Term/                          200
@@ -1471,6 +1519,7 @@
 /Blog/LocalFirstPhilosophy /Blog/LocalFirstPhilosophy/ 200
 /Blog/TauriDesktopIntegration /Blog/TauriDesktopIntegration/ 200
 /Blog/VSCodeCompatibility /Blog/VSCodeCompatibility/ 200
+/Compare                  /Compare/                 200
 /Contact                  /Contact/                 200
 /Contact/Amend            /Contact/Amend/           200
 /Contact/Claim            /Contact/Claim/           200
@@ -1486,6 +1535,7 @@
 /Contact/Reach            /Contact/Reach/           200
 /Contact/Sale             /Contact/Sale/            200
 /Contact/Scout            /Contact/Scout/           200
+/Contents                 /Contents/                200
 /Contributing             /Contributing/            200
 /Dashboard                /Dashboard/               200
 /Doc                      /Doc/                     200
@@ -1572,11 +1622,15 @@
 /Doc/workflow-user-data-sync /Doc/workflow-user-data-sync/ 200
 /Doc/workflow-webview     /Doc/workflow-webview/    200
 /Download                 /Download/                200
+/Glossary                 /Glossary/                200
 /Legal/Privacy            /Legal/Privacy/           200
 /Legal/Term               /Legal/Term/              200
 /License                  /License/                 200
+/Motion                   /Motion/                  200
 /OAuth/Success            /OAuth/Success/           200
 /Portal                   /Portal/                  200
+/Specimen                 /Specimen/                200
+/Status                   /Status/                  200
 /Verify                   /Verify/                  200
 /Visit                    /Visit/                   200
 

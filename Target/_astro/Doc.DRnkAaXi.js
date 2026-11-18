@@ -1,0 +1,1 @@
+var a={"sidebar.title":"Документация"};export{a as default};

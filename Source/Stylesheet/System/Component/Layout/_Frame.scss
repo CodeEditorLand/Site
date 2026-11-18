@@ -245,6 +245,28 @@ html[data-section="contents"] .HeaderSection[data-section="contents"] {
 }
 
 // ─── The rail: the drawer's rows ──────────────────────────────────────────
+//
+// ─── A ROW PAYS THE SAME AIR ON FOUR SIDES ────────────────────────────────
+//
+// A row here is a register line AND a target. Its hairline runs the rail's full
+// measure, and its ink stands one `--space-tight` in from that edge - the same
+// token the row already pays above and below, so the index and the name are not
+// sitting on the rule that separates them from the row above, and a hover wash or
+// the active tab's white fill has room at both ends instead of being clipped at
+// one.
+//
+// The inset is on the ROW, never on the rail: the rules still meet the measure (a
+// hairline that stops short of the edge is a box, and the rail is not a box), and
+// a fill still spans the row. `--space-tight` is the role because it is the
+// row-to-row step this row already pays in block - one relationship, four sides.
+//
+// The head line pays it too: it is the column's head cell. `#` and the digits are
+// one column, and a head that starts at a different x from its rows is a label
+// beside a list rather than the name of a column.
+//
+// The active tab's 2px rule is drawn at `inset-inline-start: 0` and is NOT moved
+// by the padding: it marks the row's own leading edge - the pulled-out tab's
+// spine - while the digit stands inside it (see `frame-tab-active`).
 
 .FrameRail {
 	display: flex;
@@ -260,6 +282,7 @@ html[data-section="contents"] .HeaderSection[data-section="contents"] {
 	gap: var(--space-tight);
 	margin: 0;
 	padding-block: var(--space-tight);
+	padding-inline: var(--space-tight);
 
 	@include hairline(top);
 }
@@ -274,6 +297,7 @@ html[data-section="contents"] .HeaderSection[data-section="contents"] {
 	align-items: baseline;
 	gap: var(--space-tight);
 	padding-block: var(--space-tight);
+	padding-inline: var(--space-tight);
 	color: var(--MuteForeground);
 	font-family: var(--FontMono);
 	font-size: var(--type-meta);
@@ -364,6 +388,9 @@ html[data-section="contents"] .FrameRailTab[data-section="contents"] {
 
 	.FrameRailLabel {
 		justify-content: center;
+		// The margin column is its own measure: 2.25rem of tab, and the air
+		// around the `#` is that width, not the drawer's row inset.
+		padding-inline: 0;
 	}
 
 	.FrameRailWord {
@@ -375,7 +402,9 @@ html[data-section="contents"] .FrameRailTab[data-section="contents"] {
 
 		justify-content: center;
 		block-size: 1.9rem;
-		padding-block: 0;
+		// Same reason as the label: the row's inline air IS the column here, so
+		// the drawer's inset is given back and the digit centres in 2.25rem.
+		padding: 0;
 		gap: 0;
 	}
 

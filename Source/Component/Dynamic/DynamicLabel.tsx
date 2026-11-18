@@ -31,4 +31,6 @@ const DynamicLabel = ({ Content, HTMLFor }: Property) => {
 	);
 };
 
+export { DynamicLabel };
+
 export default DynamicLabel;

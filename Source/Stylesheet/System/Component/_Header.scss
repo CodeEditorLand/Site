@@ -180,11 +180,19 @@
 	flex-direction: column;
 }
 
+// The drawer's rows pay the same inline inset the rail's rows pay
+// (`Component/Layout/_Frame.scss`), so the panel has ONE left edge for its rows:
+// the hairline meets the band's measure, the ink stands `--space-tight` inside it,
+// and the hover field (`::before`, `inset: 0`) still spans the whole row - the
+// field is the row, the label is what stands in it. In the bar the link states its
+// own inline padding twice, 6px at 1024 and 12px at 1152, because there the row's
+// air is what pays for the labels.
 .HeaderNavLink {
 	position: relative;
 	display: flex;
 	align-items: center;
 	padding-block: var(--space-tight);
+	padding-inline: var(--space-tight);
 	color: var(--HeaderFg);
 	text-decoration: none;
 
@@ -273,25 +281,62 @@
 	gap: var(--space-tight);
 }
 
-// ─── The action: one line, and the width that line needs ──────────────────
-// The label never breaks (the sitewide rule is in `_Global.scss`; it is stated
-// again here, on the host and on the label span, because this is the track that
-// squeezed it). A jelly-button's label is an action name - `Get Land` - and a
-// two-line label inside the control's fixed 40px height is a defect, not a
-// wrap: the box is the height of one line.
+// ─── The action: one line, and the box the Jelly element owns ─────────────
+// THE LABEL NEVER BREAKS, AND THE RULE THAT SAYS SO LIVES ON THE LABEL. The
+// sitewide half is `jelly-button { white-space: nowrap }` in `_Global.scss` -
+// `white-space` is inherited, so it reaches the shadow `<button>` and the
+// slot - and the span restates it for the arm that is a plain anchor rather
+// than a Jelly element. A jelly-button's label is an action name - `Get Land` -
+// and a two-line label inside the control's fixed 40px height is a defect, not
+// a wrap: the box is the height of one line. It is NOT carried by sizing the
+// host: `white-space` decides where a line ends, the host's width is the
+// element's own measurement.
 //
-// The padding is tightened per gear, in the bar's own breakpoints below: in a
-// 40px control the `Button` default of 2.1rem a side is 67px of air around a
-// 64px label, and in the bar's track that air was exactly what the label was
-// being asked to give up. In the drawer there is room, so it keeps the default.
-.Header .HeaderActionButton,
+// NOTHING IN THIS PARTIAL SIZES A JELLY HOST. A Jelly surface measures ITSELF:
+// `jellyBox()` reads the host's border box and the physics body, the canvas and
+// every hover frame are built from that one number
+// (`Vendor/JellyUI/dist/jelly.js`: `applyShape`, `toLocal`, `_hoverFrame`). A
+// host whose inline size is dictated by the bar's flex track is a body that is
+// not the control - the capsule is centred on the track instead of on the
+// label, and the wobble a reader gets under the cursor is the wrong shape. The
+// drawer's full-width row is the one place a dictated width is intended, so it
+// lives in the drawer's own media query below and nowhere else. `flex: none` in
+// the 1024px block is the opposite instruction - it tells the track that this
+// control's width is its label's width and may not be taken away - and that is
+// what replaced the `Get / Land` squeeze.
+//
+// THE INK IS THE ELEMENT'S TOO. `UI/Button` hands the ink variant
+// `--jelly-color-background-accent: var(--Foreground)` and
+// `--jelly-color-foreground-on-accent: var(--Background)`; the element paints
+// its label from `--jelly-label`, which its `:host` maps to the second. The
+// header used to state `color: var(--HeaderFg)` on the host - and on the ink
+// variant `--HeaderFg` IS the fill's own colour, so the control kept its fill
+// and lost its label. That is the second way a Jelly control "disappears", and
+// it is the one this partial was committing. The plain arm (the `ghost`
+// actions, an `<a>` with no Jelly body) still needs the mode's ink, so the ink
+// is stated on `:not(jelly-button)` only, and the Jelly arm's label reads the
+// component's own property.
 .Header .HeaderActionLabel {
 	white-space: nowrap;
 }
 
-.Header .HeaderActionButton {
-	inline-size: 100%;
-	justify-content: flex-start;
+.Header jelly-button.HeaderActionButton .HeaderActionLabel {
+	color: var(--jelly-label);
+}
+
+// Below 1024px the panel is the drawer and the action is a full-width row of
+// it. `.HeaderActions` is a flex column, so the track already stretches the
+// host; this states the intent rather than relying on it, so a rail that ever
+// sets `align-items: flex-start` cannot silently shrink the action to its
+// label. In the bar it does not apply - see the 1024px block.
+@media (max-width: 1023.98px) {
+	.Header .HeaderActionButton {
+		inline-size: 100%;
+		justify-content: flex-start;
+	}
+}
+
+.Header .HeaderActionButton:not(jelly-button) {
 	color: var(--HeaderFg);
 }
 
@@ -430,9 +475,18 @@
 		flex-direction: row;
 	}
 
+	// The control's width is its label's width, and `flex: none` is the whole
+	// instruction: the track may not take it away. No `inline-size` is stated
+	// here - the drawer's `100%` now lives inside the drawer's own media query,
+	// so in the bar the host stays at `auto` and the Jelly element measures the
+	// box it is going to paint. `justify-content` is a flex-container property
+	// and the Jelly host is not a flex container (its `:host` is
+	// `inline-block`), so it is stated only for the plain arm.
 	.Header .HeaderActionButton {
 		flex: none;
-		inline-size: auto;
+	}
+
+	.Header .HeaderActionButton:not(jelly-button) {
 		justify-content: center;
 	}
 

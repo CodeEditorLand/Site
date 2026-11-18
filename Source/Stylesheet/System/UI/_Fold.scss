@@ -146,12 +146,17 @@
 	list-style: none;
 }
 
+// The row is a target with a wash: its rule runs the fold's measure and its ink
+// stands `--space-tight` inside it, so the hover wash covers the row (the padding
+// box, both ends) instead of the ink starting on the row's own edge. The summary
+// above it stays at the measure: it is the fold's title line, not a row.
 .Fold__Row {
 	display: flex;
 	align-items: baseline;
 	gap: var(--space-tight);
 
 	padding-block: 0.375rem;
+	padding-inline: var(--space-tight);
 
 	@include hairline(top);
 

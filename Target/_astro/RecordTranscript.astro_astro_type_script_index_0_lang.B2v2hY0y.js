@@ -1,0 +1,1 @@
+import{t as r}from"./WireWells.DAxr1Fcp.js";r("[data-record-transcript-copy]");
