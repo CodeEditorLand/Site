@@ -22,6 +22,19 @@
  * - The as-of is printed only when the caller has one. A folio that invented a
  *   date would be the one figure on the page with no source.
  *
+ * ─── EVERY FACT CARRIES ITS KIND ──────────────────────────────────────────
+ * The right end is not one string: each field is its own span and its `kind` is
+ * its slot (`count`, `figure`, `as-of`, `source`). The stylesheet needs the
+ * kinds because they do not all behave alike at a narrow band: a count, a figure
+ * and an as-of are unbreakable groups, and the source - a path, which is data -
+ * is the one field that may break inside itself. A single `__count` class on all
+ * four would have made the count breakable to save the path, which is the wrong
+ * trade (a figure broken across two lines is two figures).
+ *
+ * The `<wbr>` after each `/` is the path's own break point: it is zero-width, it
+ * is not part of the copied text, and it keeps a long `SOURCE:` fact breaking at
+ * its separators instead of at whatever character happens to land at the edge.
+ *
  * ─── NO SCRIPT ────────────────────────────────────────────────────────────
  * No `<script>`, no `client:*`. A folio is printed.
  */
@@ -52,16 +65,23 @@ interface Props {
 
 const { index, part, figure, count, asOf, source, class: Class } = Astro.props;
 
+/** One field of the right end: its slot, and the string it prints. */
+type Fact = {
+	readonly kind: "count" | "figure" | "as-of" | "source";
+	readonly text: string;
+};
+
 /**
  * The right end's fields, in the order they are read. Each is its own span so
- * the stylesheet can set the figure tabular without touching the words.
+ * the stylesheet can set the figure tabular without touching the words, and so
+ * the source alone can carry the path's break points.
  */
-const Facts = [
-	count,
-	figure ? `${figure.value} ${figure.unit}` : undefined,
-	asOf ? `AS OF: ${asOf}` : undefined,
-	source ? `SOURCE: ${source}` : undefined,
-].filter((Entry): Entry is string => Entry !== undefined);
+const Facts: Fact[] = [
+	count !== undefined ? { kind: "count", text: count } : undefined,
+	figure ? { kind: "figure", text: `${figure.value} ${figure.unit}` } : undefined,
+	asOf ? { kind: "as-of", text: `AS OF: ${asOf}` } : undefined,
+	source ? { kind: "source", text: source } : undefined,
+].filter((Entry): Entry is Fact => Entry !== undefined);
 ---
 
 <p class:list={["detail-folio", Class]}>
@@ -72,13 +92,27 @@ const Facts = [
 
 	{Facts.length > 0 && (
 		<span class="detail-folio__facts">
-			{Facts.map((Entry, Position) => (
-				<>
-					{Position > 0 && (
-						<span class="detail-folio__sep" aria-hidden="true" />
-					)}
-					<span class="detail-folio__count">{Entry}</span>
-				</>
+			{Facts.map((Fact) => (
+				<span
+					class:list={[
+						"detail-folio__fact",
+						`detail-folio__${Fact.kind}`,
+					]}
+				>
+					{Fact.kind === "source"
+						? Fact.text.split("/").map((Segment, Position, Segments) => (
+								<>
+									{Segment}
+									{Position < Segments.length - 1 && (
+										<>
+											{"/"}
+											<wbr />
+										</>
+									)}
+								</>
+							))
+						: Fact.text}
+				</span>
 			))}
 		</span>
 	)}

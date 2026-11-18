@@ -32,20 +32,24 @@
 //   the See's row floor     45.05ch = 351.4px  (`Detail/_See.scss`, where the
 //                           character arithmetic is written out)
 //   the row gap             `--space-group` = 32px
-//   the folio's floor       its longest `nowrap` group. The widest on the site
-//                           is `/CONTENTS`: `08 CHAPTERS` + `AS OF: 2026-11-18` +
-//                           `SOURCE: SOURCE/CONTENT/INDEX/CHAPTERS.TS` - 69
-//                           glyphs and two U+2001 registers at 13px mono =
-//                           635.96px
+//   the folio's floor       the widest FACTS row on one line, because that is
+//                           the narrowest the folio may be without its register
+//                           taking a second line. The widest on the site is
+//                           `/CONTENTS`: `08 CHAPTERS` + `AS OF: 2026-11-18` +
+//                           `SOURCE: SOURCE/CONTENT/INDEX/CHAPTERS.TS` - 67
+//                           tracked glyphs at 0.68em plus two em quads =
+//                           47.56em = 618.28px at the folio's 13px mono. The
+//                           floor is 48em (80ch) = 624px, 0.44em to spare.
 //   ───────────────────────
-//                           351.4 + 32 + 635.96 = 1019.36px = 63.71rem
+//                           351.4 + 32 + 624 = 1007.4px = 62.96rem
 //
-// so the row is a row from 64rem (1024px) of foot and a column below it. At
-// 1024px the See gets 356.04px - its row floor with 4.64px to spare - and the
-// folio prints its two ends on two lines. Below 64rem the See takes the foot's
-// whole width and the folio stands under it: a 595.2px card cannot hold a 636px
-// folio beside any See at all, and the row that tried gave the See 0px, which is
-// what printed the reasons one word per line.
+// so the row is a row from 64rem (1024px) of foot - the first round step above
+// 62.96rem - and a column below it. At 1024px the See gets 368px, 16.6px above
+// its row floor, and the folio prints its place on one line and its facts on
+// the next, the facts on one line of their own. Below 64rem the See takes the
+// foot's whole width and the folio stands under it: a 595.2px card cannot hold
+// a 624px folio beside any See at all, and the row that tried gave the See 0px,
+// which is what printed the reasons one word per line.
 //
 // The rule stays where it is in both forms - a rule that moves is not an edge.
 @use "../Mixin" as *;
@@ -76,13 +80,24 @@
 		min-inline-size: 0;
 	}
 
-	// The folio YIELDS. `0 1 auto` lets it fall back to its own min-content - its
-	// two ends on two lines - instead of taking its max-content (≈ 839px on the
-	// widest folio) and starving the See. At the widest band that is the
-	// difference between a 404px See with a 240px reason and a 0px See with one
-	// word per line.
+	// The folio YIELDS - but only to its own register's measure, not past it.
+	// `0 1 auto` lets the row take the folio down from its max-content, and the
+	// floor stops it at the widest facts row on one line (`80ch` = 48em = 624px;
+	// the arithmetic is in this file's head), so the See absorbs the rest.
+	//
+	// The floor is not decoration. Without it the folio's minimum is its place
+	// alone - the facts now wrap, so their min-content is a path segment - and
+	// the row settles at a folio of 602.81px, where 618.28px of facts take a
+	// second line: a whole folio line spent to give the See 21px. With the floor
+	// the facts stay on one line and the See keeps 416px at the widest band.
+	//
+	// `min(100%, 80ch)` and not `80ch`: a band narrower than the floor still has
+	// to hold the folio, so there the floor becomes the band's own width and the
+	// facts wrap inside it. That is the `too long` state, and it is why the facts
+	// row wraps at all (`Detail/_Folio.scss`).
 	.detail-foot__folio {
 		flex: 0 1 auto;
+		min-inline-size: min(100%, 80ch);
 	}
 }
 

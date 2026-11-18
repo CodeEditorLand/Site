@@ -15,10 +15,49 @@
 //   containment bracket around a literal, and a folio is exactly that: a
 //   literal figure that identifies a place. Parentheses would be punctuation;
 //   this is a mark.
-// - **Two ends, one line.** The left end is where you are, the right end is what
-//   is here and when it was read. They are two `nowrap` groups, so a narrow
-//   viewport wraps between them and never inside one - a folio that broke
-//   mid-figure would be worse than no folio.
+// - **Two ends.** The left end is where you are, the right end is what is here
+//   and when it was read. Each end is one group, and the line wraps BETWEEN
+//   them - never inside the ordinal, the part, a count, a figure or an as-of.
+//
+// ─── THE RIGHT END IS A REGISTER, AND A REGISTER WRAPS ────────────────────
+// The facts are not one string. They are the count, the figure, the as-of and
+// the source, in that order, one U+2001 between each pair, and a band may print
+// any subset. The row has to be able to take a second line, because the widest
+// row the site prints does not fit the widest surface it is printed on:
+//
+//   `/CONTENTS` prints `08 CHAPTERS` + `AS OF: 2026-11-18` + `SOURCE:
+//   SOURCE/CONTENT/INDEX/CHAPTERS.TS` - 67 tracked glyphs at 0.68em plus two em
+//   quads = 47.56em = 618.28px at the folio's 13px mono - inside a card inset
+//   of 595.2px, 23.1px short of it.
+//
+// A row that cannot wrap does not get narrower than its content; it runs past
+// the band's right edge, which is the one thing a folio may never do (it is the
+// mark that says the band has ended). So the facts row wraps, and the brief's
+// `too long` state is met by composition rather than by trimming the fact.
+//
+// What wraps is the ROW, between facts. A count, a figure and an as-of are
+// unbreakable groups: a figure broken across two lines is two figures. The
+// source is the one exception - a path is data, and a path's own separators are
+// its break points - so the template puts a `<wbr>` after each `/` and
+// `overflow-wrap: anywhere` stands behind them for a single segment longer than
+// the band. That is the only place in this block where a line may fall inside a
+// fact, and it falls at a `/` first.
+//
+// ─── THE SEPARATOR IS DRAWN ON THE FACT IT FOLLOWS ────────────────────────
+// The separator is U+2001, drawn by the stylesheet, and it is the `::after` of
+// every fact but the last - NOT a sibling flex item. On one line the two are
+// identical. At a break they are not:
+//
+//   a sibling item   the break can fall on either side of it, so a line can
+//                    OPEN with a separator - one em of indent at the band's
+//                    left edge, where every other folio line starts flush
+//   the fact's own   the separator is glued to the fact before it, so a break
+//     `::after`      can only fall AFTER it: the em quad stays at the end of
+//                    the finished line (invisible - it is a space) and the
+//                    next line opens flush on its own fact
+//
+// So no line ever begins with a separator, and no mark is ever orphaned: at a
+// break the separator is simply the air the break consumed.
 //
 // ─── THE SLOTS ────────────────────────────────────────────────────────────
 //   .detail-folio             the line
@@ -26,6 +65,7 @@
 //   .detail-folio__index      the contained ordinal
 //   .detail-folio__part       `/LEGAL`
 //   .detail-folio__facts      the right end: the count, the as-of, the source
+//   .detail-folio__fact       one field of the right end, whichever kind it is
 //   .detail-folio__count      `26 CLAUSES`
 //   .detail-folio__figure     a figure and its unit, when the count is a number
 //   .detail-folio__as-of      `AS OF: 2026-11-18`
@@ -44,12 +84,26 @@
 	color: var(--MuteForeground);
 }
 
-.detail-folio__place,
-.detail-folio__facts {
+// The left end is one group: the ordinal and the part never part company, and
+// neither of them breaks inside.
+.detail-folio__place {
 	display: flex;
 	flex-wrap: nowrap;
 	align-items: baseline;
 	gap: 0;
+	min-inline-size: 0;
+}
+
+// The right end is the register that wraps. The column gap is 0 because the
+// U+2001 between two facts IS the gap (one em, drawn by `::after` below); the
+// row gap is the folio's own line rhythm, so a wrapped fact line sits exactly as
+// far from the one above it as the folio's two ends sit from each other.
+.detail-folio__facts {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	column-gap: 0;
+	row-gap: var(--space-tight);
 	min-inline-size: 0;
 }
 
@@ -66,12 +120,23 @@
 	white-space: nowrap;
 }
 
-// The right end is the quieter half: the count and the as-of are facts about the
-// band, and the band's heading already made the claim.
+// A fact is one unbreakable group. A count, a figure and an as-of are figures -
+// the as-of is a date, and a date is read as a figure - and a figure broken
+// across two lines is two figures.
 .detail-folio__count,
-.detail-folio__as-of,
-.detail-folio__source {
+.detail-folio__figure,
+.detail-folio__as-of {
 	white-space: nowrap;
+}
+
+// The source is a path, and a path is data. The template puts a `<wbr>` after
+// every `/`, so the first break the line maker takes is the path's own
+// separator; `anywhere` is the backstop for one segment longer than the band,
+// which would otherwise still run past the edge. `white-space` must be `normal`
+// for either to work - a `nowrap` source would suppress its own break points.
+.detail-folio__source {
+	white-space: normal;
+	overflow-wrap: anywhere;
 }
 
 .detail-folio__figure {
@@ -80,13 +145,11 @@
 
 // The separator is the site's one separator and it is drawn, not typed: a
 // template's whitespace around U+2001 becomes a 200px gap, which is the defect
-// the clause rail's head already paid for once.
-.detail-folio__sep {
-	inline-size: 1em;
-	text-align: center;
-	color: var(--MuteForeground);
-}
-
-.detail-folio__sep::before {
+// the clause rail's head already paid for once. It is the fact's own `::after`
+// and not a sibling item (the head of this file says why), and its
+// `letter-spacing: 0` keeps the gap at exactly one em: the register's tracking
+// would otherwise add its 0.08em after a character that is already a space.
+.detail-folio__fact:not(:last-child)::after {
 	content: "\2001";
+	letter-spacing: 0;
 }
