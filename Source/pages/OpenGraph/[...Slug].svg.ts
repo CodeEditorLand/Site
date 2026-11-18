@@ -168,9 +168,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
 		await import("../../Function/OpenGraph/PageMetadata.js")
 	).default;
 
+	// The lab switch: a share card is a picture of a page, so a page the build
+	// does not hold gets none. `/Specimen` is served by `dum Run` and absent from
+	// production (`Function/Configuration/Lab.mjs`).
+	const { Served } = await import("../../Function/Configuration/Lab.mjs");
+
 	// Static pages - skip the home slug ("") which is served by /OpenGraph.svg.ts
 	const StaticPath = Object.keys(PageMetadata)
-		.filter((Slug) => Slug !== "")
+		.filter((Slug) => Slug !== "" && Served(`/${Slug}`))
 		.map((Slug) => ({ params: { Slug } }));
 
 	// Blog entries

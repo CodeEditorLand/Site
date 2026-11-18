@@ -55,6 +55,13 @@ import {
 	type ContactPurpose,
 } from "../../Library/Contact/Purpose.js";
 
+/**
+ * The lab switch: whether this build carries the exploratory surfaces. The
+ * decision and the route list live in `Function/Configuration/Lab.mjs`; this
+ * file reads the answer once, below, and every derived table inherits it.
+ */
+import { Lab } from "../Configuration/Lab.mjs";
+
 /** What kind of built path a page entry produces. */
 export type RouteKind = "page" | "collection" | "dispatch";
 
@@ -93,18 +100,36 @@ export interface RouteEntry {
 
 	/** For `collection`: the content directory whose entries become paths. */
 	readonly Collection?: string;
+
+	/**
+	 * Whether this is a lab surface: a page the owner and the agents compose on,
+	 * served in development and absent from the production build.
+	 *
+	 * `Function/Configuration/Lab.mjs` decides, and the `Lab` export below is
+	 * where the registry reads that answer. A route marked here is also listed in
+	 * that module's `LabRoute`, which is the list the build step removes and the
+	 * sitemap filter reads.
+	 */
+	readonly Lab?: boolean;
 }
 
 /**
- * The registry. Order is the board's order - home first, then the destinations,
- * then the record, then the account surfaces, then the dispatch target.
+ * Every route the tree declares, before the build decides which of them it
+ * serves. Order is the board's order - home first, then the destinations, then
+ * the record, then the account surfaces, then the dispatch target.
  *
  * `Canonical` is true for the hand-listed PascalCase pages only: those are the
  * paths a person types, so they get the full variant set (case, plural, kebab,
  * flat). A collection path gets case-only variants (`GenerateSlugVariants`) to
  * keep the Cloudflare rule count bounded, and `/404` and `/Visit` get none.
+ *
+ * `Lab` marks an exploratory surface: `/Specimen` prints the document's own parts
+ * so the owner and the agents can compose from primitives, and it is served in
+ * development and absent from production (`Function/Configuration/Lab.mjs`). The
+ * flag is on the entry rather than in a second list, so the route that is removed
+ * is the route that says it may be.
  */
-export const Route: readonly RouteEntry[] = [
+const Declared: readonly RouteEntry[] = [
 	{
 		Path: "/",
 
@@ -751,6 +776,11 @@ export const Route: readonly RouteEntry[] = [
 		Heading: "Component/Surface/SurfaceHead.astro",
 
 		Card: "post-baseline",
+
+		// The printer's specimen: the document's own parts at 1:1, for the owner
+		// and the agents to compose from. Served by `dum Run`, removed from the
+		// production build by `Function/Route/Lab.ts`.
+		Lab: true,
 	},
 
 	{
@@ -833,6 +863,25 @@ export const Route: readonly RouteEntry[] = [
 		Card: "post-baseline",
 	},
 ];
+
+/**
+ * The routes this build serves - the set every derived table reads.
+ *
+ * `RoutePath`, `RouteSet`, `CanonicalRoute`, `BaselineRoute`, `AddedRoute`,
+ * `CollectionRoute`, `RouteOf`, `RouteByCase`, `IsRoute`, `ClaimsPath` and
+ * `RouteManifest` all come from this array, and `Map.ts` derives the redirect
+ * table and the service worker's route map from `CanonicalRoute`. So a lab route
+ * is removed from the nav, the sitemap's canonical rewriting, the variants, the
+ * palette and the canonical check in the same filter - a build that does not
+ * serve the page cannot list it, link it or redirect to it.
+ *
+ * In development the array is untouched, which is the whole point of a lab
+ * surface: `dum Run` serves every specimen exactly as it did before this filter
+ * existed.
+ */
+export const Route: readonly RouteEntry[] = Lab
+	? Declared
+	: Declared.filter((Entry) => Entry.Lab !== true);
 
 /**
  * The contact routes, and the rule that keeps them honest.

@@ -48,6 +48,13 @@
  * been decided, and the frame says so.
  */
 
+/**
+ * The lab switch. The register below files `/Specimen`, and a production build
+ * does not contain that page (`Function/Configuration/Lab.mjs`), so the register
+ * is filtered by the same predicate the build uses.
+ */
+import { Served } from "../../Function/Configuration/Lab.mjs";
+
 /** The four composition languages. `record` is the fifth answer - no language. */
 export type LayoutLanguage = "reading" | "workspace" | "audit" | "plate";
 
@@ -196,7 +203,7 @@ export const Languages: Readonly<Record<LayoutAnswer, LayoutSpec>> = {
  * and true: a route is filed here when its composition has the language's
  * tracks, not when the language would suit it.
  */
-export const RouteRegister: readonly (readonly [string, LayoutAnswer])[] = [
+const Filed: readonly (readonly [string, LayoutAnswer])[] = [
 	// ─── PLATE ───────────────────────────────────────────────────────────
 	// The opening spread is a plate: the keeper pair at full bleed, the trace
 	// foot under both panels, and the legend as its channel. The two pages this
@@ -295,7 +302,8 @@ export const RouteRegister: readonly (readonly [string, LayoutAnswer])[] = [
 	// The specimen sheet is one artifact in the sense that matters: it has no
 	// rail, no measure and no margin - the sheet at its head *is* its index, and
 	// its bands are plates. Filing it under a language would impose the tracks
-	// the page deliberately does not have.
+	// the page deliberately does not have. It is a lab route: served by `dum Run`,
+	// removed from the production build, and this entry is filtered out with it.
 	["/Specimen", "record"],
 
 	["/Account/SignIn", "record"],
@@ -306,6 +314,19 @@ export const RouteRegister: readonly (readonly [string, LayoutAnswer])[] = [
 
 	["/Account/ResetPassword", "record"],
 ];
+
+/**
+ * The register this build reads.
+ *
+ * A filed route is kept only if the build serves it. `/Specimen` is a lab surface -
+ * served by `dum Run`, absent from production (`Function/Configuration/Lab.mjs`) -
+ * and `/Contents` counts the register's entries per language, so an entry for a
+ * page the host does not hold would print a figure the build cannot answer for.
+ * `LanguageOf` already answers `record` for an unfiled path, so removing the entry
+ * changes nothing else.
+ */
+export const RouteRegister: readonly (readonly [string, LayoutAnswer])[] =
+	Filed.filter(([Pattern]) => Served(Pattern));
 
 /** The route as the register stores it: no trailing slash, `/` stays `/`. */
 const Normalise = (Path: string): string =>

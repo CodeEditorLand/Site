@@ -33,6 +33,13 @@ import { Bands as SpecimenBands } from "../Specimen/Page.js";
 
 import { Bands as IndexBands } from "./Page.js";
 
+/**
+ * The lab switch. One row below names `/SPECIMEN`, and a production build does
+ * not contain that page (`Function/Configuration/Lab.mjs`), so the register asks
+ * the build before it describes the page's setting.
+ */
+import { Served } from "../../Function/Configuration/Lab.mjs";
+
 /** The field-record separator: U+2001, never U+00B7. */
 const Quad = "\u2001";
 
@@ -340,8 +347,11 @@ const MotionOrder = [
 	"Record",
 ] as const;
 
-/** The document's pages, in the order a reader meets them. */
-export const SequenceRows: readonly LedgerRow[] = [
+/**
+ * The document's pages, in the order a reader meets them - before the build
+ * decides which of them it serves.
+ */
+const Sequences: readonly LedgerRow[] = [
 	Page(
 		"/",
 
@@ -424,3 +434,17 @@ export const SequenceRows: readonly LedgerRow[] = [
 		note: `NO BAND SEQUENCE TO STATE${Quad}its rhythm is inside the release record, where the regions sit at the artifact step`,
 	},
 ];
+
+/**
+ * The sequences this build can print.
+ *
+ * A page's row is kept only if the build serves the page it names: `/SPECIMEN` is
+ * a lab surface, served by `dum Run` and absent from production
+ * (`Function/Configuration/Lab.mjs`), and a register that described the setting of
+ * a page the host does not hold would be inventing a fact to fill a row - which is
+ * the one thing this file refuses to do. The row's key is the page's name with the
+ * grammar's `:` field mark, so the predicate reads the key without it.
+ */
+export const SequenceRows: readonly LedgerRow[] = Sequences.filter((Row) =>
+	Served(Row.key.replace(/:$/, "")),
+);

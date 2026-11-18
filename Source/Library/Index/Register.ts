@@ -42,6 +42,14 @@ import {
 
 import { DeclaredReason } from "../../Content/Index/Declared.js";
 
+/**
+ * The lab switch. `/Contents` prints the addresses, counts and registry drift of
+ * the build it is rendered in, so it reads the same predicate the build does: a
+ * lab route is served by `dum Run` and absent from production
+ * (`Function/Configuration/Lab.mjs`).
+ */
+import { Lab, Served } from "../../Function/Configuration/Lab.mjs";
+
 /** The fallback mark: no form here, and never a blank. */
 export const Fallback = "◎";
 
@@ -121,9 +129,35 @@ export interface TotalsFact {
 	readonly Declared: number;
 }
 
-export const Routes: readonly RouteFact[] = RoutesJson.Routes;
+/**
+ * The routes this build answers on.
+ *
+ * `Source/Generated/Facts/Routes.json` is one file for every build, because the
+ * generator walks `Source/pages/**` and the tree holds the lab's page all year.
+ * The build is what differs: `/Specimen` is served by `dum Run` and absent from
+ * the production output (`Function/Configuration/Lab.mjs`), so the archive, the
+ * chapter counts and every figure counted from this array read the facts through
+ * the same switch the build uses. A page listed here is a page `Target/` holds -
+ * that is the rule the index's archive promises, and this is where it is kept.
+ */
+export const Routes: readonly RouteFact[] = RoutesJson.Routes.filter((Route) =>
+	Served(Route.Path),
+);
 
-export const Registry: RegistryFact = RoutesJson.Registry;
+/**
+ * The hand-kept registry, and where it disagrees with the build.
+ *
+ * `Missing` is filtered for the same reason as `Routes`: a path the build does not
+ * emit cannot be a path the registry fails to declare, and the footnote that
+ * prints this list names every entry in it.
+ */
+export const Registry: RegistryFact = Lab
+	? RoutesJson.Registry
+	: {
+			...RoutesJson.Registry,
+
+			Missing: RoutesJson.Registry.Missing.filter((Path) => Served(Path)),
+		};
 
 export const Forms: readonly FormFact[] = FormsJson.Forms;
 
@@ -151,7 +185,19 @@ export const RecordHeads: readonly RecordFact[] = RecordsJson.Records;
 
 export const Modules: readonly ModuleFact[] = ModulesJson.Modules;
 
-export const Totals: TotalsFact = ModulesJson.Totals;
+/**
+ * The document's extent.
+ *
+ * `Routes` is recomposed from the array above rather than read from the fact
+ * file: `Modules.json` counted the tree, and the tree's route count includes the
+ * lab's page all year. The figure the index prints has to be the number of
+ * addresses *this build* answers on, so it is the length of the filtered array -
+ * the same array the archive prints, so the register and the archive cannot
+ * disagree about how many there are.
+ */
+export const Totals: TotalsFact = Lab
+	? ModulesJson.Totals
+	: { ...ModulesJson.Totals, Routes: Routes.length };
 
 /** The modules nothing imports, as the generator found them. */
 export const Unread: readonly ModuleFact[] = ModulesJson.Orphans;

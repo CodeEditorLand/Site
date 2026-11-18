@@ -16,6 +16,21 @@
  * a part cannot honestly be printed, the sheet states an absence in the same
  * grammar the dashboard uses for its one absent record.
  *
+ * ─── THIS PAGE IS A LAB SURFACE ───────────────────────────────────────────
+ * It is a tool for the owner and the agents, not a chapter for a reader, so it is
+ * served in development and absent from production: `dum Run` prints every plate
+ * exactly as below, and a build removes the route from `Target/` before the
+ * sitemap and the route map read the output. `Function/Configuration/Lab.mjs` is
+ * the switch, `Function/Route/Lab.ts` the build step, and the registry marks the
+ * entry `Lab: true`. Nothing in this file changes between the two states - the
+ * page is not a 404, not a `noindex`, and not hidden by a stylesheet; it simply
+ * is not emitted for a reader.
+ *
+ * The sheet exists so that advanced compositions can be assembled from smaller
+ * primitives, which is why every plate mounts a live component rather than a
+ * picture of one: a part with states is shown with its states, because a
+ * screenshot of a component cannot be composed with.
+ *
  * ─── THE COMPOSITION: A HEAD, A SHEET, PLATES, STATES, MATERIAL, A REGISTER ─
  * The page wears `SurfaceShell` - the shell the app surfaces wear - because a
  * sheet is a tool rather than a chapter: one head, then bands. It does not wear

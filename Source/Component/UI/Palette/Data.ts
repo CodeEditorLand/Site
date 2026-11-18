@@ -4,6 +4,13 @@ import { Lexicon, TermId } from "../../../Content/More/Glossary.js";
 
 import { RecordHeads } from "../../../Library/Index/Register.js";
 
+/**
+ * The lab switch: a record's door is resolved from the facts, and the facts name
+ * a lab route for the parts the specimen sheet prints. A production build does not
+ * hold that page, so the palette asks the build before it offers the door.
+ */
+import { Served } from "../../../Function/Configuration/Lab.mjs";
+
 import { FrameSections } from "../../Layout/Frame/Data.js";
 
 import type {
@@ -138,10 +145,14 @@ export const BuildPaletteRegister = (
 	 * it. A head whose only route is dynamic (`/Doc/:Slug`) has no single address
 	 * and is dropped, because a row that linked a literal `:Slug` would be a dead
 	 * link dressed as a live one - the same rule `/Contents` applies to its
-	 * archive.
+	 * archive. A lab route is dropped for the same reason one step earlier: the
+	 * facts name `/Specimen` for the parts the specimen sheet prints, and a
+	 * production build does not hold that page (`Function/Configuration/Lab.mjs`).
 	 */
 	const Records: PaletteEntry[] = RecordHeads.flatMap((Head) => {
-		const Static = Head.Routes.filter((Route) => !Route.includes(":"));
+		const Static = Head.Routes.filter(
+			(Route) => !Route.includes(":") && Served(Route),
+		);
 
 		if (Static.length === 0) return [];
 

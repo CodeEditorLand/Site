@@ -7,6 +7,15 @@ const Sourcemap = (await import("./Source/Function/Configuration/Sourcemap.js"))
 
 const { resolve: Resolve } = await import("node:path");
 
+// The lab switch, and the build step that keeps a lab route out of the output.
+// Both are read here and nowhere else in this file: `Served` decides the sitemap,
+// `LabIntegration` removes the emitted directory. `Function/Configuration/Lab.mjs`
+// holds the decision, `Function/Route/Lab.ts` the wiring.
+const { Served } = await import("./Source/Function/Configuration/Lab.mjs");
+
+const { default: LabIntegration } =
+	await import("./Source/Function/Route/Lab.js");
+
 const { default: remarkCallout } =
 	await import("./Source/Function/Markdown/Callout.js");
 
@@ -75,6 +84,13 @@ export default (await import("astro/config")).defineConfig({
 	},
 
 	integrations: [
+		// The lab runs first, and the order is the mechanism: its
+		// `astro:build:done` removes the exploratory routes from `Target/`
+		// before `@astrojs/sitemap` and `Route/Integration.ts` read that
+		// directory, so a removed route cannot reach the sitemap, the route map,
+		// the service worker or `_redirects`. See `Function/Route/Lab.ts`.
+		LabIntegration(),
+
 		(await import("@astrojs/react")).default({
 			// @ts-ignore
 			devtools: On,
@@ -99,10 +115,25 @@ export default (await import("astro/config")).defineConfig({
 			filter: (Page) => {
 				const Lower = Page.toLowerCase();
 
+				// The path this entry will be served at, without its trailing
+				// slash: the form `Served` compares. `@astrojs/sitemap` hands over
+				// absolute URLs, so the origin comes off first; a path that
+				// arrives relative is already one.
+				const Path =
+					(Page.includes("://") ? new URL(Page).pathname : Page).replace(
+						/\/+$/,
+						"",
+					) || "/";
+
+				// `@astrojs/sitemap` builds its list from the pages in `Target/`,
+				// so the lab's `astro:build:done` has already removed them by now -
+				// `Served` is the second lock on the same fact, so a build that
+				// skips that step cannot sitemap a hidden page either.
 				return (
 					!Lower.includes("/dashboard") &&
 					!Lower.includes("/account/") &&
-					!Lower.includes("/oauth/")
+					!Lower.includes("/oauth/") &&
+					Served(Path)
 				);
 
 				// TODO: Add blog slugs once B1/B2 (Blog Content Collections) are merged

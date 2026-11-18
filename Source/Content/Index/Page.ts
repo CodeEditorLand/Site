@@ -30,6 +30,13 @@ import { TypeForms } from "./Forms.js";
 
 import type { TotalsFact } from "../../Library/Index/Register.js";
 
+/**
+ * The lab switch. One row below offers the specimen sheet, and a production build
+ * does not contain that page (`Function/Configuration/Lab.mjs`), so the register
+ * asks the build before it prints the door.
+ */
+import { Lab, Served } from "../../Function/Configuration/Lab.mjs";
+
 /** The field-record separator: U+2001, never U+00B7. */
 const Quad = "\u2001";
 
@@ -438,82 +445,96 @@ export const RegistryFootnote = (
 		: `\`Function/Route/Map.ts\` declares ${Declared} canonical paths by hand; the build emits ${Built}. The ${Missing.length} it does not declare are ${Missing.join(", ")} - the redirect layer derives its variants from that set, so this page reports the drift rather than repairing it.`;
 
 /**
- * The index's own doors.
+ * The index's own doors, before the build decides which of them it serves.
  *
  * The index used to end on its own extent: the last figure, and then the footer.
  * A page that has just told a reader what the whole document is made of owes them
- * the three registers that file its parts - and the specimen sheet, which is this
- * page's appendix and the only place the parts are printed rather than counted.
- *
- * The first row is the sheet because it is the closest reading of what the reader
- * has just finished: the index says there are thirteen information types and
- * eleven forms; the sheet shows them.
+ * the registers that file its parts - and, in development, the specimen sheet,
+ * which is this page's appendix and the only place the parts are printed rather
+ * than counted. The sheet's row is first because it is the closest reading of
+ * what the reader has just finished: the index says there are thirteen
+ * information types and eleven forms; the sheet shows them.
  */
+const OnwardRows: readonly OnwardRow[] = [
+	{
+		mark: "/",
+
+		want: "THE PARTS THEMSELVES, PRINTED",
+
+		where: "SPECIMEN",
+
+		href: "/Specimen",
+
+		note: "Eleven components at 1:1 with their contracts, three stated absences, and the nine adverse states.",
+	},
+
+	{
+		mark: "/",
+
+		want: "WHAT IS LIVE TODAY",
+
+		where: "STATUS",
+
+		href: "/Status",
+
+		note: "Twenty-one records under the four columns of the state vocabulary.",
+	},
+
+	{
+		mark: "/",
+
+		want: "WHAT THE DOCUMENT'S WORDS MEAN",
+
+		where: "GLOSSARY",
+
+		href: "/Glossary",
+
+		note: "Fifteen elements, twenty nouns and five retired words.",
+	},
+
+	{
+		mark: "/",
+
+		want: "THE DOCUMENT ITSELF",
+
+		where: "DOC",
+
+		href: "/Doc",
+
+		note: "Sixty articles: the reference, the deep dives, and the workflows.",
+	},
+];
+
+/**
+ * The doors this build serves.
+ *
+ * The sheet is a lab door: `/Specimen` is served by `dum Run` and absent from the
+ * production build (`Function/Configuration/Lab.mjs`), so a production reader is
+ * never offered a page the host does not hold. The register's head is counted
+ * from this array rather than written into the copy, so `# ONWARD / 0N` cannot
+ * claim a door the list does not print.
+ */
+const ServedOnward = OnwardRows.filter((Row) => Served(Row.href));
+
 export const ContentsOnward: {
 	readonly rows: readonly OnwardRow[];
 
 	readonly copy: OnwardCopy;
 } = {
-	rows: [
-		{
-			mark: "/",
-
-			want: "THE PARTS THEMSELVES, PRINTED",
-
-			where: "SPECIMEN",
-
-			href: "/Specimen",
-
-			note: "Eleven components at 1:1 with their contracts, three stated absences, and the nine adverse states.",
-		},
-
-		{
-			mark: "/",
-
-			want: "WHAT IS LIVE TODAY",
-
-			where: "STATUS",
-
-			href: "/Status",
-
-			note: "Twenty-one records under the four columns of the state vocabulary.",
-		},
-
-		{
-			mark: "/",
-
-			want: "WHAT THE DOCUMENT'S WORDS MEAN",
-
-			where: "GLOSSARY",
-
-			href: "/Glossary",
-
-			note: "Fifteen elements, twenty nouns and five retired words.",
-		},
-
-		{
-			mark: "/",
-
-			want: "THE DOCUMENT ITSELF",
-
-			where: "DOC",
-
-			href: "/Doc",
-
-			note: "Sixty articles: the reference, the deep dives, and the workflows.",
-		},
-	],
+	rows: ServedOnward,
 
 	copy: {
-		index: "ONWARD / 04",
+		index: `ONWARD / ${String(ServedOnward.length).padStart(2, "0")}`,
 
 		label: "/THE INDEX'S OWN DOORS",
 
 		statement:
-			"An index that ended on its own extent would be a page about itself. These four are where the parts it counted are printed, stated, defined and written.",
+			"An index that ended on its own extent would be a page about itself. These are where the parts it counted are printed, stated, defined and written.",
 
-		note: `SOURCE: SOURCE/CONTENT/INDEX/PAGE.TS${Quad}THE SHEET IS THIS PAGE'S APPENDIX`,
+		note: Lab
+			? `SOURCE: SOURCE/CONTENT/INDEX/PAGE.TS${Quad}THE SHEET IS THIS PAGE'S APPENDIX`
+			: "SOURCE: SOURCE/CONTENT/INDEX/PAGE.TS",
 
-		empty: "Nothing to hand over. Every destination this register would list is the index you are reading, which cannot happen while the document has four other registers.",
+		empty: "Nothing to hand over. Every destination this register would list is the index you are reading, which cannot happen while the document has other registers.",
 	},
 };
