@@ -43,13 +43,35 @@ export default function remarkMermaid() {
 		);
 	}
 
-	return (Tree: { type: string; children?: any[] }) => {
+	return (
+		Tree: { type: string; children?: any[] },
+
+		File?: { path?: string },
+	) => {
 		LoadAvailableHashes();
 
 		if (!AvailableHashes || AvailableHashes.size === 0) return;
 
-		Walk(Tree, AvailableHashes, SvgDir);
+		Walk(Tree, AvailableHashes, SvgDir, Where(File));
 	};
+}
+
+/**
+ * The document a warning is about, relative to the build root.
+ *
+ * A hash names a diagram nobody can find. The document and its line are what
+ * the reader of a build log needs, so the plugin carries them from the vfile it
+ * is handed: Astro supplies the path, and a processor that hands none still
+ * gets the hash with no location.
+ */
+function Where(File?: { path?: string }): string | undefined {
+	if (!File?.path) return undefined;
+
+	const Root = process.cwd();
+
+	return File.path.startsWith(`${Root}/`)
+		? File.path.slice(Root.length + 1)
+		: File.path;
 }
 
 function Walk(
@@ -58,6 +80,8 @@ function Walk(
 	AvailableHashes: Set<string>,
 
 	SvgDir: string,
+
+	Document?: string,
 ) {
 	if (!Node.children) return;
 
@@ -65,15 +89,33 @@ function Walk(
 		const Child = Node.children[I];
 
 		if (Child.type === "code" && Child.lang === "mermaid") {
-			const Svg = RenderMermaidBlock(Child, AvailableHashes, SvgDir);
+			const Svg = RenderMermaidBlock(
+				Child,
+				AvailableHashes,
+				SvgDir,
+				Document,
+			);
 
 			if (Svg) {
 				Node.children[I] = Svg;
 			}
 		}
 
-		Walk(Child, AvailableHashes, SvgDir);
+		Walk(Child, AvailableHashes, SvgDir, Document);
 	}
+}
+
+/**
+ * ` (Source/Content/doc/air.md:147)`, or nothing when the processor handed no
+ * document. Appended to every warning so the build log names the page a
+ * diagram was lost from, not only the hash of the diagram.
+ */
+function Location(Node: { position?: any }, Document?: string): string {
+	if (Document === undefined) return "";
+
+	const Line = Node.position?.start?.line;
+
+	return ` (${Document}${Line === undefined ? "" : `:${Line}`})`;
 }
 
 function RenderMermaidBlock(
@@ -82,6 +124,8 @@ function RenderMermaidBlock(
 	AvailableHashes: Set<string>,
 
 	SvgDir: string,
+
+	Document?: string,
 ): any | null {
 	const Code = (Node.value || "").trim();
 
@@ -91,7 +135,7 @@ function RenderMermaidBlock(
 
 	if (!AvailableHashes.has(Hash)) {
 		process.stderr.write(
-			`[remarkMermaid] No rendered SVG found for hash ${Hash}\n`,
+			`[remarkMermaid] No rendered SVG found for hash ${Hash}${Location(Node, Document)}\n`,
 		);
 
 		return null;
@@ -106,7 +150,7 @@ function RenderMermaidBlock(
 
 		if (!SvgMatch) {
 			process.stderr.write(
-				`[remarkMermaid] No SVG element in ${SvgPath}\n`,
+				`[remarkMermaid] No SVG element in ${SvgPath}${Location(Node, Document)}\n`,
 			);
 
 			return null;
@@ -124,7 +168,7 @@ function RenderMermaidBlock(
 		};
 	} catch (Err) {
 		process.stderr.write(
-			`[remarkMermaid] Failed to read SVG ${SvgPath}: ${Err}\n`,
+			`[remarkMermaid] Failed to read SVG ${SvgPath}: ${Err}${Location(Node, Document)}\n`,
 		);
 
 		return null;

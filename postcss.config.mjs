@@ -1,5 +1,6 @@
 import autoprefixer from "autoprefixer";
 import cssnano from "cssnano";
+import cssnanoPresetAdvanced from "cssnano-preset-advanced";
 import postcssCombineDuplicatedSelectors from "postcss-combine-duplicated-selectors";
 import postcssCombineMediaQuery from "postcss-combine-media-query";
 import postcssImport from "postcss-import";
@@ -47,7 +48,18 @@ export default {
 			// @font-face rule as "unused". Keep font-face pruning off;
 			// leave the rest of discardUnused (keyframes, counter-style,
 			// namespace) at its default.
-			preset: ["advanced", { discardUnused: { fontFace: false } }],
+			//
+			// The preset is the imported function, not the string
+			// "advanced": cssnano resolves the string to the installed
+			// `cssnano-preset-advanced` anyway and says so on every build
+			// (`[CSSNANO_INSTALLED_PRESET] Warning`), which is noise
+			// standing where a real CSS warning should be. The imported
+			// function is the same preset, byte-identical output, one
+			// line of log less.
+			preset: [
+				cssnanoPresetAdvanced,
+				{ discardUnused: { fontFace: false } },
+			],
 		}),
 
 		postcssReporter(),

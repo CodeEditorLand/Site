@@ -28,10 +28,12 @@
 <script>
 	/**
 	 * The fallback is a *fallback*: the remark plugin inlines every diagram it
-	 * can at build time, and in the committed output not one of the 124 routes
-	 * carries a `language-mermaid` block (measured: 0 markers). So the honest
-	 * cost of this component is the cost of finding out there is nothing to do,
-	 * and that cost used to be paid during page load.
+	 * can at build time. At the last measurement 102 SVGs were vendored and not
+	 * one of the 16 diagrams the content carries resolved to one of them - so on
+	 * the 14 documents that hold a diagram this component is the renderer, and
+	 * on every other page its cost is one `querySelector` at idle. The build log
+	 * names the document each missing hash belongs to
+	 * (`[remarkMermaid] No rendered SVG found for hash … (file:line)`).
 	 *
 	 * Two changes, both about *when*:
 	 *
