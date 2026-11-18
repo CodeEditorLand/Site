@@ -1,5 +1,48 @@
 import type { Mouse, MovementDimensional } from "@Function/Scroll/Type.js";
 
+import { Subscribe } from "@Function/Scroll/Code/Ticker.js";
+
+// ─── The dust's one loop ─────────────────────────────────────────────────────
+//
+// Every cell owns three dust particles, and each particle used to own a
+// `requestAnimationFrame` chain of its own (`State.ID`), rescheduling itself for
+// the life of the cell. A twenty-character field is three hundred cells, so that
+// was nine hundred independent frame chains - nine hundred callbacks a frame,
+// none of them aware of the other eight hundred and ninety-nine, and none of them
+// aware that the field had scrolled out of the viewport.
+//
+// The particles still each have their own drift (an eighty-three minute phase),
+// but the *clock* is now the field's: one subscription to `Code/Ticker.ts`, which
+// is already the one loop for the pixel field and already parks itself when the
+// field leaves the viewport or the tab is hidden. Joining is idempotent and the
+// last cell leaving takes the subscription off the ticker, so an unmounted field
+// leaves no frame behind.
+type Jiggler = { JiggleAll(Time: number): void };
+
+const Jiggling = new Set<Jiggler>();
+
+let Unsubscribe: (() => void) | null = null;
+
+const Pump = (Time: number): void => {
+	for (const Cell of Jiggling) Cell.JiggleAll(Time);
+};
+
+const Join = (Cell: Jiggler): void => {
+	Jiggling.add(Cell);
+
+	if (Unsubscribe === null) Unsubscribe = Subscribe(Pump);
+};
+
+const Leave = (Cell: Jiggler): void => {
+	Jiggling.delete(Cell);
+
+	if (Jiggling.size === 0 && Unsubscribe !== null) {
+		Unsubscribe();
+
+		Unsubscribe = null;
+	}
+};
+
 /**
  * Style - one cell's painter.
  *
@@ -48,8 +91,6 @@ export default class {
 		Start: number;
 
 		Duration: number;
-
-		ID?: number | undefined;
 	}> = [];
 
 	constructor(
@@ -117,11 +158,9 @@ export default class {
 
 	/** Stop the cell: no frame survives it, and its dust leaves the page. */
 	Destroy(): void {
-		for (const State of this.StateParticle) {
-			if (State.ID) cancelAnimationFrame(State.ID);
-
-			State.ID = undefined;
-		}
+		/* Taking the cell off the ticker is the whole of "no frame survives it":
+		   the subscription is the field's, and the last cell leaving stops it. */
+		Leave(this);
 
 		for (const Particle of this.Dust) Particle.remove();
 
@@ -280,9 +319,10 @@ export default class {
 	/**
 	 * The dust: three particles, built once.
 	 *
-	 * Each one carries its own frame chain for the whole life of the cell -
-	 * `Jiggle` reschedules itself - because its drift is eighty-three minutes
-	 * long and restarting it per frame would restart the drift too.
+	 * Each one carries its own drift phase for the whole life of the cell - the
+	 * eighty-three minute sweep - but not its own frame chain. The cell joins the
+	 * field's ticker once, paints every particle in that one callback, and leaves
+	 * the ticker in `Destroy`.
 	 */
 	private MountParticles(): void {
 		this.ParticleSeed = Array.from(
@@ -316,9 +356,25 @@ export default class {
 
 				Duration: 5000000 + Math.random() * 1000,
 			});
-
-			this.Jiggle(Index, performance.now());
 		}
+
+		/* One subscription for the cell, then one synchronous paint so the dust
+		   starts drifting in the frame the cell appears rather than the next one. */
+		Join(this);
+
+		this.JiggleAll(performance.now());
+	}
+
+	/**
+	 * One frame for every particle this cell owns.
+	 *
+	 * Called by the ticker through the module's single subscription. The cells are
+	 * visited in insertion order, so a frame is one pass over the field and not one
+	 * pass per particle.
+	 */
+	JiggleAll(CurrentTime: number): void {
+		for (let Index = 0; Index < this.Dust.length; Index++)
+			this.Jiggle(Index, CurrentTime);
 	}
 
 	private Jiggle(Index: number, CurrentTime: number): void {
@@ -433,8 +489,6 @@ export default class {
 
 			this.ParticleSeed[Index] = Math.random() * 1000;
 		}
-
-		State.ID = requestAnimationFrame((Time) => this.Jiggle(Index, Time));
 	}
 }
 

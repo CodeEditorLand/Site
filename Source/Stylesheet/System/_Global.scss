@@ -241,11 +241,10 @@ body > astro-island {
 
 /* These four ids are the homepage's bands and nothing else. A documentation
    page has none of them - its content is one `.doc-prose` card - so this rule
-   is inert there and must not be read as a long-page optimisation. Whether it
-   should be extended to a document's top-level blocks is a separate decision
-   with a cost of its own: `content-visibility: auto` makes the scroll height an
-   estimate until each block has been rendered once, so the scrollbar moves
-   while the reader scrolls a 24,000px article. */
+   is inert there. The document's own blocks are NOT skipped, and the reason is
+   recorded in `Component/Doc/_Article.scss` beside those blocks: the article is
+   a canvas-backed `jelly-card`, and a block whose height is an estimate makes
+   that canvas re-allocate on every pass. */
 #features,
 #pricing,
 #testimonials,

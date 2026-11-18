@@ -7,7 +7,7 @@
  * module wires every root it finds, so the two instances share one behaviour and
  * which of them is painted is the CSS's business, not this module's.
  *
- * Four rules it keeps:
+ * Five rules it keeps:
  *
  * - **It reads the DOM, it does not guess.** The anchors point at the ids the
  *   markdown pipeline wrote, and the marked element is whatever element carries
@@ -19,45 +19,32 @@
  * - **Nothing is required.** With JavaScript off the list is still a list of
  *   anchors that jump to their headings; only the marking is absent. No entry is
  *   hidden, no entry is disabled, and the list is never re-ordered.
- * - **The scroll handler reads one number and nothing else.** Every target's
- *   position is measured once, when the module wires and again when the viewport
- *   changes; a scroll frame then compares `window.scrollY` against cached offsets
- *   and touches the DOM only when the current section actually changes. Measuring
- *   per frame - or worse, appending a probe element per frame to resolve
- *   `--HeaderHeight` - forces a layout on a page that is ten thousand pixels tall
- *   with a hundred code blocks in it, and a manual that stutters while you read it
- *   is not a well-made tool.
+ * - **The page has no scroll handler.** Position used to be resolved by a
+ *   `scroll` listener comparing `window.scrollY` against offsets cached at wire
+ *   time - which is cheap per event, but it is still a handler on the one event a
+ *   reader generates sixty times a second, and the cache went stale the moment
+ *   the document's geometry changed underneath it (a font landing, an image
+ *   decoding, a block below the fold being laid out for the first time). An
+ *   `IntersectionObserver` on the headings replaces both: the browser reports the
+ *   crossings, the callback reads nothing from layout, and a reflow that moves a
+ *   heading moves the observation with it, because the observation *is* the
+ *   geometry.
+ * - **One write per section change.** The callback maintains a set of ids inside
+ *   the reading band; the current entry is the first of them in document order.
+ *   Nothing is written unless the answer differs from the one already marked, so
+ *   a reader scrolling through a section costs zero DOM writes.
+ *
+ * The band is the header's band, not a second opinion: `-25% 0px -60% 0px` is the
+ * `rootMargin` `Component/Layout/Header.tsx` uses to decide which section the
+ * running head is in. The two registers answer the same question about the same
+ * page, so they are given the same answer by construction rather than by two
+ * tuned thresholds drifting apart.
  *
  * The marking is a position, not a transition: nothing animates, so nothing needs
  * a reduced-motion branch.
  */
 
-/** A heading is "reached" once it clears the sticky header by this much. */
-const Land = 24;
-
 let Wired = false;
-
-/**
- * The sticky header's height in pixels.
- *
- * `--HeaderHeight` is a `calc()` of two other custom properties, so its computed
- * value is still a token stream rather than a length. A probe element sized from
- * the token resolves it exactly, whatever the header's parts add up to.
- */
-const HeaderHeight = (): number => {
-	const Probe = document.createElement("div");
-
-	Probe.style.cssText =
-		"position:absolute;visibility:hidden;pointer-events:none;block-size:var(--HeaderHeight);inset-block-start:0";
-
-	document.body.appendChild(Probe);
-
-	const Height = Probe.getBoundingClientRect().height;
-
-	Probe.remove();
-
-	return Height;
-};
 
 export const WireContents = (): void => {
 	if (Wired) return;
@@ -100,38 +87,23 @@ export const WireContents = (): void => {
 	 * article these are the body's `##` headings; on the index they are the
 	 * section wrappers, which is where the anchor lives there.
 	 */
-	const Targets = Array.from(
-		Body.querySelectorAll<HTMLElement>("[id]"),
-	).filter((Target) => Links.has(Target.id));
+	const Targets = Array.from(Body.querySelectorAll<HTMLElement>("[id]")).filter(
+		(Target) => Links.has(Target.id),
+	);
 
 	if (!Targets.length) return;
 
-	/** Each target's distance from the top of the document, measured on demand. */
-	let Offsets: number[] = [];
+	/* No observer, no marking: the list is still a working jump list, which is
+	   the contract this module has always kept on a browser it cannot use. */
+	if (typeof IntersectionObserver === "undefined") return;
 
-	let Header = 0;
+	/** The targets inside the reading band right now. */
+	const InBand = new Set<string>();
 
-	const Measure = (): void => {
-		Header = HeaderHeight();
-
-		Offsets = Targets.map(
-			(Target) => Target.getBoundingClientRect().top + window.scrollY,
-		);
-	};
-
+	/** The id currently marked, so a frame with the same answer writes nothing. */
 	let Marked: string | null = null;
 
-	/** Which target the reader has passed, from the cached offsets alone. */
-	const Mark = (): void => {
-		const Line = window.scrollY + Header + Land;
-
-		let Current: string | null = null;
-
-		for (let Position = 0; Position < Targets.length; Position++) {
-			if (Offsets[Position]! <= Line) Current = Targets[Position]!.id;
-			else break;
-		}
-
+	const Paint = (Current: string | null): void => {
 		if (Current === Marked) return;
 
 		Marked = Current;
@@ -149,34 +121,39 @@ export const WireContents = (): void => {
 	};
 
 	/**
-	 * The scroll handler calls `Mark` directly rather than through a frame
-	 * callback: `Mark` reads one number and compares it against cached offsets, so
-	 * it costs a loop of arithmetic and no layout - and `requestAnimationFrame` is
-	 * paused in a background tab, which would leave the rail showing the section
-	 * the reader left.
+	 * The current entry: the first target in document order that is inside the
+	 * band. Reading `Targets` rather than `InBand` is what makes "first" mean
+	 * *first in the document* - a `Set` iterates in insertion order, which is the
+	 * order the crossings arrived in, and a reader scrolling back up would get the
+	 * answer backwards.
+	 *
+	 * Nothing in the band means the reader is between two sections: the last mark
+	 * stands, because a register that blanks itself between sections has lost the
+	 * reader it was guiding.
 	 */
-	const Schedule = (): void => {
-		Mark();
+	const Resolve = (): void => {
+		for (const Target of Targets) {
+			if (InBand.has(Target.id)) {
+				Paint(Target.id);
+
+				return;
+			}
+		}
 	};
 
-	const Remeasure = (): void => {
-		Measure();
+	const Observer = new IntersectionObserver(
+		(Entries) => {
+			for (const Entry of Entries) {
+				if (Entry.isIntersecting) InBand.add(Entry.target.id);
+				else InBand.delete(Entry.target.id);
+			}
 
-		Marked = null;
+			Resolve();
+		},
+		{ rootMargin: "-25% 0px -60% 0px" },
+	);
 
-		Mark();
-	};
-
-	window.addEventListener("scroll", Schedule, { passive: true });
-
-	window.addEventListener("resize", Remeasure);
-
-	/* Fonts and images land after the first measure and move every heading; one
-	   re-measure on load is what keeps the marks honest on a page with a diagram
-	   in it. */
-	window.addEventListener("load", Remeasure, { once: true });
-
-	Remeasure();
+	for (const Target of Targets) Observer.observe(Target);
 };
 
 export default WireContents;

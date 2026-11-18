@@ -571,13 +571,40 @@ export interface RichTextProps {
 /**
  * Read the current --StaccatoRaw value from the CSS custom property.
  * Returns 0 when Staccato hasn't started yet (SSR / before first tick).
+ *
+ * Read at the rate the noise commits, not at the rate the typewriter frames.
+ *
+ * `getComputedStyle` on the document element resolves the whole cascade for the
+ * root, and this used to be called from inside the reveal's frame callback - so a
+ * four-second reveal paid ~240 cascade resolutions to read a number that changes
+ * twice a second. The noise layer commits on a 500 ms cadence
+ * (`Function/Noise/Staccato.ts`), so the value is cached for exactly that long:
+ * the reveal sees every state the noise actually has, and costs one read per
+ * commit instead of one per frame. On a page with no noise layer the property is
+ * the `0` its stylesheet declares, and one read establishes that for the rest of
+ * the reveal.
  */
-const ReadStaccatoRaw = (): number => {
+const NOISE_READ_INTERVAL = 500;
+
+let CachedNoiseRaw = 0;
+
+let NoiseReadAt = -Infinity;
+
+const ReadStaccatoRaw = (Now: number): number => {
 	if (typeof document === "undefined") return 0;
-	const Value = getComputedStyle(document.documentElement).getPropertyValue(
-		"--StaccatoRaw",
-	);
-	return parseFloat(Value) || 0;
+
+	if (Now - NoiseReadAt < NOISE_READ_INTERVAL) return CachedNoiseRaw;
+
+	NoiseReadAt = Now;
+
+	CachedNoiseRaw =
+		parseFloat(
+			getComputedStyle(document.documentElement).getPropertyValue(
+				"--StaccatoRaw",
+			),
+		) || 0;
+
+	return CachedNoiseRaw;
 };
 
 /**
@@ -639,8 +666,8 @@ const RichText = ({ Text, Terms = false, ClassName }: RichTextProps) => {
 		const Step = (Now: number): void => {
 			// Noise-modulated character delay:
 			// --StaccatoRaw ∈ [-1, 1] → target delay ∈ [8, 36] ms
-			const NoiseRaw = ReadStaccatoRaw();
-			const TargetDelay = 18 + (NoiseRaw + 1) * 0.5 * 18;
+			const Raw = ReadStaccatoRaw(Now);
+			const TargetDelay = 18 + (Raw + 1) * 0.5 * 18;
 			LerpedDelay.current = Lerp(LerpedDelay.current, TargetDelay, 0.12);
 
 			const Elapsed = Now - LastTime.current;

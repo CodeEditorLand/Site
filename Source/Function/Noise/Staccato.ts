@@ -9,8 +9,6 @@ export default (async () => {
 
 	const Turbulence = (await import("./Turbulence.js")).default;
 
-	const ParallaxModule = (await import("./Parallax.js")).default;
-
 	const Noise: Noise2D = CreateNoise2D();
 
 	const STEP = Config.Step;
@@ -37,28 +35,30 @@ export default (async () => {
 
 	let Active = false;
 
-	let FrameIdentifier = 0;
+	let Timer: ReturnType<typeof setInterval> | null = null;
 
-	// Optimistic-update throttle: CSS vars commit every COMMIT_INTERVAL ms.
-	// RAF still fires every frame for accurate time sampling, but the
-	// properties only write when enough time has passed. CSS transitions
-	// (set to 1.6s in Stylesheet.css) then smoothly bridge each commit,
-	// so the page feels alive but states are long enough to inspect.
+	/**
+	 * The commit cadence.
+	 *
+	 * The noise is sampled and committed twice a second and the stylesheet bridges
+	 * each commit with a 1.6s transition, so the page is always mid-transition
+	 * between two states and never jumps. That is a 500 ms job.
+	 *
+	 * It used to be a `requestAnimationFrame` loop: sixty wake-ups a second to do
+	 * work twice a second, on every page that mounts the noise layer, forever.
+	 * `setInterval` at the cadence is the same commits with 2 wake-ups instead of
+	 * 60, and the `document.hidden` guard means a background tab costs nothing -
+	 * which is the one thing the old rAF loop got for free and this must not lose.
+	 */
 	const COMMIT_INTERVAL = 500;
-
-	let LastCommit = -Infinity;
 
 	const Quantize = (Value: number, Step: number): number =>
 		Math.floor(Value * Step) / Step;
 
-	const Tick = (Time: number): void => {
-		if (Active) {
-			FrameIdentifier = requestAnimationFrame(Tick);
-		}
+	const Tick = (): void => {
+		if (!Active || (typeof document !== "undefined" && document.hidden)) return;
 
-		if (Time - LastCommit < COMMIT_INTERVAL) return;
-
-		LastCommit = Time;
+		const Time = performance.now();
 
 		const Raw = Noise(Time * SPEED, 0);
 
@@ -95,8 +95,6 @@ export default (async () => {
 		Root.setProperty(PROPERTY_GLOW, String(Glow));
 
 		Turbulence.AnimateFilter(Raw);
-
-		ParallaxModule.UpdateScrollProgress(Root);
 	};
 
 	const Start = (): void => {
@@ -106,13 +104,19 @@ export default (async () => {
 
 		Turbulence.InjectFilter();
 
-		FrameIdentifier = requestAnimationFrame(Tick);
+		Tick();
+
+		Timer = setInterval(Tick, COMMIT_INTERVAL);
 	};
 
 	const Stop = (): void => {
 		Active = false;
 
-		cancelAnimationFrame(FrameIdentifier);
+		if (Timer !== null) {
+			clearInterval(Timer);
+
+			Timer = null;
+		}
 	};
 
 	/**

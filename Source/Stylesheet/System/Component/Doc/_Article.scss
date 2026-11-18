@@ -327,6 +327,38 @@ jelly-card.doc-prose .doc-article__body a {
 	margin-block-start: var(--space-reading);
 }
 
+/* ─── THE BLOCKS NOBODY IS LOOKING AT - NOT YET ─────────────────────────── */
+
+/* `content-visibility: auto` + `contain-intrinsic-block-size: auto <n>` on the
+   document's top-level blocks is the right shape of fix for a 10,000px article,
+   and it is deliberately NOT applied here. The reason is the surface the blocks
+   sit on, not the blocks.
+
+   The article is inside `jelly-card.doc-prose` (`pages/Doc/[...Slug].astro`), and
+   Jelly sizes a canvas to the *host's* whole box
+   (`Vendor/JellyUI/src/element/index.ts:280-385`) and re-allocates it whenever
+   that box changes size (`observeResize` → `applyShape`, `:262-271`, `:360-383`:
+   `canvas.height = pxH` is a fresh backing store, and it clears the canvas and
+   repaints it). A skipped block reports its intrinsic estimate instead of its
+   real height, so as the reader's first pass renders blocks one after another
+   the host height changes with them - and each change is a document-sized canvas
+   reallocation on that frame. Trading paint work for reallocation churn would
+   make the pass the reader actually performs worse, not better.
+
+   The rule lands the moment the canvas is gone or capped (card `t_5e83b25f`), and
+   the shape it should take is already decided:
+
+     .doc-article__body > :not(h1, h2, h3, h4, h5, h6, hr, :first-child) {
+       content-visibility: auto;
+       contain-intrinsic-block-size: auto 180px;
+     }
+
+   Headings are excluded because the contents register observes them and an
+   observed element's box must be real, not an estimate; the first block is
+   excluded because it is on screen at load. The `auto` keyword is what keeps the
+   scrollbar from re-guessing the document's height on every scroll - without it a
+   long article trades a paint cost for a scrollbar that never stops moving. */
+
 .doc-article__body > h2,
 .doc-article__body > h3,
 .doc-article__body > h4 {

@@ -26,6 +26,15 @@
 	--StaccatoSeedPhase: 0;
 
 	/* Scroll progress (set by JS Parallax) */
+	/* Retired, and deliberately not measured. `--ScrollProgress` fed the four
+	   `.StaccatoParallax*` transforms below; those transforms are now
+	   `none !important` (CALM, at the foot of this file) and no element carries
+	   the classes, so nothing can paint a value derived from this property. The
+	   module that measured it - a `scroll` listener reading `scrollHeight` and
+	   `clientHeight` on every event, on every page that mounted the noise layer -
+	   is gone with it. The token stays declared so the four classes still resolve
+	   if a surface ever wants the treatment back, and that surface would supply it
+	   in CSS rather than in a scroll handler. */
 	--ScrollProgress: 0;
 
 	/* Global hover lerp speed - 1.2s gives deliberate, inspectable drift */
@@ -136,9 +145,11 @@
 .TransparencyCard {
 	border: 1px solid var(--Border);
 	border-radius: var(--BorderRadius);
-	transition:
-		border-color 0.2s ease,
-		box-shadow 0.2s ease;
+	/* `box-shadow` was in this transition list and nothing may set it: the
+	   identity forbids a shadow on any surface (§1.3), so the transition was
+	   waiting on a property that could never change. Border colour is the only
+	   state change here, and it is the only one listed. */
+	transition: border-color 0.2s ease;
 	transform: none !important;
 }
 
