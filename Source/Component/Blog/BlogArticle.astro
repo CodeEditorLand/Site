@@ -7,24 +7,34 @@
  * workspace is three tracks - the piece at 8, a 1px divider, the margin at 4 -
  * and the margin carries four things in reading order:
  *
- *   1. the summary (`RecordLedger`, pinned): who filed it, when, how long it
- *      takes, what it is tagged, how many sections it has;
+ *   1. the summary (`RecordLedger`): who filed it, when, how long it takes,
+ *      what it is tagged, how many sections it has;
  *   2. the section register (`ON THIS PAGE`), the article's own `##` headings;
  *   3. the margin notes (`RecordMargin`): the date, the manual page that keeps
  *      the subject current, and where a correction goes;
  *   4. the folded aside (`RecordAside`): what the piece does not cover.
  *
+ * The first two are ONE object and it is the one that stays with the reader
+ * (`.blog-article__pinned`): the register answers "where am I in this piece" for
+ * as long as the piece is being read, and the summary's plate is five facts read
+ * once. Pinned on its own the plate covered the register from the moment it
+ * pinned - the margin's navigation hidden exactly while it was needed - and two
+ * stickies cannot be stacked without knowing the first one's height, so the
+ * wrapper is here rather than in the stylesheet.
+ *
  * This is the first page on the site composed this way. The legal documents put
  * their clause rail on the *left* and it is navigation; the manual's rail is
  * navigation too. This margin is *annotation*: nothing in it moves the reader
- * somewhere else except the notes' own destinations, and the summary stays with
- * the reader while the piece scrolls past it. A page whose margin is apparatus
- * reads as a document someone marked up, which is the whole brief.
+ * somewhere else except the register's own anchors and the notes' destinations,
+ * and the summary and the register stay with the reader while the piece scrolls
+ * past them. A page whose margin is apparatus reads as a document someone
+ * marked up, which is the whole brief.
  *
  * Below 1024px the channel is re-composed, not squeezed: the piece takes the
  * full measure, the margin becomes a ruled section under it (summary, register,
- * notes, aside), and the pinned summary stands still. Nothing is hidden and
- * nothing is reduced - the same four things, in the same order, one column.
+ * notes, aside), and nothing is pinned - the unit is a stacked pair there.
+ * Nothing is hidden and nothing is reduced - the same four things, in the same
+ * order, one column.
  *
  * ─── THE SHELL'S FOUR RULES ──────────────────────────────────────────────
  * - **One `h1`.** The title is the page's only level-one heading. The article's
@@ -209,39 +219,47 @@ const Meta = [
 			class="blog-article__margin"
 			aria-label="Margin: summary and notes"
 		>
-			<RecordLedger
-				rows={summaryRows}
-				register={summaryRegister}
-				pinned={true}
-			/>
+			{/*
+			 * The summary and the register are one pinned unit: the register is
+			 * navigation and has to stay with the reader, the plate is five facts
+			 * read once - and a plate pinned on its own covers the register for
+			 * the whole piece. The wrapper exists because two stickies cannot be
+			 * stacked without knowing the first one's height.
+			 */}
+			<div class="blog-article__pinned">
+				<RecordLedger
+					rows={summaryRows}
+					register={summaryRegister}
+				/>
 
-			{toc ? (
-				<nav class="blog-article__register" aria-label={toc.label}>
-					<p class="blog-article__register-label">{toc.label}</p>
-					<ol class="blog-article__register-list">
-						{toc.items.map((Item) => (
-							<li class="blog-article__register-item">
-								<a
-									class="blog-article__register-link"
-									href={Item.href}
-								>
-									{Item.label}
-								</a>
-							</li>
-						))}
-					</ol>
-				</nav>
-			) : (
-				<p class="blog-article__register-empty">
-					<span
-						class="blog-article__register-mark"
-						aria-hidden="true"
-					>
-						&#9678;
-					</span>
-					{registerEmpty}
-				</p>
-			)}
+				{toc ? (
+					<nav class="blog-article__register" aria-label={toc.label}>
+						<p class="blog-article__register-label">{toc.label}</p>
+						<ol class="blog-article__register-list">
+							{toc.items.map((Item) => (
+								<li class="blog-article__register-item">
+									<a
+										class="blog-article__register-link"
+										href={Item.href}
+									>
+										{Item.label}
+									</a>
+								</li>
+							))}
+						</ol>
+					</nav>
+				) : (
+					<p class="blog-article__register-empty">
+						<span
+							class="blog-article__register-mark"
+							aria-hidden="true"
+						>
+							&#9678;
+						</span>
+						{registerEmpty}
+					</p>
+				)}
+			</div>
 
 			{insets.map((Inset) => (
 				<RecordInset inset={Inset} />

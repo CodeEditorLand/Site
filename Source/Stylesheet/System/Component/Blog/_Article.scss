@@ -14,6 +14,7 @@
 //   .blog-article__main          the piece: prose and the way back
 //   .blog-article__gutter        the 1px divider between the piece and the margin
 //   .blog-article__margin        the margin channel: summary, register, notes, aside
+//   .blog-article__pinned        the margin's pinned unit: the summary and the register
 //   .blog-article__register      the article's own sections, as a register
 //   .blog-article__register-label  its label (`ON THIS PAGE`)
 //   .blog-article__register-list the section list
@@ -23,7 +24,7 @@
 //   .blog-article__body          the prose, on the reading measure
 //   .blog-article__back          the way back to the index
 //
-// Six decisions this file makes:
+// Seven decisions this file makes:
 //
 // - **The shell owns the container.** `band-inner` gives the article the same
 //   gutters every band on the site uses, so an article lines up with the index
@@ -45,6 +46,12 @@
 //   same generated anchors, the same order - it has moved from a two-column block
 //   above the prose into the margin, where a register belongs, and it is one
 //   column there because a margin is one column.
+// - **The summary and the register are one pinned unit.** The margin's first two
+//   objects stay with the reader together: the register is navigation, and a
+//   plate pinned over it hid the one object a reader consults *while* reading.
+//   Two stickies cannot be stacked without knowing the first one's height, so
+//   the pair is wrapped in the template and this file pins the wrapper - and caps
+//   it at the band, because the register's length is the article's, not a token.
 
 @use "../../Mixin" as *;
 
@@ -186,24 +193,138 @@
 		background: var(--Divider);
 	}
 
-	/* The margin is the pinned summary's containing block, so it has to be as
-	   tall as the row. `align-items: start` on the workspace sizes a grid item to
-	   its own content, and a margin that ends where its annotations end releases
-	   the pin a third of the way down the piece: the summary then scrolls away
-	   with the prose it was meant to outlast, and the annotations it passes read
-	   through it. Stretching the margin gives the sticky block the row's full
-	   height - the containing block a pin needs - and changes nothing else,
-	   because the margin draws no fill and no rule here.
+	/* The margin is the pinned unit's containing block, so it has to be as tall
+	   as the row. `align-items: start` on the workspace sizes a grid item to its
+	   own content, and a margin that ends where its annotations end releases the
+	   pin a third of the way down the piece: the summary and the register then
+	   scroll away with the prose they were meant to outlast, and the annotations
+	   they pass read through them. Stretching the margin gives the sticky block
+	   the row's full height - the containing block a pin needs - and changes
+	   nothing else, because the margin draws no fill and no rule here.
 
-	   The pin and its plate are `RecordLedger`'s
-	   (`record-ledger-block--pinned`), which scopes the pin to this same
-	   breakpoint: below 1024 the margin is a section under the piece, and a
-	   summary pinned there would pin over the piece it belongs to. */
+	   The pin and its plate are `.blog-article__pinned`'s, below, which scopes
+	   the pin to this same breakpoint: below 1024 the margin is a section under
+	   the piece, and a unit pinned there would pin over the piece it belongs
+	   to. */
 	.blog-article__margin {
 		grid-column: 3;
 		padding-block-start: 0;
 		border-block-start: 0;
 		align-self: stretch;
+	}
+}
+
+/* ─── THE PINNED UNIT: THE SUMMARY AND THE REGISTER ─────────────────────── */
+
+/* The margin's first two objects are one object, and it is the one that stays
+   with the reader.
+
+   The register is navigation: it answers "where am I in this piece" for as long
+   as the piece is being read. The summary's plate is five facts read once, at
+   the start. Pinned on its own - which is what the plate did until this rule
+   existed - the plate covers the register from the moment it pins, so the one
+   object in the margin a reader consults *while* reading is the one object the
+   pin hides. The notes and the inset are annotations read once where they hang,
+   so passing under the plate is right for them; the register is not an
+   annotation. The two are therefore one unit, and the unit is what pins.
+
+   Two stickies cannot be stacked without knowing the first one's height, so the
+   wrapper is markup (`BlogArticle.astro`) and the pin is here. The unit pays the
+   plate's duties for both objects - the fill, the layer, the header-height inset
+   and `--space-tight` at head and foot, which `_Ledger.scss` documents under
+   `record-ledger-block--pinned` - which is why the ledger inside it renders
+   without `pinned`: one object, one pin.
+
+   THE CAP IS THE COMPOSITION, NOT A FALLBACK. The register's length is the
+   article's: five sections at the floor, twelve in the longest piece today, and
+   the floor is a floor. So "the unit fits under the header" is a fact about one
+   article on one screen. Measured from the type and space tokens at 1440 the
+   plate is ~370px and a register row is 21.45px, which puts the seven-section
+   unit at ~584px and the twelve-section unit at ~691px: the first fits a 900px
+   band, the second does not fit an 800px one, and three wrapped headings take
+   the twelve-section unit to ~755px, past even a 768px band. The unit therefore
+   takes at most the band under the chrome, the plate never gives, and the
+   register is the part that scrolls - the treatment `doc-layout__sticky` already
+   gives the rail, where the register is the part that scrolls.
+
+   `max-block-size`, NOT A DEFINITE `block-size`. `doc-layout__sticky` can state
+   its height because the rail is the page's whole column and nothing follows it
+   in the flow. Here the margin's annotations follow the unit in the same column:
+   a definite height would put the unit's foot on the viewport floor, so the
+   inset and the notes would begin below the screen and could never be read. The
+   band is the ceiling; the unit is as tall as its two objects until they stop
+   fitting, and only then does the register start to scroll.
+
+   THE FOOT IS A BARE EDGE. The unit ends in `--space-tight` of its own field and
+   draws no closing hairline, because the register carries no frame (see THE
+   REGISTER below) and a rule at the foot would frame it. The register's own rule
+   was the first thing to emerge from behind the plate and it explained the cut;
+   it sits inside the unit now, so the notes pass under a field edge with nothing
+   drawn on it. That is the register's decision paid for honestly: the fill IS
+   the field, so a note is cut by the field it is printed on, and no rule is
+   printed that the register does not own.
+
+   Below 1024px nothing passes under the unit, so the pin, the fill, the layer
+   and the cap are all off, and the unit is the stacked pair the margin has
+   always printed: the plate, one group of air, the register's rule. */
+.blog-article__pinned {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-group);
+	min-inline-size: 0;
+
+	/* The plate's head and foot. They belong to the unit now, so the summary
+	   keeps exactly the field it kept above its register line and under its last
+	   row - and the register keeps the same group of air above it that the
+	   margin's own gap gave it. */
+	padding-block: var(--space-tight);
+}
+
+@include bp(1024px) {
+	.blog-article__pinned {
+		position: sticky;
+		inset-block-start: var(--HeaderHeight);
+		z-index: 1;
+
+		/* The field's own fill, never `--Card`: a white insert in a margin is a
+		   card inside a card, and a transparent unit is the overlap it was built
+		   to prevent - the notes and the inset would read through it. */
+		background: var(--Background);
+
+		/* The band under the chrome, less one group of air at its foot. */
+		max-block-size: calc(100dvh - var(--HeaderHeight) - var(--space-group));
+	}
+
+	/* The plate never gives: it is the facts a reader decided with. It also
+	   keeps its own fill, so a band too short to hold the unit clips the plate
+	   against its own field rather than letting passing text read through its
+	   last rows. */
+	.blog-article__pinned > .record-ledger-block {
+		flex: 0 0 auto;
+		background: var(--Background);
+	}
+
+	/* The register is the part that scrolls: it takes what the plate leaves and
+	   gives it back a row at a time. `min-block-size: 0` is what lets a flex item
+	   shrink below its content - without it the unit would grow past its cap and
+	   the pin would release at the foot of the band. The snap is by rows, because
+	   a register that stops halfway through a row reads as damage at its own
+	   edge; and there is deliberately no `overscroll-behavior: contain` - unlike
+	   `doc-layout__sticky`, whose rail IS the scrolling workspace, this register
+	   is an island in a page that scrolls, and a contained register would hold
+	   the page still for any reader whose cursor happened to be over it. */
+	.blog-article__pinned
+		> :is(.blog-article__register, .blog-article__register-empty) {
+		flex: 0 1 auto;
+		min-block-size: 0;
+		overflow: hidden auto;
+		scroll-snap-type: y proximity;
+	}
+
+	.blog-article__pinned
+		> .blog-article__register
+		.blog-article__register-item {
+		scroll-snap-align: start;
 	}
 }
 

@@ -108,8 +108,33 @@
 		   blocks end releases the pin part-way down the form - the facts then
 		   scroll away from the reader they were pinned for. The pin and its
 		   plate are `RecordLedger`'s (`record-ledger-block--pinned`), scoped
-		   there to this same breakpoint. */
+		   there to this same breakpoint.
+
+		   A PINNED PLATE HAS FOUR LEGS, and this column's failure was the fill.
+		   The pin once stood here as two declarations - `position: sticky` and
+		   an inset - and the block renders as `surface="quiet"`, so no tier
+		   supplied a fill either: a sticky with no fill paints nothing over the
+		   row it passes, and the process under the facts read *through* the
+		   register line. That is the overlap the reader saw, and it is why the
+		   fix is a plate rather than a `z-index`: `--Background` fill, radius 0
+		   (nothing here sets one), `z-index: 1` over the stage's `position:
+		   relative` rows, this column as the containing block, and - in
+		   `_Ledger.scss` - a top edge on the header's own hairline so the text
+		   the plate covers cannot reappear in the band above it. */
 		align-self: stretch;
+	}
+
+	/* THE SEAM THE PLATE'S FOOT PREDICTS. `_Ledger.scss` ends a pinned plate in
+	   its own field because the block under it draws the first rule to emerge
+	   from behind the plate - in the blog's margin that block is the section
+	   register, which opens on `--Divider`. The record column's next block is
+	   the process, and a stage draws only the rules BETWEEN its steps, so the
+	   plate's foot would cut the first step in mid-line with nothing to explain
+	   the cut. The leading rule is therefore this composition's, not the
+	   stage's: a stage in a band still opens bare, and the rule exists only
+	   where a plate is pinned above it. */
+	.contact-shell__record .record-stage {
+		border-block-start: 1px solid var(--Divider);
 	}
 
 	.contact-shell__gutter {

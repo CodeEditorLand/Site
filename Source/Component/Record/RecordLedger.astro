@@ -50,6 +50,11 @@ interface Props {
 	 * record it belongs to scrolls. Only a ledger in a page's margin or rail sets
 	 * this - a pinned ledger inside a band would pin a fact the band is already
 	 * saying.
+	 *
+	 * A page that pins a *unit* - this ledger and the register under it - pins
+	 * the unit instead and leaves this off: two stickies cannot be stacked
+	 * without knowing the first one's height, and the unit then pays the plate's
+	 * duties for both. `BlogArticle.astro` is that case.
 	 */
 	pinned?: boolean;
 

@@ -79,8 +79,8 @@
 
 // ─── THE PINNED HEAD ──────────────────────────────────────────────────────
 // A pinned ledger heads a column that stays with the reader: the page pins it,
-// and this modifier supplies the plate the pin needs. Four things make a pinned
-// block read as a plate rather than as a defect, and only one of them can be
+// and this modifier supplies the plate the pin needs. Five things make a pinned
+// block read as a plate rather than as a defect, and three of them can be
 // written here:
 //
 // 1. CONTAINING BLOCK. A sticky is released when its containing block's foot
@@ -102,24 +102,45 @@
 // 4. NO SEAM. The register under the plate draws its own `--Divider` rule, and
 //    that rule is the first thing to emerge from behind the plate - it *is* the
 //    seam. A closing hairline here would print a second rule 32px above it, so
-//    the plate ends in `--space-tight` of its own field instead.
+//    the plate ends in `--space-tight` of its own field instead. The corollary is
+//    a duty on the composition, not on this partial: the block that follows a
+//    pinned plate MUST open on a rule, or its first line is cut in mid-air with
+//    nothing to explain the cut. `contact-shell__record` pays it.
+// 5. NO WINDOW. The plate's top edge is the chrome's closing rule, not a point
+//    32px below it. A pinned plate filled with the field is invisible against
+//    the field, so anything it covers stays hidden only up to its top edge: with
+//    an inset of `--HeaderHeight + --space-group` the text a reader had just
+//    scrolled past reappeared in the 32px band between the header and the plate,
+//    and the ledger read as a lid laid over the page rather than as a plate
+//    hanging from the head. `--HeaderHeight` alone puts the plate's first pixel
+//    on the header's own hairline, so the only edge a passing line meets is the
+//    chrome's - and the `--space-tight` at the plate's head is the same field
+//    the plate already keeps at its foot, which is what keeps the register off
+//    the rule instead of touching it.
+//
+// A page that pins a UNIT - a summary and the register under it - puts the pin on
+// the unit and renders this ledger without `pinned`. Two stickies cannot be
+// stacked without knowing the first one's height, so the unit is the pinned
+// object and it pays the five duties above for both of its children; the ledger
+// inside it keeps only the facts. `BlogArticle.astro` is that case, and the
+// register there is navigation, which a plate pinned over it would hide.
 //
 // The pin is scoped to 1024px and up, because that is where a column exists to
 // pin in: below it the margin is a section under the piece, and a summary pinned
 // there would pin over the piece it belongs to. `--HeaderHeight` is the header's
-// own height token, so the plate clears the chrome exactly and never guesses.
+// own height token, so the plate meets the chrome exactly and never guesses.
 .record-ledger-block--pinned {
 	z-index: 1;
 
 	background: var(--Background);
 
-	padding-block-end: var(--space-tight);
+	padding-block: var(--space-tight);
 }
 
 @include bp(1024px) {
 	.record-ledger-block--pinned {
 		position: sticky;
-		inset-block-start: calc(var(--HeaderHeight) + var(--space-group));
+		inset-block-start: var(--HeaderHeight);
 	}
 }
 
