@@ -126,48 +126,91 @@ export const WEIGHT_TEXT = 400;
  */
 export const STAMP_HEX: Record<string, string> = {
 	"EXTENSION HOST": "#1d4ed8",
+
 	"CAPABILITY HOST": "#1d4ed8",
+
 	"DUAL-TRACK": "#c2410c",
+
 	WORKBENCH: "#70685b",
+
 	"EFFECT-TS": "#0e7490",
+
 	"EFFECT-TS LAYERS": "#0e7490",
+
 	"WORK-STEALING": "#1d4ed8",
+
 	SCHEDULER: "#c2410c",
+
 	RUST: "#b91c1c",
+
 	TAURI: "#b45309",
+
 	"NATIVE BACKEND": "#1d4ed8",
+
 	"RUST-NATIVE": "#b91c1c",
+
 	"OXC PIPELINE": "#c2410c",
+
 	"REST SELECTABLE": "#c2410c",
+
 	"NO ELECTRON": "#155e75",
+
 	"ASTRO UI": "#6d28d9",
+
 	"WEBVIEW BRIDGE": "#0369a1",
+
 	"WASM SANDBOX": "#6d28d9",
+
 	"BACKGROUND SERVICES": "#1d4ed8",
+
 	DAEMON: "#1d4ed8",
+
 	"LOCAL AUTHORITY": "#1d4ed8",
+
 	"DNS SANDBOX": "#1d4ed8",
+
 	"SERVICE WORKER": "#1d4ed8",
+
 	"OFFLINE SHELL": "#1d4ed8",
+
 	"PURE ABSTRACT": "#70685b",
+
 	"CONTRACT CRATE": "#70685b",
+
 	DETERMINISTIC: "#15803d",
+
 	"BUILD ORCHESTRATOR": "#c2410c",
+
 	"ESBUILD PRIMARY": "#854d0e",
+
 	"GRPC BACKBONE": "#15803d",
+
 	"CONTRACT-FIRST": "#15803d",
+
 	"AUTHENTICATION TIERS": "#1d4ed8",
+
 	"FOUR MODES": "#c2410c",
+
 	"NOT FOUND": "#70685b",
+
 	MACOS: "#70685b",
+
 	WINDOWS: "#1d4ed8",
+
 	LINUX: "#854d0e",
+
 	"ACTIVE SOURCE": "#15803d",
+
 	INTEGRATION: "#1d4ed8",
+
 	"RELEASE PREPARATION": "#c2410c",
+
 	"CLOUD PLAN": "#1d4ed8",
+
 	"PROVIDER PLAN": "#6d28d9",
+
 	"LOCAL-FIRST PLAN": "#c2410c",
+
 	"ENTERPRISE PLAN": "#70685b",
 };
 

@@ -77,6 +77,7 @@ describe("DynamicHeroSection", () => {
 
 		expect(Plate).toHaveAttribute(
 			"src",
+
 			"/Evidence/Land/NightGlass-01.png",
 		);
 

@@ -56,7 +56,8 @@ export default (async () => {
 		Math.floor(Value * Step) / Step;
 
 	const Tick = (): void => {
-		if (!Active || (typeof document !== "undefined" && document.hidden)) return;
+		if (!Active || (typeof document !== "undefined" && document.hidden))
+			return;
 
 		const Time = performance.now();
 

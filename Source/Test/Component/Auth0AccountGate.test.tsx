@@ -242,6 +242,7 @@ describe("Auth0AccountGate", () => {
 
 		expect(screen.getByRole("link", { name: "Sign In" })).toHaveAttribute(
 			"href",
+
 			"/Account/SignIn",
 		);
 	});

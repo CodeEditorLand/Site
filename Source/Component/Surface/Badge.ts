@@ -40,38 +40,61 @@ export interface BadgeInk {
 export const BadgeInk: Record<BadgeTone, BadgeInk> = {
 	grpc: {
 		fill: "SpinegRPCMute",
+
 		label: "SpinegRPCFore",
+
 		variant: "mint",
+
 		dot: "SpinegRPC",
 	},
+
 	mute: {
 		fill: "Mute",
+
 		label: "MuteForeground",
+
 		variant: "platinum",
+
 		dot: "MuteForeground",
 	},
+
 	ipc: {
 		fill: "SpineIPCMute",
+
 		label: "SpineIPCFore",
+
 		variant: "azure",
+
 		dot: "SpineIPC",
 	},
+
 	tauri: {
 		fill: "ExtensionTauriMute",
+
 		label: "ExtensionTauriFore",
+
 		variant: "amber",
+
 		dot: "ExtensionTauri",
 	},
+
 	wasm: {
 		fill: "SpineWASMMute",
+
 		label: "SpineWASMFore",
+
 		variant: "platinum",
+
 		dot: "SpineWASM",
 	},
+
 	tcp: {
 		fill: "SpineTCPMute",
+
 		label: "SpineTCPFore",
+
 		variant: "platinum",
+
 		dot: "SpineTCP",
 	},
 };

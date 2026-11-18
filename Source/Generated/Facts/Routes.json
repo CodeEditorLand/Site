@@ -6,9 +6,7 @@
 			"Source/Component/Record/**",
 			"Source/Function/Route/Map.ts"
 		],
-		"Transform": [
-			"Facts"
-		],
+		"Transform": ["Facts"],
 		"Note": "One row per route Astro builds, the forms its tree mounts, and the drift between the built routes and the hand-kept registry.",
 		"Rule": "Generated. Change the tree or the page, then run `node Source/Script/Register.ts` - never this file."
 	},
@@ -30,11 +28,7 @@
 			"Path": "/404",
 			"File": "pages/404.astro",
 			"Title": "404: No Record At This Address",
-			"Forms": [
-				"RecordHero",
-				"RecordLedger",
-				"RecordFigure"
-			],
+			"Forms": ["RecordHero", "RecordLedger", "RecordFigure"],
 			"Lines": 208,
 			"NoIndex": true
 		},
@@ -42,10 +36,7 @@
 			"Path": "/Account",
 			"File": "pages/Account/index.astro",
 			"Title": "Account | Code Editor Land",
-			"Forms": [
-				"RecordAside",
-				"RecordLedger"
-			],
+			"Forms": ["RecordAside", "RecordLedger"],
 			"Lines": 177,
 			"NoIndex": false
 		},
@@ -53,9 +44,7 @@
 			"Path": "/Account/ForgotPassword",
 			"File": "pages/Account/ForgotPassword.astro",
 			"Title": "Forgot Password - Code Editor Land",
-			"Forms": [
-				"RecordLedger"
-			],
+			"Forms": ["RecordLedger"],
 			"Lines": 43,
 			"NoIndex": false
 		},
@@ -63,9 +52,7 @@
 			"Path": "/Account/ResetPassword",
 			"File": "pages/Account/ResetPassword.astro",
 			"Title": "Reset Password - Code Editor Land",
-			"Forms": [
-				"RecordLedger"
-			],
+			"Forms": ["RecordLedger"],
 			"Lines": 43,
 			"NoIndex": false
 		},
@@ -73,9 +60,7 @@
 			"Path": "/Account/SignIn",
 			"File": "pages/Account/SignIn.astro",
 			"Title": "Sign In - Code Editor Land",
-			"Forms": [
-				"RecordLedger"
-			],
+			"Forms": ["RecordLedger"],
 			"Lines": 54,
 			"NoIndex": false
 		},
@@ -83,9 +68,7 @@
 			"Path": "/Account/SignUp",
 			"File": "pages/Account/SignUp.astro",
 			"Title": "Registration Is Not Open | Code Editor Land",
-			"Forms": [
-				"RecordLedger"
-			],
+			"Forms": ["RecordLedger"],
 			"Lines": 52,
 			"NoIndex": false
 		},
@@ -93,10 +76,7 @@
 			"Path": "/Blog",
 			"File": "pages/Blog.astro",
 			"Title": "Blog | Code Editor Land",
-			"Forms": [
-				"RecordLedger",
-				"RecordFigure"
-			],
+			"Forms": ["RecordLedger", "RecordFigure"],
 			"Lines": 131,
 			"NoIndex": false
 		},
@@ -133,10 +113,7 @@
 			"Path": "/Contact",
 			"File": "pages/Contact/index.astro",
 			"Title": "Contact | Code Editor Land",
-			"Forms": [
-				"RecordStage",
-				"RecordLedger"
-			],
+			"Forms": ["RecordStage", "RecordLedger"],
 			"Lines": 145,
 			"NoIndex": false
 		},
@@ -300,9 +277,7 @@
 			"Path": "/Contact/Sale",
 			"File": "pages/Contact/Sale.astro",
 			"Title": "Enterprise Inquiries | Code Editor Land",
-			"Forms": [
-				"RecordLedger"
-			],
+			"Forms": ["RecordLedger"],
 			"Lines": 329,
 			"NoIndex": false
 		},
@@ -341,9 +316,7 @@
 			"Path": "/Contributing",
 			"File": "pages/Contributing.astro",
 			"Title": "Contributing | Code Editor Land",
-			"Forms": [
-				"RecordLedger"
-			],
+			"Forms": ["RecordLedger"],
 			"Lines": 584,
 			"NoIndex": false
 		},
@@ -351,9 +324,7 @@
 			"Path": "/Dashboard",
 			"File": "pages/Dashboard.astro",
 			"Title": "Dashboard | Code Editor Land",
-			"Forms": [
-				"RecordLedger"
-			],
+			"Forms": ["RecordLedger"],
 			"Lines": 506,
 			"NoIndex": false
 		},
@@ -389,10 +360,7 @@
 			"Path": "/Doc/Rust",
 			"File": "pages/Doc/Rust.astro",
 			"Title": "Rust API Documentation | Code Editor Land",
-			"Forms": [
-				"RecordLedger",
-				"RecordPlate"
-			],
+			"Forms": ["RecordLedger", "RecordPlate"],
 			"Lines": 226,
 			"NoIndex": false
 		},
@@ -420,11 +388,7 @@
 			"Path": "/Glossary",
 			"File": "pages/Glossary.astro",
 			"Title": "Glossary | Code Editor Land",
-			"Forms": [
-				"RecordBand",
-				"RecordLedger",
-				"RecordMargin"
-			],
+			"Forms": ["RecordBand", "RecordLedger", "RecordMargin"],
 			"Lines": 202,
 			"NoIndex": false
 		},
@@ -432,9 +396,7 @@
 			"Path": "/Legal/Privacy",
 			"File": "pages/Legal/Privacy.astro",
 			"Title": "Privacy Policy | Code Editor Land",
-			"Forms": [
-				"RecordLedger"
-			],
+			"Forms": ["RecordLedger"],
 			"Lines": 884,
 			"NoIndex": false
 		},
@@ -442,9 +404,7 @@
 			"Path": "/Legal/Term",
 			"File": "pages/Legal/Term.astro",
 			"Title": "Terms of Service | Code Editor Land",
-			"Forms": [
-				"RecordLedger"
-			],
+			"Forms": ["RecordLedger"],
 			"Lines": 961,
 			"NoIndex": false
 		},
@@ -452,10 +412,7 @@
 			"Path": "/License",
 			"File": "pages/License.astro",
 			"Title": "License | Code Editor Land",
-			"Forms": [
-				"RecordLedger",
-				"RecordWell"
-			],
+			"Forms": ["RecordLedger", "RecordWell"],
 			"Lines": 406,
 			"NoIndex": false
 		},
@@ -476,9 +433,7 @@
 			"Path": "/OAuth/Success",
 			"File": "pages/OAuth/Success.astro",
 			"Title": "Authentication Successful - Code Editor Land",
-			"Forms": [
-				"RecordLedger"
-			],
+			"Forms": ["RecordLedger"],
 			"Lines": 342,
 			"NoIndex": true
 		},
@@ -515,11 +470,7 @@
 			"Path": "/Verify",
 			"File": "pages/Verify.astro",
 			"Title": "Verify Email - Code Editor Land",
-			"Forms": [
-				"RecordMatrix",
-				"RecordLedger",
-				"RecordWell"
-			],
+			"Forms": ["RecordMatrix", "RecordLedger", "RecordWell"],
 			"Lines": 227,
 			"NoIndex": true
 		},

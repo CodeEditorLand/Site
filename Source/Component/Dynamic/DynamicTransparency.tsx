@@ -102,14 +102,23 @@ const StatusTone: Record<string, BadgeTone> = {
 // distinct marks rather than the same outline repeated.
 const FeatureToneCycle: BadgeTone[] = [
 	"tcp",
+
 	"ipc",
+
 	"grpc",
+
 	"wasm",
+
 	"rust",
+
 	"tauri",
+
 	"effect",
+
 	"electron",
+
 	"accent",
+
 	"quiet",
 ];
 
@@ -217,6 +226,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 					void ApplyNoise();
 				}
 			},
+
 			{ rootMargin: "100% 0px" },
 		);
 
@@ -365,6 +375,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 													StatusTone[Item.Tier] ??
 													"quiet"
 												}
+
 												className="StaccatoBadge"
 											>
 												{Item.Tier}

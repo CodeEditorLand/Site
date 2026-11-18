@@ -28,12 +28,19 @@ export default {
 			 * five values, no sixth - including in markup. */
 			letterSpacing: {
 				join: "var(--track-join)",
+
 				set: "var(--track-set)",
+
 				name: "var(--track-name)",
+
 				row: "var(--track-row)",
+
 				rule: "var(--track-rule)",
+
 				tight: "var(--track-join)",
+
 				wider: "var(--track-row)",
+
 				widest: "var(--track-rule)",
 			},
 
@@ -53,11 +60,13 @@ export default {
 			fontSize: {
 				display: [
 					"var(--type-display)",
+
 					{ lineHeight: "var(--type-display-line)" },
 				],
 
 				section: [
 					"var(--type-section)",
+
 					{
 						lineHeight: "var(--type-section-line)",
 
@@ -67,26 +76,31 @@ export default {
 
 				sub: [
 					"var(--type-sub)",
+
 					{ lineHeight: "var(--type-sub-line)" },
 				],
 
 				body: [
 					"var(--type-body)",
+
 					{ lineHeight: "var(--type-body-line)" },
 				],
 
 				caption: [
 					"var(--type-caption)",
+
 					{ lineHeight: "var(--type-caption-line)" },
 				],
 
 				meta: [
 					"var(--type-meta)",
+
 					{ lineHeight: "var(--type-meta-line)" },
 				],
 
 				code: [
 					"var(--type-code)",
+
 					{ lineHeight: "var(--type-code-line)" },
 				],
 			},
@@ -109,33 +123,49 @@ export default {
 						// size. Nothing here is a new value: each reads a token.
 						h1: {
 							"font-size": "var(--type-section)",
+
 							"line-height": "var(--type-section-line)",
+
 							"letter-spacing": "var(--track-join)",
+
 							"font-weight": "500",
+
 							strong: { "font-weight": "500" },
 						},
 
 						h2: {
 							"font-size": "var(--type-section)",
+
 							"line-height": "var(--type-section-line)",
+
 							"letter-spacing": "var(--track-join)",
+
 							"font-weight": "500",
+
 							strong: { "font-weight": "500" },
 						},
 
 						h3: {
 							"font-size": "var(--type-heading)",
+
 							"line-height": "var(--type-heading-line)",
+
 							"letter-spacing": "var(--track-set)",
+
 							"font-weight": "500",
+
 							strong: { "font-weight": "500" },
 						},
 
 						h4: {
 							"font-size": "var(--type-sub)",
+
 							"line-height": "var(--type-sub-line)",
+
 							"letter-spacing": "var(--track-set)",
+
 							"font-weight": "500",
+
 							strong: { "font-weight": "500" },
 						},
 

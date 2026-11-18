@@ -31,10 +31,15 @@ export interface BlogEntry {
 	/** The frontmatter, as `content.config.ts` validates it. */
 	readonly data: {
 		readonly title: string;
+
 		readonly summary: string;
+
 		readonly publishedAt: string;
+
 		readonly tags: readonly string[];
+
 		readonly author: string;
+
 		readonly readTime: number;
 	};
 
@@ -45,7 +50,9 @@ export interface BlogEntry {
 /** One heading as `render()` reports it: the pipeline's own slug, not a guess. */
 export interface BlogHeading {
 	readonly depth: number;
+
 	readonly slug: string;
+
 	readonly text: string;
 }
 
@@ -77,6 +84,7 @@ export const ReadTimeLabel = (Minutes: number, Unit: string): string =>
  */
 export const BuildRows = (
 	Entries: readonly BlogEntry[],
+
 	MinRead: string,
 ): readonly BlogRow[] =>
 	[...Entries]
@@ -105,7 +113,9 @@ export const BuildRows = (
  */
 export const BuildToc = (
 	Headings: readonly BlogHeading[],
+
 	Label: string,
+
 	Minimum: number = TocFloor,
 ): BlogToc | null => {
 	const Second: readonly BlogTocItem[] = Headings.filter(
@@ -150,19 +160,28 @@ export const HasDiagram = (Body: string | undefined): boolean =>
  */
 const ManualFor: Readonly<Record<string, string>> = {
 	ApplicationStartupHandshake: "architecture",
+
 	BuildSystemDesign: "build-pipeline",
+
 	CC0OpenSource: "why-cc0",
+
 	EffectTypeScriptArchitecture: "why-effect-ts",
+
 	ExtensionHostDeepDive: "cocoon",
+
 	LocalFirstPhilosophy: "local-first-protocol",
+
 	TauriDesktopIntegration: "why-tauri",
+
 	VSCodeCompatibility: "vscode-api-coverage",
 };
 
 /** The note's destination: its printed label, its route and whether it resolves. */
 export interface ManualTarget {
 	readonly label: string;
+
 	readonly href: string;
+
 	readonly state: "ok" | "gone";
 }
 
@@ -177,6 +196,7 @@ export interface ManualTarget {
  */
 export const ManualTargetFor = (
 	ArticleId: string,
+
 	DocIds: readonly string[],
 ): ManualTarget | undefined => {
 	const Doc = ManualFor[ArticleId];
@@ -185,7 +205,9 @@ export const ManualTargetFor = (
 
 	return {
 		label: `/DOC/${Doc.toUpperCase()}`,
+
 		href: `/Doc/${Doc}`,
+
 		state: DocIds.includes(Doc) ? "ok" : "gone",
 	};
 };
@@ -201,13 +223,19 @@ export const ManualTargetFor = (
  */
 export const BuildSummary = (
 	Entry: BlogEntry,
+
 	Sections: number,
+
 	ReadTime: string,
 ): readonly LedgerRow[] => [
 	{ key: "AUTHOR:", value: Entry.data.author },
+
 	{ key: "FILED:", value: Entry.data.publishedAt },
+
 	{ key: "READ:", value: ReadTime },
+
 	{ key: "TAGS:", value: Entry.data.tags.join("\u2001") },
+
 	{ key: "SECTIONS:", value: String(Sections) },
 ];
 
@@ -222,25 +250,35 @@ export const BuildSummary = (
  */
 export const BuildNotes = (
 	Entry: BlogEntry,
+
 	Sections: number,
+
 	Manual: ManualTarget | undefined,
+
 	HasRegister: boolean,
 ): readonly MarginNote[] => {
 	const Notes: MarginNote[] = [
 		{
 			index: "NOTE_01",
+
 			label: "THE DATE",
+
 			body: `Every figure quoted in this piece is as of ${Entry.data.publishedAt}. The piece is not revised after publication; the manual is.`,
+
 			source: `Source/Content/blog/${Entry.id}.md`,
 		},
+
 		{
 			index: "NOTE_02",
+
 			label: "THE SHAPE",
+
 			body: HasRegister
 				? `The piece opens at \`##\`: its title is the page's only \`h1\`, and the ${Sections} sections under it are what the register in this margin lists.`
 				: Sections > 0
 					? `The piece has ${Sections} sections, below the five-section floor, so this margin prints no register: it is short enough to read in one run.`
 					: "The piece opens at `##` and runs without sections, which is why this margin prints no register: there is nothing to list, and an empty list would be a lie about the piece's shape.",
+
 			source: "Source/Component/Blog/BlogArticle.astro",
 		},
 	];

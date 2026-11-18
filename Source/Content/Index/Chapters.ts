@@ -37,50 +37,73 @@ export interface Chapter {
 export const Chapters: readonly Chapter[] = [
 	{
 		label: "THE ARGUMENT",
+
 		answers:
 			"What the editor is, on one page: the claim, the architecture, the platform, the road.",
+
 		prefixes: ["/"],
 	},
+
 	{
 		label: "THE DOCUMENT",
+
 		answers:
 			"How it works, in articles: the reference, the deep dives, the workflows, and the filed entries.",
+
 		prefixes: ["/Doc", "/Blog", "/Glossary"],
 	},
+
 	{
 		label: "THE EDITION",
+
 		answers:
 			"What can be had today, what is still being prepared, and what a build from source takes.",
+
 		prefixes: ["/Download", "/Status"],
 	},
+
 	{
 		label: "THE INSTRUMENTS",
+
 		answers:
 			"Where a reader acts on their own account: sign in, register, recover, verify, and the portal.",
+
 		prefixes: ["/Portal", "/Dashboard", "/Account", "/OAuth", "/Verify"],
 	},
+
 	{
 		label: "THE FRONT DESK",
+
 		answers:
 			"Where a reader asks for something: the hub and its fourteen request routes.",
+
 		prefixes: ["/Contact"],
 	},
+
 	{
 		label: "THE BACK MATTER",
+
 		answers:
 			"The licence, the terms, the privacy policy, and the way in for a contributor.",
+
 		prefixes: ["/License", "/Contributing", "/Legal"],
 	},
+
 	{
 		label: "THE TRAPS",
+
 		answers:
 			"Where a wrong address lands: a record that says so, and a trampoline that does not.",
+
 		prefixes: ["/404", "/Visit"],
 	},
+
 	{
 		label: "THE INDEX",
+
 		answers:
 			"This page: the document's own contents, derived from the tree rather than kept by hand.",
+
 		prefixes: ["/Contents"],
 	},
 ];

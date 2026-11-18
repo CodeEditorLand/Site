@@ -90,6 +90,7 @@ function CommandEmpty({
 	...props
 }: React.ComponentProps<typeof CommandPrimitive.Empty> & {
 	Mark?: string;
+
 	Line?: string;
 }) {
 	return (
@@ -189,6 +190,7 @@ function CommandDialog({
 	...props
 }: React.ComponentProps<typeof Dialog> & {
 	title?: string;
+
 	description?: string;
 }) {
 	return (

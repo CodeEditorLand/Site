@@ -42,24 +42,41 @@
  * a row's ink comes from the state word, through `Component/Surface/State.ts`.
  */
 import { PlatformCards } from "../Home/Platform.js";
+
 import { ReleaseCards } from "../Home/Roadmap.js";
+
 import { Air } from "../Record/Air.js";
+
 import { Cocoon } from "../Record/Cocoon.js";
+
 import { Common } from "../Record/Common.js";
+
 import { Echo } from "../Record/Echo.js";
+
 import { Grove } from "../Record/Grove.js";
+
 import { Maintain } from "../Record/Maintain.js";
+
 import { Mist } from "../Record/Mist.js";
+
 import { Mountain } from "../Record/Mountain.js";
+
 import { Output } from "../Record/Output.js";
+
 import { Rest } from "../Record/Rest.js";
+
 import { SideCar } from "../Record/SideCar.js";
+
 import { Sky } from "../Record/Sky.js";
+
 import { Vine } from "../Record/Vine.js";
+
 import { Wind } from "../Record/Wind.js";
+
 import { Worker } from "../Record/Worker.js";
 
 import type { FieldRecord } from "../Record/FieldRecord.js";
+
 import type {
 	Band,
 	Comparison,
@@ -68,6 +85,7 @@ import type {
 	Stage,
 	Trace,
 } from "../../Component/Record/Type.js";
+
 import type { ReleaseCard } from "../Home/Type.js";
 
 /** The field-record separator: U+2001, never U+00B7. */
@@ -118,19 +136,33 @@ export interface BoardColumn {
 /** The fifteen element records, in the architecture band's own order. */
 const Elements: readonly FieldRecord[] = [
 	Air,
+
 	Cocoon,
+
 	Common,
+
 	Echo,
+
 	Grove,
+
 	Maintain,
+
 	Mist,
+
 	Mountain,
+
 	Output,
+
 	Rest,
+
 	SideCar,
+
 	Sky,
+
 	Vine,
+
 	Wind,
+
 	Worker,
 ];
 
@@ -197,10 +229,15 @@ const PlatformRows: readonly BoardRow[] = PlatformCards.map((Card) => ({
  */
 const ArtifactRow: BoardRow = {
 	mark: "ARTIFACT_01",
+
 	label: "PUBLIC BUILD",
+
 	meta: `CHANNEL:${Quad}NONE PUBLISHED`,
+
 	href: "/Download",
+
 	state: "UNAVAILABLE",
+
 	note: "SOURCE: SOURCE/COMPONENT/DYNAMIC/DOWNLOAD/DATA.TS",
 };
 
@@ -209,6 +246,7 @@ const AllRows: readonly BoardRow[] = [
 	...ElementRows,
 	...ReleaseRows,
 	...PlatformRows,
+
 	ArtifactRow,
 ];
 
@@ -220,34 +258,57 @@ const RowsOf = (Words: readonly string[]): readonly BoardRow[] =>
 export const Board: readonly BoardColumn[] = [
 	{
 		key: "in-force",
+
 		label: "IN FORCE",
+
 		words: ["ACTIVE", "VERIFIED"],
+
 		note: "The record exists, and someone is working on it today.",
+
 		empty: "No record is in force. Every record below is either announced or retired, which is a different site than this one.",
+
 		rows: RowsOf(["ACTIVE", "VERIFIED"]),
 	},
+
 	{
 		key: "on-the-way",
+
 		label: "ON THE WAY",
+
 		words: ["PREPARING", "LOADING"],
+
 		note: "The record is announced, and the thing it names is not here yet.",
+
 		empty: "Nothing is announced and unfinished. Every claim on this site is either in force or retired.",
+
 		rows: RowsOf(["PREPARING", "LOADING"]),
 	},
+
 	{
 		key: "retired",
+
 		label: "RETIRED",
+
 		words: ["ARCHIVED"],
+
 		note: "The record existed and does not now. A retired record keeps its address.",
+
 		empty: "No record has been retired. Nothing on this site has been withdrawn, and the column stays to say so - an empty column is a fact about the site, and hiding it would make the other three unreadable.",
+
 		rows: RowsOf(["ARCHIVED"]),
 	},
+
 	{
 		key: "not-measured",
+
 		label: "NOT MEASURED",
+
 		words: ["UNAVAILABLE"],
+
 		note: "The record is claimed, and the fact it would print has not been produced.",
+
 		empty: "Every claimed record carries its fact. Nothing on this site is waiting on a measurement.",
+
 		rows: RowsOf(["UNAVAILABLE"]),
 	},
 ];
@@ -267,39 +328,61 @@ export const TotalRows = AllRows.length;
  */
 export const Publication: Comparison = {
 	from: "SOURCE",
+
 	to: "SIGNED ARTIFACT",
+
 	stops: [
 		{
 			label: "SOURCE",
+
 			value: "PUBLISHED",
+
 			note: "CC0, in the open",
+
 			href: "/Download",
 		},
+
 		{
 			label: "SOURCE BUILD",
+
 			value: "DOCUMENTED",
+
 			note: "One config, two steps",
+
 			href: "/Doc/installation",
 		},
+
 		{
 			label: "UNSIGNED INSTALLER",
+
 			value: "NOT BUILT",
+
 			state: "UNAVAILABLE",
+
 			note: "No artifact to sign",
 		},
+
 		{
 			label: "SIGNED INSTALLER",
+
 			value: "NOT BUILT",
+
 			state: "UNAVAILABLE",
+
 			note: "Signing planned",
 		},
+
 		{
 			label: "STORE CHANNEL",
+
 			value: "NOT OPEN",
+
 			state: "UNAVAILABLE",
+
 			note: "Marketplace under review",
 		},
 	],
+
 	caption:
 		"The release has travelled two of five stops. Every stop after the source build prints `UNAVAILABLE` rather than a date, because a date this site has not committed to is a promise, and the rail is a record.",
 };
@@ -315,42 +398,65 @@ export const Publication: Comparison = {
 export const Vocabulary: readonly LedgerRow[] = [
 	{
 		key: "READY",
+
 		value: "The action can be taken now. Used of a surface, never of an element.",
+
 		note: "INK",
 	},
+
 	{
 		key: "ACTIVE",
+
 		value: "The record exists and is being worked on. The site's ordinary live state.",
+
 		note: "SPECIMEN",
 	},
+
 	{
 		key: "LOADING",
+
 		value: "The thing is arriving and has not arrived. Used of a release in flight.",
+
 		note: "INK",
 	},
+
 	{
 		key: "PREPARING",
+
 		value: "The thing is announced and not yet started. Used of a target with no artifact.",
+
 		note: "QUIET",
 	},
+
 	{
 		key: "VERIFIED",
+
 		value: "The claim was checked against something outside this site. Rare on purpose.",
+
 		note: "SPECIMEN",
 	},
+
 	{
 		key: "UNAVAILABLE",
+
 		value: "The fact exists and is empty. Never a zero: a zero is a measurement.",
+
 		note: "INK",
 	},
+
 	{
 		key: "INTERRUPTED",
+
 		value: "An action failed. Always printed with its cause and its next step.",
+
 		note: "INK",
 	},
+
 	{
 		key: "ARCHIVED",
+
 		value: "The record existed and does not now. It keeps its address and its facts.",
+
 		note: "QUIET",
 	},
 ];
@@ -369,45 +475,73 @@ export const Measures = (AsOf: string): readonly Measure[] => {
 	return [
 		{
 			label: "RECORDS",
+
 			value: String(AllRows.length),
+
 			unit: "ON THE BOARD",
+
 			provenance: "SOURCE/CONTENT/MORE/STATUS.TS",
+
 			lead: true,
 		},
+
 		{
 			label: "IN FORCE",
+
 			value: String(RowsOf(["ACTIVE", "VERIFIED"]).length),
+
 			unit: "ACTIVE OR VERIFIED",
+
 			provenance: "SOURCE/CONTENT/RECORD/*.TS",
 		},
+
 		{
 			label: "ON THE WAY",
+
 			value: String(RowsOf(["PREPARING", "LOADING"]).length),
+
 			unit: "PREPARING OR LOADING",
+
 			provenance: "SOURCE/CONTENT/HOME/PLATFORM.TS",
 		},
+
 		{
 			label: "RETIRED",
+
 			value: String(RowsOf(["ARCHIVED"]).length),
+
 			unit: "ARCHIVED",
+
 			provenance: "SOURCE/CONTENT/RECORD/*.TS",
 		},
+
 		{
 			label: "NOT MEASURED",
+
 			value: String(RowsOf(["UNAVAILABLE"]).length),
+
 			unit: "CLAIMED, NOT COUNTED",
+
 			provenance: "SOURCE/COMPONENT/DYNAMIC/DOWNLOAD/DATA.TS",
 		},
+
 		{
 			label: "WORDS USED",
+
 			value: `${Used.size}`,
+
 			unit: "OF EIGHT",
+
 			provenance: "SOURCE/COMPONENT/SURFACE/STATE.TS",
 		},
+
 		{
 			label: "AS OF",
+
 			value: AsOf,
+
 			unit: "THIS BUILD",
+
 			provenance: "THE DAY THIS PAGE WAS RENDERED",
 		},
 	];
@@ -419,25 +553,37 @@ export const Measures = (AsOf: string): readonly Measure[] => {
  */
 export const Reading: Trace = {
 	source: "THIS PAGE DECIDES NO STATE; IT READS THE MODULES THAT DO",
+
 	steps: [
 		{
 			index: "01",
+
 			path: "Source/Content/Record/",
+
 			note: "FIFTEEN ELEMENT RECORDS, ONE STATUS EACH",
 		},
+
 		{
 			index: "02",
+
 			path: "Source/Content/Home/Roadmap.ts",
+
 			note: "TWO RELEASES, STATED IN THEIR STAMPS",
 		},
+
 		{
 			index: "03",
+
 			path: "Source/Content/Home/Platform.ts",
+
 			note: "THREE TARGETS, ALL PREPARING",
 		},
+
 		{
 			index: "04",
+
 			path: "Source/Component/Dynamic/Download/Data.ts",
+
 			note: "THE ABSENT ARTIFACT, AND WHY IT IS ABSENT",
 		},
 	],
@@ -446,11 +592,15 @@ export const Reading: Trace = {
 /** The one command that re-reads the board, and the check that it stayed true. */
 export const Check = {
 	label: "RE-READ",
+
 	language: "bash",
+
 	lines: [
 		"node Source/Script/Register.ts",
+
 		"grep -rn 'Value:' Source/Content/Record/*.ts",
 	],
+
 	source: "SOURCE/SCRIPT/REGISTER.TS",
 };
 
@@ -463,17 +613,25 @@ export const Check = {
 export const Stages: readonly Stage[] = [
 	{
 		index: "01",
+
 		label: "READ",
+
 		line: "Every record module is imported, not copied: the board reads the same fifteen, two and three the rest of the site prints.",
 	},
+
 	{
 		index: "02",
+
 		label: "GROUP",
+
 		line: "Each row is filed under the column that holds its word. The four columns are a grouping of the eight, never a ninth word.",
 	},
+
 	{
 		index: "03",
+
 		label: "PRINT",
+
 		line: "The board prints the rows and the counts together, so a column cannot claim a figure its rows do not have.",
 	},
 ];
@@ -482,53 +640,74 @@ export const Stages: readonly Stage[] = [
 export const Bands = {
 	Board: {
 		kicker: "/THE BOARD",
+
 		heading: "Every record, under the word it states",
+
 		standfirst:
 			"Twenty-one records, four columns, one vocabulary. A record appears in exactly one column, and the column it is in is the word its own module states - this page has no opinion about any of them.",
+
 		footnote: `SOURCE: SOURCE/CONTENT/RECORD/*.TS${Quad}SOURCE/CONTENT/HOME/ROADMAP.TS${Quad}SOURCE/CONTENT/HOME/PLATFORM.TS`,
+
 		tone: "flush",
 	} satisfies Band,
 
 	Axis: {
 		kicker: "/THE AXIS",
+
 		heading: "How far the release has travelled",
+
 		standfirst:
 			"`PREPARING` says a thing is not here. It does not say how far away it is. The axis does: five stops from source to a signed artifact, and two of them are reached.",
+
 		footnote: `SOURCE: SOURCE/COMPONENT/DYNAMIC/DOWNLOAD/DATA.TS${Quad}A STOP THIS SITE CANNOT REACH PRINTS UNAVAILABLE, NEVER A DATE`,
+
 		tone: "canvas",
 	} satisfies Band,
 
 	Vocabulary: {
 		kicker: "/THE VOCABULARY",
+
 		heading: "Eight words, and no others",
+
 		standfirst:
 			"The state vocabulary is closed at eight. A ninth word would be a state with no ink and no tone, which is how a status becomes a decoration.",
+
 		footnote:
 			"The tone column is the word's ink, not a second classification: `SPECIMEN` is the one green, `QUIET` is the muted ink, `INK` is the foreground. A word outside the eight prints in ink and is not a state.",
+
 		tone: "paper",
 	} satisfies Band,
 
 	Figures: {
 		kicker: "/THE FIGURES",
+
 		heading: "What the board counts",
+
 		standfirst:
 			"Every figure is computed from the rows above it, and every figure names the file it was counted in. A number this page could not compute would print `UNAVAILABLE`, never a zero.",
+
 		tone: "canvas",
 	} satisfies Band,
 
 	Reading: {
 		kicker: "/THE READING",
+
 		heading: "Where each state comes from",
+
 		standfirst:
 			"Four modules, in the order a reader would check them. The board is a reading of these files, and the files are the record.",
+
 		tone: "paper",
 	} satisfies Band,
 
 	Limits: {
 		kicker: "/THE LIMITS",
+
 		heading: "What this board cannot tell you",
+
 		standfirst:
 			"A status board that only printed its successes would be a poster. These are the three things this page knows it does not know, each stated in the same band as the board itself.",
+
 		tone: "canvas",
 	} satisfies Band,
 } as const;

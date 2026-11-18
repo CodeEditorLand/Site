@@ -17,25 +17,35 @@ export interface NotFoundSurface {
 	/** The plate's channel and its trace field. */
 	readonly plate: {
 		readonly figure: string;
+
 		readonly source: string;
+
 		readonly state: string;
+
 		readonly proposition: string;
+
 		readonly mark: string;
+
 		readonly note: string;
 	};
 
 	/** The `missing` arm: the target is gone, and this is what it was. */
 	readonly missing: {
 		readonly statement: string;
+
 		readonly cause: string;
+
 		readonly next: { readonly label: string; readonly href: string };
 	};
 
 	/** The `too-long` arm: a path that will not fit the plate's one line. */
 	readonly tooLong: {
 		readonly statement: string;
+
 		readonly cause: string;
+
 		readonly limit: string;
+
 		readonly next: { readonly label: string; readonly href: string };
 	};
 }

@@ -22,24 +22,34 @@ import type { DocSection } from "../../Component/Dynamic/Interface/Content/Page/
 const Sections: DocSection[] = [
 	{
 		Id: "start",
+
 		Label: "Start",
+
 		Children: [
 			{ Id: "install", Label: "Install" },
+
 			{ Id: "first-run", Label: "First Run" },
 		],
 	},
+
 	{
 		Id: "deep-dive",
+
 		Label: "Deep Dive",
+
 		Children: [
 			{
 				Id: "deep-dive-mountain",
+
 				Label: "Mountain",
+
 				Children: [
 					{ Id: "mountain-ipc", Label: "IPC Layer" },
+
 					{ Id: "mountain-fs", Label: "Filesystem Footprint" },
 				],
 			},
+
 			{ Id: "deep-dive-wind", Label: "Wind" },
 		],
 	},
@@ -65,6 +75,7 @@ describe("DynamicDocSidebar", () => {
 
 		await User.type(
 			screen.getByLabelText(/filter documentation pages/i),
+
 			"ipc",
 		);
 
@@ -75,8 +86,11 @@ describe("DynamicDocSidebar", () => {
 		// The matching leaf's section and group survive as context; everything else
 		// leaves the tree.
 		expect(screen.getByText("Deep Dive")).toBeInTheDocument();
+
 		expect(screen.getByText("Mountain")).toBeInTheDocument();
+
 		expect(screen.queryByText("Install")).toBeNull();
+
 		expect(screen.queryByText("Filesystem Footprint")).toBeNull();
 	});
 
@@ -87,6 +101,7 @@ describe("DynamicDocSidebar", () => {
 
 		await User.type(
 			screen.getByLabelText(/filter documentation pages/i),
+
 			"first-run",
 		);
 
@@ -108,6 +123,7 @@ describe("DynamicDocSidebar", () => {
 
 		await User.type(
 			screen.getByLabelText(/filter documentation pages/i),
+
 			"zzzz",
 		);
 

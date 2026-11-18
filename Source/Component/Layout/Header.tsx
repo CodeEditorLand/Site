@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "../UI/Button";
 
 import { Rail } from "./Frame/Rail";
+
 import { RunningHead } from "./Frame/RunningHead";
 
 import {
@@ -198,6 +199,7 @@ const Header = ({ Content, AuthSlot, Mode = "minimal" }: HeaderProps) => {
 
 				SetSection(Ids.find((Id) => Visible.current.has(Id)) ?? "");
 			},
+
 			{ rootMargin: "-25% 0px -60% 0px" },
 		);
 
@@ -230,7 +232,9 @@ const Header = ({ Content, AuthSlot, Mode = "minimal" }: HeaderProps) => {
 	/** The shell's classes: the base, the surface, and the scrolled state. */
 	const Shell = [
 		"Header",
+
 		ModeClass,
+
 		Scrolled ? "HeaderScrolled" : null,
 	].filter((Name): Name is string => Name !== null);
 

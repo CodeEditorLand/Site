@@ -87,9 +87,9 @@ export const WireContents = (): void => {
 	 * article these are the body's `##` headings; on the index they are the
 	 * section wrappers, which is where the anchor lives there.
 	 */
-	const Targets = Array.from(Body.querySelectorAll<HTMLElement>("[id]")).filter(
-		(Target) => Links.has(Target.id),
-	);
+	const Targets = Array.from(
+		Body.querySelectorAll<HTMLElement>("[id]"),
+	).filter((Target) => Links.has(Target.id));
 
 	if (!Targets.length) return;
 
@@ -150,6 +150,7 @@ export const WireContents = (): void => {
 
 			Resolve();
 		},
+
 		{ rootMargin: "-25% 0px -60% 0px" },
 	);
 

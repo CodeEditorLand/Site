@@ -41,6 +41,7 @@ export const SlipRegister = ({
 	children,
 }: {
 	head: SlipHead;
+
 	className?: string;
 
 	/** Trailing content in the same line - the palette's scope control. */
@@ -71,8 +72,11 @@ export const SlipEmpty = ({
 }: {
 	/** What is missing, uppercase - `NO RECORD`, `NO PAGE`, `NO MATCH`. */
 	Mark?: string;
+
 	Line: string;
+
 	children?: React.ReactNode;
+
 	className?: string;
 }) => (
 	<div className={cn("Slip__Empty", className)}>
@@ -103,8 +107,10 @@ export const Chord = ({
 	className,
 }: {
 	children: React.ReactNode;
+
 	/** Draw the whole cap in ink - for the trigger, where the chord is the control. */
 	Ink?: boolean;
+
 	className?: string;
 }) => (
 	<span className={cn("Chord", Ink && "Chord--ink", className)}>
@@ -132,9 +138,13 @@ export const Segmented = <Value extends string>({
 	className,
 }: {
 	Items: readonly { Value: Value; Label: string }[];
+
 	Value: Value;
+
 	OnChange: (Next: Value) => void;
+
 	Label: string;
+
 	className?: string;
 }) => {
 	const Refs = React.useRef<(HTMLButtonElement | null)[]>([]);

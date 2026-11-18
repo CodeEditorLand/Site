@@ -14,6 +14,7 @@ import type { LinkSpec } from "../../../../../Links";
 import type { LinkIndexData } from "../../../../Type";
 
 export const LinkIndexData: LinkIndexFragment = {
+
 	url: "https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/index.astro#L23",
 
 	pages: ["sky"],
@@ -23,7 +24,9 @@ export const LinkIndexData: LinkIndexFragment = {
 	terms: {
 		"Default.astro": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/pages/index.astro",
+
 			Line: 23,
 		},
 	},

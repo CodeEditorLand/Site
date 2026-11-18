@@ -33,38 +33,55 @@ import type { LedgerRow } from "../Record/Type.js";
 /** The one license the project is under. */
 const License: LedgerRow = {
 	key: "LICENSE:",
+
 	value: "Creative Commons CC0 1.0 Universal",
+
 	note: "the core editor codebase",
 };
 
 /** Who stands behind the document, and where a reader goes next. */
 export const TrustInstitution: readonly LedgerRow[] = [
 	License,
+
 	{
 		key: "MAINTAINER:",
+
 		value: "PlayForm",
+
 		note: "Sofia, Bulgaria - steward of the Code Editor Land open-source project",
 	},
+
 	{
 		key: "SUPPORT:",
+
 		value: "/Contact/Reach, /Contact/Query",
+
 		links: [
 			{ text: "/CONTACT/REACH", href: "/Contact/Reach" },
+
 			{ text: "/CONTACT/QUERY", href: "/Contact/Query" },
 		],
 	},
+
 	{
 		key: "LEGAL:",
+
 		value: "/Contact/Legal",
+
 		links: [{ text: "/CONTACT/LEGAL", href: "/Contact/Legal" }],
 	},
+
 	{
 		key: "SOURCE:",
+
 		value: "github.com/CodeEditorLand/Land",
+
 		links: [
 			{
 				text: "github.com/CodeEditorLand/Land",
+
 				href: "https://github.com/CodeEditorLand/Land",
+
 				target: "blank",
 			},
 		],

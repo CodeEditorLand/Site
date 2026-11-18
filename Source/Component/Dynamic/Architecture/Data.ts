@@ -38,23 +38,39 @@
  *   when it stops being a record.
  */
 import { Air } from "../../../Content/Record/Air.js";
+
 import { Cocoon } from "../../../Content/Record/Cocoon.js";
+
 import { Common } from "../../../Content/Record/Common.js";
+
 import { Echo } from "../../../Content/Record/Echo.js";
+
 import { Grove } from "../../../Content/Record/Grove.js";
+
 import { Land } from "../../../Content/Record/Land.js";
+
 import { Maintain } from "../../../Content/Record/Maintain.js";
+
 import { Mist } from "../../../Content/Record/Mist.js";
+
 import { Mountain } from "../../../Content/Record/Mountain.js";
+
 import { Output } from "../../../Content/Record/Output.js";
+
 import { Rest } from "../../../Content/Record/Rest.js";
+
 import { SideCar } from "../../../Content/Record/SideCar.js";
+
 import { Sky } from "../../../Content/Record/Sky.js";
+
 import { Vine } from "../../../Content/Record/Vine.js";
+
 import { Wind } from "../../../Content/Record/Wind.js";
+
 import { Worker } from "../../../Content/Record/Worker.js";
 
 import type { FieldRecord } from "../../../Content/Record/FieldRecord.js";
+
 import type Item from "../Interface/Item/Testimonial.js";
 
 import type { ElementEntry, Family } from "./Type.js";
@@ -72,20 +88,35 @@ export const FiledLabel = "ALSO FILED";
  */
 const Records: Record<string, FieldRecord> = {
 	Air,
+
 	Cocoon,
+
 	Common,
+
 	Echo,
+
 	Grove,
+
 	Land,
+
 	Maintain,
+
 	Mist,
+
 	Mountain,
+
 	Output,
+
 	Rest,
+
 	SideCar,
+
 	Sky,
+
 	Vine,
+
 	Wind,
+
 	Worker,
 };
 
@@ -95,19 +126,33 @@ const Records: Record<string, FieldRecord> = {
  */
 export const ElementDocPath: Record<string, string> = {
 	Mountain: "/Doc/mountain",
+
 	Cocoon: "/Doc/cocoon",
+
 	Wind: "/Doc/wind",
+
 	Sky: "/Doc/sky",
+
 	Air: "/Doc/air",
+
 	Echo: "/Doc/echo",
+
 	Vine: "/Doc/vine",
+
 	Common: "/Doc/common",
+
 	Grove: "/Doc/grove",
+
 	Mist: "/Doc/mist",
+
 	Rest: "/Doc/rest",
+
 	Output: "/Doc/output",
+
 	SideCar: "/Doc/sidecar",
+
 	Maintain: "/Doc/maintain",
+
 	Worker: "/Doc/worker",
 };
 
@@ -121,19 +166,33 @@ export const DocPathOf = (Name: string): string =>
  */
 const Glyphs: Record<string, string> = {
 	mountain: "⛰️",
+
 	cocoon: "🦋",
+
 	wind: "🍃",
+
 	sky: "🌌",
+
 	air: "🪁",
+
 	echo: "📣",
+
 	grove: "🌳",
+
 	vine: "🌿",
+
 	rest: "⛱️",
+
 	worker: "🍩",
+
 	common: "🧑🏼‍🏭",
+
 	maintain: "💪🏼",
+
 	mist: "🌫️",
+
 	output: "⚫",
+
 	sidecar: "🚃",
 };
 
@@ -155,11 +214,16 @@ const GlyphOf = (Name: string): string => Glyphs[Name.toLowerCase()] ?? "◎";
 export const Families: readonly Family[] = [
 	{
 		label: "/RUNTIME",
+
 		names: ["Mountain", "Common", "Echo", "Air", "SideCar"],
 	},
+
 	{ label: "/EXTENSIONS", names: ["Cocoon", "Grove"] },
+
 	{ label: "/INTERFACE", names: ["Sky", "Wind", "Worker"] },
+
 	{ label: "/BUILD", names: ["Output", "Rest", "Maintain"] },
+
 	{ label: "/TRANSPORT", names: ["Vine", "Mist"] },
 ];
 
@@ -197,11 +261,17 @@ export const LeadLine =
  */
 export const Featured: readonly string[] = [
 	"Mountain",
+
 	"Cocoon",
+
 	"Sky",
+
 	"Wind",
+
 	"Vine",
+
 	"Grove",
+
 	"Air",
 ];
 
@@ -233,6 +303,7 @@ export const FiledGroupsOf = (
 	Items: readonly Item[],
 ): readonly {
 	readonly label: string;
+
 	readonly records: readonly ElementEntry[];
 }[] =>
 	Families.map((Group) => ({
@@ -257,14 +328,20 @@ export const EntryOf = (Item: Item): ElementEntry => {
 
 	return {
 		index: Record?.Index ?? `# ${Item.Author.toUpperCase()}_01`,
+
 		name: Item.Author,
+
 		glyph: GlyphOf(Item.Author),
+
 		chips: (Item.Role ?? "")
 			.split(/\u2001| - /)
 			.map((Chip) => Chip.trim())
 			.filter((Chip) => Chip.length > 0),
+
 		body: Item.Quote,
+
 		href: DocPathOf(Item.Author),
+
 		source: Item.Href ?? Record?.Href,
 	};
 };
@@ -276,6 +353,7 @@ export const EntriesOf = (Items: readonly Item[]): readonly ElementEntry[] =>
 /** One family's records, in the family's own order. */
 export const FamilyEntriesOf = (
 	Group: Family,
+
 	Items: readonly Item[],
 ): readonly ElementEntry[] => {
 	const ByName = new Map(Items.map((Item) => [Item.Author, Item]));

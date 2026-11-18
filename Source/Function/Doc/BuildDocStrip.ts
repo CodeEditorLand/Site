@@ -58,6 +58,7 @@ export interface DocStripInput {
 
 const BuildDocStrip = (
 	Input: DocStripInput,
+
 	T: DocTranslate,
 ): readonly DocStripItem[] => {
 	const Copy = (Key: string, Default: string) =>
@@ -82,11 +83,16 @@ const BuildDocStrip = (
 	return [
 		{
 			Label: Copy("strip.status", "STATUS:"),
+
 			Value: Copy("strip.state", "PUBLISHED"),
 		},
+
 		Field("layer", Input.Layer.toUpperCase()),
+
 		Field("source", Input.Source),
+
 		Empty("compat"),
+
 		Empty("updated"),
 		...(Input.Extras ?? []),
 	];

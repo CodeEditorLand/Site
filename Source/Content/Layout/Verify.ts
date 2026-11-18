@@ -31,6 +31,7 @@ import type { MatrixColumn, LedgerRow } from "../../Component/Record/Type.js";
 /** One row of the audit matrix: the label, then one cell per column. */
 export interface AuditRow {
 	readonly label: string;
+
 	readonly cells: readonly string[];
 }
 
@@ -54,8 +55,11 @@ export interface VerifySurface {
 	/** The query contract, as a well. */
 	readonly well: {
 		readonly label: string;
+
 		readonly language: string;
+
 		readonly lines: readonly string[];
+
 		readonly source: string;
 	};
 
@@ -63,17 +67,25 @@ export interface VerifySurface {
 	readonly adverse: {
 		readonly error: {
 			readonly statement: string;
+
 			readonly cause: string;
+
 			readonly next: { readonly label: string; readonly href: string };
 		};
+
 		readonly stale: {
 			readonly statement: string;
+
 			readonly cause: string;
+
 			readonly next: { readonly label: string; readonly href: string };
 		};
+
 		readonly denied: {
 			readonly statement: string;
+
 			readonly cause: string;
+
 			readonly next: { readonly label: string; readonly href: string };
 		};
 	};
@@ -82,6 +94,7 @@ export interface VerifySurface {
 /** Resolve the route's audit through the page's translator. */
 export const VerifyAudit = (
 	T: TFunction,
+
 	Declarations: readonly { key: string; value: string }[],
 ): VerifySurface => ({
 	scopeRegister: "CHECK",

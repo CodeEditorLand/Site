@@ -37,14 +37,19 @@ export const MatchEntry = (Query: string, Entry: PaletteEntry): number => {
 	if (Needle === "") return 1;
 
 	const Label = Entry.Label.toLowerCase();
+
 	const Section = (Entry.Section ?? "").toLowerCase();
+
 	const Slug = Entry.Id.replace(
 		/^(page|part|record|term|action)-/,
+
 		"",
 	).toLowerCase();
 
 	if (Label === Needle) return 100;
+
 	if (Label.startsWith(Needle)) return 80;
+
 	if (Label.includes(Needle)) return 60;
 
 	// A word start inside the label: "footprint" finds "Filesystem Footprint".
@@ -52,7 +57,9 @@ export const MatchEntry = (Query: string, Entry: PaletteEntry): number => {
 		return 70;
 
 	if (Section.startsWith(Needle)) return 40;
+
 	if (Section.includes(Needle)) return 30;
+
 	if (Slug.includes(Needle)) return 20;
 
 	return Subsequence(Needle, `${Label} ${Section} ${Slug}`) ? 10 : 0;
@@ -78,6 +85,7 @@ const Subsequence = (Needle: string, Haystack: string): boolean => {
 /** Filter and order one group's rows. */
 export const FilterEntries = (
 	Query: string,
+
 	Entries: PaletteEntry[],
 ): PaletteEntry[] =>
 	Entries.map((Entry, Index) => ({

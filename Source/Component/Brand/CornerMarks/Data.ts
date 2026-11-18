@@ -50,7 +50,9 @@ export interface Geometry {
 /** One tick: its corner, its arm, and the inline style that places it. */
 export interface Tick {
 	readonly corner: Corner;
+
 	readonly axis: Axis;
+
 	readonly style: string;
 }
 
@@ -112,22 +114,31 @@ const ANCHORS: Record<Corner, Anchor> = {
 
 	tr: {
 		primary: "top",
+
 		along: "right",
+
 		originH: "100% 50%",
+
 		originV: "50% 0",
 	},
 
 	bl: {
 		primary: "bottom",
+
 		along: "left",
+
 		originH: "0 50%",
+
 		originV: "50% 100%",
 	},
 
 	br: {
 		primary: "bottom",
+
 		along: "right",
+
 		originH: "100% 50%",
+
 		originV: "50% 100%",
 	},
 };
@@ -140,7 +151,9 @@ const Ink = (Geometry: Geometry): string =>
 const Box = (Geometry: Geometry, Anchor: Anchor, Axis: Axis): string =>
 	[
 		`${Anchor.primary}:${Geometry.Inset}px`,
+
 		`${Anchor.along}:${Geometry.Inset}px`,
+
 		Axis === "h"
 			? `width:${Geometry.Horizontal}px;height:${Geometry.Thickness}px`
 			: `width:${Geometry.StemWidth}px;height:${Geometry.Vertical}px`,

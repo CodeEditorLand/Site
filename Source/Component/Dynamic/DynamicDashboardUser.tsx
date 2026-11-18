@@ -250,6 +250,7 @@ const DashboardUserInner = () => {
 					<button
 						type="button"
 						onClick={() => Login()}
+
 						className="auth-shell__primary emphasis-expressive"
 					>
 						{T("dashboard.account.signInButton", {
@@ -296,10 +297,12 @@ const DashboardUserInner = () => {
 			{HasNoProfile ? (
 				<DynamicStateReport
 					Label={StateLabel.Empty}
+
 					Sentence={T("account:dashboardPage.surface.state.noEmail", {
 						defaultValue:
 							"No email on this account. The provider did not return one.",
 					})}
+
 					Action={
 						<button
 							type="button"
@@ -454,9 +457,13 @@ const DashboardUserInner = () => {
 							{ProviderIcon && (
 								<ThemeImage
 									src={ProviderIcon}
+
 									alt={ProviderLabel}
+
 									width={14}
+
 									height={14}
+
 									className="h-3.5 w-3.5"
 								/>
 							)}

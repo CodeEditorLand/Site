@@ -42,7 +42,9 @@ describe("Palette mount", () => {
 		// The trigger is in the HTML, not injected by the client: a keyboard reader
 		// tabs to it before any JavaScript has run.
 		expect(Html).toContain("data-palette-trigger");
+
 		expect(Html).toContain("Find a record");
+
 		expect(Html).toContain("Chord__Key");
 	});
 
@@ -54,6 +56,7 @@ describe("Palette mount", () => {
 		// would buy a few hundred milliseconds on a chord and cost the budget of
 		// every page that never opens the palette.
 		expect(Html).toContain('client="idle"');
+
 		expect(Html).toContain(" ssr");
 	});
 });

@@ -237,6 +237,7 @@ export default ({
 							Variant: "default",
 							ClassName: "auth-shell__primary",
 						}}
+
 						OnAction={() => Login()}
 					/>
 				}
@@ -265,8 +266,11 @@ export default ({
 							{User.picture && (
 								<img
 									src={User.picture}
+
 									alt={User.name || "User avatar"}
+
 									title={User.name || "User avatar"}
+
 									width="64"
 									height="64"
 									className="auth-shell__avatar"

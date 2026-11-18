@@ -234,6 +234,7 @@ const DynamicSignUp = ({
 						{StrengthSegments.map((Segment) => (
 							<span
 								key={Segment}
+
 								className={[
 									"auth-shell__strength-segment",
 									Segment < Filled
@@ -298,10 +299,12 @@ const DynamicSignUp = ({
 					{OauthButtons.map((ButtonItem, Index) => (
 						<DynamicButton
 							key={Index}
+
 							Content={{
 								...ButtonItem,
 								FullWidth: true,
 							}}
+
 							OnAction={() =>
 								OnOAuth?.(ButtonItem.Icon as string)
 							}

@@ -122,9 +122,11 @@ const VerifyPage = ({
 					Title={T("success.title", {
 						defaultValue: "Email verified!",
 					})}
+
 					Sentence={
 						"Your email has been successfully verified. You can now sign in to your account and start using Code Editor Land."
 					}
+
 					Glyph="check"
 				>
 					<DynamicButton
@@ -133,6 +135,7 @@ const VerifyPage = ({
 							Variant: "default",
 							ClassName: "auth-shell__primary",
 						}}
+
 						OnAction={() => Navigate("/")}
 					/>
 				</AuthReport>
@@ -143,6 +146,7 @@ const VerifyPage = ({
 					Title={T("error.title", {
 						defaultValue: "Verification failed",
 					})}
+
 					Sentence={
 						<>
 							{
@@ -154,6 +158,7 @@ const VerifyPage = ({
 							}
 						</>
 					}
+
 					Glyph="alert"
 					Role="alert"
 				>
@@ -164,6 +169,7 @@ const VerifyPage = ({
 								Variant: "default",
 								ClassName: "auth-shell__primary",
 							}}
+
 							OnAction={() => Navigate("/Verify")}
 						/>
 

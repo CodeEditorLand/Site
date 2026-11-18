@@ -22,12 +22,12 @@ node Source/Script/Register.ts
 
 ## What the numbers mean
 
-| File           | Answers                                                                                       |
-| -------------- | --------------------------------------------------------------------------------------------- |
+| File           | Answers                                                                                        |
+| -------------- | ---------------------------------------------------------------------------------------------- |
 | `Routes.json`  | which routes the build emits, what each one mounts, and where the hand-kept registry disagrees |
-| `Forms.json`   | which of the Record blocks is mounted by which route                                        |
-| `Modules.json` | what every module outside the bulk trees carries, and who reads it                            |
-| `Records.json` | every record head the tree prints, and the routes a reader can reach it from                  |
+| `Forms.json`   | which of the Record blocks is mounted by which route                                           |
+| `Modules.json` | what every module outside the bulk trees carries, and who reads it                             |
+| `Records.json` | every record head the tree prints, and the routes a reader can reach it from                   |
 
 Measured at the last run: **42 routes**, **221 modules**,
 **163 read**, **13 declared with no reader**.

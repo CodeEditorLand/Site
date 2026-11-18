@@ -79,6 +79,7 @@ const DynamicForgotPassword = ({
 					<form
 						className="space-y-4"
 						onSubmit={HandleSubmit}
+
 						aria-label="Password reset request form"
 					>
 						<div aria-live="polite" aria-atomic="true">

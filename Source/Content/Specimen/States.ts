@@ -47,7 +47,9 @@ export type StateKind =
 /** One fact the arm prints under its rows. */
 export interface StateFact {
 	readonly key: string;
+
 	readonly value: string;
+
 	readonly code?: boolean;
 }
 
@@ -68,6 +70,7 @@ export interface StateCell {
 	/** The way forward. A link, never a disabled control. */
 	readonly next?: {
 		readonly label: string;
+
 		readonly href: string;
 	};
 
@@ -124,103 +127,156 @@ export interface StateContext {
 export const States = (Context: StateContext): readonly StateCell[] => [
 	{
 		kind: "empty",
+
 		index: "EMPTY / 01",
+
 		statement:
 			"A set with nothing in it yet: the archive before its first entry, a rail with no rows, a release page with no artifact.",
+
 		cause: "The arm says what would be here, why it is not, and where to read instead. It never prints a zero - a zero is a measurement, and nothing here has been measured.",
+
 		next: { label: "READ THE ARCHIVE", href: "/Blog" },
+
 		note: "OCCURS AT: /BLOG\u2001WHEN THE COLLECTION IS EMPTY",
 	},
 
 	{
 		kind: "loading",
+
 		index: "LOADING / 02",
+
 		statement:
 			"The keys are known before the values are: the record's own field names, printed at the label register with their values barred.",
+
 		cause: "No spinner. A spinner says that something is happening; a skeleton says what - and the schema of a record is known the moment the record is asked for.",
+
 		keys: ["SESSION:", "ROUTE:", "PROFILE:"],
+
 		note: "OCCURS AT: /ACCOUNT\u2001WHILE THE SESSION IS READ",
 	},
 
 	{
 		kind: "partial",
+
 		index: "PARTIAL / 03",
+
 		statement:
 			"Some facts unknown. The figure that could not be counted prints UNAVAILABLE, and the ones that could print their values beside it.",
+
 		cause: "UNAVAILABLE is the truth about not having a measurement. A zero would claim the number is nought, and a blank cell would claim the field does not exist.",
+
 		next: { label: "READ THE RELEASE RECORD", href: "/Download" },
+
 		rows: [
 			{ key: "KNOWN:", value: "PLATFORMS\u20013" },
+
 			{ key: "UNAVAILABLE:", value: "VERSION, SIZE, DIGEST" },
 		],
+
 		note: "OCCURS AT: /DOWNLOAD\u2001NO ARTIFACT IS PUBLISHED",
 	},
 
 	{
 		kind: "error",
+
 		index: "ERROR / 04",
+
 		statement:
 			"An action failed. The page states it in the vocabulary's word for an interruption, names the cause, and offers the one way to try again.",
+
 		cause: "INTERRUPTED is ink, not quiet: a failure stated in a hushed tone is a failure the design is apologising for. The retry is a link, because a disabled button is not a way forward.",
+
 		next: { label: "READ THE FAILURE REGISTER", href: "/OAuth/Success" },
+
 		note: "OCCURS AT: /OAUTH/SUCCESS\u2001FOUR ARMS, FOUR CAUSES",
 	},
 
 	{
 		kind: "stale",
+
 		index: "STALE / 05",
+
 		statement:
 			"A reading older than its as-of. The last known value stays visible, and the age prints beside it.",
+
 		cause: "A figure with no date is a figure from an unknown year. The date is part of the figure, and hiding an old number is worse than printing an old number.",
+
 		next: { label: "READ THE MEASUREMENTS", href: "/Compare" },
+
 		asOf: Context.AsOf,
+
 		age: Context.Age,
+
 		note: "OCCURS AT: /COMPARE\u2001THE ONE DATED ROW",
 	},
 
 	{
 		kind: "too-much",
+
 		index: "TOO MUCH / 06",
+
 		statement:
 			"A set that outgrew the shape it was drawn for. The register prints how many it holds, and the band still holds them.",
+
 		cause: "A list of two hundred is not a layout problem to hide: it is a number to print. The count goes in the register line, and the band keeps its rhythm rather than its assumed length.",
+
 		next: { label: "READ THE ROUTE ARCHIVE", href: "/Contents" },
+
 		rows: [
 			{ key: "SET:", value: `${Context.RouteCount} ROUTES` },
+
 			{ key: "DRAWN FOR:", value: "12" },
+
 			{ key: "CROP:", value: "NONE - THE BAND HOLDS" },
 		],
+
 		note: "OCCURS AT: /CONTENTS\u2001THE WHOLE TREE IN ONE ARCHIVE",
 	},
 
 	{
 		kind: "too-long",
+
 		index: "TOO LONG / 07",
+
 		statement:
 			"A value that will not fit the measure. It prints clipped, states how long it really is, and offers the whole of itself on hover and in the document.",
+
 		cause: "The layout must not break for a title, and the title must not be silently shortened into a different title. Both facts print.",
+
 		value: Context.LongestTitle,
+
 		limit: "72CH",
+
 		note: "OCCURS AT: /BLOG\u2001THE LONGEST TITLE IN THE COLLECTION",
 	},
 
 	{
 		kind: "missing",
+
 		index: "MISSING / 08",
+
 		statement:
 			"A record whose target is gone. The tombstone stands where the link was, and it says what the target was.",
+
 		cause: "A dead link is a promise the document cannot keep. The tombstone is not an apology: it is the record of a destination that used to exist, printed where a reader would have clicked.",
+
 		next: { label: "READ THE MANUAL", href: "/Doc" },
+
 		note: "OCCURS AT: /BLOG/<SLUG>\u2001A NOTE WHOSE MANUAL PAGE IS GONE",
 	},
 
 	{
 		kind: "denied",
+
 		index: "DENIED / 09",
+
 		statement:
 			"A surface the reader may not see. It says what the surface is, not only that the session is not allowed to open it.",
+
 		cause: "Denied is a condition of the reader's session, not of the record: the record exists, the session does not. A page that printed only the refusal would be describing the reader rather than the document.",
+
 		next: { label: "SIGN IN", href: "/Account/SignIn" },
+
 		note: "OCCURS AT: /ACCOUNT\u2001THE PROFILE ISLAND BEFORE SIGN-IN",
 	},
 ];
@@ -236,11 +292,18 @@ export const States = (Context: StateContext): readonly StateCell[] => [
  */
 export const Vocabulary: readonly string[] = [
 	"READY",
+
 	"ACTIVE",
+
 	"LOADING",
+
 	"PREPARING",
+
 	"VERIFIED",
+
 	"UNAVAILABLE",
+
 	"INTERRUPTED",
+
 	"ARCHIVED",
 ];

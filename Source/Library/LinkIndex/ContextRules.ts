@@ -61,6 +61,7 @@ export const LinkIndexContextRules: Record<
 		shell: [
 			{
 				when: "shell profile|\\.zshrc|\\.bashrc|\\.zprofile",
+
 				then: false,
 			},
 

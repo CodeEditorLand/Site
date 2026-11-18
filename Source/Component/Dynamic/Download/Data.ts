@@ -47,54 +47,89 @@ import type {
 export const Marks: readonly Mark[] = [
 	{
 		label: "Telemetry Feature Gated",
+
 		variant: "mint",
+
 		fill: "SpinegRPCMute",
+
 		ink: "SpinegRPCFore",
+
 		dot: "SpinegRPC",
 	},
+
 	{
 		label: "CC0 Licensed",
+
 		variant: "mint",
+
 		fill: "SpinegRPCMute",
+
 		ink: "SpinegRPCFore",
 	},
+
 	{
 		label: "Signing Planned",
+
 		variant: "platinum",
+
 		fill: "Mute",
+
 		ink: "MuteForeground",
 	},
+
 	{
 		label: "Native Rust",
+
 		variant: "azure",
+
 		fill: "SpineIPCMute",
+
 		ink: "SpineIPCFore",
+
 		glyph: { src: "/Image/Rust.svg", alt: "" },
 	},
+
 	{
 		label: "Tauri",
+
 		variant: "amber",
+
 		fill: "ExtensionTauriMute",
+
 		ink: "ExtensionTauriFore",
+
 		glyph: { src: "/Image/Tauri.svg", alt: "" },
 	},
+
 	{
 		label: "Effect-TS",
+
 		variant: "platinum",
+
 		fill: "ExtensionEffectTypeScriptMute",
+
 		ink: "ExtensionEffectTypeScriptFore",
+
 		glyph: { src: "/Image/EffectTS.svg", alt: "" },
 	},
+
 	{
 		label: "macOS + Windows + Linux Targets",
+
 		variant: "platinum",
+
 		fill: "Mute",
+
 		ink: "MuteForeground",
 	},
+
 	{
 		label: "Unmodified Extensions",
+
 		variant: "platinum",
+
 		fill: "Mute",
+
 		ink: "MuteForeground",
 	},
 ];
@@ -126,7 +161,9 @@ export function Manifest(T: Translate): ManifestRecord {
 			copy: T("download:state.noArtifacts", {
 				defaultValue: "STATUS: NO PUBLIC ARTIFACTS",
 			}),
+
 			status: "unavailable",
+
 			tone: "ink",
 		},
 
@@ -164,24 +201,31 @@ export function ReleaseFacts(T: Translate): readonly LedgerRow[] {
 	return [
 		{
 			key: "RELEASED:",
+
 			value: T("download:state.unavailable", {
 				defaultValue: "UNAVAILABLE",
 			}),
 		},
+
 		{
 			key: "VERSION:",
+
 			value: T("download:state.unavailable", {
 				defaultValue: "UNAVAILABLE",
 			}),
 		},
+
 		{
 			key: "BUILD:",
+
 			value: T("download:state.unavailable", {
 				defaultValue: "UNAVAILABLE",
 			}),
 		},
+
 		{
 			key: "LICENSE:",
+
 			value: "CC0",
 		},
 	];
@@ -221,7 +265,9 @@ export function Platforms(T: Translate): readonly PlatformTarget[] {
 	/** The two platforms whose release is still being prepared. */
 	const Preparing = (
 		name: string,
+
 		run?: Well,
+
 		absence?: string,
 	): PlatformTarget => ({
 		name,
@@ -244,31 +290,46 @@ export function Platforms(T: Translate): readonly PlatformTarget[] {
 	return [
 		{
 			name: "macOS",
+
 			arch: "AARCH64 / X86_64",
+
 			installer: "PREPARING",
+
 			signature: "IN PREPARATION",
+
 			checksum: Unavailable,
+
 			size: Unavailable,
+
 			state: {
 				copy: T("download:state.active", {
 					defaultValue: "STATUS: SOURCE ACTIVE",
 				}),
+
 				status: "active",
+
 				tone: "specimen",
 			},
+
 			run: {
 				label: "RUN",
+
 				language: "sh",
+
 				lines: [
 					"open Element/Mountain/Target/debug/bundle/macos/Mountain.app",
 				],
 			},
 		},
+
 		Preparing(
 			"Windows",
+
 			undefined,
+
 			"No run command is documented for Windows yet.",
 		),
+
 		Preparing("Linux", {
 			label: "RUN",
 			language: "sh",
@@ -296,9 +357,13 @@ export function Platforms(T: Translate): readonly PlatformTarget[] {
  */
 export const PlatformColumns: readonly MatrixColumn[] = [
 	{ label: "ARCH" },
+
 	{ label: "INSTALLER" },
+
 	{ label: "SIGNATURE" },
+
 	{ label: "CHECKSUM" },
+
 	{ label: "SIZE" },
 ];
 
@@ -344,27 +409,41 @@ export function BuildSteps(T: Translate): readonly Well[] {
 			label: T("download:install.step.one", {
 				defaultValue: "STEP 01 / COMPILE VS CODE SOURCE",
 			}),
+
 			language: "sh",
+
 			lines: [
 				"cd Dependency/Microsoft/Dependency/Editor",
+
 				"nvm use 24",
+
 				"export NODE_ENV=development",
+
 				"npm install",
+
 				"npm run compile",
+
 				"npm run compile-extensions-build",
 			],
+
 			source: "Documentation/GitHub/Building.md - Step 1",
 		},
+
 		{
 			label: T("download:install.step.two", {
 				defaultValue: "STEP 02 / BUILD LAND APPLICATION",
 			}),
+
 			language: "sh",
+
 			lines: [
 				"cd Land # back to repository root",
+
 				"export Trace=all Record=1 Disable=false",
+
 				"./Maintain/Debug/Build.sh --profile debug-electron-bundled",
 			],
+
 			source: "Documentation/GitHub/Building.md - Step 2",
 		},
 	];
@@ -387,22 +466,31 @@ export function BuildSteps(T: Translate): readonly Well[] {
 export function Verification(T: Translate): readonly LedgerRow[] {
 	return [
 		{ key: "SHA-256:", value: "Available at first public release" },
+
 		{ key: "PGP SIGNATURE:", value: "Available at first public release" },
+
 		{ key: "SIGNING KEY ID:", value: "Available at first public release" },
+
 		{
 			key: "PUBLISHED WITH:",
+
 			value: T("download:verification.description", {
 				defaultValue:
 					"Release downloads will publish checksum and signature material when public installers are available.",
 			}),
 		},
+
 		{
 			key: "INSTRUCTIONS:",
+
 			value: "Verification instructions will be published beside the installer, checksum, and signature artifacts.",
 		},
+
 		{
 			key: "INTEGRITY CHECK:",
+
 			value: "Available at first public release",
+
 			note: "Air contains checksum and integrity code. Public release verification material will be published with the installers.",
 		},
 	];
@@ -411,11 +499,15 @@ export function Verification(T: Translate): readonly LedgerRow[] {
 /** The check a published artifact will be held to, as a template well. */
 export const VerificationWell: Well = {
 	label: "VERIFICATION / WHEN PUBLISHED",
+
 	language: "sh",
+
 	lines: [
 		"shasum -a 256 <artifact>",
+
 		"gpg --verify <artifact>.sig <artifact>",
 	],
+
 	source: "Documentation/GitHub/Building.md - the two checks a published artifact is held to",
 };
 
@@ -436,37 +528,56 @@ export const VerificationWell: Well = {
 export function Ladder(): Comparison {
 	return {
 		label: "/POSITION",
+
 		from: "SOURCE ONLY",
+
 		to: "SIGNED ARTIFACT",
+
 		stops: [
 			{
 				label: "SOURCE",
+
 				value: "PUBLISHED",
+
 				note: "The repository is public and the tree is readable today.",
 			},
+
 			{
 				label: "BUILD",
+
 				value: "REPRODUCIBLE",
+
 				note: "The two steps in /INSTALL produce a running application from it.",
 			},
+
 			{
 				label: "INSTALLER",
+
 				value: "NOT PUBLISHED",
+
 				state: "unavailable",
 			},
+
 			{
 				label: "CHECKSUM",
+
 				value: "NOT PUBLISHED",
+
 				state: "unavailable",
 			},
+
 			{
 				label: "SIGNATURE",
+
 				value: "NOT PUBLISHED",
+
 				state: "unavailable",
 			},
 		],
+
 		caption:
 			"Two of the five positions are reached today. The three that are not print the state vocabulary's word rather than a blank, because an artifact that does not exist yet still has a place on this line - and the place is what tells a reader how far the release has come.",
+
 		empty: "No position is recorded on this axis. The rail would print the release's path from source to signed artifact; it is empty because the release record it reads is not in this build.",
 	};
 }
@@ -482,30 +593,43 @@ export function Ladder(): Comparison {
  */
 export const SourceAssumptions: Aside = {
 	index: "ASIDE_01",
+
 	label: "WHAT A SOURCE BUILD ASSUMES",
+
 	line: "The two steps in /INSTALL assume a machine that can already build a browser-sized TypeScript tree.",
+
 	rows: [
 		{
 			key: "NODE:",
+
 			value: "24, selected with nvm. The first step pins the major version.",
 		},
+
 		{
 			key: "TOOLCHAIN:",
+
 			value: "The application's own Rust toolchain, as /REQUIREMENTS lists it.",
 		},
+
 		{
 			key: "NETWORK:",
+
 			value: "Required. Both npm install and the extension build fetch.",
 		},
+
 		{
 			key: "DISK:",
+
 			value: "UNAVAILABLE - no figure is recorded for a full source build.",
 		},
+
 		{
 			key: "OFFLINE:",
+
 			value: "UNAVAILABLE - there is no offline build path today.",
 		},
 	],
+
 	source: "Documentation/GitHub/Building.md",
 };
 
@@ -520,6 +644,7 @@ export const SourceAssumptions: Aside = {
  */
 export const InstallAction = {
 	label: "VIEW SOURCE BUILDS",
+
 	href: "https://github.com/CodeEditorLand/Land/releases",
 };
 
@@ -539,55 +664,89 @@ export function Transparency(): TransparencyContent {
 		Policy: [
 			{
 				Identifier: "no-telemetry-default",
+
 				Title: "Compile-gated by default.",
+
 				Description:
 					"Telemetry and tracing code lives behind `cfg(feature)` gates. In a standard build those paths are not compiled in - no collection, no emission, no runtime cost.",
+
 				Icon: "EyeOff",
+
 				Status: "Disabled",
+
 				Detail: "Telemetry feature paths are excluded from the default build profile.",
 			},
+
 			{
 				Identifier: "no-crash-reporter",
+
 				Title: "No Microsoft endpoint dependency.",
+
 				Description:
 					"Land is built from a CC0 Code-OSS base with Microsoft service dependencies removed or replaced. The crash reporter, update service, and marketplace endpoints are all replaced with Land-owned wiring or left unconnected.",
+
 				Icon: "Shield",
+
 				Status: "Disabled",
+
 				Detail: "CC0-licensed Code-OSS base with Land-owned service wiring.",
 			},
+
 			{
 				Identifier: "no-phone-home",
+
 				Title: "Three separate systems, three separate controls.",
+
 				Description:
 					"Website analytics, account authentication, and editor telemetry are independent systems. Each is controlled by its own feature flag or environment configuration - none of the three implies the others are active.",
+
 				Icon: "Lock",
+
 				Status: "Disabled",
 			},
+
 			{
 				Identifier: "zero-cost-noop",
+
 				Title: "Disabled feature paths stay out of the runtime.",
+
 				Description:
 					"Rust `cfg(feature)` gates eliminate disabled code paths at compile time, not just at runtime. A published build profile is a verifiable record of exactly which features were included.",
+
 				Icon: "Zap",
+
 				Status: "Active",
+
 				Detail: "Rust cfg(feature) gates eliminate dead code at compile time.",
 			},
+
 			{
 				Identifier: "opt-in-otel",
+
 				Title: "Need traces? Opt in. Your infrastructure only.",
+
 				Description:
 					"OpenTelemetry tracing is available in source and activates only when a deployment explicitly enables it with a named feature flag and a configured endpoint. Trace data goes to your infrastructure.",
+
 				Icon: "Eye",
+
 				Status: "Optional",
+
 				Detail: "cargo build --features Telemetry\nSub-features: MetricsCollection, DistributedTracing.",
 			},
+
 			{
 				Identifier: "effect-ts-local",
+
 				Title: "Extension host timing stays in the process.",
+
 				Description:
 					"Cocoon has internal timing and service diagnostics for extension-host work. Unless a transport is configured, that data is local process instrumentation rather than an external product-analytics claim.",
+
 				Icon: "Layers",
+
 				Status: "Active",
+
 				Detail: "Effect-TS TelemetryService with TelemetryMock layer for zero-overhead testing.",
 			},
 		],
@@ -595,74 +754,127 @@ export function Transparency(): TransparencyContent {
 		Variant: [
 			{
 				Identifier: "debug",
+
 				Name: "debug",
+
 				Tier: "Debug",
+
 				Workbench: "Browser",
+
 				Feature: "Browser UI",
+
 				Status: "Available",
 			},
+
 			{
 				Identifier: "debug-mountain",
+
 				Name: "debug-mountain",
+
 				Tier: "Debug",
+
 				Workbench: "Mountain",
+
 				Feature: "Mountain UI",
+
 				Status: "Recommended",
 			},
+
 			{
 				Identifier: "debug-electron",
+
 				Name: "debug-electron",
+
 				Tier: "Debug",
+
 				Workbench: "Electron",
+
 				Feature: "Legacy Check",
+
 				Status: "Legacy",
 			},
+
 			{
 				Identifier: "production",
+
 				Name: "production",
+
 				Tier: "Release",
+
 				Workbench: "Mountain",
+
 				Feature: "Release Path",
+
 				Status: "Recommended",
 			},
+
 			{
 				Identifier: "release",
+
 				Name: "release",
+
 				Tier: "Release",
+
 				Workbench: "Mountain",
+
 				Feature: "Bundle Path",
+
 				Status: "Available",
 			},
+
 			{
 				Identifier: "web-browser",
+
 				Name: "web-browser",
+
 				Tier: "Release",
+
 				Workbench: "Browser",
+
 				Feature: "Web Path",
+
 				Status: "Available",
 			},
+
 			{
 				Identifier: "bundler-preparation",
+
 				Name: "bundler-preparation",
+
 				Tier: "Build",
+
 				Workbench: "-",
+
 				Feature: "-",
+
 				Status: "Available",
 			},
+
 			{
 				Identifier: "swc-bundle",
+
 				Name: "swc-bundle",
+
 				Tier: "Build",
+
 				Workbench: "-",
+
 				Feature: "-",
+
 				Status: "Experimental",
 			},
+
 			{
 				Identifier: "oxc-bundle",
+
 				Name: "oxc-bundle",
+
 				Tier: "Build",
+
 				Workbench: "-",
+
 				Feature: "-",
+
 				Status: "Experimental",
 			},
 		],
@@ -670,58 +882,93 @@ export function Transparency(): TransparencyContent {
 		Strategy: [
 			{
 				Identifier: "dev-hot-reload",
+
 				Name: "Development",
+
 				Description:
 					"Change a file, see it instantly. Hot-reload in Tauri with the Sky dev server. No manual rebuilds needed.",
+
 				Icon: "Zap",
+
 				Command: "bash Maintain/Dev-Mountain.sh",
+
 				Feature: [
 					"Hot Reload",
+
 					"Instant Preview",
+
 					"Development Server",
+
 					"No Bundling",
 				],
 			},
+
 			{
 				Identifier: "debug-build",
+
 				Name: "Debug Build",
+
 				Description:
 					"Full debug symbols for stepping through code. Three profiles: Browser, Mountain, and Electron.",
+
 				Icon: "Code",
+
 				Command:
 					"bash Maintain/Debug/Build.sh --profile debug-mountain",
+
 				Feature: [
 					"Debug Symbols",
+
 					"3 Profiles",
+
 					"Source Maps",
+
 					"File Watch",
 				],
 			},
+
 			{
 				Identifier: "production-release",
+
 				Name: "Release Build",
+
 				Description:
 					"Optimized release packaging path. Public signing and verification artifacts are still being prepared.",
+
 				Icon: "Server",
+
 				Command: "bash Maintain/Release/Build.sh --profile production",
+
 				Feature: [
 					"Optimized",
+
 					"Signing Planned",
+
 					"Clean Build",
+
 					"Packaged",
 				],
 			},
+
 			{
 				Identifier: "web-only",
+
 				Name: "Web Deployment",
+
 				Description:
 					"Run Land in the browser without installing anything. No native shell needed.",
+
 				Icon: "Layers",
+
 				Command: "bash Maintain/Release.sh --profile web-browser",
+
 				Feature: [
 					"No Install",
+
 					"Browser Only",
+
 					"Web Deploy",
+
 					"OXC Bundled",
 				],
 			},
@@ -750,27 +997,38 @@ export function Requirements(T: Translate): readonly RequirementsPanel[] {
 			label: T("download:systemRequirements.minimum", {
 				defaultValue: "Minimum Requirements",
 			}),
+
 			recommended: false,
+
 			rows: [
 				{
 					key: "PROCESSOR:",
+
 					value: "64-bit processor (x86_64 or Apple Silicon)",
 				},
+
 				{ key: "MEMORY:", value: "4 GB RAM" },
+
 				{ key: "DISK:", value: "500 MB" },
 			],
 		},
+
 		{
 			label: T("download:systemRequirements.recommended", {
 				defaultValue: "Recommended for the Best Experience",
 			}),
+
 			recommended: true,
+
 			rows: [
 				{
 					key: "PROCESSOR:",
+
 					value: "Multi-core 64-bit processor (x86_64 or Apple Silicon)",
 				},
+
 				{ key: "MEMORY:", value: "8 GB RAM" },
+
 				{ key: "DISK:", value: "1 GB SSD" },
 			],
 		},
@@ -793,26 +1051,34 @@ export function OperatingSystems(T: Translate): readonly SupportedOS[] {
 	return [
 		{
 			name: "macOS 10.15+",
+
 			note: [
 				"AARCH64 / X86_64",
+
 				T("download:card.platform.macos.universalBadge", {
 					defaultValue: "Universal Binary: Apple Silicon and Intel",
 				}),
 			].join(Quad),
 		},
+
 		{
 			name: "Windows 10+",
+
 			note: [
 				"X86_64",
+
 				T("download:card.platform.windows.description", {
 					defaultValue: "64-bit (x64)",
 				}),
 			].join(Quad),
 		},
+
 		{
 			name: "Ubuntu / Debian (deb) / Fedora (rpm)",
+
 			note: [
 				"X86_64",
+
 				T("download:card.platform.linux.description", {
 					defaultValue: "DEB, RPM, AppImage",
 				}),
@@ -830,19 +1096,29 @@ export function OperatingSystems(T: Translate): readonly SupportedOS[] {
 export const Toolchain: readonly LedgerRow[] = [
 	{
 		key: "RUST:",
+
 		value: "1.95.0+",
+
 		note: "Workspace MSRV for all Rust elements",
 	},
+
 	{
 		key: "NODE.JS:",
+
 		value: "24",
+
 		note: "Pinned 24.22.1 in Dependency/Microsoft/Dependency/Editor/.nvmrc",
 	},
+
 	{ key: "PNPM:", value: "npm install -g pnpm" },
+
 	{ key: "GIT:", value: "Git with LFS support" },
+
 	{
 		key: "PROTOBUF:",
+
 		value: "optional",
+
 		note: "Only if modifying .proto files",
 	},
 ];
@@ -857,7 +1133,9 @@ export const PreviousReleases: readonly Release[] = [];
 
 export const ReleaseColumns: readonly MatrixColumn[] = [
 	{ label: "PUBLISHED" },
+
 	{ label: "PLATFORM" },
+
 	{ label: "CHANGE" },
 ];
 
@@ -877,17 +1155,21 @@ export function Regions(T: Translate): Regions {
 	return {
 		Ladder: {
 			id: "release-ladder",
+
 			kicker: T("download:ladder.kicker", {
 				defaultValue: "/POSITION",
 			}),
+
 			heading: T("download:ladder.heading", {
 				defaultValue:
 					"How far along the line from source to signed artifact.",
 			}),
+
 			standfirst: T("download:ladder.standfirst", {
 				defaultValue:
 					"One axis, five positions, and the state of each. A matrix compares what is true in each column; this line answers a different question - which of these things exists today.",
 			}),
+
 			footnote: T("download:ladder.footnote", {
 				defaultValue:
 					"The order is the release's, not the page's: source, a build from it, an installer, its checksum, its signature. Positions that are not reached print the state vocabulary's word rather than a blank, so the rail says how far the release has come without claiming it has arrived.",
@@ -896,12 +1178,15 @@ export function Regions(T: Translate): Regions {
 
 		Platforms: {
 			id: "release-platforms",
+
 			kicker: T("download:platforms.kicker", {
 				defaultValue: "/PLATFORMS",
 			}),
+
 			heading: T("download:platforms.heading", {
 				defaultValue: "What each platform's artifact state is today.",
 			}),
+
 			standfirst: T("download:platforms.standfirst", {
 				defaultValue:
 					"The release manifest's own fields, one row per target. The artifact columns are the ones a public release fills in; the architecture column is the one that differs today.",
@@ -910,17 +1195,21 @@ export function Regions(T: Translate): Regions {
 
 		Evidence: {
 			id: "release-evidence",
+
 			kicker: T("download:evidence.kicker", {
 				defaultValue: "/EVIDENCE",
 			}),
+
 			heading: T("download:evidence.heading", {
 				defaultValue:
 					"What the release has a picture of, and what it does not.",
 			}),
+
 			standfirst: T("download:evidence.standfirst", {
 				defaultValue:
 					"One verified capture, printed at plate scale, beside the three screens the manual documents in full and the capture the build carries for each: none.",
 			}),
+
 			footnote: T("download:evidence.footnote", {
 				defaultValue:
 					"A plate is not a screenshot. The one capture in the build is a texture study of the Land element's material, and it is printed as evidence of the material rather than of the interface; the set beside it says the same thing cell by cell.",
@@ -929,16 +1218,20 @@ export function Regions(T: Translate): Regions {
 
 		Requirements: {
 			id: "release-requirements",
+
 			kicker: T("download:requirements.kicker", {
 				defaultValue: "/REQUIREMENTS",
 			}),
+
 			heading: T("download:requirements.heading", {
 				defaultValue: "What each platform needs before it builds.",
 			}),
+
 			standfirst: T("download:systemRequirements.subtitle", {
 				defaultValue:
 					"A quick check before you download saves a reinstall later.",
 			}),
+
 			footnote: T("download:requirements.footnote", {
 				defaultValue:
 					"Minimum requirements, with the recommended figure in the panel beside it. Processor notes: your code runs at native CPU speed (minimum) and span your work across every monitor (recommended).",
@@ -947,17 +1240,21 @@ export function Regions(T: Translate): Regions {
 
 		Install: {
 			id: "release-install",
+
 			kicker: T("download:install.kicker", {
 				defaultValue: "/INSTALL",
 			}),
+
 			heading: T("download:install.heading", {
 				defaultValue:
 					"The source build is the only install path today.",
 			}),
+
 			standfirst: T("download:install.standfirst", {
 				defaultValue:
 					"Two steps in the Land repository, then one command to run the app. Every line is copied from the repository's own building document.",
 			}),
+
 			footnote: T("download:install.footnote", {
 				defaultValue:
 					"Commands are quoted from the Land repository's Documentation/GitHub/Building.md: Step 1, Step 2, and Running the Application. The well prints each line as the document writes it and copies it without the shell prompt or the trailing annotation.",
@@ -966,16 +1263,20 @@ export function Regions(T: Translate): Regions {
 
 		Verify: {
 			id: "release-verify",
+
 			kicker: T("download:verify.kicker", {
 				defaultValue: "/VERIFY",
 			}),
+
 			heading: T("download:verification.title", {
 				defaultValue: "Verification Will Ship With Public Releases.",
 			}),
+
 			standfirst: T("download:verify.standfirst", {
 				defaultValue:
 					"There is no artifact to check yet. These are the fields the first installer will publish, and the check that will apply to it.",
 			}),
+
 			footnote: T("download:verify.footnote", {
 				defaultValue:
 					"The check is the standard one for the artifacts this record promises: the digest the installer publishes, and the PGP signature the masthead marks as planned. On Linux, sha256sum prints the same digest as shasum -a 256.",
@@ -984,12 +1285,15 @@ export function Regions(T: Translate): Regions {
 
 		Transparency: {
 			id: "release-transparency",
+
 			kicker: T("download:transparency.kicker", {
 				defaultValue: "/TRANSPARENCY",
 			}),
+
 			heading: T("download:transparency.title", {
 				defaultValue: "Telemetry Is Compile-Gated in Land.",
 			}),
+
 			standfirst: T("download:transparency.subtitle", {
 				defaultValue:
 					"Telemetry and tracing are behind named Rust feature gates in the native layer. Nothing is emitted by default. Each build profile explicitly lists which paths are compiled in.",
@@ -998,9 +1302,11 @@ export function Regions(T: Translate): Regions {
 
 		Previous: {
 			id: "release-previous",
+
 			kicker: T("download:previousReleases.kicker", {
 				defaultValue: "/PREVIOUS RELEASES",
 			}),
+
 			heading: T("download:previousReleases.heading", {
 				defaultValue: "There is nothing to go back to yet.",
 			}),

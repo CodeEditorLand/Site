@@ -28,6 +28,7 @@
  */
 export type Translate = (
 	key: string,
+
 	options: { readonly defaultValue: string },
 ) => string;
 

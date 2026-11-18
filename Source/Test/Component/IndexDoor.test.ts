@@ -7,7 +7,9 @@ import {
 	FrameSectionOf,
 	FrameSections,
 } from "../../Component/Layout/Frame/Data.js";
+
 import { BuildPaletteRegister } from "../../Component/UI/Palette/Data.js";
+
 import { FilterEntries } from "../../Component/UI/Palette/Match.js";
 
 /**
@@ -22,8 +24,11 @@ import { FilterEntries } from "../../Component/UI/Palette/Match.js";
 describe("the index's door", () => {
 	it("keeps the frame at ten parts and closes them with the index", () => {
 		expect(FrameSections).toHaveLength(10);
+
 		expect(FrameExtent).toBe("10");
+
 		expect(FrameClosing.Key).toBe("contents");
+
 		expect(FrameClosing.Href).toBe("/Contents");
 	});
 
@@ -31,19 +36,25 @@ describe("the index's door", () => {
 		// The running head prints `↳ CONTENTS` on the index page instead of
 		// `◎ UNFILED`: the one page that files everything is not unfiled.
 		expect(FrameSectionOf("/Contents").Key).toBe("contents");
+
 		expect(FrameSectionOf("/Contents/").Key).toBe("contents");
+
 		expect(FrameSectionOf("/Not/A/Route").Key).toBe("unfiled");
 	});
 
 	it("registers CONTENTS as a route in the palette, beside the ten", () => {
 		const Register = BuildPaletteRegister([]);
+
 		const Contents = Register.Routes.find(
 			(Row) => Row.Href === "/Contents",
 		);
 
 		expect(Contents).toBeDefined();
+
 		expect(Contents?.Label).toBe("CONTENTS");
+
 		expect(Contents?.Kind).toBe("route");
+
 		// The ten parts still lead the register, in their own order.
 		expect(Register.Routes.slice(0, 10).map((Row) => Row.Label)).toEqual(
 			FrameSections.map((Section) => Section.Label),

@@ -53,5 +53,6 @@ export interface FooterContent {
 /** A translator that resolves one key with an English default. */
 export type FooterTranslate = (
 	Key: string,
+
 	Options: { readonly defaultValue: string },
 ) => string;

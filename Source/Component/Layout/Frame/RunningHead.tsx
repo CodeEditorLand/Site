@@ -54,11 +54,13 @@ const RunningHead = ({ Logo, Translate }: RunningHeadProps) => (
 			{[...FrameSections, FrameClosing, FrameUnfiled].map((Section) => (
 				<span
 					key={Section.Key}
+
 					className="HeaderSection"
 					data-section={Section.Key}
 				>
 					<span className="HeaderSectionIndex">{Section.Index}</span>
 					{"\u2001"}
+
 					{FrameLabel(Section, Translate)}
 				</span>
 			))}
@@ -108,7 +110,9 @@ const RunningHead = ({ Logo, Translate }: RunningHeadProps) => (
 			{[...FrameSections, FrameClosing, FrameUnfiled].map((Section) => (
 				<span key={Section.Key} data-section={Section.Key}>
 					{Section.Index}
+
 					{"\u2001/\u2001"}
+
 					{FrameExtent}
 				</span>
 			))}

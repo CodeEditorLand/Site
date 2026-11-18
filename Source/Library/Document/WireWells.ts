@@ -51,6 +51,7 @@ const Clipboard =
 
 function Bind(
 	Button: HTMLElement,
+
 	Write: (Text: string) => Promise<void>,
 ): void {
 	const Label = Button.getAttribute("label") ?? "Copy to clipboard";

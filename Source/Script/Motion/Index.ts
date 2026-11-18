@@ -29,7 +29,9 @@
  * load-bearing.
  */
 import { Handover } from "./Handover.js";
+
 import { Origin } from "./Origin.js";
+
 import { Sort } from "./Sort.js";
 
 /** The bridge an island uses: `window.LandMotion?.Sort(shell, mutate)`. */
@@ -43,6 +45,7 @@ declare global {
 
 const Mount = (): void => {
 	Handover();
+
 	Origin();
 
 	window.LandMotion = { Sort };

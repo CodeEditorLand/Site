@@ -523,6 +523,7 @@ const AccountProfileInner = ({
 
 							Login();
 						}}
+
 						className="auth-shell__primary emphasis-expressive"
 					>
 						{T("signInButton", { defaultValue: "Sign In" })}

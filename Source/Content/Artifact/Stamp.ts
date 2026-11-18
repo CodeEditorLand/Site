@@ -39,19 +39,30 @@ const Quad = "\u2001";
  */
 export const ReleaseStamp: Stamp = {
 	index: "STAMP_01",
+
 	label: "EDITION",
+
 	mark: "\u3008EDITION 01\u3009",
+
 	route: "/CHANNEL:PUBLIC",
+
 	rows: [
 		{ key: "VERSION", value: "UNAVAILABLE" },
+
 		{ key: "ISSUED", value: "UNAVAILABLE" },
+
 		{ key: "HOLDING", value: "NONE PUBLISHED" },
+
 		{ key: "REACHES", value: `MACOS${Quad}WINDOWS${Quad}LINUX` },
+
 		{ key: "CHANNEL", value: "PUBLIC" },
 	],
+
 	authority:
 		"/VERIFY - THE PAGE PRINTS A CHECKSUM AND A SIGNATURE FOR EVERY ARTIFACT THE RELEASE SHIPS, AND CHECKS THE TEMPLATE IT WOULD USE.",
+
 	state: "preparing",
+
 	note: "The mark authenticates the record, not an artifact: no public artifact exists for it to be stamped on. VERSION and ISSUED stay UNAVAILABLE until one does.",
 };
 
@@ -65,11 +76,16 @@ export const ReleaseStamp: Stamp = {
 export const DocumentStamp = (
 	Totals: {
 		readonly Routes: number;
+
 		readonly Documents: number;
+
 		readonly Elements: number;
+
 		readonly Blocks: number;
+
 		readonly Modules: number;
 	},
+
 	AsOf: string,
 ): Stamp => ({
 	index: "STAMP_01",

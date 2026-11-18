@@ -30,6 +30,7 @@ const Leaf = ({
 	ActiveId,
 }: {
 	Item: DocLeaf;
+
 	ActiveId: string | undefined;
 }) => {
 	const IsActive = ActiveId === Item.Id;
@@ -136,6 +137,7 @@ const DynamicDocSidebar = ({
 						: Item.Id === ActiveId,
 				),
 			)?.Id,
+
 		[Sections, ActiveId],
 	);
 
@@ -145,9 +147,11 @@ const DynamicDocSidebar = ({
 			new Map(
 				Sections.map((Section) => [
 					Section.Id,
+
 					LeavesOf(Section).length,
 				]),
 			),
+
 		[Sections],
 	);
 
@@ -157,6 +161,7 @@ const DynamicDocSidebar = ({
 			Sections.flatMap((S) => S.Children ?? []).flatMap((Item) =>
 				IsDocGroup(Item) ? Item.Children : [Item],
 			),
+
 		[Sections],
 	);
 
@@ -195,6 +200,7 @@ const DynamicDocSidebar = ({
 	// Same auto-expand behavior one level deeper, for groups nested inside a section.
 	const AllGroups = useMemo(
 		() => Sections.flatMap((S) => S.Children ?? []).filter(IsDocGroup),
+
 		[Sections],
 	);
 
@@ -202,6 +208,7 @@ const DynamicDocSidebar = ({
 		() =>
 			AllGroups.find((G) => G.Children.some((C) => C.Id === ActiveId))
 				?.Id,
+
 		[AllGroups, ActiveId],
 	);
 
@@ -254,6 +261,7 @@ const DynamicDocSidebar = ({
 
 	const FilteredCount = Filtered.reduce(
 		(Total, Section) => Total + LeavesOf(Section).length,
+
 		0,
 	);
 
@@ -359,6 +367,7 @@ const DynamicDocSidebar = ({
 						type="button"
 						className="RailFilter__Clear"
 						onClick={() => SetQuery("")}
+
 						aria-label="Clear the filter"
 					>
 						×

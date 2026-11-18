@@ -26,8 +26,11 @@ import { Popover, PopoverContent, PopoverTrigger } from "../UI/Popover.js";
 
 const Sides = [
 	{ Mark: "↓", Label: "SIDE: BOTTOM", Meta: "FROM ABOVE" },
+
 	{ Mark: "↑", Label: "SIDE: TOP", Meta: "FROM BELOW" },
+
 	{ Mark: "→", Label: "SIDE: LEFT", Meta: "FROM THE RIGHT" },
+
 	{ Mark: "←", Label: "SIDE: RIGHT", Meta: "FROM THE LEFT" },
 ] as const;
 

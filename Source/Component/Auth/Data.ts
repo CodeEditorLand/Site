@@ -19,6 +19,7 @@
  * and are byte-identical to the ones the locale file carries.
  */
 import type { TrailItem } from "../Route/Type.js";
+
 import type { AuthFrame, AuthSurface, Translate } from "./Type.js";
 
 const Frames: Record<AuthSurface, (T: Translate) => AuthFrame> = {
@@ -151,14 +152,18 @@ export type AuthCrumb = TrailItem;
 export const AccountCrumbs = (T: Translate): readonly TrailItem[] => [
 	{
 		label: `/${T("common.breadcrumb.home", { defaultValue: "Home" }).toUpperCase()}`,
+
 		href: "/",
 	},
+
 	{
 		label: `/${T("common.breadcrumb.dashboard", {
 			defaultValue: "Dashboard",
 		}).toUpperCase()}`,
+
 		href: "/Dashboard",
 	},
+
 	{
 		label: `/${T("common.breadcrumb.account", {
 			defaultValue: "Account",

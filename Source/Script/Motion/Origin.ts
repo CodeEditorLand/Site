@@ -52,6 +52,7 @@ const Root = (): HTMLElement => document.documentElement;
 
 const Clear = (): void => {
 	Root().style.removeProperty("--motion-origin-x");
+
 	Root().style.removeProperty("--motion-origin-y");
 };
 
@@ -68,9 +69,11 @@ const Lean = (): void => {
 	}
 
 	const X = Clamp(Last.x - window.innerWidth / 2);
+
 	const Y = Clamp(Last.y - window.innerHeight / 2);
 
 	Root().style.setProperty("--motion-origin-x", `${X}px`);
+
 	Root().style.setProperty("--motion-origin-y", `${Y}px`);
 };
 

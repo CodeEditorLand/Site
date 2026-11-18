@@ -88,6 +88,7 @@ const Reduced = (): boolean =>
  */
 export const Sort = (
 	Shell: HTMLElement | null,
+
 	Mutate: () => void,
 ): boolean => {
 	if (!Shell) return false;
@@ -109,6 +110,7 @@ export const Sort = (
 
 	const Rows = [...Shell.querySelectorAll("tbody tr")].slice(
 		0,
+
 		Cap,
 	) as HTMLElement[];
 

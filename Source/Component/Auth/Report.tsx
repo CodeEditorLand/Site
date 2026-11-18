@@ -36,8 +36,11 @@ type Glyph = "alert" | "check" | "loading" | "mail";
 
 const Glyphs: Record<Glyph, typeof Mail> = {
 	alert: CircleAlert,
+
 	check: CircleCheck,
+
 	loading: Loader2,
+
 	mail: Mail,
 };
 
@@ -118,6 +121,7 @@ const AuthReport = ({
 				<div
 					className="space-y-6 p-6 pt-0"
 					role={Role ?? undefined}
+
 					aria-live="polite"
 				>
 					{children}

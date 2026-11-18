@@ -24,6 +24,7 @@ import { Requests, type IncomeCode } from "./Request.js";
  * historical name so every Contact caller keeps its import.
  */
 export type { TrailItem as ContactTrailItem } from "../../Component/Route/Type.js";
+
 import type { TrailItem } from "../../Component/Route/Type.js";
 
 /** One record on the hub: its slug, its name, its sentence, and its route. */
@@ -49,6 +50,7 @@ export interface ContactEntry {
  */
 export const ContactHubTrail: readonly TrailItem[] = [
 	{ label: "/HOME", href: "/" },
+
 	{ label: "/CONTACT" },
 ];
 
@@ -76,8 +78,11 @@ const EntryOf = (code: IncomeCode): ContactEntry => {
 
 	return {
 		slug: `/${config.Code}`,
+
 		title: config.Title,
+
 		subtitle: HubSubtitle[code] ?? config.Subtitle,
+
 		href: RouteOf(code),
 	};
 };
@@ -92,32 +97,48 @@ const EntryOf = (code: IncomeCode): ContactEntry => {
  */
 const SaleEntry: ContactEntry = {
 	slug: "/SALE",
+
 	title: "Enterprise Inquiries",
+
 	subtitle:
 		"Contact the Code Editor Land team for enterprise licensing, support, and deployment options.",
+
 	href: "/Contact/Sale",
 };
 
 /** The thirteen income codes, alphabetical by slug. */
 const Codes: readonly IncomeCode[] = [
 	"AMEND",
+
 	"CLAIM",
+
 	"DEALS",
+
 	"ERASE",
+
 	"GUARD",
+
 	"HAILS",
+
 	"LEAVE",
+
 	"LEGAL",
+
 	"LODGE",
+
 	"PAUSE",
+
 	"QUERY",
+
 	"REACH",
+
 	"SCOUT",
 ];
 
 /** The hub, in reading order: one flat grid of fourteen records. */
 export const ContactEntries: readonly ContactEntry[] = [
 	...Codes.map(EntryOf),
+
 	SaleEntry,
 ];
 
@@ -130,5 +151,6 @@ export const ContactEntries: readonly ContactEntry[] = [
  */
 export const ContactDirect = {
 	label: "Prefer email",
+
 	address: "Community@PlayForm.Cloud",
 } as const;

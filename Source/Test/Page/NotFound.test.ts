@@ -20,6 +20,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import NotFound from "../../pages/404.astro";
 
 let Html = "";
+
 let Page: Window["document"];
 
 beforeAll(async () => {
@@ -46,13 +47,21 @@ const Text = (Selector: string): string =>
 describe("the 404", () => {
 	it("prints one record, opened by its marker and closed by its action", () => {
 		expect(Page.querySelectorAll("h1")).toHaveLength(1);
+
 		expect(Text("h1")).toContain("NOT FOUND");
+
 		expect(Text(".record-hero__mark")).toContain("ROUTE_404");
+
 		expect(Text(".record-hero__route")).toContain("/TRACE:/No/Such/Route");
+
 		expect(Text(".record-hero__status")).toContain("INTERRUPTED");
+
 		expect(Text(".record-hero__relation")).toBe("LAND:");
+
 		expect(Text(".record-hero__proposition")).toContain("RETURN TO INDEX");
+
 		expect(Text(".record-hero__facts")).toContain("SIGNAL:");
+
 		expect(Text(".record-hero__facts")).toContain("ROUTE:");
 	});
 
@@ -60,6 +69,7 @@ describe("the 404", () => {
 		expect(Html.indexOf("record-hero__facts")).toBeLessThan(
 			Html.indexOf("record-hero__blank"),
 		);
+
 		expect(Html.indexOf("record-hero__blank")).toBeLessThan(
 			Html.indexOf("record-hero__relation"),
 		);
@@ -69,10 +79,13 @@ describe("the 404", () => {
 		expect(
 			Page.querySelectorAll(".record-hero__evidence .record-figure"),
 		).toHaveLength(1);
+
 		expect(Page.querySelectorAll(".record-hero__gutter")).toHaveLength(1);
+
 		expect(Text(".record-figure__caption-text")).toContain(
 			"no evidence of its own",
 		);
+
 		expect(Text(".record-figure__provenance")).toBe(
 			"/EVIDENCE/LAND/NIGHTGLASS-01.PNG",
 		);

@@ -27,9 +27,11 @@ export const Quad = "\u2001";
 /** The two rhythms, in the order the switch prints them. */
 export const DensityItems: readonly {
 	Value: MatrixDensity;
+
 	Label: string;
 }[] = [
 	{ Value: "comfortable", Label: "COMFORTABLE" },
+
 	{ Value: "compact", Label: "COMPACT" },
 ];
 

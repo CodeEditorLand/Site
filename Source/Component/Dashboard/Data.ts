@@ -48,9 +48,13 @@ const Right = (Code: IncomeCode): RightsCard => {
 
 	return {
 		title: Config.Title,
+
 		code: Config.Code,
+
 		article: Config.Article ?? Config.To,
+
 		body: Config.Subtitle,
+
 		href: Route(Config.Slug),
 	};
 };
@@ -61,9 +65,13 @@ const Channel = (Code: IncomeCode): SupportCard => {
 
 	return {
 		title: Config.Title,
+
 		code: Config.Code,
+
 		body: Config.Subtitle,
+
 		address: Config.To,
+
 		href: Route(Config.Slug),
 	};
 };
@@ -71,13 +79,20 @@ const Channel = (Code: IncomeCode): SupportCard => {
 /** The six statutory rights, in the order the baseline grid printed them. */
 export const Rights: RequestGrid<RightsCard> = {
 	label: "Your Rights Under GDPR",
+
 	intro: "As a resident of the EU/EEA or a user of our service, you hold the following rights. Each link opens a dedicated form page that pre-fills your account details and generates a properly formatted, income-coded request.",
+
 	cards: [
 		Right("REACH"),
+
 		Right("AMEND"),
+
 		Right("PAUSE"),
+
 		Right("QUERY"),
+
 		Right("LEAVE"),
+
 		Right("LODGE"),
 	],
 };
@@ -85,11 +100,16 @@ export const Rights: RequestGrid<RightsCard> = {
 /** The four support channels, in the order the baseline grid printed them. */
 export const Support: RequestGrid<SupportCard> = {
 	label: "Support & Assistance",
+
 	intro: "Direct channels for technical issues, security reports, copyright claims, and legal enquiries. Each form pre-fills your details and generates a plain-text, income-coded email.",
+
 	cards: [
 		Channel("SCOUT"),
+
 		Channel("GUARD"),
+
 		Channel("CLAIM"),
+
 		Channel("LEGAL"),
 	],
 };
@@ -101,9 +121,14 @@ export const Support: RequestGrid<SupportCard> = {
  */
 export const Erase: EraseBlock = {
 	label: "Delete Account",
+
 	intro: "Permanently delete your account and all associated personal data under GDPR Article 17. This action is irreversible.",
+
 	title: "Permanent Account Deletion",
+
 	code: "ERASE",
+
 	body: "Opens a structured erasure request form. The generated email includes income code [ERASE] and covers Auth0, PostHog, Cloudflare, and all backup copies - citing GDPR Art. 17 with a 30-day response requirement.",
+
 	href: Route("erase"),
 };

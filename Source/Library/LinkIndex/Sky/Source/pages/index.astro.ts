@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexFragment = {
 	terms: {
 		"index.astro": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/pages/index.astro",
 		},
 	},

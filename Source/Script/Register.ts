@@ -30,7 +30,9 @@
  * arrangement the generated area of Aphrodite's site uses.
  */
 import { readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+
 import { dirname, join, relative, resolve, sep } from "node:path";
+
 import { fileURLToPath } from "node:url";
 
 const Root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -102,6 +104,7 @@ const Aliases: [string, string][] = (() => {
 
 		Table.push([
 			(Match[1] ?? "") + "/",
+
 			Target.length > 0 ? Target + "/" : "",
 		]);
 	}
@@ -829,10 +832,15 @@ writeFileSync(join(Generated, "GENERATED.md"), Manifest, "utf8");
 console.log(
 	[
 		`Wrote ${Written.length} fact files + GENERATED.md`,
+
 		`  routes   ${Totals.Routes}`,
+
 		`  modules  ${Totals.Modules} (${Totals.Read} read, ${Totals.Declared} declared)`,
+
 		`  registry ${Registry.Count} declared, missing ${Registry.Missing.length}: ${Registry.Missing.join(" ")}`,
+
 		`  records  ${RecordRows.length} heads, ${RecordRows.filter((Row) => Row.Routes.length > 0).length} reachable`,
+
 		`  orphans  ${Orphans.map((Row) => Row.Path).join(" ")}`,
 	].join("\n"),
 );

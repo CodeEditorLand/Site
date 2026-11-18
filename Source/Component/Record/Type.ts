@@ -768,7 +768,9 @@ export interface MarginNote {
 	 */
 	link?: {
 		readonly label: string;
+
 		readonly href: string;
+
 		readonly state?: "ok" | "gone";
 	};
 
@@ -1147,7 +1149,9 @@ export interface Inset {
 	/** The destination the note names, with the tombstone arm when it is gone. */
 	link?: {
 		readonly label: string;
+
 		readonly href: string;
+
 		readonly state?: "ok" | "gone";
 	};
 

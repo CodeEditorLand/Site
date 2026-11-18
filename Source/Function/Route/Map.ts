@@ -1,4 +1,5 @@
 import type { RouteMap } from "./Interface/RouteMap.js";
+
 import { CanonicalRoute, RouteByCase } from "./Registry.js";
 
 // Pre-import at module evaluation time (while Vite module runner is alive).

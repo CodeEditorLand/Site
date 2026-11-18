@@ -62,6 +62,7 @@ export const useCopyReceipt = (
 		Clear();
 
 		SetState("idle");
+
 		SetMeta("");
 	}, [Clear]);
 
@@ -72,6 +73,7 @@ export const useCopyReceipt = (
 
 		if (Next === null) {
 			SetState("empty");
+
 			SetMeta("");
 
 			return;
@@ -81,6 +83,7 @@ export const useCopyReceipt = (
 
 		if (!Clipboard || typeof Clipboard.writeText !== "function") {
 			SetState("denied");
+
 			SetMeta(CopyCopy.denied.Meta);
 
 			return;
@@ -89,21 +92,25 @@ export const useCopyReceipt = (
 		Clipboard.writeText(Next.Text).then(
 			() => {
 				SetState("copied");
+
 				SetMeta(Next.Meta);
 
 				Clear();
 
 				Timer.current = setTimeout(() => {
 					SetState("idle");
+
 					SetMeta("");
 				}, CopiedInterval);
 			},
+
 			(Reason: unknown) => {
 				const Denied =
 					Reason instanceof DOMException &&
 					Reason.name === "NotAllowedError";
 
 				SetState(Denied ? "denied" : "error");
+
 				SetMeta(Denied ? CopyCopy.denied.Meta : CopyCopy.error.Meta);
 			},
 		);

@@ -65,45 +65,75 @@ export interface MaterialSpecimen {
 export const Material: readonly MaterialSpecimen[] = [
 	{
 		name: "FIELD",
+
 		token: "--Background",
+
 		value: "#F2EDE3",
+
 		use: "The paper. Every page is this colour, and nothing is painted over it except a white insert.",
+
 		kind: "fill",
 	},
+
 	{
 		name: "INSERT",
+
 		token: "--Card",
+
 		value: "#FFFFFF",
+
 		use: "An information box lying on the field. Never a page background, and never a card inside a card.",
+
 		kind: "fill",
 	},
+
 	{
 		name: "INK",
+
 		token: "--Foreground",
+
 		value: "#1C1C1E",
+
 		use: "Every word that is not a label. The same value on creme and on white, so one ink means one ink.",
+
 		kind: "ink",
+
 		scale: "display",
 	},
+
 	{
 		name: "MUTE",
+
 		token: "--MuteForeground",
+
 		value: "#70685B",
+
 		use: "Labels, markers, provenance. Never primary copy - a fact stated in the mute is a fact the page is whispering.",
+
 		kind: "ink",
 	},
+
 	{
 		name: "ACCENT",
+
 		token: "--Accent",
+
 		value: "#1E742A",
+
 		use: "The one green. It authenticates: a seal, a link, a focus ring, the active route. Rare on purpose.",
+
 		kind: "ink",
 	},
+
 	{
 		name: "RULE",
+
 		token: "--Divider",
+
 		value: "20% INK",
+
 		use: "The one hairline. A track in the hero pair, a seam in a matrix, a rule under a register line.",
+
 		kind: "rule",
 	},
 ];
@@ -111,7 +141,9 @@ export const Material: readonly MaterialSpecimen[] = [
 /** The head's own copy. */
 export const Head = {
 	index: "# SPECIMEN_01",
+
 	title: "The document's own parts",
+
 	proposition:
 		"Eleven parts, printed at 1:1 where they can stand on a plate and stated where they cannot. Each one carries its contract, its stylesheet and the surface that asks for it.",
 } as const;
@@ -120,49 +152,72 @@ export const Head = {
 export const Bands = {
 	Sheet: {
 		kicker: "/THE SHEET",
+
 		heading: "Every part, on one sheet",
+
 		standfirst:
 			"Twelve cells, one per part: its mark, its name, the layer it belongs to, and what the sheet did with it. A printed part links to its plate; an absent one prints its reason where the plate would be.",
+
 		footnote:
 			"A sheet is the one page where equal cells are right: the parts are genuinely equal, and the reader is choosing between them rather than reading them.",
 	},
+
 	Plates: {
 		kicker: "/THE PLATES",
+
 		heading: "The parts, printed",
+
 		standfirst:
 			"Seven plates. Each holds one part at its own size on a stage, and each stage is a white insert lying on the field - the same box a record uses, so a part is printed on the surface it will be printed on.",
+
 		footnote:
 			"A plate's stage is 1:1. Nothing on this sheet is scaled to fit: a part that could not be shown at its own size is stated in THE ABSENCES instead.",
 	},
+
 	Absences: {
 		kicker: "/THE ABSENCES",
+
 		heading: "The parts that are not printed",
+
 		standfirst:
 			"Three parts cannot stand on a plate, and each says why in the same three rows every absence on this site uses: what would be here, why it is not, and where to read the thing itself.",
+
 		footnote:
 			"An absence is a designed state, not a gap. The sheet is complete when every part is accounted for, not when every part is drawn.",
 	},
+
 	States: {
 		kicker: "/THE STATES",
+
 		heading: "What a part has to survive",
+
 		standfirst:
 			"Nine conditions, composed in the record grammar, each naming the surface where it actually happens. A part without its adverse states is half a part, and a page without them is half a page.",
+
 		footnote:
 			"The vocabulary is fixed at eight words, and the legend above prints all eight. A ninth word would be a state the ink register has no tone for.",
 	},
+
 	Material: {
 		kicker: "/THE MATERIAL",
+
 		heading: "What the sheet is printed with",
+
 		standfirst:
 			"Six specimens: the paper, the insert, two inks, the one accent and the one hairline. Every page of this document is made of these and of nothing else.",
+
 		footnote:
 			"Printed from `_Token.scss`. A seventh colour would be a second identity, and the sheet is where that would show.",
 	},
+
 	Register: {
 		kicker: "/THE REGISTER",
+
 		heading: "What this sheet counted",
+
 		standfirst:
 			"Four figures and two sources. The counts are read from the parts table the sheet renders, so a part added to the document changes every figure here without a second edit.",
+
 		footnote:
 			"A sheet that could disagree with itself would be two claims about one document.",
 	},
@@ -171,25 +226,40 @@ export const Bands = {
 /** The figures the sheet's register prints, derived from the parts table. */
 export const Register = (Counts: {
 	readonly Parts: number;
+
 	readonly Printed: number;
+
 	readonly Absent: number;
+
 	readonly Folded: number;
+
 	readonly Kinds: number;
 }): readonly LedgerRow[] => [
 	{ key: "PARTS:", value: String(Counts.Parts) },
+
 	{ key: "PRINTED:", value: String(Counts.Printed) },
+
 	{ key: "ABSENT:", value: String(Counts.Absent) },
+
 	{ key: "FOLDED:", value: String(Counts.Folded) },
+
 	{ key: "LAYERS:", value: String(Counts.Kinds) },
+
 	{
 		key: "SHELL:",
+
 		value: "SurfaceShell",
+
 		note: "the shell this sheet wears, and the one part of itself it does not print",
 	},
+
 	{
 		key: "SOURCE:",
+
 		value: "CONTENT/SPECIMEN/PARTS.TS",
+
 		code: true,
+
 		note: "every row above is counted from this table",
 	},
 ];
@@ -206,39 +276,63 @@ export const Onward = {
 	rows: [
 		{
 			mark: "/",
+
 			want: "EVERY ADDRESS THIS SITE ANSWERS ON",
+
 			where: "CONTENTS",
+
 			href: "/Contents",
+
 			note: "The index: every information type, every route, and the modules nothing reads.",
 		},
+
 		{
 			mark: "/",
+
 			want: "WHAT THE DOCUMENT'S MOTION IS MADE OF",
+
 			where: "MOTION",
+
 			href: "/Motion",
+
 			note: "Thirteen interaction classes on three intervals and three curves.",
 		},
+
 		{
 			mark: "/",
+
 			want: "WHAT THE DOCUMENT'S WORDS MEAN",
+
 			where: "GLOSSARY",
+
 			href: "/Glossary",
+
 			note: "Fifteen elements, twenty nouns and five retired words.",
 		},
+
 		{
 			mark: "/",
+
 			want: "WHAT IS LIVE TODAY",
+
 			where: "STATUS",
+
 			href: "/Status",
+
 			note: "Twenty-one records under the four columns of the state vocabulary.",
 		},
 	],
+
 	copy: {
 		index: "ONWARD / 04",
+
 		label: "/THE SHEET'S OWN DOORS",
+
 		statement:
 			"A specimen sheet ends on the parts it did not print. These four are the documents that file them: the index, the motion register, the lexicon and the state board.",
+
 		note: `SOURCE: SOURCE/CONTENT/SPECIMEN/PAGE.TS${Quad}THE SHEET IS AN APPENDIX, NOT A CHAPTER`,
+
 		empty: "Nothing to hand over. Every destination this register would list is the sheet you are reading, which cannot happen while the document has four other registers.",
 	},
 } as const;

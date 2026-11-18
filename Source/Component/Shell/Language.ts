@@ -90,62 +90,95 @@ export interface LayoutSpec {
 export const Languages: Readonly<Record<LayoutAnswer, LayoutSpec>> = {
 	reading: {
 		key: "reading",
+
 		name: "READING",
+
 		gives: "RAIL\u2001MEASURE\u2001MARGIN",
+
 		about: "A document read top to bottom: one measure, a rail beside it, and a margin for the apparatus that would otherwise interrupt the prose.",
+
 		declares: [
 			"a rail (the document's own contents, or the set it belongs to)",
+
 			"a measure (72ch of prose, or `full` for a page that also carries grids)",
+
 			"a margin (the notes, the facts, the aside) - or nothing, and then the measure takes the rail's side",
 		],
+
 		measure: "72CH",
 	},
 
 	workspace: {
 		key: "workspace",
+
 		name: "WORKSPACE",
+
 		gives: "RAIL\u2001PANES\u2001DRAWER",
+
 		about: "A place the reader operates: a rail of destinations, panes that hold the instrument, and a drawer when a pane is too wide for the container.",
+
 		declares: [
 			"a rail (the destinations this workspace holds)",
+
 			"at least two panes, one of them the instrument the reader came to use",
+
 			"a drawer for anything that does not fit the pane's own measure",
 		],
+
 		measure: "NONE",
 	},
 
 	audit: {
 		key: "audit",
+
 		name: "AUDIT",
+
 		gives: "LEDGER\u2001MATRIX\u2001WELLS",
+
 		about: "A claim being checked: a ledger column of the facts that scope it, the matrix those facts are read across, and wells for the commands that verify it.",
+
 		declares: [
 			"a ledger (what the audit is of, and where each fact comes from)",
+
 			"a matrix (the comparison itself, one row per claim)",
+
 			"a well (the command or token that makes the audit repeatable) - or the audit is a table, not a check",
 		],
+
 		measure: "MATRIX",
 	},
 
 	plate: {
 		key: "plate",
+
 		name: "PLATE",
+
 		gives: "PLATE\u2001CHANNEL\u2001HEAD",
+
 		about: "One artifact at full bleed with a caption channel beside it: the figure is the argument, the channel is its provenance, and the head is a record, not a poster.",
+
 		declares: [
 			"a plate (the one artifact the page is about)",
+
 			"a caption channel (`FIGURE:`, `SOURCE:`, `STATE:`) - a plate without provenance is decoration",
+
 			"a record head, so the page states what it is before it shows it",
 		],
+
 		measure: "PLATE + CHANNEL",
 	},
 
 	record: {
 		key: "record",
+
 		name: "RECORD",
+
 		gives: "\u25ce",
+
 		about: "One artifact and nothing else: a credential card, an index, a register wall, a dispatch trampoline. These pages have no tracks to distribute, and a language imposed on them would be a skin.",
+
 		declares: ["nothing - the page composes itself"],
+
 		measure: "NONE",
 	},
 };
@@ -168,7 +201,9 @@ export const RouteRegister: readonly (readonly [string, LayoutAnswer])[] = [
 	// card puts on the language are the 404 and the OAuth callback - each is one
 	// artifact, and each had no caption for it.
 	["/", "plate"],
+
 	["/404", "plate"],
+
 	["/OAuth/Success", "plate"],
 
 	// ─── READING ─────────────────────────────────────────────────────────
@@ -177,12 +212,19 @@ export const RouteRegister: readonly (readonly [string, LayoutAnswer])[] = [
 	// as a card split) and the article's margin channel, which is a reading
 	// composition with its apparatus in the margin.
 	["/License", "reading"],
+
 	["/Contributing", "reading"],
+
 	["/Legal/Term", "reading"],
+
 	["/Legal/Privacy", "reading"],
+
 	["/Contact/Sale", "reading"],
+
 	["/Doc/Rust", "workspace"],
+
 	["/Doc/*", "reading"],
+
 	["/Blog/*", "reading"],
 
 	// ─── THE THREE REFERENCE SURFACES ────────────────────────────────────
@@ -206,7 +248,9 @@ export const RouteRegister: readonly (readonly [string, LayoutAnswer])[] = [
 	// the request routes join it: both are places the reader operates, and both
 	// had their destinations scattered instead of railed.
 	["/Dashboard", "workspace"],
+
 	["/Account", "workspace"],
+
 	["/Contact/*", "workspace"],
 
 	// The comparison is a workspace: a reader operates it. The rail is the
@@ -221,8 +265,11 @@ export const RouteRegister: readonly (readonly [string, LayoutAnswer])[] = [
 	// verification route and the portal join them: one checks a token against
 	// four claims, the other checks four tiers against the same feature set.
 	["/Download", "audit"],
+
 	["/Contents", "audit"],
+
 	["/Verify", "audit"],
+
 	["/Portal", "audit"],
 
 	// The status board is the audit the whole document needs: a ledger of the
@@ -236,17 +283,25 @@ export const RouteRegister: readonly (readonly [string, LayoutAnswer])[] = [
 	// (a card grid), the contact register wall, the dispatch trampoline, and the
 	// four credential cards.
 	["/Doc", "record"],
+
 	["/Blog", "record"],
+
 	["/Contact", "record"],
+
 	["/Visit", "record"],
+
 	// The specimen sheet is one artifact in the sense that matters: it has no
 	// rail, no measure and no margin - the sheet at its head *is* its index, and
 	// its bands are plates. Filing it under a language would impose the tracks
 	// the page deliberately does not have.
 	["/Specimen", "record"],
+
 	["/Account/SignIn", "record"],
+
 	["/Account/SignUp", "record"],
+
 	["/Account/ForgotPassword", "record"],
+
 	["/Account/ResetPassword", "record"],
 ];
 

@@ -122,8 +122,11 @@ const ScrollCode: React.FC<ScrollCodeProperty> = ({ Text = "", Font = 1 }) => {
 			SetBox(
 				new DOMRect(
 					Rectangle.x,
+
 					Rectangle.y,
+
 					Rectangle.width,
+
 					Rectangle.height,
 				),
 			);
@@ -213,6 +216,7 @@ const ScrollCode: React.FC<ScrollCodeProperty> = ({ Text = "", Font = 1 }) => {
 										{Row.map(
 											(
 												Show: number,
+
 												Index: number,
 											): React.ReactNode => {
 												if (!Pixel || !Box) return null;

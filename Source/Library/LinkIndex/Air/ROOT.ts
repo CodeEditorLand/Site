@@ -193,6 +193,7 @@ export const LinkIndexData: LinkIndexFragment = {
 
 		RegisterInlineCompletionItemProvider: {
 			Repo: ElementRepos.Air,
+
 			Path: "",
 		},
 
@@ -260,6 +261,7 @@ export const LinkIndexData: LinkIndexFragment = {
 
 		TierRemoteProcedureCallSharedMemory: {
 			Repo: ElementRepos.Air,
+
 			Path: "",
 		},
 
@@ -283,6 +285,7 @@ export const LinkIndexData: LinkIndexFragment = {
 
 		phc_mvbuxcLutfZctCVwnC4TTksmtNPPVgcx7gX96tTuCKk4: {
 			Repo: ElementRepos.Air,
+
 			Path: "",
 		},
 

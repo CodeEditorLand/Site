@@ -35,6 +35,7 @@ export const TitleSeparator = "|";
  */
 export const NormalizeTitle = (
 	Raw: string,
+
 	Name: string = SiteName,
 ): string => {
 	const Trimmed = Raw.trim();

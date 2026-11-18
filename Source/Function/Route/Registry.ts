@@ -81,403 +81,699 @@ export interface RouteEntry {
 export const Route: readonly RouteEntry[] = [
 	{
 		Path: "/",
+
 		File: "index.astro",
+
 		Kind: "page",
+
 		Canonical: false,
+
 		Baseline: true,
+
 		Heading: "Component/Dynamic/DynamicHeroSection.tsx",
+
 		Card: "2",
 	},
+
 	{
 		Path: "/404",
+
 		File: "404.astro",
+
 		Kind: "page",
+
 		Canonical: false,
+
 		Baseline: true,
+
 		Heading: "Component/Record/RecordHero.astro",
+
 		Card: "3",
 	},
 
 	// ─── Destinations ─────────────────────────────────────────────────────
 	{
 		Path: "/Download",
+
 		File: "Download.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: true,
+
 		Heading: "Component/Dynamic/DownloadMasthead.astro",
+
 		Card: "4",
 	},
+
 	{
 		Path: "/Doc",
+
 		File: "Doc.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: true,
+
 		Heading: "Component/Doc/DocArticle.astro",
+
 		Card: "3",
 	},
+
 	{
 		Path: "/Doc/[...Slug]",
+
 		File: "Doc/[...Slug].astro",
+
 		Kind: "collection",
+
 		Canonical: false,
+
 		Baseline: true,
+
 		Heading: "Component/Doc/DocArticle.astro",
+
 		Card: "3",
+
 		Collection: "Source/Content/doc",
 	},
+
 	{
 		Path: "/Doc/Rust",
+
 		File: "Doc/Rust.astro",
+
 		Kind: "page",
+
 		Canonical: false,
+
 		Baseline: true,
+
 		Heading: "Component/Doc/DocArticle.astro",
+
 		Card: "3",
 	},
+
 	{
 		Path: "/Blog",
+
 		File: "Blog.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: true,
+
 		Heading: "Component/Blog/BlogIndex.astro",
+
 		Card: "3",
 	},
+
 	{
 		Path: "/Blog/[Slug]",
+
 		File: "Blog/[Slug].astro",
+
 		Kind: "collection",
+
 		Canonical: false,
+
 		Baseline: true,
+
 		Heading: "Component/Blog/BlogArticle.astro",
+
 		Card: "3",
+
 		Collection: "Source/Content/blog",
 	},
+
 	{
 		Path: "/Portal",
+
 		File: "Portal.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: true,
+
 		Heading: "Component/Surface/SurfaceHead.astro",
+
 		Card: "6",
 	},
+
 	{
 		Path: "/Dashboard",
+
 		File: "Dashboard.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: true,
+
 		Heading: "Component/Surface/SurfaceHead.astro",
+
 		Card: "6",
 	},
+
 	{
 		Path: "/Verify",
+
 		File: "Verify.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: true,
+
 		Heading: "Component/Surface/SurfaceHead.astro",
+
 		Card: "6",
 	},
 
 	// ─── The record: license, contributing, the legal set ─────────────────
 	{
 		Path: "/License",
+
 		File: "License.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: true,
+
 		Heading: "Component/Reading/ReadingDocument.astro",
+
 		Card: "5",
 	},
+
 	{
 		Path: "/Contributing",
+
 		File: "Contributing.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: true,
+
 		Heading: "Component/Reading/ReadingDocument.astro",
+
 		Card: "5",
 	},
+
 	{
 		Path: "/Legal/Term",
+
 		File: "Legal/Term.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: true,
+
 		Heading: "Component/Reading/ReadingDocument.astro",
+
 		Card: "5",
 	},
+
 	{
 		Path: "/Legal/Privacy",
+
 		File: "Legal/Privacy.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: true,
+
 		Heading: "Component/Reading/ReadingDocument.astro",
+
 		Card: "5",
 	},
 
 	// ─── The front desk ───────────────────────────────────────────────────
 	{
 		Path: "/Contact",
+
 		File: "Contact/index.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: true,
+
 		Heading: "Component/Contact/ContactPage.astro",
+
 		Card: "5",
 	},
+
 	{
 		Path: "/Contact/Sale",
+
 		File: "Contact/Sale.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: true,
+
 		Heading: "Component/Contact/ContactPage.astro",
+
 		Card: "5",
 	},
+
 	{
 		Path: "/Contact/Amend",
+
 		File: "Contact/Amend.astro",
+
 		Kind: "page",
+
 		Canonical: false,
+
 		Baseline: true,
+
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
+
 		Card: "5",
 	},
+
 	{
 		Path: "/Contact/Claim",
+
 		File: "Contact/Claim.astro",
+
 		Kind: "page",
+
 		Canonical: false,
+
 		Baseline: true,
+
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
+
 		Card: "5",
 	},
+
 	{
 		Path: "/Contact/Deals",
+
 		File: "Contact/Deals.astro",
+
 		Kind: "page",
+
 		Canonical: false,
+
 		Baseline: true,
+
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
+
 		Card: "5",
 	},
+
 	{
 		Path: "/Contact/Erase",
+
 		File: "Contact/Erase.astro",
+
 		Kind: "page",
+
 		Canonical: false,
+
 		Baseline: true,
+
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
+
 		Card: "5",
 	},
+
 	{
 		Path: "/Contact/Guard",
+
 		File: "Contact/Guard.astro",
+
 		Kind: "page",
+
 		Canonical: false,
+
 		Baseline: true,
+
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
+
 		Card: "5",
 	},
+
 	{
 		Path: "/Contact/Hails",
+
 		File: "Contact/Hails.astro",
+
 		Kind: "page",
+
 		Canonical: false,
+
 		Baseline: true,
+
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
+
 		Card: "5",
 	},
+
 	{
 		Path: "/Contact/Leave",
+
 		File: "Contact/Leave.astro",
+
 		Kind: "page",
+
 		Canonical: false,
+
 		Baseline: true,
+
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
+
 		Card: "5",
 	},
+
 	{
 		Path: "/Contact/Legal",
+
 		File: "Contact/Legal.astro",
+
 		Kind: "page",
+
 		Canonical: false,
+
 		Baseline: true,
+
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
+
 		Card: "5",
 	},
+
 	{
 		Path: "/Contact/Lodge",
+
 		File: "Contact/Lodge.astro",
+
 		Kind: "page",
+
 		Canonical: false,
+
 		Baseline: true,
+
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
+
 		Card: "5",
 	},
+
 	{
 		Path: "/Contact/Pause",
+
 		File: "Contact/Pause.astro",
+
 		Kind: "page",
+
 		Canonical: false,
+
 		Baseline: true,
+
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
+
 		Card: "5",
 	},
+
 	{
 		Path: "/Contact/Query",
+
 		File: "Contact/Query.astro",
+
 		Kind: "page",
+
 		Canonical: false,
+
 		Baseline: true,
+
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
+
 		Card: "5",
 	},
+
 	{
 		Path: "/Contact/Reach",
+
 		File: "Contact/Reach.astro",
+
 		Kind: "page",
+
 		Canonical: false,
+
 		Baseline: true,
+
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
+
 		Card: "5",
 	},
+
 	{
 		Path: "/Contact/Scout",
+
 		File: "Contact/Scout.astro",
+
 		Kind: "page",
+
 		Canonical: false,
+
 		Baseline: true,
+
 		Heading: "Component/Dynamic/DynamicContactForm.tsx",
+
 		Card: "5",
 	},
 
 	// ─── The account surfaces ─────────────────────────────────────────────
 	{
 		Path: "/Account",
+
 		File: "Account/index.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: true,
+
 		Heading: "Component/Surface/SurfaceHead.astro",
+
 		Card: "6",
 	},
+
 	{
 		Path: "/Account/SignIn",
+
 		File: "Account/SignIn.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: true,
+
 		Heading: "Component/Auth/AuthShell.astro",
+
 		Card: "6",
 	},
+
 	{
 		Path: "/Account/SignUp",
+
 		File: "Account/SignUp.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: true,
+
 		Heading: "Component/Auth/AuthShell.astro",
+
 		Card: "6",
 	},
+
 	{
 		Path: "/Account/ForgotPassword",
+
 		File: "Account/ForgotPassword.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: true,
+
 		Heading: "Component/Auth/AuthShell.astro",
+
 		Card: "6",
 	},
+
 	{
 		Path: "/Account/ResetPassword",
+
 		File: "Account/ResetPassword.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: true,
+
 		Heading: "Component/Auth/AuthShell.astro",
+
 		Card: "6",
 	},
+
 	{
 		Path: "/OAuth/Success",
+
 		File: "OAuth/Success.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: true,
+
 		Heading: "Component/Auth/AuthShell.astro",
+
 		Card: "6",
 	},
 
 	// ─── The dispatch target ──────────────────────────────────────────────
 	{
 		Path: "/Visit",
+
 		File: "Visit.astro",
+
 		Kind: "dispatch",
+
 		Canonical: false,
+
 		Baseline: true,
+
 		Heading: null,
+
 		Card: "13",
 	},
 
 	// ─── Added after the baseline ─────────────────────────────────────────
 	{
 		Path: "/Specimen",
+
 		File: "Specimen.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: false,
+
 		Heading: "Component/Surface/SurfaceHead.astro",
+
 		Card: "post-baseline",
 	},
+
 	{
 		Path: "/Motion",
+
 		File: "Motion.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: false,
+
 		Heading: "Component/More/QuietHead.astro",
+
 		Card: "9",
 	},
+
 	{
 		Path: "/Compare",
+
 		File: "Compare.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: false,
+
 		Heading: "Component/Record/RecordHero.astro",
+
 		Card: "post-baseline",
 	},
+
 	{
 		Path: "/Contents",
+
 		File: "Contents.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: false,
+
 		Heading: "Component/Record/RecordHero.astro",
+
 		Card: "post-baseline",
 	},
+
 	{
 		Path: "/Glossary",
+
 		File: "Glossary.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: false,
+
 		Heading: "Component/More/QuietHead.astro",
+
 		Card: "post-baseline",
 	},
+
 	{
 		Path: "/Status",
+
 		File: "Status.astro",
+
 		Kind: "page",
+
 		Canonical: true,
+
 		Baseline: false,
+
 		Heading: "Component/Surface/SurfaceHead.astro",
+
 		Card: "post-baseline",
 	},
 ];

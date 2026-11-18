@@ -47,47 +47,70 @@ const Register: PaletteRegister = {
 	Routes: [
 		{
 			Id: "part-home",
+
 			Label: "HOME",
+
 			Href: "/",
+
 			Part: "01",
+
 			Kind: "route",
 		},
+
 		{
 			Id: "part-doc",
+
 			Label: "DOCUMENTATION",
+
 			Href: "/Doc",
+
 			Part: "03",
+
 			Kind: "route",
 		},
 	],
+
 	Doc: [
 		{
 			Id: "doc-start",
+
 			Label: "Start",
+
 			Pages: [
 				{
 					Id: "page-install",
+
 					Label: "Install",
+
 					Href: "/Doc/install",
+
 					Section: "Start",
+
 					Kind: "page",
 				},
+
 				{
 					Id: "page-first-run",
+
 					Label: "First Run",
+
 					Href: "/Doc/first-run",
+
 					Section: "Start",
+
 					Kind: "page",
 				},
 			],
 		},
 	],
+
 	Actions: [{ Id: "action-copy", Label: "COPY ADDRESS", Kind: "action" }],
 
 	// The two registers the site adds, empty in the fixture: what is under test is
 	// the control's behaviour over a register, and five routes plus four pages is
 	// a register whose count reads as a number rather than as arithmetic.
 	Records: [],
+
 	Terms: [],
 };
 
@@ -141,6 +164,7 @@ describe("Palette", () => {
 		expect(
 			screen.getByRole("option", { name: /install/i }),
 		).toBeInTheDocument();
+
 		expect(screen.queryByRole("option", { name: /first run/i })).toBeNull();
 	});
 
@@ -206,6 +230,7 @@ describe("Palette", () => {
 
 		// The parts leave the register; the manual stays.
 		expect(screen.queryByRole("option", { name: /home/i })).toBeNull();
+
 		expect(
 			screen.getByRole("option", { name: /install/i }),
 		).toBeInTheDocument();
@@ -221,6 +246,7 @@ describe("Palette", () => {
 		await waitFor(() => expect(Count()).toBe("00"));
 
 		expect(screen.getByText("NO RECORD")).toBeInTheDocument();
+
 		expect(
 			screen.getByText(/try a part, a section, or a page name/i),
 		).toBeInTheDocument();

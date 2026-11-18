@@ -95,62 +95,101 @@ const JellyBadgeTone: Record<
 > = {
 	grpc: {
 		variant: "mint",
+
 		base: "--SpinegRPC",
+
 		fill: "--SpinegRPCMute",
+
 		label: "--SpinegRPCFore",
 	},
+
 	ipc: {
 		variant: "azure",
+
 		base: "--SpineIPC",
+
 		fill: "--SpineIPCMute",
+
 		label: "--SpineIPCFore",
 	},
+
 	tcp: {
 		variant: "amber",
+
 		base: "--SpineTCP",
+
 		fill: "--SpineTCPMute",
+
 		label: "--SpineTCPFore",
 	},
+
 	wasm: {
 		variant: "violet",
+
 		base: "--SpineWASM",
+
 		fill: "--SpineWASMMute",
+
 		label: "--SpineWASMFore",
 	},
+
 	rust: {
 		variant: "azure",
+
 		base: "--ExtensionRust",
+
 		fill: "--ExtensionRustMute",
+
 		label: "--ExtensionRustFore",
 	},
+
 	tauri: {
 		variant: "amber",
+
 		base: "--ExtensionTauri",
+
 		fill: "--ExtensionTauriMute",
+
 		label: "--ExtensionTauriFore",
 	},
+
 	effect: {
 		variant: "platinum",
+
 		base: "--ExtensionEffectTypeScript",
+
 		fill: "--ExtensionEffectTypeScriptMute",
+
 		label: "--ExtensionEffectTypeScriptFore",
 	},
+
 	electron: {
 		variant: "violet",
+
 		base: "--ExtensionElectron",
+
 		fill: "--ExtensionElectronMute",
+
 		label: "--ExtensionElectronFore",
 	},
+
 	quiet: {
 		variant: "platinum",
+
 		base: "--Border",
+
 		fill: "--Mute",
+
 		label: "--MuteForeground",
 	},
+
 	accent: {
 		variant: "mint",
+
 		base: "--Accent",
+
 		fill: "--AccentDetail",
+
 		label: "--AccentForeground",
 	},
 };
@@ -160,6 +199,7 @@ export const BadgeTones = Object.keys(JellyBadgeTone) as BadgeTone[];
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 	({ className, variant = "default", tone, children, ...props }, ref) => {
 		const jelly = JellyBadgeVariant[variant];
+
 		const ink = tone ? JellyBadgeTone[tone] : undefined;
 
 		return (

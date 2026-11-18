@@ -60,7 +60,9 @@ import type { PaletteEntry, PaletteRegister, PaletteScope } from "./Type";
 
 const Scopes: readonly { Value: PaletteScope; Label: string }[] = [
 	{ Value: "all", Label: "ALL" },
+
 	{ Value: "doc", Label: "DOC" },
+
 	{ Value: "site", Label: "SITE" },
 ];
 
@@ -85,6 +87,7 @@ const Row = ({
 	OnNavigate,
 }: {
 	Entry: PaletteEntry;
+
 	OnNavigate: (Href: string) => void;
 }) => (
 	<CommandItem
@@ -111,9 +114,13 @@ export interface PaletteProps {
 
 const Palette = ({ Register, OnNavigate }: PaletteProps) => {
 	const [Open, SetOpen] = React.useState(false);
+
 	const [Query, SetQuery] = React.useState("");
+
 	const [Scope, SetScope] = React.useState<PaletteScope>("all");
+
 	const [Copied, SetCopied] = React.useState(false);
+
 	const [Modifier, SetModifier] = React.useState("⌘K");
 
 	// A mirror of `Open` for the document-level key listener, which must not be
@@ -216,6 +223,7 @@ const Palette = ({ Register, OnNavigate }: PaletteProps) => {
 		() => () => {
 			if (CopyTimer.current) clearTimeout(CopyTimer.current);
 		},
+
 		[],
 	);
 
@@ -242,6 +250,7 @@ const Palette = ({ Register, OnNavigate }: PaletteProps) => {
 
 	const DocCount = AllDoc.reduce(
 		(Total, Group) => Total + Group.Pages.length,
+
 		0,
 	);
 
@@ -387,7 +396,9 @@ const Palette = ({ Register, OnNavigate }: PaletteProps) => {
 									{Routes.map((Entry) => (
 										<Row
 											key={Entry.Id}
+
 											Entry={Entry}
+
 											OnNavigate={Go}
 										/>
 									))}
@@ -399,7 +410,9 @@ const Palette = ({ Register, OnNavigate }: PaletteProps) => {
 									{Records.map((Entry) => (
 										<Row
 											key={Entry.Id}
+
 											Entry={Entry}
+
 											OnNavigate={Go}
 										/>
 									))}
@@ -411,7 +424,9 @@ const Palette = ({ Register, OnNavigate }: PaletteProps) => {
 									{Terms.map((Entry) => (
 										<Row
 											key={Entry.Id}
+
 											Entry={Entry}
+
 											OnNavigate={Go}
 										/>
 									))}
@@ -421,12 +436,15 @@ const Palette = ({ Register, OnNavigate }: PaletteProps) => {
 							{Doc.map((Group) => (
 								<CommandGroup
 									key={Group.Id}
+
 									heading={Group.Label}
 								>
 									{Group.Pages.map((Entry) => (
 										<Row
 											key={Entry.Id}
+
 											Entry={Entry}
+
 											OnNavigate={Go}
 										/>
 									))}
@@ -438,9 +456,12 @@ const Palette = ({ Register, OnNavigate }: PaletteProps) => {
 									{Actions.map((Entry) => (
 										<CommandItem
 											key={Entry.Id}
+
 											value={`${Entry.Id} ${Entry.Label}`}
+
 											mark="→"
 											meta={Copied ? "COPIED" : undefined}
+
 											onSelect={Copy}
 										>
 											{Entry.Label}

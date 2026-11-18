@@ -64,32 +64,49 @@ export interface FailureNote {
 export const BuildTrace: readonly WorkingStep[] = [
 	{
 		Index: "01",
+
 		Path: "Dependency/Microsoft/Dependency/Editor",
+
 		Note: "VS CODE PLATFORM COMPILE",
 	},
+
 	{
 		Index: "02",
+
 		Path: "pnpm prepublishOnly",
+
 		Note: "WIND\u2001COCOON\u2001OUTPUT\u2001SKY\u2001WORKER",
 	},
+
 	{
 		Index: "03",
+
 		Path: "extensions.manifest.json",
+
 		Note: "PREBAKE WRITES THE EXTENSION INDEX",
 	},
+
 	{
 		Index: "04",
+
 		Path: "cargo build -p Mountain",
+
 		Note: "THE NATIVE BACKEND",
 	},
+
 	{
 		Index: "05",
+
 		Path: "pnpm tauri build",
+
 		Note: "THE APPLICATION BUNDLE",
 	},
+
 	{
 		Index: "06",
+
 		Path: "Maintain/Script/SignBundle.sh",
+
 		Note: "QUARANTINE STRIPPED\u2001ENTITLEMENTS RE-APPLIED",
 	},
 ];
@@ -105,42 +122,67 @@ export const BuildTrace: readonly WorkingStep[] = [
 export const ReleaseRegister = [
 	{
 		Label: "VERSION",
+
 		Value: "UNAVAILABLE",
+
 		Note: "NO PUBLISHED RELEASE",
 	},
+
 	{ Label: "CHANNEL", Value: "PUBLIC" },
+
 	{
 		Label: "ARTIFACTS",
+
 		Value: "0",
+
 		Note: "NOTHING TO DOWNLOAD",
 	},
+
 	{ Label: "SIGNATURE", Value: "UNAVAILABLE", Note: "NOTHING TO SIGN" },
+
 	{ Label: "CHECKSUM", Value: "UNAVAILABLE", Note: "NOTHING TO DIGEST" },
+
 	{ Label: "SIZE", Value: "UNAVAILABLE", Note: "NOTHING TO MEASURE" },
+
 	{
 		Label: "TARGETS",
+
 		Value: "3",
+
 		Note: "MACOS\u2001WINDOWS\u2001LINUX",
 	},
+
 	{
 		Label: "TOOLCHAIN",
+
 		Value: "RUST\u2001TAURI\u2001NODE 24",
 	},
+
 	{ Label: "STAGES", Value: "6", Note: "/DOC/BUILD-PIPELINE" },
+
 	{
 		Label: "BUILT BY",
+
 		Value: "Maintain/Debug/Build.sh",
+
 		Code: true,
 	},
+
 	{
 		Label: "VERIFIED BY",
+
 		Value: "UNAVAILABLE",
+
 		Note: "NO PUBLISHED DIGEST",
 	},
+
 	{
 		Label: "AS OF",
+
 		Value: "c0ebf97fc",
+
 		Code: true,
+
 		Note: "THE BASELINE THIS PAGE DESCRIBES",
 	},
 ];
@@ -152,32 +194,52 @@ export const ReleaseRegister = [
 export const Failures: readonly FailureNote[] = [
 	{
 		Index: "FAILURE_01",
+
 		Name: "BLANK WORKBENCH",
+
 		Symptom:
 			"THE WINDOW OPENS AND THE WORKBENCH STAYS BLANK\u2001THE EXTENSION HOST NEVER ACTIVATES",
+
 		Cause: "COCOON DID NOT CONNECT WITHIN THE 30 SECOND GRPC BUDGET\u2001PORT 50051 OR 50052 ALREADY IN USE",
+
 		Next: "lsof -i :50051 -i :50052\u2001KILL THE ORPHAN\u2001OR CHANGE THE PORTS IN .env.Land",
+
 		State: "INTERRUPTED",
+
 		Source: "/DOC/TROUBLESHOOTING",
 	},
+
 	{
 		Index: "FAILURE_02",
+
 		Name: "PATH ARGUMENT",
+
 		Symptom:
 			"THE BUNDLED WORKBENCH CRASHES AT STARTUP WITH THE path ARGUMENT MUST BE OF TYPE STRING",
+
 		Cause: "ISandboxConfiguration.profiles WAS MISSING IN MOUNTAIN'S ConstructSandboxConfiguration",
+
 		Next: "REBUILD MOUNTAIN AFTER ANY CHANGE TO InitializationData.rs\u2001THEN WIPE THE VITE CACHE",
+
 		State: "INTERRUPTED",
+
 		Source: "/DOC/TROUBLESHOOTING",
 	},
+
 	{
 		Index: "FAILURE_03",
+
 		Name: "DAMAGED BUNDLE",
+
 		Symptom:
 			"GATEKEEPER REFUSES THE APP AS DAMAGED OR INCOMPLETE\u2001codesign --verify REPORTS not signed",
+
 		Cause: "TAURI DOES NOT RE-SIGN THE BUNDLE AFTER IT COPIES THE COCOON NODE BINARY INTO THE .app",
+
 		Next: "BundleLevel=debug sh Maintain/Script/SignBundle.sh\u2001AFTER EVERY BUILD",
+
 		State: "INTERRUPTED",
+
 		Source: "/DOC/TROUBLESHOOTING",
 	},
 ];
@@ -193,6 +255,8 @@ export const Failures: readonly FailureNote[] = [
 export const WorkingBandCopy = {
 	Footnote:
 		"SOURCE: /DOC/BUILD-PIPELINE\u2001/DOC/TROUBLESHOOTING\u2001EVERY FIGURE ON THIS BAND IS READ FROM THE MANUAL, NOT MEASURED AT RUNTIME",
+
 	TraceLabel: "BUILD",
+
 	RegisterLabel: "WORKING_01",
 } as const;

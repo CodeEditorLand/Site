@@ -12,10 +12,15 @@
  * where all fifteen print.
  */
 import { Air } from "../Record/Air.js";
+
 import { Cocoon } from "../Record/Cocoon.js";
+
 import { Echo } from "../Record/Echo.js";
+
 import { Mountain } from "../Record/Mountain.js";
+
 import { Sky } from "../Record/Sky.js";
+
 import { Wind } from "../Record/Wind.js";
 
 import type { FieldRecord } from "../Record/FieldRecord.js";
@@ -42,6 +47,7 @@ const RouteOf = (Record: FieldRecord): RouteRow => {
 
 	return {
 		Key: Body.slice(0, Split),
+
 		Value: Body.slice(Split + 1),
 	};
 };
@@ -62,9 +68,14 @@ const CardOf = (Record: FieldRecord): CardRecord => ({
 /** The six cards, in the baseline's order. */
 export const FeatureCards: readonly CardRecord[] = [
 	Mountain,
+
 	Cocoon,
+
 	Wind,
+
 	Sky,
+
 	Air,
+
 	Echo,
 ].map(CardOf);

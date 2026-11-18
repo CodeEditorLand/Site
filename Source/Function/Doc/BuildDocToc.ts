@@ -30,8 +30,11 @@ import type { DocHeading, DocToc } from "../../Component/Doc/Type.js";
 /** The headings a markdown file uses to announce its own contents list. */
 const OwnToc = new Set([
 	"table of contents",
+
 	"contents",
+
 	"on this page",
+
 	"in this page",
 ]);
 
@@ -71,6 +74,7 @@ const Nav = (Text: string): string =>
  */
 const BuildDocToc = (
 	Headings: readonly DocHeading[],
+
 	Label: string,
 ): DocToc | null => {
 	const Second = Headings.filter((Heading) => Heading.depth === 2);
@@ -82,6 +86,7 @@ const BuildDocToc = (
 
 	return {
 		Label,
+
 		Items: Second.map((Heading) => ({
 			Label: Nav(Heading.text),
 			Href: `#${Heading.slug}`,

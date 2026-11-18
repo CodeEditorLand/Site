@@ -27,8 +27,11 @@
 import { Requests, type IncomeCode } from "../Contact/Request.js";
 
 import RoutesJson from "../../Generated/Facts/Routes.json";
+
 import FormsJson from "../../Generated/Facts/Forms.json";
+
 import ModulesJson from "../../Generated/Facts/Modules.json";
+
 import RecordsJson from "../../Generated/Facts/Records.json";
 
 import {
@@ -36,6 +39,7 @@ import {
 	GroupByChapter,
 	type Chapter,
 } from "../../Content/Index/Chapters.js";
+
 import { DeclaredReason } from "../../Content/Index/Declared.js";
 
 /** The fallback mark: no form here, and never a blank. */
@@ -47,49 +51,73 @@ const Quad = "\u2001";
 /** One route, as the generator measured it. */
 export interface RouteFact {
 	readonly Path: string;
+
 	readonly File: string;
+
 	readonly Title: string;
+
 	readonly Forms: readonly string[];
+
 	readonly Lines: number;
+
 	readonly NoIndex: boolean;
 }
 
 /** The hand-kept registry, and where it disagrees with the build. */
 export interface RegistryFact {
 	readonly Declared: readonly string[];
+
 	readonly Count: number;
+
 	readonly Missing: readonly string[];
+
 	readonly Extra: readonly string[];
 }
 
 /** One block, and the routes that mount it. */
 export interface FormFact {
 	readonly Block: string;
+
 	readonly Routes: readonly string[];
+
 	readonly Count: number;
 }
 
 /** One module outside the bulk trees. */
 export interface ModuleFact {
 	readonly Path: string;
+
 	readonly Kind: string;
+
 	readonly Carries: string;
+
 	readonly Lines: number;
+
 	readonly Readers: number;
+
 	readonly ReadBy: readonly string[];
+
 	readonly Reached: boolean;
 }
 
 /** The document's own extent, as the generator counted it. */
 export interface TotalsFact {
 	readonly Files: number;
+
 	readonly Routes: number;
+
 	readonly Documents: number;
+
 	readonly Entries: number;
+
 	readonly Elements: number;
+
 	readonly Blocks: number;
+
 	readonly Modules: number;
+
 	readonly Read: number;
+
 	readonly Declared: number;
 }
 
@@ -111,8 +139,11 @@ export const Forms: readonly FormFact[] = FormsJson.Forms;
  */
 export interface RecordFact {
 	readonly Id: string;
+
 	readonly File: string;
+
 	readonly Files: readonly string[];
+
 	readonly Routes: readonly string[];
 }
 
@@ -184,6 +215,7 @@ export const NoteOf = (Route: RouteFact): string | undefined => {
 /** One chapter with its routes, in reading order. */
 export interface RouteGroup {
 	readonly chapter: Chapter;
+
 	readonly routes: readonly RouteFact[];
 }
 
@@ -221,9 +253,13 @@ const FamilyOf = (Module: ModuleFact): string =>
 /** One row of the register: the module, what it carries, and how many read it. */
 export interface FactModuleRow {
 	readonly Path: string;
+
 	readonly Carries: string;
+
 	readonly Readers: number;
+
 	readonly Marker: string;
+
 	readonly Group: string;
 }
 
@@ -240,8 +276,11 @@ export const FactModules: readonly FactModuleRow[] = Modules.filter(
 /** One declared module: what it carries and why it exists with no reader. */
 export interface DeclaredRow {
 	readonly Path: string;
+
 	readonly Carries: string;
+
 	readonly Reason: string;
+
 	/** The reason came from `Content/Index/Declared.ts`; false means the generator's sentence. */
 	readonly Explained: boolean;
 }

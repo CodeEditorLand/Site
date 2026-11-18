@@ -89,9 +89,13 @@ const RequiredMark = () => (
  */
 const Surface = {
 	"--jelly-fill": "var(--Card)",
+
 	"--jelly-radius": "0",
+
 	"--jelly-card-font-size": "inherit",
+
 	"--jelly-card-padding-block": "var(--space-group)",
+
 	"--jelly-card-padding-inline": "var(--space-group)",
 } as CSSProperties;
 
@@ -431,6 +435,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 								{Interrupted.map((Field) => (
 									<li
 										key={Field.id}
+
 										className="contact-form__errors-item"
 									>
 										<button
@@ -598,6 +603,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 											onChange={(E) =>
 												HandleChange(
 													Field.id,
+
 													E.target.value,
 												)
 											}
@@ -654,6 +660,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 											onChange={(E) =>
 												HandleChange(
 													Field.id,
+
 													E.target.value,
 												)
 											}
@@ -704,6 +711,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 										onChange={(E) =>
 											HandleChange(
 												Field.id,
+
 												E.target.value,
 											)
 										}
@@ -744,6 +752,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 						aria-disabled={Armed ? undefined : true}
 						className={[
 							"contact-form__action",
+
 							"emphasis-expressive",
 							...(Config.Destructive
 								? ["contact-form__action--destructive"]

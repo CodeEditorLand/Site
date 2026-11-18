@@ -181,5 +181,6 @@ export interface DocToc {
  */
 export type DocTranslate = (
 	Key: string,
+
 	Options: { readonly ns?: string; readonly defaultValue: string },
 ) => string;

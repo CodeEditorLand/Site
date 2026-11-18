@@ -1,12 +1,8 @@
 {
 	"_Generated": {
 		"By": "Source/Script/Register.ts",
-		"From": [
-			"Source/**"
-		],
-		"Transform": [
-			"Facts"
-		],
+		"From": ["Source/**"],
+		"Transform": ["Facts"],
 		"Note": "One row per module outside the bulk trees: what it carries, how many files read it, and whether the build reaches it.",
 		"Rule": "Generated. Change the tree or the page, then run `node Source/Script/Register.ts` - never this file."
 	},
@@ -17,9 +13,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 174,
 			"Readers": 1,
-			"ReadBy": [
-				"Layout/Base.astro"
-			],
+			"ReadBy": ["Layout/Base.astro"],
 			"Reached": true
 		},
 		{
@@ -46,10 +40,7 @@
 			"Carries": "Inset - the margin's figures, derived from the page they annotate.",
 			"Lines": 158,
 			"Readers": 2,
-			"ReadBy": [
-				"pages/Blog/[Slug].astro",
-				"pages/Doc/[...Slug].astro"
-			],
+			"ReadBy": ["pages/Blog/[Slug].astro", "pages/Doc/[...Slug].astro"],
 			"Reached": true
 		},
 		{
@@ -71,10 +62,7 @@
 			"Carries": "Session - the two transcripts the document can honestly print.",
 			"Lines": 241,
 			"Readers": 2,
-			"ReadBy": [
-				"pages/Doc/[...Slug].astro",
-				"pages/Download.astro"
-			],
+			"ReadBy": ["pages/Doc/[...Slug].astro", "pages/Download.astro"],
 			"Reached": true
 		},
 		{
@@ -83,10 +71,7 @@
 			"Carries": "Stamp - the two marks the document issues, as data.",
 			"Lines": 89,
 			"Readers": 2,
-			"ReadBy": [
-				"pages/Contents.astro",
-				"pages/Download.astro"
-			],
+			"ReadBy": ["pages/Contents.astro", "pages/Download.astro"],
 			"Reached": true
 		},
 		{
@@ -95,9 +80,7 @@
 			"Carries": "Config - the two content collections, defined once.",
 			"Lines": 68,
 			"Readers": 1,
-			"ReadBy": [
-				"content.config.ts"
-			],
+			"ReadBy": ["content.config.ts"],
 			"Reached": true
 		},
 		{
@@ -119,9 +102,7 @@
 			"Carries": "The architecture band: all fifteen elements, one record card each.",
 			"Lines": 220,
 			"Readers": 1,
-			"ReadBy": [
-				"Component/Home/ArchitectureBand.astro"
-			],
+			"ReadBy": ["Component/Home/ArchitectureBand.astro"],
 			"Reached": true
 		},
 		{
@@ -145,9 +126,7 @@
 			"Carries": "The features band: six element records, one card each.",
 			"Lines": 71,
 			"Readers": 1,
-			"ReadBy": [
-				"Component/Home/FeatureBand.astro"
-			],
+			"ReadBy": ["Component/Home/FeatureBand.astro"],
 			"Reached": true
 		},
 		{
@@ -180,9 +159,7 @@
 			"Carries": "The hero's tech-stack strip: the eight technologies the editor is made of.",
 			"Lines": 25,
 			"Readers": 1,
-			"ReadBy": [
-				"Component/Dynamic/DynamicHeroSection.tsx"
-			],
+			"ReadBy": ["Component/Dynamic/DynamicHeroSection.tsx"],
 			"Reached": true
 		},
 		{
@@ -207,9 +184,7 @@
 			"Carries": "The working band - the mechanism, its release, and what stops it.",
 			"Lines": 199,
 			"Readers": 1,
-			"ReadBy": [
-				"Component/Home/WorkingBand.astro"
-			],
+			"ReadBy": ["Component/Home/WorkingBand.astro"],
 			"Reached": true
 		},
 		{
@@ -218,9 +193,7 @@
 			"Carries": "Chapters - how the document is divided, for the index's route register.",
 			"Lines": 128,
 			"Readers": 1,
-			"ReadBy": [
-				"Library/Index/Register.ts"
-			],
+			"ReadBy": ["Library/Index/Register.ts"],
 			"Reached": true
 		},
 		{
@@ -229,9 +202,7 @@
 			"Carries": "Declared - why a module nothing reads still exists.",
 			"Lines": 115,
 			"Readers": 1,
-			"ReadBy": [
-				"Library/Index/Register.ts"
-			],
+			"ReadBy": ["Library/Index/Register.ts"],
 			"Reached": true
 		},
 		{
@@ -240,10 +211,7 @@
 			"Carries": "Forms - the artifact set: one information type, one physical form.",
 			"Lines": 261,
 			"Readers": 2,
-			"ReadBy": [
-				"Content/Index/Page.ts",
-				"pages/Contents.astro"
-			],
+			"ReadBy": ["Content/Index/Page.ts", "pages/Contents.astro"],
 			"Reached": true
 		},
 		{
@@ -252,9 +220,7 @@
 			"Carries": "Page - the index's copy, and nothing else.",
 			"Lines": 295,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/Contents.astro"
-			],
+			"ReadBy": ["pages/Contents.astro"],
 			"Reached": true
 		},
 		{
@@ -263,9 +229,7 @@
 			"Carries": "Account - the account workspace, as data.",
 			"Lines": 224,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/Account/index.astro"
-			],
+			"ReadBy": ["pages/Account/index.astro"],
 			"Reached": true
 		},
 		{
@@ -274,9 +238,7 @@
 			"Carries": "NotFound - the copy for the 404's plate and its adverse states.",
 			"Lines": 96,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/404.astro"
-			],
+			"ReadBy": ["pages/404.astro"],
 			"Reached": true
 		},
 		{
@@ -285,9 +247,7 @@
 			"Carries": "OAuth - the callback's four outcomes, as copy.",
 			"Lines": 155,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/OAuth/Success.astro"
-			],
+			"ReadBy": ["pages/OAuth/Success.astro"],
 			"Reached": true
 		},
 		{
@@ -296,9 +256,7 @@
 			"Carries": "Rust - the API surface's workspace copy.",
 			"Lines": 118,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/Doc/Rust.astro"
-			],
+			"ReadBy": ["pages/Doc/Rust.astro"],
 			"Reached": true
 		},
 		{
@@ -307,9 +265,7 @@
 			"Carries": "Verify - the verification route, as an audit.",
 			"Lines": 250,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/Verify.astro"
-			],
+			"ReadBy": ["pages/Verify.astro"],
 			"Reached": true
 		},
 		{
@@ -318,9 +274,7 @@
 			"Carries": "Visit - the tombstone the catch-all route prints when it cannot send the reader on.",
 			"Lines": 86,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/Visit.astro"
-			],
+			"ReadBy": ["pages/Visit.astro"],
 			"Reached": true
 		},
 		{
@@ -329,9 +283,7 @@
 			"Carries": "Compare - Land against the editor it replaces, in the site's own words.",
 			"Lines": 444,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/Compare.astro"
-			],
+			"ReadBy": ["pages/Compare.astro"],
 			"Reached": true
 		},
 		{
@@ -381,9 +333,7 @@
 			"Carries": "Page - the motion register's copy: bands, facts, sequences, arms, refusals.",
 			"Lines": 682,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/Motion.astro"
-			],
+			"ReadBy": ["pages/Motion.astro"],
 			"Reached": true
 		},
 		{
@@ -392,9 +342,7 @@
 			"Carries": "Register - the site's interaction classes, as data.",
 			"Lines": 324,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/Motion.astro"
-			],
+			"ReadBy": ["pages/Motion.astro"],
 			"Reached": true
 		},
 		{
@@ -662,9 +610,7 @@
 			"Carries": "Dashboard - the dashboard page's content table.",
 			"Lines": 543,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/Dashboard.astro"
-			],
+			"ReadBy": ["pages/Dashboard.astro"],
 			"Reached": true
 		},
 		{
@@ -673,9 +619,7 @@
 			"Carries": "Portal - the portal page's content table.",
 			"Lines": 583,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/Portal.astro"
-			],
+			"ReadBy": ["pages/Portal.astro"],
 			"Reached": true
 		},
 		{
@@ -741,9 +685,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 2,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -752,9 +694,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 2,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -763,9 +703,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 4,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -774,9 +712,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 4,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -785,9 +721,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 2,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -796,9 +730,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 4,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -807,9 +739,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 2,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -818,9 +748,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 4,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -829,9 +757,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 22,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -840,9 +766,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 4,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -851,9 +775,7 @@
 			"Carries": "Exports Interface.",
 			"Lines": 4,
 			"Readers": 1,
-			"ReadBy": [
-				"Function/Configuration/Load.ts"
-			],
+			"ReadBy": ["Function/Configuration/Load.ts"],
 			"Reached": true
 		},
 		{
@@ -862,9 +784,7 @@
 			"Carries": "Exports Interface.",
 			"Lines": 4,
 			"Readers": 1,
-			"ReadBy": [
-				"Function/Configuration/Override.ts"
-			],
+			"ReadBy": ["Function/Configuration/Override.ts"],
 			"Reached": true
 		},
 		{
@@ -873,9 +793,7 @@
 			"Carries": "Exports Interface.",
 			"Lines": 4,
 			"Readers": 1,
-			"ReadBy": [
-				"Function/Configuration/Parse/Boolean.ts"
-			],
+			"ReadBy": ["Function/Configuration/Parse/Boolean.ts"],
 			"Reached": true
 		},
 		{
@@ -884,9 +802,7 @@
 			"Carries": "Exports Interface.",
 			"Lines": 4,
 			"Readers": 1,
-			"ReadBy": [
-				"Function/Configuration/Parse/Number.ts"
-			],
+			"ReadBy": ["Function/Configuration/Parse/Number.ts"],
 			"Reached": true
 		},
 		{
@@ -895,9 +811,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 44,
 			"Readers": 1,
-			"ReadBy": [
-				"Function/Configuration/Resolve.ts"
-			],
+			"ReadBy": ["Function/Configuration/Resolve.ts"],
 			"Reached": true
 		},
 		{
@@ -906,9 +820,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 2,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -917,9 +829,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 4,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -928,9 +838,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 33,
 			"Readers": 1,
-			"ReadBy": [
-				"Function/Noise/Staccato.ts"
-			],
+			"ReadBy": ["Function/Noise/Staccato.ts"],
 			"Reached": true
 		},
 		{
@@ -955,9 +863,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 120,
 			"Readers": 1,
-			"ReadBy": [
-				"Function/Configuration/Resolve.ts"
-			],
+			"ReadBy": ["Function/Configuration/Resolve.ts"],
 			"Reached": true
 		},
 		{
@@ -966,9 +872,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 14,
 			"Readers": 1,
-			"ReadBy": [
-				"Function/Configuration/Override.ts"
-			],
+			"ReadBy": ["Function/Configuration/Override.ts"],
 			"Reached": true
 		},
 		{
@@ -977,9 +881,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 10,
 			"Readers": 1,
-			"ReadBy": [
-				"Function/Configuration/Override.ts"
-			],
+			"ReadBy": ["Function/Configuration/Override.ts"],
 			"Reached": true
 		},
 		{
@@ -988,9 +890,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 2,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -999,9 +899,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 2,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -1010,9 +908,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 2,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -1021,9 +917,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 2,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -1032,9 +926,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 40,
 			"Readers": 1,
-			"ReadBy": [
-				"Function/Configuration/Resolve.ts"
-			],
+			"ReadBy": ["Function/Configuration/Resolve.ts"],
 			"Reached": true
 		},
 		{
@@ -1141,9 +1033,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 4,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -1152,9 +1042,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 4,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -1175,9 +1063,7 @@
 			"Carries": "Exports Type.",
 			"Lines": 8,
 			"Readers": 1,
-			"ReadBy": [
-				"Function/Configuration/Environment.ts"
-			],
+			"ReadBy": ["Function/Configuration/Environment.ts"],
 			"Reached": true
 		},
 		{
@@ -1186,9 +1072,7 @@
 			"Carries": "BuildDocIndex - the documentation index's complete data.",
 			"Lines": 463,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/Doc.astro"
-			],
+			"ReadBy": ["pages/Doc.astro"],
 			"Reached": true
 		},
 		{
@@ -1224,9 +1108,7 @@
 			"Carries": "BuildDocToc - the in-page table of contents, from the page's own `##` headings.",
 			"Lines": 93,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/Doc/[...Slug].astro"
-			],
+			"ReadBy": ["pages/Doc/[...Slug].astro"],
 			"Reached": true
 		},
 		{
@@ -1235,9 +1117,7 @@
 			"Carries": "Exports remarkCallout.",
 			"Lines": 88,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -1246,10 +1126,7 @@
 			"Carries": "The AST-level code-mention pass for markdown content - the Aphrodite/Site pattern wired as a remark plugin (alongside Callout.ts / Mermaid.ts in this directory).",
 			"Lines": 220,
 			"Readers": 2,
-			"ReadBy": [
-				"Test/Markdown/CodeMentions.test.ts",
-				"astro.config.ts"
-			],
+			"ReadBy": ["Test/Markdown/CodeMentions.test.ts", "astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -1258,9 +1135,7 @@
 			"Carries": "remarkHeading - the page owns the level-one heading, and the markdown never renders a second one.",
 			"Lines": 59,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -1269,9 +1144,7 @@
 			"Carries": "Exports remarkMermaid.",
 			"Lines": 133,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -1280,9 +1153,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 526,
 			"Readers": 1,
-			"ReadBy": [
-				"Component/Dynamic/DynamicPortal.tsx"
-			],
+			"ReadBy": ["Component/Dynamic/DynamicPortal.tsx"],
 			"Reached": true
 		},
 		{
@@ -1291,9 +1162,7 @@
 			"Carries": "─── Scroll progress cache ──────────────────────────────────────────────────── Reading scrollTop / scrollHeight / clientHeight inside rAF after setProperty calls (which invalida...",
 			"Lines": 38,
 			"Readers": 1,
-			"ReadBy": [
-				"Function/Noise/Staccato.ts"
-			],
+			"ReadBy": ["Function/Noise/Staccato.ts"],
 			"Reached": true
 		},
 		{
@@ -1314,9 +1183,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 57,
 			"Readers": 1,
-			"ReadBy": [
-				"Function/Noise/Staccato.ts"
-			],
+			"ReadBy": ["Function/Noise/Staccato.ts"],
 			"Reached": true
 		},
 		{
@@ -1325,9 +1192,7 @@
 			"Carries": "OpenGraph SVG template generator - the Daylight Field Record artifact card.",
 			"Lines": 240,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/OpenGraph/[...Slug].svg.ts"
-			],
+			"ReadBy": ["pages/OpenGraph/[...Slug].svg.ts"],
 			"Reached": true
 		},
 		{
@@ -1349,9 +1214,7 @@
 			"Carries": "Static page metadata for OpenGraph image generation.",
 			"Lines": 463,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/OpenGraph/[...Slug].svg.ts"
-			],
+			"ReadBy": ["pages/OpenGraph/[...Slug].svg.ts"],
 			"Reached": true
 		},
 		{
@@ -1360,10 +1223,7 @@
 			"Carries": "OpenGraph runs - the record grammar as SVG text runs.",
 			"Lines": 113,
 			"Readers": 2,
-			"ReadBy": [
-				"Function/OpenGraph.ts",
-				"pages/OpenGraph.svg.ts"
-			],
+			"ReadBy": ["Function/OpenGraph.ts", "pages/OpenGraph.svg.ts"],
 			"Reached": true
 		},
 		{
@@ -1372,9 +1232,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 570,
 			"Readers": 1,
-			"ReadBy": [
-				"astro.config.ts"
-			],
+			"ReadBy": ["astro.config.ts"],
 			"Reached": true
 		},
 		{
@@ -1383,9 +1241,7 @@
 			"Carries": "Exports RouteMap.",
 			"Lines": 12,
 			"Readers": 1,
-			"ReadBy": [
-				"Function/Route/Map.ts"
-			],
+			"ReadBy": ["Function/Route/Map.ts"],
 			"Reached": true
 		},
 		{
@@ -1410,9 +1266,7 @@
 			"Carries": "Path normalization shared between service worker, 404 page, and build-time route map generation.",
 			"Lines": 57,
 			"Readers": 1,
-			"ReadBy": [
-				"Test/Route/Register.test.ts"
-			],
+			"ReadBy": ["Test/Route/Register.test.ts"],
 			"Reached": true
 		},
 		{
@@ -1421,10 +1275,7 @@
 			"Carries": "Exports RouteWorkerPolicy, PublicRoutes.",
 			"Lines": 139,
 			"Readers": 2,
-			"ReadBy": [
-				"Function/Route/Register.ts",
-				"Layout/Base.astro"
-			],
+			"ReadBy": ["Function/Route/Register.ts", "Layout/Base.astro"],
 			"Reached": true
 		},
 		{
@@ -1442,9 +1293,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 225,
 			"Readers": 1,
-			"ReadBy": [
-				"Layout/Base.astro"
-			],
+			"ReadBy": ["Layout/Base.astro"],
 			"Reached": true
 		},
 		{
@@ -1462,9 +1311,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 166,
 			"Readers": 1,
-			"ReadBy": [
-				"Function/Scroll/Layout.astro"
-			],
+			"ReadBy": ["Function/Scroll/Layout.astro"],
 			"Reached": true
 		},
 		{
@@ -1473,9 +1320,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 141,
 			"Readers": 1,
-			"ReadBy": [
-				"Function/Scroll/Code.tsx"
-			],
+			"ReadBy": ["Function/Scroll/Code.tsx"],
 			"Reached": true
 		},
 		{
@@ -1511,9 +1356,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 132,
 			"Readers": 1,
-			"ReadBy": [
-				"Function/Scroll/Code/Pixel.tsx"
-			],
+			"ReadBy": ["Function/Scroll/Code/Pixel.tsx"],
 			"Reached": true
 		},
 		{
@@ -1522,9 +1365,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 401,
 			"Readers": 1,
-			"ReadBy": [
-				"Function/Scroll/Code/Pixel.tsx"
-			],
+			"ReadBy": ["Function/Scroll/Code/Pixel.tsx"],
 			"Reached": true
 		},
 		{
@@ -1592,9 +1433,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 280,
 			"Readers": 1,
-			"ReadBy": [
-				"Library/Index/Register.ts"
-			],
+			"ReadBy": ["Library/Index/Register.ts"],
 			"Reached": true
 		},
 		{
@@ -1603,9 +1442,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 2591,
 			"Readers": 1,
-			"ReadBy": [
-				"Library/Index/Register.ts"
-			],
+			"ReadBy": ["Library/Index/Register.ts"],
 			"Reached": true
 		},
 		{
@@ -1614,9 +1451,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 1045,
 			"Readers": 1,
-			"ReadBy": [
-				"Library/Index/Register.ts"
-			],
+			"ReadBy": ["Library/Index/Register.ts"],
 			"Reached": true
 		},
 		{
@@ -1625,9 +1460,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 570,
 			"Readers": 1,
-			"ReadBy": [
-				"Library/Index/Register.ts"
-			],
+			"ReadBy": ["Library/Index/Register.ts"],
 			"Reached": true
 		},
 		{
@@ -1691,10 +1524,7 @@
 			"Carries": "The code-mention pass for the CodeEditorLand site - the Aphrodite/Site pattern adapted to the C15 link registry (Source/Library/Links.ts).",
 			"Lines": 125,
 			"Readers": 2,
-			"ReadBy": [
-				"pages/Contributing.astro",
-				"pages/Doc/Rust.astro"
-			],
+			"ReadBy": ["pages/Contributing.astro", "pages/Doc/Rust.astro"],
 			"Reached": true
 		},
 		{
@@ -1734,9 +1564,7 @@
 			"Carries": "Contributing - the Contributing page's own rows.",
 			"Lines": 132,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/Contributing.astro"
-			],
+			"ReadBy": ["pages/Contributing.astro"],
 			"Reached": true
 		},
 		{
@@ -1745,9 +1573,7 @@
 			"Carries": "License - the License page's own rows.",
 			"Lines": 52,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/License.astro"
-			],
+			"ReadBy": ["pages/License.astro"],
 			"Reached": true
 		},
 		{
@@ -1756,9 +1582,7 @@
 			"Carries": "Privacy - the Privacy Policy page's own rows.",
 			"Lines": 70,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/Legal/Privacy.astro"
-			],
+			"ReadBy": ["pages/Legal/Privacy.astro"],
 			"Reached": true
 		},
 		{
@@ -1767,9 +1591,7 @@
 			"Carries": "Term - the Terms of Service page's own rows.",
 			"Lines": 101,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/Legal/Term.astro"
-			],
+			"ReadBy": ["pages/Legal/Term.astro"],
 			"Reached": true
 		},
 		{
@@ -1832,10 +1654,7 @@
 			"Carries": "Exports AnalyticsEvent.",
 			"Lines": 14,
 			"Readers": 2,
-			"ReadBy": [
-				"Library/API/Analytics.ts",
-				"Library/WorkerClient.ts"
-			],
+			"ReadBy": ["Library/API/Analytics.ts", "Library/WorkerClient.ts"],
 			"Reached": true
 		},
 		{
@@ -1856,10 +1675,7 @@
 			"Carries": "Exports Download.",
 			"Lines": 24,
 			"Readers": 2,
-			"ReadBy": [
-				"Library/API/Download.ts",
-				"Library/WorkerClient.ts"
-			],
+			"ReadBy": ["Library/API/Download.ts", "Library/WorkerClient.ts"],
 			"Reached": true
 		},
 		{
@@ -1868,10 +1684,7 @@
 			"Carries": "Exports DownloadEvent.",
 			"Lines": 20,
 			"Readers": 2,
-			"ReadBy": [
-				"Library/API/Download.ts",
-				"Library/WorkerClient.ts"
-			],
+			"ReadBy": ["Library/API/Download.ts", "Library/WorkerClient.ts"],
 			"Reached": true
 		},
 		{
@@ -1880,10 +1693,7 @@
 			"Carries": "Exports GitHubActionRun.",
 			"Lines": 38,
 			"Readers": 2,
-			"ReadBy": [
-				"Library/API/Status.ts",
-				"Library/WorkerClient.ts"
-			],
+			"ReadBy": ["Library/API/Status.ts", "Library/WorkerClient.ts"],
 			"Reached": true
 		},
 		{
@@ -1892,10 +1702,7 @@
 			"Carries": "Exports GitHubCommit.",
 			"Lines": 30,
 			"Readers": 2,
-			"ReadBy": [
-				"Library/API/Status.ts",
-				"Library/WorkerClient.ts"
-			],
+			"ReadBy": ["Library/API/Status.ts", "Library/WorkerClient.ts"],
 			"Reached": true
 		},
 		{
@@ -1904,10 +1711,7 @@
 			"Carries": "Exports GitHubIssue.",
 			"Lines": 38,
 			"Readers": 2,
-			"ReadBy": [
-				"Library/API/Status.ts",
-				"Library/WorkerClient.ts"
-			],
+			"ReadBy": ["Library/API/Status.ts", "Library/WorkerClient.ts"],
 			"Reached": true
 		},
 		{
@@ -2006,9 +1810,7 @@
 			"Carries": "Exports ThemeIconProps, ThemeIcon.",
 			"Lines": 40,
 			"Readers": 1,
-			"ReadBy": [
-				"Library/Theme/index.ts"
-			],
+			"ReadBy": ["Library/Theme/index.ts"],
 			"Reached": true
 		},
 		{
@@ -2017,9 +1819,7 @@
 			"Carries": "Exports ThemeImageProps, ThemeImage.",
 			"Lines": 46,
 			"Readers": 1,
-			"ReadBy": [
-				"Library/Theme/index.ts"
-			],
+			"ReadBy": ["Library/Theme/index.ts"],
 			"Reached": true
 		},
 		{
@@ -2044,9 +1844,7 @@
 			"Carries": "The 404: the canonical small record (`DesignSystem-Pages.md` §3), and the site's second plate page.",
 			"Lines": 208,
 			"Readers": 1,
-			"ReadBy": [
-				"Test/Page/NotFound.test.ts"
-			],
+			"ReadBy": ["Test/Page/NotFound.test.ts"],
 			"Reached": true
 		},
 		{
@@ -2442,9 +2240,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 13,
 			"Readers": 1,
-			"ReadBy": [
-				"Layout/Base.astro"
-			],
+			"ReadBy": ["Layout/Base.astro"],
 			"Reached": true
 		},
 		{
@@ -2453,9 +2249,7 @@
 			"Carries": "Handover - the direction of a page change, printed on `<html>`.",
 			"Lines": 72,
 			"Readers": 1,
-			"ReadBy": [
-				"Script/Motion/Index.ts"
-			],
+			"ReadBy": ["Script/Motion/Index.ts"],
 			"Reached": true
 		},
 		{
@@ -2464,9 +2258,7 @@
 			"Carries": "Motion - the client half of the motion layer.",
 			"Lines": 60,
 			"Readers": 1,
-			"ReadBy": [
-				"Layout/Base.astro"
-			],
+			"ReadBy": ["Layout/Base.astro"],
 			"Reached": true
 		},
 		{
@@ -2475,9 +2267,7 @@
 			"Carries": "Origin - the command palette's lean, from the direction it was invoked.",
 			"Lines": 116,
 			"Readers": 1,
-			"ReadBy": [
-				"Script/Motion/Index.ts"
-			],
+			"ReadBy": ["Script/Motion/Index.ts"],
 			"Reached": true
 		},
 		{
@@ -2486,9 +2276,7 @@
 			"Carries": "Sort - a matrix re-ordering, as a view transition.",
 			"Lines": 124,
 			"Readers": 1,
-			"ReadBy": [
-				"Script/Motion/Index.ts"
-			],
+			"ReadBy": ["Script/Motion/Index.ts"],
 			"Reached": true
 		},
 		{
@@ -2515,9 +2303,7 @@
 			"Carries": "Auto-generated by BuildJellyUIVendor.sh - do not edit.",
 			"Lines": 3,
 			"Readers": 1,
-			"ReadBy": [
-				"pages/Contents.astro"
-			],
+			"ReadBy": ["pages/Contents.astro"],
 			"Reached": true
 		},
 		{
@@ -2526,9 +2312,7 @@
 			"Carries": "No leading comment and no exports.",
 			"Lines": 520,
 			"Readers": 1,
-			"ReadBy": [
-				"Function/Scroll/Code.tsx"
-			],
+			"ReadBy": ["Function/Scroll/Code.tsx"],
 			"Reached": true
 		}
 	],

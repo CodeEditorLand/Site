@@ -31,6 +31,7 @@ export type AuthTone = "quiet" | "success" | "failure";
 /** The one action a surface or a state offers. Never more than one. */
 export interface AuthAction {
 	readonly label: string;
+
 	readonly href: string;
 }
 
@@ -42,8 +43,11 @@ export interface AuthAction {
  */
 export interface AuthFrame {
 	readonly kicker: string;
+
 	readonly heading: string;
+
 	readonly sentence?: string;
+
 	readonly action?: AuthAction;
 }
 
@@ -53,8 +57,11 @@ export interface AuthFrame {
  */
 export interface AuthReport {
 	readonly status: string;
+
 	readonly sentence: string;
+
 	readonly action: AuthAction;
+
 	readonly tone: AuthTone;
 }
 
@@ -66,5 +73,6 @@ export interface AuthReport {
  */
 export type Translate = (
 	Key: string,
+
 	Options: { readonly defaultValue: string },
 ) => string;

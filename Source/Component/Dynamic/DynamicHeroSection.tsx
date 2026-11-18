@@ -135,11 +135,17 @@ import type Property from "./Interface/Property/Hero.js";
 /** The card's frame ink: the record panel is a warm-white Jelly surface. */
 const CardInk = {
 	"--jelly-fill": "var(--Card)",
+
 	"--jelly-radius": "0",
+
 	"--jelly-color-border-default": "var(--Border)",
+
 	"--jelly-card-padding-block": "0",
+
 	"--jelly-card-padding-inline": "0",
+
 	"--jelly-card-font-size": "inherit",
+
 	"--jelly-label": "var(--CardForeground)",
 } as CSSProperties;
 
@@ -153,10 +159,15 @@ const CardInk = {
  */
 const ActionInk = {
 	"--jelly-button-radius": "var(--RadiusButton)",
+
 	"--jelly-button-height": "44px",
+
 	"--jelly-button-padding-inline": "2.6rem",
+
 	"--jelly-button-min-width": "0px",
+
 	"--jelly-color-background-accent": "var(--Foreground)",
+
 	"--jelly-color-foreground-on-accent": "var(--Background)",
 } as CSSProperties;
 
@@ -175,8 +186,11 @@ const ANCHOR: Record<
 	Corner,
 	{
 		readonly block: "top" | "bottom";
+
 		readonly inline: "left" | "right";
+
 		readonly originH: string;
+
 		readonly originV: string;
 	}
 > = {
@@ -184,22 +198,31 @@ const ANCHOR: Record<
 
 	tr: {
 		block: "top",
+
 		inline: "right",
+
 		originH: "100% 50%",
+
 		originV: "50% 0",
 	},
 
 	bl: {
 		block: "bottom",
+
 		inline: "left",
+
 		originH: "0 50%",
+
 		originV: "50% 100%",
 	},
 
 	br: {
 		block: "bottom",
+
 		inline: "right",
+
 		originH: "100% 50%",
+
 		originV: "50% 100%",
 	},
 };
@@ -260,8 +283,11 @@ const CornerFrame = () => (
 			<span
 				className="CornerMarkTick"
 				data-corner={Tick.corner}
+
 				data-axis={Tick.axis}
+
 				key={`${Tick.corner}-${Tick.axis}`}
+
 				style={Tick.style}
 			/>
 		))}
@@ -477,6 +503,7 @@ const DynamicHeroSection = ({
 									<a
 										className="inline-block"
 										href={Action.href}
+
 										{...(Action.href.startsWith("http")
 											? {
 													target: "_blank",
@@ -497,6 +524,7 @@ const DynamicHeroSection = ({
 									<a
 										className="type-meta hero-band__destination"
 										href={Destination.href}
+
 										key={Destination.href}
 									>
 										{Destination.label}
@@ -601,12 +629,19 @@ const DynamicHeroSection = ({
 /** The eight tile glyphs, by the name the strip's data carries. */
 const StackGlyphs = {
 	Box,
+
 	Cpu,
+
 	Globe,
+
 	Layers3,
+
 	Network,
+
 	Puzzle,
+
 	Server,
+
 	Zap,
 } as const;
 

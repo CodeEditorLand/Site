@@ -28,6 +28,7 @@ import type { LedgerRow, MatrixColumn, Well } from "../../Record/Type.js";
  */
 export type Translate = (
 	key: string,
+
 	options?: { readonly defaultValue?: string },
 ) => string;
 
@@ -194,12 +195,19 @@ export interface Region {
  */
 export interface Regions {
 	readonly Ladder: Region;
+
 	readonly Platforms: Region;
+
 	readonly Evidence: Region;
+
 	readonly Requirements: Region;
+
 	readonly Install: Region;
+
 	readonly Verify: Region;
+
 	readonly Transparency: Region;
+
 	readonly Previous: Region;
 }
 
@@ -239,8 +247,11 @@ export interface SupportedOS {
 /** One published release. The list is empty today; this is what will fill it. */
 export interface Release {
 	readonly version: string;
+
 	readonly published: string;
+
 	readonly platform: string;
+
 	readonly change: string;
 }
 
@@ -257,6 +268,7 @@ export interface PlatformMatrix {
 
 	readonly rows: readonly {
 		readonly label: string;
+
 		readonly cells: readonly string[];
 	}[];
 

@@ -23,9 +23,11 @@ import type {
 	LedgerRow,
 	MatrixColumn,
 } from "../../Component/Record/Type.js";
+
 import type { OnwardCopy, OnwardRow } from "../../Content/More/Page.js";
 
 import { TypeForms } from "./Forms.js";
+
 import type { TotalsFact } from "../../Library/Index/Register.js";
 
 /** The field-record separator: U+2001, never U+00B7. */
@@ -111,31 +113,45 @@ export const IndexRecord = (Totals: TotalsFact): Hero => ({
 export const Marks: readonly LedgerRow[] = [
 	{
 		key: "#",
+
 		value: "A series marker: which record this is, and which set it belongs to.",
 	},
+
 	{
 		key: "〈 〉",
+
 		value: "Containment: the runtime claim, or the stamp a record is filed under.",
 	},
+
 	{
 		key: "/",
+
 		value: "A route, a command or a category - one slash, never a second.",
 	},
+
 	{ key: "→", value: "Direction: what a step leads to." },
+
 	{
 		key: "↳",
+
 		value: "Relation: the one-line proposition a record hangs from its nameplate.",
 	},
+
 	{
 		key: ":",
+
 		value: "A field label - `STATUS:`, `TARGET:`, `LICENSE:` - the colon is the label's.",
 	},
+
 	{
 		key: "◎",
+
 		value: "The fallback: a value that is not there, printed rather than left blank.",
 	},
+
 	{
 		key: "U+2001",
+
 		value: "The only separator. An em quad, never a middle dot.",
 	},
 ];
@@ -144,61 +160,86 @@ export const Marks: readonly LedgerRow[] = [
 export const Bands = {
 	Marks: {
 		kicker: "/THE GRAMMAR",
+
 		heading: "Eight marks, and no others",
+
 		standfirst:
 			"Every page of this document is printed in the same eight marks. They are not decoration: each one carries a relation a sentence would need a clause to say.",
+
 		footnote:
 			"The grammar is level one - no card, no page and no later decision overrules it. The marks are written as literals in the source, never as characters an editor could silently fold into a middle dot.",
+
 		tone: "canvas",
 	} satisfies Band,
 
 	Forms: {
 		kicker: "/THE FORMS",
+
 		heading: "One information type, one form",
+
 		standfirst: `${TypeForms.length} kinds of information, ${FormCount} forms. The count in the last column is measured, not claimed: it is the number of routes whose import tree mounts the block.`,
+
 		footnote:
 			"`CLAIM` prints from `RecordHero` on the 404 and on this page; the homepage's claim is the endorsed two-panel hero pair, which is a keeper and outranks the block. One form, two renderings - and the pair is the one the site is recognised by.",
+
 		tone: "paper",
 	} satisfies Band,
 
 	Plates: {
 		kicker: "/THE PLATES",
+
 		heading: "What the document has a picture of",
+
 		standfirst:
 			"Fifteen element records, fifteen manifest states and one verified capture. The mark beside the set is the one this index is issued under, and the set is the evidence the document does not have - stated cell by cell rather than left as a gallery of holes.",
+
 		footnote:
 			"SOURCE: PUBLIC/EVIDENCE/*/MANIFEST.YAML\u2001SOURCE/CONTENT/ELEMENT/WORKING.TS\u2001A CELL'S STATE IS ITS MANIFEST'S, NOT THIS PAGE'S",
+
 		tone: "canvas",
 	} satisfies Band,
 
 	Routes: {
 		kicker: "/THE ROUTES",
+
 		heading: "Every address this document answers on",
+
 		standfirst:
 			"Filed by chapter, in the order a reader moves through them. The marker column names the forms the route mounts; `◎` means the route prints no block at all.",
+
 		tone: "canvas",
 	} satisfies Band,
+
 	Register: {
 		kicker: "/THE REGISTER",
+
 		heading: "What carries the facts, and what reads it",
+
 		standfirst:
 			"The document's extent, in eight figures - each one printed with the file it was counted in, because a number without a source is an assertion, not a fact.",
+
 		tone: "canvas",
 	} satisfies Band,
 
 	Declared: {
 		kicker: "/THE DECLARED",
+
 		heading: "Files that exist for a reason, and no page reads them",
+
 		standfirst:
 			"Nothing in this tree is unexplained. These are the modules with no reader - each one states what it carries, and what it is waiting for.",
+
 		tone: "paper",
 	} satisfies Band,
 
 	Record: {
 		kicker: "/THE RECORD",
+
 		heading: "How this page was made",
+
 		standfirst:
 			"The index is generated from the tree, so its numbers cannot drift from the files they describe. Re-running the register is the only way to change a figure on this page.",
+
 		tone: "canvas",
 	} satisfies Band,
 } as const;
@@ -206,22 +247,29 @@ export const Bands = {
 /** The forms matrix: type, form, rank, and the measured route count. */
 export const FormColumns: readonly MatrixColumn[] = [
 	{ label: "TYPE" },
+
 	{ label: "FORM", ink: "Accent" },
+
 	{ label: "RANK", ink: "MuteForeground" },
+
 	{ label: "ROUTES", ink: "MuteForeground", align: "center" },
 ];
 
 /** The declared matrix: the module, what it carries, and why it exists. */
 export const DeclaredColumns: readonly MatrixColumn[] = [
 	{ label: "MODULE" },
+
 	{ label: "CARRIES" },
+
 	{ label: "WHY IT EXISTS", ink: "MuteForeground" },
 ];
 
 /** The register's columns, when the fact modules are read as a matrix. */
 export const RegisterColumns: readonly MatrixColumn[] = [
 	{ label: "MODULE" },
+
 	{ label: "CARRIES" },
+
 	{ label: "READERS", ink: "MuteForeground", align: "center" },
 ];
 
@@ -234,45 +282,70 @@ export const RegisterColumns: readonly MatrixColumn[] = [
  */
 export const RecordRows = (
 	Totals: TotalsFact,
+
 	AsOf: string,
+
 	JellyPin: string,
 ): readonly LedgerRow[] => [
 	{
 		key: "ENTRIES:",
+
 		value: `${Totals.Routes} ROUTES`,
+
 		note: "every address the build emits, dynamic ones included",
 	},
+
 	{
 		key: "GROUPED BY:",
+
 		value: "CHAPTER",
+
 		note: "eight divisions, in reading order",
 	},
+
 	{
 		key: "MARKER:",
+
 		value: "THE FORMS THE ROUTE MOUNTS",
+
 		note: "`◎` where it mounts none",
 	},
+
 	{
 		key: "FORMS:",
+
 		value: `${TypeForms.length} TYPES, ${FormCount} FORMS`,
+
 		note: `${Totals.Blocks} blocks, two types ride a ledger row`,
 	},
+
 	{
 		key: "GENERATED:",
+
 		value: "Source/Script/Register.ts",
+
 		code: true,
+
 		note: "run by hand; its output is checked in",
 	},
+
 	{
 		key: "JELLY:",
+
 		value: JellyPin,
+
 		code: true,
+
 		note: "the surface family's pin",
 	},
+
 	{ key: "AS OF:", value: AsOf, note: "the date of this reading" },
+
 	{
 		key: "COLOPHON:",
+
 		value: "THE FOOTER",
+
 		note: `the document's making${Quad}paper, type, build, extent`,
 	},
 ];
@@ -287,7 +360,9 @@ export const RecordRows = (
  */
 export const RegistryFootnote = (
 	Declared: number,
+
 	Built: number,
+
 	Missing: readonly string[],
 ): string =>
 	Missing.length === 0
@@ -308,44 +383,69 @@ export const RegistryFootnote = (
  */
 export const ContentsOnward: {
 	readonly rows: readonly OnwardRow[];
+
 	readonly copy: OnwardCopy;
 } = {
 	rows: [
 		{
 			mark: "/",
+
 			want: "THE PARTS THEMSELVES, PRINTED",
+
 			where: "SPECIMEN",
+
 			href: "/Specimen",
+
 			note: "Eleven components at 1:1 with their contracts, three stated absences, and the nine adverse states.",
 		},
+
 		{
 			mark: "/",
+
 			want: "WHAT IS LIVE TODAY",
+
 			where: "STATUS",
+
 			href: "/Status",
+
 			note: "Twenty-one records under the four columns of the state vocabulary.",
 		},
+
 		{
 			mark: "/",
+
 			want: "WHAT THE DOCUMENT'S WORDS MEAN",
+
 			where: "GLOSSARY",
+
 			href: "/Glossary",
+
 			note: "Fifteen elements, twenty nouns and five retired words.",
 		},
+
 		{
 			mark: "/",
+
 			want: "THE DOCUMENT ITSELF",
+
 			where: "DOC",
+
 			href: "/Doc",
+
 			note: "Sixty articles: the reference, the deep dives, and the workflows.",
 		},
 	],
+
 	copy: {
 		index: "ONWARD / 04",
+
 		label: "/THE INDEX'S OWN DOORS",
+
 		statement:
 			"An index that ended on its own extent would be a page about itself. These four are where the parts it counted are printed, stated, defined and written.",
+
 		note: `SOURCE: SOURCE/CONTENT/INDEX/PAGE.TS${Quad}THE SHEET IS THIS PAGE'S APPENDIX`,
+
 		empty: "Nothing to hand over. Every destination this register would list is the index you are reading, which cannot happen while the document has four other registers.",
 	},
 };

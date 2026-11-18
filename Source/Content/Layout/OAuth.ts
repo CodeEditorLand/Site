@@ -153,5 +153,6 @@ export const OAuthResult = (T: TFunction): OAuthSurface => ({
 /** The arm a provider's parameter resolves to, from a resolved surface. */
 export const FailureArm = (
 	Surface: OAuthSurface,
+
 	Parameter: string | null,
 ): OAuthFailureArm => Surface.arms[FailureCodeOf(Parameter)];

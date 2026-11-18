@@ -35,22 +35,37 @@
 import { ElementWorking } from "../Element/Working.js";
 
 import { Air } from "../Record/Air.js";
+
 import { Cocoon } from "../Record/Cocoon.js";
+
 import { Common } from "../Record/Common.js";
+
 import { Echo } from "../Record/Echo.js";
+
 import { Grove } from "../Record/Grove.js";
+
 import { Maintain } from "../Record/Maintain.js";
+
 import { Mist } from "../Record/Mist.js";
+
 import { Mountain } from "../Record/Mountain.js";
+
 import { Output } from "../Record/Output.js";
+
 import { Rest } from "../Record/Rest.js";
+
 import { SideCar } from "../Record/SideCar.js";
+
 import { Sky } from "../Record/Sky.js";
+
 import { Vine } from "../Record/Vine.js";
+
 import { Wind } from "../Record/Wind.js";
+
 import { Worker } from "../Record/Worker.js";
 
 import type { FieldRecord } from "../Record/FieldRecord.js";
+
 import type {
 	Plate,
 	PlateCell,
@@ -70,19 +85,33 @@ const Quad = "\u2001";
  */
 const Elements: readonly FieldRecord[] = [
 	Air,
+
 	Cocoon,
+
 	Common,
+
 	Echo,
+
 	Grove,
+
 	Maintain,
+
 	Mist,
+
 	Mountain,
+
 	Output,
+
 	Rest,
+
 	SideCar,
+
 	Sky,
+
 	Vine,
+
 	Wind,
+
 	Worker,
 ];
 
@@ -142,12 +171,18 @@ export const ElementPlates: readonly PlateCell[] = Elements.map(
  */
 export const ElementPlateSet: PlateSet = {
 	index: "PLATES_01",
+
 	label: "ELEMENT EVIDENCE",
+
 	plates: ElementPlates,
+
 	columns: 3,
+
 	caption:
 		"Fifteen element records, fifteen manifest states, and not one capture: eight manifests are `placeholder` with no plate beside them, seven elements have no manifest at all, and the set prints each cell's own state rather than a gallery of empty frames. The one verified capture in the build belongs to the product record, and it is printed as PLATE_01 on /Download.",
+
 	source: `PUBLIC/EVIDENCE/*/MANIFEST.YAML${Quad}SOURCE/CONTENT/ELEMENT/WORKING.TS`,
+
 	empty: "No element record carries an evidence row in this build, so there is no set to print. The cells would name each element's manifest and its state; the register has not been run against this tree.",
 };
 
@@ -167,35 +202,51 @@ export const ElementPlate = (Record: FieldRecord): Plate => {
 
 	return {
 		index: "PLATE_01",
+
 		label: Record.Title,
+
 		subject: `The capture this record's evidence would show: ${Record.Evidence.Alt.toLowerCase()}.`,
+
 		caption: HasManifest
 			? `The manifest is in the build and the plate beside it is not. The capture it describes is a texture study of the element's material, not a screenshot of its interface.`
 			: `This element has no evidence manifest in the build, so there is no capture to describe. The record above still prints its working - form, boundary, dependencies, manual and trace - and none of those fields is a picture.`,
+
 		facts: [
 			{
 				key: "SUBJECT",
+
 				value: Record.Evidence.Alt.toUpperCase(),
 			},
+
 			{
 				key: "MANIFEST",
+
 				value: HasManifest ? ManifestOf(Record) : "UNAVAILABLE",
 			},
+
 			{
 				key: "STATE",
+
 				value: Evidence?.Value ?? "UNAVAILABLE",
 			},
+
 			{
 				key: "PLATE",
+
 				value: "UNAVAILABLE",
 			},
 		],
+
 		source: HasManifest
 			? ManifestOf(Record)
 			: "SOURCE/CONTENT/ELEMENT/WORKING.TS",
+
 		state: "unavailable",
+
 		next: "OPEN THE ELEMENT'S MANUAL - IT DESCRIBES THE THING THE CAPTURE WOULD HAVE SHOWN.",
+
 		placement: "foot",
+
 		span: "measure",
 	};
 };
@@ -211,30 +262,47 @@ export const ElementPlate = (Record: FieldRecord): Plate => {
  */
 export const ReleasePlate: Plate = {
 	index: "PLATE_01",
+
 	label: "LAND, NIGHT GLASS",
+
 	subject:
 		"The one verified capture in the build: rain-speckled glass reflecting a green light at night.",
+
 	caption:
 		"It is a texture plate for the Land element's material, not a screenshot of the editor. No capture of the interface is in the build, and the three screens the manual documents in full are listed beside this plate with the capture the build carries for each: none.",
+
 	src: "/Evidence/Land/NightGlass-01.png",
+
 	alt: "Rain-speckled glass reflecting a green light at night",
+
 	position: "right",
+
 	facts: [
 		{
 			key: "SUBJECT",
+
 			value: "RAIN-SPECKLED GLASS WITH REFLECTED GREEN LIGHT",
 		},
+
 		{ key: "MODE", value: "FLASH-OBSERVATION" },
+
 		{
 			key: "CROP",
+
 			value: `RIGHT-EDGE${Quad}SUBJECT EXCEEDS TOP AND RIGHT FRAME`,
 		},
+
 		{ key: "USAGE", value: `HOMEPAGE-HERO${Quad}LAND-ELEMENT-PAGE` },
+
 		{ key: "STATUS", value: "VERIFIED" },
 	],
+
 	source: "PUBLIC/EVIDENCE/LAND/MANIFEST.YAML",
+
 	placement: "foot",
+
 	span: "wide",
+
 	ratio: "4 / 3",
 };
 
@@ -250,31 +318,48 @@ export const ReleasePlate: Plate = {
  */
 export const ReleasePlateSet: PlateSet = {
 	index: "PLATES_02",
+
 	label: "RELEASE EVIDENCE",
+
 	plates: [
 		{
 			index: "01",
+
 			subject: `THE WORKBENCH${Quad}THE EDITOR ON AN OPEN FILE`,
+
 			state: "unavailable",
+
 			note: "NO CAPTURE IN THE BUILD",
 		},
+
 		{
 			index: "02",
+
 			subject: `THE COMMAND PALETTE${Quad}THE ROUTE INDEX OVER THE EDITOR`,
+
 			state: "unavailable",
+
 			note: "NO CAPTURE IN THE BUILD",
 		},
+
 		{
 			index: "03",
+
 			subject: `THE TERMINAL${Quad}THE PANEL UNDER THE WORKBENCH`,
+
 			state: "unavailable",
+
 			note: "NO CAPTURE IN THE BUILD",
 		},
 	],
+
 	columns: 3,
+
 	caption:
 		"Three screens the manual documents in full - /Doc/workflow-open-file, /Doc/workflow-command-palette and /Doc/workflow-terminal - and no capture of any of them. A release that printed its interface as a drawing would be illustrating; this set says what the build has and what it does not.",
+
 	source: `SOURCE/CONTENT/DOC/WORKFLOW-*.MD${Quad}PUBLIC/EVIDENCE/*/MANIFEST.YAML`,
+
 	empty: "The manual does not document a screen in this build, so there is no release evidence to list. The set would name each documented screen and the capture the build carries for it.",
 };
 

@@ -33,9 +33,13 @@ import type Property from "./Interface/Property/Header.js";
 const AdaptAction = (Action: unknown): readonly HeaderContentAction[] => {
 	const Row = Action as {
 		Type?: string;
+
 		Text?: string;
+
 		Href?: string;
+
 		Variant?: string;
+
 		Content?: { Text?: string; Href?: string; Variant?: string };
 	};
 
@@ -71,7 +75,9 @@ const AdaptLink = (Link: unknown): readonly HeaderNavigationLink[] => {
 const DynamicHeader = ({ Content }: Property) => {
 	const Adapted: HeaderContent = {
 		Logo: { Text: Content.Logo.Text },
+
 		Navigation: Content.Navigation.flatMap(AdaptLink),
+
 		Actions: Content.Actions.flatMap(AdaptAction),
 	};
 

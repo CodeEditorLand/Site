@@ -39,6 +39,7 @@ const Offsite = (Label: string, Href: string): FooterLink => ({
  */
 export const FooterData = (
 	T: FooterTranslate,
+
 	Year: number = new Date().getFullYear(),
 ): FooterContent => ({
 	Ledger: [
@@ -171,6 +172,7 @@ export const FooterData = (
 
 		Offsite(
 			T("footer:record.github", { defaultValue: "/GITHUB" }),
+
 			"https://github.com/CodeEditorLand/Land",
 		),
 
@@ -214,6 +216,7 @@ export const FooterData = (
 
 		Offsite(
 			T("footer:columns.company.issues", { defaultValue: "Issues" }),
+
 			"https://github.com/CodeEditorLand/Land/issues",
 		),
 

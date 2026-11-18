@@ -55,6 +55,7 @@ beforeAll(async () => {
 /** The first element matching a selector. Throws rather than returning null. */
 const One = (
 	Selector: string,
+
 	Root: ParsedElement | Window["document"] | undefined = Page,
 ): ParsedElement => {
 	const Found = Root?.querySelector(Selector) ?? null;
@@ -67,6 +68,7 @@ const One = (
 /** Every element matching a selector, in print order. */
 const All = (
 	Selector: string,
+
 	Root: ParsedElement | Window["document"] | undefined = Page,
 ): ParsedElement[] => Array.from(Root?.querySelectorAll(Selector) ?? []);
 

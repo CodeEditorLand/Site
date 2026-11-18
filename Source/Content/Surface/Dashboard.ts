@@ -138,6 +138,7 @@ export interface SettingsRow {
 	/** `Manage`, when the row is live. */
 	readonly action?: {
 		readonly label: string;
+
 		readonly href: string;
 	};
 }
@@ -165,7 +166,9 @@ export interface DashboardSurface {
 	/** The downloads panel: one button and one line. */
 	readonly downloads: {
 		readonly label: string;
+
 		readonly href: string;
+
 		readonly line: string;
 	};
 
@@ -175,56 +178,73 @@ export interface DashboardSurface {
 	/** The telemetry section: three paths in one wide card. */
 	readonly telemetry: {
 		readonly heading: string;
+
 		readonly paths: readonly TelemetryPath[];
 	};
 
 	/** The build-configuration section: three cards in one grid. */
 	readonly build: {
 		readonly heading: string;
+
 		readonly subtitle: string;
+
 		readonly cards: readonly BuildCard[];
 	};
 
 	/** The tier section: four link cards in one grid. */
 	readonly tiers: {
 		readonly heading: string;
+
 		readonly subtitle: string;
+
 		readonly cards: readonly TierCard[];
 	};
 
 	/** The editor-connection section: one card. */
 	readonly editor: {
 		readonly heading: string;
+
 		readonly subtitle: string;
+
 		readonly name: string;
+
 		readonly status: string;
+
 		readonly text: string;
+
 		readonly scan: {
 			readonly label: string;
+
 			readonly href: string;
 		};
+
 		readonly connect: {
 			readonly label: string;
+
 			readonly href: string;
 		};
+
 		readonly note: string;
 	};
 
 	/** The partners section: three cards in one grid. */
 	readonly partners: {
 		readonly heading: string;
+
 		readonly cards: readonly PartnerCard[];
 	};
 
 	/** The data-rights section: one heading and one sentence over the directory. */
 	readonly privacy: {
 		readonly heading: string;
+
 		readonly subtitle: string;
 	};
 
 	/** The settings section: three rows in one card. */
 	readonly settings: {
 		readonly heading: string;
+
 		readonly rows: readonly SettingsRow[];
 	};
 }
@@ -233,137 +253,181 @@ export interface DashboardSurface {
 export const DashboardPage = (T: TFunction): DashboardSurface => {
 	const Copy = {
 		Title: T("common.dashboard.pageTitle", { defaultValue: "Dashboard" }),
+
 		Subtitle: T("common.dashboard.pageSubtitle", {
 			defaultValue:
 				"Your Land account, downloads, and editor connection.",
 		}),
+
 		Account: T("common.dashboard.account.heading", {
 			defaultValue: "Account",
 		}),
+
 		Downloads: "Downloads",
+
 		QuickLinks: "Quick Links",
+
 		Access: T("common.dashboard.portal.heading", {
 			defaultValue: "Authentication Tiers",
 		}),
+
 		AccessSubtitle: T("common.dashboard.portal.subtitle", {
 			defaultValue:
 				"Your current authentication method and available tiers.",
 		}),
+
 		Data: T("common.dashboard.privacy.heading", {
 			defaultValue: "Privacy & Data Rights",
 		}),
+
 		DataSubtitle: T("common.dashboard.privacy.subtitle", {
 			defaultValue:
 				"Exercise your GDPR rights, request data exports, or delete your account. All requests are sent directly to our privacy team and handled within 30 days.",
 		}),
+
 		Build: T("common.dashboard.buildLog.heading", {
 			defaultValue: "Build Configuration",
 		}),
+
 		BuildSubtitle: T("common.dashboard.buildLog.subtitle", {
 			defaultValue:
 				"Active build variant and deployment mode.\n\nAvailable via Local-First Air Daemon connection.",
 		}),
+
 		Telemetry: T("common.dashboard.telemetry.heading", {
 			defaultValue: "Telemetry Architecture",
 		}),
+
 		Editor: T("common.dashboard.editor.heading", {
 			defaultValue: "Editor Connection",
 		}),
+
 		EditorSubtitle: T("common.dashboard.editor.subtitle", {
 			defaultValue:
 				"Connect the website to your running Land editor instance.",
 		}),
+
 		EditorStatus: T("common.dashboard.editor.status", {
 			defaultValue: "Not Connected",
 		}),
+
 		EditorDescription: T("common.dashboard.editor.description", {
 			defaultValue:
 				"The Air Daemon connects this dashboard to a running Land editor via WebSocket.\n\nLaunch Land to enable real-time build logs, telemetry, and configuration management.",
 		}),
+
 		Settings: T("common.dashboard.settings.heading", {
 			defaultValue: "Settings",
 		}),
+
 		Partners: T("common.dashboard.partners.heading", {
 			defaultValue: "Partners & Attribution",
 		}),
+
 		ComingSoon: T("common.comingSoon", { defaultValue: "PLANNED" }),
 	};
 
 	return {
 		title: Copy.Title,
+
 		standfirst: Copy.Subtitle,
+
 		badges: [
 			{ label: "Telemetry Feature Gated", tone: "grpc", dot: true },
+
 			{ label: "CC0 Licensed", tone: "mute" },
+
 			{ label: "Signing Planned", tone: "mute" },
+
 			{ label: "Mountain Workbench", tone: "ipc", dot: true },
 		],
+
 		downloads: {
 			label: T("common.dashboard.downloads.goButton", {
 				defaultValue: "Go to Downloads",
 			}),
+
 			href: "/Download",
+
 			line: T("common.dashboard.downloads.description", {
 				defaultValue:
 					"Get the latest Land build for your platform. Native on macOS, Windows, and Linux.",
 			}),
 		},
+
 		quickLinks: [
 			{
 				label: T("common.dashboard.quickLinks.docs", {
 					defaultValue: "Documentation",
 				}),
+
 				href: "/Doc",
 			},
+
 			{
 				label: T("common.dashboard.quickLinks.reportIssue", {
 					defaultValue: "Report an Issue",
 				}),
+
 				href: "https://github.com/CodeEditorLand/Land/issues",
 			},
+
 			{
 				label: T("common.dashboard.quickLinks.contribute", {
 					defaultValue: "Contribute",
 				}),
+
 				href: "/Contributing",
 			},
 		],
+
 		telemetry: {
 			heading: Copy.Telemetry,
+
 			paths: [
 				{
 					badges: [
 						{ label: "Disabled", tone: "grpc", dot: true },
+
 						{ label: "Feature Gated", tone: "mute", dot: true },
 					],
+
 					heading: T("common.dashboard.telemetry.production.title", {
 						defaultValue: "Feature-gated by build profile.",
 					}),
+
 					text: T(
 						"common.dashboard.telemetry.production.description",
+
 						{
 							defaultValue:
 								"Telemetry and tracing are behind named Rust feature gates. The build profile determines what is compiled in - nothing is emitted unless a specific feature path is enabled.",
 						},
 					),
 				},
+
 				{
 					badges: [{ label: "Optional", tone: "tauri", dot: true }],
+
 					heading: T("common.dashboard.telemetry.otel.title", {
 						defaultValue:
 							"Opt-in OpenTelemetry. Your infrastructure only.",
 					}),
+
 					text: T("common.dashboard.telemetry.otel.description", {
 						defaultValue:
 							"OpenTelemetry tracing is available in source. Activating it requires an explicit feature flag and a configured endpoint - trace data goes only to infrastructure you control.",
 					}),
 				},
+
 				{
 					badges: [{ label: "Active", tone: "ipc", dot: true }],
+
 					heading: T("common.dashboard.telemetry.effect.title", {
 						defaultValue:
 							"Extension host timing. Stays in the process.",
 					}),
+
 					text: T("common.dashboard.telemetry.effect.description", {
 						defaultValue:
 							"Cocoon has internal timing and service diagnostics for extension-host work. Unless a transport is configured, that data is local process instrumentation.",
@@ -371,169 +435,251 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 				},
 			],
 		},
+
 		build: {
 			heading: Copy.Build,
+
 			subtitle: Copy.BuildSubtitle.split("\n\n")
 				.filter((Line) => Line.length > 0)
 				.join(" "),
+
 			cards: [
 				{
 					title: "Active Profile",
+
 					badge: { label: "Recommended", tone: "ipc", dot: true },
+
 					rows: [
 						{ key: "Profile", value: "production", mono: true },
+
 						{ key: "Workbench", value: "Mountain", strong: true },
+
 						{ key: "Features", value: "Active Source Path" },
+
 						{ key: "Compiler", value: "esbuild", mono: true },
 					],
 				},
+
 				{
 					title: "Deployment Mode",
+
 					badge: { label: "Active", tone: "grpc", dot: true },
+
 					rows: [
 						{
 							key: "Mode",
+
 							value: "Production Release",
+
 							strong: true,
 						},
+
 						{ key: "NODE_ENV", value: "production", mono: true },
+
 						{ key: "RUST_LOG", value: "info", mono: true },
+
 						{ key: "Bundle", value: "Full" },
 					],
 				},
+
 				{
 					title: "Test Matrix",
+
 					badge: { label: "16 Permutations", tone: "mute" },
+
 					rows: [
 						{ key: "Profiles", value: "9 named" },
+
 						{ key: "Workbenches", value: "5 variants" },
+
 						{ key: "Compilers", value: "esbuild, OXC" },
+
 						{
 							key: "Permutations",
+
 							value: "16 verified",
+
 							strong: true,
 						},
 					],
 				},
 			],
 		},
+
 		tiers: {
 			heading: Copy.Access,
+
 			subtitle: Copy.AccessSubtitle,
+
 			cards: [
 				{
 					title: "Cloud",
+
 					protocol: ["Auth0", "HTTPS / TLS 1.3"].join(` ${Quad} `),
+
 					badge: { label: "Online", tone: "ipc", dot: true },
+
 					glyph: "☁",
+
 					token: "TierCloud",
 				},
+
 				{
 					title: "Provider",
+
 					protocol: ["OAuth 2.0", "PKCE"].join(` ${Quad} `),
+
 					badge: { label: "OAuth", tone: "wasm", dot: true },
+
 					glyph: "♧",
+
 					token: "TierProvider",
 				},
+
 				{
 					title: "Local-First",
+
 					protocol: ["mTLS", "CRDTs", "WebSocket"].join(` ${Quad} `),
+
 					badge: { label: "Local", tone: "tcp", dot: true },
+
 					glyph: "⚙",
+
 					token: "TierLocalFirst",
 				},
+
 				{
 					title: "Enterprise",
+
 					protocol: ["OIDC", "SAML 2.0", "SCIM"].join(` ${Quad} `),
+
 					badge: { label: "SSO", tone: "grpc", dot: true },
+
 					glyph: "☋",
+
 					token: "TierEnterprise",
 				},
 			],
 		},
+
 		editor: {
 			heading: Copy.Editor,
+
 			subtitle: Copy.EditorSubtitle,
+
 			name: "Air Daemon",
+
 			status: Copy.EditorStatus,
+
 			text: Copy.EditorDescription,
+
 			scan: {
 				label: T("common.dashboard.editor.scanButton", {
 					defaultValue: "Scan for Daemon",
 				}),
+
 				href: "/Dashboard?mode=local",
 			},
+
 			connect: {
 				label: T("common.dashboard.editor.connect", {
 					defaultValue: "Connect via Portal",
 				}),
+
 				href: "/Portal",
 			},
+
 			note: ["mTLS", "CRDTs", "WebSocket", "Zero cloud dependency"].join(
 				` ${Quad} `,
 			),
 		},
+
 		partners: {
 			heading: Copy.Partners,
+
 			cards: [
 				{
 					name: "Code Editor Land",
+
 					line: ["Organization", "GitHub"].join(` ${Quad} `),
+
 					href: "https://github.com/CodeEditorLand",
+
 					logo: "/Asset/Logo/Glyph/Land.svg",
 				},
+
 				{
 					name: "PlayForm",
+
 					line: ["Platform", "PlayForm.Cloud"].join(` ${Quad} `),
+
 					href: "https://PlayForm.Cloud",
+
 					logo: "/Image/PlayForm.svg",
 				},
+
 				{
 					name: "NLnet Foundation",
+
 					line: "NGI0 Commons Fund",
+
 					href: "https://nlnet.nl/project/Land/",
+
 					tile: "NL",
 				},
 			],
 		},
+
 		privacy: {
 			heading: Copy.Data,
+
 			subtitle: Copy.DataSubtitle,
 		},
+
 		settings: {
 			heading: Copy.Settings,
+
 			rows: [
 				{
 					title: T("common.dashboard.settings.sync.title", {
 						defaultValue: "Sync Settings",
 					}),
+
 					body: T("common.dashboard.settings.sync.description", {
 						defaultValue:
 							"Your editor preferences follow you across every device automatically.",
 					}),
+
 					badge: { label: Copy.ComingSoon, tone: "mute" },
 				},
+
 				{
 					title: T("common.dashboard.settings.extensionSync.title", {
 						defaultValue: "Extension Sync",
 					}),
+
 					body: T(
 						"common.dashboard.settings.extensionSync.description",
+
 						{
 							defaultValue:
 								"Your installed extensions stay in sync across all machines.",
 						},
 					),
+
 					badge: { label: Copy.ComingSoon, tone: "mute" },
 				},
+
 				{
 					title: T("common.dashboard.settings.account.title", {
 						defaultValue: "Account",
 					}),
+
 					body: T("common.dashboard.settings.account.description", {
 						defaultValue:
 							"Update your profile and manage your account.",
 					}),
+
 					action: { label: "Manage", href: "/Account" },
 				},
 			],

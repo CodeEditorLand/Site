@@ -296,6 +296,7 @@ const MatrixControl = ({
 				LandMotion?: {
 					Sort: (
 						Shell: HTMLElement | null,
+
 						Mutate: () => void,
 					) => boolean;
 				};
@@ -516,11 +517,13 @@ const MatrixControl = ({
 							◎
 						</span>
 					) : null}
+
 					{Note.Mark ? (
 						<span className="MatrixControl__NoteWord">
 							{Note.Mark}
 						</span>
 					) : null}
+
 					{Note.Line ? (
 						<span className="MatrixControl__NoteLine">
 							{Note.Line}
@@ -534,6 +537,7 @@ const MatrixControl = ({
 								className="SlipAction"
 								onClick={() => {
 									SetQuery("");
+
 									SetFacet(All);
 								}}
 							>

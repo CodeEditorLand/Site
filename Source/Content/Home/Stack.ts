@@ -14,11 +14,18 @@ export const StackLabel = "TECH STACK";
 /** The eight tiles, in the order the baseline printed them. */
 export const StackTiles: readonly StackTile[] = [
 	{ Name: "RUST CORE", Icon: "Cpu", Ink: "var(--SpineTCP)" },
+
 	{ Name: "TAURI UI", Icon: "Box", Ink: "var(--SpineIPC)" },
+
 	{ Name: "EFFECT-TS SERVICES", Icon: "Layers3", Ink: "var(--SpineWASM)" },
+
 	{ Name: "GRPC IPC", Icon: "Network", Ink: "var(--SpinegRPC)" },
+
 	{ Name: "EXTENSION HOST", Icon: "Puzzle", Ink: "var(--SpineWASM)" },
+
 	{ Name: "CROSS-PLATFORM", Icon: "Globe", Ink: "var(--SpineIPC)" },
+
 	{ Name: "VS CODE API", Icon: "Server", Ink: "var(--SpinegRPC)" },
+
 	{ Name: "OPEN SOURCE CC0", Icon: "Zap", Ink: "var(--SpineTCP)" },
 ];

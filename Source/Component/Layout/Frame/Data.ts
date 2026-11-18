@@ -60,81 +60,121 @@ export interface FrameSection {
 export const FrameSections: readonly FrameSection[] = [
 	{
 		Index: "01",
+
 		Key: "home",
+
 		Label: "HOME",
+
 		Href: "/",
+
 		Prefixes: ["/", "/Compare"],
 	},
 
 	{
 		Index: "02",
+
 		Key: "download",
+
 		Label: "DOWNLOAD",
+
 		Href: "/Download",
+
 		Prefixes: ["/Download", "/Status"],
 	},
 
 	{
 		Index: "03",
+
 		Key: "doc",
+
 		Label: "DOCUMENTATION",
+
 		Href: "/Doc",
+
 		Prefixes: ["/Doc", "/Glossary", "/Motion"],
 	},
 
 	{
 		Index: "04",
+
 		Key: "blog",
+
 		Label: "BLOG",
+
 		Href: "/Blog",
+
 		Prefixes: ["/Blog"],
 	},
 
 	{
 		Index: "05",
+
 		Key: "contact",
+
 		Label: "CONTACT",
+
 		Href: "/Contact",
+
 		Prefixes: ["/Contact"],
 	},
 
 	{
 		Index: "06",
+
 		Key: "license",
+
 		Label: "LICENSE",
+
 		Href: "/License",
+
 		Prefixes: ["/License"],
 	},
 
 	{
 		Index: "07",
+
 		Key: "contributing",
+
 		Label: "CONTRIBUTING",
+
 		Href: "/Contributing",
+
 		Prefixes: ["/Contributing"],
 	},
 
 	{
 		Index: "08",
+
 		Key: "legal",
+
 		Label: "LEGAL",
+
 		Href: "/Legal/Privacy",
+
 		Prefixes: ["/Legal"],
 	},
 
 	{
 		Index: "09",
+
 		Key: "portal",
+
 		Label: "PORTAL",
+
 		Href: "/Portal",
+
 		Prefixes: ["/Portal", "/Dashboard"],
 	},
 
 	{
 		Index: "10",
+
 		Key: "account",
+
 		Label: "ACCOUNT",
+
 		Href: "/Account",
+
 		Prefixes: ["/Account", "/Verify", "/OAuth"],
 	},
 ];
@@ -156,9 +196,13 @@ export const FrameSections: readonly FrameSection[] = [
  */
 export const FrameClosing: FrameSection = {
 	Index: "↳",
+
 	Key: "contents",
+
 	Label: "CONTENTS",
+
 	Href: "/Contents",
+
 	Prefixes: ["/Contents"],
 };
 
@@ -170,9 +214,13 @@ export const FrameClosing: FrameSection = {
  */
 export const FrameUnfiled: FrameSection = {
 	Index: "◎",
+
 	Key: "unfiled",
+
 	Label: "UNFILED",
+
 	Href: "/",
+
 	Prefixes: [],
 };
 

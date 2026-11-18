@@ -81,15 +81,20 @@ const Manifest = (Note: string): WorkingRow => ({
 /** No manifest and no plate: the honest partial, never a path that would 404. */
 const NoManifest: WorkingRow = {
 	Label: "EVIDENCE",
+
 	Value: "UNAVAILABLE",
+
 	Note: "NO MANIFEST IN THE BUILD",
 };
 
 /** One register row, spelled once so the six keys cannot drift per element. */
 const Row = (
 	Label: string,
+
 	Value: string,
+
 	Note?: string,
+
 	Code?: boolean,
 ): WorkingRow => ({ Label, Value, Note, Code });
 
@@ -112,26 +117,40 @@ export const ElementWorking: Readonly<Record<string, Working>> = {
 	air: {
 		Register: [
 			Row("FORM", "BACKGROUND SERVICE"),
+
 			Row("WRITTEN IN", "RUST"),
+
 			Row("BOUNDARY", "LOOPBACK\u2001DAEMON"),
+
 			Row("DEPENDS ON", "MOUNTAIN"),
+
 			Manual("DEEP-DIVE-AIR"),
+
 			Manifest("PLATE NOT IN BUILD"),
 		],
+
 		Trace: [
 			{
 				Index: "01",
+
 				Path: "Source/Binary.rs",
+
 				Note: "THE DAEMON BINARY",
 			},
+
 			{
 				Index: "02",
+
 				Path: "Source/HTTP/Client.rs",
+
 				Note: "THE UPDATE CLIENT",
 			},
+
 			{
 				Index: "03",
+
 				Path: "Source/Library.rs",
+
 				Note: "WHAT THE CRATE EXPORTS",
 			},
 		],
@@ -140,23 +159,35 @@ export const ElementWorking: Readonly<Record<string, Working>> = {
 	cocoon: {
 		Register: [
 			Row("FORM", "EXTENSION HOST\u2001SIDECAR"),
+
 			Row("WRITTEN IN", "TYPESCRIPT\u2001EFFECT-TS"),
+
 			Row("BOUNDARY", "VINE GRPC\u2001PORT 50052"),
+
 			Row("DEPENDS ON", "MOUNTAIN\u2001VINE"),
+
 			Manual("DEEP-DIVE-COCOON"),
+
 			Manifest("PLATE NOT IN BUILD"),
 		],
+
 		Trace: [
 			{
 				Index: "01",
+
 				Path: "Effect/Bootstrap.ts",
+
 				Note: "THE BOOTSTRAP ORDER",
 			},
+
 			{
 				Index: "02",
+
 				Path: "Core/RequireInterceptor.ts",
+
 				Note: "THE VSCODE MODULE PATCH",
 			},
+
 			{ Index: "03", Path: "Service/Ipc.ts", Note: "THE GRPC CLIENT" },
 		],
 	},
@@ -164,19 +195,29 @@ export const ElementWorking: Readonly<Record<string, Working>> = {
 	common: {
 		Register: [
 			Row("FORM", "CONTRACT CRATE"),
+
 			Row("WRITTEN IN", "RUST"),
+
 			Row("BOUNDARY", "TRANSPORT AGNOSTIC"),
+
 			Row("DEPENDS ON", "NONE", "NO TAURI\u2001NO GRPC"),
+
 			Manual("DEEP-DIVE-COMMON"),
+
 			NoManifest,
 		],
+
 		Trace: [
 			{
 				Index: "01",
+
 				Path: "Error/CommonError.rs",
+
 				Note: "THE ONE ERROR ENUM",
 			},
+
 			{ Index: "02", Path: "Vine.proto", Note: "THE WIRE CONTRACT" },
+
 			{ Index: "03", Path: "Cargo.toml", Note: "ITS DEPENDENCIES" },
 		],
 	},
@@ -184,26 +225,40 @@ export const ElementWorking: Readonly<Record<string, Working>> = {
 	echo: {
 		Register: [
 			Row("FORM", "TASK SCHEDULER"),
+
 			Row("WRITTEN IN", "RUST"),
+
 			Row("BOUNDARY", "IN-PROCESS"),
+
 			Row("DEPENDS ON", "COMMON"),
+
 			Manual("DEEP-DIVE-ECHO"),
+
 			Manifest("PLATE NOT IN BUILD"),
 		],
+
 		Trace: [
 			{
 				Index: "01",
+
 				Path: "Source/Scheduler/Scheduler.rs",
+
 				Note: "THE SCHEDULER",
 			},
+
 			{
 				Index: "02",
+
 				Path: "Source/Queue/StealingQueue.rs",
+
 				Note: "THE WORK-STEALING QUEUE",
 			},
+
 			{
 				Index: "03",
+
 				Path: "Source/Task/Priority.rs",
+
 				Note: "THE THREE PRIORITIES",
 			},
 		],
@@ -212,26 +267,40 @@ export const ElementWorking: Readonly<Record<string, Working>> = {
 	grove: {
 		Register: [
 			Row("FORM", "WASM RUNTIME"),
+
 			Row("WRITTEN IN", "RUST\u2001WASM"),
+
 			Row("BOUNDARY", "CAPABILITY HOST"),
+
 			Row("DEPENDS ON", "COMMON"),
+
 			Manual("DEEP-DIVE-GROVE"),
+
 			Manifest("PLATE NOT IN BUILD"),
 		],
+
 		Trace: [
 			{
 				Index: "01",
+
 				Path: "Source/Host/Activation.rs",
+
 				Note: "ACTIVATION",
 			},
+
 			{
 				Index: "02",
+
 				Path: "Source/Host/APIBridge.rs",
+
 				Note: "THE API BRIDGE",
 			},
+
 			{
 				Index: "03",
+
 				Path: "Source/Host/Lifecycle.rs",
+
 				Note: "LIFECYCLE",
 			},
 		],
@@ -240,15 +309,23 @@ export const ElementWorking: Readonly<Record<string, Working>> = {
 	maintain: {
 		Register: [
 			Row("FORM", "BUILD ORCHESTRATOR"),
+
 			Row("WRITTEN IN", "RUST\u2001RHAI"),
+
 			Row("BOUNDARY", "COMMAND LINE"),
+
 			Row("DEPENDS ON", "CARGO\u2001TAURI"),
+
 			Manual("DEEP-DIVE-MAINTAIN"),
+
 			NoManifest,
 		],
+
 		Trace: [
 			{ Index: "01", Path: "Debug/Build.sh", Note: "THE BUILD ENTRY" },
+
 			{ Index: "02", Path: "Debug/Run.sh", Note: "THE RUN ENTRY" },
+
 			{ Index: "03", Path: "Debug/All.sh", Note: "EVERY PROFILE" },
 		],
 	},
@@ -256,22 +333,34 @@ export const ElementWorking: Readonly<Record<string, Working>> = {
 	mist: {
 		Register: [
 			Row("FORM", "DNS SANDBOX"),
+
 			Row("WRITTEN IN", "RUST"),
+
 			Row("BOUNDARY", "LOOPBACK\u2001SOCKET"),
+
 			Row("DEPENDS ON", "MOUNTAIN"),
+
 			Manual("DEEP-DIVE-MIST"),
+
 			NoManifest,
 		],
+
 		Trace: [
 			{ Index: "01", Path: "Source/Resolver.rs", Note: "THE RESOLVER" },
+
 			{
 				Index: "02",
+
 				Path: "Source/Server.rs",
+
 				Note: "THE LOOPBACK SERVER",
 			},
+
 			{
 				Index: "03",
+
 				Path: "Source/ForwardSecurity.rs",
+
 				Note: "THE ALLOWLIST",
 			},
 		],
@@ -280,22 +369,34 @@ export const ElementWorking: Readonly<Record<string, Working>> = {
 	mountain: {
 		Register: [
 			Row("FORM", "NATIVE BACKEND"),
+
 			Row("WRITTEN IN", "RUST"),
+
 			Row("BOUNDARY", "VINE GRPC\u2001TAURI IPC"),
+
 			Row("DEPENDS ON", "COMMON\u2001VINE"),
+
 			Manual("DEEP-DIVE-MOUNTAIN"),
+
 			Manifest("PLATE NOT IN BUILD"),
 		],
+
 		Trace: [
 			{ Index: "01", Path: "Binary.rs", Note: "THE TAURI ENTRY" },
+
 			{
 				Index: "02",
+
 				Path: "IPC/WindServiceHandlers/mod.rs",
+
 				Note: "THE WIND IPC SURFACE",
 			},
+
 			{
 				Index: "03",
+
 				Path: "ApplicationState/Internal/ExtensionScanner/LoadFromCache.rs",
+
 				Note: "THE EXTENSION SCAN",
 			},
 		],
@@ -304,23 +405,35 @@ export const ElementWorking: Readonly<Record<string, Working>> = {
 	output: {
 		Register: [
 			Row("FORM", "BUILD PIPELINE"),
+
 			Row("WRITTEN IN", "TYPESCRIPT"),
+
 			Row("BOUNDARY", "ESBUILD PLUGIN"),
+
 			Row("DEPENDS ON", "REST"),
+
 			Manual("OUTPUT"),
+
 			NoManifest,
 		],
+
 		Trace: [
 			{
 				Index: "01",
+
 				Path: "Source/ESBuild/Output.ts",
+
 				Note: "THE ESBUILD OUTPUT",
 			},
+
 			{
 				Index: "02",
+
 				Path: "Source/Plugin/Apply.ts",
+
 				Note: "THE APPLY PLUGIN",
 			},
+
 			{ Index: "03", Path: "Polyfill/Index.ts", Note: "THE POLYFILLS" },
 		],
 	},
@@ -328,19 +441,29 @@ export const ElementWorking: Readonly<Record<string, Working>> = {
 	rest: {
 		Register: [
 			Row("FORM", "COMPILER PIPELINE"),
+
 			Row("WRITTEN IN", "RUST\u2001OXC"),
+
 			Row("BOUNDARY", "IN-PROCESS"),
+
 			Row("DEPENDS ON", "NONE"),
+
 			Manual("DEEP-DIVE-REST"),
+
 			NoManifest,
 		],
+
 		Trace: [
 			{
 				Index: "01",
+
 				Path: "Source/Fn/OXC/Compiler.rs",
+
 				Note: "THE COMPILER",
 			},
+
 			{ Index: "02", Path: "Source/Fn/OXC/Codegen.rs", Note: "CODEGEN" },
+
 			{ Index: "03", Path: "Source/Fn/Bundle.rs", Note: "THE BUNDLE" },
 		],
 	},
@@ -348,22 +471,34 @@ export const ElementWorking: Readonly<Record<string, Working>> = {
 	sidecar: {
 		Register: [
 			Row("FORM", "PREBUILT BINARY"),
+
 			Row("WRITTEN IN", "NODE.JS"),
+
 			Row("BOUNDARY", "PROCESS\u2001SPAWN"),
+
 			Row("DEPENDS ON", "COCOON"),
+
 			Manual("DEEP-DIVE-SIDECAR"),
+
 			NoManifest,
 		],
+
 		Trace: [
 			{ Index: "01", Path: "Source/Download.rs", Note: "THE DOWNLOAD" },
+
 			{
 				Index: "02",
+
 				Path: "SideCar/Cache.json",
+
 				Note: "THE CHECKSUM CACHE",
 			},
+
 			{
 				Index: "03",
+
 				Path: "GetTauriTargetTriple.rs",
+
 				Note: "THE TARGET TRIPLE",
 			},
 		],
@@ -372,15 +507,23 @@ export const ElementWorking: Readonly<Record<string, Working>> = {
 	sky: {
 		Register: [
 			Row("FORM", "UI LAYER"),
+
 			Row("WRITTEN IN", "ASTRO"),
+
 			Row("BOUNDARY", "TAURI WEBVIEW"),
+
 			Row("DEPENDS ON", "WIND"),
+
 			Manual("DEEP-DIVE-SKY"),
+
 			Manifest("PLATE NOT IN BUILD"),
 		],
+
 		Trace: [
 			{ Index: "01", Path: "Browser.astro", Note: "THE BROWSER ENTRY" },
+
 			{ Index: "02", Path: "Electron.astro", Note: "THE ELECTRON SHIM" },
+
 			{ Index: "03", Path: "InstallCommands.ts", Note: "THE COMMANDS" },
 		],
 	},
@@ -388,26 +531,40 @@ export const ElementWorking: Readonly<Record<string, Working>> = {
 	vine: {
 		Register: [
 			Row("FORM", "IPC BACKBONE"),
+
 			Row("WRITTEN IN", "PROTOBUF"),
+
 			Row("BOUNDARY", "GRPC\u2001TONIC"),
+
 			Row("DEPENDS ON", "COMMON"),
+
 			Manual("DEEP-DIVE-VINE"),
+
 			NoManifest,
 		],
+
 		Trace: [
 			{
 				Index: "01",
+
 				Path: "Element/Mountain/Proto/Vine.proto",
+
 				Note: "THE CANONICAL PROTO",
 			},
+
 			{
 				Index: "02",
+
 				Path: "Cocoon/Source/Services/gRPC/Server/Service.ts",
+
 				Note: "THE SERVER",
 			},
+
 			{
 				Index: "03",
+
 				Path: "Cocoon/Source/Services/Mountain/gRPC/Client.ts",
+
 				Note: "THE CLIENT",
 			},
 		],
@@ -416,23 +573,35 @@ export const ElementWorking: Readonly<Record<string, Working>> = {
 	wind: {
 		Register: [
 			Row("FORM", "SERVICE LAYER"),
+
 			Row("WRITTEN IN", "TYPESCRIPT\u2001EFFECT-TS"),
+
 			Row("BOUNDARY", "IN-PROCESS"),
+
 			Row("DEPENDS ON", "COCOON"),
+
 			Manual("DEEP-DIVE-WIND"),
+
 			Manifest("PLATE NOT IN BUILD"),
 		],
+
 		Trace: [
 			{
 				Index: "01",
+
 				Path: "Effect/Configuration.ts",
+
 				Note: "CONFIGURATION",
 			},
+
 			{
 				Index: "02",
+
 				Path: "Effect/Editor.ts",
+
 				Note: "THE EDITOR SERVICE",
 			},
+
 			{ Index: "03", Path: "Effect/Clipboard.ts", Note: "THE CLIPBOARD" },
 		],
 	},
@@ -440,26 +609,40 @@ export const ElementWorking: Readonly<Record<string, Working>> = {
 	worker: {
 		Register: [
 			Row("FORM", "SERVICE WORKER"),
+
 			Row("WRITTEN IN", "TYPESCRIPT"),
+
 			Row("BOUNDARY", "HTTP\u2001CACHE"),
+
 			Row("DEPENDS ON", "SKY"),
+
 			Manual("DEEP-DIVE-WORKER"),
+
 			NoManifest,
 		],
+
 		Trace: [
 			{
 				Index: "01",
+
 				Path: "Source/Worker/Register.ts",
+
 				Note: "REGISTRATION",
 			},
+
 			{
 				Index: "02",
+
 				Path: "Source/Worker/Policy.ts",
+
 				Note: "THE CACHE POLICY",
 			},
+
 			{
 				Index: "03",
+
 				Path: "Source/Worker/CSS/Load.ts",
+
 				Note: "CSS LOADING",
 			},
 		],

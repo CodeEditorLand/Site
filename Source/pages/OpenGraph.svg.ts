@@ -62,21 +62,30 @@ import {
  */
 export const GenerateFieldRecordSvg = (Record: FieldRecord): string => {
 	const Width = 1200;
+
 	const Height = 675;
 
 	const FrameWidth = 16;
+
 	const CardInset = 24;
 
 	const CardX = FrameWidth + CardInset;
+
 	const CardY = FrameWidth + CardInset;
+
 	const CardW = Width - 2 * (FrameWidth + CardInset);
+
 	const CardH = Height - 2 * (FrameWidth + CardInset);
 
 	// Split: text left (~52%), evidence right (~48%)
 	const SplitX = CardX + Math.round(CardW * 0.52);
+
 	const TextX = CardX + 28;
+
 	const TextW = SplitX - CardX - 44;
+
 	const EvidenceX = SplitX + 12;
+
 	const EvidenceW = CardX + CardW - EvidenceX - 28;
 
 	// 〈STAMP〉 - per-keyword semantic ink, brackets stay muted
@@ -166,12 +175,16 @@ export const GenerateFieldRecordSvg = (Record: FieldRecord): string => {
 
 	// Evidence field geometry
 	const EvdX = EvidenceX + 16;
+
 	const EvdY = CardY + 28;
+
 	const EvdW = EvidenceW - 32;
+
 	const EvdH = CardH - 100;
 
 	// Seal position (bottom-right of the evidence field)
 	const SealCx = EvidenceX + EvidenceW - 52;
+
 	const SealCy = CardY + CardH - 52;
 
 	return `<svg width="${Width}" height="${Height}" viewBox="0 0 ${Width} ${Height}" xmlns="http://www.w3.org/2000/svg">

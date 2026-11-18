@@ -41,6 +41,7 @@ export const LinkIndexData: LinkIndexFragment = {
 
 		"Source/main.rs": {
 			Repo: ElementRepos.SideCar,
+
 			Path: "Source/main.rs",
 		},
 	},

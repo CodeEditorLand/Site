@@ -17,33 +17,42 @@ import type { TFunction } from "i18next";
 export interface RustSurface {
 	/** The rail's register word and its closing destination. */
 	readonly railLabel: string;
+
 	readonly railFoot: { readonly label: string; readonly href: string };
 
 	/** The two panes' heads. */
 	readonly panes: {
 		readonly index: { readonly mark: string; readonly label: string };
+
 		readonly frame: { readonly mark: string; readonly label: string };
 	};
 
 	/** The drawer. */
 	readonly drawer: {
 		readonly label: string;
+
 		readonly note: string;
+
 		readonly statement: string;
+
 		readonly source: string;
 	};
 
 	/** The `partial` state: the rustdoc's as-of is not recorded. */
 	readonly partial: {
 		readonly statement: string;
+
 		readonly cause: string;
+
 		readonly next: { readonly label: string; readonly href: string };
 	};
 
 	/** The `empty` state: a crate with no published site. */
 	readonly empty: {
 		readonly statement: string;
+
 		readonly cause: string;
+
 		readonly next: { readonly label: string; readonly href: string };
 	};
 }

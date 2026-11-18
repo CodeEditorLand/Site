@@ -15,6 +15,7 @@
 /** The server translator's shape: a key, a default, and the resolved string. */
 export type HomeTranslate = (
 	Key: string,
+
 	Options: { readonly defaultValue: string },
 ) => string;
 
@@ -25,6 +26,7 @@ export type HomeTranslate = (
  */
 export interface StampSpan {
 	readonly Text: string;
+
 	readonly Ink?: string;
 }
 
@@ -32,8 +34,10 @@ export interface StampSpan {
 export interface StampLine {
 	/** `FUNDING`, `PHASE`; absent for a bare line. */
 	readonly Label?: string;
+
 	/** The whole line when it carries no terms. */
 	readonly Text?: string;
+
 	/** The terms after the label, separated by ` / `. */
 	readonly Terms?: readonly StampSpan[];
 }
@@ -42,21 +46,27 @@ export interface StampLine {
 export interface BandHead {
 	/** The section id the baseline used, so an in-page anchor still lands. */
 	readonly ID: string;
+
 	readonly Kicker: string;
+
 	readonly Heading: string;
+
 	readonly Standfirst?: string;
+
 	readonly Stamp?: readonly StampLine[];
 }
 
 /** The route row: `/ HOST :MOUNTAIN` - a key and the value it addresses. */
 export interface RouteRow {
 	readonly Key: string;
+
 	readonly Value: string;
 }
 
 /** One key/value row of a card's ledger. */
 export interface RecordRow {
 	readonly Label: string;
+
 	readonly Value: string;
 }
 
@@ -71,7 +81,9 @@ export interface RecordRow {
  */
 export interface RegisterRow extends RecordRow {
 	readonly Note?: string;
+
 	readonly Code?: boolean;
+
 	readonly Href?: string;
 }
 
@@ -84,14 +96,22 @@ export interface RegisterRow extends RecordRow {
  */
 export interface CardRecord {
 	readonly Index: string;
+
 	readonly Title: string;
+
 	readonly Href?: string;
+
 	/** The engraved seal's name, as `Content/Record/*.ts` files it. */
 	readonly SealName: string;
+
 	readonly Stamp: readonly string[];
+
 	readonly Route: RouteRow;
+
 	readonly Service: string;
+
 	readonly Status: RecordRow;
+
 	readonly Metadata: readonly RecordRow[];
 }
 
@@ -106,11 +126,17 @@ export interface CardRecord {
  */
 export interface ElementCard extends CardRecord {
 	readonly Glyph: string;
+
 	readonly Seal: "figure" | "symbol";
+
 	readonly Symbol: string;
+
 	readonly Chips: readonly string[];
+
 	readonly Body: string;
+
 	readonly Source?: string;
+
 	readonly Span: number;
 
 	/**
@@ -144,15 +170,19 @@ export interface ElementCard extends CardRecord {
 /** One step of a record's trace: a path the manual names, and what it carries. */
 export interface TraceStep {
 	readonly Index: string;
+
 	readonly Path: string;
+
 	readonly Note: string;
 }
 
 /** One tile of the hero's tech-stack strip. */
 export interface StackTile {
 	readonly Name: string;
+
 	/** The `lucide-react` glyph's name; the component resolves it. */
 	readonly Icon: string;
+
 	readonly Ink: string;
 }
 
@@ -165,36 +195,55 @@ export interface StackTile {
  */
 export interface ReleaseElement {
 	readonly Name: string;
+
 	readonly Role: string;
+
 	readonly Before: string;
+
 	readonly Badge?: string;
+
 	readonly After: string;
+
 	readonly Href: string;
+
 	readonly Ink: string;
 }
 
 /** One release card of the roadmap band. */
 export interface ReleaseCard {
 	readonly Index: string;
+
 	/** The mono stamp under the index, one entry per printed line. */
 	readonly Stamp: readonly (readonly StampSpan[])[];
+
 	readonly Action: { readonly Label: string; readonly Href: string };
+
 	readonly Title: string;
+
 	readonly Elements: readonly ReleaseElement[];
+
 	readonly Manifest: readonly string[];
 }
 
 /** One platform card of the download band. */
 export interface PlatformCard {
 	readonly Index: string;
+
 	readonly Name: string;
+
 	readonly Ink: string;
+
 	/** The `lucide-react` glyph's name; the card resolves it. */
 	readonly Icon: string;
+
 	readonly Architecture: string;
+
 	readonly Channel: string;
+
 	readonly Version: string;
+
 	readonly Size: string;
+
 	readonly Signing: string;
 
 	/**
@@ -223,5 +272,6 @@ export interface PlatformCard {
 	readonly Note: string;
 
 	readonly Action: { readonly Label: string; readonly Href: string };
+
 	readonly Status: RecordRow;
 }

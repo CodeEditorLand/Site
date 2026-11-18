@@ -150,14 +150,23 @@ const Pixel = ({
 		};
 	}, [
 		Show,
+
 		Container,
+
 		Mouse,
+
 		Position,
+
 		Seed,
+
 		Character,
+
 		Text,
+
 		Font,
+
 		Row,
+
 		Column,
 	]);
 

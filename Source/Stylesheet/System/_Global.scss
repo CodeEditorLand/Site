@@ -378,13 +378,27 @@ html {
 /* `HeaderRecord` is excluded because the frame's running head prints the record
    name with its own 2px/20% resting underline - the nav label's treatment - and
    an 8% prose underline under it would weaken it to nothing. */
-a:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not(
-		[class*="Social"]
-	):not([class*="StaccatoLogo"]):not([class*="StaccatoSocial"]):not(
-		[class*="NavLink"]
-	):not([class*="StaccatoCard"]):not([class*="Footer"]):not(
-		[class*="HeaderRecord"]
-	):not([aria-label]) {
+/* The whole exclusion chain sits inside `:where()`, which contributes NO
+   specificity. Written as a chain of `:not([class*=...])` the selector scored
+   (0,11,1) - eleven classes' worth - and out-specified every component rule on
+   the site, so `.auth-shell__alternate { text-decoration: none; border-bottom:
+   1px }` lost and the link painted the global underline AND its own hairline.
+   Two lines under one label. Inside `:where()` the selector is a bare `a`
+   (0,0,1): the prose default still applies to every link that states no
+   treatment of its own, and any component that does state one wins. The
+   exclusions match exactly as before - `:where()` zeroes specificity, it does
+   not change what matches - so `Button`, `Logo`, `Icon`, `Social`,
+   `StaccatoLogo`, `StaccatoSocial`, `NavLink`, `StaccatoCard`, `Footer`,
+   `HeaderRecord` and `[aria-label]` are still excluded. */
+a:where(
+	:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not(
+			[class*="Social"]
+		):not([class*="StaccatoLogo"]):not([class*="StaccatoSocial"]):not(
+			[class*="NavLink"]
+		):not([class*="StaccatoCard"]):not([class*="Footer"]):not(
+			[class*="HeaderRecord"]
+		):not([aria-label])
+) {
 	text-decoration: underline;
 	text-decoration-color: var(--Divider);
 	/* The underline's metrics are a fraction of the type size, not a distance:
@@ -397,12 +411,17 @@ a:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not(
 	text-underline-offset: 0.22em;
 }
 
-a:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not(
-		[class*="Social"]
-	):not([class*="StaccatoLogo"]):not([class*="StaccatoSocial"]):not(
-		[class*="NavLink"]
-	):not([class*="StaccatoCard"]):not([class*="Footer"]):not(
-		[class*="HeaderRecord"]
-	):not([aria-label]):hover {
+/* Hover moves the line's colour, never its thickness: a link that gains weight
+   under the cursor moves the text it is measuring. Same `:where()` chain, so the
+   hover colour is also a default a component may override. */
+a:where(
+		:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not(
+				[class*="Social"]
+			):not([class*="StaccatoLogo"]):not([class*="StaccatoSocial"]):not(
+				[class*="NavLink"]
+			):not([class*="StaccatoCard"]):not([class*="Footer"]):not(
+				[class*="HeaderRecord"]
+			):not([aria-label])
+	):hover {
 	text-decoration-color: var(--Primary);
 }

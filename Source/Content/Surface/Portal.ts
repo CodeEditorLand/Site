@@ -24,7 +24,9 @@
 import type { TFunction } from "i18next";
 
 import type { FieldRecordElement } from "../../Component/Brand/FieldRecordSeal.js";
+
 import { Row } from "../../Component/Surface/State.js";
+
 import type { SurfaceState as StateRow } from "../../Component/Surface/State.js";
 
 /** The field-record separator: U+2001, never U+00B7. */
@@ -94,6 +96,7 @@ export interface PortalTier {
 	/** The tier's sign-in button: `ENTER CLOUD` and where it goes. */
 	readonly action: {
 		readonly label: string;
+
 		readonly href: string;
 	};
 }
@@ -151,7 +154,9 @@ export interface PortalSurface {
 	/** The evidence panel's image and its crop. */
 	readonly evidence: {
 		readonly src: string;
+
 		readonly alt: string;
+
 		readonly position: string;
 	};
 
@@ -171,24 +176,33 @@ export interface PortalSurface {
 /** The marker a tier's record carries, keyed by the tier identifier. */
 const TierIndex: Record<string, string> = {
 	Cloud: "CLOUD_01",
+
 	Provider: "PROVIDER_02",
+
 	LocalFirst: "LOCALFIRST_03",
+
 	Enterprise: "ENTERPRISE_04",
 };
 
 /** The seal a tier's card carries, keyed by the tier identifier. */
 const TierSeal: Record<string, FieldRecordElement> = {
 	Cloud: "Mountain",
+
 	Provider: "Cocoon",
+
 	LocalFirst: "Wind",
+
 	Enterprise: "Sky",
 };
 
 /** The ink a tier's bracketed title prints in, keyed by identifier. */
 const TierInk: Record<string, string> = {
 	Cloud: "SpineIPCFore",
+
 	Provider: "SpineWASMFore",
+
 	LocalFirst: "CardForeground",
+
 	Enterprise: "MuteForeground",
 };
 
@@ -208,20 +222,25 @@ const ActionHref = (Identifier: string): string =>
 /** One row of a tier's feature copy, before it is resolved. */
 interface PortalFeatureCopy {
 	readonly Heading: string;
+
 	readonly Key: string;
+
 	readonly Fallback: string;
 }
 
 /** One row of a tier's capability copy, before it is resolved. */
 interface PortalCapabilityCopy {
 	readonly Key: string;
+
 	readonly Fallback: string;
 }
 
 /** A tier's features, one record each. */
 const Features = (
 	T: TFunction,
+
 	Tier: "cloud" | "provider" | "localfirst" | "enterprise",
+
 	Rows: readonly PortalFeatureCopy[],
 ): readonly PortalFeature[] =>
 	Rows.map((Row, Position) => ({
@@ -235,7 +254,9 @@ const Features = (
 /** A tier's capability run, one line each. */
 const Capabilities = (
 	T: TFunction,
+
 	Tier: "cloud" | "provider" | "localfirst" | "enterprise",
+
 	Rows: readonly PortalCapabilityCopy[],
 ): readonly string[] =>
 	Rows.map((Row) =>
@@ -247,10 +268,15 @@ const Capabilities = (
 /** One tier, assembled from the copy and the facts the page already held. */
 const Tier = (Content: {
 	readonly Identifier: string;
+
 	readonly Title: string;
+
 	readonly Badge: string;
+
 	readonly Protocol: string;
+
 	readonly Features: readonly PortalFeature[];
+
 	readonly Capabilities: readonly string[];
 }): PortalTier => ({
 	index: TierIndex[Content.Identifier] ?? Content.Identifier.toUpperCase(),
@@ -289,22 +315,26 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 				Key: "sync",
 				Fallback: "Planned workspace sync across devices",
 			},
+
 			{
 				Heading: "Backup",
 				Key: "backup",
 				Fallback: "Planned encrypted backup for selected configuration",
 			},
+
 			{
 				Heading: "Team",
 				Key: "team",
 				Fallback: "Planned shared team workspace support",
 			},
+
 			{
 				Heading: "Extensions",
 				Key: "extension",
 				Fallback:
 					"Marketplace installation is planned after local extension paths stabilize",
 			},
+
 			{
 				Heading: "Remote",
 				Key: "remote",
@@ -317,17 +347,22 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 				Fallback:
 					"JWT account tokens for hosted services, issued on sign-in",
 			},
+
 			{
 				Key: "okta",
 				Fallback: "Okta SSO belongs to the enterprise plan",
 			},
+
 			{
 				Key: "mfa",
 				Fallback:
 					"MFA support depends on the configured identity provider",
 			},
+
 			{ Key: "rbac", Fallback: "Gateway RBAC is planned" },
+
 			{ Key: "audit", Fallback: "Audit logging is planned" },
+
 			{
 				Key: "cert",
 				Fallback: "Developer certificate automation is planned",
@@ -349,21 +384,25 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 				Fallback:
 					"GitHub identity is planned as a low-friction sign-in option",
 			},
+
 			{
 				Heading: "SSO",
 				Key: "sso",
 				Fallback: "Single sign-on across Land services is planned",
 			},
+
 			{
 				Heading: "Repository",
 				Key: "repo",
 				Fallback: "Settings sync tied to provider identity is planned",
 			},
+
 			{
 				Heading: "Team",
 				Key: "team",
 				Fallback: "Organization and team membership sync is planned",
 			},
+
 			{
 				Heading: "CI/CD",
 				Key: "ci",
@@ -376,21 +415,26 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 				Fallback:
 					"OAuth 2.0 / PKCE support where provider flows are enabled",
 			},
+
 			{
 				Key: "scope",
 				Fallback:
 					"Minimal OAuth scopes - only what each provider integration requires",
 			},
+
 			{
 				Key: "token",
 				Fallback:
 					"Refresh token handling depends on provider configuration",
 			},
+
 			{ Key: "webhook", Fallback: "Webhook subscriptions are planned" },
+
 			{
 				Key: "org",
 				Fallback: "Organization-level access policies are planned",
 			},
+
 			{
 				Key: "cert",
 				Fallback: "Developer certificate automation is planned",
@@ -411,34 +455,40 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 				Key: "daemon",
 				Fallback: "Browser-to-daemon loopback control is planned",
 			},
+
 			{
 				Heading: "Build",
 				Key: "build",
 				Fallback:
 					"Launching builds from the website console is planned",
 			},
+
 			{
 				Heading: "Deploy",
 				Key: "deploy",
 				Fallback: "Deploying changes into a running editor is planned",
 			},
+
 			{
 				Heading: "Configure",
 				Key: "configure",
 				Fallback: "Editor configuration management is planned",
 			},
+
 			{
 				Heading: "Extensions",
 				Key: "parity",
 				Fallback:
 					"Installed VS Code extensions run unmodified through the Cocoon path when their APIs are implemented",
 			},
+
 			{
 				Heading: "Offline",
 				Key: "offline",
 				Fallback:
 					"Local editor operation should not require a cloud login",
 			},
+
 			{
 				Heading: "Embedded SaaS",
 				Key: "bake",
@@ -452,24 +502,31 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 				Fallback:
 					"Local session tokens with short expiry, managed by the daemon",
 			},
+
 			{
 				Key: "mtls",
 				Fallback:
 					"mTLS mutual authentication is enabled by default for daemon connections",
 			},
+
 			{
 				Key: "crdt",
 				Fallback:
 					"CRDT state synchronization - planned for conflict-free offline edits",
 			},
+
 			{ Key: "team", Fallback: "Fully local team management is planned" },
+
 			{
 				Key: "cert",
 				Fallback:
 					"Local certificate management is planned; daemon credential storage is active",
 			},
+
 			{ Key: "ws", Fallback: "WebSocket loopback connection is planned" },
+
 			{ Key: "rbac", Fallback: "Local RBAC policies are planned" },
+
 			{ Key: "backup", Fallback: "Encrypted local backup is planned" },
 		]),
 	});
@@ -487,26 +544,31 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 				Key: "okta",
 				Fallback: "Okta SSO integration is planned",
 			},
+
 			{
 				Heading: "Azure AD",
 				Key: "azure",
 				Fallback: "Azure AD / Entra ID integration is planned",
 			},
+
 			{
 				Heading: "SAML 2.0",
 				Key: "saml",
 				Fallback: "SAML 2.0 support is planned",
 			},
+
 			{
 				Heading: "SCIM",
 				Key: "scim",
 				Fallback: "SCIM provisioning is planned",
 			},
+
 			{
 				Heading: "Groups",
 				Key: "group",
 				Fallback: "IdP group to Land role mapping is planned",
 			},
+
 			{
 				Heading: "Audit",
 				Key: "audit",
@@ -519,24 +581,29 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 				Fallback:
 					"OIDC discovery is handled by the configured identity provider",
 			},
+
 			{
 				Key: "jit",
 				Fallback:
 					"Just-in-time provisioning happens through the configured identity provider",
 			},
+
 			{
 				Key: "mfa",
 				Fallback: "MFA enforcement depends on the configured IdP",
 			},
+
 			{
 				Key: "session",
 				Fallback:
 					"Session duration follows the configured tenant policy",
 			},
+
 			{
 				Key: "ca",
 				Fallback: "Organization CA certificate management is planned",
 			},
+
 			{
 				Key: "compliance",
 				Fallback: "Compliance documentation is planned",
@@ -546,37 +613,61 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 
 	return {
 		index: "PORTAL_01",
+
 		heading: "AUTHENTICATION TIERS",
+
 		headingInk: "SpineIPCFore",
+
 		subheading: "FOUR MODES",
+
 		subheadingInk: "SpineTCPFore",
+
 		protocol: "HTTPS",
+
 		program: ["CLOUD", "PROVIDER", "LOCAL-FIRST", "ENTERPRISE"],
+
 		banner: ["NATIVE", "OPEN", "CROSS-PLATFORM"],
+
 		status: HeroStatus,
+
 		states: [State("STATUS", HeroStatus)],
+
 		title: "LAND",
+
 		relation: "EDITOR WITHOUT CHROMIUM",
+
 		metadata: [
 			{ label: "TARGET", value: "MACOS / WINDOWS / LINUX" },
+
 			{ label: "LICENSE", value: "CC0" },
+
 			{ label: "SIGNAL", value: "LOCAL-FIRST" },
 		],
+
 		evidence: {
 			src: "/Evidence/Land/NightGlass-01.png",
+
 			alt: "Rain-speckled glass reflecting a green light at night",
+
 			position: "right",
 		},
+
 		tiers: [Cloud, Provider, LocalFirst, Enterprise],
+
 		credits: [
 			["CODEEDITORLAND PORTAL", "CC0 LICENSED"].join(Quad),
+
 			[
 				"TELEMETRY FEATURE GATED",
+
 				"AUTH0 + OAUTH 2.0",
+
 				"OIDC / SAML PLANNED",
 			].join(Quad),
 		],
+
 		returnLabel: "↳RETURN TO INDEX",
+
 		returnHref: "/",
 	};
 };

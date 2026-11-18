@@ -280,6 +280,7 @@ const DynamicResetPassword = ({
 					{StrengthSegments.map((Segment) => (
 						<span
 							key={Segment}
+
 							className={[
 								"auth-shell__strength-segment",
 								Segment < Filled

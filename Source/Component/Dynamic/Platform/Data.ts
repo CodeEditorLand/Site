@@ -33,7 +33,9 @@ export const Kicker = "# ACTION_01\u2001/PLATFORMS";
  */
 export const Columns: readonly MatrixColumn[] = [
 	{ label: "SOURCE BUILD", ink: "SpinegRPCFore", align: "center" },
+
 	{ label: "INSTALLER", ink: "SpineTCPFore", align: "center" },
+
 	{ label: "SIGNED", ink: "SpineWASMFore", align: "center" },
 ];
 
@@ -43,6 +45,7 @@ export const Columns: readonly MatrixColumn[] = [
  * an icon: a value is never translated into a symbol.
  */
 const YES = "yes";
+
 const NO = "no";
 
 /**

@@ -36,9 +36,13 @@ export type CopyState = "idle" | "copied" | "denied" | "error" | "empty";
 
 export const CopyCopy = {
 	idle: { Mark: "→", Label: "COPY", Meta: "" },
+
 	copied: { Mark: "✓", Label: "COPIED", Meta: "" },
+
 	denied: { Mark: "◎", Label: "DENIED", Meta: "CLIPBOARD UNAVAILABLE" },
+
 	error: { Mark: "◎", Label: "INTERRUPTED", Meta: "TRY AGAIN" },
+
 	empty: { Mark: "◎", Label: "NOTHING TO COPY", Meta: "" },
 } as const;
 

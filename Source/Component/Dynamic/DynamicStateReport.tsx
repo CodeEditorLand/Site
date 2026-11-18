@@ -39,18 +39,26 @@ const Status = (Term: StateTerm): string => `STATUS: ${Term}`;
 /** The eight terms of the status vocabulary, plus the two edge labels. */
 export const StateLabel = {
 	Ready: Status("READY"),
+
 	Active: Status("ACTIVE"),
+
 	Loading: Status("LOADING"),
+
 	Preparing: Status("PREPARING"),
+
 	Verified: Status("VERIFIED"),
+
 	Unavailable: Status("UNAVAILABLE"),
+
 	Interrupted: Status("INTERRUPTED"),
+
 	Archived: Status("ARCHIVED"),
 
 	/* Not states of the register: a record with nothing in it, and an access
 	   condition. They print through the same badge, in `ink`, because they are
 	   labels of a record and not achievements of one. */
 	Empty: "RECORD: EMPTY",
+
 	SignInRequired: "/ACCESS: SIGN IN REQUIRED",
 } as const;
 

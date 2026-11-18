@@ -147,6 +147,7 @@ export const WireTrustContents = (): void => {
 			for (const Link of Found) {
 				Link.classList.toggle(
 					"trust-contents__link--current",
+
 					IsCurrent,
 				);
 

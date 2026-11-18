@@ -70,180 +70,292 @@ export interface TypeForm {
 export const TypeForms: readonly TypeForm[] = [
 	{
 		type: "CLAIM",
+
 		form: "HERO",
+
 		block: "RecordHero",
+
 		rank: "ARTIFACT",
+
 		answers:
 			"What this page asserts about itself, in one record beside its evidence.",
 	},
+
 	{
 		type: "FACT",
+
 		form: "LEDGER",
+
 		block: "RecordLedger",
+
 		rank: "LEAF",
+
 		answers: "What is true of this one object, as `key: value` rows.",
 	},
+
 	{
 		type: "COMMAND",
+
 		form: "WELL",
+
 		block: "RecordWell",
+
 		rank: "LEAF",
+
 		answers:
 			"What you type: a command or transcript, framed, copyable, with its provenance.",
 	},
+
 	{
 		type: "COMPARISON",
+
 		form: "MATRIX",
+
 		block: "RecordMatrix",
+
 		rank: "SET",
+
 		answers:
 			"How one state compares across columns, with one ink per column.",
 	},
+
 	{
 		type: "PROCESS",
+
 		form: "STAGE",
+
 		block: "RecordStage",
+
 		rank: "SET",
+
 		answers: "In what order this happens: numbered steps on one rail.",
 	},
+
 	{
 		type: "EDITION",
+
 		form: "MATRIX",
+
 		block: "RecordMatrix",
+
 		rank: "SET",
+
 		answers:
 			"Which releases came before this one, read across published, platform and change.",
 	},
+
 	{
 		type: "RECORD",
+
 		form: "ENTRY",
+
 		block: "RecordEntry",
+
 		rank: "LEAF",
+
 		answers: "Which one record this is, out of the set it belongs to.",
 	},
+
 	{
 		type: "MEASUREMENT",
+
 		form: "INSTRUMENT",
+
 		block: "RecordInstrument",
+
 		rank: "SET",
+
 		answers:
 			"How much, and where the figure came from - a figure without a source is not printed.",
 	},
+
 	{
 		type: "EVIDENCE",
+
 		form: "FIGURE",
+
 		block: "RecordFigure",
+
 		rank: "LEAF",
+
 		answers:
 			"What the evidence shows, with the file it came from under it.",
 	},
+
 	{
 		type: "PAIR",
+
 		form: "PAIR",
+
 		block: "RecordPair",
+
 		rank: "FRAME",
+
 		answers:
 			"How two things read against each other, in one frame with one caption.",
 	},
+
 	{
 		type: "ROUTE",
+
 		form: "ARCHIVE",
+
 		block: "RecordArchive",
+
 		rank: "SET",
+
 		answers:
 			"Where a reader can go: the document's own addresses, filed by chapter.",
 	},
+
 	{
 		type: "PERSON",
+
 		form: "LEDGER ROW",
+
 		rank: "LEAF",
+
 		answers:
 			"Who maintains it: one credit row, never a portrait and never a card.",
 	},
+
 	{
 		type: "LICENCE",
+
 		form: "LEDGER ROW",
+
 		rank: "LEAF",
+
 		answers:
 			"What may be done with it: one row pointing at the document that says so in full.",
 	},
+
 	{
 		type: "ANNOTATION",
+
 		form: "MARGIN",
+
 		block: "RecordMargin",
+
 		rank: "LEAF",
+
 		answers:
 			"What is worth saying beside the record - and where that claim is sourced.",
 	},
+
 	{
 		type: "DISCLOSURE",
+
 		form: "ASIDE",
+
 		block: "RecordAside",
+
 		rank: "FRAME",
+
 		answers:
 			"What the record keeps and does not lead with: folded, one summary, one body.",
 	},
+
 	{
 		type: "POSITION",
+
 		form: "COMPARE",
+
 		block: "RecordCompare",
+
 		rank: "SET",
+
 		answers:
 			"Where these things sit on one axis, and which of those positions is reached.",
 	},
+
 	{
 		type: "PROVENANCE",
+
 		form: "TRACE",
+
 		block: "RecordTrace",
+
 		rank: "LEAF",
+
 		answers:
 			"Where a claim can be checked, in the order its own source names the places.",
 	},
+
 	{
 		type: "CONDITION",
+
 		form: "FAILURE",
+
 		block: "RecordFailure",
+
 		rank: "LEAF",
+
 		answers:
 			"What a reader sees when an action has failed, why, and the next step.",
 	},
+
 	{
 		type: "EVIDENCE AT SCALE",
+
 		form: "PLATE",
+
 		block: "RecordPlate",
+
 		rank: "LEAF",
+
 		answers:
 			"What the page has a picture of: a numbered capture at its container's width, with the manifest's facts in a channel.",
 	},
+
 	{
 		type: "EVIDENCE AS A SET",
+
 		form: "PLATE-SET",
+
 		block: "RecordPlateSet",
+
 		rank: "SET",
+
 		answers:
 			"Many figures of one subject, seen at one size: a field of plates, each with its own state.",
 	},
+
 	{
 		type: "AUTHENTICATION",
+
 		form: "STAMP",
+
 		block: "RecordStamp",
+
 		rank: "LEAF",
+
 		answers:
 			"What makes this record what it claims to be: one mark, the route it was issued under, and the authority that verifies it.",
 	},
+
 	{
 		type: "SESSION",
+
 		form: "TRANSCRIPT",
+
 		block: "RecordTranscript",
+
 		rank: "LEAF",
+
 		answers:
 			"What happened when it was typed: turns, speakers and the answers, in order, with the source it was read from.",
 	},
+
 	{
 		type: "ANNOTATED FIGURE",
+
 		form: "INSET",
+
 		block: "RecordInset",
+
 		rank: "LEAF",
+
 		answers:
 			"The claim the margin could not hold alone: a note with its figure - a capture, or bars drawn from the page's own numbers.",
 	},

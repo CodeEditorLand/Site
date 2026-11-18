@@ -48,56 +48,103 @@ import type { PlatformCard } from "./Type.js";
 export const PlatformCards: readonly PlatformCard[] = [
 	{
 		Index: "# RELEASE_01",
+
 		Name: "macOS",
+
 		Ink: "var(--OSMacOS)",
+
 		Icon: "Apple",
+
 		Architecture: "Universal Binary: Apple Silicon and Intel",
+
 		Channel: "PUBLIC",
+
 		Version: "UNAVAILABLE",
+
 		Size: "UNAVAILABLE",
+
 		Signing: "IN PREPARATION",
+
 		Webview: "WKWEBVIEW",
+
 		Minimum: "MACOS 10.15+",
+
 		Checksum: "UNAVAILABLE",
+
 		Toolchain: "RUST 1.95.0+",
+
 		Note: "NO PUBLIC ARTIFACT: NOTHING TO VERSION, SIZE OR DIGEST.",
+
 		Action: { Label: "Download for macOS", Href: "/Download" },
+
 		Status: { Label: "STATUS:", Value: "PREPARING" },
 	},
+
 	{
 		Index: "# RELEASE_01",
+
 		Name: "Windows",
+
 		Ink: "var(--OSWindows)",
+
 		Icon: "Monitor",
+
 		Architecture: "64-bit (x64)",
+
 		Channel: "PUBLIC",
+
 		Version: "UNAVAILABLE",
+
 		Size: "UNAVAILABLE",
+
 		Signing: "IN PREPARATION",
+
 		Webview: "WEBVIEW2",
+
 		Minimum: "WINDOWS 10+",
+
 		Checksum: "UNAVAILABLE",
+
 		Toolchain: "RUST 1.95.0+",
+
 		Note: "NO PUBLIC ARTIFACT: NOTHING TO VERSION, SIZE OR DIGEST.",
+
 		Action: { Label: "Download for Windows", Href: "/Download" },
+
 		Status: { Label: "STATUS:", Value: "PREPARING" },
 	},
+
 	{
 		Index: "# RELEASE_01",
+
 		Name: "Linux",
+
 		Ink: "var(--OSLinux)",
+
 		Icon: "Terminal",
+
 		Architecture: "64-bit (DEB, RPM, AppImage)",
+
 		Channel: "PUBLIC",
+
 		Version: "UNAVAILABLE",
+
 		Size: "UNAVAILABLE",
+
 		Signing: "IN PREPARATION",
+
 		Webview: "WEBKITGTK",
+
 		Minimum: "UBUNTU / DEBIAN / FEDORA",
+
 		Checksum: "UNAVAILABLE",
+
 		Toolchain: "RUST 1.95.0+",
+
 		Note: "NO PUBLIC ARTIFACT: NOTHING TO VERSION, SIZE OR DIGEST.",
+
 		Action: { Label: "Download for Linux", Href: "/Download" },
+
 		Status: { Label: "STATUS:", Value: "PREPARING" },
 	},
 ];

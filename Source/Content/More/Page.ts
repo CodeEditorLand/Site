@@ -77,44 +77,73 @@ export interface OnwardCopy {
 export const NotFoundOnward: readonly OnwardRow[] = [
 	{
 		mark: "/",
+
 		want: "EVERY ADDRESS THIS SITE ANSWERS ON",
+
 		where: "CONTENTS",
+
 		href: "/Contents",
+
 		note: "The index: every route, filed by chapter, with the forms each one mounts.",
 	},
+
 	{
 		mark: "/",
+
 		want: "WHAT IS LIVE TODAY",
+
 		where: "STATUS",
+
 		href: "/Status",
+
 		note: "Twenty-one records under the four columns of the state vocabulary.",
 	},
+
 	{
 		mark: "/",
+
 		want: "THE WORD FOR THAT THING",
+
 		where: "GLOSSARY",
+
 		href: "/Glossary",
+
 		note: "The fifteen elements, the grammar's own nouns, and five retired words.",
 	},
+
 	{
 		mark: "/",
+
 		want: "WHAT IT IS COMPARED TO",
+
 		where: "COMPARE",
+
 		href: "/Compare",
+
 		note: "Eight aspects of the substitution, and the five figures nobody has measured.",
 	},
+
 	{
 		mark: "/",
+
 		want: "WHAT CAN BE DOWNLOADED",
+
 		where: "DOWNLOAD",
+
 		href: "/Download",
+
 		note: "The edition, the three targets, and what a build from source takes.",
 	},
+
 	{
 		mark: "/",
+
 		want: "TO REPORT A LINK THAT SHOULD WORK",
+
 		where: "CONTACT",
+
 		href: "/Contact",
+
 		note: "The front desk takes the path you came from.",
 	},
 ];
@@ -122,10 +151,14 @@ export const NotFoundOnward: readonly OnwardRow[] = [
 /** The 404's register copy. */
 export const NotFoundOnwardCopy: OnwardCopy = {
 	index: "ONWARD / 06",
+
 	label: "/THE NEXT RECORD",
+
 	statement:
 		"This address holds nothing, so the page hands over the six places a reader who typed it usually meant. The first is the index, which lists every address the build emits.",
+
 	note: `SOURCE: SOURCE/CONTENT/MORE/PAGE.TS${Quad}EVERY ROW POINTS AT A ROUTE THE BUILD EMITS`,
+
 	empty: "There is nowhere to send the reader. That would mean the site has one page, and this register exists because it does not.",
 };
 
@@ -153,6 +186,7 @@ export const StatusOnward = Foot([
 		href: "/Glossary",
 		note: "The grammar's own nouns, and the five words this site retired.",
 	},
+
 	{
 		mark: "/",
 		want: "WHAT THE SUBSTRATE IS COMPARED TO",
@@ -160,6 +194,7 @@ export const StatusOnward = Foot([
 		href: "/Compare",
 		note: "Eight aspects of the substitution, and the figures nobody has measured.",
 	},
+
 	{
 		mark: "/",
 		want: "WHAT IS PUBLISHED TODAY",
@@ -167,6 +202,7 @@ export const StatusOnward = Foot([
 		href: "/Download",
 		note: "The edition: source, three targets, and the absent artifact.",
 	},
+
 	{
 		mark: "/",
 		want: "EVERY ADDRESS THIS SITE ANSWERS ON",
@@ -185,6 +221,7 @@ export const GlossaryOnward = Foot([
 		href: "/Status",
 		note: "Twenty-one records under the four columns of the state vocabulary.",
 	},
+
 	{
 		mark: "/",
 		want: "WHAT IT IS COMPARED TO",
@@ -192,6 +229,7 @@ export const GlossaryOnward = Foot([
 		href: "/Compare",
 		note: "Eight aspects of the substitution, and the five figures nobody has measured.",
 	},
+
 	{
 		mark: "/",
 		want: "THE MANUAL ITSELF",
@@ -199,6 +237,7 @@ export const GlossaryOnward = Foot([
 		href: "/Doc",
 		note: "Sixty articles: the reference, the deep dives, and the workflows.",
 	},
+
 	{
 		mark: "/",
 		want: "EVERY ADDRESS THIS SITE ANSWERS ON",
@@ -217,6 +256,7 @@ export const CompareOnward = Foot([
 		href: "/Status",
 		note: "Twenty-one records under the four columns of the state vocabulary.",
 	},
+
 	{
 		mark: "/",
 		want: "THE WORD FOR THAT THING",
@@ -224,6 +264,7 @@ export const CompareOnward = Foot([
 		href: "/Glossary",
 		note: "The fifteen elements, the grammar's own nouns, and five retired words.",
 	},
+
 	{
 		mark: "/",
 		want: "WHAT A BUILD FROM SOURCE TAKES",
@@ -231,6 +272,7 @@ export const CompareOnward = Foot([
 		href: "/Download",
 		note: "The install region, with one run entry per platform.",
 	},
+
 	{
 		mark: "/",
 		want: "EVERY ADDRESS THIS SITE ANSWERS ON",

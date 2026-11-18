@@ -22,6 +22,7 @@ import {
 	ContactEntries,
 	type ContactEntry,
 } from "../../Library/Contact/Data.js";
+
 import { Requests, type IncomeCode } from "../../Library/Contact/Request.js";
 
 /** One hub record: the entry's own words, plus the registry's basis and window. */
@@ -95,16 +96,19 @@ export const ContactProcess = [
 		label: "RECEIVE",
 		line: "The request reaches the desk's mailbox with its income code in the subject line, so it is filed before anyone reads it.",
 	},
+
 	{
 		index: "02",
 		label: "VERIFY",
 		line: "Anything else the desk needs is asked for at the address the request came from - never by a link in a reply.",
 	},
+
 	{
 		index: "03",
 		label: "ANSWER",
 		line: "The answer arrives inside the window the route's own record prints, at the address you gave.",
 	},
+
 	{
 		index: "04",
 		label: "CLOSE",

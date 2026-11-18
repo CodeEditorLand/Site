@@ -73,10 +73,15 @@ export const RailLabel = "RUNTIME PATH";
  */
 export const ElementOrder = [
 	"Mountain",
+
 	"Cocoon",
+
 	"Wind",
+
 	"Sky",
+
 	"Air",
+
 	"Echo",
 ] as const;
 
@@ -126,10 +131,15 @@ const DocOf: Record<string, string> = {
  */
 const PropertyIds = [
 	"designTokens",
+
 	"componentLibrary",
+
 	"documentation",
+
 	"versionControl",
+
 	"cicdIntegration",
+
 	"collaboration",
 ] as const;
 
@@ -148,36 +158,42 @@ const PropertyCopy: Record<
 > = {
 	designTokens: {
 		title: "Native services where they count.",
+
 		description:
 			"Heavy editor work runs natively, not trapped in a web view. Window management, file I/O, and terminals are native Rust services - no serialized JSON IPC bridge.",
 	},
 
 	componentLibrary: {
 		title: "Unmodified extensions, no fork path.",
+
 		description:
 			"Your VS Code extensions run unmodified - no forks, no rewrites. A compatibility host implements the VS Code extension API surface.",
 	},
 
 	documentation: {
 		title: "Fibers, not Promises.",
+
 		description:
 			"Failures are typed, traceable, and cancellable - one supervised fiber never takes down the rest of the editor.",
 	},
 
 	versionControl: {
 		title: "One source tree, configured targets.",
+
 		description:
 			"Tauri uses the OS WebView on each platform - no bundled Chromium. One codebase compiles to native macOS, Windows, and Linux packages.",
 	},
 
 	cicdIntegration: {
 		title: "Background daemon, always running.",
+
 		description:
 			"Updates, indexing, signing, and health checks run in a persistent daemon that keeps working after the main window closes.",
 	},
 
 	collaboration: {
 		title: "CC0. No restrictions.",
+
 		description:
 			"Fork it, ship it, build commercial products on top of it. The entire codebase is CC0 public domain - no attribution required, no compliance headaches.",
 	},
@@ -186,6 +202,7 @@ const PropertyCopy: Record<
 /** The server translator's shape, as `Content/Home/Type.ts` declares it. */
 export type Translate = (
 	Key: string,
+
 	Options: { readonly defaultValue: string },
 ) => string;
 

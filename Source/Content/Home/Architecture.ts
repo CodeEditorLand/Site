@@ -16,19 +16,33 @@
 import EnglishHome from "../../Library/I18n/Locale/En/Home.json";
 
 import { Air } from "../Record/Air.js";
+
 import { Cocoon } from "../Record/Cocoon.js";
+
 import { Common } from "../Record/Common.js";
+
 import { Echo } from "../Record/Echo.js";
+
 import { Grove } from "../Record/Grove.js";
+
 import { Maintain } from "../Record/Maintain.js";
+
 import { Mist } from "../Record/Mist.js";
+
 import { Mountain } from "../Record/Mountain.js";
+
 import { Output } from "../Record/Output.js";
+
 import { Rest } from "../Record/Rest.js";
+
 import { SideCar } from "../Record/SideCar.js";
+
 import { Sky } from "../Record/Sky.js";
+
 import { Vine } from "../Record/Vine.js";
+
 import { Wind } from "../Record/Wind.js";
+
 import { Worker } from "../Record/Worker.js";
 
 import type { FieldRecord } from "../Record/FieldRecord.js";
@@ -50,19 +64,33 @@ import type {
  */
 const Glyphs: Readonly<Record<string, string>> = {
 	air: "🪁",
+
 	cocoon: "🦋",
+
 	common: "🧑🏼‍🏭",
+
 	echo: "📣",
+
 	grove: "🌳",
+
 	maintain: "💪🏼",
+
 	mist: "🌫️",
+
 	mountain: "⛰️",
+
 	output: "⚫",
+
 	rest: "⛱️",
+
 	sidecar: "🚃",
+
 	sky: "🌌",
+
 	vine: "🌿",
+
 	wind: "🍃",
+
 	worker: "🍩",
 };
 
@@ -83,8 +111,11 @@ const Symbolic: ReadonlySet<string> = new Set(["Common"]);
  */
 const Plates: ReadonlySet<string> = new Set([
 	"cocoon",
+
 	"maintain",
+
 	"mountain",
+
 	"wind",
 ]);
 
@@ -98,7 +129,9 @@ const Plates: ReadonlySet<string> = new Set([
 const NoWorking: readonly RegisterRow[] = [
 	{
 		Label: "EVIDENCE",
+
 		Value: "UNAVAILABLE",
+
 		Note: "NO WORKING RECORDED FOR THIS ELEMENT",
 	},
 ];
@@ -131,22 +164,37 @@ const English = (
 /** One row of the table: the record, its width, and the order it prints in. */
 const Order: readonly {
 	readonly Record: FieldRecord;
+
 	readonly Span: number;
 }[] = [
 	{ Record: Air, Span: 5 },
+
 	{ Record: Cocoon, Span: 7 },
+
 	{ Record: Common, Span: 7 },
+
 	{ Record: Echo, Span: 5 },
+
 	{ Record: Grove, Span: 8 },
+
 	{ Record: Maintain, Span: 4 },
+
 	{ Record: Mist, Span: 6 },
+
 	{ Record: Mountain, Span: 6 },
+
 	{ Record: Output, Span: 8 },
+
 	{ Record: Rest, Span: 4 },
+
 	{ Record: SideCar, Span: 7 },
+
 	{ Record: Sky, Span: 5 },
+
 	{ Record: Vine, Span: 4 },
+
 	{ Record: Wind, Span: 8 },
+
 	{ Record: Worker, Span: 8 },
 ];
 
@@ -179,6 +227,7 @@ const CardOf =
 		Span,
 	}: {
 		readonly Record: FieldRecord;
+
 		readonly Span: number;
 	}): ElementCard => {
 		const Key = Record.Id;
@@ -187,29 +236,47 @@ const CardOf =
 
 		return {
 			Index: Record.Index,
+
 			Title: Record.Title,
+
 			Href: Record.Href,
+
 			SealName: Record.Seal,
+
 			Stamp: Record.Stamp ?? [],
+
 			Route: RouteOf(Record),
+
 			Service: Record.Route?.[1] ?? "",
+
 			Status: { Label: Record.Status.Label, Value: Record.Status.Value },
+
 			Metadata: Record.Metadata,
+
 			Glyph: Glyphs[Key] ?? Symbol,
+
 			Seal: Symbolic.has(Record.Seal) ? "symbol" : "figure",
+
 			Symbol,
+
 			Chips: ChipsOf(
 				T(`home:architecture.${Key}.subtitle`, {
 					defaultValue: English(Key).subtitle,
 				}),
 			),
+
 			Body: T(`home:architecture.${Key}.description`, {
 				defaultValue: English(Key).description,
 			}),
+
 			Source: Record.Href,
+
 			Span,
+
 			Depth: Plates.has(Key) ? "plate" : "record",
+
 			Register: Working?.Register ?? NoWorking,
+
 			Trace: Working?.Trace ?? [],
 		};
 	};

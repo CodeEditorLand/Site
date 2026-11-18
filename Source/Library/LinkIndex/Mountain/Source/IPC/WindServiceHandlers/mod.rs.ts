@@ -69,6 +69,7 @@ export const LinkIndexData: LinkIndexFragment = {
 
 		"mod.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/mod.rs",
 		},
 	},

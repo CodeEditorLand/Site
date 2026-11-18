@@ -54,6 +54,7 @@ beforeAll(async () => {
 /** The first element matching a selector. Throws rather than returning null. */
 const One = (
 	Selector: string,
+
 	Root: ParsedElement | Window["document"] | undefined = Page,
 ): ParsedElement => {
 	const Found = Root?.querySelector(Selector) ?? null;
@@ -66,6 +67,7 @@ const One = (
 /** Every element matching a selector, in print order. */
 const All = (
 	Selector: string,
+
 	Root: ParsedElement | Window["document"] | undefined = Page,
 ): ParsedElement[] => Array.from(Root?.querySelectorAll(Selector) ?? []);
 
@@ -88,10 +90,15 @@ describe("FeatureBand", () => {
 			Cards().map((Card) => Text(One(".home-record__index", Card))),
 		).toEqual([
 			"# MOUNTAIN_01",
+
 			"# COCOON_01",
+
 			"# WIND_01",
+
 			"# SKY_01",
+
 			"# AIR_01",
+
 			"# ECHO_01",
 		]);
 	});
@@ -150,6 +157,7 @@ describe("FeatureBand", () => {
 		const Fills = new Map(
 			Cards().map((Card) => [
 				Text(One(".home-record__index", Card)),
+
 				Card.getAttribute("style"),
 			]),
 		);

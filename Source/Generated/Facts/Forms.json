@@ -1,24 +1,15 @@
 {
 	"_Generated": {
 		"By": "Source/Script/Register.ts",
-		"From": [
-			"Source/pages/**",
-			"Source/Component/Record/**"
-		],
-		"Transform": [
-			"Facts"
-		],
+		"From": ["Source/pages/**", "Source/Component/Record/**"],
+		"Transform": ["Facts"],
 		"Note": "The artifact set, measured: for each of the fourteen blocks, the routes whose import tree mounts it.",
 		"Rule": "Generated. Change the tree or the page, then run `node Source/Script/Register.ts` - never this file."
 	},
 	"Forms": [
 		{
 			"Block": "RecordHero",
-			"Routes": [
-				"/404",
-				"/Compare",
-				"/Contents"
-			],
+			"Routes": ["/404", "/Compare", "/Contents"],
 			"Count": 3
 		},
 		{
@@ -35,9 +26,7 @@
 		},
 		{
 			"Block": "RecordPair",
-			"Routes": [
-				"/Download"
-			],
+			"Routes": ["/Download"],
 			"Count": 1
 		},
 		{
@@ -64,10 +53,7 @@
 		},
 		{
 			"Block": "RecordArchive",
-			"Routes": [
-				"/Contents",
-				"/Doc"
-			],
+			"Routes": ["/Contents", "/Doc"],
 			"Count": 2
 		},
 		{
@@ -84,12 +70,7 @@
 		},
 		{
 			"Block": "RecordCompare",
-			"Routes": [
-				"/Compare",
-				"/Download",
-				"/Portal",
-				"/Status"
-			],
+			"Routes": ["/Compare", "/Download", "/Portal", "/Status"],
 			"Count": 4
 		},
 		{
@@ -117,27 +98,17 @@
 		},
 		{
 			"Block": "RecordInstrument",
-			"Routes": [
-				"/Contents",
-				"/Download",
-				"/Status"
-			],
+			"Routes": ["/Contents", "/Download", "/Status"],
 			"Count": 3
 		},
 		{
 			"Block": "RecordPlateSet",
-			"Routes": [
-				"/Contents",
-				"/Download"
-			],
+			"Routes": ["/Contents", "/Download"],
 			"Count": 2
 		},
 		{
 			"Block": "RecordEntry",
-			"Routes": [
-				"/Doc",
-				"/Portal"
-			],
+			"Routes": ["/Doc", "/Portal"],
 			"Count": 2
 		},
 		{
@@ -189,18 +160,12 @@
 		},
 		{
 			"Block": "RecordTrace",
-			"Routes": [
-				"/",
-				"/Compare",
-				"/Status"
-			],
+			"Routes": ["/", "/Compare", "/Status"],
 			"Count": 3
 		},
 		{
 			"Block": "RecordFailure",
-			"Routes": [
-				"/"
-			],
+			"Routes": ["/"],
 			"Count": 1
 		},
 		{
@@ -216,10 +181,7 @@
 		},
 		{
 			"Block": "RecordFigure",
-			"Routes": [
-				"/404",
-				"/Blog"
-			],
+			"Routes": ["/404", "/Blog"],
 			"Count": 2
 		},
 		{
@@ -247,36 +209,22 @@
 		},
 		{
 			"Block": "RecordPlate",
-			"Routes": [
-				"/Doc",
-				"/Doc/:Slug",
-				"/Doc/Rust",
-				"/Download"
-			],
+			"Routes": ["/Doc", "/Doc/:Slug", "/Doc/Rust", "/Download"],
 			"Count": 4
 		},
 		{
 			"Block": "RecordStamp",
-			"Routes": [
-				"/Contents",
-				"/Download"
-			],
+			"Routes": ["/Contents", "/Download"],
 			"Count": 2
 		},
 		{
 			"Block": "RecordInset",
-			"Routes": [
-				"/Blog/:Slug",
-				"/Doc/:Slug"
-			],
+			"Routes": ["/Blog/:Slug", "/Doc/:Slug"],
 			"Count": 2
 		},
 		{
 			"Block": "RecordTranscript",
-			"Routes": [
-				"/Doc/:Slug",
-				"/Download"
-			],
+			"Routes": ["/Doc/:Slug", "/Download"],
 			"Count": 2
 		}
 	]

@@ -44,72 +44,133 @@ const Kind = new Map<string, string>([
 	// A shell: something a reader runs.
 	...[
 		"bash",
+
 		"sh",
+
 		"shell",
+
 		"zsh",
+
 		"fish",
+
 		"console",
+
 		"terminal",
+
 		"powershell",
+
 		"ps",
+
 		"ps1",
+
 		"cmd",
+
 		"bat",
+
 		"make",
+
 		"makefile",
 	].map((Language) => [Language, "COMMAND"] as const),
+
 	// A data format: something a reader edits.
 	...[
 		"json",
+
 		"jsonc",
+
 		"json5",
+
 		"toml",
+
 		"yaml",
+
 		"yml",
+
 		"ini",
+
 		"dotenv",
+
 		"env",
+
 		"conf",
+
 		"properties",
 	].map((Language) => [Language, "CONFIG"] as const),
+
 	// A language: something a reader reads.
 	...[
 		"rust",
+
 		"rs",
+
 		"typescript",
+
 		"ts",
+
 		"tsx",
+
 		"javascript",
+
 		"js",
+
 		"jsx",
+
 		"mjs",
+
 		"cjs",
+
 		"python",
+
 		"py",
+
 		"go",
+
 		"c",
+
 		"h",
+
 		"cpp",
+
 		"hpp",
+
 		"java",
+
 		"kotlin",
+
 		"swift",
+
 		"sql",
+
 		"html",
+
 		"css",
+
 		"scss",
+
 		"sass",
+
 		"less",
+
 		"vue",
+
 		"svelte",
+
 		"astro",
+
 		"proto",
+
 		"protobuf",
+
 		"graphql",
+
 		"gql",
+
 		"nix",
+
 		"dockerfile",
+
 		"diff",
+
 		"patch",
 	].map((Language) => [Language, "SOURCE"] as const),
 ]);
@@ -145,12 +206,19 @@ const Control = (Payload: string, Label: string): HTMLElement => {
 	Button.className = "record-well__copy";
 
 	Button.setAttribute("data-record-well-copy", "");
+
 	Button.setAttribute("data-copy-payload", Payload);
+
 	Button.setAttribute("size", "small");
+
 	Button.setAttribute("shape", "square");
+
 	Button.setAttribute("label", Label);
+
 	Button.setAttribute("aria-label", Label);
+
 	Button.setAttribute("title", Label);
+
 	Button.setAttribute("style", Skin);
 
 	Button.innerHTML = Glyph;
@@ -235,7 +303,9 @@ const Wrap = (Block: HTMLPreElement): void => {
 		/* The adopted control keeps its handler and its label; only its placement
 		   changes - it was floating over the block, it now sits in the bar. */
 		FloatedButton.style.removeProperty("position");
+
 		FloatedButton.style.removeProperty("top");
+
 		FloatedButton.style.removeProperty("right");
 
 		FloatedButton.classList.add("record-well__copy");
@@ -245,6 +315,7 @@ const Wrap = (Block: HTMLPreElement): void => {
 		Bar.append(
 			Control(
 				Payload,
+
 				`Copy ${KindLabel ?? (Language || "block")} to the clipboard`,
 			),
 		);
@@ -256,6 +327,7 @@ const Wrap = (Block: HTMLPreElement): void => {
 	 * declaration is dropped - the colour and the token spans stay.
 	 */
 	Block.style.removeProperty("background-color");
+
 	Block.style.removeProperty("background");
 
 	Block.classList.add("record-well__body");

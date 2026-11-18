@@ -49,21 +49,31 @@ const Manifest: Record<
 	string,
 	{
 		readonly Phase: string;
+
 		readonly Status: string;
+
 		readonly Target: string;
+
 		readonly Signal: string;
 	}
 > = {
 	free: {
 		Phase: "ACTIVE SOURCE",
+
 		Status: "ACTIVE",
+
 		Target: "NATIVE DESKTOP PATH",
+
 		Signal: "NO CHROMIUM / NO ELECTRON / CC0",
 	},
+
 	progress: {
 		Phase: "INTEGRATION",
+
 		Status: "LOADING",
+
 		Target: "V1.0",
+
 		Signal: "SIGNED INSTALLERS / VERIFIED DOWNLOADS",
 	},
 };
@@ -79,18 +89,29 @@ const Manifest: Record<
 const CapabilityLabels: Record<string, readonly string[]> = {
 	free: [
 		"EXTENSIONS",
+
 		"WEBVIEW",
+
 		"FIBERS",
+
 		"TELEMETRY",
+
 		"LICENSE",
+
 		"TARGETS",
 	],
+
 	progress: [
 		"MARKETPLACE",
+
 		"COCOON",
+
 		"VINE",
+
 		"INSTALLERS",
+
 		"ECHO",
+
 		"DISTRIBUTION",
 	],
 };
@@ -108,8 +129,10 @@ const ElementRowOf = (Element: string): PhaseRow => {
 
 	return {
 		key: Name,
+
 		value: Role,
 		...(Detail ? { note: Detail } : {}),
+
 		href: DocPathOf(Name),
 	};
 };
@@ -129,8 +152,11 @@ const FactsOf = (Identifier: string, Item: Tier): readonly string[] => {
 
 	return [
 		`PHASE: ${Phase.Phase}`,
+
 		`STATUS: ${Status}`,
+
 		`TARGET: ${Phase.Target}`,
+
 		`SIGNAL: ${Phase.Signal}`,
 	];
 };

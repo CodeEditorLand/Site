@@ -51,16 +51,19 @@ export const LinkIndexData: LinkIndexFragment = {
 
 		OpenChannelFromCocoon: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Proto/Vine.proto",
 		},
 
 		ProcessCocoonRequest: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Proto/Vine.proto",
 		},
 
 		SendCocoonNotification: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Proto/Vine.proto",
 		},
 	},

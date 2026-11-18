@@ -21,6 +21,7 @@
  * word and the hero's stamp are React primitives.
  */
 import fs from "node:fs";
+
 import path from "node:path";
 
 import Renderer from "@astrojs/react/server.js";
@@ -34,10 +35,15 @@ import type { Element as ParsedElement } from "happy-dom";
 import { beforeAll, describe, expect, it } from "vitest";
 
 import RecordFigure from "../../Component/Record/RecordFigure.astro";
+
 import RecordHero from "../../Component/Record/RecordHero.astro";
+
 import RecordInstrument from "../../Component/Record/RecordInstrument.astro";
+
 import RecordPair from "../../Component/Record/RecordPair.astro";
+
 import PlatformMatrix from "../../Component/Dynamic/Download/PlatformMatrix.astro";
+
 import Requirements from "../../Component/Dynamic/Download/Requirements.astro";
 
 const Root = process.cwd();
@@ -101,6 +107,7 @@ describe("the layer's law", () => {
 		const Missing = PartialFiles().filter((Name) => {
 			const Text = fs.readFileSync(
 				path.join(Root, "Source/Stylesheet/System/Record", Name),
+
 				"utf8",
 			);
 
@@ -156,9 +163,11 @@ describe("the layer's law", () => {
 /** One render, parsed. */
 const Render = async (
 	Component: Parameters<typeof Container.renderToString>[0],
+
 	Options: Parameters<typeof Container.renderToString>[1],
 ): Promise<ParsedElement> => {
 	const Html = await Container.renderToString(Component, Options);
+
 	const Parsed = new Window({ url: "https://editor.land/" });
 
 	Parsed.document.body.innerHTML = Html;
@@ -212,13 +221,18 @@ describe("RecordInstrument", () => {
 		expect(Measures).toHaveLength(2);
 
 		expect(All(".record-instrument__measure--lead", Page)).toHaveLength(1);
+
 		expect(Text(Measures[0])).toContain("ARTIFACTS:");
+
 		expect(Text(Measures[0])).toContain("0");
+
 		expect(Text(Measures[0])).toContain("PUBLISHED");
+
 		expect(Text(Measures[0])).toContain("SOURCE: NO PUBLIC RELEASE EXISTS");
 
 		// The absent figure prints the vocabulary's word, and never a unit.
 		expect(Text(Measures[1])).toContain("UNAVAILABLE");
+
 		expect(All(".record-instrument__unit", Measures[1])).toHaveLength(0);
 
 		expect(
@@ -235,6 +249,7 @@ describe("RecordInstrument", () => {
 		});
 
 		expect(All(".record-instrument__measure", Page)).toHaveLength(0);
+
 		expect(Text(Page.querySelector(".record-instrument__empty"))).toContain(
 			"No figure is taken",
 		);
@@ -261,7 +276,9 @@ describe("RecordPair", () => {
 		const Pods = All(".record-pair__pod", Page);
 
 		expect(Pods).toHaveLength(2);
+
 		expect(All(".record-pair__gutter", Page)).toHaveLength(1);
+
 		expect(All(".record-pair__pod--subject", Page)).toHaveLength(1);
 
 		// The subject is the right pod, and it is marked by its title's rule.
@@ -274,6 +291,7 @@ describe("RecordPair", () => {
 
 		// Each pod's body is the block handed to its slot, not prose.
 		expect(Text(Pods[0])).toContain("minimum rows");
+
 		expect(Text(Pods[1])).toContain("recommended rows");
 
 		expect(Text(Page.querySelector(".record-pair__caption"))).toContain(
@@ -295,6 +313,7 @@ describe("RecordPair", () => {
 		});
 
 		expect(All("h2, h3, h4", Page)).toHaveLength(0);
+
 		expect(All(".record-pair__label", Page)).toHaveLength(2);
 	});
 });
@@ -323,12 +342,15 @@ describe("the layer's first consumers", () => {
 
 		// The instrument is the region's summary, above the matrix.
 		expect(All(".record-instrument__measure", Page)).toHaveLength(2);
+
 		expect(Text(Page.querySelector(".record-instrument"))).toContain(
 			"ARTIFACTS:",
 		);
+
 		expect(Text(Page.querySelector(".record-instrument"))).toContain(
 			"TARGETS:",
 		);
+
 		expect(Text(Page.querySelector(".record-instrument"))).toContain(
 			"SOURCE:",
 		);
@@ -338,6 +360,7 @@ describe("the layer's first consumers", () => {
 
 		// And the matrix itself is a real table with a row label per target.
 		expect(All("table tbody tr", Page)).toHaveLength(2);
+
 		expect(All("th.record-matrix__label", Page)).toHaveLength(2);
 	});
 
@@ -374,19 +397,25 @@ describe("the layer's first consumers", () => {
 		const Pods = All(".record-pair__pod", Page);
 
 		expect(Pods).toHaveLength(2);
+
 		expect(All(".record-pair__gutter", Page)).toHaveLength(1);
+
 		expect(All("h4.record-pair__label", Page)).toHaveLength(2);
+
 		expect(Pods[1]?.classList.contains("record-pair__pod--subject")).toBe(
 			true,
 		);
 
 		// Each pod's body is a real RecordLedger, not prose.
 		expect(All(".record-pair__pod .record-ledger", Page)).toHaveLength(2);
+
 		expect(Text(Pods[0])).toContain("4 GB RAM");
+
 		expect(Text(Pods[1])).toContain("8 GB RAM");
 
 		// The region's other two parts survive the pair.
 		expect(All(".download-requirements__os-chip", Page)).toHaveLength(1);
+
 		expect(Text(Page.querySelector(".download-requirements"))).toContain(
 			"BUILD TOOLCHAIN (SOURCE)",
 		);
@@ -403,7 +432,9 @@ describe("the layer's first consumers", () => {
 		});
 
 		expect(All(".record-figure__media img", Page)).toHaveLength(1);
+
 		expect(All(".record-figure__caption-text", Page)).toHaveLength(1);
+
 		expect(Text(Page.querySelector(".record-figure__provenance"))).toBe(
 			"/EVIDENCE/LAND/NIGHTGLASS-01.PNG",
 		);
@@ -421,7 +452,9 @@ describe("the layer's first consumers", () => {
 		});
 
 		expect(All(".record-hero__evidence", Page)).toHaveLength(1);
+
 		expect(All(".record-hero__gutter", Page)).toHaveLength(1);
+
 		expect(Text(Page.querySelector(".record-hero__evidence"))).toContain(
 			"composed evidence",
 		);
@@ -447,13 +480,17 @@ describe("RecordHero", () => {
 		});
 
 		expect(All("h1", Page)).toHaveLength(1);
+
 		expect(Text(Page.querySelector("h1"))).toContain("NOT FOUND");
+
 		expect(Text(Page.querySelector(".record-hero__route"))).toContain(
 			"/TRACE:/nope",
 		);
+
 		expect(Text(Page.querySelector(".record-hero__relation"))).toBe(
 			"LAND:",
 		);
+
 		expect(Text(Page.querySelector(".record-hero__proposition"))).toContain(
 			"RETURN TO INDEX",
 		);
@@ -464,13 +501,16 @@ describe("RecordHero", () => {
 		expect(Html.indexOf("record-hero__facts")).toBeLessThan(
 			Html.indexOf("record-hero__blank"),
 		);
+
 		expect(Html.indexOf("record-hero__blank")).toBeLessThan(
 			Html.indexOf("record-hero__relation"),
 		);
 
 		// No evidence and no seal passed: no plate, no gutter, no seal.
 		expect(All(".record-hero__evidence", Page)).toHaveLength(0);
+
 		expect(All(".record-hero__gutter", Page)).toHaveLength(0);
+
 		expect(All(".record-hero__seal", Page)).toHaveLength(0);
 	});
 });

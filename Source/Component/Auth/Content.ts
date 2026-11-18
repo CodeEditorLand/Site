@@ -23,6 +23,7 @@
  * No fact was dropped and no label was renamed. The labels stay labels.
  */
 import type AccountContentShape from "../Dynamic/Interface/Content/Page/Account.js";
+
 import type VerifyContentShape from "../Dynamic/Interface/Content/Page/Verify.js";
 
 import type { Translate } from "./Type.js";
@@ -139,6 +140,7 @@ export const AccountContent = (T: Translate): AccountContentShape => ({
 		}),
 		InvalidTokenMessage: T(
 			"account.resetPassword.invalidToken.description",
+
 			{
 				defaultValue:
 					"The reset link has expired or was already used. A link works once and closes after one hour.",

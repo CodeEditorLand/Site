@@ -1,6 +1,7 @@
 import type { DocSection } from "../../Dynamic/Interface/Content/Page/Doc.js";
 
 import { Lexicon, TermId } from "../../../Content/More/Glossary.js";
+
 import { RecordHeads } from "../../../Library/Index/Register.js";
 
 import { FrameSections } from "../../Layout/Frame/Data.js";
@@ -71,6 +72,7 @@ export const BuildPaletteRegister = (
 			Part: "02",
 			Kind: "route",
 		},
+
 		{
 			Id: "part-glossary",
 			Label: "GLOSSARY",
@@ -78,6 +80,7 @@ export const BuildPaletteRegister = (
 			Part: "03",
 			Kind: "route",
 		},
+
 		{
 			Id: "part-compare",
 			Label: "COMPARE",

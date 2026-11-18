@@ -41,16 +41,19 @@ import type { StatusTone } from "../../Content/Record/FieldRecord.js";
 const ToneStyle: Readonly<Record<StatusTone, Record<string, string>>> = {
 	ink: {
 		"--jelly-fill": "var(--Mute)",
+
 		"--jelly-label": "var(--Foreground)",
 	},
 
 	specimen: {
 		"--jelly-fill": "var(--SpinegRPCMute)",
+
 		"--jelly-label": "var(--SpinegRPCFore)",
 	},
 
 	quiet: {
 		"--jelly-fill": "var(--Mute)",
+
 		"--jelly-label": "var(--MuteForeground)",
 	},
 };
@@ -58,7 +61,9 @@ const ToneStyle: Readonly<Record<StatusTone, Record<string, string>>> = {
 /** The badge's own variant name for a tone; the fill above is what paints it. */
 const ToneVariant: Readonly<Record<StatusTone, "mint" | "platinum">> = {
 	ink: "platinum",
+
 	specimen: "mint",
+
 	quiet: "platinum",
 };
 

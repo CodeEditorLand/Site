@@ -24,10 +24,15 @@ import type { Aside, LedgerRow } from "../../Component/Record/Type.js";
 /** One rail row, in the shell rail's own shape. */
 export interface AccountRailItem {
 	readonly mark: string;
+
 	readonly label: string;
+
 	readonly meta?: string;
+
 	readonly href?: string;
+
 	readonly current?: boolean;
+
 	readonly note?: string;
 }
 
@@ -51,7 +56,9 @@ export interface AccountSurface {
 	/** The `denied` state: what this workspace is, and what it needs. */
 	readonly denied: {
 		readonly statement: string;
+
 		readonly cause: string;
+
 		readonly next: { readonly label: string; readonly href: string };
 	};
 }

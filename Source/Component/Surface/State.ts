@@ -55,12 +55,19 @@ export interface SurfaceState {
  */
 export const StateTerms = [
 	"READY",
+
 	"ACTIVE",
+
 	"LOADING",
+
 	"PREPARING",
+
 	"VERIFIED",
+
 	"UNAVAILABLE",
+
 	"INTERRUPTED",
+
 	"ARCHIVED",
 ] as const;
 
@@ -70,12 +77,19 @@ export type StateTerm = (typeof StateTerms)[number];
 /** §1.5's tone per state word. The table is total over the eight, and closed. */
 const ToneByWord: Readonly<Record<string, StatusTone>> = {
 	READY: "ink",
+
 	ACTIVE: "specimen",
+
 	LOADING: "ink",
+
 	PREPARING: "quiet",
+
 	VERIFIED: "specimen",
+
 	UNAVAILABLE: "ink",
+
 	INTERRUPTED: "ink",
+
 	ARCHIVED: "quiet",
 };
 

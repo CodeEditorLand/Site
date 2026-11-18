@@ -35,22 +35,33 @@ import type { PropertyEntry } from "../../Component/Dynamic/Properties/Type.js";
 const Copy: Record<string, string> = {
 	"home:features.item.designTokens.title":
 		"Native services where they count.",
+
 	"home:features.item.designTokens.description":
 		"Heavy editor work runs natively.",
+
 	"home:features.item.componentLibrary.title":
 		"Unmodified extensions, no fork path.",
+
 	"home:features.item.componentLibrary.description":
 		"Extensions run unmodified.",
+
 	"home:features.item.documentation.title": "Fibers, not Promises.",
+
 	"home:features.item.documentation.description": "Failures are typed.",
+
 	"home:features.item.versionControl.title":
 		"One source tree, configured targets.",
+
 	"home:features.item.versionControl.description":
 		"Tauri uses the OS WebView.",
+
 	"home:features.item.cicdIntegration.title":
 		"Background daemon, always running.",
+
 	"home:features.item.cicdIntegration.description": "A persistent daemon.",
+
 	"home:features.item.collaboration.title": "CC0. No restrictions.",
+
 	"home:features.item.collaboration.description": "Fork it, ship it.",
 };
 
@@ -95,9 +106,13 @@ const One = (Selector: string): ParsedElement => {
 describe("the properties grid", () => {
 	it("prints three claims and files the other three", () => {
 		expect(Entries).toHaveLength(6);
+
 		expect(ClaimsOf(Entries)).toHaveLength(3);
+
 		expect(FiledOf(Entries)).toHaveLength(3);
+
 		expect(All(".properties-grid > jelly-card")).toHaveLength(3);
+
 		expect(All(".properties-filed__item")).toHaveLength(3);
 	});
 
@@ -115,13 +130,16 @@ describe("the properties grid", () => {
 		// The claim is an `h3` - a record's name, never the page's `h1`/`h2`.
 		expect(All(".record-entry__name").map((Node) => Node.tagName)).toEqual([
 			"H3",
+
 			"H3",
+
 			"H3",
 		]);
 	});
 
 	it("gives every claim a destination, which is what the arrow needs", () => {
 		expect(All(".record-entry__link")).toHaveLength(3);
+
 		expect(All(".record-entry__arrow")).toHaveLength(3);
 
 		expect(
@@ -138,6 +156,7 @@ describe("the properties grid", () => {
 
 		for (const Fill of Fills) {
 			expect(Fill).toContain("--jelly-fill:");
+
 			expect(Fill).toContain("--jelly-card-padding-inline:0");
 		}
 
@@ -147,6 +166,7 @@ describe("the properties grid", () => {
 
 	it("labels the filed strip and links every filed property", () => {
 		expect(One(".properties-filed__label").textContent).toBe("ALSO FILED");
+
 		expect(One(".properties-filed").getAttribute("aria-label")).toBe(
 			"ALSO FILED",
 		);
@@ -166,7 +186,9 @@ describe("the properties grid", () => {
 		});
 
 		expect(Empty).toContain("properties-empty");
+
 		expect(Empty).not.toContain("properties-grid");
+
 		expect(Empty).not.toContain("properties-filed");
 	});
 });
@@ -187,6 +209,7 @@ describe("the records it is handed", () => {
 		});
 
 		expect(Html).toContain("properties-filed__name");
+
 		expect(Html).not.toContain("properties-filed__link");
 	});
 });

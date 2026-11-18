@@ -26,8 +26,11 @@ import type {
 export const HeaderLinkList: readonly HeaderLink[] = [
 	{
 		Key: "nav.features",
+
 		Label: "Features",
+
 		Href: "/#features",
+
 		Section: "features",
 	},
 
@@ -37,8 +40,11 @@ export const HeaderLinkList: readonly HeaderLink[] = [
 
 	{
 		Key: "nav.github",
+
 		Label: "GitHub",
+
 		Href: "https://github.com/CodeEditorLand/Land",
+
 		Target: "blank",
 	},
 ];
@@ -50,22 +56,31 @@ export const HeaderLinkList: readonly HeaderLink[] = [
 export const HeaderActionList: readonly HeaderAction[] = [
 	{
 		Key: "actions.signIn",
+
 		Label: "Sign In",
+
 		Href: "/Account/SignIn",
+
 		Variant: "ghost",
 	},
 
 	{
 		Key: "actions.editorPortal",
+
 		Label: "Editor Portal",
+
 		Href: "/Portal",
+
 		Variant: "ghost",
 	},
 
 	{
 		Key: "actions.getStarted",
+
 		Label: "Get Land",
+
 		Href: "/Download",
+
 		Variant: "default",
 	},
 ];
@@ -124,6 +139,7 @@ const ContentLink = (Link: HeaderNavigationLink): HeaderLink => {
 
 	return {
 		Label: Link.Label,
+
 		Href: Link.Href,
 		...(Section === undefined ? {} : { Section }),
 		...(TargetOf(Link.Href) === "self" ? {} : { Target: "blank" as const }),
@@ -136,7 +152,9 @@ const ContentAction = (Action: HeaderContentAction): HeaderAction => {
 
 	return {
 		Label: Action.Text,
+
 		Href,
+
 		Variant: ActionVariant(Action.Variant),
 		...(TargetOf(Href) === "self" ? {} : { Target: "blank" as const }),
 	};
@@ -150,6 +168,7 @@ const ContentAction = (Action: HeaderContentAction): HeaderAction => {
  */
 export const HeaderView = (
 	Content: HeaderContent | undefined,
+
 	T: HeaderTranslate,
 ): HeaderViewType => ({
 	Logo: Content?.Logo?.Text ?? T("logo", { defaultValue: "Land" }),
@@ -186,7 +205,9 @@ const OnRoute = (Route: string, Current: string): boolean =>
  */
 export const HeaderLinkState = (
 	Link: HeaderLink,
+
 	Path: string,
+
 	Section: string,
 ): HeaderLinkActivity => {
 	if (Link.Target === "blank") return "idle";

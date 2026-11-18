@@ -91,5 +91,6 @@ export interface HeaderView {
 /** A translator that resolves one key with an English default. */
 export type HeaderTranslate = (
 	Key: string,
+
 	Options: { readonly defaultValue: string },
 ) => string;

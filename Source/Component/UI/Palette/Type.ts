@@ -52,7 +52,9 @@ export interface PaletteEntry {
 /** One register of the palette: a heading and the rows under it. */
 export interface PaletteRegisterGroup {
 	Id: string;
+
 	Label: string;
+
 	Pages: PaletteEntry[];
 }
 

@@ -117,10 +117,15 @@ export const PieceInset = (Input: {
  */
 export const PageInset = (Input: {
 	readonly body: string;
+
 	readonly sections: number;
+
 	readonly order: number;
+
 	readonly inSection: number;
+
 	readonly section: string;
+
 	readonly file: string;
 }): Inset => {
 	const Words = WordCount(Input.body);
@@ -129,21 +134,27 @@ export const PageInset = (Input: {
 
 	return {
 		index: "INSET_01",
+
 		label: "THE EXTENT",
+
 		figure: {
 			caption: `${Input.sections} sections and ${Words.toLocaleString("en-GB")} words of prose: about ${Minutes} minutes at ${Rate} words a minute.`,
+
 			source: Input.file,
+
 			bars: Bars([
 				{
 					label: "SECTIONS",
 					value: String(Input.sections).padStart(2, "0"),
 					amount: Input.sections,
 				},
+
 				{
 					label: "WORDS",
 					value: Words.toLocaleString("en-GB"),
 					amount: Words,
 				},
+
 				{
 					label: "MINUTES",
 					value: String(Minutes).padStart(2, "0"),
@@ -151,7 +162,9 @@ export const PageInset = (Input: {
 				},
 			]),
 		},
+
 		body: `This is page ${String(Input.order).padStart(2, "0")} of ${String(Input.inSection).padStart(2, "0")} in ${Input.section}. The metadata strip prints the order without its denominator; this note prints both.`,
+
 		source: `${Input.file}${Quad}ORDER FROM THE FRONTMATTER, COUNT FROM THE SECTION`,
 	};
 };
