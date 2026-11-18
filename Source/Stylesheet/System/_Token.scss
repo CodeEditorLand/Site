@@ -1064,12 +1064,13 @@
 	--optical-key-column: 28ch;
 
 	/* THE ROUTE COLUMN IS ITS CONTENT'S MEASURE, AND A FLOOR. The longest route
-	 * the register prints is `/CONTACT/LEGAL` - 14 glyphs plus 13 inter-letter
-	 * registers at `--track-name` (0.04em = 0.0667ch) = 14.87ch, so 15ch is the
-	 * column. It is a floor on the route and never a width: a longer route grows
-	 * and its own reason follows it, and a shorter one leaves the reason on the
-	 * same edge as every other row's. 24ch was 61 % over that content and took
-	 * the width from the reason, which then printed one word per line
+	 * the register prints is `/DOC/INTRODUCTION` - 17 glyphs plus 16 inter-letter
+	 * registers at `--track-name` (0.04em = 0.0667ch) = 18.07ch, so the column is
+	 * 19ch: the next whole character, which is what makes it a measure instead of
+	 * a fit. It is a floor on the route and never a width - a longer route grows
+	 * and its own reason follows it, and every shorter one leaves its reason on
+	 * the same edge as every other row's. 24ch was 5.9ch over that content and
+	 * took those characters from the reason, which then printed one word per line
 	 * (`Detail/_See.scss` carries the arithmetic and the query). */
-	--optical-route-column: 15ch;
+	--optical-route-column: 19ch;
 }

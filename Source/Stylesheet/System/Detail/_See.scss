@@ -26,33 +26,34 @@
 //
 // ─── THE ROW IS A CONTAINER QUESTION, NOT A VIEWPORT ONE ──────────────────
 // The strip is printed at the foot of a band and inside a white card, beside a
-// folio, so its width is never the viewport's: 595.2px in the widest card inset
-// (the foot's own 62ch cap at 16px) and 224px in a phone's card. A `@media`
-// breakpoint says "row" at a 1440px viewport where the strip is 224px, so the
-// row switches on the STRIP's own inline size - `@container see`.
+// folio, so its width is never the viewport's: 595.2px at its widest - the card's
+// 72ch body less its 3rem inset, which is also the strip's own 62ch cap at 16px -
+// and 224px in a phone's card. A `@media` breakpoint says "row" at a 1440px
+// viewport where the strip is 224px, so the row switches on the STRIP's own
+// inline size - `@container see`.
 //
 // The switch is a measure, not a guess:
 //
-//   the widest route printed    `/CONTACT/LEGAL` - 14 glyphs plus 13
+//   the widest route printed    `/DOC/INTRODUCTION` - 17 glyphs plus 16
 //                               inter-letter registers at `--track-name`
-//                               (0.04em = 0.0667ch) = 14.87ch, set in a 15ch
+//                               (0.04em = 0.0667ch) = 18.07ch, set in a 19ch
 //                               column (`--optical-route-column`) so every
 //                               reason in the strip starts on one edge
 //   the row gap                 `--space-reading` = 16px = 2.05ch
 //   the reason's floor          24ch - under 24 characters a caption breaks
 //                               every third word
 //   ───────────────────────────
-//                               15ch + 2.05ch + 24ch = 41.05ch ≈ 320px
+//                               19ch + 2.05ch + 24ch = 45.05ch = 351.4px
 //
-// so the row is a row from 20rem (320px) of strip and a column below it. At
-// 20rem the reason holds its 24ch floor to within a fifth of a character; at the
-// widest strip it holds its full measure - 15ch + 2.05ch + 52ch = 69.05ch =
-// 538.6px inside 595.2px, so 56.6px of slack and the cap is actually reached. A
-// cap that is never reached is not a measure, which is why the reason's measure
-// is 52ch and not the opening 62ch it was given by hand: 62ch beside a 15ch route
+// so the row is a row from 22rem (352px) of strip and a column below it. At
+// 22rem the reason holds 24.08ch - its floor to within a twelfth of a character;
+// at the widest strip it holds its full measure - 19ch + 2.05ch + 52ch = 73.05ch
+// = 569.8px inside 595.2px, so 25.4px of slack and the cap is actually reached.
+// A cap that is never reached is not a measure, which is why the reason's measure
+// is 52ch and not the opening 62ch it was given by hand: 62ch beside a 19ch route
 // would never be reached in any strip this site prints.
 //
-// Below 20rem the route sits above its reason and the reason takes the strip's
+// Below 22rem the route sits above its reason and the reason takes the strip's
 // whole width, which is the only composition that keeps a 224px strip from
 // printing one word per line.
 @use "../Mixin" as *;
@@ -109,10 +110,9 @@
 
 // The route is a route: uppercase, tracked, and never wrapped - a route that
 // broke mid-path would read as two routes. Its column is a floor at the longest
-// route's measure (`--optical-route-column`, 15ch), so every reason in the strip
-// starts on one line and no strip pays for a column it does not print. It is a
-// floor and not a width: a route longer than 15ch grows and its own reason
-// follows it, and the other rows keep their edge.
+// route's measure (`--optical-route-column`, 19ch), so every reason in the strip
+// starts on one edge. It is a floor and not a width: a route longer than 19ch
+// grows and its own reason follows it, and the other rows keep their edge.
 .detail-see__route {
 	@include mono-meta;
 	@include track(var(--track-name));
@@ -135,16 +135,24 @@
 }
 
 // ─── THE ROW, WHEN THE STRIP CAN HOLD IT ──────────────────────────────────
-// 15ch + 16px + 24ch = 319.16px, so 20rem is the first round step at which the
+// 19ch + 2.05ch + 24ch = 351.4px, so 22rem (352px) is the first step at which the
 // route and its reason can share a line. The route keeps `0 0 auto` so it is
 // never squeezed by its own reason; the reason takes what is left and stops at
 // its measure, which leaves the row's right edge ragged on purpose - that is
 // what a measure does.
-@container see (min-width: 20rem) {
+//
+// The row wraps for the one case a container query cannot see: a route longer
+// than the strip can hold beside a 24ch reason (a path is data, and the design
+// brief's `too long` state says the layout must not break). The reason's basis is
+// its 24ch floor, so such a route takes its own reason to the next line - the
+// column form, decided per row - and the row gap is that form's 4px, so the two
+// arms read as one composition.
+@container see (min-width: 22rem) {
 	.detail-see__row {
 		flex-direction: row;
+		flex-wrap: wrap;
 		align-items: baseline;
-		gap: var(--space-reading);
+		gap: calc(var(--space-tight) / 2) var(--space-reading);
 	}
 
 	.detail-see__route {
@@ -152,6 +160,6 @@
 	}
 
 	.detail-see__reason {
-		flex: 1 1 auto;
+		flex: 1 1 24ch;
 	}
 }

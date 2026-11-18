@@ -29,7 +29,7 @@
 //
 // The two registers can share a line when the foot holds all three parts:
 //
-//   the See's row floor     41.05ch = 320.2px  (`Detail/_See.scss`, where the
+//   the See's row floor     45.05ch = 351.4px  (`Detail/_See.scss`, where the
 //                           character arithmetic is written out)
 //   the row gap             `--space-group` = 32px
 //   the folio's floor       its longest `nowrap` group. The widest on the site
@@ -38,14 +38,14 @@
 //                           glyphs and two U+2001 registers at 13px mono =
 //                           635.96px
 //   ───────────────────────
-//                           320.2 + 32 + 635.96 = 988.16px = 61.76rem
+//                           351.4 + 32 + 635.96 = 1019.36px = 63.71rem
 //
-// so the row is a row from 62rem (992px) of foot and a column below it. At 992px
-// the See gets 324.04px - its row floor with 3.84px to spare - and the folio
-// prints its two ends on two lines. Below 62rem the See takes the foot's whole
-// width and the folio stands under it: a 595.2px card cannot hold a 636px folio
-// beside any See at all, and the row that tried gave the See 0px, which is what
-// printed the reasons one word per line.
+// so the row is a row from 64rem (1024px) of foot and a column below it. At
+// 1024px the See gets 356.04px - its row floor with 4.64px to spare - and the
+// folio prints its two ends on two lines. Below 64rem the See takes the foot's
+// whole width and the folio stands under it: a 595.2px card cannot hold a 636px
+// folio beside any See at all, and the row that tried gave the See 0px, which is
+// what printed the reasons one word per line.
 //
 // The rule stays where it is in both forms - a rule that moves is not an edge.
 @use "../Mixin" as *;
@@ -61,7 +61,7 @@
 	min-inline-size: 0;
 }
 
-@container foot (min-width: 62rem) {
+@container foot (min-width: 64rem) {
 	.detail-foot__row {
 		flex-direction: row;
 		align-items: baseline;
@@ -79,7 +79,7 @@
 	// The folio YIELDS. `0 1 auto` lets it fall back to its own min-content - its
 	// two ends on two lines - instead of taking its max-content (≈ 839px on the
 	// widest folio) and starving the See. At the widest band that is the
-	// difference between a 404px See with a 271px reason and a 0px See with one
+	// difference between a 404px See with a 240px reason and a 0px See with one
 	// word per line.
 	.detail-foot__folio {
 		flex: 0 1 auto;
@@ -89,7 +89,7 @@
 // On a white card the foot is inside the card's own inset: the See and the Folio
 // keep the measure they had and the rule above them is the card's separator. The
 // gap tightens ACROSS the row and keeps the reading gap DOWN it, because a card
-// foot is a column (595.2px, below the 61rem row) and 8px between the last
+// foot is a column (595.2px, below the 64rem row) and 8px between the last
 // reason and the folio would read as one paragraph.
 .detail-foot[data-surface="card"] .detail-foot__row {
 	column-gap: var(--space-tight);
