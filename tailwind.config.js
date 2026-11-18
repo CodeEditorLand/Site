@@ -290,6 +290,23 @@ export default {
 		require("@tailwindcss/typography"),
 
 		require("@tailwindcss/aspect-ratio"),
+
+		/* `aria-invalid:` - the state a control carries once its value has been
+		   rejected. Tailwind 3.4 ships `aria-checked`, `aria-disabled`,
+		   `aria-expanded`, `aria-hidden`, `aria-pressed`, `aria-readonly`,
+		   `aria-required` and `aria-selected` as variants and no other `aria-*`
+		   name, so every `aria-invalid:*` utility in `Source/Component/UI/`
+		   (`Checkbox`, `Textarea`, `RadioGroup`, `Select`, `InputOTP`) emitted
+		   no rule at all - measured in the compiled sheet, 0 selectors matching
+		   `aria-invalid`. The invalid state is therefore a state that never
+		   renders: the control looks exactly like a valid one while the form
+		   refuses it. One variant here generates all of them, which is the
+		   single decision rather than a class rename per component.
+		   The selector is the one Tailwind's own arbitrary form
+		   (`aria-[invalid=true]:`) expands to, so the two spellings agree. */
+		function ({ addVariant }) {
+			addVariant("aria-invalid", '&[aria-invalid="true"]');
+		},
 	],
 
 	// TODO: Link that to the dynamic components inside ./Source/Function/Scroll/Layout.astro

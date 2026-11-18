@@ -2,11 +2,11 @@
 /**
  * SurfaceState - the state register of an app surface.
  *
- * A status is not a fact: `DesignSystem-Components.md` §7 requires ACTIVE and
+ * A status is not a fact: `DESIGN-COMPLETE.md` §1.5 requires ACTIVE and
  * VERIFIED to carry a specimen marker beside the word, because a status that
  * renders exactly like an ordinary fact has lost its state. This block is that
- * marker's one home on the functional surfaces - the shell's head and each
- * portal tier's band render it, so the shape cannot drift between them.
+ * marker's one home on the static surfaces - the shell's head and each portal
+ * tier's band render it, so the shape cannot drift between them.
  *
  * The marker is ONE 2px rule standing before the word, at the word's own ink: a
  * shape, so the state survives greyscale and is never colour-only, with the
@@ -14,9 +14,20 @@
  * foreground, `quiet` = the muted foreground). It is the same marker the header
  * draws at the foot of the current destination, turned to stand in a row.
  *
- * A state keeps its key: `EDITOR  ▍NOT CONNECTED` says what the state is *of*,
- * which a bare pill never did. The key column is the ledger's own, so the
- * register and the facts under it read as one block rather than two lists.
+ * A state keeps its key, and the key keeps its colon: `STATUS:` then the word,
+ * the same `KEY: WORD` grammar the state's own sentence prints elsewhere on the
+ * site (`STATUS: LOADING`, `RECORD: EMPTY`). The key column is the ledger's
+ * own, so the register and the facts under it read as one block rather than two
+ * lists - and a reader who sees `STATUS: LOADING` in a card sees the same
+ * `STATUS:` here.
+ *
+ * The tone is not a prop and not a page's choice: it is the row's, and the row
+ * came from `State.ts`, which is the one table of §1.5's eight values. A page
+ * that hands in a ninth word hands in `ink`, because `Row()` resolves the tone
+ * and never guesses one.
+ *
+ * The React islands print the same register through `StateBadge` - one grammar,
+ * two renderers, because an Astro block cannot run inside a hydrated island.
  *
  * No script and no hydration: a state register is static.
  */
@@ -37,7 +48,7 @@ const { states, class: ClassName } = Astro.props;
 	{
 		states.map((Row) => (
 			<li class="surface__state-row">
-				<span class="surface__state-key">{Row.key}</span>
+				<span class="surface__state-key">{Row.key}:</span>
 				<span
 					class:list={[
 						"surface__state-word",
