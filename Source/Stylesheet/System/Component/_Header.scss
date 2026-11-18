@@ -298,8 +298,8 @@
 // ─── The second signal: weight ────────────────────────────────────────────
 // The convention the site states in `Doc/_Sidebar.scss`, `UI/_Item.scss` and
 // `Layout/_Rail.scss` is four marks: `aria-current`, ink, weight 500, and a
-// leading rule. The bar has two of them - the attribute and the 2px accent bar
-// above - and was missing the third.
+// leading rule. The bar had two of the four - the attribute and the 2px accent
+// bar above - and weight was the one it lacked.
 //
 // INK IS THE ONE MARK THE BAR CANNOT HAVE. Every destination in the ribbon
 // already sits at `--HeaderFg`, which is full ink on both header modes; the

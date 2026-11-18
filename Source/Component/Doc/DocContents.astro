@@ -29,9 +29,12 @@
  * contents lists on one page are worse than one.
  *
  * The current entry is marked by `Contents.ts` - `aria-current="location"`, the
- * ink, the weight and a 1px rule on the row's leading edge, the same three
- * signals the tree marks its current page with. With JavaScript off the list is
- * still a working jump list; only the marking is absent.
+ * ink, the weight and a 2px `--Accent` rule on the row's leading edge, the same
+ * four marks the tree marks its current page with. The rule was 1px `--Primary`
+ * and moved with `Stylesheet/System/Component/Doc/_Contents.scss`; the rule's
+ * width is reserved on every row, so a row becoming current shifts nothing. With
+ * JavaScript off the list is still a working jump list; only the marking is
+ * absent.
  */
 import DocContentsList from "./DocContentsList.astro";
 

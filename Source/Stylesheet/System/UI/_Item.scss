@@ -30,7 +30,11 @@
 //               named here so it is not rediscovered as a bug.
 //   current     a 2px accent rule on the leading edge + ink + weight 500 - the
 //               same marker the header's active route and the rail's current page
-//               use. One marker vocabulary, three surfaces.
+//               use. One marker vocabulary, and it is the site's: three signals
+//               (`aria-current`, ink, weight) plus a leading rule, four marks in
+//               all, carried by the header nav, the shell rail, this item
+//               grammar, the doc sidebar, the doc contents, the doc layer, the
+//               clause rail and the surface region rail.
 //
 // ─── DISABLED IS NOT DIMMED ─────────────────────────────────────────────────
 //

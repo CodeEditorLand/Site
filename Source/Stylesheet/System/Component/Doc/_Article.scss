@@ -247,6 +247,16 @@
    `.doc-article__body` - so every element rule in this file applies to the
    markdown unchanged and none of them is restated for the card.
 
+   The card is a `jelly-card`, and on this surface it never animates: its hover
+   loop refuses a host taller than the viewport
+   (`startHoverLoop`'s `offsetHeight > window.innerHeight`), and every article in
+   the manual is taller than one. What it costs instead is a backing store -
+   `applyShape` sizes the canvas to the host's whole box, and only past
+   `MAX_CANVAS_EDGE` / `MAX_CANVAS_AREA` does it flatten to a CSS surface. At 2x
+   DPR that cap is a 4,000px host, so the articles long enough to be felt as a
+   slow scroll have no canvas; the short ones keep one, and it is a texture, not
+   a frame. That balance is Jelly's to own (`t_5e83b25f`); nothing here fights it.
+
    The width is `--Paper` - the measure PLUS its two insets - because with
    `box-sizing: border-box` a bare `--Measure` would put the padding inside the
    measure and the prose would end short of the header above it. This way the
@@ -270,7 +280,7 @@ jelly-card.doc-prose {
 	   width on this page: the card's content box, the header, the strip, the
 	   layer and the pager all end on the same edge. It also keeps the identity's
 	   one-typeface rule inside the card's own box. The prose is unaffected -
-	   `.doc-prose__body` sets its own type. */
+	   `.doc-article__body` sets its own size and leading. */
 	font-family: var(--FontMono);
 	font-size: var(--type-body);
 
@@ -372,37 +382,60 @@ jelly-card.doc-prose .doc-article__body a {
 	margin-block-start: var(--space-reading);
 }
 
-/* ─── THE BLOCKS NOBODY IS LOOKING AT - NOT YET ─────────────────────────── */
+/* ─── THE BLOCKS NOBODY IS LOOKING AT ──────────────────────────────────── */
 
-/* `content-visibility: auto` + `contain-intrinsic-block-size: auto <n>` on the
-   document's top-level blocks is the right shape of fix for a 10,000px article,
-   and it is deliberately NOT applied here. The reason is the surface the blocks
-   sit on, not the blocks.
+/* A documentation page is a document, not a screen: `deep-dive-mountain` is 928
+   lines of markdown and `ci-cd-pipeline` is 430, and every block of either is
+   laid out and painted whether or not the reader is anywhere near it. This is
+   the containment that stops it: `content-visibility: auto` skips a block's
+   layout and paint until it comes within about a screen of the viewport, and
+   `contain-intrinsic-block-size: auto <n>` gives a skipped block a height so the
+   document's own extent is still known.
 
-   The article is inside `jelly-card.doc-prose` (`pages/Doc/[...Slug].astro`), and
-   Jelly sizes a canvas to the *host's* whole box
-   (`Vendor/JellyUI/src/element/index.ts:280-385`) and re-allocates it whenever
-   that box changes size (`observeResize` → `applyShape`, `:262-271`, `:360-383`:
-   `canvas.height = pxH` is a fresh backing store, and it clears the canvas and
-   repaints it). A skipped block reports its intrinsic estimate instead of its
-   real height, so as the reader's first pass renders blocks one after another
-   the host height changes with them - and each change is a document-sized canvas
-   reallocation on that frame. Trading paint work for reallocation churn would
-   make the pass the reader actually performs worse, not better.
+   The previous card wrote this rule down and did not apply it, because the
+   article's `jelly-card` was said to re-allocate a document-sized canvas on
+   every height change. Two of the three terms in that were wrong, and the
+   shipped `dist/jelly.js` says so in one line each:
+   `startHoverLoop` refuses a host taller than the viewport
+   (`offsetHeight > window.innerHeight`), so the card never repainted per frame
+   on any doc page; and `applyShape` flattens a host past the texture limits
+   (8192 px an edge, 16,777,216 device pixels) to a CSS surface with no bitmap
+   and no physics body, which at 2x DPR is every article over 4,000px - i.e.
+   every one long enough to be felt as a slow scroll. `t_5e83b25f` then landed
+   the Jelly side of the balance (hover parks at rest, a viewport-taller host is
+   refused, the canvas is capped), so the surface is the library's decision and
+   nothing here fights it.
 
-   The rule lands the moment the canvas is gone or capped (card `t_5e83b25f`), and
-   the shape it should take is already decided:
+   What is left of the concern is real but bounded, and named: a card whose host
+   stays *under* the cap - a short article, or any article on a 1x display - does
+   re-allocate its texture when the host's height changes, and an estimate
+   becoming a real height is exactly such a change. That is one pass: `auto`
+   remembers each block's real size, so the second pass through the same article
+   changes nothing. On `ci-cd-pipeline` it is also bought back many times over,
+   because `Component/Doc/Well.ts` puts a `jelly-icon-button` in the bar of every
+   fenced block: a skipped block has no boxes, so those controls park with no
+   canvas until their block is rendered - ~25 canvases at load become the two or
+   three the reader can see.
 
-     .doc-article__body > :not(h1, h2, h3, h4, h5, h6, hr, :first-child) {
-       content-visibility: auto;
-       contain-intrinsic-block-size: auto 180px;
-     }
+   The cost the reader can see, named: until a block has been rendered once its
+   height is the estimate, so the document's scroll height is an estimate and the
+   scrollbar thumb changes size during the first pass. It does not move the
+   reader's content - blocks above the viewport have rendered and keep their real
+   height - and `auto` is what makes every later pass exact, which is why the
+   keyword is `auto` and not a bare 180px. `Home/_Band.scss` records the same
+   trade measured at band granularity, where five 800px placeholders against
+   4,300px bands left the page 5,000px short; per block the error is per block and
+   the reader never sees it as a jump.
 
-   Headings are excluded because the contents register observes them and an
-   observed element's box must be real, not an estimate; the first block is
-   excluded because it is on screen at load. The `auto` keyword is what keeps the
-   scrollbar from re-guessing the document's height on every scroll - without it a
-   long article trades a paint cost for a scrollbar that never stops moving. */
+   Three exclusions, and each one needs a real box:
+   - headings, because `Component/Doc/Contents.ts` observes them and an observed
+     element's box must be its own, not an estimate;
+   - `hr`, because a hairline is cheaper to paint than to estimate;
+   - the first block, because it is on screen at load. */
+.doc-article__body > :not(h1, h2, h3, h4, h5, h6, hr, :first-child) {
+	content-visibility: auto;
+	contain-intrinsic-block-size: auto 180px;
+}
 
 .doc-article__body > h2,
 .doc-article__body > h3,

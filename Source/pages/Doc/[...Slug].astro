@@ -33,6 +33,21 @@ import { GetI18n } from "../../Library/I18n/Server";
  * which is also where the 72ch measure lives, so the card's edge and the
  * prose's edge are one decision.
  *
+ * **This card never animates, and that is the library's own rule, not a bug
+ * here.** A `jelly-card` starts its physics on `pointerenter`, and
+ * `startHoverLoop` refuses a host taller than the viewport outright
+ * (`offsetHeight > window.innerHeight`, `Vendor/JellyUI/src/element/index.ts:1238`,
+ * present in the shipped `dist/jelly.js`). Every article in the manual is taller
+ * than a laptop viewport - the shortest, `why-cc0`, is 4,066 bytes - so on all
+ * 78 pages the element has no hover loop to run, and what it costs is a backing
+ * store: `applyShape` sizes the canvas to the host's whole box, past which
+ * `MAX_CANVAS_EDGE` (8192 device px) and `MAX_CANVAS_AREA` (16,777,216) flatten
+ * it to a CSS surface with no bitmap and no body. At 2x DPR that cap is a
+ * 4,000px host, so every article long enough to be felt as a slow scroll has no
+ * canvas at all; the ones that keep one are short enough that its size is
+ * bounded. `t_5e83b25f` owns that balance inside Jelly and `t_b31aa15b` measured
+ * it: this is a texture, not a frame.
+ *
  * **The strip is this page's to build, and the shell's to place.** Only the page
  * knows its section and its source, so `BuildDocStrip` runs here with the three
  * facts a markdown file can prove about itself - `LAYER:` from `section`,

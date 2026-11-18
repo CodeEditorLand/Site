@@ -14,11 +14,11 @@
 // up. A rail where the labels start at a different x on every row is a list of
 // links, not a register.
 //
-// ─── CURRENT, IN THREE SIGNALS ────────────────────────────────────────────
+// ─── CURRENT, IN THREE SIGNALS AND A RULE ─────────────────────────────────
 // The row in force carries `aria-current`, ink at 500, and a 2px accent rule on
 // its leading edge - the same marker the header's active route uses, so the site
-// has one active-state vocabulary rather than three. One of the three is a hue;
-// the other two survive greyscale and a screen reader.
+// has one active-state vocabulary rather than three. One of the four marks is a
+// hue; the other three survive greyscale and a screen reader.
 //
 // ─── HOVER IS A WASH, NOT A HUE ───────────────────────────────────────────
 // `--Mute` (the paper's darker step) at full bleed, flat, no radius. The accent

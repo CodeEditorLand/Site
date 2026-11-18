@@ -262,10 +262,10 @@ body > astro-island {
 
 /* These four ids are the homepage's bands and nothing else. A documentation
    page has none of them - its content is one `.doc-prose` card - so this rule
-   is inert there. The document's own blocks are NOT skipped, and the reason is
-   recorded in `Component/Doc/_Article.scss` beside those blocks: the article is
-   a canvas-backed `jelly-card`, and a block whose height is an estimate makes
-   that canvas re-allocate on every pass. */
+   is inert there. The document's own blocks are skipped by their own rule,
+   beside them in `Component/Doc/_Article.scss`, because a document needs the
+   same treatment at a different granularity: per block, with an estimate in the
+   hundreds of pixels rather than the bands' 800. */
 #features,
 #pricing,
 #testimonials,

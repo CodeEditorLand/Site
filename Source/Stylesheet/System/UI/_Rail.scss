@@ -8,10 +8,20 @@
 // section. Those four gaps are what make a tree a mockup instead of a control.
 //
 // This partial adds them and touches nothing the rail already had. The current
-// page keeps its three signals (aria-current, ink, weight) and its leading rule
-// goes 1px `--Primary` to 2px `--Accent` in `Doc/_Sidebar.scss` - the same marker
-// the header's active route draws, so the site has one active-state vocabulary
-// rather than three.
+// page keeps its four marks - `aria-current`, full ink, weight 500, and the 2px
+// `--Accent` rule on its leading edge (drawn in `Doc/_Sidebar.scss`, where the
+// tree's rows live) - which is the whole convention the site states in
+// `Doc/_Sidebar.scss`, `Layout/_Rail.scss` and `UI/_Item.scss`. Eight surfaces
+// carry it: the header nav, the shell rail, the item grammar, the doc sidebar,
+// the doc contents, the doc layer, the clause rail and the surface region rail.
+// The two breadcrumbs (the trail and the article's crumbs) carry the first three
+// and have no row to draw the rule on. One active-state vocabulary.
+//
+// The filter does not add a fifth mark and does not take one away: it prunes
+// rows, and a pruned row is absent rather than unmarked. What it must never do
+// is leave the rail claiming a position it is not showing - which is why the
+// count on a closed section is a fact and the empty state is a row with a way
+// out, not a message.
 //
 // ─── THE FILTER IS THE PALETTE'S INPUT ──────────────────────────────────────
 //
