@@ -16,6 +16,11 @@
  *             These are the 37 routes the behaviour checklist covers.
  *   Heading   the component that prints the page's one `h1`, or `null` when the
  *             route is a trampoline that is never read as a page
+ *   Purpose   on a `/Contact` route, what the route is for, who should be sent
+ *             there and the label a link to it carries (`Library/Contact/
+ *             Purpose.ts`). Absent on every other route, and required on those:
+ *             a contact route's meaning is not in its file name, so a page that
+ *             linked one by slug alone sent readers to the wrong form
  *   Card      the programme card on the website board that owns the page body
  *             (the frame, the head and this registry are card 12's)
  *

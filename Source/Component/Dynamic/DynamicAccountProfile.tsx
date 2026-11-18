@@ -627,7 +627,7 @@ const AccountProfileInner = ({
 							{Tier}
 							{"\u2001"}
 							<span
-								className={`flat h-1.5 w-1.5 ${TierColor.Dot}`}
+								className={`StaccatoDot flat h-1.5 w-1.5 ${TierColor.Dot}`}
 								aria-hidden="true"
 							/>
 						</span>
@@ -883,7 +883,7 @@ const AccountProfileInner = ({
 								{Tier}
 								{"\u2001"}
 								<span
-									className={`flat h-1 w-1 ${TierColor.Dot}`}
+									className={`StaccatoDot flat h-1 w-1 ${TierColor.Dot}`}
 									aria-hidden="true"
 								/>
 							</span>

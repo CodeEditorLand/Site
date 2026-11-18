@@ -118,8 +118,15 @@
 }
 
 a.specimen-sheet__cell-inner:hover .specimen-sheet__name {
+	// The cell is a block link when its plate has a destination, and the NAME is
+	// the destination: it takes the accent and the 2px rule follows the name's
+	// ink. The cell's other lines (the state, the body) are the plate's context
+	// and keep their ink. `Stylesheet/System/State/_Card.scss` states the law.
+	color: var(--Accent);
+
 	text-decoration: underline;
 	text-decoration-thickness: 2px;
+	text-decoration-color: currentColor;
 	text-underline-offset: var(--optical-underline-offset);
 }
 

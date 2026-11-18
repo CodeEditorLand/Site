@@ -144,7 +144,7 @@ export const HrefOf = (Code: IncomeCode): ContactRoutePath =>
 	`/Contact/${Cased(Code)}` as ContactRoutePath;
 
 /** The route as the grammar prints it: `/CONTACT/REACH`. */
-export const RouteOf = (Code: IncomeCode): string => `/CONTACT/${Code}`;
+export const ContactRouteOf = (Code: IncomeCode): string => `/CONTACT/${Code}`;
 
 /**
  * One income code, with the four facts its page already declares.
@@ -155,7 +155,9 @@ export const RouteOf = (Code: IncomeCode): string => `/CONTACT/${Code}`;
  */
 const FromCode = (
 	Code: IncomeCode,
+
 	Intent: ContactIntent,
+
 	Audience: string,
 ): ContactPurpose => {
 	const Config = Requests[Code];
@@ -165,7 +167,7 @@ const FromCode = (
 
 		Href: HrefOf(Code),
 
-		Route: RouteOf(Code),
+		Route: ContactRouteOf(Code),
 
 		Code: Config.Code,
 
@@ -202,7 +204,8 @@ const Register: ContactPurpose = {
 	Purpose:
 		"Fourteen routes, one register: data requests, technical support, legal and enterprise. Each prints its five-letter code and the window it answers in.",
 
-	Audience: "a reader who does not yet know which of the fourteen requests is theirs",
+	Audience:
+		"a reader who does not yet know which of the fourteen requests is theirs",
 
 	Label: "Contact - the register of routes",
 
@@ -233,7 +236,8 @@ const Sale: ContactPurpose = {
 	Purpose:
 		"Enterprise adds support, an SLA and custom development. The code stays CC0. A request is filed as a GitHub issue, so the whole team reads it and the answer is public.",
 
-	Audience: "a company reading what the enterprise offer includes before it makes contact",
+	Audience:
+		"a company reading what the enterprise offer includes before it makes contact",
 
 	Label: "Enterprise inquiries (SALE)",
 
@@ -254,73 +258,97 @@ const Purposes: Record<ContactRoutePath, ContactPurpose> = {
 
 	"/Contact/Amend": FromCode(
 		"AMEND",
+
 		"correct",
+
 		"a reader whose stored details are wrong or incomplete",
 	),
 
 	"/Contact/Claim": FromCode(
 		"CLAIM",
+
 		"copyright",
+
 		"a copyright owner, or an agent acting for one, whose work was copied",
 	),
 
 	"/Contact/Deals": FromCode(
 		"DEALS",
+
 		"sales",
+
 		"a company buying for a team: deployment, integrations, support contracts, volume licensing",
 	),
 
 	"/Contact/Erase": FromCode(
 		"ERASE",
+
 		"erase",
+
 		"a reader who wants their account and its data permanently gone",
 	),
 
 	"/Contact/Guard": FromCode(
 		"GUARD",
+
 		"security",
+
 		"anyone reporting a vulnerability, a breach or unauthorised access - anonymously if they prefer",
 	),
 
 	"/Contact/Hails": FromCode(
 		"HAILS",
+
 		"talk",
+
 		"anyone who wants to talk to the team and whose reason is not one of the other thirteen",
 	),
 
 	"/Contact/Leave": FromCode(
 		"LEAVE",
+
 		"consent",
+
 		"a reader withdrawing consent for processing that relies on it",
 	),
 
 	"/Contact/Legal": FromCode(
 		"LEGAL",
+
 		"legal",
+
 		"a lawyer, a regulator, or a partner whose matter needs legal review",
 	),
 
 	"/Contact/Lodge": FromCode(
 		"LODGE",
+
 		"complaint",
+
 		"a reader complaining about how we have handled their personal data",
 	),
 
 	"/Contact/Pause": FromCode(
 		"PAUSE",
+
 		"restrict",
+
 		"a reader in a dispute who wants processing limited while it is assessed",
 	),
 
 	"/Contact/Query": FromCode(
 		"QUERY",
+
 		"object",
+
 		"a reader objecting to a particular purpose we process their data for",
 	),
 
 	"/Contact/Reach": FromCode(
 		"REACH",
+
 		"access",
+
 		"a reader exercising subject access: what we hold, and a portable copy of it",
 	),
 
@@ -328,7 +356,9 @@ const Purposes: Record<ContactRoutePath, ContactPurpose> = {
 
 	"/Contact/Scout": FromCode(
 		"SCOUT",
+
 		"support",
+
 		"a user with something broken: a build, a crash, an extension, performance",
 	),
 };
@@ -343,12 +373,10 @@ export const ContactRoutes: readonly ContactRoutePath[] = Object.keys(
 ) as ContactRoutePath[];
 
 /** One route by path, or `undefined` when the path is not a contact route. */
-export const ContactPurposeOf = (
-	Path: string,
-): ContactPurpose | undefined =>
-	(Object.prototype.hasOwnProperty.call(Purposes, Path)
+export const ContactPurposeOf = (Path: string): ContactPurpose | undefined =>
+	Object.prototype.hasOwnProperty.call(Purposes, Path)
 		? Purposes[Path as ContactRoutePath]
-		: undefined);
+		: undefined;
 
 /**
  * One route by path, for a caller that has the path in hand.
@@ -388,13 +416,15 @@ export const LinkFor = (Intent: ContactIntent): ContactPurpose => {
 		(Entry) => Entry.Intent === Intent && Entry.Canonical,
 	);
 
-	if (Match.length !== 1) {
+	const Only = Match.length === 1 ? Match[0] : undefined;
+
+	if (Only === undefined) {
 		throw new Error(
 			`Contact/Purpose: ${Match.length} canonical routes answer "${Intent}" - exactly one must.`,
 		);
 	}
 
-	return Match[0];
+	return Only;
 };
 
 export default Purposes;

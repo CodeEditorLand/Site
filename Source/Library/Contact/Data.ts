@@ -1,22 +1,24 @@
 /**
- * Data - the Contact hub's index, derived from the request registry.
+ * Data - the Contact hub's index, derived from the purpose table.
  *
  * The hub is one grid of fourteen records: thirteen income codes and the SALE
- * page. Nothing here retypes a fact - a code's slug, title and subtitle are read
- * out of `Request.ts`, and the route a code is published on is derived from the
- * code itself, so the grid cannot disagree with the registry.
+ * page. Nothing here retypes a fact - a code's slug, title, sentence and route
+ * all come from `Purpose.ts`, which reads the words out of `Request.ts` and
+ * carries the spelling of the route, so a card cannot print one purpose and link
+ * to a form that answers another.
  *
  * `SALE` is the one record that is a page rather than an income code, so it is
- * the one record whose words are carried here: the registry has no entry to read
- * them from, and both are the strings the card has always printed.
+ * the one record whose words are carried here: the purpose table has no route
+ * sentence for it beyond the page's own standfirst, and these two strings are
+ * what the card has always printed. Its route still comes from the table.
  *
  * The order is alphabetical by slug, which is the order the baseline grid
  * printed: AMEND, CLAIM, DEALS, ERASE, GUARD, HAILS, LEAVE, LEGAL, LODGE, PAUSE,
  * QUERY, REACH, SCOUT, SALE.
  */
-import { Requests, type IncomeCode } from "./Request.js";
+import type { IncomeCode } from "./Request.js";
 
-import { ContactPurposeFor, HrefOf } from "./Purpose.js";
+import { ContactPurposeAt, ContactPurposeFor } from "./Purpose.js";
 
 /**
  * One crumb: a label and where it leads. The last crumb is the current page.
@@ -57,14 +59,6 @@ export const ContactHubTrail: readonly TrailItem[] = [
 ];
 
 /**
- * The route a code is published on. A request route is a file named for its
- * code in title case (`REACH` -> `Contact/Reach.astro`), and the spelling lives
- * in the purpose table, so this grid and every link to a route derive the path
- * the same way instead of each writing `/Contact/${...}` by hand.
- */
-const RouteOf = (code: IncomeCode): string => HrefOf(code);
-
-/**
  * The hub prints one sentence per card. A code whose route page carries a
  * longer standfirst keeps that longer copy on its own page; the baseline's hub
  * printed the shorter sentence, so it is carried here rather than inherited -
@@ -74,18 +68,24 @@ const HubSubtitle: Partial<Record<IncomeCode, string>> = {
 	LODGE: "Lodge a formal complaint about how we have handled your personal data under GDPR Article 77.",
 };
 
-/** One request as a card: the code's slug, the registry's title and subtitle. */
+/**
+ * One request as a card: the route's own record, read once.
+ *
+ * The slug, the title, the sentence and the href all come from the purpose table
+ * now - the same record a link elsewhere reads - so a card cannot print one
+ * purpose and link to a route that answers another.
+ */
 const EntryOf = (code: IncomeCode): ContactEntry => {
-	const config = Requests[code];
+	const Record = ContactPurposeFor(code);
 
 	return {
-		slug: `/${config.Code}`,
+		slug: `/${Record.Code}`,
 
-		title: config.Title,
+		title: Record.Title,
 
-		subtitle: HubSubtitle[code] ?? config.Subtitle,
+		subtitle: HubSubtitle[code] ?? Record.Purpose,
 
-		href: RouteOf(code),
+		href: Record.Href,
 	};
 };
 
@@ -105,7 +105,7 @@ const SaleEntry: ContactEntry = {
 	subtitle:
 		"Contact the Code Editor Land team for enterprise licensing, support, and deployment options.",
 
-	href: "/Contact/Sale",
+	href: ContactPurposeAt("/Contact/Sale").Href,
 };
 
 /** The thirteen income codes, alphabetical by slug. */

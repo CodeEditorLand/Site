@@ -169,13 +169,22 @@
 /* Button - tiny seed texture; hover elevates cleanly */
 
 .StaccatoButton {
-	padding-left: 1rem;
-	padding-right: 1rem;
 	transform: translate(
 		calc(var(--StaccatoSeed, 0) * 0.5px),
 		calc(var(--StaccatoSeedPhase, 0) * 0.3px)
 	);
 	transition: transform 0.5s ease;
+}
+
+/* The button's inset is a default, not a law. Every caller sets it with a
+   `px-*` utility (`px-3` on the compact account control, `px-4` on the wide
+   ones), and a bare `padding-left`/`padding-right` here outranks all of them -
+   the same fault the status dot had, one property over. At zero specificity
+   the utility wins, and a button that carries no padding utility still gets
+   1rem. */
+:where(.StaccatoButton) {
+	padding-left: 1rem;
+	padding-right: 1rem;
 }
 
 .StaccatoButton:hover {
@@ -313,6 +322,52 @@
 :is(a, button, [role="button"]):hover .StaccatoBadge {
 	transform: scale(1);
 	opacity: 1;
+}
+
+/* THE STATUS DOT - a mark, and a box of its own.
+   ─────────────────────────────────────────────────────────────────────
+   A dot is an empty `<span>` that carries `h-2 w-2` and a `bg-*` utility.
+   Two things have to be true for it to paint, and neither was written here:
+
+   1. A BOX. `h-2 w-2` set `height`/`width`, and neither applies to an
+      inline box; a `<span>` is inline. Every dot in the tree happened to sit
+      inside a flex row (`jelly-badge`'s shadow body is `inline-flex` and its
+      slot is `display: contents`, so the slotted span is blockified as a flex
+      item), which is the only reason any of them painted at all - by the
+      accident of a parent's display, not by a rule of their own. A dot placed
+      in a paragraph, a table cell or any other non-flex parent had no box and
+      a background with no box paints nothing. The size below is the one the
+      utilities were asking for, so a dot that already worked does not move;
+      it is declared here so the mark keeps it with or without them.
+
+   2. A FILL THAT LOSES TO THE CALLER. The dot's colour IS its status: green
+      for `Available`, amber for `Legacy`, purple for `Experimental`, and the
+      caller assigns it with a `bg-*` utility in the markup. A default written
+      as a plain `background-color` on `.StaccatoDot` outranks that utility -
+      this sheet is emitted after `@tailwind utilities` (see `System.scss`:
+      `System/Tailwind` is the first `@use`), so at equal specificity the site
+      rule wins by source order - which is how every dot on the site turned
+      mute at once. `:where()` carries no specificity at all, so the caller's
+      utility wins wherever there is one, and the mark still has an ink where
+      there is not.
+
+   `flex: none` keeps a dot inside a flex row from being squeezed to nothing by
+   a long label. Radius 0 is the identity, not a preference. */
+
+.StaccatoDot {
+	display: inline-block;
+	border-radius: 0;
+	flex: none;
+}
+
+:where(.StaccatoDot) {
+	inline-size: 0.5rem;
+	block-size: 0.5rem;
+
+	/* A surface that paints a dot in CSS rather than in markup sets
+	   `--StaccatoDotFill`; the mute ink is the fallback so a dot with neither
+	   is still a mark and never a hole. */
+	background-color: var(--StaccatoDotFill, var(--MuteForeground));
 }
 
 .StaccatoBadge .StaccatoDot {

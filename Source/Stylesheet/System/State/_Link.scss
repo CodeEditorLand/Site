@@ -9,8 +9,10 @@
 //
 //   rest      one underline at `--Divider` (20 % ink) - the sitewide prose
 //             default, and the reason a link is a link without colour
-//   hover     the same underline at the full ink. The line moves; the words do
-//             not, and nothing gains a hue
+//   hover     for a ROUTE link, the same underline at the full ink: the line
+//             moves, the words do not, and nothing gains a hue. For a BLOCK
+//             link, the destination label takes the accent and the rule follows
+//             it - see "TWO HOVERS" below
 //   focus     the one accent ring, 2px at 4px
 //   current   `aria-current` plus the 2px accent rule and weight 500 - the
 //             site's four marks, and the header's bar is the same marker at the
@@ -29,12 +31,12 @@
 // anchor (many had none), the position marks on the anchors whose partial never
 // drew them, and the gone target.
 //
-// ─── THE HOVERS THIS LAYER MOVED ───────────────────────────────────────────
+// ─── TWO HOVERS, AND THE DIFFERENCE IS WHETHER THE LINK RESTS ON A RULE ────
 //
-// Twelve selectors turned a label the accent on hover, which spends the one
-// colour that authenticates on a mouse position. Each one was moved to ink and
-// given a non-colour marker in its own partial - the rule where the row has a
-// rule, the underline where it has none:
+// A ROUTE link that already rests on a line needs no hue: its hover moves that
+// line to the ink, the words do not change, and the state is legible without
+// colour. Twelve selectors that turned a label the accent on hover were moved
+// here for that reason - a route link's state is its rule:
 //
 //   Component/Doc/_Index.scss       .doc-card__link, .doc-appendix__link,
 //                                   .doc-appendix__arrow, .doc-services,
@@ -53,10 +55,31 @@
 //                                   opacity - a state present in the DOM and
 //                                   gone from the page)
 //
-// Two hovers keep the accent, and both are documented where they live:
-// `.HeaderNavLink:hover` (the ribbon's 12 % field, which previews the current
-// state - C5, a keeper's treatment) and `.hero-band__stack-tile:hover` (the
-// hero pair's tile edge, part of an endorsed surface).
+// A BLOCK link - an anchor whose whole surface is the target and whose title,
+// name or label names the destination - rests on nothing. Its state has to be
+// drawn, and the strongest true mark is the one the accent makes: the
+// DESTINATION takes the hue, the rule follows it (`currentColor`), and the
+// CONTEXT - the note, the body, the meta - keeps its ink. This is the difference
+// the old register missed. The wash that turned a whole card green was wrong
+// because it covered the note; the correction then took the hue off the title
+// as well, and the title is the destination. `State/_Card.scss` states the law;
+// these are the components that answer with it:
+//
+//   Doc/_Index.scss          .doc-card__title, .doc-tile__label,
+//                            .doc-services__link
+//   Blog/_Listing.scss       .blog-index__title
+//   Record/_Entry.scss       .record-entry__link (the record's name)
+//   Record/_Archive.scss     .record-archive__title (already answered so)
+//   Record/_Stage.scss       .record-stage__plate-label
+//   Doc/_Rust.scss           .doc-crate__label
+//   Specimen/_Sheet.scss     .specimen-sheet__name
+//   Contact/_Hub.scss        .contact-hub__name (via the state floor)
+//   Dashboard/_Index.scss    .surface-partner__name (via the state floor)
+//
+// Two hovers keep the accent for a third reason, and both are documented where
+// they live: `.HeaderNavLink:hover` (the ribbon's 12 % field, which previews the
+// current state - C5, a keeper's treatment) and `.hero-band__stack-tile:hover`
+// (the hero pair's tile edge, part of an endorsed surface).
 
 // ─── FOCUS: EVERY ANCHOR GETS THE RING ─────────────────────────────────────
 //

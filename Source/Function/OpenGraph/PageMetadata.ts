@@ -10,6 +10,8 @@
 
 import { Requests } from "../../Library/Contact/Request.js";
 
+import { HrefOf } from "../../Library/Contact/Purpose.js";
+
 interface PageMeta {
 	Title: string;
 
@@ -457,9 +459,9 @@ const PageMetadata: Record<string, PageMeta> = {
  * unloved the moment someone pastes its link.
  */
 for (const Request of Object.values(Requests)) {
-	PageMetadata[
-		`Contact/${Request.Code.charAt(0)}${Request.Code.slice(1).toLowerCase()}`
-	] = {
+	/* The key is the route without its leading slash: `HrefOf` is the one place
+	   the spelling of a contact path lives. */
+	PageMetadata[HrefOf(Request.Code).slice(1)] = {
 		Title: `${Request.Title} | Code Editor Land`,
 
 		Description: Request.Subtitle,

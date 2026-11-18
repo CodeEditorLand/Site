@@ -252,10 +252,11 @@
 		transparent
 	);
 
-	// The act is a block link resting on the nav label's 2px/20 % rule, so its
-	// hover moves that rule to the ink and its focus adds the site's one ring.
-	// The accent on a hover is the register `State/_Link.scss` retires: the accent
-	// authenticates a position, and a pointer is not one.
+	// The act rests on the nav label's 2px/20 % rule, so its state is that rule
+	// moving to the ink. The accent on a hover belongs to a BLOCK link's
+	// destination label, which rests on nothing and has to be marked
+	// (`State/_Card.scss`); this act is a labelled action with a resting rule, so
+	// the line is its mark and the hue is not.
 	&:hover {
 		text-decoration-color: var(--CardForeground);
 	}

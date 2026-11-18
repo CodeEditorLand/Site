@@ -106,15 +106,15 @@ const ScanAnimation = () => (
 	<div className="flex items-center gap-3">
 		<div className="flex gap-1" aria-hidden="true">
 			<span
-				className="flat inline-block h-2 w-2 animate-pulse bg-[var(--TierLocalFirst)]"
+				className="StaccatoDot flat inline-block h-2 w-2 animate-pulse bg-[var(--TierLocalFirst)]"
 				style={{ animationDelay: "0ms" }}
 			/>
 			<span
-				className="flat inline-block h-2 w-2 animate-pulse bg-[var(--TierLocalFirst)]"
+				className="StaccatoDot flat inline-block h-2 w-2 animate-pulse bg-[var(--TierLocalFirst)]"
 				style={{ animationDelay: "150ms" }}
 			/>
 			<span
-				className="flat inline-block h-2 w-2 animate-pulse bg-[var(--TierLocalFirst)]"
+				className="StaccatoDot flat inline-block h-2 w-2 animate-pulse bg-[var(--TierLocalFirst)]"
 				style={{ animationDelay: "300ms" }}
 			/>
 		</div>
@@ -217,7 +217,7 @@ const LocalFirstScanInner = () => {
 								{"\u2001"}
 
 								<span
-									className="flat h-1.5 w-1.5 animate-pulse bg-[var(--TierLocalFirst)]"
+									className="StaccatoDot flat h-1.5 w-1.5 animate-pulse bg-[var(--TierLocalFirst)]"
 									aria-hidden="true"
 								/>
 							</span>
@@ -231,7 +231,7 @@ const LocalFirstScanInner = () => {
 								{"\u2001"}
 
 								<span
-									className="flat h-1.5 w-1.5 bg-[var(--SpinegRPC)]"
+									className="StaccatoDot flat h-1.5 w-1.5 bg-[var(--SpinegRPC)]"
 									aria-hidden="true"
 								/>
 							</span>
@@ -245,7 +245,7 @@ const LocalFirstScanInner = () => {
 								{"\u2001"}
 
 								<span
-									className="flat h-1.5 w-1.5 bg-[var(--MuteForeground)]"
+									className="StaccatoDot flat h-1.5 w-1.5 bg-[var(--MuteForeground)]"
 									aria-hidden="true"
 								/>
 							</span>
@@ -315,21 +315,21 @@ const LocalFirstScanInner = () => {
 								<span className="inline-flex items-center border border-[color:var(--SpineIPCMute)] bg-[var(--SpineIPCSurface)] px-2 py-0.5 text-[color:var(--SpineIPCFore)]">
 									Peer-to-peer design{"\u2001"}
 									<span
-										className="flat h-1 w-1 bg-[var(--SpineIPC)]"
+										className="StaccatoDot flat h-1 w-1 bg-[var(--SpineIPC)]"
 										aria-hidden="true"
 									/>
 								</span>
 								<span className="inline-flex items-center border border-[color:var(--SpineIPCMute)] bg-[var(--SpineIPCSurface)] px-2 py-0.5 text-[color:var(--SpineIPCFore)]">
 									Local-first{"\u2001"}
 									<span
-										className="flat h-1 w-1 bg-[var(--SpineIPC)]"
+										className="StaccatoDot flat h-1 w-1 bg-[var(--SpineIPC)]"
 										aria-hidden="true"
 									/>
 								</span>
 								<span className="inline-flex items-center border border-[color:var(--SpineIPCMute)] bg-[var(--SpineIPCSurface)] px-2 py-0.5 text-[color:var(--SpineIPCFore)]">
 									No cloud required{"\u2001"}
 									<span
-										className="flat h-1 w-1 bg-[var(--SpineIPC)]"
+										className="StaccatoDot flat h-1 w-1 bg-[var(--SpineIPC)]"
 										aria-hidden="true"
 									/>
 								</span>

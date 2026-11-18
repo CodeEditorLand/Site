@@ -29,9 +29,11 @@
 //
 // ─── A STATE CHANGES ONE OF FOUR MATERIALS, AND NOTHING ELSE ────────────────
 //
-//   INK     the label's colour - `--Foreground` or `--MuteForeground`, never a
-//           hue. A hover that spends the accent is a hover that has stopped
-//           authenticating anything.
+//   INK     the label's colour - `--Foreground` or `--MuteForeground`, and one
+//           exception: a BLOCK link's destination label under the pointer takes
+//           `--Accent`, because the pointer is marking the place it will open
+//           (`State/_Card.scss`). A ROUTE link that already rests on a rule
+//           needs no hue - its state is the line moving.
 //   RULE    a line's colour or weight: `--Border` (8 %) at rest, `--Divider`
 //           (20 %) when the line is the only thing defining the edge, and the
 //           2px accent bar for the current position.
@@ -67,13 +69,14 @@
 // ─── THE ACCENT'S BUDGET ────────────────────────────────────────────────────
 //
 // The accent appears on: the focus ring, the current-position rule, the mark of
-// a completed write (`✓ COPIED`), the record's opening rule, the seal, and the
-// header ribbon's hover - the one place a hover may spend it, because there the
-// hover is PREVIEWING the current state and the two must be the same field or
-// the ribbon has two languages. Twelve selectors that turned a label green on
-// hover were moved to ink by this layer's partials; the list is in
-// `State/_Link.scss` under "THE HOVERS THIS LAYER MOVED", so the next card can
-// find them without a grep.
+// a completed write (`✓ COPIED`), the record's opening rule, the seal, the
+// destination label of a block link under the pointer (and on focus), and the
+// header ribbon's hover - which spends it because there the hover is PREVIEWING
+// the current state and the two must be the same field or the ribbon has two
+// languages. Twelve ROUTE-link hovers that turned a label green were moved to
+// ink by this layer's partials; a block link's destination label keeps the hue.
+// The list of both is in `State/_Link.scss` under "TWO HOVERS", so the next card
+// can find them without a grep.
 //
 // ─── DISABLED IS NOT DIMMED ─────────────────────────────────────────────────
 //

@@ -238,6 +238,20 @@
 	color: var(--Foreground);
 }
 
+/* The step's name is the destination when the stage has a href, so it answers
+   the pointer with the accent and a rule that follows the name's ink. The line
+   under it (`.record-stage__plate-line`) is the step's context and keeps its
+   muted ink. This is the block link's law (`State/_Card.scss`) where the anchor
+   IS the label, so the state layer's descendant rule cannot reach it. */
+a.record-stage__plate-label:hover {
+	color: var(--Accent);
+
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-decoration-color: currentColor;
+	text-underline-offset: var(--optical-underline-offset);
+}
+
 .record-stage__plate-line {
 	margin: 0;
 	font-size: var(--type-caption);

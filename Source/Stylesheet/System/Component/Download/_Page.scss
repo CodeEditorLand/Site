@@ -173,13 +173,24 @@
 // 2. Its cards take the hairline every white information box on this site
 //    carries. They are `bg-card` boxes with no boundary, and on the creme field
 //    an unbounded white box is a floating panel rather than an insert.
-// 3. Its status dots print in the muted ink, and its badges do not breathe. The
-//    dot stays a mark - it is not removed - but the page's green remains the seal
-//    and the one `STATUS: SOURCE ACTIVE`, and a static row does not need a
-//    micro-scale to be read.
+// 3. Its badges do not breathe. A static row does not need a micro-scale to be
+//    read, so the badge holds one size and full ink.
+//
+//    This was four things until the dots lost their colour. The fourth was a
+//    repaint of the dots in the muted ink - `.download-transparency
+//    .StaccatoDot { background-color: var(--MuteForeground) }` - on the reading
+//    that the page's green belongs to the seal and to `STATUS: SOURCE ACTIVE`
+//    alone. The reading was wrong about what a dot is: its colour is not the
+//    page's decoration but the row's status, assigned by the row's own data
+//    (`Active` green, `Optional` yellow, `Recommended` blue, `Legacy` yellow,
+//    `Experimental` purple). A page may not repaint a status mark, and at
+//    `0,2,0` that rule outranked every `bg-*` utility in the markup, so the
+//    whole island printed one grey. The dots keep the ink their data assigns;
+//    the page's green remains the seal and the one `STATUS: SOURCE ACTIVE`,
+//    because those are the page's to spend and a status is not.
 //
 // The island's markup, its words and its body are untouched. It is a component
-// this surface does not own; these are the four things the page hands it.
+// this surface does not own; these are the three things the page hands it.
 
 .download-transparency {
 	padding-block: 0;
@@ -191,10 +202,6 @@
 
 .download-transparency .TransparencyCard {
 	border: 1px solid var(--Border);
-}
-
-.download-transparency .StaccatoDot {
-	background-color: var(--MuteForeground);
 }
 
 .download-transparency .StaccatoBadge {

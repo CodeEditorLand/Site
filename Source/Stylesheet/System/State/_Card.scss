@@ -3,25 +3,38 @@
 // ─── THE CARD ───────────────────────────────────────────────────────────────
 //
 // A card is a block link: the whole surface is the target, so the words inside it
-// must not be underlined (a rule under the title says the title is the link and
-// the card is not) and the state must be drawn on the block.
+// must not be underlined at rest (a rule under the title says the title is the
+// link and the card is not) and the state must be drawn on the block.
 //
-// ─── THE CARD ANSWERS WITH ITS TITLE AND ITS EDGE ─────────────────────────
+// ─── THE DESTINATION TAKES THE ACCENT; THE CONTEXT DOES NOT ────────────────
 //
 // The site had two answers, and neither was a state:
 //
 //   a hue      `.doc-card__link:hover { color: var(--Accent) }` - every word in
-//              the card turns green, including the note, which is not the link's
-//              label but the card's context
+//              the card turned green, including the note, which is not the
+//              link's label but the card's context
 //   a fade     `.blog-index__link:hover { opacity: 0.8 }` - the card dims. That
 //              is `DESIGN-COMPLETE.md` §0.3 at card scale: present in the DOM,
 //              receding from the page
 //
-// The state this layer gives them is the same one the row grammar gives a row,
-// translated to a block: **the title takes the underline and the card's edge
-// steps from the separator's ink to the edge's.** Two marks, both ink, both
-// greyscale-safe, and the card's note keeps its own ink because it is context and
-// not the destination.
+// The correction for the wash removed the hue from the TITLE as well, and that
+// took the good half out with the bad. The note was right to keep its ink; the
+// title is the destination. So the state this layer gives a block link is:
+//
+//   the title     takes `--Accent` and an underline drawn in `currentColor`, so
+//                 the hue and the rule agree - it names the place the pointer is
+//                 about to open
+//   the context   the note, the body and the meta keep their ink; the accent
+//                 never reaches them
+//   the edge      steps from the separator's ink to the edge's - the second,
+//                 greyscale-safe signal the row grammar also draws
+//
+// A pointer over a block link is not "a mouse position" in the abstract: it is a
+// reader marking a destination, and a destination is one of the accent's
+// legitimate uses (`DESIGN-COMPLETE.md` §1.6: "seals, links, focus, active
+// states"). A route link that already rests on a rule needs no hue - its state
+// is the line moving (`State/_Link.scss`) - while a block link rests on nothing
+// and has to be marked.
 //
 // ─── PRESSED: 1PX, BECAUSE A CARD IS AN OBJECT ────────────────────────────
 //
@@ -35,7 +48,12 @@
 // and a span that took this layer's hover would advertise a link that is not
 // there. `a:is(...)` is one character of specificity more than the prose default
 // and exactly the amount needed to state "a block link paints no line".
-$Card: "a:is(.doc-card__link, .doc-tile, .doc-services, .blog-index__link, .contact-hub__card, .hero-band__stack-tile, .home-platform__anchor, .record-stage__plate-label, .record-band__index-item, .surface-partner)";
+$Card: "a:is(.doc-card__link, .doc-tile, .blog-index__link, .contact-hub__card, .hero-band__stack-tile, .home-platform__anchor, .record-stage__plate-label, .record-band__index-item, .surface-partner)";
+
+// `.doc-services` is deliberately absent although the register is a block: its
+// anchor is the LABEL only (the note is a sibling outside it), so the partial
+// draws its hover and the state layer must not give an inline label a card's
+// press and fill. `Doc/_Index.scss` owns it.
 
 // ─── REST: NO RULE UNDER THE WORDS ─────────────────────────────────────────
 
@@ -47,13 +65,17 @@ $Card: "a:is(.doc-card__link, .doc-tile, .doc-services, .blog-index__link, .cont
 	text-decoration: none;
 }
 
-// ─── HOVER: THE TITLE'S RULE AND THE EDGE'S INK ───────────────────────────
+// ─── HOVER: THE DESTINATION'S HUE AND RULE, THE EDGE'S INK ────────────────
 //
 // `:where()` on all three, because two of these blocks carry a treatment this
 // layer must not touch: the hero's stack tile answers the pointer with an accent
 // edge (a keeper's part, and it stays), and the contact hub's card takes a fill.
-// At zero specificity this rule is a floor for the cards that answer with nothing,
-// and the two that already answer keep their own answer.
+// At zero specificity this rule is a floor for the cards that answer with
+// nothing, and the two that already answer keep their own answer.
+//
+// The title list is the family's destination labels. `.record-stage__plate-label`
+// is not here on purpose: in that component the anchor IS the label, so a
+// descendant rule cannot reach it and `Record/_Stage.scss` draws its hover.
 
 :where(#{$Card}):hover {
 	// The edge. A card whose frame is a hairline steps it to the edge ink; a card
@@ -72,16 +94,25 @@ $Card: "a:is(.doc-card__link, .doc-tile, .doc-services, .blog-index__link, .cont
 		.doc-card__title,
 		.doc-tile__label,
 		.blog-index__title,
-		.contact-hub__name
+		.contact-hub__name,
+		.surface-partner__name
 	) {
+	// The destination. The accent, and the rule in the title's own ink, so a
+	// green word never sits over a dark line. This is the one place a hover
+	// spends the accent in this layer, and it is what the component partials
+	// restate at their own specificity (`Doc/_Index.scss`, `Blog/_Listing.scss`).
+	color: var(--Accent);
+
 	text-decoration: underline;
 	text-decoration-thickness: 1px;
-	text-decoration-color: var(--state-ink);
+	text-decoration-color: currentColor;
 	text-underline-offset: var(--optical-underline-offset);
 }
 
 // The card's own mark - the `→` a doc tile prints, the arrow an appendix row
-// carries - follows the title into the ink, so the block moves as one object.
+// carries - follows the label's ink, so the block moves as one object. It is
+// `currentColor` rather than `--state-ink` because the label may now be the
+// accent: the mark belongs to the label, not to the card's frame.
 :where(#{$Card}):hover
 	:where(
 		.doc-card__arrow,
@@ -89,7 +120,7 @@ $Card: "a:is(.doc-card__link, .doc-tile, .doc-services, .blog-index__link, .cont
 		.doc-appendix__arrow,
 		.contact-hub__slug
 	) {
-	color: var(--state-ink);
+	color: currentColor;
 
 	border-color: var(--state-rule-strong);
 }

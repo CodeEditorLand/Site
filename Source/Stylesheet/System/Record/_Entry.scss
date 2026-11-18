@@ -136,7 +136,13 @@
 }
 
 .record-entry__link:hover {
-	text-decoration-color: var(--Primary);
+	// The record's NAME is the destination; the body and the chips below it are
+	// the entry's context and keep their ink. The name takes the accent and the
+	// rule follows the name's ink (`currentColor`), so the line and the words
+	// agree instead of one staying dark beside green words.
+	color: var(--Accent);
+
+	text-decoration-color: currentColor;
 }
 
 // The site's one ring: 2px of the accent at the identity's 4px offset

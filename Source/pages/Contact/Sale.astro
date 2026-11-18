@@ -33,8 +33,20 @@ import ShellRail from "../../Component/Shell/ShellRail.astro";
 import ShellState from "../../Component/Shell/ShellState.astro";
 import { GetI18n } from "../../Library/I18n/Server";
 import type { ContactTrailItem } from "../../Library/Contact/Data.js";
+import { LinkFor } from "../../Library/Contact/Purpose.js";
 
 const T = GetI18n();
+
+/**
+ * The form this page hands a reader to.
+ *
+ * `SALE` is the page that describes the offer; the form that reaches a person is
+ * `DEALS`, and the purpose table names it canonical for the `sales` intent. The
+ * label's default and the destination therefore come from one record - the
+ * locale files still translate the words, but a translation cannot point the
+ * link somewhere the offer is not.
+ */
+const Sales = LinkFor("sales");
 
 const MetaTitle = T("meta.contact.sales.title", {
 	defaultValue: "Enterprise Inquiries | Code Editor Land",
@@ -296,9 +308,9 @@ const SaleRail = [
 					class="contact-sale__card StaccatoBorderShimmer StaccatoCard"
 					id="direct"
 				>
-					<a class="contact-sale__route" href="/Contact/Deals">
+					<a class="contact-sale__route" href={Sales.Href}>
 						{T("common.sales.contact.dealsButton", {
-							defaultValue: "Enterprise Sales form (DEALS)",
+							defaultValue: Sales.Label,
 						})}
 						<span class="InlineSeparator">&#9993;</span>
 					</a>

@@ -374,13 +374,20 @@
 }
 
 .auth-shell__status {
-	margin: 0;
 	font-family: var(--FontMono);
 	font-size: var(--type-sub);
 	line-height: var(--type-sub-line);
 	letter-spacing: var(--track-row);
 	text-transform: uppercase;
 	color: var(--Foreground);
+}
+
+/* The reset is a default, not a law: `Report.tsx` places the line with `mb-3`
+   and a bare `margin: 0` here outranks it (this sheet is emitted after
+   `@tailwind utilities`, at equal specificity). Zero specificity lets the
+   caller's spacing win and still removes the default margin everywhere else. */
+:where(.auth-shell__status) {
+	margin: 0;
 }
 
 /* The route's register, under the frame's sentence. Same block the portal and

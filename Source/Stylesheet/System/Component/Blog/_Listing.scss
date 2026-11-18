@@ -219,9 +219,12 @@
 // The hover was `opacity: 0.8`: the card receded from the page under the
 // pointer. That is a state present in the DOM and absent from the page - the
 // failure `DESIGN-COMPLETE.md` §0.3 names - and on a creme field it reads as the
-// card being disabled by the reader's attention rather than offered to it. The
-// block link's marker is the title's rule (`Stylesheet/System/State/_Card.scss`),
-// so the card keeps its ink and gains a line under the words that name it.
+// card being disabled by the reader's attention rather than offered to it.
+//
+// The block link's marker is its destination label (`State/_Card.scss`): the
+// TITLE takes the accent and the rule follows it, because the title is the place
+// the pointer is about to open. The excerpt, the date and the tags are the
+// card's context and keep their ink.
 .blog-index__link {
 	display: block;
 	inline-size: 100%;
@@ -231,9 +234,10 @@
 
 .blog-index__link:hover .blog-index__title,
 .blog-index__link:focus-visible .blog-index__title {
+	color: var(--Accent);
 	text-decoration: underline;
 	text-decoration-thickness: 1px;
-	text-decoration-color: var(--CardForeground);
+	text-decoration-color: currentColor;
 	text-underline-offset: var(--optical-underline-offset);
 }
 
