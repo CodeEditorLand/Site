@@ -6,25 +6,40 @@
  * The page was a crate grid over a frame. But a reader here is operating: nine
  * documentation hosts are destinations, the frame is the instrument, and what the
  * frame *is* - generated output, from another host, with no as-of date - is a
- * fact the page never printed. That is a workspace: a rail of destinations, panes
- * that hold the register and the instrument, and a drawer for the contract.
+ * fact the page never printed. That is a workspace: a rail of destinations, an
+ * instrument, and a drawer for the contract.
  *
- * ─── THE FOUR PARTS ───────────────────────────────────────────────────────
+ * ─── THE INSTRUMENT IS ONE BAND OVER ONE SURFACE ──────────────────────────
+ * The register and the frame were two panes, `5fr / 1px / 7fr`. They are not two
+ * comparable readings: one is a list of nine rows with a note each, the other is
+ * an embedded application that is itself a two-column layout. At a 1280 window
+ * the panes' container is 768px, so the 5fr pane gave each of the nine tiles
+ * 51px - 19px of text, two and a half characters at 13px - and the 7fr pane gave
+ * rustdoc 415px, below its own 701px breakpoint: the frame was rendering
+ * rustdoc's phone layout inside the page's frame.
+ *
+ * So the panes are stacked (`layout="stack"`, the seam rotated across instead of
+ * down): the register is a full-width ledger of nine rows - name, `↗`, note at
+ * 62ch at 1024 and 78ch at 1280 - and the frame is a full-width surface under a
+ * pinned tab rail. The surface is bled to the column, so the frame is 720px at
+ * 1024 and 848px at 1280 and 1920: above rustdoc's 701px floor at all three.
+ *
+ * ─── THE FIVE PARTS ───────────────────────────────────────────────────────
  *   head    the page's own documentation header (breadcrumb, `h1`, standfirst,
  *           the metadata strip) - `DocArticle`'s, unchanged
  *   rail    `CRATES / 09` - the nine hosts, each a destination, in tab order
- *   panes   `# REGISTER_01` (the crate tiles, kept) beside `# FRAME_01` (the
- *           viewer, kept), 5fr / 1px / 7fr
+ *   band    `# REGISTER_01` - the nine rows, each with its name, `↗` and note
+ *   surface `# FRAME_01` - the nine tabs over the rustdoc frame, bar pinned
  *   drawer  what the frame is, and the two honest gaps: the rustdoc's as-of is
  *           not recorded, and a crate with no published site prints a tombstone
  *
  * ─── WHAT SURVIVES ────────────────────────────────────────────────────────
  * The sequence is still the baseline's: breadcrumb, header, strip, crates,
- * viewer, way back. The nine tiles are the same nine tiles with the same URLs,
- * labels and descriptions, printed by the same `doc-crate` markup; the viewer is
- * the same component with the same tabs and the same frame. What is added is the
- * rail, the panes' heads and the drawer - and the two states the page could not
- * previously say.
+ * viewer, way back. The nine crates are the same nine crates with the same URLs,
+ * labels and descriptions, printed by the same `doc-crate` markup - as rows
+ * instead of tiles, which is a change of composition and not of content. Nine
+ * names, nine arrows, nine notes, nine tabs, and both registers' marks and
+ * counts are all still printed.
  *
  * Every crate URL, label and description is in `Component/Doc/Rust/Data.ts` and
  * is the string the page has always printed. The rail reads the same array, so a
@@ -134,7 +149,8 @@ const CrateRail = RustCrates.map((Crate, Position) => ({
 				measure={false}
 			>
 				<ShellPanes
-					ratio="5/7"
+					layout="stack"
+					class="doc-rust__instrument"
 					primary={{
 						mark: Surface.panes.index.mark,
 						label: Surface.panes.index.label,
@@ -160,14 +176,12 @@ const CrateRail = RustCrates.map((Crate, Position) => ({
 										target="_blank"
 										rel="noopener noreferrer"
 									>
-										<span class="doc-crate__label">
-											{Crate.Label}
-											<span
-												class="doc-crate__arrow"
-												aria-hidden="true"
-											>
-												↗
-											</span>
+										<span class="doc-crate__label">{Crate.Label}</span>
+										<span
+											class="doc-crate__arrow"
+											aria-hidden="true"
+										>
+											↗
 										</span>
 										<span class="doc-crate__note">
 											{Crate.Description}

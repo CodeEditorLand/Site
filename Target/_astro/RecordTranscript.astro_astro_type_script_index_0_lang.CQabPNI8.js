@@ -1,0 +1,1 @@
+import{t as r}from"./WireWells.BizJkk_S.js";r("[data-record-transcript-copy]");

@@ -141,14 +141,24 @@ const SubstitutionFacets = Columns.map((Column, Index) => ({
 		</RecordBand>
 
 		{/*
-			THE PANES HOLD THE TWO THINGS CONSULTED BESIDE THE MATRIX.
+			THE BAND HOLDS THE TWO THINGS CONSULTED BESIDE THE MATRIX, STACKED.
 
 			A workspace's pane is a 5fr or 7fr track, and the three-column
 			comparison at that measure would be a table the reader scrolls
 			sideways - the one thing a matrix exists to avoid. So the matrix is
-			the page's artifact at the track's full width, and the panes hold
+			the page's artifact at the track's full width, and the band holds
 			what a reader consults *while* reading it: what carries over, and
 			the three documents that answer it. The drawer holds the command.
+
+			The two are stacked rather than set beside each other, and the
+			measure is why: at a 1280 window the panes' container is 768px, so a
+			7fr track gave the compare's five stops 83px each and a 5fr track
+			gave the trace's paths 42px - five characters a line for a 41-
+			character path. Neither block could lay itself out: `RecordCompare`
+			and `RecordTrace` read the *window* (their wide rules are 768px media
+			queries), not the box they sit in. Stacked, each takes the
+			container's full 768px, which is the width both blocks' wide rules
+			were drawn for.
 
 			The workspace contract is still honoured - a rail, two panes and a
 			drawer - and the instrument is still the page's subject; it is
@@ -157,7 +167,7 @@ const SubstitutionFacets = Columns.map((Column, Index) => ({
 		*/}
 		<RecordBand band={Bands.Carries}>
 			<ShellPanes
-				ratio="7/5"
+				layout="stack"
 				primary={{
 					mark: "# PANE_01",
 					label: "WHAT CARRIES OVER",

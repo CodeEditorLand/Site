@@ -11,13 +11,15 @@
 //   .PageShell__foot           the full-width row under the grid (an audit's wells)
 //
 // ─── THE DECLARATION STRIP ────────────────────────────────────────────────
-// Two rows, under a hairline, above the page's own head. Row 1 is the
-// declaration at the meta tier - `# LAYOUT / READING`, the facts as `KEY:`/value
-// pairs separated by U+2001, and the page's stamp pinned to the row's end by the
-// grid. Row 2 is the gloss - the same three things as prose, at the body tier
-// and the opening measure, one proposition per line under a `↳`. The long form
-// is printed at every width: the strip is the page's answer to "what did this
-// page have to declare", and an answer that disappears on a phone is a caption.
+// Two rows, under a hairline, above the page's own head, in three tiers. Row 1
+// is the declaration - `# LAYOUT / READING` at the sub tier in ink, the facts as
+// `KEY:`/value pairs at the meta tier separated by U+2001, and the page's stamp
+// at the meta tier, tracked and mute, pinned to the row's end by the grid. Row 2
+// is the gloss - the same three things as prose, at the body tier, one
+// proposition per item under a `↳`, three columns at a wide container. The long
+// form is printed at every width: the strip is the page's answer to "what did
+// this page have to declare", and an answer that disappears on a phone is a
+// caption.
 //
 // ─── THE TRACKS ───────────────────────────────────────────────────────────
 // Reading is asymmetric on purpose: a 13rem rail, the measure itself, and a
@@ -53,20 +55,39 @@ $ShellStickyTop: calc(var(--HeaderHeight) + var(--space-tight));
 }
 
 // ─── THE DECLARATION STRIP ────────────────────────────────────────────────
-// Two rows, three columns:
+// Four parts, three tiers, two kinds of sentence:
 //
-//   record | facts | stamp     the declaration, at the meta tier
-//   gloss  | gloss | gloss     the gloss, at the body tier, at its own measure
+//   record   # LAYOUT / WORKSPACE     sub tier, ink                the title
+//   facts    GIVES: …   FOR: …        meta, mute key / ink value   the claim
+//   stamp    # WORKSPACE_05           meta, tracked, mute          the mark
+//   gloss    ↳ …                      body tier, mute              the hand-in
 //
 // Row 1 is what a reader scans; row 2 is what the page hands in. They are two
-// rows because they are two kinds of sentence: a record line and its
-// explanation. On one line, at one tier, they competed - and the explanation,
-// right-flushed into ragged-left meta capitals, lost its shape.
+// kinds of sentence - a record line and its explanation - and they are printed
+// at two sizes for that reason. At one tier they competed: the explanation,
+// right-flushed into ragged-left meta capitals, lost its shape, and the record
+// lost its rank, because nothing in the strip was larger than anything else.
 //
-// The grid is what pins the stamp. `margin-inline-start: auto` inside a wrapping
-// flex was the old mechanism, and it could not survive a wrap: the stamp drifted
-// into the middle of the line the moment the facts wrapped. A named column
-// cannot drift.
+// The grid is what pins the stamp. `margin-inline-start: auto` inside a
+// wrapping flex was the old mechanism, and it could not survive a wrap: the
+// stamp drifted into the middle of the line the moment the facts wrapped. A
+// named column cannot drift.
+//
+// ─── THE RHYTHM IS BETWEEN THE GROUPS, NOT BETWEEN THE ROWS ───────────────
+// One `row-gap` cannot say "the facts belong to the record and the gloss is a
+// new thought". So the grid's row gap is 0 and each row states its own distance
+// from the row above it: `--space-tight` from the record to its facts,
+// `--space-reading` from the facts to the gloss. The strip's block padding is
+// one reading step at each edge - the record is 18px now, and a title needs the
+// same air above it that the gloss gets below it.
+
+// The record's word edge, stated in rem because the gloss is a different tier:
+// `ch` and `em` would resolve to the gloss's own font size. At the sub tier the
+// `#` is 1ch = 0.675rem, its tracking is 0.04em = 0.045rem, and the row's word
+// gap is 0.4em = 0.45rem - so `LAYOUT` starts 1.17rem into the strip, and the
+// gloss's mark column is that same 1.17rem. The `#` and the three `↳` hang on
+// one edge, and the record's word and the clauses' text share the other.
+$DeclarationWordEdge: 1.17rem;
 
 .PageShell__declaration {
 	@include mono-meta;
@@ -78,19 +99,27 @@ $ShellStickyTop: calc(var(--HeaderHeight) + var(--space-tight));
 		"facts facts"
 		"gloss gloss";
 	column-gap: var(--space-tight);
-	row-gap: var(--space-tight);
+	row-gap: 0;
 	align-items: baseline;
 	margin: 0;
-	padding-block: var(--space-tight) var(--space-reading);
+	padding-block: var(--space-reading);
 
 	@include hairline(bottom);
 }
 
-// ─── ROW 1: THE DECLARATION ───────────────────────────────────────────────
-// `# LAYOUT / READING`. The mark is the accent and the name is ink; the kind and
-// the slash stay mute, because they are grammar rather than fact. The flex is
-// only a baseline row - the wrap points are its own, so a narrow container wraps
-// the head instead of clipping it.
+// ─── ROW 1: THE RECORD ────────────────────────────────────────────────────
+// `# LAYOUT / WORKSPACE`. The strip's title, and the only part of the strip set
+// at the sub tier. It is one object in one ink: the `#` is the accent (the
+// strip's one green thing), and `LAYOUT`, the slash and the name are the ink -
+// the mute label that used to sit in front of the name was a second rank at a
+// size that only has room for one, and the label/value contrast the strip needs
+// is printed by the facts row, where it is grammar rather than scale. No weight:
+// 18px of uppercase mono in ink is the rank.
+//
+// The flex is only a baseline row - the wrap points are its own, so a narrow
+// container wraps the head instead of clipping it. The word gap is em-relative
+// (0.4em), because it is the space between a mark and its word and it has to
+// hold at whatever size the tier gives.
 .PageShell__record {
 	display: flex;
 	flex-wrap: wrap;
@@ -98,19 +127,25 @@ $ShellStickyTop: calc(var(--HeaderHeight) + var(--space-tight));
 	gap: 0 0.4em;
 	grid-area: record;
 	margin: 0;
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	color: var(--Foreground);
 }
 
-// ─── INK AND TRACKING: LABEL AGAINST VALUE ────────────────────────────────
-// Hierarchy without weight and without a new colour. A label is tracked at the
-// row register; a value is set solid. That is the ledger's own rule (its key is
-// tracked, its value is not) and it is what lets a 13px line hold two ranks
-// without a second size. The mark is grammar, so it is tracked with the labels
-// - and it is the strip's one accent.
+// ─── INK AND TRACKING: THE RANK OF EACH PART ──────────────────────────────
+// Hierarchy without weight and without a second colour. The law is tracking
+// inverse to size, so the record's grammar parts take the `name` register
+// (0.04em) - at 18px the `row` register's 0.08em opens the title into letters -
+// while the facts' keys keep `--track-row` (0.08em), because they are a label
+// ACROSS the strip and the wider register is what makes a 13px key read as a
+// key. The mark is grammar, so it is tracked with the record's parts.
 .PageShell__mark,
 .PageShell__word,
-.PageShell__slash,
-.PageShell__key,
-.PageShell__index {
+.PageShell__slash {
+	@include track(var(--track-name));
+}
+
+.PageShell__key {
 	@include track(var(--track-row));
 }
 
@@ -123,10 +158,6 @@ $ShellStickyTop: calc(var(--HeaderHeight) + var(--space-tight));
 
 .PageShell__mark {
 	color: var(--Accent);
-}
-
-.PageShell__name {
-	color: var(--Foreground);
 }
 
 // The em quad that separates the declaration from its facts. It is the grammar's
@@ -143,13 +174,18 @@ $ShellStickyTop: calc(var(--HeaderHeight) + var(--space-tight));
 // The pairs sit on one line while there is room and stack when there is not;
 // the em quad between them is a trailing space, so a stack never starts with an
 // indent it did not mean.
+//
+// The block-start margin is the row's own distance from the record: one tight
+// step, because the facts are the record's continuation and not a new thought.
+// At 56rem they move onto the record's line and the margin goes to 0, because
+// the grid's column gap is then the distance.
 .PageShell__facts {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: baseline;
 	row-gap: calc(var(--space-tight) / 2);
 	grid-area: facts;
-	margin: 0;
+	margin: var(--space-tight) 0 0;
 	padding: 0;
 }
 
@@ -169,37 +205,63 @@ $ShellStickyTop: calc(var(--HeaderHeight) + var(--space-tight));
 	color: var(--MuteForeground);
 }
 
+// A value is ink and set solid: that is the whole of the fact's grammar, and it
+// is a colour decision the strip does not get to re-tune per page.
+//
+// `overflow-wrap` is the "too long" state (§7): a `FOR:` label is authored
+// prose, and a page that hands in one unbreakable run must wrap inside the facts
+// column rather than widen it and push the stamp off the row.
 .PageShell__tracks,
 .PageShell__label {
 	margin: 0;
 	color: var(--Foreground);
+	overflow-wrap: break-word;
 }
 
-// The page's own stamp, at the row's end. Ink, not accent: the strip spends its
-// one accent on the `#` that opens it, and a stamp is a quotation of a record
-// marker rather than a second seal.
+// The page's own stamp, at the row's end - a stamp, not a label. Meta tier, the
+// widest register the system has (0.18em, a label ABOVE a region rather than
+// beside a value: a stamp is read as a mark, not as a word), and mute, so the
+// strip spends its ink on the record and its one accent on the `#` that opens
+// it. A stamp is a quotation of a record marker, never a second seal.
+//
+// `nowrap` is the pin's other half - a stamp broken across two lines is a
+// caption - and the right edge cancels the register's trailing letter-space, so
+// the last character's ink, not its advance, meets the strip's right edge.
 .PageShell__index {
 	grid-area: stamp;
 	justify-self: end;
-	margin: 0;
-	color: var(--Foreground);
+	margin: 0 var(--optical-edge-rule) 0 0;
+	white-space: nowrap;
+	color: var(--MuteForeground);
+	@include track(var(--track-rule));
 }
 
 // ─── ROW 2: THE GLOSS ─────────────────────────────────────────────────────
-// The declaration's three clauses as prose. Body tier, not meta: this is the
-// only sentence in the strip and it is meant to be read, not skimmed. Set
-// solid - no caps, no tracking - because a value's setting is a fact's and a
-// sentence is not a fact. Muted, because it is the apparatus of the strip and
-// the strip's claim is row 1: hierarchy here is ink and position, never weight.
+// The declaration's clauses as prose. Body tier, not meta: this is the only
+// sentence in the strip and it is meant to be read, not skimmed. Set solid - no
+// caps, no tracking - because a value's setting is a fact's and a sentence is
+// not a fact. Muted, because it is the apparatus of the strip and the strip's
+// claim is row 1: hierarchy here is ink, size and position, never weight.
 //
-// The measure is the opening measure (62ch), the site's cap for anything that
-// opens a surface: a standfirst, a caption, an empty state's sentence. It is
-// left-aligned and capped, so the gloss ends where a reader's eye expects a
-// paragraph to end - never flushed right, and never a wall across the container.
+// The clauses are three PARALLEL PROPOSITIONS, so they are printed as a set:
+// stacked at a narrow container, three columns at a wide one (see the container
+// query below). The stacked form is the default because it is the form that
+// fits anywhere - one track, capped at the opening measure (62ch), the `↳` in a
+// gutter column so the three clauses align as one block of text.
+//
+// The row-gap is one tight step, not one reading step: a body line's leading is
+// 1.65, so a tight step between clauses is what makes them three items rather
+// than one paragraph with marks in it.
+//
+// The block-start margin is the row's distance from the facts - one reading
+// step, because the gloss is the new thought and the declaration is done.
 .PageShell__declares {
 	grid-area: gloss;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	row-gap: var(--space-tight);
 	max-inline-size: var(--MeasureOpening);
-	margin: 0;
+	margin: var(--space-reading) 0 0;
 	padding: 0;
 	list-style: none;
 	font-size: var(--type-body);
@@ -208,20 +270,19 @@ $ShellStickyTop: calc(var(--HeaderHeight) + var(--space-tight));
 	color: var(--MuteForeground);
 }
 
-// One proposition per row, the `↳` in a column of its own and the clause in the
+// One proposition per item, the `↳` in a column of its own and the clause in the
 // next. That column is what makes the mark a hanging indent rather than a
 // bullet: every wrapped line returns to the clause's own edge, so a clause that
-// runs to three lines still reads as one proposition and the three clauses read
-// as a set.
+// runs to three lines still reads as one proposition.
 //
-// The mark column is the mark's advance plus the site's own mark gap (0.5ch) -
-// 1.5ch at the body tier, 14.4px. The declaration row's word lands at 14.04px
-// (the `#`'s 1ch advance, its 0.08em tracking, and the row's 0.4em gap, all at
-// the meta tier), so the gloss's text and `LAYOUT` sit on one edge to within a
-// third of a pixel, without either of them hanging into the page gutter.
+// The gutter is the record's word edge (`$DeclarationWordEdge`), not the mark's
+// own advance: the three `↳` hang on the page's left edge under the `#`, and
+// the clauses' text starts under `LAYOUT`. Two blocks, two shared edges - and
+// because the gutter is a rem value, it holds when the clauses are columns at
+// 16px and when they are a stack at 16px.
 .PageShell__clause {
 	display: grid;
-	grid-template-columns: calc(1ch + var(--optical-mark-gap)) minmax(0, 1fr);
+	grid-template-columns: $DeclarationWordEdge minmax(0, 1fr);
 }
 
 .PageShell__clause-text {
@@ -229,20 +290,81 @@ $ShellStickyTop: calc(var(--HeaderHeight) + var(--space-tight));
 }
 
 // ─── THE WIDE DECLARATION ─────────────────────────────────────────────────
-// One row: head, facts, stamp. The facts column is the flexible one - a long
-// `FOR:` label wraps inside it instead of crowding the stamp off the row - and
-// the stamp keeps its own column at the end.
+// One row: record, facts, stamp. The facts column is the flexible one - a long
+// `FOR:` value wraps inside it instead of crowding the stamp off the row - and
+// the stamp keeps its own `auto` column at the end, which is what makes the pin
+// a property of the grid rather than of the text.
 //
-// 56rem is where the head, the longest label the register can print and the
-// stamp all fit on one line with room to spare. Below it the same grid stacks,
-// which is re-composition rather than a squeeze: the stamp stays on the
-// declaration's row and the facts stay together under it.
+// 56rem is where the record, the longest label the register can print and the
+// stamp all fit on one line with room to spare (211 + 8 + 416 + 8 + 142 = 785px
+// of 824). Below it the same grid stacks, which is re-composition rather than a
+// squeeze: the stamp stays on the record's row and the facts stay together under
+// it. The facts column holds a `FOR:` label of 26ch on one line here; a longer
+// one wraps inside the column - the ledger's rows, which is what a `dl` is.
+//
+// The gloss takes its three columns at the same width, because 56rem is the
+// first container where three columns can each hold a measure: 824px of content
+// less two group gaps is 253px a column - 24.4ch of text after the mark's
+// gutter, which is the shell's own margin measure (its 16rem track is 26.7ch at
+// the body tier) and no column that breaks a word. Below it the set is a stack,
+// not two columns and an orphan.
 @container shell (min-width: 56rem) {
 	.PageShell__declaration {
 		grid-template-columns: auto minmax(0, 1fr) auto;
 		grid-template-areas:
 			"record facts stamp"
 			"gloss gloss gloss";
+	}
+
+	.PageShell__facts {
+		margin-block-start: 0;
+	}
+
+	// The set: equal tracks, and only as many as there are clauses.
+	//
+	// `flex: 1 1 0` makes every clause the same width whatever it says - they are
+	// parallel, so they are equal - and a gloss of one clause (the one-artifact
+	// pages print exactly one) takes the whole line up to its own measure instead
+	// of leaving two empty tracks behind it. A `repeat(3, …)` grid cannot do
+	// that without counting the clauses in a `:has()` chain.
+	//
+	// `--space-group` between the columns, not `--space-tight`: the gap is what
+	// says "three things", and a reading step would print them as one run of
+	// prose with marks in it - which is the form the owner was looking at.
+	.PageShell__declares {
+		display: flex;
+		gap: 0 var(--space-group);
+		max-inline-size: none;
+	}
+
+	.PageShell__clause {
+		flex: 1 1 0;
+		min-inline-size: 0;
+		max-inline-size: var(--MeasureOpening);
+	}
+}
+
+// ─── THE STAMP AT THE PHONE'S WIDTH ───────────────────────────────────────
+// The stamp is 14 tracked characters - 142px at the meta tier and the widest
+// register - and the record is 211px at the sub tier (`# LAYOUT / WORKSPACE`,
+// the longest name the register prints). With one tight step between them they
+// need 361px of content; the shell's 16px gutter at a 360px window leaves 328.
+//
+// So below 25rem the stamp takes its own row under the record instead of
+// squeezing the title into a break: the record stays one line, the stamp stays
+// pinned to the strip's right edge, and the facts follow both. The rule fires a
+// shade early (the two fit at 393px, it stacks to 400px) because a fit with
+// seven pixels to spare is a fit that a longer `index` would take back. This is
+// a container query, not a viewport one, so a shell inside a narrow pane
+// re-stacks at the same point.
+@container shell (max-width: 25rem) {
+	.PageShell__declaration {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-areas:
+			"record"
+			"stamp"
+			"facts"
+			"gloss";
 	}
 }
 
@@ -319,11 +441,11 @@ $ShellStickyTop: calc(var(--HeaderHeight) + var(--space-tight));
 //
 // The floor is per row and it is measured, never chosen: `--row-floor` defaults to
 // 18rem, which is the hard minimum rather than a taste - 3rem of card padding plus
-// the 15rem that the widest unbreakable string in this language needs
-// (`Community@PlayForm.Cloud`, 25ch). A narrower track overflows instead of
-// wrapping. A row whose artifacts need more declares it: the contact sale's six
-// features need 45ch of text, so its row sets `--row-floor: 30rem`
-// (`Component/Contact/_Sale.scss`).
+// the 14.4rem that the widest unbreakable string in this language needs
+// (`Community@PlayForm.Cloud`, 24ch at the 9.6px body ch), which is 17.4rem and
+// rounds up to 18. A narrower track overflows instead of wrapping. A row whose
+// artifacts need more declares it: the contact sale's six features need 45ch of
+// text, so its row sets `--row-floor: 30rem` (`Component/Contact/_Sale.scss`).
 
 .PageShell__row {
 	display: flex;

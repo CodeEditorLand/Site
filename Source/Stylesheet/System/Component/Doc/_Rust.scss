@@ -1,18 +1,52 @@
-// DocRust - the Rust API surface: the page container, the crate switcher and the
-// rustdoc frame.
+// DocRust - the Rust API surface: one instrument, a register band over a
+// rustdoc surface, and the way back into the documentation.
 //
 // Publishes:
-//   .doc-rust            the page container (one gutter, one max width)
-//   .doc-crates          the nine crate tiles, five across from 768px
-//   .doc-crate           one tile: its name, its ↗ and one line about the crate
-//   .doc-crate__label    the crate's name
-//   .doc-crate__note     the crate's description
-//   .doc-rust__viewer    the switcher and its frame
-//   .doc-rust__bar       the tab list
-//   .doc-rust__tab       one crate
+//   .doc-rust              the page container (one gutter, one max width)
+//   .doc-rust__instrument  the stacked instrument, bled to the column's edges
+//   .doc-crates            the register: nine rows, one column
+//   .doc-crate             one row: name, ↗, note on one line
+//   .doc-crate__label      the crate's name
+//   .doc-crate__arrow      ↗ - the row leaves this site
+//   .doc-crate__note       the crate's description, at the caption measure
+//   .doc-rust__viewer      the switcher and its frame
+//   .doc-rust__bar         the tab list, pinned under the header
+//   .doc-rust__tab         one crate
 //   .doc-rust__tab--active  the crate the frame is showing
-//   .doc-rust__frame     the rustdoc iframe
-//   .doc-rust__back      the way back into the documentation
+//   .doc-rust__frame       the rustdoc iframe
+//   .doc-rust__back        the way back into the documentation
+//
+// ─── THE REGISTER IS A LEDGER, NOT A GRID OF TILES ────────────────────────
+// The nine crates used to be five tiles across the 5fr pane: 51px each, and
+// 19px of text inside a tile's own padding - two and a half characters at 13px,
+// which is a description printed as a column of fragments. The list is not a
+// matrix of equals; it is nine rows with one note each, so it is a ledger: the
+// name in a fixed column, the arrow beside it, the note taking the rest of the
+// row at the caption measure. Nine rows at the band's full width give the note
+// 484px (62ch) at 1024 and 612px (78ch) at 1280 - the measure the descriptions
+// were written for - and the row's own hairline does the separating, so the nine
+// boxes are gone and nothing in the row was dropped.
+//
+// ─── THE INSTRUMENT IS STACKED AND BLED ───────────────────────────────────
+// `ShellPanes--stack`: the register is the band, the frame is the surface, and
+// the seam between them is the gutter rotated. The surface is the half that
+// needs the column - rustdoc lays out its own 200px sidebar and its own content
+// column, and its own breakpoint is 701px - so the seam and the surface take the
+// column's whole width (from the workspace spine to the page's right gutter)
+// while the register keeps the text edge it shares with the `h1` above it. The
+// bleed is one negative gutter on two grid items: the band's own padding is what
+// it consumes, so nothing overflows the page.
+//
+// Above the rail's breakpoint the spine is the surface's left edge, and the
+// frame's own 1px border there would print a second rule 1px from the spine's
+// `--Divider` - so the frame drops that border and the spine is the edge.
+//
+// ─── THE TAB BAR IS A PINNED RAIL ─────────────────────────────────────────
+// The frame is 70vh and the reader scrolls inside it; the nine tabs are the only
+// control the surface has, so the bar pins under the header while the surface is
+// on screen. That is why the viewer clips with `overflow: clip` and not
+// `overflow: hidden`: `hidden` makes the viewer a scroll container and a sticky
+// child would have nothing to stick to.
 //
 // The active tab is marked twice - `aria-selected` in the markup and an inverted
 // fill here - so the state is not colour-only. The fill is `ink-invert`, the same
@@ -30,68 +64,112 @@
 	padding-block: var(--space-group);
 }
 
-/* The crate tiles: two across on a narrow viewport, five across from 768px -
-   the baseline's `grid-cols-2 md:grid-cols-5`, which is the one place on this
-   page that is not the documentation grid. Nine tiles in five columns leave a
-   hole in the last row on purpose: the list is a set, not a sequence. */
+/* The instrument. Two grid items carry the bleed - the seam and the surface -
+   so the register stays on the page's text edge. See the file's head. */
+.doc-rust__instrument .ShellPanes__gutter,
+.doc-rust__instrument .ShellPanes__pane--secondary {
+	margin-inline: calc(var(--Gutter) * -1);
+}
+
+@container shell (min-width: 56rem) {
+	.doc-rust__instrument .doc-rust__viewer {
+		border-inline-start: 0;
+	}
+}
+
+/* The surface's head ends without a rule of its own: the frame's top border is
+   8px below it, and two hairlines that close together are one rule drawn twice.
+   The band's head keeps its rule - it is the ledger's top edge. */
+.doc-rust__instrument .ShellPanes__pane--secondary .ShellPanes__head {
+	padding-block-end: 0;
+
+	border-block-end: 0;
+}
+
+/* The register: one column of rows, no boxes. */
 .doc-crates {
 	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: var(--space-tight);
-
-	list-style: none;
+	grid-template-columns: minmax(0, 1fr);
 
 	margin: 0;
 	padding: 0;
 
-	@include bp(768px) {
-		grid-template-columns: repeat(5, minmax(0, 1fr));
-	}
+	list-style: none;
 }
 
+/* One row: the name in a fixed column, the arrow, then the note. The name column
+   is `6.5rem` because the longest of the nine is eight characters at the body
+   tier (77px) and a column that resized per row would not read as a column. */
 .doc-crate {
-	display: block;
+	display: grid;
+	grid-template-columns: 6.5rem 1.25rem minmax(0, 1fr);
+	column-gap: var(--space-reading);
+	align-items: baseline;
 
-	block-size: 100%;
+	padding-block: var(--space-tight);
 
-	padding: var(--space-reading);
+	@include hairline(bottom);
 
-	background: var(--Card);
-
-	@include hairline;
-
-	color: var(--CardForeground);
+	color: var(--Foreground);
 
 	text-decoration: none;
 
 	&:hover {
 		color: var(--Accent);
+
+		border-block-end-color: var(--Divider);
+	}
+
+	&:hover .doc-crate__arrow {
+		color: var(--Accent);
 	}
 }
 
 .doc-crate__label {
-	display: block;
-
 	font-size: var(--type-body);
 	line-height: var(--type-body-line);
 	font-weight: 500;
 }
 
-.doc-crate__note {
-	display: block;
+.doc-crate__arrow {
+	@include mono-meta;
+}
 
+.doc-crate__note {
 	font-size: var(--type-caption);
 	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
 
 	color: var(--MuteForeground);
 
-	margin-block-start: var(--space-tight);
+	/* The site's own measure, so a note never runs wider than the prose above
+	   it: at 1280 the row gives the note 78ch and this caps it at 72. */
+	max-inline-size: var(--Measure);
+
+	text-wrap: pretty;
+}
+
+/* Under 32rem of instrument the note moves to a second line, spanning the row.
+   The three fixed columns are 156px, so a 326px band (a phone) would leave the
+   note 21ch - a description printed as a column of fragments again. The row
+   keeps its three cells; only the axis of the note changes. */
+@container panes (max-width: 31.99rem) {
+	.doc-crate {
+		row-gap: var(--space-tight);
+	}
+
+	.doc-crate__note {
+		grid-column: 1 / -1;
+	}
 }
 
 .doc-rust__viewer {
 	@include hairline;
 
-	overflow: hidden;
+	/* `clip`, not `hidden`: the tab bar is sticky and `hidden` would make this
+	   box the scrollport it sticks to. Nothing here needs a scroll container -
+	   every radius on the site is 0. */
+	overflow: clip;
 
 	background: var(--Card);
 }
@@ -103,7 +181,25 @@
 
 	padding: var(--space-tight) var(--space-reading);
 
+	/* The bar travels over the frame, so it needs its own opaque field: the
+	   viewer's fill is behind it, not under it. */
+	background: var(--Card);
+
 	@include hairline(bottom);
+}
+
+/* The bar pins under the header, but only where it is one row. The nine tabs are
+   48 characters at 13px mono plus 9 x 32px of padding, 9 borders and 8 gaps =
+   774px, and the bar's own padding makes 806px - so it is one row only in the
+   848px surface the bleed gives at a 48rem instrument (768px of container, the
+   1280 window). Below that it wraps to two or three rows, and a pinned 86-120px
+   bar over a 70vh frame is the frame's own obstruction. */
+@container panes (min-width: 48rem) {
+	.doc-rust__bar {
+		position: sticky;
+		inset-block-start: calc(var(--HeaderHeight) + var(--space-tight));
+		z-index: 2;
+	}
 }
 
 .doc-rust__tab {

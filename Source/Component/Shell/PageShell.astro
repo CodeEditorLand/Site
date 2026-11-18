@@ -21,24 +21,25 @@
  *          ↳ a margin (the notes, the facts, the aside) - or nothing, and then
  *            the measure takes the rail's side
  *
- * Row 1 is the *declaration*: the `#` in the accent, `LAYOUT` and `/` in the
- * mute, the language's name in ink, its facts as `KEY:`/value pairs separated
- * by U+2001 (labels mute, values ink), and the page's own stamp pinned to the
- * row's end by the grid. It is one line while the container can hold it, and
- * head-and-stamp over facts when it cannot - never three fragments, and never a
- * stamp adrift in the middle of the line. It is the line a reader scans.
+ * Row 1 is the *declaration*: the `#` in the accent, `LAYOUT`, the slash and the
+ * language's name in ink at the sub tier, its facts as `KEY:`/value pairs at the
+ * meta tier separated by U+2001 (labels mute, values ink), and the page's own
+ * stamp at the meta tier, tracked and mute, pinned to the row's end by the grid.
+ * It is one line while the container can hold it, and head-and-stamp over facts
+ * when it cannot - never three fragments, and never a stamp adrift in the middle
+ * of the line. It is the line a reader scans.
  *
- * Row 2 is the *gloss*: the same three things as prose, at the body tier and
- * the opening measure, one proposition per line under a `↳`. The three clauses
- * are a set - the tracks the language gives, in the order it gives them - so
- * they print as three rows rather than as one run-together sentence. The shell
- * prints `Spec.declares` verbatim: the register owns the sentence, the shell
- * owns the shape.
+ * Row 2 is the *gloss*: the same three things as prose, at the body tier, one
+ * proposition per item under a `↳`. The three clauses are a set - the tracks the
+ * language gives, in the order it gives them - so they print as three columns at
+ * a wide container and as a stack with the marks in a gutter column below it,
+ * never as one run-together sentence. The shell prints `Spec.declares` verbatim:
+ * the register owns the sentence, the shell owns the shape.
  *
  * The split is the whole point. Facts and explanation on one line compete, and
- * at the meta tier a right-flushed paragraph of clauses reads as a wall of
- * small capitals rather than as a declaration with a gloss. Two rows, one
- * measure, and the hierarchy is ink, tracking and space - never weight.
+ * at one tier a right-flushed paragraph of clauses reads as a wall of small
+ * capitals rather than as a declaration with a gloss. Two rows, three tiers, and
+ * the hierarchy is ink, tracking and space - never weight.
  *
  * A page that is one artifact prints `DECLARES: NOTHING` and no tracks, because
  * that is what is true.

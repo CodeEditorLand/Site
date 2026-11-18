@@ -3,6 +3,7 @@
 // Publishes:
 //   .ShellPanes                  the query container
 //   .ShellPanes__grid            `5fr 1px 7fr` at the wide container, one column below
+//   .ShellPanes--stack           the seam rotated at every width: an index above a surface
 //   .ShellPanes__gutter          the 1px track in `--Divider` ink
 //   .ShellPanes__pane            one pane: head, note, body
 //   .ShellPanes__head            `# PANE_01  NAME  META`
@@ -20,6 +21,21 @@
 // track becomes a 1px horizontal rule between them, at the same ink. The gutter
 // element stays in the DOM in both states (it is the seam, and the seam exists
 // either way); only its axis changes.
+//
+// `--stack` is that axis chosen, not fallen back to. It is the panes' second
+// composition, and it is for a different instrument: an INDEX above a SURFACE.
+// A pane pair is the right instrument when both halves are readable at a column
+// width - two comparable readings of one subject. It is the wrong instrument
+// when one half is a list of N and the other is an embedded application: the
+// list's notes are squeezed into whatever the 5fr track leaves (19px of text,
+// two and a half characters at 13px, on the doc-rust page), and the application
+// becomes a frame inside a frame - rustdoc is a two-column UI itself, and at
+// 415px it renders its own phone layout inside the pane. Stacked, the notes get
+// the band's full measure and the surface gets the column.
+//
+// Nothing else about the pair changes: the same two panes, the same heads at the
+// same three ranks, the same drawer, and the same 1px seam in `--Divider` -
+// running across instead of down.
 @use "../Mixin" as *;
 
 .ShellPanes {
@@ -136,6 +152,36 @@
 		padding-block-start: var(--space-group);
 		border-block-start: 1px solid var(--Divider);
 	}
+}
+
+// ─── THE STACKED INSTRUMENT ───────────────────────────────────────────────
+// One track at every width. The gutter is the seam here - it stays visible and
+// becomes the 1px horizontal rule between the band and the surface - so neither
+// pane is inset from the other and the secondary pane draws no border of its
+// own. `margin-block` on the seam is the chapter step: the band's last rule and
+// the surface's head are each one `--space-group` away from it.
+
+.ShellPanes--stack .ShellPanes__grid {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.ShellPanes--stack .ShellPanes__gutter {
+	display: block;
+	align-self: auto;
+	block-size: 1px;
+	margin-block: var(--space-group);
+	background: var(--Divider);
+}
+
+.ShellPanes--stack .ShellPanes__pane--primary,
+.ShellPanes--stack .ShellPanes__pane--secondary {
+	padding-inline: 0;
+}
+
+.ShellPanes--stack .ShellPanes__pane--secondary {
+	margin-block-start: 0;
+	padding-block-start: 0;
+	border-block-start: 0;
 }
 
 // ─── THE DRAWER ───────────────────────────────────────────────────────────

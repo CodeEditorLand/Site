@@ -43,10 +43,10 @@
 	padding-inline: var(--Gutter);
 	padding-block-end: 4rem;
 
-	// The body is a query container of its own: the row's scatter restraint is a
-	// question about how wide the row is, and a card cannot query itself. Inside
-	// `__main` the shell cancels this box's gutter and measure, so its content box
-	// is the row's width.
+	// The body is a query container of its own: the ledger's one-track gate (the
+	// hairline and the collapsed row gap) is a question about how wide the row is,
+	// and a row cannot query itself. Inside `__main` the shell cancels this box's
+	// gutter and measure, so its content box IS the row's width.
 	container: sale / inline-size;
 }
 
@@ -173,7 +173,10 @@
 	// grids, so a content-sized track would size itself per card. See "THE LABEL
 	// COLUMN IS 12rem". The `min()` is the phone guard - the track can never be
 	// wider than the card's own content box less the gutter.
-	grid-template-columns: min(12rem, calc(100% - var(--space-group))) minmax(0, 1fr);
+	grid-template-columns: min(12rem, calc(100% - var(--space-group))) minmax(
+			0,
+			1fr
+		);
 	column-gap: var(--space-group);
 
 	// The subject and its first fact share one baseline - a ledger row, not a
@@ -261,8 +264,9 @@
 // The 2rem row gap becomes the hairline: the rows are one white plate divided by
 // the site's one rule (`--Border`, `DESIGN-COMPLETE` §1.3), with the card's own
 // 1.5rem padding on each side of it, so the rule marks the boundary without doing
-// the space's job. A column gap stays for the two-track case, which this page
-// cannot reach but a wider row could.
+// the space's job. The rule and the collapsed gap are gated on the ONE-TRACK form
+// (below), because a rule across the top of a card that is BESIDE its neighbour
+// would be a rule between two columns.
 //
 // The group step above the row is new, and it is the other half of "squished
 // together": `.contact-sale` is a block, so the letter's panel and this row were
@@ -273,23 +277,71 @@
 	--row-floor: 30rem;
 
 	margin-block-start: var(--space-group);
-	row-gap: 0;
 }
 
-.contact-sale .PageShell__row > .contact-sale__card + .contact-sale__card {
-	border-block-start: 1px solid var(--Border);
+// Two tracks need 2 x 30 + 2 = 62rem of row, so the one-track form is the row under
+// 62rem - every width this page has. The query is on `.contact-sale` because a row
+// cannot query its own width; the container's content box IS the row's width, since
+// the shell cancels this body's gutter inside `__main`.
+@container sale (max-width: 61.99rem) {
+	.contact-sale .PageShell__row {
+		row-gap: 0;
+	}
+
+	.contact-sale .PageShell__row > .contact-sale__card + .contact-sale__card {
+		border-block-start: 1px solid var(--Border);
+	}
 }
 
 // ─── THE CARD AS A LEDGER ROW ─────────────────────────────────────────────
 // At one track the card is the row's full width, and 40rem of unbroken column is
 // the wrong shape for a list of six fragments: it reads as a paragraph under a
-// heading. Above 40rem of content the heading takes a label column and the facts
+// heading. Above 38rem of content the heading takes a label column and the facts
 // take the measure beside it -
 //
-//     What Enterprise Includes │ Priority support and SLA
-//                              │ Custom deployment options: cloud, on-prem, or ...
+//     What Enterprise        │ Priority support and SLA
+//     Includes               │ Custom deployment options: cloud, on-prem, or air-gapped
 //
 // - subject, then facts, the way the site's ledgers read.
+//
+// ─── THE LABEL COLUMN IS 12rem, ONE WIDTH ON ALL THREE ROWS ───────────────
+// Three cards are three grids, so a content-sized track (`minmax(12rem, 18rem)`)
+// sized itself per card: the first row's label took 16.2rem (`What Enterprise
+// Includes`, 24ch at the 10.8px heading ch) and the other two 12rem, which is two
+// facts edges in one ledger - a ragged table, not a ledger. 12rem is the one width
+// that puts all three facts columns on the same line.
+//
+// 12rem is also 17.8ch at the heading tier, so `What Enterprise Includes` folds to
+// `What Enterprise` / `Includes` (15ch fits) while `Direct Contact` (14ch) and
+// `Still Open Source` (17ch) stay on one line. Folding the subject is the right
+// trade: the six facts are the content, and every rem the label gives back is a rem
+// the measure gets. At an 18rem label the measure is 20.2rem = 33.7ch, where four
+// of the six features wrap and so do the DEALS link and the PlayForm line.
+//
+// The `min(12rem, 100% - the gutter)` is the phone guard: the label track can never
+// be wider than the card's own content box less the gutter, so a 320px phone (an
+// 18rem card, 15rem of content) folds the label rather than overflowing the card.
+// Below 38rem of content the children span both tracks and neither width is used.
+//
+// ─── THE MEASURE ──────────────────────────────────────────────────────────
+// At this page's 43.2rem row the card's content box is 40.2rem, so the measure is
+// 40.2 - 12 - 2 = 26.2rem = 43.7ch at the body tier (1ch = 0.6em of the 16px mono).
+// Four of the six features then print on one line and only
+// `Custom deployment options: cloud, on-prem, or air-gapped` (56ch) and
+// `Security review and compliance documentation` (44ch) take two; the #direct row
+// prints its DEALS link (31ch with the glyph), `Prefer email? Reach us directly:`
+// (32ch), the address (24ch) and `Operated by PlayForm, Sofia, Bulgaria` (37ch) on
+// four lines, one fact each.
+//
+// ─── WHERE THE ROW FORM STARTS ────────────────────────────────────────────
+// 38rem of card CONTENT - a 41rem card - because that is where the measure is still
+// 24rem = 40ch, the floor at which the list reads as a list. Below it the label
+// column would eat the facts, so the card keeps the block form it has always had:
+// heading over a full-measure list.
+//
+// 38rem rather than 40 is the tolerance: this page's card content is 40.2rem, and a
+// form that switched on 0.2rem of slack would flip back to the block form on any
+// font metric a pixel narrower than IBM Plex Mono's 0.6em advance.
 //
 // The grid is declared on the card and the COLUMN FORM IS THE DEFAULT: every child
 // spans both tracks, so the card is one column and reads exactly as it always did.
@@ -298,23 +350,19 @@
 // is on `sale-card` and styles its descendants. That is also why the grid is not
 // inside the query: the card cannot ask its own width, but its children can.
 //
-// The label column is `minmax(12rem, 18rem)`. 18rem is what `What Enterprise
-// Includes` needs on one line (24ch at the heading tier, 10.8px/ch = 16.2rem, plus
-// slack); 12rem is where it folds to two lines rather than squeezing the measure.
-// The body takes the rest: at this page's 43.2rem row that is 20.2rem = 33.7ch, so
-// two of the six features print on one line and four on two - against the two to
-// five lines per feature the 16.8ch three-track column printed.
-//
-// 40rem is the card's own CONTENT box - a 43rem card - and it is where the body
-// column would fall under 31ch: 40rem of content is the label's 18rem, the 2rem
-// gutter and 20rem of measure (30.9ch), the classic minimum. Below it the card
-// keeps the column form it has always had, which is the right form for a 20.6rem
-// card in a two-track row.
+// ─── THE ANCHORS ──────────────────────────────────────────────────────────
+// `#includes`, `#direct` and `#open-source` are on the CARDS - the element that owns
+// the row - and the heading is the first cell of the card's first grid row, so an
+// anchor lands on the row's top edge with the heading directly under it. The
+// clearance under the sticky header is the document's one
+// `scroll-padding-block-start` (`_Base.scss`); a `scroll-margin` here would ADD a
+// second header height and land every one of the three a whole header too low,
+// which is the defect that rule exists to replace.
 .contact-sale__card > * {
 	grid-column: 1 / -1;
 }
 
-@container sale-card (min-width: 40rem) {
+@container sale-card (min-width: 38rem) {
 	// The subject holds the label column's first cell; everything else is the
 	// measure. Naming the column rather than the order keeps the `#direct` card
 	// honest, where the DEALS route link precedes the heading in the markup and
@@ -329,25 +377,23 @@
 	}
 }
 
-// ─── THE SCATTER, PINNED ON A ROW ─────────────────────────────────────────
+// ─── THE SCATTER, PINNED ON A LEDGER ──────────────────────────────────────
 // `StaccatoCard` offsets each element by up to 3px and rotates it by up to 0.5deg
 // from its seed (`Component/_Noise.scss`). On a 691px row a half-degree rotation
 // moves each end 3px vertically, and three rows on three different seeds read as a
-// crooked table - a ledger's rows share one edge. So the seed is pinned to zero
-// while the row is a stack, and the classes stay: the hover settle still runs.
+// crooked table - a ledger's rows share one edge. The row prints one track at every
+// width on this page, so the pin is unconditional rather than a wide-row exception:
+// the three cards are always a stack, and a stack is always a ledger. The classes
+// stay and so does the hover settle, which reads the attention vars, not the seed.
 //
-// The query is on `.contact-sale`, not on the card, because a card cannot query
-// itself; `.contact-sale`'s content box is the row's width (the shell cancels its
-// gutter inside `__main`). `!important` is the only way to outrank the inline seed
-// `Function/Noise/Staccato.ts` writes. The shimmer needs no such restraint:
-// `StaccatoBorderShimmer` has been a documented no-op since the borderless
-// redesign (`_Noise.scss`, §Border & Outline), so it paints nothing on a card or
-// on a row.
-@container sale (min-width: 43rem) {
-	.contact-sale__card {
-		--StaccatoSeed: 0 !important;
-		--StaccatoSeedPhase: 0 !important;
-	}
+// `!important` is the only way to outrank the inline seed `Function/Noise/Staccato.ts`
+// writes. The shimmer needs no such restraint: `StaccatoBorderShimmer` has been a
+// documented no-op since the borderless redesign (`_Noise.scss`, §Border & Outline),
+// so it paints nothing on a card or on a row - the classes are kept because the
+// markup is the Jelly-era markup, not because they are doing anything.
+.contact-sale__card {
+	--StaccatoSeed: 0 !important;
+	--StaccatoSeedPhase: 0 !important;
 }
 
 // ─── The close ────────────────────────────────────────────────────────────

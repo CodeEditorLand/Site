@@ -24,6 +24,17 @@
  * order - the primary pane stays first, because on a phone the reader meets the
  * instrument they came for before the context beside it.
  *
+ * ─── STACKED BY CHOICE: AN INDEX ABOVE A SURFACE ──────────────────────────
+ * `layout="stack"` rotates the seam at every width, and it is not the narrow
+ * fallback: it is the composition for an instrument whose halves are not two
+ * comparable readings. A list of N with a note per row, above an embedded
+ * application, is that case - in a 5fr pane the notes are squeezed to a couple
+ * of characters and the application is a frame inside a frame. Stacked, the
+ * primary pane is the band (its head is the band's head, its rows get the full
+ * measure) and the secondary pane is the surface (its head is the surface's
+ * head, its body gets the column). Same heads, same marks, same counts, same
+ * drawer - only the axis of the seam changes.
+ *
  * No script and no hydration.
  */
 interface Pane {
@@ -55,6 +66,17 @@ interface Props {
 	 */
 	ratio?: "5/7" | "7/5" | "1/1";
 
+	/**
+	 * The composition. `panes` (the default) is two columns with the hairline
+	 * gutter between them - the right instrument when both halves are readable
+	 * at a column width. `stack` puts the primary above the secondary with the
+	 * seam rotated at every width: the composition for an index above a
+	 * surface, where the primary is a list of N whose rows carry a note and the
+	 * secondary is an embedded application that needs the column. `ratio` is
+	 * not read when the layout is `stack`.
+	 */
+	layout?: "panes" | "stack";
+
 	/** The drawer at the foot: what neither pane holds. Absent, no drawer. */
 	drawer?: {
 		readonly label: string;
@@ -70,6 +92,7 @@ const {
 	primary,
 	secondary,
 	ratio = "5/7",
+	layout = "panes",
 	drawer,
 	class: ClassName,
 } = Astro.props;
@@ -80,7 +103,9 @@ const HasDrawer = Astro.slots.has("drawer");
 <div
 	class:list={[
 		"ShellPanes",
-		`ShellPanes--${ratio.replace("/", "-")}`,
+		layout === "stack"
+			? "ShellPanes--stack"
+			: `ShellPanes--${ratio.replace("/", "-")}`,
 		ClassName,
 	]}
 >
