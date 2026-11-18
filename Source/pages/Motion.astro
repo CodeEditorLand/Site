@@ -103,6 +103,35 @@ const RegisterRows = Classes.map((Entry) => ({
 	note: `${Entry.intervalText}${Quad}${Entry.curve}${Quad}${Entry.relationship}${Quad}MOVES: ${Entry.moves}`,
 }));
 
+/**
+ * The four ledgers this page prints as registers, in the site's grammar:
+ * `# <LABEL> / <count>`.
+ *
+ * §4.1 of the brief: a register is identity, not copy. The mark says the block
+ * is a register, the label names the set, and the count is that set's own length
+ * read from the same array the ledger below it renders - so a row added to
+ * `HandoverRows`, `SkeletonArrived`, `Intervals` or `Curves` moves the number
+ * above it in the same edit. A number typed beside a label is a claim about the
+ * rows that nothing checks, and the moment the rows grow the claim is false.
+ *
+ * `RecordLedger` folds the caller's mark and count away and recomposes both from
+ * `rows`, so the line and the set cannot disagree in either direction; these
+ * expressions exist because the *source* has to state the count too. A register
+ * that only counts at render time reads like copy in the template, and copy is
+ * what the next card trims.
+ *
+ * The two margin registers are the same shape for the same reason: the three
+ * intervals and the three curves are `System/_Motion.scss`'s, and the margin
+ * prints how many of each this page is standing on.
+ */
+const ImagesRegister = `# THE TWO IMAGES / ${String(HandoverRows.length).padStart(2, "0")}`;
+
+const RecordArrivedRegister = `# THE SAME RECORD, ARRIVED / ${String(SkeletonArrived.length).padStart(2, "0")}`;
+
+const IntervalsRegister = `# THE INTERVALS / ${String(Intervals.length).padStart(2, "0")}`;
+
+const CurvesRegister = `# THE CURVES / ${String(Curves.length).padStart(2, "0")}`;
+
 /** The page's seven registers, as both the rail and the contents fold print them. */
 const Registers = [
 	{
@@ -271,7 +300,7 @@ const ReducedNote = {
 				</a>
 				<RecordLedger
 					rows={HandoverRows.map((Row) => ({ ...Row }))}
-					register="THE TWO IMAGES"
+					register={ImagesRegister}
 					class="MotionSpecimen__Ledger--stage"
 				/>
 			</MotionSpecimen>
@@ -318,7 +347,7 @@ const ReducedNote = {
 				<div>
 					<RecordLedger
 						rows={SkeletonArrived.map((Row) => ({ ...Row }))}
-						register="THE SAME RECORD, ARRIVED"
+						register={RecordArrivedRegister}
 					/>
 				</div>
 			</MotionSpecimen>
@@ -423,7 +452,7 @@ const ReducedNote = {
 					value: Interval.value,
 					note: Interval.note,
 				}))}
-				register="THE INTERVALS"
+				register={IntervalsRegister}
 			/>
 			<RecordLedger
 				rows={Curves.map((Curve) => ({
@@ -432,7 +461,7 @@ const ReducedNote = {
 					note: Curve.note,
 					code: true,
 				}))}
-				register="THE CURVES"
+				register={CurvesRegister}
 				class="MotionMargin__Curves"
 			/>
 			<RecordMargin note={ReducedNote} />

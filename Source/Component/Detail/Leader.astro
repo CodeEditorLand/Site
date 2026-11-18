@@ -40,7 +40,16 @@ interface Props {
 	/** The entries, in the order they are read. */
 	items: readonly LeaderItem[];
 
-	/** `# CHAPTERS` - the register line's name. Absent, no register line. */
+	/**
+	 * `# CHAPTERS` - the register line's name. Absent, no register line.
+	 *
+	 * The prop takes the register in either of the two shapes the grammar has:
+	 * the set's name (`CHAPTERS`), or the whole line (`# CHAPTERS / 08`, the
+	 * shape §4.1 of the brief prescribes for a prop). Both print one mark and
+	 * one count, because the mark and the count belong to the block: the
+	 * caller's mark is folded away and the count is re-read from `items`, so a
+	 * number written at the call site can never outlive the entries it counts.
+	 */
 	register?: string;
 
 	/** One column (the default) or two, the latter only at 1024px and up. */
@@ -82,11 +91,26 @@ const {
 /** The count is the list's own length: the register line cannot drift from it. */
 const Count = String(items.length).padStart(2, "0");
 
-/** The register line states the state it is in, in the vocabulary's word. */
-const RegisterLine =
+/**
+ * The set's name, whatever shape the caller handed in. A register may arrive as
+ * a name (`CHAPTERS`) or as the whole line (`# CHAPTERS / 08`); the mark and the
+ * count are the block's, so the caller's are folded away here and composed once
+ * below. Only a trailing count (or the state word that stands in for one) is
+ * stripped - a name that carries a slash of its own keeps it.
+ */
+const Name =
 	register === undefined
 		? undefined
-		: `${register} / ${state === "loading" ? "LOADING" : Count}`;
+		: register
+				.trim()
+				.replace(/^#\s*/, "")
+				.replace(/\s*\/\s*(?:[0-9]+|LOADING|UNAVAILABLE)$/, "");
+
+/** The register line states the state it is in, in the vocabulary's word. */
+const RegisterLine =
+	Name === undefined
+		? undefined
+		: `${Name} / ${state === "loading" ? "LOADING" : Count}`;
 
 /** The too-much state: the set is longer than the register prints. */
 const Truncated = limit !== undefined && items.length > limit;

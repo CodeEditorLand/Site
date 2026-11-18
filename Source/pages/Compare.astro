@@ -91,6 +91,18 @@ const MeasureCells = Measurements.map((Row) => ({
 const Dated =
 	Measurements.find((Row) => Row.asOf !== undefined)?.asOf ?? "UNAVAILABLE";
 
+/**
+ * The register above the substitution's reading, in the site's grammar:
+ * `# WHAT CHANGES / 08`. The mark is the grammar's, the name is the band's, and
+ * the count is `Changes.length` - the same eight aspects the matrix above
+ * prints, because `Changes` is `Rows` mapped - so the register cannot name a
+ * number its rows do not have. The ledger folds the mark away and re-reads the
+ * count from the rows it is handed, so the line and the rows cannot disagree;
+ * a page that could not count its set prints `UNAVAILABLE`, never a zero, and
+ * this page always can.
+ */
+const ChangesRegister = `# WHAT CHANGES / ${String(Changes.length).padStart(2, "0")}`;
+
 const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/COMPARE" }];
 
 /** The substitution matrix's control: its two columns, named by their own heads. */
@@ -137,7 +149,11 @@ const SubstitutionFacets = Columns.map((Column, Index) => ({
 				caption="SOURCE: SOURCE/CONTENT/DOC/COCOON.MD. Both columns are that document's table, verbatim."
 			/>
 
-			<RecordLedger register="WHAT CHANGES" rows={Changes} columns={1} />
+			<RecordLedger
+				register={ChangesRegister}
+				rows={Changes}
+				columns={1}
+			/>
 		</RecordBand>
 
 		{/*

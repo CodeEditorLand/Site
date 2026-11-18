@@ -138,6 +138,30 @@ const ChapterEntries = RouteGroups.map(({ chapter, routes }) => ({
 }));
 
 /**
+ * The chapter index's register, in the site's grammar: `# CHAPTERS / 08`.
+ *
+ * §4.1 of the brief: a register is identity, not copy. The mark says the block
+ * is a register, the label names the set, and the count is the set's own length -
+ * `ChapterEntries.length`, the same array the leader below prints, so a chapter
+ * added to `Content/Index/Chapters.ts` moves the number above the list, the
+ * movement row in the fold and the `BandFoot` figure at the band's foot in one
+ * edit. Three places on this page print that figure; all three read
+ * `RouteGroups.length`, and none of them types it.
+ *
+ * `Leader` folds the caller's mark and count away and recomposes both from
+ * `items`, so the line and the entries cannot disagree in either direction; the
+ * expression exists because the *source* has to state the count too - a register
+ * that only counts at render time reads like copy in the template.
+ *
+ * No arm of this line is `UNAVAILABLE`: `RouteGroups` is derived at build time
+ * from `Source/Generated/Facts/Routes.json`, which this page imports statically -
+ * a build whose facts file is missing fails to resolve rather than printing a
+ * `00` that would claim the document has no chapters. The register's age is a
+ * separate question, and the band's footnote already states it.
+ */
+const ChaptersRegister = `# CHAPTERS / ${String(ChapterEntries.length).padStart(2, "0")}`;
+
+/**
  * The chapters band's references: the two bands on this page that answer the
  * same question in another form. Each carries its reason, because a reference
  * without one is a widget.
@@ -415,7 +439,7 @@ const FormFacets = FormColumns.map((Column, Index) => ({
 				"Each chapter names the job a reader arrives with. The figure at the end of its line is the number of addresses the build answers in that chapter, counted from the same register the archive below files them from.",
 		}}
 	>
-		<Leader items={ChapterEntries} register="CHAPTERS" columns={2} />
+		<Leader items={ChapterEntries} register={ChaptersRegister} columns={2} />
 
 		<BandFoot
 			slot="foot"

@@ -110,6 +110,27 @@ const Scope: readonly LedgerRow[] = [
 ];
 
 /**
+ * The scope ledger's register, in the site's grammar: `# SCOPE / 04`.
+ *
+ * §4.1 of the brief: a register is identity, not copy. The mark says the block
+ * is a register, the label names the set, and the count is the set's own length -
+ * the four facts `Scope` declares, read from the same array the ledger prints, so
+ * a fifth fact added to the scope moves the number above it in the same edit.
+ * `RecordLedger` folds the caller's mark and count away and recomposes both from
+ * `rows`, so the line and the rows cannot disagree in either direction; the
+ * expression exists because the *source* has to state the count too - a register
+ * that only counts at render time reads like copy in the template.
+ *
+ * No arm of this line is `UNAVAILABLE`: the four rows are composed here, and the
+ * three figures among them are read from the board below (`TotalRows`,
+ * `Board.length`, `Vocabulary.length`) at build time. The register counts its own
+ * facts, which is a thing this page always knows; the *values* those facts carry
+ * are the board's question, and the board answers each column from the module
+ * named in its footnote.
+ */
+const ScopeRegister = `# SCOPE / ${String(Scope.length).padStart(2, "0")}`;
+
+/**
  * The head's states. Two words from the vocabulary and nothing else: the board
  * is `ACTIVE` because the records it reads are, and its evidence is
  * `UNAVAILABLE` because eight of the fifteen manifests are placeholders.
@@ -171,7 +192,7 @@ const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/STATUS" }];
 			rail. The declaration strip still prints `LEDGER MATRIX WELLS`, and
 			all three are below it.
 		*/}
-		<RecordLedger register="SCOPE" rows={Scope} columns={2} />
+		<RecordLedger register={ScopeRegister} rows={Scope} columns={2} />
 
 		<RecordBand band={{ ...Bands.Board, index: ColumnLinks }}>
 			<StatusBoard

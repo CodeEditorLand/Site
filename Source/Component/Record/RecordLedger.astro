@@ -42,6 +42,13 @@ interface Props {
 	 * A register line printed above the rows: `# SUMMARY / 04`. The ledger is
 	 * then a *register* rather than a bare list - the shape a summary takes when
 	 * it sits in a page's margin and has to name itself.
+	 *
+	 * The prop takes the register in either of the two shapes the grammar has:
+	 * the set's name (`SUMMARY`), or the whole line (`# SUMMARY / 04`, the shape
+	 * §4.1 of the brief prescribes for a prop). Both print one mark and one
+	 * count, because the mark and the count belong to the block: the caller's
+	 * mark is folded away and the count is re-read from `rows`, so a number
+	 * written at the call site can never outlive the rows it counts.
 	 */
 	register?: string;
 
@@ -114,11 +121,26 @@ const Shell = [
 /** The count is the rows' own length: the register and its rows cannot disagree. */
 const Count = String(rows.length).padStart(2, "0");
 
-/** The register line: the caller's name, then the count the block owns. */
-const RegisterLine =
+/**
+ * The set's name, whatever shape the caller handed in. A register may arrive as
+ * a name (`WHAT CHANGES`) or as the whole line (`# WHAT CHANGES / 08`); the mark
+ * and the count are the block's, so the caller's are folded away here and
+ * composed once below. Only a trailing count (or the state word that stands in
+ * for one) is stripped - a name that carries a slash of its own keeps it.
+ */
+const Name =
 	register === undefined
 		? undefined
-		: `${register} / ${state === "loading" ? "LOADING" : Count}`;
+		: register
+				.trim()
+				.replace(/^#\s*/, "")
+				.replace(/\s*\/\s*(?:[0-9]+|LOADING|UNAVAILABLE)$/, "");
+
+/** The register line: the caller's name, then the count the block owns. */
+const RegisterLine =
+	Name === undefined
+		? undefined
+		: `${Name} / ${state === "loading" ? "LOADING" : Count}`;
 
 /**
  * The rows a skeleton prints. A loading register keeps the keys it was handed -
