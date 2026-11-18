@@ -116,7 +116,7 @@ Located at `Vendor/JellyUI/` (our fork: DependencyCodeEditorLand/Jelly)
 | `Base.astro`              | Shiki+Mermaid dark CSS, jelly.js path | -                                       |
 | `astro.config.ts`         | Shiki dual-theme                      | -                                       |
 | `Route/Integration.ts`    | `_redirects` pass-through             | -                                       |
-| `BuildJellyUIVendor.sh`   | Builds `Public/Vendor/JellyUI/` + `Public/jelly.js` | both gitignored            |
+| `BuildJellyUIVendor.sh`   | Builds `Public/Vendor/JellyUI/` (mirror) | gitignored                 |
 
 ### 8. Debugging Tips
 

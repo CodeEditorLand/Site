@@ -2,15 +2,21 @@
 # Builds the vendored Jelly UI submodule (Vendor/JellyUI, tracking
 # https://github.com/DependencyCodeEditorLand/Jelly - our fork of
 # https://github.com/jelly-org/ui) and mirrors its dist bundle into
-# Public/Vendor/JellyUI/ (+ Public/jelly.js) instead of loading it from the
-# jelly-ui.com CDN.
+# Public/Vendor/JellyUI/ (jelly.js + jelly.d.ts) instead of loading it from
+# the jelly-ui.com CDN.
 #
-# Source/Layout/Base.astro does not read either Public copy: it imports
+# Source/Layout/Base.astro does not read that mirror: it imports
 # Vendor/JellyUI/dist/jelly.js with ?url, and Vite copies + content-hashes
-# that into /_astro/. The Public copies are static mirrors only, and every
-# one of them is generated - they are gitignored, never committed. A tracked
-# bundle goes stale on the next build while the submodule pin still looks
-# current, and `git checkout --` restores the stale runtime.
+# that into /_astro/. The Public mirror is a static copy only, and it is
+# generated - gitignored, never committed. A tracked bundle goes stale on the
+# next build while the submodule pin still looks current, and
+# `git checkout --` restores the stale runtime.
+#
+# The script used to also write Public/Asset/JellyUI/jelly.js and a flat
+# Public/jelly.js. Both were tracked once, both are gone: the Asset copy was
+# a workaround for the /* -> /Visit/ catch-all that the Vite ?url import made
+# obsolete, and nothing ever read the flat copy. Do not reintroduce either
+# path here.
 #
 # Safe to run on every build - it skips work when the built output already
 # matches the pinned submodule commit.

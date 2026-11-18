@@ -16,6 +16,9 @@ lychee-report.md
 # Built by Maintain/Script/BuildJellyUIVendor.sh from Vendor/JellyUI
 # (git submodule) - never hand-edit, never commit.
 Public/Vendor/JellyUI/
+# Legacy paths older revisions of that script wrote. Nothing reads them and
+# no current script produces them; kept ignored so a stale checkout cannot
+# re-add them to the index.
 Public/Asset/JellyUI/
 Public/jelly.js
 Public/jelly.js.map
