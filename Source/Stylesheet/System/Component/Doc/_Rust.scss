@@ -234,7 +234,12 @@
 	cursor: pointer;
 }
 
-.doc-rust__tab:hover {
+/* The hover belongs to a tab the reader can switch TO. The active tab is
+   already the frame on screen, and its label is creme on the ink fill - so a
+   hover that painted it `--Foreground` would put `#1c1c1e` on `#1c1c1e`
+   (1.00:1) and the label would vanish under the cursor. The hover therefore
+   excludes the active tab instead of the active tab out-specifying it. */
+.doc-rust__tab:not(.doc-rust__tab--active):hover {
 	color: var(--Foreground);
 
 	border-color: var(--Primary);
@@ -242,6 +247,12 @@
 
 .doc-rust__tab--active {
 	@include ink-invert;
+
+	/* The label's ink, stated after the include that paints the fill - the order
+	   rule `.surface-button` keeps for the same reason. `.doc-rust__tab` set
+	   `color` to the muted ink, and a fill that does not restate its label is a
+	   filled control with a 3.10:1 word in it. */
+	color: var(--PrimaryForeground);
 
 	border-color: var(--Primary);
 }

@@ -24,7 +24,10 @@
 //   .surface__prose        a paragraph inside a band body
 //   .surface__panel        an island's frame inside a band body
 //   .surface__actions      the action row inside a band body
-//   .surface__action       one action link
+//   .surface__action       the GHOST register: ink label, one `--Divider` rule,
+//                          no fill - the register of a browse action
+//   .surface-button        the INK register: ink fill, creme label - one per
+//                          artifact, and only where the reader commits
 //
 // Owned by P11. Sits beside the Record layer, never inside it: a block's
 // anatomy belongs to the block, and this file writes no `.record-*` selector.
@@ -248,22 +251,44 @@
 	margin-block-start: var(--space-group);
 }
 
+/* ─── THE TWO REGISTERS OF A SURFACE ACTION ──────────────────────────────── */
+// A band can ask the reader for two different things, and the difference is
+// whether they are committing or browsing:
+//
+//   GHOST (`.surface__action`)  ink label, one `--Divider` rule under the
+//                               label, no fill. For a destination: the reader
+//                               is going somewhere else, and the page is not
+//                               asking them to finish anything here.
+//   INK   (`.surface-button`)   ink fill, creme label. For the single action
+//                               that completes a RECORD - one per artifact,
+//                               never two.
+//
+// The ghost is the default, because most in-page actions are routes. The ink
+// register on a band whose only action is a link out is a black slab in a white
+// panel: it borrows the weight of a commitment the reader is not making.
+
+// THE GHOST. The rule is the marker, not a hue: `--Divider` (20 %) is the value
+// every link marker in the system uses, and the hover moves that rule to the
+// ink while the words stay put - the route-link answer `State/_Link.scss` writes
+// down, and the same one `.surface-absent__action` gives below. One line only,
+// so `text-decoration` stays off: a border and an underline under one label is
+// two rules for one link.
 .surface__action {
 	@include mono-meta;
 	@include track(var(--track-row));
 
-	text-decoration: none;
 	color: var(--Foreground);
+	text-decoration: none;
+	border-block-end: 1px solid var(--Divider);
 }
 
-.surface__action:hover {
-	// A surface's action is a route link: its rule is the marker, not a hue.
+.surface__action:hover,
+.surface__action:focus-visible {
+	// The rule is already the action's marker, so the state moves the rule and
+	// leaves the label's ink alone.
 	color: var(--Foreground);
 
-	text-decoration: underline;
-	text-decoration-thickness: 1px;
-	text-decoration-color: var(--Foreground);
-	text-underline-offset: var(--optical-underline-offset);
+	border-block-end-color: var(--Primary);
 }
 
 @include bp(640px) {
@@ -679,12 +704,21 @@
 	padding-block-start: var(--space-group);
 }
 
-// The emphasis-expressive action of a surface: ink fill, creme label, one per
-// artifact, and only on the thing the reader clicks (`_Type.scss`, §5 A6).
+// THE INK REGISTER. The emphasis-expressive action of a surface: ink fill,
+// creme label, and only on the thing the reader clicks (`_Type.scss`, §5 A6).
+// One per artifact, never two, and never on a browse action - a "go somewhere
+// else" link takes `.surface__action` above, because the page's one black slab
+// belongs to the thing the reader finishes, not to the door out of the room.
+//
+// `mono-meta` is included FIRST on purpose: it sets `color` to the muted ink, so
+// an include that states a colour after `ink-invert` would paint `#70685b` on
+// `#1c1c1e` - 3.10:1, a black box with a barely-visible word. The label's ink is
+// stated last, after every include that can touch `color`, and it is stated
+// here rather than left to the mixin's order.
 .surface-button {
-	@include ink-invert;
 	@include mono-meta;
 	@include track(var(--track-row));
+	@include ink-invert;
 
 	display: inline-flex;
 	align-items: center;
@@ -694,6 +728,8 @@
 	text-decoration: none;
 }
 
+// The underline is creme because it follows `currentColor`, which is the label's
+// ink: a filled action's hover adds a line to the label, it never repaints it.
 .surface-button:hover,
 .surface-button:focus-visible {
 	text-decoration: underline;

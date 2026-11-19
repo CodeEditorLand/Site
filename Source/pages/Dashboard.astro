@@ -221,15 +221,22 @@ const MatrixRows = [
 				</div>
 			</SurfaceRegion>
 
-			<!-- 02 Downloads. One fact and the one action that acts on it. -->
+			<!-- 02 Downloads. One fact and the one action that acts on it. The
+			 action is a route: the reader is going to another page, not
+			 finishing something here, so it takes the ghost register
+			 (`surface__action`). The page spends its one ink fill on the
+			 account record's sign-in - the only thing a reader on this page
+			 completes rather than visits - so a band that only offers a door
+			 out takes the rule, not the slab. -->
 			<SurfaceRegion index="# 02" id="downloads" title="Downloads">
 				<div class="surface-panel">
 					<p class="surface-region__standfirst">
 						{Page.downloads.line}
 					</p>
 					<div class="surface__actions">
-						<a class="surface-button" href={Page.downloads.href}>
+						<a class="surface__action" href={Page.downloads.href}>
 							{Page.downloads.label}
+							{"\u2001"}
 							<span aria-hidden="true">→</span>
 						</a>
 					</div>

@@ -39,6 +39,14 @@
 /// markers, table heads. It carries the `name` register by default - a label
 /// beside its value - and a caller that needs another register overrides the
 /// tracking it was given rather than restating the size and ink.
+///
+/// It SETS `color`, which is the one trap in this mixin: a caller painting an
+/// ink fill must state its own ink AFTER this include, never before it. The
+/// mute ink on `--Primary` is 3.10:1 - a filled action whose label is a barely
+/// visible word, which reads as a black box. `_Shell.scss` `.surface-button` and
+/// `Doc/_Rust.scss` `.doc-rust__tab--active` are the two callers that owe their
+/// label to that ordering, and both state it explicitly rather than relying on
+/// which include came last.
 @mixin mono-meta {
 	font-size: var(--type-meta);
 	line-height: var(--type-meta-line);
