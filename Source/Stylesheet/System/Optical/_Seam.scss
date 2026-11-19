@@ -28,8 +28,10 @@
 // ─── 1. THE RULE IN THE MIDDLE OF ITS GUTTER ──────────────────────────────
 
 // The plate and figure channels: a plate in one column, its caption channel in
-// the other, one `--Divider` rule between them at a `--space-group` gap. The rule
-// sat 32px from the plate and 16px from the caption.
+// the other, one `--Divider` rule between them at a `--space-group` gap. On the
+// column's own edge the rule sits 32px from the plate and 16px from the caption's
+// text; the seam takes half the gap off the box and gives it back to the padding,
+// so the rule lands in the middle of the gap and the text does not move.
 @include bp(1024px) {
 	.record-figure--channel .record-figure__caption,
 	.record-plate--channel .record-plate__channel {
@@ -38,13 +40,10 @@
 	}
 }
 
-// The doc article's margin channel. It used to be a column of a grid with a
-// `--space-group` gap, so its rule sat at the column's edge and the seam pulled
-// it back into the middle of that gap. It is now the page's LAST track with the
-// desk (`1fr`) before it: there is no gap to centre a rule in, and the rule at
-// the track's own edge IS the middle of nothing - it is the margin's boundary,
-// where a ruled column's rule belongs. So the seam is retired here rather than
-// moved, and the reading margins keep their own edge.
+// The doc article's margin channel is the page's LAST track with the desk (`1fr`)
+// before it: there is no gap to centre a rule in, and the rule at the track's own
+// edge IS the margin's boundary, where a ruled column's rule belongs. So no seam
+// is applied here, and the reading margins keep their own edge.
 
 // The shell's reading margin, same story: `rail | desk | paper | desk | margin`
 // with no column gaps, so the rule is the column's edge.
@@ -59,7 +58,7 @@
 // form the margin has no vertical rule of its own - it is a row - so each note's
 // left rule is the SEPARATOR between two segments, and removing it would leave
 // four notes running into one another. The queries below therefore name the
-// column form's own container width rather than the old breakpoint.
+// column form's own container width rather than a window breakpoint.
 @container article (min-width: 84rem) {
 	.blog-article__margin .record-margin,
 	.blog-article__margin .record-inset {
@@ -85,7 +84,7 @@
 // The stamp's two 20% rules are what make it read as a stamp rather than a small
 // card, and a band that stops inside the frame's padding reads as a box drawn
 // inside a box. The negative frame padding is the mechanism `Detail/_Rule.scss`
-// uses for the band foot: the rules run to the frame, the mark stays where it was.
+// uses for the band foot: the rules run to the frame, the mark does not move.
 .record-stamp__mark {
 	margin-inline: calc(var(--space-group) * -1);
 	padding-inline: var(--space-group);

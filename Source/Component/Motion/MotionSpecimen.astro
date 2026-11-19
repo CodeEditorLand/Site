@@ -93,7 +93,13 @@ const Span = Motion
 						style={`--span: ${Span}%`}
 					/>
 				</span>
-				<span class="MotionSpecimen__Interval">
+				<span
+					class:list={[
+						"MotionSpecimen__Interval",
+						Motion.intervalText.trim() === "UNAVAILABLE" &&
+							"MotionSpecimen__Interval--unknown",
+					]}
+				>
 					{Motion.intervalText}
 				</span>
 			</div>

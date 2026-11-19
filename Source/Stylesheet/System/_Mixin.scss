@@ -65,8 +65,10 @@
 	padding-inline: var(--Gutter);
 }
 
-/// bp - one breakpoint, taken as a value: 640px, 768px, 1024px and 1280px are the
-/// only four the site uses, so there are no named breakpoints to remember.
+/// bp - one breakpoint, taken as a value. Four steps are the site's: 640px,
+/// 768px, 1024px and 1280px. Three partials carry a step of their own - 1152px
+/// in `_Header.scss`, 1200px in `Dynamic/_Hero.scss`, 1536px in `_Utility.scss`
+/// - and each is one surface's own measurement, not a fifth step of the scale.
 @mixin bp($min) {
 	@media (min-width: $min) {
 		@content;
@@ -93,10 +95,12 @@
 // layer is judged on. Six four-line copies are cheaper than one branch nobody
 // can see.
 //
-// `transform` and `opacity` are the only properties named. `motion-trace` is
-// transform-only because the line it draws is already at its full width and
-// only its scale changes; `motion-resolve` leads with opacity because a state
-// resolving is one printed thing giving way to another.
+// `transform` and `opacity` are the properties named, and `color` for
+// `motion-resolve` alone - a resolution is an ink change, and an ink change
+// that snaps is not a resolve. `motion-trace` is transform-only because the
+// line it draws is already at its full width and only its scale changes;
+// `motion-resolve` leads with opacity because a state resolving is one printed
+// thing giving way to another.
 
 /// motion-enter - the arrival of an affordance: hover, keyboard focus, or the
 /// reveal of a control the reader can use. `$duration` and `$easing` are

@@ -8,30 +8,28 @@
 // carries no fill, which makes it the one box a document stylesheet can paint
 // UNDER the jelly without reaching into the vendored shadow tree.
 //
-// ─── THE FIELD BELONGED TO THE WRAPPER, AND ONLY BY ACCIDENT ───────────────
-//
-// The site had this state. It did not have it on the button.
+// ─── THE FIELD BELONGS TO THE CONTROL ──────────────────────────────────────
 //
 // `State/_Row.scss`, `State/_Card.scss` and `State/_Link.scss` each enrol a list
 // of class names, and `.home-platform__anchor` is on all three. A pointer over
-// one of those anchors paints `--state-field` behind whatever is inside it, so
-// the platform download action - an ink capsule in an enrolled anchor - showed a
-// creme plate with the jelly on top, and the owner read that plate as the Jelly
+// one of those anchors paints `--state-field` behind whatever is inside it, so a
+// platform download action - an ink capsule in an enrolled anchor - shows a
+// creme plate with the jelly on top, and a reader reads that plate as the Jelly
 // button's own state.
 //
-// It was the anchor's. The hero action sits in `<a class="inline-block">` - a
-// Tailwind utility, in no registry - so the same control, with the same inline
-// `--jelly-color-background-accent: var(--Foreground)` /
-// `--jelly-color-foreground-on-accent: var(--Background)` pair and the same
-// radius and height, on the same white surface, showed nothing at all. Two
-// identical buttons, two different states, and the difference was a class name
-// a page author happened to reach for. `inline-block`, `block` and `flex` are
-// exactly the wrappers people reach for, so the accidental case was the common
-// one - and the header's action, the release card's action and the auth shell's
-// sign-in were all on the wrong side of it.
+// It is the anchor's. The same control in a wrapper no registry knows - the hero
+// action sits in `<a class="inline-block">`, a Tailwind utility - shows nothing
+// at all: same inline `--jelly-color-background-accent` /
+// `--jelly-color-foreground-on-accent` pair, same radius, same height, on the
+// same white surface, no state. Two identical buttons, two different states, and
+// the difference is a class name a page author happened to reach for.
+// `inline-block`, `block` and `flex` are exactly the wrappers people reach for,
+// so the accidental case is the common one - and the header's action, the
+// release card's action and the auth shell's sign-in are all on the wrong side
+// of it.
 //
-// The correction is to enrol the CONTROL. A Jelly host paints its own field on
-// hover and its own press on press. It cannot depend on a wrapper's class,
+// So the CONTROL is enrolled, not the wrapper. A Jelly host paints its own field
+// on hover and its own press on press. It cannot depend on a wrapper's class,
 // because it does not consult one.
 //
 // ─── WHY THE HOST'S OWN BACKGROUND, AND NOT A PSEUDO-ELEMENT ───────────────
@@ -96,13 +94,13 @@
 // ─── THE ONE OWNER ─────────────────────────────────────────────────────────
 //
 // `State/_Row.scss`, `State/_Card.scss` and `State/_Link.scss` paint a field on
-// an enrolled anchor. Where that anchor's body IS a Jelly control the host now
-// paints the same pixels, so two declarations would own one box. Today both
-// fields are opaque and the same value, which hides the fault; the first field
-// that gains an alpha, or moves to a different step, turns the wrapper into a
-// darker rectangle than the control it wraps. The press stacks worse than the
-// hover: the wrapper travels 1px AND the host travels 1px, so the control would
-// drop 2px under the pointer.
+// an enrolled anchor. Where that anchor's body IS a Jelly control the host
+// paints the same pixels, so two declarations would own one box. Both fields are
+// opaque and the same value, which hides the fault; the first field that gains
+// an alpha, or moves to a different step, turns the wrapper into a darker
+// rectangle than the control it wraps. The press stacks worse than the hover:
+// the wrapper travels 1px AND the host travels 1px, so the control would drop
+// 2px under the pointer.
 //
 // So the field has exactly one owner, and it is the host. The registry rules
 // read this predicate and stand down on a wrapper whose body is a Jelly
@@ -154,10 +152,7 @@ jelly-icon-button:defined:not([disabled]):not([aria-disabled="true"]):hover {
 // travels `--state-press-travel` and the field deepens one step. It is restated
 // here rather than inherited because the hero's, the platform's and the release
 // card's Jelly buttons carry no `data-slot="button"` (they are the raw element,
-// not the kit adapter), so `$Control` never reached them - and the 1px they did
-// get came from `.home-platform__anchor`'s card press, which this card takes
-// away. Without this rule the platform action would lose its travel and the hero
-// action would never have had one.
+// not the kit adapter), so `$Control` never reaches them.
 //
 // A kit Jelly button carries `data-slot="button"` and `State/_Control.scss`
 // states the same travel at a higher specificity; the two declarations agree, so
@@ -190,9 +185,9 @@ jelly-icon-button:defined:not([disabled]):not([aria-disabled="true"]):not(
 // it paints no line.
 //
 // The declaration is what this removes; whether a browser draws a pixel under an
-// atomic inline child is not something this card measured (it ran no browser),
-// and it does not need to: two anchors that hold the same control must not state
-// two different things about being a link.
+// atomic inline child is not measured here, and it does not need to be: two
+// anchors that hold the same control must not state two different things about
+// being a link.
 //
 // `:where()` keeps this at zero specificity: a component that states its own
 // decoration still wins, which is the law `_Global.scss` states for the whole
@@ -205,8 +200,7 @@ jelly-icon-button:defined:not([disabled]):not([aria-disabled="true"]):not(
 
 // ─── WHAT IS DELIBERATELY ABSENT: `jelly-badge` ────────────────────────────
 //
-// The card that built this file named `jelly-badge` beside the two controls. It
-// does not get a state, and the reason is that a badge is not a control.
+// A badge is not a control, and `jelly-badge` takes no state.
 //
 // `State/_Index.scss` names four materials a state may change - INK, RULE,
 // FIELD, MARK - and a badge IS the mark material, not a target that wears one:

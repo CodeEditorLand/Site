@@ -784,6 +784,51 @@ const Declared: readonly RouteEntry[] = [
 	},
 
 	{
+		Path: "/Specimen/States",
+
+		File: "Specimen/States.astro",
+
+		Kind: "page",
+
+		Canonical: true,
+
+		Baseline: false,
+
+		Heading: "Component/Surface/SurfaceHead.astro",
+
+		Card: "post-baseline",
+
+		// The states gallery: every component of the document against every
+		// condition it is asked, read from the ten family matrices rather than
+		// written again. A lab surface like `/Specimen`, served by `dum Run` and
+		// removed from a production build by the same list.
+		Lab: true,
+	},
+
+	{
+		Path: "/Specimen/Reference",
+
+		File: "Specimen/Reference.astro",
+
+		Kind: "page",
+
+		Canonical: true,
+
+		Baseline: false,
+
+		Heading: "Component/Surface/SurfaceHead.astro",
+
+		Card: "post-baseline",
+
+		// The component reference: one entry per family - what it is for, its
+		// slots, what it is asked, what it may never be, and the row that proves
+		// it - generated from the same family modules the states gallery reads.
+		// A lab surface like `/Specimen/States`, served by `dum Run` and removed
+		// from a production build by the same list.
+		Lab: true,
+	},
+
+	{
 		Path: "/Motion",
 
 		File: "Motion.astro",

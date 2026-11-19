@@ -49,9 +49,10 @@
 import RecordFigure from "../Record/RecordFigure.astro";
 import Register from "../Record/Register.astro";
 import type { Register as RegisterShape } from "../Record/RegisterLine.js";
-import ContactBreadcrumb from "../Contact/ContactBreadcrumb.astro";
+import Trail from "../Route/Trail.astro";
 
 import type { BlogRow, BlogTrailItem } from "./Type.js";
+import { TrailOf } from "./Data.js";
 import type { FieldRecordStatusState } from "../Brand/FieldRecordStatus";
 
 /** One measure on the plate: a label, a figure and its unit. */
@@ -151,7 +152,7 @@ const Seed = (Position: number): string =>
 
 <div class="blog-index">
 	<div class="blog-index__open">
-		<ContactBreadcrumb trail={trail} class="blog-index__trail" />
+		<Trail trail={TrailOf(trail)} class="blog-index__trail" />
 
 		<header class="blog-index__head">
 			<h1 class="blog-index__heading" id={HeadingID}>

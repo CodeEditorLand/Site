@@ -26,6 +26,24 @@
  * nothing. The STATUS row carries the word `LOADING`; the bars are `aria-hidden`,
  * so a screen reader hears one state, not nine rectangles.
  *
+ * ─── TWO FIGURES THE BLOCK NOW OWNS (added by the states gallery) ─────────
+ * A block that cannot express its own figure makes every caller express it, and
+ * two of this block's arms were doing exactly that:
+ *
+ * - `stale` printed `AGE:` only when the caller had already worked the age out
+ *   from the as-of. It now derives the age from `asOf` and prints `AGE: n DAYS`
+ *   on its own; `age` still wins where a caller knows better, so every existing
+ *   rendering is unchanged. Two callers were computing it before handing the
+ *   date over (`Specimen.astro` and `EdgeLeaf`), which is the defect the brief
+ *   names: a prop that cannot express its own figure belongs to the component.
+ * - `too-much` printed `SHOWING: 6 OF 212` and left the remainder as arithmetic
+ *   for the reader. It now prints `ALL: 206 MORE` above the door, computed from
+ *   `total - shown`, and prints nothing when the window is the whole set.
+ *
+ * Both were found by putting every component on one page: the states gallery
+ * asks `MANY` and `STALE` of all 187, and the two arms were the only places the
+ * document asked a reader to subtract.
+ *
  * ─── THE RULES EVERY ARM KEEPS ────────────────────────────────────────────
  * - **A word from the eight.** `status` is one of `READY`, `ACTIVE`, `LOADING`,
  *   `PREPARING`, `VERIFIED`, `UNAVAILABLE`, `INTERRUPTED`, `ARCHIVED`; the tone
@@ -111,7 +129,7 @@ interface Props {
 	/** `stale`: the date the reading was taken (`YYYY-MM-DD`). */
 	asOf?: string;
 
-	/** `stale`: how old that is, in words (`318 DAYS`). */
+	/** `stale`: how old that is, in words (`318 DAYS`). Omitted, derived from `asOf`. */
 	age?: string;
 
 	/**
@@ -201,6 +219,30 @@ const CauseKey: Readonly<Record<AdverseKind, string>> = {
 const Word = status ?? DefaultStatus[kind];
 const Resolved = Tone(Word) ?? "ink";
 
+/**
+ * How old the reading is, derived from the date when the caller gave only the
+ * date.
+ *
+ * A stale arm is the one place a block owns a figure it can compute: the as-of is
+ * the caller's fact, and the age is arithmetic on it. Until this card every caller
+ * worked the age out itself - `Specimen.astro` and `EdgeLeaf` each carried their
+ * own day-count helper - which is the defect `Design-Brief.md` §4.1 names: a prop
+ * that cannot express its own figure is a defect in the component, not in the
+ * caller. `age` still wins where a caller knows better (a printed sheet's date is
+ * the build's, not the render's), so no existing rendering changes.
+ */
+const Age = ((): string | undefined => {
+	if (age !== undefined) return age;
+
+	if (asOf === undefined) return undefined;
+
+	const Then = new Date(`${asOf}T00:00:00Z`).getTime();
+
+	if (Number.isNaN(Then)) return undefined;
+
+	return `${Math.max(0, Math.round((Date.now() - Then) / 86_400_000))} DAYS`;
+})();
+
 const IsStale = kind === "stale";
 const IsTooMuch = kind === "too-much";
 const IsTooLong = kind === "too-long";
@@ -272,12 +314,27 @@ const IsLoading = kind === "loading";
 			</div>
 		) : null}
 
+		{/* The remainder, as a figure rather than a subtraction. `SHOWING: 6 OF
+		    212` leaves the reader to work out what is missing before deciding
+		     whether the door below is worth following; the arm now states it.
+		     It prints only when there IS a remainder, so a complete window never
+		     claims a set beyond itself. */}
+		{IsTooMuch && shown !== undefined && total !== undefined && total > shown ? (
+			<div class="ShellState__row">
+				<dt class="ShellState__key">ALL:</dt>
+				<dd class="ShellState__value ShellState__value--figure">
+					{total - shown}
+					<span class="ShellState__of">MORE</span>
+				</dd>
+			</div>
+		) : null}
+
 		{IsStale && asOf ? (
 			<div class="ShellState__row">
 				<dt class="ShellState__key">AS OF:</dt>
 				<dd class="ShellState__value">
 					{asOf}
-					{age ? <span class="ShellState__age">{age}</span> : null}
+					{Age ? <span class="ShellState__age">{Age}</span> : null}
 				</dd>
 			</div>
 		) : null}

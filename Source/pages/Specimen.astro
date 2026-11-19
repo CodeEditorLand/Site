@@ -40,6 +40,9 @@
  * the same register twice.
  *
  *   head       # SPECIMEN_01, the h1 at L, the `↳` proposition, STATUS: VERIFIED
+ *   /THE GALLERY the sheet's own index of itself: sixteen bands, one row each,
+ *              the figure each matrix counted, the sentence that says what the
+ *              band argues, and the two lines that say what it is read for
  *   /THE SHEET one cell per part, four across, equal, ruled - the index
  *   /THE PLATES seven parts live at 1:1, each with a pinned contract
  *   /THE ABSENCES three parts stated, each with what would be here and why not
@@ -88,6 +91,9 @@
  *              route at rest and after a failed send, a board with an empty shelf,
  *              a glossary run of one word and of ninety, and a routing register
  *              that names the page it is printed on
+ *   /THE APPARATUS the tenth family: motion, the specimen surface's own blocks
+ *              and this card's gallery index, the head, the runtime providers,
+ *              the trail and the blog - and every way they fail without a sound
  *   /THE MATERIAL the six things the document is printed with
  *   /THE REGISTER what the sheet counted, and the file it counted from
  *
@@ -179,6 +185,16 @@ import SpecimenSmall from "../Component/Specimen/SpecimenSmall.astro";
 import SpecimenSmallMatrix from "../Component/Specimen/SpecimenSmallMatrix.astro";
 import SpecimenComposition from "../Component/Specimen/SpecimenComposition.astro";
 import SpecimenCompositionMatrix from "../Component/Specimen/SpecimenCompositionMatrix.astro";
+import SpecimenApparatus from "../Component/Specimen/SpecimenApparatus.astro";
+import SpecimenApparatusMatrix from "../Component/Specimen/SpecimenApparatusMatrix.astro";
+import SpecimenFamilies from "../Component/Specimen/SpecimenFamilies.astro";
+import {
+	Families,
+	FamilyCount,
+	MatrixCellCount,
+	MatrixRowCount,
+} from "../Content/Specimen/Families.js";
+import { SpecimenCount as ApparatusSpecimenCount } from "../Content/Specimen/Apparatus.js";
 import {
 	SpecimenCount as CompositionSpecimenCount,
 	LabCount,
@@ -192,7 +208,7 @@ import Base from "../Layout/Base.astro";
 
 const MetaTitle = "Specimen | Code Editor Land";
 
-const MetaDescription = `The document's own parts, printed: twelve components at 1:1 with their contracts, three stated absences, the nine adverse states composed, the input family's state matrix with its live rows, the overlay family's matrix, dismissal contract and ${OverlaySpecimens.length} live overlays, the display family's matrix, its two verdicts and ${DisplaySpecimens.length} live specimens, the record ledger family's matrix, its twelve improvements and ${RecordSpecimens.length} live rows, the record narrative family's matrix, its twenty-three improvements and ${NarrativeSpecimens.length} live rows, the frame family's matrix, its eleven improvements and ${FrameSpecimens.length} live compositions, the reading family's matrix, its eleven improvements and ${ReadingSpecimens.length} live rows, the composition family's matrix, its verdict on all ${Verdicts.length} Dynamic parts with ${LabCount} lab-only and ${OrphanCount} orphaned, its ten improvements and ${CompositionSpecimenCount} live compositions, the small-surface family's matrix, its eighteen improvements and ${SmallSpecimens.length} live rows across the credential, account, licence, request and reference blocks, and the six things the site is printed with.`;
+const MetaDescription = `The document's own parts, printed: twelve components at 1:1 with their contracts, three stated absences, the nine adverse states composed, the gallery's index of all ${FamilyCount} bands with the figure each matrix counted, the input family's state matrix with its live rows, the overlay family's matrix, dismissal contract and ${OverlaySpecimens.length} live overlays, the display family's matrix, its two verdicts and ${DisplaySpecimens.length} live specimens, the record ledger family's matrix, its twelve improvements and ${RecordSpecimens.length} live rows, the record narrative family's matrix, its twenty-three improvements and ${NarrativeSpecimens.length} live rows, the frame family's matrix, its eleven improvements and ${FrameSpecimens.length} live compositions, the reading family's matrix, its eleven improvements and ${ReadingSpecimens.length} live rows, the composition family's matrix, its verdict on all ${Verdicts.length} Dynamic parts with ${LabCount} lab-only and ${OrphanCount} orphaned, its ten improvements and ${CompositionSpecimenCount} live compositions, the small-surface family's matrix, its eighteen improvements and ${SmallSpecimens.length} live rows across the credential, account, licence, request and reference blocks, the apparatus family's matrix, its thirteen improvements and ${ApparatusSpecimenCount} live rows across motion, the specimen surface, the head, the runtime, the trail and the blog, and the six things the site is printed with.`;
 
 /* ─── THE PARTS, BY DISPOSITION ────────────────────────────────────────── */
 
@@ -334,8 +350,42 @@ const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/SPECIMEN" }];
 		standfirst={Head.proposition}
 		states={[Row("SHEET", "VERIFIED")]}
 	>
+		{/* ─── THE GALLERY ──────────────────────────────────────────── */}
+		{/* The sheet's own contents, and the band this card added. It stands
+		    FIRST because it is the page's index of itself: sixteen bands, one
+		    row each, with the figure each matrix counted and the sentence that
+		    says what the band argues. Before it, the sheet had ten family
+		    bands and no way to survey them - the one surface whose subject is
+		    the design frame was the one surface a reader could not see whole. */}
+		<RecordBand band={{ ...Bands.Gallery, id: "gallery" }}>
+			<SpecimenFamilies
+				families={Families}
+				label="GALLERY"
+				count={`${FamilyCount} BANDS`}
+				empty="No band is filed, so the gallery states that it has nothing to index rather than printing a contents list with no contents."
+			/>
+
+			<p class="specimen-page__note">
+				{FamilyCount} bands: {MatrixCellCount} cells of state matrix
+				printed across {MatrixRowCount} live rows, plus the sheet's own
+				apparatus, the material and the closing register. Every figure is
+				the family module's own export - a component added to a family
+				moves the row above it in the same edit, and the index cannot
+				claim a count the matrix beside it does not print.
+				{` `}The row's `argues` line is the family's question, and its
+				`read` line is what the band prints: a reader who reads only this
+				band has seen the shape of the document.
+				{` `}The conditions every matrix asks, and every component's answer
+				to each, are collected on one page:{" "}
+				<a class="specimen-page__link" href="/Specimen/States">
+					/SPECIMEN/STATES
+				</a>{" "}
+				- the term sheet this index is the table of contents for.
+			</p>
+		</RecordBand>
+
 		{/* ─── THE SHEET ─────────────────────────────────────────────── */}
-		<RecordBand band={Bands.Sheet}>
+		<RecordBand band={{ ...Bands.Sheet, id: "sheet" }}>
 			<SpecimenSheet
 				rows={SheetRows}
 				label="SHEET"
@@ -344,9 +394,10 @@ const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/SPECIMEN" }];
 			/>
 
 			<p class="specimen-page__note">
-				The sheet is the page's index and its adverse state at once: a
-				part that cannot be printed keeps its cell, and the cell says
-				so.
+				The sheet indexes the document's parts - the gallery above
+				indexes the sheet's bands - and it is the page's adverse state
+				at once: a part that cannot be printed keeps its cell, and the
+				cell says so.
 				{` ${PartCount} `} cells, {` ${PrintedCount} `} of them printed
 				and
 				{` ${AbsentCount} `} of them stated.
@@ -354,7 +405,7 @@ const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/SPECIMEN" }];
 		</RecordBand>
 
 		{/* ─── THE PLATES ────────────────────────────────────────────── */}
-		<RecordBand band={Bands.Plates}>
+		<RecordBand band={{ ...Bands.Plates, id: "plates" }}>
 			{PrintedCount === 0 ? (
 				<ShellState
 					kind="empty"
@@ -886,8 +937,53 @@ const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/SPECIMEN" }];
 			</p>
 		</RecordBand>
 
+		{/* ─── THE APPARATUS ─────────────────────────────────────────── */}
+		{/* The tenth family band, and the last before the stock: the parts that
+		    make the document work rather than say something. Motion, the
+		    specimen surface's own blocks and this card's gallery index, the
+		    head, the runtime providers, the trail and the blog. They are one
+		    family because they fail in one way - silently - and the seven
+		    compositions the brief named by hand are columns of the matrix
+		    rather than prose. The matrix and the two argument sections are
+		    static Astro; the rows are static too, except `MotionOrigin`, the
+		    family's one island, mounted `client:visible` exactly as `/Motion`
+		    mounts it. The providers render no markup, so their rows print the
+		    contract each one exposes, and the head's rows print the tags
+		    `TagsOf()` returns - the function the head itself renders from. */}
+		<RecordBand band={{ ...Bands.Apparatus, id: "apparatus" }}>
+			<SpecimenApparatusMatrix />
+
+			<SpecimenApparatus />
+
+			<p class="specimen-page__note">
+				The matrix, the improvements and the rows read one file:
+				Content/Specimen/Apparatus.ts states every cell's disposition,
+				every behaviour the exploration produced with the cell that
+				produced it, the five observations this card did not fix, and
+				every row's arm. A condition added there appears on the matrix's
+				figures, in the columns' own list and in the rows' order with no
+				second edit - the same rule /THE FIELD, /THE OVERLAY, /THE
+				DISPLAY, /THE RECORD, /THE NARRATIVE, /THE FRAME, /THE READING,
+				/THE COMPOSITION and /THE SMALL SURFACES follow.
+				{` `}This band is the tenth about a family rather than a part, and
+				the first whose subject is what the document does when it is
+				working: a motion that explains a change, a specimen that shows
+				one, a head that states one, a provider that carries one. That is
+				why its seven compositions are columns of the matrix and not a
+				paragraph - reduced motion, no trigger, no image, no logo,
+				unfurled, offline and unconfigured are not states a block is
+				styled for; they are the conditions under which the apparatus
+				either tells the truth or lies by omission.
+				{` `}{ApparatusSpecimenCount} rows, seven groups, and not one of
+				them is a screenshot: every state is mounted live, and the three
+				that cannot be mounted - the head, the two providers and the
+				pageview walker - print the contract they expose rather than a
+				picture of a context.
+			</p>
+		</RecordBand>
+
 		{/* ─── THE MATERIAL ──────────────────────────────────────────── */}
-		<RecordBand band={Bands.Material}>
+		<RecordBand band={{ ...Bands.Material, id: "material" }}>
 			<SpecimenMaterial
 				items={Material}
 				label="MATERIAL"
@@ -897,7 +993,7 @@ const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/SPECIMEN" }];
 		</RecordBand>
 
 		{/* ─── THE REGISTER ──────────────────────────────────────────── */}
-		<RecordBand band={Bands.Register}>
+		<RecordBand band={{ ...Bands.Register, id: "register" }}>
 			<div class="specimen-page__register">
 				<RecordLedger
 					rows={RegisterRows}

@@ -2,12 +2,14 @@
 
 // ─── THE DISCLOSURE ─────────────────────────────────────────────────────────
 //
-// `<details>` is the site's only disclosure mechanism and it has nine summaries
-// in eight partials: the page's own contents, the blog article's aside, the
-// download's previous releases, the doc rail's tree and layer, the trust
-// documents' clauses, the shell's drawer, the motion layer's fold and its
-// expand row. Four of them answer the pointer; five do not. None of them states
-// its OPEN state beyond the word swap the component prints.
+// `<details>` is the site's only disclosure mechanism, and the layer enrols nine
+// `<summary>` classes in nine partials: the page's own contents, the blog
+// article's aside, the download's previous releases, the doc rail's tree and
+// layer, the trust documents' clauses, the shell's drawer, the motion layer's
+// fold and its expand row. Some of them answer the pointer in their own partial;
+// the rest do not, and this layer gives them the wash and the ink at zero
+// specificity so the ones that do keep their answer. None of them states its
+// OPEN state beyond the word swap the component prints.
 //
 // ─── OPEN IS A STATE, NOT JUST A SWITCH ───────────────────────────────────
 //
@@ -15,7 +17,7 @@
 // the heading of what it revealed. That is a real state change and the site only
 // half-drew it: the word swapped and the mark turned. What is added here is the
 // rest of it - the label goes to 500, the mark goes to the ink, and the summary's
-// rule steps from the separator's 8 % to the edge's 20 %, because a line that now
+// rule steps from the separator's 8 % to the edge's 20 %, because a line that
 // closes a head is an edge and not a separator (`Detail/_Rule.scss` states the
 // two inks and this reads the same token).
 //
@@ -32,8 +34,8 @@
 $Summary: ":is(.Fold__Summary, .record-aside__summary, .doc-sidebar__trigger, .doc-contents__summary, .doc-layer__summary, .trust-contents__summary, .download-releases__summary, .ShellPanes__drawer-summary, .MotionFold__Summary, .MotionExpand__Row, summary)";
 
 // The triggers that are not `<summary>`: a button that opens a panel states the
-// same thing with `aria-expanded`, and the site has three (the header's drawer,
-// the doc rail's mobile toggle, the sidebar's own). They wear the same states.
+// same thing with `aria-expanded`, and the site has two (the header's drawer and
+// the doc rail's mobile toggle). They wear the same states.
 $Expander: ":is([aria-expanded]:not(summary))";
 
 // ─── REST ───────────────────────────────────────────────────────────────────
@@ -48,9 +50,9 @@ $Expander: ":is([aria-expanded]:not(summary))";
 
 // ─── HOVER: THE FIELD AND THE INK ──────────────────────────────────────────
 //
-// The five summaries that did not answer the pointer now take the wash and the
-// ink. `:where()` so the four that already have a hover keep theirs - the fold's
-// register line, the aside's label, the drawer's row.
+// The summaries that do not answer the pointer in their own partial take the wash
+// and the ink here. `:where()` so the ones that already have a hover keep theirs -
+// the fold's register line, the aside's label, the drawer's row.
 
 :where(#{$Summary}, #{$Expander}):hover {
 	background-color: var(--state-field);

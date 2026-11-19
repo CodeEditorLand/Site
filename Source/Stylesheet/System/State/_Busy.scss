@@ -2,12 +2,12 @@
 
 // ─── BUSY ───────────────────────────────────────────────────────────────────
 //
-// The state a control is in while it waits for the world to answer. The site has
-// the markup for it in six places - `DynamicButton`, `RecordLedger`,
-// `RecordCompare`, `Leader`, `MotionSkeleton`, `MotionFold` all write
-// `aria-busy` - and until this layer the stylesheet had no rule for the
-// attribute anywhere. A busy control looked exactly like a resting one, and the
-// only thing that told the reader anything was a spinner.
+// The state a control is in while it waits for the world to answer. The markup is
+// already there: sixteen components write `aria-busy`, among them
+// `DynamicButton`, `RecordLedger`, `RecordCompare`, `Leader`, `MotionSkeleton`
+// and `MotionFold`. A busy control that looks exactly like a resting one leaves
+// the reader with nothing but a spinner to tell them anything - and a spinner
+// says only that something is happening.
 //
 // ─── NO SPINNER, AND THE REASON IS NOT TASTE ──────────────────────────────
 //
@@ -130,16 +130,16 @@
 // is busy is a control, and the two are the same object at two scales only
 // because they read the same two tokens.
 
-// ─── THE ONE SPINNER LEFT ON THE SITE ─────────────────────────────────────
+// ─── NO SPINNER LEFT ON THE SITE ──────────────────────────────────────────
 //
-// `DynamicButton` rendered `lucide.Loader2` with `animate-spin` inside a busy
-// button; it renders `.StateBusy` now. The two other live spinners
-// (`DynamicResetPassword`, `Auth/Report`) are a bordered div and a `Loader2`
-// inside a status report - they are not controls, and they are replaced by the
-// same readout at their own sites.
+// `DynamicButton` prints `.StateBusy` where it printed `lucide.Loader2` with
+// `animate-spin`. The two spinners outside a control - `DynamicResetPassword`'s
+// bordered ring and `Auth/Report`'s `Loader2` - print the stack form of the same
+// readout at their own sites; neither is a control, so neither takes the inline
+// arm.
 //
 // No suppression rule is written here. A stylesheet that stops a spinner from
 // spinning leaves a frozen glyph on the page - the state present in the DOM and
 // saying nothing - which is the failure this layer exists to remove. The
-// components were changed instead, and the search that finds a new one is
-// `grep -rn "animate-spin" Source/Component`.
+// components print the readout instead, and the search that finds a new spinner
+// is `grep -rn "animate-spin" Source/Component`.

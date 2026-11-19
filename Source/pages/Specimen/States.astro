@@ -1,0 +1,326 @@
+---
+/**
+ * The states gallery: every component of the document in every state it is
+ * asked, on one page, generated from the ten family matrices.
+ *
+ * ─── WHY THIS ROUTE EXISTS ────────────────────────────────────────────────
+ * `/Specimen` prints ten state matrices, one per family, and each is the right
+ * instrument for its own subject. What it cannot do is answer the question a
+ * reader arrives with - "is this component finished?" - because the answer lives
+ * in ten tables, under ten heads, in ten column orders, with ten question sets.
+ *
+ * This page is that answer. It imports the ten families, folds their seventy-five
+ * column keys onto one spine of twenty-two conditions, and reads every cell
+ * through the family's own `MatrixCell` - so a cell here and a cell on the
+ * family's matrix are the same cell, read twice, and the term sheet cannot drift
+ * from the evidence it summarises.
+ *
+ * ─── THIS PAGE IS A LAB SURFACE ───────────────────────────────────────────
+ * Like `/Specimen` it is a tool for the owner and the agents, not a chapter for a
+ * reader: served in development, absent from the production build.
+ * `Function/Configuration/Lab.mjs` lists it in `LabRoute`, `Function/Route/Lab.ts`
+ * removes the emitted directory before the route map is generated, and the
+ * sitemap filter keeps it out of `sitemap-0.xml`. Nothing in this file changes
+ * between the two states - the page simply is not emitted for a reader.
+ *
+ * ─── THE COMPOSITION: SPINE, SHEET, CATALOG, REASONS, UNASKED, WALL, CHANGES ─
+ * The page is the term sheet in the order a term sheet is read: the vocabulary,
+ * the summary, the detail, the evidence, the holes, the live proof, and what the
+ * whole exercise changed.
+ *
+ *   head         # SPECIMEN_02, the h1 at L, the `↳` proposition, STATUS: VERIFIED
+ *   /THE SPINE   the twenty-two conditions: what each asks, the status word it
+ *                answers to where it has one, its figure down the document, and
+ *                the one line saying when the state is right
+ *   /THE SHEET   ten families against the spine, a figure per cell - where a
+ *                family is thin, before reading a single component
+ *   /THE CATALOG every component as one disclosure: closed a strip of cells,
+ *                open the whole ledger with every note and reason in full
+ *   /THE REASONS the sentences that explain a class, with every cell each one
+ *                explains; the singleton reasons print inside their own row
+ *   /THE UNASKED the third disposition, per family - the work list, sorted by
+ *                the size of the hole
+ *   /THE WALL    twenty-two conditions mounted live, one per artifact that owns
+ *                one, each with the same `when` line the spine prints
+ *   /THE CHANGES six behaviours the unified view produced, and the three
+ *                observations this card did not act on
+ *   /THE REGISTER what the gallery counted, and the ten files it counted from
+ *
+ * ─── THE ONE XL IS NOT SPENT HERE ─────────────────────────────────────────
+ * The head's `h1` is L, by the shell family's contract, and this page has no
+ * artifact whose largest type should be the artifact itself - the material band
+ * on `/Specimen` spends that page's XL, and a second page spending one would be
+ * two pages claiming the same rank. The largest type here is a condition's
+ * label in the catalog, which is what the page is about.
+ *
+ * ─── NO NUMBER IS WRITTEN HERE ────────────────────────────────────────────
+ * Every count is derived: the components and cells from the ten families, the
+ * built and impossible cells from their own `MatrixCell`, the distinct sentences
+ * from the reasons themselves. A figure typed into this file would be the one
+ * number on the sheet that could disagree with the sheet.
+ */
+import { Header } from "../../Component/Layout/Header";
+import Onward from "../../Component/More/Onward.astro";
+import RecordBand from "../../Component/Record/RecordBand.astro";
+import RecordLedger from "../../Component/Record/RecordLedger.astro";
+import { RegisterOf } from "../../Component/Record/RegisterLine.js";
+import Trail from "../../Component/Route/Trail.astro";
+import SpecimenGallery from "../../Component/Specimen/SpecimenGallery.astro";
+import SpecimenReasons from "../../Component/Specimen/SpecimenReasons.astro";
+import SpecimenSpine from "../../Component/Specimen/SpecimenSpine.astro";
+import SpecimenWall from "../../Component/Specimen/SpecimenWall.astro";
+import SurfaceShell from "../../Component/Surface/SurfaceShell.astro";
+import { Row } from "../../Component/Surface/State.js";
+import {
+	Bands,
+	BuiltCount,
+	CellCount,
+	ComponentCount,
+	ConditionCount,
+	DistinctReasonCount,
+	FamilyCount,
+	Head,
+	Improvements,
+	MatrixCellCount,
+	Observations,
+	Onward as OnwardCopy,
+	ReasonCount,
+	Register,
+	Reasons,
+	Unasked,
+	UnaskedCount,
+	WallCount,
+} from "../../Content/Specimen/Gallery.js";
+import Base from "../../Layout/Base.astro";
+
+const MetaTitle = "States | Code Editor Land";
+
+const MetaDescription = `Every component of the document in every state it is asked: ${ComponentCount} components against ${ConditionCount} conditions read from the ten family matrices, ${CellCount} cells of which ${BuiltCount} are built, ${ReasonCount} cannot exist and carry a written reason, and ${UnaskedCount} are conditions no matrix asks - plus the ${Reasons.length} shared sentences that explain a class, the work list per family, the ${WallCount} conditions mounted live, and the six behaviours the unified view produced.`;
+
+/** The trail: the index, the sheet, then this gallery. A crumb is a place. */
+const TrailItems = [
+	{ label: "/HOME", href: "/" },
+	{ label: "/SPECIMEN", href: "/Specimen" },
+	{ label: "/STATES" },
+];
+
+/** The register's rows, and the line that counts them. */
+const RegisterRows = Register();
+
+const CountedRegister = RegisterOf("REGISTER", RegisterRows);
+
+/** The families that ask every condition - printed as a fact, not a hope. */
+const Complete = Unasked.filter((Entry) => Entry.conditions.length === 0);
+---
+
+<Base
+	Title={MetaTitle}
+	Description={MetaDescription}
+	Url={Astro.url.href}
+	lang="en"
+>
+	<Header client:load slot="Header" />
+
+	{/* The crumb sits above the shell, the way every surface's does: the trail
+	    is a route statement about the page, and the head is the page's own
+	    opening. A crumb printed under a title reads as a footnote to it. */}
+	<Trail trail={TrailItems} class="gallery-page__trail" />
+
+	<SurfaceShell
+		index={Head.index}
+		title={Head.title}
+		standfirst={Head.proposition}
+		states={[Row("GALLERY", "VERIFIED")]}
+		rows={[
+			{ key: "COMPONENTS:", value: String(ComponentCount) },
+			{ key: "CONDITIONS:", value: String(ConditionCount) },
+			{ key: "CELLS:", value: String(CellCount) },
+			{ key: "FAMILIES:", value: String(FamilyCount) },
+		]}
+	>
+		{/* ─── THE SPINE ────────────────────────────────────────────── */}
+		<RecordBand band={{ ...Bands.Spine, id: "spine" }}>
+			<SpecimenSpine />
+
+			<p class="gallery-page__note">
+				The spine is the gallery's vocabulary and its unit at once: a
+				condition is a column on every other band of this page, and the
+				word it answers to is §1.5's. Eight words state a record's
+				condition; the twelve conditions without one are shapes and
+				contexts, and the cell prints the group rather than leaving a
+				blank - a blank cell in a table of dispositions is an excuse where
+				a fact belongs.
+				{` `}The figure under each condition is the transposed view no
+				family matrix can print, because a family knows its own rows and
+				not the document's. It is also where an unasked condition shows
+				itself: a condition reading `0 / 0` is one no matrix asks at all,
+				and /THE UNASKED names the family that would have to.
+			</p>
+		</RecordBand>
+
+		{/* ─── THE SHEET ────────────────────────────────────────────── */}
+		<RecordBand band={{ ...Bands.Sheet, id: "sheet" }}>
+			<SpecimenGallery part="sheet" />
+
+			<p class="gallery-page__note">
+				Ten families against {ConditionCount} conditions, and every figure
+				in the grid is counted from the family's own rows: a component
+				added to `Frame.ts` moves a cell here in the same edit. The matrix
+				reads the same tables the family's own matrix reads, through the
+				same `MatrixCell`, so the two cannot disagree - which is the only
+				property a term sheet has to have.
+				{` `}The ten matrices print {MatrixCellCount} cells between them in
+				their own column sets; this page reads {CellCount} because it asks
+				every component every condition, including the ones a family's
+				matrix never put a column against.
+			</p>
+		</RecordBand>
+
+		{/* ─── THE CATALOG ──────────────────────────────────────────── */}
+		<RecordBand band={{ ...Bands.Catalog, id: "catalog" }}>
+			<SpecimenGallery part="catalog" />
+
+			<p class="gallery-page__note">
+				Each row is a disclosure, and that is the card's one piece of
+				advanced behaviour: the browser's own `details` / `summary`
+				element gives the keyboard path, the strip gives the scan, and the
+				open row gives the evidence in full. A footnote per cell would be
+				thousands of numbers to chase at this scale, and a reason
+				truncated to fit a six-rem column would be an excuse rather than a
+				fact.
+				{` `}The row's address is stable -{" "}
+				<code>/Specimen/States#row-frame-shell</code> opens one component's
+				ledger - because the first thing a reader does with a term sheet is
+				send someone a line of it.
+				{` `}Each line names its condition and the family's own column it was
+				read from; the sentence that says when that condition is right is
+				printed once in /THE SPINE rather than four thousand times here,
+				which is the difference between a term sheet and a wall of repeated
+				prose.
+			</p>
+		</RecordBand>
+
+		{/* ─── THE REASONS ──────────────────────────────────────────── */}
+		<RecordBand band={{ ...Bands.Reasons, id: "reasons" }}>
+			<SpecimenReasons part="reasons" />
+
+			<p class="gallery-page__note">
+				{DistinctReasonCount} distinct sentences explain the document's
+				impossible cells, and {Reasons.length} of them explain more than
+				one: those are the sentences that say what a CLASS of parts cannot
+				be, and they are printed here in full. The rest are written per
+				component and print inside that component's own row above, which is
+				where a reader who wants one reason will look.
+				{` `}The grouping is exact - identical text, nothing inferred, no
+				sentence shortened - so the register can be checked against the
+				cells it claims.
+			</p>
+		</RecordBand>
+
+		{/* ─── THE UNASKED ──────────────────────────────────────────── */}
+		<RecordBand band={{ ...Bands.Unasked, id: "unasked" }}>
+			<SpecimenReasons part="unasked" />
+
+			<p class="gallery-page__note">
+				{UnaskedCount} cells are neither built nor impossible: they are
+				conditions a family's matrix has no column for, and this band is
+				the work list. {Complete.length === 0
+					? "No family asks every condition on the spine, which is the finding rather than a failure - ten matrices were written for ten subjects, and each one left the other nine's questions to the others."
+					: `${Complete.length} of the ${FamilyCount} families ask every condition on the spine.`}
+				{` `}The list is sorted by the size of the hole, so a card that
+				picks this up starts where the most cells are unaccounted for.
+			</p>
+		</RecordBand>
+
+		{/* ─── THE WALL ─────────────────────────────────────────────── */}
+		<RecordBand band={{ ...Bands.Wall, id: "wall" }}>
+			<SpecimenWall />
+
+			<p class="gallery-page__note">
+				The wall is the page's proof that the spine is not a taxonomy: each
+				condition is mounted on the artifact that owns it, and the `WHEN IT
+				IS RIGHT` line is the same sentence the spine prints, read from one
+				entry rather than written twice. Two rows - `ON PAPER` and
+				`REDUCED` - cannot be photographed on screen at all, and print the
+				contract they expose instead.
+				{` `}Nothing here is a screenshot: a picture of a state cannot be
+				composed with, and this page exists so that the next composition
+				can start from a state rather than from a mock.
+			</p>
+		</RecordBand>
+
+		{/* ─── THE CHANGES ──────────────────────────────────────────── */}
+		<RecordBand band={{ ...Bands.Improvements, id: "changes" }}>
+			<div class="gallery-page__changes">
+				<p class="gallery-page__changes-head">
+					<span class="gallery-page__changes-label">IMPROVEMENTS:</span>
+					<span class="gallery-page__changes-figure">
+						{Improvements.length} BEHAVIOURS / EACH WITH THE CELL BEHIND IT
+					</span>
+				</p>
+
+				<ol class="gallery-page__changes-list">
+					{Improvements.map((Improvement) => (
+						<li class="gallery-page__change">
+							<p class="gallery-page__change-head">
+								<span class="gallery-page__change-component">
+									{Improvement.component}
+								</span>
+								<span class="gallery-page__change-from">
+									FROM: {Improvement.from}
+								</span>
+							</p>
+							<p class="gallery-page__change-found">
+								<span class="gallery-page__change-key">FOUND:</span>
+								{Improvement.found}
+							</p>
+							<p class="gallery-page__change-now">
+								<span class="gallery-page__change-key">NOW:</span>
+								{Improvement.now}
+							</p>
+						</li>
+					))}
+				</ol>
+
+				<p class="gallery-page__changes-head">
+					<span class="gallery-page__changes-label">OBSERVATIONS:</span>
+					<span class="gallery-page__changes-figure">
+						{Observations.length} THINGS THIS CARD DID NOT FIX
+					</span>
+				</p>
+
+				<ol class="gallery-page__changes-list">
+					{Observations.map((Observation) => (
+						<li class="gallery-page__change">
+							<p class="gallery-page__change-head">
+								<span class="gallery-page__change-component">
+									{Observation.subject}
+								</span>
+								<span class="gallery-page__change-from">
+									OWNER: {Observation.owner}
+								</span>
+							</p>
+							<p class="gallery-page__change-found">
+								<span class="gallery-page__change-key">NOTE:</span>
+								{Observation.note}
+							</p>
+						</li>
+					))}
+				</ol>
+			</div>
+		</RecordBand>
+
+		{/* ─── THE REGISTER ─────────────────────────────────────────── */}
+		<RecordBand band={{ ...Bands.Register, id: "register" }}>
+			<div class="gallery-page__register">
+				<RecordLedger
+					rows={RegisterRows}
+					columns={2}
+					register={CountedRegister}
+				/>
+			</div>
+
+			<Onward slot="foot" rows={OnwardCopy.rows} copy={OnwardCopy.copy} />
+		</RecordBand>
+	</SurfaceShell>
+</Base>

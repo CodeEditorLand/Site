@@ -5,8 +5,9 @@
 //
 // The row is the site's most repeated interactive object: an archive entry, a
 // ledger row, a status-board record, a lexicon term, an onward destination, a
-// rail position, a fold line. They live in eleven partials and they had eleven
-// answers to the same three questions. This partial is the one answer.
+// rail position, a fold line. They live across the component families and the
+// record layer, and every partial that draws one answers the same three
+// questions. This partial is the one answer.
 //
 // ─── HOVER IS A FIELD. SELECTION IS A MARK. CURRENT IS A RULE. ─────────────
 //
@@ -68,8 +69,9 @@ $Row: ':is(.record-archive__link, .record-entry__link, .record-band__index-item,
 // ─── REST ───────────────────────────────────────────────────────────────────
 //
 // The cursor is the one thing a row must state at rest: a row that opens a page
-// is a pointer, a row that only prints is a default arrow, and the site had both
-// on the same list. Every row in this list is a target.
+// is a pointer, a row that only prints is a default arrow, and a list that
+// carries both tells the reader two things about one row. Every row in this list
+// is a target.
 
 #{$Row} {
 	cursor: pointer;
@@ -80,16 +82,17 @@ $Row: ':is(.record-archive__link, .record-entry__link, .record-band__index-item,
 
 // ─── HOVER: THE WASH, WHERE THE PARTIAL HAS NOT DRAWN IT ───────────────────
 //
-// Most rows already answer the pointer; the ones that do not (the status board's
-// records, the lexicon's terms, the onward register, the rail's positions) are
-// the ones this rule is for. `:where()` keeps it at zero specificity, so a row
-// that has its own hover - the archive's sliding title, the ledger's travelling
-// value, the item grammar's wash - keeps it and this rule never fires there.
+// Most rows already answer the pointer; the ones that do not - the rail's
+// positions - are the ones this rule is for. `:where()` keeps it at zero
+// specificity, so a row that has its own hover - the archive's sliding title,
+// the ledger's travelling value, the item grammar's wash, the status board's
+// records, the lexicon's terms, the onward register, the fold's lines - keeps it
+// and this rule never fires there.
 //
 // `#{$NotJellyBody}` (`State/_Button.scss`) stands this rule down on a row whose
 // body is a Jelly control: `.home-platform__anchor` is a row AND an anchor a page
-// author wrapped a button in, and the host paints that field itself now. One
-// owner, and it is the control.
+// author wrapped a button in, and the host paints that field itself. One owner,
+// and it is the control.
 
 :where(#{$Row}#{$NotJellyBody}):hover {
 	background-color: var(--state-field);

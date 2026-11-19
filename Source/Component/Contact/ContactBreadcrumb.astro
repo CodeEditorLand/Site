@@ -11,15 +11,17 @@
  *
  * So the markup moved to `Component/Route/Trail.astro`, which is the survivor,
  * and this file now renders it. It is kept rather than deleted because a card
- * does not delete a component, and because two Blog components still import it
- * (`Blog/BlogIndex.astro:38`, `Blog/BlogArticle.astro:32`). Those are not this
- * card's files, so this file is where their labels are written into the grammar:
+ * does not delete a component. The two Blog components that used to import it
+ * (`Blog/BlogIndex.astro`, `Blog/BlogArticle.astro`) now import `Route/Trail`
+ * directly and write their own crumbs through `Blog/Data.ts`'s `TrailOf`, so the
+ * blog no longer reaches through a Contact-named adapter for the site's
+ * breadcrumb. The transform stays here for any caller that has not moved:
  * a caller that hands in `Home` gets `/HOME`, and a caller that already writes
  * `/HOME` gets `/HOME` back unchanged. The transform lives here rather than in
  * `Trail` because `Trail` prints its label as written and never re-cases it.
  *
- * A card that owns the Blog should pass `/HOME` and `/BLOG` itself and delete
- * this file together with its two imports.
+ * Nothing in this file's markup or transform changed when the blog moved - the
+ * note is the only edit, and it records what the blog now does.
  */
 import Trail from "../Route/Trail.astro";
 import type { TrailItem } from "../Route/Type.js";

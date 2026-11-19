@@ -98,7 +98,11 @@ export const Lab =
  *
  * @type {readonly string[]}
  */
-export const LabRoute = Object.freeze(["/Specimen"]);
+export const LabRoute = Object.freeze([
+	"/Specimen",
+	"/Specimen/States",
+	"/Specimen/Reference",
+]);
 
 /**
  * The lab routes as a set of lower-cased paths.

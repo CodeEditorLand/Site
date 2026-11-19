@@ -333,3 +333,30 @@ export const BuildAside = (Entry: BlogEntry): Aside => ({
  */
 export const RegisterEmpty =
 	"No register: this piece has fewer than five sections, so it is read in one run rather than navigated. The heading floor is five because two or three headings read as a document that happens to have sections.";
+
+/**
+ * The trail's crumbs, written into the site's one grammar.
+ *
+ * A trail prints its label EXACTLY as the caller wrote it - that is the
+ * component's contract, and it is what stops a route statement from being
+ * re-cased by whichever surface happens to render it. The blog's pages hand in
+ * their labels from i18n (`Home`, `Blog`), so the grammar has to be written
+ * somewhere between the page and the trail.
+ *
+ * It used to be written by `Contact/ContactBreadcrumb.astro`, the absorbed
+ * bridge: a Contact-named adapter was the last thing the blog reached through
+ * for the site's breadcrumb, which is how a bridge outlives the thing it
+ * bridged. The two blog surfaces now import `Route/Trail` directly and write
+ * their own crumbs, and the bridge is left untouched for any caller that has
+ * not moved.
+ *
+ * One leading slash, upper case, nothing else - the same rule the bridge used,
+ * so the rendered trail is byte-for-byte what it was.
+ */
+export const TrailOf = (
+	Crumbs: readonly { readonly label: string; readonly href?: string }[],
+): readonly { readonly label: string; readonly href?: string }[] =>
+	Crumbs.map((Crumb) => ({
+		...Crumb,
+		label: `/${Crumb.label.replace(/^\/+/, "").toUpperCase()}`,
+	}));

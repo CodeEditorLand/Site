@@ -1,0 +1,633 @@
+---
+/**
+ * SpecimenReference - the component reference, at two magnifications.
+ *
+ * ─── WHAT THIS BLOCK IS FOR ───────────────────────────────────────────────
+ * `Content/Specimen/Reference.ts` reads the ten families and states what each
+ * one is for, what a page may put in it, what it is already asked to survive,
+ * what it may never be and the one live row that proves it. This block prints
+ * that model. It decides nothing: every sentence, every figure, every
+ * prohibition and every proof row arrives from the module, which reads them from
+ * the family matrices themselves.
+ *
+ * `part="contract"` prints the seven laws of the component contract - the ones
+ * that hold before any family's own matrix is read. `part="families"` prints the
+ * ten entries.
+ *
+ * ─── THE DISCLOSURE IS THE WHOLE INTERACTION ──────────────────────────────
+ * Ten entries, each with five sections and a matrix of up to twenty-four
+ * columns, is a document nobody can scan open. So an entry is a `<details>`:
+ * shut, it is the family's mark, its band, its figures and its proof row - the
+ * four things a reader needs to know whether this is the family they want. Open,
+ * it is the whole entry, with the matrix resolving every impossible cell to the
+ * sentence that explains it.
+ *
+ * `<details>` is the browser's own disclosure, so the keyboard path is Tab and
+ * Enter rather than a script, and the state is the `open` attribute rather than
+ * a class. The one line of script at the foot opens a row reached by an address
+ * - `/Specimen/Reference#entry-reading` - because a reader who follows a link to
+ * an entry expects the entry, not its summary. That is the same behaviour
+ * `SpecimenGallery` ships, for the same reason.
+ *
+ * ─── THE MATRIX RESOLVES, IT DOES NOT REPEAT ──────────────────────────────
+ * A cell marked `N/A` prints a superscript number, and the number is the
+ * position of the family's own sentence in the list printed under the table.
+ * Repeating a two-hundred-word sentence in a six-rem cell would bury the cells
+ * that do have something to say; printing `N/A` with no way to resolve it would
+ * be an excuse. The number is the only arrangement that is both readable and
+ * complete.
+ *
+ * ─── NOTHING IS TRUNCATED AND NOTHING IS SUMMARISED ───────────────────────
+ * Every sentence the model carries prints in full, at the caption step, in the
+ * mono face the rest of the sheet uses. The reference is a document a
+ * contributor reads before touching a component; a shortened reason is the one
+ * thing it may not contain.
+ *
+ * No hydration directive: the block is static apart from one hash handler.
+ */
+import Mark from "../Mark/Mark.astro";
+
+import { Padded } from "../Record/RegisterLine.js";
+
+import {
+	Contract,
+	EntryCount,
+	Reference,
+	SlotCount,
+	Unasked,
+} from "../../Content/Specimen/Reference.js";
+
+interface Props {
+	/** Which magnification: the contract's seven laws, or the ten entries. */
+	part: "contract" | "families";
+}
+
+const { part } = Astro.props;
+
+/** `01` - the entry's position, printed after `#`. */
+const Index = (Entry: (typeof Reference)[number]): string =>
+	Entry.index.replace(/^#\s*/, "");
+
+/** The anchor of one entry, so a line of the reference can be sent to someone. */
+const Anchor = (Entry: (typeof Reference)[number]): string =>
+	`entry-${Entry.band.replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "").toLowerCase()}`;
+
+/** The anchor of one prohibition, so a matrix cell's number can be a link. */
+const LawAnchor = (
+	Entry: (typeof Reference)[number],
+	Position: number,
+): string => `${Anchor(Entry)}-law-${Position}`;
+
+/**
+ * The gallery's row for a component, so the proof row can be seen live.
+ *
+ * `SpecimenGallery` builds its anchors from the component's `FAMILY/NAME` id;
+ * this is the same transformation applied to the two fields the entry carries,
+ * so the two pages agree on the address without this block importing the
+ * gallery's markup.
+ */
+const LiveRow = (Family: string, Component: string): string =>
+	`/Specimen/States#row-${`${Family}/${Component}`.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+
+/** The conditions a family never asks, by band. */
+const UnaskedOf = (Band: string) =>
+	Unasked.find((Entry) => Entry.band === Band) ?? { conditions: [], cells: 0 };
+---
+
+{
+	part === "contract" ? (
+		<figure class="reference-contract" id="contract">
+			<p class="reference-contract__head">
+				<span class="reference-contract__head-label">THE CONTRACT:</span>
+				<span class="reference-contract__head-figure">
+					{Contract.length} LAWS / §4.2 - §4.4 / {EntryCount} FAMILIES BOUND
+					BY THEM
+				</span>
+			</p>
+
+			<ol class="reference-contract__list">
+				{Contract.map((Law, Position) => (
+					<li class="reference-contract__law">
+						<p class="reference-contract__law-head">
+							<span class="reference-contract__law-index">
+								〈{Padded(Position + 1)}〉
+							</span>
+							<span class="reference-contract__law-title">{Law.law}</span>
+							<span class="reference-contract__law-source">
+								DESIGN-COMPLETE {Law.source}
+							</span>
+						</p>
+
+						<p class="reference-contract__law-means">
+							<span class="reference-contract__key">MEANS:</span>
+							{Law.means}
+						</p>
+
+						<p class="reference-contract__law-check">
+							<span class="reference-contract__key">CHECK:</span>
+							{Law.check}
+						</p>
+					</li>
+				))}
+			</ol>
+		</figure>
+	) : (
+		<div class="reference" id="families">
+			<p class="reference__head">
+				<span class="reference__head-label">THE REFERENCE:</span>
+				<span class="reference__head-figure">
+					{EntryCount} FAMILIES / {SlotCount} SLOTS / ONE ENTRY EACH
+				</span>
+			</p>
+
+			{Reference.map((Entry) => {
+				const UnaskedRow = UnaskedOf(Entry.band);
+
+				return (
+					<section class="reference-entry" id={Anchor(Entry)}>
+						<details class="reference-entry__fold">
+							<summary class="reference-entry__summary">
+								<span class="reference-entry__mark" aria-hidden="true">
+									#
+								</span>
+								<span class="reference-entry__index">{Index(Entry)}</span>
+								<span class="reference-entry__band">
+									<Mark kind="square" />
+									{Entry.band}
+								</span>
+								<span class="reference-entry__figure">
+									{Entry.figures.components} COMPONENTS × {Entry.figures.columns}
+									{" "}COLUMNS / {Entry.figures.cells} CELLS /{" "}
+									{Entry.figures.built} BUILT
+								</span>
+								<span class="reference-entry__proof-mark">
+									{Entry.proof === undefined
+										? "◎ PROOF: UNAVAILABLE"
+										: `PROOF: ${Entry.proof.mark}`}
+								</span>
+							</summary>
+
+							<div class="reference-entry__body">
+								{/* ── FOR ────────────────────────────────────────── */}
+								<p class="reference-entry__for">
+									<span class="reference-entry__key">FOR:</span>
+									{Entry.for}
+								</p>
+
+								<p class="reference-entry__read">
+									<span class="reference-entry__key">READ FOR:</span>
+									{Entry.read}
+								</p>
+
+								<p class="reference-entry__gap">
+									<span class="reference-entry__key">ITS BOUNDARY:</span>
+									{Entry.gap}
+								</p>
+
+								{/* ── FIGURES ────────────────────────────────────── */}
+								<p class="reference-entry__head-line">
+									<span class="reference-entry__head-label">FIGURES:</span>
+									<span class="reference-entry__head-figure">
+										{Entry.figures.components} SLOTS / {Entry.states.length}
+										{" "}STATES / {Entry.combinations.length} COMBINATIONS
+									</span>
+								</p>
+
+								<dl class="reference-entry__ledger">
+									<div class="reference-entry__line">
+										<dt>ITS OWN MATRIX:</dt>
+										<dd>
+											{Entry.figures.cells} CELLS / {Entry.figures.built} BUILT /{" "}
+											{Entry.figures.reasons} N/A
+										</dd>
+									</div>
+
+									<div class="reference-entry__line">
+										<dt>AGAINST THE SPINE:</dt>
+										<dd>
+											{Entry.figures.spine.built} BUILT /{" "}
+											{Entry.figures.spine.reasons} N/A /{" "}
+											{Entry.figures.spine.unasked} UNASKED OF{" "}
+											{Entry.figures.spine.of}
+										</dd>
+									</div>
+
+									<div class="reference-entry__line">
+										<dt>LIVE ROWS:</dt>
+										<dd>
+											{Entry.figures.specimens} IN {Entry.figures.groups} GROUPS
+										</dd>
+									</div>
+
+									<div class="reference-entry__line">
+										<dt>PROHIBITIONS:</dt>
+										<dd>
+											{Entry.figures.laws} SENTENCES /{" "}
+											{Entry.figures.changes} BEHAVIOURS RECORDED
+										</dd>
+									</div>
+								</dl>
+
+								{/* ── SLOTS ──────────────────────────────────────── */}
+								<p class="reference-entry__head-line">
+									<span class="reference-entry__head-label">ITS SLOTS:</span>
+									<span class="reference-entry__head-figure">
+										{Entry.figures.components} PARTS A PAGE MAY MOUNT / BUILT
+										COUNTED AGAINST THE SPINE'S {Entry.figures.spine.of}
+									</span>
+								</p>
+
+								<div class="reference-entry__scroll">
+									<table class="reference-entry__table">
+										<thead>
+											<tr>
+												<th scope="col">PART</th>
+												<th scope="col">FILE</th>
+												<th scope="col">WHAT IT IS</th>
+												<th scope="col">BUILT</th>
+											</tr>
+										</thead>
+										<tbody>
+											{Entry.slots.map((Slot) => (
+												<tr>
+													<td class="reference-entry__cell-name">{Slot.name}</td>
+													<td class="reference-entry__cell-code">{Slot.file}</td>
+													<td class="reference-entry__cell-note">{Slot.note}</td>
+													<td class="reference-entry__cell-figure">
+														{Slot.built} OF {Slot.of}
+													</td>
+												</tr>
+											))}
+										</tbody>
+									</table>
+								</div>
+
+								{/* ── ASKED ──────────────────────────────────────── */}
+								<p class="reference-entry__head-line">
+									<span class="reference-entry__head-label">ITS STATES:</span>
+									<span class="reference-entry__head-figure">
+										{Entry.states.length} CONDITIONS IT IS ASKED
+									</span>
+								</p>
+
+								<ul class="reference-entry__asked">
+									{Entry.states.map((Column) => (
+										<li class="reference-entry__asked-row">
+											<span class="reference-entry__asked-label">
+												{Column.label}
+											</span>
+											<span class="reference-entry__asked-ask">{Column.ask}</span>
+											<span class="reference-entry__asked-figure">
+												{Column.built} OF {Column.of}
+											</span>
+										</li>
+									))}
+								</ul>
+
+								<p class="reference-entry__head-line">
+									<span class="reference-entry__head-label">
+										ITS COMBINATIONS:
+									</span>
+									<span class="reference-entry__head-figure">
+										{Entry.combinations.length} SHAPES AND CONTEXTS
+									</span>
+								</p>
+
+								<ul class="reference-entry__asked">
+									{Entry.combinations.map((Column) => (
+										<li class="reference-entry__asked-row">
+											<span class="reference-entry__asked-label">
+												{Column.label}
+											</span>
+											<span class="reference-entry__asked-ask">
+												{Column.group}: {Column.ask}
+											</span>
+											<span class="reference-entry__asked-figure">
+												{Column.built} OF {Column.of}
+											</span>
+										</li>
+									))}
+								</ul>
+
+								{/* ── NEVER ──────────────────────────────────────── */}
+								<p class="reference-entry__head-line">
+									<span class="reference-entry__head-label">
+										WHAT IT MAY NEVER BE:
+									</span>
+									<span class="reference-entry__head-figure">
+										{Entry.figures.laws} SENTENCES / THE FOUR THAT FORBID MOST
+									</span>
+								</p>
+
+								<ol class="reference-entry__laws">
+									{Entry.strongest.map((Law) => {
+										const Position = Entry.laws.indexOf(Law) + 1;
+
+										return (
+											<li class="reference-entry__law" id={LawAnchor(Entry, Position)}>
+												<p class="reference-entry__law-head">
+													<span class="reference-entry__law-index">
+														〈{Padded(Position)}〉
+													</span>
+													<span class="reference-entry__law-count">
+														{Law.count} CELL{Law.count === 1 ? "" : "S"}
+													</span>
+												</p>
+												<p class="reference-entry__law-text">{Law.text}</p>
+												<p class="reference-entry__law-cells">
+													{Law.cells.join(" / ")}
+												</p>
+											</li>
+										);
+									})}
+								</ol>
+
+								{/* ── MATRIX ─────────────────────────────────────── */}
+								<p class="reference-entry__head-line">
+									<span class="reference-entry__head-label">ITS MATRIX:</span>
+									<span class="reference-entry__head-figure">
+										{Entry.figures.components} ROWS × {Entry.figures.columns} COLUMNS /
+										CELLS ARE BUILT OR N/A WITH THE SENTENCE BELOW
+									</span>
+								</p>
+
+								<p class="reference-entry__matrix-note-line">
+									A built cell's own note - how that combination was built - is on{" "}
+									<a href="/Specimen/States">the states gallery</a>, where the row
+									opens; this table is the scan, and the sentence under it is the
+									evidence for every cell that cannot exist.
+								</p>
+
+								<div class="reference-entry__scroll">
+									<table class="reference-entry__matrix">
+										<thead>
+											<tr>
+												<th class="reference-entry__matrix-corner" scope="col">
+													PART
+												</th>
+												{Entry.matrix.columns.map((Column) => (
+													<th scope="col" title={`${Column.label}: ${Column.ask}`}>
+														<span class="reference-entry__matrix-head">
+															{Column.label}
+														</span>
+													</th>
+												))}
+											</tr>
+										</thead>
+										<tbody>
+											{Entry.matrix.rows.map((Row) => (
+												<tr>
+													<th class="reference-entry__matrix-name" scope="row">
+														{Row.name}
+													</th>
+													{Row.cells.map((Cell, Position) => (
+														<td
+															class="reference-entry__matrix-cell"
+															data-disposition={Cell.disposition}
+														>
+															{Cell.disposition === "built" ? (
+																<span aria-label="built">▪</span>
+															) : Cell.law === undefined ? (
+																<span class="reference-entry__matrix-na">N/A</span>
+															) : (
+																<a
+																	class="reference-entry__matrix-na"
+																	href={`#${LawAnchor(Entry, Cell.law)}`}
+																>
+																	N/A<sup>{Cell.law}</sup>
+																</a>
+															)}
+															<span class="reference-entry__visually-hidden">
+																{Entry.matrix.columns[Position]?.label}:{" "}
+																{Cell.disposition === "built"
+																	? (Cell.note ?? "built")
+																	: `not applicable, reason ${Cell.law ?? "UNAVAILABLE"}`}
+															</span>
+														</td>
+													))}
+												</tr>
+											))}
+										</tbody>
+									</table>
+								</div>
+
+								<p class="reference-entry__head-line">
+									<span class="reference-entry__head-label">
+										EVERY SENTENCE THE MATRIX USES:
+									</span>
+									<span class="reference-entry__head-figure">
+										{Entry.figures.laws} PROHIBITIONS / NUMBERED AS THE CELLS
+										REFERENCE THEM
+									</span>
+								</p>
+
+								<ol class="reference-entry__laws">
+									{Entry.laws.map((Law, Position) => (
+										<li class="reference-entry__law" id={LawAnchor(Entry, Position + 1)}>
+											<p class="reference-entry__law-head">
+												<span class="reference-entry__law-index">
+													〈{Padded(Position + 1)}〉
+												</span>
+												<span class="reference-entry__law-count">
+													{Law.count} CELL{Law.count === 1 ? "" : "S"}
+												</span>
+											</p>
+											<p class="reference-entry__law-text">{Law.text}</p>
+											<p class="reference-entry__law-cells">{Law.cells.join(" / ")}</p>
+										</li>
+									))}
+								</ol>
+
+								{/* ── PROOF ──────────────────────────────────────── */}
+								<p class="reference-entry__head-line">
+									<span class="reference-entry__head-label">
+										THE ROW THAT PROVES IT:
+									</span>
+									<span class="reference-entry__head-figure">
+										{Entry.proof === undefined
+											? "◎ UNAVAILABLE"
+											: `${Entry.proof.mark} / ${Entry.proof.state}`}
+									</span>
+								</p>
+
+								{Entry.proof === undefined ? (
+									<p class="reference-entry__absent">
+										<span class="reference-entry__key">◎ PROOF: UNAVAILABLE</span>
+										The reference names the mark{" "}
+										<code>{Entry.proofAbsent}</code> as this family's proof, and
+										the family's <code>Specimens</code> no longer carries it - so
+										the pointer is stated rather than resolved, because a proof
+										that names a row nobody prints is a claim with no source.
+									</p>
+								) : (
+									<figure class="reference-entry__proof">
+										<p class="reference-entry__proof-head">
+											<span class="reference-entry__proof-mark-line">
+												{Entry.proof.mark}
+											</span>
+											<span class="reference-entry__proof-state">
+												{Entry.proof.state}
+											</span>
+											<span class="reference-entry__proof-component">
+												{Entry.proof.component}
+											</span>
+										</p>
+										<p class="reference-entry__proof-when">{Entry.proof.when}</p>
+										<p class="reference-entry__proof-why">
+											<span class="reference-entry__key">WHY THIS ROW:</span>
+											{Entry.proof.why}
+										</p>
+										<p class="reference-entry__proof-links">
+											<a href={LiveRow(Entry.key, Entry.proof.component)}>
+												SEE THE ROW, LIVE
+												<span aria-hidden="true">→</span>
+											</a>
+											<a href={Entry.href}>
+												THE FAMILY'S OWN MATRIX
+												<span aria-hidden="true">→</span>
+											</a>
+										</p>
+									</figure>
+								)}
+
+								{/* ── CHANGES ────────────────────────────────────── */}
+								<p class="reference-entry__head-line">
+									<span class="reference-entry__head-label">
+										WHAT THE EXPLORATION CHANGED:
+									</span>
+									<span class="reference-entry__head-figure">
+										{Entry.figures.changes} BEHAVIOUR
+										{Entry.figures.changes === 1 ? "" : "S"} / EACH INSIDE THE
+										COMPONENT IT NAMES
+									</span>
+								</p>
+
+								{Entry.changes.length === 0 ? (
+									<p class="reference-entry__absent">
+										<span class="reference-entry__key">
+											◎ IMPROVEMENTS: UNAVAILABLE
+										</span>
+										{Entry.source} carries no <code>Improvements</code> export:
+										its family was printed before the convention existed, so the
+										behaviours its matrix produced are recorded as the notes on the
+										cells it built - and those notes print in this entry's matrix
+										and in the family's own band. The absence is stated rather
+										than filled, because a behaviour with no cell behind it is a
+										preference.
+									</p>
+								) : (
+									<ol class="reference-entry__changes">
+										{Entry.changes.map((Change) => (
+											<li class="reference-entry__change">
+												<p class="reference-entry__change-head">
+													<span class="reference-entry__change-component">
+														{Change.component}
+													</span>
+													<span class="reference-entry__change-from">
+														FROM: {Change.from}
+													</span>
+												</p>
+												<p class="reference-entry__change-found">
+													<span class="reference-entry__key">FOUND:</span>
+													{Change.found}
+												</p>
+												<p class="reference-entry__change-built">
+													<span class="reference-entry__key">BUILT:</span>
+													{Change.built}
+												</p>
+											</li>
+										))}
+									</ol>
+								)}
+
+								{/* ── UNASKED ────────────────────────────────────── */}
+								<p class="reference-entry__head-line">
+									<span class="reference-entry__head-label">
+										WHAT ITS MATRIX DOES NOT ASK:
+									</span>
+									<span class="reference-entry__head-figure">
+										{UnaskedRow.conditions.length} CONDITIONS / {UnaskedRow.cells} CELLS
+										UNANSWERED
+									</span>
+								</p>
+
+								{UnaskedRow.conditions.length === 0 ? (
+									<p class="reference-entry__absent">
+										<span class="reference-entry__key">◎ NOTHING UNASKED</span>
+										This family's matrix puts a column against every condition the
+										gallery's spine names - the only answer that needs no sentence
+										under it.
+									</p>
+								) : (
+									<p class="reference-entry__unasked">
+										{UnaskedRow.conditions.join(" / ")}
+										{" "}
+										<span class="reference-entry__unasked-note">
+											- the family's matrix has no column for these, and{" "}
+											<a href="/Specimen/States#unasked">
+												/THE UNASKED
+												<span aria-hidden="true">→</span>
+											</a>{" "}
+											prints the sentence that says why.
+										</span>
+									</p>
+								)}
+
+								{/* ── GROUPS ─────────────────────────────────────── */}
+								<p class="reference-entry__head-line">
+									<span class="reference-entry__head-label">ITS LIVE ROWS:</span>
+									<span class="reference-entry__head-figure">
+										{Entry.figures.specimens} ROWS IN {Entry.figures.groups} GROUPS
+									</span>
+								</p>
+
+								<ol class="reference-entry__groups">
+									{Entry.groups.map((Group) => (
+										<li class="reference-entry__group">
+											<p class="reference-entry__group-label">{Group.label}</p>
+											<p class="reference-entry__group-note">{Group.note}</p>
+										</li>
+									))}
+								</ol>
+
+								<p class="reference-entry__source">
+									<span class="reference-entry__key">SOURCE:</span>
+									{Entry.source}
+									<span class="reference-entry__key">LIVE:</span>
+									<a href={Entry.href}>{Entry.href}</a>
+								</p>
+							</div>
+						</details>
+					</section>
+				);
+			})}
+		</div>
+	)
+}
+
+<script>
+	/**
+	 * One behaviour, and it is the only script this block ships: an entry
+	 * reached by an address (`/Specimen/Reference#entry-reading`) opens itself,
+	 * because a reader who follows a link to an entry expects the entry rather
+	 * than its summary.
+	 *
+	 * The element is the state: `open` is a property `<details>` already has, so
+	 * this sets it rather than inventing a class.
+	 */
+	const OpenFromHash = (): void => {
+		const Id = window.location.hash.slice(1);
+
+		if (Id.length === 0) return;
+
+		const Fold = document
+			.getElementById(Id)
+			?.querySelector<HTMLDetailsElement>(".reference-entry__fold");
+
+		if (Fold instanceof HTMLDetailsElement) Fold.open = true;
+	};
+
+	OpenFromHash();
+
+	window.addEventListener("hashchange", OpenFromHash);
+</script>

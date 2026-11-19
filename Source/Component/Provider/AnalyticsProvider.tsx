@@ -10,6 +10,15 @@ import {
 
 import { GetWorkersClient } from "../../Library/WorkerClient";
 
+/**
+ * The runtime's own state, as the context reports it.
+ *
+ * `LIVE` is a client that arrived; `PENDING` is the frame before the effect ran;
+ * `BLOCKED` is a client that never arrived because `GetWorkersClient()` threw -
+ * an ad-blocker, a dead network, a refused request.
+ */
+export type AnalyticsAvailability = "PENDING" | "LIVE" | "BLOCKED";
+
 interface AnalyticsContextType {
 	track: (
 		event: string,
@@ -24,6 +33,21 @@ interface AnalyticsContextType {
 
 		traits?: Record<string, unknown>,
 	) => Promise<void>;
+
+	/**
+	 * Whether a call will reach the client.
+	 *
+	 * The three calls are no-ops when no client arrived, and they always were -
+	 * what was missing was the fact. A consumer could not tell a delivered event
+	 * from a dropped one, because the provider that exists to make the runtime's
+	 * state legible was the one part of the runtime with no state to read. A
+	 * surface that wants to state its own telemetry status now prints this
+	 * instead of guessing.
+	 */
+	available: boolean;
+
+	/** Why not, when `available` is false. `LIVE` when it is true. */
+	reason: AnalyticsAvailability;
 }
 
 const AnalyticsContext = createContext<AnalyticsContextType | null>(null);
@@ -33,10 +57,17 @@ const AnalyticsProvider = ({ children }: { children: ReactNode }) => {
 		typeof GetWorkersClient
 	> | null>(null);
 
+	const [Availability, SetAvailability] =
+		useState<AnalyticsAvailability>("PENDING");
+
 	useEffect(() => {
 		try {
 			SetClient(GetWorkersClient());
+
+			SetAvailability("LIVE");
 		} catch {
+			SetAvailability("BLOCKED");
+
 			if (import.meta.env.DEV) {
 				console.warn(
 					"Analytics: initialization blocked (ad-blocker or network unavailable)",
@@ -83,6 +114,10 @@ const AnalyticsProvider = ({ children }: { children: ReactNode }) => {
 		trackPageView: TrackPageView,
 
 		identify: Identify,
+
+		available: Availability === "LIVE",
+
+		reason: Availability,
 	};
 
 	return (

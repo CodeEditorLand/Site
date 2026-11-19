@@ -1,12 +1,17 @@
 /* ═══════════════════════════════════════════════════════════════════════════
  * REPEATABLE UTILITY CLASSES - Daylight Field Record
-  *
-  * Extracted from inline Tailwind. Flat corners, mono type, uppercase,
-  * creme canvas. Named after semantic role.
+ *
+ * The classes a page or a component asks for by NAME instead of composing
+ * inline: flat corners, mono type, tracked labels, creme canvas. Named after
+ * the semantic role, never after the declaration. A name here is API - it is
+ * kept when it has no consumer rather than deleted, and the list of names
+ * nobody reads is written down under TYPOGRAPHY PATTERNS.
  * ═══════════════════════════════════════════════════════════════════════════ */
 
 /* ─── BORDER RADIUS ──────────────────────────────────────────────────────
- * .flat replaces rounded-none. All elements flat per design system. */
+ * .flat is radius 0, the identity's one material rule (`DESIGN-COMPLETE.md`
+ * §1.3) - the class a markup author asks for where a Tailwind `rounded-*`
+ * would otherwise be written. */
 .flat {
 	border-radius: 0;
 }
@@ -25,10 +30,10 @@
 }
 
 /* ─── TRANSITIONS ──────────────────────────────────────────────────────
- * Bound to the motion vocabulary (`_Motion.scss`), never to a literal: 150ms
- * `cubic-bezier(0.4,0,0.2,1)` was a fifth interval and a fifth curve that no
- * relationship named, written inline in a utility sheet. `quick`/`arrive` is
- * the press pair, which is what a colour or fill change on hover is. */
+ * Bound to the motion vocabulary (`_Motion.scss`), never to a literal: an
+ * interval or a curve written inline here is a relationship nobody named, and
+ * the sheet then carries a duration the vocabulary cannot see. `quick`/`arrive`
+ * is the press pair, which is what a colour or fill change on hover is. */
 .tr-fg {
 	transition-property:
 		color, background-color, border-color, text-decoration-color, fill,
@@ -113,12 +118,12 @@
    uses for `--Destruct` / `--DestructForeground`, and what `ErrorBoundary`,
    `UI/Button` and `UI/Badge` ask for - and Tailwind's `destructive` key in
    `tailwind.config.js`, which the shadcn-derived `UI/` kit asks for.
-   This is the house half, and it was the half with a hole in it:
-   `ErrorBoundary.tsx:74` wrote `text-destruct hover:bg-destruct
-   hover:text-destruct-fg` against a sheet that only ever defined the two
-   background names, so the error action's ink and its hover foreground
-   resolved to nothing on the 36 of 37 pages the boundary reaches, and only
-   its `border-[var(--Destruct)]` drew. Completing the family here is the one
+   This is the house half, and it is complete here: ink, foreground and the
+   hover foreground, because a family that answers only its background names
+   resolves to nothing - `ErrorBoundary.tsx` writes `text-destruct
+   hover:bg-destruct hover:text-destruct-fg`, and against a sheet holding only
+   the two backgrounds the error action's ink and its hover foreground paint no
+   colour at all while its `border-[var(--Destruct)]` draws. One family, one
    decision, applied once - not a patch per page. */
 .text-destruct {
 	color: var(--Destruct);
@@ -171,16 +176,18 @@
 
 /* ─── UI-KIT UTILITIES ───────────────────────────────────────────────────
  * The components under `Source/Component/UI/` are the shadcn kit, written
- * against Tailwind v4's vocabulary, while this sheet is Tailwind v3.4. Four of
- * the seven names `LOST.md` measured as Tailwind-shaped-but-ungenerated are
- * here (`text-destruct`, the fifth, is with its family in the text block
- * above); `field-sizing-content` is the one real name on the scan's foreign
- * list. Each is generated once, with the declaration the v4 utility emits, so
- * the class in the markup is the class the sheet answers - an ungenerated
- * variant is a state that never renders. Measured in `Target/_astro/Base.*.css`:
- * none of these resolves there today. (The animation names - `animate-in`,
- * `fade-in-0`, `zoom-in-95`, `animate-caret-blink` - are not here: they need
- * `tailwindcss-animate` or a keyframe set, which is `_Motion.scss`'s surface.)
+ * against Tailwind v4's vocabulary, while this sheet is Tailwind v3.4, so a v4
+ * name generates no rule and the state that asked for it never renders. The
+ * names in this block are the ones `LOST.md` measured as
+ * Tailwind-shaped-but-ungenerated and that this sheet can answer -
+ * `aspect-square`, `aspect-video`, `origin-top-center`, `outline-hidden` (and
+ * its `focus:` / `focus-visible:` forms), `field-sizing-content` - plus
+ * `text-destruct` and `hover:text-destruct-fg`, which sit with their family in
+ * the text block above. Each is written once, with the declaration the v4
+ * utility emits, so the class in the markup is the class the sheet answers.
+ * (The animation names - `animate-in`, `fade-in-0`, `zoom-in-95`,
+ * `animate-caret-blink` - are not here: they need `tailwindcss-animate` or a
+ * keyframe set, which is `_Motion.scss`'s surface.)
  */
 
 /* `.aspect-square` / `.aspect-video` - Tailwind v3's named core ratios. The
@@ -247,10 +254,10 @@
  * No consumer today: `.section-label`, `.nav-label`, `.card-title-mono`,
  * `.tag-mono`, `.code-inline`, `.content-subtitle`, `.text-muted-fg`, the four
  * `.opacity-*`, `.tr-fg`, `.tr-bg`, `.content-section`, `.container-center`,
- * `.section-intro`, `.subtitle-block`, `.focus-ring` (measured across every
- * component and page source file). They are kept rather than deleted - a name
- * here is API and a later card may compose with one - but a card that adds a
- * use for one is adopting it, not finding it in service.
+ * `.section-intro`, `.subtitle-block`, `.focus-ring`, `.focus-ring-light`
+ * (measured across every component and page source file). They are kept rather
+ * than deleted - a name here is API and a later card may compose with one - but
+ * a card that adds a use for one is adopting it, not finding it in service.
  */
 
 /* .eyebrow - section eyebrow label - mono, uppercase, tracked.
@@ -265,11 +272,10 @@
 	color: var(--MuteForeground);
 }
 
-/* .headline - mono display. Size comes from --type-display, which is already a
-   fluid clamp, so the old 2.25rem -> 3rem breakpoint ladder is gone: the role
-   governs the scale. (The `min-width: 640px` block that restated the same two
-   declarations was the ladder's last step; a fluid clamp does not need a
-   breakpoint that changes nothing.) */
+/* .headline - mono display, at weight 400 and the `join` register. Size comes
+   from --type-display, which is already a fluid clamp, so the role governs the
+   scale and no breakpoint restates it: a step that changes nothing at a
+   threshold only reflows every line on the page. */
 .headline {
 	font-family: var(--FontSans);
 	font-size: var(--type-display);
@@ -383,14 +389,18 @@
 /* ─── MISCELLANEOUS ────────────────────────────────────────────────────── */
 
 /* .content-section - standard section wrapper. A page-level boundary, so it
-   takes the chapter rhythm rather than the 64/80px literals it carried (neither
-   is on the poster scale). */
+   takes the chapter rhythm (`--space-chapter`, 84px): a 64px or an 80px literal
+   is on neither documented scale. */
 .content-section {
 	width: 100%;
 	padding-block: var(--space-chapter);
 }
 
-/* .container-center - container mx-auto px-4 text-center */
+/* .container-center - a centred column: `--space-reading` of inline padding,
+   and a max-width that steps 640 / 768 / 1024 / 1280 / 1536px. The 1536px step
+   is this class's own - it is the one place on the site where that step is
+   drawn, and `_Mixin.scss` names it with the other two that are a surface's own
+   measurement rather than a step of the scale. */
 .container-center {
 	width: 100%;
 	margin-left: auto;

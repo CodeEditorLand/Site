@@ -17,9 +17,9 @@
 // the ledger row does, and it is the rule a new rule in this file is tested
 // against: **name the state change, or do not write the rule.**
 //
-// ── THE VOCABULARY: SEVEN RELATIONSHIPS, THREE INTERVALS, THREE CURVES ─────
+// ── THE VOCABULARY: EIGHT RELATIONSHIPS, THREE INTERVALS, THREE CURVES ─────
 // The relationship names the state change; the interval and the curve belong to
-// the site. Seven relationships run on three intervals and three curves, so a
+// the site. Eight relationships run on three intervals and three curves, so a
 // block cannot invent a fourth duration:
 //
 //   INTERVALS            CURVES
@@ -66,16 +66,17 @@
 // frame is the corner marks (C19), which own it in their own partial.
 //
 // ── FIRST PAINT ───────────────────────────────────────────────────────────
-// The file's two `@keyframes` are the interrupt's and the reveal's, and neither
-// can fire at first paint: the interrupt is bound to
+// The file's three `@keyframes` - the interrupt's, the reveal's and the
+// margin's conversion - cannot fire at first paint. The interrupt is bound to
 // `[aria-invalid="true"]:not(:focus)`, an attribute no control carries when the
-// document is parsed, and the reveal to `details[open] > :not(summary)`, where
-// no `<details>` on the site carries `open` in its markup. Every other rule is a
-// `transition`, and a transition cannot fire at first paint either - the element
-// is created with the computed value it will keep, so there is no change for an
-// interval to run between. "Motion must not decorate static content" and "do not
-// animate anything on page load" are the same rule, and both are satisfied by
-// there being no entrance animation to skip.
+// document is parsed; the reveal to `details[open] > :not(summary)`, where no
+// `<details>` on the site carries `open` in its markup; and the conversion to a
+// container query the page has to enter before its rule exists at all. Every
+// other rule is a `transition`, and a transition cannot fire at first paint
+// either - the element is created with the computed value it will keep, so
+// there is no change for an interval to run between. "Motion must not decorate
+// static content" and "do not animate anything on page load" are the same rule,
+// and both are satisfied by there being no entrance animation to skip.
 //
 // ── REDUCED MOTION ────────────────────────────────────────────────────────
 // First-class, in two layers. Every mixin in `System/_Mixin.scss` carries both
@@ -122,16 +123,18 @@
 //             `Record/_Archive.scss`, which is its block's partial.
 //   press     `.record-ledger__value`     the same rows, at the moment of the
 //             press.
-//   crop      `.portal-hero__evidence img` `pages/Portal.astro:291` - the frame
+//   crop      `.portal-hero__evidence img` `pages/Portal.astro:193` - the frame
 //             is `overflow: hidden`, so the image crops inside a box that stays
 //             put.
 //   resolve   `jelly-icon-button[data-copy]` every Shiki block on the site:
 //             `Function/Utility/CopyCommand.ts:118` creates the button and sets
 //             `data-copy`, and writes `label="Copied"` for 1800ms.
-//   reveal    `details[open] > :not(summary)` eleven `<details>` in ten files
-//             (Doc's layer and contents, Trust, Download's previous releases,
-//             the Dashboard's two, `RecordAside`, `ShellPanes`, the Motion
-//             specimens, `UI/Fold`).
+//   reveal    `details[open] > :not(summary)` 53 `<details>` in 27 files:
+//             Doc's layer, contents and article; Trust; Download's previous
+//             releases; the Dashboard's two; the Record blocks (aside, figure,
+//             ledger, plate, stage, failure); `ShellPanes`; the Motion
+//             specimens; `UI/Fold` and `UI/Accordion`; and the specimen lab's
+//             own sheets.
 //   interrupt `[aria-invalid="true"]`     `Dynamic/DynamicInput.tsx:67` and the
 //             contact form's four fields.
 //
@@ -147,10 +150,12 @@
 
 /* ─── THE VOCABULARY ─────────────────────────────────────────────────────── */
 
-/* Three intervals, three curves, and the seven relationships expressed as
-   pairs of them. The relationship tokens keep their names because every partial
-   reads them (`UI/_Slip.scss`, `UI/_Palette.scss`, `Download/_Releases.scss`):
-   what changed is that a relationship no longer carries a duration of its own. */
+/* Three intervals, three curves, and the eight relationships expressed as
+   pairs of them. A relationship token carries no duration of its own: it POINTS
+   at an interval and a curve, which is what stops a block inventing a fourth
+   duration. The relationship names are read by partials outside this file
+   (`UI/_Slip.scss`, `UI/_Palette.scss`, `Download/_Releases.scss`), so the
+   names are API and the values are the site's. */
 @layer theme {
 	:root {
 		/* THE INTERVALS - how long the site takes to say a thing. */
@@ -370,10 +375,10 @@
 
 /* ─── THE ARCHIVE ROW - THE TRACE, AND WHERE IT LIVES ────────────────────── */
 
-/* `DESIGN-COMPLETE.md` §5.2 row 6 pairs `Record/_Archive.scss` with
-   `_Motion.scss:171-190` as the archive hover trace, and row 13 asks this card
-   to re-point the families here. Both halves are now true, and the split
-   between them is the block's:
+/* `DESIGN-COMPLETE.md` §5.2 row 6 pairs `Record/_Archive.scss` with this file
+   as the archive hover trace, and row 13 asks this card to re-point the
+   families here. Both halves are true, and the split between them is the
+   block's:
 
    `RecordArchive` is live again - two importers, `/Doc` (`Doc.astro:175`) and
    `/Contents` (`Contents.astro:483`) - and every rule its row needs is in
@@ -469,9 +474,10 @@ jelly-icon-button[data-copy][label="Copied"] {
 
 /* ─── THE DISCLOSURE - THE REVEAL ────────────────────────────────────────── */
 
-/* The site's five disclosures are CSS-only `<details>` (Doc's layer and
-   contents, Trust's contents, Download's previous releases, the Dashboard's
-   request history): the summary is the closed state and the body is the open
+/* The site's disclosures are CSS-only `<details>` (Doc's layer, contents and
+   article; Trust's contents; Download's previous releases; the Dashboard's
+   request history; the Record blocks' asides and plates; `UI/Fold` and
+   `UI/Accordion`): the summary is the closed state and the body is the open
    one. Opening is a state change, so it is the one thing a disclosure may
    animate - the body arrives on `reveal`, in OPACITY ONLY, because a body that
    slides would move the page under the reader's hand.
@@ -607,19 +613,18 @@ details[open] > :not(summary) {
    have an element to run on, and these have none.
 
    MEASURED, not assumed. A walk of every `.tsx` / `.ts` / `.astro` import from
-   `Source/pages/**` reaches 30 `Component/UI/` modules, and eight of them still
+   `Source/pages/**` reaches 30 `Component/UI/` modules, and five of them still
    carry the names:
 
-     Drawer, InputOTP, HoverCard, Menubar, AlertDialog, Tooltip, Sheet,
-     NavigationMenu                                       - all unreachable.
+     AlertDialog, HoverCard, InputOTP, NavigationMenu, Tooltip
+                                                          - all unreachable.
 
-   The four that used to carry them and are reachable - `Dialog`, `Popover`,
-   `Select`, `DropdownMenu` - were rewritten and now print no animate class at
-   all, so the list shrank by half and the half that is left is the half no page
-   mounts. This card records the family as WAITING rather than deleting it: the
-   moment a page mounts one of those eight, the keyframe set becomes a real
-   deliverable and the ledger says which files ask for it (card 8's comment on
-   this card, `.hermes/tmp/stitch/ledger/t_87543f14.md` §3.4).
+   The reachable ones - `Dialog`, `Popover`, `Select`, `DropdownMenu` - print no
+   animate class at all, so what is left is only what no page mounts. This card
+   records the family as WAITING rather than deleting it: the moment a page
+   mounts one of those five, the keyframe set becomes a real deliverable and the
+   ledger says which files ask for it (card 8's comment on this card,
+   `.hermes/tmp/stitch/ledger/t_87543f14.md` §3.4).
 
    `animate-caret-blink` would not be implemented even where it is reached: a
    looping blink is motion that continues without a state change, which is the
@@ -628,31 +633,40 @@ details[open] > :not(summary) {
    (the slip, the palette, the menu) carry their own enter interval in their own
    partials.
 
-   ── THE STACCATO FAMILY: A JS ENGINE THAT IS NOT IN THE TREE ──────────────
+   ── THE STACCATO FAMILY: A LIVE ENGINE, OFF THE VOCABULARY ────────────────
 
-   `System/Component/_Noise.scss` is a 710-line motion system whose channels
-   (`--Staccato`, `--StaccatoRaw`, `--StaccatoRhythm`, ...) are documented as
-   "updated every frame by Staccato.ts". There is no `Staccato.ts` in
-   `Source/Script/` and nothing imports one, so every channel sits at its `:root`
-   default of 0 and every `calc()` on it resolves to a constant. What is left is
-   not motion; it is static declarations named after motion, and four of them
-   dim a live element:
+   `System/Component/_Noise.scss` is the site's one noise-motion partial: eight
+   `--Staccato*` channels (`--Staccato`, `--StaccatoRaw`, `--StaccatoRhythm`,
+   ...) and the four tiers of classes that read them. The channels are committed
+   by `Function/Noise/Staccato.ts` on a 500ms `setInterval`
+   (`COMMIT_INTERVAL`) with a `document.hidden` guard, each commit bridged by
+   the partial's own 1.6s transition. The engine is mounted by
+   `Dynamic/DynamicPortal.tsx` (`Staccato.Start()`, :1487) and by
+   `Dynamic/DynamicTransparency.tsx:204`, so the channels move on `/Portal` and
+   in the transparency block, and sit at their `:root` 0 everywhere else - where
+   every `calc()` on them resolves to a constant and the class is a static
+   declaration named after motion.
 
-     .StaccatoBadge      opacity .93    printed by DynamicBadge (this card's)
-     .StaccatoDot        opacity .5     printed by DynamicBadge (this card's)
-     .StaccatoRhythmDot  opacity .5     printed by DynamicBadge (this card's)
-     .StaccatoSpinner    opacity .65    printed by DynamicButton (this card's)
-     .StaccatoBreath     opacity .9     printed by DynamicCard (this card's)
-     .StaccatoVisible    1s entrance    printed by nothing
+   Two things follow, and neither is this file's to repair:
 
-   This card removes those five hooks from its own three adapters - the Jelly
-   badge and button take their ink from the element, not from a dead pulse - and
-   records the rest rather than editing `_Noise.scss`, which is not this card's
-   file and whose other classes (`.StaccatoNavLink`, `.StaccatoCard`,
-   `.StaccatoPrice`, `.StaccatoButton`) are still printed by other cards' markup.
-   `.StaccatoButton` in particular is a live hover lift on every `DynamicButton`
-   at `0.5s ease`, and `DynamicButton` has no page importer - so the lift is
-   latent, not live. The whole family is a card of its own: it is the one motion
+   1. The partial's CALM block (its foot) neutralises the seed scatter and the
+      scroll parallax unconditionally: `--StaccatoSeed` moves nothing on
+      `.StaccatoTranslate`, `.StaccatoScale`, `.StaccatoSkew`, `.StaccatoJitter`,
+      `.StaccatoRotate`, `.StaccatoFloat` or the three `.StaccatoParallax*`.
+   2. `.StaccatoVisible` is printed by nothing: `Attention.ObserveAndApply`
+      adds the class and no caller invokes it.
+
+   The hooks a live element can still carry are `.StaccatoBreath` and
+   `.StaccatoRhythmDot` in `DynamicPortal` and `DynamicTransparency` - the two
+   blocks that mount the engine - and `.StaccatoDot` in the local-first scan,
+   the account profile and the transparency rows, where the colour is the
+   caller's and the size is the ladder's step for a dot that states no `h-*`.
+   `DynamicBadge`, `DynamicCard` and `DynamicButton` take their ink from the
+   element rather than from a pulse.
+
+   `.StaccatoButton` is the one hook that runs off the vocabulary on a surface
+   that renders: a `0.5s ease` hover lift on every `DynamicButton`, which eight
+   auth components mount. The family is a card of its own - it is the one motion
    system on the site that is neither CSS-first nor on the vocabulary. */
 
 /* ─── THE REDUCED-MOTION ROOT ────────────────────────────────────────────── */

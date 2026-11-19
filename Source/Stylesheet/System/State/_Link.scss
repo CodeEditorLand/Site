@@ -28,65 +28,65 @@
 // block links wear nothing (a rule under the words says the words are the link
 // and the block is not), and a component that states a `text-decoration` wins
 // because the global rule sits inside `:where()`. This layer does not restate
-// it. What it adds is the states the law did not reach: the ring on every
-// anchor (many had none), the position marks on the anchors whose partial never
-// drew them, and the gone target.
+// it. What it adds is the states the law does not reach: the ring on every
+// anchor, the position marks on the anchors whose partial draws none, and the
+// gone target.
 //
 // ─── TWO HOVERS, AND THE DIFFERENCE IS WHETHER THE LINK RESTS ON A RULE ────
 //
 // A ROUTE link that already rests on a line needs no hue: its hover moves that
 // line to the ink, the words do not change, and the state is legible without
-// colour. Twelve selectors that turned a label the accent on hover were moved
-// here for that reason - a route link's state is its rule:
+// colour. Ten selectors answer that way, and they are the whole register:
 //
-//   Component/Doc/_Index.scss       .doc-card__link, .doc-appendix__link,
-//                                   .doc-appendix__arrow, .doc-services,
-//                                   .doc-tile              -> ink + underline
-//   Component/Doc/_Rust.scss        .doc-crate, .doc-crate__arrow
-//                                                          -> ink + rule
-//   Component/More/_Lexicon.scss    .lexicon__letter-link, .lexicon-entry__link
-//                                                          -> ink + underline
-//   Component/More/_Onward.scss     .onward__where         -> ink + rule
-//   Component/Surface/_Shell.scss   .surface__action, .surface-absent__action
-//                                                          -> ink + rule
-//   Component/Layout/_Frame.scss    .HeaderRecordName      -> ink + rule
-//   Component/Dashboard/_Index.scss .surface-links__item   -> ink + rule
-//   Component/Blog/_Listing.scss    .blog-index__link      -> the title's rule
-//                                   (it answered the pointer by fading to 80 %
-//                                   opacity - a state present in the DOM and
-//                                   gone from the page)
+//   Component/Doc/_Index.scss       .doc-appendix__link        ink + underline
+//                                   .doc-appendix__arrow       follows the link
+//   Component/Doc/_Rust.scss        .doc-crate__arrow          ink
+//   Component/More/_Lexicon.scss    .lexicon__letter-link      ink + underline
+//                                   .lexicon-entry__link       ink + rule
+//   Component/More/_Onward.scss     .onward__where             ink
+//   Component/Surface/_Shell.scss   .surface__action           ink + underline
+//                                   .surface-absent__action    ink + rule
+//   Component/Layout/_Frame.scss    .HeaderRecordName          ink + its 2px rule
+//   Component/Dashboard/_Index.scss .surface-links__item       ink + rule
 //
 // A BLOCK link - an anchor whose whole surface is the target and whose title,
 // name or label names the destination - rests on nothing. Its state has to be
 // drawn, and the strongest true mark is the one the accent makes: the
 // DESTINATION takes the hue, the rule follows it (`currentColor`), and the
-// CONTEXT - the note, the body, the meta - keeps its ink. This is the difference
-// the old register missed. The wash that turned a whole card green was wrong
-// because it covered the note; the correction then took the hue off the title
-// as well, and the title is the destination. `State/_Card.scss` states the law;
-// these are the components that answer with it:
+// CONTEXT - the note, the body, the meta - keeps its ink. The wash that turned a
+// whole card green was wrong because it covered the note; a hover that takes the
+// hue off the title as well is wrong because the title is the destination.
+// `State/_Card.scss` states the law; these are the components that answer with
+// it, and the anchor each one is drawn in is named beside it:
 //
-//   Doc/_Index.scss          .doc-card__title, .doc-tile__label,
-//                            .doc-services__link
-//   Blog/_Listing.scss       .blog-index__title
-//   Record/_Entry.scss       .record-entry__link (the record's name)
+//   Doc/_Index.scss          .doc-card__title      (in .doc-card__link)
+//                            .doc-tile__label      (in .doc-tile)
+//                            .doc-services__link   (the label is the anchor)
+//   Blog/_Listing.scss       .blog-index__title    (in .blog-index__link)
+//   Record/_Entry.scss       .record-entry__link   (the record's name)
 //   Record/_Archive.scss     .record-archive__title (already answered so)
-//   Record/_Stage.scss       .record-stage__plate-label
-//   Doc/_Rust.scss           .doc-crate__label
-//   Specimen/_Sheet.scss     .specimen-sheet__name
-//   Contact/_Hub.scss        .contact-hub__name (via the state floor)
+//   Record/_Stage.scss       .record-stage__plate-label (the anchor is the label)
+//   Doc/_Rust.scss           .doc-crate__label     (in .doc-crate)
+//   Specimen/_Sheet.scss     .specimen-sheet__name (in .specimen-sheet__cell-inner)
+//   Contact/_Hub.scss        .contact-hub__name    (via the state floor)
 //   Dashboard/_Index.scss    .surface-partner__name (via the state floor)
 //
-// Two hovers keep the accent for a third reason, and both are documented where
-// they live: `.HeaderNavLink:hover` (the ribbon's 12 % field, which previews the
-// current state - C5, a keeper's treatment) and `.hero-band__stack-tile:hover`
-// (the hero pair's tile edge, part of an endorsed surface).
+// The split is not the class name - `.doc-card__link` and `.doc-tile` are anchors
+// that hold a destination label, while `.doc-appendix__link` IS its label - it is
+// whether there is a context cell the hue must not reach.
+//
+// One hover keeps the accent for a third reason, and it is documented where it
+// lives: `.HeaderNavLink:hover` (the ribbon's 12 % field, which previews the
+// current state - C5, a keeper's treatment). The hero's
+// `.hero-band__stack-tile:hover` does not: its frame moves to the ink
+// (`Home/_Stack.scss`), because a hover is ink and the accent is the current
+// route's.
 
 // ─── FOCUS: EVERY ANCHOR GETS THE RING ─────────────────────────────────────
 //
 // The base layer draws `:focus-visible` at the accent already, so this rule is
 // not a new ring - it is the guarantee that no partial's `outline: none` (there
-// are seven) can leave a link with nothing. `:where()` keeps it at zero
+// are ten) can leave a link with nothing. `:where()` keeps it at zero
 // specificity so a partial that states its own ring still owns it.
 
 :where(a[href]):focus-visible,
@@ -145,11 +145,11 @@ $Route: ":is(.record-archive__link, .record-entry__link, .record-ledger__link, .
 // the one case a list has to print the row it cannot link, where dropping the
 // row would lose the fact that the record exists.
 //
-// No surface mounts it today, and that is the honest state of the vocabulary:
-// every missing destination on the site is currently composed as a tombstone in
-// a block (`RecordFigure`, `RecordMargin`, `RecordPlate`, the /Visit record), so
-// there is no dead link left to style. The rule is declared because a list that
-// gains one would otherwise invent a fifth treatment.
+// No surface mounts it, and that is the honest state of the vocabulary: every
+// missing destination on the site is composed as a tombstone in a block
+// (`RecordFigure`, `RecordMargin`, `RecordPlate`, the /Visit record), so there is
+// no dead link left to style. The rule is declared because a list that gains one
+// would otherwise invent a fifth treatment.
 
 a[data-gone],
 a[aria-disabled="true"]:not([class*="Button"]):not([class*="NavLink"]) {

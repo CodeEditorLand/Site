@@ -25,6 +25,10 @@
  *           nothing is a lie about the state of the world.
  * empty     the set prints one composed line: what would be listed and why it is
  *           not.
+ * no fact   a record whose register is empty keeps its row as a disclosure - the
+ *           record exists - and prints `◎ NO FACT` and its source inside it,
+ *           because an empty `<dl>` under a `SOURCE:` line promises facts and
+ *           delivers a citation.
  *
  * ─── NO SCRIPT ────────────────────────────────────────────────────────────
  * `details` again: keyboard operable, announced, and searchable while closed. The
@@ -98,32 +102,42 @@ const Unknown = (Value: string): boolean => Value.trim() === "UNAVAILABLE";
 					</summary>
 
 					<div class="MotionExpand__Body">
-						<dl class="MotionExpand__Register">
-							{Record.rows.map((Fact) => (
-								<div class="MotionExpand__Fact-row">
-									<dt class="MotionExpand__Key">
-										{Fact.key}
-									</dt>
-									<dd
-										class:list={[
-											"MotionExpand__Value",
-											Unknown(Fact.value) &&
-												"MotionExpand__Value--unknown",
-										]}
-									>
-										{Fact.value}
-										{Fact.note ? (
-											<span class="MotionExpand__Note">
-												<span aria-hidden="true">
-													↳
-												</span>{" "}
-												{Fact.note}
-											</span>
-										) : null}
-									</dd>
-								</div>
-							))}
-						</dl>
+						{/* A record whose register is empty still opens - the row is a
+						    disclosure and the record exists. What was absent was the
+						    block saying so: an empty `<dl>` under a `SOURCE:` line
+						    promises facts and delivers a citation. */}
+						{Record.rows.length === 0 ? (
+							<p class="MotionExpand__NoFact">
+								<span aria-hidden="true">◎</span> NO FACT
+							</p>
+						) : (
+							<dl class="MotionExpand__Register">
+								{Record.rows.map((Fact) => (
+									<div class="MotionExpand__Fact-row">
+										<dt class="MotionExpand__Key">
+											{Fact.key}
+										</dt>
+										<dd
+											class:list={[
+												"MotionExpand__Value",
+												Unknown(Fact.value) &&
+													"MotionExpand__Value--unknown",
+											]}
+										>
+											{Fact.value}
+											{Fact.note ? (
+												<span class="MotionExpand__Note">
+													<span aria-hidden="true">
+														↳
+													</span>{" "}
+													{Fact.note}
+												</span>
+											) : null}
+										</dd>
+									</div>
+								))}
+							</dl>
+						)}
 						<p class="MotionExpand__Source">
 							SOURCE: {Record.source}
 						</p>

@@ -119,8 +119,9 @@
 //
 // A block that prints a state mark (a `✓`, a `◎`, a `→`) in a column of its own
 // reserves the column whether or not it prints one, so a state change never
-// shifts the label. Three blocks already do this by hand; this is the token they
-// are all reading.
+// shifts the label. `UI/_Item.scss` is the model and still writes its 1.25rem by
+// hand; this class is the tokenised form of the same geometry for a block that
+// has no leading cell to pay for it from, and no block mounts it yet.
 
 .StateMarked {
 	padding-inline-start: calc(var(--space-reading) + var(--state-mark-column));

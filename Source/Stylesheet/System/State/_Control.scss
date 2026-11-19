@@ -11,7 +11,8 @@
 //                        `.auth-shell__reveal`, `.auth-shell__alternate`
 //   the form's action    `.contact-form__action`, `.auth-shell__submit`
 //   the legacy utilities `.StaccatoButton` - a Tailwind-era class pair that
-//                        survives in the mark layer and takes the same press
+//                        survives in the noise layer (`Component/_Noise.scss`)
+//                        and takes the same press
 //
 // They do not share a fill and they must not: a copy receipt has no frame, a
 // primary action is an ink field, a scope cell is a tab. What they share is the
@@ -20,20 +21,20 @@
 //
 // ─── THE PRESS IS A TRAVEL, NOT A SCALE ────────────────────────────────────
 //
-// The kit wrote `active:scale-[0.97]`: 3 % of a 40px button is 1.2px, and on a
-// mono label it is a re-render of the text at a second size - the one thing the
+// The kit's `active:scale-[0.97]` is 3 % of a 40px button - 1.2px - and on a
+// mono label it is a re-render of the text at a second size, the one thing the
 // type layer spends its whole length preventing. A press is a movement, so it is
 // a movement: the box travels `--state-press-travel` (1px) down, the field
 // deepens one step, and it returns. Nothing changes size.
 //
 // ─── THE RING, AND WHY IT IS AN OUTLINE ────────────────────────────────────
 //
-// The kit drew focus as `ring-[2px]` at 40 % accent - a Tailwind `ring` is a
-// `box-shadow`, which is a glow with a radius, and the identity has no shadow.
-// It also drew at 40 % alpha, which is a state you can miss. The site's ring is
-// an `outline`: 2px of the accent at 2px of offset, a shape drawn outside the
-// box, visible at any alpha of the field behind it. One value, everywhere, and
-// `box-shadow: none` so a kit component cannot add its own back.
+// The kit's focus is `ring-[2px]` at 40 % accent. A Tailwind `ring` is a
+// `box-shadow`, which is a glow with a radius, and the identity has no shadow;
+// 40 % alpha is also a state you can miss. The site's ring is an `outline`: 2px
+// of the accent at 4px of offset, a shape drawn outside the box, visible at any
+// alpha of the field behind it. One value, everywhere, and `box-shadow: none` so
+// a kit component cannot add its own back.
 //
 // A `jelly-button` is a custom element with a shadow root, so the focus lands on
 // the inner control and `:focus-visible` on the host never matches. `:has()` is
@@ -91,10 +92,9 @@ $Bare: ":is(.SlipAction, .Copy, .PaletteTrigger, .RailFilter__Clear, .doc-sideba
 	background-color: var(--state-field-press);
 }
 
-// The kit's press was `active:scale-[0.97]` - 3 % of a 40px button, and on a mono
-// label a re-render of the text at a second size. `scale: 1` stands it down; the
-// travel above is the press. The two declarations do not fight, because one is the
-// `scale` property and the other is `transform`.
+// `scale: 1` stands the kit's press down; the travel above is the press. The two
+// declarations do not fight, because one is the `scale` property and the other is
+// `transform`.
 [data-slot="button"]:active {
 	scale: 1;
 }

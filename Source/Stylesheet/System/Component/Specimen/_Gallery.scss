@@ -1,0 +1,1087 @@
+// The states gallery's stylesheet: the spine, the summary sheet, the catalog, the
+// reason register and the unasked work list.
+//
+// Publishes:
+//   .gallery-page__trail        the crumb above the shell
+//   .gallery-page__note         one line under a band's body
+//   .gallery-page__register     the figures the gallery counted
+//   .gallery-page__changes      what the exploration changed, and what it did not
+//   .gallery-spine              the twenty-two conditions, as one table
+//   .gallery-spine__row         one condition: head, when, asked-by
+//   .gallery-sheet              ten families against the spine, a figure per cell
+//   .gallery-catalog            every component, one disclosure each
+//   .gallery-row                one component: a strip when shut, a ledger when open
+//   .gallery-reasons            the sentences that explain a class
+//   .gallery-unasked            the work list, per family
+//
+// ─── ONE INSTRUMENT AT FOUR MAGNIFICATIONS ────────────────────────────────
+// The spine, the sheet, the catalog and the reasons register are the same object
+// read at four sizes: a condition, a family, a component, a sentence. They share
+// one rule ink, one cell height and one register step, so a reader moving between
+// them is moving a lens rather than changing pages. That is why they are one
+// partial and not four.
+//
+// ─── THE MATRIX'S OWN ANATOMY, REUSED DELIBERATELY ────────────────────────
+// A pinned name column, a scrolling body, hairline cells, a register under it -
+// the family matrices already solved the wide-table problem, and the sheet uses
+// the same shape with its own class names. The names are the gallery's because a
+// class that belongs to another family's partial is a class nobody can move
+// without breaking a surface they were not reading.
+//
+// ─── THE STRIP IS THE ONE PLACE A GLYPH IS THE CELL ───────────────────────
+// At 187 components the cell cannot be a word. `▪` is the site's own square mark
+// and `N/A` is the matrix's own abbreviation, and both are `aria-hidden`: the
+// row's figure is the summary's accessible text, because twenty-two glyphs read
+// aloud is a wall rather than a row.
+@use "../../Mixin" as *;
+
+/* ─── THE PAGE ───────────────────────────────────────────────────────────── */
+
+.gallery-page__trail {
+	@include band-inner;
+
+	padding-block: var(--space-group) 0;
+}
+
+.gallery-page__note {
+	max-inline-size: var(--Measure);
+	margin: var(--space-group) 0 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.gallery-page__register {
+	max-inline-size: var(--Measure);
+	margin: 0;
+}
+
+/* ─── THE CHANGES ────────────────────────────────────────────────────────── */
+
+.gallery-page__changes {
+	max-inline-size: var(--MeasureWide, var(--Measure));
+	margin: 0;
+}
+
+.gallery-page__changes-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: var(--space-group) 0 var(--space-tight);
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+
+	&:first-child {
+		margin-block-start: 0;
+	}
+}
+
+.gallery-page__changes-label {
+	color: var(--Foreground);
+}
+
+.gallery-page__changes-figure {
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+.gallery-page__changes-list {
+	display: grid;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.gallery-page__change {
+	display: grid;
+	gap: 0.3rem;
+	padding-block: var(--space-reading);
+
+	@include hairline(bottom);
+}
+
+.gallery-page__change-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+	margin: 0;
+}
+
+.gallery-page__change-component {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.gallery-page__change-from {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+.gallery-page__change-found,
+.gallery-page__change-now {
+	margin: 0;
+	max-inline-size: var(--Measure);
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.gallery-page__change-now {
+	color: var(--MuteForeground);
+}
+
+.gallery-page__change-key {
+	margin-inline-end: 0.5ch;
+	color: var(--MuteForeground);
+	letter-spacing: var(--track-name);
+}
+
+/* ─── THE SPINE ──────────────────────────────────────────────────────────── */
+
+.gallery-spine {
+	margin: 0;
+	min-inline-size: 0;
+}
+
+.gallery-spine__head,
+.gallery-sheet__head,
+.gallery-catalog__head,
+.gallery-reasons__head,
+.gallery-unasked__head,
+.gallery-wall__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0 0 var(--space-tight);
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.gallery-spine__head-label,
+.gallery-sheet__head-label,
+.gallery-catalog__head-label,
+.gallery-reasons__head-label,
+.gallery-unasked__head-label,
+.gallery-wall__head-label {
+	color: var(--Foreground);
+}
+
+.gallery-spine__head-figure,
+.gallery-sheet__head-figure,
+.gallery-catalog__head-figure,
+.gallery-reasons__head-figure,
+.gallery-unasked__head-figure,
+.gallery-wall__head-figure {
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+.gallery-spine__list {
+	display: grid;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.gallery-spine__row {
+	display: grid;
+	gap: 0.35rem;
+	padding-block: var(--space-reading);
+
+	@include hairline(bottom);
+
+	&:first-child {
+		@include hairline(top);
+	}
+}
+
+// The brief's arms give way to the shapes and the shapes to the contexts: one
+// heavier rule where the question changes, so a reader scanning the spine sees
+// where one set ends without reading a word.
+.gallery-spine__row--group {
+	border-block-start: 2px solid var(--Divider);
+}
+
+.gallery-spine__term {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.gallery-spine__mark {
+	color: var(--Mark);
+}
+
+.gallery-spine__index {
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+.gallery-spine__label {
+	color: var(--Foreground);
+	min-inline-size: 8rem;
+}
+
+.gallery-spine__ask {
+	color: var(--MuteForeground);
+	flex: 1 1 12rem;
+}
+
+.gallery-spine__status {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.4em;
+
+	color: var(--Foreground);
+}
+
+.gallery-spine__status-key,
+.gallery-spine__figure-key {
+	color: var(--MuteForeground);
+}
+
+.gallery-spine__status-word--specimen {
+	color: var(--state-ink-attested);
+}
+
+.gallery-spine__status-word--quiet,
+.gallery-spine__group-word {
+	color: var(--MuteForeground);
+}
+
+.gallery-spine__figures {
+	display: inline-flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
+
+	font-variant-numeric: tabular-nums;
+
+	color: var(--Foreground);
+}
+
+.gallery-spine__figure {
+	color: var(--Foreground);
+}
+
+.gallery-spine__when,
+.gallery-spine__where {
+	margin: 0;
+	max-inline-size: var(--Measure);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.gallery-spine__where {
+	color: var(--MuteForeground);
+}
+
+.gallery-spine__when-key {
+	margin-inline-end: 0.5ch;
+	color: var(--MuteForeground);
+	letter-spacing: var(--track-name);
+}
+
+.gallery-spine__caption,
+.gallery-sheet__caption,
+.gallery-wall__caption {
+	display: block;
+	margin-block-start: var(--space-reading);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: 1.6;
+
+	color: var(--MuteForeground);
+	max-inline-size: var(--Measure);
+	text-wrap: pretty;
+}
+
+.gallery-spine__caption-key,
+.gallery-sheet__caption-key,
+.gallery-wall__caption-key {
+	margin-inline-end: 0.5ch;
+
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+/* ─── THE SHEET ──────────────────────────────────────────────────────────── */
+
+.gallery-sheet {
+	margin: 0 0 var(--space-group);
+	min-inline-size: 0;
+}
+
+.gallery-sheet__scroll {
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+
+	min-inline-size: 0;
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	background: var(--Card);
+}
+
+.gallery-sheet__table {
+	inline-size: 100%;
+	min-inline-size: 84rem;
+
+	border-collapse: collapse;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+}
+
+.gallery-sheet__head-row {
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.gallery-sheet__corner {
+	position: sticky;
+	inset-inline-start: 0;
+	z-index: 2;
+
+	inline-size: 16rem;
+	padding: var(--space-tight);
+
+	background: var(--Card);
+	text-align: start;
+	vertical-align: bottom;
+
+	border-inline-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.gallery-sheet__corner-label {
+	display: block;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.gallery-sheet__corner-ask {
+	display: block;
+	margin-block-start: 0.25rem;
+
+	color: var(--MuteForeground);
+}
+
+.gallery-sheet__head {
+	padding: var(--space-tight) 0.35rem;
+
+	text-align: start;
+	vertical-align: bottom;
+
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	min-inline-size: 3.6rem;
+}
+
+.gallery-sheet__head--group {
+	border-inline-start: 2px solid var(--Divider);
+}
+
+.gallery-sheet__head-label {
+	display: block;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.gallery-sheet__head-ask {
+	display: block;
+	margin-block-start: 0.2rem;
+
+	font-size: var(--type-caption);
+	line-height: 1.3;
+
+	color: var(--MuteForeground);
+}
+
+.gallery-sheet__total-head {
+	padding: var(--space-tight) 0.5rem;
+
+	text-align: start;
+	vertical-align: bottom;
+
+	border-inline-start: 2px solid var(--Divider);
+}
+
+.gallery-sheet__row:not(:first-child) {
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.gallery-sheet__name {
+	position: sticky;
+	inset-inline-start: 0;
+	z-index: 1;
+
+	padding: var(--space-tight);
+
+	background: var(--Card);
+	text-align: start;
+	vertical-align: top;
+
+	border-inline-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.gallery-sheet__name-link {
+	display: block;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+		text-decoration-thickness: 2px;
+		text-underline-offset: var(--optical-underline-offset);
+	}
+}
+
+.gallery-sheet__name-subject {
+	display: block;
+	margin-block-start: 0.25rem;
+
+	font-size: var(--type-caption);
+	line-height: 1.35;
+
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.gallery-sheet__name-count {
+	display: block;
+	margin-block-start: 0.3rem;
+
+	font-variant-numeric: tabular-nums;
+
+	color: var(--Foreground);
+}
+
+.gallery-sheet__cell {
+	padding: 0.35rem;
+	vertical-align: top;
+
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.gallery-sheet__cell--group {
+	border-inline-start: 2px solid var(--Divider);
+}
+
+.gallery-sheet__cell[data-disposition="unasked"] {
+	background: color-mix(in srgb, var(--Mute) 22%, transparent);
+}
+
+.gallery-sheet__figure {
+	display: block;
+
+	font-variant-numeric: tabular-nums;
+
+	color: var(--Foreground);
+}
+
+.gallery-sheet__of {
+	margin-inline: 0.15em;
+	color: var(--MuteForeground);
+}
+
+.gallery-sheet__reasons,
+.gallery-sheet__unasked {
+	display: block;
+	margin-block-start: 0.15rem;
+
+	font-size: var(--type-caption);
+	line-height: 1.3;
+
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+.gallery-sheet__unasked {
+	@include track(var(--track-name));
+}
+
+.gallery-sheet__total {
+	padding: 0.35rem 0.5rem;
+	vertical-align: top;
+
+	border-inline-start: 2px solid var(--Divider);
+}
+
+/* ─── THE CATALOG ────────────────────────────────────────────────────────── */
+
+.gallery-catalog {
+	margin: 0;
+	min-inline-size: 0;
+}
+
+.gallery-catalog__family {
+	margin-block-start: var(--space-chapter);
+	min-inline-size: 0;
+
+	&:first-of-type {
+		margin-block-start: var(--space-group);
+	}
+}
+
+.gallery-catalog__family-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.gallery-catalog__family-band {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.45em;
+
+	color: var(--Foreground);
+}
+
+.gallery-catalog__family-figure {
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+.gallery-catalog__family-link {
+	margin-inline-start: auto;
+
+	color: var(--MuteForeground);
+	text-decoration: none;
+
+	&:hover {
+		color: var(--Foreground);
+		text-decoration: underline;
+		text-decoration-thickness: 2px;
+		text-underline-offset: var(--optical-underline-offset);
+	}
+}
+
+.gallery-catalog__family-subject {
+	margin: 0.35rem 0 var(--space-reading);
+	max-inline-size: var(--Measure);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.gallery-row {
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	&:last-of-type {
+		border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	}
+}
+
+.gallery-row__summary {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.35rem var(--space-tight);
+
+	padding-block: var(--space-tight);
+
+	cursor: pointer;
+	list-style: none;
+
+	&::-webkit-details-marker {
+		display: none;
+	}
+
+	&::before {
+		content: "+";
+
+		inline-size: 1ch;
+
+		color: var(--Mark);
+	}
+
+	&:hover .gallery-row__name {
+		text-decoration: underline;
+		text-decoration-thickness: 2px;
+		text-underline-offset: var(--optical-underline-offset);
+	}
+}
+
+.gallery-row[open] > .gallery-row__summary::before {
+	content: "−";
+}
+
+.gallery-row__summary:focus-visible {
+	outline: 2px solid var(--Accent);
+	outline-offset: 4px;
+}
+
+.gallery-row__mark {
+	color: var(--Mark);
+}
+
+.gallery-row__index {
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.gallery-row__name {
+	min-inline-size: 9rem;
+
+	color: var(--Foreground);
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.gallery-row__file {
+	flex: 1 1 14rem;
+	min-inline-size: 0;
+
+	font-size: var(--type-caption);
+	line-height: 1.4;
+
+	color: var(--MuteForeground);
+	overflow-wrap: anywhere;
+}
+
+.gallery-row__count {
+	color: var(--Foreground);
+	font-variant-numeric: tabular-nums;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.gallery-row__strip {
+	display: grid;
+	// One row of cells, however many the spine asks: `auto-flow: column` reads
+	// the count from the data, so a condition added to `Gallery.ts` widens the
+	// strip instead of wrapping onto a second line.
+	grid-auto-flow: column;
+	grid-auto-columns: minmax(1.5rem, 1fr);
+	gap: 0;
+
+	flex: 1 0 100%;
+	min-inline-size: 0;
+
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.gallery-row__cell {
+	padding: 0.2rem 0.15rem;
+
+	font-size: var(--type-caption);
+	line-height: 1.3;
+	text-align: center;
+
+	color: var(--MuteForeground);
+
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	&:first-child {
+		border-inline-start: 0;
+	}
+
+	&[data-disposition="na"] {
+		background: color-mix(in srgb, var(--Mute) 45%, transparent);
+	}
+
+	&[data-disposition="unasked"] {
+		background: color-mix(in srgb, var(--Mute) 18%, transparent);
+		color: var(--MuteForeground);
+	}
+
+	&[data-disposition="built"] {
+		color: var(--Foreground);
+	}
+}
+
+.gallery-row__body {
+	padding-block: 0 var(--space-reading);
+	padding-inline-start: 2ch;
+
+	max-inline-size: var(--MeasureWide, var(--Measure));
+}
+
+.gallery-row__note,
+.gallery-row__source {
+	margin: 0 0 0.4rem;
+	max-inline-size: var(--Measure);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.gallery-row__source {
+	color: var(--MuteForeground);
+	overflow-wrap: anywhere;
+}
+
+.gallery-row__note-key {
+	margin-inline-end: 0.5ch;
+
+	color: var(--MuteForeground);
+	letter-spacing: var(--track-name);
+
+	&:not(:first-child) {
+		margin-inline-start: var(--space-tight);
+	}
+}
+
+.gallery-row__ledger {
+	display: grid;
+	gap: 0;
+	margin: var(--space-reading) 0 0;
+	padding: 0;
+
+	@include hairline(top);
+}
+
+.gallery-row__line {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 0.15rem;
+	align-items: baseline;
+
+	padding-block: 0.35rem;
+
+	@include hairline(bottom);
+
+	&[data-disposition="unasked"] {
+		background: color-mix(in srgb, var(--Mute) 18%, transparent);
+	}
+}
+
+// The key column is real only where there is room for it: a line printed in a
+// narrow band stacks the condition above its evidence rather than squeezing the
+// key into a column of four characters. Ascending queries, because `bp()` is a
+// `min-width` - a descending pair would have the narrow rule win everywhere.
+@include bp(640px) {
+	.gallery-row__line {
+		grid-template-columns: 10rem minmax(0, 1fr);
+		gap: var(--space-tight);
+	}
+}
+
+@include bp(1024px) {
+	.gallery-row__line {
+		grid-template-columns: 14rem minmax(0, 1fr);
+	}
+}
+
+.gallery-row__line-key {
+	display: grid;
+	gap: 0.1rem;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.gallery-row__line-label {
+	color: var(--Foreground);
+}
+
+.gallery-row__line-column {
+	font-size: var(--type-caption);
+	line-height: 1.3;
+
+	color: var(--MuteForeground);
+}
+
+.gallery-row__line-value {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: 1.55;
+
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.gallery-row__verdict {
+	margin-inline-end: 0.5ch;
+
+	@include track(var(--track-name));
+
+	color: var(--MuteForeground);
+}
+
+.gallery-row__link {
+	color: var(--Foreground);
+	text-decoration: underline;
+	text-decoration-thickness: 2px;
+	text-underline-offset: var(--optical-underline-offset);
+	text-decoration-color: color-mix(
+		in srgb,
+		var(--Foreground) 20%,
+		transparent
+	);
+}
+
+/* ─── THE REASONS ────────────────────────────────────────────────────────── */
+
+.gallery-reasons,
+.gallery-unasked {
+	margin: 0;
+	min-inline-size: 0;
+}
+
+.gallery-reasons__empty {
+	display: grid;
+	gap: 0.3rem;
+
+	max-inline-size: var(--Measure);
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+
+	color: var(--MuteForeground);
+}
+
+.gallery-reasons__empty-key {
+	color: var(--Foreground);
+	letter-spacing: var(--track-name);
+}
+
+.gallery-reasons__list,
+.gallery-unasked__list {
+	display: grid;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.gallery-reasons__reason {
+	display: grid;
+	gap: 0.3rem;
+
+	padding-block: var(--space-reading);
+
+	@include hairline(bottom);
+
+	&:first-child {
+		@include hairline(top);
+	}
+}
+
+.gallery-reasons__reason-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.gallery-reasons__mark {
+	color: var(--Mark);
+	font-variant-numeric: tabular-nums;
+}
+
+.gallery-reasons__count {
+	color: var(--Foreground);
+	font-variant-numeric: tabular-nums;
+}
+
+.gallery-reasons__text {
+	margin: 0;
+	max-inline-size: var(--Measure);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.gallery-reasons__cells-summary {
+	cursor: pointer;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--MuteForeground);
+}
+
+.gallery-reasons__cells-list {
+	display: grid;
+	gap: 0.15rem;
+
+	margin: var(--space-tight) 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.gallery-reasons__cell {
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: 1.4;
+
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+/* ─── THE UNASKED ────────────────────────────────────────────────────────── */
+
+.gallery-unasked__lede {
+	margin: 0 0 var(--space-reading);
+	max-inline-size: var(--Measure);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.gallery-unasked__entry {
+	display: grid;
+	gap: 0.3rem;
+
+	padding-block: var(--space-reading);
+
+	@include hairline(bottom);
+
+	&:first-child {
+		@include hairline(top);
+	}
+}
+
+.gallery-unasked__entry--complete {
+	background: color-mix(in srgb, var(--Mute) 12%, transparent);
+}
+
+.gallery-unasked__entry-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0;
+}
+
+.gallery-unasked__band {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+		text-decoration-thickness: 2px;
+		text-underline-offset: var(--optical-underline-offset);
+	}
+}
+
+.gallery-unasked__entry-figure {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+.gallery-unasked__gap {
+	margin: 0;
+	max-inline-size: var(--Measure);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.gallery-unasked__conditions,
+.gallery-unasked__source {
+	margin: 0;
+	max-inline-size: var(--Measure);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: 1.6;
+
+	color: var(--Foreground);
+	overflow-wrap: anywhere;
+}
+
+.gallery-unasked__source {
+	color: var(--MuteForeground);
+}
+
+.gallery-unasked__conditions-key {
+	margin-inline-end: 0.5ch;
+	color: var(--MuteForeground);
+	letter-spacing: var(--track-name);
+
+	&:not(:first-child) {
+		margin-inline-start: var(--space-tight);
+	}
+}

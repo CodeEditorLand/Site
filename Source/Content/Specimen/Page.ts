@@ -458,6 +458,64 @@ export const Bands = {
 			"The seven compositions the brief named by hand are columns of the matrix, not paragraphs: signed out, signing in, signed in, expired, denied, a failed submit and a missing clause. They are not hypothetical states - they are the seven ways these pages are read - and each one found a defect no page had asked about, because no page had ever been in that state with a reader watching. Nothing was deleted to fix them: a state that could not be printed was given an arm, and a sentence that was printed in the wrong ink was given its tone.",
 	},
 
+	/**
+	 * The gallery's index - the band this card added.
+	 *
+	 * The sheet had ten family bands and no way to see them: a reader arrived at
+	 * `/THE SHEET`, read twelve parts, and then met nine families in one scroll.
+	 * The one surface whose subject is *the design frame* was the one surface a
+	 * reader could not survey.
+	 *
+	 * It stands FIRST, before `/THE SHEET`, because it is the sheet's own
+	 * contents: sixteen bands, one row each, with the figure the band's matrix
+	 * counted and the sentence that says what the band argues. A reader who
+	 * reads only this band has seen the shape of the document.
+	 */
+	Gallery: {
+		kicker: "/THE GALLERY",
+
+		interval: "turn",
+
+		heading: "The sheet's own index, before its bands",
+
+		standfirst:
+			"Sixteen bands, one row each: the sheet's own apparatus, the ten families, the material and the register. Every row states the band, the figure its matrix counted, what it argues and what it is read for - so the frame can be seen before it is read.",
+
+		footnote:
+			"Every figure here is the family module's own export, not a number typed beside a label: a component added to `Reading.ts` moves the row above it in the same edit. That is the same rule `/THE REGISTER` follows at the foot of the page, applied to the page's own table of contents.",
+	},
+
+	/**
+	 * The apparatus family's band - the tenth, and the last before the stock.
+	 *
+	 * Its subject is the parts that make the document work rather than say
+	 * something: motion, the specimen surface's own blocks and this card's
+	 * gallery index, the head, the runtime providers, the trail and the blog.
+	 * They are one family because they fail in one way - silently. A motion that
+	 * does not fire, a card with no image, a provider that was never configured,
+	 * a trail with no crumbs: none of them throws, and every one of them is a lie
+	 * about the state of the world.
+	 *
+	 * The seven compositions the brief named by hand - every motion at reduced
+	 * motion, a motion with no trigger, a specimen with one entry and with forty,
+	 * a social card with no image, a provider row with no logo - are columns of
+	 * its matrix rather than prose, and each found a defect no page had asked
+	 * about because no page had ever been in that state with a reader watching.
+	 */
+	Apparatus: {
+		kicker: "/THE APPARATUS",
+
+		interval: "break",
+
+		heading: "The apparatus, and every way it fails without a sound",
+
+		standfirst:
+			"Seventeen components against twenty-four conditions: the matrix with a reason printed in full for every cell that cannot exist, the thirteen behaviours the exploration produced with the cell that produced each, the five things this card found and did not fix, and then the family mounted live - a fold with leaves, with none, loading and forty long, a record set and a record that is gone, a sequence and the same sequence at reduced motion, a skeleton and a skeleton with no key, a specimen as a register and as a plate, the sheet at one part and at forty and at none, the material strip and its empty arm, the gallery's index, the head's four cards, the runtime's three contracts, the trail at five crumbs and one and none, and the blog's archive at rest and at one and at none.",
+
+		footnote:
+			"Nine of the thirteen behaviours are arms the components could not express before this card: a skeleton with no schema, a sequence that could not state its reduced-motion promise, a fold whose loading arm had no sentence, a record whose register was empty, a trail with no crumbs and a current page that was `href`-shaped, a head that could not say it had no image, a provider that could not say it was blocked, an identity context that threw when it was unconfigured, and a pageview walker that patched the router once per tracker. Nothing was deleted to fix them: each one is a prop, a branch or a module-level set, and every existing rendering still renders.",
+	},
+
 	Material: {
 		kicker: "/THE MATERIAL",
 

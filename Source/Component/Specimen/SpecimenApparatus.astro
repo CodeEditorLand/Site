@@ -1,0 +1,1016 @@
+---
+/**
+ * SpecimenApparatus - the apparatus family, printed live.
+ *
+ * ─── WHAT CAN BE MOUNTED, AND WHAT CAN ONLY BE STATED ─────────────────────
+ * Five of the six motion blocks are `<details>` disclosures: they print with no
+ * script and the browser owns their state, so the sheet mounts them for real.
+ * `MotionOrigin` is the family's one island - a Radix popover - and it is mounted
+ * with `client:visible`, exactly as `/Motion` mounts it, because a drawing of a
+ * trigger/surface relation would be a drawing of something the reader can do.
+ *
+ * The providers are different in kind: `AnalyticsProvider`, `Auth0Provider` and
+ * `PageviewTracker` render no markup at all. A row cannot mount a context, so the
+ * runtime rows print the CONTRACT each one exposes - the same keys its consumers
+ * read - and say so in the row's `when` line. That is not a picture of a
+ * component; it is the only honest form a context has on a printed sheet.
+ *
+ * The head is the third case: `MetaTags` writes into `<head>` and cannot be
+ * mounted in a body. Its rows call `TagsOf()` - the function the head itself
+ * renders from - and print the tags it returns as a register. The sheet is
+ * therefore showing the head's real output, not a copy of it.
+ *
+ * ─── THE RENDERER DECIDES NOTHING ────────────────────────────────────────
+ * A row states what it is, which part it exercises, when that state is right and
+ * the arm it prints; this file builds the data and mounts the block. That split
+ * is why the matrix and the rows cannot drift: both read
+ * `Content/Specimen/Apparatus.ts`, and a state added there appears on both with
+ * no second edit.
+ *
+ * ─── THE DATA IS THE SITE'S OWN ──────────────────────────────────────────
+ * The motion classes are `Content/Motion/Register.ts`'s own records, the sheet's
+ * cells are `Parts.ts`'s, the material is the token sheet's, the gallery is the
+ * families' own exports, the trail crumbs are routes the site has, and the
+ * article is the blog collection's shape. A specimen printed with lorem ipsum
+ * would prove that the block can hold text; a specimen printed with the
+ * document's own facts proves that the block can hold THIS document.
+ *
+ * ─── THE STAGE IS A PLATE, NOT A VIEWPORT ────────────────────────────────
+ * The motion specimen splits 4/1px/7 above 1024px, the sequence runs horizontally
+ * above 768px and the article is 8/1px/4 above 1024px. All three are viewport
+ * rules, and a plate that simulated them would be printing a browser.
+ * `_Apparatus.scss` declares the stacked composition for the narrow stage and
+ * says so where it does it.
+ */
+import {
+	Groups,
+	InGroup,
+	type Specimen,
+} from "../../Content/Specimen/Apparatus.js";
+
+import { ClassOf } from "../../Content/Motion/Register.js";
+import { SheetRows } from "../../Content/Specimen/Parts.js";
+import type { Part } from "../../Content/Specimen/Parts.js";
+import { Material } from "../../Content/Specimen/Page.js";
+import { Families } from "../../Content/Specimen/Families.js";
+
+import MotionExpand from "../Motion/MotionExpand.astro";
+import MotionFold from "../Motion/MotionFold.astro";
+import MotionOrigin from "../Motion/MotionOrigin.astro";
+import MotionSequence from "../Motion/MotionSequence.astro";
+import MotionSkeleton from "../Motion/MotionSkeleton.astro";
+import MotionSpecimen from "../Motion/MotionSpecimen.astro";
+import BlogArticle from "../Blog/BlogArticle.astro";
+import BlogIndex from "../Blog/BlogIndex.astro";
+import RecordLedger from "../Record/RecordLedger.astro";
+import { RegisterOf } from "../Record/RegisterLine.js";
+import SpecimenFamilies from "./SpecimenFamilies.astro";
+import SpecimenMaterial from "./SpecimenMaterial.astro";
+import SpecimenPlate from "./SpecimenPlate.astro";
+import SpecimenSheet from "./SpecimenSheet.astro";
+import SurfaceAbsent from "../Surface/SurfaceAbsent.astro";
+import Trail from "../Route/Trail.astro";
+import { TagsOf } from "../Social/Tags.js";
+
+import type { BlogRow } from "../Blog/Type.js";
+import type {
+	ExpandRecord,
+	FoldLeaf,
+	Sequence,
+} from "../Motion/Type.js";
+import type { LedgerRow } from "../Record/Type.js";
+import type { MarginNote } from "../Record/Type.js";
+import type { TrailItem } from "../Route/Type.js";
+
+/* ─── THE MOTION CLASSES, FROM THE REGISTER ──────────────────────────────── */
+
+/** The fold's own record: what it costs, what it moves, what it keeps. */
+const FOLD = ClassOf("FOLD");
+
+/* ─── THE FOLD'S LEAVES ──────────────────────────────────────────────────── */
+
+/** Three questions the document keeps closed until a reader asks. */
+const FOLD_LEAVES: readonly FoldLeaf[] = [
+	{
+		index: "01",
+		label: "Why the licence is CC0 and not MIT",
+		note: "A licence that asks for attribution is a licence a fork can fail.",
+		meta: "3 SOURCES",
+	},
+
+	{
+		index: "02",
+		label: "What the telemetry gate covers",
+		href: "/Download",
+		note: "The feature is built and switched off until the policy is published.",
+		meta: "FEATURE GATED",
+	},
+
+	{
+		index: "03",
+		label: "Where the Rust core is documented",
+		href: "/Doc/Rust",
+		meta: "12 PAGES",
+	},
+];
+
+/** The same run with the middle leaf's target gone: the tombstone arm. */
+const FOLD_LEAVES_GONE: readonly FoldLeaf[] = [
+	FOLD_LEAVES[0]!,
+
+	{
+		index: "02",
+		label: "What the telemetry gate covers",
+		gone: true,
+		meta: "WAS: /TELEMETRY",
+	},
+
+	FOLD_LEAVES[2]!,
+];
+
+/** Forty leaves: the run that is longer than its frame. */
+const FOLD_LEAVES_LONG: readonly FoldLeaf[] = Array.from(
+	{ length: 40 },
+	(_, Index) => ({
+		index: String(Index + 1).padStart(2, "0"),
+		label: `Question ${Index + 1}: ${["the licence", "the telemetry gate", "the Rust core", "the extension host"][Index % 4]}`,
+		meta: Index % 3 === 0 ? "3 SOURCES" : undefined,
+	}),
+);
+
+/** The keys a record will print, before its values arrive. */
+const SKELETON_KEYS = ["CHECKSUM:", "SIGNED BY:", "BUILT:", "TARGETS:"];
+
+/* ─── THE RECORD SETS ────────────────────────────────────────────────────── */
+
+const EXPAND_RECORDS: readonly ExpandRecord[] = [
+	{
+		index: "RECORD_01",
+		name: "The licence",
+		fact: "CC0 1.0",
+		rows: [
+			{ key: "SOURCE:", value: "LICENSE", code: true },
+			{ key: "AS OF:", value: "2026-11-19" },
+			{ key: "METHOD:", value: "Read from the repository's root licence file." },
+		],
+		source: "SOURCE/COMPONENT/RECORD/REGISTERLINE.TS",
+	},
+
+	{
+		index: "RECORD_02",
+		name: "The build",
+		fact: "SOURCE ONLY",
+		rows: [
+			{ key: "SOURCE:", value: "MAINTAIN/SCRIPT/BUILD.MJS", code: true },
+			{ key: "AS OF:", value: "2026-11-19" },
+			{ key: "CHECKSUM:", value: "UNAVAILABLE" },
+		],
+		source: "SOURCE/CONTENT/MORE/STATUS.TS",
+	},
+
+	{
+		index: "RECORD_03",
+		name: "The targets",
+		fact: "3 PLATFORMS",
+		rows: [
+			{ key: "MACOS:", value: "aarch64 + x86_64" },
+			{ key: "WINDOWS:", value: "x86_64" },
+			{ key: "LINUX:", value: "x86_64" },
+		],
+		source: "SOURCE/CONTENT/MORE/COMPARE.TS",
+	},
+];
+
+const EXPAND_GONE: readonly ExpandRecord[] = [
+	EXPAND_RECORDS[0]!,
+
+	{
+		index: "RECORD_02",
+		name: "The build",
+		fact: "SOURCE ONLY",
+		rows: [],
+		source: "SOURCE/CONTENT/MORE/STATUS.TS",
+		missing: "a status page that was retired when the build moved to source",
+	},
+
+	EXPAND_RECORDS[2]!,
+];
+
+const EXPAND_NOFACT: readonly ExpandRecord[] = [
+	{
+		index: "RECORD_01",
+		name: "The signature",
+		fact: "PLANNED",
+		rows: [],
+		source: "SOURCE/CONTENT/MORE/STATUS.TS",
+	},
+];
+
+/* ─── THE SEQUENCES ──────────────────────────────────────────────────────── */
+
+const SEQUENCE: Sequence = {
+	name: "THE COPY",
+	nodes: [
+		{ index: "01", state: "READY", note: "The well is printed and the command is selectable." },
+		{ index: "02", state: "ACTIVE", note: "The reader pressed copy; the clipboard call is running." },
+		{ index: "03", state: "VERIFIED", note: "The clipboard answered; the label says so." },
+		{ index: "04", state: "READY", note: "The label returns after two seconds." },
+	],
+	edges: [
+		{
+			motion: "PRESS",
+			interval: "150 MS",
+			explains: "the input landed, and the control says it heard",
+		},
+		{
+			motion: "SETTLE",
+			interval: "320 MS",
+			explains: "the state resolved, and the ink changes with it",
+		},
+		{
+			motion: "RETURN",
+			interval: "200 MS",
+			explains: "the label gives way, and nothing is claimed any more",
+		},
+	],
+	source: "SOURCE/STYLESHEET/SYSTEM/MOTION/_EXPAND.SCSS",
+	empty: "A sequence needs at least two states and one edge between each pair.",
+};
+
+/** The same sequence with the promise its class makes at reduced motion. */
+const SEQUENCE_REDUCED: Sequence = {
+	...SEQUENCE,
+	reduced:
+		"the state changes in one frame and the label is simply there - the end state is declared unconditionally and only the interval is gated",
+};
+
+const SEQUENCE_ONE: Sequence = {
+	name: "THE COPY",
+	nodes: [{ index: "01", state: "READY", note: "One state is not a sequence." }],
+	edges: [],
+	source: "SOURCE/STYLESHEET/SYSTEM/MOTION/_EXPAND.SCSS",
+	empty:
+		"A sequence is a state change drawn, so a run of one state has no transition to draw and no interval to print.",
+};
+
+const SEQUENCE_UNMEASURED: Sequence = {
+	name: "THE HANDOVER",
+	nodes: [
+		{ index: "01", state: "ACTIVE", note: "The page the reader is on." },
+		{ index: "02", state: "PREPARING", note: "The next document is being fetched." },
+		{ index: "03", state: "READY", note: "The next document is painted." },
+	],
+	edges: [
+		{
+			motion: "HANDOVER",
+			explains: "the page gives way to another",
+		},
+		{
+			motion: "RESOLVE",
+			interval: "320 MS",
+			explains: "the new document settles into place",
+		},
+	],
+	source: "SOURCE/STYLESHEET/SYSTEM/MOTION/_HANDOVER.SCSS",
+	empty: "A sequence needs at least two states and one edge between each pair.",
+};
+
+/* ─── THE SPECIMEN'S STAGES ──────────────────────────────────────────────── */
+
+/** One artifact for the specimen's stage: a fold explaining a fold. */
+const STAGE_FOLD_LEAVES: readonly FoldLeaf[] = [
+	{
+		index: "01",
+		label: "The leaves move and the box does not",
+		note: "A box that grows is a layout animation.",
+	},
+
+	{
+		index: "02",
+		label: "The interval is the class's, not the block's",
+		note: "200ms on the arrive curve, and 0ms at reduced motion.",
+	},
+];
+
+/* ─── THE SHEET'S CELLS ──────────────────────────────────────────────────── */
+
+/** Forty cells: the sheet at a size no document has yet. */
+const SHEET_FORTY = Array.from({ length: 40 }, (_, Index) => ({
+	mark: String(Index + 1).padStart(2, "0"),
+	name: `PART ${String(Index + 1).padStart(2, "0")}`,
+	note: "One cell of a sheet of forty, printed to prove the grid holds.",
+	kind: ["SURFACE", "FORM", "CONTENT", "BLOCK"][Index % 4]!,
+	disposition: "printed" as const,
+}));
+
+/* ─── THE PLATE'S PART ───────────────────────────────────────────────────── */
+
+/**
+ * The part a plate prints in this family.
+ *
+ * A plate needs a part, and this family's parts are not in `Parts.ts` - so the
+ * two plate rows print the material strip, whose contract is the token sheet's
+ * own. The mark is the sheet's, the disposition is `printed`, and the anchor is
+ * the row's own id so the plate's heading can be cited.
+ */
+const PLATE_PART: Part & { readonly plate: string } = {
+	mark: "APPARATUS",
+	name: "MATERIAL",
+	kind: "SURFACE",
+	file: "COMPONENT/SPECIMEN/SPECIMENMATERIAL.ASTRO",
+	note: "The six things the document is printed with.",
+	contract: [
+		{
+			key: "TAKES:",
+			value: "items, label, count, empty",
+			code: true,
+		},
+		{
+			key: "PRINTS:",
+			value: "A register line and a strip of six specimens, each a swatch, a token, a value and a use.",
+		},
+		{
+			key: "STYLESHEET:",
+			value: "System/Component/Specimen/_Material.scss",
+			code: true,
+		},
+		{ key: "CONSUMER:", value: "THIS SHEET, /THE MATERIAL" },
+	],
+	disposition: "printed",
+	plate: "#apparatus-APPARATUS_23",
+};
+
+/**
+ * The same part for the field stage.
+ *
+ * A plate's anchor is derived from its part's `plate` reference, so two plates
+ * printing one part would print one id twice - and a duplicate id is a document
+ * that cannot be cited. The second row therefore carries its own reference, and
+ * the two plates are two anchors.
+ */
+const PLATE_PART_FIELD: Part & { readonly plate: string } = {
+	...PLATE_PART,
+	plate: "#apparatus-APPARATUS_24",
+};
+
+/* ─── THE HEAD'S ROWS ────────────────────────────────────────────────────── */
+
+/** The head a page gets when it passes the four facts the frame always has. */
+const HEAD_PAGE = TagsOf({
+	title: "Specimen | Code Editor Land",
+	description:
+		"The document's own parts, printed: twelve components at 1:1 with their contracts, three stated absences, and the nine adverse states composed.",
+	url: "https://editor.land/Specimen",
+});
+
+/** The same head with no card image: the whole `og:image` family is absent. */
+const HEAD_NO_IMAGE = TagsOf({
+	title: "Specimen | Code Editor Land",
+	description:
+		"The document's own parts, printed: twelve components at 1:1 with their contracts, three stated absences, and the nine adverse states composed.",
+	url: "https://editor.land/Specimen",
+	image: null,
+});
+
+/** A dated piece: `og:type` is `article` and the date joins the WebSite node. */
+const HEAD_ARTICLE = TagsOf({
+	title: "How the build system is designed",
+	description:
+		"Every artefact the editor ships is built from source, and the pipeline that does it is part of the product.",
+	url: "https://editor.land/Blog/BuildSystemDesign",
+	type: "article",
+	publishedTime: "2026-11-19",
+	author: "Nikola R. Hristov",
+});
+
+/** A lab route: the head says the page is not for a reader. */
+const HEAD_NOINDEX = TagsOf({
+	title: "Specimen | Code Editor Land",
+	description:
+		"The document's own parts, printed: twelve components at 1:1 with their contracts, three stated absences, and the nine adverse states composed.",
+	url: "https://editor.land/Specimen",
+	noIndex: true,
+});
+
+/** The tags a head writes, as the ledger rows the sheet prints. */
+const TagRows = (Tags: readonly { kind: string; key: string; value: string }[]) =>
+	Tags.filter((Tag) => Tag.kind !== "jsonld").map((Tag) => ({
+		key: `${Tag.key}:`,
+		value: Tag.value,
+	}));
+
+/** The JSON-LD node, as its own ledger: the three facts a feed reads. */
+const NodeRows = (Tags: readonly { kind: string; key: string; value: string }[]) => {
+	const Node = Tags.find((Tag) => Tag.kind === "jsonld");
+
+	if (Node === undefined) return [] as readonly LedgerRow[];
+
+	const Parsed = JSON.parse(Node.value) as Record<string, unknown>;
+
+	return [
+		{ key: "@TYPE:", value: String(Parsed["@type"]) },
+		{ key: "NAME:", value: String(Parsed["name"]) },
+		{ key: "URL:", value: String(Parsed["url"]) },
+	];
+};
+
+/* ─── THE RUNTIME'S CONTRACTS ────────────────────────────────────────────── */
+
+const ANALYTICS_LIVE: readonly LedgerRow[] = [
+	{ key: "CONTEXT:", value: "AnalyticsContext" },
+	{ key: "CALLS:", value: "track / trackPageView / identify", code: true },
+	{ key: "AVAILABLE:", value: "true" },
+	{ key: "REASON:", value: "LIVE" },
+	{ key: "RENDERS:", value: "Its children and no markup of its own." },
+];
+
+const ANALYTICS_BLOCKED: readonly LedgerRow[] = [
+	{ key: "CONTEXT:", value: "AnalyticsContext" },
+	{ key: "CALLS:", value: "track / trackPageView / identify", code: true },
+	{ key: "AVAILABLE:", value: "false" },
+	{ key: "REASON:", value: "BLOCKED" },
+	{
+		key: "CAUSE:",
+		value: "GetWorkersClient() threw - an ad-blocker or a dead network.",
+	},
+	{ key: "EFFECT:", value: "Every call is a no-op and the page is intact." },
+];
+
+const AUTH0_CONFIGURED: readonly LedgerRow[] = [
+	{ key: "CONTEXT:", value: "Auth0Context" },
+	{ key: "DOMAIN:", value: "editor-land.eu.auth0.com", code: true },
+	{ key: "CLIENT:", value: "CONFIGURED", code: true },
+	{ key: "REDIRECT:", value: "/OAUTH/SUCCESS", code: true },
+	{ key: "ORGANIZATION:", value: "UNAVAILABLE", code: true },
+];
+
+const AUTH0_UNCONFIGURED: readonly LedgerRow[] = [
+	{ key: "CONTEXT:", value: "Auth0Context" },
+	{ key: "DOMAIN:", value: "UNAVAILABLE" },
+	{ key: "CLIENT:", value: "UNAVAILABLE" },
+	{ key: "REDIRECT:", value: "UNAVAILABLE" },
+	{ key: "EFFECT:", value: "The children render unwrapped and the surface still prints." },
+];
+
+const TRACKER_LIVE: readonly LedgerRow[] = [
+	{ key: "CONTEXT:", value: "AnalyticsContext" },
+	{ key: "LISTENS:", value: "popstate / pushState / replaceState", code: true },
+	{ key: "INSTALLS:", value: "Once, by the first tracker." },
+	{ key: "REMOVES:", value: "Once, by the last." },
+	{ key: "RENDERS:", value: "Nothing." },
+];
+
+const TRACKER_INERT: readonly LedgerRow[] = [
+	{ key: "CONTEXT:", value: "UNAVAILABLE" },
+	{ key: "LISTENS:", value: "Nothing - the effect returns before it subscribes." },
+	{ key: "SENDS:", value: "Nothing." },
+	{ key: "RENDERS:", value: "Nothing." },
+];
+
+/* ─── THE TRAIL'S CRUMBS ─────────────────────────────────────────────────── */
+
+const TRAIL_FIVE: readonly TrailItem[] = [
+	{ label: "/HOME", href: "/" },
+	{ label: "/DOC", href: "/Doc" },
+	{ label: "/ARCHITECTURE", href: "/Doc/Architecture" },
+	{ label: "/THE RECORD LAYER", href: "/Doc/Record" },
+	{ label: "/A LEDGER" },
+];
+
+const TRAIL_ONE: readonly TrailItem[] = [{ label: "/SPECIMEN" }];
+
+const TRAIL_LONG: readonly TrailItem[] = [
+	{ label: "/HOME", href: "/" },
+	{ label: "/DOC", href: "/Doc" },
+	{
+		label: "/THE RECORD LAYER, AND THE FOUR FORMS A FACT IS STATED IN ACROSS THE DOCUMENT",
+	},
+];
+
+/* ─── THE BLOG'S ROWS ────────────────────────────────────────────────────── */
+
+const BLOG_ROWS: readonly BlogRow[] = [
+	{
+		href: "/Blog/BuildSystemDesign",
+		date: "2026-11-19",
+		title: "How the build system is designed",
+		summary:
+			"Every artefact the editor ships is built from source, and the pipeline that does it is part of the product.",
+		author: "Nikola R. Hristov",
+		readTime: "9 min read",
+		tags: ["BUILD", "RUST"],
+	},
+
+	{
+		href: "/Blog/RecordLayer",
+		date: "2026-11-04",
+		title: "The record layer, and why a fact needs four forms",
+		summary:
+			"A ledger, a matrix, a stage and a well are not four designs of one thing; they are four information types.",
+		author: "Nikola R. Hristov",
+		readTime: "12 min read",
+		tags: ["DESIGN", "GRAMMAR"],
+	},
+
+	{
+		href: "/Blog/ExtensionHost",
+		date: "2026-10-22",
+		title: "The extension host is unmodified",
+		summary:
+			"The editor runs the extension API as it is, and the compatibility table says which parts are still in progress.",
+		author: "Nikola R. Hristov",
+		readTime: "6 min read",
+		tags: ["EXTENSIONS"],
+	},
+];
+
+const BLOG_REGISTER = RegisterOf("BLOG", BLOG_ROWS, { unit: "ENTRIES" });
+
+const BLOG_MEASURES = [
+	{ label: "ENTRIES", value: String(BLOG_ROWS.length) },
+	{ label: "TAGS", value: String(new Set(BLOG_ROWS.flatMap((Row) => Row.tags)).size) },
+	{ label: "AUTHORS", value: String(new Set(BLOG_ROWS.map((Row) => Row.author)).size) },
+	{ label: "NEWEST", value: BLOG_ROWS[0]!.date },
+];
+
+const ARTICLE_SUMMARY: readonly LedgerRow[] = [
+	{ key: "FILED:", value: "2026-11-19" },
+	{ key: "BY:", value: "Nikola R. Hristov" },
+	{ key: "READING:", value: "9 min read" },
+	{ key: "TAGGED:", value: "BUILD, RUST" },
+	{ key: "SECTIONS:", value: "5" },
+];
+
+const ARTICLE_REGISTER = RegisterOf("SUMMARY", ARTICLE_SUMMARY);
+
+const ARTICLE_NOTES: readonly MarginNote[] = [
+	{
+		index: "NOTE_01",
+		label: "THE DATE",
+		body: "The build pipeline described here is the one this site was published from; the date is the day the piece was filed, not the day the tree was read.",
+		source: "SOURCE/BLOG/BUILDSYSTEMDESIGN.MD",
+	},
+
+	{
+		index: "NOTE_02",
+		label: "THE CORRECTION",
+		body: "A correction to this piece is filed as an issue on the repository, and the correction is printed in the piece rather than appended to it.",
+		source: "SOURCE/CONTENT/BLOG/INDEX.TS",
+	},
+];
+
+const ARTICLE_TOC = {
+	label: "ON THIS PAGE",
+	items: [
+		{ label: "The shape of the pipeline", href: "#the-shape-of-the-pipeline" },
+		{ label: "What is built and what is fetched", href: "#what-is-built" },
+	],
+};
+
+/* ─── THE STAGE ──────────────────────────────────────────────────────────── */
+
+/** The stage's own width, from the row. */
+const SkinClass = (Entry: Specimen): string => {
+	const Width = Entry.width ?? "band";
+
+	return `specimen-apparatus__stage specimen-apparatus__stage--${Width}`;
+};
+
+/** A ledger row set, as the register line above it. */
+const LedgerOf = (Label: string, Rows: readonly LedgerRow[]) =>
+	RegisterOf(Label, Rows);
+---
+
+<div class="specimen-apparatus">
+	{Groups.map((Group) => (
+		<section class="specimen-apparatus__group">
+			<p class="specimen-apparatus__group-head">
+				<span class="specimen-apparatus__group-kicker">{Group.label}</span>
+				<span class="specimen-apparatus__group-count">
+					{InGroup(Group.key).length}
+				</span>
+			</p>
+
+			<p class="specimen-apparatus__group-note">{Group.note}</p>
+
+			<div class="specimen-apparatus__rows">
+				{InGroup(Group.key).map((Entry) => (
+					<article
+						class="specimen-apparatus__row"
+						id={`apparatus-${Entry.mark}`}
+					>
+						<header class="specimen-apparatus__spec">
+							<p class="specimen-apparatus__mark">
+								<span
+									class="specimen-apparatus__mark-hash"
+									aria-hidden="true"
+								>
+									#
+								</span>
+								{Entry.mark}
+							</p>
+
+							<h3 class="specimen-apparatus__state">
+								{Entry.state_name}
+							</h3>
+
+							<p class="specimen-apparatus__part">
+								{Entry.component}
+							</p>
+
+							<p class="specimen-apparatus__when">{Entry.when}</p>
+						</header>
+
+						<div
+							class={SkinClass(Entry)}
+							data-skin={Entry.width ?? "band"}
+						>
+							{Entry.kind === "motionfold" ? (
+								<MotionFold
+									name="OPEN QUESTIONS"
+									label={
+										Entry.variant === "long" ? "THE RUN" : "AS FILED"
+									}
+									count={
+										Entry.variant === "long"
+											? "40"
+											: Entry.variant === "empty"
+												? "00"
+												: Entry.variant === "loading"
+													? undefined
+													: "03"
+									}
+									leaves={
+										Entry.variant === "gone"
+											? FOLD_LEAVES_GONE
+											: Entry.variant === "long"
+												? FOLD_LEAVES_LONG
+												: Entry.variant === "empty" ||
+													  Entry.variant === "loading"
+													? []
+													: FOLD_LEAVES
+									}
+									state={
+										Entry.variant === "loading" ? "loading" : "rest"
+									}
+									keys={
+										Entry.variant === "loading"
+											? SKELETON_KEYS
+											: []
+									}
+									waiting={
+										Entry.variant === "loading"
+											? "THE FOUR ANSWERS THIS FOLD IS FOR"
+											: undefined
+									}
+									long={Entry.variant === "long"}
+									more={
+										Entry.variant === "long"
+											? "Forty leaves. The run scrolls inside its own frame and the summary still prints the whole count."
+											: undefined
+									}
+									empty="No question is filed against this subject yet, so the fold opens onto a statement rather than onto a blank: the count above is the set's own zero."
+								/>
+							) : Entry.kind === "motionexpand" ? (
+								<MotionExpand
+									marker="# EXPAND / 03"
+									records={
+										Entry.variant === "gone"
+											? EXPAND_GONE
+											: Entry.variant === "nofact"
+												? EXPAND_NOFACT
+												: EXPAND_RECORDS
+									}
+									empty="No record is filed, so there is nothing to open: the set states what it would hold rather than printing a disclosure onto nothing."
+								/>
+							) : Entry.kind === "motionsequence" ? (
+								<MotionSequence
+									sequence={
+										Entry.variant === "one"
+											? SEQUENCE_ONE
+											: Entry.variant === "unmeasured"
+												? SEQUENCE_UNMEASURED
+												: Entry.variant === "reduced"
+													? SEQUENCE_REDUCED
+													: SEQUENCE
+									}
+								/>
+							) : Entry.kind === "motionskeleton" ? (
+								<MotionSkeleton
+									marker="# LOADING / 04"
+									keys={
+										Entry.variant === "empty"
+											? []
+											: SKELETON_KEYS
+									}
+									waiting="THE RELEASE MANIFEST"
+									age={
+										Entry.variant === "empty"
+											? "318 DAYS"
+											: "3 DAYS"
+									}
+									empty="The manifest's own field names have not arrived either, so this block can state that it is waiting and not what it is waiting for - the arm this card added."
+								/>
+							) : Entry.kind === "motionspecimen" ? (
+								<MotionSpecimen
+									motion={
+										Entry.variant === "plate" ? undefined : FOLD
+									}
+									variant="wide"
+									note={
+										Entry.variant === "plate"
+											? "The plate arm: no register column, because the class was stated above it."
+											: "The stage holds a real fold. Open it: the leaves move and the box does not."
+									}
+								>
+									<MotionFold
+										name="WHAT THE FOLD KEEPS"
+										label="THE RULE"
+										count="02"
+										leaves={STAGE_FOLD_LEAVES}
+										empty="No rule is filed."
+									/>
+								</MotionSpecimen>
+							) : Entry.kind === "motionorigin" ? (
+								<MotionOrigin />
+							) : Entry.kind === "sheet" ? (
+								<SpecimenSheet
+									rows={
+										Entry.variant === "one"
+											? SheetRows.slice(0, 1)
+											: Entry.variant === "many"
+												? SHEET_FORTY
+												: Entry.variant === "empty"
+													? []
+													: SheetRows
+									}
+									label="SHEET"
+									count={
+										Entry.variant === "one"
+											? "01 PART"
+											: Entry.variant === "many"
+												? "40 PARTS"
+												: Entry.variant === "empty"
+													? "00 PARTS"
+													: `${SheetRows.length} PARTS`
+									}
+									empty="No part is filed, so there is nothing on this sheet. A specimen sheet with no parts is a document that has not been written yet, not a page that failed to load."
+								/>
+							) : Entry.kind === "plate" ? (
+								<SpecimenPlate
+									part={
+										Entry.variant === "field"
+											? PLATE_PART_FIELD
+											: PLATE_PART
+									}
+									caption="The material strip at 1:1 on the surface it is printed on. A plate is one part, its contract beside it, and the caption that says what to look at."
+									source="SOURCE/COMPONENT/SPECIMEN/SPECIMENMATERIAL.ASTRO"
+									stage={Entry.variant === "field" ? "field" : "insert"}
+								>
+									<SpecimenMaterial
+										items={Material}
+										label="MATERIAL"
+										count={`${Material.length} SPECIMENS`}
+										empty="No specimen is filed, so the strip prints nothing."
+									/>
+								</SpecimenPlate>
+							) : Entry.kind === "material" ? (
+								<SpecimenMaterial
+									items={Entry.variant === "empty" ? [] : Material}
+									label="MATERIAL"
+									count={
+										Entry.variant === "empty"
+											? "00 SPECIMENS"
+											: `${Material.length} SPECIMENS`
+									}
+									empty="No specimen is filed, so the strip prints nothing. The material is not a preference that can be missing: it is read from the token sheet, and a strip with no rows is a build that lost the file."
+								/>
+							) : Entry.kind === "families" ? (
+								<SpecimenFamilies
+									families={
+										Entry.variant === "one"
+											? Families.slice(0, 1)
+											: Families
+									}
+									label="GALLERY"
+									count={
+										Entry.variant === "one"
+											? "01 BAND"
+											: `${Families.length} BANDS`
+									}
+									empty="No band is filed, so the gallery states that it has nothing to index rather than printing a contents list with no contents."
+								/>
+							) : Entry.kind === "head" ? (
+								<div class="specimen-apparatus__register">
+									<RecordLedger
+										rows={
+											Entry.variant === "noimage"
+												? TagRows(HEAD_NO_IMAGE)
+												: Entry.variant === "article"
+													? TagRows(HEAD_ARTICLE)
+													: Entry.variant === "noindex"
+														? TagRows(HEAD_NOINDEX)
+														: TagRows(HEAD_PAGE)
+										}
+										columns={2}
+										register={LedgerOf(
+											"HEAD",
+											TagRows(
+												Entry.variant === "noimage"
+													? HEAD_NO_IMAGE
+													: Entry.variant === "article"
+														? HEAD_ARTICLE
+														: Entry.variant === "noindex"
+															? HEAD_NOINDEX
+															: HEAD_PAGE,
+											),
+										)}
+									/>
+
+									<RecordLedger
+										rows={NodeRows(
+											Entry.variant === "article"
+												? HEAD_ARTICLE
+												: Entry.variant === "noindex"
+													? HEAD_NOINDEX
+													: Entry.variant === "noimage"
+														? HEAD_NO_IMAGE
+														: HEAD_PAGE,
+										)}
+										columns={3}
+										register={LedgerOf(
+											"JSON-LD",
+											NodeRows(
+												Entry.variant === "article"
+													? HEAD_ARTICLE
+													: Entry.variant === "noindex"
+														? HEAD_NOINDEX
+														: Entry.variant === "noimage"
+															? HEAD_NO_IMAGE
+															: HEAD_PAGE,
+											),
+										)}
+									/>
+								</div>
+							) : Entry.kind === "analytics" ? (
+								<div class="specimen-apparatus__register">
+									<RecordLedger
+										rows={
+											Entry.variant === "blocked"
+												? ANALYTICS_BLOCKED
+												: ANALYTICS_LIVE
+										}
+										columns={2}
+										register={LedgerOf(
+											"CONTEXT",
+											Entry.variant === "blocked"
+												? ANALYTICS_BLOCKED
+												: ANALYTICS_LIVE,
+										)}
+									/>
+								</div>
+							) : Entry.kind === "auth0" ? (
+								<div class="specimen-apparatus__register">
+									<RecordLedger
+										rows={
+											Entry.variant === "unconfigured"
+												? AUTH0_UNCONFIGURED
+												: AUTH0_CONFIGURED
+										}
+										columns={2}
+										register={LedgerOf(
+											"IDENTITY",
+											Entry.variant === "unconfigured"
+												? AUTH0_UNCONFIGURED
+												: AUTH0_CONFIGURED,
+										)}
+									/>
+								</div>
+							) : Entry.kind === "tracker" ? (
+								<div class="specimen-apparatus__register">
+									<RecordLedger
+										rows={
+											Entry.variant === "inert"
+												? TRACKER_INERT
+												: TRACKER_LIVE
+										}
+										columns={2}
+										register={LedgerOf(
+											"TRACKER",
+											Entry.variant === "inert"
+												? TRACKER_INERT
+												: TRACKER_LIVE,
+										)}
+									/>
+								</div>
+							) : Entry.kind === "trail" ? (
+								<Trail
+									trail={
+										Entry.variant === "one"
+											? TRAIL_ONE
+											: Entry.variant === "empty"
+												? []
+												: Entry.variant === "long"
+													? TRAIL_LONG
+													: TRAIL_FIVE
+									}
+								/>
+							) : Entry.kind === "blogindex" ? (
+								<BlogIndex
+									trail={[
+										{ label: "/HOME", href: "/" },
+										{ label: "/BLOG" },
+									]}
+									heading="The archive"
+									standfirst="Every piece filed against this project, newest first."
+									rows={
+										Entry.variant === "one"
+											? BLOG_ROWS.slice(0, 1)
+											: Entry.variant === "empty"
+												? []
+												: BLOG_ROWS
+									}
+									emptyTitle="No entry is filed"
+									emptyNote="The archive is built from the collection, and the collection answered with nothing. The plate above states the same fact in the record grammar rather than printing four zeroes."
+									backLabel="Back to the top"
+									backHref="#apparatus-APPARATUS_43"
+									register={
+										Entry.variant === "one"
+											? RegisterOf("BLOG", BLOG_ROWS.slice(0, 1), {
+													unit: "ENTRIES",
+												})
+											: Entry.variant === "empty"
+												? RegisterOf("BLOG", [], {
+														unit: "ENTRIES",
+													})
+												: BLOG_REGISTER
+									}
+									plateMeasures={
+										Entry.variant === "empty"
+											? []
+											: BLOG_MEASURES
+									}
+									plateCaption="What this archive is, measured: the entries it holds, the tags they carry, the authors who filed them, and the newest date among them."
+									plateSource="SOURCE/CONTENT/BLOG/INDEX.TS"
+								/>
+							) : Entry.kind === "blogarticle" ? (
+								<BlogArticle
+									title="How the build system is designed"
+									summary="Every artefact the editor ships is built from source, and the pipeline that does it is part of the product."
+									tags={["BUILD", "RUST"]}
+									author="Nikola R. Hristov"
+									date="2026-11-19"
+									readTime="9 min read"
+									toc={
+										Entry.variant === "noregister" ? null : ARTICLE_TOC
+									}
+									trail={[
+										{ label: "/HOME", href: "/" },
+										{ label: "/BLOG", href: "/Blog" },
+										{ label: "/BUILD SYSTEM DESIGN" },
+									]}
+									backLabel="Back to the archive"
+									backHref="#apparatus-APPARATUS_46"
+									summaryRows={ARTICLE_SUMMARY}
+									summaryRegister={ARTICLE_REGISTER}
+									notes={ARTICLE_NOTES}
+									aside={null}
+									registerEmpty="This piece is shorter than the register's floor: it has fewer than five sections, so a contents list would be a list of two and a reader can see both by scrolling."
+								>
+									<p id="the-shape-of-the-pipeline">
+										The editor is built from source, and the
+										pipeline that builds it is part of the
+										product rather than a script beside it.
+										Every artefact the site publishes is
+										produced by the same pass that reads the
+										tree, which is why a figure on a page and
+										the file it cites cannot disagree.
+									</p>
+									<p id="what-is-built">
+										The pipeline has three stages: the tree is
+										read, the content is composed, and the
+										artefacts are written. The first stage is
+										the only one that can fail in a way a
+										reader sees, and it fails at build time
+										rather than at request time.
+									</p>
+								</BlogArticle>
+							) : (
+								<SurfaceAbsent
+									status="UNAVAILABLE"
+									wouldBe="The fold's leaves, printed on paper, under the register line that counts them."
+									whyNot={Entry.when}
+									next={{
+										label: "READ THE OBSERVATION",
+										href: "#apparatus-matrix",
+									}}
+									note="SOURCE: SOURCE/STYLESHEET/SYSTEM/MOTION/_FOLD.SCSS"
+								/>
+							)}
+						</div>
+					</article>
+				))}
+			</div>
+		</section>
+	))}
+</div>

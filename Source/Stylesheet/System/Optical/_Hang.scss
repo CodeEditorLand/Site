@@ -6,7 +6,7 @@
 // hangs into the margin and the word lands on the measure - which means on the
 // same optical edge as everything under it. A register whose `#` pushes its own
 // name two characters in from the facts it names is the most repeated defect on
-// this site: every block that prints a register line had it.
+// this site: a block that prints a register line without the hang has it.
 //
 // ─── HOW ──────────────────────────────────────────────────────────────────
 // Two mechanisms, because there are two shapes:
@@ -22,7 +22,7 @@
 // ─── WHAT MAY NOT HANG ────────────────────────────────────────────────────
 // Only a line whose template writes the mark itself. `.record-entry__index` is
 // the case that decides this: the doc index hands it `01` - a position, no mark -
-// while the properties grid hands it `# CLAIM_01`. One class, two shapes, so the
+// while the properties grid hands it `# 01`. One class, two shapes, so the
 // entry's marker does not hang: a line that prints no mark must never be shifted,
 // and CSS cannot see the difference. (The brief's `missing` state, made concrete
 // by the tree.)

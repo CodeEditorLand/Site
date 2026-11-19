@@ -1,0 +1,181 @@
+---
+/**
+ * SpecimenWall - the twenty-two conditions, mounted live.
+ *
+ * ─── ONE ROW PER CONDITION, ON THE ARTIFACT THAT OWNS IT ──────────────────
+ * A wall is not a catalogue: the catalog above already prints every component
+ * against every condition. The wall answers the other question - "what does this
+ * condition LOOK like when the block that owns it is doing it right?" - so each
+ * row mounts the artifact whose subject the condition is rather than the
+ * component nearest to hand. `EMPTY` is `ShellState`'s, `READ-ONLY` is a field's,
+ * `ON PAPER` is the print layer's, `REDUCED` is the skeleton's.
+ *
+ * ─── THE RENDERER DECIDES NOTHING ────────────────────────────────────────
+ * A row states what it is, which artifact it mounts, when that state is right
+ * and the props the artifact takes; this file switches on the row's `kind` and
+ * mounts. That split is why the wall and the spine cannot drift: both read
+ * `Content/Specimen/Gallery.ts`, and a condition's `when` line is printed from
+ * the same entry that counts its cells.
+ *
+ * ─── TWO ROWS CANNOT BE PHOTOGRAPHED ─────────────────────────────────────
+ * `ON PAPER` is a stylesheet and `REDUCED` is a media query: neither has a
+ * screen state to mount. Their rows print the contract they expose - the print
+ * layer's five failures prevented, the skeleton's static bars - and mount the
+ * artifact that proves it, because a picture of a print stylesheet is a picture
+ * of nothing.
+ *
+ * ─── THE STAGE IS THE SHEET'S, NOT THE BLOCK'S ───────────────────────────
+ * `narrow`, `band`, `wide` and `card` are the compositions the condition is
+ * being read in, and they are the row's, not the block's: a state that is narrow
+ * because its container is narrow is the composition the row exists to print.
+ */
+import { DynamicLabel } from "../Dynamic/DynamicLabel";
+
+import PrintRecord from "../Layout/Print/PrintRecord.astro";
+
+import MotionSkeleton from "../Motion/MotionSkeleton.astro";
+
+import RecordLedger from "../Record/RecordLedger.astro";
+
+import { RegisterOf } from "../Record/RegisterLine.js";
+
+import ShellState from "../Shell/ShellState.astro";
+
+import {
+	Conditions,
+	Wall,
+	WallCount,
+} from "../../Content/Specimen/Gallery.js";
+
+/** The condition's printed label, from the spine the row's `when` comes from. */
+const LabelOf = (Key: string): string =>
+	Conditions.find((Condition) => Condition.key === Key)?.label ?? Key.toUpperCase();
+---
+
+<figure class="gallery-wall" id="gallery-wall">
+	<p class="gallery-wall__head">
+		<span class="gallery-wall__head-label">THE WALL:</span>
+		<span class="gallery-wall__head-figure">
+			{WallCount} CONDITIONS / ONE ARTIFACT EACH / MOUNTED LIVE
+		</span>
+	</p>
+
+	<ol class="gallery-wall__list">
+		{Wall.map((Row) => (
+			<li class="gallery-wall__row" id={`wall-${Row.condition}`}>
+				<p class="gallery-wall__row-head">
+					<span class="gallery-wall__mark" aria-hidden="true">
+						#
+					</span>
+					<span class="gallery-wall__row-index">{Row.mark}</span>
+					<span class="gallery-wall__condition">{LabelOf(Row.condition)}</span>
+					<span class="gallery-wall__component">{Row.component}</span>
+				</p>
+
+				<p class="gallery-wall__when">
+					<span class="gallery-wall__when-key">WHEN IT IS RIGHT:</span>
+					{Row.when}
+				</p>
+
+				<div class="gallery-wall__stage" data-width={Row.stage ?? "band"}>
+					{Row.kind === "state" && Row.state !== undefined ? (
+						<ShellState
+							kind={Row.state.kind}
+							index={Row.state.index}
+							statement={Row.state.statement}
+							cause={Row.state.cause}
+							next={Row.state.next}
+							rows={Row.state.rows}
+							shown={Row.state.shown}
+							total={Row.state.total}
+							value={Row.state.value}
+							limit={Row.state.limit}
+							asOf={Row.state.asOf}
+							keys={Row.state.keys}
+							surface={Row.state.surface}
+							dense={Row.state.dense}
+						/>
+					) : null}
+
+					{Row.kind === "field" && Row.field !== undefined ? (
+						<div class="gallery-wall__field">
+							<DynamicLabel
+								Content={{
+									Text: Row.field.label,
+									Disabled: Row.field.disabled,
+								}}
+								HTMLFor={`wall-field-${Row.condition}`}
+							/>
+							<input
+								class="gallery-wall__input"
+								id={`wall-field-${Row.condition}`}
+								type="text"
+								value={Row.field.value}
+								readonly={Row.field.readonly}
+								disabled={Row.field.disabled}
+							/>
+							{Row.field.hint ? (
+								<p class="gallery-wall__hint">{Row.field.hint}</p>
+							) : null}
+						</div>
+					) : null}
+
+					{Row.kind === "ledger" && Row.ledger !== undefined ? (
+						<RecordLedger
+							rows={Row.ledger.rows}
+							register={RegisterOf(Row.ledger.label, Row.ledger.rows)}
+						/>
+					) : null}
+
+					{Row.kind === "print" ? (
+						<div class="gallery-wall__print">
+							<PrintRecord />
+							<p class="gallery-wall__contract">
+								<span class="gallery-wall__contract-key">ON PAPER:</span>
+								The arm is a stylesheet, not a markup state. Five failures
+								are prevented in
+								`Source/Stylesheet/System/Print/_State.scss`: a skeleton bar
+								prints as redaction, a windowed list prints as the whole set,
+								an ellipsis prints as a cut, a scroll container drops its
+								overflow, and a colour-only state prints as no state at all.
+								Link targets print beside their labels (`Print/_Link.scss`),
+								so a printed adverse state still says where its door is.
+							</p>
+						</div>
+					) : null}
+
+					{Row.kind === "skeleton" ? (
+						<div class="gallery-wall__skeleton">
+							<MotionSkeleton
+								marker="# LOADING / 04"
+								keys={["TARGET:", "LICENSE:", "SIGNING:", "CHECKSUM:"]}
+								waiting="THE BUILD MANIFEST"
+								age="0 DAYS"
+							/>
+							<p class="gallery-wall__contract">
+								<span class="gallery-wall__contract-key">REDUCED:</span>
+								The arm is a media query, so the state has no screen of its
+								own - what it has is a skeleton whose bars are static in both
+								arms. `prefers-reduced-motion` changes no meaning here,
+								because the bars never moved: the schema is what the block
+								prints, and motion was never carrying it.
+							</p>
+						</div>
+					) : null}
+				</div>
+			</li>
+		))}
+	</ol>
+
+	<figcaption class="gallery-wall__caption">
+		<span class="gallery-wall__caption-key">READ:</span>
+		<span class="gallery-wall__caption-value">
+			Each row is one condition on the artifact that owns it, and the `WHEN IT
+			IS RIGHT` line is the same sentence the spine prints - read from one
+			entry rather than written twice. The stage's width is the composition
+			the condition is being read in, not a property of the block: a state
+			inside a 16rem column and the same state across a 60rem band are two
+			compositions of one state, and both are on this wall.
+		</span>
+	</figcaption>
+</figure>

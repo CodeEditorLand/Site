@@ -5,9 +5,9 @@
 // writing a state value the next card will tidy into a different one; the same
 // figure as a token is a decision.
 //
-// The ladder is deliberately short. Four fields, two inks, two rules, one ring,
-// one travel. A fifth field would be a fifth meaning, and the states only have
-// four meanings between them: attention, press, choice, and unavailability.
+// The ladder is deliberately short. Four fields, three inks, two rules, one
+// ring, one travel. A fifth field would be a fifth meaning, and the states only
+// have four meanings between them: attention, press, choice, and unavailability.
 //
 // ─── WHY THE FIELDS ARE THE CREME RAMP AND NOT ALPHA OF INK ─────────────────
 //
@@ -19,11 +19,12 @@
 // white insert darkening toward creme is the same movement in the same
 // direction.
 //
-// `--state-field-nav` is the one exception and it is the accent, because the
-// header ribbon's hover is previewing the current state and both must be the
-// accent or the ribbon speaks two languages. It is 12 % - the value C5 has
-// carried since the ribbon was rebuilt - and it is the only place a pointer may
-// spend the accent.
+// `--state-field-nav` is the accent, because the header ribbon's hover is
+// previewing the current state and both must be the accent or the ribbon speaks
+// two languages. It is 12 %, and it is the only place a pointer may spend the
+// accent. The ribbon paints that 12 % itself - `.HeaderNavLink::before` at
+// `opacity: 0.12` (`Component/_Header.scss`) - so no rule reads this token; it is
+// the value a navigation landmark's field takes if one ever states it here.
 
 :root {
 	// ─── fields ───────────────────────────────────────────────────────────
@@ -47,28 +48,27 @@
 
 	/* THE ATTESTED STATE'S INK - and why it is not the accent.
 
-	   Every state line on the site prints a 4px square before its word
-	   (`SurfaceState`, `RecordStamp`, `RecordInset`, `RecordMargin`,
-	   `ShellState`, `RecordCompare`): the square is the state's SHAPE, and it
-	   is what survives greyscale, a photocopy and a reader who cannot see the
-	   accent at all. The tone used to add a hue on top of the shape -
-	   `specimen` was "the green accent" - which meant that a state that
-	   reported itself printed in the one colour the site reserves for
-	   authenticating a route, a link, a focus and a seal. A page with nine
-	   specimen states had nine green things and no way to say where the
-	   reader was.
+	   Every state line on the site prints a square before its word, and that
+	   square is `System/Mark/_Square.scss`'s `.MarkSquare` - the mark layer's
+	   one drawn mark, in two fills (known, unknown) and two sizes. The square
+	   is the state's SHAPE, and it is what survives greyscale, a photocopy and
+	   a reader who cannot see the accent at all. This token is its ink: the
+	   foreground, never the accent, because the accent authenticates a route, a
+	   link, a focus and a seal, and a page whose every attested state printed
+	   green would have no way left to say where the reader is.
 
-	   So the attested tone keeps the shape and takes the ink, and the
-	   distinction it needs is carried by SIZE, the second material a state is
-	   allowed: the attested mark is half again the reporting mark. Nothing is
-	   lost - the word, the square, the register line and the key's colon are
-	   all still printed - and the accent goes back to meaning one thing. */
+	   The distinction the attested tone needs is SIZE, the second material a
+	   state is allowed: `.MarkSquare`'s attested arm is `--mark-square-attested`
+	   (6px) against `--mark-square` (4px) - half again, at every base, so no
+	   block's resting square moves. Nothing is lost: the word, the square, the
+	   register line and the key's colon are all still printed, and the accent
+	   goes back to meaning one thing. */
 	--state-ink-attested: var(--Foreground);
 
-	/* the state square's SCALE, not its size: each block states its own base
-	   (`--state-mark-base`, 4px for a record's square, 0.4rem for the shell's)
-	   and a tone scales it. 1 reporting, 1.5 attested - so no block's resting
-	   square moves and the attested one is half again, at every base. */
+	/* the attested tone's RATIO, stated where the state vocabulary is declared:
+	   1 reporting, 1.5 attested. The square itself is the mark layer's
+	   (`System/Mark/_Square.scss`: `--mark-square` 4px, `--mark-square-attested`
+	   6px), so a block takes its size there and writes no base of its own. */
 	--state-mark-scale: 1;
 	--state-mark-scale-attested: 1.5;
 
@@ -84,9 +84,10 @@
 
 	// ─── the ring ─────────────────────────────────────────────────────────
 	/* focus is the one accent ring: 2px, 4px off the box - the identity's own
-	   figure (`DESIGN-COMPLETE.md` §1.6), and the value the sitewide base rule
-	   already draws. Never a glow, never a shadow, never colour alone: the ring
-	   is a shape drawn outside the box. */
+	   figure (`DESIGN-COMPLETE.md` §1.6). `_Base.scss` draws the same 2px ring at
+	   a 2px offset; this layer states the identity's 4px on every control, link,
+	   row, tab, summary and field it enrols. Never a glow, never a shadow, never
+	   colour alone: the ring is a shape drawn outside the box. */
 	--state-ring-width: 2px;
 	--state-ring-offset: 4px;
 

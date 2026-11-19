@@ -8,14 +8,23 @@
  * settled on the mono form: a trail is a Route Strip artifact (§1.8), not a
  * detail of whichever page first needed one.
  *
- * The grammar, in three rules:
+ * The grammar, in four rules:
  *
  * - **The label is printed as the caller wrote it, `/`-prefixed.** `/HOME`,
  *   `/DASHBOARD`, `/ACCOUNT`. The component adds nothing to it.
  * - **The leading slash is the only separator.** There is no separator element
  *   between crumbs, because a second `/` prints the grammar twice.
- * - **The current page is not a link.** The last crumb is a `<span>` carrying
- *   `aria-current="page"`, and the `href` is absent rather than empty.
+ * - **The current page is not a link, and it is the LAST crumb by position.**
+ *   It is a `<span>` carrying `aria-current="page"`. The rule used to be
+ *   `href`-shaped - the component trusted the caller to omit the target - so a
+ *   page that passed a target on its final crumb printed a link to itself: a
+ *   route statement that lies about where the reader is. Position decides now,
+ *   and the target is dropped rather than honoured.
+ * - **A trail with no crumb renders nothing.** It used to render
+ *   `<nav aria-label="Breadcrumb"><ol></ol></nav>`: a landmark a screen reader
+ *   announces and a reader cannot use. A breadcrumb with nothing in it is not an
+ *   empty state, it is a defect - the page has no route to state, so the block
+ *   states none.
  *
  * It publishes `.trail`, `.trail__list`, `.trail__item`, `.trail__link` and
  * `.trail__current` from `System/Component/Route/_Trail.scss`.
@@ -26,7 +35,8 @@
  * This component absorbs `Component/Contact/ContactBreadcrumb.astro` and
  * `System/Component/Contact/_Breadcrumb.scss`, which were the same trail under a
  * surface's own name; both files are kept and marked absorbed rather than
- * deleted, and this file is the survivor.
+ * deleted, and this file is the survivor. The two blog surfaces now import this
+ * file directly.
  */
 import type { TrailItem } from "./Type.js";
 
@@ -34,27 +44,42 @@ interface Props {
 	/** The crumbs, first to last. The last one is the current page. */
 	trail: readonly TrailItem[];
 
+	/**
+	 * The landmark's accessible name. Defaults to the word the site has always
+	 * used; a page whose document has a name of its own can say so -
+	 * `Breadcrumb: Documentation` - because a landmark is announced out of
+	 * context and "Breadcrumb" alone does not say which document.
+	 */
+	label?: string;
+
 	/** A class the page adds to the shell, for its own spacing. */
 	class?: string;
 }
 
-const { trail, class: Class } = Astro.props;
+const { trail, label: Label = "Breadcrumb", class: Class } = Astro.props;
+
+/** The last crumb is the page the reader is on, whatever the caller passed. */
+const Last = trail.length - 1;
 ---
 
-<nav class:list={["trail", Class]} aria-label="Breadcrumb">
-	<ol class="trail__list">
-		{trail.map((Item) => (
-			<li class="trail__item">
-				{Item.href ? (
-					<a class="trail__link" href={Item.href}>
-						{Item.label}
-					</a>
-				) : (
-					<span class="trail__current" aria-current="page">
-						{Item.label}
-					</span>
-				)}
-			</li>
-		))}
-	</ol>
-</nav>
+{
+	trail.length === 0 ? null : (
+		<nav class:list={["trail", Class]} aria-label={Label}>
+			<ol class="trail__list">
+				{trail.map((Item, Index) => (
+					<li class="trail__item">
+						{Item.href && Index !== Last ? (
+							<a class="trail__link" href={Item.href}>
+								{Item.label}
+							</a>
+						) : (
+							<span class="trail__current" aria-current="page">
+								{Item.label}
+							</span>
+						)}
+					</li>
+				))}
+			</ol>
+		</nav>
+	)
+}

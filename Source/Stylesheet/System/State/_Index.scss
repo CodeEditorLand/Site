@@ -6,11 +6,14 @@
 // state it is in, in ink, and states it in a vocabulary that is the same
 // everywhere.
 //
-// It is the last layer. Every rule in it either (a) declares a value no partial
-// declared, or (b) moves a value a partial declared to the one the vocabulary
-// allows. Source order is the mechanism, and the reason it is last is that an
-// interaction state is the last thing that happens to a control - after its
-// type, its spacing, its rule, its motion. See `System.scss` before moving it.
+// It is the last layer that states what a control does. Every rule in it either
+// (a) declares a value no partial declared, or (b) moves a value a partial
+// declared to the one the vocabulary allows. Source order is the mechanism, and
+// the reason it comes after the type layer is that an interaction state is the
+// last thing that happens to a control - after its type, its spacing, its rule,
+// its motion. The mark layer and the print layer load after it: the first names
+// the marks it draws, the second recomposes the same states for paper. See
+// `System.scss` before moving it.
 //
 // ─── THE EIGHT STATES ───────────────────────────────────────────────────────
 //
@@ -44,7 +47,7 @@
 //
 // Never a shadow, never a radius, never a gradient, never an opacity on a label,
 // never a scale on type. Those are five ways to say "state" that the identity
-// does not have, and each of them was on this site before this layer.
+// does not have, and a diff that adds one has left the identity.
 //
 // ─── THE THREE SHAPES: A HOVER IS A FIELD, A SELECTION IS A MARK, A CURRENT
 //     POSITION IS A RULE ─────────────────────────────────────────────────────
@@ -90,16 +93,14 @@
 // cell (a matrix's `YES`), a register's head, a hover's border, a ghost
 // button's fill, a selection, a specimen's value, or a decorative glyph.
 //
-// Those were all accent sites before this layer's partials took them back, and
-// each of them meant the same thing as every other: "something is here". A page
-// that says that seven times says nothing. The count is now stated per surface
-// in the card that made it (t_65c00fc6), and the number a page should read is
-// small enough that a reader can find the green.
+// Those would all mean the same thing as every other: "something is here". A
+// page that says that seven times says nothing. The count is now stated per
+// surface in the card that made it (t_65c00fc6), and the number a page should
+// read is small enough that a reader can find the green.
 //
-// Twelve ROUTE-link hovers that turned a label green were moved to ink by this
-// layer's partials; a block link's destination label keeps the hue. The list of
-// both is in `State/_Link.scss` under "TWO HOVERS", so the next card can find
-// them without a grep.
+// Ten ROUTE-link selectors answer in ink rather than in hue; a block link's
+// destination label keeps the hue. The register of both is in `State/_Link.scss`
+// under "TWO HOVERS", so the next card can find them without a grep.
 //
 // ─── DISABLED IS NOT DIMMED ─────────────────────────────────────────────────
 //
@@ -126,8 +127,7 @@
 // auto-width control's inline extent grows by the readout - that is the one
 // dimension a state that prints a word cannot hold, and hiding the word to hold it
 // would be the same trade as the spinner: silence in exchange for geometry.
-// `DynamicButton` carried a `Loader2` with `animate-spin`; it carries
-// `.StateBusy` now.
+// `DynamicButton` prints `.StateBusy`; no control on the site renders a spinner.
 //
 // ─── THE READING ORDER ──────────────────────────────────────────────────────
 //

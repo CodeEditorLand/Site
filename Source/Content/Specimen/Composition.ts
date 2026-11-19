@@ -95,15 +95,21 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "loading",
+
 		label: "LOADING",
+
 		ask: "has not arrived",
+
 		group: "condition",
 	},
 
 	{
 		key: "partial",
+
 		label: "PARTIAL",
+
 		ask: "one fact unknown",
+
 		group: "condition",
 	},
 
@@ -111,22 +117,31 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "stale",
+
 		label: "STALE",
+
 		ask: "older than its as-of",
+
 		group: "condition",
 	},
 
 	{
 		key: "disabled",
+
 		label: "DISABLED",
+
 		ask: "cannot be used",
+
 		group: "condition",
 	},
 
 	{
 		key: "readonly",
+
 		label: "READ-ONLY",
+
 		ask: "cannot be changed",
+
 		group: "condition",
 	},
 
@@ -138,8 +153,11 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "long",
+
 		label: "LONG",
+
 		ask: "a line past its column",
+
 		group: "shape",
 	},
 
@@ -149,8 +167,11 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "incard",
+
 		label: "IN A CARD",
+
 		ask: "inside a white insert",
+
 		group: "shape",
 	},
 
@@ -188,15 +209,21 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "xl",
+
 		label: "AT 240",
+
 		ask: "a mark at 240px",
+
 		group: "composition",
 	},
 
 	{
 		key: "lone",
+
 		label: "LONE",
+
 		ask: "a band with one card",
+
 		group: "composition",
 	},
 
@@ -212,15 +239,21 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "inband",
+
 		label: "IN A BAND",
+
 		ask: "inside a chapter",
+
 		group: "context",
 	},
 
 	{
 		key: "print",
+
 		label: "ON PAPER",
+
 		ask: "the printed sheet",
+
 		group: "context",
 	},
 ];
@@ -317,6 +350,7 @@ const Printed = (what: string, why: string): Cells => ({
 const Leaf = (what: string, set: string): Cells => ({
 	...Printed(
 		what,
+
 		"it renders the props it is handed and nothing is resolved at render time",
 	),
 
@@ -493,6 +527,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Printed(
 				"band shell",
+
 				"the head and the body are server-rendered and the band holds no island of its own",
 			),
 
@@ -604,6 +639,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Printed(
 				"record middle",
+
 				"every field it prints is resolved from the card's own data at build time",
 			),
 
@@ -687,6 +723,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Printed(
 				"proof band",
+
 				"the six records, their tints and their ledgers are all resolved at build time",
 			),
 
@@ -850,6 +887,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Leaf(
 				"element card",
+
 				"the wall that holds it (`ARCHITECTUREBAND`)",
 			),
 
@@ -921,6 +959,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Printed(
 				"element wall",
+
 				"the fifteen records and their spans are resolved at build time",
 			),
 
@@ -994,6 +1033,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Printed(
 				"release manifest",
+
 				"the two states and their facts are resolved at build time",
 			),
 
@@ -1071,6 +1111,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Leaf(
 				"release state",
+
 				"the manifest that holds it (`ROADMAPBAND`)",
 			),
 
@@ -1138,6 +1179,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Printed(
 				"download manifest",
+
 				"the three rows and their facts are resolved at build time",
 			),
 
@@ -1213,6 +1255,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Leaf(
 				"artefact row",
+
 				"the manifest that holds it (`PLATFORMBAND`)",
 			),
 
@@ -1276,6 +1319,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Printed(
 				"method band",
+
 				"the trace, the register and the three failures are content-module arrays resolved at build time",
 			),
 
@@ -1425,6 +1469,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Printed(
 				"card frame",
+
 				"it renders a slot and two custom properties, and resolves nothing",
 			),
 
@@ -1528,6 +1573,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Printed(
 				"metadata run",
+
 				"the pairs are the record's own and are resolved before the page exists",
 			),
 
@@ -1877,6 +1923,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Printed(
 				"ink renderer",
+
 				"it is a pure function of a string and a lookup table",
 			),
 
@@ -2192,6 +2239,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Island(
 				"header adapter",
+
 				"the bar it adapts is server-rendered and the auth status inside it is the island",
 			),
 
@@ -2273,6 +2321,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Printed(
 				"footer adapter",
+
 				"its content is a schema object resolved before the page exists",
 			),
 
@@ -2328,6 +2377,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Island(
 				"doc tree",
+
 				"the tree is server-rendered and the disclosure that opens it is the browser's",
 			),
 
@@ -2421,6 +2471,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Island(
 				"tier surface",
+
 				"the tiers are static content and the auth state inside it is the island",
 			),
 
@@ -2490,6 +2541,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Island(
 				"transparency panel",
+
 				"its copy is static and its switch is the island",
 			),
 
@@ -2563,6 +2615,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Island(
 				"verification panel",
+
 				"its checksums are content and its copy button is the island",
 			),
 
@@ -2640,6 +2693,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Island(
 				"account shell",
+
 				"the route decides which screen and the auth state is the island",
 			),
 
@@ -2717,6 +2771,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Island(
 				"auth boundary",
+
 				"the provider resolves the session at run time",
 			),
 
@@ -2792,6 +2847,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Island(
 				"account gate",
+
 				"the session is the island's whole subject",
 			),
 
@@ -2867,6 +2923,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Island(
 				"callback handler",
+
 				"it runs on mount and has nothing to print until it has run",
 			),
 
@@ -2942,6 +2999,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Island(
 				"verify surface",
+
 				"the verification token is the island's subject",
 			),
 
@@ -3089,6 +3147,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Island(
 				"dashboard record",
+
 				"the session and the scan are both run-time",
 			),
 
@@ -3160,6 +3219,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Island(
 				"scan surface",
+
 				"the scan runs in the browser and every row's state arrives from it",
 			),
 
@@ -3957,6 +4017,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Printed(
 				"generic card",
+
 				"its three sections are props resolved before the page exists",
 			),
 
@@ -4084,6 +4145,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Printed(
 				"table",
+
 				"its columns and rows are props resolved before the page exists",
 			),
 
@@ -4149,6 +4211,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Printed(
 				"rich text",
+
 				"the string is a prop and the parser is pure",
 			),
 
@@ -4208,6 +4271,7 @@ export const Rows: readonly Row[] = [
 		cells: {
 			...Island(
 				"diagram fallback",
+
 				"the diagrams it draws arrive as `<pre>` blocks and are rendered on the client",
 			),
 
@@ -4727,6 +4791,7 @@ export const Verdicts: readonly Verdict[] = [
 
 		mounted_by: [
 			"PAGES/ACCOUNT/FORGOTPASSWORD.ASTRO",
+
 			"PAGES/ACCOUNT/RESETPASSWORD.ASTRO",
 		],
 
@@ -4745,6 +4810,7 @@ export const Verdicts: readonly Verdict[] = [
 
 		mounted_by: [
 			"PAGES/ACCOUNT/SIGNIN.ASTRO",
+
 			"PAGES/ACCOUNT/SIGNUP.ASTRO",
 		],
 

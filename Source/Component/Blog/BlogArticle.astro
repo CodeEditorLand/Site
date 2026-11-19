@@ -56,15 +56,16 @@
  * The body is `.prose-flow`: the site's one paragraph rhythm, opening on a
  * hairline. No script and no hydration directive.
  */
-import ContactBreadcrumb from "../Contact/ContactBreadcrumb.astro";
 import RecordAside from "../Record/RecordAside.astro";
 import RecordInset from "../Record/RecordInset.astro";
 import RecordLedger from "../Record/RecordLedger.astro";
 import RecordMargin from "../Record/RecordMargin.astro";
 import type { Register as RegisterShape } from "../Record/RegisterLine.js";
+import Trail from "../Route/Trail.astro";
 
 import type { Aside, Inset, LedgerRow, MarginNote } from "../Record/Type.js";
 import type { BlogToc, BlogTrailItem } from "./Type.js";
+import { TrailOf } from "./Data.js";
 
 interface Props {
 	/** The article's `title`. The page's only `h1`. */
@@ -168,7 +169,7 @@ const Meta = [
 ---
 
 <article class="blog-article">
-	<ContactBreadcrumb trail={trail} class="blog-article__trail" />
+	<Trail trail={TrailOf(trail)} class="blog-article__trail" />
 
 	<header class="blog-article__head">
 		{tags.length > 0 ? (

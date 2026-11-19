@@ -147,6 +147,17 @@ export interface Sequence {
 	/** `SOURCE:` - the file or block the sequence was read out of. Required. */
 	source: string;
 
+	/**
+	 * What the state change does for a reader who asked for less motion.
+	 *
+	 * Every rule in `System/Motion/` declares its end state unconditionally and
+	 * gates only its interval, so the promise is the same document in one frame.
+	 * A sequence that printed its intervals and not that promise was the one
+	 * block in the family that could not state it - and the reader who needs the
+	 * sentence is exactly the one who will never see the transition.
+	 */
+	reduced?: string;
+
 	/** What the sequence says when it has fewer than two nodes. Required. */
 	empty: string;
 }

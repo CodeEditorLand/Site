@@ -1,1 +1,0 @@
-import{t as r}from"./RichText.CtLTayIg.js";import{Fn as t}from"./Vendor/React.D6fuhlXU.js";var a=t(),o=t=>(0,a.jsx)(r,{...t});export{o as DynamicRichText,o as default};

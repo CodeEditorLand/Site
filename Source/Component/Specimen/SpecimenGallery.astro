@@ -1,0 +1,376 @@
+---
+/**
+ * SpecimenGallery - the term sheet, at two scales.
+ *
+ * ─── TWO PARTS, ONE INSTRUMENT ────────────────────────────────────────────
+ * `part="sheet"` prints the ten families against the twenty-two conditions, a
+ * figure per cell: the first page of a term sheet, where a reader sees where a
+ * family is thin before reading a single component. `part="catalog"` prints
+ * every component as one disclosure: closed it is a strip of cells, open it is
+ * the component's whole ledger with every note and every reason in full.
+ *
+ * They are one component because they are one instrument at two magnifications,
+ * and because a second component would be a second place to keep the cell marks
+ * in step with the family matrices.
+ *
+ * ─── THE STRIP IS THE SCAN, THE OPEN ROW IS THE EVIDENCE ──────────────────
+ * At this many components a footnote per cell is thousands of numbers to chase. The
+ * disclosure is the answer the family matrices' anatomy cannot give at this
+ * scale: `<details>` is the browser's own disclosure - reachable with Tab,
+ * opened with Enter - so the keyboard path is not a script but the element. The
+ * strip is `aria-hidden` and the row's figure is the summary's accessible text,
+ * because twenty-two glyphs read aloud is a wall rather than a row.
+ *
+ * ─── NOTHING IS TRUNCATED ─────────────────────────────────────────────────
+ * A reason is a sentence and a sentence in a six-rem column is an excuse. The
+ * cell in the strip is a mark; the sentence is in the open row, in full, at the
+ * caption step. That is the same division the family matrices make between a
+ * cell and its numbered note - only here the note is one keystroke away instead
+ * of four thousand numbers down a page.
+ *
+ * ─── THE UNASKED CELL SAYS WHERE ITS REASON IS ────────────────────────────
+ * A condition a family never asks has no per-cell reason to print: the reason is
+ * the family's, and it is printed once in /THE UNASKED. Repeating a 250-word
+ * family sentence inside every unasked cell would bury the cells that do have
+ * something to say - so the cell states the fact and links to the band that
+ * explains it.
+ *
+ * No script and no hydration: a disclosure is the browser's, and everything else
+ * is printed.
+ */
+import Mark from "../Mark/Mark.astro";
+
+import {
+	CellCount,
+	ComponentCount,
+	Components,
+	ConditionCount,
+	Conditions,
+	Families,
+	FamilyCount,
+} from "../../Content/Specimen/Gallery.js";
+
+interface Props {
+	/** Which magnification: the summary sheet, or the component catalog. */
+	part: "sheet" | "catalog";
+}
+
+const { part } = Astro.props;
+
+/** The sheet's grid: one row per family, one cell per condition. */
+const Sheet = Families.map((Family) => ({
+	family: Family,
+
+	cells: Conditions.map((Condition) => {
+		const Read = Family.components.map(
+			(Component) => Component.cells[Condition.key],
+		);
+
+		const Built = Read.filter((Cell) => Cell.disposition === "built").length;
+
+		const Reasons = Read.filter((Cell) => Cell.disposition === "na").length;
+
+		return {
+			condition: Condition,
+			built: Built,
+			reasons: Reasons,
+			unasked: Read.length - Built - Reasons,
+			total: Read.length,
+		};
+	}),
+}));
+
+/** Whether a column opens a new group - the matrix's own heavier rule. */
+const OpensGroup = (Index: number): boolean =>
+	Index > 0 && Conditions[Index]!.group !== Conditions[Index - 1]!.group;
+
+/** `001` - the component's position on the whole page, printed after `#`. */
+const Marks = new Map(
+	Components.map(
+		(Component, Index) =>
+			[Component.id, String(Index + 1).padStart(3, "0")] as const,
+	),
+);
+
+/** A component's anchor, so a row can be linked to from anywhere. */
+const Anchor = (Id: string): string =>
+	`row-${Id.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+---
+
+{
+	part === "sheet" ? (
+		<figure class="gallery-sheet" id="gallery-sheet">
+			<p class="gallery-sheet__head">
+				<span class="gallery-sheet__head-label">THE SHEET:</span>
+				<span class="gallery-sheet__head-figure">
+					{FamilyCount} FAMILIES × {ConditionCount} CONDITIONS / {CellCount} CELLS
+					READ
+				</span>
+			</p>
+
+			<div class="gallery-sheet__scroll">
+				<table class="gallery-sheet__table">
+					<thead>
+						<tr class="gallery-sheet__head-row">
+							<th class="gallery-sheet__corner" scope="col">
+								<span class="gallery-sheet__corner-label">FAMILY</span>
+								<span class="gallery-sheet__corner-ask">BUILT / HOLDS</span>
+							</th>
+
+							{Conditions.map((Condition, Index) => (
+								<th
+									class:list={[
+										"gallery-sheet__head",
+										OpensGroup(Index) && "gallery-sheet__head--group",
+									]}
+									scope="col"
+									data-group={Condition.group}
+								>
+									<span class="gallery-sheet__head-label">
+										{Condition.label}
+									</span>
+									<span class="gallery-sheet__head-ask">{Condition.ask}</span>
+								</th>
+							))}
+
+							<th class="gallery-sheet__total-head" scope="col">
+								<span class="gallery-sheet__head-label">ALL</span>
+								<span class="gallery-sheet__head-ask">built / cells</span>
+							</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						{Sheet.map((Row) => (
+							<tr class="gallery-sheet__row">
+								<th class="gallery-sheet__name" scope="row">
+									<a class="gallery-sheet__name-link" href={Row.family.href}>
+										{Row.family.band}
+									</a>
+									<span class="gallery-sheet__name-subject">
+										{Row.family.subject}
+									</span>
+									<span class="gallery-sheet__name-count">
+										{Row.family.components.length} COMPONENTS
+									</span>
+								</th>
+
+								{Row.cells.map((Cell, Index) => (
+									<td
+										class:list={[
+											"gallery-sheet__cell",
+											OpensGroup(Index) && "gallery-sheet__cell--group",
+										]}
+										data-disposition={
+											Cell.unasked === Cell.total ? "unasked" : "read"
+										}
+									>
+										{Cell.unasked === Cell.total ? (
+											<span class="gallery-sheet__unasked">
+												NOT ASKED
+											</span>
+										) : (
+											<>
+												<span class="gallery-sheet__figure">
+													{Cell.built}
+													<span class="gallery-sheet__of">/</span>
+													{Cell.total}
+												</span>
+												{Cell.reasons > 0 ? (
+													<span class="gallery-sheet__reasons">
+														{Cell.reasons} N/A
+													</span>
+												) : null}
+											</>
+										)}
+									</td>
+								))}
+
+								<td class="gallery-sheet__total">
+									<span class="gallery-sheet__figure">
+										{Row.family.built}
+										<span class="gallery-sheet__of">/</span>
+										{Row.family.galleryCells}
+									</span>
+									{Row.family.unasked > 0 ? (
+										<span class="gallery-sheet__reasons">
+											{Row.family.unasked} UNASKED
+										</span>
+									) : null}
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+
+			<figcaption class="gallery-sheet__caption">
+				<span class="gallery-sheet__caption-key">READ:</span>
+				<span class="gallery-sheet__caption-value">
+					A cell is that family's components that BUILD the condition, over
+					the number it holds, with the count that cannot exist beneath it.
+					`NOT ASKED` is not a zero: it is a column the family's matrix does
+					not carry, and /THE UNASKED names each one against the family that
+					owes it. The ALL column counts the family's own cells -{" "}
+					{CellCount} read in all - so the sheet's last column and the
+					register's CELLS figure are the same arithmetic.
+				</span>
+			</figcaption>
+		</figure>
+	) : (
+		<div class="gallery-catalog" id="gallery-catalog">
+			<p class="gallery-catalog__head">
+				<span class="gallery-catalog__head-label">THE CATALOG:</span>
+				<span class="gallery-catalog__head-figure">
+					{ComponentCount} COMPONENTS / ONE DISCLOSURE EACH / NOTHING
+					TRUNCATED
+				</span>
+			</p>
+
+			{Families.map((Family) => (
+				<section class="gallery-catalog__family">
+					<p class="gallery-catalog__family-head">
+						<span class="gallery-catalog__family-band">
+							<Mark kind="square" />
+							{Family.band}
+						</span>
+						<span class="gallery-catalog__family-figure">
+							{Family.components.length} COMPONENTS / {Family.folded} SPINE
+							CONDITIONS ASKED / {Family.own.length} OWN
+						</span>
+						<a class="gallery-catalog__family-link" href={Family.href}>
+							THE FAMILY'S OWN MATRIX
+							<span aria-hidden="true">→</span>
+						</a>
+					</p>
+
+					<p class="gallery-catalog__family-subject">{Family.subject}</p>
+
+					{Family.components.map((Component) => (
+						<details class="gallery-row" id={Anchor(Component.id)}>
+							<summary class="gallery-row__summary">
+								<span class="gallery-row__mark" aria-hidden="true">
+									#
+								</span>
+								<span class="gallery-row__index">
+									{Marks.get(Component.id)}
+								</span>
+								<span class="gallery-row__name">{Component.name}</span>
+								<span class="gallery-row__file">{Component.file}</span>
+								<span class="gallery-row__count">
+									{Component.built} OF {ConditionCount} BUILT
+								</span>
+
+								<span class="gallery-row__strip" aria-hidden="true">
+									{Conditions.map((Condition) => (
+										<span
+											class="gallery-row__cell"
+											data-disposition={
+												Component.cells[Condition.key].disposition
+											}
+										>
+											{Component.cells[Condition.key].disposition === "built"
+												? "▪"
+												: Component.cells[Condition.key].disposition === "na"
+													? "N/A"
+													: "—"}
+										</span>
+									))}
+								</span>
+							</summary>
+
+							<div class="gallery-row__body">
+								<p class="gallery-row__note">
+									<span class="gallery-row__note-key">WHAT IT IS:</span>
+									{Component.note}
+								</p>
+
+								<p class="gallery-row__source">
+									<span class="gallery-row__note-key">FILE:</span>
+									{Component.file}
+									<span class="gallery-row__note-key">FAMILY:</span>
+									{Family.band}
+									<span class="gallery-row__note-key">MATRIX:</span>
+									{Family.source}
+								</p>
+
+								<dl class="gallery-row__ledger">
+									{Conditions.map((Condition) => {
+										const Cell = Component.cells[Condition.key];
+
+										return (
+											<div
+												class="gallery-row__line"
+												data-disposition={Cell.disposition}
+											>
+												<dt class="gallery-row__line-key">
+													<span class="gallery-row__line-label">
+														{Condition.label}
+													</span>
+													<span class="gallery-row__line-column">
+														{Cell.column ?? Condition.ask}
+													</span>
+												</dt>
+												<dd class="gallery-row__line-value">
+													{Cell.disposition === "built" ? (
+														<>
+															<span class="gallery-row__verdict">BUILT:</span>
+															{Cell.note ??
+																`the family's matrix renders this condition - ${Condition.ask}.`}
+														</>
+													) : Cell.disposition === "na" ? (
+														<>
+															<span class="gallery-row__verdict">N/A:</span>
+															{Cell.reason}
+														</>
+													) : (
+														<>
+															<span class="gallery-row__verdict">
+																UNASKED:
+															</span>
+															{Cell.reason}{" "}
+															<a class="gallery-row__link" href="#unasked">
+																READ WHY, IN /THE UNASKED
+															</a>
+														</>
+													)}
+												</dd>
+											</div>
+										);
+									})}
+								</dl>
+							</div>
+						</details>
+					))}
+				</section>
+			))}
+		</div>
+	)
+}
+
+<script>
+	/**
+	 * One behaviour, and it is the only script this component ships: a row
+	 * reached by an address (`/Specimen/States#row-frame-shell`) opens itself,
+	 * because a reader who follows a link to a component expects the
+	 * component's ledger rather than a shut summary.
+	 *
+	 * The element is the state: `open` is a property `<details>` already has, so
+	 * this sets it rather than inventing a class, and the behaviour is the
+	 * browser's own disclosure with one line of help. No framework, no
+	 * hydration - the same shape `Doc/RustViewer.astro` uses for its tab hash.
+	 */
+	const OpenFromHash = (): void => {
+		const Id = window.location.hash.slice(1);
+
+		if (Id.length === 0) return;
+
+		const Row = document.getElementById(Id);
+
+		if (Row instanceof HTMLDetailsElement) Row.open = true;
+	};
+
+	OpenFromHash();
+
+	window.addEventListener("hashchange", OpenFromHash);
+</script>

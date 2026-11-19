@@ -26,7 +26,10 @@
 // ─── INSET ────────────────────────────────────────────────────────────────
 
 // The record grid's chip: a hairline box with `--space-tight` on each side and
-// a tracked label inside it. The label's right inset was 9px and its left 8px.
+// a tracked label inside it. The label's advance is one tracking step wider than
+// its ink, so symmetric padding insets the ink 9px on the right and 8px on the
+// left; the inline-end padding adds that step back and the ink is inset 8px on
+// both sides.
 .record-entry__chip {
 	padding-inline-end: calc(var(--space-tight) + var(--optical-edge-row));
 }
@@ -41,8 +44,9 @@
 // ─── CENTRE ───────────────────────────────────────────────────────────────
 
 // A centred matrix column head. The head is tracked at the row register and the
-// column's cells are not, so the head's ink was half a step left of the cells it
-// names - which is exactly the misalignment a centred column exists to avoid.
+// column's cells are not, so without the correction the head's ink sits half a
+// step left of the cells it names - which is exactly the misalignment a centred
+// column exists to avoid.
 .record-matrix__column--center {
 	text-indent: var(--optical-track-half);
 }

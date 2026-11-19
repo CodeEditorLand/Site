@@ -1,0 +1,154 @@
+---
+/**
+ * SpecimenReasons - the sentences that explain a class, and the questions no
+ * matrix asks.
+ *
+ * ─── WHY A REASON REGISTER AT ALL ─────────────────────────────────────────
+ * Two thousand cells cannot exist, and each carries a sentence. Most of those
+ * sentences are written once per component - "a surface shell is not a control",
+ * "a mark has no text state" - so the document's reasons are not shared text but
+ * repeated text, and the honest thing to do with them is count the distinct ones
+ * and print the ones that explain more than one cell.
+ *
+ * A reason that explains ninety-six cells is a fact about a CLASS: it is the
+ * sentence that says what a printed block cannot be. Those are printed here in
+ * full, always visible, with the cells they explain folded underneath. Nothing
+ * is shortened to make a summary, because a shortened reason is an excuse.
+ *
+ * ─── THE UNASKED LIST IS THE SHEET'S WORK LIST ────────────────────────────
+ * The third disposition, per family: the conditions that family's matrix has no
+ * column for, and how many of its components the answer would cover. Sorted by
+ * the size of the hole, because a card that picks this up should start where the
+ * most cells are unaccounted for.
+ *
+ * No script and no hydration: a disclosure is the browser's.
+ */
+import {
+	Conditions,
+	DistinctReasonCount,
+	Reasons,
+	SingleReasonCount,
+	Unasked,
+} from "../../Content/Specimen/Gallery.js";
+interface Props {
+	/** Which register: the shared reasons, or the unasked work list. */
+	part: "reasons" | "unasked";
+}
+
+const { part } = Astro.props;
+---
+
+{part === "reasons" ? (
+<div class="gallery-reasons" id="gallery-reasons">
+	<p class="gallery-reasons__head">
+		<span class="gallery-reasons__head-label">THE REASONS:</span>
+		<span class="gallery-reasons__head-figure">
+			{DistinctReasonCount} DISTINCT SENTENCES / {Reasons.length} SHARED /{" "}
+			{SingleReasonCount} USED ONCE
+		</span>
+	</p>
+
+	{Reasons.length === 0 ? (
+		<p class="gallery-reasons__empty">
+			<span class="gallery-reasons__empty-key">◎ UNAVAILABLE:</span>
+			No sentence explains more than one cell, which would mean every
+			impossible cell was written from scratch. The gallery states that
+			rather than printing an empty register, because a register with no
+			rows is a claim about the document that this page would be making
+			without evidence.
+		</p>
+	) : (
+		<ol class="gallery-reasons__list">
+			{Reasons.map((Reason) => (
+				<li class="gallery-reasons__reason">
+					<p class="gallery-reasons__reason-head">
+						<span class="gallery-reasons__mark">〈{Reason.mark}〉</span>
+						<span class="gallery-reasons__count">
+							{Reason.count} CELLS
+						</span>
+					</p>
+
+					<p class="gallery-reasons__text">{Reason.text}</p>
+
+					<details class="gallery-reasons__cells">
+						<summary class="gallery-reasons__cells-summary">
+							THE {Reason.count} CELLS IT EXPLAINS
+						</summary>
+						<ul class="gallery-reasons__cells-list">
+							{Reason.cells.map((Where) => (
+								<li class="gallery-reasons__cell">{Where}</li>
+							))}
+						</ul>
+					</details>
+				</li>
+			))}
+		</ol>
+	)}
+</div>
+) : (
+<div class="gallery-unasked" id="unasked">
+	<p class="gallery-unasked__head">
+		<span class="gallery-unasked__head-label">THE UNASKED:</span>
+		<span class="gallery-unasked__head-figure">
+			{Unasked.reduce((Total, Entry) => Total + Entry.conditions.length, 0)}{" "}
+			CONDITIONS ACROSS {Unasked.filter((Entry) => Entry.conditions.length > 0).length}{" "}
+			FAMILIES
+		</span>
+	</p>
+
+	<p class="gallery-unasked__lede">
+		A condition a family's matrix has no column for is not built and not
+		impossible - it is unanswered, and this is the list of who owes the
+		answer. Each entry prints the family's own explanation of what its matrix
+		asks, then the conditions it leaves out, then the number of its
+		components the answer would cover.
+	</p>
+
+	<ol class="gallery-unasked__list">
+		{Unasked.map((Entry) => (
+			<li
+				class:list={[
+					"gallery-unasked__entry",
+					Entry.conditions.length === 0
+						? "gallery-unasked__entry--complete"
+						: null,
+				]}
+			>
+				<p class="gallery-unasked__entry-head">
+					<a class="gallery-unasked__band" href={Entry.family.href}>
+						{Entry.family.band}
+					</a>
+					<span class="gallery-unasked__entry-figure">
+						{Entry.conditions.length === 0
+							? "ASKS EVERY CONDITION"
+							: `${Entry.conditions.length} UNASKED / ${Entry.cells} CELLS`}
+					</span>
+				</p>
+
+				<p class="gallery-unasked__gap">{Entry.family.gap}</p>
+
+				{Entry.conditions.length === 0 ? (
+					<p class="gallery-unasked__conditions">
+						<span class="gallery-unasked__conditions-key">ASKS:</span>
+						{Conditions.map((Condition) => Condition.label).join("\u2001")}
+					</p>
+				) : (
+					<p class="gallery-unasked__conditions">
+						<span class="gallery-unasked__conditions-key">DOES NOT ASK:</span>
+						{Entry.conditions.map((Condition) => Condition.label).join("\u2001")}
+					</p>
+				)}
+
+				<p class="gallery-unasked__source">
+					<span class="gallery-unasked__conditions-key">MATRIX:</span>
+					{Entry.family.source}
+					<span class="gallery-unasked__conditions-key">COMPONENTS:</span>
+					{Entry.family.components.length}
+					<span class="gallery-unasked__conditions-key">OWN COLUMNS:</span>
+					{Entry.family.own.length}
+				</p>
+			</li>
+		))}
+	</ol>
+</div>
+)}

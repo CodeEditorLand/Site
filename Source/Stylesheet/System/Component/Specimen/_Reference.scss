@@ -1,0 +1,983 @@
+// The component reference's stylesheet: the contract's seven laws, and one
+// entry per family - its slots, its columns, its prohibitions, its matrix, its
+// proof row and what the exploration changed.
+//
+// Publishes:
+//   .reference                          the ten entries, as one document
+//   .reference__head                    the counted line over them
+//   .reference-contract                 the seven laws of the component contract
+//   .reference-contract__law            one law: its mark, its means, its check
+//   .reference-entry                    one family: a disclosure
+//   .reference-entry__summary           shut: the mark, the band, the figures, the proof
+//   .reference-entry__body              open: the whole entry
+//   .reference-entry__ledger            the figures, as a ledger of rows
+//   .reference-entry__table             the slots: part, file, what it is, built
+//   .reference-entry__asked             one column of the family's own matrix, counted
+//   .reference-entry__laws              the prohibitions, numbered as the cells use them
+//   .reference-entry__matrix            the family's matrix: rows × its own columns
+//   .reference-entry__proof             the row that proves the family, and why
+//   .reference-entry__changes           what the exploration changed
+//   .reference-entry__groups            the groups the live rows are filed in
+//
+// ─── ONE DOCUMENT, TEN DISCLOSURES ────────────────────────────────────────
+// The reference is read in two passes: shut, ten summary rows that a reader can
+// compare in one screen; open, one entry in full. That is why the summary carries
+// the figures and the proof mark rather than only the band - a reader choosing
+// between families is choosing on those three facts.
+//
+// ─── THE MATRIX IS THE FAMILY'S OWN, NOT THE GALLERY'S ────────────────────
+// A cell here is the family's own column against the family's own row, so the
+// table can be narrower than the gallery's spine and still be complete: the
+// family asks its own questions, and this is the page where its own questions
+// are printed with their prohibitions beside them. A cell that cannot exist
+// prints `N/A` and a superscript number, and the number is a link to the
+// sentence under the table - the same division between mark and sentence the
+// family matrices make, only here the sentence is one keystroke away.
+//
+// ─── THE PROOF ROW IS A FIGURE, NOT A QUOTE ───────────────────────────────
+// It prints at the entry's own inset, with the mark in the register column, the
+// state in ink and the reason at caption weight, and two links: the live row on
+// the states gallery and the family's own matrix. A proof a reader cannot go and
+// look at is a claim, and this document does not print claims.
+@use "../../Mixin" as *;
+
+/* ─── THE PAGE ───────────────────────────────────────────────────────────── */
+
+.reference-page__trail {
+	@include band-inner;
+
+	padding-block: var(--space-group) 0;
+}
+
+.reference-page__note {
+	max-inline-size: var(--Measure);
+	margin: var(--space-group) 0 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+/* ─── THE DOCUMENT ───────────────────────────────────────────────────────── */
+
+.reference {
+	min-inline-size: 0;
+}
+
+.reference__head,
+.reference-contract__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0 0 var(--space-group);
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.reference__head-label,
+.reference-contract__head-label {
+	color: var(--Foreground);
+}
+
+.reference__head-figure,
+.reference-contract__head-figure {
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+/* ─── THE CONTRACT ───────────────────────────────────────────────────────── */
+
+.reference-contract {
+	margin: 0;
+	min-inline-size: 0;
+}
+
+.reference-contract__list {
+	display: grid;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.reference-contract__law {
+	padding-block: var(--space-reading);
+
+	@include hairline(top);
+
+	&:last-child {
+		@include hairline(bottom);
+	}
+}
+
+.reference-contract__law-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.35rem var(--space-tight);
+
+	margin: 0 0 0.4rem;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.reference-contract__law-index {
+	color: var(--Mark);
+	font-variant-numeric: tabular-nums;
+}
+
+.reference-contract__law-title {
+	color: var(--Foreground);
+}
+
+.reference-contract__law-source {
+	margin-inline-start: auto;
+
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+.reference-contract__law-means,
+.reference-contract__law-check {
+	max-inline-size: var(--Measure);
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.reference-contract__law-check {
+	margin-block-start: 0.35rem;
+	color: var(--MuteForeground);
+}
+
+.reference-contract__key,
+.reference-entry__key {
+	margin-inline-end: 0.5em;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--MuteForeground);
+}
+
+/* ─── ONE ENTRY ──────────────────────────────────────────────────────────── */
+
+.reference-entry {
+	min-inline-size: 0;
+
+	@include hairline(bottom);
+}
+
+.reference-entry__fold {
+	min-inline-size: 0;
+}
+
+.reference-entry__summary {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.35rem var(--space-tight);
+
+	padding-block: var(--space-tight);
+
+	cursor: pointer;
+	list-style: none;
+
+	&::-webkit-details-marker {
+		display: none;
+	}
+
+	&::before {
+		content: "+";
+
+		inline-size: 1ch;
+
+		color: var(--Mark);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--Accent);
+		outline-offset: 4px;
+	}
+}
+
+.reference-entry__fold[open] > .reference-entry__summary::before {
+	content: "−";
+}
+
+.reference-entry__mark {
+	color: var(--Mark);
+}
+
+.reference-entry__index {
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.reference-entry__band {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.45em;
+
+	color: var(--Foreground);
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	.reference-entry__fold[open] & {
+		text-decoration: underline;
+		text-decoration-thickness: 2px;
+		text-underline-offset: var(--optical-underline-offset);
+	}
+}
+
+.reference-entry__figure {
+	flex: 1 1 18rem;
+	min-inline-size: 0;
+
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.reference-entry__proof-mark {
+	color: var(--Foreground);
+	font-variant-numeric: tabular-nums;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+/* ─── THE ENTRY'S BODY ───────────────────────────────────────────────────── */
+
+.reference-entry__body {
+	padding: 0 0 var(--space-group) 1ch;
+}
+
+.reference-entry__for,
+.reference-entry__read,
+.reference-entry__gap {
+	max-inline-size: var(--Measure);
+	margin: 0 0 0.6rem;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.65;
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.reference-entry__read,
+.reference-entry__gap {
+	color: var(--MuteForeground);
+}
+
+.reference-entry__head-line {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: var(--space-group) 0 var(--space-tight);
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.reference-entry__head-label {
+	color: var(--Foreground);
+}
+
+.reference-entry__head-figure {
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+/* ─── THE FIGURES, AS A LEDGER ───────────────────────────────────────────── */
+
+.reference-entry__ledger {
+	display: grid;
+	gap: 0;
+	max-inline-size: var(--MeasureWide, var(--Measure));
+	margin: 0;
+	padding: 0;
+
+	@include hairline(top);
+}
+
+.reference-entry__line {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 0.15rem;
+
+	padding-block: 0.4rem;
+
+	@include hairline(bottom);
+
+	// The label/value pair is the wide composition; at a phone's width the value
+	// goes under its label and keeps its register. Mobile-first like every other
+	// partial on the site, so the only breakpoint here is a widening.
+	@include bp(640px) {
+		grid-template-columns: minmax(11rem, 18%) minmax(0, 1fr);
+		gap: var(--space-tight);
+	}
+
+	dt {
+		@include mono-meta;
+		@include track(var(--track-row));
+
+		color: var(--MuteForeground);
+	}
+
+	dd {
+		margin: 0;
+
+		font-family: var(--FontMono);
+		font-size: var(--type-meta);
+		line-height: 1.5;
+		color: var(--Foreground);
+		font-variant-numeric: tabular-nums;
+	}
+}
+
+/* ─── THE TABLES ─────────────────────────────────────────────────────────── */
+
+.reference-entry__scroll {
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+
+	min-inline-size: 0;
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	background: var(--Card);
+}
+
+.reference-entry__table {
+	inline-size: 100%;
+	min-inline-size: 44rem;
+
+	border-collapse: collapse;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.5;
+
+	th {
+		padding: var(--space-tight) 0.6rem;
+
+		text-align: start;
+		vertical-align: bottom;
+
+		border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+
+		@include mono-meta;
+		@include track(var(--track-row));
+
+		color: var(--MuteForeground);
+	}
+
+	td {
+		padding: 0.5rem 0.6rem;
+
+		vertical-align: top;
+
+		@include hairline(bottom);
+
+		color: var(--Foreground);
+	}
+
+	tr:last-child td {
+		border-block-end: 0;
+	}
+}
+
+.reference-entry__cell-name {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+	white-space: nowrap;
+}
+
+.reference-entry__cell-code {
+	color: var(--MuteForeground);
+	overflow-wrap: anywhere;
+}
+
+.reference-entry__cell-note {
+	max-inline-size: 42ch;
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.reference-entry__cell-figure {
+	text-align: end;
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+}
+
+/* ─── THE COLUMNS, COUNTED ───────────────────────────────────────────────── */
+
+.reference-entry__asked {
+	display: grid;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	@include hairline(top);
+}
+
+.reference-entry__asked-row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: var(--space-tight);
+	align-items: baseline;
+
+	padding-block: 0.3rem;
+
+	@include hairline(bottom);
+
+	@include bp(640px) {
+		grid-template-columns: minmax(9rem, 16rem) minmax(0, 1fr) auto;
+	}
+}
+
+.reference-entry__asked-ask {
+	grid-column: 1 / -1;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.5;
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+
+	@include bp(640px) {
+		grid-column: auto;
+	}
+}
+
+.reference-entry__asked-label {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.reference-entry__asked-figure {
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+/* ─── THE PROHIBITIONS ───────────────────────────────────────────────────── */
+
+.reference-entry__laws {
+	display: grid;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	@include hairline(top);
+}
+
+.reference-entry__law {
+	padding-block: var(--space-tight);
+
+	@include hairline(bottom);
+
+	&:target {
+		background: var(--Surface1);
+		outline: 2px solid var(--Accent);
+		outline-offset: 2px;
+	}
+}
+
+.reference-entry__law-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0 0 0.25rem;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.reference-entry__law-index {
+	color: var(--Mark);
+	font-variant-numeric: tabular-nums;
+}
+
+.reference-entry__law-count {
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+.reference-entry__law-text {
+	max-inline-size: var(--Measure);
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.reference-entry__law-cells {
+	max-inline-size: var(--Measure);
+	margin: 0.25rem 0 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: 1.45;
+	color: var(--MuteForeground);
+	overflow-wrap: anywhere;
+}
+
+/* ─── THE MATRIX ─────────────────────────────────────────────────────────── */
+
+.reference-entry__matrix {
+	inline-size: 100%;
+	min-inline-size: 60rem;
+
+	border-collapse: collapse;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: 1.35;
+
+	th,
+	td {
+		border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	}
+
+	thead th {
+		padding: var(--space-tight) 0.35rem;
+
+		text-align: start;
+		vertical-align: bottom;
+
+		border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+
+		@include mono-meta;
+		@include track(var(--track-row));
+
+		color: var(--Foreground);
+	}
+}
+
+.reference-entry__matrix-corner {
+	position: sticky;
+	inset-inline-start: 0;
+	z-index: 2;
+
+	inline-size: 12rem;
+	min-inline-size: 12rem;
+	padding-inline: var(--space-tight);
+
+	background: var(--Card);
+	border-inline-start: 0;
+}
+
+.reference-entry__matrix-head {
+	display: block;
+	max-inline-size: 6rem;
+	color: var(--MuteForeground);
+}
+
+.reference-entry__matrix-name {
+	position: sticky;
+	inset-inline-start: 0;
+	z-index: 1;
+
+	padding: var(--space-tight) 0.5rem;
+
+	background: var(--Card);
+	text-align: start;
+	white-space: nowrap;
+
+	border-inline-start: 0;
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.reference-entry__matrix-cell {
+	padding: 0.3rem 0.35rem;
+
+	text-align: center;
+	vertical-align: top;
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	font-variant-numeric: tabular-nums;
+
+	&[data-disposition="built"] {
+		color: var(--Foreground);
+	}
+
+	&[data-disposition="na"] {
+		color: var(--MuteForeground);
+	}
+}
+
+.reference-entry__matrix-na {
+	color: var(--MuteForeground);
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+	}
+
+	sup {
+		font-size: 0.65em;
+		vertical-align: super;
+	}
+}
+
+.reference-entry__matrix-note-line {
+	max-inline-size: var(--Measure);
+	margin: 0 0 var(--space-tight);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: 1.55;
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+
+	a {
+		color: var(--Accent);
+	}
+}
+
+.reference-entry__matrix-na {
+	color: var(--MuteForeground);
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+	}
+
+	sup {
+		font-size: 0.65em;
+		vertical-align: super;
+	}
+}
+
+.reference-entry__matrix-note-line {
+	max-inline-size: var(--Measure);
+	margin: 0 0 var(--space-tight);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: 1.55;
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+
+	a {
+		color: var(--Accent);
+	}
+}
+
+/* ─── THE PROOF ROW ──────────────────────────────────────────────────────── */
+
+.reference-entry__proof {
+	margin: 0;
+	padding: var(--space-reading);
+
+	background: var(--Card);
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.reference-entry__proof-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0 0 0.4rem;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.reference-entry__proof-mark-line {
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+.reference-entry__proof-state {
+	color: var(--Foreground);
+}
+
+.reference-entry__proof-component {
+	margin-inline-start: auto;
+
+	color: var(--MuteForeground);
+}
+
+.reference-entry__proof-when {
+	max-inline-size: var(--Measure);
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.65;
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.reference-entry__proof-why {
+	max-inline-size: var(--Measure);
+	margin: 0.5rem 0 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.reference-entry__proof-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-group);
+
+	margin: var(--space-reading) 0 0;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	a {
+		display: inline-flex;
+		gap: 0.4em;
+		align-items: baseline;
+
+		color: var(--Accent);
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+			text-decoration-thickness: 2px;
+			text-underline-offset: var(--optical-underline-offset);
+		}
+	}
+}
+
+/* ─── THE CHANGES ────────────────────────────────────────────────────────── */
+
+.reference-entry__changes {
+	display: grid;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	@include hairline(top);
+}
+
+.reference-entry__change {
+	padding-block: var(--space-reading);
+
+	@include hairline(bottom);
+}
+
+.reference-entry__change-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0 0 0.35rem;
+}
+
+.reference-entry__change-component {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.reference-entry__change-from {
+	color: var(--MuteForeground);
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.reference-entry__change-found,
+.reference-entry__change-built {
+	max-inline-size: var(--Measure);
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.reference-entry__change-built {
+	margin-block-start: 0.35rem;
+	color: var(--MuteForeground);
+}
+
+/* ─── THE ABSENCES ───────────────────────────────────────────────────────── */
+
+.reference-entry__absent {
+	max-inline-size: var(--Measure);
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.65;
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+
+	code {
+		color: var(--Foreground);
+	}
+}
+
+.reference-entry__unasked {
+	max-inline-size: var(--Measure);
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+	color: var(--Foreground);
+	text-wrap: pretty;
+
+	a {
+		color: var(--Accent);
+	}
+}
+
+.reference-entry__unasked-note {
+	color: var(--MuteForeground);
+}
+
+/* ─── THE LIVE ROWS' GROUPS ──────────────────────────────────────────────── */
+
+.reference-entry__groups {
+	display: grid;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	@include hairline(top);
+}
+
+.reference-entry__group {
+	padding-block: var(--space-tight);
+
+	@include hairline(bottom);
+}
+
+.reference-entry__group-label {
+	margin: 0 0 0.2rem;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.reference-entry__group-note {
+	max-inline-size: var(--Measure);
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+/* ─── THE SOURCE LINE ────────────────────────────────────────────────────── */
+
+.reference-entry__source {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.4rem;
+
+	margin: var(--space-group) 0 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: 1.5;
+	color: var(--MuteForeground);
+
+	a {
+		color: var(--Accent);
+	}
+}
+
+/* ─── WHAT A SCREEN READER HEARS, AND THE EYE DOES NOT ───────────────────── */
+
+.reference-entry__visually-hidden {
+	position: absolute;
+
+	inline-size: 1px;
+	block-size: 1px;
+	padding: 0;
+	margin: -1px;
+
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+/* ─── THE NARROW SUMMARY ROW ─────────────────────────────────────────────── */
+//
+// The summary is a flex run, so it already wraps. The only thing it needs at a
+// phone's width is for the band to stop reserving a column it cannot fill.
+
+.reference-entry__band {
+	min-inline-size: 0;
+
+	@include bp(640px) {
+		min-inline-size: 12rem;
+	}
+}
+
+.reference-entry__body {
+	padding-inline-start: 0;
+
+	@include bp(640px) {
+		padding-inline-start: 1ch;
+	}
+}

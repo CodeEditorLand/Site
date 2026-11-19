@@ -568,6 +568,7 @@ export const Rows: readonly Row[] = [
 
 			incard: NotACard(
 				"directory",
+
 				"band's body, not a record's surface",
 			),
 
@@ -849,6 +850,7 @@ export const Rows: readonly Row[] = [
 
 			incard: NotACard(
 				"clause list",
+
 				"navigation, not a record's surface",
 			),
 
@@ -904,6 +906,7 @@ export const Rows: readonly Row[] = [
 
 			dense: NoDense(
 				"route shell",
+
 				"its rhythm is the opening's and the workspace's",
 			),
 
@@ -1159,6 +1162,7 @@ export const Rows: readonly Row[] = [
 
 			dense: NoDense(
 				"opening",
+
 				"its rhythm is the page's opening distance",
 			),
 
@@ -1248,6 +1252,7 @@ export const Rows: readonly Row[] = [
 
 			incard: NotACard(
 				"trail",
+
 				"route statement, not a record's surface",
 			),
 
@@ -1327,6 +1332,7 @@ export const Rows: readonly Row[] = [
 
 			incard: NotACard(
 				"status board",
+
 				"band's artifact, not a record's surface",
 			),
 
@@ -1416,6 +1422,7 @@ export const Rows: readonly Row[] = [
 
 			incard: NotACard(
 				"lexicon run",
+
 				"page's body, not a record's surface",
 			),
 
@@ -1575,6 +1582,7 @@ export const Rows: readonly Row[] = [
 
 			dense: NoDense(
 				"head",
+
 				"one marker, one title, one proposition and one strip",
 			),
 
@@ -1584,6 +1592,7 @@ export const Rows: readonly Row[] = [
 
 			incard: NotACard(
 				"reference head",
+
 				"page opening, not a record's surface",
 			),
 
@@ -1661,6 +1670,7 @@ export const Rows: readonly Row[] = [
 
 			dense: NoDense(
 				"register",
+
 				"one row per intent, at the reading step",
 			),
 

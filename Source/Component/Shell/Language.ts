@@ -306,6 +306,11 @@ const Filed: readonly (readonly [string, LayoutAnswer])[] = [
 	// removed from the production build, and this entry is filtered out with it.
 	["/Specimen", "record"],
 
+	// The states gallery is the same artifact at the other magnification: no
+	// rail, no measure, one index of components and the conditions they are
+	// asked. Filed beside the sheet it indexes, and filtered out with it.
+	["/Specimen/States", "record"],
+
 	["/Account/SignIn", "record"],
 
 	["/Account/SignUp", "record"],

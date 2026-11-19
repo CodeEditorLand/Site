@@ -1,5 +1,7 @@
 :root {
-	/* Core channels - updated every frame by Staccato.ts */
+	/* Core channels - committed by Staccato.ts on a 500ms interval, never per
+	 frame, and the sheet bridges each commit with a 1.6s transition so the
+	 page is always mid-transition between two states. */
 	--Staccato: 0;
 	--StaccatoRaw: 0;
 	--StaccatoPhase: 0;
@@ -45,9 +47,12 @@
  TIER 1 - STATIC SEED OFFSETS
  ─────────────────────────────────────────────────────────────────
  Transforms are driven by --StaccatoSeed / --StaccatoSeedPhase,
- which are set ONCE on page load (never on each frame).
- Each element lands at a unique, stable position.
- Hover lerps cleanly back to the identity / elevated state.
+ which SeedSelector sets ONCE per page load, so an element lands at
+ one stable position and hover lerps back to the identity.
+ The scatter classes - Translate, Scale, Skew, Jitter, Rotate and
+ Float - are neutralised by CALM at the foot of this file, so the
+ seed survives only on the controls declared below it: Card, Button,
+ NavLink, Icon, Avatar, Price, Checkmark, Toggle, Social, Badge.
  ══════════════════════════════════════════════════════════════════ */
 
 .StaccatoTranslate {
@@ -136,12 +141,12 @@
 }
 
 /* HUD card surface: hairline border + sharp corners for definition on the
- dark cyberpunk canvas and a crisp edge in light. Background is supplied by
- each card's own utility (bg-card) - do NOT set background-color here, or it
- overrides utilities like bg-primary on elements that reuse .StaccatoCard
- (e.g. IconTooltip). Border brightens on hover; glow only in dark.
+ creme field. Background is supplied by each card's own utility (bg-card) - do
+ NOT set background-color here, or it overrides utilities like bg-primary on
+ elements that reuse .StaccatoCard (e.g. IconTooltip). Border brightens on
+ hover and nothing else changes: the identity has no shadow and no glow.
  FeatureCard / PricingCard / TestimonialCard / MasonryCard / PlatformCard
- are now jelly-card custom elements - Jelly's canvas handles their border. */
+ are jelly-card custom elements - Jelly's canvas handles their border. */
 .TransparencyCard {
 	border: 1px solid var(--Border);
 	border-radius: var(--BorderRadius);
@@ -336,32 +341,33 @@
       item), which is the only reason any of them painted at all - by the
       accident of a parent's display, not by a rule of their own. A dot placed
       in a paragraph, a table cell or any other non-flex parent had no box and
-      a background with no box paints nothing. The size below is the one the
-      utilities were asking for, so a dot that already worked does not move;
-      it is declared here so the mark keeps it with or without them.
+      a background with no box paints nothing. `display: inline-block` is the
+      layer that was missing, and it is declared on the class itself so a dot
+      needs no parent's display to paint.
 
    2. A FILL THAT LOSES TO THE CALLER. The dot's colour IS its status: green
       for `Available`, amber for `Legacy`, purple for `Experimental`, and the
-      caller assigns it with a `bg-*` utility in the markup. A default written
-      as a plain `background-color` on `.StaccatoDot` outranks that utility -
-      this sheet is emitted after `@tailwind utilities` (see `System.scss`:
+      caller assigns it with a `bg-*` utility in the markup. A plain
+      `background-color` on `.StaccatoDot` outranks that utility - this sheet
+      is emitted after `@tailwind utilities` (see `System.scss`:
       `System/Tailwind` is the first `@use`), so at equal specificity the site
-      rule wins by source order - which is how every dot on the site turned
-      mute at once. `:where()` carries no specificity at all, so the caller's
-      utility wins wherever there is one, and the mark still has an ink where
-      there is not.
+      rule wins by source order, and every dot renders in one mute ink.
+      `:where()` carries no specificity at all, so the caller's utility wins
+      wherever there is one, and the mark still has an ink where there is not.
 
    `flex: none` keeps a dot inside a flex row from being squeezed to nothing by
    a long label. Radius 0 is the identity, not a preference.
 
-   ─── THE SIZE IS THE MARK LAYER'S (this card) ─────────────────────────────
+   ─── THE SIZE IS THE MARK LAYER'S ─────────────────────────────────────────
    `.StaccatoDot` is the state square under its legacy name, so it takes the
-   badge step from the ladder (`--mark-square-badge`, 6px) instead of a
-   `0.5rem` of its own. It was 8px - the largest of the five sizes the site had
-   for one dot - and every surviving caller (the local-first scan, the
-   transparency rows, the error boundary) prints it beside 13px type. The
-   colour still belongs to the caller's `bg-*` utility: the dot's colour IS its
-   status, and the `:where()` keeps that contract. */
+   badge step from the ladder (`--mark-square-badge`, 6px) rather than a size
+   of its own. A caller that states `h-* w-*` still wins - the local-first scan
+   asks for 8px, 6px and 4px, the transparency rows for 8px, the account
+   profile for 6px and 4px - because `:where()` carries no specificity; the
+   ladder's step is what a dot with no utility gets, and 6px is the step that
+   reads beside 13px type. The colour is the same contract: the dot's colour IS
+   its status, so the caller's `bg-*` utility wins and `--StaccatoDotFill` /
+   `--mark-ink` are only the fallback. */
 
 .StaccatoDot {
 	display: inline-block;
@@ -405,9 +411,10 @@
 /* ══════════════════════════════════════════════════════════════════
  TIER 2 - LIVE FLOAT (only elements that SHOULD move)
  ─────────────────────────────────────────────────────────────────
- Hero decorative elements and the hero CTA keep live animated
- transforms. Amplitudes are low. Hover drains the noise signal
- and settles at the attention anchor or a clean elevated state.
+ The hero CTA keeps its live animated transform; the decorative
+ float is declared here and neutralised by CALM. Amplitudes are low.
+ Hover drains the noise signal and settles at the attention anchor
+ or a clean elevated state.
  ══════════════════════════════════════════════════════════════════ */
 
 /* Hero decorative particles / illustrations - gentle continuous float */
@@ -452,10 +459,14 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
- TIER 3 - FLASHING LIGHTS (live opacity / color / border / glow)
+ TIER 3 - FLASHING LIGHTS (live opacity / colour / border)
  ─────────────────────────────────────────────────────────────────
  NO position changes. Only opacity, hue, border-color, outline.
- These are the "alive" elements. Everything else is seed-static.
+ These are the "alive" elements, and they are alive only where the
+ engine runs: on every other surface the channel is 0 and the rule
+ is a static value. The hue shift is neutralised by CALM; the glow
+ and shadow-lift classes are no-ops, because the identity has no
+ shadow.
  ══════════════════════════════════════════════════════════════════ */
 
 .StaccatoOpacity {
@@ -483,7 +494,8 @@
 /* ─── Color ─── */
 
 .StaccatoColorShift {
-	/* Reduced from 8deg → 4deg */
+	/* 4deg, not 8: a hue shift is a shimmer at the edge of perception, and
+	   CALM sets the filter to none unconditionally. */
 	filter: hue-rotate(calc(var(--StaccatoColor) * 4deg));
 }
 
@@ -501,8 +513,9 @@
 }
 
 .StaccatoBorderShimmer {
-	/* Borderless redesign: no-op. Kept as a class so existing markup
-	 doesn't break, but the shimmer animation is intentionally removed. */
+	/* A no-op kept as a class so existing markup does not break: the border
+	 shimmer is not drawn, because a border that animates is decoration, and the
+	 identity has no shadow for it to shimmer into. */
 }
 
 .StaccatoOutlineGlow {
@@ -511,14 +524,14 @@
 	outline-offset: calc(2px + var(--StaccatoGlow) * 2px);
 }
 
-/* Glow / shadow: flat white design - intentional no-ops */
+/* Glow / shadow: the identity has no shadow - intentional no-ops */
 
 .StaccatoGlow {
-	/* no box-shadow on flat white */
+	/* no box-shadow: flat is identity level 1 */
 }
 
 .StaccatoShadowLift {
-	/* no box-shadow on flat white */
+	/* no box-shadow: flat is identity level 1 */
 }
 
 /* Input focus: live border-color only */
@@ -570,7 +583,14 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
- TIER 4 - SCROLL-LINKED PARALLAX (not noise jitter)
+ TIER 4 - THE PARALLAX CLASSES, KEPT AND NEUTRALISED
+ ─────────────────────────────────────────────────────────────────
+ --ScrollProgress is never written: the module that measured it is
+ gone, and CALM at the foot of this file sets all three transforms
+ to `none !important` unconditionally. The rules stay so the three
+ class names still resolve if a surface ever wants the treatment
+ back - and that surface would supply the value in CSS, not in a
+ scroll handler.
  ══════════════════════════════════════════════════════════════════ */
 
 .StaccatoParallaxNear {
@@ -586,7 +606,13 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
- INTERSECTION OBSERVER ENTRY ANIMATION
+ THE ENTRY ANIMATION - A CLASS NOTHING PRINTS
+ ─────────────────────────────────────────────────────────────────
+ `Attention.ObserveAndApply` adds `.StaccatoVisible` through an
+ IntersectionObserver and no caller invokes it, so the animation is
+ inert. The class is declared for the surface that wires it up: a
+ page that mounts it is adopting the effect, not finding it in
+ service.
  ══════════════════════════════════════════════════════════════════ */
 
 .StaccatoVisible {
@@ -611,6 +637,10 @@
 
 /* ══════════════════════════════════════════════════════════════════
  feTURBULENCE DISPLACEMENT (opt-in, hover only)
+ The filter is injected by `Turbulence.InjectFilter()` when the engine
+ starts, so the hover paints only on a surface that called
+ `Staccato.Start()`; elsewhere `#StaccatoTurbulence` does not exist and
+ the filter resolves to none.
  ══════════════════════════════════════════════════════════════════ */
 
 .StaccatoTurbulence:hover {
@@ -672,8 +702,11 @@
 
 /* ══════════════════════════════════════════════════════════════════
  TYPEWRITER CURSOR
- Blinks via --StaccatoRhythm so it syncs with the noise engine.
- Used by RichText during locale-switch character-reveal animation.
+ Its opacity is read from --StaccatoRhythm, so it thickens and thins
+ with the engine's commits instead of blinking on a keyframe - and
+ where the engine does not run the channel is 0 and the cursor is a
+ steady 50 % rule. Used by RichText during the locale-switch
+ character-reveal.
  ══════════════════════════════════════════════════════════════════ */
 
 .StaccatoCursor {
@@ -695,16 +728,16 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
- REDUCED MOTION
+ CALM, THEN REDUCED MOTION
  ══════════════════════════════════════════════════════════════════ */
 
 /* ─────────────────────────────────────────────────────────────
- CALM / REFINED MOTION (always on)
- The noise-driven scatter, tilt, and scroll-parallax read as dated.
- For a polished, minimal HUD, sections sit static and grid-aligned.
- Neutralise the parallax + drift transforms unconditionally; hover and
- focus transitions (defined elsewhere) are preserved. FloatingCard keeps
- its own centering transform and is calmed in the hero component itself.
+ CALM - ALWAYS ON, NOT A REDUCED-MOTION BRANCH
+ The noise-driven scatter, tilt and scroll-parallax are neutralised
+ for every reader, not only the one who asked for less motion: the
+ page sits static and grid-aligned, and hover and focus transitions
+ (declared elsewhere) are preserved. FloatingCard keeps its own
+ centring transform and is calmed in the hero component itself.
  ───────────────────────────────────────────────────────────── */
 .StaccatoParallaxNear,
 .StaccatoParallaxMid,

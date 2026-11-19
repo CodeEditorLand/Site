@@ -9,18 +9,18 @@
 //
 // ─── THE DESTINATION TAKES THE ACCENT; THE CONTEXT DOES NOT ────────────────
 //
-// The site had two answers, and neither was a state:
+// A block link's state is not a wash and it is not a fade:
 //
-//   a hue      `.doc-card__link:hover { color: var(--Accent) }` - every word in
-//              the card turned green, including the note, which is not the
+//   a wash     setting `color: var(--Accent)` on the whole anchor turns every
+//              word in the card green, including the note, which is not the
 //              link's label but the card's context
-//   a fade     `.blog-index__link:hover { opacity: 0.8 }` - the card dims. That
-//              is `DESIGN-COMPLETE.md` §0.3 at card scale: present in the DOM,
+//   a fade     `opacity: 0.8` on hover dims the card. That is
+//              `DESIGN-COMPLETE.md` §0.3 at card scale: present in the DOM,
 //              receding from the page
 //
-// The correction for the wash removed the hue from the TITLE as well, and that
-// took the good half out with the bad. The note was right to keep its ink; the
-// title is the destination. So the state this layer gives a block link is:
+// The correction for the wash must not take the hue off the TITLE as well, because
+// that takes the good half out with the bad. The note keeps its ink; the title is
+// the destination. So the state this layer gives a block link is:
 //
 //   the title     takes `--Accent` and an underline drawn in `currentColor`, so
 //                 the hue and the rule agree - it names the place the pointer is
@@ -69,8 +69,8 @@ $Card: "a:is(.doc-card__link, .doc-tile, .blog-index__link, .contact-hub__card, 
 // ─── HOVER: THE DESTINATION'S HUE AND RULE, THE EDGE'S INK ────────────────
 //
 // `:where()` on all three, because two of these blocks carry a treatment this
-// layer must not touch: the hero's stack tile answers the pointer with an accent
-// edge (a keeper's part, and it stays), and the contact hub's card takes a fill.
+// layer must not touch: the hero's stack tile answers the pointer by moving its
+// frame to the ink (`Home/_Stack.scss`), and the contact hub's card takes a fill.
 // At zero specificity this rule is a floor for the cards that answer with
 // nothing, and the two that already answer keep their own answer.
 //
@@ -110,10 +110,12 @@ $Card: "a:is(.doc-card__link, .doc-tile, .blog-index__link, .contact-hub__card, 
 	text-underline-offset: var(--optical-underline-offset);
 }
 
-// The card's own mark - the `→` a doc tile prints, the arrow an appendix row
-// carries - follows the label's ink, so the block moves as one object. It is
-// `currentColor` rather than `--state-ink` because the label may now be the
-// accent: the mark belongs to the label, not to the card's frame.
+// The card's own marks - the `→` a doc tile prints, the arrow an appendix row
+// carries - follow the label's ink, so the block moves as one object. It is
+// `currentColor` rather than `--state-ink` because the label may be the accent:
+// the mark belongs to the label, not to the card's frame.
+// `.contact-hub__slug` is on the same line as the name and takes the same
+// treatment, so the address and the record it addresses read as one object.
 :where(#{$Card}):hover
 	:where(
 		.doc-card__arrow,
@@ -132,11 +134,9 @@ $Card: "a:is(.doc-card__link, .doc-tile, .blog-index__link, .contact-hub__card, 
 // never moved - and the field is the press step.
 //
 // `#{$NotJellyBody}` (`State/_Button.scss`) removes both from a card whose body
-// is a Jelly control. `.home-platform__anchor` is in this registry, and before
-// the host had a press of its own that anchor was the only thing giving the
-// platform download button a 1px drop and a press field. Now the control gives
-// them to itself, and a card that kept them would travel twice (2px) and stack
-// two fields on one box.
+// is a Jelly control. `.home-platform__anchor` is in this registry, and the
+// control inside it gives itself the 1px drop and the press field: a card that
+// kept them would travel twice (2px) and stack two fields on one box.
 
 #{$Card}#{$NotJellyBody}:active {
 	transform: translateY(var(--state-press-travel));
@@ -161,11 +161,12 @@ $Card: "a:is(.doc-card__link, .doc-tile, .blog-index__link, .contact-hub__card, 
 
 // ─── CURRENT: A CARD CAN BE THE PAGE YOU ARE ON ───────────────────────────
 //
-// `/Contents` links the page it is the index of, and a doc card for the article
-// you are reading is a real case. The marker is the row grammar's: a 2px accent
-// rule on the leading edge, no wash, weight unchanged (a card's title is already
-// at 500). `:where()` again, so a band's index item that already marks its own
-// position is not given a second bar.
+// No card mounts `aria-current` yet, and the marker is stated anyway: `/Contents`
+// links the pages it indexes, and a doc card for the article you are reading is
+// the case this vocabulary exists for. The marker is the row grammar's: a 2px
+// accent rule on the leading edge, no wash, weight unchanged (a card's title is
+// already at 500). `:where()` again, so a band's index item that already marks its
+// own position is not given a second bar.
 
 :where(#{$Card}[aria-current]:not([aria-current="false"])) {
 	position: relative;

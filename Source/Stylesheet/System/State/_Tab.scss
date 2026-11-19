@@ -3,20 +3,22 @@
 // ─── THE TAB ────────────────────────────────────────────────────────────────
 //
 // A tab is the one-of-N control: exactly one is true and the others are not. The
-// site has four of them in three partials and two markup languages:
+// site has three of them in three partials and two markup languages, plus the
+// kit's primitive:
 //
 //   .Segmented__Cell    a radio group of scopes - `aria-checked`
 //   .doc-rust__tab      the nine crates of the Rust surface - `role="tab"` +
 //                       `aria-selected`
 //   .FrameRailTab       the frame's ten parts - styled by `html[data-section]`,
 //                       the document's own state rather than the row's
-//   [data-slot="tabs-trigger"]   the kit's primitive, unmounted today
+//   [data-slot="tabs-trigger"]   the kit's primitive, mounted on the specimen's
+//                       display sheet
 //
-// The three that mount do not agree on how the state is spelled, and one of them
-// (`RustViewer`) writes `aria-selected` in the markup and reads a `--active`
-// class in the stylesheet - two vocabularies that must be kept in step by hand.
-// That is the drift this partial closes: the ARIA attribute is the state, and a
-// class is a convenience that can only ever restate it.
+// They do not agree on how the state is spelled, and one of them (`RustViewer`)
+// writes `aria-selected` in the markup and reads a `--active` class in the
+// stylesheet - two vocabularies that must be kept in step by hand. That is the
+// drift this partial closes: the ARIA attribute is the state, and a class is a
+// convenience that can only ever restate it.
 //
 // ─── THE SELECTED TAB IS THE PULLED-OUT SHEET ─────────────────────────────
 //

@@ -26,6 +26,13 @@
  * the same size. The bars are `aria-hidden` and the keys are not, so a screen
  * reader hears one state and four field names, not four rectangles.
  *
+ * ─── WHEN THE SCHEMA HAS NOT ARRIVED EITHER ───────────────────────────────
+ * `empty` is what the block prints with no key: the composed sentence under the
+ * same register head, because `# LOADING / 04` over an empty `<dl>` is a count of
+ * four over a list of nothing. The block's argument is that a reader waiting
+ * learns the schema; with no schema there is still a true sentence, and it is
+ * that one.
+ *
  * ─── NO SCRIPT ────────────────────────────────────────────────────────────
  * `aria-busy` is the state, the word `LOADING` is the state, and neither needs
  * JavaScript. A page that renders this block is a page that knows it is waiting.
@@ -43,6 +50,18 @@ interface Props {
 	/** How long it has been waiting, when that is known: `318 DAYS`. */
 	age?: string;
 
+	/**
+	 * What the block says when it has no key to print.
+	 *
+	 * The keys are the arriving record's field names, and the block's whole
+	 * argument is that a reader waiting learns the schema. When the schema has
+	 * not arrived either, there is nothing to bar - and a register head reading
+	 * `# LOADING / 04` over an empty `<dl>` is a count of four over a list of
+	 * nothing. This sentence is what that state prints instead, and it is
+	 * optional so the existing call site keeps its signature.
+	 */
+	empty?: string;
+
 	/** Extra classes from the page. */
 	class?: string;
 }
@@ -52,6 +71,7 @@ const {
 	keys: Keys,
 	waiting: Waiting,
 	age: Age,
+	empty: Empty = "The record's own field names have not arrived either, so this block can state that it is waiting and not what it is waiting for.",
 	class: Class,
 } = Astro.props;
 
@@ -72,19 +92,28 @@ const WidthOf = (Key: string): number =>
 >
 	<p class="MotionSkeleton__Marker">{Marker}</p>
 
-	<dl class="MotionSkeleton__Rows">
-		{Keys.map((Key) => (
-			<div class="MotionSkeleton__Row">
-				<dt class="MotionSkeleton__Key">{Key}</dt>
-				<dd class="MotionSkeleton__Value" aria-hidden="true">
-					<span
-						class="MotionSkeleton__Bar"
-						style={`--bar: ${WidthOf(Key)}%`}
-					/>
-				</dd>
-			</div>
-		))}
-	</dl>
+	{Keys.length === 0 ? (
+		<p class="MotionSkeleton__Empty">
+			<span class="MotionSkeleton__EmptyMark" aria-hidden="true">
+				◎
+			</span>
+			{Empty}
+		</p>
+	) : (
+		<dl class="MotionSkeleton__Rows">
+			{Keys.map((Key) => (
+				<div class="MotionSkeleton__Row">
+					<dt class="MotionSkeleton__Key">{Key}</dt>
+					<dd class="MotionSkeleton__Value" aria-hidden="true">
+						<span
+							class="MotionSkeleton__Bar"
+							style={`--bar: ${WidthOf(Key)}%`}
+						/>
+					</dd>
+				</div>
+			))}
+		</dl>
+	)}
 
 	<p class="MotionSkeleton__Wait">
 		<span aria-hidden="true">↳</span> WAITING ON: {Waiting}

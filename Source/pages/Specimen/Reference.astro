@@ -1,0 +1,180 @@
+---
+/**
+ * The component reference: one entry per family, generated from the same tables
+ * the states gallery reads.
+ *
+ * ─── WHY THIS ROUTE IS THE LAST PAGE OF THE WAVE ──────────────────────────
+ * Ten family cards printed ten matrices, and the states gallery folded them onto
+ * one spine. What neither could answer is the question a contributor asks before
+ * touching a component: what is this family FOR, what may I put in it, what is
+ * it already asked to survive, and what may it never be? The matrices answer the
+ * third cell by cell, and the fourth only by accident - a cell marked impossible
+ * is a family saying what one of its parts may never be, and nobody had collected
+ * those sentences in one place.
+ *
+ * This page is that collection. `Content/Specimen/Reference.ts` reads the ten
+ * family modules - their `Rows`, their `Columns`, their `MatrixCell`, their
+ * `Specimens`, their `Improvements` - and states each family in the same five
+ * questions. It writes no sixth opinion: every figure, every column, every
+ * prohibition and every proof row is read from the family itself.
+ *
+ * ─── THIS PAGE IS A LAB SURFACE ───────────────────────────────────────────
+ * Like `/Specimen` and `/Specimen/States` it is a tool for the owner and the
+ * agents, not a chapter for a reader: served in development, absent from the
+ * production build. `Function/Configuration/Lab.mjs` lists it in `LabRoute`,
+ * `Function/Route/Lab.ts` removes the emitted directory before the route map is
+ * generated, and the sitemap filter keeps it out of `sitemap-0.xml`.
+ *
+ * ─── THE COMPOSITION: CONTRACT, FAMILIES, REGISTER ────────────────────────
+ * The page is read in the order the document's constitution is read:
+ *
+ *   head           # SPECIMEN_03, the h1 at L, the `↳` proposition, STATUS: VERIFIED
+ *   /THE CONTRACT  the seven laws that hold before any family's matrix is read,
+ *                  each with what it means and how a reviewer checks it
+ *   /THE FAMILIES  ten entries, each a disclosure: shut, the purpose, the figures
+ *                  and the proof row; open, the slots, the columns, the
+ *                  prohibitions, the matrix, the proof and what changed
+ *   /THE REGISTER  what the reference counted, and the ten files it counted from
+ *
+ * ─── THE ONE XL IS NOT SPENT HERE ─────────────────────────────────────────
+ * The head's `h1` is L, by the shell family's contract. The reference's largest
+ * type is a prohibition's own sentence, which is what the page is about - and a
+ * page that spent the XL on its own title would be claiming the rank of the
+ * material band on `/Specimen`, which is not this page's subject.
+ *
+ * ─── NO NUMBER IS WRITTEN HERE ────────────────────────────────────────────
+ * Every count is derived: the families, the slots, the cells, the prohibitions
+ * and the resolved proofs from `Content/Specimen/Reference.ts`, which reads them
+ * from the ten family modules. A figure typed into this file would be the one
+ * number on the page that could disagree with the page.
+ */
+import { Header } from "../../Component/Layout/Header";
+import Onward from "../../Component/More/Onward.astro";
+import RecordBand from "../../Component/Record/RecordBand.astro";
+import RecordLedger from "../../Component/Record/RecordLedger.astro";
+import { RegisterOf } from "../../Component/Record/RegisterLine.js";
+import Trail from "../../Component/Route/Trail.astro";
+import SpecimenReference from "../../Component/Specimen/SpecimenReference.astro";
+import SurfaceShell from "../../Component/Surface/SurfaceShell.astro";
+import { Row } from "../../Component/Surface/State.js";
+import {
+	Bands,
+	EntryCount,
+	Head,
+	LawCount,
+	MatrixCells,
+	Onward as OnwardCopy,
+	ProofCount,
+	Register,
+	SlotCount,
+} from "../../Content/Specimen/Reference.js";
+import Base from "../../Layout/Base.astro";
+
+const MetaTitle = "Reference | Code Editor Land";
+
+const MetaDescription = `The component reference: ${EntryCount} families, one entry each - what the family is for, the ${SlotCount} parts a page may mount, the states and combinations it is asked, the ${LawCount} prohibitions its own matrix states in its own words, and the one live row that proves it, across ${MatrixCells} cells of the ten family matrices.`;
+
+/** The trail: the index, the sheet, the gallery, then this reference. A crumb is a place. */
+const TrailItems = [
+	{ label: "/HOME", href: "/" },
+	{ label: "/SPECIMEN", href: "/Specimen" },
+	{ label: "/STATES", href: "/Specimen/States" },
+	{ label: "/REFERENCE" },
+];
+
+/** The register's rows, and the line that counts them. */
+const RegisterRows = Register();
+
+const CountedRegister = RegisterOf("REGISTER", RegisterRows);
+---
+
+<Base
+	Title={MetaTitle}
+	Description={MetaDescription}
+	Url={Astro.url.href}
+	lang="en"
+>
+	<Header client:load slot="Header" />
+
+	{/* The crumb sits above the shell, the way every surface's does: the trail
+	    is a route statement about the page, and the head is the page's own
+	    opening. A crumb printed under a title reads as a footnote to it. */}
+	<Trail trail={TrailItems} class="reference-page__trail" />
+
+	<SurfaceShell
+		index={Head.index}
+		title={Head.title}
+		standfirst={Head.proposition}
+		states={[Row("REFERENCE", "VERIFIED")]}
+		rows={[
+			{ key: "FAMILIES:", value: String(EntryCount) },
+			{ key: "SLOTS:", value: String(SlotCount) },
+			{ key: "PROHIBITIONS:", value: String(LawCount) },
+			{ key: "PROOFS:", value: `${ProofCount} OF ${EntryCount}` },
+		]}
+	>
+		{/* ─── THE CONTRACT ────────────────────────────────────────── */}
+		<RecordBand band={{ ...Bands.Contract, id: "contract" }}>
+			<SpecimenReference part="contract" />
+
+			<p class="reference-page__note">
+				These seven hold before any family's own matrix is read, and they
+				are the only sentences on this page that are not derived: they are
+				the document's constitution, restated as a table because a
+				contributor reads a table and skips a paragraph. Each names the
+				section it comes from and the thing a reviewer looks at - a law
+				with no check is a preference.
+				{` `}A family's own laws come after its slots, and they are the
+				other way round: those are the sentences the family's matrix
+				already uses to forbid a combination, collected rather than
+				written.
+			</p>
+		</RecordBand>
+
+		{/* ─── THE FAMILIES ────────────────────────────────────────── */}
+		<RecordBand band={{ ...Bands.Families, id: "families" }}>
+			<SpecimenReference part="families" />
+
+			<p class="reference-page__note">
+				Ten entries in `/Specimen`'s order, so a reader who uses the two
+				pages together finds the same family in the same place. Each entry
+				answers five questions in the same sequence - what the family is
+				for, its slots, what it is asked, what it may never be, and the row
+				that proves it - so comparing two families is comparing the same
+				questions rather than two authors' habits.
+				{` `}The matrix inside an entry is the family's OWN, not the
+				gallery's spine: a cell that cannot exist prints `N/A` and a
+				number, and the number is a link to the sentence that explains it.
+				A sentence in a six-rem cell would be an excuse; a bare `N/A` with
+				nothing to resolve it would be a hole. The number is the only
+				arrangement that is both readable and complete.
+				{` `}The proof row is a claim with a destination: it prints the
+				row's own mark, its state and the sentence that says when the state
+				is right, then links to the live row on the states gallery and to
+				the family's own matrix. A proof a reader cannot go and look at is
+				not a proof.
+			</p>
+		</RecordBand>
+
+		{/* ─── THE REGISTER ────────────────────────────────────────── */}
+		<RecordBand band={{ ...Bands.Register, id: "register" }}>
+			<RecordLedger rows={RegisterRows} register={CountedRegister} />
+
+			<p class="reference-page__note">
+				Every figure above is counted from the ten family modules, and the
+				source row names the files it was counted from. The two
+				denominators are printed apart on purpose: an entry's own matrix is
+				its rows against its own columns, and the spine is the same rows
+				against the gallery's twenty-two conditions - a page that added the
+				two would be counting one component twice.
+				{` `}The proof row is the only thing on this page that was chosen
+				rather than derived, and even it cannot drift: the mark is named in
+				`Reference.ts` and resolved against the family's `Specimens`, so a
+				row that moves out of a family leaves `◎ PROOF: UNAVAILABLE` behind
+				instead of a pointer to a row nobody prints.
+			</p>
+
+			<Onward slot="foot" rows={OnwardCopy.rows} copy={OnwardCopy.copy} />
+		</RecordBand>
+	</SurfaceShell>
+</Base>

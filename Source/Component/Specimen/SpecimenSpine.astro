@@ -1,0 +1,134 @@
+---
+/**
+ * SpecimenSpine - the gallery's twenty-two conditions, as one table.
+ *
+ * ─── WHAT A SPINE IS, AND WHY IT IS NOT A GLOSSARY ────────────────────────
+ * A glossary defines words. This is a spine: each condition states what it ASKS
+ * of a component, the §1.5 word it is answered in where it has one, the figure
+ * it earns across the whole document, and the one line that says when the state
+ * is right. A reader who reads this band has read the gallery's argument before
+ * meeting a single cell of it.
+ *
+ * ─── THE STATUS CELL IS NOT DECORATION ────────────────────────────────────
+ * Eight words state a record's condition, and ten of the twenty-two conditions
+ * answer to one. The other twelve are shapes and contexts, and the cell says so
+ * in the group's own word rather than leaving a blank: a blank cell in a table
+ * of dispositions is the same defect as a blank cell in a ledger - an excuse
+ * where a fact belongs.
+ *
+ * ─── THE FIGURES ARE COUNTED DOWN THE DOCUMENT ────────────────────────────
+ * `BUILT / N/A / UNASKED` per condition is the transposed view no family matrix
+ * can print: a family knows its own rows, not the document's. It is also where
+ * the sheet's two open arms show themselves - a condition with no built cell and
+ * no reason is a condition no matrix asks at all.
+ *
+ * No script and no hydration: the spine is printed.
+ */
+import Mark from "../Mark/Mark.astro";
+
+import {
+	ConditionCount,
+	ConditionRows,
+	ComponentCount,
+} from "../../Content/Specimen/Gallery.js";
+
+/** The conditions, with the figure each one earns. */
+const Rows = ConditionRows;
+---
+
+<figure class="gallery-spine" id="gallery-spine">
+	<p class="gallery-spine__head">
+		<span class="gallery-spine__head-label">THE SPINE:</span>
+		<span class="gallery-spine__head-figure">
+			{ConditionCount} CONDITIONS ASKED OF {ComponentCount} COMPONENTS
+		</span>
+	</p>
+
+	<dl class="gallery-spine__list">
+		{Rows.map((Row, Index) => (
+			<div
+				class:list={[
+					"gallery-spine__row",
+					Index > 0 && Row.condition.group !== Rows[Index - 1]!.condition.group
+						? "gallery-spine__row--group"
+						: null,
+				]}
+				data-group={Row.condition.group}
+			>
+				<dt class="gallery-spine__term">
+					<span class="gallery-spine__mark" aria-hidden="true">
+						#
+					</span>
+					<span class="gallery-spine__index">
+						{String(Index + 1).padStart(2, "0")}
+					</span>
+
+					<span class="gallery-spine__label">{Row.condition.label}</span>
+
+					<span class="gallery-spine__ask">{Row.condition.ask}</span>
+
+					<span class="gallery-spine__status">
+						{Row.condition.status === undefined ? (
+							<span class="gallery-spine__group-word">
+								{Row.condition.group.toUpperCase()}
+							</span>
+						) : (
+							<>
+								<span class="gallery-spine__status-key">STATUS:</span>
+								<Mark kind="square" tone={Row.tone ?? "ink"} />
+								<span
+									class:list={[
+										"gallery-spine__status-word",
+										`gallery-spine__status-word--${Row.tone ?? "ink"}`,
+									]}
+								>
+									{Row.condition.status}
+								</span>
+							</>
+						)}
+					</span>
+
+					<span class="gallery-spine__figures">
+						<span class="gallery-spine__figure">
+							<span class="gallery-spine__figure-key">BUILT:</span>
+							{Row.built}
+						</span>
+						<span class="gallery-spine__figure">
+							<span class="gallery-spine__figure-key">N/A:</span>
+							{Row.reasons}
+						</span>
+						<span class="gallery-spine__figure">
+							<span class="gallery-spine__figure-key">UNASKED:</span>
+							{Row.unasked}
+						</span>
+					</span>
+				</dt>
+
+				<dd class="gallery-spine__when">
+					<span class="gallery-spine__when-key">WHEN IT IS RIGHT:</span>
+					{Row.condition.when}
+				</dd>
+
+				<dd class="gallery-spine__where">
+					<span class="gallery-spine__when-key">ASKED BY:</span>
+					{Row.families.length === 0
+						? "NO FAMILY MATRIX - the arm is `ShellState`'s alone"
+						: Row.families.join("\u2001")}
+				</dd>
+			</div>
+		))}
+	</dl>
+
+	<figcaption class="gallery-spine__caption">
+		<span class="gallery-spine__caption-key">READ:</span>
+		<span class="gallery-spine__caption-value">
+			A condition is `BUILT` where a component renders that combination,
+			`N/A` where the family's matrix says it cannot exist and wrote the
+			reason, and `UNASKED` where the family's matrix has no column for it
+			at all. The three figures under each condition are those three
+			answers, counted down the whole document rather than across one
+			family - which is why a condition no matrix asks reads `0 / 0` here
+			and is named in /THE UNASKED below.
+		</span>
+	</figcaption>
+</figure>

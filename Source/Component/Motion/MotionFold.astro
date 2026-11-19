@@ -21,7 +21,9 @@
  * ─── THE ADVERSE ARMS ARE PROPS, NOT A SECOND COMPONENT ───────────────────
  * `empty` is required: a fold that opens onto nothing is indistinguishable from a
  * fold that failed. `state="loading"` prints the keys with their values barred -
- * the schema arrives before the data does. `long` caps the run at 60vh and the
+ * the schema arrives before the data does - and with no key at all it prints the
+ * `empty` sentence inside the busy list, so a loading fold is never a busy list
+ * announcing nothing. `long` caps the run at 60vh and the
  * summary keeps printing the whole count, so a fold of two hundred is honest
  * about being bigger than its frame. A leaf with `gone` keeps its row as a
  * tombstone: `◎`, muted ink, no link, and the meta cell says what it was.
@@ -127,6 +129,20 @@ const ClassOf = (Leaf: FoldLeaf): string =>
 					</span>
 					<span class="MotionFold__Label MotionFold__Note">
 						WAITING ON: {Waiting}
+					</span>
+				</li>
+			) : null}
+			{/* A loading fold with no key and no waiting line was a busy list
+			    announcing nothing: the empty arm's sentence is the one thing it
+			    could still say, and it says it inside the list so the state is
+			    still announced as busy. */}
+			{Keys.length === 0 && !Waiting ? (
+				<li class="MotionFold__Leaf">
+					<span class="MotionFold__LeafIndex" aria-hidden="true">
+						◎
+					</span>
+					<span class="MotionFold__Label MotionFold__Note">
+						{Empty}
 					</span>
 				</li>
 			) : null}

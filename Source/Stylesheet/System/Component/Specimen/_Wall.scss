@@ -1,0 +1,199 @@
+// The wall's stylesheet: twenty-two conditions, each on the artifact that owns it.
+//
+// Publishes:
+//   .gallery-wall              the wall, as one figure
+//   .gallery-wall__row         one condition: its head, its `when` line, its stage
+//   .gallery-wall__stage       the composition the condition is read in
+//   .gallery-wall__field       the control's arm: a label, a value, a reason
+//   .gallery-wall__print       the print arm's contract, beside the print action
+//   .gallery-wall__skeleton    the reduced arm's artifact, beside its contract
+//
+// ─── A STAGE, NOT A CARD ──────────────────────────────────────────────────
+// The wall prints live blocks, and a live block inside a card inside a band would
+// be three surfaces deep. Every stage is the creme field with one hairline above
+// it - the same ruled cell the sheet's states wall uses - so the artifact inside
+// keeps its own surface and the wall keeps the rhythm.
+//
+// ─── FOUR WIDTHS, AND THEY ARE THE ROW'S ──────────────────────────────────
+// `narrow` is a real 16rem column, `band` the plate's own measure, `wide` a wide
+// band, `card` a white box that stands in for a Jelly surface. The width is the
+// composition the condition is being read in, not a property of the block: a
+// state that is narrow because its container is narrow is exactly what the row
+// exists to print, and the block is unchanged.
+@use "../../Mixin" as *;
+
+.gallery-wall {
+	margin: 0;
+	min-inline-size: 0;
+}
+
+.gallery-wall__list {
+	display: grid;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.gallery-wall__row {
+	display: grid;
+	gap: 0.35rem;
+
+	padding-block: var(--space-group);
+
+	@include hairline(bottom);
+
+	&:first-child {
+		@include hairline(top);
+	}
+}
+
+.gallery-wall__row-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.gallery-wall__mark {
+	color: var(--Mark);
+}
+
+.gallery-wall__row-index {
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+.gallery-wall__condition {
+	color: var(--Foreground);
+	min-inline-size: 8rem;
+}
+
+.gallery-wall__component {
+	color: var(--MuteForeground);
+	margin-inline-start: auto;
+}
+
+.gallery-wall__when {
+	margin: 0;
+	max-inline-size: var(--Measure);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1.6;
+
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.gallery-wall__when-key {
+	margin-inline-end: 0.5ch;
+	color: var(--MuteForeground);
+	letter-spacing: var(--track-name);
+}
+
+.gallery-wall__stage {
+	display: grid;
+	gap: var(--space-reading);
+
+	margin-block-start: var(--space-tight);
+	min-inline-size: 0;
+
+	&[data-width="narrow"] {
+		max-inline-size: 16rem;
+	}
+
+	&[data-width="band"] {
+		max-inline-size: var(--MeasurePlate, 44rem);
+	}
+
+	&[data-width="wide"] {
+		max-inline-size: 60rem;
+	}
+
+	// A card is the site's one white information box: the state inside it takes
+	// the block's own `bare` arm, because a white box in a white card is a card
+	// in a card.
+	&[data-width="card"] {
+		max-inline-size: 32rem;
+		padding: var(--space-group);
+
+		background: var(--Card);
+
+		@include hairline;
+		@include flat;
+	}
+}
+
+.gallery-wall__field {
+	display: grid;
+	gap: 0.35rem;
+	min-inline-size: 0;
+}
+
+.gallery-wall__input {
+	inline-size: 100%;
+	padding: 0.45rem 0.5rem;
+
+	background: var(--Card);
+	color: var(--Foreground);
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	border-radius: var(--RadiusInput);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+
+	&:disabled,
+	&:read-only {
+		color: var(--MuteForeground);
+		background: color-mix(in srgb, var(--Mute) 18%, var(--Card));
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--Accent);
+		outline-offset: 4px;
+	}
+}
+
+.gallery-wall__hint {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: 1.55;
+
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.gallery-wall__print,
+.gallery-wall__skeleton {
+	display: grid;
+	gap: var(--space-reading);
+	min-inline-size: 0;
+}
+
+.gallery-wall__contract {
+	margin: 0;
+	max-inline-size: var(--Measure);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: 1.6;
+
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.gallery-wall__contract-key {
+	margin-inline-end: 0.5ch;
+	color: var(--Foreground);
+	letter-spacing: var(--track-name);
+}

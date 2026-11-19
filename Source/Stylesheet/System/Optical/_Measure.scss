@@ -10,10 +10,10 @@
 //      ledger in a margin) then agree only to within a few pixels - which is the
 //      worst of both: close enough to look aligned, far enough to look wrong.
 //      The ledger's key column, the surface state's key column and the
-//      cross-reference's route column are now `--optical-key-column` and
+//      cross-reference's route column are `--optical-key-column` and
 //      `--optical-route-column` (`Record/_Ledger.scss`,
 //      `Component/Surface/_Shell.scss`, `Detail/_See.scss`), and the archive's
-//      `12ch / 26ch` columns are the model they were moved onto.
+//      `12ch / 26ch` columns are the model they read.
 //
 //      The route column is the one of the three that is a FLOOR and not a width:
 //      its 19ch is the measure of the longest route the register prints, so a
@@ -40,9 +40,9 @@
 
 // ─── 1. THE ARCHIVE'S HEADER ON ITS ROWS' INSET ───────────────────────────
 // An archive's rows are anchors with `--space-tight` of inline padding, so their
-// markers and titles start 8px in from the block's edge. The header above them
-// started at 0, so `# ARCHIVE_01` and the markers it names were two different
-// columns - and the row rules, which belong to the `<li>`, start at 0 as well.
+// markers and titles start 8px in from the block's edge. A header that starts at
+// 0 puts `# ARCHIVE_01` and the markers it names in two different columns - and
+// the row rules, which belong to the `<li>`, start at 0 as well.
 // The header takes the rows' resting inset on its own leading edge only: its far
 // end stays on the block's edge, where the count and the rows' closing rule are.
 .record-archive__head {

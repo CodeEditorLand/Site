@@ -98,6 +98,26 @@
 
 // ─── THE NOTE ─────────────────────────────────────────────────────────────
 
+// A link inside a band's note. The note is the sheet's own register, so the
+// link is the note's ink at the site's one underline weight - the same rule
+// `.gallery-row__link` draws on the states gallery, which is where this note
+// now points.
+.specimen-page__link {
+	color: var(--Foreground);
+	text-decoration: underline;
+	text-decoration-thickness: 2px;
+	text-underline-offset: var(--optical-underline-offset);
+	text-decoration-color: color-mix(
+		in srgb,
+		var(--Foreground) 20%,
+		transparent
+	);
+
+	&:hover {
+		text-decoration-color: var(--Primary);
+	}
+}
+
 .specimen-page__note {
 	max-inline-size: var(--Measure);
 	margin: var(--space-group) 0 0;

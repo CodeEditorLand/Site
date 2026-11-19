@@ -26,6 +26,14 @@
  * because the site has transitions whose state nothing in the markup sets, and
  * pretending they have a name would be the one thing the motion layer forbids.
  *
+ * ─── THE REDUCED-MOTION PROMISE IS THE SEQUENCE'S OWN ─────────────────────
+ * `sequence.reduced` prints one line under the run: what the state change does
+ * for a reader who asked for less motion. Every rule in `System/Motion/` declares
+ * its end state unconditionally and gates only its interval, and a block that
+ * drew the intervals without that sentence could not state the promise the family
+ * makes - the reader who needs it is exactly the one who will never see the
+ * transition. Absent, no line prints, so every existing sequence is unchanged.
+ *
  * ─── NO SCRIPT ────────────────────────────────────────────────────────────
  * A sequence is printed. Nothing here is a stepper, nothing animates on scroll,
  * and the only motion the block ever shows is the motion it is describing - which
@@ -47,6 +55,7 @@ const {
 	nodes: Nodes,
 	edges: Edges,
 	source: Source,
+	reduced: Reduced,
 	empty: Empty,
 } = SequenceData;
 
@@ -136,6 +145,15 @@ Nodes.forEach((Node, Position) => {
 			</p>
 		</div>
 	)}
+
+	{Reduced ? (
+		<p class="MotionSequence__Reduced">
+			<span class="MotionSequence__ReducedKey">
+				AT REDUCED MOTION:
+			</span>{" "}
+			<span class="MotionSequence__ReducedValue">{Reduced}</span>
+		</p>
+	) : null}
 
 	<p class="MotionSequence__Source">SOURCE: {Source}</p>
 </div>

@@ -5,14 +5,13 @@ html {
 	/* clip (not hidden) so fixed/sticky children don't add horizontal scroll */
 	overflow-x: clip;
 	font-family: var(--FontSans);
-	/* THE PAGE'S OPTICAL SIZE. `font-size-adjust` was declared here as `0.48` -
-	   a guess at the fallback->mono swap - and 0.48 is not any face in the chain:
-	   IBM Plex Mono's x/em is 0.516, so a 0.48 request scales the PRIMARY face by
-	   0.48/0.516 = 0.93 and every documented size rendered 7 % small. The 13px
-	   floor was setting at 12.1px, and the XL tier at 66.9px instead of 72. It is
-	   now `--optical-x-height` (0.516, the face's own ratio), declared by the type
-	   layer in `System/Type/_Figure.scss` - one declaration site, and the layer
-	   that owns type owns the ratio. Nothing else about this rule changed. */
+	/* THE PAGE'S OPTICAL SIZE lives in the type layer, not here: `html` states
+	   no `font-size-adjust`, and `System/Type/_Figure.scss` reads
+	   `--optical-x-height` (0.516, IBM Plex Mono's own x/em) so one declaration
+	   site holds the ratio and the layer that owns type owns it. The number
+	   matters: a request that is not the face's own ratio rescales the primary
+	   face - 0.48 would scale it by 0.48/0.516 = 0.93, setting the 13px floor at
+	   12.1px and the XL tier at 66.9px instead of 72. */
 }
 
 /* Jelly UI: flat corners everywhere per Daylight Field Record */
@@ -184,7 +183,7 @@ jelly-badge:not(:defined) {
  *    document can speak.
  *
  * 2. WHAT IS NOT HERE, AND WHY. `--jelly-label` and `--jelly-ring` are `:root`
- *    defaults in `_Token.scss:986-987` (`var(--Foreground)` and `var(--Ring)`),
+ *    defaults in `_Token.scss:1091-1092` (`var(--Foreground)` and `var(--Ring)`),
  *    and `--Ring` and `--Accent` are the same ink (`#1e742a`), so a Jelly focus
  *    ring and an anchor focus ring are one colour by value and there is nothing
  *    to correct here. A fill is never sitewide: a bare element carries its own
@@ -208,7 +207,8 @@ jelly-badge:not(:defined) {
  * it is scoped to the transient Copied state.
  */
 
-/* Emoji and symbol fallback fonts for special characters like ★☆ */
+/* Form controls inherit the page's face, so no control renders in a browser
+   default while the text beside it is mono. */
 body,
 button,
 input,
@@ -217,7 +217,9 @@ select {
 	font-family: inherit;
 }
 
-/* Emoji font:apply ONLY to elements that render emoji/symbol characters. */
+/* Emoji and symbol fallback fonts, for an element that renders a symbol like
+   ★☆ - applied ONLY there: a fallback emoji face in the chain would otherwise
+   win over the mono face for every glyph. */
 .StarRatingSymbol {
 	font-family:
 		"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
@@ -247,7 +249,9 @@ main > astro-island:has(> :first-child) {
 	contain-intrinsic-block-size: auto;
 }
 
-/* CLS prevention: Header island - reserve the exact header bar height (h-14 = 3.5rem) */
+/* CLS prevention: the Header and Footer islands are blocks before they hydrate,
+   so each reserves its own flow position instead of collapsing to nothing. No
+   height is reserved here - the bar's height belongs to the component. */
 main ~ astro-island,
 body > astro-island {
 	display: block;
@@ -266,12 +270,15 @@ body > astro-island {
 
 /* ─── content-visibility: skip layout cost for off-screen sections ─── */
 
-/* These four ids are the homepage's bands and nothing else. A documentation
-   page has none of them - its content is one `.doc-prose` card - so this rule
-   is inert there. The document's own blocks are skipped by their own rule,
-   beside them in `Component/Doc/_Article.scss`, because a document needs the
-   same treatment at a different granularity: per block, with an estimate in the
-   hundreds of pixels rather than the bands' 800. */
+/* These four ids are the homepage's bands: `pages/index.astro`'s own header
+   comment names them (#features, #pricing, #testimonials, #download), and no
+   element in the tree prints one today - so the rule is declared and matches
+   nothing until a band carries its id. A documentation page has none of them -
+   its content is one `jelly-card.doc-prose` - so the rule is inert there in any
+   case. The document's own blocks are skipped by their own rule, beside them in
+   `Component/Doc/_Article.scss`, because a document needs the same treatment at
+   a different granularity: per block, with an estimate in the hundreds of
+   pixels rather than the bands' 800. */
 #features,
 #pricing,
 #testimonials,
@@ -315,8 +322,8 @@ body > astro-island {
 }
 
 /* Shared "// Eyebrow" + <h2> + subtitle heading block. A page-level heading
-   block, so its closing interval is the reserved emptiness (`--space-blank`),
-   not a 64px literal that was on no scale. */
+   block, so its closing interval is the reserved emptiness (`--space-blank`,
+   52px): a 64px literal is on neither documented scale. */
 .mx-auto.mb-10.max-w-2xl.text-center {
 	margin-bottom: var(--space-blank);
 }
@@ -324,10 +331,11 @@ body > astro-island {
 /* Text Selection Highlighting.
    The selection is the reader's own marking, not the site's authentication, so
    it is ink at 14 % - the same wash a hover uses - and the text stays the text.
-   It was `--Accent` on `--Card` (green block, white words), which made quoting
-   a sentence the loudest green on the page. `Detail/_Ink.scss` states the value
-   and refines it for an inverted action; this is the base declaration so the
-   rule holds even if the detail layer is ever moved. */
+   The accent is not a selection ink: `--Accent` on `--Card` is a green block
+   with white words, which makes quoting a sentence the loudest green on the
+   page. `Detail/_Ink.scss` states the value and refines it for an inverted
+   action; this is the base declaration so the rule holds even if the detail
+   layer is ever moved. */
 *::selection,
 ::selection {
 	background: color-mix(in srgb, var(--Foreground) 14%, transparent);
@@ -403,7 +411,7 @@ html {
    `StaccatoLogo`, `StaccatoSocial`, `NavLink`, `StaccatoCard`, `Footer`,
    `HeaderRecord` and `[aria-label]` are still excluded. */
 /* ONE LINE PER LINK - which line belongs to which role. Prose and route links
-   wear this underline (`--Divider`, 1px, 0.22em). Nav labels never wear it:
+   wear this underline (`--Divider`, 1px, 0.3em). Nav labels never wear it:
    they wear the rail's wash and the 2px `--Accent` bar when current, or the
    2px/20% resting underline in the header and the frame rail. Buttons and Jelly
    actions carry no resting text underline. Block links - a card, a tile, a row

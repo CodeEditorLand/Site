@@ -16,174 +16,49 @@
  *   - NO `<meta name="viewport">`: the frame writes it (`Base.astro`), and a
  *     second copy in the head is the duplicate this module used to ship.
  *
+ * ─── THIS FILE RENDERS; `Tags.ts` DECIDES ────────────────────────────────
+ * The list of tags is `TagsOf()`'s, and it is data: the specimen sheet prints it
+ * as a register, so the head's contract is inspectable without a browser. This
+ * file's whole job is to turn that list into elements - and it is why the head
+ * can now express two absences it could not before: no card image (the
+ * `og:image` family is omitted rather than pointed at nothing) and no canonical
+ * target (no `href=""`).
+ *
  * The two `og:locale:alternate` rows are the languages the site publishes, not
  * duplicates of `og:locale` (which is the page's own language).
  */
-import { NormalizeTitle } from "./Title";
+import { TagsOf, type HeadFacts } from "./Tags.js";
 
-interface MetaTagsProperty {
-	title: string;
+export type MetaTagsProperty = HeadFacts;
 
-	description: string;
-
-	image?: string;
-
-	url?: string;
-
-	type?: "website" | "article";
-
-	lang?: string;
-
-	siteName?: string;
-
-	publishedTime?: string;
-
-	author?: string;
-
-	noIndex?: boolean;
-}
-
-export default ({
-	title,
-	description,
-	image = "/Favicon/og-image.png",
-	url = "",
-	type = "website",
-	lang = "en",
-	siteName = "Code Editor Land",
-	publishedTime,
-	author,
-	noIndex = false,
-}: MetaTagsProperty) => {
-	/**
-	 * One title pattern for the site - see `Social/Title.ts`.
-	 *
-	 * The module owns the rule (strip a suffix the page appended in any
-	 * separator, then print `| Code Editor Land`) and is idempotent, so a page
-	 * that already built its own suffix keeps exactly one.
-	 */
-	const SafeTitle = NormalizeTitle(title || siteName, siteName);
-
-	const SafeDescription =
-		description ||
-		"Rust and Tauri editor stack with VS Code API compatibility in progress.";
-
-	// `url` is the CANONICAL url the frame resolved for this route - absolute,
-	// on the configured site origin (`Layout/Base.astro:89`). It feeds the
-	// canonical link, `og:url`, `twitter:url` and the WebSite node below, so the
-	// four cannot disagree.
-	const SiteURL = url;
-
-	// Origin (scheme + host) for absolutising relative asset paths.
-	const SiteOrigin = SiteURL.startsWith("http")
-		? new URL(SiteURL).origin
-		: "";
-
-	const JSONLD: any = {
-		"@context": "https://schema.org",
-
-		"@type": "WebSite",
-
-		name: siteName,
-
-		url: SiteURL,
-
-		description: SafeDescription,
-	};
-
-	if (type === "article" && publishedTime) {
-		JSONLD.datePublished = publishedTime;
-	}
-
-	JSONLD.author = author
-		? { "@type": "Organization", name: author }
-		: [
-				{
-					"@type": "Person",
-
-					name: "Nikola R. Hristov",
-
-					url: "https://github.com/NikolaRHristov",
-				},
-
-				{
-					"@type": "Organization",
-
-					name: "Code Editor Land",
-
-					url: SiteOrigin,
-				},
-
-				{
-					"@type": "Organization",
-
-					name: "PlayForm",
-
-					url: "https://PlayForm.Cloud",
-				},
-			];
+export default (Facts: MetaTagsProperty) => {
+	const Tags = TagsOf(Facts);
 
 	return (
 		<>
-			<title>{SafeTitle}</title>
-			<meta name="description" content={SafeDescription} />
-			<meta
-				name="author"
-				content="Nikola R. Hristov, Code Editor Land, PlayForm"
-			/>
-			<meta
-				name="robots"
-				content={noIndex ? "noindex, nofollow" : "index, follow"}
-			/>
-			<link rel="canonical" href={SiteURL} />
-
-			<meta property="og:type" content={type} />
-			<meta property="og:url" content={SiteURL} />
-			<meta property="og:title" content={SafeTitle} />
-			<meta property="og:description" content={SafeDescription} />
-			<meta
-				property="og:image"
-				content={
-					image.startsWith("http") ? image : `${SiteOrigin}${image}`
-				}
-			/>
-			<meta property="og:image:width" content="1200" />
-			<meta property="og:image:height" content="675" />
-			<meta
-				property="og:image:type"
-				content={image.endsWith(".svg") ? "image/svg+xml" : "image/png"}
-			/>
-			<meta property="og:site_name" content={siteName} />
-			<meta property="og:locale" content={lang} />
-
-			<meta name="twitter:card" content="summary_large_image" />
-			<meta name="twitter:url" content={SiteURL} />
-			<meta name="twitter:title" content={SafeTitle} />
-			<meta name="twitter:description" content={SafeDescription} />
-			<meta
-				name="twitter:image"
-				content={
-					image.startsWith("http") ? image : `${SiteOrigin}${image}`
-				}
-			/>
-			<meta name="twitter:site" content="@CodeEditorLand" />
-			<meta name="twitter:creator" content="@CodeEditorLand" />
-
-			{/*
-				No `<meta name="viewport">` here. `Layout/Base.astro` writes it once,
-				before this block; a second copy is a duplicate the validator flags
-				and the browser ignores.
-			*/}
-			<meta property="og:locale:alternate" content="bg" />
-			<meta property="og:locale:alternate" content="de" />
-			<meta name="format-detection" content="telephone=no" />
-
-			<script
-				type="application/ld+json"
-				dangerouslySetInnerHTML={{
-					__html: JSON.stringify(JSONLD),
-				}}
-			/>
+			{Tags.map((Tag, Index) =>
+				Tag.kind === "title" ? (
+					<title key={`title:${Index}`}>{Tag.value}</title>
+				) : Tag.kind === "link" ? (
+					<link
+						key={`link:${Tag.key}:${Index}`}
+						rel={Tag.key}
+						href={Tag.value}
+					/>
+				) : Tag.kind === "jsonld" ? (
+					<script
+						key={`jsonld:${Index}`}
+						type={Tag.key}
+						dangerouslySetInnerHTML={{ __html: Tag.value }}
+					/>
+				) : (
+					<meta
+						key={`meta:${Tag.attribute}:${Tag.key}:${Index}`}
+						{...{ [Tag.attribute ?? "name"]: Tag.key }}
+						content={Tag.value}
+					/>
+				),
+			)}
 		</>
 	);
 };

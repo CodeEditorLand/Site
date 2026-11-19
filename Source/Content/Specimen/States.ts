@@ -282,6 +282,21 @@ export const States = (Context: StateContext): readonly StateCell[] => [
 ];
 
 /**
+ * How many conditions the band prints.
+ *
+ * Derived rather than typed: `States()` emits one cell per condition and the
+ * context only fills their values, so the array's length is the condition count
+ * whatever the page measured. The gallery index reads this figure, which is why
+ * a tenth condition added to the band moves the index in the same edit.
+ */
+export const StateCount = States({
+	LongestTitle: "",
+	AsOf: "",
+	Age: "",
+	RouteCount: 0,
+}).length;
+
+/**
  * The vocabulary as the band's legend: one chip per word, in the register's
  * order.
  *

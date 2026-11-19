@@ -1,0 +1,123 @@
+---
+/**
+ * SpecimenFamilies - the sheet's own index: a nav of the bands, with the figure
+ * each one counts and the sentence that says what it argues.
+ *
+ * ─── GRAMMAR ─────────────────────────────────────────────────────────────
+ * INFORMATION TYPE  a set of like objects, read as a set and used as a door: the
+ *                   bands of one sheet, each a row that names the band, states
+ *                   what it argues, and carries the figure its matrix counted.
+ *                   Not a contact sheet (which prints the parts of a document),
+ *                   not a ledger (which states facts about one object), and not
+ *                   a contents fold (which is navigation inside a page and can
+ *                   be closed).
+ * RANK              set.
+ * SLOT CONTRACT     families[] -> index, label, href, figure, argues, read, group
+ *                   label      -> the register line's word, `GALLERY`
+ *                   count      -> printed after the label
+ *                   empty      -> what the index says with no band
+ * MAY HOLD          one row per band. A mark, a kicker, two sentences, a figure.
+ * MAY NOT HOLD      a cell of a matrix, a part, a control. The index states what
+ *                   a band argues; the band proves it.
+ *
+ * ─── WHY IT IS A NAV AND NOT A LIST OF LINKS ─────────────────────────────
+ * It is the sheet's only table of contents, and a reader uses it twice: on the
+ * way in, to see the shape of the document before reading it, and on the way
+ * back, to reach the family they wanted. So each row is an anchor over the whole
+ * row rather than a label with a separate link - one target, one name, and the
+ * `argues` line inside the anchor's own accessible name.
+ *
+ * ─── THE FIGURE IS THE FAMILY'S, NOT THE INDEX'S ─────────────────────────
+ * `figure` is composed by `Content/Specimen/Families.ts` from the family module's
+ * own exports, so the index cannot claim a count the matrix beside it does not
+ * print. That is the same rule `/THE REGISTER` follows at the foot of the page.
+ *
+ * ─── THE GROUP RULE IS THE ONE STRUCTURE ─────────────────────────────────
+ * Three sets - the sheet's own apparatus, the ten families, and the stock - and
+ * the index prints a heavier rule where one becomes the next. A reader scanning
+ * the rows should see where the families begin without reading a word of them.
+ *
+ * No script and no hydration: an index is printed.
+ */
+import type { Family } from "../../Content/Specimen/Families.js";
+
+interface Props {
+	/** The bands, in the order they are read. The block sorts nothing. */
+	families: readonly Family[];
+
+	/** The register line's word: `GALLERY`. */
+	label: string;
+
+	/** The register line's count, printed after the label. */
+	count: number | string;
+
+	/**
+	 * What the index says when it has no band. Required: an index with no row is
+	 * a page that failed to load, and a gallery whose subject is legibility has
+	 * to be legible about its own absence.
+	 */
+	empty: string;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const { families, label, count, empty, class: ClassName } = Astro.props;
+
+/** Whether a row opens a new set: the matrix prints a heavier rule there. */
+const OpensGroup = (Index: number): boolean =>
+	Index > 0 && families[Index]!.group !== families[Index - 1]!.group;
+---
+
+<nav
+	class:list={["specimen-families", ClassName]}
+	aria-label={`${label}: ${families.length} bands`}
+>
+	<p class="specimen-families__register">
+		<span class="specimen-families__register-mark" aria-hidden="true">#</span>
+		<span class="specimen-families__register-word">{label}</span>
+		<span class="specimen-families__register-sep" aria-hidden="true">
+			{"\u2001"}
+		</span>
+		<span class="specimen-families__register-count">{count}</span>
+	</p>
+
+	{families.length === 0 ? (
+		<p class="specimen-families__empty">{empty}</p>
+	) : (
+		<ol class="specimen-families__rows">
+			{families.map((Row, Index) => (
+				<li
+					class:list={[
+						"specimen-families__row",
+						OpensGroup(Index) && "specimen-families__row--group",
+					]}
+					data-group={Row.group}
+				>
+					<a class="specimen-families__link" href={Row.href}>
+						<span class="specimen-families__mark">
+							<span aria-hidden="true">#</span>
+							{Row.index}
+						</span>
+
+						<span class="specimen-families__body">
+							<span class="specimen-families__label">
+								{Row.label}
+							</span>
+							<span class="specimen-families__argues">
+								{Row.argues}
+							</span>
+							<span class="specimen-families__read">
+								{Row.read}
+							</span>
+						</span>
+
+						<span class="specimen-families__figure">
+							{Row.figure}
+						</span>
+					</a>
+				</li>
+			))}
+		</ol>
+	)}
+</nav>

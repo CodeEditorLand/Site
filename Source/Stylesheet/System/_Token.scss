@@ -66,25 +66,25 @@
 
 		   A mark is not content. It says something ABOUT the line it opens -
 		   that the line is a register, a route, a consequence, a destination -
-		   so it takes the muted ink and never the accent. Before this token
-		   the site's `#` was green on the header, the footer, the rail, the
-		   shell head, every pane, every plate, every record head and every
-		   register line: twenty-seven marks, and the accent on a page meant
-		   "a mark is here" long before it meant "this is where you are".
-		   Muted is also the older decision - `Detail/_Hang.scss` set a list
-		   marker to the muted ink because a marker is a label, not the item.
+		   so it takes the muted ink and never the accent. Green on a mark is
+		   how a page says "a mark is here" before it has said "this is where
+		   you are": the `#` opens the header, the footer, the rail, the shell
+		   head, every pane, every plate, every record head and every register
+		   line, and the accent spent on those twenty-seven sites is the accent
+		   the reader's own position no longer gets.
+		   The same reasoning is already in `Detail/_Hang.scss`, which sets a
+		   list marker to the muted ink because a marker is a label, not the
+		   item.
 
 		   One name, so the twenty-seven sites read one value and the next card
 		   that wants marks in ink changes a line instead of twenty-seven. */
 		--Mark: var(--MuteForeground);
 
 		/* PAPER CONTOUR → the faint white line of the topographical texture
-		   behind the field (`Component/_Background.scss`, `#TopoMap`). It was
-		   the file's one literal colour - `rgba(255, 255, 255, 0.06)` - which is
-		   a tint nobody could find when the texture needed adjusting, and the
-		   one tint on the site that was not the paper's own. It is the card's
-		   white at 6 %, so the contour is drawn in the same ink the inserts are
-		   printed on. */
+		   behind the field (`Component/_Background.scss`, `#TopoMap`). It is the
+		   card's white at 6 %, not a literal: the contour is drawn in the same
+		   ink the inserts are printed on, and a tint that is a token is a tint
+		   the next card can find when the texture needs adjusting. */
 		--PaperContour: color-mix(in srgb, var(--Card) 6%, transparent);
 
 		--Destruct: #dc2626;
@@ -160,14 +160,12 @@
 		 on it - at the line or under it - and each of them takes -800
 		 (5.8-6.4:1). Everything else keeps -700.
 
-		 WHAT WAS HERE. Twenty-nine of these tokens carried a DARK-THEME
-		 light shade (#fca5a5, #93c5fd, #4ade80, #fde047, #d4d4d8 ...) as
-		 the ink for a label on a light fill: 1.26-2.64:1 on white and
-		 1.26-2.06:1 on the tint it was set on. They were the palette's one
-		 real drift - not a shade off, a whole theme off - and every icon
-		 and keyword that read one of them was printing a label nobody
-		 could read. The values below are the same hue family, one ramp
-		 step down, measured.
+		 WHAT A LABEL INK IS NOT. A dark-theme light shade (#fca5a5, #93c5fd,
+		 #4ade80, #fde047, #d4d4d8 ...) is not an ink for a label on a light
+		 fill: it measures 1.26-2.64:1 on white and 1.26-2.06:1 on the tint it
+		 is set on. That is not a shade off, it is a whole theme off, and every
+		 icon and keyword that reads one prints a label nobody can read. The
+		 values below are the same hue family, one ramp step down, measured.
 
 		 The four spines are the reference and were already right:
 		 #15803d / #1d4ed8 / #c2410c / #6d28d9, 5.0-7.1:1 on white.
@@ -245,7 +243,7 @@
 
 		/* ─────────────────────────────────────────────────────────────
 		 FRAMEWORK / EXTENSION COLORS
-		 Each entry: Primary | Mute (18% on black) | Surface (8% on black) | Fore
+		 Each entry: Primary | Mute (18% on white) | Surface (8% on white) | Fore
 		 ───────────────────────────────────────────────────────────── */
 		--ExtensionRust: #f87171;
 
@@ -891,8 +889,8 @@
 
 		/* ─────────────────────────────────────────────────────────────
 		 TYPOGRAPHY - IBM Plex Mono / JetBrains Mono throughout.
-		 Single mono family. All uppercase. Four scales only.
-		 No sans-serif display face.
+		 Single mono family. Labels uppercase and tracked, prose set as
+		 prose. Three scales only. No sans-serif display face.
 		 ───────────────────────────────────────────────────────────── */
 		--FontSans:
 			"IBM Plex Mono", "JetBrains Mono", "Fira Code", ui-monospace,
@@ -902,11 +900,11 @@
 			"IBM Plex Mono", "JetBrains Mono", "Fira Code", ui-monospace,
 			"SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
 
-		/* The documented tiers - three usable after the 2026-09-11 no-XS
-		   decision (DesignSystem.md §5). Nothing on the site renders below
-		   13px, so no --TypeScaleXS exists. These are HEAD's own tokens
-		   (Base.css) and stay the source of the two large tiers: the role
-		   layer below references them, so a tier cannot drift from a role. */
+		/* The documented tiers, and there are three: the no-XS decision
+		   (`DesignSystem.md` §5) leaves S, L and XL, and nothing on the site
+		   renders below 13px, so no `--TypeScaleXS` exists. These are the
+		   source of the two large tiers - the role layer below references
+		   them, so a tier cannot drift from a role. */
 		--TypeScaleS: 0.875rem; /* 14px - the S tier, 13-18px */
 		--TypeScaleL: clamp(2rem, 5vw, 3.25rem); /* 32-52px */
 		--TypeScaleXL: clamp(3rem, 8vw, 4.5rem); /* 48-72px */
@@ -937,9 +935,9 @@
 		--land-shim-coverage-badge-text: #ffffff;
 
 		/* ─────────────────────────────────────────────────────────────
-		 SEMANTIC STAMP INKS (C17) - dark -600/-700 shades for labels
-		 on light surfaces, for hues whose *Fore token is a dark-theme
-		 light color. Used by Source/Function/Theme/SemanticColor.ts.
+		 SEMANTIC STAMP INKS (C17) - the -700 and -800 shades, for a label
+		 on a light surface whose hue's *Fore token is not dark enough to
+		 carry it. Read by Source/Function/Theme/SemanticColor.ts.
 		 All >= 4.5:1 on white.
 		 ───────────────────────────────────────────────────────────── */
 		--SemanticRed: #b91c1c; /* rust / rpm ink */
@@ -1007,8 +1005,9 @@
 	--type-caption-line: 1.5;
 
 	/* The 13px floor: /LABEL kickers, # markers, table heads. Metadata
-	   line-height is 1.1-1.25 (DesignSystem.md §5). This role rendered at 11px
-	   before the restatement, which the no-XS decision forbids. */
+	   line-height is 1.1-1.25 (DesignSystem.md §5). 11px is not a smaller step
+	   of this role: the no-XS decision removed it, and nothing renders below
+	   13px. */
 	--type-meta: 0.8125rem;
 	--type-meta-line: 1.15;
 
@@ -1025,11 +1024,11 @@
 	     row   +0.08em  a label ACROSS a row (nav, chip, a control's caption)
 	     rule  +0.18em  a label ABOVE a region (`/KICKER`, the action)
 
-	   Beside -> across -> above is 0.04 -> 0.08 -> 0.18. Before this layer the
-	   tree carried twenty distinct letter-spacing values across sixty partials
-	   - 0.025, 0.05, 0.06, 0.1, 0.12, 0.14, 0.15, 0.2, 0.25 and their
-	   negatives - because every card tuned the same three decisions by eye. A
-	   partial reads a register; it does not write a sixth value. */
+	   Beside -> across -> above is 0.04 -> 0.08 -> 0.18. A partial reads a
+	   register; it does not write a sixth value. Tuning letter-spacing by eye is
+	   how one tree reaches twenty values for three decisions - 0.025, 0.05,
+	   0.06, 0.1, 0.12, 0.14, 0.15, 0.2, 0.25 and their negatives - and a sheet
+	   with twenty of them has no tracking system at all. */
 	--track-join: -0.02em;
 	--track-set: 0;
 	--track-name: 0.04em;
@@ -1045,8 +1044,8 @@
 	--space-blank: 3.25rem; /* 52px - the card's mandatory blank band */
 	--space-chapter: 5.25rem; /* 84px - a page-level chapter boundary only */
 
-	/* GRID AND MEASURE - the frame is HEAD's max-w-6xl (72rem) and the gutter is
-	   HEAD's own clamp; a prose surface opens at 62ch.
+	/* GRID AND MEASURE - the frame is 6XL (72rem) and the gutter is the site's
+	   own clamp; a prose surface opens at 62ch (`--MeasureOpening`).
 
 	   THE PAPER IS FLUID, AND IT IS ONE VALUE. `--Measure` is the reading plate.
 	   It opens at 72ch - the widest a line can be before the eye loses its
@@ -1056,10 +1055,11 @@
 	   in width at a threshold reflows every paragraph on the page at once, and a
 	   reader who resizes a window sees the document change its mind.
 
-	   40ch + 25vw is 72ch (691px) at a 1024px window, 77ch (744px) at 1440 and
-	   88ch (845px) from ~1808 up. Every reading surface reads THIS value - the
-	   doc article, the blog article, the legal set, the trust pages - so the
-	   plate is one decision and not five. */
+	   THE ARITHMETIC. The 25vw term has to add 48ch before the ceiling binds: at
+	   1024px the floor (72ch, 691px) is what renders, at 1440 the preferred is
+	   77ch (744px), and the ceiling (88ch, 845px) holds from ~1843 up. Every
+	   reading surface reads THIS value - the doc article, the blog article, the
+	   legal set, the trust pages - so the plate is one decision and not five. */
 	--Gutter: clamp(1rem, 4vw, 2.5rem);
 	--Measure: clamp(72ch, 40ch + 25vw, 88ch);
 	--MeasureOpening: 62ch;
@@ -1205,9 +1205,9 @@
 	 * 19ch: the next whole character, which is what makes it a measure instead of
 	 * a fit. It is a floor on the route and never a width - a longer route grows
 	 * and its own reason follows it, and every shorter one leaves its reason on
-	 * the same edge as every other row's. 24ch was 5.9ch over that content and
-	 * took those characters from the reason, which then printed one word per line
-	 * (`Detail/_See.scss` carries the arithmetic and the query). */
+	 * the same edge as every other row's. 24ch is 5.9ch over that content and
+	 * takes those characters from the reason, which then prints one word per
+	 * line (`Detail/_See.scss` carries the arithmetic and the query). */
 	--optical-route-column: 19ch;
 }
 

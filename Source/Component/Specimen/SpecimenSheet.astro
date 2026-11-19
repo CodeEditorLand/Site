@@ -74,7 +74,7 @@ const Disposition = {
 
 <section
 	class:list={["specimen-sheet", ClassName]}
-	aria-label={`${label}: ${count} parts`}
+	aria-label={`${label}: ${rows.length} parts`}
 >
 	<p class="specimen-sheet__register">
 		<span class="specimen-sheet__register-mark" aria-hidden="true">
@@ -125,7 +125,11 @@ const Disposition = {
 						class="specimen-sheet__cell"
 						data-disposition={Row.disposition}
 					>
-						{Row.plate === undefined ? (
+						{/* The link follows the disposition, not the reference: a
+						    part the sheet states as absent must not print a live
+						    link to a plate that does not exist, even if the parts
+						    table happens to carry a plate path for it. */}
+						{Row.disposition !== "printed" || Row.plate === undefined ? (
 							<span class="specimen-sheet__cell-inner">
 								{Body}
 							</span>
