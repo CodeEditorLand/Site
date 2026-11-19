@@ -29,7 +29,7 @@
  * shows: a contents rail that can collapse, a folio that survives a long source
  * path, an index card with a missing description."
  *
- * The six compositions are columns of the `composition` group; the three named
+ * The seven compositions are columns of the `composition` group; the three named
  * improvements are entries in `Improvements`, each with the cell behind it.
  *
  * ─── NOTHING HERE IS A TYPED FIGURE ───────────────────────────────────────

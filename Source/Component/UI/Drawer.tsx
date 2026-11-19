@@ -33,10 +33,10 @@ import { cn } from "./Utility";
  *
  * The kit's handle is a `h-2 w-[100px]` muted bar, which reads as a mobile
  * affordance pasted onto a paper document. The site's grip is drawn by
- * `_Slip.scss` as a ruled cap in the row rhythm - a hairline the width of the
- * register line, on the card fill - so it says *this edge can be pulled* in the
- * same material as the rule under the head. It is `aria-hidden`: the drag is an
- * extra door, never the only one, and Escape and the close control are the
+ * `_Slip.scss` as a ruled cap in the row rhythm - 2rem of `--Divider`, 3px tall,
+ * centred on the slip's top edge, radius 0 - so it says *this edge can be pulled*
+ * in the same material as the rule under the head. It is `aria-hidden`: the drag
+ * is an extra door, never the only one, and Escape and the close control are the
  * stated ones.
  *
  * ─── THE DRAWER'S OWN ADVERSE STATE ───────────────────────────────────────

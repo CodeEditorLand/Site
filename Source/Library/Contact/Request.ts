@@ -3,10 +3,11 @@
 /**
  * Income code registry.
  *
- * Each incoming contact request is tagged with a 5-letter code
- * (old telephone exchange style - every letter unambiguous when
- * spoken aloud). The code appears in the email subject so the
- * receiving team can filter and prioritise at a glance.
+ * Each incoming contact request is tagged with a 5-letter code (old telephone
+ * exchange style - a spoken word rather than a number). The code appears in
+ * the email subject so the receiving team can filter and prioritise at a
+ * glance. The random instance ID beside it (`GeneratePairId`) is the part
+ * drawn from an unambiguous alphabet.
  *
  * Format in email subject:  [REACH-3FPQ9] Data Access & Export Request - user@example.com
  */

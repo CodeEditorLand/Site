@@ -99,9 +99,10 @@ function Calendar({
 			day_selected:
 				"bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
 
-			// The today mark is a 2px accent square at the cell's leading edge, which is
-			// the site's current-position marker; the class carries it so the stylesheet
-			// can draw the mark rather than a fill.
+			// The today mark is the site's current-position marker: `.CalendarDay--today`
+			// draws a 2px accent square at the cell's leading edge as an inset rule. The
+			// class also fills the cell with the accent and sets its label to
+			// `--AccentForeground`, so the day is ruled and filled - the rule is the mark.
 			day_today: "CalendarDay--today bg-accent text-accent-foreground",
 
 			day_outside:
@@ -153,8 +154,10 @@ interface CalendarPlateProps {
  * CalendarPlate - the month as a plate, with its register and its adverse arms.
  *
  * The month always prints: which days a month has is known before what happened on
- * them is. What the state changes is the sentence under the register - and an empty
- * month is a fact about the period, not a failure of the page.
+ * them is. What the state changes is the note beside the register - `◎ NO MARK` for
+ * an empty month, `◎ UNAVAILABLE` for one whose facts have not arrived - and the
+ * `note` prop prints the sentence at the plate's foot. An empty month is a fact
+ * about the period, not a failure of the page.
  */
 function CalendarPlate({
 	label,

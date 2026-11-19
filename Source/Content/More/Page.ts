@@ -5,10 +5,9 @@
  * ─── WHY THE ONWARD REGISTER IS ONE OBJECT ────────────────────────────────
  * Every one of these pages ends by pointing somewhere, and the 404 begins by
  * doing it. That is one information type - *you are here, and here is where you
- * probably meant to be* - and it was four different link lists before this
- * module: the 404's two sentences of apology, the manual's pager, the footer's
- * routes row, and nothing at all on a page that had just told a reader their
- * address was wrong.
+ * probably meant to be* - so it is one register and one block, not four link
+ * lists: the 404's sentences, the manual's pager, the footer's routes row and a
+ * page that had just told a reader their address was wrong.
  *
  * A routing register is not an archive. An archive files records by their own
  * names; a register of destinations files them by the *intent* the reader
@@ -18,11 +17,10 @@
  * own block rather than a fourth use of `RecordArchive`.
  *
  * ─── EVERY ROW IS TRUE ────────────────────────────────────────────────────
- * No row points at a page that does not answer the intent beside it. The three
- * new surfaces are here because they are new and nothing links to them yet; the
- * rest are the pages a reader who has just been told "no record at this address"
- * actually needs. A routing register that listed everything would be a sitemap,
- * and the site already has one.
+ * No row points at a page that does not answer the intent beside it: each one is
+ * a page a reader who has just been told "no record at this address" actually
+ * needs. A routing register that listed everything would be a sitemap, and the
+ * site already has one.
  *
  * The separator is U+2001, the site's only one.
  */
@@ -50,7 +48,7 @@ export interface OnwardRow {
 
 /** The register's copy, per page. */
 export interface OnwardCopy {
-	/** `# ONWARD / 05` - the register head. */
+	/** The register head, `ONWARD / 06`: the word, and the row count the page supplies. */
 	readonly index: string;
 
 	/** The `/LABEL` after the index: `/THE REST OF THE DOCUMENT`. */
@@ -70,9 +68,9 @@ export interface OnwardCopy {
  * The 404's register.
  *
  * Six intents, ordered by how likely a reader who typed a wrong address is to
- * have meant them. The first is the index, because the site's own error copy
- * already says `/Contents` lists every route the build emits - and until this
- * card the page said that and did not link it.
+ * have meant them. The first is the index, because the site's own error copy says
+ * `/Contents` lists every route the build emits - and a page that says so must
+ * link it.
  */
 export const NotFoundOnward: readonly OnwardRow[] = [
 	{

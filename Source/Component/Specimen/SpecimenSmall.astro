@@ -6,16 +6,17 @@
  * Almost nothing in this family ships JavaScript. A credential frame is a
  * `<div>` with a grid, a report is a `<dl>`, a directory is a grid of anchors, a
  * clause is an `h2`, a rail is an `<ol>`, a workspace is a two-column grid, a
- * board is four shelves, a lexicon is a run of `<article>`s. The two islands the
- * family has - the contact form and the auth gate - are mounted by the routes
- * that need them, and the sheet does not mount either: the workspace takes a
- * `form` slot, so the plate prints the composition without hydrating a real
- * Auth0 form.
+ * board is four shelves, a lexicon is a run of `<article>`s. The family's one
+ * island is the contact form - `DynamicContactForm`, mounted by
+ * `ContactWorkspace` on the routes that need it - and the sheet does not mount
+ * it: the workspace takes a `form` slot, so the plate prints the composition
+ * without hydrating a real Auth0 form.
  *
  * `AuthReport` is a React component and is rendered SERVER-SIDE here, with no
  * `client:*` directive: it has no state, no handler and no hook, so the sheet
  * gets its markup and the page ships nothing. That is the same argument the
- * dashboard's directory won when it stopped being an island.
+ * dashboard's directory makes: markup that is the same on every request has
+ * nothing to hydrate.
  *
  * ─── THE RENDERER DECIDES NOTHING ────────────────────────────────────────
  * A row states what it is, which part it exercises, when that state is right and

@@ -7,12 +7,12 @@
  * `/Specimen` prints ten state matrices, one per family, and each is the right
  * instrument for its own subject: the frame's twenty-two columns are not the
  * ledger's twenty-four, and a matrix that answered both would be a matrix of
- * two questions. What no page could do until this one is answer the question a
+ * two questions. What no other page can do is answer the question a
  * reader actually arrives with - "is this component finished?" - because the
  * answer lives in ten tables, under ten heads, in ten different column orders,
  * with ten different question sets.
  *
- * So this module does not write a sixth opinion about the components. It
+ * So this module does not write an eleventh opinion about the components. It
  * IMPORTS the ten families, normalises their column keys onto one spine of
  * twenty-two conditions, and reads every cell through the family's own
  * `MatrixCell`. A cell on this page and a cell on the family's matrix are the
@@ -34,13 +34,13 @@
  * per family, so the term sheet ends in a work list rather than an opinion.
  *
  * ─── THE SPINE, AND WHY IT IS TWENTY-TWO ──────────────────────────────────
- * The ten families' columns fold into seventy-five distinct keys. Twenty-two of
- * them are the same condition asked in different words - `oneitem` is `one`,
- * `longtext` is `long`, `card` is `incard`, `reduced` is `reducedmotion` - and
- * the synonym table below is the whole of that fold, printed so a reader can
- * check it rather than trust it.
+ * The ten families' columns fold into seventy-five distinct keys. Thirty of
+ * them land on the spine - twenty-one by name and nine through the synonym
+ * table, where `oneitem` is `one`, `longtext` is `long`, `card` is `incard`,
+ * `reducedmotion` is `reduced` - and the synonym table below is the whole of
+ * that fold, printed so a reader can check it rather than trust it.
  *
- * The remaining fifty-three are a family's OWN conditions: the frame's two
+ * The remaining forty-five are a family's OWN conditions: the frame's two
  * rails, the reading family's ninety sections, the small surfaces' seven ways a
  * reader arrives locked out. They stay where they are - a condition only one
  * family asks is that family's subject, not a column of the document - and the
@@ -416,7 +416,7 @@ export interface Condition {
 	/**
 	 * The §1.5 status word the condition is stated in, where it has one.
 	 *
-	 * Eight of the ten adverse conditions answer to the vocabulary; the twelve
+	 * All ten adverse conditions answer to the vocabulary; the twelve
 	 * shapes and contexts have none, because a column width is not a status and
 	 * a block that invented a word for one would be a ninth word in a register
 	 * that is closed at eight. `ACTIVE` and `VERIFIED` are not used by any
@@ -1074,7 +1074,7 @@ export interface ConditionRow {
  * every family contributes.
  *
  * This is the view no family matrix can print - a family knows its own rows, not
- * the document's - and it is what makes a condition's health legible: `DENIED`
+ * the document's - and it is what makes a condition's health legible: `MISSING`
  * is asked by no family, `DISABLED` is impossible for more components than it is
  * built for, and `REST` is built by everything because it is the default.
  */
@@ -1131,11 +1131,12 @@ export interface Reason {
 /**
  * The sentences that explain more than one cell, in descending order.
  *
- * A reason written once and reused is a fact about a CLASS of parts - "a printed
- * block is not a control" explains ninety-six cells across the document - and
- * those are the sentences worth printing on a term sheet. The reasons that
- * explain one cell each are printed in full inside the component's own row
- * below, and a page that repeated them here would be the same text twice.
+ * A reason written once and reused is a fact about a CLASS of parts - the
+ * overlay family's `Reason` table is written once and taken by every row that
+ * shares the absence - and those are the sentences worth printing on a term
+ * sheet. The reasons that explain one cell each are printed in full inside the
+ * component's own row below, and a page that repeated them here would be the
+ * same text twice.
  *
  * The grouping is exact: two reasons are one entry when their text is identical.
  * No template is inferred and no sentence is shortened to make a group, because

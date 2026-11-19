@@ -28,7 +28,7 @@
  *     through the gallery's `Component` (name, file, note, cells);
  *   - its states and its combinations, from its own `Columns`, with the figure
  *     each column is built by;
- *   - what it may never be, from its own `NOT APPLICABLE` cells grouped by the
+ *   - what it may never be, from its own `N/A` cells grouped by the
  *     sentence that explains them - the family's own words, never a paraphrase;
  *   - its figures, its unasked conditions, its improvements;
  *   - the proof row's state, component and sentence, resolved from the family's
@@ -40,7 +40,7 @@
  * that moves out of the family leaves `◎ PROOF: UNAVAILABLE` behind rather than
  * a pointer to a row that no longer exists.
  *
- * ─── THE FOUR QUESTIONS, IN THE ORDER A CONTRIBUTOR ASKS THEM ─────────────
+ * ─── THE FIVE QUESTIONS, IN THE ORDER A CONTRIBUTOR ASKS THEM ─────────────
  *   FOR            what the family is for, in the sheet's own voice
  *   SLOTS          the parts, each with the file it lives in
  *   ASKED          the states it is asked, and the combinations it is composed at
@@ -620,10 +620,10 @@ const SheetRow = (Band: string) => Sheet.find((Row) => Row.label === Band);
  * One family's laws: its impossible cells, grouped by the sentence that explains
  * them, heaviest first.
  *
- * This is the derivation the reference exists for. A cell marked `NOT
- * APPLICABLE` is a family saying what one of its parts may never be, and the
- * sentence beside it is that family's own wording - so the section is not a
- * critic's opinion of the family, it is the family's prohibitions collected.
+ * This is the derivation the reference exists for. A cell marked `N/A` is a
+ * family saying what one of its parts may never be, and the sentence beside it
+ * is that family's own wording - so the section is not a critic's opinion of the
+ * family, it is the family's prohibitions collected.
  * The order is by the number of cells a sentence explains, because the sentence
  * that forbids the most is the family's strongest law.
  *

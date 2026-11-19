@@ -32,10 +32,11 @@ const BadgeVariants = cva(
  * The badge is a Jelly surface with a real ink pair (the tone map below) and that
  * is a keeper. What it could not do was carry a SET:
  *
- *   count    `PROTOCOL: gRPC ␁03` - the badge's own figure, printed after U+2001
- *            at the same register. A count inside a badge is a fact, not decoration:
- *            it says how many things that ink is the ink of, and the caller derives
- *            it from the array it counts.
+ *   count    the badge's own figure, set off by a hairline rule rather than by a
+ *            character: `.Badge__Count` draws `border-inline-start` with a 0.375rem
+ *            gap on each side, so the count sits in a column of its own. A count
+ *            inside a badge is a fact, not decoration: it says how many things that
+ *            ink is the ink of, and the caller derives it from the array it counts.
  *   mark     a dot, when the claim has no glyph of its own - the same mark
  *            `DownloadMasthead` prints beside a claim without an icon.
  *   size     `meta` (the register's 24px) or `standard` (30px). Two sizes, because
@@ -45,8 +46,10 @@ const BadgeVariants = cva(
  *
  * ─── THE INK IS THE IDENTITY ─────────────────────────────────────────────
  * `grpc` is green because it IS gRPC, `tauri` is amber because it is Tauri. The
- * colour is the claim's own, and the accent is not spent here - the accent
- * authenticates a route, a link, a focus and a seal, and a badge is none of those.
+ * colour is the claim's own, and no variant spends the accent on a fill: they paint
+ * `--Primary`, `--Secondary`, `--Destruct` and the transparent outline. The one tone
+ * that reaches for the accent is `accent`, and it takes it as an edge -
+ * `--jelly-color-border-default: var(--Accent)` over an `--AccentDetail` fill.
  */
 
 export interface BadgeProps
@@ -65,7 +68,7 @@ export interface BadgeProps
 	 */
 	mark?: "dot" | React.ReactNode;
 
-	/** The badge's own figure, printed after U+2001 at the same register. */
+	/** The badge's own figure, printed after a hairline rule at the badge's register. */
 	count?: string | number;
 }
 
@@ -110,7 +113,7 @@ const JellyBadgeVariant: Record<
 	},
 };
 
-// Tone: a named ink pair from the palette (protocol spine / extension family).
+// A tone is a named ink pair from the palette (protocol spine / extension family).
 // A toned badge is a Jelly surface with a real fill, not an outlined label -
 // that is the difference between a mark and a piece of text.
 export type BadgeTone =

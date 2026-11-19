@@ -21,10 +21,11 @@ import { cn } from "./Utility";
 // have scrolled before interacting. Use DropdownMenu with modal={false} instead
 // (see LocaleSwitcher.tsx for the established pattern).
 //
-// The command palette is the one place the lock is correct: it is a modal by
-// nature, the reader's whole attention for as long as it is open, and it does not
-// open from a scrolled reading position the way a header menu does. The two
-// decisions are recorded together so neither reads as a bug in the other.
+// The command palette is the one surface where a lock is correct: it is a modal
+// by nature, the reader's whole attention for as long as it is open, and it does
+// not open from a scrolled reading position the way a header menu does. That lock
+// is `Dialog`'s, not this primitive's - the palette never renders a Select. The
+// two decisions are recorded together so neither reads as a bug in the other.
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
@@ -147,10 +148,12 @@ function SelectItem({
 	...props
 }: React.ComponentProps<typeof SelectPrimitive.Item> & {
 	/**
-	 * The leading mark cell: `✓` the value in force, `/` a route, `◎` a value
-	 * that cannot be chosen. Drawn by the stylesheet's pseudo-element from
-	 * `data-mark`, exactly as the dropdown's items are - a select that could not
-	 * print a mark would be the one control in the kit outside the row grammar.
+	 * The leading mark cell: `/` a route, `◎` a value that cannot be chosen.
+	 * Drawn by the stylesheet's pseudo-element from `data-mark`, exactly as the
+	 * dropdown's items are. The stylesheet overrides it with `✓` for the item in
+	 * force (`[data-state="checked"]`), so the mark a caller passes is never the
+	 * current-value mark - a select that could not print one would be the one
+	 * control in the kit outside the row grammar.
 	 */
 	mark?: string | undefined;
 
@@ -184,10 +187,9 @@ function SelectSeparator({
 }
 
 /**
- * The two scroll buttons are the slip's own edges: a hairline and a `›` turned on
- * its side, not a pair of icon rows. They only exist when the list is taller than
- * its box, which is the one case a slip's frame is not enough to say "there is
- * more".
+ * The two scroll buttons are the slip's own edges: a hairline and a chevron, not
+ * a pair of icon rows. They only exist when the list is taller than its box,
+ * which is the one case a slip's frame is not enough to say "there is more".
  */
 function SelectScrollUpButton({
 	className,

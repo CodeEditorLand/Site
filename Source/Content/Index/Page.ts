@@ -166,10 +166,10 @@ export const Marks: readonly LedgerRow[] = [
 /** The bands, in the order the page reads them. */
 export const Bands = {
 	/**
-	 * The page's own table of contents, as a band. It was written inline in
-	 * `pages/Contents.astro` until the interval register needed to read every
-	 * band's rung from one place: a sequence that is restated in a second file
-	 * drifts from the page it claims to describe, and a register that drifts is a
+	 * The page's own table of contents, as a band. It lives here rather than
+	 * inline in `pages/Contents.astro` because the interval register reads every
+	 * band's rung from one place: a sequence restated in a second file drifts
+	 * from the page it claims to describe, and a register that drifts is a
 	 * register of nothing.
 	 */
 	Chapters: {
@@ -249,9 +249,9 @@ export const Bands = {
 	} satisfies Band,
 
 	/**
-	 * The four composition languages. Written inline on the page until the
-	 * interval register needed every band in one place, for the same reason the
-	 * chapter index moved here.
+	 * The four composition languages, here for the same reason the chapter index
+	 * is: the interval register needs every band in one place, and a band declared
+	 * twice is a band that can disagree with itself.
 	 */
 	Languages: {
 		kicker: "/THE LANGUAGES",
@@ -442,10 +442,10 @@ export const RecordRows = (
  * and 42, which is the one thing it must never do: report a difference as an
  * agreement.
  *
- * The old sentence called every route canonical and read its figure from
- * `Map.ts`, which had stopped holding the list - so on a build where the two
- * agreed it printed `0 declared` and forty-one names. Both figures now come from
- * `Registry` in the generator, and the sentence says what each one counts.
+ * Every figure comes from `Registry` in the generator and the sentence says what
+ * each one counts: a route is canonical only when it takes the full variant set,
+ * and a declared figure read from a list that no longer holds it is how a
+ * footnote comes to print `0 declared` beside forty-one names.
  */
 export const RegistryFootnote = (
 	Declared: number,
@@ -472,13 +472,13 @@ export const RegistryFootnote = (
 /**
  * The index's own doors, before the build decides which of them it serves.
  *
- * The index used to end on its own extent: the last figure, and then the footer.
- * A page that has just told a reader what the whole document is made of owes them
- * the registers that file its parts - and, in development, the specimen sheet,
- * which is this page's appendix and the only place the parts are printed rather
- * than counted. The sheet's row is first because it is the closest reading of
- * what the reader has just finished: the index counts the information types and
- * their forms, and the sheet shows them.
+ * An index that ends on its own extent is a page about itself: the last figure,
+ * and then the footer. A page that has just told a reader what the whole document
+ * is made of owes them the registers that file its parts - and, in development,
+ * the specimen sheet, which is this page's appendix and the only place the parts
+ * are printed rather than counted. The sheet's row is first because it is the
+ * closest reading of what the reader has just finished: the index counts the
+ * information types and their forms, and the sheet shows them.
  */
 const OnwardRows: readonly OnwardRow[] = [
 	{
@@ -535,9 +535,9 @@ const OnwardRows: readonly OnwardRow[] = [
  *
  * The sheet is a lab door: `/Specimen` is served by `dum Run` and absent from the
  * production build (`Function/Configuration/Lab.mjs`), so a production reader is
- * never offered a page the host does not hold. The register's head is counted
- * from this array rather than written into the copy, so `# ONWARD / 0N` cannot
- * claim a door the list does not print.
+ * never offered a page the host does not hold. The head's figure is counted from
+ * this array rather than typed, so `ONWARD / 0N` cannot claim a door the list does
+ * not print.
  */
 const ServedOnward = OnwardRows.filter((Row) => Served(Row.href));
 

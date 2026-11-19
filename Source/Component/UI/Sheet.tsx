@@ -26,31 +26,29 @@ import { cn } from "./Utility";
  * ─── THE SAME OBJECT, ENTERING SIDEWAYS ────────────────────────────────────
  *
  * A sheet is not a second kind of panel. It is the slip the whole family uses -
- * `.Slip`, `--Divider` frame, radius 0, no shadow, 12 % ink scrim - and the
- * only thing that differs is the side it is anchored to and the direction it
- * travels from. That is why this file no longer paints `bg-background` over a
- * `bg-black/50` scrim: those two declarations were the kit's, and they made the
- * one control that opens beside the page the one control that did not look like
- * it belonged to the page.
+ * `.Slip`, `--Divider` frame, radius 0, no shadow, `SlipScrim` at 12 % ink - and
+ * the only thing that differs is the side it is anchored to and the direction it
+ * travels from. The panel and the scrim are why: the kit's `bg-background` over a
+ * `bg-black/50` scrim would make the one control that opens beside the page the
+ * one control that did not look like it belonged to the page.
  *
  * ─── A SHEET IS AS TALL AS ITS EDGE ───────────────────────────────────────
  *
- * The kit writes `inset-y-0 h-full` for a left or right sheet and `h-auto` for a
- * top or bottom one, and then gives neither an internal scroll - so a long sheet
- * overflows its own frame. The family's rule is the edge's: a side sheet is the
- * height of the viewport (it is a column beside the page) and a top or bottom
- * sheet is the height of its content, bounded at 80dvh (it is a bar across the
- * page). In both cases the head and the foot pin and `.Slip__Body` is the only
- * region that scrolls.
+ * The height is the edge's: a side sheet is the height of the viewport (it is a
+ * column beside the page, `max-block-size: 100dvh`) and a top or bottom sheet is
+ * the height of its content, bounded at 80dvh (it is a bar across the page). Both
+ * are flex columns with `overflow: hidden`, so the head and the foot pin and
+ * `.Slip__Body` is the only region that scrolls. Without that bound and that one
+ * scroll region a long sheet overflows its own frame.
  *
  * ─── WHY THE HEAD IS NOT OPTIONAL IN PRACTICE ─────────────────────────────
  *
- * A slip can never open as an unlabelled box (`_Slip.scss`), and an edge panel
- * is the one overlay a reader meets without having clicked anything near its
- * subject - so it is the one that most needs to say what it is. `head` is
- * optional in the type because a sheet may legitimately carry its own
- * `SheetTitle`; the specimen prints both, and the stylesheet keeps the two from
- * colliding.
+ * A slip never opens as an unlabelled box (`_Slip.scss`: the register line names
+ * it), and an edge panel is the one overlay a reader meets without having clicked
+ * anything near its subject - so it is the one that most needs to say what it is.
+ * `head` is optional in the type because a sheet may carry its own `SheetTitle`
+ * instead; a sheet that prints both stacks the sticky register line above the
+ * panel head, and the specimen does exactly that.
  */
 
 export type SheetSide = "top" | "right" | "bottom" | "left";

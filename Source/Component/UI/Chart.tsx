@@ -6,7 +6,9 @@ import * as RechartsPrimitive from "recharts";
 
 import { cn } from "./Utility";
 
-// Format: { THEME_NAME: CSS_SELECTOR }
+// The kit's theme map, cut to the one theme this site has: a `theme` entry is the
+// CSS selector for the element that carries that theme's variables, and `light`
+// is the document root, so its selector is the empty string.
 const THEMES = { light: "" } as const;
 
 export type ChartConfig = {
@@ -394,7 +396,6 @@ function ChartLegendContent({
 	);
 }
 
-// Helper to extract item config from a payload.
 function GetPayloadConfigFromPayload(
 	config: ChartConfig,
 
@@ -445,7 +446,10 @@ interface ChartFrameProps {
 	/** The figure's caption: what it argues, in one sentence. */
 	caption?: string;
 
-	/** The state the figure reports. `empty` and `stale` are the two that matter. */
+	/**
+	 * The state the figure reports, published on `data-state`. Omitted publishes
+	 * nothing, which is the figure at rest.
+	 */
 	state?: "rest" | "loading" | "empty" | "stale" | "error" | "partial";
 
 	/** How tall the plot is. */
@@ -465,8 +469,12 @@ interface ChartFrameProps {
  * A chart on this site is a claim, and a claim carries its register, its caption and
  * its provenance. Without them the figure is a picture that could have come from
  * anywhere; with them it is a plate from the same manual as every other plate. The
- * frame prints `# MEASUREMENTS / 06` above the plot and the caption under it, and it
- * carries the figure's state on `data-state` so the stylesheet can answer it.
+ * frame prints `# MEASUREMENTS / 06` above the plot and the caption under it.
+ *
+ * The figure's state is published on `data-state` and nothing in the stylesheet
+ * answers it: the frame's edge, ink and fill are the same at every state, and the
+ * arm that states an absence is `ChartEmpty` inside the body. `data-state` is the
+ * hook a state rule would key on, not a treatment this component applies.
  *
  * ─── THE STATES ──────────────────────────────────────────────────────────
  *   loading   the axes are printed and the bars are not: the shape of the figure is
@@ -476,6 +484,8 @@ interface ChartFrameProps {
  *             zero, because a zero is a measurement.
  *   stale     the figure's as-of is older than the page: the frame says the age and
  *             the values stay visible.
+ *   rest      the figure at rest: the state a chart is in when nothing is wrong.
+ *   error     the figure could not be drawn at all.
  */
 function ChartFrame({
 	label,
@@ -533,7 +543,8 @@ interface ChartEmptyProps {
  * ChartEmpty - a figure with no data.
  *
  * A chart of nothing is a set of axes, which is a claim that the scale is known and
- * the values are not. The empty arm says that in words instead of drawing it.
+ * the values are not. The empty arm says that in words instead of drawing it: the
+ * `◎` mark, the word `NO SERIES`, what would be plotted and why it is not.
  */
 function ChartEmpty({ statement, cause, className }: ChartEmptyProps) {
 	return (

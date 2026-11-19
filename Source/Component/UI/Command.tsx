@@ -26,10 +26,11 @@ import { cn } from "./Utility";
  * menu item is, with the same five states - so a palette result and a menu item
  * are visibly the same object.
  *
- * `shouldFilter` is left to the caller. The palette filters its own register (it
- * matches a page against its section and its slug as well as its label, which
- * cmdk's flat string match cannot), and cmdk still owns the selection over
- * whatever is rendered - which is the whole reason to use it.
+ * `shouldFilter` passes through `Command` untouched; `CommandDialog` sets it
+ * `false`, because the palette filters its own register (it matches a page
+ * against its section and its slug as well as its label, which cmdk's flat string
+ * match cannot) and cmdk still owns the selection over whatever is rendered -
+ * which is the whole reason to use it.
  */
 
 function Command({

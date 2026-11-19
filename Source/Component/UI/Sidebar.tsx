@@ -94,8 +94,9 @@ function SidebarProvider({
 
 	const [openMobile, setOpenMobile] = React.useState(false);
 
-	// This is the internal state of the sidebar.
-	// We use openProp and setOpenProp for control from outside the component.
+	// The uncontrolled state. `openProp`/`setOpenProp` make the same value
+	// controlled from outside, so `open` is the prop whenever a caller passes one
+	// and `_open` only answers a sidebar nobody is controlling.
 	const [_open, _setOpen] = React.useState(defaultOpen);
 
 	const open = openProp ?? _open;
@@ -110,21 +111,26 @@ function SidebarProvider({
 				_setOpen(openState);
 			}
 
-			// This sets the cookie to keep the sidebar state.
+			// The state is mirrored into a cookie (`sidebar_state`, path `/`, seven
+			// days) so a server render can restore it before the first paint. Nothing
+			// in `Source/` reads it yet.
 			document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
 		},
 
 		[setOpenProp, open],
 	);
 
-	// Helper to toggle the sidebar.
+	// Two surfaces, two flags: below the breakpoint the sidebar is a sheet with its
+	// own open state, above it the panel is persistent - so one toggle cannot set
+	// one variable for both.
 	const toggleSidebar = React.useCallback(() => {
 		return IsMobile
 			? setOpenMobile((open) => !open)
 			: setOpen((open) => !open);
 	}, [IsMobile, setOpen, setOpenMobile]);
 
-	// Adds a keyboard shortcut to toggle the sidebar.
+	// `⌘B` / `Ctrl+B`, bound on `window` and removed by the effect's cleanup, so a
+	// page that unmounts the provider leaves no listener behind.
 	React.useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
 			if (
@@ -142,8 +148,10 @@ function SidebarProvider({
 		return () => window.removeEventListener("keydown", handleKeyDown);
 	}, [toggleSidebar]);
 
-	// We add a state so that we can do data-state="expanded" or "collapsed".
-	// This makes it easier to style the sidebar with Tailwind classes.
+	// `expanded`/`collapsed` is the one word both surfaces read: the desktop wrapper
+	// publishes it as `data-state`, the sheet takes it as a prop, and the Tailwind
+	// `group-data-[...]` selectors key on it - so the open boolean never reaches a
+	// class name directly.
 	const state = open ? "expanded" : "collapsed";
 
 	const contextValue = React.useMemo<SidebarContextProps>(
@@ -268,7 +276,9 @@ function Sidebar({
 			data-side={side}
 			data-slot="sidebar"
 		>
-			{/* This is what handles the sidebar gap on desktop */}
+			{/* The container is `fixed` and takes no room in the flow, so this empty
+			    sibling reserves its width - which is why the gap animates on the same
+			    duration as the panel */}
 			<div
 				data-slot="sidebar-gap"
 				className={cn(
@@ -673,7 +683,9 @@ function SidebarMenuSkeleton({
 }: React.ComponentProps<"div"> & {
 	showIcon?: boolean;
 }) {
-	// Deterministic width based on element index to avoid hydration mismatch
+	// Two widths, one per icon state, derived from `showIcon` rather than drawn at
+	// random: a random width differs between the server render and the hydration
+	// pass, and React reports the difference as a mismatch.
 	const width = React.useMemo(() => {
 		const H = ((showIcon ? 7 : 3) * 31) % 41;
 

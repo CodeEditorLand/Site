@@ -30,7 +30,7 @@
  *   25  are LIVE   - a page or a live block mounts them;
  *    6  are LAB    - the only thing that mounts them is this specimen sheet;
  *    4  are ORPHANED - nothing in the tree imports them at all;
- *   13  duplicate a block that already exists, in whole or in part.
+ *   12  duplicate a block that already exists, in whole or in part.
  *
  * `Verdicts` below states each one with the importers it has, and asks for a
  * decision rather than proposing a deletion. Nothing in this card removed a file:
@@ -43,10 +43,11 @@
  * at 240px. Improve the survivors; report the orphans for a decision instead of
  * deleting them."
  *
- * The four compositions are columns (`NO PLATE`, `THREE`, `NINE`, `AT 16`, `AT
- * 240` - five, because the mark was named at two sizes and each found a different
- * defect); the improvements are entries in `Improvements`, each with the cell
- * behind it; the orphans are `Verdicts`.
+ * The seven compositions are columns: the five the brief named by hand -
+ * `NO PLATE`, `THREE`, `NINE`, `AT 16` and `AT 240`, the mark at two sizes
+ * because each found a different defect - plus a band with one card and a
+ * record with no action. The improvements are entries in `Improvements`, each
+ * with the cell behind it; the orphans are `Verdicts`.
  *
  * ─── NOTHING HERE IS A TYPED FIGURE ──────────────────────────────────────
  * Every count on the sheet is derived from the tables below, so a row or a
@@ -294,7 +295,7 @@ export interface Row {
 	/**
 	 * The cells this row overrides. Everything not listed is `BUILT`, because a
 	 * family that renders its own happy state everywhere should not have to say
-	 * so six hundred times - and a default of `built` makes every exception a
+	 * so fourteen hundred times - and a default of `built` makes every exception a
 	 * sentence someone had to write.
 	 *
 	 * The overrides are usually a BASE plus the row's own differences: a base is
@@ -4645,7 +4646,7 @@ export interface Verdict {
  * The thirty-five `Dynamic/*` parts, in the order the matrix lists them.
  *
  * The uncomfortable answer, stated: twenty-five are live, six are mounted only by
- * this sheet, four by nothing, and thirteen duplicate a block that already exists.
+ * this sheet, four by nothing, and twelve duplicate a block that already exists.
  * The `decision` line is an ASK, not a proposal - this card deleted nothing, and
  * a file with no importer is a decision the owner has not made yet.
  */

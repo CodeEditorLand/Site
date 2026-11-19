@@ -15,9 +15,17 @@ interface ErrorBoundaryState {
 }
 
 /**
- * React Error Boundary that catches render errors in child components.
- * Shows a flat, styled fallback UI consistent with the design system.
- * Accepts a FallbackComponent prop for custom error UI (e.g. skeletons).
+ * React Error Boundary that catches render errors in a child tree.
+ *
+ * The fallback is the site's `INTERRUPTED` record, not a sentence about how to feel:
+ * `# FAILURE / 01␁/RUNTIME`, the state word, and three labelled rows - `WHAT
+ * FAILED:`, `CAUSE:` (the exception's own message, the one fact the boundary holds)
+ * and `RETRY:`, which resets the boundary in place.
+ *
+ * `FallbackComponent` takes the caught error and the reset callback for a caller that
+ * wants its own error UI; `fallback` takes a node when the caller does not need the
+ * error. No surface in `Source/` mounts this component today - the test is its only
+ * call site.
  */
 export class ErrorBoundary extends Component<
 	ErrorBoundaryProps,
@@ -63,11 +71,11 @@ export class ErrorBoundary extends Component<
 						{/*
 							The site's error state, in the record grammar: a register
 							head, a state word from the fixed vocabulary, and three
-							labelled rows. It used to print "Something went wrong" - a
-							sentence that tells the reader how to feel - and then the
-							raw exception, with no statement of what was lost or what
-							to do. The exception message is still printed, as `CAUSE:`,
-							because it is the one fact the boundary actually holds.
+							labelled rows. The exception message prints as `CAUSE:`,
+							because it is the one fact the boundary actually holds;
+							what the block does not print is a sentence telling the
+							reader how to feel. `RETRY:` resets the boundary in place,
+							so the region comes back without a reload.
 						*/}
 						<h2 className="mb-4 font-mono text-[13px] font-medium uppercase tracking-[0.08em] text-card-foreground">
 							<span aria-hidden="true">#</span> FAILURE / 01

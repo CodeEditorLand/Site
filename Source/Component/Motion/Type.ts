@@ -1,11 +1,13 @@
 /**
  * Type - the shapes the motion layer's components render.
  *
- * Four components, four shapes, and one rule the record layer already states:
- * a block renders what a page hands it and never sorts, derives or invents. The
- * one derived value here is a *bar length* - the interval as a percentage of the
- * longest interval the site has - and it is derived in the component from the
- * caller's milliseconds so the page cannot print two different scales.
+ * Six components, four shapes, and one rule the record layer already states:
+ * a block renders what a page hands it and never sorts, derives or invents. Only
+ * the fold, the expand, the sequence and the specimen carry a shape here; the
+ * skeleton and the origin take their props inline. The one derived value is a
+ * *bar length* - the interval as a percentage of the longest interval the site
+ * has - and it is derived in `MotionSpecimen` from the caller's milliseconds so
+ * the page cannot print two different scales.
  *
  * Field names are lower camel case and every array is `readonly`, matching
  * `Component/Record/Type.ts`. A page that needs a field this module does not
@@ -152,9 +154,9 @@ export interface Sequence {
 	 *
 	 * Every rule in `System/Motion/` declares its end state unconditionally and
 	 * gates only its interval, so the promise is the same document in one frame.
-	 * A sequence that printed its intervals and not that promise was the one
-	 * block in the family that could not state it - and the reader who needs the
-	 * sentence is exactly the one who will never see the transition.
+	 * A block that printed its intervals and not that promise would be the one block
+	 * in the family that could not state it - and the reader who needs the sentence
+	 * is exactly the one who will never see the transition.
 	 */
 	reduced?: string;
 

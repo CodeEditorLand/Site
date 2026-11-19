@@ -4,7 +4,7 @@
  *
  * ─── WHY THE SHEET NEEDED AN INDEX OF ITSELF ──────────────────────────────
  * Ten family bands, four opening bands, the material strip and the closing
- * register: sixteen sections in one scroll, and until this card no way to see
+ * register: sixteen sections in one scroll, and without an index no way to see
  * them. The sheet's own argument is that a design frame becomes real when its
  * worst combinations are printed - and a reader who cannot survey the frame is
  * reading a list of sections rather than a document.
@@ -12,7 +12,7 @@
  * So the index is not a table of contents in the ordinary sense. Each row states
  * three things: what the band is, the figures its matrix counted, and the one
  * sentence that says what the family ARGUES. A reader scanning the index learns
- * the sheet's shape - nine families, each with its own question - before reading
+ * the sheet's shape - ten families, each with its own question - before reading
  * a single cell of it.
  *
  * ─── EVERY FIGURE IS THE FAMILY'S OWN ─────────────────────────────────────
@@ -155,7 +155,7 @@ const Figure = (
 /**
  * The sixteen bands, in the order they are read.
  *
- * The first six are the sheet's own apparatus, the next ten are the families,
+ * The first four are the sheet's own apparatus, the next ten are the families,
  * and the last two are the stock and the closing ledger. The index's order IS the
  * page's order: a reader who uses it as a table of contents and a reader who uses
  * it as a map are reading the same sequence.

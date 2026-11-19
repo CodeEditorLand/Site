@@ -95,9 +95,10 @@ const Unknown = (Value: string): boolean => Value.trim() === "UNAVAILABLE";
 								{Record.fact}
 							</span>
 						) : null}
-						{/* One mark, one turn (`Mark/_Arrow.scss`): the two-glyph swap this
-						    block used to print (`→` / `↳`) was the fold's gesture drawn
-						    with the arrow and the proposition's mark. */}
+						{/* One mark, one turn (`Mark/_Arrow.scss`): the two-glyph swap
+						    (`→` shut, `↳` open) would be the fold's gesture drawn
+						    with the arrow and the proposition's mark, for a state
+						    the mark layer's own quarter turn already states. */}
 						<Mark kind="fold" class="MotionExpand__Glyph" />
 					</summary>
 

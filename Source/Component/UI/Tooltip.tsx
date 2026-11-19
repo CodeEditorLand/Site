@@ -43,10 +43,9 @@ function TooltipContent({
 }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
 	return (
 		<TooltipPrimitive.Portal>
-			{/* pointer-events-none: tooltip content is informational only.
-			 This prevents mouseleave from firing on the trigger when the
-			 cursor moves over the tooltip, which would otherwise break
-			 Staccato hover state and Radix's own open/close logic. */}
+			{/* pointer-events-none: tooltip content is informational only. A cap
+			 that could be hovered would take the pointer from its trigger, fire
+			 mouseleave there, and flicker the open state Radix is maintaining. */}
 			<TooltipPrimitive.Content
 				data-slot="tooltip-content"
 				sideOffset={sideOffset}

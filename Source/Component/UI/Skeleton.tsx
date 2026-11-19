@@ -6,32 +6,40 @@ import { cn } from "./Utility";
  * Skeleton - the shape of a record before its data arrives.
  *
  * ─── A GREY BOX IS NOT THIS SITE'S SKELETON ──────────────────────────────
- * `Component/Motion/MotionSkeleton.astro` already states the site's loading arm:
- * a register line, the keys the arriving record will print, their values barred,
+ * `Component/Motion/MotionSkeleton.astro` states the site's loading arm: a
+ * register line, the keys the arriving record will print, their values barred,
  * and `WAITING ON:` naming what has not arrived. It is an `.astro` block, so a
- * React island that had to wait fell back on the grey box below - a box that says
- * something is happening and nothing else.
+ * React island that has to wait needs the same anatomy as a primitive - which is
+ * what `SkeletonRecord` is, and why it is not a box.
  *
- * `SkeletonRecord` is that same anatomy as a React primitive. It reads the same
- * two tokens the block reads (`--motion-skeleton-bar` and
- * `--motion-skeleton-ink`), so a busy button (`StateBusy`), a loading record
- * (`MotionSkeleton`) and a waiting card are one object at three scales.
+ * `SkeletonRecord` reads the same two tokens the block reads
+ * (`--motion-skeleton-bar` and `--motion-skeleton-ink`), so a busy button
+ * (`StateBusy`), a loading record (`MotionSkeleton`) and a waiting card are one
+ * object at three scales.
  *
- * ─── NO PULSE, AND THE REASON IS NOT TASTE ───────────────────────────────
+ * ─── NO PULSE IN THE RECORD GRAMMAR, AND THE REASON IS NOT TASTE ─────────
  * A pulse is a loop: motion with no state change, which the motion layer forbids
- * and which tells the reader nothing they did not already know. The bars are
- * static. What moves is the moment the record arrives - `resolve`, one printed
- * state giving way to another - and that belongs to whatever replaces this
- * skeleton, not to the skeleton.
+ * and which tells the reader nothing they did not already know. The record's bars
+ * are static. What moves is the moment the record arrives - `resolve`, one
+ * printed state giving way to another - and that belongs to whatever replaces
+ * this skeleton, not to the skeleton.
+ *
+ * The `Skeleton` primitive below is the exception: it carries `animate-pulse` and
+ * `bg-accent`, so it is a green pulsing box - a loop, and the accent spent on a
+ * loading state. `SkeletonRecord`, `SkeletonMatrix` and `SkeletonLines` are the arms
+ * that follow the rule.
  *
  * ─── THE THREE SHAPES ────────────────────────────────────────────────────
  *   SkeletonRecord   a record: register line, keys, barred values, the wait
  *   SkeletonMatrix   a table that has not arrived: its head, and bars in the cells
  *   SkeletonLines    prose that has not arrived: n lines at the measured width
  *
- * The grey `Skeleton` and its three card compositions are untouched: two account
- * surfaces mount them, they want a shape rather than a schema, and removing their
- * arm would be a regression, not an improvement.
+ * `Skeleton` has three call sites - `DynamicAuthStatus`, `DynamicAccountProfile` and
+ * `SidebarMenuSkeleton` - and all three want a shape rather than a schema, so
+ * removing their arm would be a regression, not an improvement. The three card
+ * compositions (`SkeletonCard`, `SkeletonFeatureCard`, `SkeletonPricingTier`) have
+ * no call site in `Source/`: they are layouts kept for a surface that has not been
+ * built.
  */
 
 function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
@@ -106,8 +114,9 @@ function SkeletonPricingTier({ className }: React.ComponentProps<"div">) {
  *
  * A long key tends to name a long value (`SOURCE:`, `CHECKSUM:`) and a short key a
  * short one, so the caller does not have to invent a width per field. Clamped to
- * 24-72% so no bar is a dot and no bar is a full rule. `MotionSkeleton` states the
- * same rule; the two are the same arithmetic because they are the same bar.
+ * 24-72% so no bar is a dot and no bar is a full rule. `MotionSkeleton` prints the
+ * same bars from a `--bar` its caller hands it; this is the same arithmetic with the
+ * guess made once, from the key, instead of once per call site.
  */
 const WidthOf = (Key: string): number =>
 	Math.min(72, Math.max(24, 24 + Key.length * 3));

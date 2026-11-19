@@ -1,7 +1,7 @@
 ---
 /**
  * BlogIndex - the blog's archive page: a centred header, a full-bleed plate of
- * the archive's extent, and the articles in a three-column grid.
+ * the archive's extent, and the articles on the shell's capacity line.
  *
  * ─── THE COMPOSITION ─────────────────────────────────────────────────────
  * Three gears, and the page changes gear between them:
@@ -9,14 +9,14 @@
  *   open     the trail and the centred header (the baseline's, unchanged)
  *   plate    a full-bleed instrument: `# BLOG / 08 ENTRIES` and four measured
  *            facts, edge to edge, with the caption in a channel beside it
- *   archive  the eight-card grid, on the baseline's measure
+ *   archive  the eight cards, on the baseline's measure
  *
  * The plate is the one full-width element on any page of the site that is not a
  * hero: its rules run to the viewport edge, its content stays on the container's
  * gutters, and its caption sits in a channel at the right rather than under it.
  * That is the gear change - a centred poster head, then a wide ruled plate, then
- * the grid - and it is why this page no longer reads as a header with cards
- * under it.
+ * the grid - and it is why the page reads as a composed document rather than a
+ * header with cards under it.
  *
  * The plate is a `RecordFigure` with its composed arm: the media is the page's
  * own register (a label and four `dt`/`dd` rows), not a picture. The information
@@ -28,8 +28,8 @@
  *
  * ─── THE ARCHIVE: A LEAD, THEN A CAPACITY LINE ───────────────────────────
  * Eight cards, each a whole-card link, on the shell's capacity line
- * (`.PageShell__row`). Two things changed from the baseline's `1 / 2 / 3`
- * columns, and both are in `Blog/_Listing.scss`:
+ * (`.PageShell__row`). Two rules decide the row, and both are in
+ * `Blog/_Listing.scss`:
  *
  *   the lead   `rows[0]` - the newest by `publishedAt` - takes the full measure
  *              and the L tier. It is the first row of the sorted list, not a
@@ -136,10 +136,10 @@ const PlateState: FieldRecordStatusState | undefined =
 	rows.length === 0 ? "unavailable" : undefined;
 
 /**
- * The card's seed scatter: the baseline's cards sat very slightly rotated and
+ * The card's seed scatter: the baseline's cards sit very slightly rotated and
  * offset from one another, which its client engine applied per card. Two small
  * deterministic numbers reproduce that placement without shipping the engine,
- * and `nth` is stable between builds because it is the row's own position.
+ * and the seed is stable between builds because it is the row's own position.
  *
  * Position 0 - the lead - resolves to `0 / 0`, which is the one card that sits
  * square. That is not a special case in the CSS: a 51rem card rotated by half a

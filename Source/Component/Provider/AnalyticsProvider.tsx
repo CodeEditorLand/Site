@@ -37,12 +37,10 @@ interface AnalyticsContextType {
 	/**
 	 * Whether a call will reach the client.
 	 *
-	 * The three calls are no-ops when no client arrived, and they always were -
-	 * what was missing was the fact. A consumer could not tell a delivered event
-	 * from a dropped one, because the provider that exists to make the runtime's
-	 * state legible was the one part of the runtime with no state to read. A
-	 * surface that wants to state its own telemetry status now prints this
-	 * instead of guessing.
+	 * The three calls are no-ops when no client arrived, so a consumer that
+	 * reads only them cannot tell a delivered event from a dropped one. This is
+	 * the fact that difference needs: a surface that wants to state its own
+	 * telemetry status prints this instead of guessing.
 	 */
 	available: boolean;
 

@@ -28,9 +28,10 @@ import { cn } from "./Utility";
  *
  * ─── THE SEAM IS A CONTROL, SO IT TAKES FOCUS ────────────────────────────
  * `react-resizable-panels` gives the separator arrow-key resizing and a roving
- * focus; what the kit did not give it was a focus ring. It has one now - the same
- * 2px accent ring at 4px offset every other control wears - because a keyboard
- * user who cannot see where they are is not setting anything.
+ * focus; what the kit's handle does not give it is a focus ring. It has one - the
+ * same 2px accent ring at 4px offset every other control wears (`--state-ring-width`,
+ * `--state-ring-offset`) - because a keyboard user who cannot see where they are is
+ * not setting anything.
  *
  * ─── FIXED IS A STATE, NOT A DELETION ────────────────────────────────────
  * A layout that must not be resized keeps its seam and prints its ratio; the seam

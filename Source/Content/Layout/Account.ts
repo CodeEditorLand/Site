@@ -1,9 +1,9 @@
 /**
  * Account - the account workspace, as data.
  *
- * The route was a frame over a column of cards. A workspace is the honest form
- * for it: the reader is operating something, the ways in and out of the account
- * are destinations, and the profile is the instrument. Three things live here:
+ * A workspace, not a frame over a column of cards: the reader is operating
+ * something, the ways in and out of the account are destinations, and the profile
+ * is the instrument. Three things live here:
  *
  * - `Rail` - the seven destinations this workspace holds. The account's five
  *   routes plus the two surfaces that read the account (the dashboard and the
@@ -14,8 +14,8 @@
  * - `Aside` - the folded disclosure under both panes: what the profile does not
  *   carry, and the route that does carry it.
  *
- * Every string is copy the surface was missing. The account route printed a
- * breadcrumb and an island; it never said what the workspace held.
+ * Every string here is copy the surface would otherwise lack: a breadcrumb and an
+ * island say nothing about what the workspace holds.
  */
 import type { TFunction } from "i18next";
 
@@ -47,7 +47,7 @@ export interface AccountSurface {
 	/** The access ledger beside the instrument. */
 	readonly access: readonly LedgerRow[];
 
-	/** The register's label: the access ledger prints `# ACCESS / 05` from it. */
+	/** The register's label: the access ledger prints `# ACCESS / 06` beside it, counted from the rows. */
 	readonly accessLabel: string;
 
 	/** The folded disclosure under both panes. */

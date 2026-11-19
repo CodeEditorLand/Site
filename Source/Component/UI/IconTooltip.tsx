@@ -25,16 +25,16 @@ import {
  * a register line, would be a paragraph where a caption belongs. So the family
  * rule is stated as a size rule rather than as an exception:
  *
- *   one line   the ink cap - `bg-primary`, the site's inverted mark, and the
- *              staccato tilt a multi-line gloss already carries
+ *   gloss      the ink cap - `bg-primary`, the site's inverted mark; one line
+ *              is one cap, an array is the staccato stack
  *   detail     the slip - white insert, `--Divider` frame, a register line
  *
- * `Detail` is what switches between them. When it is absent the tooltip is
- * exactly what it was: three layers of label exposure (the trigger's
- * `aria-label`, its `title`, and Radix's content), an array of lines rendered
- * as the tilted caps, one line rendered as a single cap. When it is present the
- * tooltip is content - a head, a note, a row set - and it wears the same
- * surface every other overlay wears, because content is what a slip is for.
+ * `Detail` is what switches between them. Without it the tooltip is the cap:
+ * three layers of label exposure (the trigger's `aria-label`, its `title`, and
+ * Radix's content), an array of lines rendered as the tilted caps, one line
+ * rendered as a single cap. With it the tooltip is content - a head, a note, a
+ * row set - and it wears the same surface every other overlay wears, because
+ * content is what a slip is for.
  *
  * ─── THREE LAYERS OF LABEL EXPOSURE, AND WHY ALL THREE STAY ───────────────
  *
@@ -42,8 +42,7 @@ import {
  * native fallback for a pointer that never triggers Radix (a slow hover, a
  * keyboard reader in a browser that suppresses portals); the content is the
  * styled tooltip. Removing any one of them would be a different accessibility
- * claim, so none is removed - the card that built this component made that
- * decision and it is still right.
+ * claim, so none is removed.
  */
 interface IconTooltipProperty {
 	/** Human-readable label - drives aria-label, title, and tooltip text. Pass an array for multi-line tooltips. */
@@ -62,8 +61,12 @@ interface IconTooltipProperty {
 	ClassName?: string;
 
 	/**
-	 * Reserved: future doc-link href.
-	 * When provided the tooltip will render a clickable link.
+	 * Reserved: the doc-link target. Accepted and not rendered.
+	 *
+	 * The prop is destructured and dropped, so a call site can pass the path today
+	 * and a link arm can read it later without every call site changing. Nothing
+	 * about the tooltip changes when it is given - a comment that promised a
+	 * clickable link would be describing an arm that does not exist.
 	 */
 	DocHref?: string;
 
@@ -91,37 +94,36 @@ interface IconTooltipProperty {
 	/**
 	 * The glyph's own state, when it has one.
 	 *
-	 * `unavailable` prints `◎` before the label in the cap, which is the mark the
-	 * item grammar uses for a row that exists and cannot be used - so a disabled
-	 * icon says so in the tooltip rather than only in its own styling.
+	 * `unavailable` prints `◎` before the label, which is the mark the item
+	 * grammar uses for a row that exists and cannot be used - so a disabled icon
+	 * says so in the tooltip rather than only in its own styling. The mark is
+	 * drawn in the single-line cap only: the array arm and the detail arm print
+	 * their own content and never read this prop.
 	 */
 	State?: "ready" | "unavailable";
 }
 
 /**
- * IconTooltip - single source of truth for icon accessibility across the site.
+ * The component, in its two arms.
  *
- * Provides three layers of label exposure:
- * 1. aria-label on the trigger <span> - screen readers announce the label
- * 2. title on the trigger <span> - native browser tooltip fallback
- * 3. Radix TooltipContent - styled hover tooltip for sighted users
+ * The trigger is a `<span role="img">` carrying `aria-label` and `title` (the
+ * first two layers above), at `tabIndex={-1}`: the label reaches a screen
+ * reader, and the glyph does not join the tab order.
  *
- * Usage with Lucide icon:
- * <IconTooltip Label="Sync" Icon={RefreshCw} Color="#3b82f6" />
+ * With a Lucide icon:
+ *   <IconTooltip Label="Sync" Icon={RefreshCw} />
  *
- * Usage wrapping an <img> brand mark:
- * <IconTooltip Label="GitHub">
- * <img src="/Image/GitHub.svg" alt="GitHub" width="16" height="16"
- * className="h-4 w-4" />
- * </IconTooltip>
+ * Wrapping a brand mark:
+ *   <IconTooltip Label="GitHub">
+ *     <img src="/Image/GitHub.svg" alt="GitHub" width="16" height="16" />
+ *   </IconTooltip>
  *
- * Usage with detail - the tooltip becomes a slip:
- * <IconTooltip Label="gRPC" Icon={Radio} Head={{ Name: "PROTOCOL", Count: 4 }}
- *   Detail={<p>…</p>} Note="The spine's transport." />
+ * With a detail - the tooltip becomes a slip:
+ *   <IconTooltip Label="gRPC" Icon={Radio} Head={{ Name: "PROTOCOL", Count: 4 }}
+ *     Detail={<p>…</p>} Note="The spine's transport." />
  *
- * DocHref is reserved for future documentation links - pass it now so
- * the data is threaded through and the tooltip can evolve to a link
- * without changing every call site.
+ * `DocHref` is accepted and not rendered (see the prop); the inventory at the
+ * foot of this file is the mapping a link arm would read.
  */
 const IconTooltip = ({
 	Label,
@@ -255,12 +257,12 @@ const IconTooltip = ({
 };
 
 /**
- * DocHref Inventory - candidate icon-to-doc mappings for future linking.
+ * DocHref inventory - the icon-to-doc mapping a link arm would read.
  *
- * When DocHref is wired up, these icons would link to the corresponding
- * documentation page. Paths are relative to the site root (/Doc/{slug}).
+ * `DocHref` is not rendered (see the prop above); this table is the data it
+ * would take, with paths relative to the site root (`/Doc/{slug}`).
  *
- * Lucide Icon | Label | Suggested DocHref
+ * Lucide Icon | Label | DocHref
  * --------------|------------------|---------------------------
  * Code | Code | /Doc/Architecture
  * Cpu | CPU | /Doc/Architecture

@@ -170,8 +170,9 @@ export class DownloadsAPI {
 	}
 
 	/**
-	 * Returns all previous release versions, ordered newest-first.
-	 * Semantic alias for GetVersionList() with an explicit limit default.
+	 * Returns the release version list, newest-first as the worker serves it,
+	 * capped at `Limit` (20 by default) - a semantic alias for
+	 * GetVersionList().
 	 */
 	async GetPreviousReleases(Limit: number = 20): Promise<Download[]> {
 		return await this.GetVersionList(Limit);

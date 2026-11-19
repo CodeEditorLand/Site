@@ -8,9 +8,10 @@
  * page's paper, an appendix is a badge strip or a tile grid, a foot is a rule
  * with two registers. The two exceptions are the family's own and are mounted
  * by the pages that need them: `Contents.ts` (the marking, one observer per
- * page) and `RustViewer`'s tab bar (the switch, now scoped to its own root).
- * The sheet mounts the second three times, which is exactly why the viewer's
- * script had to stop addressing the whole document.
+ * page) and `RustViewer`'s tab bar (the switch, scoped to its own root). The
+ * sheet mounts the second three times, which is why the viewer's script
+ * addresses its own root and never the document: three viewers on one page
+ * would otherwise fight over one tab set.
  *
  * ─── THE RENDERER DECIDES NOTHING ────────────────────────────────────────
  * A row states what it is, which part it exercises, when that state is right and
@@ -108,7 +109,7 @@ const TOC: DocToc = { Label: "On this page", Items: TocItems };
 /**
  * The same list with this row's own targets.
  *
- * The sheet mounts five articles, so an id may not be `spec-read-1` five times:
+ * The sheet mounts six articles, so an id may not be `spec-read-1` six times:
  * each row's headings carry the row's mark and its contents point at them, which
  * keeps every specimen a working jump list instead of a picture of one.
  */

@@ -2,11 +2,11 @@
  * The Edge register - every sheet this document files, in the order it is read.
  *
  * ─── WHY THIS FILE EXISTS ─────────────────────────────────────────────────
- * The site had a running head that said which PART of the document the reader
- * stood in, and nothing that said which SHEET. A part is ten pages of a dossier;
- * a sheet is one of them, and a reader who wants to know whether to stay needs
- * the sheet, not the part: what it is, where in the document it sits, when it
- * was last read, whether it is indexed, and what it was set from.
+ * A running head says which PART of the document the reader stands in, and
+ * nothing says which SHEET. A part is ten pages of a dossier; a sheet is one of
+ * them, and a reader who wants to know whether to stay needs the sheet, not the
+ * part: what it is, where in the document it sits, when it was last read,
+ * whether it is indexed, and what it was set from.
  *
  * So this is the document's collation: the sheets in reading order, each with the
  * one sentence that says what it is for and the file it was set from. It is the
@@ -54,12 +54,12 @@ import {
 } from "../../Component/Layout/Frame/Data.js";
 
 // The document's one separator, U+2001, is never typed in this file: every string
-// here is a proposition or a path. The leaf's facts are rows now, so the em quad
-// that used to be drawn BETWEEN two facts is gone with the inline run - the
-// separators that remain are inside a value (`05␁CONTACT`, `12␁DAYS`), where the
-// quad joins two halves of one fact rather than two facts, and it is typed by the
-// component that builds the value. A template's newline beside an em quad becomes
-// a 200px gap, which is the defect the clause rail already paid for once.
+// here is a proposition or a path. The leaf's facts are rows, so no em quad is
+// drawn BETWEEN two facts - the separators that exist are inside a value
+// (`05␁CONTACT`, `12␁DAYS`), where the quad joins two halves of one fact rather
+// than two facts, and the component that builds the value types it. A template's
+// newline beside an em quad becomes a 200px gap, which is why the separator is
+// never left to the template.
 
 /** One sheet of the document. */
 export interface EdgeSheet {
@@ -99,9 +99,10 @@ export interface EdgeSheet {
 
 /**
  * The document, sheet by sheet, in the order a dossier is read: the cover and
- * its substitution table, the offer and its audit, the manual, the notes, the
- * desk and its thirteen routes, the legal back matter, the two app surfaces, and
- * then the index of all of it.
+ * its substitution table, the offer and the status board, the manual with its
+ * glossary and motion notes, the notes, the desk and its fourteen request
+ * routes, the licence and the contributor's way in, the legal back matter, the
+ * two app surfaces, the account routes, and then the index of all of it.
  *
  * The order inside a part is the order of a reader's use, not the alphabet: a
  * part opens on its index, then its children, then the reference pages that

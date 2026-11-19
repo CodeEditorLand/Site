@@ -69,7 +69,7 @@ export interface CompareRow {
  * Verbatim from `Source/Content/doc/cocoon.md` § "Workbench Architecture Role",
  * which is itself the site's account of the substitution. The order is the
  * document's: process, then renderer, then the channel between them, then the
- * four things a workbench does with the operating system.
+ * preload bridge and the four things a workbench does with the operating system.
  *
  * `changes` is short on purpose. A matrix cell refuses to wrap - that is what
  * makes a comparison scannable - so a cell holding a sentence would widen the

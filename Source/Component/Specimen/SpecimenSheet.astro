@@ -9,30 +9,31 @@
  *                   (which reads one row across several columns), and not a
  *                   ledger (which states facts about a single object).
  * RANK              set.
- * SLOT CONTRACT     rows[] -> mark, name, note, kind, disposition, href?
+ * SLOT CONTRACT     rows[] -> mark, name, note, kind, disposition, plate?
  *                   label  -> the register line's word, `SHEET`
  * MAY HOLD          cells. One mark, one name, one line, one disposition.
  * MAY NOT HOLD      prose, a figure, a part's contract, an action.
  * WIDE              four equal cells across. Equal is right here and almost
  *                   nowhere else: the parts are genuinely equal, and the reader
  *                   is choosing between them rather than reading them in order.
- * NARROW            two cells across, then one below 30rem. The cell keeps its
- *                   four lines and its disposition; it does not become a row.
+ * NARROW            two cells across, three at 640px and four at 1024px. The
+ *                   cell keeps its four lines and its disposition; it does not
+ *                   become a row, and the grid never falls to a single column.
  * DENSE             yes, by construction - it is a sheet. The density is the
  *                   cell's, not the type's: nothing here is smaller than the
  *                   meta tier, because a contact sheet is not a fine print.
  *
  * ─── THE DISPOSITION IS THE CELL'S FOURTH LINE ────────────────────────────
- * A printed part prints `→ PLATE 03` and links to it. An absent part prints
- * `◎ ABSENT` and does not link, because the sheet prints that part's reason in
- * place of a plate and a link to a plate that does not exist is a dead link
- * dressed as a live one. The mark is the grammar's: `→` is a direction, `◎` is
- * the fallback mark for a thing with no glyph.
+ * A printed part prints `→ PRINTED` and links to its plate when the parts table
+ * carries one. An absent part prints `◎ ABSENT` and does not link, because the
+ * sheet prints that part's reason in place of a plate and a link to a plate that
+ * does not exist is a dead link dressed as a live one. The mark is the grammar's:
+ * `→` is a direction, `◎` is the fallback mark for a thing with no glyph.
  *
  * ─── IT IS A LIST, NOT A GRID OF CARDS ────────────────────────────────────
  * The cells are `<li>` in an `<ol>` and they paint no surface: one hairline
  * between cells, no fill, no radius. A contact sheet is a printed grid, and a
- * grid of white boxes would be nine cards wearing a sheet's name.
+ * grid of white boxes would be twelve cards wearing a sheet's name.
  *
  * No script and no hydration: a sheet is printed.
  */

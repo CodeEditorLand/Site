@@ -21,10 +21,11 @@
  * this block: `.MotionResolve` in `System/Motion/_Skeleton.scss`.
  *
  * ─── THE BAR'S LENGTH IS A GUESS, AND IT SAYS SO ──────────────────────────
- * `--bar` is the caller's estimate of the value's shape - a word is short, a path
- * is long - because a bar of uniform width would be a claim that every value is
- * the same size. The bars are `aria-hidden` and the keys are not, so a screen
- * reader hears one state and four field names, not four rectangles.
+ * `--bar` is derived from the key's own name length - a long key tends to name a
+ * long value (`SOURCE:`, `CHECKSUM:`) and a short key a short one - because a
+ * bar of uniform width would be a claim that every value is the same size. The
+ * bars are `aria-hidden` and the keys are not, so a screen reader hears one
+ * state and four field names, not four rectangles.
  *
  * ─── WHEN THE SCHEMA HAS NOT ARRIVED EITHER ───────────────────────────────
  * `empty` is what the block prints with no key: the composed sentence under the
@@ -57,8 +58,8 @@ interface Props {
 	 * argument is that a reader waiting learns the schema. When the schema has
 	 * not arrived either, there is nothing to bar - and a register head reading
 	 * `# LOADING / 04` over an empty `<dl>` is a count of four over a list of
-	 * nothing. This sentence is what that state prints instead, and it is
-	 * optional so the existing call site keeps its signature.
+	 * nothing. This sentence is what that state prints instead; a caller that
+	 * has a key always has a schema, so it is optional.
 	 */
 	empty?: string;
 

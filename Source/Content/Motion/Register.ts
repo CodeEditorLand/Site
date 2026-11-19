@@ -123,9 +123,9 @@ const Line = "CUBIC-BEZIER(0.2, 0.7, 0.2, 1)";
 const Return = "CUBIC-BEZIER(0.4, 0, 0.5, 1)";
 
 /**
- * The thirteen classes, in the order a reader meets them: the five that were
- * already in the paper (enter, press, trace, settle, resolve), the two that
- * acknowledge a refusal or an inspection, then the six this layer adds.
+ * The thirteen classes, in the order a reader meets them: the five the paper's
+ * grammar names (enter, press, trace, settle, resolve), the two that acknowledge a
+ * refusal or an inspection, then the six the interaction layer adds.
  */
 export const Classes: readonly InteractionClass[] = [
 	{

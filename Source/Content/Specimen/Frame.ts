@@ -319,9 +319,11 @@ const NotInCard = (what: string, why: string): Cell =>
 	);
 
 /**
- * The twenty components, in the order a page meets them: the surface's opening,
- * its regions and its state vocabulary; then the shell's four languages and its
- * five primitives; then the frame's three layout units.
+ * The twenty components, in the order a page meets them: the app surface's own
+ * ten - the shell, its head, the region, the register, the status line, the
+ * badge and chip runs, the absence, the state badge and the lifecycle
+ * vocabulary - then the page shell, the panes, the plate, the rail, the state,
+ * the two edges, the frame rail, the running head and the print layer.
  *
  * Every row's overrides are reasons. A row with no overrides would be a part that
  * survives every combination, and no part does.

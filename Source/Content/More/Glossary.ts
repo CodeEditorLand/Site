@@ -6,8 +6,8 @@
  * Wind, Grove, Mountain. It also uses ordinary English words - record, form,
  * band, ledger, matrix - in senses that are not ordinary, because the site's
  * grammar gives each one a job. A reader arriving from the manual meets fifteen
- * capitalised nouns and twenty lower-case ones that look like English and are
- * not, and until this page there was nowhere to look either up.
+ * capitalised nouns and twenty-one lower-case ones that look like English and are
+ * not, and this page is where either is looked up.
  *
  * ─── THE THREE RUNS ARE THREE KINDS OF WORD ───────────────────────────────
  *   /THE ELEMENTS          the fifteen named parts, defined from the records
@@ -831,7 +831,8 @@ export const Facts: readonly LedgerRow[] = [
 	},
 ];
 
-/** The page's bands: the two runs that are not the element list. */
+/** The page's bands: the two runs that are not the element list, and the limits
+ *  band that closes the page. */
 export const Bands = {
 	Words: {
 		kicker: "/THE DOCUMENT'S WORDS",

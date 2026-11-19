@@ -1,0 +1,27 @@
+# Line endings - everything is stored AND checked out as LF.
+#
+# `core.autocrlf` is `true` in the global git config on the development
+# machines, so every `git checkout`, `stash pop` and `reset --hard` wrote CRLF
+# back into the working tree. That is what gave Maintain/Format.sh's line-ending
+# pass work to do on a tree that had just been converted, and it is the reason
+# the pass existed at all (t_6b9a495a).
+#
+# A repository attribute outranks a user-level `core.autocrlf`, so this holds
+# for any clone on any machine, whatever its git config says.
+* text=auto eol=lf
+
+# Binary - never normalised, never diffed as text.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.pdf binary
+*.zip binary
+*.gz binary

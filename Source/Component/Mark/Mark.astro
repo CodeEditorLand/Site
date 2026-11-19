@@ -7,7 +7,7 @@
  * line is a register, a route, a consequence, a destination, a state - so it
  * takes the muted ink, it is never read out, and it is never a control.
  *
- * Eight kinds, one form each. The form is drawn by `Stylesheet/System/Mark` and
+ * Seven kinds, one form each. The form is drawn by `Stylesheet/System/Mark` and
  * this component is the only renderer, so a block picks a KIND and never a
  * colour, a size or a shape:
  *
@@ -36,7 +36,7 @@ import { MarkClass } from "./Type.js";
 import type { MarkFill, MarkKind, MarkTone } from "./Type.js";
 
 interface Props {
-	/** Which mark. One of the eight. */
+	/** Which mark. One of the seven. */
 	kind: MarkKind;
 
 	/**

@@ -139,12 +139,11 @@ const NoWorking: readonly RegisterRow[] = [
 /**
  * The element's English copy, as the `defaultValue` the band resolves against.
  *
- * Every string this band prints is `T(key, { defaultValue })`, and the rule is
- * that the English copy lives in the `defaultValue` **and** in
- * `Locale/En/Home.json` (`DESIGN.md` §4.4). This module used to pass an empty
- * string as the default, which made the copy depend entirely on the resolver
- * being live at the moment the band renders - and when it is not, the band
- * prints fifteen records with no chips and an empty body instead of failing
+ * Every string this band adds is `T(key, { defaultValue })`, and the rule is that
+ * the English copy lives in the `defaultValue` **and** in `Locale/En/Home.json`
+ * (`DESIGN.md` §4.4). An empty default would make the copy depend entirely on the
+ * resolver being live at the moment the band renders, and when it is not, the band
+ * would print fifteen records with no chips and an empty body instead of failing
  * loudly. The locale module is the single source of truth and is imported here
  * rather than re-typed, so the two can never drift.
  */

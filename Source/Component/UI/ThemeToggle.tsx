@@ -4,7 +4,11 @@ import { Button } from "./Button";
 
 /**
  * ThemeToggle - Daylight Field Record.
- * Single theme: renders a static sun icon indicating daylight mode.
+ *
+ * One theme, so there is nothing to toggle: the control is a disabled ghost button
+ * carrying the sun, `aria-label="Daylight theme active"` and the title `Daylight`.
+ * It is a marker of the theme the page is already in, not a switch - a control that
+ * could be pressed and changed nothing would be a lie about a second theme.
  */
 const ThemeToggle = ({ ClassName }: { ClassName?: string }) => {
 	return (

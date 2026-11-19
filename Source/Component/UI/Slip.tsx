@@ -8,12 +8,12 @@ import { cn } from "./Utility";
  * Slip - the small parts every control surface shares.
  *
  * A menu, a select, the palette, a dialog, a sheet, a drawer, a popover and the
- * rail's filter are one surface with one grammar, so the parts that grammar is
+ * hover card are one surface with one grammar, so the parts that grammar is
  * made of live here and nowhere else:
  *
  *   SlipRegister  the `# NAME / NN` line a slip opens with, and its path
  *   SlipEmpty     the adverse state: `◎` what is not here, `↳` what to do
- *   SlipLoading   the same head, counting `LOADING`, over three ruled rows
+ *   SlipLoading   the skeleton the rows land on, in the loaded row rhythm
  *   SlipError     `STATUS: INTERRUPTED`, the cause, the next step, the retry
  *   SlipNote      the `↳` proposition a panel carries under its head
  *   SlipFoot      the keyboard path, stated once for every slip that has one
@@ -124,10 +124,9 @@ export const SlipRegister = ({
 );
 
 /**
- * The empty state. Three lines and no illustration: the mark says *nothing is
- * here* in the grammar's fallback glyph, the second line says what would have
- * been here, and the third says what to do about it - which is the difference
- * between an empty list and a dead end.
+ * The empty state. The mark line says *nothing is here* in the grammar's fallback
+ * glyph, the second line says what would have been here, and the children are the
+ * way out - which is the difference between an empty list and a dead end.
  */
 export const SlipEmpty = ({
 	Mark = "NO RECORD",
@@ -158,7 +157,12 @@ export const SlipEmpty = ({
 );
 
 /**
- * The loading state: the slip's own head counting `LOADING`, over ruled rows.
+ * The loading state: ruled skeleton rows, in the rhythm the loaded rows will land
+ * on.
+ *
+ * The head is the caller's: a slip in this state hands `SlipRegister` a
+ * `SlipHead` with `State="LOADING"`, so the count cell prints the word instead of
+ * a figure and this component draws only the body.
  *
  * ─── NO SPINNER WHERE A SKELETON WOULD DO ──────────────────────────────────
  *
@@ -316,10 +320,10 @@ export interface SlipFootItem {
 /**
  * The foot: the slip's keyboard path, stated in the grammar's own caps.
  *
- * It was the palette's private device and it is the family's now, because the
- * claim it makes - *this control can be driven from the keyboard, and here is
- * how* - is either true of every slip or it is true of one. The order is the
- * grammar's: what moves, what opens, what closes.
+ * It belongs to the family rather than to the palette, because the claim it
+ * makes - *this control can be driven from the keyboard, and here is how* - is
+ * either true of every slip or it is true of one. The order is the grammar's:
+ * what moves, what opens, what closes.
  */
 export const SlipFoot = ({
 	Items,
@@ -353,9 +357,10 @@ export const SlipFoot = ({
 /**
  * The way out of a state, drawn as a row rather than as a button.
  *
- * A mark and a label, no fill, no frame. Used by the palette's empty state, by
- * a failed slip's retry, and by the matrix band's note line, so a reader who
- * learns the gesture in one control recognises it in the other. It is a real
+ * A mark and a label, no fill, no frame. The class is what the palette's empty
+ * state, the matrix band's note line and a failed slip's retry share, so a reader
+ * who learns the gesture in one control recognises it in the other; this component
+ * is the same row for the callers that have no markup of their own. It is a real
  * `<button>`; the class is the only thing that makes it a row.
  */
 export const SlipAction = ({
@@ -414,10 +419,11 @@ export const Chord = ({
 );
 
 /**
- * The scope control: one true value out of three, so it is a radio group and not
- * a row of buttons. Arrow keys move between cells, which is what a reader who has
- * just tabbed into a radio group expects; the roving tabindex is the group's, not
- * each cell's.
+ * The scope control: one true value out of the set it is given, so it is a radio
+ * group and not a row of buttons. Arrow keys move between cells, which is what a
+ * reader who has just tabbed into a radio group expects; the roving tabindex is
+ * the group's rule, written as `tabIndex={0}` on the chosen cell and `-1` on the
+ * rest.
  */
 export const Segmented = <Value extends string>({
 	Items,

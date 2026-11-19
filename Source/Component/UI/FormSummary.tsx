@@ -3,12 +3,11 @@ import { cn } from "./Utility";
 /**
  * FormSummary - the form's refusal, as an artifact.
  *
- * ─── WHAT IT WAS ──────────────────────────────────────────────────────────
- * Sixteen lines of markup inside one form component, and a second block of
- * classes in one lane's partial. It worked, and it was the only thing on the
- * site that knew how to say "this form was refused": the state word, a counted
- * set, and one control per member. A second form would have rebuilt it, and the
- * rebuild would have printed a different count in a different ink.
+ * ─── ONE RECEIPT ──────────────────────────────────────────────────────────
+ * The state word, a counted set and one control per member are one artifact, and
+ * they are one artifact because a second form that rebuilt them would print a
+ * different count in a different ink - which is how a site ends up with two ways
+ * to say the same refusal.
  *
  * ─── WHAT IT IS ───────────────────────────────────────────────────────────
  * One block with one job: take the refused rows, and print them as a receipt in

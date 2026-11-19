@@ -2,8 +2,9 @@
  * The site's one document-title pattern.
  *
  * Every route prints `<page title> | Code Editor Land`, and the pattern is
- * applied HERE, once, rather than by 43 pages that each append a suffix and
- * hope they agree. Before this module the head printed four patterns:
+ * applied HERE, once, rather than by each page that appends a suffix and hopes
+ * they agree. Four title shapes reach this function, and all four leave in the
+ * one pattern:
  *
  *   Documentation | Code Editor Land          (the `|` pages)
  *   404 - Page Not Found                     (no suffix at all)
@@ -17,8 +18,8 @@
  *
  * The home page is the one exception: its title LEADS with the record name and
  * carries the product's tagline after it, which is the baseline's own form
- * (`Target/index.html` at `57c16c23f`). A title that starts with the site name
- * is left alone.
+ * (`Target/index.html` at `57c16c23f`). A title that names the site without a
+ * suffix is left alone.
  */
 
 /** The site name, as the head prints it. */

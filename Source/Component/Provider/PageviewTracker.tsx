@@ -8,17 +8,21 @@ import { UseAnalytics } from "./AnalyticsProvider";
  * The router's listeners, installed once.
  *
  * ─── WHY THIS IS MODULE-LEVEL AND NOT PER-INSTANCE ────────────────────────
- * The tracker used to patch `history.pushState` and `history.replaceState` from
- * inside its own effect and restore them on cleanup. With one tracker that is
- * correct. With two - a second island, a preview, a surface that mounts its own
- * - the second tracker captured the FIRST one's patched functions as the
- * "originals", and whichever unmounted first restored a function the other had
- * already replaced. The result was a pageview per route change becoming a
- * pageview per tracker, and a restored router that was not the browser's.
+ * `history.pushState` and `history.replaceState` are one global pair, so a patch
+ * installed inside a tracker's own effect is only correct while exactly one
+ * tracker exists. With two - a second island, a preview, a surface that mounts
+ * its own - the second captures the FIRST one's patched functions as the
+ * "originals", and whichever unmounts first restores a function the other had
+ * already replaced: a pageview per route change becomes a pageview per tracker,
+ * and the restored router is not the browser's.
  *
- * The listeners now belong to the module: the first tracker installs them, the
- * last one removes them, and a second tracker joins the set. One route change is
- * one event however many trackers are mounted.
+ * The listeners belong to the module instead: the first tracker installs them,
+ * the last one removes them, and a second tracker joins the set. One route change
+ * is one event however many trackers are mounted.
+ *
+ * It renders nothing and reads `UseAnalytics()`, so it must sit inside
+ * `AnalyticsProvider` - `Layout/Base.astro` mounts the two in that order, and a
+ * tracker outside the provider is a component that can never send.
  */
 type Publish = (Path: string, Title: string) => void;
 

@@ -1,11 +1,10 @@
 /**
  * OAuth - the callback's four outcomes, as copy.
  *
- * The route used to print one apologetic sentence for every failure ("Something
- * went wrong during sign-in. Please try again.") and a heading that named no
- * state. Four ways the exchange can fail are four different facts, and a reader
- * deciding whether the fault is theirs, the provider's or the tenant's needs the
- * one that happened - not the average of the four.
+ * One apologetic sentence for every failure - "Something went wrong during
+ * sign-in. Please try again." - under a heading that named no state is the
+ * average of four different facts. A reader deciding whether the fault is
+ * theirs, the provider's or the tenant's needs the one that happened.
  *
  * ─── THE FOUR ARMS ────────────────────────────────────────────────────────
  * Each arm is a `ShellState` `error` composition, so it prints the same way the

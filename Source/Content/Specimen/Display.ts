@@ -14,7 +14,7 @@
  * is an excuse and a reason is a fact.
  *
  * ─── THE DISPOSITION IS THE SHEET'S OWN VOCABULARY ────────────────────────
- * `BUILT` and `NOT APPLICABLE` are not members of §1.5's eight status words, and
+ * `BUILT` and `N/A` are not members of §1.5's eight status words, and
  * they must not be: a status is what a surface is doing, and this is what the sheet
  * did with a cell. It is the same three dispositions `Parts.ts` uses, stated as two.
  *
@@ -26,9 +26,10 @@
  *
  * ─── THE SPECIMENS ARE DATA, THE STAGE IS THE COMPONENT'S ─────────────────
  * A row states what it is (`state`), which part it exercises (`component`), when
- * that state is right (`when`), and the props its specimen needs (`spec`). The
- * renderer mounts the component; it decides nothing. That split is why the matrix
- * and the live rows cannot drift: both read this file.
+ * that state is right (`when`), and the props its specimen needs - carried on
+ * the row itself through `DisplaySpec`. The renderer mounts the component; it
+ * decides nothing. That split is why the matrix and the live rows cannot drift:
+ * both read this file.
  */
 
 /* ─── THE COLUMNS ────────────────────────────────────────────────────────── */
@@ -923,8 +924,8 @@ export const Rows: readonly Row[] = [
  * One cell of the matrix.
  *
  * A row lists only its exceptions, so a missing entry is `BUILT` - and that default
- * is what makes every `NOT APPLICABLE` in this file a sentence someone had to write
- * rather than a blank someone left.
+ * is what makes every `N/A` in this file a sentence someone had to write rather
+ * than a blank someone left.
  */
 export const MatrixCell = (Row: Row, Column: Column): Cell =>
 	Row.cells[Column.key] ?? { disposition: "built" };

@@ -1,13 +1,11 @@
 /**
  * Data - the dashboard's privacy and data-rights directory, as data.
  *
- * Every destination here already existed in `DynamicPrivacyRequests.tsx` as a
- * card built inline: a title, a code badge, a statutory article, a paragraph
- * and a link to `/Contact/<Slug>`. The cards were markup; the facts were the
- * registry. This module reads the facts back out of `Library/Contact/Request`
- * so a request cannot be listed with the wrong article, the wrong address or a
- * link to a route that does not exist, and the template has nothing left to
- * decide.
+ * A request card is a title, a code badge, a statutory article, a paragraph and
+ * a link to `/Contact/<Slug>`. The cards are markup; the facts are the registry.
+ * This module reads the facts out of `Library/Contact/Request` so a request
+ * cannot be listed with the wrong article, the wrong address or a link to a
+ * route that does not exist, and the template has nothing left to decide.
  *
  * Three rules this module keeps:
  *
@@ -23,9 +21,9 @@
  *   shapes: a right ends in `Open form`, a support channel ends in a mailbox,
  *   and the erasure block is one red card.
  *
- * The copy is literal English, exactly as the component it replaces carried
- * it: this surface was never routed through `T`, and inventing i18n keys for
- * it now would change what the page resolves without changing what it says.
+ * The copy is literal English: this surface is not routed through `T`, and
+ * inventing i18n keys for it would change what the page resolves without
+ * changing what it says.
  */
 import { Requests } from "../../Library/Contact/Request.js";
 
@@ -104,11 +102,10 @@ export const Rights: RequestGrid<RightsCard> = {
  * The five support channels: the general inquiry first, then the four that
  * answer a named kind of trouble.
  *
- * `HAILS` was missing. The grid opened on technical support, so a reader whose
- * reason was "I want to ask the team something" had no card - the only general
- * door on the site was the one route this grid did not print. The intro names
- * five kinds now because there are five cards, and a count written beside a list
- * has to be the list's own.
+ * The order is the point. `HAILS` is the only general door on the site, so a
+ * reader whose reason is "I want to ask the team something" must find a card
+ * before the four that name a trouble. The intro names five kinds because there
+ * are five cards, and a count written beside a list has to be the list's own.
  */
 export const Support: RequestGrid<SupportCard> = {
 	label: "Support & Assistance",

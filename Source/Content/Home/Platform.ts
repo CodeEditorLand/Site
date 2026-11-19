@@ -6,27 +6,28 @@
  * the version, the size, the signing state, its action and its status.
  *
  * ─── THE VERSION AND SIZE ROWS ────────────────────────────────────────────
- * Both print `UNAVAILABLE`, and both did not. The card used to print
- * `Version: vPre-release` and `Size: Coming Soon` - a version string that names
- * no published release and a marketing phrase where a measurement belongs. The
- * Download page's own release register prints `VERSION: UNAVAILABLE` for the same
- * release, so the two surfaces contradicted each other about the same fact.
+ * Both print `UNAVAILABLE`: a version string that names no published release and
+ * a marketing phrase where a measurement belongs are claims the build cannot
+ * back. The Download page's own release register prints `VERSION: UNAVAILABLE`
+ * for the same release, and two surfaces must not contradict each other about
+ * the same fact.
  *
  * `UNAVAILABLE` is the vocabulary's word for a fact that exists and is empty, and
  * the note under the three rows says why: nothing has been published to version,
  * measure or digest. A zero would be a measurement; "Coming Soon" is a promise.
  *
  * `STATUS: PREPARING` is `DESIGN-COMPLETE.md` §1.5's word for this condition
- * (`quiet`), and §1.5's vocabulary is closed at eight values. The row printed
- * `RELEASE PREPARATION` - two words, no state among them - so the state table
- * (`Component/Surface/State.ts`) could not read it and any printer that asked
- * for its tone fell back to `ink`. "Release" is not lost: the card's own marker
+ * (`quiet`), and §1.5's vocabulary is closed at eight values. A two-word phrase
+ * such as `RELEASE PREPARATION` carries no state the table
+ * (`Component/Surface/State.ts`) can read, so a printer that asked it for a tone
+ * would fall back to `ink`. The word "release" still prints: the card's own marker
  * is `# RELEASE_01` and the band it sits in is the release band.
  *
- * ─── THE FOUR FACTS THE ROW GAINED ────────────────────────────────────────
- * The row printed five facts and stopped. A reader choosing where to build has
- * four more questions the site already answers somewhere else, so they are
- * printed here, in the same ledger, rather than left for the reader to assemble:
+ * ─── THE FOUR FACTS THE LEDGER ALSO PRINTS ────────────────────────────────
+ * The five facts the release record holds - architecture, channel, version, size,
+ * signing - are joined by four a reader choosing where to build would otherwise
+ * have to assemble from other pages, so they are printed here, in the same
+ * ledger:
  *
  * - `WEBVIEW:` is the one runtime fact that actually differs between the three
  *   rows - `WKWebView` on macOS, `WebView2` on Windows, `WebKitGTK` on Linux

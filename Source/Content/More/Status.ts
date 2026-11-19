@@ -4,10 +4,10 @@
  *
  * ─── WHY THIS PAGE EXISTS ─────────────────────────────────────────────────
  * The site states a status on fifteen element records, two releases, three
- * platform records and one absent artifact - and a reader could only find them
- * by opening four different surfaces and holding the answers in their head. A
- * manual has a page that answers *what is live, what is coming, what is retired*
- * in one reading, and this site did not.
+ * platform records and one absent artifact - and a reader looking for them
+ * otherwise opens four surfaces and holds the answers in their head. A manual has
+ * one page that answers *what is live, what is coming, what is retired* in one
+ * reading, and this is that page.
  *
  * ─── THE ROWS ARE DERIVED, NOT WRITTEN ────────────────────────────────────
  * Nothing below retypes a status. The fifteen rows come from
@@ -29,7 +29,9 @@
  *
  * Every word is from §1.5's eight. The column is a grouping of the vocabulary,
  * never a ninth word: a board that invented `PLANNED` would be the drift the
- * vocabulary exists to prevent.
+ * vocabulary exists to prevent. `READY` and `INTERRUPTED` answer no column's
+ * question - no record the board files states either today - and a column for a
+ * word nothing states would be a shelf kept empty on purpose.
  *
  * ─── THE EMPTY COLUMN IS PART OF THE DESIGN ───────────────────────────────
  * `RETIRED` has no rows, and it prints a composed empty rather than disappearing:
@@ -173,8 +175,8 @@ const Bare = (Index: string): string => Index.replace(/^#\s*/, "");
  * One stamp line's value, as `Content/Home/Roadmap.ts` writes it.
  *
  * A release's status is not a field on the card - it is a span line in the
- * card's stamp, because the baseline printed a stamp's brackets, keyword and
- * value in three different inks and a string cannot carry that. Reading it back
+ * card's stamp, because a stamp prints its brackets, keyword and value in three
+ * different inks and a string cannot carry that. Reading it back
  * out of the spans is the only way to state the release's own word rather than
  * a second copy of it, so the board and the homepage cannot disagree.
  */
@@ -323,7 +325,7 @@ export const TotalRows = AllRows.length;
  * travelled*, which is the question the word `PREPARING` raises and cannot
  * answer. The two ends are the site's own: source, and a signed artifact.
  *
- * Four of the five stops are `UNAVAILABLE` and that is the point of the rail: a
+ * Three of the five stops are `UNAVAILABLE` and that is the point of the rail: a
  * progression whose middle is missing is more honest than one drawn as complete.
  */
 export const Publication: Comparison = {
@@ -465,9 +467,10 @@ export const Vocabulary: readonly LedgerRow[] = [
  * The figures the board is read against.
  *
  * Every count is computed from the rows above, so a column that gains a record
- * gains its figure. The one figure that is not a count of rows is `WORDS USED`,
- * which is a count of the vocabulary's eight that this site actually states -
- * the difference between a closed vocabulary and a full one.
+ * gains its figure. `WORDS USED` counts the distinct vocabulary words the board's
+ * rows state - the difference between a closed vocabulary and a full one - and
+ * `AS OF` is the one figure that is not a count at all: it is the day the page
+ * rendered.
  */
 export const Measures = (AsOf: string): readonly Measure[] => {
 	const Used = new Set(AllRows.map((Row) => Row.state));

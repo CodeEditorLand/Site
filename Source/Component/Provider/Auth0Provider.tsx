@@ -17,16 +17,14 @@ import type { ReactNode } from "react";
  * - Okta claims are normalized by Auth0 to standard OIDC format
  *
  * ─── THE UNCONFIGURED ARM ─────────────────────────────────────────────────
- * The wrapper used to mount the SDK's provider whatever it was handed. With no
- * domain or no client identifier the SDK throws on mount, and because this is a
- * context wrapper that takes the whole island down with it - so the one surface
- * a reader reaches when they cannot get in was the surface that failed hardest
- * when the environment was incomplete.
+ * The SDK's provider cannot mount without a domain and a client identifier: it
+ * throws, and because this is a context wrapper that takes the whole island down
+ * with it - so the one surface a reader reaches when they cannot get in would be
+ * the surface that failed hardest when the environment was incomplete.
  *
- * A missing value is now a state the block can express: the children render
- * unwrapped, the credential surface still prints its frame and its report, and
- * the page can state that the provider is unconfigured. A configured environment
- * renders exactly what it rendered before, byte for byte.
+ * A missing value is a state the block expresses: the children render unwrapped,
+ * the credential surface still prints its frame and its report, and the page can
+ * state that the provider is unconfigured.
  */
 export default ({
 	Children,

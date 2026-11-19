@@ -26,34 +26,36 @@ import { cn } from "./Utility";
  * ─── WHAT THIS FILE DECIDES, AND WHAT RADIX KEEPS ─────────────────────────
  *
  * Radix owns the modal: the focus trap, the scroll lock, Escape, outside-click,
- * the `aria-modal` and the `data-state` every rule below reads. Nothing about
- * that is restated here. What this file decides is that a dialog is a *slip* -
- * the same white insert a menu is, with the same `--Divider` frame, the same
- * radius 0, the same 120 ms arrival - and that it therefore opens with the same
- * register line, carries the same adverse arms, and states the same keyboard
- * path in the same foot. A dialog that arrived as a differently built box would
- * be the fourth surface in a system that has one.
+ * the `aria-modal` and the `data-state` every rule below reads. The one thing this
+ * file adds to that is the return: `UseDoorReturn` captures the element that had
+ * focus and restores it, refusing `document.body`, which is an override of Radix's
+ * close-autofocus rather than a second trap. What this file decides is that a
+ * dialog is a *slip* - the same white insert a menu is, with the same `--Divider`
+ * frame, the same radius 0, the same 120 ms arrival - and that it therefore opens
+ * with the same register line, carries the same adverse arms, and states the same
+ * keyboard path in the same foot. A dialog that arrived as a differently built box
+ * would be the fourth surface in a system that has one.
  *
  * ─── THE TALL DIALOG IS THE REASON FOR THE THREE REGIONS ──────────────────
  *
- * The kit centres a dialog with `top-50%` + `translate-y-[-50%]` and gives it no
- * internal scroll. A dialog taller than the viewport therefore overflows off
- * both edges, and the top of it - which holds the title and the first field -
- * is the part that goes off-screen first and the part a reader cannot reach.
- * The fix is structural rather than a size cap: the panel is a flex column at
- * `min(90vh, …)`, the head and the foot are `flex: none`, and the body is the
- * only thing that scrolls. Then a dialog can be two rows or two hundred, and
- * the title stays on screen while the middle moves - which is the same device
- * the plate's pinned spec column uses, at modal scale.
+ * The kit's dialog is centred by `top-50%` + `translate-y-[-50%]` and has no
+ * internal scroll, so a dialog taller than the viewport overflows off both edges
+ * and the top of it - which holds the title and the first field - is the part that
+ * goes off-screen first and the part a reader cannot reach. The fix is structural
+ * rather than a size cap: `.Slip--dialog` keeps the same centring, bounds itself at
+ * `min(90vh, 90dvh)`, is a flex column, and gives the head and the foot `flex:
+ * none` so the body is the only thing that scrolls. Then a dialog can be two rows
+ * or two hundred, and the title stays on screen while the middle moves - which is
+ * the same device the plate's pinned spec column uses, at modal scale.
  *
  * ─── THE ADVERSE ARMS ARE ABOVE THE CHILDREN, NOT INSTEAD OF THEM ─────────
  *
- * `state` prints the arm *over* the body and leaves the children rendered
- * underneath. That is deliberate and it is §7's "offline / stale" state: a
- * dialog that is reloading should keep the last known rows visible, say they
- * are stale, and not blank the panel the reader is reading. A dialog that
- * replaced its content with a skeleton would be a dialog that made the reader
- * lose their place twice.
+ * `state` prints the arm *above* the body, in the same flow, and leaves the
+ * children rendered underneath. That is deliberate and it is §7's "offline /
+ * stale" state: a dialog that is reloading should keep the last known rows
+ * visible, say they are stale, and not blank the panel the reader is reading. A
+ * dialog that replaced its content with a skeleton would be a dialog that made the
+ * reader lose their place twice.
  */
 
 /**

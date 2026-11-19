@@ -36,11 +36,13 @@
  * document's own facts proves that the block can hold THIS document.
  *
  * ─── THE STAGE IS A PLATE, NOT A VIEWPORT ────────────────────────────────
- * The motion specimen splits 4/1px/7 above 1024px, the sequence runs horizontally
- * above 768px and the article is 8/1px/4 above 1024px. All three are viewport
- * rules, and a plate that simulated them would be printing a browser.
- * `_Apparatus.scss` declares the stacked composition for the narrow stage and
- * says so where it does it.
+ * The motion specimen splits 4/1px/7 above 1024px and the sequence runs
+ * horizontally above 768px: both are viewport rules, and a plate that simulated
+ * them would be printing a browser. The article is the third case and the only
+ * one that is not a viewport's: its workspace splits into desk / paper / desk /
+ * 1px / margin above 84rem of its own container, so the stage inherits whatever
+ * composition its width earns. `_Apparatus.scss` declares the stacked
+ * composition for the narrow stage and says so where it does it.
  */
 import {
 	Groups,

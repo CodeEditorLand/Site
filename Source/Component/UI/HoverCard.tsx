@@ -11,20 +11,19 @@ import { cn } from "./Utility";
 /**
  * HoverCard - a slip that arrives on a pause.
  *
- * ─── IT WAS THE ONE OVERLAY THAT WAS NOT THE SLIP ─────────────────────────
+ * ─── WHY IT IS A SLIP AND NOT A CARD ──────────────────────────────────────
  *
- * The kit's hover card was `rounded-none border bg-popover p-4 text-popover-
- * foreground` at a fixed `w-64`: a box the site had never seen anywhere else,
- * with the kit's `zoom-in-95` arrival (which emits nothing - there is no
- * `tailwindcss-animate` in this tree) and no register line. It was the fourth
- * surface in a system that has one, and it was invisible as such because a
- * hover card is small and nobody compares it with a menu.
+ * The kit's hover card is `rounded-none border bg-popover p-4 text-popover-
+ * foreground` at a fixed `w-64`: a box the site has nowhere else, with the kit's
+ * `zoom-in-95` arrival (which emits nothing - there is no `tailwindcss-animate`
+ * in this tree) and no register line. That would be the fourth surface in a
+ * system that has one, and it is invisible as such because a hover card is small
+ * and nobody compares it with a menu.
  *
- * It is a slip now: `.Slip`, `.Slip--panel`, the family's `--Divider` frame,
- * the family's 120 ms arrival from the side it opened on, and the same register
- * line - which matters more here than anywhere else, because a hover card
- * appears without a click and is the surface a reader is least prepared to
- * identify.
+ * So it is the slip: `.Slip`, `.Slip--panel`, the family's `--Divider` frame, the
+ * family's 120 ms arrival from the side it opened on, and the same register line -
+ * which matters more here than anywhere else, because a hover card appears
+ * without a click and is the surface a reader is least prepared to identify.
  *
  * ─── THE DELAYS ARE PART OF THE DESIGN, NOT A DEFAULT ─────────────────────
  *

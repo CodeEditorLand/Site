@@ -2,22 +2,21 @@
  * Tags - the document head, as data.
  *
  * ─── WHY THE HEAD IS A MODULE AND NOT A JSX RETURN ────────────────────────
- * The head was one function that built and printed its tags in the same
- * expression, which meant the only way to know what a route's head would write
- * was to render it - and the only place it could be read was `<head>`. A
- * specimen sheet cannot mount a head in a body, so the one part of the site a
- * reader meets before the page was also the one part the sheet could not print.
+ * A function that builds and prints its tags in the same expression can only be
+ * read by rendering it, and only inside `<head>` - so the one part of the site a
+ * reader meets before the page is the one part a specimen sheet cannot print: a
+ * sheet cannot mount a head in a body.
  *
  * This module decides; `MetaTags.tsx` renders. The list is the contract, and the
  * sheet prints it as a register, so the head's tags are inspectable without a
  * browser and a tag added here appears on the sheet with no second edit.
  *
- * ─── THE FOUR ABSENCES THE OLD SHAPE COULD NOT EXPRESS ────────────────────
- * `image` defaulted to the site's card, so a page with no image passed `""` and
- * the head printed `og:image` as the bare origin plus three sub-tags describing
- * it. `url` defaulted to `""`, so an unresolved canonical printed
- * `<link rel="canonical" href="">` - a page that canonically lives nowhere.
- * Both are now absences the shape can carry:
+ * ─── THE TWO ABSENCES THE SHAPE CARRIES ───────────────────────────────────
+ * A default cannot state an absence: an `image` that fell back to the site's card
+ * would make a page with no image print `og:image` as the bare origin plus three
+ * sub-tags describing it, and a `url` that fell back to `""` would print
+ * `<link rel="canonical" href="">` - a page that canonically lives nowhere. Both
+ * are absences the shape carries explicitly:
  *
  *   image: null   omits `og:image`, its three sub-tags and `twitter:image`
  *                 together, because they describe one image
@@ -30,6 +29,10 @@
  * duplicates of `og:locale` (which is the page's own language) - and they are
  * `AlternateLocales` here rather than two literals in a JSX block, so the list
  * has one home.
+ *
+ * `theme-color` is not in this list: the frame writes it once as the field's
+ * `#F2EDE3` (`Layout/Base.astro`), never `#000000` or `#ffffff`, and there is no
+ * `prefers-color-scheme` block anywhere - the site has one theme.
  */
 import { NormalizeTitle, SiteName } from "./Title.js";
 

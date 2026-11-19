@@ -4,15 +4,15 @@
  *
  * ─── THE COMPOSITION (the margin channel) ────────────────────────────────
  * The piece is the page; its apparatus is printed in the margin beside it. The
- * workspace is three tracks - the piece at 8, a 1px divider, the margin at 4 -
- * and the margin carries four things in reading order:
+ * margin carries five things in reading order:
  *
  *   1. the summary (`RecordLedger`): who filed it, when, how long it takes,
  *      what it is tagged, how many sections it has;
  *   2. the section register (`ON THIS PAGE`), the article's own `##` headings;
- *   3. the margin notes (`RecordMargin`): the date, the manual page that keeps
- *      the subject current, and where a correction goes;
- *   4. the folded aside (`RecordAside`): what the piece does not cover.
+ *   3. the insets (`RecordInset`): the piece's own extent, drawn;
+ *   4. the margin notes (`RecordMargin`): the date, the piece's shape, and the
+ *      manual page that keeps the subject current;
+ *   5. the folded aside (`RecordAside`): what the piece does not cover.
  *
  * The first two are ONE object and it is the one that stays with the reader
  * (`.blog-article__pinned`): the register answers "where am I in this piece" for
@@ -32,8 +32,8 @@
  *
  * Below 1024px the channel is re-composed, not squeezed: the piece takes the
  * full measure, the margin becomes a ruled section under it (summary, register,
- * notes, aside), and nothing is pinned - the unit is a stacked pair there.
- * Nothing is hidden and nothing is reduced - the same four things, in the same
+ * insets, notes, aside), and nothing is pinned - the unit is a stacked pair there.
+ * Nothing is hidden and nothing is reduced - the same five things, in the same
  * order, one column.
  *
  * ─── THE SHELL'S FOUR RULES ──────────────────────────────────────────────

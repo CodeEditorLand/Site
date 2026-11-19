@@ -9,7 +9,7 @@ import { cn } from "./Utility";
 /**
  * Tabs - sibling views of one subject, one visible at a time.
  *
- * ─── THE TWO STATES THE KIT DID NOT HAVE ─────────────────────────────────
+ * ─── THE TWO STATES RADIX CANNOT GIVE ─────────────────────────────────────
  * Radix gives the strip its behaviour: one tab stop for the group, arrow keys,
  * Home and End, `aria-selected` on the chosen tab and `hidden` on every panel but
  * one. What it cannot give is the two states a strip meets on a real page:
@@ -21,9 +21,9 @@ import { cn } from "./Utility";
  *                   that says `→ 0 MORE` is a strip that talks to itself.
  *   KEYBOARD PAST THE EDGE   an arrow key can move the roving tab stop onto a tab
  *                   the strip is hiding, and a reader would then be typing into
- *                   something they cannot see. The trigger scrolls itself into
- *                   view on focus, so the keyboard path and the pointer path see
- *                   the same strip.
+ *                   something they cannot see. The strip scrolls the focused
+ *                   trigger into view on focus capture, so the keyboard path and
+ *                   the pointer path see the same strip.
  *
  * ─── THE OVERFLOW IS A READOUT, NOT A CONTROL ────────────────────────────
  * A "more" button at the edge would be a second scroller, and the second scroller
@@ -118,8 +118,8 @@ const TabsList = React.forwardRef<
 	 *
 	 * The roving tab stop is Radix's, so an arrow key can land on a tab the strip
 	 * is hiding. `nearest` moves the strip the shortest distance that makes the
-	 * tab visible and does nothing when it already is - which is why this is not a
-	 * `scrollIntoView` on every focus.
+	 * tab visible and does nothing when it already is - which is why this can run
+	 * on every focus without shifting a strip that did not need to move.
 	 */
 	const Reveal = React.useCallback(
 		(Event: React.FocusEvent<HTMLDivElement>) => {

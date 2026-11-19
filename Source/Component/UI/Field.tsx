@@ -9,12 +9,12 @@ import { cn } from "./Utility";
  * figure, and the one thing to do with it.
  *
  * ─── WHY THIS COMPONENT EXISTS ────────────────────────────────────────────
- * `Source/Component/UI/` carried the ten primitives and no field. Every surface
- * that needed a labelled control rebuilt the same six parts by hand, and the
- * three that did it (the contact form, the account screens, the specimen plate)
- * disagreed about all six: one put the label under the input, one printed a
- * hint and an error in the same slot, one counted nothing, and none of them
- * could state `READ-ONLY` anywhere a reader would look for it.
+ * One field, once. `Source/Component/UI/` carries the primitives and no field, so
+ * every surface that needs a labelled control would rebuild the same six parts by
+ * hand - and the surfaces that do (the contact form, the account screens, the
+ * specimen plate) disagree about all six: one puts the label under the input, one
+ * prints a hint and an error in the same slot, one counts nothing, and none of
+ * them can state `READ-ONLY` anywhere a reader would look for it.
  *
  * So the anatomy lives here once. The component owns the name, the register, the
  * box, the sentences, the count and the action; the primitive it wraps owns only
@@ -31,11 +31,14 @@ import { cn } from "./Utility";
  * it is reading the input.
  *
  * ─── THE COUNTER IS DERIVED, NOT SUPPLIED ─────────────────────────────────
- * `Limit` is the only figure a caller gives. The count is the length of the
- * value the control declares - `value` or `defaultValue` - so a field cannot
- * print `12 / 64` over a box holding forty characters. On a controlled control
- * the count is live; on an uncontrolled one it is the declared value's length,
- * which is the honest thing a server-rendered field can know.
+ * `Limit` is the only figure a caller gives. The count is read from the value the
+ * control declares - `value` or `defaultValue` - and only from the caller's
+ * `Value` when the control declares none, so a field cannot print `12 / 64` over
+ * a box holding forty characters. `Measure` decides what the figure is: `length`
+ * counts the characters of the value (a text field), `value` counts the value
+ * itself (a slider). On a controlled control the count follows the render that
+ * carries the new value; on an uncontrolled one it is the declared value's
+ * length, which is the honest thing a server-rendered field can know.
  *
  * ─── WHAT THE FIELD ADDS TO THE STATE LAYER ───────────────────────────────
  * `State/_Field.scss` owns rest, hover, focus, invalid, disabled and read-only
@@ -46,9 +49,13 @@ import { cn } from "./Utility";
  *   partial   the value arrived and the fact that would confirm it did not
  *   loading   the schema printed and the answer barred, in the record grammar
  *
- * and it cannot own `focus` in a document that has no cursor. All five are
- * declared on the block as `data-state`, which is the same vocabulary the state
- * layer speaks and the reason a specimen sheet can print a focus ring.
+ * and it cannot own `focus` in a document that has no cursor. The block declares
+ * its one state as `data-state` - `valid`, `loading` and `focus` among the seven
+ * values - and the counter's turn is its own pair of attributes: `data-over` when
+ * the figure is past `Limit`, `data-near` at ninety per cent of it. `partial` is
+ * a class on the sentence in the foot, not a block state, because the value did
+ * arrive. Together they are the same vocabulary the state layer speaks, and the
+ * reason a specimen sheet can print a focus ring.
  *
  * ─── NO WRAPPER, NO SECOND SURFACE ────────────────────────────────────────
  * The field draws one box. A caller that wants a field on a white insert passes
@@ -57,7 +64,8 @@ import { cn } from "./Utility";
  * printed on. A card inside a card is never the answer.
  */
 
-/** The state the block declares, in the order the field resolves it. */
+/** The state the block declares. `ResolveState` picks one, first match wins:
+ * `loading`, `disabled`, `readonly`, `invalid`, `valid`, `focus`, `rest`. */
 export type FieldState =
 	| "rest"
 	| "focus"
@@ -121,7 +129,9 @@ export interface FieldProps {
 
 	/**
 	 * A declared state the document cannot otherwise produce. `focus` is the one
-	 * arm a printed sheet needs; a live field resolves it from `:focus-visible`.
+	 * arm a printed sheet needs; a live field draws its ring from
+	 * `:focus-visible` on the control (`:has()`, so a click does not ring it) and
+	 * never writes this value itself.
 	 */
 	State?: "focus" | undefined;
 
@@ -137,7 +147,7 @@ export interface FieldProps {
 	/** The one link that belongs to the name (`FORGOT?`, `PASTE`). */
 	HeadAction?: React.ReactNode;
 
-	/** An extra word in the field's register, beside `REQUIRED`/`READ-ONLY`. */
+	/** An extra word in the field's register, beside `READ-ONLY` and the counter. */
 	Meta?: string | undefined;
 
 	/** The field on a white insert: the hairline alone, no second fill. */

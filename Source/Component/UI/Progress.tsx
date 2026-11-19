@@ -30,9 +30,11 @@ import { cn } from "./Utility";
  *   partial      the figure is known and the total is not: `07 OF UNAVAILABLE`,
  *                never `07 OF 0` and never a full bar.
  *
- * ─── THE FIGURE IS TABULAR AND ZERO-PADDED BY THE CALLER ─────────────────
- * The component prints what it is given. It pads nothing, because the site pads in
- * one place (`Matrix/Data.ts`'s `Pad`) and a second pad would be a second width.
+ * ─── THE FIGURE IS TABULAR AND ZERO-PADDED TO TWO DIGITS ─────────────────
+ * The component pads the value it prints (`String(value).padStart(2, "0")`) so
+ * `07 OF 12` holds its column while the job runs. The site's other pad is
+ * `Matrix/Data.ts`'s `Pad`, and both are two digits, so the two widths are one
+ * width; a pad that was three digits somewhere would be a second width.
  */
 
 /** The job's state, which is not the same thing as its value. */
@@ -101,8 +103,8 @@ const Progress = React.forwardRef<
 			</ProgressPrimitive.Root>
 		);
 
-		// The bare bar is the kit's bar. A caller that asked for no register gets
-		// the exact element it had before this file grew a figure.
+		// The bare bar is the kit's bar. A caller that asks for no register gets the
+		// track and the fill and nothing else - no wrapper, no line above it.
 		if (label === undefined) return Root;
 
 		// A total that is not known prints `UNAVAILABLE`, never `00`: an indeterminate

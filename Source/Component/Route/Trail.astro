@@ -2,11 +2,11 @@
 /**
  * Trail - the site's one breadcrumb grammar.
  *
- * `DESIGN.md` §9 Q3 found two trail grammars in the tree - the mono `/LABEL`
- * strip on Contact and Blog, and the plain `Home /` list on Contributing,
- * License, the two legal pages, the doc article and the account index - and
- * settled on the mono form: a trail is a Route Strip artifact (§1.8), not a
- * detail of whichever page first needed one.
+ * Two trail grammars live in the tree - the mono `/LABEL` strip on Contact and
+ * Blog, and the plain `Home /` list on Contributing, License, the two legal
+ * pages, the doc article and the account index - and `DESIGN.md` §9 Q3 settled
+ * on the mono form: a trail is a Route Strip artifact (§1.8), not a detail of
+ * whichever page first needed one.
  *
  * The grammar, in four rules:
  *
@@ -15,16 +15,14 @@
  * - **The leading slash is the only separator.** There is no separator element
  *   between crumbs, because a second `/` prints the grammar twice.
  * - **The current page is not a link, and it is the LAST crumb by position.**
- *   It is a `<span>` carrying `aria-current="page"`. The rule used to be
- *   `href`-shaped - the component trusted the caller to omit the target - so a
- *   page that passed a target on its final crumb printed a link to itself: a
- *   route statement that lies about where the reader is. Position decides now,
- *   and the target is dropped rather than honoured.
- * - **A trail with no crumb renders nothing.** It used to render
- *   `<nav aria-label="Breadcrumb"><ol></ol></nav>`: a landmark a screen reader
- *   announces and a reader cannot use. A breadcrumb with nothing in it is not an
- *   empty state, it is a defect - the page has no route to state, so the block
- *   states none.
+ *   It is a `<span>` carrying `aria-current="page"`. Position decides, not the
+ *   data: a page that passes a target on its final crumb gets a statement rather
+ *   than a link to itself, which would be a route statement that lies about where
+ *   the reader is. The target is dropped rather than honoured.
+ * - **A trail with no crumb renders nothing.** `<nav aria-label="Breadcrumb">
+ *   <ol></ol></nav>` is a landmark a screen reader announces and a reader cannot
+ *   use. A breadcrumb with nothing in it is not an empty state, it is a defect -
+ *   the page has no route to state, so the block states none.
  *
  * It publishes `.trail`, `.trail__list`, `.trail__item`, `.trail__link` and
  * `.trail__current` from `System/Component/Route/_Trail.scss`.
@@ -32,11 +30,11 @@
  * No script and no hydration: a trail is markup. It is also not a heading - the
  * trail says where the reader is, and the page's `h1` says what they are reading.
  *
- * This component absorbs `Component/Contact/ContactBreadcrumb.astro` and
- * `System/Component/Contact/_Breadcrumb.scss`, which were the same trail under a
- * surface's own name; both files are kept and marked absorbed rather than
- * deleted, and this file is the survivor. The two blog surfaces now import this
- * file directly.
+ * `Component/Contact/ContactBreadcrumb.astro` and
+ * `System/Component/Contact/_Breadcrumb.scss` are absorbed, not deleted: they are
+ * the same trail under a surface's own name, kept and marked absorbed for any
+ * caller that still reaches through them. This file is the one trail, and both
+ * blog surfaces import it directly.
  */
 import type { TrailItem } from "./Type.js";
 
@@ -45,10 +43,10 @@ interface Props {
 	trail: readonly TrailItem[];
 
 	/**
-	 * The landmark's accessible name. Defaults to the word the site has always
-	 * used; a page whose document has a name of its own can say so -
-	 * `Breadcrumb: Documentation` - because a landmark is announced out of
-	 * context and "Breadcrumb" alone does not say which document.
+	 * The landmark's accessible name. Defaults to `Breadcrumb`; a page whose
+	 * document has a name of its own can say so - `Breadcrumb: Documentation` -
+	 * because a landmark is announced out of context and `Breadcrumb` alone does
+	 * not say which document.
 	 */
 	label?: string;
 

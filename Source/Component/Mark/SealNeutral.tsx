@@ -4,28 +4,24 @@ import React from "react";
  * SealNeutral - the seal's FORM, with no device in it.
  *
  * ─── WHY THE FORM NEEDS A NAME ────────────────────────────────────────────
- * The site strikes one roundel: concentric rings, four cardinal ticks, the
- * element's device in the middle, in the accent with `--AccentDetail` for the
- * detail. The eight element seals are variations of it - the same 64-unit
- * viewBox, the same outer ring at r=28 and stroke 1, the same inner ring at
- * stroke 0.5, the same ticks. Each replaces the centre.
+ * The eight element seals in `Brand/FieldRecordSeal` share one 64-unit viewBox
+ * and one ink pair: a seal whose device is a roundel draws the same outer ring
+ * at r=28 and stroke 1, the same inner rings, and the same four cardinal ticks.
+ * Each element replaces the centre.
  *
- * The ninth case is the element whose record carries no device (`Common`). It
- * used to print `◎` in a 36px box, which is a glyph in a box and not a seal -
- * two forms for one mark, and the box was a different size from every roundel
- * beside it on the same wall.
+ * The case with no device (`Common`) is this one. A `◎` in a box would be a
+ * glyph in a box and not a seal - two forms for one mark, and a box at a size
+ * no roundel beside it on the same wall shares.
  *
- * This is that case, drawn: the roundel with an EMPTY field, and the grammar's
- * `◎` (U+25CE, the fallback mark) set in the field as the honest statement that
- * there is no device. Nothing is lost - the `◎` still prints - and the wall now
- * carries one form at one size.
+ * So this is that case, drawn: the roundel with an EMPTY field, and the
+ * grammar's `◎` (U+25CE, the fallback mark) set in the field as the honest
+ * statement that there is no device. Nothing is lost - the `◎` still prints -
+ * and the wall carries one form at one size.
  *
  * ─── THE INKS ARE TOKENS ──────────────────────────────────────────────────
- * `--Accent` for the rings and the ticks, `--AccentDetail` for the one detail
- * stroke. No literal colour: the file this replaces carried `#D6B947` and
- * `var(--Accent, #1E742A)` inline, which is the one thing the identity forbids
- * a mark to do (`DESIGN-COMPLETE.md` §1.6 - "a block never carries a literal
- * colour").
+ * `--Accent` for the outer ring, the field's two rings and the four ticks. No
+ * literal colour: the identity forbids a mark to carry one
+ * (`DESIGN-COMPLETE.md` §1.6 - "a block never carries a literal colour").
  *
  * No script, no state: a seal is struck once.
  */

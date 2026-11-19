@@ -6,23 +6,23 @@
  * are the product. Every other part on this sheet can be judged by looking at
  * it; a field has to be judged by what it does when the reader is in it, when
  * the value is wrong, when the value has not arrived, when the label is longer
- * than the box, and when the same instrument is asked to sit in a card, a band
- * and a sixteen-rem column.
+ * than the box, and when the same instrument is asked to sit in a card, a band,
+ * a sixteen-rem column and a sixty-rem one.
  *
- * The tree carried the five states the state layer names - rest, hover, focus,
- * invalid, disabled, read-only - on six kit primitives, and nothing that named
- * the rest. There was no valid state, no counter, no addon, no action row, no
- * dense variant, no loading field, no partial field, and no place where a
- * field's label could say `REQUIRED` or `READ-ONLY` in its own register. The
- * matrix is how those absences became visible: ten rows, twenty-three columns,
- * and every empty cell either built or given a reason.
+ * The matrix's conditions are the field's own: rest, focus, filled, empty,
+ * invalid, valid, disabled, read-only, required, hint, counter, addon and
+ * action - thirteen of them, asked of all ten components, including a label
+ * that can say `REQUIRED` or `READ-ONLY` in its own register. The matrix is
+ * where an absence becomes visible rather than assumed: ten rows,
+ * twenty-three columns, two hundred and thirty cells, and every empty cell
+ * either built or given a reason.
  *
  * ─── THE CELL IS A DISPOSITION, NOT A STATUS WORD ─────────────────────────
- * `BUILT` and `NOT APPLICABLE` are not members of §1.5's eight status words,
+ * `BUILT` and `N/A` are not members of §1.5's eight status words,
  * and they must not be: a status is what a surface is doing, and this is what a
  * sheet did with a cell. The vocabulary here is the sheet's own - the same three
  * dispositions `Parts.ts` uses (`printed`, `absent`, `folded`), stated as two.
- * A cell that is `NOT APPLICABLE` prints its reason; a cell that is `BUILT` may
+ * A cell that is `N/A` prints its reason; a cell that is `BUILT` may
  * print a note saying which part of the family built it, because "built" in the
  * `INPUT` row and "built" in the `FORM` row are not the same construction.
  *
@@ -34,8 +34,9 @@
  * ─── THE SPECIMENS ARE DATA, THE STAGE IS THE COMPONENT'S ──────────────────
  * A row states what it is (`state`), which part of the family it exercises
  * (`component`), when that state is right (`when`), and the props its specimen
- * needs (`specimen`). The renderer mounts the control; it decides nothing. That
- * split is why the matrix and the live rows cannot drift: both read this file.
+ * needs - carried on the row itself through `FieldSpec`. The renderer mounts
+ * the control; it decides nothing. That split is why the matrix and the live
+ * rows cannot drift: both read this file.
  */
 
 /* ─── THE COLUMNS ────────────────────────────────────────────────────────── */
@@ -715,8 +716,8 @@ export const Rows: readonly Row[] = [
  * One cell of the matrix.
  *
  * A row lists only its exceptions, so a missing entry is `BUILT` - and that
- * default is what makes every `NOT APPLICABLE` in this file a sentence someone
- * had to write rather than a blank someone left.
+ * default is what makes every `N/A` in this file a sentence someone had to
+ * write rather than a blank someone left.
  */
 export const MatrixCell = (Row: Row, Column: Column): Cell =>
 	Row.cells[Column.key] ?? { disposition: "built" };
@@ -791,7 +792,7 @@ export const MatrixRegister = (): readonly {
  * The three groups the sheet prints the live rows in.
  *
  * A state, a control and a context are three different questions, and a flat
- * list of thirty rows would read as one long answer to none of them.
+ * list of twenty-nine rows would read as one long answer to none of them.
  */
 export type Group = "states" | "controls" | "skins";
 

@@ -12,9 +12,9 @@
  * - It takes `T` and never imports the i18n client. The page resolves the
  *   translator and hands it in, so this file stays a pure function of its
  *   arguments and can be read as data.
- * - It derives, it never invents. `index`, `href` and the status label are
+ * - It derives, it never invents. `index`, `href` and the status word are
  *   computed from the tier identifier the page already carried
- *   (`CLOUD_01`, `/Account/SignIn?connection=cloud`, `PLANNED`), so a tier's
+ *   (`CLOUD_01`, `/Account/SignIn?connection=cloud`, `PREPARING`), so a tier's
  *   marker and its destination cannot drift apart.
  *
  * The separators are U+2001 (EM QUAD), the field-record glyph the rest of the
@@ -37,10 +37,10 @@ const Quad = "\u2001";
  * under, the word, and the tone §1.5 gives that word.
  *
  * The tone is looked up by `Row()` and never written here: a surface states a
- * word from the eight, and the table decides its tone. `PLANNED` used to be
- * written in this position with a hand-set `quiet` tone, which is how a plan
- * came to render as a state the vocabulary does not own - it is a `PLAN:`
- * declaration now, beside the real state.
+ * word from the eight, and the table decides its tone. `PLANNED` is not one of
+ * the eight, so writing it here with a hand-set `quiet` tone would render a plan
+ * as a state the vocabulary does not own - it prints as a `PLAN:` declaration
+ * beside the real state instead.
  */
 const State = (Key: string, Word: string): StateRow => Row(Key, Word);
 
@@ -78,10 +78,10 @@ export interface PortalTier {
 	/** `HTTPS / TLS 1.3` - what the tier speaks, after `PROTOCOL:`. */
 	readonly protocol: string;
 
-	/** `PLANNED` - the only status any tier carries today. */
+	/** `PREPARING` - the only status any tier carries today. */
 	readonly status: string;
 
-	/** The tier's one state, as the register prints it: `STATUS` over `PLANNED`. */
+	/** The tier's one state, as the register prints it: `STATUS` over `PREPARING`. */
 	readonly states: readonly StateRow[];
 
 	/** `Online`, `OAuth 2.0`, `Local-First`, `Planned`. */
@@ -211,11 +211,11 @@ const TierInk: Record<string, string> = {
  *  beside it, because `PLANNED` is not a state in the fixed vocabulary. */
 const TierStatus = "PREPARING";
 
-/** The label a tier's sign-in button carried: `ENTER CLOUD`. */
+/** The label a tier's sign-in button carries: `ENTER CLOUD`. */
 const ActionLabel = (Identifier: string): string =>
 	`ENTER ${Identifier.toUpperCase()}`;
 
-/** The destination a tier's sign-in button carried. */
+/** The destination a tier's sign-in button carries. */
 const ActionHref = (Identifier: string): string =>
 	`/Account/SignIn?connection=${Identifier.toLowerCase()}`;
 
@@ -300,8 +300,8 @@ const HeroStatus = "PREPARING";
 
 /**
  * The page, as a function of the translator. Nothing here is conditional on a
- * locale: the page renders English server-side and the strings are the same
- * ones it rendered before.
+ * locale: the page renders English server-side, and the translator is handed in
+ * rather than imported so the module stays readable as data.
  */
 export const PortalPage = (T: TFunction): PortalSurface => {
 	const Cloud = Tier({

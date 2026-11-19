@@ -353,7 +353,7 @@ interface CarouselStatusProps {
  * CarouselStatus - the position, printed.
  *
  * `# SLIDE / 02 OF 05` in the site's grammar, and `aria-live="polite"` so the change
- * is announced once. A set of zero prints `SLIDE / 00`, which is the empty state's
+ * is announced once. A set of zero prints `00 OF 00`, which is the empty state's
  * figure rather than a lie about a first slide.
  */
 function CarouselStatus({ label, className }: CarouselStatusProps) {

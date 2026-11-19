@@ -7,9 +7,10 @@
  * Submodule rule (gitlinks): paths under Land/Element/<Name>/ and
  * Land/Dependency/<...>/ are SUBMODULES - GitHub does not render files
  * through them. A link into one must compose via the checkout's OWN repo
- * home: the element repo (CodeEditorLand/<Name>, from Land/Element/
- * .gitmodules) or the dependency repo (DependencyCodeEditorLand/<Name>,
- * from the innermost Dependency .gitmodules). The repo consts below are
+ * home, read from that checkout's remote: the element repo
+ * (CodeEditorLand/<Name>) or the dependency repo, which is
+ * DependencyCodeEditorLand/<Name> except where the innermost remote names
+ * another org (Ingress is CodeEditorLand/Ingress). The repo consts below are
  * keyed by the local checkout dir name, so the index never hardcodes a
  * gitlink path.
  */

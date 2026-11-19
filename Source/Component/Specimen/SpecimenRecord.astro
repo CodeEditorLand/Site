@@ -4,7 +4,7 @@
  *
  * ─── WHY THIS STAGE IS NOT AN ISLAND ─────────────────────────────────────
  * The display family's rows are a React island because half of them measure a
- * container, draw a month or open a menu. This family ships no JavaScript at all:
+ * container or draw a month. This family ships no JavaScript at all:
  * a ledger is a `<dl>`, a matrix is a `<table>`, a rail is an `<ol>`, a trace is a
  * list and a register is a `<p>`. The only interactive thing any of them prints is
  * the `<details>` a ledger row opens with, and the browser owns that. So the stage

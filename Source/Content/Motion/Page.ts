@@ -3,8 +3,8 @@
  *
  * ─── WHY THE COPY IS A MODULE ─────────────────────────────────────────────
  * The site's rule since the index: a page decides order, a data module decides
- * words. `/Motion` prints thirteen classes from `Register.ts` and nine adverse
- * arms, six specimen notes, six sequences and eight refusals from here - none of
+ * `/Motion` prints thirteen classes from `Register.ts` and nine adverse
+ * arms, six specimen notes, five sequences and eight refusals from here - none of
  * it typed into the template, so a sentence that changes changes in one place.
  *
  * ─── THE VOICE ────────────────────────────────────────────────────────────
@@ -20,7 +20,7 @@ import type { Band, LedgerRow } from "../../Component/Record/Type.js";
 /** U+2001 - the site's only separator. */
 const Quad = "\u2001";
 
-/** The head's facts: what this page is, in five rows. */
+/** The head's facts: what this page is, in six rows. */
 export const Facts: readonly LedgerRow[] = [
 	{
 		key: "CLASSES:",
@@ -792,7 +792,7 @@ export const SpecimenNotes = {
 		"Two arms of one state: the keys with their values barred, and the record that replaces them. The bars never pulse; the motion is the resolve that ends the wait, 320ms.",
 } as const;
 
-/** The sort specimen's matrix: six classes, so the facet has something to narrow. */
+/** The sort specimen's matrix: eight classes, so the facet has something to narrow. */
 export const SortColumns = [
 	{ label: "MOTION" },
 

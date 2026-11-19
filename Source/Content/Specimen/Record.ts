@@ -2,9 +2,11 @@
  * Record - the record ledger family's state matrix, its specimens, and what the
  * exploration changed.
  *
- * ─── WHY THIS FAMILY NEEDS A MATRIX MORE THAN ANY OF THE OTHER THREE ──────
- * The input family is touched, the overlay family is dismissed, the display
- * family is read. This family is BELIEVED. A ledger is where a reader checks
+ * ─── WHY THIS FAMILY NEEDS A MATRIX MORE THAN THE OTHER FAMILIES ──────────
+ * The input family is touched, the overlay is dismissed, the display is read,
+ * the narrative is told, the frame is sat in, the reading is navigated, the
+ * composition is composed, the small surfaces are abandoned and the apparatus
+ * is unnoticed. This family is BELIEVED. A ledger is where a reader checks
  * whether the thing is real: its target, its licence, its signal, its figure and
  * the source that figure came from. A display component that loses its empty
  * state looks slightly wrong; a ledger that loses its partial state prints a
@@ -953,8 +955,8 @@ export const Rows: readonly Row[] = [
  * One cell of the matrix.
  *
  * A row lists only its exceptions, so a missing entry is `BUILT` - and that
- * default is what makes every `NOT APPLICABLE` in this file a sentence someone
- * had to write rather than a blank someone left.
+ * default is what makes every `N/A` in this file a sentence someone had to
+ * write rather than a blank someone left.
  */
 export const MatrixCell = (Row: Row, Column: Column): Cell =>
 	Row.cells[Column.key] ?? { disposition: "built" };
@@ -1216,7 +1218,7 @@ export const Observations: readonly Observation[] = [
 /**
  * The four groups the sheet prints the live rows in.
  *
- * Eight components in one flat list of thirty-six rows would read as one long
+ * Eight components in one flat list of fifty-two rows would read as one long
  * answer to none of four questions: what the document states as facts, how it
  * places things on an axis, how it measures, and how it counts.
  */

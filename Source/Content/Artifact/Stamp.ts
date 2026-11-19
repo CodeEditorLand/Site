@@ -70,9 +70,11 @@ export const ReleaseStamp: Stamp = {
 /**
  * The document's own mark, printed on the index.
  *
- * The rows are the register's totals, so the stamp is the one place on `/Contents`
- * that prints a figure the page did not derive itself - it was handed the totals
- * and it prints them, exactly as the register band does.
+ * Four of the six rows are the register's totals - routes, documents, blocks and
+ * the declared modules outside bulk - passed in rather than restated, so the
+ * stamp cannot drift from the table it marks; the other two are the edition and
+ * the build's date. It prints what it was handed, exactly as the register band
+ * does.
  */
 export const DocumentStamp = (
 	Totals: {

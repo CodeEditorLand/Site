@@ -119,7 +119,7 @@ import {
  * rows cannot drift: both read `Content/Specimen/Display.ts`, and a state added there
  * appears on both with no second edit.
  *
- * ─── THE TWO COMPONENTS THAT NEED A BROWSER ──────────────────────────────
+ * ─── THE ROW THAT MEASURES ITS CONTAINER ─────────────────────────────────
  * The chart draws itself with `recharts`, which measures its container - so the row
  * prints its own loading arm until the island has mounted, which is honest twice
  * over: it is what the reader sees while the plot is measured, and it is the chart's

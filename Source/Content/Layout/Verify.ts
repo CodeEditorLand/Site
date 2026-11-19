@@ -1,10 +1,9 @@
 /**
  * Verify - the verification route, as an audit.
  *
- * The route used to be a card and a state word. An audit is the honest form for
- * it: a link is checked against a set of claims, the claims are read across the
- * states the link can be in, and the commands that make the check repeatable are
- * printed beside it.
+ * An audit, not a card and a state word: a link is checked against a set of
+ * claims, the claims are read across the states the link can be in, and the
+ * commands that make the check repeatable are printed beside it.
  *
  * Four things live here, and the page composes them:
  *

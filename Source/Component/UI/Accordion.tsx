@@ -11,13 +11,14 @@ import { cn } from "./Utility";
 /**
  * Accordion - a stack of disclosures, each closed until asked.
  *
- * ─── WHAT WAS MISSING ────────────────────────────────────────────────────
- * Two states and one interval. The interval is the one the file already tried to
- * use: `animate-accordion-up` / `animate-accordion-down` were never declared
- * anywhere, so the panel snapped open and the class names were decoration. The
- * real disclosure is in `System/UI/_Display.scss`, driven by Radix's own
+ * ─── THE INTERVAL, AND WHERE IT LIVES ─────────────────────────────────────
+ * The disclosure is `System/UI/_Display.scss`'s: `display-disclose-open` /
+ * `display-disclose-close`, driven by Radix's own
  * `--radix-accordion-content-height`, with the reduced-motion branch that keeps
- * the end state and removes the time.
+ * the end state and removes the time. The `animate-accordion-up` /
+ * `animate-accordion-down` names `AccordionContent` still passes declare nothing
+ * in this tree - `tailwindcss-animate` is not installed - so the panel's height
+ * comes from the attribute selector and the class names are inert.
  *
  * The states are the two the stack meets on a page:
  *
@@ -26,8 +27,11 @@ import { cn } from "./Utility";
  *                instead of rendering a ruled void.
  *   UNAVAILABLE  a section that cannot open (`disabled` on the item, which Radix
  *                carries as `data-disabled`). It stays in the stack - a stack
- *                that hides an option lies about the set - and its trigger loses
- *                its ink and its cursor.
+ *                that hides an option lies about the set - and its trigger goes
+ *                to quiet ink with a `not-allowed` cursor. The kit's
+ *                `disabled:opacity-50` also fires on it, so the trigger is dimmed
+ *                as well; the site's rule for a disabled row is that it stays
+ *                fully legible.
  *
  * ─── OPEN IS A STATE, NOT A SWITCH ───────────────────────────────────────
  * `System/State/_Disclosure.scss` states the site's rule for a `<summary>`: when a

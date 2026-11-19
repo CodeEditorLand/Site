@@ -41,19 +41,18 @@
  * from a run that was never built, and this page's whole claim is that it files
  * every word the document uses.
  *
- * ─── WHAT THE MATRIX ADDED ────────────────────────────────────────────────
- * Two things a run of one word and a run of ninety revealed:
+ * ─── THE HEAD PRINTS THE RUN'S EXTENT ─────────────────────────────────────
+ * Two things a run of one word and a run of ninety make plain:
  *
- * - **The head named the run and not its extent.** Every other counted line on
- *   the site prints `# LABEL / NN`; the run's head printed `# RUN_01`, a heading
- *   and a note, with no figure anywhere - while the alphabet strip beneath it
- *   was the reader's only clue to how much was filed. The head now prints the
- *   count, composed from `Run.terms.length` (never a prop, so it cannot outlive
- *   the terms), with `unit` for the noun a caller wants (`WORDS`, `TERMS`).
- * - **A run of one letter printed a one-link navigation.** The strip exists so a
- *   reader can scan by letter; a strip with one letter is a nav that says "there
- *   is only one", which the count already says. It prints only when the run uses
- *   two or more letters, and the group's own letter heading is untouched.
+ * - **The head names the run and its extent.** Every other counted line on the
+ *   site prints `# LABEL / NN`; this head prints the count, composed from
+ *   `Run.terms.length` (never a prop, so it cannot outlive the terms), with
+ *   `unit` for the noun a caller wants (`WORDS`, `TERMS`) - because the alphabet
+ *   strip beneath it is not the reader's only clue to how much is filed.
+ * - **A run of one letter prints no letter strip.** The strip exists so a reader
+ *   can scan by letter; a strip with one letter is a nav that says "there is only
+ *   one", which the count already says. It prints only when the run uses two or
+ *   more letters, and the group's own letter heading is untouched.
  *
  * No script and no hydration: a lexicon is printed.
  */

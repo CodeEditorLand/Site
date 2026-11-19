@@ -11,9 +11,10 @@ import { cn } from "./Utility";
  *
  * ─── THREE THINGS THE KIT DID NOT HAVE ───────────────────────────────────
  *
- *   A FRAME     the viewport with the document's one hairline, so a scroll area is
- *               an inset on the field rather than a region of the page that happens
- *               to be shorter than its content.
+ *   A FRAME     the frame div's one hairline, so a scroll area is an inset on the
+ *               field rather than a region of the page that happens to be shorter
+ *               than its content. The hairline is on `.ScrollAreaFrame`, not on the
+ *               viewport, because the head above the viewport is inside the frame.
  *   A FIGURE    `# LEDGER / 24 ROWS` above the frame. A reader cannot see how much
  *               is behind the fold, and a scrollbar's length is a proportion, not a
  *               count. `ScrollAreaFrame` prints the count and the "more" mark.
@@ -22,9 +23,9 @@ import { cn } from "./Utility";
  *               missing rows, which is the one thing a dossier may not have.
  *
  * ─── THE THUMB IS A RULE ─────────────────────────────────────────────────
- * No pill, no radius, no fade: the thumb is the `--Divider` rule at 4px, which is
- * the same mark the hero pair's gutter uses. The scroll area is an instrument, and
- * an instrument's parts are rules.
+ * No pill, no radius, no fade: the thumb is the `--Divider` rule (`--state-rule-strong`,
+ * 20 % ink) in the 10px track less its 1px padding, so it reads 8px wide - a rule, not
+ * a lozenge. The scroll area is an instrument, and an instrument's parts are rules.
  */
 
 function ScrollArea({

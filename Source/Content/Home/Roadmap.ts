@@ -6,14 +6,15 @@
  * the release is read through: the `Elements` it carries and the `Manifest` it
  * declares.
  *
- * The stamp is a list of spans rather than a string because the baseline printed
- * a stamp's brackets, its keyword and its value in three different inks, and a
- * string cannot carry that. The manifest lines are single strings: each one is a
- * complete `KEY: VALUE` row and it prints as one.
+ * The stamp is a list of spans rather than a string because a stamp prints its
+ * brackets, its keyword and its value in three different inks, and a string cannot
+ * carry that. The manifest lines are single strings: each one is a complete
+ * `KEY: VALUE` row and it prints as one.
  */
 import type { ReleaseCard } from "./Type.js";
 
-/** The ink a manifest row's value is printed in - the record's own. */
+/** The stamp's four inks: the brackets and separators, the keyword, the field
+ *  label, and the value. */
 const Ink = {
 	Bracket: "var(--MuteForeground)",
 
@@ -26,15 +27,14 @@ const Ink = {
 
 /** One element row's link ink, per element.
  *
- *  A row's `Value` is the destination (the element's manual page), so the
- *  accent on it is the link's own ink and stays. The per-element inks are the
- *  fill's -700 shades: Cocoon's card is `--SpinegRPCMute`, so its label ink is
- *  the spine green and not the site accent (the accent authenticates a
- *  destination, and this name IS one - but so is every other element's, and a
- *  green name among four would read as "this one is special" when all it means
- *  is "gRPC"). Wind's card is `--OSMacOSMute`, so its label ink is that hue's
- *  -700 and not the muted ink: a muted link label is a destination a reader
- *  cannot find. */
+ *  A row's `Href` is the destination (the element's manual page), so the name is
+ *  a link and carries an ink a reader can find. The four rows that carry one
+ *  print in their own hue - Cocoon `--SpinegRPCFore`, Wind `--OSMacOSFore`, Sky
+ *  `--SpineIPCFore`, Mountain `--SemanticRed` - and the rest fall back to
+ *  `--CardForeground`. The site accent is not spent here: it authenticates a
+ *  destination, and a green name among four would read as "this one is special"
+ *  when all it means is "gRPC", while a muted label would be a destination a
+ *  reader cannot find. */
 const ElementInk: Readonly<Record<string, string>> = {
 	Mountain: "var(--SemanticRed)",
 

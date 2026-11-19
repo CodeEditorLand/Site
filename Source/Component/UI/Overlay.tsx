@@ -6,12 +6,12 @@ import * as React from "react";
  * Overlay - the family's one dismissal contract, and the door a slip came
  * through.
  *
- * ─── WHY A CONTRACT AND NOT EIGHT SETS OF DEFAULTS ────────────────────────
+ * ─── WHY A CONTRACT AND NOT ONE SET OF DEFAULTS PER PRIMITIVE ─────────────
  *
- * Eight primitives each do the five dismissals slightly differently, and the
- * differences are invisible until they bite: a dialog returns focus to its
+ * The overlay primitives each do the five dismissals slightly differently, and
+ * the differences are invisible until they bite: a dialog returns focus to its
  * trigger because Radix owns the trigger; the palette's door is a sibling
- * button, so its focus return had to be hand-written; a menu whose trigger is
+ * button, so its focus return is hand-written; a menu whose trigger is
  * removed while open stays open with nothing to return to, in every primitive.
  * A reader does not experience "eight correct implementations" - they
  * experience one document that sometimes forgets where they were.
@@ -30,9 +30,11 @@ import * as React from "react";
  * Here: the hooks. `UseSlipRoot` owns open state and the door; `UseDoorReturn`
  * is the focus rule; `UseTriggerGuard` is the removed-trigger rule;
  * `UseScrollLock` is the scroll rule. Each is called *inside* the component
- * that needs it - `Dialog.tsx`, `Popover.tsx`, `Palette.tsx` - because a
- * behaviour that lives in a wrapper is a behaviour a caller can forget to wrap
- * with.
+ * that needs it - `Dialog.tsx`, `Popover.tsx`, `Sheet.tsx`, `Drawer.tsx`,
+ * `DropdownMenu.tsx`, `ContextMenu.tsx` - because a behaviour that lives in a
+ * wrapper is a behaviour a caller can forget to wrap with. The palette is built
+ * on `Dialog`, so it gets the door through it rather than calling the hooks
+ * itself.
  *
  * Not here: any surface. Not one class name is written in this file; the slip
  * is drawn by `Stylesheet/System/UI/_Slip.scss` and this file only decides what
@@ -42,9 +44,9 @@ import * as React from "react";
 /**
  * One line of the contract, as the specimen prints it.
  *
- * `Held` is the honest part: which of the eight primitives actually does this,
- * and whether the family had to add it. A contract table that claimed all five
- * everywhere would be a table nobody could check.
+ * `Held` is the honest part: which primitive actually does this, and whether the
+ * family had to add it. A contract table that claimed all five everywhere would
+ * be a table nobody could check.
  */
 export interface Dismissal {
 	/** The field label - `ESCAPE:`, `OUTSIDE:`, `FOCUS:`, `SCROLL:`, `TRIGGER:`. */
@@ -120,9 +122,9 @@ export interface Door {
  *
  * A `Root` provides it and a `Trigger` fills it, because that is the only place
  * the two meet: the primitive owns the open state, the trigger owns the
- * element, and the guard needs both. `null` is the honest default - a slip
- * mounted without a door (the palette's chord, a menu opened from a row) simply
- * has no element to guard, and the hook says so instead of inventing one.
+ * element, and the guard needs both. `null` is the default for a trigger with no
+ * `Root` above it; what can be absent inside a root is the element the trigger
+ * writes, and `UseTriggerGuard` reads an absent element as a door that has gone.
  */
 export const DoorContext = React.createContext<Door | null>(null);
 
@@ -251,9 +253,8 @@ export const UseSlipRoot = ({
  *
  * Radix calls `onOpenAutoFocus` before it moves focus and `onCloseAutoFocus`
  * before it restores. Capturing at the first and restoring at the second is the
- * whole rule, and it is stated once for the eight primitives because the
- * palette had already written it by hand and the second copy would have drifted
- * from the first.
+ * whole rule, and it is stated once for the slips that need it rather than
+ * written by hand at each surface, where the copies drift.
  *
  * The fallback matters: a chord pressed with nothing focused has
  * `document.body` as its door, and restoring focus to the body is a return to
@@ -296,10 +297,11 @@ export const UseDoorReturn = () => {
 /**
  * The scroll rule, for a surface that is not Radix Dialog.
  *
- * Radix Dialog and vaul already lock. This exists for the one case they do not
- * cover - a non-modal slip that the caller has asked to lock, because it holds
- * a form the page must not scroll behind - and it sets the same attribute they
- * do, so the CSS has one selector to compensate and not two.
+ * Radix Dialog and vaul already lock, through `react-remove-scroll`. This exists
+ * for the one case they do not cover - a non-modal slip that the caller has asked
+ * to lock, because it holds a form the page must not scroll behind - and it
+ * writes the same `data-scroll-locked` name they write, on `<html>` rather than
+ * on `<body>`, so the family has one attribute name for one condition.
  */
 export const UseScrollLock = (Locked: boolean): void => {
 	React.useEffect(() => {

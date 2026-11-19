@@ -8,7 +8,7 @@
  * reading family is FOUND, and the composition family is SCANNED. This family is
  * the SMALL SURFACES: the eight credential routes a reader meets at their most
  * fragile, the account directory, the legal set's clause and its rail, the
- * fifteen contact routes, and the four reference blocks that carry the site's
+ * fifteen contact routes, and the five reference blocks that carry the site's
  * own vocabulary.
  *
  * A small surface fails differently from every family above it. A ledger fails

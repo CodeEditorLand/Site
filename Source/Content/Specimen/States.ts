@@ -21,10 +21,10 @@
  *
  * ─── THE FIGURES ARE PASSED IN ────────────────────────────────────────────
  * `States()` takes the few values that can only be read from the tree at build
- * time - the longest filed title, the one dated measurement, how many routes
- * the index files - so this module holds the copy and the page holds the
- * measurement. A number written here would be the one thing this document may
- * not contain: a figure with no source.
+ * time - the longest filed title, the one dated measurement and how old it is,
+ * how many routes the index files - so this module holds the copy and the page
+ * holds the measurement. A number written here would be the one thing this
+ * document may not contain: a figure with no source.
  */
 
 /**

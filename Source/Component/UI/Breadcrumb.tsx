@@ -171,7 +171,8 @@ function BreadcrumbCollapse({
 	tail = 2,
 	className,
 }: BreadcrumbCollapseProps) {
-	// Nothing to fold: a trail of three or fewer prints whole.
+	// Nothing to fold: a trail of `tail + 2` or fewer prints whole - four places at
+	// the default `tail` of 2.
 	const Fits = items.length <= tail + 2;
 
 	const Head = items[0];

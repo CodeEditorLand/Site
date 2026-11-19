@@ -132,14 +132,12 @@ const CategoryStyle: Record<TermCategory, string> = {
 	Tool: "border-[var(--ExtensionReact)] text-[color:var(--SpineIPCFore)]",
 };
 
-// Both maps draw the same ink: the `*Fore` token is the -700 shade the token
-// layer declares as "the ink for labels on light fills" (`_Token.scss`, PROTOCOL
-// SPINE COLORS), and an inline chip and a Jelly badge are the same label on the
-// same light surface. Before this, the inline map carried the -600 hexes
-// (`#2563eb`, `#9333ea`) and the badge map the -700 ones, so one term printed in
-// two blues depending on which renderer reached it, and neither came from a
-// token. The literal hexes are gone; `border-[var(--SpineIPC)]` and its five
-// siblings already resolved and are unchanged.
+// Both maps draw the same ink, and they must: an inline chip and a Jelly badge are
+// the same label on the same light surface, so one term cannot print in two blues
+// depending on which renderer reached it. The ink is the `*Fore` token - the -700
+// shade `_Token.scss` declares under PROTOCOL SPINE COLORS as the ink for labels on
+// light fills - and the border is the spine's own token. No literal hex belongs in
+// either map.
 const CategoryBadgeStyle: Record<TermCategory, string> = {
 	Architecture: "border-[var(--SpineIPC)] text-[color:var(--SpineIPCFore)]",
 
@@ -575,14 +573,13 @@ export interface RichTextProps {
  * Read at the rate the noise commits, not at the rate the typewriter frames.
  *
  * `getComputedStyle` on the document element resolves the whole cascade for the
- * root, and this used to be called from inside the reveal's frame callback - so a
- * four-second reveal paid ~240 cascade resolutions to read a number that changes
- * twice a second. The noise layer commits on a 500 ms cadence
- * (`Function/Noise/Staccato.ts`), so the value is cached for exactly that long:
- * the reveal sees every state the noise actually has, and costs one read per
- * commit instead of one per frame. On a page with no noise layer the property is
- * the `0` its stylesheet declares, and one read establishes that for the rest of
- * the reveal.
+ * root, and a four-second reveal runs ~240 frames for a number that changes twice
+ * a second - 240 cascade resolutions to read 8 values. The noise layer commits on a
+ * 500 ms cadence (`Function/Noise/Staccato.ts`), so the value is cached for exactly
+ * that long: the reveal sees every state the noise actually has, and costs one read
+ * per commit instead of one per frame. On a page with no noise layer the property
+ * is the `0` its stylesheet declares (`Component/_Noise.scss`), and one read
+ * establishes that for the rest of the reveal.
  */
 const NOISE_READ_INTERVAL = 500;
 
@@ -665,7 +662,7 @@ const RichText = ({ Text, Terms = false, ClassName }: RichTextProps) => {
 
 		const Step = (Now: number): void => {
 			// Noise-modulated character delay:
-			// --StaccatoRaw ∈ [-1, 1] → target delay ∈ [8, 36] ms
+			// --StaccatoRaw ∈ [-1, 1] → target delay ∈ [18, 36] ms
 			const Raw = ReadStaccatoRaw(Now);
 			const TargetDelay = 18 + (Raw + 1) * 0.5 * 18;
 			LerpedDelay.current = Lerp(LerpedDelay.current, TargetDelay, 0.12);

@@ -8,7 +8,8 @@
  *                   measurement - and how many sit under each.
  * RANK              set.
  * SLOT CONTRACT     columns[]  -> one column each: key, label, words[], note,
- *                                empty, rows[] (mark, label, meta, href?, state)
+ *                                empty, rows[] (mark, label, meta, href?, state,
+ *                                note?)
  *                   caption?   -> the provenance line under the board
  *                   empty?     -> what the board says with no columns at all
  * MAY HOLD          rows. A row is a record's marker, its name, its word and one
@@ -47,19 +48,17 @@
  * column would make "nothing is retired" indistinguishable from "retirement is
  * not recorded", which is the one distinction a status board exists to make.
  *
- * ─── WHAT THE MATRIX ADDED ────────────────────────────────────────────────
- * Two things the board's twenty-four combinations found:
+ * ─── THE EMPTY BOARD AND THE ROW'S OWN MARK ───────────────────────────────
+ * Two rules the board's twenty-four combinations settle:
  *
- * - **A board with no columns printed an empty paragraph.** `empty` is optional
- *   on the board itself, and the arm printed `<p>{empty}</p>` whether or not the
- *   caller had a sentence - so the one state the block documents as "renders
- *   nothing at all" rendered a `<section>` with an empty line in it. It now
- *   renders the sentence when there is one and nothing when there is not.
- * - **The row's state word was colour-only.** §1.5 requires a state to survive
- *   greyscale, and every other register on the site prints the square before the
- *   word (`SurfaceState`, `StateBadge`, `LexiconEntry`); the board's row was the
- *   one place a reader had to see the ink to know the state. The row now carries
- *   the mark its tone already implied.
+ * - **A board with no columns prints a sentence or nothing.** `empty` is optional
+ *   on the board itself: the sentence when the caller has one, and no `<p>` at
+ *   all when it does not - the state is documented as "renders nothing at all",
+ *   so an empty line inside the `<section>` is not that.
+ * - **The row's state word is never colour-only.** §1.5 requires a state to
+ *   survive greyscale, and every other register on the site prints the square
+ *   before the word (`SurfaceState`, `StateBadge`, `LexiconEntry`), so the row
+ *   carries the mark its tone already implies.
  *
  * No script and no hydration: a board is a printed page.
  */

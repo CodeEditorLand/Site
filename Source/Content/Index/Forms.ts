@@ -20,9 +20,8 @@
  *   *comparison* and an *edition* are both read across columns - one state
  *   against N, or one release against the ones before it - so both take the
  *   matrix. Sharing is not the failure; inventing a second shape for the same
- *   object is. The first draft of this table gave the edition the archive, on the
- *   argument that a release is a filed record; the tree disagreed - the Download
- *   page prints a matrix - and the tree is the authority on what a form is for.
+ *   object is. The Download page prints the edition as a matrix, and the tree is
+ *   the authority on what a form is for.
  * - **The claim's form has two renderings.** `RecordHero` prints it on the 404
  *   and on this page; the homepage's claim is the endorsed two-panel hero pair,
  *   which is a keeper and outranks the block. One form, two renderings, and the
@@ -55,13 +54,11 @@ export interface TypeForm {
 }
 
 /**
- * The five forms this table gained with the apparatus wave: the plate, the
- * plate-set, the stamp, the transcript and the inset.
- *
- * Each one is a *different* information type from the block nearest to it, and
- * the `answers` line is what keeps them apart. A plate is not a figure (the
- * evidence the record is about, numbered, with a channel, versus the evidence a
- * paragraph illustrates); a plate-set is not a matrix (many figures of one
+ * The five apparatus forms - the plate, the plate-set, the stamp, the transcript
+ * and the inset - are each a *different* information type from the block nearest
+ * to it, and the `answers` line is what keeps them apart. A plate is not a figure
+ * (the evidence the record is about, numbered, with a channel, versus the evidence
+ * a paragraph illustrates); a plate-set is not a matrix (many figures of one
  * subject, versus values across columns); a stamp is not a ledger (one mark and
  * its authority, versus what is true of an object); a transcript is not a well
  * (a session with two sides, versus one command); an inset is not a margin note

@@ -32,10 +32,10 @@
  *                   has stopped saying what the word means.
  *
  * ─── THE TERM IS THE ID ───────────────────────────────────────────────────
- * The entry's id is derived from the term, not passed in, so the rail's link to a
- * retired word and the entry's own anchor cannot disagree - both compute the same
- * string from the same word. A page that supplied the id would be the second place
- * the word's address is spelled.
+ * The entry's id is derived from the run and the term by `TermId`, not passed in,
+ * so the command palette's row (`UI/Palette/Data.ts`) and the entry's own anchor
+ * cannot disagree - both compute the same string from the same two words. A page
+ * that supplied the id would be the second place the word's address is spelled.
  *
  * ─── A DEFINITION WITHOUT A SOURCE IS STILL PRINTED ───────────────────────
  * `source` is optional, and its absence is printed as `SOURCE: UNAVAILABLE`
@@ -43,14 +43,12 @@
  * not define is a word this page is paraphrasing, and the reader is owed the
  * difference between a citation and a summary.
  *
- * ─── WHAT THE MATRIX ADDED ────────────────────────────────────────────────
- * The absent source printed in the same ink as a cited one: `SOURCE: UNAVAILABLE`
- * looked exactly like `SOURCE: Content/More/Glossary.ts`, so the one difference
- * the sentence above exists to draw was invisible at a glance. The absent value
- * now takes the `quiet` ink and a `--unavailable` class - the same tone
- * `SurfaceState` gives an `UNAVAILABLE` word - and a cited source keeps full
- * ink. Nothing moved, nothing was dropped: the row was already there, and now
- * it reads as the partial state it is.
+ * ─── THE ABSENT SOURCE WEARS THE MUTED INK ────────────────────────────────
+ * `SOURCE: UNAVAILABLE` must not look like `SOURCE: Content/More/Glossary.ts`,
+ * or the difference the sentence above exists to draw is invisible at a glance.
+ * The absent value takes the muted ink through
+ * `lexicon-entry__fact-value--unavailable` - the same tone `SurfaceState` gives
+ * an `UNAVAILABLE` word - and a cited source keeps full ink.
  *
  * No script and no hydration: a definition is printed.
  */

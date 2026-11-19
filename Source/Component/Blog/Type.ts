@@ -1,11 +1,11 @@
 /**
  * Blog - the shapes the blog surface renders.
  *
- * Two surfaces, two shapes, and neither is a content model. The articles
- * themselves stay markdown: their words, headings, tables and code lines are
- * the pipeline's to render, and moving them into data would make every future
+ * Four shapes over two surfaces, and none of them is a content model. The
+ * articles themselves stay markdown: their words, headings, tables and code lines
+ * are the pipeline's to render, and moving them into data would make every future
  * edit a string edit inside a module. What lives here is only the apparatus
- * around them - the index rows and the in-page contents list.
+ * around them - the index rows, the in-page contents list and the trail's crumbs.
  *
  * Every array is `readonly`, and so are its elements, because a surface renders
  * the data a page hands it and never sorts, splices or pushes it.
@@ -72,8 +72,8 @@ export interface BlogToc {
 }
 
 /**
- * One crumb of the trail above a blog page. The last crumb is the current page
- * and carries no `href`.
+ * One crumb of the trail above a blog page. The last crumb is the current page:
+ * the trail prints it as a statement whatever `href` it carries.
  */
 export interface BlogTrailItem {
 	/** Printed verbatim; the `/LABEL` voice is the caller's to supply. */

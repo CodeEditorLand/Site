@@ -1,10 +1,10 @@
 /**
  * NotFound - the copy for the 404's plate and its adverse states.
  *
- * The page had one sentence and a record. A plate needs a name, a source, a state
- * and a proposition; the too-long arm needs a statement, a cause and a limit. Six
- * strings that only this route prints, kept here rather than in the template so
- * the page stays a composition.
+ * A plate needs a name, a source, a state and a proposition; each adverse arm -
+ * `missing` and `too-long` - needs a statement, a cause and a destination, and
+ * the too-long arm a limit as well. The strings only this route prints stay here
+ * rather than in the template, so the page stays a composition.
  *
  * The rule every string keeps: it says what happened and what to do, and it never
  * apologises. A 404 that says "sorry" has told the reader how to feel instead of

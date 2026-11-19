@@ -28,7 +28,7 @@
  * the difference between a sitemap and a way out.
  *
  * ─── THE REGISTER IS A NAV, NOT A SECTION ─────────────────────────────────
- * It is an `<nav aria-label>` with an `<ol>`, because it is a set of
+ * It is a `<nav aria-label>` with an `<ol>`, because it is a set of
  * destinations and the order is the reading order. It prints no `h2`: a page
  * that has told a reader their address is wrong does not need a heading to say
  * "here are some links", and a heading would make the way out a subject.
@@ -38,14 +38,14 @@
  * be able to state, because it is the state a site reaches when it is one page.
  * `empty` is a field of the copy, not an optional prop.
  *
- * ─── WHAT THE MATRIX ADDED ────────────────────────────────────────────────
- * A register printed on the page it routes to listed that page as a destination:
- * "you are here, and here is the way here" - a link to the address the reader is
- * already standing on. `current` names the one destination the reader is at; that
- * row prints as a statement carrying `aria-current="page"`, in the same row
- * grammar, with the arrow kept because the arrow is the grammar's and not the
- * link's. Every other row is unchanged, and a register that passes no `current`
- * renders exactly as it did.
+ * ─── THE PAGE THE READER IS ON IS NOT A DESTINATION ───────────────────────
+ * A register printed on the page it routes to must not list that page as a
+ * destination: "you are here, and here is the way here" is a link to the address
+ * the reader is already standing on. `current` names that one destination; its
+ * row prints as a statement carrying `aria-current="page"` and `YOU ARE HERE`,
+ * in the same row grammar, with the arrow kept because the arrow is the
+ * grammar's and not the link's. A register that passes no `current` prints every
+ * row as a link.
  *
  * No script and no hydration: a register is printed.
  */

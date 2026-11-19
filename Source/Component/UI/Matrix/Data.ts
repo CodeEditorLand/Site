@@ -5,8 +5,8 @@
  * page copy lives in `Content/`: a control whose sentences are scattered through
  * its markup cannot be read as one voice, and this control has more sentences
  * than most because most of it is a state. The grammar's marks (`#`, `/`, `✓`,
- * `◎`, `→`) and the two composed count lines stay in the island, because a mark
- * is not a sentence.
+ * `◎`, `↳`) and the two composed count lines stay in the island, and the `→` is
+ * a `.MarkArrow` the stylesheet draws, because a mark is not a sentence.
  *
  * ─── THE VOICE ─────────────────────────────────────────────────────────────
  *

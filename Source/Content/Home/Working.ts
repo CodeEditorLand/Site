@@ -9,10 +9,10 @@
  * from the manual's own troubleshooting page with its cause and its fix.
  *
  * WHY A BAND AND NOT A SENTENCE. The page states `SOURCE ACTIVE` and
- * `STATUS: PREPARING` and then, until now, showed neither the source nor what is
- * being prepared. A reader deciding whether the thing is real needs the stages,
- * the facts and the failure modes in one place - the manual's working, on the
- * page that makes the claim.
+ * `STATUS: PREPARING`, and a reader deciding whether the thing is real needs the
+ * source and what is being prepared beside those two words: the stages, the facts
+ * and the failure modes in one place - the manual's working, on the page that
+ * makes the claim.
  *
  * THE SIX STAGES ARE THE MANUAL'S SIX STAGES, in the manual's order and with the
  * manual's own paths (`Content/doc/build-pipeline.md` § Pipeline Overview). None
@@ -114,9 +114,9 @@ export const BuildTrace: readonly WorkingStep[] = [
 /**
  * What the build produces, as twelve facts.
  *
- * Seven of the twelve cannot be answered today and print `UNAVAILABLE` with the
+ * Six of the twelve cannot be answered today and print `UNAVAILABLE` with the
  * reason under them. That is the band's honest centre: the source builds, and no
- * release artifact exists to describe. A register that dropped those seven rows
+ * release artifact exists to describe. A register that dropped those six rows
  * would be a shorter lie.
  */
 export const ReleaseRegister = [

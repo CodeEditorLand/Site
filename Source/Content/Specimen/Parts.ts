@@ -4,10 +4,10 @@
  * ─── WHY THIS TABLE EXISTS ────────────────────────────────────────────────
  * The tree grew a second layer under the design system: a family of
  * `Dynamic*` adapters that render a content schema, and the `Surface` blocks
- * that carry a state. By the time the surfaces were composed page by page, nine
- * of those files had no reader at all - they rendered, they were typed, and
- * nothing on the site asked them for anything. A part nothing reads is not a
- * part; it is a file.
+ * that carry a state. Ten of the `Dynamic*` files have no production reader -
+ * six are mounted only by the specimen sheet and four by nothing at all - so
+ * they render, they are typed, and nothing on the site asks them for anything.
+ * A part nothing reads is not a part; it is a file.
  *
  * This table is the sheet's subject. One record per part, and each record says
  * four things a reader can check: what the part takes, what it prints, which

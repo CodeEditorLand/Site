@@ -11,7 +11,7 @@
  *
  *   motion      what moves, when, and what the movement explains
  *   specimen    the instrument that shows every other family - this sheet's own
- *               three blocks, plus the gallery index this card built
+ *               three blocks, plus the gallery index
  *   social      the head: the one place a route's title, canonical and card are
  *               written, and the only part of the site read outside it
  *   provider    the runtime layer: analytics, identity, and the pageview that
@@ -389,8 +389,8 @@ const NoMeasure = (what: string, why: string): Cell =>
 
 /**
  * The seventeen components, in the order a reader meets them: the six motion
- * blocks, the four specimen blocks (three that were here and the gallery index
- * this card built), the head, the three runtime providers, the trail, and the two
+ * blocks, the four specimen blocks (the sheet, the plate, the material and the
+ * gallery index), the head, the three runtime providers, the trail, and the two
  * blog surfaces.
  *
  * Every row's overrides are reasons. A row with no overrides would be a part that

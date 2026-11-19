@@ -8,10 +8,10 @@
  * ─── WHAT IS IN HERE ──────────────────────────────────────────────────────
  * - **The element plate-set** (`ElementPlateSet`) - fifteen cells, one per
  *   element record the architecture wall carries, each printing its own manifest
- *   state. Eight of the fifteen have an `Evidence/<Element>/manifest.yaml` with
- *   `status: placeholder`; seven have no manifest at all; **none** of the fifteen
- *   has a capture in the build. The set says that, per cell, instead of drawing
- *   fifteen empty frames.
+ *   state. Seven of the fifteen have an `Evidence/<Element>/manifest.yaml` with
+ *   `status: placeholder`; the other eight have no manifest at all; **none** of
+ *   the fifteen has a capture in the build. The set says that, per cell, instead
+ *   of drawing fifteen empty frames.
  * - **The release plate** (`ReleasePlate`) - the one capture that *is* in the
  *   build (`Public/Evidence/Land/NightGlass-01.png`, `status: verified`), printed
  *   at plate scale with its manifest's own facts. It is evidence of the Land
@@ -135,11 +135,11 @@ const EvidenceOf = (Record: FieldRecord) =>
 	ElementWorking[Record.Id]?.Register.find((Row) => Row.Label === "EVIDENCE");
 
 /**
- * The element plate-set: fifteen cells, each printing the state its own manifest
- * gives it.
+ * The element plate-set: fifteen cells, each printing what its own manifest says
+ * and the state the plate itself is in.
  *
- * The cell's `subject` is the record's `alt` text - the sentence the manifest
- * wrote for the capture - because a set of plates is read by its subjects and an
+ * The cell's `subject` is the record's own title and `alt` text - the sentence
+ * written for the capture - because a set of plates is read by its subjects and an
  * invented caption per cell would be fifteen inventions. The `note` is the
  * working register's own value and reason (`MANIFEST␁PLACEHOLDER` /
  * `PLATE NOT IN BUILD`, or `UNAVAILABLE` / `NO MANIFEST IN THE BUILD`), so the
@@ -310,11 +310,12 @@ export const ReleasePlate: Plate = {
  * The release's plate-set: the three screens the manual documents in full, and
  * the capture the build carries for each.
  *
- * The subjects are the manual's own sections (`workflow-open-file`,
- * `workflow-command-palette`, `workflow-terminal`), not invented screens, and the
- * note on each cell is the same fact: the manual describes it, the build has no
- * picture of it. This is the release's evidence gap stated as a set of three,
- * which is a different claim from the platform matrix's "no installer exists".
+ * The subjects are the three screens the manual documents in full
+ * (`workflow-open-file`, `workflow-command-palette`, `workflow-terminal`), not
+ * invented screens, and the note on each cell is the same fact: the manual
+ * describes it, the build has no picture of it. This is the release's evidence gap
+ * stated as a set of three, which is a different claim from the platform matrix's
+ * "no installer exists".
  */
 export const ReleasePlateSet: PlateSet = {
 	index: "PLATES_02",
@@ -380,9 +381,10 @@ export const ElementForSlug = (Slug: string): FieldRecord | undefined =>
 /**
  * The plate a manual page carries, when the page is about an element.
  *
- * `undefined` for every other page - the manual has 80 documents and 15 of them
- * are about an element. Returning `undefined` rather than a default plate is what
- * keeps the shell honest: a page with no plate prints no plate.
+ * `undefined` for every other page - the manual has 78 documents and 29 of them
+ * are about an element (fifteen element pages and fourteen deep dives). Returning
+ * `undefined` rather than a default plate is what keeps the shell honest: a page
+ * with no plate prints no plate.
  */
 export const ElementPlateForSlug = (Slug: string): Plate | undefined => {
 	const Record = ElementForSlug(Slug);

@@ -1,15 +1,14 @@
 /**
  * The homepage bands, as data.
  *
- * Every card in the five bands prints the same record anatomy - a marker, a
- * pair of containment stamps, a route over its service line, a link, a status
- * and four key/value rows - so the shape is declared once here and the bands
- * differ only in which fields they carry.
+ * The record anatomy the features and architecture bands print - a marker, a pair
+ * of containment stamps, a route over its service line, a link, a status and four
+ * key/value rows - is declared once here, and the other bands' cards declare only
+ * the fields they carry.
  *
- * Nothing in this file is copy that was authored here: the strings come from
- * `Locale/En/Home.json` through the translator, or from `Content/Record/*.ts`,
- * or from the pre-programme render the bands are being restored to. A field is
- * optional exactly when the baseline card did not print it.
+ * Nothing in this file is copy: the strings a band prints come from
+ * `Locale/En/Home.json` through the translator, or from `Content/Record/*.ts`. A
+ * field is optional exactly when the card does not print it.
  */
 
 /** The server translator's shape: a key, a default, and the resolved string. */
@@ -21,8 +20,8 @@ export type HomeTranslate = (
 
 /**
  * One span of a stamp line. `Ink` is a CSS colour; absent means the line's own
- * muted ink. The baseline coloured a stamp's brackets, its keyword and its
- * value separately, so a line is a list of spans rather than a string.
+ * muted ink. A stamp prints its brackets, its keyword and its value in separate
+ * inks, so a line is a list of spans rather than a string.
  */
 export interface StampSpan {
 	readonly Text: string;
@@ -142,8 +141,8 @@ export interface ElementCard extends CardRecord {
 	/**
 	 * How much of the element's working the card prints.
 	 *
-	 * `record` is the card as the wall has always printed it plus its six-fact
-	 * register - the dense reading, which is right for twelve of the fifteen.
+	 * `record` is the card as the wall prints it plus its six-fact
+	 * register - the dense reading, which is right for eleven of the fifteen.
 	 * `plate` adds the three-step trace, and it is reserved for the four
 	 * elements a reader meets first (the host, the extension host, the service
 	 * layer, the build). The wall is then a page with four annotated entries
@@ -190,8 +189,9 @@ export interface StackTile {
  * One element row of a release card.
  *
  * `Before` and `After` are the two halves of the row's "replaces / uses" line,
- * with the technology it names lifted into a badge between them - which is how
- * the baseline printed that line, and why it is three fields rather than one.
+ * with the technology it names lifted into a badge between them - which is why the
+ * technology is a badge rather than part of either half, and why it is three
+ * fields rather than one.
  */
 export interface ReleaseElement {
 	readonly Name: string;

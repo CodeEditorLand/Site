@@ -17,6 +17,6 @@ export interface TrailItem {
 	/** The crumb as written, `/`-prefixed - `/HOME`, `/ACCOUNT`. */
 	readonly label: string;
 
-	/** Absent on the last crumb - the current page is not a link. */
+	/** Where the crumb leads. Ignored on the last crumb: that one is the page. */
 	readonly href?: string;
 }

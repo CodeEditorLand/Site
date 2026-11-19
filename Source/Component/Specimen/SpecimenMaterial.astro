@@ -10,7 +10,7 @@
  *                   legend (a legend explains marks), and not a figure (nothing
  *                   here is evidence for a claim - it *is* the material).
  * RANK              set.
- * SLOT CONTRACT     items[] -> name, token, value, use, kind
+ * SLOT CONTRACT     items[] -> name, token, value, use, kind, scale?
  * MAY HOLD          six specimens and their four lines each.
  * MAY NOT HOLD      a seventh value. The identity is six things, and a strip
  *                   that grew a row would be a second identity.
@@ -27,9 +27,11 @@
  * ─── THE SWATCH IS THE VALUE, NOT A PICTURE OF IT ─────────────────────────
  * A fill is painted with the token itself (`var(--Background)`), never with the
  * hex the label prints: the label is a reading, and the swatch is the thing. An
- * ink specimen is the word set in the ink at the L tier, because that is what a
- * printer's specimen does with an ink - it shows you a letter, not a chip. A
- * rule specimen is 1px of `--Divider` at the width the site draws it.
+ * ink specimen is the word set in the ink at the L tier (`--type-section`),
+ * because that is what a printer's specimen does with an ink - it shows you a
+ * letter, not a chip. The primary ink alone is set at the display tier: the
+ * largest type on a specimen sheet should be the material showing itself. A rule
+ * specimen is 1px of `--Divider` at the width the site draws it.
  *
  * ─── THE HAIRLINE IS THE ONLY FRAME ───────────────────────────────────────
  * Each specimen is separated by one hairline and carries no fill, no radius and
@@ -62,7 +64,7 @@ interface Props {
 
 const { items, label, count, empty, class: ClassName } = Astro.props;
 
-/** The custom property each specimen paints its swatch with. */
+/** Wraps a token name in `var()`, so a swatch paints with the token, never the hex. */
 const Paint = (Token: string): string => `var(${Token})`;
 ---
 

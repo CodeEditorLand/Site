@@ -2,13 +2,11 @@
  * Config - the two content collections, defined once.
  *
  * `Source/content.config.ts` is the file Astro loads (the framework reads it by
- * name, not by import), and it is now a re-export of this module. Before that it
- * carried a second, subtly different copy of both collections: the same two
- * `glob` loaders, the same two schemas, and one difference that mattered - the
- * live copy set `generateId` so a blog entry's id is its filename, while this one
- * did not. Two definitions of one collection is the drift this programme exists
- * to end, and the fix is not to delete either file: one owns the definition, the
- * other owns the framework's entry point.
+ * name, not by import), and it is a re-export of this module. The split is
+ * deliberate: one file owns the definition, the other owns the framework's entry
+ * point. A second copy of either collection is a second place for a schema to
+ * drift, and that drift is silent - a copy without `generateId` files a blog
+ * entry under a re-derived id while every page still renders.
  *
  * The rule the schemas encode:
  *

@@ -180,19 +180,43 @@ FormatPrettier() {
 
 	\cd "$Root"
 
-	# Pass 1: blank-line formatter - inserts blank lines after statement and
-	# block boundaries. Runs first so that Prettier can normalize the result.
+	# Pass 1: blank-line formatter. It inserts a blank line only where Prettier
+	# keeps one - between statements, object/type-literal members, array elements
+	# and call arguments - and never inside an expression or a JSX subtree. Its
+	# output is therefore a fixed point of pass 2: a formatted tree reports
+	# "0 files", and a second `npm run Format` writes nothing at all.
+	#
+	# Keep it that way. Any rule that inserts a blank line Prettier strips makes
+	# every run rewrite the whole tree (~1,600 files), which is what kept the dev
+	# server reloading (t_6b9a495a).
 	\python3 "$Current/Format/TypeScript.py" --All
 
 	# Pass 2: Prettier - formats TS/JS/JSX/TSX/JSON/MD/CSS/Astro.
 	# prettier-plugin-astro is loaded automatically if installed.
-	# || \true prevents file-level errors from aborting the pipeline.
+	# `|| :` prevents file-level errors from aborting the pipeline. (`|| 	rue`
+	# looks equivalent, but shfmt rewrites the escape to `rue` - a missing
+	# command, which `set -e` then turns into a dead Format run.)
 	if [ -x "$Root/node_modules/.bin/prettier" ]; then
 		"$Root/node_modules/.bin/prettier" --write . \
-			--ignore-path ".prettierignore" || \true
+			--ignore-path ".prettierignore" || :
 	else
 		\echo "Prettier not found in node_modules/.bin - skipping."
 		\echo "Run: pnpm install"
+	fi
+
+	# Check the invariant instead of trusting it: after Prettier has run, pass 1
+	# must have nothing left to say. Anything it still wants to change is a blank
+	# line Prettier just stripped, i.e. the rewrite storm starting over. A clean
+	# run reports 0; a number here names the drift.
+	Drift=$(
+		\python3 "$Current/Format/TypeScript.py" --DryRun --All 2>/dev/null |
+			\grep -c "Would modify" || :
+	)
+	if [ "${Drift:-0}" -gt 0 ]; then
+		\echo "WARNING: $Drift file(s) still want a blank line Prettier strips."
+		\echo "  The blank-line pass has drifted from Prettier's policy - every"
+		\echo "  Format run will keep rewriting them. Run it by hand to list them:"
+		\echo "    python3 Maintain/Format/TypeScript.py --DryRun --All"
 	fi
 
 	\echo ""

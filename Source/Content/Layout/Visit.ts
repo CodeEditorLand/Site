@@ -7,12 +7,12 @@
  * original path and replace it in one frame. That job is why the route carries no
  * stylesheet, no Base layout and no React island: every byte is latency.
  *
- * It also means the route has never said anything. A reader whose browser does
- * not run the script, or whose path resolves to nothing at all, met a blank
- * creme field and a three-second meta refresh to the homepage - which is a dead
- * end dressed as a redirect. This module is the record that page was missing:
- * the missing-state composition, in the grammar, printed inside `<noscript>` so
- * it costs nothing when the script runs and states the truth when it does not.
+ * So the route prints one thing when its script does not run. A reader whose
+ * browser blocks it, or whose path resolves to nothing at all, would otherwise
+ * meet a blank creme field and a three-second meta refresh to the homepage - a
+ * dead end dressed as a redirect. This module is the record that arm prints: the
+ * missing-state composition, in the grammar, inside `<noscript>` so it costs
+ * nothing when the script runs and states the truth when it does not.
  *
  * ─── WHY PLAIN DATA, NOT A TRANSLATOR ─────────────────────────────────────
  * The route is deliberately outside `Library/I18n`: importing the server
@@ -24,10 +24,9 @@
  *
  * ─── THE RULES THE COPY KEEPS ─────────────────────────────────────────────
  * - It states the state (`UNAVAILABLE`), never an apology.
- * - It prints the three facts the route actually holds: the path asked for, the
- *   fact that nothing is filed there, and the fact that the address is well
- *   formed. A 404 that says "oops" has told the reader how to feel instead of
- *   what is true.
+ * - It prints the three facts the route actually holds: the path asked for, that
+ *   it resolves to nothing, and that the build emits no signal for it. A 404 that
+ *   says "oops" has told the reader how to feel instead of what is true.
  * - It offers one way forward - the index, which is the only page that can name
  *   every address the build does emit - and one way back.
  */

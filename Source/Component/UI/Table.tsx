@@ -212,7 +212,7 @@ interface TableEmptyProps {
 	/** How many columns the empty row spans. */
 	colSpan: number;
 
-	/** The state word. `◎` is the grammar's mark for an absence. */
+	/** The absence's mark, printed before the word. Default `◎` - the grammar's fallback. */
 	mark?: string;
 
 	/** What would be here. */
@@ -284,9 +284,9 @@ interface TableRegisterProps {
 /**
  * TableRegister - the line above a table: `# TIERS / 04`.
  *
- * The mark, the label, U+2001's job done by the rule, and the count. It is the
- * same register a `RecordBand` prints, at the table's scale, so a table on this
- * site opens the way every other set does.
+ * The mark, the label, the `/` rule and the count. It is the same register a
+ * `RecordBand` prints, at the table's scale, so a table on this site opens the way
+ * every other set does.
  */
 function TableRegister({ label, count, note }: TableRegisterProps) {
 	return (

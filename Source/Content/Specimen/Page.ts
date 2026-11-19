@@ -2,7 +2,7 @@
  * Page - the sheet's copy, and nothing else.
  *
  * Every sentence `/Specimen` prints that is not a part's own contract is here:
- * the head, the three bands' openings, the material's six specimens, the
+ * the head, every band's opening, the material's six specimens, the
  * register's rows and the sheet's four doors. The page composes; it decides
  * nothing about what it says.
  *
@@ -302,8 +302,8 @@ export const Bands = {
 	 * The fourth band about a family rather than a part, and the first whose subject
 	 * is what the document is BELIEVED for: a ledger is where a reader checks
 	 * whether the thing is real - its target, its licence, its figure and the source
-	 * that figure came from. The other three families are touched, dismissed and
-	 * read; this one is trusted, and a ledger that loses its partial state prints a
+	 * that figure came from. The other families are touched, dismissed, read and
+	 * told; this one is trusted, and a ledger that loses its partial state prints a
 	 * blank cell where a fact should be, which a reader reads as "none".
 	 *
 	 * It follows `/THE DISPLAY` for the reason that one follows `/THE OVERLAY`: a
@@ -434,7 +434,7 @@ export const Bands = {
 	 * The ninth band about a family rather than a part, and the first whose
 	 * subject is what the document does when the reader is LOCKED OUT: the eight
 	 * credential routes, the account directory, the legal set's clause and its
-	 * rail, the fifteen contact routes and the four reference blocks. A frame
+	 * rail, the fifteen contact routes and the five reference blocks. A frame
 	 * fails by holding nothing and furniture fails by losing the reader; a small
 	 * surface fails by being abandoned - the page nobody designed a second state
 	 * for, reached at the one moment the reader cannot work around it.
@@ -462,7 +462,7 @@ export const Bands = {
 	 * The gallery's index - the band this card added.
 	 *
 	 * The sheet had ten family bands and no way to see them: a reader arrived at
-	 * `/THE SHEET`, read twelve parts, and then met nine families in one scroll.
+	 * `/THE SHEET`, read twelve parts, and then met ten families in one scroll.
 	 * The one surface whose subject is *the design frame* was the one surface a
 	 * reader could not survey.
 	 *
@@ -497,10 +497,11 @@ export const Bands = {
 	 * about the state of the world.
 	 *
 	 * The seven compositions the brief named by hand - every motion at reduced
-	 * motion, a motion with no trigger, a specimen with one entry and with forty,
-	 * a social card with no image, a provider row with no logo - are columns of
-	 * its matrix rather than prose, and each found a defect no page had asked
-	 * about because no page had ever been in that state with a reader watching.
+	 * motion, a motion with no trigger, a social card with no image, a provider
+	 * row with no logo, the head read outside the page, the runtime that is not
+	 * reachable and the provider with no credentials - are columns of its matrix
+	 * rather than prose, and each found a defect no page had asked about because
+	 * no page had ever been in that state with a reader watching.
 	 */
 	Apparatus: {
 		kicker: "/THE APPARATUS",

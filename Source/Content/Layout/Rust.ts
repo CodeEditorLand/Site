@@ -1,15 +1,15 @@
 /**
  * Rust - the API surface's workspace copy.
  *
- * The page was a crate grid over a frame. A workspace is the honest form: the
- * nine crates are destinations, the frame is the instrument, and what the frame
- * *is* - its source, its as-of, its failure modes - is a drawer the reader opens.
+ * A workspace, not a crate grid: the nine crates are destinations, the frame is
+ * the instrument, and what the frame *is* - its source, its as-of, its failure
+ * modes - is a drawer the reader opens.
  *
  * The crate names, URLs and descriptions are NOT here: they are
  * `Component/Doc/Rust/Data.ts`'s, and the rail and the register both read them.
- * This module carries only the copy the surface was missing - the two gaps the
- * page never stated (the rustdoc's as-of is not recorded, and a crate with no
- * published site prints a tombstone rather than a dead link).
+ * This module carries only the copy the surface would otherwise lack - the two
+ * gaps the register cannot state (the rustdoc's as-of is not recorded, and a
+ * crate with no published site prints a tombstone rather than a dead link).
  */
 import type { TFunction } from "i18next";
 

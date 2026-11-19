@@ -27,7 +27,9 @@ import { cn } from "./Utility";
  * the same object arriving by a different gesture.
  *
  * Radix owns the behaviour: the pointer position, arrow keys, Escape, focus
- * return. Nothing about it is restated here.
+ * return. The one thing this file states itself is the open state, because a
+ * context menu's door is a region rather than a button and the removed-trigger
+ * guard needs a `Close` that really closes - see below.
  */
 
 /**

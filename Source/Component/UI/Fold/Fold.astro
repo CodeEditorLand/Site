@@ -15,14 +15,16 @@
  * register, at the scale a page without furniture can carry: one line, closed.
  *
  * ─── NARROW BY DEFAULT, WIDE ON REQUEST ───────────────────────────────────
- * Hidden at >=1024 unless `wide`. A page with a rail has the rail; a page without
- * one keeps its fold at every width, because a table of contents is the
- * document's own index and not a phone affordance.
+ * `display: none` from 1024px up unless `wide` (`Fold--wide`). A page with a rail
+ * has the rail; a page without one keeps its fold at every width, because a table
+ * of contents is the document's own index and not a phone affordance.
  *
  * ─── THE EMPTY FOLD IS COMPOSED ───────────────────────────────────────────
- * `empty` is required. A page with no sections opens its fold and says what
- * would be here and why it is not - a fold that rendered nothing would be
- * indistinguishable from contents that failed to build.
+ * `empty` is required, and it is what the body prints instead of rows: `◎ NO
+ * SECTION` and the sentence. A fold that rendered nothing would be
+ * indistinguishable from contents that failed to build. The `<details>` carries no
+ * `open` attribute, so an empty fold's message sits behind the same closed summary
+ * as a full one - the summary's `00` is the only part of the state that shows.
  *
  * ─── A ROW'S `meta` IS A FACT, NOT DECORATION ─────────────────────────────
  * The right-hand cell carries the section's own count (`13 ROWS`, `07 BANDS`) or

@@ -1,19 +1,19 @@
 /**
  * Type - the mark set's vocabulary, as values.
  *
- * Eight marks, one form each. This module is the list, so a block that prints a
+ * Seven marks, one form each. This module is the list, so a block that prints a
  * mark picks a kind from here rather than inventing a span; `Mark.astro` is the
  * only renderer, and `Stylesheet/System/Mark` is the only place a form is drawn.
  *
  * ─── WHY THE LADDER IS EXPORTED ───────────────────────────────────────────
  * A block sometimes needs the mark's SIZE as a number - a box that has to be
  * reserved, a figure in a contract column, a specimen sheet printing the steps
- * side by side. It reads `MarkStep`, which is the same ladder the stylesheet
- * declares (`Mark/_Token.scss`), so the two cannot disagree about what the
- * fourth step is.
+ * side by side. It reads `MarkStep`, which carries steps 1-8 of the ladder the
+ * stylesheet declares (`Mark/_Token.scss`), so the two cannot disagree about
+ * what the fourth step is.
  */
 
-/** The eight marks. One form each. */
+/** The seven marks. One form each. */
 export type MarkKind =
 	/** The state square: filled = known, hollow = not. */
 	| "square"

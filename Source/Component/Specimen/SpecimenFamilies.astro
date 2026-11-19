@@ -64,7 +64,7 @@ interface Props {
 
 const { families, label, count, empty, class: ClassName } = Astro.props;
 
-/** Whether a row opens a new set: the matrix prints a heavier rule there. */
+/** Whether a row opens a new set: the index prints a heavier rule there. */
 const OpensGroup = (Index: number): boolean =>
 	Index > 0 && families[Index]!.group !== families[Index - 1]!.group;
 ---

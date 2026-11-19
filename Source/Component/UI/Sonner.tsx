@@ -7,8 +7,10 @@ import * as React from "react";
 import { cn } from "./Utility";
 
 // ─── Theme note ───────────────────────────────────────────────────────────────
-// The site uses a fixed flat-white theme with no dark mode. next-themes is not
-// wired up (no ThemeProvider in the Astro root), so theme is hardcoded "light".
+// One theme: the creme field with white inserts, no dark mode. next-themes is not
+// wired up (there is no ThemeProvider in the Astro root), so `theme` is the literal
+// "light" and the toaster never follows the OS - the site has nothing to follow it
+// to.
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
@@ -28,8 +30,9 @@ import { cn } from "./Utility";
  * way to take it back.
  *
  * ─── NO TWO-SECOND RECEIPTS ──────────────────────────────────────────────
- * A default `duration` of four seconds, not two: a sentence a reader has to read
- * twice is not a receipt, and the site's own copy is measured, not clipped.
+ * Four seconds by default, not two: a sentence a reader has to read twice is not a
+ * receipt, and the site's own copy is measured, not clipped. `Notify.failed` stands
+ * for six - a refusal carries a cause and a door, which is two sentences.
  */
 
 const Toaster = ({ ...props }: ToasterProps) => {

@@ -2,38 +2,36 @@
 // PrivacyRequests - the dashboard's data-rights directory: the six statutory
 // rights, the five support channels, and the one entry that ends the account.
 //
-// This was `Dynamic/DynamicPrivacyRequests.tsx`, a "use client" island with no
-// client state, no handler and no hook - it shipped React to the browser to
-// render static links. Nothing hydrates here, so nothing needs an island: the
-// same destinations, in the same order, with the same copy, at zero
-// JavaScript. No interaction was removed, because there was none to remove.
+// Nothing hydrates: the directory is static links, so it is an Astro block and
+// not a "use client" island - the same destinations, in the same order, with the
+// same copy, at zero JavaScript. There is no client state, no handler and no hook
+// to keep, because the surface has no interaction to keep.
 //
 // The three blocks are three shapes and are rendered as three blocks, not as
 // one list with a `kind` branch: a right ends in `Open form`, a support
 // channel ends in the mailbox its request lands at, and the erasure entry is
-// one red card. Flattening them is how the old file drifted into a list of
-// twenty-three rows for ten destinations.
+// one red card. Flattening them is a list of rows where three objects belong.
 //
-// ─── WHAT THE STATE MATRIX ADDED ─────────────────────────────────────────
-// The directory had one rendering: the full list. The matrix printed it in
-// twenty-four combinations and three had no answer at all.
+// ─── THE THREE ARMS THE DIRECTORY STATES ─────────────────────────────────
+// The directory has one rendering: the full list. Three states are printed
+// beside it, because in each one the list would be a label over a hole.
 //
-//   - **An empty grid.** A block whose registry returned no card printed its
-//     heading, its intro sentence about six rights, and then a grid of nothing:
-//     a label over a hole, which is the exact defect `SurfaceAbsent` exists to
-//     prevent. Each block now carries its own composed `empty` sentence from
-//     `Data.ts` and prints it under the same heading.
-//   - **A denied reader.** A dashboard surface a signed-out reader reaches
-//     printed the whole directory as though they could act on it. `state="denied"`
-//     prints what the page is, why it is not being shown, and the one way in -
-//     in the site's own three rows, not in an apology.
-//   - **No count.** Three sets, three headings, no figure anywhere - while
-//     every other counted line on the site prints `# LABEL / NN`. Each block now
-//     prints its register through `Register.astro`, composed with `RegisterOf`
-//     from the rows it is about to render, so the line cannot outlive its set.
+//   - **An empty grid.** A block whose registry returns no card still prints
+//     its heading and its intro sentence, so a grid of nothing under them is a
+//     label over a hole - the exact defect `SurfaceAbsent` exists to prevent.
+//     Each block carries its own composed `empty` sentence from `Data.ts` and
+//     prints it under the same heading, with `STATUS: UNAVAILABLE`.
+//   - **A denied reader.** A signed-out reader must not be shown the whole
+//     directory as though they could act on it. `state="denied"` prints what
+//     the page is, why it is not being shown, and the one way in - in the
+//     site's own three rows, not in an apology.
+//   - **No count.** Three sets, three headings, and every other counted line on
+//     the site prints `# LABEL / NN`. Each block prints its register through
+//     `Register.astro`, composed with `RegisterOf` from the rows it is about to
+//     render, so the counted line cannot outlive its set.
 //
-// The `erase` block is optional now: a route that is not offered prints nothing
-// rather than an erasure card that leads to a page which does not answer.
+// `erase` is optional: a route that is not offered prints nothing rather than an
+// erasure card that leads to a page which does not answer.
 //
 // No script tag, no client directive, no inline style.
 import SurfaceAbsent from "../Surface/SurfaceAbsent.astro";

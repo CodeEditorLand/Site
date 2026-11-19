@@ -86,7 +86,7 @@
 		"astro": "7.4.13",
 		"astro-capo": "0.0.1",
 		"astrojs-service-worker": "2.0.3",
-		"autoprefixer": "10.6.2",
+		"autoprefixer": "10.7.0",
 		"class-variance-authority": "0.7.1",
 		"clsx": "2.1.1",
 		"cmdk": "1.1.1",

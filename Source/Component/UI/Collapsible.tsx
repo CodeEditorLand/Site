@@ -16,13 +16,14 @@ import { cn } from "./Utility";
  * regions is the accordion, and a component that did both would be one component
  * pretending to be two.
  *
- * ─── THE MARK THE KIT DID NOT HAVE ───────────────────────────────────────
- * A collapsible trigger is a button with no icon, so nothing on it said which way
- * the panel was going. The grammar answers that with two glyphs: `→` while the
- * region is closed (there is more, that way) and `↳` while it is open (this is the
- * content of the line above). `CollapsibleTrigger` prints the slot and
- * `System/UI/_Display.scss` draws the glyph from `data-state`, so no caller has to
- * remember which one goes where and the two states cannot be swapped by a page.
+ * ─── THE MARK THE TRIGGER CARRIES ────────────────────────────────────────
+ * A collapsible trigger is a button with no icon of its own, so the kit's markup
+ * says nothing about which way the panel is going. The grammar answers that with
+ * two glyphs: `→` while the region is closed (there is more, that way) and `↳`
+ * while it is open (this is the content of the line above).
+ * `CollapsibleTrigger` prints the slot and `System/UI/_Display.scss` draws the
+ * glyph from `data-state`, so no caller has to remember which one goes where and
+ * the two states cannot be swapped by a page.
  *
  * ─── THE SAME REDUCED-MOTION PATH AS THE ACCORDION ───────────────────────
  * Radix publishes `--radix-collapsible-content-height`, the stylesheet animates

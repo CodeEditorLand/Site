@@ -13,23 +13,23 @@ import { cn } from "./Utility";
 /**
  * Menubar - the application's own bar, wearing the slip.
  *
- * ─── THE ONE CONTROL THAT WAS STILL THE KIT ───────────────────────────────
+ * ─── THE ONE CONTROL THAT CANNOT BE THE KIT ───────────────────────────────
  *
- * `MenubarContent` was `flat z-50 min-w-[12rem] overflow-hidden border
- * bg-popover p-1 text-popover-foreground` - the kit's popover, which is not a
- * surface this site has - and its rows were a Tailwind string with
- * `focus:bg-accent` on them. Every other menu in the family had already been
- * moved onto `.Slip` and `.Slip__Row`; the menubar had not, which meant the one
- * place a reader meets a *bar of menus* - the place a desktop application is
- * most recognisable - was the one place the document stopped being itself.
+ * A menubar is the place a reader meets a *bar of menus* - the place a desktop
+ * application is most recognisable - so it is the one place the document cannot
+ * stop being itself. The kit's answer is a popover surface this site does not
+ * have (`flat z-50 min-w-[12rem] overflow-hidden border bg-popover p-1
+ * text-popover-foreground`) with `focus:bg-accent` on its rows; neither is a
+ * material or a state this document prints.
  *
- * It is the same instrument now. The bar is `.Menubar` (a ruled strip on the
+ * So it is the family's instrument: the bar is `.Menubar` (a ruled strip on the
  * card fill, one hairline under it, no fill of its own), the trigger is
  * `.Menubar__Trigger` with the row grammar's own hover wash and the accent rule
  * when its menu is open, the content is `.Slip`, and every row is `.Slip__Row`
- * with `data-mark` / `data-meta` exactly as a dropdown's rows are. Nothing about
- * the behaviour is restated: Radix owns the arrow keys between menus, the
- * typeahead, the Escape, the focus return.
+ * with `data-mark` / `data-meta` exactly as a dropdown's rows are. Radix owns the
+ * arrow keys between menus, the typeahead, the Escape and the focus return; the
+ * bar owns its open state and the removed-trigger rule, because that state
+ * belongs to the bar rather than to one menu (below).
  *
  * ─── WHY `head` IS ON THE CONTENT AND NOT ON THE BAR ──────────────────────
  *
@@ -132,9 +132,9 @@ function Menubar({
  * One menu in the bar.
  *
  * It provides no door of its own: a menubar's open state is the bar's (see
- * `Menubar` above), so the guard lives there and this stays a pass-through. A
- * `DoorContext` of `null` is the honest value here - the slip has no single
- * element it came through.
+ * `Menubar` above), so the guard lives there and this stays a pass-through.
+ * `DoorContext` keeps its `null` default here, so `MenubarTrigger`'s ref writes
+ * nowhere - the slip has no single element it came through.
  */
 function MenubarMenu({
 	children,
@@ -351,8 +351,8 @@ function MenubarSeparator({
 
 /**
  * The shortcut cell. A chord is printed in the grammar's containment mark -
- * `〈⌘S〉` - so it is the same object the palette's foot and the dropdown's
- * shortcut use, and a reader learns the notation once.
+ * `〈⌘S〉` - in the row's meta cell, the same notation the dropdown's shortcut and
+ * the palette's foot print, so a reader learns it once.
  */
 function MenubarShortcut({
 	className,

@@ -20,11 +20,11 @@ import { cn } from "./Utility";
  *              a subject rather than a row.
  *
  * ─── WHY THE LABEL IS A SIBLING, NOT A CHILD ─────────────────────────────
- * The separator primitive is a `div` with `role="separator"`; text inside it would
- * be announced as part of the rule, which is not a thing a screen reader can read.
- * So the labelled form is a flex row: a rule, the label, a note, a rule - and each
- * piece keeps its own semantics. The two rules are decorative and carry no role;
- * the label is a paragraph and is read.
+ * The separator primitive is a `div`, and when it is not decorative it carries
+ * `role="separator"` - text inside it would then be announced as part of the rule,
+ * which is not a thing a screen reader can read. So the labelled form is a flex row:
+ * a rule, the label, a note, a rule - and each piece keeps its own semantics. The two
+ * rules are decorative and carry no role; the label is a paragraph and is read.
  */
 
 interface SeparatorProps extends React.ComponentPropsWithoutRef<

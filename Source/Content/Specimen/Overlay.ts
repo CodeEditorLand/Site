@@ -7,10 +7,9 @@
  * menu at rest is a button, a dialog at rest is a button, and the whole
  * behaviour - what happens on Escape, what happens when the rows have not
  * arrived, what happens when the trigger is removed while the slip is open -
- * exists only in the two seconds after a click. The tree carried ten components
- * and had never seen most of those two seconds: no empty menu, no loading body,
- * no error body, no submenu three deep, no dialog taller than the viewport, no
- * popover near the right edge.
+ * exists only in the two seconds after a click. Those two seconds are the
+ * matrix's subject: an empty menu, a loading body, an error body, a submenu
+ * three deep, a dialog taller than the viewport, a popover near the right edge.
  *
  * So the matrix is the argument. Ten rows, twenty columns, and every cell that
  * cannot exist carries its reason in full as a footnote rather than a truncated
@@ -333,8 +332,8 @@ export interface OverlayRow {
 
 /**
  * The ten components, in the family's order: the four panels, the two cards,
- * the cap, then the four list surfaces. Panels first because they are the
- * largest object and the one a reader meets with a click rather than a hover.
+ * then the four list surfaces. Panels first because they are the largest object
+ * and the one a reader meets with a click rather than a hover.
  */
 export const Rows: readonly OverlayRow[] = [
 	{

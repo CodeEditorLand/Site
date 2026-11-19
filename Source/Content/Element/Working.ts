@@ -18,13 +18,14 @@
  * THE TRACE IS THE PATH THE CLAIM CAN BE CHECKED ALONG. Three files the
  * element's own manual names, in the order the manual names them, each with the
  * one thing it carries. It is not a build transcript and it is not invented
- * output: every path below is quoted from `Content/doc/deep-dive-<element>.md`
- * and every note is the file's own role, so a reader can open the file and the
- * manual and find both saying the same thing.
+ * output: every path below is quoted from the element's manual page
+ * (`Content/doc/deep-dive-<element>.md`, or the bare `output.md` where the manual
+ * files the element under its own name) and every note is the file's own role, so
+ * a reader can open the file and the manual and find both saying the same thing.
  *
- * EVIDENCE IS THE HONEST COLUMN. Eight of the fifteen elements have an
+ * EVIDENCE IS THE HONEST COLUMN. Seven of the fifteen elements have an
  * `Evidence/<Element>/manifest.yaml` in the build and none of those manifests
- * has a plate beside it yet (`status: placeholder`); the other seven have no
+ * has a plate beside it yet (`status: placeholder`); the other eight have no
  * manifest at all. The register prints exactly that, per element, instead of a
  * path that would 404: `MANIFEST␁PLACEHOLDER` with `PLATE NOT IN BUILD`, or
  * `UNAVAILABLE` with `NO MANIFEST IN THE BUILD`. That is the partial state the

@@ -6,9 +6,11 @@ import React from "react";
 
 import { cn } from "./Utility";
 
-// Daylight Field Record: flat corners, mono label, ink variant.
-// Original look (colors, sizing) is unchanged - only the physics/
-// motion layer is Jelly's.
+// Daylight Field Record: flat corners, mono label, ink variant. The filled variants
+// mount the Jelly surface - `jelly-button`, or `jelly-icon-button` at `size="icon"` -
+// so the physics and the motion are Jelly's. `ghost` and `link` carry no fill for
+// Jelly to paint, so they are the plain `<button>`; `asChild` is a `Slot`; and a
+// caller that passes `style` gets the plain button as well.
 const ButtonVariants = cva(
 	"inline-flex items-center justify-center gap-0 whitespace-nowrap select-none touch-manipulation rounded-none font-mono text-sm font-medium uppercase tracking-wider transition-[background-color,color,transform] active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-[color-mix(in_srgb,var(--Ring)_40%,transparent)] focus-visible:ring-[2px] aria-invalid:ring-[color-mix(in_srgb,var(--Destruct)_20%,transparent)]",
 

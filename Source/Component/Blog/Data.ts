@@ -3,14 +3,15 @@
  *
  * Nothing here is copy: the labels arrive from the page's i18n call, and this
  * module never imports the i18n client. What it owns is the ordering, the
- * reading-time label, the contents list and the ledger rows, because those are
- * the page's decisions and a template is the wrong place to make them.
+ * reading-time label, the contents list, the ledger rows, the margin's notes and
+ * the trail's crumbs, because those are the page's decisions and a template is
+ * the wrong place to make them.
  *
- * The three functions are total: an empty collection yields an empty row list,
- * an article with fewer headings than the floor yields no contents list, and an
- * article with no tags yields a ledger without a tag row. None of them throws on
- * missing data, because a missing field is the schema's job to reject, not this
- * module's.
+ * Every derivation is total: an empty collection yields an empty row list, an
+ * article with fewer headings than the floor yields no contents list, and an
+ * article whose tags list is empty joins to an empty `TAGS:` value. None of them
+ * throws on missing data, because a missing field is the schema's job to reject,
+ * not this module's.
  */
 import type { Aside, LedgerRow, MarginNote } from "../Record/Type.js";
 
@@ -132,8 +133,9 @@ export const BuildToc = (
  * Does this article carry a Mermaid fence?
  *
  * The page asks so it can mount the client-side renderer only where a diagram
- * exists: seven of eight articles have none, and loading a diagram engine for
- * them would be a page weight nothing on the page needs.
+ * exists: five of the eight articles carry a fence and three carry none, and
+ * loading a diagram engine for the three would be a page weight nothing on the
+ * page needs.
  */
 export const HasDiagram = (Body: string | undefined): boolean =>
 	Body?.includes("```mermaid") ?? false;
@@ -343,15 +345,14 @@ export const RegisterEmpty =
  * their labels from i18n (`Home`, `Blog`), so the grammar has to be written
  * somewhere between the page and the trail.
  *
- * It used to be written by `Contact/ContactBreadcrumb.astro`, the absorbed
- * bridge: a Contact-named adapter was the last thing the blog reached through
- * for the site's breadcrumb, which is how a bridge outlives the thing it
- * bridged. The two blog surfaces now import `Route/Trail` directly and write
- * their own crumbs, and the bridge is left untouched for any caller that has
- * not moved.
+ * It is written here rather than by `Contact/ContactBreadcrumb.astro`, the
+ * absorbed bridge: a Contact-named adapter is the last thing the blog should
+ * reach through for the site's breadcrumb, since a bridge outlives the thing it
+ * bridged. Both blog surfaces import `Route/Trail` directly and write their own
+ * crumbs.
  *
- * One leading slash, upper case, nothing else - the same rule the bridge used,
- * so the rendered trail is byte-for-byte what it was.
+ * One leading slash, upper case, nothing else - the trail's one grammar, so the
+ * rendered trail is the same string on every page that hands in a label.
  */
 export const TrailOf = (
 	Crumbs: readonly { readonly label: string; readonly href?: string }[],

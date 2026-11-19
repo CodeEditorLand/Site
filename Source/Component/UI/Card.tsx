@@ -8,12 +8,15 @@ import { cn } from "./Utility";
  * ─── THE SURFACE IS A KEEPER ─────────────────────────────────────────────
  * `Card` is a `jelly-card` with the insert's fill, radius 0 and no padding of its
  * own. `KEEPERS.md` states the Jelly surfaces are the design system's surface family
- * and not a decoration to be replaced, so nothing here repaints one.
+ * and not a decoration to be replaced, so nothing here swaps one for a `<div>` and a
+ * set of utilities: the fill, the radius and the padding are the element's own custom
+ * properties (`--jelly-fill`, `--jelly-radius`, `--jelly-card-padding-*`), set from
+ * the site's tokens.
  *
- * ─── WHAT THE FAMILY ADDED: THE CARD'S OWN STATE ─────────────────────────
+ * ─── THE CARD'S OWN STATE ────────────────────────────────────────────────
  * A card that failed to load its body, a card whose values are older than its
  * as-of, a card with nothing in it yet - all three rendered as a card that worked,
- * which is the one thing a dossier may not do. The card now carries its state on
+ * which is the one thing a dossier may not do. The card carries its state on
  * `data-state` (the stylesheet answers the edge and the ink), and `CardState` prints
  * the sentence at its foot:
  *
@@ -37,7 +40,7 @@ import { cn } from "./Utility";
 type CardStateKind = "loading" | "empty" | "error" | "stale" | "archived";
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-	/** The body's state. Omitted means a card at rest, exactly as before. */
+	/** The body's state. Omitted means a card at rest: no state ink, no state edge. */
 	state?: CardStateKind;
 }
 
