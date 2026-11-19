@@ -714,13 +714,14 @@ const SkinClass = (Row: Specimen): string => {
 								/>
 							) : Entry.kind === "index" ? (
 								<DocIndex
-									section={
-										Entry.variant === "absent"
+									section={{
+										...(Entry.variant === "absent"
 											? CHAPTER_ABSENT
 											: Entry.variant === "many"
 												? CHAPTER_MANY
-												: CHAPTER
-									}
+												: CHAPTER),
+										Id: `${Entry.variant ?? "chapter"}-${Entry.mark}`,
+									}}
 								/>
 							) : Entry.kind === "card" ? (
 								<ul class="specimen-reading__cards">
@@ -746,15 +747,16 @@ const SkinClass = (Row: Specimen): string => {
 								</ul>
 							) : Entry.kind === "appendix" ? (
 								<DocAppendix
-									appendix={
-										Entry.variant === "stripabsent"
+									appendix={{
+										...(Entry.variant === "stripabsent"
 											? STRIP_ABSENT
 											: Entry.variant === "backend"
 												? BACKEND
 												: Entry.variant === "deployments"
 													? DEPLOYMENTS
-													: ARCHITECTURE
-									}
+													: ARCHITECTURE),
+										Id: `${Entry.variant ?? "architecture"}-${Entry.mark}`,
+									}}
 									state={Entry.variant === "empty" ? "empty" : "rest"}
 									empty="The destinations this panel lists have not been read in this build, so the panel states what would be here rather than printing an empty body."
 								/>

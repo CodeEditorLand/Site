@@ -1,11 +1,11 @@
-// SpecimenFrame - the surface, shell and layout family's plate: the state matrix,
+// SpecimenReading - the doc, reading and detail family's plate: the state matrix,
 // its notes, the improvements the exploration produced, the observations it did
-// not fix, the conditions' own figures, and the fifty-odd live rows.
+// not fix, the conditions' own figures, and the fifty-seven live rows.
 //
 // Publishes:
 //   .reading-matrix-sheet               the state matrix, as one figure
 //   .reading-matrix-sheet__scroll       the frame the table scrolls in
-//   .reading-matrix-sheet__table        twenty rows, twenty-two columns
+//   .reading-matrix-sheet__table        fourteen rows, twenty-four columns
 //   .reading-matrix-sheet__corner       the head's leading cell
 //   .reading-matrix-sheet__head         one condition's head
 //   .reading-matrix-sheet__head--group  the first head of a new group
@@ -30,23 +30,25 @@
 // ─── THE MATRIX IS ONE INSTRUMENT AND EVERY FAMILY PRINTS IT ──────────────
 // A pinned name column, a scrolling body, footnotes with marks, a register under
 // it. What changes per family is the FIGURES and the two sections under the table
-// - the record family argues trust, the narrative family argues a sentence, and
-// this one argues a frame. So the partial carries its own names, and the shared
-// shape is repeated rather than borrowed: a class that belongs to another
-// family's partial is a class no one can move without breaking a surface they
-// were not reading.
+// - the record family argues trust, the narrative family argues a sentence, the
+// frame family argues a frame, and this one argues the reader's furniture. So the
+// partial carries its own names, and the shared shape is repeated rather than
+// borrowed: a class that belongs to another family's partial is a class no one
+// can move without breaking a surface they were not reading.
 //
-// ─── TWENTY-TWO COLUMNS DO NOT FIT, AND MUST NOT ──────────────────────────
-// The table scrolls inside `.reading-matrix-sheet__scroll` and the component's name
-// is pinned to the leading edge. Compressing twenty-two conditions into a page
-// would mean either dropping conditions or printing them below the type floor,
-// and both are the same answer: the matrix stops being readable.
+// ─── TWENTY-FOUR COLUMNS DO NOT FIT, AND MUST NOT ─────────────────────────
+// The table scrolls inside `.reading-matrix-sheet__scroll` and the component's
+// name is pinned to the leading edge. Compressing twenty-four conditions into a
+// page would mean either dropping conditions or printing them below the type
+// floor, and both are the same answer: the matrix stops being readable.
 //
-// ─── THE ROWS ARE NOT AN ISLAND ───────────────────────────────────────────
-// Every row on this plate is static Astro, because this family ships no
-// JavaScript at all: a shell is a `<div>` with a grid, a rail a `<nav>`, a pane
-// pair two `<section>`s and a seam. The only interactive things the rows print
-// are `<details>` disclosures and the print button, and the browser owns both.
+// ─── THE ROWS ARE NOT AN ISLAND, AND THE STAGE IS A PLATE ────────────────
+// Every row on this plate is static Astro except the crate viewer, whose tab bar
+// is the family's own script and is scoped to its own root. The documentation
+// shell pins its rail to the viewport and hides it below 1024px; both are page
+// behaviours, and a plate that simulated them would be printing a browser. The
+// stage overrides at the foot of this file set the rail static and bounded, and
+// say so where they do it.
 
 @use "../../Mixin" as *;
 
@@ -646,59 +648,43 @@
 	color: var(--MuteForeground);
 }
 
-.specimen-reading__marks {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--space-tight);
-}
-
-.specimen-reading__head-marks {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--space-tight);
-}
-
-.specimen-reading__surface-body {
-	padding-block: var(--space-group);
-}
-
-.specimen-reading__plate-slot {
+/* The one-card stage: `DocCard` renders an `<li>`, because on a page it is a
+   cell of the index's grid. The plate gives it a list of one, so the card is
+   mounted at its own width and not as a bare list item in the flow. */
+.specimen-reading__cards {
 	display: grid;
-	justify-items: start;
-	gap: var(--space-reading);
+	gap: var(--space-tight);
 
-	padding: var(--space-chapter) var(--space-group);
-	text-align: start;
+	margin: 0;
+	padding: 0;
+
+	list-style: none;
 }
 
-.specimen-reading__plate-mark {
-	margin: 0;
+/* ─── THE PLATE IS NOT A VIEWPORT ────────────────────────────────────────── */
 
-	color: var(--MuteForeground);
+/* `DocLayout`'s rail is `position: sticky` with a `100dvh` height and is hidden
+   below 1024px - both are page behaviours, and a plate that simulated them would
+   be printing a browser rather than a composition. Inside the stage the rail is
+   static and bounded: the reader of the sheet sees the three tracks, the two
+   registers and the foot, which is what the row's `when` line is about. The
+   sticky behaviour itself is the shell's own and is unchanged on the pages. */
+.specimen-reading__stage .doc-layout__sticky {
+	position: static;
 
-	font-family: var(--FontMono);
-	font-size: var(--type-section);
-	line-height: 1;
+	block-size: auto;
+	max-block-size: 26rem;
+
+	padding-block-end: 0;
 }
 
-.specimen-reading__plate-value {
-	margin: 0;
-
-	color: var(--Foreground);
-
-	font-family: var(--FontMono);
-	font-size: var(--type-section);
-	line-height: var(--type-section-line);
-	letter-spacing: var(--track-join);
-
-	text-wrap: balance;
+.specimen-reading__stage .doc-layout__head {
+	max-block-size: 14rem;
 }
 
-.specimen-reading__plate-note {
-	margin: 0;
-
-	@include mono-meta;
-	@include track(var(--track-row));
-
-	color: var(--MuteForeground);
+/* The stage's own query container, so the shell inside it re-composes on the
+   plate's width instead of on the window's: a 60rem plate is the two-column
+   form, a 16rem one is the stacked form, and neither is the browser's. */
+.specimen-reading__stage {
+	container-type: inline-size;
 }

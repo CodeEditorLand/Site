@@ -35,6 +35,14 @@
  * is not part of the copied text, and it keeps a long `SOURCE:` fact breaking at
  * its separators instead of at whatever character happens to land at the edge.
  *
+ * ─── THE PART IS A PATH TOO ───────────────────────────────────────────────
+ * The source was the only field that broke, and the part was `nowrap` - so a
+ * folio on a deep page (`/DOC/DEEP-DIVE-FILESYSTEM-FOOTPRINT`) ran past the
+ * band's right edge, which is the one thing a folio may never do: it is the mark
+ * that says the band has ended. The part now carries the same `<wbr>` after
+ * every `/`, and the ordinal and the part still never part company, because the
+ * place group stays `nowrap` between them and only the part wraps inside itself.
+ *
  * ─── NO SCRIPT ────────────────────────────────────────────────────────────
  * No `<script>`, no `client:*`. A folio is printed.
  */

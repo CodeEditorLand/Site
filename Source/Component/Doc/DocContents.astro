@@ -35,6 +35,19 @@
  * width is reserved on every row, so a row becoming current shifts nothing. With
  * JavaScript off the list is still a working jump list; only the marking is
  * absent.
+ *
+ * Two facts about the register itself, and both came out of the state matrix:
+ *
+ * - **It counts itself.** `ON THIS PAGE␁12` is the same counted line the rest of
+ *   the site prints, and the figure is `Items.length` - derived, never passed in,
+ *   so it cannot outlive the rows. It prints in both registers, because closed
+ *   the summary's count is the only figure the reader has.
+ * - **It can fold and it can tighten.** The rail's head is capped at half the
+ *   rail; a document with ninety sections spends that cap on its own contents
+ *   and leaves the tree a slit. `collapsible` prints the rail register as a
+ *   `<details open>` - one row with the label, the count and the way back in -
+ *   and `dense` is the tight step. Nothing is hidden: the fold is open by
+ *   default, so it is the reader's choice and never a page's.
  */
 import DocContentsList from "./DocContentsList.astro";
 

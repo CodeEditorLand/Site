@@ -372,6 +372,38 @@ export const Bands = {
 			"The frame's one law is that nothing here is a card: a shell holds tracks, a track holds bands, a band holds records, and a card is a record's surface. The composition the brief asked for by name - a card that contains a page - is the one place that law is inverted, and it is printed here as `FRAME_03`, re-composing at the card's own width because the shell is a query container and not a viewport rule.",
 	},
 
+	/**
+	 * The reading family's band.
+	 *
+	 * The seventh band about a family rather than a part, and the one whose
+	 * subject is the READER's furniture: the rail that says where you are in the
+	 * manual, the contents that say where you are in the page, the card that
+	 * files a page, the article that prints it, the appendix that closes the
+	 * index, the folio that says where you have got to and the cross-reference
+	 * that says where else the subject is said. Nothing here is content; all of
+	 * it decides whether a reader can find their place - which is why its matrix
+	 * carries the compositions the brief named by hand (one section, ninety, a
+	 * heading wider than the rail, an article with no summary, a foot with no
+	 * cross-references, a strip at 640px) as COLUMNS rather than as prose.
+	 *
+	 * It follows `/THE FRAME` for the reason that one follows `/THE NARRATIVE`:
+	 * the frame decides whether content can be read at all, and this family
+	 * decides whether the reader can find it once it is readable.
+	 */
+	Reading: {
+		kicker: "/THE READING",
+
+		interval: "break",
+
+		heading: "The reader's furniture, and every document it has to hold",
+
+		standfirst:
+			"Fourteen components against twenty-four conditions: the matrix with a reason printed in full for every cell that cannot exist, the eleven behaviours the exploration produced with the cell that produced each, the four things this card found and did not fix, and then the family mounted live - a document with one section and a document with ninety, a heading wider than the rail, an article with no summary, an index card with no description, a foot with no cross-references, a layer of one page, a viewer with no crate, a detail strip at 640px, and the seven adverse compositions a reader meets when the world is unkind.",
+
+		footnote:
+			"Three of the behaviours are the ones the brief named by hand, and each is a prop of the block itself: `DocContents.collapsible` is the fold, `DocLayout.contentsFold` decides it from the list's own length, and the folio's part breaks at its own separators. A behaviour in a wrapper would be a second artifact, and the containment law does not allow a leaf to hold one.",
+	},
+
 	Material: {
 		kicker: "/THE MATERIAL",
 

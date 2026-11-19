@@ -78,15 +78,21 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "loading",
+
 		label: "LOADING",
+
 		ask: "has not arrived",
+
 		group: "condition",
 	},
 
 	{
 		key: "partial",
+
 		label: "PARTIAL",
+
 		ask: "one fact unknown",
+
 		group: "condition",
 	},
 
@@ -94,22 +100,31 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "stale",
+
 		label: "STALE",
+
 		ask: "older than its as-of",
+
 		group: "condition",
 	},
 
 	{
 		key: "disabled",
+
 		label: "DISABLED",
+
 		ask: "cannot be used",
+
 		group: "condition",
 	},
 
 	{
 		key: "readonly",
+
 		label: "READ-ONLY",
+
 		ask: "cannot be changed",
+
 		group: "condition",
 	},
 
@@ -121,8 +136,11 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "long",
+
 		label: "LONG",
+
 		ask: "a line past its column",
+
 		group: "shape",
 	},
 
@@ -132,71 +150,101 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "incard",
+
 		label: "IN A CARD",
+
 		ask: "inside a white insert",
+
 		group: "shape",
 	},
 
 	{
 		key: "onesection",
+
 		label: "ONE SECTION",
+
 		ask: "a document with one",
+
 		group: "composition",
 	},
 
 	{
 		key: "ninety",
+
 		label: "NINETY",
+
 		ask: "a document with ninety",
+
 		group: "composition",
 	},
 
 	{
 		key: "longheading",
+
 		label: "LONG HEADING",
+
 		ask: "wider than the rail",
+
 		group: "composition",
 	},
 
 	{
 		key: "nosummary",
+
 		label: "NO SUMMARY",
+
 		ask: "an article with none",
+
 		group: "composition",
 	},
 
 	{
 		key: "noxref",
+
 		label: "NO X-REF",
+
 		ask: "a foot with no see-also",
+
 		group: "composition",
 	},
 
 	{
 		key: "at640",
+
 		label: "AT 640",
+
 		ask: "a detail strip at 640px",
+
 		group: "composition",
 	},
 
 	{
 		key: "norail",
+
 		label: "NO RAIL",
+
 		ask: "a page with no rail",
+
 		group: "composition",
 	},
 
 	{
 		key: "withaction",
+
 		label: "WITH ACTION",
+
 		ask: "one thing to click",
+
 		group: "context",
 	},
 
 	{
 		key: "print",
+
 		label: "ON PAPER",
+
 		ask: "the printed sheet",
+
 		group: "context",
 	},
 ];
@@ -310,10 +358,14 @@ export const Rows: readonly Row[] = [
 
 			loading: BuildTime(
 				"documentation shell",
+
 				"the rail, the paper and the margin are server-rendered and the one island inside it (the mobile tree) hydrates over rows the server already printed",
 			),
 
-			stale: NoAsOf("shell", "the page's apparatus - a folio, a ledger row"),
+			stale: NoAsOf(
+				"shell",
+				"the page's apparatus - a folio, a ledger row",
+			),
 
 			empty: Built(
 				"`sections` empty prints `◎` and the sentence where the tree would be, in both the rail and the panel; the head prints no contents at all",
@@ -331,7 +383,9 @@ export const Rows: readonly Row[] = [
 				"`contentsDense` halves the contents register's air; the shell's five tracks are unchanged",
 			),
 
-			one: Built("a rail of one section: the head and the tree each hold one row"),
+			one: Built(
+				"a rail of one section: the head and the tree each hold one row",
+			),
 
 			many: Built(
 				"an 81-row tree scrolls in its own register with `overscroll-behavior: contain`; the page never grows",
@@ -400,7 +454,7 @@ export const Rows: readonly Row[] = [
 			readonly: ReadOnly("shell"),
 
 			empty: Built(
-				'`state="empty"` prints the paper\'s absence under the same head, strip and measure: `◎`, the page\'s sentence and `STATUS: UNAVAILABLE`',
+				"`state=\"empty\"` prints the paper's absence under the same head, strip and measure: `◎`, the page's sentence and `STATUS: UNAVAILABLE`",
 			),
 
 			loading: Built(
@@ -497,6 +551,7 @@ export const Rows: readonly Row[] = [
 
 			loading: BuildTime(
 				"contents register",
+
 				"the rows are the headings `render()` reported, so the list and the document are written in the same pass",
 			),
 
@@ -552,15 +607,21 @@ export const Rows: readonly Row[] = [
 
 			noxref: NotAXref("`BandFoot`'s"),
 
-			at640: Built("the disclosure, collapsed, one row at the paper's measure"),
+			at640: Built(
+				"the disclosure, collapsed, one row at the paper's measure",
+			),
 
 			norail: Built(
 				"the disclosure IS the no-rail register: it is what an article prints when there is no rail to pin a list to",
 			),
 
-			withaction: Built("every row is a jump link to an id the pipeline wrote"),
+			withaction: Built(
+				"every row is a jump link to an id the pipeline wrote",
+			),
 
-			print: Built("the disclosure prints open; the rail's register prints as the list it is"),
+			print: Built(
+				"the disclosure prints open; the rail's register prints as the list it is",
+			),
 		},
 	},
 
@@ -582,6 +643,7 @@ export const Rows: readonly Row[] = [
 
 			loading: BuildTime(
 				"contents list",
+
 				"the rows are the document's headings and the ids are the pipeline's, written in the same pass",
 			),
 
@@ -605,11 +667,15 @@ export const Rows: readonly Row[] = [
 				"ninety rows: the marker column holds two digits and grows to three without moving the names",
 			),
 
-			long: Built("the name wraps under its marker, never under the marker's own column"),
+			long: Built(
+				"the name wraps under its marker, never under the marker's own column",
+			),
 
 			narrow: Built("the row is a two-track grid at any width"),
 
-			wide: Built("the row keeps the marker's 3ch column whatever the band's width"),
+			wide: Built(
+				"the row keeps the marker's 3ch column whatever the band's width",
+			),
 
 			incard: NotApplicable(
 				"A list of in-page anchors is a register of a document: inside a card it would be navigation inside a record.",
@@ -617,7 +683,9 @@ export const Rows: readonly Row[] = [
 
 			onesection: Built("one row"),
 
-			ninety: Built("ninety rows, numbered `01`..`90`, with the third digit reserved by `ch`"),
+			ninety: Built(
+				"ninety rows, numbered `01`..`90`, with the third digit reserved by `ch`",
+			),
 
 			longheading: Built("the row wraps to two lines"),
 
@@ -653,6 +721,7 @@ export const Rows: readonly Row[] = [
 
 			loading: BuildTime(
 				"layer map",
+
 				"the entries are the section's pages in collection order, passed by the page",
 			),
 
@@ -678,9 +747,13 @@ export const Rows: readonly Row[] = [
 				"fifteen rows open into two columns at 1024 and up; the closed row is still one line",
 			),
 
-			long: Built("the name wraps inside its row; the count stays at the row's end"),
+			long: Built(
+				"the name wraps inside its row; the count stays at the row's end",
+			),
 
-			narrow: Built("one column, and the summary wraps between its fields"),
+			narrow: Built(
+				"one column, and the summary wraps between its fields",
+			),
 
 			wide: Built("the opened list is two columns"),
 
@@ -688,13 +761,17 @@ export const Rows: readonly Row[] = [
 				"A layer map closes an article: inside a card it would be a map inside a record, and the article above it is the surface.",
 			),
 
-			onesection: Built("the solo arm: one page, stated, with nothing to open"),
+			onesection: Built(
+				"the solo arm: one page, stated, with nothing to open",
+			),
 
 			ninety: Built(
 				"the opened list holds ninety rows; closed it is still one line, which is the composition decision this block exists for",
 			),
 
-			longheading: Built("the row's name wraps; the summary's fields wrap between themselves"),
+			longheading: Built(
+				"the row's name wraps; the summary's fields wrap between themselves",
+			),
 
 			nosummary: NotASummary("`DocArticle`'s"),
 
@@ -702,11 +779,17 @@ export const Rows: readonly Row[] = [
 
 			at640: Built("one column, closed by default"),
 
-			norail: Built("the layer is the article's foot, printed with or without a rail"),
+			norail: Built(
+				"the layer is the article's foot, printed with or without a rail",
+			),
 
-			withaction: Built("the summary is the action; every opened row is a link"),
+			withaction: Built(
+				"the summary is the action; every opened row is a link",
+			),
 
-			print: Built("the disclosure prints open, so a printed article ends on its map"),
+			print: Built(
+				"the disclosure prints open, so a printed article ends on its map",
+			),
 		},
 	},
 
@@ -728,6 +811,7 @@ export const Rows: readonly Row[] = [
 
 			loading: BuildTime(
 				"chapter",
+
 				"the rows are the collection's pages, read at build time and ordered by `SectionOrder`",
 			),
 
@@ -745,7 +829,9 @@ export const Rows: readonly Row[] = [
 				"The chapter is a band and a grid: its density is the grid's capacity line (`--row-floor`), not a tight step, and a denser grid is a narrower card.",
 			),
 
-			one: Built("a chapter of one card is a grid of one, at the same card floor"),
+			one: Built(
+				"a chapter of one card is a grid of one, at the same card floor",
+			),
 
 			many: Built(
 				"a chapter of sixteen wraps by the capacity line; the kicker's count is the chapter's own `Rows.length`",
@@ -757,13 +843,17 @@ export const Rows: readonly Row[] = [
 
 			narrow: Built("one card per row below the grid's floor"),
 
-			wide: Built("three across at the desk's width; the card floor is the title's measure plus the inset"),
+			wide: Built(
+				"three across at the desk's width; the card floor is the title's measure plus the inset",
+			),
 
 			incard: NotApplicable(
 				"A chapter is a band wrapping a grid: inside a card it would be a page's chapter inside a record, and a card inside a card is the one composition the identity forbids.",
 			),
 
-			onesection: Built("the index's smallest chapter: one card under one `h2`"),
+			onesection: Built(
+				"the index's smallest chapter: one card under one `h2`",
+			),
 
 			ninety: Built(
 				"ten chapters holding eighty-one cards; each chapter counts itself in its kicker and the closing archive counts the sections",
@@ -785,9 +875,13 @@ export const Rows: readonly Row[] = [
 				"the index renders without the rail on the baseline composition: `mobile={false}`, because the card grid IS the navigation",
 			),
 
-			withaction: Built("the whole card is the anchor, so the grid is the way in"),
+			withaction: Built(
+				"the whole card is the anchor, so the grid is the way in",
+			),
 
-			print: Built("the grid prints; the card's hover ink is the browser's"),
+			print: Built(
+				"the grid prints; the card's hover ink is the browser's",
+			),
 		},
 	},
 
@@ -809,16 +903,22 @@ export const Rows: readonly Row[] = [
 
 			loading: BuildTime(
 				"card",
+
 				"the card renders one page's record, and the record is the collection's",
 			),
 
-			partial: Built("the same arm as `empty`: the title is a fact, the description is not, and the card states which is which"),
+			partial: Built(
+				"the same arm as `empty`: the title is a fact, the description is not, and the card states which is which",
+			),
 
 			error: NotApplicable(
 				"A card has no failure arm: it renders one page's label, note and href, and a page whose record failed is a page that is not in the collection.",
 			),
 
-			stale: NoAsOf("card", "the page it leads to - its strip, its folio"),
+			stale: NoAsOf(
+				"card",
+				"the page it leads to - its strip, its folio",
+			),
 
 			dense: NotApplicable(
 				"A card's density is the grid's: the capacity line decides how many fit, and a card with less air inside is a card whose note is closer to its title for no reason.",
@@ -826,13 +926,19 @@ export const Rows: readonly Row[] = [
 
 			one: NotASet("card", "a chapter's grid, which is `DocIndex`'s"),
 
-			many: Built("a set of sixteen is sixteen of these, at the grid's floor"),
+			many: Built(
+				"a set of sixteen is sixteen of these, at the grid's floor",
+			),
 
 			long: Built("the title balances; the note wraps at 62ch"),
 
-			narrow: Built("the card is one column and its inset is the group's"),
+			narrow: Built(
+				"the card is one column and its inset is the group's",
+			),
 
-			wide: Built("the feature card (`level={2}`) takes the group inset and the L title"),
+			wide: Built(
+				"the feature card (`level={2}`) takes the group inset and the L title",
+			),
 
 			incard: NotApplicable(
 				"A card IS a record's surface: a card inside a card is the one composition the identity forbids, and the card's `jelly-card` is already the surface it sits on.",
@@ -840,9 +946,13 @@ export const Rows: readonly Row[] = [
 
 			onesection: Built("a chapter of one is one card"),
 
-			ninety: Built("the index's eighty-one cards are eighty-one of these"),
+			ninety: Built(
+				"the index's eighty-one cards are eighty-one of these",
+			),
 
-			longheading: Built("the title balances and wraps inside the card's inset"),
+			longheading: Built(
+				"the title balances and wraps inside the card's inset",
+			),
 
 			nosummary: Built(
 				"a page with no description is the card's own missing-fact arm: `◎ DESCRIPTION: UNAVAILABLE`, in the note's slot, in the meta voice",
@@ -854,7 +964,9 @@ export const Rows: readonly Row[] = [
 
 			norail: Built("a card is inside the paper, not beside the rail"),
 
-			withaction: Built("the card's anchor fills the surface, so the whole card is the target"),
+			withaction: Built(
+				"the card's anchor fills the surface, so the whole card is the target",
+			),
 
 			print: Built("the card prints; the hover ink is the browser's"),
 		},
@@ -873,10 +985,12 @@ export const Rows: readonly Row[] = [
 			readonly: ReadOnly("panel"),
 
 			empty: Built(
-				'`state="empty"` prints the panel\'s absence under the same heading and lede: `◎` and the sentence, in the panel\'s own grammar',
+				"`state=\"empty\"` prints the panel's absence under the same heading and lede: `◎` and the sentence, in the panel's own grammar",
 			),
 
-			loading: Built('`state="loading"` prints the keys with their values barred, under the same heading'),
+			loading: Built(
+				'`state="loading"` prints the keys with their values barred, under the same heading',
+			),
 
 			partial: Built(
 				"the architecture strip with no `Index` prints `◎ STATUS: UNAVAILABLE` instead of an empty badge run - a strip that read the panel and not its elements says so",
@@ -886,17 +1000,26 @@ export const Rows: readonly Row[] = [
 				"A failed read is the empty arm: the panel states what would be here, and there is no retry a printed page can offer - the retry is a rebuild.",
 			),
 
-			stale: NoAsOf("appendix panel", "the page's folio or the record it reads"),
+			stale: NoAsOf(
+				"appendix panel",
+				"the page's folio or the record it reads",
+			),
 
 			dense: NotApplicable(
 				"The panel is one artifact at the band's rhythm; a denser panel is a table, and the site has one of those where it means a comparison.",
 			),
 
-			one: Built("the backend panel with one worker: one row, its link and its sentence"),
+			one: Built(
+				"the backend panel with one worker: one row, its link and its sentence",
+			),
 
-			many: Built("fifteen badges wrap; twelve tiles take two columns; four workers take one row each"),
+			many: Built(
+				"fifteen badges wrap; twelve tiles take two columns; four workers take one row each",
+			),
 
-			long: Built("the lede caps at 62ch; a tile's note wraps under its label"),
+			long: Built(
+				"the lede caps at 62ch; a tile's note wraps under its label",
+			),
 
 			narrow: Built("the tiles stack and the workers print one per line"),
 
@@ -908,17 +1031,25 @@ export const Rows: readonly Row[] = [
 
 			onesection: Built("an appendix of one destination"),
 
-			ninety: Built("a strip of ninety badges wraps; the tile grid takes as many rows as it needs"),
+			ninety: Built(
+				"a strip of ninety badges wraps; the tile grid takes as many rows as it needs",
+			),
 
-			longheading: Built("the `h2` balances and wraps; the panel's lede keeps its measure"),
+			longheading: Built(
+				"the `h2` balances and wraps; the panel's lede keeps its measure",
+			),
 
-			nosummary: NotASummary("`DocArticle`'s - the appendix's own sentence is its `Lede`, which is required"),
+			nosummary: NotASummary(
+				"`DocArticle`'s - the appendix's own sentence is its `Lede`, which is required",
+			),
 
 			noxref: NotAXref("`BandFoot`'s"),
 
 			at640: Built("one column: the lede, then the panel's rows"),
 
-			norail: Built("the appendices close the index, which renders without a rail panel"),
+			norail: Built(
+				"the appendices close the index, which renders without a rail panel",
+			),
 
 			withaction: Built("every badge, worker and tile is a link"),
 
@@ -935,7 +1066,7 @@ export const Rows: readonly Row[] = [
 
 		cells: {
 			disabled: NotApplicable(
-				"The viewer's tabs are never disabled: a crate that cannot be shown is not a tab, and a disabled tab is a control saying \"not for you\" about a document the reader came to read.",
+				'The viewer\'s tabs are never disabled: a crate that cannot be shown is not a tab, and a disabled tab is a control saying "not for you" about a document the reader came to read.',
 			),
 
 			readonly: NotApplicable(
@@ -968,13 +1099,21 @@ export const Rows: readonly Row[] = [
 
 			one: Built("one crate: one tab, and the frame opens on it"),
 
-			many: Built("nine crates: the bar scrolls horizontally and the keyboard walks it"),
+			many: Built(
+				"nine crates: the bar scrolls horizontally and the keyboard walks it",
+			),
 
-			long: Built("a crate name wraps inside its tab; the bar's scroll is the backstop"),
+			long: Built(
+				"a crate name wraps inside its tab; the bar's scroll is the backstop",
+			),
 
-			narrow: Built("the bar scrolls; the frame keeps the column's width and rustdoc's own 701px breakpoint takes over inside it"),
+			narrow: Built(
+				"the bar scrolls; the frame keeps the column's width and rustdoc's own 701px breakpoint takes over inside it",
+			),
 
-			wide: Built("the frame is the column's width, bled to the page's spine"),
+			wide: Built(
+				"the frame is the column's width, bled to the page's spine",
+			),
 
 			incard: NotApplicable(
 				"The viewer is a surface with a frame in it: inside a card it would be a frame inside a frame, and the frame's own border would be the second.",
@@ -984,7 +1123,9 @@ export const Rows: readonly Row[] = [
 				"A crate group with one crate is the `ONE` cell; a section is not a thing the viewer holds - the register of crates is `DocIndex`'s.",
 			),
 
-			ninety: Built("ninety crates: the bar scrolls and the arrow keys walk it one tab at a time"),
+			ninety: Built(
+				"ninety crates: the bar scrolls and the arrow keys walk it one tab at a time",
+			),
 
 			longheading: NotApplicable(
 				"The viewer prints crate names, not headings: a heading is the page's, above it.",
@@ -994,11 +1135,17 @@ export const Rows: readonly Row[] = [
 
 			noxref: NotAXref("`BandFoot`'s"),
 
-			at640: Built("the bar scrolls, the frame keeps its height and its own breakpoint"),
+			at640: Built(
+				"the bar scrolls, the frame keeps its height and its own breakpoint",
+			),
 
-			norail: Built("the Rust surface has no rail: the viewer is the page's column"),
+			norail: Built(
+				"the Rust surface has no rail: the viewer is the page's column",
+			),
 
-			withaction: Built("the tabs are the action, and the arrow keys, Home and End are the path through them"),
+			withaction: Built(
+				"the tabs are the action, and the arrow keys, Home and End are the path through them",
+			),
 
 			print: NotApplicable(
 				"An `<iframe>` does not print: the viewer's frame is a live surface, and a printed page would show the tab bar over a blank rectangle. The crates are listed as links above it, which is what prints.",
@@ -1022,7 +1169,9 @@ export const Rows: readonly Row[] = [
 				'`state="empty"` prints the document\'s absence inside the same paper: the facts and the index above it are still true, and the card says why the clauses are not there',
 			),
 
-			loading: Built('`state="loading"` prints the keys with their values barred, under the same head'),
+			loading: Built(
+				'`state="loading"` prints the keys with their values barred, under the same head',
+			),
 
 			partial: Built(
 				"a ledger row the record cannot fill prints `UNAVAILABLE` as its value; the row stays, the value says so",
@@ -1062,11 +1211,17 @@ export const Rows: readonly Row[] = [
 				"The reading surface is the page's paper: inside a card it would be a document inside a record. The legal pages' white card is the body's own class, not a wrapper around the surface.",
 			),
 
-			onesection: Built("one clause: the index is one row and the rail is not painted"),
+			onesection: Built(
+				"one clause: the index is one row and the rail is not painted",
+			),
 
-			ninety: Built("ninety clauses: the rail scrolls, the disclosure is one row, and the index's two columns take as many rows as they need"),
+			ninety: Built(
+				"ninety clauses: the rail scrolls, the disclosure is one row, and the index's two columns take as many rows as they need",
+			),
 
-			longheading: Built("the `h1` balances; a clause heading wraps in the index's name column"),
+			longheading: Built(
+				"the `h1` balances; a clause heading wraps in the index's name column",
+			),
 
 			nosummary: Built(
 				"with no standfirst the head prints the kicker, the title and the ledger, so the facts become the opening - the legal set's own composition",
@@ -1082,9 +1237,13 @@ export const Rows: readonly Row[] = [
 				'`layout="stack"` is the composition with no rail at all: the index prints between the facts and the document',
 			),
 
-			withaction: Built("the index is the action; the print control is the page's, outside the surface"),
+			withaction: Built(
+				"the index is the action; the print control is the page's, outside the surface",
+			),
 
-			print: Built("the clauses print; the rail's stickiness and the disclosure are the browser's"),
+			print: Built(
+				"the clauses print; the rail's stickiness and the disclosure are the browser's",
+			),
 		},
 	},
 
@@ -1126,18 +1285,24 @@ export const Rows: readonly Row[] = [
 
 			one: Built("one reference beside the folio"),
 
-			many: Built("five references wrap; the folio keeps the row's right end"),
+			many: Built(
+				"five references wrap; the folio keeps the row's right end",
+			),
 
 			long: Built(
 				"a long source wraps at its `/`s and a long part now wraps at its own; the strip's container query stacks the two registers at 640px",
 			),
 
-			narrow: Built("the row stacks: references above the folio, on the strip's own container query"),
+			narrow: Built(
+				"the row stacks: references above the folio, on the strip's own container query",
+			),
 
-			wide: Built("references at the left end, folio at the right, on one baseline"),
+			wide: Built(
+				"references at the left end, folio at the right, on one baseline",
+			),
 
 			incard: Built(
-				'`surface="card"` keeps the rule inside the card\'s inset instead of bleeding it to the edge, because the card\'s frame is already the boundary',
+				"`surface=\"card\"` keeps the rule inside the card's inset instead of bleeding it to the edge, because the card's frame is already the boundary",
 			),
 
 			onesection: NotApplicable(
@@ -1152,15 +1317,21 @@ export const Rows: readonly Row[] = [
 				"A foot prints a part, a count, an as-of and references - not a heading. The band's heading is the band's.",
 			),
 
-			nosummary: NotASummary("`DocArticle`'s, and the band's own standfirst"),
+			nosummary: NotASummary(
+				"`DocArticle`'s, and the band's own standfirst",
+			),
 
 			noxref: Built(
 				"no `see` and the foot is a folio alone - the composition the brief named, and the one every band on the site that has nothing to cross-reference wears",
 			),
 
-			at640: Built("the strip's container query turns the row into a stack at 22rem of strip"),
+			at640: Built(
+				"the strip's container query turns the row into a stack at 22rem of strip",
+			),
 
-			norail: Built("a foot closes a band, not a page: the rail is not its context"),
+			norail: Built(
+				"a foot closes a band, not a page: the rail is not its context",
+			),
 
 			withaction: Built("the references are links; the folio is printed"),
 
@@ -1216,7 +1387,9 @@ export const Rows: readonly Row[] = [
 				"the two ends wrap between facts, never inside one: a count, a figure and an as-of are unbreakable groups",
 			),
 
-			wide: Built("the two ends sit on one baseline, justified to the band's edges"),
+			wide: Built(
+				"the two ends sit on one baseline, justified to the band's edges",
+			),
 
 			incard: Built(
 				"inside a white card the same line prints at the card's inset; the foot's `surface=\"card\"` keeps the rule inside it",
@@ -1234,17 +1407,25 @@ export const Rows: readonly Row[] = [
 
 			nosummary: NotASummary("`DocArticle`'s"),
 
-			noxref: Built("a folio is what a foot with no cross-references is: the right end of a rule with nothing at its left"),
+			noxref: Built(
+				"a folio is what a foot with no cross-references is: the right end of a rule with nothing at its left",
+			),
 
-			at640: Built("the ends stack and the facts wrap between themselves; the ordinal and the part never part company"),
+			at640: Built(
+				"the ends stack and the facts wrap between themselves; the ordinal and the part never part company",
+			),
 
-			norail: Built("a folio is printed by bands, the footer and the page edge - none of which is a rail"),
+			norail: Built(
+				"a folio is printed by bands, the footer and the page edge - none of which is a rail",
+			),
 
 			withaction: NotApplicable(
 				"A folio is printed, not clicked: the ordinal and the part are text. A folio that linked would be a pager.",
 			),
 
-			print: Built("a folio is the one thing on the site designed for the printed sheet"),
+			print: Built(
+				"a folio is the one thing on the site designed for the printed sheet",
+			),
 		},
 	},
 
@@ -1261,7 +1442,7 @@ export const Rows: readonly Row[] = [
 			readonly: ReadOnly("register"),
 
 			empty: Built(
-				"no references renders nothing at all - not an empty frame, not a \"no related pages\" sentence. A see-also with nothing to see is noise",
+				'no references renders nothing at all - not an empty frame, not a "no related pages" sentence. A see-also with nothing to see is noise',
 			),
 
 			loading: Built(
@@ -1284,33 +1465,51 @@ export const Rows: readonly Row[] = [
 
 			one: Built("one reference: the register and one row"),
 
-			many: Built("five references wrap, each keeping its route column's floor"),
+			many: Built(
+				"five references wrap, each keeping its route column's floor",
+			),
 
 			long: Built(
 				"the route's column is a floor at 19ch and the reason caps at 52ch; a longer route grows and its own reason follows it",
 			),
 
-			narrow: Built("the row stacks at the strip's own container query, not at a viewport breakpoint"),
+			narrow: Built(
+				"the row stacks at the strip's own container query, not at a viewport breakpoint",
+			),
 
-			wide: Built("route and reason share a baseline, the route's column holding every reason on one edge"),
+			wide: Built(
+				"route and reason share a baseline, the route's column holding every reason on one edge",
+			),
 
-			incard: Built("the strip is printed inside a white card on the legal pages, at the card's inset"),
+			incard: Built(
+				"the strip is printed inside a white card on the legal pages, at the card's inset",
+			),
 
-			onesection: NotApplicable("A see-also is not a document's section: the sections are `DocContents`'."),
+			onesection: NotApplicable(
+				"A see-also is not a document's section: the sections are `DocContents`'.",
+			),
 
 			ninety: NotApplicable(
 				"A see-also is a handful of references. Ninety is an index, and the site has `Leader` and `DocContents` for that.",
 			),
 
-			longheading: NotApplicable("A register prints routes, not headings."),
+			longheading: NotApplicable(
+				"A register prints routes, not headings.",
+			),
 
 			nosummary: NotASummary("`DocArticle`'s"),
 
-			noxref: Built("that is the block rendering nothing: its resting arm on a band with nothing to cross-reference"),
+			noxref: Built(
+				"that is the block rendering nothing: its resting arm on a band with nothing to cross-reference",
+			),
 
-			at640: Built("the row stacks; the route keeps its own line and the reason follows it"),
+			at640: Built(
+				"the row stacks; the route keeps its own line and the reason follows it",
+			),
 
-			norail: Built("the register is printed at a band's foot, with or without a rail"),
+			norail: Built(
+				"the register is printed at a band's foot, with or without a rail",
+			),
 
 			withaction: Built("every route is an anchor"),
 
@@ -1354,7 +1553,9 @@ export const Rows: readonly Row[] = [
 				"The leader's rhythm IS the leader: the dots run from the name to its figure and they are the row's rule. A tight step would close them.",
 			),
 
-			one: Built("one entry: the register line prints `01` and the row keeps its dots"),
+			one: Built(
+				"one entry: the register line prints `01` and the row keeps its dots",
+			),
 
 			many: Built(
 				"thirty-eight entries with `limit`: the first n print and a foot line states the real size and the route to all of it",
@@ -1364,19 +1565,29 @@ export const Rows: readonly Row[] = [
 				"the name wraps inside its own cell and the figure stays on the last line of the entry rather than being pushed off it",
 			),
 
-			narrow: Built("one column below 1024, with the dots floored at 1.5rem so they never close to nothing"),
+			narrow: Built(
+				"one column below 1024, with the dots floored at 1.5rem so they never close to nothing",
+			),
 
-			wide: Built("two columns at 1024 and up, filling left to right so the array's order is the register's"),
+			wide: Built(
+				"two columns at 1024 and up, filling left to right so the array's order is the register's",
+			),
 
 			incard: NotApplicable(
 				"A leader is a register on the paper: inside a card its dots would be the card's rule, and the card is a record's surface.",
 			),
 
-			onesection: Built("a set of one: the register line counts it and the row prints"),
+			onesection: Built(
+				"a set of one: the register line counts it and the row prints",
+			),
 
-			ninety: Built("`limit` prints the first n and `SHOWING: 6 OF 38` states the rest, with the route to all of it"),
+			ninety: Built(
+				"`limit` prints the first n and `SHOWING: 6 OF 38` states the rest, with the route to all of it",
+			),
 
-			longheading: Built("the name wraps under itself, on the name's own edge"),
+			longheading: Built(
+				"the name wraps under itself, on the name's own edge",
+			),
 
 			nosummary: NotASummary("`DocArticle`'s"),
 
@@ -1384,11 +1595,17 @@ export const Rows: readonly Row[] = [
 
 			at640: Built("one column; the dots keep their floor"),
 
-			norail: Built("a register is printed on the paper, with or without a rail"),
+			norail: Built(
+				"a register is printed on the paper, with or without a rail",
+			),
 
-			withaction: Built("an entry with an `href` is a link and one without is text, in the same row"),
+			withaction: Built(
+				"an entry with an `href` is a link and one without is text, in the same row",
+			),
 
-			print: Built("the leader is a printed artifact: the dots are a border, not a background"),
+			print: Built(
+				"the leader is a printed artifact: the dots are a border, not a background",
+			),
 		},
 	},
 ];
@@ -1497,7 +1714,7 @@ export const Improvements: readonly Improvement[] = [
 
 		found: "A document with ninety sections spent the rail's whole head on its contents. `Doc/_Layout.scss` caps that head at 50% of the rail, so the register was a scroll box the reader had to scroll to find the section they were already in - and the tree, which is the rail's other half, was left a slit. The block could be dense or not; it could not be folded, and a page could not choose either.",
 
-		built: "`DocContents.collapsible` prints the rail register as a `<details open>` - one row carrying the label, the count and the way back in - and `DocLayout.contentsFold: \"auto\"` folds it above 24 rows, so the ninety-section document folds itself and the twelve-section one does not. Open by default: the fold exists so a reader can give the rail's scroll to the tree, not so a page can withhold its own contents. `dense` is the second half of the same answer - the same rows in less air.",
+		built: '`DocContents.collapsible` prints the rail register as a `<details open>` - one row carrying the label, the count and the way back in - and `DocLayout.contentsFold: "auto"` folds it above 24 rows, so the ninety-section document folds itself and the twelve-section one does not. Open by default: the fold exists so a reader can give the rail\'s scroll to the tree, not so a page can withhold its own contents. `dense` is the second half of the same answer - the same rows in less air.',
 	},
 
 	{
@@ -1555,7 +1772,7 @@ export const Improvements: readonly Improvement[] = [
 
 		from: "EMPTY / WITH ACTION",
 
-		found: "With no crates the viewer printed an empty tab bar and an `<iframe>` with no `src`: a frame around nothing, which is the composition a reader reads as broken rather than as absent. And the bar was a `role=\"tablist\"` whose only keyboard path was Tab - the ARIA pattern it claimed was not implemented, so the arrows did nothing and a keyboard reader could not walk the crates.",
+		found: 'With no crates the viewer printed an empty tab bar and an `<iframe>` with no `src`: a frame around nothing, which is the composition a reader reads as broken rather than as absent. And the bar was a `role="tablist"` whose only keyboard path was Tab - the ARIA pattern it claimed was not implemented, so the arrows did nothing and a keyboard reader could not walk the crates.',
 
 		built: "`RustViewer.empty` prints the absence inside the frame's own box - `◎`, the sentence and the line that says why - and the frame is not rendered at all. The tab bar gains the pattern it promised: roving `tabindex`, ArrowLeft/Right/Up/Down, Home and End, focus following the selection. `STATUS: LOADING` prints above the frame until it loads and the script removes it.",
 	},
@@ -1567,7 +1784,7 @@ export const Improvements: readonly Improvement[] = [
 
 		found: "An article whose prose did not render printed its breadcrumb, its kicker, its `h1`, its strip and then a white card with nothing in it. Every other block in the family had its two adverse arms; the shell that holds all of them had none, so the one page that is nothing but paper was the one page that could be blank paper.",
 
-		built: '`DocArticle.state` (`rest` | `empty` | `loading`) with `empty` and `keys`: `empty` prints `◎`, the page\'s sentence and `STATUS: UNAVAILABLE` inside the paper; `loading` prints the keys with their values barred. `ReadingDocument` gains the same two arms, so the legal set cannot print a blank clause card either.',
+		built: "`DocArticle.state` (`rest` | `empty` | `loading`) with `empty` and `keys`: `empty` prints `◎`, the page's sentence and `STATUS: UNAVAILABLE` inside the paper; `loading` prints the keys with their values barred. `ReadingDocument` gains the same two arms, so the legal set cannot print a blank clause card either.",
 	},
 
 	{
@@ -1577,7 +1794,7 @@ export const Improvements: readonly Improvement[] = [
 
 		found: "The three closing artifacts printed their `h2`, their lede and then whatever the build had: an appendix whose rows were not read was a heading and a sentence over a hole, and the architecture panel with no `Index` printed an empty `<ul>` under a lede about the fifteen elements.",
 
-		built: '`DocAppendix.state` with `empty`/`loading` arms under the same heading and lede, and a partial arm for the strip: an architecture panel with no `Index` prints `◎ STATUS: UNAVAILABLE` rather than an empty badge run. The panel\'s sentence is never dropped, because the subject is still stated when its destinations are not.',
+		built: "`DocAppendix.state` with `empty`/`loading` arms under the same heading and lede, and a partial arm for the strip: an architecture panel with no `Index` prints `◎ STATUS: UNAVAILABLE` rather than an empty badge run. The panel's sentence is never dropped, because the subject is still stated when its destinations are not.",
 	},
 
 	{
@@ -1653,7 +1870,7 @@ export const Observations: readonly Observation[] = [
 
 /** One group of rows on the plate: the family's own reading order. */
 export type Group =
-	| "documents" | "contents" | "index" | "detail" | "reading" | "adverse";
+	"documents" | "contents" | "index" | "detail" | "reading" | "adverse";
 
 /** Which block a row mounts. The renderer switches on it and on nothing else. */
 export type Kind =
@@ -1722,529 +1939,825 @@ export const Specimens: readonly Specimen[] = [
 	/* ── DOCUMENTS ───────────────────────────────────────────────────────── */
 	{
 		mark: "READ_01",
+
 		state_name: "THE ARTICLE",
+
 		component: "DOCARTICLE",
+
 		when: "The resting documentation page: breadcrumb, kicker, the page's one h1, the standfirst, the strip, and the paper at one measure.",
+
 		kind: "article",
 	},
 
 	{
 		mark: "READ_02",
+
 		state_name: "NO SUMMARY",
+
 		component: "DOCARTICLE",
+
 		when: "A page with no `description`: the header prints the kicker, the title and then the strip, so the metadata becomes the opening fact instead of a gap where a sentence was.",
+
 		kind: "article",
+
 		variant: "nosummary",
 	},
 
 	{
 		mark: "READ_03",
+
 		state_name: "LONG HEADING",
+
 		component: "DOCARTICLE",
+
 		when: "A title wider than the rail: the `h1` balances at the L tier and the standfirst still ends on the prose's right edge.",
+
 		kind: "article",
+
 		variant: "longheading",
 	},
 
 	{
 		mark: "READ_04",
+
 		state_name: "NO RAIL",
+
 		component: "DOCARTICLE",
+
 		when: "The Rust page's composition: the article shell owns its own container, the contents are the disclosure, and there is no rail to pin anything to.",
+
 		kind: "article",
+
 		variant: "norail",
 	},
 
 	{
 		mark: "READ_05",
+
 		state_name: "ONE SECTION",
+
 		component: "DOCLAYOUT",
+
 		when: "A document with one section: the rail's head prints one row, the tree keeps the scroll, and nothing renders a contents list of one item twice.",
+
 		kind: "layout",
+
 		variant: "onesection",
+
 		width: "wide",
 	},
 
 	{
 		mark: "READ_06",
+
 		state_name: "NINETY",
+
 		component: "DOCLAYOUT",
+
 		when: "A document with ninety sections: the contents register folds itself and goes dense, so the tree keeps the rail's scroll instead of a slit.",
+
 		kind: "layout",
+
 		variant: "ninety",
+
 		width: "wide",
 	},
 
 	{
 		mark: "READ_07",
+
 		state_name: "NO TREE",
+
 		component: "DOCLAYOUT",
+
 		when: "A rail whose sections were not read: the head and the foot keep their places and the tree's slot states the absence instead of printing a label over a hole.",
+
 		kind: "layout",
+
 		variant: "notree",
+
 		width: "wide",
 	},
 
 	/* ── CONTENTS ────────────────────────────────────────────────────────── */
 	{
 		mark: "READ_08",
+
 		state_name: "RAIL",
+
 		component: "DOCCONTENTS",
+
 		when: "The pinned register at the top of the sticky rail: the page's own sections, with the count the register line now carries.",
+
 		kind: "contents",
+
 		width: "narrow",
 	},
 
 	{
 		mark: "READ_09",
+
 		state_name: "FOLDED",
+
 		component: "DOCCONTENTS",
+
 		when: "The same register folded: one row with the label, the count and the way back in, open by default so the fold is the reader's choice.",
+
 		kind: "contents",
+
 		variant: "fold",
+
 		width: "narrow",
 	},
 
 	{
 		mark: "READ_10",
+
 		state_name: "DENSE",
+
 		component: "DOCCONTENTS",
+
 		when: "Ninety rows at the tight step: the same marker column, the same reserved 2px rule, a third less air - the register a long document folds AND tightens.",
+
 		kind: "contents",
+
 		variant: "many",
+
 		dense: true,
+
 		width: "narrow",
 	},
 
 	{
 		mark: "READ_11",
+
 		state_name: "ONE SECTION",
+
 		component: "DOCCONTENTS",
+
 		when: "A one-section document: one row, and the register counts `01` rather than saying nothing about its extent.",
+
 		kind: "contents",
+
 		variant: "one",
+
 		width: "narrow",
 	},
 
 	{
 		mark: "READ_12",
+
 		state_name: "LONG HEADING",
+
 		component: "DOCCONTENTS",
+
 		when: "A heading wider than the rail: the name wraps under its own marker, because the marker is a grid track and not an inline prefix.",
+
 		kind: "contents",
+
 		variant: "long",
+
 		width: "narrow",
 	},
 
 	{
 		mark: "READ_13",
+
 		state_name: "DISCLOSURE",
+
 		component: "DOCCONTENTS",
+
 		when: "Below the rail's breakpoint: the same list as a CSS-only `<details>`, collapsed, one row at the paper's measure.",
+
 		kind: "contents",
+
 		variant: "disclosure",
 	},
 
 	{
 		mark: "READ_14",
+
 		state_name: "THE ROWS",
+
 		component: "DOCCONTENTSLIST",
+
 		when: "The list on its own: a two-digit marker, the heading's own words, and the id the pipeline wrote - nothing re-slugified, nothing re-cased.",
+
 		kind: "contentslist",
+
 		width: "narrow",
 	},
 
 	{
 		mark: "READ_15",
+
 		state_name: "NINETY",
+
 		component: "DOCCONTENTSLIST",
+
 		when: "Ninety rows: the marker column holds `01`..`90` without moving a name, because its width is a `ch` track and not a character count.",
+
 		kind: "contentslist",
+
 		variant: "many",
+
 		width: "narrow",
 	},
 
 	{
 		mark: "READ_16",
+
 		state_name: "LAYER",
+
 		component: "DOCLAYER",
+
 		when: "The section the reader just finished: one closed row stating the layer, its size and the way in - fifteen rows only if they open it.",
+
 		kind: "layer",
 	},
 
 	{
 		mark: "READ_17",
+
 		state_name: "ONE PAGE",
+
 		component: "DOCLAYER",
+
 		when: "A layer of one: the same row with the same label, value and count and no glyph, because there is nothing to open - and the size is still stated.",
+
 		kind: "layer",
+
 		variant: "one",
 	},
 
 	{
 		mark: "READ_18",
+
 		state_name: "LONG",
+
 		component: "DOCLAYER",
+
 		when: "A page name wider than the row: the name wraps and the count stays at the row's end, so the register line is still readable at a glance.",
+
 		kind: "layer",
+
 		variant: "long",
+
 		width: "narrow",
 	},
 
 	/* ── THE INDEX ───────────────────────────────────────────────────────── */
 	{
 		mark: "READ_19",
+
 		state_name: "CHAPTER",
+
 		component: "DOCINDEX",
+
 		when: "One chapter of the index: a bare band with its `/NAME NN PAGES` kicker and the chapter's card grid, three across when the desk allows.",
+
 		kind: "index",
 	},
 
 	{
 		mark: "READ_20",
+
 		state_name: "MISSING DESCRIPTION",
+
 		component: "DOCINDEX",
+
 		when: "A chapter holding a page with no `description`: the card states `◎ DESCRIPTION: UNAVAILABLE` in the body slot, so the grid keeps its row height and the missing fact is named.",
+
 		kind: "index",
+
 		variant: "absent",
 	},
 
 	{
 		mark: "READ_21",
+
 		state_name: "MANY",
+
 		component: "DOCINDEX",
+
 		when: "A chapter of sixteen: the grid wraps by the capacity line, so the count in the kicker and the cards on the page are the same number.",
+
 		kind: "index",
+
 		variant: "many",
+
 		width: "wide",
 	},
 
 	{
 		mark: "READ_22",
+
 		state_name: "CARD",
+
 		component: "DOCCARD",
+
 		when: "The one card on its own: a title, the page's description, and the whole card as the way in - an anchor, not a click handler.",
+
 		kind: "card",
+
 		width: "narrow",
 	},
 
 	{
 		mark: "READ_23",
+
 		state_name: "NO DESCRIPTION",
+
 		component: "DOCCARD",
+
 		when: "A card whose page has no description: the note's slot prints `◎ DESCRIPTION: UNAVAILABLE` at the note's size, so the set's rows stay the same height.",
+
 		kind: "card",
+
 		variant: "absent",
+
 		width: "narrow",
 	},
 
 	{
 		mark: "READ_24",
+
 		state_name: "FEATURE",
+
 		component: "DOCCARD",
+
 		when: "One of the three ways in: the card's title is its `h2`, so it takes the L tier and the group inset - a level above the chapter cards, not a bigger card.",
+
 		kind: "card",
+
 		variant: "feature",
 	},
 
 	{
 		mark: "READ_25",
+
 		state_name: "APPENDIX",
+
 		component: "DOCAPPENDIX",
+
 		when: "The architecture panel: the fifteen elements as a badge strip, then the one link out - every badge an anchor, so the element a reader taps is the element that opens.",
+
 		kind: "appendix",
+
 		variant: "architecture",
 	},
 
 	{
 		mark: "READ_26",
+
 		state_name: "PARTIAL STRIP",
+
 		component: "DOCAPPENDIX",
+
 		when: "The same panel with no `Index`: the lede stays and the strip prints `◎ STATUS: UNAVAILABLE` instead of an empty badge run.",
+
 		kind: "appendix",
+
 		variant: "stripabsent",
 	},
 
 	{
 		mark: "READ_27",
+
 		state_name: "WORKERS",
+
 		component: "DOCAPPENDIX",
+
 		when: "The backend panel: four workers, each a link and its own sentence after the baseline's `-`, because the dash is part of the row.",
+
 		kind: "appendix",
+
 		variant: "backend",
 	},
 
 	{
 		mark: "READ_28",
+
 		state_name: "TILES",
+
 		component: "DOCAPPENDIX",
+
 		when: "The deployments panel: twelve destinations as a two-column tile grid, each a name, its arrow and one line of context.",
+
 		kind: "appendix",
+
 		variant: "deployments",
 	},
 
 	{
 		mark: "READ_29",
+
 		state_name: "NOT READ",
+
 		component: "DOCAPPENDIX",
+
 		when: "A panel whose destinations were not read: the heading and the lede stand, and the body states the absence instead of leaving a hole at the foot of the index.",
+
 		kind: "appendix",
+
 		variant: "empty",
 	},
 
 	{
 		mark: "READ_30",
+
 		state_name: "CRATES",
+
 		component: "RUSTVIEWER",
+
 		when: "The crate switcher: one tab per crate, the frame opening on the first, and `STATUS: LOADING` above the frame until rustdoc arrives.",
+
 		kind: "rust",
+
 		width: "wide",
 	},
 
 	{
 		mark: "READ_31",
+
 		state_name: "ONE CRATE",
+
 		component: "RUSTVIEWER",
+
 		when: "A group with one crate: one tab, and the keyboard path still holds - arrows wrap to the same tab, Home and End go to it.",
+
 		kind: "rust",
+
 		variant: "one",
 	},
 
 	{
 		mark: "READ_32",
+
 		state_name: "NO CRATE",
+
 		component: "RUSTVIEWER",
+
 		when: "A group with no crates: the viewer keeps its frame and states the absence inside it, rather than printing a bar over an iframe with no `src`.",
+
 		kind: "rust",
+
 		variant: "empty",
 	},
 
 	/* ── THE DETAIL LAYER ────────────────────────────────────────────────── */
 	{
 		mark: "READ_33",
+
 		state_name: "THE FOOT",
+
 		component: "BANDFOOT",
+
 		when: "A band's colophon at its resting shape: one rule, the cross-references at the left end, the folio at the right.",
+
 		kind: "foot",
 	},
 
 	{
 		mark: "READ_34",
+
 		state_name: "NO X-REF",
+
 		component: "BANDFOOT",
-		when: "A band with nothing to cross-reference: the foot is a folio alone. No empty frame, no \"no related pages\" sentence.",
+
+		when: 'A band with nothing to cross-reference: the foot is a folio alone. No empty frame, no "no related pages" sentence.',
+
 		kind: "foot",
+
 		variant: "noxref",
 	},
 
 	{
 		mark: "READ_35",
+
 		state_name: "NOT READ",
+
 		component: "BANDFOOT",
+
 		when: "A foot whose references were asked for and not read: the register prints and its values are barred, so the two states are distinguishable.",
+
 		kind: "foot",
+
 		variant: "loading",
 	},
 
 	{
 		mark: "READ_36",
+
 		state_name: "IN A CARD",
+
 		component: "BANDFOOT",
+
 		when: "The foot inside a white insert: the rule stays inside the card's own inset, because the card's frame is already the boundary.",
+
 		kind: "foot",
+
 		variant: "card",
+
 		width: "card",
 	},
 
 	{
 		mark: "READ_37",
+
 		state_name: "LONG SOURCE",
+
 		component: "FOLIO",
+
 		when: "A source path wider than the band: the path breaks at its own `/`s, so the folio ends where the band ends instead of running past it.",
+
 		kind: "folio",
+
 		variant: "source",
 	},
 
 	{
 		mark: "READ_38",
+
 		state_name: "LONG PART",
+
 		component: "FOLIO",
+
 		when: "A part wider than the band - a deep page's `/DOC/DEEP-DIVE-FILESYSTEM-FOOTPRINT`: the part now breaks at its own separators, and the ordinal never leaves it.",
+
 		kind: "folio",
+
 		variant: "part",
+
 		width: "narrow",
 	},
 
 	{
 		mark: "READ_39",
+
 		state_name: "TWO FACTS",
+
 		component: "FOLIO",
+
 		when: "A folio with a count and an as-of and no source: each fact is its own span, and a fact the caller did not pass is absent rather than `UNAVAILABLE`.",
+
 		kind: "folio",
+
 		variant: "partial",
 	},
 
 	{
 		mark: "READ_40",
+
 		state_name: "AT 640",
+
 		component: "BANDFOOT",
+
 		when: "The detail strip at 640px: the strip's own container query stacks the references above the folio, and nothing is truncated to fit.",
+
 		kind: "foot",
+
 		variant: "narrow",
+
 		width: "narrow",
 	},
 
 	{
 		mark: "READ_41",
+
 		state_name: "REFERENCES",
+
 		component: "SEE",
+
 		when: "The register at rest: `↳ SEE`, a route, and the reason it is worth following - a reference without a reason is dropped, not printed bare.",
+
 		kind: "see",
 	},
 
 	{
 		mark: "READ_42",
+
 		state_name: "NOT READ",
+
 		component: "SEE",
+
 		when: "The references were asked for and not read: the register prints with its keys and barred values, which is a different fact from having none.",
+
 		kind: "see",
+
 		variant: "loading",
 	},
 
 	{
 		mark: "READ_43",
+
 		state_name: "NO REASON",
+
 		component: "SEE",
+
 		when: "Every row passed without a reason: the block renders nothing at all. That is the arm, and it is the reason the block refuses bare links.",
+
 		kind: "see",
+
 		variant: "bare",
 	},
 
 	{
 		mark: "READ_44",
+
 		state_name: "THE LEADER",
+
 		component: "LEADER",
+
 		when: "The printed index entry: name, leader, figure, and the register line that counts the set - no rules, because the dots are the rule.",
+
 		kind: "leader",
 	},
 
 	{
 		mark: "READ_45",
+
 		state_name: "ONE",
+
 		component: "LEADER",
+
 		when: "A set of one: the register prints `01` and the row keeps its dots, so the shape holds at the smallest set.",
+
 		kind: "leader",
+
 		variant: "one",
 	},
 
 	{
 		mark: "READ_46",
+
 		state_name: "TOO MUCH",
+
 		component: "LEADER",
+
 		when: "Thirty-eight entries where the register prints six: `SHOWING: 6 OF 38` and the route to all of it, so the figure is never a lie about the set.",
+
 		kind: "leader",
+
 		variant: "many",
+
 		width: "wide",
 	},
 
 	{
 		mark: "READ_47",
+
 		state_name: "UNAVAILABLE",
+
 		component: "LEADER",
+
 		when: "A row whose figure is unknown: `UNAVAILABLE` in the figure column - the vocabulary's word, never a zero and never a blank cell.",
+
 		kind: "leader",
+
 		variant: "unavailable",
 	},
 
 	{
 		mark: "READ_48",
+
 		state_name: "THE READING",
+
 		component: "READINGDOCUMENT",
+
 		when: "A legal document read with its contents beside it: the facts date and scope it, the clause rail is sticky, and the text is on one measure.",
+
 		kind: "reading",
+
 		variant: "rail",
+
 		width: "wide",
 	},
 
 	{
 		mark: "READ_49",
+
 		state_name: "STACKED",
+
 		component: "READINGDOCUMENT",
+
 		when: "The same document with no rail: the index prints between the facts and the text, which is the composition for a page that is read straight through.",
+
 		kind: "reading",
+
 		variant: "stack",
 	},
 
 	{
 		mark: "READ_50",
+
 		state_name: "NO SUMMARY",
+
 		component: "READINGDOCUMENT",
+
 		when: "A document with no standfirst: the head prints the kicker, the title and the ledger, so the facts become the opening and the measure still holds.",
+
 		kind: "reading",
+
 		variant: "nosummary",
 	},
 
 	/* ── THE ADVERSE STATES ──────────────────────────────────────────────── */
 	{
 		mark: "READ_51",
+
 		state_name: "EMPTY PAPER",
+
 		component: "DOCARTICLE",
+
 		when: "An article whose prose is not in the build: the paper keeps its shape and states the absence, in the record grammar, instead of printing white.",
+
 		kind: "article",
+
 		variant: "empty",
 	},
 
 	{
 		mark: "READ_52",
+
 		state_name: "LOADING PAPER",
+
 		component: "DOCARTICLE",
+
 		when: "A paper whose prose has not arrived: the keys print with their values barred, because the schema is what a reader can already be told.",
+
 		kind: "article",
+
 		variant: "loading",
 	},
 
 	{
 		mark: "READ_53",
+
 		state_name: "EMPTY DOCUMENT",
+
 		component: "READINGDOCUMENT",
+
 		when: "A legal document whose clauses are not set: the facts and the index above it are still true, and the card says why the text is not there.",
+
 		kind: "reading",
+
 		variant: "empty",
 	},
 
 	{
 		mark: "READ_54",
+
 		state_name: "LOADING DOCUMENT",
+
 		component: "READINGDOCUMENT",
+
 		when: "A document being read: the clause keys print with barred values, under the same head - never a spinner on a page that is a document.",
+
 		kind: "reading",
+
 		variant: "loading",
 	},
 
 	{
 		mark: "READ_55",
+
 		state_name: "EMPTY REGISTER",
+
 		component: "LEADER",
+
 		when: "A register with nothing in it: the caller's composed sentence says what would be here, why it is not, and what to do - the frame is not printed at all.",
+
 		kind: "leader",
+
 		variant: "empty",
 	},
 
 	{
 		mark: "READ_56",
+
 		state_name: "LOADING REGISTER",
+
 		component: "LEADER",
+
 		when: "A register whose figures have not arrived: the entries' two cells print with their values barred, so the names arrive first, as they do in the data.",
+
 		kind: "leader",
+
 		variant: "loading",
 	},
 
 	{
 		mark: "READ_57",
+
 		state_name: "AT 640",
+
 		component: "LEADER",
+
 		when: "The leader in a narrow column: one column, the dots floored at 1.5rem, and a name that still will not fit wraps inside its own cell.",
+
 		kind: "leader",
+
 		width: "narrow",
 	},
 ];
@@ -2256,10 +2769,15 @@ const GroupOf = (Row: Specimen): Group => {
 	const At = Specimens.indexOf(Row);
 
 	if (At < 7) return "documents";
+
 	if (At < 18) return "contents";
+
 	if (At < 32) return "index";
+
 	if (At < 47) return "detail";
+
 	if (At < 50) return "reading";
+
 	return "adverse";
 };
 
@@ -2271,6 +2789,7 @@ export const InGroup = (Group: Group): readonly Specimen[] =>
 export const Groups: readonly { key: Group; label: string; note: string }[] = [
 	{
 		key: "documents",
+
 		label: "/THE DOCUMENTS",
 
 		note: "The shell that holds a reading column, in the four shapes the brief named: a resting article, an article with no summary, a title wider than the rail, and the same shell with no rail at all - plus the rail with one section, with ninety, and with no tree.",
@@ -2278,6 +2797,7 @@ export const Groups: readonly { key: Group; label: string; note: string }[] = [
 
 	{
 		key: "contents",
+
 		label: "/THE CONTENTS",
 
 		note: "The page's own contents in every register it has: the pinned rail, the fold, the dense step, one section, a heading wider than the rail, the disclosure, and the rows on their own at ninety.",
@@ -2285,6 +2805,7 @@ export const Groups: readonly { key: Group; label: string; note: string }[] = [
 
 	{
 		key: "index",
+
 		label: "/THE INDEX",
 
 		note: "The manual's filing: a chapter and its count, a chapter holding a page with no description, a chapter of sixteen, the card alone in its three arms, the three appendices and the crate viewer - including the one the brief asked for by name, an index card with a missing description.",
@@ -2292,6 +2813,7 @@ export const Groups: readonly { key: Group; label: string; note: string }[] = [
 
 	{
 		key: "detail",
+
 		label: "/THE DETAIL",
 
 		note: "The apparatus that closes a band: the foot at rest, with no cross-references, with its references unread, inside a card and at 640px; the folio under a long source and a long part; the see-also in its three arms; and the leader at one entry, at thirty-eight and in a narrow column.",
@@ -2299,6 +2821,7 @@ export const Groups: readonly { key: Group; label: string; note: string }[] = [
 
 	{
 		key: "reading",
+
 		label: "/THE READING",
 
 		note: "The surface the legal set wears: read with its clause rail, read straight through with no rail, and read with no standfirst, where the facts become the opening.",
@@ -2306,6 +2829,7 @@ export const Groups: readonly { key: Group; label: string; note: string }[] = [
 
 	{
 		key: "adverse",
+
 		label: "/THE ADVERSE",
 
 		note: "The seven compositions a reader meets when the world is unkind: an empty paper and a loading one, an empty document and a loading one, an empty register and a loading one, and the leader at 640px where the dots are the only rule it has.",
