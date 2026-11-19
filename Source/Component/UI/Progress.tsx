@@ -105,7 +105,12 @@ const Progress = React.forwardRef<
 		// the exact element it had before this file grew a figure.
 		if (label === undefined) return Root;
 
-		const Total = state === "partial" ? "UNAVAILABLE" : String(max);
+		// A total that is not known prints `UNAVAILABLE`, never `00`: an indeterminate
+		// job has no denominator, and a partial one has a figure without one.
+		const Total =
+			state === "partial" || state === "loading"
+				? "UNAVAILABLE"
+				: String(max);
 
 		const Shown = String(value ?? 0).padStart(2, "0");
 
