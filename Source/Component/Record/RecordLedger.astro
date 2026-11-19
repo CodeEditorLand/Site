@@ -160,8 +160,7 @@ const Count = Padded(rows.length);
  * cannot exist without one - and the block overrides it with its own figure, so
  * a count that drifted at the call site is corrected here rather than printed.
  */
-const Line =
-	register === undefined ? undefined : { ...register, count: Count };
+const Line = register === undefined ? undefined : { ...register, count: Count };
 
 /**
  * The rows a skeleton prints. A loading register keeps the keys it was handed -
@@ -210,7 +209,7 @@ const SkeletonRows: readonly LedgerRow[] =
 								/>
 							</dd>
 						</div>
-				))
+					))
 				: rows.map((Row) => <RecordLedgerRow row={Row} />)}
 		</dl>
 	)}

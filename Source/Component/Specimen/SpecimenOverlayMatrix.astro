@@ -48,9 +48,9 @@ import { RegisterOf } from "../Record/RegisterLine.js";
 
 /** Every cell that cannot exist, numbered - the matrix's footnotes. */
 const Notes = Rows.flatMap((Row) =>
-	Columns.filter((Column) => MatrixCell(Row, Column).disposition === "na").map(
-		(Column) => ({ Row, Column, Cell: MatrixCell(Row, Column) }),
-	),
+	Columns.filter(
+		(Column) => MatrixCell(Row, Column).disposition === "na",
+	).map((Column) => ({ Row, Column, Cell: MatrixCell(Row, Column) })),
 ).map((Note, Index) => ({ ...Note, mark: String(Index + 1).padStart(2, "0") }));
 
 /** The footnote a cell points at. */
@@ -80,79 +80,80 @@ const Matrix = RegisterOf("THE MATRIX", Figures);
 			<thead>
 				<tr class="overlay-matrix__head-row">
 					<th class="overlay-matrix__corner" scope="col">
-						<span class="overlay-matrix__corner-label">COMPONENT</span>
+						<span class="overlay-matrix__corner-label">
+							COMPONENT
+						</span>
 						<span class="overlay-matrix__corner-ask">
 							{Columns.length} CONDITIONS
 						</span>
 					</th>
 
-					{
-						Columns.map((Column, Index) => (
-							<th
-								class:list={[
-									"overlay-matrix__head",
-									OpensGroup(Index) && "overlay-matrix__head--group",
-								]}
-								scope="col"
-							>
-								<span class="overlay-matrix__head-label">
-									{Column.label}
-								</span>
-								<span class="overlay-matrix__head-ask">
-									{Column.ask}
-								</span>
-							</th>
-						))
-					}
+					{Columns.map((Column, Index) => (
+						<th
+							class:list={[
+								"overlay-matrix__head",
+								OpensGroup(Index) &&
+									"overlay-matrix__head--group",
+							]}
+							scope="col"
+						>
+							<span class="overlay-matrix__head-label">
+								{Column.label}
+							</span>
+							<span class="overlay-matrix__head-ask">
+								{Column.ask}
+							</span>
+						</th>
+					))}
 				</tr>
 			</thead>
 
 			<tbody>
-				{
-					Rows.map((Row) => (
-						<tr class="overlay-matrix__row">
-							<th class="overlay-matrix__name" scope="row">
-								<span class="overlay-matrix__name-text">
-									{Row.name}
-								</span>
-								<span class="overlay-matrix__name-part">
-									{Row.part}
-								</span>
-								<span class="overlay-matrix__name-count">
-									{BuiltOf(Row)} / {Columns.length}
-								</span>
-							</th>
+				{Rows.map((Row) => (
+					<tr class="overlay-matrix__row">
+						<th class="overlay-matrix__name" scope="row">
+							<span class="overlay-matrix__name-text">
+								{Row.name}
+							</span>
+							<span class="overlay-matrix__name-part">
+								{Row.part}
+							</span>
+							<span class="overlay-matrix__name-count">
+								{BuiltOf(Row)} / {Columns.length}
+							</span>
+						</th>
 
-							{Columns.map((Column, Index) => {
-								const Cell = MatrixCell(Row, Column);
+						{Columns.map((Column, Index) => {
+							const Cell = MatrixCell(Row, Column);
 
-								return (
-									<td
-										class:list={[
-											"overlay-matrix__cell",
-											OpensGroup(Index) &&
-												"overlay-matrix__cell--group",
-										]}
-										data-disposition={Cell.disposition}
-									>
-										{Cell.disposition === "built" ? (
-											<span class="overlay-matrix__built">
-												BUILT
+							return (
+								<td
+									class:list={[
+										"overlay-matrix__cell",
+										OpensGroup(Index) &&
+											"overlay-matrix__cell--group",
+									]}
+									data-disposition={Cell.disposition}
+								>
+									{Cell.disposition === "built" ? (
+										<span class="overlay-matrix__built">
+											BUILT
+										</span>
+									) : (
+										<span class="overlay-matrix__na">
+											N/A
+											<span class="overlay-matrix__note-mark">
+												〈
+												{NoteMark(Row.name, Column.key)}
+												〉
 											</span>
-										) : (
-											<span class="overlay-matrix__na">
-												N/A
-												<span class="overlay-matrix__note-mark">
-													〈{NoteMark(Row.name, Column.key)}〉
-												</span>
-											</span>
-										)}
-									</td>
-								);
-							})}
-						</tr>
-					))
-				}
+										</span>
+									)}
+								</td>
+							);
+						})}
+					</tr>
+				))}
 			</tbody>
 		</table>
 	</div>
@@ -166,34 +167,35 @@ const Matrix = RegisterOf("THE MATRIX", Figures);
 		</p>
 
 		<ol class="overlay-matrix__notes-list">
-			{
-				Notes.map((Note) => (
-					<li class="overlay-matrix__note" id={`overlay-note-${Note.mark}`}>
-						<span class="overlay-matrix__note-mark">
-							〈{Note.mark}〉
-						</span>
-						<span class="overlay-matrix__note-where">
-							{Note.Row.name} / {Note.Column.label}
-						</span>
-						<span class="overlay-matrix__note-reason">
-							{Note.Cell.reason}
-						</span>
-					</li>
-				))
-			}
+			{Notes.map((Note) => (
+				<li
+					class="overlay-matrix__note"
+					id={`overlay-note-${Note.mark}`}
+				>
+					<span class="overlay-matrix__note-mark">
+						〈{Note.mark}〉
+					</span>
+					<span class="overlay-matrix__note-where">
+						{Note.Row.name} / {Note.Column.label}
+					</span>
+					<span class="overlay-matrix__note-reason">
+						{Note.Cell.reason}
+					</span>
+				</li>
+			))}
 		</ol>
 	</div>
 
 	<figcaption class="overlay-matrix__caption">
 		<span class="overlay-matrix__caption-key">READ:</span>
 		<span class="overlay-matrix__caption-value">
-			A cell is `BUILT` when the family renders that combination and
-			`N/A` when it cannot exist - and a cell that cannot exist carries
-			its reason in the notes below rather than a truncated one in the
-			cell. {BuiltCount} of {CellCount} cells are built; {ReasonCount}
-			are reasons. The default is `BUILT` because this matrix was
-			written after the family was put on one surface: the absences are
-			the interesting cells and the built ones are the family.
+			A cell is `BUILT` when the family renders that combination and `N/A`
+			when it cannot exist - and a cell that cannot exist carries its
+			reason in the notes below rather than a truncated one in the cell.{" "}
+			{BuiltCount} of {CellCount} cells are built; {ReasonCount}
+			are reasons. The default is `BUILT` because this matrix was written
+			after the family was put on one surface: the absences are the
+			interesting cells and the built ones are the family.
 		</span>
 		<span class="overlay-matrix__caption-source">
 			<span class="overlay-matrix__caption-key">SOURCE:</span>
@@ -217,15 +219,13 @@ const Matrix = RegisterOf("THE MATRIX", Figures);
 	</p>
 
 	<ol class="overlay-contract__list">
-		{
-			Dismissals.map((Dismissal) => (
-				<li class="overlay-contract__row">
-					<span class="overlay-contract__key">{Dismissal.key}</span>
-					<span class="overlay-contract__value">{Dismissal.value}</span>
-					<span class="overlay-contract__held">{Dismissal.held}</span>
-				</li>
-			))
-		}
+		{Dismissals.map((Dismissal) => (
+			<li class="overlay-contract__row">
+				<span class="overlay-contract__key">{Dismissal.key}</span>
+				<span class="overlay-contract__value">{Dismissal.value}</span>
+				<span class="overlay-contract__held">{Dismissal.held}</span>
+			</li>
+		))}
 	</ol>
 
 	<figcaption class="overlay-contract__caption">

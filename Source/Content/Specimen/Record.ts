@@ -72,8 +72,11 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "loading",
+
 		label: "LOADING",
+
 		ask: "has not arrived",
+
 		group: "condition",
 	},
 
@@ -81,43 +84,61 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "partial",
+
 		label: "PARTIAL",
+
 		ask: "one fact unknown",
+
 		group: "condition",
 	},
 
 	{
 		key: "error",
+
 		label: "ERROR",
+
 		ask: "the action failed",
+
 		group: "condition",
 	},
 
 	{
 		key: "stale",
+
 		label: "STALE",
+
 		ask: "older than its as-of",
+
 		group: "condition",
 	},
 
 	{
 		key: "disabled",
+
 		label: "DISABLED",
+
 		ask: "cannot be used",
+
 		group: "condition",
 	},
 
 	{
 		key: "readonly",
+
 		label: "READ-ONLY",
+
 		ask: "cannot be changed",
+
 		group: "condition",
 	},
 
 	{
 		key: "selected",
+
 		label: "SELECTED",
+
 		ask: "the marked one",
+
 		group: "condition",
 	},
 
@@ -125,22 +146,31 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "manyitems",
+
 		label: "MANY ITEMS",
+
 		ask: "a set of twenty",
+
 		group: "shape",
 	},
 
 	{
 		key: "longkey",
+
 		label: "LONG KEY",
+
 		ask: "a key longer than its value",
+
 		group: "shape",
 	},
 
 	{
 		key: "longvalue",
+
 		label: "LONG VALUE",
+
 		ask: "a value of three lines",
+
 		group: "shape",
 	},
 
@@ -152,15 +182,21 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "totalrow",
+
 		label: "TOTAL ROW",
+
 		ask: "the set's sum",
+
 		group: "shape",
 	},
 
 	{
 		key: "openrow",
+
 		label: "ROW THAT OPENS",
+
 		ask: "a row that discloses",
+
 		group: "shape",
 	},
 
@@ -1007,7 +1043,7 @@ export interface Improvement {
 }
 
 /**
- * The eleven behaviours that only became obvious once the matrix existed.
+ * The twelve behaviours that only became obvious once the matrix existed.
  *
  * This section is the deliverable the brief asks for by name - "the improvements
  * that came out of the exploration" - and each entry names the cell that
@@ -1021,7 +1057,7 @@ export const Improvements: readonly Improvement[] = [
 
 		found: "A build's three flags were three rows of the same rank as its target and its licence, so a ledger of six facts read as a ledger of nine. The detail existed; it had no rank.",
 
-		built: "`LedgerRow.open` prints the row as a `<details>` whose summary is the value, with the disclosed facts as the same row grammar one level in. No script: the browser's disclosure is the behaviour and the mark layer's fold is its sign.",
+		built: "`LedgerRow.open` prints the row as a `<details>` whose summary is the value, with the disclosed facts as the same row grammar one level in - and through `RecordLedgerValue`, the renderer the row's own value uses, so a link, a literal or a state word cannot print two ways on either level. No script: the browser's disclosure is the behaviour and the mark layer's fold is its sign.",
 	},
 
 	{
@@ -1131,7 +1167,7 @@ export const Improvements: readonly Improvement[] = [
 
 		found: "The line's five parts were printed but never announced: the mark and the separator are `aria-hidden`, so a screen reader ran the label into the figure and read `WHAT CHANGES08`. And the too-much state - a set longer than the page - had no register at all: `RecordPlateSet` printed `SHOWING: 12 OF 240` in its own foot, outside the shape.",
 
-		built: "`Register.astro` carries `aria-label={RegisterText(...)}`, so the announcement and the printed line are the same statement; and `RegisterWindow(label, showing, total)` is the too-much state as a register, in the grammar every other count uses.",
+		built: "`Register.astro` prints two runs: the five parts, and a visually hidden line carrying `RegisterText(...)` so the announcement and the printed line are the same statement - the earlier `aria-label` on the `<p>` was dropped by every screen reader, because ARIA prohibits naming the `paragraph` role; and `RegisterWindow(label, showing, total)` is the too-much state as a register, in the grammar every other count uses.",
 	},
 ];
 
@@ -1167,11 +1203,11 @@ export const Observations: readonly Observation[] = [
 	},
 
 	{
-		name: "TWO BLOCKS HAVE NO IMPORTER",
+		name: "THE LEDGER HAS NO SOURCE SLOT",
 
-		found: "`RecordCompare` and `RecordPlateSet` are imported by no page. They are not dead: `RecordCompare` is the only block that answers an axis with ends, and `RecordPlateSet` is the only one that answers many figures of one subject. The sheet mounts both, which is the argument for keeping them - and the first page that needs an axis finds it finished rather than finds a kit default.",
+		found: "Every block in this family can say where its content came from except the one that prints facts. `RecordInstrument` requires a `provenance` on every measure, `RecordTrace` requires `source`, `RecordMatrix` takes a `caption` and `RecordPlateSet` takes a `source`; `RecordLedger` offers `note` (a qualifier about the value) and `asOf` (the value's age) and nothing for a source. The pressure is visible where the block is used: `/STATUS` carries its scope ledger's provenance in the band caption - \"Every row was read from the module named in its band's footnote\" - because there is nowhere inside the block to put it.",
 
-		owner: "Nobody's, yet. A block with a state matrix and a live specimen is a block waiting for its surface, not a file waiting for someone.",
+		owner: "A `LedgerRow.source` field, not a block-level `source` prop: a ledger assembled from three modules has three sources, and one line under the block would attribute all of them to one. That is a change to the row's contract, and it would print under every fact in the forty-nine ledgers this tree mounts - a decision for the card that owns the tree's facts, not for the one that built the row's states.",
 	},
 ];
 
@@ -1408,7 +1444,7 @@ export const Specimens: readonly Specimen[] = [
 
 		component: "Ledger",
 
-		when: "A fact whose detail is three more facts: the row discloses them in a `<details>` and still states its value when shut.",
+		when: "A fact whose detail is three more facts: the row discloses them in a `<details>` and still states its value when shut. The disclosed facts print through the row's own value renderer, so a link, a literal or a state word reads the same one level in.",
 
 		kind: "ledger",
 
@@ -1654,7 +1690,7 @@ export const Specimens: readonly Specimen[] = [
 
 		component: "Matrix",
 
-		when: "A column's sum: the divider's rule above the row and the sub role in its cells - a total per column, because a comparison's total is per column.",
+		when: "A set's sum: one figure across the whole table, under the divider's rule and at the sub role, because the rows above add up to it and the block never computes it. A total that carries a value per column prints one cell each instead.",
 
 		kind: "matrix",
 

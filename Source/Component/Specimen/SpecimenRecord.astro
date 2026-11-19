@@ -75,7 +75,11 @@ import type {
 const FactPool: readonly LedgerRow[] = [
 	{ key: "TARGET:", value: "MACOS\u2001AARCH64" },
 
-	{ key: "LICENSE:", value: "CC0\u2001PUBLIC DOMAIN", note: "no attribution is required" },
+	{
+		key: "LICENSE:",
+		value: "CC0\u2001PUBLIC DOMAIN",
+		note: "no attribution is required",
+	},
 
 	{ key: "SIGNAL:", value: "ACTIVE" },
 
@@ -91,7 +95,11 @@ const FactPool: readonly LedgerRow[] = [
 
 	{ key: "EXTENSIONS:", value: "UNMODIFIED\u2001VS CODE API" },
 
-	{ key: "TELEMETRY:", value: "FEATURE GATED", note: "off until it is asked for" },
+	{
+		key: "TELEMETRY:",
+		value: "FEATURE GATED",
+		note: "off until it is asked for",
+	},
 
 	{ key: "SIGNING:", value: "PLANNED" },
 
@@ -219,7 +227,12 @@ const OpenFacts: readonly LedgerRow[] = [
 const SelectedFacts: readonly LedgerRow[] = [
 	{ key: "CHANNEL:", value: "PUBLIC" },
 
-	{ key: "CHANNEL:", value: "BETA", selected: true, note: "the one this record describes" },
+	{
+		key: "CHANNEL:",
+		value: "BETA",
+		selected: true,
+		note: "the one this record describes",
+	},
 
 	{ key: "CHANNEL:", value: "NIGHTLY" },
 
@@ -284,14 +297,14 @@ const LedgerProps = (Row: Specimen) => {
 	return {
 		rows: Facts,
 		...(Row.dense ? { density: "register" as const } : {}),
-		...(Row.surface === "standard"
-			? { surface: "standard" as const }
-			: {}),
+		...(Row.surface === "standard" ? { surface: "standard" as const } : {}),
 		...(Row.state === undefined
 			? {}
 			: { state: Row.state as RegisterState }),
 		...(Row.empty === undefined ? {} : { empty: Row.empty }),
-		...(Row.label === undefined ? {} : { register: RegisterOf(Row.label, Facts) }),
+		...(Row.label === undefined
+			? {}
+			: { register: RegisterOf(Row.label, Facts) }),
 	};
 };
 
@@ -378,7 +391,7 @@ const MatrixRows = (Row: Specimen) => {
 			{ label: "CLOUD", cells: ["gRPC", "04"] },
 			{ label: "LOCAL", cells: ["IPC", "06"] },
 			{ label: "SIDECAR", cells: ["TCP", "02"] },
-			{ label: "TOTAL:", cells: ["", "12"], total: true },
+			{ label: "TOTAL:", cells: ["12 FEATURES"], total: true },
 		];
 	}
 
@@ -860,7 +873,9 @@ const PlateSetProps = (Row: Specimen): { set: PlateSet } => {
 								src: "/Evidence/Land/NightGlass-01.png",
 								alt: "Rain-speckled glass reflecting a green light at night",
 							}
-						: { note: "filed in the manifest, no plate in the build" }),
+						: {
+								note: "filed in the manifest, no plate in the build",
+							}),
 				})),
 				window: { showing: Count, total: "240" },
 				caption:
@@ -905,13 +920,9 @@ const PlateSetProps = (Row: Specimen): { set: PlateSet } => {
 const RegisterProps = (Row: Specimen) => ({
 	register: RegisterCount(Row.label ?? "WHAT CHANGES", Row.count ?? "00", {
 		...(Row.unit === undefined ? {} : { unit: Row.unit }),
-		...(Row.separator === "quad"
-			? { separator: "quad" as const }
-			: {}),
+		...(Row.separator === "quad" ? { separator: "quad" as const } : {}),
 	}),
-	...(Row.state === undefined
-		? {}
-		: { state: Row.state as RegisterState }),
+	...(Row.state === undefined ? {} : { state: Row.state as RegisterState }),
 	class: "specimen-record__register-line",
 });
 
@@ -926,108 +937,100 @@ const SkinClass = (Row: Specimen): string => {
 ---
 
 <div class="specimen-record">
-	{
-		Groups.map((Group) => (
-			<section class="specimen-record__group" key={Group.key}>
-				<p class="specimen-record__group-head">
-					<span class="specimen-record__group-kicker">
-						{Group.label}
-					</span>
-					<span class="specimen-record__group-count">
-						{InGroup(Group.key).length}
-					</span>
-				</p>
+	{Groups.map((Group) => (
+		<section class="specimen-record__group" key={Group.key}>
+			<p class="specimen-record__group-head">
+				<span class="specimen-record__group-kicker">{Group.label}</span>
+				<span class="specimen-record__group-count">
+					{InGroup(Group.key).length}
+				</span>
+			</p>
 
-				<p class="specimen-record__group-note">{Group.note}</p>
+			<p class="specimen-record__group-note">{Group.note}</p>
 
-				<div class="specimen-record__rows">
-					{InGroup(Group.key).map((Entry) => (
-						<article
-							class="specimen-record__row"
-							id={`record-${Entry.mark}`}
+			<div class="specimen-record__rows">
+				{InGroup(Group.key).map((Entry) => (
+					<article
+						class="specimen-record__row"
+						id={`record-${Entry.mark}`}
+					>
+						<header class="specimen-record__spec">
+							<p class="specimen-record__mark">
+								<span
+									class="specimen-record__mark-hash"
+									aria-hidden="true"
+								>
+									#
+								</span>
+								{Entry.mark}
+							</p>
+
+							<h3 class="specimen-record__state">
+								{Entry.state_name}
+							</h3>
+
+							<p class="specimen-record__part">
+								{Entry.component}
+							</p>
+
+							<p class="specimen-record__when">{Entry.when}</p>
+						</header>
+
+						<div
+							class={SkinClass(Entry)}
+							data-skin={Entry.width ?? "band"}
 						>
-							<header class="specimen-record__spec">
-								<p class="specimen-record__mark">
-									<span
-										class="specimen-record__mark-hash"
-										aria-hidden="true"
-									>
-										#
-									</span>
-									{Entry.mark}
-								</p>
-
-								<h3 class="specimen-record__state">
-									{Entry.state_name}
-								</h3>
-
-								<p class="specimen-record__part">
-									{Entry.component}
-								</p>
-
-								<p class="specimen-record__when">
-									{Entry.when}
-								</p>
-							</header>
-
-							<div
-								class={SkinClass(Entry)}
-								data-skin={Entry.width ?? "band"}
-							>
-								{Entry.kind === "ledger" ? (
-									<RecordLedger {...LedgerProps(Entry)} />
-								) : Entry.kind === "matrix" ? (
-									<RecordMatrix {...MatrixProps(Entry)} />
-								) : Entry.kind === "compare" ? (
-									<RecordCompare {...CompareProps(Entry)} />
-								) : Entry.kind === "trace" ? (
-									<RecordTrace {...TraceProps(Entry)} />
-								) : Entry.kind === "instrument" ? (
-									<RecordInstrument
-										{...InstrumentProps(Entry)}
+							{Entry.kind === "ledger" ? (
+								<RecordLedger {...LedgerProps(Entry)} />
+							) : Entry.kind === "matrix" ? (
+								<RecordMatrix {...MatrixProps(Entry)} />
+							) : Entry.kind === "compare" ? (
+								<RecordCompare {...CompareProps(Entry)} />
+							) : Entry.kind === "trace" ? (
+								<RecordTrace {...TraceProps(Entry)} />
+							) : Entry.kind === "instrument" ? (
+								<RecordInstrument {...InstrumentProps(Entry)} />
+							) : Entry.kind === "plateset" ? (
+								<RecordPlateSet {...PlateSetProps(Entry)} />
+							) : Entry.kind === "register" ? (
+								<Register {...RegisterProps(Entry)} />
+							) : Entry.kind === "registerline" ? (
+								<div class="specimen-record__constructors">
+									<Register
+										register={RegisterOf(
+											"A SET THE BLOCK HOLDS",
+											[1, 2, 3, 4, 5, 6, 7, 8],
+										)}
+										class="specimen-record__register-line"
 									/>
-								) : Entry.kind === "plateset" ? (
-									<RecordPlateSet {...PlateSetProps(Entry)} />
-								) : Entry.kind === "register" ? (
-									<Register {...RegisterProps(Entry)} />
-								) : Entry.kind === "registerline" ? (
-									<div class="specimen-record__constructors">
-										<Register
-											register={RegisterOf(
-												"A SET THE BLOCK HOLDS",
-												[1, 2, 3, 4, 5, 6, 7, 8],
-											)}
-											class="specimen-record__register-line"
-										/>
-										<Register
-											register={RegisterCount(
-												"A COUNT IT DOES NOT",
-												26,
-												{ unit: "ROUTES" },
-											)}
-											class="specimen-record__register-line"
-										/>
-										<Register
-											register={RegisterUnavailable(
-												"A COUNT IT CANNOT KNOW",
-											)}
-											class="specimen-record__register-line"
-										/>
-										<Register
-											register={RegisterWindow(
-												"A WINDOW OF A LARGER SET",
-												12,
-												240,
-											)}
-											class="specimen-record__register-line"
-										/>
-									</div>
-								) : null}
-							</div>
-						</article>
-					))}
-				</div>
-			</section>
-		))
-	}
+									<Register
+										register={RegisterCount(
+											"A COUNT IT DOES NOT",
+											26,
+											{ unit: "ROUTES" },
+										)}
+										class="specimen-record__register-line"
+									/>
+									<Register
+										register={RegisterUnavailable(
+											"A COUNT IT CANNOT KNOW",
+										)}
+										class="specimen-record__register-line"
+									/>
+									<Register
+										register={RegisterWindow(
+											"A WINDOW OF A LARGER SET",
+											12,
+											240,
+										)}
+										class="specimen-record__register-line"
+									/>
+								</div>
+							) : null}
+						</div>
+					</article>
+				))}
+			</div>
+		</section>
+	))}
 </div>

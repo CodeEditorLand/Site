@@ -5,8 +5,9 @@
  * ─── THIS IS NOT A BLOCK ──────────────────────────────────────────────────
  * It is the ledger's row, in its own file so that the row and the row that
  * OPENS cannot print the same fact two different ways. `RecordLedger` maps its
- * `rows` through this file, and a row's own `open` facts are mapped through it
- * again - the disclosure is the same grammar one level in, not a second shape.
+ * `rows` through this file, and the facts inside a disclosure print through
+ * `RecordLedgerValue` - the same renderer this row's own value uses - so the
+ * disclosure is the same grammar one level in, not a second shape.
  * It is not exported to pages and it answers no information type of its own:
  * the block is `RecordLedger`, and this is its row.
  *
@@ -38,7 +39,7 @@
  */
 import Mark from "../Mark/Mark.astro";
 
-import { Tone } from "../Surface/State.js";
+import RecordLedgerValue from "./RecordLedgerValue.astro";
 
 import type { LedgerRow } from "./Type.js";
 
@@ -56,22 +57,6 @@ interface Props {
 }
 
 const { row: Row, nested = false } = Astro.props;
-
-/** The vocabulary's tone for a value that is a state word. */
-const Tint = Row.state === undefined ? undefined : (Tone(Row.state) ?? "ink");
-
-/**
- * The mark a state row's square takes, from the mark layer's own adverse arms:
- * a loading word gets the bar, a word for a fact that has gone or has not come
- * gets the quiet square, and every other state word gets the hollow one - an
- * unknown fact is never the filled square of a measured one.
- */
-const Fill =
-	Row.state === "loading"
-		? "loading"
-		: Row.state === "archived" || Row.state === "preparing"
-			? "stale"
-			: "unknown";
 ---
 
 <div
@@ -86,120 +71,66 @@ const Fill =
 	aria-current={Row.selected ? "true" : undefined}
 >
 	<dt class="record-ledger__key">
-		{
-			Row.selected ? (
-				<Mark
-					kind="square"
-					size="attested"
-					tone="specimen"
-					class="record-ledger__selected-mark"
-				/>
-			) : null
-		}
+		{Row.selected ? (
+			<Mark
+				kind="square"
+				size="attested"
+				tone="specimen"
+				class="record-ledger__selected-mark"
+			/>
+		) : null}
 		{Row.key}
 	</dt>
 
 	<dd class="record-ledger__value">
-		{
-			Row.open !== undefined ? (
-				<details class="record-ledger__disclosure">
-					<summary class="record-ledger__summary">
-						<span class="record-ledger__summary-value">
-							{Row.value}
-						</span>
-						<Mark kind="fold" class="record-ledger__fold" />
-					</summary>
+		{Row.open !== undefined ? (
+			<details class="record-ledger__disclosure">
+				<summary class="record-ledger__summary">
+					<span class="record-ledger__summary-value">
+						{Row.value}
+					</span>
+					<Mark kind="fold" class="record-ledger__fold" />
+				</summary>
 
-					<dl class="record-ledger__nested">
-						{Row.open.map((Child) => (
-							<div class="record-ledger__row record-ledger__row--nested">
-								<dt class="record-ledger__key">{Child.key}</dt>
-								<dd class="record-ledger__value">
-									{Child.state === undefined ? (
-										Child.value
-									) : (
-										<span
-											class:list={[
-												"record-ledger__state",
-												`record-ledger__state--${Tone(Child.state) ?? "ink"}`,
-											]}
-										>
-											<Mark
-												kind="square"
-												fill={
-													Child.state ===
-													"loading"
-														? "loading"
-														: "unknown"
-												}
-												tone={Tone(Child.state) ?? "ink"}
-											/>
-											{Child.value}
+				<dl class="record-ledger__nested">
+					{Row.open.map((Child) => (
+						<div class="record-ledger__row record-ledger__row--nested">
+							<dt class="record-ledger__key">{Child.key}</dt>
+							<dd class="record-ledger__value">
+								<RecordLedgerValue row={Child} />
+
+								{Child.note ? (
+									<span class="record-ledger__note">
+										{Child.note}
+									</span>
+								) : null}
+
+								{Child.asOf ? (
+									<span class="record-ledger__as-of">
+										<span class="record-ledger__as-of-key">
+											AS OF:
 										</span>
-									)}
-									{Child.note ? (
-										<span class="record-ledger__note">
-											{Child.note}
-										</span>
-									) : null}
-								</dd>
-							</div>
-						))}
-					</dl>
-				</details>
-			) : Row.state !== undefined ? (
-				<span
-					class:list={[
-						"record-ledger__state",
-						`record-ledger__state--${Tint}`,
-					]}
-				>
-					<Mark kind="square" fill={Fill} tone={Tint} />
-					{Row.value}
-				</span>
-			) : Row.links !== undefined && Row.links.length > 0 ? (
-				Row.links.map((Link, Index) => (
-					<>
-						{Index > 0 && (
-							<span class="record-ledger__separator">{" / "}</span>
-						)}
-						<a
-							class="record-ledger__link"
-							href={Link.href}
-							target={Link.target === "blank" ? "_blank" : undefined}
-							rel={
-								Link.target === "blank"
-									? "noopener noreferrer"
-									: undefined
-							}
-						>
-							{Link.text}
-						</a>
-					</>
-				))
-			) : Row.code ? (
-				<code class="record-ledger__code">{Row.value}</code>
-			) : Row.strong ? (
-				<strong class="record-ledger__strong">{Row.value}</strong>
-			) : (
-				Row.value
-			)
-		}
+										{` `}
+										{Child.asOf}
+									</span>
+								) : null}
+							</dd>
+						</div>
+					))}
+				</dl>
+			</details>
+		) : (
+			<RecordLedgerValue row={Row} />
+		)}
 
-		{
-			Row.note ? (
-				<span class="record-ledger__note">{Row.note}</span>
-			) : null
-		}
+		{Row.note ? <span class="record-ledger__note">{Row.note}</span> : null}
 
-		{
-			Row.asOf ? (
-				<span class="record-ledger__as-of">
-					<span class="record-ledger__as-of-key">AS OF:</span>
-					{` `}
-					{Row.asOf}
-				</span>
-			) : null
-		}
+		{Row.asOf ? (
+			<span class="record-ledger__as-of">
+				<span class="record-ledger__as-of-key">AS OF:</span>
+				{` `}
+				{Row.asOf}
+			</span>
+		) : null}
 	</dd>
 </div>

@@ -47,9 +47,9 @@ import { RegisterOf } from "../Record/RegisterLine.js";
 
 /** Every cell that cannot exist, numbered - the matrix's footnotes. */
 const Notes = Rows.flatMap((Row) =>
-	Columns.filter((Column) => MatrixCell(Row, Column).disposition === "na").map(
-		(Column) => ({ Row, Column, Cell: MatrixCell(Row, Column) }),
-	),
+	Columns.filter(
+		(Column) => MatrixCell(Row, Column).disposition === "na",
+	).map((Column) => ({ Row, Column, Cell: MatrixCell(Row, Column) })),
 ).map((Note, Index) => ({ ...Note, mark: String(Index + 1).padStart(2, "0") }));
 
 /** The footnote a cell points at. */
@@ -82,79 +82,80 @@ const VerdictCount = Verdicts.length;
 			<thead>
 				<tr class="display-matrix__head-row">
 					<th class="display-matrix__corner" scope="col">
-						<span class="display-matrix__corner-label">COMPONENT</span>
+						<span class="display-matrix__corner-label">
+							COMPONENT
+						</span>
 						<span class="display-matrix__corner-ask">
 							{Columns.length} CONDITIONS
 						</span>
 					</th>
 
-					{
-						Columns.map((Column, Index) => (
-							<th
-								class:list={[
-									"display-matrix__head",
-									OpensGroup(Index) && "display-matrix__head--group",
-								]}
-								scope="col"
-							>
-								<span class="display-matrix__head-label">
-									{Column.label}
-								</span>
-								<span class="display-matrix__head-ask">
-									{Column.ask}
-								</span>
-							</th>
-						))
-					}
+					{Columns.map((Column, Index) => (
+						<th
+							class:list={[
+								"display-matrix__head",
+								OpensGroup(Index) &&
+									"display-matrix__head--group",
+							]}
+							scope="col"
+						>
+							<span class="display-matrix__head-label">
+								{Column.label}
+							</span>
+							<span class="display-matrix__head-ask">
+								{Column.ask}
+							</span>
+						</th>
+					))}
 				</tr>
 			</thead>
 
 			<tbody>
-				{
-					Rows.map((Row) => (
-						<tr class="display-matrix__row">
-							<th class="display-matrix__name" scope="row">
-								<span class="display-matrix__name-text">
-									{Row.name}
-								</span>
-								<span class="display-matrix__name-count">
-									{BuiltOf(Row)} / {Columns.length}
-								</span>
-							</th>
+				{Rows.map((Row) => (
+					<tr class="display-matrix__row">
+						<th class="display-matrix__name" scope="row">
+							<span class="display-matrix__name-text">
+								{Row.name}
+							</span>
+							<span class="display-matrix__name-count">
+								{BuiltOf(Row)} / {Columns.length}
+							</span>
+						</th>
 
-							{Columns.map((Column, Index) => {
-								const Cell = MatrixCell(Row, Column);
+						{Columns.map((Column, Index) => {
+							const Cell = MatrixCell(Row, Column);
 
-								return (
-									<td
-										class:list={[
-											"display-matrix__cell",
-											OpensGroup(Index) &&
-												"display-matrix__cell--group",
-										]}
-										data-disposition={Cell.disposition}
-									>
-										{Cell.disposition === "built" ? (
-											<span
-												class="display-matrix__built"
-												title={Cell.note ?? undefined}
-											>
-												BUILT
+							return (
+								<td
+									class:list={[
+										"display-matrix__cell",
+										OpensGroup(Index) &&
+											"display-matrix__cell--group",
+									]}
+									data-disposition={Cell.disposition}
+								>
+									{Cell.disposition === "built" ? (
+										<span
+											class="display-matrix__built"
+											title={Cell.note ?? undefined}
+										>
+											BUILT
+										</span>
+									) : (
+										<span class="display-matrix__na">
+											N/A
+											<span class="display-matrix__note-mark">
+												〈
+												{NoteMark(Row.name, Column.key)}
+												〉
 											</span>
-										) : (
-											<span class="display-matrix__na">
-												N/A
-												<span class="display-matrix__note-mark">
-													〈{NoteMark(Row.name, Column.key)}〉
-												</span>
-											</span>
-										)}
-									</td>
-								);
-							})}
-						</tr>
-					))
-				}
+										</span>
+									)}
+								</td>
+							);
+						})}
+					</tr>
+				))}
 			</tbody>
 		</table>
 	</div>
@@ -168,21 +169,22 @@ const VerdictCount = Verdicts.length;
 		</p>
 
 		<ol class="display-matrix__notes-list">
-			{
-				Notes.map((Note) => (
-					<li class="display-matrix__note" id={`display-note-${Note.mark}`}>
-						<span class="display-matrix__note-mark">
-							〈{Note.mark}〉
-						</span>
-						<span class="display-matrix__note-where">
-							{Note.Row.name} / {Note.Column.label}
-						</span>
-						<span class="display-matrix__note-reason">
-							{Note.Cell.reason}
-						</span>
-					</li>
-				))
-			}
+			{Notes.map((Note) => (
+				<li
+					class="display-matrix__note"
+					id={`display-note-${Note.mark}`}
+				>
+					<span class="display-matrix__note-mark">
+						〈{Note.mark}〉
+					</span>
+					<span class="display-matrix__note-where">
+						{Note.Row.name} / {Note.Column.label}
+					</span>
+					<span class="display-matrix__note-reason">
+						{Note.Cell.reason}
+					</span>
+				</li>
+			))}
 		</ol>
 	</div>
 
@@ -194,14 +196,12 @@ const VerdictCount = Verdicts.length;
 			reason in the notes above rather than a truncated one in the cell.
 			{BuiltCount} of {CellCount} cells are built; {ReasonCount} are
 			reasons. A built cell may carry a note saying which construction
-			built it, because "built" on the TABLE row and "built" on the
-			SONNER row are not the same construction.
+			built it, because "built" on the TABLE row and "built" on the SONNER
+			row are not the same construction.
 		</span>
 		<span class="display-matrix__caption-source">
 			<span class="display-matrix__caption-key">SOURCE:</span>
-			<span
-				class="display-matrix__caption-value display-matrix__caption-value--code"
-			>
+			<span class="display-matrix__caption-value display-matrix__caption-value--code">
 				SOURCE/CONTENT/SPECIMEN/DISPLAY.TS
 			</span>
 		</span>
@@ -220,40 +220,42 @@ const VerdictCount = Verdicts.length;
 			</span>
 		</p>
 
-		{
-			Verdicts.map((Verdict) => (
-				<article
-					class="display-matrix__verdict"
-					data-keep={Verdict.keep ? "true" : "false"}
-				>
-					<header class="display-matrix__verdict-head">
-						<span class="display-matrix__verdict-mark" aria-hidden="true">
-							#
-						</span>
-						<span class="display-matrix__verdict-name">
-							{Verdict.component}
-						</span>
-						<span class="display-matrix__verdict-rule" aria-hidden="true">
-							/
-						</span>
-						<span class="display-matrix__verdict-word">
-							{Verdict.keep ? "KEEP" : "RETIRE"}
-						</span>
-						<span class="display-matrix__verdict-mounted">
-							MOUNTED: {Verdict.mounted}
-						</span>
-					</header>
+		{Verdicts.map((Verdict) => (
+			<article
+				class="display-matrix__verdict"
+				data-keep={Verdict.keep ? "true" : "false"}
+			>
+				<header class="display-matrix__verdict-head">
+					<span
+						class="display-matrix__verdict-mark"
+						aria-hidden="true"
+					>
+						#
+					</span>
+					<span class="display-matrix__verdict-name">
+						{Verdict.component}
+					</span>
+					<span
+						class="display-matrix__verdict-rule"
+						aria-hidden="true"
+					>
+						/
+					</span>
+					<span class="display-matrix__verdict-word">
+						{Verdict.keep ? "KEEP" : "RETIRE"}
+					</span>
+					<span class="display-matrix__verdict-mounted">
+						MOUNTED: {Verdict.mounted}
+					</span>
+				</header>
 
-					<p class="display-matrix__verdict-question">
-						{Verdict.question}
-					</p>
+				<p class="display-matrix__verdict-question">
+					{Verdict.question}
+				</p>
 
-					<p class="display-matrix__verdict-answer">
-						{Verdict.answer}
-					</p>
-				</article>
-			))
-		}
+				<p class="display-matrix__verdict-answer">{Verdict.answer}</p>
+			</article>
+		))}
 	</div>
 
 	{/* ─── THE COLUMNS' OWN FIGURES ─────────────────────────────────── */}
@@ -266,16 +268,21 @@ const VerdictCount = Verdicts.length;
 		</p>
 
 		<ul class="display-matrix__column-list">
-			{
-				Columns.map((Column) => (
-					<li class="display-matrix__column" data-disposition={BuiltIn(Column) === Rows.length ? "built" : "partial"}>
-						<span class="display-matrix__column-label">{Column.label}</span>
-						<span class="display-matrix__column-count">
-							{BuiltIn(Column)} / {Rows.length}
-						</span>
-					</li>
-				))
-			}
+			{Columns.map((Column) => (
+				<li
+					class="display-matrix__column"
+					data-disposition={
+						BuiltIn(Column) === Rows.length ? "built" : "partial"
+					}
+				>
+					<span class="display-matrix__column-label">
+						{Column.label}
+					</span>
+					<span class="display-matrix__column-count">
+						{BuiltIn(Column)} / {Rows.length}
+					</span>
+				</li>
+			))}
 		</ul>
 	</div>
 </figure>

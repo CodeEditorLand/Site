@@ -1,13 +1,23 @@
 // REGISTER - the site's most-printed line, set in its five parts.
 //
 // ─── THE LAW ──────────────────────────────────────────────────────────────
-// `Register.astro` prints a register as five spans:
+// `Register.astro` prints a register as two runs:
 //
-//   <span class="register-line__mark">#</span>{" "}
-//   <span class="register-line__label">WORKING</span>
-//   <span class="register-line__separator"> / </span>
-//   <span class="register-line__count">06</span>
-//   <span class="register-line__unit"> WORDS</span>
+//   <span class="register-line__spoken"># WORKING / 06 WORDS</span>
+//   <span class="register-line__printed" aria-hidden="true">
+//     <span class="register-line__mark">#</span>{" "}
+//     <span class="register-line__label">WORKING</span>
+//     <span class="register-line__separator"> / </span>
+//     <span class="register-line__count">06</span>
+//     <span class="register-line__unit"> WORDS</span>
+//   </span>
+//
+// The printed run is the five parts; the spoken run is the same statement as one
+// string, visually hidden. Two runs, because the eye reads punctuation and the
+// ear does not: with only the printed run a screen reader read `WHAT CHANGES06`,
+// and `aria-label` on the `<p>` could not fix it (ARIA prohibits naming the
+// `paragraph` role, so the attribute was dropped). `__spoken` is the fix, and it
+// is the only rule here that removes anything from the page.
 //
 // The line is the grammar's smallest complete statement: a mark, a name, a
 // separator and a figure, with an optional unit bound to the figure. It appears
@@ -60,6 +70,29 @@
 //            hyphenating. The separator and the count stay whole beside it.
 // TOO MUCH   the line is per-register and accumulates nothing: the two
 //            hundredth register on a page is set exactly as the first.
+
+// ─── 0. THE TWO RUNS ──────────────────────────────────────────────────────
+// The spoken run is the whole line as one string and it is never seen. It is
+// clipped rather than `display: none` (a display-none node is not announced
+// either) and it is taken out of flow so it cannot affect the line's width,
+// wrapping or `text-wrap: balance`. `clip-path` is the modern clip; the 1px box
+// is what keeps a reader in forced-colours mode from painting a dot.
+//
+// The printed run carries no rules of its own: it is an inline span whose only
+// job is to be the one `aria-hidden` node, so the five parts below stay the
+// line's anatomy and not five copies of an attribute.
+
+.register-line__spoken {
+	position: absolute;
+	inline-size: 1px;
+	block-size: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
 
 // ─── 1. THE MARK ──────────────────────────────────────────────────────────
 // `#` says something ABOUT the line; it is not the line's name. Muted, at the

@@ -57,8 +57,14 @@ type Props = Instrument & {
 	readonly class?: string;
 };
 
-const { measures, label, caption, empty, class: Class, state = "rest" } =
-	Astro.props;
+const {
+	measures,
+	label,
+	caption,
+	empty,
+	class: Class,
+	state = "rest",
+} = Astro.props;
 
 /**
  * A measure's figure: the state word when the figure is not known, otherwise the
@@ -111,10 +117,7 @@ const Empty = !Loading && (state === "empty" || measures.length === 0);
 				>
 					<p class="record-instrument__key">{measure.label}:</p>
 
-					<p
-						class="record-instrument__figure"
-						data-figure="loading"
-					>
+					<p class="record-instrument__figure" data-figure="loading">
 						<span
 							class="record-instrument__bar"
 							aria-hidden="true"

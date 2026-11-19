@@ -447,7 +447,11 @@ const FormFacets = FormColumns.map((Column, Index) => ({
 	    because a reader who has just read the record wants the index of subjects
 	    before the legend of marks. */}
 	<RecordBand band={{ ...Bands.Chapters, id: "chapters" }}>
-		<Leader items={ChapterEntries} register={ChaptersRegister} columns={2} />
+		<Leader
+			items={ChapterEntries}
+			register={ChaptersRegister}
+			columns={2}
+		/>
 
 		<BandFoot
 			slot="foot"

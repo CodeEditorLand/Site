@@ -25,6 +25,12 @@
 //                   .record-ledger__selected-mark  the attested square on a selected key
 //                   .record-ledger__state       a value that is a state word
 //                   .record-ledger__as-of       `AS OF:` - the fact's age
+//                   .record-ledger-block        the block: an optional register line over the rows
+//                   .record-ledger-block--rest  the density hook on the block (no rules; the
+//                   .record-ledger-block--register  shell's own modifiers carry the layout)
+//                   .record-ledger-block--pinned  the plate a margin pins
+//                   .record-ledger-block__register  the register line above the rows
+//                   .record-ledger-block__empty     the composed sentence of an empty ledger
 //                   .record-ledger__key         mono key, e.g. TARGET, LICENSE, SIGNAL
 //                   .record-ledger__value       ink value
 //                   .record-ledger__code        a value that is a literal, in a `<code>` element

@@ -109,6 +109,7 @@ const Skeleton = [0, 1, 2];
 	role="group"
 	aria-label={compare.label ?? `${compare.from} to ${compare.to}`}
 	aria-busy={Loading ? "true" : undefined}
+	data-state={Loading ? "loading" : Empty ? "empty" : "rest"}
 >
 	{compare.label ? (
 		<p class="record-compare__label">{compare.label}</p>

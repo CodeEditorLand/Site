@@ -176,7 +176,9 @@ const CrateRail = RustCrates.map((Crate, Position) => ({
 										target="_blank"
 										rel="noopener noreferrer"
 									>
-										<span class="doc-crate__label">{Crate.Label}</span>
+										<span class="doc-crate__label">
+											{Crate.Label}
+										</span>
 										<span
 											class="doc-crate__arrow"
 											aria-hidden="true"
@@ -245,7 +247,9 @@ const CrateRail = RustCrates.map((Crate, Position) => ({
 
 				<p class="doc-rust__back">
 					<a href="/Doc">
-						{Documentation}{"\u2001"}<span aria-hidden="true">←</span>
+						{Documentation}
+						{"\u2001"}
+						<span aria-hidden="true">←</span>
 					</a>
 				</p>
 			</DocArticle>

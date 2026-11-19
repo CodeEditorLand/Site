@@ -1,0 +1,92 @@
+---
+/**
+ * RecordLedgerValue - one row's value, printed the one way a ledger prints it.
+ *
+ * ─── WHY THIS IS A FILE AND NOT A BRANCH ──────────────────────────────────
+ * A row's value has five arms - a state word, a list of destinations, a literal,
+ * an emphasised fact, and plain ink - and the row that OPENS prints two levels
+ * of them: its own value, and the values of the facts it discloses. Written
+ * twice, the two levels drift: the nested arm lost `links`, `code` and `strong`
+ * the first time it was written, so a fact that is a link one level down printed
+ * as plain text while the same fact one level up printed as an anchor. That is
+ * the exact defect `RecordLedgerRow` exists to prevent between the row and the
+ * row-that-opens; the fix is to give both the same renderer.
+ *
+ * So this file owns the five arms, `RecordLedgerRow` calls it for its own value,
+ * and `RecordLedgerRow` calls it again for every fact inside a disclosure. The
+ * disclosure is the same grammar one level in, which is what the block's header
+ * has always claimed.
+ *
+ * ─── WHAT IS NOT HERE ─────────────────────────────────────────────────────
+ * `note` and `asOf` are the ROW's channels, not the value's: they print after
+ * the value in the `<dd>`, and a row that opens prints them after the whole
+ * disclosure. Keeping them in the row is what lets a disclosed row state its own
+ * age without the nested facts inheriting it.
+ *
+ * No script and no hydration: this prints text, an anchor, a `<code>` or a mark.
+ */
+import Mark from "../Mark/Mark.astro";
+
+import { Tone } from "../Surface/State.js";
+
+import type { LedgerRow } from "./Type.js";
+
+interface Props {
+	/** The row whose value is printed. Its key, note and age are the caller's. */
+	row: LedgerRow;
+}
+
+const { row: Row } = Astro.props;
+
+/** The vocabulary's tone for a value that is a state word. */
+const Tint = Row.state === undefined ? undefined : (Tone(Row.state) ?? "ink");
+
+/**
+ * The mark a state row's square takes, from the mark layer's own adverse arms:
+ * a loading word gets the bar, a word for a fact that has gone or has not come
+ * gets the quiet square, and every other state word gets the hollow one - an
+ * unknown fact is never the filled square of a measured one.
+ */
+const Fill =
+	Row.state === "loading"
+		? "loading"
+		: Row.state === "archived" || Row.state === "preparing"
+			? "stale"
+			: "unknown";
+---
+
+{
+	Row.state !== undefined ? (
+		<span
+			class:list={[
+				"record-ledger__state",
+				`record-ledger__state--${Tint}`,
+			]}
+		>
+			<Mark kind="square" fill={Fill} tone={Tint} />
+			{Row.value}
+		</span>
+	) : Row.links !== undefined && Row.links.length > 0 ? (
+		Row.links.map((Link, Index) => (
+			<>
+				{Index > 0 && <span class="record-ledger__separator">{" / "}</span>}
+				<a
+					class="record-ledger__link"
+					href={Link.href}
+					target={Link.target === "blank" ? "_blank" : undefined}
+					rel={
+						Link.target === "blank" ? "noopener noreferrer" : undefined
+					}
+				>
+					{Link.text}
+				</a>
+			</>
+		))
+	) : Row.code ? (
+		<code class="record-ledger__code">{Row.value}</code>
+	) : Row.strong ? (
+		<strong class="record-ledger__strong">{Row.value}</strong>
+	) : (
+		Row.value
+	)
+}

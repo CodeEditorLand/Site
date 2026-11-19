@@ -93,8 +93,10 @@ interface MatrixRow {
 
 	/**
 	 * The row is the set's total. It prints under the divider's ink at the sub
-	 * role, and with no cells it spans the whole table - one sum of the set
-	 * rather than one sum per column.
+	 * role, and a total that carries a single figure spans every value column -
+	 * one sum of the set rather than one sum per column. A total that carries a
+	 * value per column prints one cell each, because a comparison's total is a
+	 * total per column.
 	 */
 	total?: boolean;
 }
@@ -207,7 +209,9 @@ const markOf = (value: string): string => {
 
 	const tone = Tone(value);
 
-	return tone === undefined ? "" : ` record-matrix__cell--state record-matrix__cell--${tone}`;
+	return tone === undefined
+		? ""
+		: ` record-matrix__cell--state record-matrix__cell--${tone}`;
 };
 
 /** Whether a value is a state word, and therefore carries the mark's square. */
@@ -270,76 +274,93 @@ const Empty = state === "empty" || (!Busy && rows.length === 0);
 			</tr>
 		</thead>
 		<tbody>
-			{Busy
-				? Skeleton.map((Index) => (
-						<tr class="record-matrix__row record-matrix__row--skeleton">
-							<th scope="row" class="record-matrix__label">
-								FACT_{String(Index + 1).padStart(2, "0")}
-							</th>
-							{columns.map((column) => (
-								<td class={cellClass(column, "")}>
-									<span
-										class="record-matrix__bar"
-										aria-hidden="true"
-									/>
-								</td>
-							))}
-						</tr>
-					))
-				: Empty
-					? (
-							<tr class="record-matrix__row record-matrix__row--empty">
-								<td class="record-matrix__empty" colspan={Span}>
-									<span
-										class="record-matrix__empty-mark"
-										aria-hidden="true"
-									>
-										◎
-									</span>{" "}
-									{EmptyText}
-								</td>
-							</tr>
-						)
-					: rows.map((row) => (
-							<tr
-								class:list={[
-									"record-matrix__row",
-									row.total &&
-										"record-matrix__row--total",
-								]}
-							>
-								<th scope="row" class="record-matrix__label">
-									{row.label}
-								</th>
-								{columns.map((column, index) => {
-									const value = valueAt(row, index);
-
-									return (
-										<td class={cellClass(column, value)}>
-											{isState(value) ? (
-												<span class="record-matrix__state">
-													<Mark
-														kind="square"
-														fill={
-															value
-																.trim()
-																.toLowerCase() ===
-															"loading"
-																? "loading"
-																: "unknown"
-														}
-														tone={stateTone(value)}
-													/>
-													{value}
-												</span>
-											) : (
-												value
-											)}
-										</td>
-									);
-								})}
-							</tr>
+			{Busy ? (
+				Skeleton.map((Index) => (
+					<tr class="record-matrix__row record-matrix__row--skeleton">
+						<th scope="row" class="record-matrix__label">
+							FACT_{String(Index + 1).padStart(2, "0")}
+						</th>
+						{columns.map((column) => (
+							<td class={cellClass(column, "")}>
+								<span
+									class="record-matrix__bar"
+									aria-hidden="true"
+								/>
+							</td>
 						))}
+					</tr>
+				))
+			) : Empty ? (
+				<tr class="record-matrix__row record-matrix__row--empty">
+					<td class="record-matrix__empty" colspan={Span}>
+						<span
+							class="record-matrix__empty-mark"
+							aria-hidden="true"
+						>
+							◎
+						</span>{" "}
+						{EmptyText}
+					</td>
+				</tr>
+			) : (
+				rows.map((row) => (
+					<tr
+						class:list={[
+							"record-matrix__row",
+							row.total && "record-matrix__row--total",
+						]}
+					>
+						<th scope="row" class="record-matrix__label">
+							{row.label}
+						</th>
+						{/*
+							THE TOTAL ROW'S ONE FIGURE. A total that carries a value per
+							column is a total per column and prints one cell each; a total
+							that carries a single figure is the sum of the whole set, so it
+							prints once, across every value column - a sum printed in the
+							first column would read as the total of that column alone.
+						*/}
+						{row.total === true &&
+						row.cells.length === 1 &&
+						columns.length > 1 ? (
+							<td
+								class="record-matrix__cell"
+								colspan={columns.length}
+							>
+								{valueAt(row, 0)}
+							</td>
+						) : (
+							columns.map((column, index) => {
+								const value = valueAt(row, index);
+
+								return (
+									<td class={cellClass(column, value)}>
+										{isState(value) ? (
+											<span class="record-matrix__state">
+												<Mark
+													kind="square"
+													fill={
+														value
+															.trim()
+															.toLowerCase() ===
+														"loading"
+															? "loading"
+															: "unknown"
+													}
+													tone={stateTone(value)}
+												/>
+												{value}
+											</span>
+										) : (
+											value
+										)}
+									</td>
+								);
+							})
+						)}
+					</tr>
+				))
+			)}
 		</tbody>
 	</table>
 </div>

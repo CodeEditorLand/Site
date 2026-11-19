@@ -65,26 +65,34 @@ const Count = RegisterCountText(register, state);
  * The whole line as one string, for the reader who is not looking at it.
  *
  * The four parts are separate spans so the line can be coloured part by part,
- * and two of them - the mark and the separator - are `aria-hidden`, because
- * they are punctuation rather than words. That is right for the eye and wrong
- * for the ear: a screen reader ran the label straight into the figure and read
- * `WHAT CHANGES08`, which is not a register and not even two words. `aria-label`
- * restores the line the way `RegisterText` composes it - mark, name, separator,
- * figure, unit - so the announcement and the printed line are the same
- * statement. It is the use `RegisterLine.ts` documented and this file had not
- * yet made.
+ * and two of them - the mark and the separator - are punctuation rather than
+ * words. That is right for the eye and wrong for the ear: a screen reader ran
+ * the label straight into the figure and read `WHAT CHANGES08`, which is not a
+ * register and not even two words.
+ *
+ * ─── WHY THIS IS A SPAN AND NOT `aria-label` ──────────────────────────────
+ * This file carried `aria-label` on the `<p>`, and it did nothing: ARIA
+ * prohibits naming the `paragraph` role, so the attribute was dropped by every
+ * screen reader and the run-together announcement survived. The fix that works
+ * is the standard one - the printed run is `aria-hidden` and a visually hidden
+ * span carries the line the way `RegisterLine.ts` composes it (mark, name,
+ * separator, figure, unit), so the announcement and the printed line are the
+ * same statement. The hidden span is `.register-line__spoken` in
+ * `Type/_Register.scss`, which is where the line's other five parts are set.
  */
 const Spoken = RegisterText(register, state);
 ---
 
-<p class:list={[Class]} data-state={state} aria-label={Spoken}>
-	<span class="register-line__mark" aria-hidden="true">#</span>{" "}
-	<span class="register-line__label">{register.label}</span>
-	<span class="register-line__separator" aria-hidden="true">{Separator}</span>
-	<span class="register-line__count">{Count}</span>
-	{
-		register.unit === undefined ? null : (
-			<span class="register-line__unit">{" "}{register.unit}</span>
-		)
-	}
+<p class:list={[Class]} data-state={state}>
+	<span class="register-line__spoken">{Spoken}</span>
+
+	<span class="register-line__printed" aria-hidden="true">
+		<span class="register-line__mark">#</span>{" "}
+		<span class="register-line__label">{register.label}</span>
+		<span class="register-line__separator">{Separator}</span>
+		<span class="register-line__count">{Count}</span>
+		{register.unit === undefined ? null : (
+			<span class="register-line__unit"> {register.unit}</span>
+		)}
+	</span>
 </p>

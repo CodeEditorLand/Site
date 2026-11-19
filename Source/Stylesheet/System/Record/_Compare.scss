@@ -237,6 +237,18 @@
 // The skeleton: a hairline bar where a label goes and a shorter one where the
 // value goes, both in `--Mute`. It is drawn, not animated - the site has no
 // pulse, and a pulsing bar is a spinner wearing a rectangle.
+//
+// The rail's ticks are HOLLOW while the stops have not arrived. The axis is the
+// schema - `from` and `to` are given, which is why the ends still print - but a
+// position on it is a measurement, and a filled tick would mark one the rail does
+// not have. This is the one rule `--loading` exists for; `--empty` is the hook a
+// page targets when it wants the composed sentence to sit differently, and it
+// changes no ink of its own.
+.record-compare--loading .record-compare__tick {
+	background: transparent;
+	border: 1px solid var(--Divider);
+}
+
 .record-compare__stop--skeleton {
 	gap: var(--space-reading);
 }

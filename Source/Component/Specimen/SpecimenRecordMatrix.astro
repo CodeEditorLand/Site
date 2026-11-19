@@ -48,9 +48,9 @@ import { RegisterOf } from "../Record/RegisterLine.js";
 
 /** Every cell that cannot exist, numbered - the matrix's footnotes. */
 const Notes = Rows.flatMap((Row) =>
-	Columns.filter((Column) => MatrixCell(Row, Column).disposition === "na").map(
-		(Column) => ({ Row, Column, Cell: MatrixCell(Row, Column) }),
-	),
+	Columns.filter(
+		(Column) => MatrixCell(Row, Column).disposition === "na",
+	).map((Column) => ({ Row, Column, Cell: MatrixCell(Row, Column) })),
 ).map((Note, Index) => ({ ...Note, mark: String(Index + 1).padStart(2, "0") }));
 
 /** The footnote a cell points at. */
@@ -88,82 +88,75 @@ const Matrix = RegisterOf("THE MATRIX", Figures);
 						</span>
 					</th>
 
-					{
-						Columns.map((Column, Index) => (
-							<th
-								class:list={[
-									"record-matrix-sheet__head",
-									OpensGroup(Index) &&
-										"record-matrix-sheet__head--group",
-								]}
-								scope="col"
-							>
-								<span class="record-matrix-sheet__head-label">
-									{Column.label}
-								</span>
-								<span class="record-matrix-sheet__head-ask">
-									{Column.ask}
-								</span>
-							</th>
-						))
-					}
+					{Columns.map((Column, Index) => (
+						<th
+							class:list={[
+								"record-matrix-sheet__head",
+								OpensGroup(Index) &&
+									"record-matrix-sheet__head--group",
+							]}
+							scope="col"
+						>
+							<span class="record-matrix-sheet__head-label">
+								{Column.label}
+							</span>
+							<span class="record-matrix-sheet__head-ask">
+								{Column.ask}
+							</span>
+						</th>
+					))}
 				</tr>
 			</thead>
 
 			<tbody>
-				{
-					Rows.map((Row) => (
-						<tr class="record-matrix-sheet__row">
-							<th class="record-matrix-sheet__name" scope="row">
-								<span class="record-matrix-sheet__name-text">
-									{Row.name}
-								</span>
-								<span class="record-matrix-sheet__name-file">
-									{Row.file}
-								</span>
-								<span class="record-matrix-sheet__name-count">
-									{BuiltOf(Row)} / {Columns.length}
-								</span>
-							</th>
+				{Rows.map((Row) => (
+					<tr class="record-matrix-sheet__row">
+						<th class="record-matrix-sheet__name" scope="row">
+							<span class="record-matrix-sheet__name-text">
+								{Row.name}
+							</span>
+							<span class="record-matrix-sheet__name-file">
+								{Row.file}
+							</span>
+							<span class="record-matrix-sheet__name-count">
+								{BuiltOf(Row)} / {Columns.length}
+							</span>
+						</th>
 
-							{Columns.map((Column, Index) => {
-								const Cell = MatrixCell(Row, Column);
+						{Columns.map((Column, Index) => {
+							const Cell = MatrixCell(Row, Column);
 
-								return (
-									<td
-										class:list={[
-											"record-matrix-sheet__cell",
-											OpensGroup(Index) &&
-												"record-matrix-sheet__cell--group",
-										]}
-										data-disposition={Cell.disposition}
-									>
-										{Cell.disposition === "built" ? (
-											<span
-												class="record-matrix-sheet__built"
-												title={Cell.note ?? undefined}
-											>
-												BUILT
+							return (
+								<td
+									class:list={[
+										"record-matrix-sheet__cell",
+										OpensGroup(Index) &&
+											"record-matrix-sheet__cell--group",
+									]}
+									data-disposition={Cell.disposition}
+								>
+									{Cell.disposition === "built" ? (
+										<span
+											class="record-matrix-sheet__built"
+											title={Cell.note ?? undefined}
+										>
+											BUILT
+										</span>
+									) : (
+										<span class="record-matrix-sheet__na">
+											N/A
+											<span class="record-matrix-sheet__note-mark">
+												〈
+												{NoteMark(Row.name, Column.key)}
+												〉
 											</span>
-										) : (
-											<span class="record-matrix-sheet__na">
-												N/A
-												<span class="record-matrix-sheet__note-mark">
-													〈
-													{NoteMark(
-														Row.name,
-														Column.key,
-													)}
-													〉
-												</span>
-											</span>
-										)}
-									</td>
-								);
-							})}
-						</tr>
-					))
-				}
+										</span>
+									)}
+								</td>
+							);
+						})}
+					</tr>
+				))}
 			</tbody>
 		</table>
 	</div>
@@ -177,21 +170,22 @@ const Matrix = RegisterOf("THE MATRIX", Figures);
 		</p>
 
 		<ol class="record-matrix-sheet__notes-list">
-			{
-				Notes.map((Note) => (
-					<li class="record-matrix-sheet__note" id={`record-note-${Note.mark}`}>
-						<span class="record-matrix-sheet__note-mark">
-							〈{Note.mark}〉
-						</span>
-						<span class="record-matrix-sheet__note-where">
-							{Note.Row.name} / {Note.Column.label}
-						</span>
-						<span class="record-matrix-sheet__note-reason">
-							{Note.Cell.reason}
-						</span>
-					</li>
-				))
-			}
+			{Notes.map((Note) => (
+				<li
+					class="record-matrix-sheet__note"
+					id={`record-note-${Note.mark}`}
+				>
+					<span class="record-matrix-sheet__note-mark">
+						〈{Note.mark}〉
+					</span>
+					<span class="record-matrix-sheet__note-where">
+						{Note.Row.name} / {Note.Column.label}
+					</span>
+					<span class="record-matrix-sheet__note-reason">
+						{Note.Cell.reason}
+					</span>
+				</li>
+			))}
 		</ol>
 	</div>
 
@@ -199,8 +193,8 @@ const Matrix = RegisterOf("THE MATRIX", Figures);
 		<span class="record-matrix-sheet__caption-key">READ:</span>
 		<span class="record-matrix-sheet__caption-value">
 			A cell is `BUILT` when the family renders that combination and `N/A`
-			when it cannot exist - and a cell that cannot exist carries its reason
-			in the notes above rather than a truncated one in the cell.
+			when it cannot exist - and a cell that cannot exist carries its
+			reason in the notes above rather than a truncated one in the cell.
 			{BuiltCount} of {CellCount} cells are built; {ReasonCount} are
 			reasons. A built cell may carry a note saying which construction
 			built it, because "built" on the LEDGER row and "built" on the
@@ -208,9 +202,7 @@ const Matrix = RegisterOf("THE MATRIX", Figures);
 		</span>
 		<span class="record-matrix-sheet__caption-source">
 			<span class="record-matrix-sheet__caption-key">SOURCE:</span>
-			<span
-				class="record-matrix-sheet__caption-value record-matrix-sheet__caption-value--code"
-			>
+			<span class="record-matrix-sheet__caption-value record-matrix-sheet__caption-value--code">
 				SOURCE/CONTENT/SPECIMEN/RECORD.TS
 			</span>
 		</span>
@@ -229,46 +221,44 @@ const Matrix = RegisterOf("THE MATRIX", Figures);
 			</span>
 		</p>
 
-		{
-			Improvements.map((Improvement) => (
-				<article class="record-matrix-sheet__improvement">
-					<header class="record-matrix-sheet__improvement-head">
-						<span
-							class="record-matrix-sheet__improvement-mark"
-							aria-hidden="true"
-						>
-							#
-						</span>
-						<span class="record-matrix-sheet__improvement-name">
-							{Improvement.component}
-						</span>
-						<span
-							class="record-matrix-sheet__improvement-rule"
-							aria-hidden="true"
-						>
-							/
-						</span>
-						<span class="record-matrix-sheet__improvement-from">
-							{Improvement.from}
-						</span>
-					</header>
+		{Improvements.map((Improvement) => (
+			<article class="record-matrix-sheet__improvement">
+				<header class="record-matrix-sheet__improvement-head">
+					<span
+						class="record-matrix-sheet__improvement-mark"
+						aria-hidden="true"
+					>
+						#
+					</span>
+					<span class="record-matrix-sheet__improvement-name">
+						{Improvement.component}
+					</span>
+					<span
+						class="record-matrix-sheet__improvement-rule"
+						aria-hidden="true"
+					>
+						/
+					</span>
+					<span class="record-matrix-sheet__improvement-from">
+						{Improvement.from}
+					</span>
+				</header>
 
-					<p class="record-matrix-sheet__improvement-found">
-						<span class="record-matrix-sheet__improvement-key">
-							FOUND:
-						</span>{" "}
-						{Improvement.found}
-					</p>
+				<p class="record-matrix-sheet__improvement-found">
+					<span class="record-matrix-sheet__improvement-key">
+						FOUND:
+					</span>{" "}
+					{Improvement.found}
+				</p>
 
-					<p class="record-matrix-sheet__improvement-built">
-						<span class="record-matrix-sheet__improvement-key">
-							BUILT:
-						</span>{" "}
-						{Improvement.built}
-					</p>
-				</article>
-			))
-		}
+				<p class="record-matrix-sheet__improvement-built">
+					<span class="record-matrix-sheet__improvement-key">
+						BUILT:
+					</span>{" "}
+					{Improvement.built}
+				</p>
+			</article>
+		))}
 	</div>
 
 	{/* ─── THE OBSERVATIONS ────────────────────────────────────────── */}
@@ -280,37 +270,35 @@ const Matrix = RegisterOf("THE MATRIX", Figures);
 			</span>
 		</p>
 
-		{
-			Observations.map((Observation) => (
-				<article class="record-matrix-sheet__observation">
-					<header class="record-matrix-sheet__observation-head">
-						<span
-							class="record-matrix-sheet__improvement-mark"
-							aria-hidden="true"
-						>
-							#
-						</span>
-						<span class="record-matrix-sheet__improvement-name">
-							{Observation.name}
-						</span>
-					</header>
+		{Observations.map((Observation) => (
+			<article class="record-matrix-sheet__observation">
+				<header class="record-matrix-sheet__observation-head">
+					<span
+						class="record-matrix-sheet__improvement-mark"
+						aria-hidden="true"
+					>
+						#
+					</span>
+					<span class="record-matrix-sheet__improvement-name">
+						{Observation.name}
+					</span>
+				</header>
 
-					<p class="record-matrix-sheet__improvement-found">
-						<span class="record-matrix-sheet__improvement-key">
-							FOUND:
-						</span>{" "}
-						{Observation.found}
-					</p>
+				<p class="record-matrix-sheet__improvement-found">
+					<span class="record-matrix-sheet__improvement-key">
+						FOUND:
+					</span>{" "}
+					{Observation.found}
+				</p>
 
-					<p class="record-matrix-sheet__improvement-built">
-						<span class="record-matrix-sheet__improvement-key">
-							OWNER:
-						</span>{" "}
-						{Observation.owner}
-					</p>
-				</article>
-			))
-		}
+				<p class="record-matrix-sheet__improvement-built">
+					<span class="record-matrix-sheet__improvement-key">
+						OWNER:
+					</span>{" "}
+					{Observation.owner}
+				</p>
+			</article>
+		))}
 	</div>
 
 	{/* ─── THE COLUMNS' OWN FIGURES ────────────────────────────────── */}
@@ -323,23 +311,21 @@ const Matrix = RegisterOf("THE MATRIX", Figures);
 		</p>
 
 		<ul class="record-matrix-sheet__column-list">
-			{
-				Columns.map((Column) => (
-					<li
-						class="record-matrix-sheet__column"
-						data-disposition={
-							BuiltIn(Column) === Rows.length ? "built" : "partial"
-						}
-					>
-						<span class="record-matrix-sheet__column-label">
-							{Column.label}
-						</span>
-						<span class="record-matrix-sheet__column-count">
-							{BuiltIn(Column)} / {Rows.length}
-						</span>
-					</li>
-				))
-			}
+			{Columns.map((Column) => (
+				<li
+					class="record-matrix-sheet__column"
+					data-disposition={
+						BuiltIn(Column) === Rows.length ? "built" : "partial"
+					}
+				>
+					<span class="record-matrix-sheet__column-label">
+						{Column.label}
+					</span>
+					<span class="record-matrix-sheet__column-count">
+						{BuiltIn(Column)} / {Rows.length}
+					</span>
+				</li>
+			))}
 		</ul>
 	</div>
 </figure>
