@@ -20,11 +20,19 @@
 //                   .record-ledger__row--nested a fact inside another row's disclosure
 //                   .record-ledger__disclosure  the `<details>` a row opens with
 //                   .record-ledger__summary     the row's value, as the disclosure's summary
+//                   .record-ledger__summary-value  the value inside that summary, before the fold
 //                   .record-ledger__fold        the mark layer's fold, on the summary
 //                   .record-ledger__nested      the opened facts, one level in
 //                   .record-ledger__selected-mark  the attested square on a selected key
 //                   .record-ledger__state       a value that is a state word
+//                   .record-ledger__state--specimen  ... an attested word
+//                   .record-ledger__state--quiet     ... a word that is not in force
 //                   .record-ledger__as-of       `AS OF:` - the fact's age
+//                   .record-ledger__as-of-key   the `AS OF:` label, tracked
+//                   .record-ledger__link        a value that is a destination
+//                   .record-ledger__separator   the `/` between two destinations
+//                   .record-ledger__bar         a value's stand-in while it loads
+//                   .record-ledger__row--skeleton  a row whose value has not arrived
 //                   .record-ledger-block        the block: an optional register line over the rows
 //                   .record-ledger-block--rest  the density hook on the block (no rules; the
 //                   .record-ledger-block--register  shell's own modifiers carry the layout)
@@ -45,8 +53,10 @@
 // NARROW            the key moves above its value: one fact per line, key at meta
 //                   weight, value under it. A long path wraps inside the value
 //                   column instead of pushing the key off the line.
-// WIDE (>=640)      the key takes `min(14rem, 40%)` and the value takes the rest,
-//                   so fifty ledgers down a page share one value column.
+// WIDE (>=640)      the key takes `min(--optical-key-column, 40%)` - 28ch, the
+//                   character measure the rest of the block is set on - and the
+//                   value takes the rest, so fifty ledgers down a page share one
+//                   value column.
 // DENSE             `columns` is the layout axis - two facts side by side, never
 //                   a smaller type. `density="register"` is the reading axis:
 //                   the same facts as a table, two columns with a hairline
@@ -65,9 +75,6 @@
 // `LedgerRow` carries no column count, so a block sets the class on the shell.
 // `--3` is published for a page-authored shell; RecordLedger's `columns` prop
 // stops at 2, because three columns of facts is a RecordMatrix.
-//
-// Owned by B3. S1 published the skeleton; B3 refines the values, never the
-// names.
 
 @use "../Mixin" as *;
 
@@ -238,8 +245,8 @@
 // scale, spacing and tracking. It is therefore one step up the scale, from the
 // body role to the sub role - both inside the S tier - and nothing else: no ink
 // change, no underline that would read as a link. An emphasised fact is still a
-// fact. (This rule carried `font-weight: 600` and was the layer's one live
-// identity violation; a weight step is not available to it.)
+// fact, and a weight step is not available to it: `<strong>` is capped at 500
+// in `_Base.scss`, so the element can carry the semantics and not the shout.
 .record-ledger__strong {
 	font-size: var(--type-sub);
 	letter-spacing: var(--track-join);
@@ -250,11 +257,11 @@
 // long value, and `min-inline-size: 0` on the value lets a long path wrap
 // instead of pushing the key column narrower.
 //
-// The measure is `28ch`, not `14rem`: 14rem is 28.7 characters at the meta role,
-// so every ledger's value column used to start in the middle of a character, and
-// two ledgers in different containers could not share a grid. `28ch` is the same
-// column on the character grid the rest of the block is set on
-// (`--optical-key-column`).
+// The measure is `28ch` (`--optical-key-column`), not `14rem`: 14rem is 28.7
+// characters at the meta role, so a rem-measured column starts in the middle of
+// a character and two ledgers in different containers cannot share a grid.
+// `28ch` is the same column on the character grid the rest of the block is set
+// on.
 @include bp(640px) {
 	.record-ledger__row {
 		flex-direction: row;
@@ -369,9 +376,8 @@
 }
 
 // The register line states the state it is in: `LOADING` in place of the count.
-// It is the vocabulary's word, so it carries the vocabulary's ink - the same
-// muted register as a count, because a register that is still arriving is not a
-// fault.
+// It is the vocabulary's word, so it keeps the register's ink - the same ink as
+// a count, because a register that is still arriving is not a fault.
 .record-ledger-block__register[data-state="loading"] {
 	color: var(--Foreground);
 }
@@ -391,11 +397,10 @@
 // ═══════════════════════════════════════════════════════════════════════════
 // THE ROW'S THREE MORE SHAPES
 //
-// The record family's state matrix asked this block for combinations the site
-// never printed: a row that opens, a row that is the marked one, and a row that
-// is the set's total. All three are additions to the row grammar, and all three
-// print inside the row that already existed - none of them is a new block, and
-// a plain row renders exactly as it did.
+// Three shapes beyond the plain row: a row that opens, a row that is the marked
+// one, and a row that is the set's total. All three are additions to the row
+// grammar, and all three print inside the row that already existed - none of
+// them is a new block, and a plain row renders exactly as a plain row.
 // ═══════════════════════════════════════════════════════════════════════════
 
 // ─── THE TOTAL ROW ────────────────────────────────────────────────────────
@@ -524,9 +529,10 @@
 }
 
 // ─── THE STATE WORD AND THE AGE ───────────────────────────────────────────
-// A value that is a state word takes the vocabulary's ink and the mark layer's
-// square, in the same three tones every other state on the site uses. The word
-// itself is the caller's and prints verbatim: this rule tints and marks, it
+// A value that is a state word takes the vocabulary's tone and the mark layer's
+// square, in the three tones every state on the site uses: ink by default,
+// `--specimen` for an attested word, `--quiet` for one that is not in force. The
+// word itself is the caller's and prints verbatim: this rule tints and marks, it
 // never re-cases.
 //
 // A fact older than the page keeps its value and states its age beside it -

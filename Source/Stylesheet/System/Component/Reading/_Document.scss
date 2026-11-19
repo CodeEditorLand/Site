@@ -259,11 +259,11 @@
 	margin-block-start: var(--space-group);
 }
 
-/* The document's own title, opening the body: the baseline rendered it as the
-   prose body's first `h1`, larger than the page's own heading - the heading is
-   deliberately quiet and the card is the page. It is a `p` here, not an `h1`,
-   because the page already has one and a document that opens with a second
-   level-one heading is the defect this surface exists to remove. */
+/* The document's own title, opening the body: the page's heading above is
+   deliberately quiet and the card is the page, so the document's own title is
+   the first thing the body says. It is a `p` here, not an `h1`, because the page
+   already has one and a document that opens with a second level-one heading is
+   the defect this surface exists to remove. */
 .reading-document__title {
 	font-size: var(--type-section);
 	line-height: 1.15;
@@ -311,10 +311,9 @@
 }
 
 /* A clause is an `h2`, so it is L - the section head's tier (`_Type.scss`, THE
-   ELEMENT LADDER). It rendered at 18px for a while, the same size as the
-   sentence under it, which is the demotion the ladder exists to undo: a legal
-   document's twenty-six clauses are its twenty-six sections, and a section head
-   that is not larger than its paragraph is a row label wearing an `h2`. */
+   ELEMENT LADDER). A legal document's twenty-six clauses are its twenty-six
+   sections, and a section head that is not larger than its paragraph is a row
+   label wearing an `h2`, which is the demotion the ladder exists to undo. */
 .reading-clause {
 	scroll-margin-block-start: var(--reading-anchor-offset);
 
@@ -353,12 +352,13 @@
    with the clause rail pinned beside it.
 
    THE TRACKS ARE THE READING LANGUAGE'S: `rail | desk | body | desk`. The rail
-   is at the page's left edge, the body reads at `--Measure` (the plate, 72-88ch
-   - `_Token.scss`), and the two `1fr` desks take whatever is left, so the
-   document is centred between the rail and the page's right edge instead of
-   hugging the rail on a wide screen. The container is the reading desk
-   (`.trust-page`, `Trust/_Page.scss`), so the plate can reach its full width
-   here as it does on a doc page or an article - one measure, three surfaces. */
+   is at the page's left edge, the body reads at `--Measure` (the plate,
+   clamp(72ch, 40ch + 25vw, 88ch) - `_Token.scss`), and the two `1fr` desks take
+   whatever is left, so the document is centred between the rail and the page's
+   right edge instead of hugging the rail on a wide screen. The container is the
+   reading desk (`.trust-page`, `Trust/_Page.scss`), so the plate can reach its
+   full width here as it does on a doc page or an article - one measure, three
+   surfaces. */
 .reading-document--rail {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);

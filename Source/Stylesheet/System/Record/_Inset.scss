@@ -16,8 +16,11 @@
 //                   .record-inset__frame--composed    composed media in the slot
 //                   .record-inset__bars               the measure figure
 //                   .record-inset__bar                one labelled bar
-//                   .record-inset__bar-track          the bar's 1px bed
+//                   .record-inset__bar-head           the bar's label and its figure
+//                   .record-inset__bar-value          that figure, in ink
+//                   .record-inset__bar-track          the bar's 6px bed, closed by a hairline
 //                   .record-inset__bar-fill           the bar, sized by --bar-share
+//                   .record-inset__total              the bars' sum, under the divider's rule
 //                   .record-inset__figure-caption     `FIGURE:` / `SOURCE:` / `AS OF:`
 //                   .record-inset__head               `# INSET_01 / LABEL`
 //                   .record-inset__index|__label
@@ -168,9 +171,9 @@
 	color: var(--Foreground);
 }
 
-// The track is a 1px bed at the hairline's ink, and the fill is a 6px rule of
-// divider ink over it: two printed rules, one above the other - which is how a
-// bar reads as ink rather than as a coloured chart.
+// The track is a 6px bed of `--Mute` closed by a 1px hairline, and the fill is a
+// 6px rule of divider ink over it: two printed rules, one above the other -
+// which is how a bar reads as ink rather than as a coloured chart.
 .record-inset__bar-track {
 	position: relative;
 	display: block;

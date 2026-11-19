@@ -17,10 +17,11 @@
 // difference between a workspace and a dashboard of dashboards.
 //
 // ─── THE SEAM ROTATES ─────────────────────────────────────────────────────
-// Below the panes' own container width the two panes stack and the 1px vertical
-// track becomes a 1px horizontal rule between them, at the same ink. The gutter
-// element stays in the DOM in both states (it is the seam, and the seam exists
-// either way); only its axis changes.
+// Below the panes' own container width the two panes stack, and the seam runs
+// across instead of down, at the same ink. In that arm it is drawn on the
+// secondary pane's leading edge, because the gutter track is not laid out at a
+// single column; `--stack` keeps the gutter element and rotates it (below).
+// The seam exists in every arm - only its axis, and here its owner, changes.
 //
 // `--stack` is that axis chosen, not fallen back to. It is the panes' second
 // composition, and it is for a different instrument: an INDEX above a SURFACE.
@@ -143,8 +144,9 @@
 }
 
 // ─── THE NARROW PANES ─────────────────────────────────────────────────────
-// The seam rotates to a horizontal rule, and the secondary pane keeps its own
-// head so the reader still knows which pane they are in.
+// The seam rotates to a horizontal rule on the secondary pane's leading edge,
+// and the secondary pane keeps its own head so the reader still knows which
+// pane they are in.
 
 @container panes (max-width: 43.99rem) {
 	.ShellPanes__pane--secondary {
@@ -215,8 +217,8 @@
 }
 
 // The drawer's mark is the mark layer's fold (`Mark/_Arrow.scss`): one glyph,
-// one quarter turn, opened by the `<details open>` above. The rule here rotated
-// the block's own `&rarr;` - the site's fourth spelling of the disclosure.
+// one quarter turn, driven by the `<details open>` above - so the drawer carries
+// no glyph and no rotation of its own.
 .ShellPanes__drawer-mark {
 	/* the fold's own place: before the label, so the gap is the mark's */
 }

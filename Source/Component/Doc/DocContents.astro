@@ -6,8 +6,8 @@
  *
  * It answers a different question from the rail's tree. The tree says *which page
  * of the manual am I on*; this says *which part of this page am I in*. A
- * nine-hundred-line article has ten or twenty `##` sections, and before this
- * block the page printed none of them: a reader who landed mid-article had the
+ * nine-hundred-line article has ten or twenty `##` sections, and without this
+ * block the page prints none of them: a reader who lands mid-article has the
  * tree, which never changes while they read.
  *
  * Two registers, one data shape, and the register is the only thing a caller
@@ -30,11 +30,11 @@
  *
  * The current entry is marked by `Contents.ts` - `aria-current="location"`, the
  * ink, the weight and a 2px `--Accent` rule on the row's leading edge, the same
- * four marks the tree marks its current page with. The rule was 1px `--Primary`
- * and moved with `Stylesheet/System/Component/Doc/_Contents.scss`; the rule's
- * width is reserved on every row, so a row becoming current shifts nothing. With
- * JavaScript off the list is still a working jump list; only the marking is
- * absent.
+ * four marks the tree marks its current page with. The rule's ink is the accent,
+ * not `--Primary`, and `Stylesheet/System/Component/Doc/_Contents.scss` states
+ * why; its width is reserved on every row, so a row becoming current shifts
+ * nothing. With JavaScript off the list is still a working jump list; only the
+ * marking is absent.
  *
  * Two facts about the register itself, and both came out of the state matrix:
  *
@@ -100,8 +100,8 @@ const Label = toc?.Label ?? "";
  * The count is the list's own length.
  *
  * A contents register is a register: `# ON THIS PAGE / 12` is what the site
- * prints for every other counted line, and a rail that named the register and
- * not its extent was the one place the grammar was missing. It is derived here
+ * prints for every other counted line, and a rail that names the register and
+ * not its extent is the one place the grammar is missing. It is derived here
  * and never passed in, so it cannot outlive the rows it counts - and it is
  * printed in both registers, because the disclosure's summary needs it more
  * than the rail does (closed, it is the only figure the reader has).

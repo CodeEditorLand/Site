@@ -1,15 +1,14 @@
 // INTERVAL - the page as a sequence of intervals.
 //
 // ─── THE PROBLEM ──────────────────────────────────────────────────────────
-// Every band on this site paid the same distance. `.record-band` opened and
-// closed at --space-group (32px), so every seam was 64px, and the index's nine
-// movements read as nine equal paragraphs. A page where every band is equally
-// important is a page where none is: the reader cannot feel where one subject
-// ends and the next begins, and the document stops being a sequence of subjects
-// and becomes a stack of them.
+// A page whose bands all pay the same distance is a page where every band is
+// equally important, and a page where every band is equally important is a page
+// where none is: at a uniform `--space-group` (32px) every seam is 64px, the
+// index's nine movements read as nine equal paragraphs, and the document stops
+// being a sequence of subjects and becomes a stack of them.
 //
 // ─── THE FOUR INTERVALS ───────────────────────────────────────────────────
-// The seam between two bands is now one of four named intervals. Each one is a
+// The seam between two bands is one of four named intervals. Each one is a
 // value the whole page can be read against, and each names what the band below
 // it IS:
 //
@@ -63,8 +62,9 @@
 // row, which is an underline, not a boundary.
 //
 // ─── THE REGISTER INSIDE ──────────────────────────────────────────────────
-// A band's interior has three distances and every default is the value the band
-// already paid, so declaring a rung never re-sets a page's contents by accident:
+// A band's interior has three distances, and every default is the atomic step its
+// contents are already set at, so declaring a rung never re-sets a page's
+// interior by accident:
 //
 //   head    kicker -> heading -> standfirst    reading (16)
 //   body    the head to the body, the footnote group   (32)
@@ -77,11 +77,11 @@
 // which is what makes a turn read as a turn rather than as a big beat.
 //
 // ─── A CHAPTER IS A TURN ──────────────────────────────────────────────────
-// `record-band--chapter` is now what a `turn` prints rather than a second
-// opinion: `RecordBand.astro` adds the class when the band's interval is `turn`,
-// so a chapter cannot be a chapter without the boundary rule, and the rule
-// cannot appear on a band that is not one. The class keeps its own name and its
-// own ink (`--Divider`); this layer only owns the distance around it.
+// `record-band--chapter` is what a `turn` prints: `RecordBand.astro` adds the
+// class when the band's interval is `turn`, so a chapter cannot be a chapter
+// without the boundary rule, and the rule cannot appear on a band that is not
+// one. The class keeps its own name and its own ink (`--Divider`); this layer
+// only owns the distance around it.
 //
 // ─── THE SEQUENCE GUARD ───────────────────────────────────────────────────
 // "No two adjacent bands share a rung" is a law, so it is also enforced: two
@@ -183,9 +183,9 @@
 }
 
 // ─── THE REGISTER, INSIDE ─────────────────────────────────────────────────
-// Three values, and each default is exactly what the band paid before the ladder
-// existed - so a band that declares no rung changes nothing about its own
-// interior, and an interval is never a licence to re-set a page.
+// Three values, and each default is the atomic step a band's interior is set at
+// - so a band that declares no rung changes nothing about its own interior, and
+// an interval is never a licence to re-set a page.
 //
 //   --band-head   kicker -> heading -> standfirst -> index   reading (16)
 //   --band-body   the head to the body, and the footnote     group   (32)

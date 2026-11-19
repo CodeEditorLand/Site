@@ -27,6 +27,8 @@
 //                   .record-plate__facts              the manifest's rows
 //                   .record-plate__fact-key|__fact-value
 //                   .record-plate__source             `SOURCE: ...` - always printed
+//                   .record-plate__apparatus          the channel's apparatus, folded under its claim
+//                   .record-plate__capture-link       the link that opens the capture at full size
 // MAY HOLD          a composed capture in the slot. Never a second plate.
 // NARROW            the channel drops under the frame at the column's measure and
 //                   the facts become one column. The frame keeps its ratio.
@@ -43,9 +45,9 @@
 //
 // THE CHANNEL IS ONE DECISION, MADE ONCE. Under a plate as wide as the page, a
 // caption is read at the wrong distance from the thing it describes; beside it,
-// at 24ch, it is read as apparatus - which is what it is. Below 1024 the channel
-// stacks, because a 20ch column beside a 900px plate is a squeezed slot, not a
-// channel.
+// at 20-26ch, it is read as apparatus - which is what it is. Below 1024 the
+// channel stacks, because a 20ch column beside a 900px plate is a squeezed slot,
+// not a channel.
 //
 // THE `AS OF:` LINE IS THE STALENESS STATE. A capture with a date prints it in
 // the register line; a capture with no recorded date prints nothing there and
@@ -64,9 +66,10 @@
 	margin: 0;
 }
 
-// `measure` keeps the plate on the column it was given; `wide` (the default)
-// lets it take the container's whole width. A plate the width of the paragraph
-// beside it is a figure, which is the block this one is not.
+// `span="wide"` (the default) lets the plate take the container's whole width;
+// `span="measure"` drops the modifier and the rule below caps it at the measure
+// it was given. A plate the width of the paragraph beside it is a figure, which
+// is the block this one is not.
 .record-plate:not(.record-plate--wide) {
 	max-inline-size: var(--Measure);
 }

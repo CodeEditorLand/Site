@@ -42,7 +42,8 @@ const Label = (Word: string): string => `${Word}:`;
  * order is read in. The facts are the record's own two metadata blocks, kept
  * verbatim - `TARGET`/`LICENSE`/`SIGNAL` say what the record is,
  * `SPECIES`/`TEMP`/`WIND` are the specimen observation the field-record grammar
- * has always printed beside it.
+ * has always printed beside it, and the hero prints only the first block (see
+ * `observation` below).
  */
 const HeroBandFor = (T: Translate): HeroBand => ({
 	claim: {
@@ -171,8 +172,8 @@ const HeroBandFor = (T: Translate): HeroBand => ({
 	 * always carried, and it is not a card row:
 	 * `DesignSystem-Components.md` §1 gives the hero record `TARGET / LICENSE /
 	 * SIGNAL` and caps it at four rows, so the observation prints in
-	 * `FeatureBand` (the `#features` layer), as the filed specimen ledger under
-	 * the claims it qualifies.
+	 * `FeatureBand` (the `# OBSERVATION_01` band), as the filed specimen ledger
+	 * under the claims it qualifies.
 	 */
 	observation: [
 		{

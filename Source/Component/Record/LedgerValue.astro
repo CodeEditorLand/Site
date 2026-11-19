@@ -6,16 +6,15 @@
  * A row's value has five arms - a state word, a list of destinations, a literal,
  * an emphasised fact, and plain ink - and the row that OPENS prints two levels
  * of them: its own value, and the values of the facts it discloses. Written
- * twice, the two levels drift: the nested arm lost `links`, `code` and `strong`
- * the first time it was written, so a fact that is a link one level down printed
- * as plain text while the same fact one level up printed as an anchor. That is
- * the exact defect `LedgerRow` exists to prevent between the row and the
- * row-that-opens; the fix is to give both the same renderer.
+ * twice, the two levels drift: a fact that is a link one level down prints as
+ * plain text while the same fact one level up prints as an anchor, and a literal
+ * one level down loses its `<code>`. That is the exact defect `LedgerRow` exists
+ * to prevent between the row and the row-that-opens; the fix is to give both the
+ * same renderer.
  *
  * So this file owns the five arms, `LedgerRow` calls it for its own value, and
  * `LedgerRow` calls it again for every fact inside a disclosure. The disclosure
- * is the same grammar one level in, which is what the block's header has always
- * claimed.
+ * is the same grammar one level in, which is what the block's header claims.
  *
  * ─── WHAT IS NOT HERE ─────────────────────────────────────────────────────
  * `note` and `asOf` are the ROW's channels, not the value's: they print after

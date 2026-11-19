@@ -16,7 +16,8 @@
  * - The note under a name is the `↳` proposition in its hanging form: it opens
  *   under the name and wraps on the name's own edge, not the band's.
  * - A register line (`# CHAPTERS / 08`) names the set and counts it. The count
- *   is the list's own length, so the two cannot disagree.
+ *   is the list's own length, so the two cannot disagree - `Register` is the
+ *   renderer and this block recomposes the figure from `items`.
  * - A row whose figure is not known prints `UNAVAILABLE` - the vocabulary's
  *   word, never a zero and never a blank cell.
  *
@@ -26,8 +27,9 @@
  * cells with their values barred: the names are the schema and arrive before the
  * figures, and a bar is a skeleton in the record grammar, never a spinner.
  * `too-much` is the `limit` prop: the register prints the first n and a foot line
- * stating the real size and the route to all of it, which is the same sentence
- * `RecordLedger`'s register and `ShellState`'s too-much arm print.
+ * stating the real size and the route to all of it - the same `SHOWING: n OF m`
+ * the Record layer's windowed blocks print (`Record/RecordArchive.astro`) and
+ * `ShellState`'s too-much arm prints.
  *
  * ─── NO SCRIPT ────────────────────────────────────────────────────────────
  * No `<script>`, no `client:*`. A register is printed; the only interaction is

@@ -10,11 +10,14 @@
  *                   ONE artifact with two columns.
  * RANK              frame. The layer's only two-up block.
  * SLOT CONTRACT     pair.left / pair.right -> one pod each: a title-bar `label`,
- *                   a `body` (prose) OR a named slot holding one block, and at
- *                   most one pod marked `subject`
+ *                   a `body` (prose) OR a named slot holding one block, an
+ *                   optional `state` word and `note` (`SOURCE:`), and at most one
+ *                   pod marked `subject`
  *                   pair.caption?          -> the one statement made about both
  *                   pair.heading?          -> the pod labels' level, when the
  *                                             pair is a section of a page
+ *                   pair.relation?         -> how the two sides bear on each other,
+ *                                             printed in the gutter
  *                   slot="left" / "right"  -> the pod's body when it is a block
  *                   surface?               -> `card` (the pair's own white box,
  *                                             the default) or `bare` (the pair
@@ -102,7 +105,8 @@ const Paragraphs = (Body: string): readonly string[] =>
 
 /**
  * Whether a pod's body is a block (a slot) or prose. Both is a pod with two
- * claims under one label, and the block reports it rather than picking one.
+ * claims under one label: the block reports it and renders the slot, so a page
+ * that passed both sees the warning rather than two claims printed as one.
  */
 const BodyOf = (Side: "left" | "right", Pod: PairPod) => {
 	const HasSlot = Astro.slots.has(Side);

@@ -14,10 +14,12 @@ import {
  * grammar (C17 collage method).
  *
  * StampText:   〈KEYWORD〉 -> gray bracket glyphs, keyword-colored text.
- *              "RUST + TAURI" style joins color each side, "+" stays ink.
+ *              "RUST + TAURI" style joins color each side, the "+" separator
+ *              in the glyph ink like the brackets.
  * RouteText:   /KEYWORD:VALUE -> gray slash, sky-blue keyword, ink rest.
  *              Lines without route shape render as plain muted ink.
- * StatusText:  "STATUS:" ink, value green (ACTIVE/specimen) or ink.
+ * StatusText:  "STATUS:" ink, the value ink - the attested tone is a shape,
+ *              never a hue (`FieldRecordStatus` prints the 6px square).
  * PlatformDescriptionText: platform keyword chips colored per map.
  */
 

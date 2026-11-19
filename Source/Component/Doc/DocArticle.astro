@@ -4,10 +4,8 @@
  * page-level breadcrumb, then kicker, the page's only `h1`, standfirst, the
  * metadata strip, then the body.
  *
- * That is the whole sequence, and it is the baseline's sequence plus one
- * element. The baseline rendered breadcrumb, `h1`, standfirst, prose; it did
- * not render the strip, because the pre-programme page was a React island that
- * printed its prose and nothing about it.
+ * That is the whole sequence: breadcrumb, kicker, the page's only `h1`,
+ * standfirst, the metadata strip, then the body.
  *
  * Three things the shell owns so no page re-decides them:
  *
@@ -20,10 +18,9 @@
  *   `LAYER:` are the `:` field labels, and `UNAVAILABLE` is the grammar's own
  *   word for a field the tree cannot fill. The page builds the fields
  *   (`Function/Doc/BuildDocStrip`) because only the page knows its section and
- *   its source; the shell owns where they sit. The strip is recovered from
- *   `9666ad4c5` - element, field anatomy and tone rules unchanged - and its
- *   position is the one the removal left free: between the header and the body,
- *   at the header's measure, above the prose it describes.
+ *   its source; the shell owns where they sit - between the header and the body,
+ *   at the header's measure, above the prose it describes. It is the record's
+ *   metadata row, not a second paragraph of the standfirst.
  * - **One measure.** The header, the strip and (by default) the body are capped
  *   at the same `var(--Measure)` - the plate, 72-88ch, fluid on the window - so
  *   the standfirst ends where the prose ends at every width, and a wider window
@@ -138,12 +135,12 @@ interface Props {
 	 * The paper's own state. `rest` prints the body; `empty` and `loading`
 	 * print the paper's absence in the record grammar instead.
 	 *
-	 * An article whose prose failed to render used to print its header, its
-	 * strip and then a white card with nothing in it - a page that reads as
-	 * broken, and the one composition a documentation surface cannot leave to
-	 * chance. `empty` prints the page's own sentence about what would be here;
-	 * `loading` prints the keys with their values barred, because the keys are
-	 * the schema and arrive first.
+	 * A white card with nothing in it is a page that reads as broken - the one
+	 * composition a documentation surface cannot leave to chance, because the
+	 * header, the strip and the frame above it all say the page exists. `empty`
+	 * prints the page's own sentence about what would be here; `loading` prints
+	 * the keys with their values barred, because the keys are the schema and
+	 * arrive first.
 	 */
 	state?: "rest" | "empty" | "loading";
 

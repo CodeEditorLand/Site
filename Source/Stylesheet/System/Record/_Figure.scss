@@ -84,8 +84,8 @@
 // ─── THE CHANNEL PLACEMENT ────────────────────────────────────────────────
 // A plate as wide as the page and a caption under it are read at the wrong
 // distance: the eye crosses the whole width to reach the sentence. The channel
-// gives the caption a column of its own beside the plate, on a 1px divider, at a
-// 24-28ch measure - the same relationship a margin note has to the record it
+// gives the caption a column of its own beside the plate, on a 1px divider, at an
+// 18-26ch measure - the same relationship a margin note has to the record it
 // annotates, one scale up.
 //
 // The channel is a wide-screen composition only. Below 1024px the plate and its
@@ -134,8 +134,9 @@
 // ─── THE TOMBSTONE ────────────────────────────────────────────────────────
 // The evidence is not there: the mark, the vocabulary's word, and the caption
 // that says what the missing evidence would have shown. The frame stays - a
-// record whose target is gone is still a record - and it is the one filled
-// surface here, because the plate would have been filled.
+// record whose target is gone is still a record - and it is filled like the plate
+// frame it stands in for, because an absent plate that went transparent would
+// read as a gap in the page rather than as evidence that is missing.
 .record-figure__absent {
 	@include hairline;
 	display: flex;

@@ -45,9 +45,9 @@ export type SealSize = "xs" | "s" | "m" | "l" | "xl";
  * A number on the ladder's old API is mapped to the step it was reaching for.
  *
  * The boundaries are the steps' own midpoints, rounded to the sizes hosts
- * actually pass: 16 / 32 / 48 / 64 / 240. A number below 24 was a mark that had
- * been shrunk to fit a chip - the composition family found those drawing at a
- * quarter of a pixel - so it maps to `xs`, where the stroke correction lives.
+ * actually pass: 16 / 32 / 48 / 64 / 240. A number of 20 or below is a mark that
+ * has been shrunk to fit a chip, so it maps to `xs`, where the stroke correction
+ * lives.
  */
 const Step = (size: SealSize | number): SealSize => {
 	if (typeof size === "string") return size;
@@ -68,9 +68,8 @@ const SealPattern: React.FC<{ element: FieldRecordElement }> = ({
 }) => {
 	const stroke = "var(--Accent)";
 
-	/* The seal's one permitted second ink, as a token - it was a literal
-	   `#D6B947` in this file, and a mark is the last place the identity allows a
-	   colour to be typed by hand. */
+	/* The seal's one permitted second ink, as a token: a mark is the last place
+	   the identity allows a colour to be typed by hand. */
 	const detail = "var(--AccentDetail)";
 
 	switch (element) {
@@ -400,9 +399,9 @@ const SealPattern: React.FC<{ element: FieldRecordElement }> = ({
 		default:
 			// The element whose record carries no device prints the seal's own
 			// FORM - the neutral roundel, with the grammar's `◎` in its empty
-			// field. It used to print the bare `◎` in a box, which was a glyph
-			// in a box beside eight roundels: a second seal form on the same
-			// wall. The mark is the same; the form is now the seal's.
+			// field. The mark is the same on every wall; the form is the seal's,
+			// so a record with no device is not a second seal shape beside the
+			// eight.
 			return <SealNeutral className="h-full w-full" />;
 	}
 };

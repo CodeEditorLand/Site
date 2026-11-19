@@ -970,8 +970,11 @@ export const Families: readonly Family[] = [
 
 	ReadFamily(
 		Meta[4]!,
+
 		Narrative.Rows,
+
 		Narrative.Columns,
+
 		Narrative.MatrixCell,
 	),
 
@@ -993,8 +996,11 @@ export const Families: readonly Family[] = [
 
 	ReadFamily(
 		Meta[9]!,
+
 		Apparatus.Rows,
+
 		Apparatus.Columns,
+
 		Apparatus.MatrixCell,
 	),
 ];

@@ -143,9 +143,9 @@
 }
 
 // The second state's action: the site's route voice, `/TRACK PROGRESS` at the
-// accent. It is the same destination the card always printed; what changed is
-// that one plate may carry one ink action, and this state is not the one a
-// reader can act on today.
+// accent. One plate may carry one ink action, and this state is not the one a
+// reader can act on today - so it carries its destination as a route line, not
+// as a second filled button.
 .home-release__destination {
 	display: inline-flex;
 	align-items: baseline;

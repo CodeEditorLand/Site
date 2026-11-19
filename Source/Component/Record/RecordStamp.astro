@@ -17,14 +17,17 @@
  *                   stamp.authority -> `AUTHORITY: ...` - required
  *                   stamp.state?    -> `STATUS: <word>` in its vocabulary tone
  *                   stamp.revoked?  -> the tombstone: `◎ WITHDRAWN: <reason>`
+ *                   stamp.expires?  -> the `EXPIRES:` row that bounds the mark
+ *                   stamp.verify?   -> the route that checks the mark
  *                   stamp.note?     -> one line: what the mark does not cover
  * MAY HOLD          nothing. A stamp is a mark and its register.
  * MAY NOT HOLD      prose, a figure, a second mark - a record carries one seal
  *                   and one stamp, and two of either is a record arguing with
  *                   itself.
  * WIDE (>=1024)     a hairline frame at the container's measure; the mark at
- *                   the section role, the route beneath it, the rows in two
- *                   columns under a rule, the authority on the frame's floor.
+ *                   the section role, the route beneath it, the rows as a register
+ *                   (an `11ch` key column and its value, one ruled line each), the
+ *                   authority on the frame's floor.
  * NARROW            one column; the rows stack; the mark steps to the heading
  *                   role so it cannot overflow a 320px measure. The frame, the
  *                   route and the authority are untouched - a stamp that loses

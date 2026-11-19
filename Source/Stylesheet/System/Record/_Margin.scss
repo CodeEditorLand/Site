@@ -19,6 +19,8 @@
 //                   .record-margin__gone         the tombstone: `◎ TARGET GONE`
 //                   .record-margin__source       `SOURCE: ...` - always printed
 //                   .record-margin__source--absent   `SOURCE: UNAVAILABLE`
+//                   .record-margin__register     the state word and the `AS OF:` date, on one row
+//                   .record-margin__asof         the note's date
 // MAY HOLD          nothing. A note is a marker, a claim, a destination and a
 //                   source; a block in the margin is a second claim in a place
 //                   too narrow to read it.
@@ -194,9 +196,10 @@
 	color: var(--MuteForeground);
 }
 
-// The partial state: the row prints its own key and the vocabulary's word, in
-// the same muted ink as the label. It is not dimmed into invisibility - the
-// reader must be able to see that the note has no source.
+// The partial state: the row prints its own key and the vocabulary's word, and
+// it keeps the ink rather than stepping down to the label's - the reader must be
+// able to see that the note has no source, and a dimmed word is a word that has
+// been hidden to say so.
 .record-margin__source--absent {
 	color: var(--Foreground);
 }

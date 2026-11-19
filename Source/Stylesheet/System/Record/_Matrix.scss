@@ -21,19 +21,21 @@
 //                   .record-matrix__cell--state     a cell that states a condition
 //                   .record-matrix__cell--specimen  ... in the vocabulary's attested tone
 //                   .record-matrix__cell--quiet     ... in the vocabulary's quiet tone
+//                   .record-matrix__state           the square and the word, as one inline pair
 //                   .record-matrix__row--total      the row that sums the column above it
 //                   .record-matrix__row--skeleton   a row whose values have not arrived
 //                   .record-matrix__row--empty      the one row a matrix with no rows prints
 //                   .record-matrix__empty           what it says: what, why, where
+//                   .record-matrix__empty-mark      the `◎` that opens that sentence
 //                   .record-matrix__bar             a value's stand-in, in the record grammar
 // MAY HOLD          nothing - cells are values.
 // NARROW            the label column pins to the left edge of the shell while
 //                   the columns scroll under it. See THE SEAM below.
 // WIDE              the table takes its container; every cell refuses to wrap.
-// DENSE             `--dense` halves `--space-tight` to a quarter of it on the
-//                   rows' block padding. The type, the rules and the inks do not
-//                   move: a dense matrix is a tighter comparison, not a smaller
-//                   one, and a cell that got smaller would be a weaker claim.
+// DENSE             `--dense` halves `--space-tight` on the rows' block padding.
+//                   The type, the rules and the inks do not move: a dense matrix
+//                   is a tighter comparison, not a smaller one, and a cell that
+//                   got smaller would be a weaker claim.
 //
 // One custom property carries what a class cannot, set by the block from
 // `MatrixColumn.ink`:
@@ -56,9 +58,6 @@
 // right edge, so the scroll reads as a seam the columns pass under rather than as
 // cells disappearing behind an opaque block. The corner cell pins with it, so the
 // header row and the label column meet in a corner that stays put.
-//
-// Owned by B4. S1 published the skeleton; B4 refines the values, never the
-// names.
 
 @use "../Mixin" as *;
 
@@ -167,8 +166,8 @@
 .record-matrix__cell--yes {
 	/* A data cell is a value, not a destination. It keeps its weight - the one
 	   emphasis a matrix cell may carry - and takes the ink; the cell's own word
-	   (`YES`) is the fact. Green here made a comparison table look like a
-	   navigation list. */
+	   (`YES`) is the fact. Green here would make a comparison table read as a
+	   navigation list, and the accent authenticates a route, not an answer. */
 	color: var(--Foreground);
 	font-weight: 500;
 }

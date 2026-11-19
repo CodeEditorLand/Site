@@ -15,21 +15,17 @@
 // `System/Record/Index` is loaded after `System/Component/Index`, so a bare
 // `.properties-entry` would lose the cascade to the block it is refining.
 //
-// Recovered verbatim from `8b58843c5^` at K7 - it was deleted whole with the
-// record-shaped homepage, and its subject did not go with it: the six-record
-// band is `Home/FeatureBand` today, and `Dynamic/Properties/Data.ts` still
-// carries the `PropertyEntry` set (`EntriesOf`, `ClaimsOf`, `FiledOf`,
-// `ClaimLimit`, `FiledLabel`).
-//
-// It waits on its component, and the component is card 9's:
-// `Source/Component/Dynamic/Properties/**` owns the band that renders
-// `RecordEntry`s in this grid. The partial is wired in
-// `System/Component/_Index.scss`, so its rules are published the moment that
-// component lands; nothing in the tree prints `.properties-grid` yet, and this
-// note is the handoff that says so. The grid's shape is the one
-// `Home/_Feature.scss` publishes for the six element records - one column, two
-// from 768px, three from 1280px - which is why the capability is not lost while
-// the component is absent.
+// The band's subject outlived the record-shaped homepage that first printed it:
+// the six-record band on the homepage is `Home/FeatureBand`, and
+// `Dynamic/Properties/Data.ts` still carries the `PropertyEntry` set
+// (`EntriesOf`, `ClaimsOf`, `FiledOf`, `ClaimLimit`, `FiledLabel`). Its renderer
+// is `Source/Component/Dynamic/Properties/Grid.astro`, which this partial
+// styles and `System/Component/_Index.scss` wires in; the only host that mounts
+// the grid is the Specimen sheet (`pages/Specimen.astro`), so no route prints
+// `.properties-grid` today. The grid's shape is the one `Home/_Feature.scss`
+// publishes for the six element records - one column, two from 768px, three
+// from 1280px - which is why the capability is not lost while the component
+// has no route.
 
 @use "../../Mixin" as *;
 
@@ -72,7 +68,7 @@ jelly-card > .record-entry.properties-entry {
  * page and their paragraphs one click away (`DocOf`). The baseline filed them
  * through `RecordBand`'s `record-band__index` classes, which is a borrowed class
  * on a block that is not a `RecordBand` - `DESIGN-COMPLETE.md` §4.2 calls that
- * out by name ("a borrowed class is not a block"), and it is why the strip
+ * out by name ("a borrowed class is not a block") - and it is why the strip
  * drifted from the band's own anatomy. These three classes are the strip's own.
  *
  * The strip is one line of meta under the grid, separated by the same hairline

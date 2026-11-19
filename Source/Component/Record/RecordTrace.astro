@@ -21,8 +21,9 @@
  * NARROW            the note moves under the path and the index holds its 2ch
  *                   column, so a long path wraps inside its own line rather than
  *                   pushing the note off it.
- * WIDE (>=768)      the path takes the left measure and the note a 20ch column at
- *                   its right, so fifteen traces down a page align on the note.
+ * WIDE (>=768)      the path takes the left measure and the note a
+ *                   `minmax(14ch, 20ch)` column at its right, so fifteen traces
+ *                   down a page align on the note.
  * DENSE             none. A trace is a reading; a compressed reading is a list of
  *                   links, and a list of links is not evidence. `state="loading"`
  *                   is not a density either - it is the same trace with its paths

@@ -30,25 +30,24 @@
  * `jelly-icon-button[data-copy]` sitewide and would resolve its source as this
  * button's previous sibling - the title bar's label, not the command.
  *
- * ─── THE OVERFLOW THE BLOCK LEARNED TO OWN ────────────────────────────────
- * A well printed `white-space: pre` and scrolled sideways, because a command
- * that reflowed would be a command the reader cannot paste. The exploration
- * found the other half of that truth: a well also carries CONFIG and OUTPUT,
- * where the long line is a VALUE and not something anyone types, and a reader
- * scrolling 300 characters sideways to find the end of a JSON string is a
- * reader who has lost the line. So `wrap` is the caller's declaration that the
- * lines are read rather than typed - the body goes `pre-wrap` with a hanging
- * indent and every character still prints. The default is unchanged: a command
- * keeps its shape.
+ * ─── THE OVERFLOW THE BLOCK OWNS ──────────────────────────────────────────
+ * The body is `white-space: pre` and scrolls sideways, because a command that
+ * reflowed would be a command the reader cannot paste. The other half of that
+ * truth is that a well also carries CONFIG and OUTPUT, where the long line is a
+ * VALUE and not something anyone types, and a reader scrolling 300 characters
+ * sideways to find the end of a JSON string is a reader who has lost the line.
+ * So `wrap` is the caller's declaration that the lines are read rather than typed
+ * - the body goes `pre-wrap` with a hanging indent and every character still
+ * prints. Without `wrap`, a command keeps its shape.
  *
- * ─── AND THE THREE STATES IT DID NOT HAVE ─────────────────────────────────
+ * ─── THE THREE STATES ─────────────────────────────────────────────────────
  * `window` is the too-much state: print the first N lines and name the rest on
  * the foot (`SHOWING: 12 OF 240`), while the copy payload stays whole - the
- * reader who copies gets the file. `state` with `empty` is the state a well
- * never had: the command is not documented yet, and the bar prints its label so
- * the reader knows which command is missing. `note` is the one line a well could
- * not say - what the command assumes, which shell it wants - and it prints in
- * the well's own foot rather than as a paragraph beside it.
+ * reader who copies gets the file. `state` with `empty` is the well with no
+ * command: the command is not documented yet, and the bar prints its label so
+ * the reader knows which command is missing. `note` is the one line a well
+ * cannot print in its body - what the command assumes, which shell it wants -
+ * and it prints in the well's own foot rather than as a paragraph beside it.
  */
 import type { Well } from "./Type.js";
 

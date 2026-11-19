@@ -116,8 +116,9 @@
 	color: var(--Foreground);
 }
 
-// The entry's one line: a proposition hung under the name, at the opening
-// measure so a long chapter description does not run to the figure's column.
+// The entry's one line: a proposition hung under the name. Its measure is the
+// opening cap, stated once in `Detail/_Rhythm.scss` beside `.detail-foot__see`,
+// so a long chapter description does not run to the figure's column.
 .detail-leader__note {
 	display: block;
 	margin: 0;
@@ -132,8 +133,9 @@
 // ─── THE ADVERSE STATES ───────────────────────────────────────────────────
 
 // Too much: the register prints the set's real size and the route to the whole
-// of it. It is the ledger's `SHOWING n OF m` in the same grammar, and it is a
-// line in the register - never a truncated row or a scroll box.
+// of it. It is the Record layer's `SHOWING: n OF m` in the same grammar
+// (`Record/RecordArchive.astro`, `Record/RecordWell.astro`), and it is a line in
+// the register - never a truncated row or a scroll box.
 .detail-leader__more {
 	@include mono-meta;
 	@include track(var(--track-row));

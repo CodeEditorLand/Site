@@ -16,9 +16,9 @@
  * corner marks through this one frame (C19), which is why the marks are not
  * the host's job.
  *
- * No `<script>` and no `client:*`: this block ships zero JavaScript. The React
- * card forwarded a ref; nothing in the tree passes one, so the Astro frame has
- * no ref at all - an unreachable prop is not preserved, it is dropped.
+ * No `<script>` and no `client:*`: this block ships zero JavaScript. The frame
+ * forwards no ref - nothing in the tree passes one, and an unreachable prop is
+ * not preserved, it is dropped.
  */
 import CornerMarks from "./CornerMarks.astro";
 

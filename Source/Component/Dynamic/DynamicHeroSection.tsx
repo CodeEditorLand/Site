@@ -99,31 +99,29 @@ import type Property from "./Interface/Property/Hero.js";
  * On mobile the stack is card first, evidence second: the record arrives before
  * the evidence (`DesignSystem-Components.md` §1).
  *
- * What left this band, and where it went - the density budget
- * (`DesignSystem-Grammar.md` §8) allows the hero one field record, one evidence
- * image and one primary action, and nothing else:
+ * What is not in this band, and where the same strings are printed - the density
+ * budget (`DesignSystem-Grammar.md` §8) allows the hero one field record, one
+ * evidence image and one primary action, and nothing else:
  *
- * - the standfirst paragraph  -> `DynamicFeatures`, the `# OBSERVATION_01`
- *   band's opening (the plain-language explanation belongs to the document
- *   structure, `DesignSystem-Pages.md` §1);
- * - the three status chips    -> `DynamicPricing`, the `# CONDITIONS_01`
- *   manifest's status strip;
- * - `SPECIES` / `TEMP` / `WIND` -> `FeatureBand`, the `#features` band that
- *   succeeded the `# OBSERVATION_01` layer, as its filed specimen ledger
+ * - the standfirst paragraph  -> `FeatureBand`, the `# OBSERVATION_01` band's
+ *   opening (the plain-language explanation belongs to the document structure,
+ *   `DesignSystem-Pages.md` §1);
+ * - the three status chips    -> `RoadmapBand`, the `# CONDITIONS_01` manifest's
+ *   stamped headers;
+ * - `SPECIES` / `TEMP` / `WIND` -> `FeatureBand`'s filed specimen ledger
  *   (`Hero/Type.ts` `Metadata.observation`). The card keeps three rows; a
  *   fourth block in it would break `DesignSystem-Components.md` §1's
  *   `TARGET / LICENSE / SIGNAL` template and its four-row cap.
  *
- * The four-element rail is the one that came back, and it is restored where the
- * evidence is: Mountain → Cocoon → Sky → Wind is the hero's ordered process, so
- * it is printed as the panel's `RecordStage` (`DESIGN-COMPLETE.md` §5.2 row 3) -
- * across the foot of the pair, never on the plate. `FeatureBand` used to print
- * its own copy of the same four steps; that copy is gone, because the proof now
- * sits under the claim it proves, and two copies of one rail on one page is not
- * a proof, it is a habit. The steps themselves are unchanged and printed once.
+ * Each is a move, not a deletion: the strings are the same strings, printed by
+ * the band whose layer owns them.
  *
- * Every one of those is a move, not a deletion: the strings are the same
- * strings, printed by the band whose layer owns them.
+ * The four-element rail is the hero's own: Mountain → Cocoon → Sky → Wind is the
+ * ordered process the claim asserts, so it prints as the panel's `RecordStage`
+ * (`DESIGN-COMPLETE.md` §5.2 row 3) - across the foot of the pair, never on the
+ * plate. `FeatureBand` prints no second copy, because the proof sits under the
+ * claim it proves and two copies of one rail on one page is not a proof, it is a
+ * habit. The steps are printed once.
  *
  * This stays a `.tsx` island because the page's `h1` and its record are one
  * artifact and an `.astro` block cannot be imported from a `.tsx` file: the
@@ -404,7 +402,7 @@ const DynamicHeroSection = ({
 							 * The tier is XL (48-72px); the value is the low end
 							 * of it because the claim is fifteen glyphs wide and
 							 * the card is 49% of the pair. At the top of the
-							 * tier it broke after `RUST +`, which turned the
+							 * tier it would break after `RUST +`, which turns the
 							 * record's assertion into a two-line poster. A
 							 * claim that cannot be read as one sentence is not
 							 * a claim.
@@ -421,16 +419,15 @@ const DynamicHeroSection = ({
 							 * compatible with, what that compatibility means,
 							 * and the program line.
 							 *
-							 * These four were four separate bands at three
-							 * different tiers (L, L, S, S), which is what made
-							 * the card shout four times before it said
-							 * anything. They are one block now, at S, under one
+							 * These four are one block, at S, under one
 							 * hairline: a stamp is read as a stamp because of
 							 * its containment and its tracking, not because it
-							 * is 52px tall. The jump from the claim to this
-							 * block is the page's hardest tier jump and it is
-							 * deliberate - the reader should meet one assertion
-							 * and then a block of readings.
+							 * is 52px tall. Four separate bands at three
+							 * different tiers (L, L, S, S) made the card shout
+							 * four times before it said anything. The jump from
+							 * the claim to this block is the page's hardest tier
+							 * jump and it is deliberate - the reader should meet
+							 * one assertion and then a block of readings.
 							 */}
 							<div className="hero-band__stamps">
 								{/*
@@ -602,18 +599,16 @@ const DynamicHeroSection = ({
 			 * claim above asserts, printed as a Signal Trace across the
 			 * whole measure, under both panels.
 			 *
-			 * It used to sit inside the evidence panel, above the plate,
-			 * and it took 405 of that panel's 1368px - which turned the
-			 * evidence plate into a rail with a photograph under it and
-			 * pushed the pair to 1512px. An instrument's wiring runs
-			 * under the panel, not over the display: here the trace spans
-			 * the pair, the plate is full height again, and the four
-			 * steps read left to right in the order they happen.
+			 * It runs under both panels, not inside the evidence panel: inside,
+			 * it took 405 of that panel's 1368px - which turned the evidence
+			 * plate into a rail with a photograph under it and pushed the pair
+			 * to 1512px. An instrument's wiring runs under the panel, not over
+			 * the display: the trace spans the pair, the plate is full height,
+			 * and the four steps read left to right in the order they happen.
 			 *
-			 * Same block, same four steps, same label. A move, not a
-			 * deletion - and a strengthening, because a four-across rail
-			 * at the full measure can print each step's one line on one
-			 * line, which the 655px column could not.
+			 * Same block, same four steps, same label - and a strengthening,
+			 * because a four-across rail at the full measure prints each step's
+			 * one line on one line, which the 655px column could not.
 			 */}
 			<div
 				aria-labelledby="hero-trace-label"
@@ -636,11 +631,10 @@ const DynamicHeroSection = ({
 			 *
 			 * The row's column count is derived, not asserted:
 			 * `StackTracks` reads the tile count and the partial reads that
-			 * number as a ceiling. The strip used to be two columns below a
-			 * container query and four above it, which is right for exactly
-			 * the eight tiles it was written for - the composition family's
-			 * matrix printed nine in a narrow card and the layout answered
-			 * with a hole.
+			 * number as a ceiling. A fixed two-column / four-column pair is
+			 * right for exactly the eight tiles it was written for; nine in a
+			 * narrow card leave a row of one, and the layout answers with a
+			 * hole.
 			 */}
 			<div className="hero-band__stack">
 				<p className="hero-band__stack-label">

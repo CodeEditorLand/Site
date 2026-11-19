@@ -21,11 +21,13 @@
 //                   .record-transcript__line          what was said, verbatim
 //                   .record-transcript__stamp         the turn's own stamp or its state word
 //                   .record-transcript__skeleton      a hairline bar where the line would be
+//                   .record-transcript__turn-fail     a failed turn's cause and next step
+//                   .record-transcript__retry         the session's one recovery destination
 //                   .record-transcript__foot          `SHOWING: 12 OF 240` and the note
 //                   .record-transcript__source        `SOURCE: ...` - always printed
 // MAY HOLD          turns only.
-// NARROW            the turn is two rows - mark and speaker, then the line under
-//                   the speaker with the stamp at its right. The mark column is
+// NARROW            the turn is two rows - mark, speaker and stamp, then the line
+//                   under them, spanning both remaining columns. The mark column is
 //                   2ch and never moves: it is the one thing that makes a
 //                   transcript readable.
 // WIDE (>=1024)     one row per turn, four columns: `2ch | 9ch | 1fr | auto`.

@@ -179,12 +179,10 @@ export const Split = <
  * The lifecycle vocabulary - five words, one per surface.
  *
  * `StateTerms` says what a surface is DOING (`LOADING`, `INTERRUPTED`); this
- * table says how far along it is, which is a different question and had no
- * vocabulary at all. Every page answered it in its own adjectives - "Coming
- * Soon" on the portal, "Feature Gated" on the download masthead, "Disabled" in
- * the dashboard, "Beta" in a blog post - and five adjectives for one fact is the
- * same defect as five state marks: a reader cannot compare two pages, and a
- * page cannot be counted.
+ * table says how far along it is, which is a different question and one that
+ * needs its own vocabulary. Answered in a page's own adjectives - "Coming Soon",
+ * "Feature Gated", "Disabled", "Beta" - it is five adjectives for one fact: a
+ * reader cannot compare two pages, and a page cannot be counted.
  *
  * The five are the whole life of a surface, in order:
  *

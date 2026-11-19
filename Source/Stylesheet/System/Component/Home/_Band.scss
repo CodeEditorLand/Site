@@ -15,24 +15,20 @@
 //   .home-band__stamp-line  one line of that block
 //   .home-band__body        the band's records
 //
-// THE RHYTHM IS THE PAGE'S, and it is nameable: turn / break / rest / beat /
-// turn - two registers (wide, wide, tight, tight, wide) and never the same rung
-// twice running. The four bands used to carry the same `clamp(4rem, 5vw, 5rem)`
-// padding and the same heading size, which is a page where every band has the
-// same weight - the definition of a poster sequence. That was then replaced by a
-// two-rung `--band-air` (wide / tight), which named the page's alternation but
-// had no room for the second rung inside a register: "wide, wide" was two bands
-// at exactly the same volume.
+// THE RHYTHM IS THE PAGE'S, and it is nameable: the five bands run turn /
+// break / rest / turn / beat - two registers (turn and break open a movement,
+// rest and beat continue one) and never the same rung twice running. The
+// sequence is data, in `Content/Home/Band.ts`'s `Sequence`; each band receives
+// its rung in `Component/Home/Band.astro`, once, from that sequence, so a band
+// cannot disagree with the page about where the reader rests.
 //
-// The air now comes from the site's interval ladder
+// The air comes from the site's interval ladder
 // (`System/Layout/_Interval.scss`), because the page's rhythm is not this
 // surface's private fact - it is the same four rungs every page in the document
-// opens at, and the homepage is the page that taught them. A band still cannot
-// disagree with the page about where the reader rests: the rung is set in
-// `Component/Home/Band.astro`, once, from the page's sequence.
+// opens at, and the homepage is the page that taught them.
 //
-// THE HEAD IS A RECORD HEAD. Centred, it was four posters; left, with a marker
-// line that rules to the margin and a 7/5 pair under it, it is four parts of one
+// THE HEAD IS A RECORD HEAD. Centred, it read as a poster; left, with a marker
+// line that rules to the margin and a 7/5 pair under it, it is one part of one
 // document - the same anatomy as the frame's running head.
 
 @use "../../Mixin" as *;
@@ -47,7 +43,7 @@
 
 // ─── THE BANDS DECLARE THEIR REAL HEIGHT ────────────────────────────────────
 //
-// `_Global.scss` gives these four ids `content-visibility: auto` with an 800px
+// `_Global.scss` gives these ids `content-visibility: auto` with an 800px
 // intrinsic placeholder. That is a fine trade for four bands of about 900px; it
 // is the wrong trade for this page, where the architecture wall is 4,300px. The
 // placeholder made the document's scroll height an estimate that was 5,000px
@@ -56,8 +52,8 @@
 // marks painted over the appendix.
 //
 // A dossier's page count is a fact, not an estimate. The override is scoped to
-// the four ids this surface owns; the rule itself stays where it is, for the
-// surfaces it was written for.
+// the five ids this surface's bands print; the rule itself stays where it is,
+// for the surfaces it was written for.
 #features,
 #pricing,
 #testimonials,
@@ -120,9 +116,9 @@
 	margin: 0;
 	font-family: var(--FontMono);
 	font-weight: 400;
-	// L tier (32-52px). At the top of the tier a fifty-character heading set
-	// in a 7/12 column ran to four lines; 40px is the same tier's middle and
-	// sets the longest band heading on two. The hero's claim (56px) is the
+	// L tier (32-52px). This clamp tops out at 40px: the longest band heading
+	// is fifty characters, and at the tier's ceiling it ran to four lines in
+	// the 7/12 column; 40px sets it on two. The hero's claim (56px) is the
 	// page's only XL and stays a clear step above every band.
 	font-size: clamp(2rem, 2.8vw, 2.5rem);
 	line-height: 1.08;

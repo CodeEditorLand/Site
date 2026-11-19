@@ -1,12 +1,11 @@
 /**
  * Data - the Rust API surface's crate list.
  *
- * The nine crates and their descriptions are the page's own content, moved out
- * of the template so the page is a composition instead of a table. Nothing here
- * is derived: every URL, label and description is the string the page printed
- * before this module existed, and the order is the order the tiles and the tabs
- * have always been in (Mountain first, because it is the crate the frame opens
- * on).
+ * The nine crates and their descriptions are the page's own content, kept out of
+ * the template so the page is a composition instead of a table. Nothing here is
+ * derived: every URL, label and description is the string the page prints, and
+ * the order is the order the tiles and the tabs read in (Mountain first, because
+ * it is the crate the frame opens on).
  */
 import type { RustCrate } from "./Type.js";
 

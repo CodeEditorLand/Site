@@ -57,6 +57,11 @@
 //   .record-stage__plate-body   the plate's label and line
 //   .record-stage__plate-label  the step's name inside the plate
 //   .record-stage__plate-line   one line under it
+//   .record-stage__item--current / .record-stage__plate--current  the step the run is at
+//   .record-stage__state        `STATUS:` and the step's word
+//   .record-stage__state--ink / --specimen / --quiet  the word in the vocabulary's tone
+//   .record-stage__detail       a step's paragraph, as a `<details>` under its line
+//   .record-stage__absent       the stage with no steps: mark, state word, sentence
 //
 // Mobile first, and the switch is the `bp()` mixin: below 1024px the rail is a
 // stack whatever the modifier says, because four columns of a sentence are
@@ -80,9 +85,6 @@
 // `var(--Border)`, and its `:not()` chain outranks any single component rule -
 // a `border-bottom` here would draw a second line under the first, so the
 // partial leaves the underline to the one rule that wins.
-//
-// Owned by B5. S1 published the skeleton; B5 refines the values, never the
-// names.
 
 @use "../Mixin" as *;
 
@@ -263,10 +265,11 @@ a.record-stage__plate-label:hover {
 
 // ─── THE NARRATIVE FAMILY: THE RUN'S POSITION, A STEP'S STATE, ITS DETAIL ──
 // The stage can advance: `--current` is the step the run is at, and it takes the
-// attested square, the divider's rule under its index and `aria-current`. A
-// step's own `STATUS:` word prints in the step's register, and a step's detail is
-// a `<details>` whose summary is the step's line - so a rail of one-line steps
-// can keep the paragraph each one needs without becoming a column of prose.
+// attested square at its index, the divider's ink on the rule above it and
+// `aria-current="step"`. A step's own `STATUS:` word prints in the step's
+// register, and a step's detail is a `<details>` whose summary is the step's
+// line - so a rail of one-line steps can keep the paragraph each one needs
+// without becoming a column of prose.
 .record-stage__item--current,
 .record-stage__plate--current {
 	border-block-start-color: var(--Divider);

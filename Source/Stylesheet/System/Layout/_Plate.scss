@@ -147,8 +147,10 @@
 }
 
 // ─── THE WIDE PLATE ───────────────────────────────────────────────────────
-// The channel takes a 20rem track and a hairline gutter - the keeper hero pair's
-// model at plate scale: the plate, one 1px rule, the channel.
+// The channel takes a 20rem track and draws its own leading rule, with
+// `--space-group` of air inside it: the plate's edge is the plate's, the rule is
+// the channel's. Unlike the hero pair, the divider here is the channel's border
+// rather than a middle track - the channel is one object, not a second panel.
 
 @container plate (min-width: 48rem) {
 	.ShellPlate__grid {

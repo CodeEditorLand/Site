@@ -7,12 +7,12 @@
 //                   and not a badge (a tint with no field behind it).
 // RANK              leaf.
 // SLOT CONTRACT     .record-stamp                  the frame: a white insert
-//                   .record-stamp--withdrawn       the tombstone arm
+//                   .record-stamp--withdrawn       the shell hook of the tombstone arm
 //                   .record-stamp__head            `# STAMP_01 / EDITION ␁ STATUS:`
 //                   .record-stamp__index           the marker, in ink
 //                   .record-stamp__label           the `/LABEL`
 //                   .record-stamp__state           `STATUS: <word>` in its tone
-//                   .record-stamp__state-marker    the 4px specimen mark
+//                   .record-stamp__state--ink|--specimen|--quiet  the word's tone
 //                   .record-stamp__mark            `〈EDITION 01〉` at the section role
 //                   .record-stamp__route           `/CHANNEL:PUBLIC`
 //                   .record-stamp__revoked         `◎ WITHDRAWN: <reason>`
@@ -90,8 +90,7 @@
 }
 
 // The status mark is the mark layer's square (`Component/Mark/Mark.astro`), at
-// the record's own step - this block used to draw its own 4px square here, and
-// the block next door drew the same square at 6.4px.
+// the record's own step: one square, one size scale, and no block draws its own.
 
 .record-stamp__state--specimen {
 	color: var(--state-ink-attested);
@@ -147,7 +146,7 @@
 
 // ─── THE FACTS ────────────────────────────────────────────────────────────
 // The ledger's row, one step tighter: a stamp's facts are read as a register
-// under the mark, so the key column is narrow and every row carries its own rule.
+// under the mark, so the key column is `11ch` and every row carries its own rule.
 .record-stamp__rows {
 	display: flex;
 	flex-direction: column;

@@ -19,6 +19,8 @@
 //                   .record-instrument__as-of     `AS OF:` when the figure has an age
 //                   .record-instrument__caption   one sentence under the panel
 //                   .record-instrument__empty     what the panel says with no measures
+//                   .record-instrument__bar       a figure's stand-in while it loads
+//                   .record-instrument__measure--total  the panel's sum, under the divider's ink
 // MAY HOLD          nothing.
 // NARROW            the strip reflows: two cells to a line at 640, one below; the
 //                   label moves above the figure and the figure keeps its size.

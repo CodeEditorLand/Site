@@ -24,6 +24,7 @@
 //                   .record-hero__gutter        the 1px hairline between the panels
 //                   .record-hero__evidence      the evidence panel
 //                   .record-hero__plate         the image filling that panel
+//                   .record-hero__tombstone     the evidence panel when the capture is absent
 // MAY HOLD          RecordLedger (facts), RecordFigure or a chart (evidence),
 //                   RecordStage (trace foot), one RecordBand at tone="bare".
 // MAY NOT HOLD      a second hero, seal, `h1`, or a band that paints a fill.
@@ -45,11 +46,14 @@
 //   grid-template-columns: minmax(0, 49fr) 1px minmax(0, 51fr); // from 768px
 //
 // Three tracks: the record 49 parts, the hairline 1px, the evidence 51 parts.
-// The two panels therefore measure 48.97% and 50.97% of the pair at any
-// realistic width - inside the documented 48.5-49.5% for the data card and
-// 50.5-51.5% for the evidence. The blueprint's separate 1.8-2.3% panel gap is
-// NOT applied: its own panel ranges already sum past 100% with a gap between
-// them, so the ratio and the hairline win and the gap is the hairline's width.
+// The `fr` ratio divides what the 1px track and the gutter's two gaps leave, so
+// the panels sit just under 49% and just over 51% of that space - inside the
+// documented 48.5-49.5% for the data card and 50.5-51.5% for the evidence only
+// while the gutter's air is small: the `clamp()` gap below takes about 1.5% of
+// the pair from each panel at 1440px, which puts the two measures at roughly
+// 47.5% and 49.4%. The blueprint's separate 1.8-2.3% panel gap is NOT applied:
+// its own panel ranges already sum past 100% with a gap between them, so the
+// ratio and the hairline win and the gap is the hairline's air.
 //
 // THE HEIGHT. `min-block-size: 80dvh` on the pair - the documented viewport
 // share - so the artifact fills the first screen and the evidence panel has a
@@ -259,11 +263,10 @@
 //
 // The ink is the system's divider strength, not the surface hairline: the
 // gutter sits between a warm-white card and a photograph, and `var(--Border)`
-// (8 % ink) dissolves on the card side at that contrast. The live hero's
-// identical track was lifted to the 20 % mix and this copy kept the hairline -
-// the defect M1 removed, reintroduced in the Record layer. It draws
-// `var(--Divider)` now, the token `_Token.scss` holds for exactly this case, so
-// the two heroes cannot drift apart again.
+// (8 % ink) dissolves on the card side at that contrast. It draws
+// `var(--Divider)` - the token `_Token.scss` holds for exactly this case - and it
+// is the same track the homepage hero draws, so the two heroes cannot drift
+// apart.
 .record-hero__gutter {
 	display: none;
 	inline-size: 1px;

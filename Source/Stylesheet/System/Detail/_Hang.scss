@@ -3,9 +3,9 @@
 // ─── THE LAW ──────────────────────────────────────────────────────────────
 // A sentence opens on its first letter. A quotation mark, a bullet, a section
 // sign or the grammar's `↳` is a mark ABOUT the text, not the text, so it sits
-// in the margin and the first letter stays on the measure. Every paragraph on
-// this site currently starts its first line one or two characters in, which is
-// the difference between a page set by a machine and a page set by a hand.
+// in the margin and the first letter stays on the measure. A paragraph whose
+// first line starts one or two characters in is the difference between a page
+// set by a machine and a page set by a hand.
 //
 // Two mechanisms, in this order:
 //
@@ -15,10 +15,13 @@
 //    not the only one.
 // 2. **A negative inline-start margin on the mark itself**, which every engine
 //    implements. It is applied only to marks this site prints as their own
-//    element - the three `↳` propositions - because hanging needs to know the
-//    mark's width, and a mark that is part of a string cannot be measured.
+//    element - the `↳` of the record hero and of the quiet head, below - because
+//    hanging needs to know the mark's width, and a mark that is part of a string
+//    cannot be measured. The shell plate's and the edge's `↳` are the same mark
+//    in their own partials (`Layout/_Plate.scss`,
+//    `Component/Layout/_Edge.scss`) and hang by the same rule.
 //
-// The margin is guarded at 640px. Below it the page gutter is 16px and the
+// The margin is guarded at 768px. Below it the page gutter is 16px and the
 // hanging mark would sit outside the paper; above it there is always room.
 //
 // ─── THE WRAP RULES ───────────────────────────────────────────────────────

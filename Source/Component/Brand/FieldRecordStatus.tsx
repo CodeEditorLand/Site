@@ -39,10 +39,9 @@ export interface FieldRecordStatusProps {
  * vanished for a reader who cannot see green. It is the mark layer's square
  * (`Mark/_Square.scss`) at the attested step - half again the 4px a reporting
  * state prints - in the value's own ink: one shape for a state everywhere on the
- * site, and one that survives greyscale. The 6px box and its `0.4em` gap used to
- * be written into this file as an inline style; they are the ladder's and the
- * token's now, because a mark set that lives in seven inline styles is seven
- * marks.
+ * site, and one that survives greyscale. The box and its gap are the ladder's
+ * and the token's (`MarkSquare`, `--mark-gap`), not this file's inline style,
+ * because a mark set that lives in seven inline styles is seven marks.
  */
 const FieldRecordStatus: React.FC<FieldRecordStatusProps> = ({
 	status,

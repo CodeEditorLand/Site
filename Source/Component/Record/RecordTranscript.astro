@@ -21,9 +21,10 @@
  * WIDE (>=1024)     the turn is one row: a 2ch mark column, a 9ch speaker
  *                   column, the line, and the stamp at the far right - four
  *                   columns, so the eye can read one speaker down the page.
- * NARROW            the stamp moves under the line and the speaker stays in its
- *                   column: the mark column is what makes a transcript readable,
- *                   and it is the one thing that never moves.
+ * NARROW            the line moves under the speaker and the stamp stays at the
+ *                   row's right, on the speaker's line: the mark column is what
+ *                   makes a transcript readable, and it is the one thing that
+ *                   never moves.
  * DENSE             none. A transcript is verbatim: a compressed session has
  *                   dropped the line that mattered.
  *
@@ -75,7 +76,8 @@ const Printed =
 		? transcript.turns.slice(0, transcript.window.showing)
 		: transcript.turns;
 
-/** The count the bar prints: the turns printed, not the turns withheld. */
+/** The count the bar prints: the set's total when the caller measured one, else
+ * the turns' own length - never the printed window. */
 const Count = transcript.window?.total ?? String(transcript.turns.length);
 
 /** The unit the bar prints beside the count. */

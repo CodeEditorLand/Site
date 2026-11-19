@@ -147,8 +147,8 @@
 	color: var(--CardForeground);
 }
 
-// The facts, one line: the channel, the three release facts, the status, and
-// the action pushed to the row's right edge.
+// The facts, one line: the channel, the seven release facts, the note, the
+// status, and the action pushed to the row's right edge.
 .home-platform__facts {
 	display: flex;
 	flex-wrap: wrap;

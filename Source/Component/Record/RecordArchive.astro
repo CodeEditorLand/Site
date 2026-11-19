@@ -5,10 +5,8 @@
  * `DesignSystem-Artifacts.md` §2 gives a set of records one shape - "an index of
  * filed observations", never a wall of equal cards and never a stack of
  * chapters - and `DESIGN.md` §3.4 asks for that shape on the surfaces that list
- * many records. The two of them (the blog index and the doc index) had each
- * been hand-built, differently, twice; this file is the one place the shape is
- * written, so a surface that lists records hands over an array instead of
- * rebuilding a row grammar.
+ * many records. The blog index and the doc index both hand this file an array,
+ * so the shape is written once and no surface rebuilds a row grammar.
  *
  * What it renders, in order:
  *
@@ -23,9 +21,9 @@
  * Four decisions a caller should know:
  *
  * - **`entries` alone is a complete archive.** The header's count is derived
- *   from the list when the page does not pass one, so the number and the rows
- *   under it cannot disagree; `index`, `heading` and `count` are the header's
- *   copy and belong to the page.
+ *   from the list when the page does not pass one; a page that passes its own
+ *   string (`52 ENTRIES`) owns that figure, which is why the derived form is the
+ *   default. `index` and `heading` are the header's copy and belong to the page.
  * - **The whole row is the anchor.** The card's anatomy is one `<a>` per entry,
  *   so the row's parts live inside it and a reader clicks the row rather than a
  *   word in it. The global link rule underlines every plain anchor, which on a
@@ -37,8 +35,9 @@
  *   trace under it. No hydration directive, no inline code and no state class:
  *   the block ships HTML and CSS and nothing else (`DESIGN.md` Q8 leaves the
  *   layer unowned).
- * - **No page conversion.** The surfaces that consume this block move in their
- *   own cards, one at a time.
+ * - **The block is a section, not a page.** It prints its own header, rows and
+ *   foot, and no page wrapper: the surface around it owns the band, the card and
+ *   the heading level above its `h2`.
  *
  * The heading is the block's `h2`, never an `h1`: a page owns the level-one
  * heading, and an archive is a section of a page.
@@ -76,7 +75,7 @@ const Printed =
 /**
  * The archive's own state. A set with no entries is empty whether or not the
  * caller says so - an archive that prints a heading and a `0` over nothing is a
- * page with a hole in it, which is exactly what this block used to do.
+ * page with a hole in it.
  */
 const State = state ?? (entries.length === 0 ? "empty" : "rest");
 
@@ -135,7 +134,7 @@ const Marked = Printed.some((Entry) => Entry.marker !== undefined);
 /**
  * The header's count: the page's own string when it passes one (`52 ENTRIES`),
  * else the list's length. The derived form cannot drift from the rows under it,
- * which is the whole reason it is the default rather than a second prop.
+ * which is why it is the default; a page that passes a string owns that figure.
  */
 const Count = count ?? String(entries.length);
 

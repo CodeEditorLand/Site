@@ -2,16 +2,17 @@
 // to be small.
 //
 // ─── WHY THIS LAYER EXISTS ────────────────────────────────────────────────
-// Ten cards built the frame, the surfaces, the record grammar and the type
-// system. What none of them could own is the difference between a system applied
-// and a page designed: the optical edge of a tracked label, the way a rule meets
-// a band's edge, the hanging mark on a proposition, the figures in a ledger that
-// do not shift when a value changes, the hover that reads as ink instead of
-// colour. None of it is a new idea. All of it is the difference the reader feels.
+// The frame, the surfaces, the record grammar and the type system are the
+// system applied. What none of them can own is the difference between a system
+// applied and a page designed: the optical edge of a tracked label, the way a
+// rule meets a band's edge, the hanging mark on a proposition, the figures in a
+// ledger that do not shift when a value changes, the hover that reads as ink
+// instead of colour. None of it is a new idea. All of it is the difference the
+// reader feels.
 //
 // So this layer is deliberately not a block layer and not a token layer. It
 // changes no name, adds no component to the record grammar and sets no new
-// ladder step. It is the place where four laws are written down once and applied
+// ladder step. It is the place where five laws are written down once and applied
 // to the artifacts that already exist:
 //
 //   FIGURE   a number is set as a figure: one column, tabular, tracked as a
@@ -20,7 +21,10 @@
 //            first letter, not on its first quote.
 //   RULE     a hairline has two inks and one clearance, and a rule that closes a
 //            band runs to the band's edge.
-//   INK      a hover is ink; the accent authenticates and never decorates.
+//   INK      a hover is ink on a link that rests on a rule; the accent
+//            authenticates and never decorates.
+//   RHYTHM   a band owns its own spacing, a block may not open or close it, and
+//            two measures cap every line.
 //
 // ─── WHY IT LOADS LAST ────────────────────────────────────────────────────
 // Every rule here refines a declaration a partial already makes, so this file

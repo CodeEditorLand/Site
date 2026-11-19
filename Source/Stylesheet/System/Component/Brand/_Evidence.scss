@@ -11,10 +11,9 @@
 //
 // ─── WHY THE BLOCK HAS A PARTIAL OF ITS OWN ───────────────────────────────
 // The rest arm paints nothing - an `<img>` with `object-fit: cover` and the
-// host's own box is the whole of it - so this file would have had no reason to
-// exist while a plate always had a photograph. It exists because the block
-// gained two compositions that DO paint: an absence and a skeleton. The Brand
-// family had no stylesheet before this; it has one for exactly the arm that is
+// host's own box is the whole of it - so a plate that always had a photograph
+// would need no stylesheet. The block has two compositions that DO paint: an
+// absence and a skeleton, and this partial exists for exactly the arm that is
 // more than an image.
 //
 // ─── THE ABSENCE IS AN INSET, NOT A HOLE ──────────────────────────────────

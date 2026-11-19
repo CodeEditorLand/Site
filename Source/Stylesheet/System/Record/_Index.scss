@@ -60,12 +60,14 @@
 //    renumbers nothing, re-cases nothing, and invents no slash, colon or figure.
 //
 // ─── DENSITY ──────────────────────────────────────────────────────────────
-// Density is one axis per block and it is never type size. Band has none (a band
-// is air); Entry's `surface="bare"` is the dense reading of a record inside a
-// card; Ledger has `columns` for layout and `density="register"` for the reading
-// that turns the same facts into a table; Matrix has `density="dense"`; Stage
-// uses `orientation` and `variant`; Archive is dense by construction; Compare has
-// none (a rail that compresses becomes a table, and a table is the matrix);
+// Density is one axis per block and it is never type size. Band has none at rest
+// (a band is air) and `--dense` only when it is a section inside an artifact;
+// Entry has `surface="bare"` for a record inside a card and `--dense` for the
+// register reading of the same record; Ledger has `columns` for layout and
+// `density="register"` for the reading that turns the same facts into a table;
+// Matrix has `density="dense"`; Stage uses `orientation` and `variant`; Archive
+// is dense by construction; Compare has none (a rail that compresses becomes a
+// table, and a table is the matrix);
 // Well, Pair, Aside, Margin, Figure, Hero, Trace, Failure, Instrument, Plate,
 // Stamp, Inset, Transcript and PlateSet have none - a command must not compress,
 // evidence gets its size, a disclosure that is compressed cannot be opened, a
@@ -77,7 +79,7 @@
 //
 // ─── NARROW ───────────────────────────────────────────────────────────────
 // Every block states its own narrow behaviour in its partial, and "squeezed" is
-// not one of them. The two that needed work: the matrix pins its row label so a
+// not one of them. Two do more than stack: the matrix pins its row label so a
 // comparison is read one row at a time with the row's name still attached, and
 // the pair rotates its gutter so two things read against each other stay one
 // frame when they stack.

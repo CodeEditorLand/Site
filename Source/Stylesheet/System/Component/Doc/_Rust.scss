@@ -19,15 +19,15 @@
 //   .doc-rust__back        the way back into the documentation
 //
 // ─── THE REGISTER IS A LEDGER, NOT A GRID OF TILES ────────────────────────
-// The nine crates used to be five tiles across the 5fr pane: 51px each, and
-// 19px of text inside a tile's own padding - two and a half characters at 13px,
-// which is a description printed as a column of fragments. The list is not a
-// matrix of equals; it is nine rows with one note each, so it is a ledger: the
-// name in a fixed column, the arrow beside it, the note taking the rest of the
-// row at the caption measure. Nine rows at the band's full width give the note
-// 484px (62ch) at 1024 and 612px (78ch) at 1280 - the measure the descriptions
-// were written for - and the row's own hairline does the separating, so the nine
-// boxes are gone and nothing in the row was dropped.
+// The nine crates are not a matrix of equals; they are nine rows with one note
+// each, so they are a ledger: the name in a fixed column, the arrow beside it,
+// the note taking the rest of the row at the caption measure. Five tiles across
+// the 5fr pane would give each one 51px - 19px of text inside a tile's own
+// padding, two and a half characters at 13px, which is a description printed as
+// a column of fragments. Nine rows at the band's full width give the note 484px
+// (62ch) at 1024 and 612px (78ch) at 1280 - the measure the descriptions were
+// written for - and the row's own hairline does the separating, so nothing in
+// the row is dropped.
 //
 // ─── THE INSTRUMENT IS STACKED AND BLED ───────────────────────────────────
 // `ShellPanes--stack`: the register is the band, the frame is the surface, and
@@ -50,14 +50,24 @@
 // `overflow: hidden`: `hidden` makes the viewer a scroll container and a sticky
 // child would have nothing to stick to.
 //
+// The frame itself - its element, its `sandbox` and its tab list - is
+// `Source/Component/Doc/RustViewer.astro`'s; this partial owns only the box they
+// sit in. The sandbox is `allow-scripts allow-same-origin allow-popups
+// allow-top-navigation-by-user-activation`: rustdoc needs scripts and its own
+// origin to render, and the two navigation permissions are the reader's own
+// gesture. That list is written once, in `RustViewer.astro`; nothing in this
+// partial can widen or narrow it, so the contract is the markup's and the
+// stylesheet must not pretend to state it.
+//
 // The active tab is marked twice - `aria-selected` in the markup and an inverted
 // fill here - so the state is not colour-only. The fill is `ink-invert`, the same
 // tier a band's one expressive element uses, because the tab bar is this page's
 // single expressive moment.
 //
-// The frame is 70vh: it is a viewport into another site, and the one number that
-// makes it read as a window rather than a strip. It is a literal on purpose and
-// the only one in this partial.
+// The frame is 70vh: it is a viewport into another site, and the number that
+// makes it read as a window rather than a strip. It is a viewport fraction and
+// not a token because it describes the window, not the page - and it is a
+// literal here on purpose, unlike the column widths below, which are measures.
 @use "../../Mixin" as *;
 
 .doc-rust {
@@ -160,7 +170,9 @@
 	color: var(--MuteForeground);
 
 	/* The site's own measure, so a note never runs wider than the prose above
-	   it: at 1280 the row gives the note 78ch and this caps it at 72. */
+	   it: `--Measure` is clamp(72ch, 40ch + 25vw, 88ch), which at 1280 resolves
+	   to ~81ch of caption - wider than the row's 78ch - so at 1280 the row's own
+	   width holds the line and the cap takes over above that window. */
 	max-inline-size: var(--Measure);
 
 	text-wrap: pretty;
@@ -248,10 +260,10 @@
 .doc-rust__tab--active {
 	@include ink-invert;
 
-	/* The label's ink, stated after the include that paints the fill - the order
-	   rule `.surface-button` keeps for the same reason. `.doc-rust__tab` set
-	   `color` to the muted ink, and a fill that does not restate its label is a
-	   filled control with a 3.10:1 word in it. */
+	/* `ink-invert` paints the fill AND its label together (`--Primary` fill,
+	   `--PrimaryForeground` label); the label is restated here so the active
+	   tab's ink does not depend on which rule the cascade reaches last -
+	   `.doc-rust__tab` above sets `color` to the muted ink. */
 	color: var(--PrimaryForeground);
 
 	border-color: var(--Primary);

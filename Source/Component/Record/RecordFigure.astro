@@ -22,6 +22,9 @@
  *                                  nothing (a figure whose evidence is its
  *                                  sentence)
  *                   captionPlacement? -> `below` (default) or `channel`
+ *                   folio?      -> the figure's own folio, printed above the caption
+ *                   open?       -> the caption becomes the disclosure's summary
+ *                   next?       -> the tombstone's next step
  *                   state?      -> the tombstone: the evidence is not there
  * MAY HOLD          composed media in the slot. The block never renders Mermaid
  *                   itself - the caller owns the diagram and its output.
@@ -30,7 +33,7 @@
  * WIDE              the frame takes the column it is given; the caption is
  *                   measure-capped at 62ch so it never runs wider than the prose
  *                   it belongs to. In the `channel` placement the caption takes
- *                   a 24-28ch column of its own beside the plate.
+ *                   an 18-26ch column of its own beside the plate.
  * NARROW            the frame goes full-bleed to its container, the caption
  *                   stays at caption weight under it, and the provenance wraps
  *                   to its own line rather than truncating. A diagram wider than

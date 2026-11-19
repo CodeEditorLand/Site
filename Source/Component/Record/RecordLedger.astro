@@ -19,11 +19,11 @@
  * `surface` changes only whether the shell wears the `.emphasis-standard` tier,
  * and each row's `note`/`lead` change only that row's own markup.
  *
- * ─── THE ROW DOES MORE THAN ONE THING NOW ─────────────────────────────────
+ * ─── THE ROW DOES MORE THAN ONE THING ─────────────────────────────────────
  * The rows are printed by `LedgerRow.astro`, which owns the row's grammar
- * so the row and the row-that-opens cannot print the same fact two ways. Three
- * row-level shapes were added by the record family's state matrix, and each one
- * came from a combination the site never met:
+ * so the row and the row-that-opens cannot print the same fact two ways. Four
+ * row-level shapes sit on top of the plain row, and each one is a combination a
+ * page can reach without changing the row's anatomy:
  *
  * - `selected` - the marked row of a set (`aria-current` + the attested square);
  * - `total` - the set's sum, under a heavier rule and at the sub role;
@@ -32,8 +32,8 @@
  *   vocabulary) and a fact older than the page (`AS OF:`), the PARTIAL and
  *   STALE states as fields rather than as colours.
  *
- * None of them changes what a plain row prints, and every one of them is
- * additive: a `LedgerRow` written before this wave renders exactly as it did.
+ * None of them changes what a plain row prints: a row with none of these fields
+ * renders exactly as a plain row.
  *
  * ─── THE REGISTER IS NOT A STRING ─────────────────────────────────────────
  * A register line above the rows is a `Register` (`RegisterLine.ts`): a label
@@ -76,8 +76,7 @@ interface Props {
 	 * The prop is a `Register`, never a string: `{ label, count }`, built by
 	 * `RegisterOf(label, rows)` (or `RegisterCount` / `RegisterUnavailable` when
 	 * the figure is not a row count). A bare string cannot express a register
-	 * without its count, so it is not accepted - that was the defect this shape
-	 * exists to end.
+	 * without its count, so the type does not accept one.
 	 *
 	 * The mark and the count belong to the block: the count is recomposed from
 	 * `rows` below, so a figure that arrives from a stale source cannot outlive
@@ -103,7 +102,7 @@ interface Props {
 	 * table: two columns at 1024px and up, a hairline between the columns, keys
 	 * at the row register and values under them, and the count after the
 	 * register line's name. The type step does not change - a fact that needs
-	 * 12px to fit needs a matrix, not a denser ledger.
+	 * 13px to fit needs a matrix, not a denser ledger.
 	 */
 	density?: LedgerDensity;
 

@@ -17,6 +17,9 @@
 //                   .record-failure__key           `SYMPTOM:`, `CAUSE:`, `NEXT:`
 //                   .record-failure__value         the field's text
 //                   .record-failure__source        `SOURCE:` and where it is documented
+//                   .record-failure--dead-end      no recovery path: the NEXT row's rule goes structural
+//                   .record-failure__recovery      the destination the sentence names, under it
+//                   .record-failure__detail        the log line or reproduction, folded under the fields
 // MAY HOLD          nothing.
 // NARROW            the key moves above its value, one field per line; the next
 //                   step wraps in its own column and keeps its leading mark.
@@ -33,7 +36,9 @@
 //
 // `NEXT:` is the only field that carries an emphasis, and it is a rule rather
 // than a colour: the last field's own value takes a 2px leading mark. The ink
-// palette has one accent and it authenticates; a failure does not get it.
+// palette has one accent and it authenticates, so the failure's own chrome never
+// takes it - the one accent here is the recovery link's, because a link's
+// destination is exactly what the accent is for.
 
 @use "../Mixin" as *;
 

@@ -10,11 +10,10 @@
  *     # BLOG / 08 ENTRIES
  *
  * ─── WHY THIS MODULE EXISTS ───────────────────────────────────────────────
- * A register used to travel as a bare string. That is the defect the wave kept
- * re-fixing at the call site: a caller could hand in `WHAT CHANGES` and the line
- * arrived without its count, or hand in `# WHAT CHANGES / 99` and the number
- * outlived the eight rows under it. A string can express a register without a
- * count, so no amount of care at the call site makes the grammar safe.
+ * A bare string can express a register without a count, and no amount of care at
+ * the call site makes the grammar safe: a caller hands in `WHAT CHANGES` and the
+ * line arrives without its figure, or hands in `# WHAT CHANGES / 99` and the
+ * number outlives the eight rows under it.
  *
  * `Register` is an object whose `count` is required: a register without a count
  * cannot be written down. The four constructors are the only sanctioned ways to
@@ -26,7 +25,7 @@
  *     RegisterUnavailable("CHECK")         the count cannot be known, and says so
  *     RegisterWindow("PLATES", 12, 240)    the too-much state: `12 OF 240`
  *
- * ─── THE SENTENCE A FUTURE CARD SHOULD READ ───────────────────────────────
+ * ─── THE RULE ─────────────────────────────────────────────────────────────
  * **A register is a `Register`, never a string.** If a block prints a register,
  * its prop is this shape; if the block holds the rows the register counts, build
  * it with `RegisterOf(label, rows)` and let the block recompose the count from
@@ -153,13 +152,11 @@ export const RegisterUnavailable = (
  * The register of a set that is too large to print: the count is the window and
  * the set it was cut from - `12 OF 240`.
  *
- * This is the too-much state as a line rather than as a note, and it exists
- * because the alternative was a second vocabulary: `RecordPlateSet` printed
- * `SHOWING: 12 OF 240` in its own foot while every other block printed a
- * register, so the one state that most needs its figure (a set longer than the
- * page) was the one state whose figure did not travel in the register's shape.
- * A window is still a count - it is the count of what the reader is holding plus
- * the count of what exists - and it is stated in the register's own grammar.
+ * This is the too-much state as a line rather than as a note. A block that
+ * prints `SHOWING: 12 OF 240` in a foot of its own has invented a second
+ * vocabulary for the one state that most needs its figure: a window is still a
+ * count - the count of what the reader is holding plus the count of what exists -
+ * and it is stated in the register's own grammar.
  *
  * `total` is a string for the same reason `Register.count` is: a figure the
  * block does not hold may arrive as text, and a total that cannot be known is

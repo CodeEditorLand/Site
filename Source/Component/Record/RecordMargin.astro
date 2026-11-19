@@ -17,12 +17,13 @@
  *                   note.body     -> the claim: one to three sentences
  *                   note.link?    -> `→ LABEL`, or the tombstone when `gone`
  *                   note.source?  -> `SOURCE: ...`, or `SOURCE: UNAVAILABLE`
+ *                   note.asOf?    -> `AS OF:` and the date the note was taken
  * MAY HOLD          nothing. A note is a marker, a claim, a destination and a
  *                   source. A block in the margin would be a second claim in a
  *                   place too narrow to read it.
  * MAY NOT HOLD      a figure, a well, another note, or a heading - the note is
  *                   printed beside a heading, never as one.
- * WIDE (>=1024)     the note hangs on a hairline at its left, at a 26ch measure:
+ * WIDE (>=1024)     the note hangs on a hairline at its left, at a 30ch measure:
  *                   it is a marginalium, and a marginalium that runs the width
  *                   of the column is a paragraph that lost its place.
  * NARROW            the hairline rotates to a top rule and the note takes the
@@ -33,10 +34,10 @@
  *
  * THE SOURCE ROW ALWAYS PRINTS. A note whose claim has no provenance prints
  * `SOURCE: UNAVAILABLE` - the partial state is a fact about the note, and a note
- * that quietly omits its source row is a claim the reader cannot check. This is
- * the one place in the layer where a missing field is printed rather than
- * skipped, and it is deliberate: the margin is where an unsourced claim would
- * do the most damage.
+ * that quietly omits its source row is a claim the reader cannot check. The
+ * margin note and `RecordInset` are the two blocks that print a missing field
+ * rather than skipping it, and both are deliberate: marginal apparatus is where
+ * an unsourced claim does the most damage.
  *
  * THE TOMBSTONE. `link.state === "gone"` prints `◎ TARGET GONE` with the label
  * the note named and the route it used to have, instead of an anchor. A record

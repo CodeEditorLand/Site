@@ -3,9 +3,9 @@
  * DocAppendix - one of the three artifacts that close the documentation index.
  *
  * They share a shape - an `h2`, then one panel holding a sentence and a set of
- * destinations - and differ only in how the destinations print. The baseline
- * rendered three different bodies, so this file has three branches and switches
- * on `appendix.Kind` rather than on the heading:
+ * destinations - and differ only in how the destinations print. This file has
+ * three branches and switches on `appendix.Kind` rather than on the heading, so
+ * a heading is free to change without changing the body:
  *
  * - **`architecture`** - the fifteen elements as a badge strip, then one link
  *   out to the organisation. Each badge is an anchor, so the element a reader
@@ -32,11 +32,10 @@ interface Props {
 	 * The artifact's own state. `rest` prints its body; `empty` and `loading`
 	 * print the panel's absence under the same heading and lede.
 	 *
-	 * The three appendices are the index's last three subjects, and until this
-	 * prop existed a build that could not read one of them printed an `h2`, a
-	 * sentence and then nothing - a heading over a hole at the foot of the page
-	 * a reader scrolls to when they want the map. The absence is the panel's
-	 * own: the sentence stays, the mark says what is missing.
+	 * The three appendices are the index's last three subjects, and the absence
+	 * is the panel's own: a build that cannot read one of them keeps the `h2` and
+	 * the sentence and states what is missing, because a heading over a hole at
+	 * the foot of the page is what a reader scrolls to when they want the map.
 	 */
 	state?: "rest" | "empty" | "loading";
 

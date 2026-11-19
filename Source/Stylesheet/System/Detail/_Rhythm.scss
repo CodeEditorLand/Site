@@ -18,8 +18,8 @@
 // ─── THE MEASURE ──────────────────────────────────────────────────────────
 // Two caps, no third: `--MeasureOpening` (62ch) for anything that opens a
 // surface - a standfirst, a caption, an empty state's sentence - and `--Measure`
-// (72ch) for running prose. A third value is a fourth decision, and the page's
-// right edge goes ragged in a way no reader can name.
+// (clamp(72ch, 40ch + 25vw, 88ch)) for running prose. A third value is a fourth
+// decision, and the page's right edge goes ragged in a way no reader can name.
 //
 // ─── THE CLOSING ──────────────────────────────────────────────────────────
 // A record closes on its last fact, not on a rule it did not earn: the ledger

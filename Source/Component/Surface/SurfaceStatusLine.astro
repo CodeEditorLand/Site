@@ -12,14 +12,14 @@
  *   STATUS: WORD   ROUTE: /PORTAL   SOURCE: RELEASE RECORD   BUILT: 2026-11-18
  *
  * - The state word comes from `State.ts` through `SurfaceState`, so a page
- *   cannot choose a tone for a word the vocabulary does not own. The 2px marker
- *   is the register's own and survives greyscale.
+ *   cannot choose a tone for a word the vocabulary does not own. The state
+ *   square is the register's own and survives greyscale.
  * - The declarations are the audit trail of that word: the route it is read at,
  *   the source that produced it, and the date the page was built. They are the
  *   surface's *own* facts, passed in - this block invents none of them.
  *
- * The block is one row at every width it can hold, and wraps to two rows of
- * key/value pairs below 640px. It is never a card and never a second ledger: the
+ * The block is one row while it fits and wraps to a second line of key/value
+ * pairs when it does not. It is never a card and never a second ledger: the
  * ledger under it stays the surface's facts, this row stays its state.
  *
  * No script and no hydration: a status line is static.

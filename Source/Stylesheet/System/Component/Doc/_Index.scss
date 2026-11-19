@@ -31,27 +31,24 @@
 //   .doc-archive             the closing RecordArchive, at chapter distance
 //   .doc-index__back         the index's back-to-top line
 //
-// ─── NO `!important` ON A LINK'S LINE ─────────────────────────────────────
+// ─── ONE LINE PER LINK, AND NO `!important` TO GET IT ─────────────────────
 //
-// Every link in this file once wrote `text-decoration: none !important` (and
-// `underline !important` on hover) because it was fighting the sitewide prose
-// underline: that selector was written as a chain of eleven
-// `:not([class*=...])`, scored (0,11,1) and beat every component rule on the
-// site. `System/_Global.scss` now wraps the same exclusion chain in `:where()`,
-// which contributes no specificity, so the prose default is a bare `a` (0,0,1)
-// and any component class (0,1,0) wins without shouting. The `!important`s are
-// gone: they were never about these links, and left in place they would have
-// out-ranked the next card's attempt to state a treatment here. Each link below
-// paints exactly one line - the one its role asks for.
+// The sitewide prose underline in `System/_Global.scss` sits inside `:where()`,
+// so the exclusion chain that would otherwise score (0,11,1) contributes no
+// specificity: the prose default is a bare `a` (0,0,1) and any component class
+// (0,1,0) wins it outright. Every link in this file therefore states its own
+// `text-decoration` and none of them reaches for `!important` - one would
+// out-rank the next card's attempt to state a treatment on the same element.
+// Each link below paints exactly one line: the one its role asks for.
 //
 // ─── WHY A CARD GRID ──────────────────────────────────────────────────────
 //
-// This is what the baseline rendered: ten `<section>`s, each a `h2` over a
-// three-across grid of `jelly-card`s, with a three-across masthead above them.
-// `DESIGN.md` §3.2 argues the opposite - a row ledger - and the fidelity rule
-// for this programme is explicit that the render wins and the disagreement is
-// reported. So the grid is back, and the ledger's row grammar lives on only in
-// the sidebar, where a tree is what a reader wants.
+// The composition is ten `<section>`s, each a `h2` over a three-across grid of
+// `jelly-card`s, with a three-across masthead above them. `DESIGN.md` §3.2
+// argues the opposite - a row ledger - and the fidelity rule for this
+// programme is explicit that the render wins and the disagreement is reported.
+// So the grid stands, and the ledger's row grammar lives on only in the
+// sidebar, where a tree is what a reader wants.
 //
 // ─── ONE SURFACE PER OBJECT ───────────────────────────────────────────────
 //
@@ -63,15 +60,15 @@
 //
 // ─── THE COLUMN IS THE MEASURE, NOT THE WINDOW ────────────────────────────
 //
-// The three ways in used to go three-across at `bp(768px)` - a viewport query
-// deciding a column count for a row that does not span the viewport. The index
+// The row is decided by the COLUMN, not by the window: a `bp(768px)` query was
+// answering "three across" for a row that does not span the viewport. The index
 // sits in the reading shell's main track (26ch of rail out of a 72rem shell),
-// so its column is ~49.4rem (790px) wide at every desktop width while the query
-// said "three across" from 768 up. Measured: three columns of 242px left a
-// feature card 178px of text, and "Report a Bug or Request a Feature" (33
-// characters, L tier 3.25rem = 52px, 1ch = 0.6em = 31.2px) needed six lines in
-// it. The headings are the page's voice and they do not shrink (`DESIGN-BRIEF`
-// §5.1: improve is enhance, never simplify) - the column count moves instead.
+// so its column is ~49.4rem (790px) wide at every desktop width. Measured,
+// three columns of 242px leave a feature card 178px of text, and "Report a Bug
+// or Request a Feature" (33 characters, L tier 3.25rem = 52px, 1ch = 0.6em =
+// 31.2px) needs six lines in it. The headings are the page's voice and they do
+// not shrink (`DESIGN-BRIEF` §5.1: improve is enhance, never simplify) - the
+// column count moves instead.
 //
 // So the row is a `@container doc-index` query, and the container is the body
 // the row sits in. `.doc-article__body` is named only on a page that holds a
@@ -98,7 +95,7 @@
 // their floor is the card's legibility rather than a heading's measure. Three
 // across still fires at the index's 49.4rem track - the baseline's map (§2.4
 // D8) is unchanged at 1280+ - and stops firing at 1024-1279, where the track is
-// 41.4rem and a viewport query used to force three columns of 199px into it.
+// 41.4rem and a viewport query would force three columns of 199px into it.
 @use "../../Mixin" as *;
 
 /* ─── THE WAYS IN ───────────────────────────────────────────────────────── */
@@ -155,16 +152,13 @@
 /* ─── THE CHAPTER TIER ──────────────────────────────────────────────────── */
 //
 // A section's heading is a chapter title, and a chapter title is an `h2` - L,
-// the section head's tier (`_Type.scss`, THE ELEMENT LADDER). This page used to
-// step it to S (18px) because at 1440 the `h1` and the ten section headings
-// both rendered at 52px and the page read as eleven equal claims. That
-// measurement was right about the symptom and wrong about the cause: eleven
-// headings of one size is what a page of eleven chapters looks like when the
-// title is also a functional `h1` at L (§2.4 gives a functional `h1` L, and this
-// page's title is one). What separates the title from the chapters is the
-// chapter boundary - the `--space-chapter` air, the kicker and the rule - not a
-// size between the tiers, which the identity forbids. So the chapter takes the
-// ladder, and the step down is gone.
+// the section head's tier (`_Type.scss`, THE ELEMENT LADDER). Eleven headings of
+// one size is what a page of eleven chapters looks like when the title is also a
+// functional `h1` at L (§2.4 gives a functional `h1` L, and this page's title is
+// one) - so what separates the title from the chapters is the chapter boundary,
+// the `--space-chapter` air, the kicker and the rule, not a size between the
+// tiers, which the identity forbids. The chapter takes the ladder; there is no
+// step down.
 //
 // The kicker above it keeps the label voice (`/ELEMENTS␁16 PAGES`, tracked,
 // muted), so a chapter still reads as filed, not as loose.
@@ -190,10 +184,10 @@
    note at seven, and a card that narrow is a column of words. Three across
    needs 3 x 15rem + 2 x 1rem = 47rem, two needs 31rem.
 
-   Measured, this is what changes: the index's track is 49.4rem at 1280+ (three
-   across, unchanged - the baseline's map, §2.4 D8) and 41.4rem at 1024-1279,
-   where a viewport query used to force three columns of 199px inside a 662px
-   track. The two-line rule applied to the longest title here (52ch, e.g.
+   Measured, this is what the container decides: the index's track is 49.4rem at
+   1280+ (three across, unchanged - the baseline's map, §2.4 D8) and 41.4rem at
+   1024-1279, where a viewport query would force three columns of 199px inside a
+   662px track. The two-line rule applied to the longest title here (52ch, e.g.
    "Creating and Interacting with an Integrated Terminal") would ask 19.6rem a
    card - 60.65rem for three - and would collapse the map to two across at
    every width; that is a composition change, not a fit fix, so the floor is
@@ -237,13 +231,12 @@ jelly-card.doc-card__surface {
 	inline-size: 100%;
 }
 
-/* The card is the link, so nothing in it is underlined: the baseline's cards
-   were `jelly-card`s with a click handler and carried no rule at all. The
-   site's accessibility rule (`_Global.scss`) underlines every anchor through
-   ten `:not()` selectors, which no single class can outrank - hence the one
-   `!important` in this partial, on a property the card must not show. The
-   title and the note are one destination; a rule under either of them says
-   "this is a link inside a card", which is not what the card is. */
+/* The card is the link, so nothing in it is underlined: a rule under the title
+   or the note would say "this is a link inside a card", which is not what the
+   card is. `Stylesheet/System/State/_Card.scss` states that rest rule for the
+   family - `$Card` lists `.doc-card__link` - and this declaration repeats it at
+   the component's own specificity, so the card never depends on the state
+   layer's selector list to stay unlined. */
 .doc-card__link {
 	display: block;
 
@@ -259,13 +252,14 @@ jelly-card.doc-card__surface {
 	// The accent authenticates a destination, and a pointer over a block link is
 	// about to open one - so the TITLE takes the hue and the rule follows it
 	// (`currentColor`), while the note stays `--CardForeground`: it is the card's
-	// context, not the place the pointer goes.
-	//
-	// This was once a wash over every word in the card, note included, and the
-	// correction for that wash removed the hue from the title as well. That took
-	// the good half out with the bad: the note was right to stay in ink, the
-	// destination was not. `Stylesheet/System/State/_Card.scss` states the
-	// family's law - destination accent, context ink, underline always.
+	// context, not the place the pointer goes. A wash over every word in the card
+	// spends the hue on the note; taking the hue off the title instead leaves the
+	// destination unmarked. `Stylesheet/System/State/_Card.scss` states the
+	// family's law - destination accent, context ink, rule in `currentColor` -
+	// and `State/_Link.scss` records why a BLOCK link is marked while a route
+	// link's state is its own line. This restates the law at the component's own
+	// specificity so the card's hover does not depend on the state layer's
+	// `:where()` floor.
 	&:hover .doc-card__title {
 		color: var(--Accent);
 
@@ -436,8 +430,10 @@ jelly-card.doc-card__surface {
 	text-decoration: none;
 
 	// A route link in the appendix's foot: it has no context cell of its own, and
-	// its state is the rule. The accent is for a destination LABEL with context
-	// beside it (`State/_Card.scss`); here the label is the whole thing, so the
+	// its state is the rule. `State/_Link.scss` files it in the ROUTE register:
+	// the links whose hover moves the line to the ink and leaves the words
+	// alone. `State/_Card.scss` gives the hue to BLOCK links, whose title is a
+	// destination inside a context. Here the label is the whole thing, so the
 	// underline is the state and the hue is not.
 	&:hover {
 		text-decoration: underline;

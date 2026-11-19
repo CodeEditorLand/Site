@@ -15,13 +15,17 @@
 //                   .record-trace__note          `↳` and the one thing the step carries
 //                   .record-trace__note-mark     `↳`, aria-hidden
 //                   .record-trace__source        `SOURCE:` and where the trace came from
+//                   .record-trace__source-key    the `SOURCE:` label, tracked
+//                   .record-trace__bar           a value's stand-in while the paths load
+//                   .record-trace__step--skeleton  a step whose path has not arrived
 //                   .record-trace__empty         what the trace says with no steps
 // MAY HOLD          nothing.
 // NARROW            the note moves under the path, indented past the index column;
 //                   a long path wraps inside its own line and never pushes the
 //                   note off the row.
-// WIDE (>=768)      the path takes the left measure and the note a 20ch column at
-//                   the right, so fifteen traces down a page align on the note.
+// WIDE (>=768)      the path takes the left measure and the note a
+//                   `minmax(14ch, 20ch)` column at the right, so fifteen traces
+//                   down a page align on the note.
 // DENSE             none, by design. A trace is a reading: compressing it produces
 //                   a list of links, and a list of links is not evidence.
 //
@@ -175,13 +179,11 @@
 }
 
 // ─── THE LOADING TRACE ────────────────────────────────────────────────────
-// The type contract has always said a loading trace prints skeletons; until the
-// record family's state matrix the block only changed the marker to `LOADING`
-// and printed nothing under it, so a trace that was being read looked exactly
-// like a trace that had failed. The skeleton is the trace's own shape: the index
-// in ink (the steps' order is known), a hairline bar where the path will be, and
-// a shorter one in the note's column. Drawn, never animated - the site has no
-// pulse, and a pulsing bar is a spinner wearing a rectangle.
+// A loading trace prints the trace's own shape: the index in ink (the steps'
+// order is known), a hairline bar where the path will be, and a shorter one in
+// the note's column. A marker that said `LOADING` over nothing would read exactly
+// like a trace that had failed. Drawn, never animated - the site has no pulse,
+// and a pulsing bar is a spinner wearing a rectangle.
 .record-trace__bar {
 	display: block;
 	block-size: 0.5rem;

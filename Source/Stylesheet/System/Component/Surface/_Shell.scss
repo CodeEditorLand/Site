@@ -1,12 +1,14 @@
 // SurfaceShell - the shared shell of the two app surfaces (portal, dashboard).
 //
-// Both pages are tools: they open with a record marker, one h1 at section
-// weight, one sentence, and a status ledger, then stack bands. The shell owns
-// the opening only - every band below it is a RecordBand, so nothing here
-// touches band rhythm, surfaces or headings.
+// Both pages are tools: they open on `SurfaceHead` (a record marker, one `h1`,
+// one sentence, the status line and the facts ledger) and stack regions under
+// it. The wrapper owns the field and the ink; every region below it is a band or
+// a `SurfaceRegion`, so nothing here touches band rhythm, surfaces or headings.
 //
 // Publishes:
 //   .surface               the shell, on the page canvas
+//   --- the earlier opening: no markup emits the group below; `SurfaceHead`
+//       owns the opening now (`.surface-head`, at the end of this file) ---
 //   .surface__head         the opening block
 //   .surface__head-inner   the one inner container, on the band gutters
 //   .surface__index        the record marker, mono meta
@@ -17,8 +19,6 @@
 //   .surface__state-row    one state row, on the ledger's own key column
 //   .surface__state-key    the mono key a state is stated under
 //   .surface__state-word   the state word, at its tone's ink
-//   .surface__mark         (retired) the 2px rule a state carried; the mark
-//                          layer's square is the state mark now
 //   .surface__chips        a row of state chips, each in a `jelly-badge`
 //   .surface__stack        a dense stack of records at --space-tight
 //   .surface__prose        a paragraph inside a band body
@@ -29,8 +29,8 @@
 //   .surface-button        the INK register: ink fill, creme label - one per
 //                          artifact, and only where the reader commits
 //
-// Owned by P11. Sits beside the Record layer, never inside it: a block's
-// anatomy belongs to the block, and this file writes no `.record-*` selector.
+// Sits beside the Record layer, never inside it: a block's anatomy belongs to
+// the block, and this file writes no `.record-*` selector.
 @use "../../Mixin" as *;
 
 .surface {
@@ -75,9 +75,10 @@
 	text-wrap: balance;
 }
 
-// The field-record brackets: identity, not decoration, so they are the shell's
-// own rather than a caller's markup - and they carry no colour of their own
-// beyond the muted ink they always had.
+// The field-record brackets of the earlier opening: identity, not decoration, so
+// they are the shell's own rather than a caller's markup, and they carry no
+// colour beyond the muted ink. The current head (`SurfaceHead`) prints its title
+// bare - `〈 〉` never contains a title.
 .surface__title::before {
 	content: "〈";
 	color: var(--MuteForeground);
@@ -102,11 +103,12 @@
 }
 
 // ─── THE STATE REGISTER ────────────────────────────────────────────────────
-// A state is not a fact (§7). ACTIVE and VERIFIED carry a specimen marker
+// A state is not a fact (§7). ACTIVE and VERIFIED carry the site's state square
 // beside the word, because a status that renders exactly like an ordinary fact
-// has lost its state. The marker is ONE 2px rule at the word's own ink - a
-// shape, so the state survives greyscale and is never colour-only, exactly like
-// the header's `aria-current` rule; the tone travels on the ink.
+// has lost its state. The square is the mark layer's (`Mark/_Square.scss`): one
+// form in `currentColor`, so the state survives greyscale and is never
+// colour-only, and the tone travels on the ink and on the square's step - never
+// on a hue. It is the same shape the register's `STATUS:` row prints.
 //
 // The register sits above the ledger and borrows its geometry: same key column
 // from 640px up, same row rhythm, same interior hairline. A reader sees one
@@ -150,9 +152,9 @@
 
 .surface__state-word--specimen {
 	/* The attested tone: the ink, and the marker's size carries the state
-	   (`Mark/_Square.scss` - a tone and its step are one rule there). It used to
-	   print in the accent, which is the site's authentication colour and not a
-	   state's label ink. */
+	   (`Mark/_Square.scss` - a tone and its step are one rule there). The accent
+	   authenticates a route, a link, a focus and a seal; it is never a state's
+	   label ink. */
 	color: var(--state-ink-attested);
 }
 
@@ -165,9 +167,9 @@
 }
 
 // The marker itself is the mark layer's square (`Component/Mark/Mark.astro`):
-// one form, `currentColor` for its ink, and the tone's own step. The rule that
-// drew a `2px x 0.9em` bar here was the site's fourth state mark and the second
-// shape for one meaning - a bar is not a state, and a state is not a bar.
+// one form, `currentColor` for its ink, and the tone's own step. A bar is not a
+// state and a state is not a bar, so the register prints the square every other
+// block in the family prints.
 //
 // The one place the mark is INLINE in a sentence rather than a flex child: the
 // register's word. The gap is the mark layer's token, not a second spacing
@@ -342,8 +344,7 @@
 }
 
 // A page title prints bare: `〈 〉` contains a runtime stamp, a claim or a
-// platform, never a title (`DESIGN.md` §9 Q7). The brackets this head first
-// carried were the shell's, not the grammar's.
+// platform, never a title (`DESIGN.md` §9 Q7).
 .surface-head__title--display {
 	font-size: var(--type-display);
 	line-height: var(--type-display-line);
@@ -436,10 +437,10 @@
 }
 
 /* ─── THE ABSENT STATE ────────────────────────────────────────────────────── */
-// The one white information box on these surfaces, and the composition every
-// region uses when it has no record: what would be here, why it is not, what to
-// do. It borrows the ledger's key column, so an absent record reads like a
-// record with three facts instead of a placeholder with none.
+// The white information box a region prints when it has no record: what would be
+// here, why it is not, what to do. It borrows the ledger's key column, so an
+// absent record reads like a record with three facts instead of a placeholder
+// with none.
 .surface-absent {
 	display: grid;
 	gap: var(--space-reading);
@@ -514,8 +515,8 @@
 
 .surface-absent__action:hover {
 	// The rule is already the action's marker, so the state moves that rule to
-	// the ink. The accent on this action would compete with the accent rule the
-	// absent surface draws to say what is missing.
+	// the ink. The accent stays with position and authentication; an absence is
+	// neither.
 	color: var(--Foreground);
 
 	border-bottom-color: var(--Primary);
@@ -610,14 +611,13 @@
 // ─── the region in force ──────────────────────────────────────────────────
 // The site's convention in full: `aria-current`, full ink, weight 500, and the
 // 2px accent rule the row reserves on every link (`border-inline-start: 2px
-// solid transparent` above, so the mark arriving moves nothing). This list had
-// three of the four - the attribute, the ink and the rule - and the weight was
-// the one mark missing, and without it a region read as a link that had been
-// clicked rather than as the row the reader is standing in.
+// solid transparent` above, so the mark arriving moves nothing). All four are
+// needed: without the weight a region reads as a link that has been clicked
+// rather than as the row the reader is standing in.
 //
-// THE VALUE IS THE EMITTER'S, NOT THE SELECTOR'S. This rule used to be pinned
-// to `[aria-current="true"]`, which is the one value no other surface on the
-// site speaks: a rail of positions inside a page says `location`, a rail of
+// THE VALUE IS THE EMITTER'S, NOT THE SELECTOR'S. Pinned to
+// `[aria-current="true"]` the rule would speak the one value no other surface on
+// the site speaks: a rail of positions inside a page says `location`, a rail of
 // destinations between pages says `page` (`ShellRail`'s `current` prop is
 // exactly that choice). Matching the attribute by presence, minus the one value
 // that means "not current", keeps the marker on the row whatever the emitter
@@ -659,12 +659,11 @@
 	margin-block-end: var(--space-reading);
 }
 
-/* A region's title is an `h2`, so it is L - the section head's tier
-   (`_Type.scss`, THE ELEMENT LADDER). It used to be the sub step on the
-   argument that a region label is not a chapter; the ladder's answer is that a
-   region IS the section of a functional page, and a section head is L whether
-   the page has one of them or ten. What stays local is the register: a region
-   title is tracked as a name, because it sits beside its own index marker. */
+/* A region's title is an `h2`, so its size is the element ladder's L
+   (`_Type.scss`, THE ELEMENT LADDER): a region IS the section of a functional
+   page, and a section head is L whether the page has one of them or ten. What
+   stays local is the register: a region title is tracked as a name, because it
+   sits beside its own index marker. */
 .surface-region__title {
 	@include track(var(--track-name));
 
@@ -916,9 +915,8 @@
 
 /* ─── THE REGISTER'S TWO COLUMNS AND ITS DENSE STEP ──────────────────────── */
 // A register of eight words is a set, and a set reads across. The two-column
-// form is a container query on the register's own box, because a register in a
-// margin is narrow at every viewport - the same reason `ShellState` queries
-// itself.
+// form starts at the site's 640px `bp` step, not at a container query - so a
+// register in a narrow slot still prints two columns while the window is wide.
 .surface__states--two {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);

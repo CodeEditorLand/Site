@@ -31,8 +31,8 @@
 // two blocks are different artifacts - one is pinned navigation, one is a map at
 // the foot - so they are two partials, but a reader should not be able to tell
 // their rows apart. That is why this file moves whenever `Doc/_Contents.scss`
-// moves: the rule was 1px `--Primary` in both, it is 2px `--Accent` in both now,
-// and the invariant only holds if the two are changed together.
+// moves: the rule is 2px `--Accent` in both, and the invariant only holds if the
+// two are changed together.
 @use "../../Mixin" as *;
 
 .doc-layer {
@@ -95,7 +95,6 @@
    same place on every page. The state is declared unconditionally; only the
    interval is motion's. */
 .doc-layer__marker {
-	/* the disclosure glyph: far end of the summary row */
 	@include mono-meta;
 
 	flex: 0 0 auto;

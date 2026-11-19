@@ -178,8 +178,11 @@ export const TagsOf = ({
 
 		{
 			kind: "meta",
+
 			attribute: "name",
+
 			key: "description",
+
 			value: SafeDescription,
 		},
 

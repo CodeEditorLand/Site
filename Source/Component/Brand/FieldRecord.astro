@@ -15,12 +15,14 @@
  *   STATUS: <STATE>        (FieldRecordStatus)
  *   <METADATA ROWS>        (FieldRecordMetadata - TARGET/LICENSE/SIGNAL etc.)
  *   [ACTION]               (FieldRecordAction, when present)
- *   [SEAL]                 (FieldRecordSeal, upper-right, max 12% width)
+ *   [SEAL]                 (FieldRecordSeal, in the head row, upper-right)
  *
  * Composes the FieldRecordDataCard/Index/Metadata/Seal/Action/Status set
  * exactly like the hero (DynamicHeroSection). The hero renders its own
- * two-panel composition directly and does not use this orchestrator; this
- * template is the single-card surface for element records (F4 series).
+ * two-panel composition directly and does not use this orchestrator. No route
+ * renders this file either: its only consumer is `Specimen/SpecimenComposition`,
+ * so it is the single-card composition the specimen sheet shows, not the
+ * element-record card the homepage prints (`Home/ElementCard`).
  *
  * The seal, the status block and the semantic ledger stay React: the hero
  * island imports them, and a `.tsx` cannot import an `.astro`. Astro renders

@@ -9,7 +9,8 @@
  *   READING    a document read top to bottom: one measure, a rail beside it,
  *              a margin for apparatus. The prose is the page.
  *   WORKSPACE  a place the reader operates: a rail of destinations, panes that
- *              hold the instrument, and a drawer when the pane is too wide.
+ *              hold the instrument, and a drawer for the third instrument that
+ *              fits neither pane.
  *   AUDIT      a claim being checked: a ledger column of the facts, the matrix
  *              they are read across, and wells for the things you can act on.
  *   PLATE      one artifact at full bleed with a caption channel beside it. The
@@ -206,9 +207,9 @@ export const Languages: Readonly<Record<LayoutAnswer, LayoutSpec>> = {
 const Filed: readonly (readonly [string, LayoutAnswer])[] = [
 	// ─── PLATE ───────────────────────────────────────────────────────────
 	// The opening spread is a plate: the keeper pair at full bleed, the trace
-	// foot under both panels, and the legend as its channel. The two pages this
-	// card puts on the language are the 404 and the OAuth callback - each is one
-	// artifact, and each had no caption for it.
+	// foot under both panels, and the legend as its channel. The 404 and the
+	// OAuth callback are one artifact each, and each prints its channel as the
+	// caption.
 	["/", "plate"],
 
 	["/404", "plate"],
@@ -216,10 +217,8 @@ const Filed: readonly (readonly [string, LayoutAnswer])[] = [
 	["/OAuth/Success", "plate"],
 
 	// ─── READING ─────────────────────────────────────────────────────────
-	// The back matter and the manual were the reading pages before this card.
-	// The two pages that join them are the sale letter (prose that was printed
-	// as a card split) and the article's margin channel, which is a reading
-	// composition with its apparatus in the margin.
+	// The back matter, the manual, the sale letter and the article's margin
+	// channel are reading pages: prose with its apparatus in the margin.
 	["/License", "reading"],
 
 	["/Contributing", "reading"],
@@ -253,9 +252,8 @@ const Filed: readonly (readonly [string, LayoutAnswer])[] = [
 	["/Motion", "reading"],
 
 	// ─── WORKSPACE ───────────────────────────────────────────────────────
-	// The dashboard was the workspace before this card. The account surface and
-	// the request routes join it: both are places the reader operates, and both
-	// had their destinations scattered instead of railed.
+	// The dashboard, the account surface and the request routes are workspaces:
+	// places the reader operates, each with its destinations in a rail.
 	["/Dashboard", "workspace"],
 
 	["/Account", "workspace"],
@@ -270,9 +268,9 @@ const Filed: readonly (readonly [string, LayoutAnswer])[] = [
 	["/Compare", "workspace"],
 
 	// ─── AUDIT ───────────────────────────────────────────────────────────
-	// The download record and the index were audits before this card. The
-	// verification route and the portal join them: one checks a token against
-	// four claims, the other checks four tiers against the same feature set.
+	// The download record, the index, the verification route and the portal are
+	// audits: one checks a token against four claims, another checks four tiers
+	// against the same feature set.
 	["/Download", "audit"],
 
 	["/Contents", "audit"],

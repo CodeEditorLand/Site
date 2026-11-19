@@ -19,16 +19,15 @@
  * - **Nothing is required.** With JavaScript off the list is still a list of
  *   anchors that jump to their headings; only the marking is absent. No entry is
  *   hidden, no entry is disabled, and the list is never re-ordered.
- * - **The page has no scroll handler.** Position used to be resolved by a
- *   `scroll` listener comparing `window.scrollY` against offsets cached at wire
- *   time - which is cheap per event, but it is still a handler on the one event a
- *   reader generates sixty times a second, and the cache went stale the moment
- *   the document's geometry changed underneath it (a font landing, an image
- *   decoding, a block below the fold being laid out for the first time). An
- *   `IntersectionObserver` on the headings replaces both: the browser reports the
- *   crossings, the callback reads nothing from layout, and a reflow that moves a
- *   heading moves the observation with it, because the observation *is* the
- *   geometry.
+ * - **The page has no scroll handler.** A `scroll` listener comparing
+ *   `window.scrollY` against offsets cached at wire time is cheap per event, but
+ *   it is still a handler on the one event a reader generates sixty times a
+ *   second, and the cache goes stale the moment the document's geometry changes
+ *   underneath it (a font landing, an image decoding, a block below the fold
+ *   being laid out for the first time). An `IntersectionObserver` on the headings
+ *   replaces both: the browser reports the crossings, the callback reads nothing
+ *   from layout, and a reflow that moves a heading moves the observation with it,
+ *   because the observation *is* the geometry.
  * - **One write per section change.** The callback maintains a set of ids inside
  *   the reading band; the current entry is the first of them in document order.
  *   Nothing is written unless the answer differs from the one already marked, so

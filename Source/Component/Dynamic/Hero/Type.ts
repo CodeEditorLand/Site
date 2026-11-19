@@ -59,7 +59,12 @@ export interface Claim {
 	/** The record's relation to the product, one label long. */
 	readonly relation: string;
 
-	/** The standfirst: one sentence, at most two lines. */
+	/**
+	 * The standfirst: one sentence, at most two lines. The hero does not print
+	 * it - the explanation belongs to the band that opens the document
+	 * structure (`FeatureBand`), and the hero card is one claim, not a claim
+	 * and its gloss. The string is carried so that band has one source.
+	 */
 	readonly standfirst: string;
 }
 
@@ -67,12 +72,16 @@ export interface Claim {
 export interface Status {
 	/**
 	 * The whole status line, e.g. `STATUS: SOURCE ACTIVE`. The component splits
-	 * it so `STATUS:` and its value keep their own inks - the value is the one
-	 * green thing in the row.
+	 * it so `STATUS:` and its value keep their own inks - both ink; the
+	 * attested tone is a 6px square, never a hue (`FieldRecordStatus`).
 	 */
 	readonly copy: string;
 
-	/** The honest qualifiers beside it: installers, extension coverage. */
+	/**
+	 * The honest qualifiers beside it: installers, extension coverage. Carried
+	 * for the manifest that prints them; the hero card prints none - one
+	 * record, one status row.
+	 */
 	readonly chips: readonly string[];
 }
 
@@ -107,9 +116,8 @@ export interface Fact {
  * the first block and only the first block: `DesignSystem-Components.md` §1
  * gives a hero record `TARGET / LICENSE / SIGNAL` and caps it at four metadata
  * rows. The observation block therefore travels to the band that is an
- * observation (`FeatureBand.astro`, the `#features` layer that succeeded the
- * `# OBSERVATION_01` band), where it is printed as the specimen ledger it
- * always was.
+ * observation (`FeatureBand.astro`, the `# OBSERVATION_01` band), where it is
+ * printed as the specimen ledger it always was.
  */
 export interface Metadata {
 	/** The record card's three rows: what the record is. */
@@ -181,7 +189,8 @@ export interface HeroBand {
 
 	/**
 	 * The specimen observation, `SPECIES` / `TEMP` / `WIND`. Not a card row -
-	 * it is the observation `FeatureBand` prints in the `#features` layer.
+	 * it is the observation `FeatureBand` prints in the `# OBSERVATION_01`
+	 * band.
 	 */
 	readonly observation: readonly Fact[];
 

@@ -243,6 +243,7 @@ export interface Entry {
 	/** The groups the family prints its live rows in, and what each asks. */
 	readonly groups: readonly {
 		readonly label: string;
+
 		readonly note: string;
 	}[];
 
@@ -1088,6 +1089,7 @@ export const Bands = {
 /** The register's rows, derived from the tables above. */
 export const Register: readonly {
 	readonly key: string;
+
 	readonly value: string;
 }[] = [
 	{ key: "FAMILIES:", value: String(EntryCount) },

@@ -16,10 +16,10 @@
 // hero are decoration for a reader who is being shown what the thing is made of,
 // and every one of the eight is named again, in a record, further down.
 //
-// It used to open 5rem below the pair and close 5rem after itself, which made a
-// 227px block of it - a third movement under a two-movement artifact. At 2rem
-// and no tail it is what a legend is: a labelled row of eight chips, read in the
-// margin of the thing it explains.
+// It opens 2rem below the pair and closes with no tail of its own: a 5rem
+// interval above and below made a 227px block of it - a third movement under a
+// two-movement artifact. At 2rem and no tail it is what a legend is: a labelled
+// row of eight chips, read in the margin of the thing it explains.
 //
 // The tile is the one place on the homepage with a hover state: it is the only
 // element in the strip that a pointer can find, and the border is the whole of
@@ -36,15 +36,12 @@
 
 // ─── THE ROW IS A CAPACITY LINE, NOT A COLUMN COUNT ───────────────────────
 //
-// The strip used to print `repeat(2, …)` below a container query and
-// `repeat(4, …)` above it - a rule written for the eight tiles it was built for
-// and wrong for any other set. The composition family's matrix printed the two
-// cases the rule could not answer: NINE tiles, where four columns leave a row of
-// one, and the same nine inside a NARROW CARD, where four columns leave a row of
-// one that is also overflowing.
-//
-// So the row is a wrapping flex line with three published numbers, and the count
-// per row falls out of the arithmetic instead of being asserted:
+// A fixed `repeat(2, …)` / `repeat(4, …)` pair is a rule written for the eight
+// tiles it was built for and wrong for any other set: nine tiles leave a row of
+// one at four columns, and the same nine inside a narrow card leave a row of one
+// that also overflows. So the row is a wrapping flex line with three published
+// numbers, and the count per row falls out of the arithmetic instead of being
+// asserted:
 //
 //   --stack-tracks   how many the SET wants in a row, derived from the tile
 //                    count (`Content/Home/Stack.ts:StackTracks`) - four divides
@@ -141,9 +138,8 @@
 	   (8 %, 1.18:1), which reads as a rumour on the same-coloured field
 	   (LOST.md top-ten #1). */
 	border: 1px solid var(--Divider);
-	/* The hover was a hand-rolled 160ms `ease` - a sixth interval and a fourth
-	   curve no relationship named. It is the ENTER pair: the affordance
-	   arriving. */
+	/* The hover is the ENTER pair - the affordance arriving - not a hand-rolled
+	   duration and curve of its own. */
 	transition-property: border-color;
 	transition-duration: var(--motion-enter-duration);
 	transition-timing-function: var(--motion-enter-easing);

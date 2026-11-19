@@ -7,11 +7,12 @@
  * reader needs around it: the facts that date and scope it, an index into it,
  * and one measure to read it on.
  *
- * Two shapes, and neither is a document model. The clauses themselves stay
- * page markup, because a clause is verbatim legal text: moving it into data
- * would make every future edit a string edit inside a module, and the point of
- * this layer is that the text is never touched. What lives here is only the
- * apparatus - the index rows and the surface's prop surface.
+ * One shape here, and it is not a document model: `ReadingIndexItem` is the
+ * apparatus, and the surface's prop surface is declared by
+ * `ReadingDocument.astro` itself. The clauses stay page markup, because a clause
+ * is verbatim legal text: moving it into data would make every future edit a
+ * string edit inside a module, and the point of this layer is that the text is
+ * never touched.
  */
 
 /**

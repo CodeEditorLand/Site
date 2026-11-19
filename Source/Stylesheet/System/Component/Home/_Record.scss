@@ -5,9 +5,8 @@
 //   .home-record               the record inside it
 //   .home-record__head         the marker row: index and seal
 //   .home-record__index        `# MOUNTAIN_01`
-//   .home-record__seal         the 36px mark's box
+//   .home-record__seal         the 32px mark's box
 //   .home-record__figure       the engraved seal inside that box
-//   .home-record__symbol       the neutral `◎` for the one element drawn as a symbol
 //   .home-record__stamps       the containment pair
 //   .home-record__stamp        one `〈 ... 〉` line
 //   .home-record__bracket      the bracket glyph
@@ -39,9 +38,9 @@
 //
 // One rule shapes every card: each row after the first is separated by a
 // hairline and the same block padding, so the card reads as a ruled record
-// rather than as a stack of unrelated lines. The baseline drew that rule on each
-// row group; here it is one rule on the container, which is the same drawing with
-// one declaration instead of six.
+// rather than as a stack of unrelated lines. The rule sits on the container
+// rather than on each row group, which is the same drawing with one declaration
+// instead of six.
 
 @use "../../Mixin" as *;
 
@@ -95,8 +94,8 @@
 	display: inline-block;
 	flex-shrink: 0;
 
-	/* the seal's own step (m = 32px), so the box cannot be a size the mark set
-	   does not have - it was 36px, four pixels from the 32 the mark layer uses */
+	/* the seal's own step (s = 32px), so the box cannot be a size the mark set
+	   does not have - not a 36px box four pixels off the ladder */
 	inline-size: var(--mark-size-7);
 	block-size: var(--mark-size-7);
 }
@@ -181,19 +180,21 @@
 
 .home-record__status-value {
 	/* The state word is a FACT, not an authentication: it takes the ink, and the
-	   three tones below are the whole vocabulary (quiet for a pending or retired
-	   state, ink for everything else, and the block's own state square for the
-	   shape). It printed in the accent before this card, which is why every
-	   element card on the homepage carried a green word. */
+	   two tone rules below are the whole vocabulary this element paints (quiet
+	   for a pending or retired state, ink for everything else). The specimen
+	   tone is carried by the block's own state square, never by a hue - an
+	   element card must not carry a green word. */
 	color: var(--CardForeground);
 }
 
 // The STATUS vocabulary's three tones (`DESIGN-COMPLETE.md` §1.5). `specimen`
-// means the state is attested - ACTIVE, VERIFIED - and it is carried by the
-// card's 4px state square at half again the size (`--state-mark-scale`), never
-// by a hue: the accent authenticates a route, a link, a focus and a seal, and a
-// value that spent it would leave the page with nothing to point at. A quiet
-// state is muted; a state the vocabulary does not know is ink.
+// means the state is attested - ACTIVE, VERIFIED - and this element does not
+// paint it as a hue: the word stays ink, because the accent authenticates a
+// route, a link, a focus and a seal, and a value that spent it would leave the
+// page with nothing to point at. Where a block prints a state square, the
+// attested tone's distinction is SIZE, at the mark layer (`--mark-square` 4px,
+// `--mark-square-attested` 6px). A quiet state is muted; a state the vocabulary
+// does not know is ink.
 .home-record__status-value[data-tone="quiet"] {
 	color: var(--MuteForeground);
 }

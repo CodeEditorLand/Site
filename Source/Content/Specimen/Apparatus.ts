@@ -435,6 +435,7 @@ export const Rows: readonly Row[] = [
 
 			noimage: NoMedia(
 				"fold",
+
 				"leaves - an index, a label, a note and a meta cell",
 			),
 
@@ -442,6 +443,7 @@ export const Rows: readonly Row[] = [
 
 			unfurled: NoUnfurl(
 				"fold",
+
 				"it is an in-page disclosure over content the page already holds,",
 			),
 
@@ -497,6 +499,7 @@ export const Rows: readonly Row[] = [
 
 			noimage: NoMedia(
 				"record set",
+
 				"records - an index, a name, one fact and a register",
 			),
 
@@ -576,6 +579,7 @@ export const Rows: readonly Row[] = [
 
 			noimage: NoMedia(
 				"sequence",
+
 				"nodes and edges - words on a hairline",
 			),
 
@@ -655,6 +659,7 @@ export const Rows: readonly Row[] = [
 
 			noimage: NoMedia(
 				"skeleton",
+
 				"field names and bars, both drawn in the record grammar",
 			),
 
@@ -662,6 +667,7 @@ export const Rows: readonly Row[] = [
 
 			unfurled: NoUnfurl(
 				"skeleton",
+
 				"it is a waiting state for one page's record,",
 			),
 
@@ -747,6 +753,7 @@ export const Rows: readonly Row[] = [
 
 			unfurled: NoUnfurl(
 				"specimen",
+
 				"it is a sheet's own instrument, not a page's,",
 			),
 
@@ -816,6 +823,7 @@ export const Rows: readonly Row[] = [
 
 			noimage: NoMedia(
 				"slip",
+
 				"four rows - a side, a label and where it comes from",
 			),
 
@@ -823,11 +831,13 @@ export const Rows: readonly Row[] = [
 
 			unfurled: NoUnfurl(
 				"slip",
+
 				"it is a surface opened by a control on the page,",
 			),
 
 			offline: NoNetwork(
 				"slip",
+
 				"the four rows are constants in the component",
 			),
 
@@ -893,6 +903,7 @@ export const Rows: readonly Row[] = [
 
 			noimage: NoMedia(
 				"sheet",
+
 				"cells - a mark, a name, a note, a kind and a disposition",
 			),
 
@@ -902,6 +913,7 @@ export const Rows: readonly Row[] = [
 
 			offline: NoNetwork(
 				"sheet",
+
 				"its rows are the parts table, read at build time",
 			),
 
@@ -983,11 +995,13 @@ export const Rows: readonly Row[] = [
 
 			unfurled: NoUnfurl(
 				"plate",
+
 				"it is a sheet's instrument for one part,",
 			),
 
 			offline: NoNetwork(
 				"plate",
+
 				"its contract is the parts table's record",
 			),
 
@@ -1051,6 +1065,7 @@ export const Rows: readonly Row[] = [
 
 			incard: NotACard(
 				"material strip",
+
 				"band's artifact, not a record's surface",
 			),
 
@@ -1070,11 +1085,13 @@ export const Rows: readonly Row[] = [
 
 			unfurled: NoUnfurl(
 				"material strip",
+
 				"it is this sheet's own stock,",
 			),
 
 			offline: NoNetwork(
 				"material strip",
+
 				"the values are the token sheet's",
 			),
 
@@ -1158,6 +1175,7 @@ export const Rows: readonly Row[] = [
 
 			noimage: NoMedia(
 				"gallery index",
+
 				"rows - a kicker, a label, a figure and two sentences",
 			),
 
@@ -1165,11 +1183,13 @@ export const Rows: readonly Row[] = [
 
 			unfurled: NoUnfurl(
 				"gallery index",
+
 				"it indexes one sheet's bands,",
 			),
 
 			offline: NoNetwork(
 				"gallery index",
+
 				"its figures are the family modules' exports",
 			),
 
@@ -1235,6 +1255,7 @@ export const Rows: readonly Row[] = [
 
 			wide: NoMeasure(
 				"head",
+
 				"it renders no box; the width a reader sees is the card's, not the head's",
 			),
 
@@ -1260,6 +1281,7 @@ export const Rows: readonly Row[] = [
 
 			offline: NoNetwork(
 				"head",
+
 				"it is written at build time into the document",
 			),
 
@@ -1275,6 +1297,7 @@ export const Rows: readonly Row[] = [
 
 			print: NoPaper(
 				"head",
+
 				"the head is the document's metadata, and a printed sheet carries the page it describes",
 			),
 		},
@@ -1314,6 +1337,7 @@ export const Rows: readonly Row[] = [
 
 			dense: NoDense(
 				"analytics context",
+
 				"it renders no rows and owns no rhythm",
 			),
 
@@ -1327,11 +1351,13 @@ export const Rows: readonly Row[] = [
 
 			narrow: NoMeasure(
 				"analytics context",
+
 				"it wraps children and renders no box of its own",
 			),
 
 			wide: NoMeasure(
 				"analytics context",
+
 				"it wraps children and renders no box of its own",
 			),
 
@@ -1349,6 +1375,7 @@ export const Rows: readonly Row[] = [
 
 			noimage: NoMedia(
 				"analytics context",
+
 				"no markup at all beyond its children",
 			),
 
@@ -1356,6 +1383,7 @@ export const Rows: readonly Row[] = [
 
 			unfurled: NoUnfurl(
 				"analytics context",
+
 				"it is a client-side context with no document output,",
 			),
 
@@ -1371,6 +1399,7 @@ export const Rows: readonly Row[] = [
 
 			print: NoPaper(
 				"analytics context",
+
 				"it is a runtime context with no document output",
 			),
 		},
@@ -1420,11 +1449,13 @@ export const Rows: readonly Row[] = [
 
 			narrow: NoMeasure(
 				"identity context",
+
 				"it wraps children and renders no box",
 			),
 
 			wide: NoMeasure(
 				"identity context",
+
 				"it wraps children and renders no box",
 			),
 
@@ -1438,6 +1469,7 @@ export const Rows: readonly Row[] = [
 
 			noimage: NoMedia(
 				"identity context",
+
 				"no markup beyond its children",
 			),
 
@@ -1445,6 +1477,7 @@ export const Rows: readonly Row[] = [
 
 			unfurled: NoUnfurl(
 				"identity context",
+
 				"it is a client-side context,",
 			),
 
@@ -1458,6 +1491,7 @@ export const Rows: readonly Row[] = [
 
 			withaction: NoAction(
 				"identity context",
+
 				"the sign-in control belongs to the surface inside it",
 			),
 
@@ -1587,6 +1621,7 @@ export const Rows: readonly Row[] = [
 
 			incard: NotACard(
 				"trail",
+
 				"route statement, not a record's surface",
 			),
 
@@ -1602,6 +1637,7 @@ export const Rows: readonly Row[] = [
 
 			unfurled: NoUnfurl(
 				"trail",
+
 				"it states where the reader is inside one document,",
 			),
 
@@ -1693,6 +1729,7 @@ export const Rows: readonly Row[] = [
 
 			offline: NoNetwork(
 				"index",
+
 				"its rows are the collection, read at build time",
 			),
 
@@ -1786,6 +1823,7 @@ export const Rows: readonly Row[] = [
 
 			offline: NoNetwork(
 				"article",
+
 				"the piece and its margin are rendered at build time",
 			),
 

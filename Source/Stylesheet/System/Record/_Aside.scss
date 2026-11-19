@@ -11,7 +11,10 @@
 //                   .record-aside__summary      the `<summary>`: marker, label, mark
 //                   .record-aside__index        `# ASIDE_01`
 //                   .record-aside__label        `/ WHAT THIS DOES NOT COVER`
-//                   .record-aside__mark         the `→` that turns 90° when open
+//                   .record-aside__mark         the fold at the row's end, from the mark layer
+//                   .record-aside__count        the count behind the disclosure, at the bar's far end
+//                   .record-aside__state        `STATUS:` and the aside's word
+//                   .record-aside__skeleton     the body's three bars while it loads
 //                   .record-aside__body         the folded body
 //                   .record-aside__line         the `↳` proposition under the summary
 //                   .record-aside__paragraph    one paragraph of prose
@@ -78,10 +81,10 @@
 
 // The mark is the row's end, and it is the mark layer's fold (`Mark/_Arrow.scss`):
 // closed it points along the row (`›`, "there is more this way"); open the same
-// glyph turns a quarter turn and points down. It used to be a `→` that turned -
-// the arrow that means "destination" used for a thing that does not go anywhere,
-// which is exactly the second arrow style this layer removes. The hover travel
-// is the mark's own too, so the aside and the page fold cannot drift apart.
+// glyph turns a quarter turn and points down. A `→` would be the arrow that means
+// "destination", used for a thing that does not go anywhere - the second arrow
+// style this layer removes. The hover travel is the mark's own too, so the aside
+// and the page fold cannot drift apart.
 
 // The label answers the pointer with ink - the row's affordance, unchanged.
 .record-aside__summary:hover > .record-aside__label {

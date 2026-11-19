@@ -5,7 +5,7 @@
 // The anatomy is the same on every page, so it lives here once instead of being
 // retyped per page: kicker, heading, standfirst, index strip, body, footnote.
 //
-// Three decisions worth knowing before you compose a band:
+// Four decisions worth knowing before you compose a band:
 //
 // - The band is a section with the page's only level-two heading inside it. The
 //   page owns the only level-one heading; a block never renders one.
@@ -20,8 +20,9 @@
 // - The band adds no second expressive element. Exactly one thing per band may
 //   be ink-inverted, and which thing that is belongs to the page, not here.
 //
-// `tone` picks the surface: `paper` (white card), `canvas` (creme, the default)
-// or `flush` (the first band after the header, which drops its top rule).
+// `tone` picks the surface: `paper` (white card), `canvas` (creme, the default),
+// `flush` (the first band after the header, which drops its top rule) or `bare`
+// (structure inside a Jelly surface: no fill, no frame, no inset).
 //
 // ─── THE BAND'S OWN ADVERSE STATE ─────────────────────────────────────────
 // A band whose subject is not written yet is still a band: `state` keeps the
@@ -31,10 +32,10 @@
 // the band's footnote underneath as the next step. The alternative, a band that
 // renders nothing, is a page with a hole where a chapter should be.
 //
-// `dense` is the band read as a section inside an artifact: the same anatomy at
-// the artifact's inset, with no chapter interval and a heading one tier down. It
-// exists because a hero's evidence section and a card's second subject both need
-// a heading, and neither may spend the page's air on one.
+// `dense` is the band read as a section inside an artifact: the same anatomy with
+// a heading one tier down and the body opening at the tight step. It exists
+// because a hero's evidence section and a card's second subject both need a
+// heading, and neither may spend the page's air on one.
 //
 // No client-side script and no hydration directive: the block is static.
 import type { Band } from "./Type.js";

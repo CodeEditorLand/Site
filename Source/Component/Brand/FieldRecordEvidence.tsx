@@ -15,16 +15,14 @@ import { cn } from "../UI/Utility";
  * block's.
  *
  * ─── AND A PLATE THAT IS NOT THERE IS STILL A PLATE ───────────────────────
- * The composition family's matrix printed a hero with no evidence image, and the
- * render was the honest failure of every component that treats an image as a
- * fact: `<img src="">` drew a broken-image glyph inside a 40dvh panel, the
- * caption underneath described a plate that was not there, and the panel's whole
- * 51% of the pair became a browser error message. A broken glyph is not an
- * adverse state; it is an absence the design never drew.
+ * `<img src="">` draws a broken-image glyph inside a 40dvh panel, the caption
+ * underneath describes a plate that is not there, and the panel's whole 51% of
+ * the pair becomes a browser error message. A broken glyph is not an adverse
+ * state; it is an absence the design never drew.
  *
  * So the block has three states, and two of them are compositions:
  *
- *   rest     the photograph, as it has always rendered;
+ *   rest     the photograph, `object-fit: cover`, and no text on it;
  *   absent   `src` is missing or empty: the plate keeps its frame, its measure
  *            and its place in the pair, prints the grammar's `◎`, the row
  *            `PLATE: UNAVAILABLE` and - under it - the description that would
@@ -41,13 +39,13 @@ import { cn } from "../UI/Utility";
  * one thing, named. A reader who cannot see the panel gets the same sentence
  * either way, which is the test the whole adverse-state rule exists for.
  *
- * ─── ONE FIX CARRIED OVER ─────────────────────────────────────────────────
- * The image used to carry `aria-label` beside its `alt`, which is the same
- * sentence twice: `aria-label` wins, so the `alt` was dead weight in the
- * accessible tree. The alt is the description and now the only one.
+ * ─── ONE NAME PER IMAGE ───────────────────────────────────────────────────
+ * The image carries `alt` and no `aria-label`: two names for one thing is the
+ * same sentence twice, and `aria-label` wins, so the `alt` would be dead weight
+ * in the accessible tree. The alt is the description and the only one.
  *
  * ─── NO NUMBER, NO INK, NO MOTION ─────────────────────────────────────────
- * Nothing here paints a colour: the frame is the surface hairline, the `◎` is
+ * Nothing here paints a colour: the frame is the site's divider ink, the `◎` is
  * the mark layer's fallback glyph in the muted ink, and the two words are the
  * vocabulary's. A plate that has failed is not allowed to invent an urgency of
  * its own - `UNAVAILABLE` is the word the site uses for a fact that exists and

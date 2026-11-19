@@ -2,10 +2,10 @@
 //
 // One row per entry, the title as the link and the summary as its note, under a
 // record header that names the archive and counts its entries.
-// `DesignSystem-Artifacts.md` §2 asks for exactly this instead of a wall of
-// equal cards ("an index of filed observations"), and the two surfaces that
-// need it - the blog index and the doc index - had each been built by hand,
-// differently, twice.
+// `DesignSystem-Artifacts.md` §2 gives a set of records one shape - "an index of
+// filed observations", never a wall of equal cards - and the two surfaces that
+// need it, the blog index and the doc index, hand it an array instead of
+// rebuilding a row grammar.
 //
 // ─── GRAMMAR ─────────────────────────────────────────────────────────────
 // INFORMATION TYPE  a filed set: which records are in this archive, and how many.
@@ -18,6 +18,7 @@
 //   index?   -> the record's `# MARKER`
 //   heading? -> the archive's name, the block's one `h2`
 //   count?   -> the count at the far end; absent, it is the length of `entries`
+//               (a page-supplied string is the page's own figure, not a derived one)
 // MAY HOLD          nothing. A row is data; a block in a row would be a record
 //                   inside a record.
 // MAY NOT HOLD      an entry block per row (that is a band of entries, not an
@@ -51,6 +52,11 @@
 //   .record-archive__marker     the marker column: a date, a section, a reading time
 //   .record-archive__title      the entry's name, and the row's link text
 //   .record-archive__note       the entry's summary
+//   .record-archive__absent     the composed absence: mark, state word, sentence
+//   .record-archive__foot       `SHOWING: N OF M` and the caller's note, on the foot
+//   .record-archive__window     that figure, tracked
+//   .record-archive__note-line  the caller's note beside it
+//   .record-archive__gone       a tombstone row for an entry whose target is gone
 //
 // Five decisions:
 //
@@ -114,13 +120,11 @@
 }
 
 /* The archive's name - an `h2`, so it is L, the ladder's section-head tier
-   (`_Type.scss`, THE ELEMENT LADDER). It used to print in the marker's own voice
-   (13px, uppercase, tracked) so that `# ARCHIVE_01 DOCUMENTATION ARCHIVE 52
-   ENTRIES` read as one line of identity; the name is a heading, though, and a
-   heading at label size is the demotion the ladder undoes. It keeps the
-   nameplate's uppercase and its tracking - that is the record's voice - and
-   takes the tier. The ink is inherited from the shell, because the card this may
-   sit in owns the surface. */
+   (`_Type.scss`, THE ELEMENT LADDER). The name is a heading, and a heading at
+   label size is the demotion the ladder undoes; it keeps the nameplate's
+   uppercase and its tracking - that is the record's voice - and takes the tier.
+   The ink is inherited from the shell, because the card this may sit in owns the
+   surface. */
 .record-archive__heading {
 	font-weight: 500;
 	letter-spacing: var(--track-row);
@@ -186,14 +190,14 @@
    so the rules stay put while the text inside them moves.
 
    `text-decoration: none` is not cosmetic housekeeping. The global rule in
-   `System/_Global.scss` matches `a:not([class*="Button"]):not(...)...` - ten
-   `:not()` arguments, so it scores (0,10,1) - and a single-class rule cannot
-   outrank it. Left alone, that rule would underline the title, the note and
-   the marker of every row, and would turn all three near-black on hover, which
-   is the opposite of the disclosure this block is for. The declaration below
-   is therefore the one place in this partial that has to state its weight;
-   the row replaces the underline with its own affordances: the pointer cursor,
-   the accent ink, the trace under the title, and the focus ring. */
+   `System/_Global.scss` matches every plain anchor through a long `:not()` chain
+   wrapped in `:where()`, so it scores (0,0,1) and a single class outranks it.
+   Left alone, that rule would underline the title, the note and the marker of
+   every row, and would turn all three near-black on hover, which is the opposite
+   of the disclosure this block is for. The declaration below is therefore the one
+   place in this partial that has to cancel a sitewide default; the row replaces
+   the underline with its own affordances: the pointer cursor, the accent ink, the
+   trace under the title, and the focus ring. */
 .record-archive__link {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
@@ -355,9 +359,9 @@
 }
 
 // ─── THE NARRATIVE FAMILY: THE ARCHIVE'S STATES, ITS WINDOW, ITS TOMBSTONE ─
-// An archive with no entries used to print its header and stop, which is a page
-// with a hole under a heading. It now prints the counted zero and the composed
-// absence: what would be filed here, why it is not, and what to do.
+// An archive with no entries prints the counted zero and the composed absence:
+// what would be filed here, why it is not, and what to do - never a header over
+// a hole.
 //
 // `window` is the too-much state - the first N rows and the count it did not
 // print, on the foot - and `state: "gone"` on an entry prints a tombstone row

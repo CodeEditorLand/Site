@@ -39,10 +39,11 @@
  *          ↳ a margin (the notes, the facts, the aside) - or nothing, and then
  *            the measure takes the rail's side
  *
- * Row 1 is the *declaration*: the `#` in the accent, `LAYOUT`, the slash and the
- * language's name in ink at the sub tier, its facts as `KEY:`/value pairs at the
- * meta tier separated by U+2001 (labels mute, values ink), and the page's own
- * stamp at the meta tier, tracked and mute, pinned to the row's end by the grid.
+ * Row 1 is the *declaration*: the `#` in the mark ink, `LAYOUT`, the slash and
+ * the language's name in ink at the sub tier, its facts as `KEY:`/value pairs at
+ * the meta tier separated by U+2001 (labels mute, values ink), and the page's
+ * own stamp at the meta tier, tracked and mute, pinned to the row's end by the
+ * grid.
  * It is one line while the container can hold it, and head-and-stamp over facts
  * when it cannot - never three fragments, and never a stamp adrift in the middle
  * of the line. It is the line a reader scans.
@@ -108,9 +109,11 @@ interface Props {
 	label?: string;
 
 	/**
-	 * The reading measure. `prose` caps the main track at `--Measure` (the plate,
-	 * 72-88ch); `full` leaves the body inside it open for a page that also
-	 * carries grids. Ignored by the languages that do not read at a measure.
+	 * The reading measure, written as `data-measure`. `prose` caps the main track
+	 * at `--Measure` (the plate, 72-88ch); `full` is meant to leave the body
+	 * inside it open for a page that also carries grids. The layout layer reads no
+	 * `[data-measure]` rule today, so the reading main track is capped at
+	 * `--Measure` in both states.
 	 */
 	measure?: "prose" | "full";
 

@@ -8,11 +8,10 @@
  * filed plate, the way a patch panel's cells are one panel and not six boxes -
  * and it is why the cells carry no border of their own: the paper is the rule.
  *
- * The band used to print the runtime rail under the grid as well. That rail is
- * now the hero's foot (`RUNTIME PATH`, under the pair), because it is the proof
- * of the claim the hero makes and it belongs under that claim, not one band
- * down. The four steps are unchanged and printed once; two copies of one rail on
- * one page is a habit, not a proof.
+ * The runtime rail is the hero's foot (`RUNTIME PATH`, under the pair), not a
+ * band's: it is the proof of the claim the hero makes and it belongs under that
+ * claim. The four steps are printed once, in one place - two copies of one rail
+ * on one page is a habit, not a proof.
  *
  * The specimen observation stays here. `DESIGN-COMPLETE.md` §2.3 H11 files it
  * under the features grid and it is a `keep`: `SPECIES:` / `TEMP:` / `WIND:` are
@@ -20,18 +19,15 @@
  * card is capped at three rows (`TARGET:` / `LICENSE:` / `SIGNAL:`), so the
  * observation is filed below the matrix as a strip in the ledger's own voice.
  *
- * It is a *block import*, not a class copy: the strip used to carry
- * `record-ledger` classes it never imported, which is why it drifted from the
- * block's own anatomy. A borrowed class is not a block.
+ * It is a *block import*, not a class copy: `RecordLedger` is the block that
+ * owns the ledger's anatomy, and a borrowed class is not a block.
  *
  * ─── THE BAND IS A SET, SO IT TAKES A SET ─────────────────────────────────
  * The matrix was written for exactly six records: three columns from `lg` and
- * two from `md` is a distribution that divides six and nothing else. The
- * composition family's matrix printed the band with THREE - the proof band a
- * page would print when it can only stand behind three claims - and the answer
- * was a 2 + 1 grid with a hole in the seam where the sixth cell used to be. A
- * plate with a gap in it does not read as a plate that files three; it reads as
- * a plate that lost three.
+ * two from `md` is a distribution that divides six and nothing else. A plate
+ * that files three would answer with a 2 + 1 grid and a hole in the seam where
+ * the sixth cell should be - and a plate with a gap in it reads as a plate that
+ * lost three, not as one that files three.
  *
  * So the band takes `cards` (defaulting to the six the page files), derives its
  * column count from the set it holds, and says so on the grid:
@@ -47,10 +43,12 @@
  *
  * ─── AND A SUBSET PRINTS ITS FIGURE ───────────────────────────────────────
  * A plate holding three of six records must not look like a plate holding six:
- * `RECORDS: 03 / 06` is printed under the grid whenever `cards` is a proper
- * subset, as a `Register` built from the arrays themselves - so the figure
- * cannot outlive the set it counts. The full six print no line, because a plate
- * that states the obvious is a plate that doubts it.
+ * the register line `# RECORDS / 03` and, beside it, `SELECTION: 03 OF 06` are
+ * printed under the grid whenever `cards` is a proper subset. The register is
+ * built from the arrays themselves - so the figure cannot outlive the set it
+ * counts - and the selection states the whole the plate was drawn from. The
+ * full six print no line, because a plate that states the obvious is a plate
+ * that doubts it.
  */
 import { BandOf, HomeBands, Sequence } from "../../Content/Home/Band.js";
 import { FeatureCards } from "../../Content/Home/Feature.js";

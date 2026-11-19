@@ -20,10 +20,9 @@
 //                   command that wrapped would be a command the reader cannot
 //                   copy, so the overflow is inside the frame and the page grid
 //                   never widens. The copy control is Jelly's, at the bar's
-//                   rhythm, and it is absent - not hidden-then-revealed - when
-//                   the document has no clipboard to offer (see the note on
-//                   `.record-well__copy`): with JavaScript off the well prints
-//                   its command and nothing else.
+//                   rhythm, and it is revealed only once the document declares a
+//                   clipboard (see ABSENT, NOT DEAD below): with JavaScript off
+//                   the well prints its command and nothing else.
 // WIDE              the well takes the column it is given; `white-space: pre`
 //                   keeps every line's shape at any width.
 // DENSE             none. A command must not compress: the one thing a well
@@ -37,12 +36,16 @@
 //   .record-well__copy          the copy control - a `jelly-icon-button`, placed; its skin is Jelly's
 //   .record-well__body          the recessed body
 //   .record-well__line          one verbatim line
+//   .record-well--wrap          a body that has no shape to keep: `pre-wrap`, hanging indent
+//   .record-well__source        `SOURCE:` and where the command was read
+//   .record-well__foot          the band under the body: window, note, provenance
+//   .record-well__window        `SHOWING: N OF M` for a windowed block
+//   .record-well__note          the caller's note beside it
+//   .record-well__absent        the well with no body: mark, state word, sentence
 //
 // The body scrolls sideways rather than wrapping, so a long command keeps its
 // shape; that is the one overflow this block owns. The frame is square: a well
 // is cut into the band, not laid on it.
-//
-// Owned by B6. S1 published the skeleton; B6 refines the values, never the names.
 
 @use "../Mixin" as *;
 
@@ -87,9 +90,9 @@
 // `display: none` has no box at all: `build()` runs, the canvas is sized 0x0,
 // no physics body is created, and the element parks itself out of the shared
 // loop. It then paints nothing and answers nothing - it looks right at rest and
-// is inert under the pointer, which is exactly "the copy button lost its jelly
-// on hover". The body is built from the box present at upgrade, so the box has
-// to be there *then*.
+// is inert under the pointer, which is the "the copy button lost its jelly on
+// hover" failure. The body is built from the box present at upgrade, so the box
+// has to be there *then*.
 //
 // So the control ships VISIBLE in the markup (no `hidden` attribute) and this
 // sheet hides it until the document declares the clipboard, which `Base.astro`
@@ -99,8 +102,8 @@
 // first pointerenter.
 //
 // `display: none` is the absence: out of layout, out of the tab order, out of
-// the accessibility tree - the same contract `hidden` had. What changed is
-// *when* the decision is made, and that is the whole fix.
+// the accessibility tree - the same contract `hidden` has. What the rule fixes
+// is *when* the decision is made, which is what makes the control usable.
 .record-well__copy {
 	display: none;
 	flex: 0 0 auto;

@@ -15,7 +15,7 @@
  *   one card with seven rows - so a section carries a list of cards and no
  *   nested runs. The tree lives in the sidebar, where it is collapsible; the
  *   index is a wall of cards because a reader scans it.
- * - No shape carries a surface. The card's tone belongs to the card component
+ * - No shape carries a surface. The card's fill belongs to the card component
  *   (`System/Component/Doc/_Index.scss`), so the data can never alternate one
  *   section against the next.
  *

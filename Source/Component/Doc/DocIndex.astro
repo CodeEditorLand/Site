@@ -4,10 +4,10 @@
  * `tone="bare"` wrapping the chapter's card grid, and one `RecordEntry` per
  * card inside the `jelly-card` that card already had.
  *
- * The baseline rendered ten of these, each a `<section>` whose `h2` was the
- * section name and whose body was a three-column card grid. That composition
- * survives - the grid, the counts, the anchor id - and the section grammar
- * around it is now the block layer's instead of this file's:
+ * The composition is the baseline's - a `<section>` whose `h2` is the section
+ * name over a three-column card grid, with the grid, the counts and the anchor
+ * id intact - and the section grammar around it belongs to the block layer
+ * instead of this file:
  *
  * - **The chapter is a band.** `RecordBand` at `tone="bare"` prints the kicker
  *   and the chapter's single `h2`; a bare band paints no border, no fill and no
@@ -26,8 +26,9 @@
  *   arrow: `↗` for a destination that opens in its own tab, `→` for one that
  *   stays in the page.
  * - **The index marker is the card's position in its chapter**, two digits,
- *   printed as written (`01`..`16`). It is passed in, never derived by the
- *   block: the page knows the order, the block prints it.
+ *   printed as written (`01`..`16`). This file derives it from the card's
+ *   position and hands it to `RecordEntry`, which prints it verbatim - the order
+ *   is the chapter's, and the padding is decided once, here.
  *
  * Two notes a caller should know:
  *
@@ -87,8 +88,9 @@ const Absent = `◎ ${T("index.note.absent", {
 })}`;
 
 /**
- * The card's marker: its position in the chapter, two digits. The block prints
- * it verbatim, so the padding is the page's - a rail number is `01`, not `1`.
+ * The card's marker: its position in the chapter, two digits. `RecordEntry`
+ * prints it verbatim, so the padding is decided here - a rail number is `01`,
+ * not `1`.
  */
 const Marker = (Position: number): string =>
 	String(Position + 1).padStart(2, "0");

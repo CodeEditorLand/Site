@@ -19,22 +19,23 @@
 //   .doc-contents__name            the heading's own words
 //   .doc-contents__link--current   the section the reader is in
 //
-// ─── THE CURRENT ROW IS MARKED THREE WAYS, AND ONLY ONE IS COLOUR ─────────
+// ─── THE CURRENT ROW IS MARKED FOUR WAYS, AND ONLY ONE IS THE HUE ─────────
 //
-// The rail's tree marks its current page with `aria-current`, ink and weight, and
-// a 2px `--Accent` rule on the row's leading edge; the contents marks its current
+// The rail's tree marks its current page with `aria-current`, ink, weight and a
+// 2px `--Accent` rule on the row's leading edge; the contents marks its current
 // section with the same four. That is the whole point of putting the two
 // registers in one rail: a reader learns one "you are here" and it works in both
 // lists. The rule is a shape rather than a hue, so it survives greyscale and
 // print, and the ink step means a reader who cannot see the rule still reads the
 // change.
 //
-// THE RULE IS 2px `--Accent`, NOT 1px `--Primary`. It was the narrower, darker
-// one - a fourth marker in a site that states one - and beside a 13px row a 1px
-// rule reads as the box's own edge rather than as a mark. Two things had to move
-// together to fix it: the width (reserved on every row, so nothing shifts) and
-// the ink. `Doc/_Layer.scss` draws the identical row and its own head says a
-// reader must not be able to tell the two apart, so it moves with this file.
+// THE RULE IS 2px `--Accent`, NOT 1px `--Primary`: beside a 13px row a 1px rule
+// reads as the box's own edge rather than as a mark, and `--Primary` is the ink
+// the row's text already uses - a fourth marker in a site that states one. Two
+// things move together to keep it: the width (reserved on every row, so nothing
+// shifts) and the ink. `Doc/_Layer.scss` draws the identical row and its own
+// head says a reader must not be able to tell the two apart, so it moves with
+// this file.
 //
 // ─── TYPE ─────────────────────────────────────────────────────────────────
 //
@@ -108,9 +109,9 @@
 /* The row: a 3ch marker column and the name. The leading rule is reserved on
    every row - transparent at rest, inked when current - so marking a row never
    moves the text it marks. The reserved width is the marker's width, 2px, not a
-   hairline: a rule that has to grow from 1px to 2px when a row becomes current
-   moves every label in the list by a pixel, which is the thing the reservation
-   exists to prevent. */
+   hairline: a rule that grows from 1px to 2px when a row becomes current moves
+   every label in the list by a pixel, which is the thing the reservation exists
+   to prevent. */
 .doc-contents__link {
 	display: grid;
 	grid-template-columns: 3ch minmax(0, 1fr);

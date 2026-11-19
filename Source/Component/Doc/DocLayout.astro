@@ -7,15 +7,16 @@
  * **The rail carries two registers, and they answer two questions.** Its head is
  * the page's own contents (`DocContents`, pinned): *which part of this page am I
  * in*. Under a hairline, the tree takes the rail's scroll: *which page of the
- * manual am I on*. Before this, the rail only ever answered the second - and a
- * nine-hundred-line article never changed the answer while the reader was
- * reading it. The pinned head is bounded (it never takes more than half the rail)
- * and scrolls on its own if a document has more sections than fit; the tree is
- * what scrolls, because it is the list a reader walks.
+ * manual am I on*. A rail that only answered the second would never change its
+ * answer while a nine-hundred-line article was being read, which is the reader
+ * this shell exists for. The pinned head is bounded (it never takes more than
+ * half the rail) and scrolls on its own if a document has more sections than fit;
+ * the tree is what scrolls, because it is the list a reader walks.
  *
- * Both pages that have a sidebar render this instead of retyping the aside, so
- * the rail's width, its sticky behaviour, its two scroll areas and the mobile
- * panel are one decision in one file.
+ * Every page that has a rail renders this instead of retyping the aside - the
+ * doc pages, the index and the specimen sheet's three shells - so the rail's
+ * width, its sticky behaviour, its two scroll areas and the mobile panel are one
+ * decision in one file.
  *
  * Four notes on what this file does NOT do:
  *
@@ -152,11 +153,10 @@ const SidebarTitle = T("sidebar.title", {
 /**
  * What the rail says when it has no tree.
  *
- * `sections` empty used to print the title and then nothing: a label over a
- * hole, which reads as a build that failed rather than as a manual whose tree
- * has not been read. The rail is the one navigation a documentation page has,
- * so it states the absence in the record grammar - `◎` and a sentence - rather
- * than leaving its register empty.
+ * A title over a hole reads as a build that failed rather than as a manual whose
+ * tree has not been read. The rail is the one navigation a documentation page
+ * has, so it states the absence in the record grammar - `◎` and a sentence -
+ * rather than leaving its register empty.
  */
 const SidebarEmpty = T("sidebar.empty", {
 	ns: "doc",

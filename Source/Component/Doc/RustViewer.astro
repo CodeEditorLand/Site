@@ -36,10 +36,10 @@ interface Props {
 	/**
 	 * What the viewer prints when the page passed no crate.
 	 *
-	 * An empty `crates` used to render an empty tab bar and an `<iframe>` with
-	 * no `src` - a frame around nothing, which is the one composition a reader
-	 * reads as broken rather than as absent. The viewer keeps its frame and
-	 * states the absence inside it, in the record grammar.
+	 * An empty tab bar and an `<iframe>` with no `src` is a frame around
+	 * nothing, which is the one composition a reader reads as broken rather than
+	 * as absent. The viewer keeps its frame and states the absence inside it, in
+	 * the record grammar.
 	 */
 	empty?: string;
 
@@ -49,12 +49,11 @@ interface Props {
 	/**
 	 * The viewer's own name, so two viewers on one page cannot collide.
 	 *
-	 * The frame's id used to be the literal `RustDocFrame`, and the script
-	 * addressed the tabs and the frame by `document.querySelectorAll` - which
-	 * is correct for a page with one viewer and wrong for a page with two (the
-	 * specimen sheet mounts three). The id is derived from this, and the script
-	 * is scoped to the viewer's own root, so each instance is its own
-	 * instrument.
+	 * The frame's id is derived from this, and the script is scoped to the
+	 * viewer's own root: `document.querySelectorAll` over the page would let one
+	 * bar's click move another bar's ink and every arrow key walk both lists,
+	 * which is wrong for any page that mounts more than one viewer (the specimen
+	 * sheet mounts three).
 	 */
 	id?: string;
 }
@@ -114,6 +113,13 @@ const FrameId = `${id}Frame`;
 			LOADING
 		</p>
 
+		{/* The frame's permission set, written once, here. rustdoc needs scripts
+		    and its own origin to render, and the two navigation permissions are
+		    the reader's own gesture - so the sandbox is a window with a lock on
+		    it, never a page that can navigate the document it is embedded in.
+		    `System/Component/Doc/_Rust.scss` documents the box this frame sits
+		    in and names this file as the owner of the list; neither file
+		    states the other's half. */}
 		<iframe
 			id={FrameId}
 			class="doc-rust__frame"
@@ -129,10 +135,9 @@ const FrameId = `${id}Frame`;
 	/**
 	 * One viewer's behaviour, scoped to its own root.
 	 *
-	 * `document.querySelectorAll(".doc-rust__tab")` was the whole page's tabs:
-	 * with two viewers mounted, one bar's click moved the other bar's ink and
-	 * every arrow key walked both lists. The root is the instrument, and the
-	 * instrument is what a script may touch.
+	 * The root is the instrument, and the instrument is what a script may touch:
+	 * every query below starts at `Root`, so a second viewer on the page cannot
+	 * answer for this one's tabs, frame or state line.
 	 */
 	const Wire = (Root: HTMLElement): void => {
 		const Tabs = Array.from(

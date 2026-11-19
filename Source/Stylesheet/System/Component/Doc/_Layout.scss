@@ -18,13 +18,12 @@
 //   .doc-layout__margin    the apparatus: a column, a bar, or a ruled section
 //
 // ─── THE COMPOSITION: THE PAPER IS THE PAGE ───────────────────────────────
-// A documentation page is a document, and the owner's report was exact about
-// what it had become: three columns squeezing an A4. The old shell was
-// `26ch | 1fr | 18rem` inside a 72rem container, so on a 2560px monitor the
-// card the prose is printed on was ~430px wide - narrower than the measure it
-// was supposed to BE - while the desk either side of it was empty.
+// A documentation page is a document, and a document is not three columns
+// squeezing an A4. On a 2560px monitor the card the prose is printed on is
+// `--Paper` wide - the measure plus its two insets - while the desks either side
+// of it are real space.
 //
-// The shell now reads `rail | desk | paper | desk | margin`:
+// The shell reads:
 //
 //   rail    26ch, at the page's left edge, sticky
 //   desk    `1fr` - real space, floored at `--Desk`
@@ -43,18 +42,18 @@
 // The apparatus (the page's extent, the notes about how it is filed) is ONE
 // aside in one slot in all three states:
 //
-//   column  (>= 84rem of desk)  the sticky right track above
-//   bar     (>= 1024px)         a horizontal register pinned under the header
-//   stacked (< 1024px)          a ruled section under the paper
+//   column  (>= 84rem of desk)      the sticky right track above
+//   bar     (59rem - 83.99rem)      a horizontal register pinned under the header
+//   stacked (< 59rem)               a ruled section under the paper
 //
 // The bar is the interesting one. Below 84rem of desk there is no room for
-// 26ch + a 77ch plate + 18rem of apparatus, and taking the apparatus out of the
-// plate is exactly the mistake this card repairs - so the apparatus LEAVES THE
-// FLOW instead of narrowing the page: it becomes a single row under the header,
-// its items laid inline as segments of the row, scrolling horizontally when
-// they do not fit. Nothing is hidden, nothing is abbreviated, and nothing is
-// duplicated: `DocLayout.astro` renders one aside, and this file gives it three
-// layouts.
+// 26ch + the plate at `--Paper` + 18rem of apparatus, and taking the apparatus
+// out of the plate is exactly the mistake this card repairs - so the apparatus
+// LEAVES THE FLOW instead of narrowing the page: it becomes a single row under
+// the header, its items laid inline as segments of the row, scrolling
+// horizontally when they do not fit. Nothing is hidden, nothing is abbreviated,
+// and nothing is duplicated: `DocLayout.astro` renders one aside, and this file
+// gives it three layouts.
 //
 // The bar is pinned with `position: sticky` inside a WRAPPING FLEX row, not a
 // grid. A sticky grid item is confined to its own grid row, so a bar in row 1
@@ -227,10 +226,10 @@
 }
 
 // ─── THE THREE-COLUMN FORM: both rails outside the plate ──────────────────
-// 84rem of desk is the first container that holds a 26ch rail, a 77ch plate,
-// an 18rem register and two 2rem desks (26 + 46.5 + 18 + 4 = 94.5ch at the
-// body tier), and at that width the desks are 68px each - real space, not a
-// squeeze. Below it the register is the bar above.
+// 84rem of desk is where the register gets a track of its own outside the plate:
+// the rail's 26ch, the plate at `--Paper`, the 18rem register and two `--Desk`
+// gaps are each given a track, and the plate is the one that yields when their
+// sum exceeds the desk. Below 84rem the register is the bar above.
 @container doc (min-width: 84rem) {
 	// No margin: rail | desk | paper | desk. The register's track is added by
 	// the `:has()` rule below and not reserved here, because an empty 18rem
@@ -319,7 +318,7 @@
 	padding-inline-end: var(--space-tight);
 }
 
-// The pinned register. It takes its own height up to 55% of the rail and then
+// The pinned register. It takes its own height up to 50% of the rail and then
 // scrolls, so the tree always keeps the larger half: a reader who is lost in a
 // page is looking for a section, and a reader who is lost in the manual is
 // looking for a page - but the section is the nearer question.

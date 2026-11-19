@@ -5,7 +5,8 @@
 //   .home-feature__grid             the matrix: one to three columns, one seam
 //   .home-feature__empty            the plate's empty arm - a set of none
 //   .home-feature__subset           a plate that files a selection, and its figure
-//   .home-feature__subset-ledger    `# RECORDS / 03` and `SELECTION: 03 OF 06`
+//   .home-feature__subset-register  `# RECORDS / 03`
+//   .home-feature__subset-row       `SELECTION: 03 OF 06`
 //   .home-feature__specimen         the filed observation strip below the matrix
 //   .home-feature__specimen-label   the strip's `SPECIMEN` label
 //   .home-feature__specimen-ledger  its three readings, on one line
@@ -24,7 +25,7 @@
 //
 // The cards are the element's own tint, not white: `FeatureCard` hands each
 // `jelly-card` its `--jelly-fill` from `JellyCardFill(card.SealName)`, the
-// semantic per-element fill the cards had before the band was rebuilt. The
+// semantic per-element fill that carries the element's identity. The
 // `.home-feature` rule below is the *fallback* for a card whose seal resolves to
 // no fill - it is not the intended colour, and it must stay weaker than the
 // inline property so the per-element identity wins.
@@ -56,8 +57,7 @@
 //      seam is the plate's closing row.
 //
 // The six-record set is unaffected: six divides three and two, so its remainder
-// is zero at every width and neither rule fires. The page's own matrix renders
-// exactly as it did.
+// is zero at every width, neither rule fires, and every track is filled.
 
 @use "../../Mixin" as *;
 

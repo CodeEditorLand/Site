@@ -23,11 +23,13 @@
 //   .doc-sidebar__toggle-current      the current page's name, in the trigger
 //   .doc-sidebar__panel               the opened panel
 //
-// THE CURRENT PAGE IS MARKED THREE WAYS, AND ONLY ONE IS COLOUR:
+// THE CURRENT PAGE IS MARKED FOUR WAYS, AND ONLY ONE IS THE HUE:
 //
 //   1. `aria-current="page"` on the anchor - the machine-readable state.
-//   2. Ink (`--Foreground`) and weight 500 - the text itself changes.
-//   3. A `2px` rule on the row's leading edge in `--Accent` - a shape, not a
+//   2. Ink (`--Foreground`) - the text itself changes.
+//   3. Weight 500 - the text's second change, and never the state on its own:
+//      the group triggers carry the same weight.
+//   4. A `2px` rule on the row's leading edge in `--Accent` - a shape, not a
 //      hue: it survives greyscale, a colour-blind reader and a printed page, and
 //      it is the same marker the header gives its active route. The width is
 //      reserved on every row (`border-inline-start: 2px solid transparent`), so a
@@ -123,10 +125,11 @@
 .doc-sidebar__marker {
 	font-size: var(--type-meta);
 
-	/* the turn is the mark layer's (`Mark/_Arrow.scss`): one glyph, one quarter
-	   turn, for every disclosure on the site. The rule here rotated a `›` of its
-	   own with its own transition, which is how the site ended up with a `›`
-	   here, a `→` in the aside and a `→`/`↳` pair in the motion specimen. */
+	/* The turn is the mark layer's (`Mark/_Arrow.scss`): one glyph, one quarter
+	   turn, for every disclosure on the site - including the `[open]` spellings
+	   it already covers. So this block sets the glyph's size and nothing else: no
+	   transform and no transition here, because a second `›` with its own turn is
+	   the defect the mark layer exists to remove. */
 }
 
 .doc-sidebar__link {

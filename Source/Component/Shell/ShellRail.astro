@@ -15,34 +15,36 @@
  * `✓` for the row in force, `◎` for one that is gone. A row without a mark is a
  * row whose label is the whole fact, and it still gets the column.
  *
- * ─── CURRENT IS NOT A HUE ─────────────────────────────────────────────────
- * The row in force carries `aria-current="location"` (or `"page"`), a 2px accent
- * rule on its leading edge - the same marker the header's active route uses - and
- * ink at 500. Three signals, one of them a colour, so the state survives
- * greyscale and a screen reader.
+ * ─── CURRENT, IN THE SITE'S FOUR MARKS ────────────────────────────────────
+ * The row in force carries the four marks every rail on the site carries -
+ * `aria-current` (`"location"` or `"page"`), full ink, weight 500, and a 2px
+ * accent rule on its leading edge, the same marker the header's active route
+ * uses. The rail adds a fifth and a sixth: the row fills `--Card`, and its mark
+ * takes the accent with the rule. One of the four is a hue, so the state
+ * survives greyscale and a screen reader.
  *
  * ─── NARROW IS RE-COMPOSITION ─────────────────────────────────────────────
  * Below the shell's rail breakpoint the rail does not shrink into a column of
  * ellipses: it becomes a ruled register *above* the main track, at the main's own
- * measure, with its rows still in reading order. The `order` property moves it;
- * nothing is hidden and nothing is folded away. A rail of five to fourteen rows
- * is short enough to print, and a disclosure that hides the only navigation on a
- * phone is a worse answer than a list.
+ * measure, with its rows still in reading order. It is the grid's first child, so
+ * it prints first with no `order` and no second markup; nothing is hidden and
+ * nothing is folded away. A rail of five to fourteen rows is short enough to
+ * print, and a disclosure that hides the only navigation on a phone is a worse
+ * answer than a list.
  *
- * ─── GROUPS: A RAIL OF SECTIONS (added by the frame card) ─────────────────
+ * ─── GROUPS: A RAIL OF SECTIONS ───────────────────────────────────────────
  * A manual's rail is not one list, it is parts of a list: `/DOCUMENTATION` has
- * five sections and each has its own rows. Every page that needed that shape
- * built a second rail beside this one, which is how five rails became seven.
- * `groups` is that shape inside the primitive - a sub-register line per group
- * (its label and its own count, counted from its rows) and the group's rows
+ * five sections and each has its own rows. `groups` is that shape inside the
+ * primitive - a sub-register line per group (its label and its own count,
+ * counted from its rows) and the group's rows
  * under it, in one `<ol>`. `items` stays the flat form; a caller passes one or
  * the other, and the head's count is still the caller's own figure because the
  * rail does not count what it was not given.
  *
- * ─── THE ADVERSE ARMS (added by the frame card) ───────────────────────────
- * A rail whose destinations have not been read used to print its head and then
- * an empty `<ol>` - a register line over nothing. `state` gives it the two arms
- * every other block in the family has:
+ * ─── THE ADVERSE ARMS ─────────────────────────────────────────────────────
+ * A rail whose destinations have not been read prints its head and then the two
+ * arms every block in the family has, rather than a register line over an empty
+ * `<ol>`:
  *
  *   state="empty"    `◎ UNAVAILABLE` + the caller's sentence, inside the rail
  *   state="loading"  the row keys, their values barred - the schema, not a spinner

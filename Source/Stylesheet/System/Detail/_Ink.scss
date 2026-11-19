@@ -1,4 +1,5 @@
-// INK - a hover is ink; the accent authenticates and never decorates.
+// INK - a hover on a link that rests on a rule is ink; the accent authenticates
+// and never decorates.
 //
 // ─── THE LAW ──────────────────────────────────────────────────────────────
 // The palette has one accent and it is rationed on purpose: it marks a seal, a
@@ -10,30 +11,37 @@
 // underline. A green hover spends the accent on a mouse position, and after
 // five of them a reader has stopped reading green as a seal.
 //
-// So: a hover changes the RULE and the INK, never the hue. A focus keeps the
+// So on this layer's artifacts - every one of them a link that already rests on
+// a rule - a hover changes the RULE and the INK, never the hue. A focus keeps the
 // accent ring, because a focus ring is an authentication - it says where the
-// keyboard is, and the reader did not choose it with a pointer.
+// keyboard is, and the reader did not choose it with a pointer. A BLOCK link is
+// the other half of the law: it rests on nothing, so its destination label takes
+// the accent and the rule follows the ink - `State/_Card.scss` states that half,
+// `State/_Link.scss` records the split and lists the ten route links.
 //
 // ─── THE UNDERLINE'S METRICS ──────────────────────────────────────────────
 // An underline's offset is not a fixed distance; it is a fraction of the type
 // size, and the fraction is set by the face's descender, not by taste: with
 // `text-underline-position: auto` the offset is measured from the alphabetic
 // baseline (css-text-decor-4 §2.8.1), and IBM Plex Mono's deepest printable
-// descender is `g` at 0.212em. The value this layer carried - 0.22em - put the
-// top of a 1px line 0.008em above the bottom of a `g`, a tenth of a pixel at the
-// 13px meta tier: the line sat on the glyphs, and skip-ink broke it into
-// fragments under every `p`, `g` and `y`. `--optical-underline-offset`
+// descender is `g` at 0.212em. `--optical-underline-offset`
 // (`System/_Token.scss`) is 0.3em - the deepest descender in the font stack
 // (0.236em in Menlo and SF Mono) plus 0.064em of air - so the line clears every
 // descender the ladder can print, at every size, and stays one continuous
-// hairline. The sitewide rule in `System/_Global.scss` reads the same token;
-// this layer repeats it for the artifacts that live here so the detail does not
-// depend on a selector list it does not own.
+// hairline. The rule it replaced was 0.22em: that put the top of a 1px line
+// 0.008em above the bottom of a `g`, a tenth of a pixel at the 13px meta tier,
+// and skip-ink broke the line into fragments under every `p`, `g` and `y`.
+//
+// The sitewide rule in `System/_Global.scss` reads the same token and names this
+// file back; this layer repeats the two declarations for the artifacts that live
+// here so the detail does not depend on a selector list it does not own. The
+// token is the contract between the two files: change it in `_Token.scss` and
+// both follow.
 //
 // The artifacts are the ones a reader follows: the leader's name (body tier)
 // and the cross-reference's route (the meta tier, where the collision was
-// visible). `.detail-folio__link` is the group's third member and has no markup
-// target since the folio became a row of facts rather than a link; it keeps the
+// visible). `.detail-folio__link` is the group's third member and no markup emits
+// it today - the folio prints a row of facts, not a link - but it keeps the
 // metrics so a folio that prints a route again draws the same line.
 //
 // ─── SELECTION ────────────────────────────────────────────────────────────
@@ -101,11 +109,11 @@
 
 // ─── ONE OFF-REGISTER INTERVAL ────────────────────────────────────────────
 
-// The archive row's disclosure slide was declared at 180ms with the browser's
-// `ease` - a fourth interval and a fourth curve, in the one partial that
-// predates the motion layer. It is the same movement as `motion-enter` (a pull
-// toward the reader), so it takes that relationship's two tokens and its
+// The archive row's disclosure slide is the same movement as `motion-enter` (a
+// pull toward the reader), so it takes that relationship's two tokens and its
 // reduced-motion contract, and the row's geometry does not change by a pixel.
+// The interval it replaced - 180ms with the browser's `ease` - was a fourth
+// interval and a fourth curve beside the motion layer's own.
 //
 // It does not take the `motion-enter` mixin: that relationship names `transform`
 // and `opacity`, and this row's movement is its own inset - the title steps in

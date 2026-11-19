@@ -1,9 +1,9 @@
 // ═══════════════════════════════════════════════════════════════════════════
 // LAYOUT - four composition languages, one register
 //
-// The site had one column and eight ways of padding it. This directory is the
-// layer that replaces "a stack of bands" with four named languages, each with
-// its own tracks, its own measure and its own narrow behaviour:
+// The site's composition is four named languages rather than one column padded
+// eight ways, each with its own tracks, its own measure and its own narrow
+// behaviour:
 //
 //   READING    13rem rail | desk | plate (72-88ch) | desk | 16rem margin
 //              a document read top to bottom, its rails at the page's edges
@@ -23,11 +23,14 @@
 // what the language gives, so the contract is readable on the page itself.
 //
 // ─── CONTAINER QUERIES, NOT VIEWPORT QUERIES ──────────────────────────────
-// Every track decision in this directory is `@container shell (...)`. The shell
-// is the query container, so a shell placed in a narrow slot re-composes instead
-// of overflowing - which is what makes a reading shell inside a workspace pane,
-// or a plate inside an audit, behave. The one viewport query in the layer is the
-// rail's sticky offset, because the header is a viewport fact.
+// Every track decision in this directory queries the box that has to hold the
+// content - `shell` in the shell, `panes` in the panes, `plate` in the plate,
+// `state` in the state - so a composition placed in a narrow slot re-composes
+// instead of overflowing. That is what makes a reading shell inside a workspace
+// pane, or a plate inside an audit, behave. The layer writes one media query,
+// the reduced-motion guard on the register's bar; its one viewport-shaped number
+// is the rail's sticky offset, which reads `--HeaderHeight` because the header
+// is a viewport fact.
 //
 // ─── NARROW IS RE-COMPOSITION ─────────────────────────────────────────────
 // No track shrinks into ellipses. The rail becomes a ruled register above the
@@ -44,11 +47,10 @@
 @use "Panes";
 @use "Plate";
 @use "State";
-// The interval layer loads LAST in this directory: it changes the value of a
-// `padding-block` three partials already wrote (`.record-band`, `.band`,
+// The interval layer loads LAST in this directory: it rewrites the value of a
+// `padding-block` that three partials already set (`.record-band`, `.band`,
 // `.home-band`) and it reads the same declarations they read, so source order is
-// the mechanism. It adds the one thing none of them had - the page's vertical
-// sequence as four named intervals - and it owns the distance around a boundary
-// rule the chapter class draws. See `Layout/_Interval.scss` before moving this
-// line.
+// the mechanism. It owns the page's vertical sequence as four named intervals,
+// and the distance around a boundary rule the chapter class draws. See
+// `Layout/_Interval.scss` before moving this line.
 @use "Interval";

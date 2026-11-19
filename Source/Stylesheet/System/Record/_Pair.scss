@@ -10,7 +10,12 @@
 //                   .record-pair--bare           no fill, no frame - structure inside a surface
 //                   .record-pair__pods           the two pods and the gutter between them
 //                   .record-pair__pod            one pod: title bar over body
+//                   .record-pair__pod--left      the first pod, placed in track 1
+//                   .record-pair__pod--right     the second pod, placed in track 3
 //                   .record-pair__pod--subject   the pod the other is read against
+//                   .record-pair__state          `STATUS:` and a pod's own word, in its bar
+//                   .record-pair__empty          the composed absence of a pod with no body
+//                   .record-pair__relation       how the two sides bear on each other, in the gutter
 //                   .record-pair__bar            a pod's title bar
 //                   .record-pair__label          the title-bar label
 //                   .record-pair__body           the pod's body - prose, or one block
@@ -219,8 +224,7 @@
 }
 
 // A label that is a heading: the pair is a section of a page, so its pod titles
-// are that section's headings and print at the sub role in the pod's own ink -
-// the same treatment a section's panel title had before the pair held it. The
+// are that section's headings and print at the sub role in the pod's own ink. The
 // label's tracking and uppercase stand down here: a title is not a label, and
 // `Minimum Requirements` is written in its own case.
 .record-pair__label--heading {

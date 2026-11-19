@@ -14,11 +14,14 @@
 // up. A rail where the labels start at a different x on every row is a list of
 // links, not a register.
 //
-// ─── CURRENT, IN THREE SIGNALS AND A RULE ─────────────────────────────────
-// The row in force carries `aria-current`, ink at 500, and a 2px accent rule on
-// its leading edge - the same marker the header's active route uses, so the site
-// has one active-state vocabulary rather than three. One of the four marks is a
-// hue; the other three survive greyscale and a screen reader.
+// ─── CURRENT, IN THE SITE'S FOUR MARKS ────────────────────────────────────
+// The row in force carries the four marks every rail on the site carries -
+// `aria-current`, full ink, weight 500, and a 2px accent rule on its leading
+// edge - and two more of its own: the row fills `--Card`, and its mark takes the
+// accent with the rule so the row reads as one object. The rule is the same
+// marker the header's active route uses, so the site has one active-state
+// vocabulary rather than three. One of the four is a hue; the other three
+// survive greyscale and a screen reader.
 //
 // ─── HOVER IS A WASH, NOT A HUE ───────────────────────────────────────────
 // `--Mute` (the paper's darker step) at full bleed, flat, no radius. The accent
@@ -53,8 +56,9 @@
 }
 
 .ShellRail__mark {
-	/* the rail's `#`: a mark, so `--Mark`. The rail's one accent is the current
-	   row's 2px rule (`[aria-current]` below), which is the position. */
+	/* the rail's `#`: a mark, so `--Mark`. The rail's accent belongs to the
+	   current row - its 2px rule and its mark - because the accent is the
+	   position. */
 	color: var(--Mark);
 }
 
@@ -201,11 +205,11 @@
 
 /* ─── GROUPS: A RAIL OF SECTIONS ─────────────────────────────────────────── */
 // A group is a sub-register: its own label and its own count, at the register
-// line's step but one rank quieter than the rail's own head, because the head
-// names the whole rail and a group names a part of it. The rows under it keep
-// their reserved mark column, so a grouped rail's labels still line up across
-// every group - which is the only reason to group a register instead of
-// stacking two rails.
+// line's step, its label in ink where the rail's own head is muted - the head
+// names the whole rail, a group names the part the rows below it belong to. The
+// rows under it keep their reserved mark column, so a grouped rail's labels
+// still line up across every group - which is the only reason to group a
+// register instead of stacking two rails.
 .ShellRail__group-head {
 	@include mono-meta;
 	@include track(var(--track-row));

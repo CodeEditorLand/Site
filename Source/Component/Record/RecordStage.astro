@@ -14,6 +14,9 @@
 // SLOT CONTRACT     stages[]        -> one step each: index, label, line, href?
 //                   orientation?    -> `row` (across the band) or `stack` (down its edge)
 //                   variant?        -> `rail` (the default) or `plates`
+//                   current?        -> the index of the step the run is at
+//                   state?          -> `rest` (default), `empty` or `loading`, when no steps print
+//                   empty?          -> the sentence the absence prints
 // MAY HOLD          steps only.
 // MAY NOT HOLD      prose, a figure, a second process.
 // NARROW            the rail stacks at any orientation; the plates go one across.

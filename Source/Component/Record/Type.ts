@@ -1,5 +1,5 @@
 /**
- * Type - the data shapes the Record layer's ten blocks render.
+ * Type - the data shapes the Record layer's blocks render.
  *
  * One exported type per concept, and no React: a block's props are these
  * shapes plus whatever the page composes around them. Field names are lower
@@ -7,10 +7,7 @@
  * block renders the data a page hands it and never sorts, splices or pushes
  * it.
  *
- * This module supersedes `Interface.ts`, which carried a `ReactNode` figure
- * body and two shapes that disagree with the CSS surface (a string index
- * strip, a `right` cell alignment). Three departures are deliberate and are
- * the ones a block card should read twice:
+ * Three shapes are deliberate and are the ones a block card should read twice:
  *
  * - `Band.index` is an array of `{ label, href }`, not an array of strings:
  *   the index strip is a strip of links, so the href belongs to the item
@@ -643,9 +640,8 @@ export interface Trace {
 	 * `empty` is a trace whose source names no step at all. It is a state of its
 	 * own rather than a length of zero, because the two read differently: a trace
 	 * with no steps and no sentence is a hole, and a trace that says *why* it has
-	 * none is a provenance statement. The component checked `empty` before this
-	 * field existed, which meant a caller could not legally write the state the
-	 * block already understood.
+	 * none is a provenance statement. Without the field a caller could not
+	 * legally write the state the block already understands.
 	 */
 	state?: "rest" | "loading" | "empty";
 
@@ -1313,11 +1309,11 @@ export interface CompareStop {
 /**
  * RecordCompare - one axis, its stops, and where each thing sits on it.
  *
- * The comparison rail answers a question the site could not previously ask:
- * *along this one axis, in what order do these things sit, and which of them
- * exists today?* The four authentication tiers sit on one axis of who holds the
- * identity; a release's artifacts sit on one axis of what is published. A matrix
- * would answer neither - it compares states across columns, and it has no ends.
+ * The comparison rail answers one question: *along this one axis, in what order
+ * do these things sit, and which of them exists today?* The four authentication
+ * tiers sit on one axis of who holds the identity; a release's artifacts sit on
+ * one axis of what is published. A matrix would answer neither - it compares
+ * states across columns, and it has no ends.
  *
  * The axis is required and it has two ends: `from` and `to` are printed at the
  * rail's own ends, so a reader knows which direction the order runs. A rail
@@ -1355,10 +1351,9 @@ export interface Comparison {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// THE FIVE FORMS THE MANUAL WAS MISSING
+// THE FIVE FORMS
 //
-// The layer answered sixteen information types with sixteen blocks. These five
-// answer the five types a printed manual has and this site did not: the *plate*
+// These five answer five information types a printed manual has: the *plate*
 // (evidence at plate scale, with a caption channel), the *stamp* (a mark that
 // says the record is what it claims), the *inset* (a marginal note that can
 // carry a figure), the *transcript* (a session, with turn markers) and the

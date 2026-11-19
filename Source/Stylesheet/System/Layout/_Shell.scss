@@ -28,16 +28,14 @@
 // absorb whatever the plate and the rails do not take. The measure track is
 // `minmax(0, var(--Measure))`, and `--Measure` is the A4 plate (72-88ch, fluid
 // on the window - `_Token.scss`), so a wider page gives the paper a wider plate
-// and the reader a wider desk, and never a wider line: the prose stops where a
-// line stops being a line, which is what a document does.
+// and the reader a wider desk. The line widens only as far as the plate does:
+// past 88ch the desks take the rest, which is what a document does.
 //
-// The rule that stood here before said the opposite - that the margin absorbs
-// the rest and the prose never widens to fill a wider page. It was coherent at
-// 1440 and wrong at 2560: with the shell capped at 6XL and both rails taken out
-// of the measure, the paper was left 430px of a 2560px screen while the desk on
-// either side of it was empty. The rails now come out of the DESK rather than
-// out of the paper, and the shell's ceiling is the reading desk (120rem), so
-// the plate reaches its full width with both rails still outside it.
+// The rails come out of the DESK, not out of the paper, and the shell's ceiling
+// is the reading desk (120rem). Taken out of the measure instead, with the shell
+// capped at 6XL, a 2560px screen leaves the paper 430px wide while the desk on
+// either side of it is empty; at 120rem the plate reaches its full width with
+// both rails still outside it.
 //
 // A shell with no rail or no margin drops those tracks (`:has()`), because an
 // empty 13rem track is a column of nothing holding the paper off-centre - and
@@ -65,10 +63,11 @@
 @use "../Mixin" as *;
 
 // The sticky offset: the header's own published height plus one tight step. The
-// header is a viewport fact, so this is the layer's one viewport-shaped number;
-// everything else is a container query. It reads `--HeaderHeight` rather than
-// restating 5.25rem, because the header grows a second line below 640px and a
-// sticky that guessed the taller value would sit under the bar on a phone.
+// header is a viewport fact, so this is the layer's one viewport-shaped number,
+// and every track threshold in it is a container query on the box that holds the
+// content. It reads `--HeaderHeight` rather than restating 5.25rem, because the
+// header grows a second line below 640px and a sticky that guessed the taller
+// value would sit under the bar on a phone.
 $ShellStickyTop: calc(var(--HeaderHeight) + var(--space-tight));
 
 .PageShell {
@@ -110,22 +109,21 @@ $ShellStickyTop: calc(var(--HeaderHeight) + var(--space-tight));
 //
 // Row 1 is what a reader scans; row 2 is what the page hands in. They are two
 // kinds of sentence - a record line and its explanation - and they are printed
-// at two sizes for that reason. At one tier they competed: the explanation,
-// right-flushed into ragged-left meta capitals, lost its shape, and the record
-// lost its rank, because nothing in the strip was larger than anything else.
+// at two sizes for that reason. At one tier they compete: the explanation,
+// right-flushed into ragged-left meta capitals, loses its shape, and the record
+// loses its rank, because nothing in the strip is larger than anything else.
 //
 // The grid is what pins the stamp. `margin-inline-start: auto` inside a
-// wrapping flex was the old mechanism, and it could not survive a wrap: the
-// stamp drifted into the middle of the line the moment the facts wrapped. A
-// named column cannot drift.
+// wrapping flex cannot survive a wrap - the stamp drifts into the middle of the
+// line the moment the facts wrap. A named column cannot drift.
 //
 // ─── THE RHYTHM IS BETWEEN THE GROUPS, NOT BETWEEN THE ROWS ───────────────
 // One `row-gap` cannot say "the facts belong to the record and the gloss is a
 // new thought". So the grid's row gap is 0 and each row states its own distance
 // from the row above it: `--space-tight` from the record to its facts,
 // `--space-reading` from the facts to the gloss. The strip's block padding is
-// one reading step at each edge - the record is 18px now, and a title needs the
-// same air above it that the gloss gets below it.
+// one reading step at each edge - the record is 18px at the sub tier, and a title
+// needs the same air above it that the gloss gets below it.
 
 // The record's word edge, stated in rem because the gloss is a different tier:
 // `ch` and `em` would resolve to the gloss's own font size. At the sub tier the
@@ -155,12 +153,11 @@ $DeclarationWordEdge: 1.17rem;
 
 // ─── ROW 1: THE RECORD ────────────────────────────────────────────────────
 // `# LAYOUT / WORKSPACE`. The strip's title, and the only part of the strip set
-// at the sub tier. It is one object in one ink: the `#` is the accent (the
-// strip's one green thing), and `LAYOUT`, the slash and the name are the ink -
-// the mute label that used to sit in front of the name was a second rank at a
-// size that only has room for one, and the label/value contrast the strip needs
-// is printed by the facts row, where it is grammar rather than scale. No weight:
-// 18px of uppercase mono in ink is the rank.
+// at the sub tier. It is one object in one ink: the `#` is a mark, so it takes
+// `--Mark` (the muted ink every grammar mark prints in - `_Token.scss`), and
+// `LAYOUT`, the slash and the name are the ink. The label/value contrast the
+// strip needs is printed by the facts row, where it is grammar rather than
+// scale. No weight: 18px of uppercase mono in ink is the rank.
 //
 // The flex is only a baseline row - the wrap points are its own, so a narrow
 // container wraps the head instead of clipping it. The word gap is em-relative
@@ -267,8 +264,8 @@ $DeclarationWordEdge: 1.17rem;
 // The page's own stamp, at the row's end - a stamp, not a label. Meta tier, the
 // widest register the system has (0.18em, a label ABOVE a region rather than
 // beside a value: a stamp is read as a mark, not as a word), and mute, so the
-// strip spends its ink on the record and its one accent on the `#` that opens
-// it. A stamp is a quotation of a record marker, never a second seal.
+// strip spends its ink on the record and its only colour on nothing at all. A
+// stamp is a quotation of a record marker, never a second seal.
 //
 // `nowrap` is the pin's other half - a stamp broken across two lines is a
 // caption - and the right edge cancels the register's trailing letter-space, so
@@ -457,16 +454,16 @@ $DeclarationWordEdge: 1.17rem;
 // its own grid.
 //
 // ─── THE TRACK COUNT IS A CAPACITY, NOT A BREAKPOINT ──────────────────────
-// The old rule printed `repeat(var(--row-tracks), minmax(0, 1fr))` from
-// `@container shell (min-width: 48rem)`. That measured the wrong box twice over:
+// A `@container shell (min-width: 48rem)` printing
+// `repeat(var(--row-tracks), minmax(0, 1fr))` measures the wrong box twice over:
 // the shell is wider than the track the row sits in (the contact sale's row is a
 // 43.2rem measure inside a 59rem shell), and a shell width says nothing about
-// whether a card can hold its own sentence. What it produced was three 13.07rem
-// tracks, 161px of text - 16.8ch - where the six enterprise features wrapped to
-// one phrase per line and the 25ch address, which is `text-wrap: nowrap`, ran
-// 78.9px past its own card.
+// whether a card can hold its own sentence. Three 13.07rem tracks leave 161px of
+// text - 16.8ch - where the six enterprise features wrap to one phrase per line
+// and the 25ch address, which is `text-wrap: nowrap`, runs 78.9px past its own
+// card.
 //
-// So the count is a floor now. `--row-tracks` stays the authored maximum (how
+// So the count is a floor. `--row-tracks` stays the authored maximum (how
 // many artifacts the row is composed for) and `--row-floor` is the width ONE
 // track needs to hold its artifact's own longest fragment. The row is a wrapping
 // flex line whose items cannot shrink below
@@ -552,11 +549,10 @@ $DeclarationWordEdge: 1.17rem;
 // THE THRESHOLDS ARE ARITHMETIC, IN CONTAINER TERMS. The shell's content box is
 // the window less its two gutters, and its ceiling is 120rem:
 //
-//   58rem  rail (13rem) + a desk (2rem) + the smallest plate (72ch = 43.2rem at
-//          the body tier) + a desk = 60.2rem of tracks, so at 58rem the paper
-//          takes 68.5ch - the one place the plate is allowed under its own
-//          measure, and it is the narrowest window that still shows a rail
-//          beside a document. Below it both rails stack.
+//   58rem  rail (13rem) + the plate at its floor (72ch = 43.2rem at the body
+//          tier) = 56.2rem, so at 58rem the paper sits at its own measure with
+//          0.9rem of air on each side of it: the narrowest window that still
+//          shows a rail beside a document. Below it both rails stack.
 //   84rem  rail (13rem) + a desk (2rem) + the plate at 77ch (46.5rem) + a desk
 //          (2rem) + the register (16rem) = 79.5rem, and at 84rem the desks are
 //          68px each: the first container in which the register can stand
@@ -690,8 +686,7 @@ $DeclarationWordEdge: 1.17rem;
 	// THE THREE-COLUMN FORM: the rails at the page's edges, the desks between
 	// them and the paper, the plate at its own measure in the middle. One
 	// template per combination of slots, because a missing rail must not leave
-	// its track behind: an empty 13rem column is what held the paper off-centre
-	// before this card.
+	// its track behind: an empty 13rem column holds the paper off-centre.
 	.PageShell[data-layout="reading"] .PageShell__grid {
 		display: grid;
 		grid-template-columns:

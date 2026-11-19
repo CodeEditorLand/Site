@@ -77,12 +77,11 @@
 	min-block-size: 80dvh;
 	// THE OUTER INSET. All four sides take the page's own edge - the same
 	// `clamp(2rem, 5vw, 5rem)` the Portal hero's row carries, 72px at 1440 - so
-	// the artifact is inset from the band on every side. The block side used to
-	// be the smaller `clamp(2rem, 3vw, 3rem)`, on the argument that every pixel
-	// of the pair's height belonged to the instrument; the effect was a pair
-	// that had been bled to the viewport's top and foot while the Portal's
-	// floated inside its band, and that difference is most of what the owner
-	// saw. The pair pays the inset back in its own block height, below.
+	// the artifact is inset from the band on every side. A smaller block inset
+	// would bleed the pair to the viewport's top and foot while the Portal's
+	// floats inside its band, and that difference is most of what a reader
+	// reads as "not the same hero". The pair pays the inset back in its own
+	// block height, below.
 	padding: var(--hero-pair-inset);
 	margin-inline: auto;
 	// Published for the record card, which cannot take its height from the
@@ -91,13 +90,13 @@
 	// could never take the free space. The two values are declared here, once,
 	// and the inset computes the pair's content box from them.
 	//
-	// The height grows by the inset it gave away. The 5vw block padding took
-	// 58px off the card at 1440 and the card's own inset took another 8, and the
-	// blank interval is a keeper at 15-25% of the card, so the pair takes those
-	// pixels back instead of spending them on the interval: 51rem is the
-	// shortest pair that still leaves the interval above 15% once the card has
-	// paid the 5vw inset and its own 2.75rem of block padding, and 54rem is the
-	// tallest it may grow before the interval passes 25%.
+	// The height is measured from the interval, not chosen. The 5vw block
+	// padding takes 58px off the card at 1440 and the card's own inset another
+	// 8, and the blank interval is a keeper at 15-25% of the card, so the pair
+	// takes those pixels back instead of spending them on the interval: 51rem
+	// is the shortest pair that still leaves the interval above 15% once the
+	// card has paid the 5vw inset and its own 2.75rem of block padding, and
+	// 54rem is the tallest it may grow before the interval passes 25%.
 	--hero-pair-block: clamp(51rem, 89dvh, 54rem);
 	--hero-pair-inset: clamp(2rem, 5vw, 5rem);
 }
@@ -122,10 +121,10 @@
 		row-gap: 0;
 		column-gap: clamp(0.5rem, 1.5vw, 1.875rem);
 		// A panel is a panel: at desktop the pair has a height, and both
-		// halves fit inside it. Before this, the pair's height was whatever
-		// the photograph's intrinsic ratio made it - 1075px at 1440 - so the
-		// card stretched to match and the blank interval could never grow
-		// past its floor.
+		// halves fit inside it. Without it the pair's height is whatever the
+		// photograph's intrinsic ratio makes it - 1075px at 1440 - so the card
+		// stretches to match and the blank interval can never grow past its
+		// floor.
 		//
 		// The clamp is derived from the interval, not from taste. The record's
 		// content measures ~496px at 1440 and the card pays 2 x 2.75rem of its
@@ -173,11 +172,10 @@
 	// the same knobs `.record-hero__inset` reads - so the two heroes' cards can
 	// no longer drift apart, and a host that tightens one tightens the other.
 	//
-	// This rule used to spend `clamp(1.75rem, 2.4vw, 2.5rem)` and give the
-	// 0.75rem it saved to the blank interval. That was the wrong place to buy
-	// the interval: a plate, a claim, a stamp block, a status, a ledger and an
-	// action all sitting in a 40px inset read as a panel with a border, and the
-	// owner's reference is a card with air inside it. The interval is bought
+	// This rule spends the card's full inset and does not give any of it to
+	// the blank interval: a plate, a claim, a stamp block, a status, a ledger
+	// and an action all sitting in a 40px inset read as a panel with a border,
+	// and the reference is a card with air inside it. The interval is bought
 	// from the pair's block height instead (`--hero-pair-block`).
 	--card-padding-block: 2.75rem;
 	--card-padding-inline: 1.5rem;
@@ -236,9 +234,9 @@
 // on one line at every width the pair is a pair at, and it still outranks the
 // band headings (32-52px) by the hard jump the tier system requires.
 //
-// The card's inner measure is 21px narrower than it was before the gutter's air
-// (`column-gap` takes 21.6px a side at 1440, and the card is 49% of the pair),
-// which is why the one-line threshold below moved with it.
+// The card's inner measure is 21px narrower than the gutter's air leaves it
+// without the gap (`column-gap` takes 21.6px a side at 1440, and the card is 49%
+// of the pair), which is why the one-line threshold below sits at 1200px.
 .hero-band__claim {
 	margin: var(--space-reading) 0 0;
 	font-family: var(--FontMono);
@@ -253,10 +251,9 @@
 }
 
 // From 1200px up - where the 49% card's inner measure clears the claim at the
-// tier's floor - it is one line, always. The threshold was 1120px until the
-// gutter was given its air: at 1120 the card now offers 429px of inner measure
-// against 418px of type, and eleven pixels of slack is not a fit, it is a
-// coincidence. 1200px keeps 35px of slack at the threshold.
+// tier's floor - it is one line, always. At 1120 the card offers 429px of inner
+// measure against 418px of type, and eleven pixels of slack is not a fit, it is
+// a coincidence; 1200px keeps 35px of slack at the threshold.
 @include bp(1200px) {
 	.hero-band__claim {
 		white-space: nowrap;
@@ -266,11 +263,11 @@
 // THE STAMP BLOCK. `〈NO ELECTRON〉`, `/COMPAT: VS CODE`, what that compatibility
 // means, and the program line - four readings at the S tier under one hairline.
 //
-// They used to be four bands at three tiers (L, L, S, S), which is why the card
-// shouted four times before it said anything. A stamp is read as a stamp because
-// of its containment and its tracking, not because it is 52px tall; at 13px,
-// tracked, under a rule, they read as the record's engraved block - which is
-// what the grammar calls them.
+// They are one tier because a stamp is read as a stamp: its containment and its
+// tracking carry the form, not its size. At 13px, tracked, under a rule, they
+// read as the record's engraved block - which is what the grammar calls them.
+// Four bands at three tiers (L, L, S, S) shouted four times before the card said
+// anything.
 .hero-band__stamps {
 	margin-block-start: var(--space-reading);
 	padding-block-start: 0.625rem;
@@ -364,10 +361,10 @@
 
 // The relation, at the reference's own values: `text-field-s`
 // (`--TypeScaleS`, 14px) at `leading-[1.1]`, in the card's ink at 70%, 12px
-// under the nameplate (`mt-3`). It used to be the 13px meta tier in
-// `--MuteForeground` eight pixels under - a caption hung beneath a headline
-// rather than the second line of one proposition. The ink is stronger than the
-// muted it replaces, so the line reads as part of the claim and not as a note.
+// under the nameplate (`mt-3`). It is the second line of one proposition, not a
+// caption: the 13px meta tier in `--MuteForeground` eight pixels under read as a
+// caption hung beneath a headline, and the stronger ink makes the line part of
+// the claim rather than a note on it.
 .hero-band__relation {
 	margin: 0.75rem 0 0;
 	font-size: var(--TypeScaleS);
@@ -409,9 +406,9 @@
 	letter-spacing: var(--track-row);
 }
 
-// The site's action grammar is `/LABEL` at the accent ink, and the global link
-// rule already draws the hairline underline in `var(--Border)` - so this rule
-// sets the role and the ink and leaves the underline alone.
+// The site's action grammar is `/LABEL` at the accent ink. This rule sets the
+// role and the ink and suppresses the prose underline, so the destination reads
+// as a route beside the action rather than as a second paragraph link.
 .hero-band__destination {
 	color: var(--Accent);
 	text-decoration: none;
@@ -464,10 +461,10 @@
 // gutter sits between a warm-white card and a photograph, and `var(--Border)`
 // (8% ink) dissolves on the card side at that contrast. `--Divider` IS that
 // value - `color-mix(in srgb, var(--CardForeground) 20%, transparent)`, the mix
-// the site's other dividers draw (the markdown-alert rule in `_Base.scss`) -
-// and it is the token `Record/_Hero.scss` already reads for its own gutter, so
-// the two heroes cannot drift apart again. The declaration used to restate the
-// mix here; it now names the token that holds it. Same ink, one home.
+// the site's other dividers draw (the markdown-alert rule in `_Base.scss`) - and
+// it is the token `Record/_Hero.scss` reads for its own gutter, so the two
+// heroes cannot drift apart. The rule names the token rather than restating the
+// mix: same ink, one home.
 //
 // The track is what makes the rule a track; the air around it is the pair's
 // `column-gap` (see `.hero-band__pair`). Together they are the separation the

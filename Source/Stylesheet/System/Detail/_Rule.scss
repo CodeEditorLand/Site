@@ -12,10 +12,11 @@
 //               boundary - a chapter, a gutter, the foot of a band, the end of
 //               the document - and at 8 % ink an edge is a rumour (1.18:1).
 //
-// Two rules in the tree drew an edge at the separator's ink. They are corrected
-// here, in the layer whose whole job is this distinction, rather than in the
-// partials that own the surfaces - because the partials were each right about
-// their own seam and wrong about the boundary they were drawing.
+// Two rules in the tree draw an edge and must therefore take the edge's ink: the
+// footer's opening rule and the band foot, both below. They are stated here, in
+// the layer whose whole job is this distinction, rather than in the partials
+// that own the surfaces - because a partial is right about its own seam and can
+// be wrong about the boundary it is drawing.
 //
 // ─── THE CLEARANCE ────────────────────────────────────────────────────────
 // A rule never sits closer than `--space-tight` to the text it introduces, and

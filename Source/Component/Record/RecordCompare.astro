@@ -21,8 +21,9 @@
  *                   order (that is a Stage).
  * MAY NOT HOLD      a nested set, a figure, a well. A rail is one line.
  * WIDE (>=768)      one line across the measure; each stop is a column whose top
- *                   edge is the rail, with a 7px tick at its head - filled when
- *                   the position is reached, hollow when it is not.
+ *                   edge is the rail, with a 6px tick (`--mark-tick-stop`) at its
+ *                   head - filled when the position is reached, hollow when it is
+ *                   not.
  * NARROW            the rail rotates: the line runs down the left edge and the
  *                   stops stack along it, each keeping its tick and its state.
  *                   The axis's two ends print above the stack, so the direction

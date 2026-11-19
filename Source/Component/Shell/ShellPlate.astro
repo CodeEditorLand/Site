@@ -22,9 +22,10 @@
  * is the honest bleed for a page inside the site's frame - the frame's rail and
  * the page's gutter still hold the measure.
  *
- * `viewport` bleeds past both gutters to the window's edges. It is used once, on
- * the 404, where the plate *is* the page and there is no measure to hold. It
- * clips its own overflow so a wide plate can never widen the document.
+ * `viewport` bleeds past both gutters to the window's edges. The 404 is the one
+ * production page that spends it, where the plate *is* the page and there is no
+ * measure to hold. The bleed is clipped by the shell's `overflow-x: clip`
+ * (`Layout/_Shell.scss`), so a wide plate can never widen the document.
  *
  * ─── THE MEDIA ARM ────────────────────────────────────────────────────────
  * The composed arm is the normal one: the page passes the plate's content through
@@ -84,7 +85,7 @@ interface Props {
 	/**
 	 * The absence arm: a plate whose evidence is not there.
 	 *
-	 * A plate with no `media`, no `trace` and no slot used to print its frame as
+	 * A plate with no `media`, no `trace` and no slot would print its frame as
 	 * an empty white field - a figure that is a hole, which reads as a page that
 	 * failed rather than a plate with a fact to state. This arm prints the three
 	 * things every absence on the site prints (`Design-Brief.md` §7): what would

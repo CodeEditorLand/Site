@@ -17,8 +17,11 @@ export interface SpecimenLabelProps {
 
 	className?: string;
 
-	/** Seal render size in px (default 36 - card-sized specimen anchor, not the hero 64). */
-	/** The seal's step (`s` 20 / `m` 32 / `l` 48), or a px number for an old caller. */
+	/**
+	 * The seal's step (`xs` 16 / `s` 32 / `m` 48 / `l` 64 / `xl` 240), or a px
+	 * number for an old caller. Defaults to `s`, the card-sized specimen anchor -
+	 * not the hero's `l`.
+	 */
 	sealSize?: SealSize | number;
 
 	/** Hide the index + seal header row (used when the host renders its own). */
@@ -37,8 +40,8 @@ export interface SpecimenLabelProps {
  * The distinct physical form for the element series: ink directly on the
  * creme canvas (NO --Card white background - the canvas shows through),
  * hairline rgba(7,7,7,0.08) rules between rows, dense left-aligned mono
- * uppercase ledger type, a small seal as the specimen anchor, and one green
- * accent detail (the STATUS row when the record tone is "specimen").
+ * uppercase ledger type, and a small seal as the specimen anchor. The STATUS
+ * row takes no hue: the attested tone is a shape, never the accent.
  *
  * The field-record grammar is preserved (# INDEX, 〈STAMP〉, /ROUTE, PROGRAM,
  * TITLE:, STATUS:, metadata rows) but stamps render at ledger scale

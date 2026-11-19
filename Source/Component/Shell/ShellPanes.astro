@@ -19,8 +19,9 @@
  * found by the browser's own in-page search when closed.
  *
  * ─── NARROW ───────────────────────────────────────────────────────────────
- * The gutter rotates: the two panes stack, and the 1px rule becomes the seam
- * between them at the same ink. The panes keep their heads, their marks and their
+ * The seam rotates: the two panes stack, and the rule runs across between them at
+ * the same ink - on the secondary pane's leading edge, since the gutter track is
+ * not laid out at one column. The panes keep their heads, their marks and their
  * order - the primary pane stays first, because on a phone the reader meets the
  * instrument they came for before the context beside it.
  *
@@ -35,10 +36,10 @@
  * head, its body gets the column). Same heads, same marks, same counts, same
  * drawer - only the axis of the seam changes.
  *
- * ─── THE PANE'S OWN ADVERSE ARMS (added by the frame card) ────────────────
- * A pane whose instrument has not arrived used to print its head and then an
- * empty body, which reads as a pane that failed rather than a pane with a fact
- * to state. Each pane now carries the two arms every block in the family has:
+ * ─── THE PANE'S OWN ADVERSE ARMS ──────────────────────────────────────────
+ * A pane whose instrument has not arrived prints its head and then an absence,
+ * not an empty body - which reads as a pane that failed rather than a pane with a
+ * fact to state. Each pane carries the two arms every block in the family has:
  *
  *   state="empty"    `◎ UNAVAILABLE` + the pane's own sentence (`empty`)
  *   state="loading"  the keys the pane will print, their values barred

@@ -15,17 +15,17 @@
  * channel, version, size, signing, the action and the status.
  *
  * ─── A MANIFEST IS A SET, AND ITS ADVERSE STATE IS A SET OF NONE ──────────
- * The plate was written for exactly three artefacts and had no answer for the
- * two sets a release actually produces: ONE - the day a build exists for a
- * single platform, which is the shape every first release has - and NONE, the
- * day nothing is downloadable, which the site's own masthead already states in
- * words ("nothing is downloadable yet; builds are from source").
+ * The plate files exactly three artefacts, and a release also produces two
+ * smaller sets: ONE - the day a build exists for a single platform, which is the
+ * shape every first release has - and NONE, the day nothing is downloadable,
+ * which the site's own masthead already states in words ("nothing is
+ * downloadable yet; builds are from source").
  *
- * One row already rendered correctly: the row's rule is `+ .home-platform`, so a
- * plate of one has no divider in it. What was missing was the empty arm, and an
- * empty arm on a white plate is not an empty plate - it is a plate with nothing
- * on it, which reads as a build that lost its data rather than a project with
- * nothing to ship.
+ * One row needs no special case: the row's rule is `+ .home-platform`, so a
+ * plate of one has no divider in it. The empty arm is the case that needs one,
+ * and an empty arm on a white plate is not an empty plate - it is a plate with
+ * nothing on it, which reads as a build that lost its data rather than a project
+ * with nothing to ship.
  *
  * So the plate states the absence in the vocabulary, in the plate's own voice,
  * and keeps the three facts a reader needs: that no artefact is filed, that
@@ -45,7 +45,7 @@ import PlatformCard from "./PlatformCard.astro";
 interface Props {
 	/**
 	 * The artefacts the manifest files. Defaults to the page's three, so the
-	 * homepage passes nothing and the band renders as it always has.
+	 * homepage passes nothing.
 	 */
 	cards?: readonly PlatformCardData[];
 }

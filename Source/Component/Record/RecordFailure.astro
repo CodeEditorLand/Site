@@ -10,7 +10,8 @@
  *                   has three fixed fields and one vocabulary word, and prose
  *                   loses the third field, which is the only actionable one.
  * RANK              leaf.
- * SLOT CONTRACT     failure    -> index, name, symptom, cause, next, state, source
+ * SLOT CONTRACT     failure    -> index, name, symptom, cause, next, state, source,
+ *                                and optionally `recovery` and `detail`
  * MAY HOLD          nothing. Three fields and a state word.
  * MAY NOT HOLD      a stack trace, a well of commands, a second failure. A
  *                   failure that needs a command block is a failure beside a
@@ -25,8 +26,10 @@
  *                   explaining itself.
  *
  * ─── THE STATE WORD ──────────────────────────────────────────────────────
- * `STATUS:` prints the fixed eight-word vocabulary and nothing else, in the tone
- * the one state table resolves (`Surface/State.ts`). `INTERRUPTED` is ink, not
+ * `STATUS:` prints the state word the caller hands in, upper-cased, in the tone
+ * the one state table resolves (`Surface/State.ts`). The eight-word vocabulary is
+ * the caller's contract, not a filter here: the block does not translate a word
+ * it was given. `INTERRUPTED` is ink, not
  * red: the site has no second alarm colour, and a failure that shouts in a hue
  * the palette does not own would be the only thing on the page pretending.
  *
@@ -54,12 +57,12 @@ const ToneOf = Tone(state) ?? "ink";
 /**
  * Whether the failure has no way out.
  *
- * The brief names this case by hand - "a failure with no recovery path" - and a
- * block that printed an empty NEXT row would be saying the reader's next step is
- * a blank. A documented dead end is a FACT about the condition, so the block
- * marks it (`record-failure--dead-end`), prints the vocabulary's word in the
- * value's place and keeps the row: the three fields are the block, and a failure
- * with two fields is a symptom with no answer.
+ * A failure with no recovery path is a documented case, and a block that printed
+ * an empty NEXT row would be saying the reader's next step is a blank. A
+ * documented dead end is a FACT about the condition, so the block marks it
+ * (`record-failure--dead-end`), prints the vocabulary's word in the value's
+ * place and keeps the row: the three fields are the block, and a failure with two
+ * fields is a symptom with no answer.
  */
 const DeadEnd = next.trim() === "" || next.trim().toUpperCase() === "UNAVAILABLE";
 ---

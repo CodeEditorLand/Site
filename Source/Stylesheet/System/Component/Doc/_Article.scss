@@ -25,11 +25,13 @@
 //
 // Four decisions this file makes so no page has to:
 //
-// - **One measure, one token.** The body, the header, the metadata strip and the
-//   pager all read `var(--Measure)` - the paper's plate, fluid from 72ch to 88ch
-//   on the window (`_Token.scss`) - so the standfirst, the prose and the pager
-//   end on the same right edge at every width, and a wider window widens the
-//   page's plate rather than the prose's line.
+// - **One measure, one token.** The body, the header and the metadata strip all
+//   read `var(--Measure)` - the paper's plate, fluid from 72ch to 88ch on the
+//   window (`_Token.scss`) - so the standfirst, the prose and the strip end on
+//   the same right edge at every width, and a wider window widens the page's
+//   plate rather than the prose's line. The pager reads `var(--Paper)` instead,
+//   which is the same measure plus its two insets: it sits outside the card, so
+//   its two ends have to reach the card's frame, not the prose's edge.
 // - **The container is the page's.** This partial adds no gutter and no max
 //   width: `DocLayout` owns the one container on a rail page, and a page without
 //   a rail owns its own (`.doc-rust`).
@@ -74,9 +76,10 @@
 	color: var(--MuteForeground);
 
 	/* A crumb is a mono route label, so it keeps the prose underline the
-	   sitewide rule gives it (`--Divider`, 1px, 0.22em) - and takes its own ink
-	   on hover. The global hover moves the line's colour and nothing else, so
-	   without this the rule darkened under a label that stayed muted. */
+	   sitewide rule gives it - `--Divider`, 1px, `--optical-underline-offset`
+	   (0.3em) in `System/_Global.scss` - and takes its own ink on hover. That
+	   global hover moves the line's colour and nothing else, so without this
+	   the rule would darken under a label that stayed muted. */
 	&:hover,
 	&:focus-visible {
 		color: var(--Foreground);
@@ -141,11 +144,11 @@
    a value that is a state (`UNAVAILABLE`) renders quiet so it never reads as a
    positive claim (DESIGN.md §1.5).
 
-   **The label is tracked; the value is not.** The strip used to upper-case the
-   whole line, which printed `SOURCE: SOURCE/CONTENT/DOC/ARCHITECTURE.MD` - a
-   path that does not exist, in a casing the file system does not use. A fact is
-   printed as it is written; the tracking belongs to the field's name, which is a
-   label. */
+   **The label is tracked; the value is not.** A fact is printed as it is
+   written - `SOURCE: SOURCE/CONTENT/DOC/ARCHITECTURE.MD` is a path, and
+   upper-casing it would print a file name the file system does not use - so
+   the tracking belongs to the field's name, which is a label, and the value
+   keeps its own casing. */
 .doc-article__strip {
 	@include mono-meta;
 
@@ -341,7 +344,7 @@
    `MAX_CANVAS_EDGE` / `MAX_CANVAS_AREA` does it flatten to a CSS surface. At 2x
    DPR that cap is a 4,000px host, so the articles long enough to be felt as a
    slow scroll have no canvas; the short ones keep one, and it is a texture, not
-   a frame. That balance is Jelly's to own (`t_5e83b25f`); nothing here fights it.
+   a frame. That balance is Jelly's to own; nothing here fights it.
 
    The width is `--Paper` - the measure PLUS its two insets - because with
    `box-sizing: border-box` a bare `--Measure` would put the padding inside the
@@ -449,7 +452,7 @@ jelly-card.doc-prose .doc-article__body a {
 }
 
 /* Components doc §5: a code block is FLAT - shiki's `github-light` surface,
-   radius 0 (Base.css), no rule inside it. The hairline the `pre` rule above
+   radius 0 (Base.css), no rule inside it. The hairline the `pre` rule below
    carries is for an indented block that has no theme; `.astro-code` brings its
    own surface and gets none. */
 .doc-article__body > pre.astro-code {
@@ -478,19 +481,14 @@ jelly-card.doc-prose .doc-article__body a {
    `contain-intrinsic-block-size: auto <n>` gives a skipped block a height so the
    document's own extent is still known.
 
-   The previous card wrote this rule down and did not apply it, because the
-   article's `jelly-card` was said to re-allocate a document-sized canvas on
-   every height change. Two of the three terms in that were wrong, and the
-   shipped `dist/jelly.js` says so in one line each:
-   `startHoverLoop` refuses a host taller than the viewport
-   (`offsetHeight > window.innerHeight`), so the card never repainted per frame
-   on any doc page; and `applyShape` flattens a host past the texture limits
-   (8192 px an edge, 16,777,216 device pixels) to a CSS surface with no bitmap
-   and no physics body, which at 2x DPR is every article over 4,000px - i.e.
-   every one long enough to be felt as a slow scroll. `t_5e83b25f` then landed
-   the Jelly side of the balance (hover parks at rest, a viewport-taller host is
-   refused, the canvas is capped), so the surface is the library's decision and
-   nothing here fights it.
+   The article's `jelly-card` is not a reason to withhold this, and the shipped
+   `dist/jelly.js` says so in one line each: `startHoverLoop` refuses a host
+   taller than the viewport (`offsetHeight > window.innerHeight`), so the card
+   never repaints per frame on any doc page; and `applyShape` flattens a host
+   past the texture limits (8192 px an edge, 16,777,216 device pixels) to a CSS
+   surface with no bitmap and no physics body, which at 2x DPR is every article
+   over 4,000px - i.e. every one long enough to be felt as a slow scroll. The
+   surface is the library's decision and nothing here fights it.
 
    What is left of the concern is real but bounded, and named: a card whose host
    stays *under* the cap - a short article, or any article on a 1x display - does
@@ -533,11 +531,10 @@ jelly-card.doc-prose .doc-article__body a {
 }
 
 /* A document's `h2` is a section head, so it is L, and its `h3` is the S
-   heading - the ladder's tiers (`_Type.scss`, THE ELEMENT LADDER). The body used
-   to set them at the standfirst step and at body size, which is how a manual
-   ends up with headings that are not larger than the paragraphs they introduce:
-   the markdown pipeline's prose layer already sets this same ladder
-   (`tailwind.config.js`), so the surface and the pipeline now agree. */
+   heading - the ladder's tiers (`_Type.scss`, THE ELEMENT LADDER). A manual
+   whose headings are not larger than the paragraphs they introduce is a set of
+   row labels wearing an `h2`; the markdown pipeline's prose layer sets the same
+   ladder (`tailwind.config.js`), so the surface and the pipeline agree. */
 .doc-article__body > h2 {
 	font-weight: 500;
 	letter-spacing: var(--track-join);
@@ -697,10 +694,9 @@ jelly-card.doc-prose .doc-article__body a {
 	text-align: end;
 }
 
-/* The link sits on a jelly-card: the card is the pager's flex item (it was at
-   HEAD too, with the 45% cap on the card), so the cap moves from the link to
-   the card, the "next" card takes the auto margin, and the link fills its card
-   and carries the inset the card's own padding does not. */
+/* The link sits on a jelly-card, and the CARD is the pager's flex item: the 45%
+   cap is on the card, the "next" card takes the auto margin, and the link fills
+   its card and carries the inset the card's own padding does not. */
 .doc-pager__card {
 	flex: 0 1 auto;
 
@@ -720,8 +716,8 @@ jelly-card.doc-prose .doc-article__body a {
 	padding-inline: var(--space-reading);
 
 	/* The card is the destination; a rule under its two lines would say the
-	   text is the link instead of the card. The baseline's pager was the same
-	   card with a click handler, and carried no rule at all. */
+	   text is the link and the card is not, which is the one thing a block link
+	   must not say. */
 	text-decoration: none;
 }
 

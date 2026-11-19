@@ -7,7 +7,7 @@
 //                   pictures, compared by being seen at one size.
 // RANK              set.
 // SLOT CONTRACT     .record-plate-set                  the set: head, field, foot
-//                   .record-plate-set--2|--3           cells across on wide screens
+//                   .record-plate-set--3               three across at 1024 (two from 640 is the field's default)
 //                   .record-plate-set--loading         the skeleton arm
 //                   .record-plate-set--empty           the composed empty state
 //                   .record-plate-set__head            `# PLATES_01 / LABEL ␁ 15 PLATES`
@@ -29,8 +29,9 @@
 // NARROW            one across; two at 640. The frame keeps 4:3 at every width:
 //                   a plate that changes shape with the viewport is a different
 //                   plate.
-// WIDE (>=1024)     three across at `--space-group` (or two, when the set says
-//                   so). No rules between the cells - the framed figures are the
+// WIDE (>=1024)     three across at `--space-group` when the set asks for three;
+//                   two is the field's default from 640. No rules between the
+//                   cells - the framed figures are the
 //                   structure, and a grid of boxes inside a band is a grid of
 //                   cards.
 // DENSE             none. A set of figures is scanned at one size; a denser set
@@ -155,8 +156,8 @@
 }
 
 // The cell's mark is the mark layer's square (`Mark/_Square.scss`) under this
-// block's own name - it was a 4px box declared here while the stamp next door
-// declared the same 4px box and the shell declared 6.4px.
+// block's own name: one size, read from `--mark-square`, so the square is the
+// same square wherever the layer prints it.
 .record-plate-set__cell-marker {
 	display: block;
 	flex: 0 0 auto;

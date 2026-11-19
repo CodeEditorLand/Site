@@ -3,12 +3,10 @@
  * DocCard - one card of the documentation index: a title, the page's
  * `description` under it, and the whole card as the way in.
  *
- * The baseline rendered each entry as a `jelly-card` carrying a click handler,
- * a `tabindex` and an inline `onclick="location.href=..."`. The card is the
- * same card; what changed is that the destination is an anchor now, so the
- * entry is reachable from the keyboard, opens in a new tab with the platform's
- * own gesture, and needs no script. That is an implementation difference on the
- * same render, which is what this programme allows.
+ * The destination is an ANCHOR, not a click handler: the card is reachable from
+ * the keyboard, opens in a new tab with the platform's own gesture, and needs no
+ * script. The surface is a `jelly-card` and the anchor fills it, so the whole
+ * card is the target.
  *
  * `level` is the one thing a caller decides:
  *

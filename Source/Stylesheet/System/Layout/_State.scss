@@ -82,11 +82,9 @@
 }
 
 // The status mark is the mark layer's square (`Component/Mark/Mark.astro`), at
-// the record's own step. The rule here drew a `0.4rem` (6.4px) square with a
-// hand-written `translate: 0 -0.1em`, while a stamp drew 4px and a register drew
-// a 2px bar - three sizes and two shapes for one mark. The square's raise is the
-// mark layer's token now (`--mark-raise`), so the box that holds it does not
-// carry a nudge of its own.
+// the record's own step: one form, `currentColor` for its ink, and the tone's own
+// step. Its raise is the mark layer's token (`--mark-raise`), so this box carries
+// no nudge of its own and a stamp, a register and a state draw one mark.
 
 .ShellState__status--specimen {
 	color: var(--state-ink-attested);
@@ -171,11 +169,10 @@
 }
 
 // The action is a link at the meta register, so its line is the site's one
-// line: `--optical-underline-offset` clears the descenders that 0.12em cut
-// through (a 2px line 1.6px under a 13px baseline sits inside every `p` and
-// `g`). The 2px weight stays - it is this surface's staccato underline, the
-// heavier of the two registers the site draws under a word - and only its
-// distance from the text changes.
+// line: `--optical-underline-offset` clears the descenders (a 2px line 1.6px
+// under a 13px baseline sits inside every `p` and `g`). The 2px weight is this
+// surface's staccato underline, the heavier of the two registers the site draws
+// under a word.
 .ShellState__action {
 	color: var(--Foreground);
 	text-decoration: underline;
@@ -231,8 +228,8 @@
 
 // ─── THE LAST-KNOWN SET ───────────────────────────────────────────────────
 // A compact ledger under the state's rows: the stale reading's values, or the
-// facts a partial state does have. Two columns at the wide container, because a
-// set of facts is read across.
+// facts a partial state does have. One column, read down - the same ledger the
+// rows above it print, at the same key column.
 
 .ShellState__facts {
 	display: grid;

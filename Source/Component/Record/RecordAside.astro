@@ -25,7 +25,7 @@
  * MAY HOLD          prose, one ledger, or one block through the slot.
  * MAY NOT HOLD      two claims under one summary, a second summary, or a
  *                   heading: the summary is the aside's only title.
- * WIDE              the summary bar is a row: marker, label, disclosure mark.
+ * WIDE              the summary bar is a row: marker, label, `〈count〉`, mark.
  * NARROW            the same row wraps; the mark stays at the line's end so the
  *                   reader's thumb finds it in the same place.
  * DENSE             none. An aside is already the compressed form of its subject
@@ -33,12 +33,12 @@
  *
  * THE DISCLOSURE MARK IS `›`, AND IT TURNS. The site's grammar has `→` for
  * progression and `›` for "there is more behind this"; a disclosure is the
- * second, not the first. This block used to print a `→` and rotate it, which
- * made the arrow that means "destination" do the fold's work - one of the four
- * spellings of the same gesture the mark set removed. The mark, its ink and its
- * quarter turn are `Mark/_Arrow.scss`'s now, and the only motion this block has
- * is that turn. With `prefers-reduced-motion` it snaps and loses nothing: the
- * body is present or it is not.
+ * second, not the first. A `→` rotated in place would make the arrow that means
+ * "destination" do the fold's work - one of the four spellings of the same
+ * gesture the mark set removes. The mark, its ink and its quarter turn are
+ * `Mark/_Arrow.scss`'s, and the only motion this block has is that turn. With
+ * `prefers-reduced-motion` it snaps and loses nothing: the body is present or it
+ * is not.
  *
  * A `<details>` IS THE WHOLE MECHANISM. No script, no `client:*`, no state in
  * React: the disclosure works with JavaScript off, prints open in a print

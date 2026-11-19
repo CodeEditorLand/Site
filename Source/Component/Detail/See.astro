@@ -12,9 +12,11 @@
  * ─── THE GRAMMAR IT KEEPS ─────────────────────────────────────────────────
  * - The route is printed in the grammar's route form, `/PRIVACY`, uppercase, as
  *   given - the block never re-cases it and never invents the slash.
- * - Every reference carries its reason, at the caption's size and the opening
- *   measure. A reference without one is not printed: the block refuses the row
- *   rather than printing a bare link.
+ * - Every reference carries its reason, at the caption's size and at its own
+ *   column's 52ch - `Detail/_See.scss` writes the arithmetic, and 62ch is the
+ *   value it lost to: a caption beside a 19ch route never reaches 62ch, and a
+ *   cap that is never reached is not a measure. A reference without a reason is
+ *   not printed: the block refuses the row rather than printing a bare link.
  * - No references at all renders nothing - not an empty frame, not a "no
  *   related pages" sentence. A see-also with nothing to see is noise.
  *
@@ -43,8 +45,8 @@ interface Props {
 	 * The block's own law - a see-also with nothing to see is noise, so no
 	 * references renders nothing - is about a foot that has no references. A
 	 * foot whose references have not been READ is a different fact, and it is
-	 * the one that used to be invisible: the foot printed its folio and the
-	 * reader could not tell a band with no cross-references from a build that
+	 * the one that would otherwise be invisible: the foot prints its folio and
+	 * the reader cannot tell a band with no cross-references from a build that
 	 * never read them.
 	 */
 	state?: "rest" | "loading";

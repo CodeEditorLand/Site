@@ -11,14 +11,16 @@
  *
  * The `id` is the rail's destination and the scroll-spy's key; `data-region`
  * marks it for the readout script in the page. The `h2` is the only level-two
- * heading a region emits, and it is deliberately S with tracking rather than a
- * fourth size: a region label on an instrument, not a chapter of a document.
+ * heading a region emits, and its size is the element ladder's L (`_Type.scss`):
+ * a region IS the section of a functional page, so its title is never a fourth
+ * size. What stays local is the register - the title is tracked as a name,
+ * because it sits beside its own index marker.
  *
- * ─── THE ADVERSE ARMS (added by the frame card) ───────────────────────────
- * A region whose record has not arrived used to render its head and then
- * nothing - a heading with a hole under it, which reads as a page that failed to
- * load rather than a region with a fact to state. `state` gives the region the
- * two arms it was missing, in the record grammar and without a second block:
+ * ─── THE ADVERSE ARMS ─────────────────────────────────────────────────────
+ * A region whose record has not arrived prints its head and then an absence, not
+ * a heading with a hole under it - which reads as a page that failed to load
+ * rather than a region with a fact to state. `state` gives the region the two
+ * arms, in the record grammar and without a second block:
  *
  *   state="empty"    `◎ UNAVAILABLE` + the caller's sentence (`empty`)
  *   state="loading"  the keys the region will print, their values barred

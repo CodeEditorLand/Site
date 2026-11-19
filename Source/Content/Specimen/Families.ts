@@ -143,8 +143,11 @@ export interface Family {
 /** A family's figure, in the sheet's own register: `16 × 24 / 384 / 47`. */
 const Figure = (
 	Rows: number,
+
 	Cells: number,
+
 	Built: number,
+
 	Specimens: number,
 ) =>
 	`${Rows} × ${Cells / Rows} / ${Cells} CELLS / ${Built} BUILT / ${Specimens} ROWS`;
@@ -231,8 +234,11 @@ export const Families: readonly Family[] = [
 
 		figure: Figure(
 			FieldRows.length,
+
 			FieldCells,
+
 			FieldBuilt,
+
 			FieldSpecimens.length,
 		),
 

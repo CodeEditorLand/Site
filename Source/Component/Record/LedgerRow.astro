@@ -11,7 +11,7 @@
  * It is not exported to pages and it answers no information type of its own:
  * the block is `RecordLedger`, and this is its row.
  *
- * ─── THE ROW'S SIX ARMS, AND WHY EACH ONE IS A SHAPE ─────────────────────
+ * ─── THE ROW'S FIVE ARMS, AND WHY EACH ONE IS A SHAPE ────────────────────
  * A value is one of: a state word (with the vocabulary's mark and tone), a list
  * of destinations, a literal, an emphasised fact, or plain ink. Those are
  * different claims and they print differently - the markup says which, so a
@@ -29,9 +29,9 @@
  * ─── THE COLON IS THE CALLER'S ────────────────────────────────────────────
  * `Row.key` prints verbatim. The grammar says a compact field label carries its
  * `:` (`TARGET:`), and the majority of the tree's ledger keys already do - so a
- * renderer that appended one would double it on every one of them. The keys that
- * lack it are a content defect, named on the specimen sheet's record band, and
- * they are fixed where the data lives.
+ * renderer that appended one would double it on every one of them. A key that
+ * lacks its colon is a content defect and is fixed where the data lives, never
+ * by the renderer guessing.
  *
  * ─── NO SCRIPT, NO HYDRATION ──────────────────────────────────────────────
  * `<details>` is the only interactive thing this file can print and it needs no

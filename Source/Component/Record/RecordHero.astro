@@ -28,8 +28,9 @@
  *                   paints its own fill or chapter padding.
  * WIDE (>=768)      `49fr / 1px / 51fr`: the record, the hairline gutter, the
  *                   evidence. The gutter draws `--Divider`, never `--Border` -
- *                   the hairline dissolves against a photograph and this is the
- *                   one rule M1 restored twice.
+ *                   the hairline dissolves against a photograph, and the divider
+ *                   is the token `_Token.scss` holds for a rule that has to read
+ *                   on both a white card and a picture.
  * NARROW            the record first, the evidence second, the gutter gone: the
  *                   information arrives before the illustration, and the
  *                   interval falls back to its floor token because a percentage
@@ -51,8 +52,9 @@
  * - **No JavaScript.** Every part is an `.astro` block or a React component
  *   rendered on the server with no `client:*`, so the artifact ships as HTML
  *   and CSS.
- * - **No page conversion.** The surfaces that consume this block move in their
- *   own cards, one at a time.
+ * - **No page-level layout.** The block owns the artifact's geometry and nothing
+ *   above it: the band, the page's container and the rhythm between sections
+ *   belong to the surface that mounts it.
  */
 import FieldRecordAction from "../Brand/FieldRecordAction.astro";
 import FieldRecordDataCard from "../Brand/FieldRecordDataCard.astro";
@@ -109,8 +111,8 @@ const Composed = Astro.slots.has("default");
 const HasEvidence = evidence !== undefined || Composed;
 
 /**
- * The seal's box, in pixels. The hero's seal is the artifact's own mark, so
- * its size is the artifact's geometry rather than a page's choice.
+ * The seal's size step. The hero's seal is the artifact's own mark, so its step
+ * is the artifact's geometry (`m`) rather than a page's choice.
  */
 const SEAL = "m";
 ---

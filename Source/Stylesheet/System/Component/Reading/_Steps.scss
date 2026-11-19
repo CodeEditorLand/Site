@@ -13,12 +13,13 @@
 //   .contributing-steps__command   the command row: the pre and its button
 //   .contributing-steps__pre       the command itself
 //
-// The numbers are the baseline render's: a `p-6` card, `space-y-6` between the
-// steps, a `gap-4` between the chip and the body, a 2rem square chip on
-// `--secondary`, a body-weight heading, and a command block inset 8px below the
-// line with the copy control beside it. The card is deliberately not a
-// `StaccatoCard`: its seed-scatter transform rotates static content, and this is
-// a procedure rather than a specimen.
+// The numbers are the baseline composition's, kept as literals because each one
+// is a mapping of the same scale: a 1.5rem card inset (`p-6`), 1.5rem between
+// steps (`space-y-6`), 1rem between the chip and the body (`gap-4`), a 2rem
+// square chip on `--Secondary`, a body-weight heading, and a command block inset
+// 8px below the line with the copy control beside it. The card is deliberately
+// not a `StaccatoCard`: its seed-scatter transform rotates static content, and
+// this is a procedure rather than a specimen.
 
 @use "../../Mixin" as *;
 

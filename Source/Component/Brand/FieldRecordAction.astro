@@ -9,10 +9,10 @@
  * record arm prefixes `/`, the button arm does not - and both carry the
  * caller's own classes after the block's.
  *
- * External targets open in a new tab with `rel="noopener noreferrer"`, decided
- * by the href itself rather than by the caller: a link that leaves the site
- * says so, and a link that stays does not open a tab. See
- * `FieldRecordAction/Data.ts` for the ink and the pair rule.
+ * The button arm applies the external-target pair (`target` + `rel`, from
+ * `FieldRecordAction/Data.ts`), decided by the href itself: a link that leaves
+ * the site says so, and a link that stays does not open a tab. The record arm
+ * is an in-page route line and carries no target.
  *
  * No `<script>` and no `client:*`: this block ships zero JavaScript. It has no
  * state - the jelly element's motion is the element's own CSS.

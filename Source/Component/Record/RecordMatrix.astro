@@ -22,12 +22,13 @@
  * WIDE              the table takes its container; the row label column is the
  *                   first cell and every cell refuses to wrap.
  * NARROW            THE ROW LABEL PINS. The shell scrolls sideways and the
- *                   label column stays on the left edge, over a `--Card` fill
- *                   and under a hairline seam, so a five-column comparison on a
- *                   phone is read one row at a time with the row's name still
- *                   attached to its cells. That is the difference between a
- *                   comparison that survives a narrow column and a table that
- *                   is merely squeezed into one.
+ *                   label column stays on the left edge, over the surface's own
+ *                   fill (`--MatrixFill`, the creme field by default; a matrix
+ *                   inside a white card sets `--Card`) and under a hairline seam,
+ *                   so a five-column comparison on a phone is read one row at a
+ *                   time with the row's name still attached to its cells. That is
+ *                   the difference between a comparison that survives a narrow
+ *                   column and a table that is merely squeezed into one.
  * DENSE             `density="dense"` halves the row rhythm and nothing else -
  *                   never the type, never the rules. For a long comparison
  *                   (every previous release) where the rows are read as a scan
@@ -46,9 +47,9 @@
  * two-value union, so it travels as a modifier class and the stylesheet owns
  * it.
  *
- * ─── THE THREE STATES A TABLE IS ASKED FOR AND NEVER HAD ──────────────────
- * The record family's matrix found this block printing a bare head over nothing
- * in three different ways, and each one is now a shape rather than a hole:
+ * ─── THE THREE STATES A TABLE MUST PRINT ──────────────────────────────────
+ * A matrix can be asked to print a head over nothing in three different ways,
+ * and each one is a shape rather than a hole:
  *
  * - `empty` - the head STAYS, because the head is the schema and the schema is
  *   still true when there are no rows, and one cell spanning the table says what
@@ -56,9 +57,9 @@
  * - `loading` - the head stays and three skeleton rows print, each with its
  *   label and a hairline bar in every cell: the columns are known before the
  *   values are, so the skeleton is the comparison's own shape.
- * - a cell whose value is a state word (`UNAVAILABLE`, `PREPARING`) now prints
- *   the vocabulary's mark and takes its tone. A comparison whose one honest
- *   answer is "not measured" used to read as a value that happened to be a word.
+ * - a cell whose value is a state word (`UNAVAILABLE`, `PREPARING`) prints the
+ *   vocabulary's mark and takes its tone. A comparison whose one honest answer is
+ *   "not measured" must not read as a value that happens to be a word.
  *
  * ─── THE TOTAL ROW ────────────────────────────────────────────────────────
  * `MatrixRow.total` marks the row that sums the column above it. It prints

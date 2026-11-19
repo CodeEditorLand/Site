@@ -28,7 +28,9 @@
 //                   second line reads as damage, not as a strip), and the
 //                   heading's `text-wrap: balance` keeps a three-word claim off
 //                   a single orphaned line.
-// WIDE              `--band-inner` (72rem, `--Gutter`) and the chapter rhythm.
+// WIDE              the `band-inner` container - 72rem
+//                   (`--ContainerSixExtraLarge`) on `--Gutter` insets - and the
+//                   chapter rhythm.
 // DENSE             none, and that is the point: a band is air. Density belongs
 //                   to the block in its body.
 //
@@ -47,9 +49,13 @@
 //   .record-band__index-item    one link in that strip
 //   .record-band__body          the band's content
 //   .record-band__footnote      provenance, caveat or source line
-//
-// Owned by B1. S1 publishes the skeleton; B1 refines the values, never the
-// names.
+//   .record-band--dense         the band as a section inside an artifact: heading tier, tight body
+//   .record-band--absent        a band with no body: the head stays, the absence prints
+//   .record-band__absent        the absence block: mark, state word, sentence
+//   .record-band__absent-head   the `◎ STATUS:` line above the sentence
+//   .record-band__absent-mark   the `◎`, aria-hidden
+//   .record-band__absent-state--ink / --quiet  the word in the vocabulary's tone
+//   .record-band__absent-line   the sentence the caller wrote
 
 @use "../Mixin" as *;
 

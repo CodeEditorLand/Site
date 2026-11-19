@@ -12,8 +12,8 @@
  * The fill stays the neutral mute for every tone - these are state chips, not
  * protocol chips, so they take no spine ink - and the ink carries the tone.
  * The marker inside the badge draws itself in `currentColor`, so the label ink
- * below is the single declaration that paints both the green rule and the green
- * word on a `specimen` chip.
+ * below is the single declaration that paints both the square and the word of a
+ * `specimen` chip.
  *
  * The tone comes from `State.ts`, which knows §1.5's eight values and nothing
  * else. A chip outside those eight - `Disabled`, `Coming Soon`, `Optional` -
@@ -51,13 +51,12 @@ const Ink: Readonly<Record<StatusTone, string>> = {
 
 /** One chip's two Jelly properties, plus the two shape properties the site pins.
  *
- *  THE ATTESTED TONE IS A SHAPE. `specimen` used to print its label in the
- *  accent; the accent authenticates a route, a link, a focus and a seal, so a
- *  legend that spent it made the legend the loudest thing on the page. The chip
- *  carries the mark layer's square (`Mark/_Square.scss`) at the badge's step,
- *  and the attested tone takes the half-again size there - so the three tones
- *  still read as three in greyscale, and the chip's marker is the same mark the
- *  register and the record print.
+ *  THE ATTESTED TONE IS A SHAPE. The accent authenticates a route, a link, a
+ *  focus and a seal, so a legend that spent it would be the loudest thing on the
+ *  page. The chip carries the mark layer's square (`Mark/_Square.scss`) at the
+ *  badge's step, and the attested tone takes the half-again size there - so the
+ *  three tones still read as three in greyscale, and the chip's marker is the
+ *  same mark the register and the record print.
  */
 const Style = (ChipTone: StatusTone): string =>
 	`--jelly-fill:var(--Mute);--jelly-label:${Ink[ChipTone]};--jelly-badge-radius:0;--jelly-badge-font-size:13px`;

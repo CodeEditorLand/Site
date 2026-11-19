@@ -22,13 +22,14 @@
  *
  * HOVER (implemented, CSS-only - the C19 "old-school game UI" intent):
  * the host shell that keeps the marks adds the .CornerMarkShell class
- * (see System/Component/_CornerMarks.scss). On shell hover the cursor becomes a
- * pointer and each L arm slides PERPENDICULAR to itself (the horizontal
+ * (see System/Component/_CornerMarks.scss). The shell keeps the DEFAULT cursor -
+ * the frame is not a control, and the pointer belongs only to a surface that
+ * links. On shell hover each L arm slides PERPENDICULAR to itself (the horizontal
  * mark moves up/down, the vertical mark moves left/right) so the arms
  * separate at the corner and never cross - a rigid whole-line slide (no
- * scaling), 200ms ease, scoped to prefers-reduced-motion:
- * no-preference. The ticks carry data-corner (tl/tr/bl/br) + data-axis
- * (h/v) attributes the stylesheet keys its direction rules on.
+ * scaling), the motion layer's 200ms `enter` interval, scoped to
+ * prefers-reduced-motion: no-preference. The ticks carry data-corner (tl/tr/bl/br)
+ * + data-axis (h/v) attributes the stylesheet keys its direction rules on.
  */
 import { CORNER_GEOMETRY, CornerTicks } from "./CornerMarks/Data.js";
 

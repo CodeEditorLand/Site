@@ -3,11 +3,10 @@
  * Folio - where in the document the reader has got to, and what is here.
  *
  * ─── WHY THIS BLOCK EXISTS ────────────────────────────────────────────────
- * The site had no folio. Every band ends and the reader is nowhere: the running
- * head says which part of the document they are in, and nothing says which band,
- * how much of it there is, or when it was read. A printed page answers all three
- * at its foot, in one line, and that line is the cheapest apparatus a document
- * has.
+ * Every band ends and the reader is otherwise nowhere: the running head says
+ * which part of the document they are in, and nothing says which band, how much
+ * of it there is, or when it was read. A printed page answers all three at its
+ * foot, in one line, and that line is the cheapest apparatus a document has.
  *
  *   〈03〉 /LEGAL␁26 CLAUSES␁AS OF: 2026-11-18
  *
@@ -36,12 +35,12 @@
  * its separators instead of at whatever character happens to land at the edge.
  *
  * ─── THE PART IS A PATH TOO ───────────────────────────────────────────────
- * The source was the only field that broke, and the part was `nowrap` - so a
- * folio on a deep page (`/DOC/DEEP-DIVE-FILESYSTEM-FOOTPRINT`) ran past the
- * band's right edge, which is the one thing a folio may never do: it is the mark
- * that says the band has ended. The part now carries the same `<wbr>` after
- * every `/`, and the ordinal and the part still never part company, because the
- * place group stays `nowrap` between them and only the part wraps inside itself.
+ * A `nowrap` part runs past the band's right edge on a deep page
+ * (`/DOC/DEEP-DIVE-FILESYSTEM-FOOTPRINT`), which is the one thing a folio may
+ * never do: it is the mark that says the band has ended. So the part carries the
+ * same `<wbr>` after every `/` that the source carries, and the ordinal and the
+ * part still never part company, because the place group stays `nowrap` between
+ * them and only the part wraps inside itself.
  *
  * ─── NO SCRIPT ────────────────────────────────────────────────────────────
  * No `<script>`, no `client:*`. A folio is printed.

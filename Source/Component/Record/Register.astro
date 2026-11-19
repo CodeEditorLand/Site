@@ -11,12 +11,11 @@
  *     count  the figure        `08`, `UNAVAILABLE`, `LOADING`
  *
  * ─── WHY A COMPONENT AND NOT A TEMPLATE LINE PER BLOCK ────────────────────
- * Five blocks used to spell this line out themselves, so five blocks could drop
- * a part of it - and the one that mattered was the count. `Register` takes a
- * `Register` (see `RegisterLine.ts`), a shape whose `count` is required, so a
- * block that renders through this component cannot print a register without its
- * figure. A caller that wants to hand in a bare string cannot: the prop does not
- * accept one.
+ * A line spelled out per block is a line five blocks can drop a part of - and
+ * the part that matters is the count. `Register` takes a `Register` (see
+ * `RegisterLine.ts`), a shape whose `count` is required, so a block that renders
+ * through this component cannot print a register without its figure. A caller
+ * that wants to hand in a bare string cannot: the prop does not accept one.
  *
  * The parts are spans rather than one text node so the line can be read - and
  * coloured - character by character, which is the site's collage method: the
@@ -71,13 +70,13 @@ const Count = RegisterCountText(register, state);
  * register and not even two words.
  *
  * ─── WHY THIS IS A SPAN AND NOT `aria-label` ──────────────────────────────
- * This file carried `aria-label` on the `<p>`, and it did nothing: ARIA
- * prohibits naming the `paragraph` role, so the attribute was dropped by every
- * screen reader and the run-together announcement survived. The fix that works
- * is the standard one - the printed run is `aria-hidden` and a visually hidden
- * span carries the line, so the announcement and the printed line are the same
- * statement. The hidden span is `.register-line__spoken` in
- * `Type/_Register.scss`, which is where the line's other five parts are set.
+ * `aria-label` cannot name a `<p>`: ARIA prohibits naming the `paragraph` role,
+ * so the attribute is dropped by every screen reader and the run-together
+ * announcement survives. The fix that works is the standard one - the printed run
+ * is `aria-hidden` and a visually hidden span carries the line, so the
+ * announcement and the printed line are the same statement. The hidden span is
+ * `.register-line__spoken` in `Type/_Register.scss`, which is where the line's
+ * printed parts are set.
  *
  * The hidden span carries `RegisterSpokenText`, not `RegisterText`: the printed
  * line's `#` and `/` are punctuation, and a screen reader reads them as the

@@ -33,8 +33,9 @@
 //                   card does not run a paragraph to 900px.
 // DENSE             `surface="bare"` is the dense reading - the same anatomy with
 //                   no fill and no frame, for a set of records inside one card
-//                   (the doc index's card grid, a tier's feature list). Never a
-//                   smaller type.
+//                   (the doc index's card grid, a tier's feature list) - and
+//                   `--dense` is the register reading, marker and name on one
+//                   line. Never a smaller type.
 //
 // Publishes:
 //   .record-entry               the entry shell - the white card surface
@@ -48,8 +49,13 @@
 //   .record-entry__chips        the chip row
 //   .record-entry__chip         one short label in that row
 //   .record-entry__body         one paragraph - the entry's claim
-//
-// Owned by B2.
+//   .record-entry__state        `STATUS:` and its word, on the grid's full width
+//   .record-entry__absent       the `◎` and the composed sentence of a missing record
+//   .record-entry__facts        facts carried beside the prose, one ruled line each
+//   .record-entry__fact         one key/value pair in that list
+//   .record-entry__note         a `SOURCE:`-style line under the record
+//   .record-entry--dense        the register reading: marker, name and glyph on one line
+//   .record-entry--archived     a record that is filed: its name steps to the quiet ink
 //
 // The `.emphasis-standard` surface is reproduced here instead of being applied
 // as a class, so the block is self-contained: `--Card` fill and a hairline all
@@ -146,8 +152,8 @@
 }
 
 // The site's one ring: 2px of the accent at the identity's 4px offset
-// (`State/_Token.scss`). This was 1px of the ink at 0.15em - a third value for a
-// state the site states once, and at 1px it disappeared against a row's rule.
+// (`State/_Token.scss`). A 1px ink outline is a third value for a state the site
+// states once, and at 1px it disappears against a row's own rule.
 .record-entry__link:focus-visible {
 	outline: var(--state-ring-width) solid var(--state-ring);
 	outline-offset: var(--state-ring-offset);

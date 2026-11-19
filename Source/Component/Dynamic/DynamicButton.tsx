@@ -45,25 +45,22 @@ const ButtonIconRegistry: Record<string, lucide.LucideIcon> = {
  * (`_Base.scss`: 2px `--Accent` at 4px). This adapter adds the label, the icon
  * and the busy state, and nothing else.
  *
- * The three `Staccato*` hooks it used to carry are gone. They belonged to the
- * noise system in `_Noise.scss`, whose channels are "updated every frame by
- * Staccato.ts" - a script that is not in the tree - so they were resolving to
- * static values: `StaccatoSpinner` held the loading glyph at 65% opacity and
- * `StaccatoIcon` held every icon at 85%, both with a 1.4s opacity transition that
- * had nothing to transition between. `StaccatoButton` also set
- * `padding-inline: 1rem` on the host, which is a second padding outside Jelly's
- * own, and a 0.5s `ease` hover lift that is not one of the site's three
- * intervals.
+ * The three `Staccato*` hooks belong to the noise system in `_Noise.scss`, and
+ * this adapter does not carry them: they resolve to static values here (a 1.4s
+ * opacity transition with nothing to transition between), `StaccatoButton` sets
+ * `padding-inline: 1rem` on the host - a second padding outside Jelly's own -
+ * and its 0.5s `ease` hover lift is not one of the motion layer's named
+ * intervals. A Jelly button keeps its surface, its padding and its press.
  *
  * ─── THE BUSY STATE HAS NO SPINNER ────────────────────────────────────────
- * It carried `lucide.Loader2` with `animate-spin`, on the argument that a
- * spinner may stay circular because a square cannot spin. The argument is about
- * the shape and the shape was never the problem: a spinner is a LOOP, it says
- * "something is happening" for as long as it turns and nothing else, and a state
- * that never resolves is not a state. The busy arm is now the record grammar's
- * own - a bar whose value is not known yet, and the word `LOADING` beside it -
- * drawn from the skeleton layer's two tokens so a busy button and a loading
- * record are the same object at two scales. See `Stylesheet/System/State/_Busy.scss`.
+ * The spinner argument - that a spinner may stay circular because a square
+ * cannot spin - is about the shape, and the shape is not the problem: a spinner
+ * is a LOOP, it says "something is happening" for as long as it turns and
+ * nothing else, and a state that never resolves is not a state. The busy arm is
+ * the record grammar's own - a bar whose value is not known yet, and the word
+ * `LOADING` beside it - drawn from the skeleton layer's two tokens so a busy
+ * button and a loading record are the same object at two scales. See
+ * `Stylesheet/System/State/_Busy.scss`.
  */
 const DynamicButton = ({ Content, OnAction, IsLoading = false }: Property) => {
 	const {
@@ -134,19 +131,19 @@ const DynamicButton = ({ Content, OnAction, IsLoading = false }: Property) => {
 
 			{IsLoading ? (
 				// ─── NO SPINNER, AND THE LABEL STAYS ───────────────────────────
-				// This was `lucide.Loader2` with `animate-spin`: a loop that says
-				// "something is happening" for as long as it spins and nothing else.
-				// The busy arm is printed instead, in the record grammar and from the
-				// skeleton layer's own two tokens - a bar whose value is not known
-				// yet, and the vocabulary's own word.
+				// A spinner is a loop that says "something is happening" for as
+				// long as it spins and nothing else. The busy arm is printed
+				// instead, in the record grammar and from the skeleton layer's own
+				// two tokens - a bar whose value is not known yet, and the
+				// vocabulary's own word.
 				//
 				// The action's label is NOT withdrawn: replacing "Sign In" with
 				// "Loading" shrinks the button under the reader's cursor at the exact
 				// moment they pressed it, and it takes away the one word that says
 				// what is being waited for. So the label stays and the readout joins
 				// it, which is why the state is additive here and not a substitution.
-				// The word is uppercased by the layer's tracking register, so it is
-				// written in sentence case like every other label on the site.
+				// The button's own `uppercase` register prints it as LOADING, so it
+				// is written in sentence case here like every other label's source.
 				<>
 					{"\u2001"}
 

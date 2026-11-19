@@ -16,7 +16,9 @@ import type { Entry } from "./Type.js";
 /**
  * `Entry` plus the one additive page hook: a composing page needs to place the
  * entry in its own grid, and `class` is the pass-through the sibling blocks
- * publish. Nothing else is added - the six `Entry` fields are the whole surface.
+ * publish. The `Entry` fields are the record; the block's own additions are
+ * `class`, `surface`, and the four state arms (`state`, `empty`, `facts`,
+ * `note`) plus `dense`.
  *
  * `surface` is the second hook, and it follows `RecordBand`'s `tone="bare"`: an
  * entry that is structure *inside* a Jelly surface (a tier card, a panel) drops

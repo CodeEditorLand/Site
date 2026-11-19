@@ -21,8 +21,8 @@
 //
 // 3. **The unit is bound to its figure.** A figure and its unit are one object:
 //    they never separate across a line, and the space between them is a thin
-//    space (0.4ch), not a word space. The instrument printed them with an 8px
-//    gap at every size, which at 32px reads as two things.
+//    space (0.4ch), not a word space. A fixed 8px gap at every size reads as two
+//    things at 32px, which is why the gap is a fraction of the figure instead.
 //
 // 4. **An unknown figure is a word.** `UNAVAILABLE` is not a value with a unit;
 //    it is the vocabulary's statement that there is no value. It takes the name
