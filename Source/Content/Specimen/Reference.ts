@@ -53,6 +53,8 @@
  * its matrix, its laws and its proof lookup in the same edit, and a condition
  * added to a family's `Columns` appears here with no second edit.
  */
+import type { LedgerRow } from "../../Component/Record/Type.js";
+
 import * as Apparatus from "./Apparatus.js";
 
 import * as Composition from "./Composition.js";
@@ -1086,12 +1088,20 @@ export const Bands = {
 	},
 } as const;
 
-/** The register's rows, derived from the tables above. */
-export const Register: readonly {
-	readonly key: string;
-
-	readonly value: string;
-}[] = [
+/**
+ * The register's rows, derived from the tables above.
+ *
+ * Rows, not a builder: every figure is already counted at module load, so a
+ * call would have nothing to decide. The page hands this array to
+ * `RegisterOf("REGISTER", Register)` and the ledger recomposes the count from
+ * the same array it prints - the figure cannot outlive the rows.
+ *
+ * Typed as the ledger's own `LedgerRow` rather than as an inline shape, so the
+ * rows this module exports are the rows `RecordLedger` can print: a key, a
+ * value, and `code` where the value is a literal (the source path) rather than
+ * prose.
+ */
+export const Register: readonly LedgerRow[] = [
 	{ key: "FAMILIES:", value: String(EntryCount) },
 
 	{ key: "SLOTS:", value: String(SlotCount) },
@@ -1114,7 +1124,7 @@ export const Register: readonly {
 
 	{ key: "PROOFS RESOLVED:", value: `${ProofCount} OF ${EntryCount}` },
 
-	{ key: "SOURCE:", value: "CONTENT/SPECIMEN/*.TS" },
+	{ key: "SOURCE:", value: "CONTENT/SPECIMEN/*.TS", code: true },
 ];
 
 /** The reference's four doors, for the page's foot. */

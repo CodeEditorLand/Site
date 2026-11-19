@@ -1,1 +1,0 @@
-export { n as card, t as default, r as labels, i as manifest, a as page, o as platform, s as previousReleases, c as requirements, l as state, u as status, d as subtitle, f as systemRequirements, p as title, m as transparency, h as verification } from "./Download_Dh1rjS_A.mjs";

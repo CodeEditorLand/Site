@@ -1,1 +1,0 @@
-export { n as card, t as default, r as labels, i as manifest, a as page, o as previousReleases, s as subtitle, c as systemRequirements, l as title, u as transparency, d as verification } from "./Download_CUunMaCs.mjs";

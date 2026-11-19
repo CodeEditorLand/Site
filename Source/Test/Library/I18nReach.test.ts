@@ -20,6 +20,10 @@
  */
 import { readFileSync } from "node:fs";
 
+import { dirname, join } from "node:path";
+
+import { fileURLToPath } from "node:url";
+
 import { describe, expect, it } from "vitest";
 
 import "@/Library/I18n/Client.js";
@@ -215,16 +219,28 @@ describe("each route declares the namespaces it reads", () => {
 	it("calls LoadServerNamespace with them, before the first GetI18n()", () => {
 		const ProblemList: string[] = [];
 
-		console.log("DEBUG RouteNamespace:", JSON.stringify(RouteNamespace));
+		/* `new URL("...", import.meta.url)` is rewritten by Vite's asset pass,
+		   which hands back `undefined` for a computed path; the source root is
+		   resolved from this module's own file instead. */
+		const SourceRoot = join(
+			dirname(fileURLToPath(import.meta.url)),
+
+			"../..",
+		);
 
 		for (const [Route, NamespaceList] of RouteNamespace) {
-			const Source = readFileSync(
-				new URL(`../../${Route}`, import.meta.url),
+			const Source = readFileSync(join(SourceRoot, Route), "utf8");
 
-				"utf8",
+			/* Prose in a comment is not a call: the page's own comment may name
+			   `GetI18n()` before the declaration line, so comments are stripped
+			   before the two positions are compared. */
+			const Code = Source.replace(/\/\*[\s\S]*?\*\//g, " ").replace(
+				/^\s*\/\/.*$/gm,
+
+				" ",
 			);
 
-			const Call = /LoadServerNamespace\(([^)]*)\)/.exec(Source);
+			const Call = /LoadServerNamespace\(([^)]*)\)/.exec(Code);
 
 			if (!Call) {
 				ProblemList.push(`${Route}: no LoadServerNamespace call`);

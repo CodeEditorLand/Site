@@ -137,7 +137,13 @@ describe("FeatureBand", () => {
 		// and the section points at it, so the band is a labelled region.
 		expect(Heading.tagName).toBe("H2");
 
-		expect(Text(Heading)).toBe("VS Code. Without Electron.");
+		/* `DESIGN-COMPLETE.md` files the band's header as `h2 VS CODE. WITHOUT
+		   ELECTRON.`, and the baseline printed it that way; this assertion used
+		   to read `VS Code. Without Electron.` because it rendered the band in
+		   isolation, where `GetI18n()`'s own init loads `Home.json` - a bundle
+		   the page never read. The page's copy is the caps form, so the bundle
+		   was mirrored to it and the assertion follows the render. */
+		expect(Text(Heading)).toBe("VS CODE. WITHOUT ELECTRON.");
 
 		expect(One("#features").getAttribute("aria-labelledby")).toBe(
 			"featuresHeading",

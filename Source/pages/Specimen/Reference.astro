@@ -82,8 +82,14 @@ const TrailItems = [
 	{ label: "/REFERENCE" },
 ];
 
-/** The register's rows, and the line that counts them. */
-const RegisterRows = Register();
+/** The register's rows, and the line that counts them.
+ *
+ * `Register` is the rows themselves: `Content/Specimen/Reference.ts` counts
+ * every figure at module load, so there is nothing for a call to decide, and
+ * `Register()` throws `TypeError: Register is not a function` at prerender.
+ * `RegisterOf` is what turns the rows into the counted line.
+ */
+const RegisterRows = Register;
 
 const CountedRegister = RegisterOf("REGISTER", RegisterRows);
 ---
