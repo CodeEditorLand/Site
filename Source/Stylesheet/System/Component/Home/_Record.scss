@@ -54,6 +54,40 @@
 	block-size: 100%;
 }
 
+// ─── THE CARD'S MEASURED FLOOR ────────────────────────────────────────────
+//
+// The matrix's track count is a capacity (`Component/Home/_Feature.scss`), and the
+// capacity it reads is this record's floor. It is measured from the widest row the
+// record prints, not from taste, and the rows are read at the meta tier where they
+// are set - 13px IBM Plex Mono, which advances 0.6em, so 1ch is 7.8px and one
+// tracked glyph at `--track-rule` (0.18em) is 10.14px:
+//
+//   the ledger row   the key column is the 7rem declared on `.home-record__key`
+//                    (112px - it holds the longest key, `VISIBILITY:` at 11
+//                    glyphs, 97.24px, with 15px to spare) + the row gap 0.75rem
+//                    (12px) + a value column of 19 characters, the measure
+//                    `Record/_Ledger.scss` gives the value in the wide row:
+//                    19 x 10.14 = 192.66px                      = 316.66px
+//   the stamps       `<BACKGROUND SERVICES>` = 20 glyphs       = 202.8px
+//   the head         `# MOUNTAIN_01` 131.82 + 12 + the 32px seal = 175.82px
+//   the route        `/FREQUENCY:ECHO` = 16 glyphs             = 162.24px
+//   the status       `STATUS:` + 6px + `ACTIVE`                = 137.82px
+//   the link row     `MOUNTAIN:` at the sub tier + 8 + the arrow = 132.16px
+//
+// The ledger is the binding row: 316.66px of content, plus this card's own inset
+// (2 x 1.25rem = 40px) is 356.66px = 22.29rem a card. That is the number the
+// matrix's floor rounds up to 23rem.
+//
+// The inset and the row rhythm are LITERALS ON THE 4px GRID AND THEY STAY: 20px and
+// 12px are on the documented scale (`_Token.scss` SPACING - 4/8/12/20/32/52/84) and
+// the role layer deliberately has no token between `--space-reading` (16px) and
+// `--space-group` (32px), because a sixth relationship is a sixth relationship. The
+// card is dense at three tracks, and the answer to that is room - the track floor -
+// never a smaller type: the type stays at its tier at every track count.
+//
+// The rhythm itself does not change with the track count. It is the card's, not the
+// matrix's: one 0.75rem step and one hairline between every row group, at 535.5px
+// and at 706px alike, because a record is the same record however wide the cell is.
 .home-record {
 	display: flex;
 	flex-direction: column;

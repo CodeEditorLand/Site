@@ -99,11 +99,11 @@
 
 // The trace inside a card reads at the card's own width, and the card no longer
 // has to say so: `RecordTrace` declares a `trace` container and switches at
-// 580px of it (`Record/_Trace.scss`). A four-to-seven-column card is 416-572px at
-// a 1280 window, under the threshold, so its trace keeps the stacked form - the
-// path on the line and the note under it. The eight-column card (`wind`) is
-// 656px and takes the wide form, which is what a 656px box can hold: a 42-glyph
-// path plus its note column.
+// 580px of it (`Record/_Trace.scss`). A four-to-seven-column card gives it
+// 288-540px at a 1280 window, under the threshold, so its trace keeps the stacked
+// form - the path on the line and the note under it. The eight-column card
+// (`wind`) gives it 624px and takes the wide form, which is what a 624px box can
+// hold: a 42-glyph path plus its 20ch note column.
 //
 // This used to be two rules here, pinning the block's narrow row at every
 // viewport, because the block itself decided from the window and a card at 1280

@@ -494,7 +494,7 @@ $DeclarationWordEdge: 1.17rem;
 	display: flex;
 	flex-wrap: wrap;
 	align-items: flex-start;
-	gap: var(--space-group);
+	gap: var(--row-gap, var(--space-group));
 }
 
 // `flex-basis: 0` and the floor as a `min-inline-size`: the hypothetical main
@@ -502,6 +502,13 @@ $DeclarationWordEdge: 1.17rem;
 // the free space of a short line is shared equally by `flex-grow`. The 0.02rem
 // is slack for sub-pixel rounding at the exact fit - three shares and two gaps
 // summing to precisely 100% must not wrap on a fractional pixel.
+//
+// `--row-gap` is the row's third knob, beside the ceiling and the floor, and it
+// is a FALLBACK rather than a declaration: a row whose cells share one plate
+// passes a 1px seam (`Component/Home/_Feature.scss`) and the contact sale passes
+// 0 for its ruled one-track form, and neither has to out-rank this partial to do
+// it. It appears in the gap AND in the share, so the arithmetic can never be
+// computed against a gutter the row is not laying out.
 .PageShell__row > * {
 	flex: 1 1 0;
 	min-inline-size: min(
@@ -509,7 +516,10 @@ $DeclarationWordEdge: 1.17rem;
 		max(
 			var(--row-floor, 18rem),
 			calc(
-				(100% - (var(--row-tracks, 2) - 1) * var(--space-group)) /
+				(
+						100% - (var(--row-tracks, 2) - 1) *
+							var(--row-gap, var(--space-group))
+					) /
 					var(--row-tracks, 2) - 0.02rem
 			)
 		)

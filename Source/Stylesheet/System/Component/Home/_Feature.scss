@@ -2,7 +2,7 @@
 // observation strip that closes it.
 //
 // Publishes:
-//   .home-feature__grid             the matrix: one to three columns, one seam
+//   .home-feature__grid             the matrix: a capacity row of records, one seam
 //   .home-feature__empty            the plate's empty arm - a set of none
 //   .home-feature__subset           a plate that files a selection, and its figure
 //   .home-feature__subset-register  `# RECORDS / 03`
@@ -11,15 +11,15 @@
 //   .home-feature__specimen-label   the strip's `SPECIMEN` label
 //   .home-feature__specimen-ledger  its three readings, on one line
 //
-// THE MATRIX. Six element records, three columns from `lg`, two from `md`, one
-// below - the distribution the baseline chose for a six-item set - but flush,
-// with a 1px seam of the creme field between the cells instead of a 2rem gap.
-// The seam is the composition: six records read as one filed plate, the way a
-// patch panel's cells are one panel and not six boxes. It is also why the cells
-// lose their border at the widths where the matrix exists: the paper is the
-// rule, and a hairline on top of a 1px seam draws two.
+// THE MATRIX. Six element records in the shell's capacity row
+// (`.PageShell__row`, `Layout/_Shell.scss`), flush, with a 1px seam of the creme
+// field between the cells instead of a group gap. The seam is the composition:
+// six records read as one filed plate, the way a patch panel's cells are one
+// panel and not six boxes. It is also why the cells lose their border where the
+// matrix exists: the paper is the rule, and a hairline on top of a 1px seam draws
+// two.
 //
-// Below `md` the cells stack and take a real gap and their border back: a
+// At one track the cells stack and take a real gap and their border back: a
 // single column of tinted cells 1px apart is one tinted block with no seams in
 // it, which is not a matrix, it is a smear.
 //
@@ -36,52 +36,139 @@
 // specimen label is read as a label - `SPECIES: … TEMP: … WIND: …` - not as a
 // three-storey ledger under six records.
 //
-// ─── THE COLUMN COUNT IS THE SET'S ────────────────────────────────────────
+// ─── THE TRACK COUNT IS THE RECORD'S CAPACITY, NOT THE WINDOW'S ───────────
 //
-// `repeat(3, …)` is a distribution that divides six and nothing else. The
-// composition family's matrix printed the band with three records, and the
-// layout answered with a 2 + 1 at every width below `lg` - a hole in the seam
-// where the missing fourth cell would have been, which reads as a plate that
-// lost a record rather than one that files three.
+// This was `repeat(2, …)` from `bp(768px)` and `repeat(var(--feature-tracks), …)`
+// from `bp(1024px)`: a column count decided by the viewport, for cards whose
+// content has a floor. The record's floor is measured in
+// `Component/Home/_Record.scss` (THE CARD'S MEASURED FLOOR) - 316.66px of content,
+// 356.66px a card - and the window never asked whether a card could hold it:
 //
-// So the band publishes the count it wants (`--feature-tracks`, from the set's
-// own length) and the remainder of that count against the columns the width can
-// hold. Two rules make a short last row a composition instead of a gap:
+//   1024 viewport   3 tracks in a 942px row   273.36px of content  - 43px under
+//   1280+ viewport  3 tracks in a 1072px row  316.67px of content  - exactly at it,
+//                                                                   no air either way
 //
-//   1. the third column exists only where three tracks fit - `lg` - and the
-//      count of tracks at `md` is two;
-//   2. when exactly one cell is left over, it spans the line
-//      (`[data-remainder="1"] > :last-child`). That is the site's LEAD rule,
-//      applied to the last cell of a plate: a lone record at two-thirds width
-//      is a cell with a hole beside it, and the same record across the full
-//      seam is the plate's closing row.
+// That is what "shrunken" was. A card at its floor has no air, and a card under
+// its floor has a ledger whose value column is narrower than the 19 characters
+// the row is set to hold. The fix is the one the doc index and the blog index
+// took before it: the count is a capacity.
 //
-// The six-record set is unaffected: six divides three and two, so its remainder
-// is zero at every width, neither rule fires, and every track is filled.
+// `--row-floor` is one record's measured floor, 23rem (368px) - the 22.29rem the
+// ledger asks, rounded up to the next half rem, because a floor is a MINIMUM and
+// not a target. `--row-tracks` is the authored ceiling the component publishes
+// from the set (`data-tracks`), exactly as `--row-tracks` is the authored ceiling
+// on the blog index. The row prints three tracks while three shares clear the
+// floor, two while two do, one when none does, and no breakpoint declares any of
+// them:
+//
+//   three  3 x 23rem + 2 x 1px = 69.125rem (1106px) of row. The band's measure is
+//          72rem INCLUDING its gutters - 67rem (1072px) of row - so three is
+//          2.125rem (34px) short and does not print at any viewport. The ceiling
+//          stays three because the set divides three and a wider band would hold
+//          it; this band cannot.
+//   two    2 x 23rem + 1px = 46.0625rem (737px) of row, which is 801px of viewport
+//          under the gutter clamp (`--Gutter` is 4vw below 1000px), and every
+//          width above it. At the homepage's 67rem row the card is 535.5px, so the
+//          ledger's value column is 371.5px: the 19 characters the row asks, and
+//          the air around them.
+//   one    below 801px. The card is the row's full width, so the ledger's key
+//          column is a small part of it and the record reads as a wide record -
+//          which is what one column of six is.
+//
+// The type stays at its tier at every count. The card is dense because it carries
+// a marker and a seal, two stamps, a route, a link, a status and a four-row
+// ledger - and the answer to that is room, never a smaller size (`DESIGN-BRIEF`
+// §5.1: enhance, never simplify).
+//
+// ─── THE SEAM IS DECIDED BY THE SAME NUMBER ───────────────────────────────
+//
+// The seam belongs to the two- and three-track form and the border to the
+// one-track form, and CSS cannot read a flex line's track count. So the band's
+// body is a query container and the seam fires at the row width where two tracks
+// first clear the floor - `$feature-pair`, the same number the capacity line
+// derives from `$feature-floor`, so the seam and the count cannot disagree. The
+// container is the band's body and not the grid: an element cannot query itself,
+// and the body's content box IS the row's width, because the row is a block child
+// with no inline inset. `:has()` keeps the containment off every other band.
+//
+// ─── THE SHORT LAST ROW ANSWERS ITSELF ────────────────────────────────────
+//
+// `--feature-tracks` and the `[data-remainder="1"] > :last-child` span rule are
+// gone. A capacity row shares its free space with `flex-grow`, so a line that ends
+// short closes at full width: a plate of three at two tracks prints 2 + 1 and the
+// lone record takes the whole seam, and a plate of five prints 2 + 2 + 1 with the
+// same closing line. A remainder of two was never answered at all - the span rule
+// only knew a remainder of one - and the row answers it as a pair at half each,
+// because growth counts whatever is on the line. The component still publishes
+// `data-count`, `data-tracks` and `data-remainder`: they are facts about the set,
+// and the layout no longer has to be told.
+//
+// ─── ONE MEASURE IN THE BAND ──────────────────────────────────────────────
+//
+// The matrix, the selection's figure and the specimen strip each carried their own
+// `max-inline-size: 72rem; margin-inline: auto`, and all three were dead: the
+// band's inner is 72rem INCLUDING its gutters, so it hands every child a 67rem row
+// and a 72rem cap cannot bind. They drew nothing - but a cap that can only ever be
+// narrower than the measure it sits in is a trap, not a decision: the first time
+// the band widens, the matrix drops into an island narrower than the head above
+// it. The band's inner is the band's one measure, so no child re-states it.
 
 @use "../../Mixin" as *;
 
-.home-feature__grid {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr);
-	gap: 1rem;
-	max-inline-size: 72rem;
-	margin-inline: auto;
+/// One record's measured floor: a card that holds its four-row ledger at a
+/// readable value column, plus its own inset. The arithmetic is
+/// `Component/Home/_Record.scss` (THE CARD'S MEASURED FLOOR):
+/// 112 + 12 + 192.66 = 316.66px of content, + 2 x 20px of inset = 356.66px =
+/// 22.29rem, rounded up to 23rem so the floor is a minimum and not the exact fit.
+$feature-floor: 23rem;
 
-	@include bp(768px) {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 1px;
-	}
+/// The row width at which two tracks clear the floor - the seam's threshold and
+/// the capacity line's, from one number. The 1px is the seam itself.
+$feature-pair: $feature-floor * 2 + 0.0625rem;
 
-	@include bp(1024px) {
-		grid-template-columns: repeat(var(--feature-tracks, 3), minmax(0, 1fr));
-	}
+/* The query container: the band's body, which is exactly as wide as the row it
+   holds. Named only on a band that holds this matrix, so no other band's body
+   pays for the containment. */
+.home-band__body:has(> .home-feature__grid) {
+	container: feature-band / inline-size;
 }
 
-/* The short last row, answered by the layout: one record across the seam. */
-@include bp(768px) {
-	.home-feature__grid[data-remainder="1"] > :last-child {
-		grid-column: 1 / -1;
+/* The row's three knobs and its cross-axis rule. The ceiling is the set's
+   (`data-tracks`, inline from the component) and 3 is the fallback for a caller
+   that passes none - the same fallback shape the row itself uses. */
+.home-band__body > .home-feature__grid {
+	--row-tracks: 3;
+	--row-floor: #{$feature-floor};
+
+	/* The one-track form: a card to a card is the reading step. The seam is
+	   declared below, where two tracks exist to be seamed. */
+	--row-gap: var(--space-reading);
+
+	/* A matrix's cells are one plate: the tallest cell of a line sets the height
+	   of every cell beside it, so the seam runs unbroken. The row's own
+	   `flex-start` is for a ragged run of artifacts, not for a divided plate. */
+	align-items: stretch;
+}
+
+/* Two tracks or more: the seam, and the cells' border gone. The band's body is
+   the container and its width is the row's width, so this fires exactly where
+   the second track prints - the contact sale's one-track query is the same
+   idiom, on the same reasoning. The selector is the one-track rule's, and it
+   comes after it, so the seam is not out-ranked by the gap it replaces.
+   `[data-tracks="1"]` is the one ceiling that can never print a second track: a
+   set of one is one card at every width, and a lone tinted card with its border
+   turned off is a card that lost its edge. */
+@container feature-band (min-width: #{$feature-pair}) {
+	.home-band__body > .home-feature__grid:not([data-tracks="1"]) {
+		--row-gap: 1px;
+	}
+
+	/* The cell has no frame of its own inside the matrix: its tint is its edge,
+	   and the seam is the paper. The Jelly border property is set to transparent
+	   rather than to `none` so the element keeps its declared border box and the
+	   cells stay the same size whether or not the matrix is on. */
+	.home-feature__grid:not([data-tracks="1"]) .home-feature {
+		--jelly-color-border-default: transparent;
 	}
 }
 
@@ -92,8 +179,7 @@
 // is a layout that has failed quietly, and the brief's empty rule is that the
 // surface says what would be here, why it is not, and what to do.
 .home-feature__empty {
-	max-inline-size: 72rem;
-	margin: 0 auto var(--space-group);
+	margin-block: 0 var(--space-group);
 
 	@include hairline(top);
 	padding-block-start: var(--space-tight);
@@ -137,9 +223,7 @@
 	column-gap: clamp(1.5rem, 3vw, 3rem);
 	row-gap: var(--space-tight);
 
-	max-inline-size: 72rem;
 	margin-block-start: var(--space-group);
-	margin-inline: auto;
 	padding-block-start: var(--space-tight);
 
 	@include hairline(top);
@@ -168,16 +252,6 @@
 	--jelly-fill: var(--Card);
 }
 
-// The cell has no frame of its own inside the matrix: its tint is its edge, and
-// the seam is the paper. The Jelly border property is set to transparent rather
-// than to `none` so the element keeps its declared border box and the cells stay
-// the same size whether or not the matrix is on.
-@include bp(768px) {
-	.home-feature__grid .home-feature {
-		--jelly-color-border-default: transparent;
-	}
-}
-
 // The observation layer's filed strip: the record's `SPECIES:` / `TEMP:` /
 // `WIND:`, below the matrix rather than inside the hero card. It takes the
 // matrix's measure so it lines up with the records above it, and opens on the
@@ -190,9 +264,7 @@
 	align-items: baseline;
 	column-gap: clamp(1.5rem, 3vw, 3rem);
 	row-gap: var(--space-tight);
-	max-inline-size: 72rem;
 	margin-block-start: var(--space-group);
-	margin-inline: auto;
 	padding-block-start: var(--space-tight);
 }
 

@@ -286,7 +286,7 @@
 // the shell cancels this body's gutter inside `__main`.
 @container sale (max-width: 61.99rem) {
 	.contact-sale .PageShell__row {
-		row-gap: 0;
+		--row-gap: 0;
 	}
 
 	.contact-sale .PageShell__row > .contact-sale__card + .contact-sale__card {

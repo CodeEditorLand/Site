@@ -2,11 +2,14 @@
 /**
  * FeatureBand - `# OBSERVATION_01`: the six element records that carry the claim.
  *
- * The six are one **matrix**, not six cards: three columns from `lg`, two from
- * `md`, one below, flush against each other with a 1px seam of the creme field
- * between them. The seam is the whole composition - six records read as one
- * filed plate, the way a patch panel's cells are one panel and not six boxes -
- * and it is why the cells carry no border of their own: the paper is the rule.
+ * The six are one **matrix**, not six cards: two tracks at every desktop width,
+ * one below 801px, flush against each other with a 1px seam of the creme field
+ * between them. The count is the record's capacity, not a breakpoint - the band
+ * is the shell's capacity row and one record measures 23rem (`_Feature.scss`) -
+ * so the matrix prints as many tracks as its own width can hold records for. The
+ * seam is the whole composition - six records read as one filed plate, the way a
+ * patch panel's cells are one panel and not six boxes - and it is why the cells
+ * carry no border of their own: the paper is the rule.
  *
  * The runtime rail is the hero's foot (`RUNTIME PATH`, under the pair), not a
  * band's: it is the proof of the claim the hero makes and it belongs under that
@@ -22,24 +25,32 @@
  * It is a *block import*, not a class copy: `RecordLedger` is the block that
  * owns the ledger's anatomy, and a borrowed class is not a block.
  *
- * ─── THE BAND IS A SET, SO IT TAKES A SET ─────────────────────────────────
+ * ─── THE BAND IS A SET, AND THE COUNT IS ITS CAPACITY ─────────────────────
  * The matrix was written for exactly six records: three columns from `lg` and
  * two from `md` is a distribution that divides six and nothing else. A plate
- * that files three would answer with a 2 + 1 grid and a hole in the seam where
- * the sixth cell should be - and a plate with a gap in it reads as a plate that
+ * that files three answered with a 2 + 1 grid and a hole in the seam where the
+ * sixth cell should be - and a plate with a gap in it reads as a plate that
  * lost three, not as one that files three.
  *
- * So the band takes `cards` (defaulting to the six the page files), derives its
- * column count from the set it holds, and says so on the grid:
+ * The count is now the RECORD's, not the window's: the grid is the shell's
+ * capacity row (`.PageShell__row`), whose floor is one record's measured 23rem
+ * (`_Feature.scss` states the switches, `_Record.scss` the measurement). The band
+ * publishes three facts about the set:
  *
  *   data-count      how many records the plate holds
- *   data-tracks     how many columns the SET wants (`FeatureTracks`)
- *   data-remainder  count % tracks - the short last row, if there is one
+ *   data-tracks     the CEILING the set asks for (`--row-tracks`) - three for a
+ *                   set that divides three, two for a set that divides two but
+ *                   not three, one for a set that is one
+ *   data-remainder  count % ceiling
  *
- * A short last row is answered by the layout rather than by an empty cell: when
- * the remainder is one, that record spans the line (`_Feature.scss`), which is
- * the same rule the site's other rows use for a LEAD item. The six-record set has
- * no remainder at any width, so the page's own matrix is unchanged to the pixel.
+ * The ceiling is not the count. A capacity row prints as many tracks as its own
+ * width can hold records for: the homepage's six print TWO at every desktop width
+ * (three tracks need 1106px of row and the band's measure is 1072px) and one
+ * below 801px. A short last line needs no rule and no attribute: the row shares
+ * its free space with `flex-grow`, so a plate of three at two tracks prints 2 + 1
+ * and the lone record takes the whole seam, and a plate of five prints 2 + 2 + 1
+ * with the same closing line. `data-remainder` stays published because it is a
+ * fact about the set, not because the layout reads it.
  *
  * ─── AND A SUBSET PRINTS ITS FIGURE ───────────────────────────────────────
  * A plate holding three of six records must not look like a plate holding six:
@@ -91,14 +102,16 @@ const Head = BandOf(HomeBands(T), "features");
 const Observation = HeroBandFor(T).observation;
 
 /**
- * How many columns the set wants.
+ * The ceiling the set asks for: how many tracks the plate is COMPOSED for, never
+ * how many it prints.
  *
  * Three is the matrix's own count and the one the band was drawn for; two is the
  * count that divides four; one is a set that is one. A set that divides neither
  * takes three and prints a short last row, because a short row is a fact about
- * the set.
+ * the set. The layout takes this as `--row-tracks` and prints the most tracks its
+ * own width can hold a record for, up to it.
  */
-const Tracks = (Count: number): number => {
+const Ceiling = (Count: number): number => {
 	if (Count <= 1) return 1;
 
 	if (Count % 3 === 0) return 3;
@@ -108,9 +121,9 @@ const Tracks = (Count: number): number => {
 	return 3;
 };
 
-const Tracks_ = Tracks(cards.length);
+const CeilingOf = Ceiling(cards.length);
 
-const Remainder = Tracks_ === 0 ? 0 : cards.length % Tracks_;
+const Remainder = CeilingOf === 0 ? 0 : cards.length % CeilingOf;
 
 /** The subset's figure, or `undefined` when the plate is the whole set. */
 const Subset =
@@ -131,11 +144,11 @@ const Subset =
 		</p>
 	) : (
 		<div
-			class="home-feature__grid"
+			class="home-feature__grid PageShell__row"
 			data-count={cards.length}
 			data-remainder={Remainder}
-			data-tracks={Tracks_}
-			style={`--feature-tracks:${Tracks_}`}
+			data-tracks={CeilingOf}
+			style={`--row-tracks:${CeilingOf}`}
 		>
 			{cards.map((Card) => (
 				<FeatureCard card={Card} />

@@ -737,27 +737,27 @@ export const Rows: readonly Row[] = [
 			),
 
 			dense: B(
-				"the matrix's seam IS the tight arm: six cells at 1px, three across from `lg`",
+				"the matrix's seam IS the tight arm: six cells at 1px, two across from 801px",
 			),
 
 			one: B(
-				"a set of one prints one cell across the full seam - `FeatureTracks` returns one, and the grid's third column is never asserted for a set that does not fill it",
+				"a set of one prints one cell across the full seam - the ceiling is one, so a one-track row is the row's whole width",
 			),
 
 			many: B(
-				"a set of twelve prints four rows of three; the band has no cap and the seam holds at any count",
+				"a set of twelve prints six rows of two; the band has no cap, the seam holds at any count, and the ceiling stays three",
 			),
 
 			long: B(
-				"a card's title wraps inside its cell; the cell's width is the grid's, and the card has no minimum of its own",
+				"a card's title wraps inside its cell; the cell's width is the row's, and the card's minimum is the 23rem one record needs",
 			),
 
 			narrow: B(
-				"below `md` the cells stack, take a real gap and their border back - a single column of tinted cells 1px apart is one tinted block, not a matrix",
+				"below 801px the cells stack, take a real gap and their border back - a single column of tinted cells 1px apart is one tinted block, not a matrix",
 			),
 
 			wide: B(
-				"the matrix caps at 72rem and centres; a wider band does not widen the plate",
+				"the matrix takes the band's measure - 67rem inside the 72rem inner - so it is exactly as wide as the head above it, and a wider band would widen both",
 			),
 
 			incard: X(
@@ -769,7 +769,7 @@ export const Rows: readonly Row[] = [
 			),
 
 			three: B(
-				"`cards` of three prints one row of three at `lg` and two-plus-a-lead below it (`data-remainder`), and the subset's figure `# RECORDS / 03` under the grid - the composition this family's brief named, and the one that found the 2 + 1 hole",
+				"`cards` of three prints 2 + 1 with the lone record across the whole seam, and the subset's figure `# RECORDS / 03` under the grid - the short last row is answered by the row's own growth, not by a span rule",
 			),
 
 			nine: X(
@@ -4467,7 +4467,7 @@ export const Improvements: readonly Improvement[] = [
 
 		found: "The proof band's matrix was `repeat(3)` from `lg` and `repeat(2)` from `md` - a distribution that divides six and nothing else. Printed with three records it answered 2 + 1 at every width below `lg`: a hole in the seam where the fourth cell would have been, which reads as a plate that lost a record rather than one that files three. And a plate of three looked exactly like a plate of six to a reader who had not counted.",
 
-		built: "`cards` is a prop and the band derives its own count (`FeatureTracks`): a set that divides three wants three, one that divides two wants two, and the grid publishes `data-count`, `data-tracks` and `data-remainder`. When exactly one cell is left over it spans the line (`[data-remainder=\"1\"] > :last-child`), which is the site's LEAD rule applied to a plate's closing row. A subset also prints its figure under the grid - `# RECORDS / 03` and `SELECTION: 03 OF 06` - built from the two arrays, so the number cannot outlive the set.",
+		built: "`cards` is a prop and the band publishes its ceiling (`Ceiling`, as `--row-tracks` and `data-tracks`): a set that divides three is composed for three, one that divides two is composed for two. The count it actually PRINTS is the record's capacity - the grid is the shell's capacity row, and one record measures 23rem - so six records print two tracks at every desktop width and one below 801px. The grid still publishes `data-count`, `data-tracks` and `data-remainder`, but a short last line needs no rule: the row shares its free space with `flex-grow`, so a lone record closes the seam at full width and a remainder of two prints as a pair at half each. A subset also prints its figure under the grid - `# RECORDS / 03` and `SELECTION: 03 OF 06` - built from the two arrays, so the number cannot outlive the set.",
 	},
 
 	{
