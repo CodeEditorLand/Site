@@ -133,6 +133,9 @@
 //
 //   Token        the vocabulary as values - one declaration site
 //   Control      the button family: press, ring, disabled, busy
+//   Button       the Jelly host: the field under the canvas, and the one owner
+//                of it (`Row`, `Link` and `Card` read its predicate and stand
+//                down on a wrapper whose body is a Jelly control)
 //   Link         the anchor: prose, route, navigation, and the gone target
 //   Row          the row grammar: hover, selected, current, pressed
 //   Tab          the one-of-N family: scope cells, crate tabs, rail parts
@@ -148,6 +151,7 @@
 
 @use "Token";
 @use "Control";
+@use "Button";
 @use "Link";
 @use "Row";
 @use "Tab";

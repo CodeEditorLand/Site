@@ -1,0 +1,634 @@
+---
+/**
+ * SpecimenFrame - the surface, shell and layout family, printed live.
+ *
+ * ─── WHY THIS STAGE IS NOT AN ISLAND ──────────────────────────────────────
+ * Every block in this family ships zero JavaScript of its own: a shell is a
+ * `<div>` with a grid, a rail a `<nav>` with an `<ol>`, a pane pair two
+ * `<section>`s and a seam, a plate a `<figure>`, a state an `<aside>`. The two
+ * islands the family touches (`Rail` and `RunningHead`) are the frame's own and
+ * are mounted by the header, not by this sheet. So the stage is static Astro and
+ * the band on the specimen sheet costs the page nothing - which is itself a
+ * claim about the family, printed by how it is mounted.
+ *
+ * ─── THE RENDERER DECIDES NOTHING ────────────────────────────────────────
+ * A row states what it is, which part it exercises, when that state is right and
+ * the arm it prints; this file builds the data and mounts the block. That split
+ * is why the matrix and the rows cannot drift: both read
+ * `Content/Specimen/Frame.ts`, and a state added there appears on both with no
+ * second edit.
+ *
+ * ─── THE DATA IS THE SITE'S OWN ──────────────────────────────────────────
+ * Every route, part, count and sentence below is the kind of thing this document
+ * states: a sheet of the manual, a part of the record, a state word from the
+ * eight, a destination the rail really lists. A specimen printed with lorem ipsum
+ * would prove that the block can hold text; a specimen printed with the
+ * document's own facts proves that the block can hold THIS document.
+ */
+import { Groups, InGroup, type Specimen } from "../../Content/Specimen/Frame.js";
+
+import EdgeLeaf from "../Layout/Edge/EdgeLeaf.astro";
+import EdgeTurn from "../Layout/Edge/EdgeTurn.astro";
+import { FrameSections } from "../Layout/Frame/Data.js";
+import PrintRecord from "../Layout/Print/PrintRecord.astro";
+import RecordBand from "../Record/RecordBand.astro";
+import RecordLedger from "../Record/RecordLedger.astro";
+import PageShell from "../Shell/PageShell.astro";
+import ShellPanes from "../Shell/ShellPanes.astro";
+import ShellPlate from "../Shell/ShellPlate.astro";
+import ShellRail from "../Shell/ShellRail.astro";
+import ShellState from "../Shell/ShellState.astro";
+import SurfaceAbsent from "../Surface/SurfaceAbsent.astro";
+import SurfaceBadge from "../Surface/SurfaceBadge.astro";
+import SurfaceChips from "../Surface/SurfaceChips.astro";
+import SurfaceHead from "../Surface/SurfaceHead.astro";
+import SurfaceLife from "../Surface/SurfaceLife.astro";
+import SurfaceRegion from "../Surface/SurfaceRegion.astro";
+import SurfaceShell from "../Surface/SurfaceShell.astro";
+import SurfaceState from "../Surface/SurfaceState.astro";
+import SurfaceStatusLine from "../Surface/SurfaceStatusLine.astro";
+import { Row } from "../Surface/State.js";
+
+/* ─── THE DOCUMENT'S OWN PROSE ───────────────────────────────────────────── */
+
+/** One sentence the site states about itself, used wherever a body is needed. */
+const Prose =
+	"The editor runs natively on macOS, Windows and Linux: Rust and Tauri underneath, the VS Code extension API on top, and no Chromium in the process tree.";
+
+/** A second sentence, for the blocks that hold two. */
+const ProseSecond =
+	"Extensions are unmodified: the marketplace's packages load as they are, and nothing in the editor has to be rebuilt to carry them.";
+
+/** The manual's part, as the frame files it. */
+const DocPart = FrameSections[2]!;
+
+/* ─── THE RAIL'S ROWS ────────────────────────────────────────────────────── */
+
+/** The manual's sections, as the rail prints them. */
+const RailItems = [
+	{ mark: "01", label: "THE RUNTIME", meta: "06" },
+	{ mark: "02", label: "THE EXTENSION HOST", meta: "04" },
+	{ mark: "03", label: "THE BUILD PIPELINE", meta: "03" },
+	{ mark: "04", label: "THE SUBSTITUTION", meta: "05" },
+	{ mark: "05", label: "TROUBLESHOOTING", meta: "02" },
+];
+
+/** The clause register: rows that state rather than link. */
+const RailStatements = [
+	{ mark: "§01", label: "THE SOFTWARE IS OFFERED AS IT IS", meta: "CC0" },
+	{ mark: "§02", label: "NO WARRANTY IS GIVEN OR IMPLIED", meta: "CC0" },
+	{ mark: "§03", label: "THE MARK COVERS THE TREE", meta: "SEALED" },
+	{ mark: "§04", label: "ATTRIBUTION IS THE ONLY CONDITION", meta: "CC0" },
+];
+
+/** Twenty-six destinations, for the `many` row. */
+const RailMany = Array.from({ length: 26 }, (_, Index) => ({
+	mark: String(Index + 1).padStart(2, "0"),
+	label: `SECTION ${String(Index + 1).padStart(2, "0")}`,
+	meta: String((Index % 9) + 1).padStart(2, "0"),
+}));
+
+/** The grouped rail: the manual's tree as three groups. */
+const RailGroups = [
+	{
+		label: "THE MANUAL",
+		mark: "§",
+		items: RailItems.slice(0, 3),
+	},
+	{
+		label: "THE RECORD",
+		mark: "§",
+		items: [
+			{ mark: "06", label: "THE EDITION", meta: "01" },
+			{ mark: "07", label: "THE CHECKSUMS", meta: "12" },
+			{ mark: "08", label: "THE COMPATIBILITY TABLE", meta: "09" },
+		],
+	},
+	{
+		label: "THE BACK MATTER",
+		mark: "§",
+		items: [
+			{ mark: "09", label: "LICENCE", meta: "CC0" },
+			{ mark: "10", label: "CONTRIBUTING", meta: "04" },
+		],
+	},
+];
+
+/* ─── THE SURFACE'S OWN FACTS ────────────────────────────────────────────── */
+
+/** The eight state words, as the legend prints them. */
+const Vocabulary = [
+	"READY",
+	"ACTIVE",
+	"LOADING",
+	"PREPARING",
+	"VERIFIED",
+	"UNAVAILABLE",
+	"INTERRUPTED",
+	"ARCHIVED",
+];
+
+/** The surface's own declarations: the audit trail of one word. */
+const Declarations = [
+	{ key: "ROUTE", value: "/PORTAL" },
+	{ key: "SOURCE", value: "RELEASE RECORD" },
+	{ key: "BUILT", value: "2026-11-19" },
+];
+
+/** The surface's own facts, in the order the head prints them. */
+const SurfaceRows = [
+	{ key: "TARGET:", value: "MACOS\u2001WINDOWS\u2001LINUX" },
+	{ key: "LICENSE:", value: "CC0\u2001PUBLIC DOMAIN" },
+	{ key: "SIGNAL:", value: "TELEMETRY\u2001FEATURE GATED" },
+	{ key: "CHANNEL:", value: "PUBLIC" },
+];
+
+/** The pane pair's two heads, as the workspace prints them. */
+const PrimaryPane = {
+	mark: "# PANE_01",
+	label: "THE MANUAL",
+	meta: "05 SECTIONS",
+	note: "The document's own tree, one row per section, with the count of its subsections in the value column.",
+};
+
+const SecondaryPane = {
+	mark: "# PANE_02",
+	label: "THE DOCUMENT",
+	meta: "READING",
+	note: "The section itself, at the reading measure: the pane is as wide as the instrument inside it.",
+};
+
+/* ─── THE STAGE ──────────────────────────────────────────────────────────── */
+
+/** The stage's own width, from the row. */
+const SkinClass = (Row: Specimen): string => {
+	const Width = Row.width ?? "band";
+
+	return `specimen-frame__stage specimen-frame__stage--${Width}`;
+};
+
+/** The page's own rail, for the shells that take one. */
+const ShellRailSlot = {
+	items: RailItems,
+	count: "05",
+	label: "ON THIS PAGE",
+};
+
+/**
+ * The language a row's shell is composed in.
+ *
+ * Typed as the union `PageShell` takes, so the row's `variant` string cannot
+ * reach the component as an arbitrary string - a shell that was handed a
+ * language it does not know would fall back to the route's filing and print a
+ * declaration strip about a page that is not the one on the sheet.
+ */
+const ShellLanguage = (
+	Row: Specimen,
+): "reading" | "workspace" | "audit" | "plate" | "record" => {
+	switch (Row.variant) {
+		case "record":
+			return "record";
+		case "workspace":
+			return "workspace";
+		case "audit":
+			return "audit";
+		case "plate":
+			return "plate";
+		default:
+			return "reading";
+	}
+};
+---
+
+<div class="specimen-frame">
+	{Groups.map((Group) => (
+		<section class="specimen-frame__group" key={Group.key}>
+			<p class="specimen-frame__group-head">
+				<span class="specimen-frame__group-kicker">{Group.label}</span>
+				<span class="specimen-frame__group-count">
+					{InGroup(Group.key).length}
+				</span>
+			</p>
+
+			<p class="specimen-frame__group-note">{Group.note}</p>
+
+			<div class="specimen-frame__rows">
+				{InGroup(Group.key).map((Entry) => (
+					<article class="specimen-frame__row" id={`frame-${Entry.mark}`}>
+						<header class="specimen-frame__spec">
+							<p class="specimen-frame__mark">
+								<span class="specimen-frame__mark-hash" aria-hidden="true">
+									#
+								</span>
+								{Entry.mark}
+							</p>
+
+							<h3 class="specimen-frame__state">{Entry.state_name}</h3>
+
+							<p class="specimen-frame__part">{Entry.component}</p>
+
+							<p class="specimen-frame__when">{Entry.when}</p>
+						</header>
+
+						<div class={SkinClass(Entry)} data-skin={Entry.width ?? "band"}>
+							{Entry.kind === "pageshell" ? (
+								<PageShell
+									language={ShellLanguage(Entry)}
+									index={`# ${Entry.mark.replace("_", "")}`}
+									label={Entry.variant === "incard" ? "A PAGE IN A CARD" : undefined}
+									class={Entry.variant === "inset" ? "PageShell--inset" : undefined}
+								>
+									<RecordBand
+										slot="head"
+										band={{
+											kicker: "/THE DECLARATION",
+											heading: "The page's own opening",
+											standfirst:
+												"The shell declares the tracks; the page's head is the page's.",
+											interval: "rest",
+										}}
+									>
+										<p class="specimen-frame__prose">{Prose}</p>
+									</RecordBand>
+
+									{Entry.variant === "norail" ? null : (
+										<ShellRail
+											slot="rail"
+											label={ShellRailSlot.label}
+											count={ShellRailSlot.count}
+											items={ShellRailSlot.items}
+											sticky={false}
+										/>
+									)}
+
+									{Entry.variant === "workspace" ? (
+										<ShellPanes
+											primary={PrimaryPane}
+											secondary={SecondaryPane}
+										>
+											<ShellRail
+												slot="primary"
+												label="ON THIS PAGE"
+												count="05"
+												items={RailItems}
+												sticky={false}
+											/>
+											<div slot="secondary">
+												<p class="specimen-frame__prose">{Prose}</p>
+												<p class="specimen-frame__prose">{ProseSecond}</p>
+											</div>
+										</ShellPanes>
+									) : Entry.variant === "audit" ? (
+										<div>
+											<RecordLedger
+												rows={[
+													{ key: "CLAIM:", value: "NATIVE, NOT CHROMIUM" },
+													{ key: "CHECKED:", value: "2026-11-19" },
+													{ key: "AGAINST:", value: "THE BUILD PIPELINE" },
+												]}
+												columns={1}
+											/>
+										</div>
+									) : Entry.variant === "plate" ? (
+										<ShellPlate
+											index="PLATE_01"
+											figure="THE OPENING PAIR"
+											source="/LAND"
+											state="VERIFIED"
+											proposition="The claim, printed at the page's own width."
+											trace={{
+												mark: "◎",
+												value: "THE EDITOR, NATIVE",
+												note: "ONE ARTIFACT, ONE MEASURE",
+											}}
+										/>
+									) : (
+										<div>
+											<p class="specimen-frame__prose">{Prose}</p>
+											<p class="specimen-frame__prose">{ProseSecond}</p>
+										</div>
+									)}
+
+									{Entry.variant === "tworails" || Entry.variant === "narrow" ? (
+										<div slot="margin">
+											<p class="specimen-frame__aside-key">NOTE:</p>
+											<p class="specimen-frame__prose">
+												The register is the page's apparatus: the facts, the
+												notes and the as-of that annotate the paper without
+												interrupting it.
+											</p>
+										</div>
+									) : null}
+								</PageShell>
+							) : Entry.kind === "panes" ? (
+								<ShellPanes
+									ratio={
+										Entry.variant === "7-5"
+											? "7/5"
+											: Entry.variant === "1-1"
+												? "1/1"
+												: "5/7"
+									}
+									layout={Entry.variant === "stack" ? "stack" : "panes"}
+									primary={
+										Entry.variant === "loading"
+											? { ...PrimaryPane, state: "loading", keys: ["SECTION", "SUBSECTIONS", "READ"] }
+											: Entry.variant === "absent"
+												? { ...PrimaryPane }
+												: PrimaryPane
+									}
+									secondary={
+										Entry.variant === "absent"
+											? {
+													...SecondaryPane,
+													state: "empty",
+													empty: "The document has not been set from its source in this build, so the pane has nothing to print.",
+												}
+											: SecondaryPane
+									}
+									drawer={
+										Entry.variant === "drawer"
+											? {
+													label: "THE TRANSCRIPT",
+													note: "12 TURNS",
+													open: true,
+												}
+											: { label: "THE TRANSCRIPT", note: "12 TURNS" }
+									}
+									dense={Entry.dense}
+								>
+									<ShellRail
+										slot="primary"
+										label="ON THIS PAGE"
+										count="05"
+										items={RailItems}
+										sticky={false}
+									/>
+									<div slot="secondary">
+										<p class="specimen-frame__prose">{Prose}</p>
+										<p class="specimen-frame__prose">{ProseSecond}</p>
+									</div>
+									<div slot="drawer">
+										<p class="specimen-frame__prose">
+											The drawer holds what neither pane holds: the log, the
+											transcript, the reference the reader consults rather than
+											reads.
+										</p>
+									</div>
+								</ShellPanes>
+							) : Entry.kind === "rail" ? (
+								<ShellRail
+									label={
+										Entry.variant === "statement"
+											? "THE LICENCE"
+											: Entry.variant === "groups"
+												? "THE MANUAL"
+												: "ON THIS PAGE"
+									}
+									count={
+										Entry.variant === "one"
+											? "01"
+											: Entry.variant === "many"
+												? "26"
+												: Entry.variant === "groups"
+													? "08"
+													: Entry.variant === "empty"
+														? "05"
+														: Entry.variant === "loading"
+															? "05"
+															: "05"
+									}
+									items={
+										Entry.variant === "one"
+											? [RailItems[0]!]
+											: Entry.variant === "many"
+												? RailMany
+												: Entry.variant === "statement"
+													? RailStatements
+													: Entry.variant === "long"
+														? [
+																{
+																	mark: "01",
+																	label:
+																		"THE RUNTIME, ITS BOUNDARIES, AND WHAT IT DOES NOT OWN",
+																	note: "One line under the label, when the row needs a qualification.",
+																	meta: "06",
+																},
+																...RailItems.slice(1),
+															]
+														: RailItems
+									}
+									groups={Entry.variant === "groups" ? RailGroups : undefined}
+									current="location"
+									state={
+										Entry.variant === "empty"
+											? "empty"
+											: Entry.variant === "loading"
+												? "loading"
+												: "rest"
+									}
+									empty="The manual's sections have not been read in this build, so the rail lists nothing."
+									keys={["SECTION", "SUBSECTIONS", "READ"]}
+									sticky={false}
+									dense={Entry.dense}
+									foot={
+										Entry.variant === "foot"
+											? { label: "READ THE INDEX", href: "/Contents" }
+											: undefined
+									}
+								>
+								</ShellRail>
+							) : Entry.kind === "plate" ? (
+								<ShellPlate
+									index="PLATE_01"
+									figure="THE BUILD PIPELINE"
+									source="/DOC/BUILD-PIPELINE"
+									state={Entry.variant === "absence" ? "UNAVAILABLE" : "VERIFIED"}
+									proposition={
+										Entry.variant === "absence"
+											? "The plate's channel is complete and its field states what is missing."
+											: "One artifact, printed at the page's own width, with its provenance beside it."
+									}
+									bleed={Entry.variant === "bleed" ? "viewport" : "container"}
+									height={Entry.variant === "tall" ? "34rem" : undefined}
+									media={
+										Entry.variant === "image"
+											? {
+													src: "/Asset/Seal/Land.svg",
+													alt: "The Land seal, as a plate's evidence.",
+													position: "center",
+												}
+											: undefined
+									}
+									trace={
+										Entry.variant === "trace" || Entry.variant === "bleed"
+											? {
+													mark: "〈BUILD〉",
+													value: "SOURCE → VERIFY → PREPARE",
+													note: "THREE STAGES, NO INTERMEDIATE ARTIFACT",
+												}
+											: undefined
+									}
+									absence={
+										Entry.variant === "absence"
+											? {
+													status: "UNAVAILABLE",
+													wouldBe:
+														"A photograph of the workbench at the moment the tree resolved, or a printed trace of the build.",
+													whyNot:
+														"No capture is filed for this plate: the manifest lists the subject and no image has been made from it yet.",
+													next: {
+														label: "READ THE MANIFEST",
+														href: "/Download",
+													},
+												}
+											: undefined
+									}
+								>
+									{Entry.variant === "slot" ? (
+										<div class="specimen-frame__plate-slot">
+											<p class="specimen-frame__plate-mark">◎</p>
+											<p class="specimen-frame__plate-value">
+												THE SHEET, AS A DOCUMENT
+											</p>
+											<p class="specimen-frame__plate-note">
+												A COMPOSED PLATE: THE PAGE'S OWN ELEMENT, FRAMED
+											</p>
+										</div>
+									) : null}
+								</ShellPlate>
+							) : Entry.kind === "shell" ? (
+								<SurfaceShell
+									index="# PORTAL_01"
+									title="The portal, and what it holds"
+									standfirst="One page, one instrument head, and the bands the surface states itself in."
+									states={[Row("STATUS", "VERIFIED")]}
+									declarations={Declarations}
+									rows={SurfaceRows}
+									life={Entry.variant === "live" ? "LIVE" : "BETA"}
+									lifeNote="SOURCE: /STATUS\u2001READ AT THIS COMMIT"
+								>
+									<div class="specimen-frame__surface-body">
+										<p class="specimen-frame__prose">{Prose}</p>
+									</div>
+								</SurfaceShell>
+							) : Entry.kind === "head" ? (
+								<SurfaceHead
+									index="# ACCOUNT_01"
+									title="The account, and what it keeps"
+									proposition="A surface that is named and specified before it is built."
+									states={[Row("STATUS", "PREPARING")]}
+									declarations={Declarations}
+									rows={SurfaceRows}
+									life={Entry.variant === "planned" ? "PLANNED" : "RETIRED"}
+									lifeNote="SOURCE: /STATUS\u2001READ AT THIS COMMIT"
+								>
+									<div class="specimen-frame__head-marks">
+										<SurfaceBadge label="NATIVE" tone="ipc" dot />
+										<SurfaceBadge label="CC0" tone="mute" />
+									</div>
+								</SurfaceHead>
+							) : Entry.kind === "region" ? (
+								<SurfaceRegion
+									index="# 04"
+									id={`frame-region-${Entry.mark}`}
+									title="The records this region holds"
+									standfirst="A region is a band, not a card: it opens on an index and an `h2`."
+									state={Entry.variant === "loading" ? "loading" : "empty"}
+									empty="The records this region lists have not been filed in this build, so the region states what would be here rather than printing an empty body."
+									keys={["RECORD", "ROUTE", "STATE"]}
+								>
+									<p class="specimen-frame__prose">{Prose}</p>
+								</SurfaceRegion>
+							) : Entry.kind === "register" ? (
+								<SurfaceState
+									states={Vocabulary.map((Word) => Row("STATE", Word))}
+									columns={2}
+								/>
+							) : Entry.kind === "statusline" ? (
+								<SurfaceStatusLine
+									states={[Row("STATUS", "VERIFIED"), Row("SIGNAL", "LOADING")]}
+									declarations={Declarations}
+								/>
+							) : Entry.kind === "badges" ? (
+								<div class="specimen-frame__marks">
+									<SurfaceBadge label="Active" tone="grpc" dot />
+									<SurfaceBadge label="16 Permutations" tone="mute" />
+									<SurfaceBadge label="Coming Soon" tone="tauri" />
+									<SurfaceBadge label="CC0 Licensed" tone="ipc" />
+									<SurfaceBadge label="Unavailable" tone="wasm" />
+								</div>
+							) : Entry.kind === "chips" ? (
+								<SurfaceChips
+									chips={["ACTIVE", "PREPARING", "UNAVAILABLE", "ARCHIVED", "VERIFIED"]}
+								/>
+							) : Entry.kind === "absent" ? (
+								<SurfaceAbsent
+									status="INTERRUPTED"
+									wouldBe="The release record for this channel, with its checksums."
+									whyNot="The manifest was read and the record's own read failed: the request returned nothing, and nothing is not an empty record."
+									next={{ label: "READ THE MANIFEST", href: "/Download" }}
+									retry={
+										Entry.variant === "retry"
+											? { label: "READ THE RECORD AGAIN", href: "/Download" }
+											: undefined
+									}
+									note="SOURCE: /DOWNLOAD\u2001MANIFEST SECTION 2"
+									dense={Entry.dense}
+								/>
+							) : Entry.kind === "life" ? (
+								<SurfaceLife
+									term="Coming Soon"
+									note="SOURCE: THE PAGE'S OWN ADJECTIVE, WHICH IS THE DEFECT THIS BLOCK REMOVES."
+								/>
+							) : Entry.kind === "state" ? (
+								<ShellState
+									kind={Entry.variant === "partial" ? "partial" : "stale"}
+									index="REGISTER / 00"
+									statement={
+										Entry.variant === "partial"
+											? "Three of the record's five facts were read; two were not."
+											: "The release record was last read on 2026-01-05."
+									}
+									cause={
+										Entry.variant === "partial"
+											? "The build reads the manifest and the licence file; the checksum file is generated by the release job and has not run."
+											: "The record is regenerated when a release is cut, and no release has been cut since."
+									}
+									next={{ label: "READ THE MANIFEST", href: "/Download" }}
+									rows={
+										Entry.variant === "partial"
+											? [
+													{ key: "TARGET:", value: "MACOS\u2001AARCH64" },
+													{ key: "LICENSE:", value: "CC0" },
+													{ key: "CHECKSUM:", value: "UNAVAILABLE" },
+												]
+											: undefined
+									}
+									asOf={Entry.variant === "partial" ? undefined : "2026-01-05"}
+									age={Entry.variant === "partial" ? undefined : "318 DAYS"}
+									surface={Entry.variant === "bare" ? "bare" : "box"}
+									dense={Entry.dense}
+								/>
+							) : Entry.kind === "edgeleaf" ? (
+								<EdgeLeaf
+									path="/Specimen"
+									canonical="/Specimen"
+									section={DocPart}
+									state={Entry.variant === "stale" ? "stale" : "unfiled"}
+								/>
+							) : Entry.kind === "edgeturn" ? (
+								<EdgeTurn
+									canonical="/Doc/Rust"
+									state={Entry.variant === "missing" ? "missing" : "index"}
+								/>
+							) : Entry.kind === "print" ? (
+								<PrintRecord />
+							) : null}
+						</div>
+					</article>
+				))}
+			</div>
+		</section>
+	))}
+</div>

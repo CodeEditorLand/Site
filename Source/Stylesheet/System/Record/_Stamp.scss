@@ -230,3 +230,28 @@
 		gap: 0;
 	}
 }
+
+// ─── THE NARRATIVE FAMILY: THE MARK'S EXPIRY, THE ROUTE THAT CHECKS IT ─────
+// A stamp is issued for a period, so its `EXPIRES:` row prints with the facts
+// that bound it - a mark with no boundary is a mark a reader cannot date. The
+// verification route prints under the authority as the stamp's one link: the
+// authority says what makes the mark true, the link says where to confirm it.
+.record-stamp__row--expires .record-stamp__row-key,
+.record-stamp__row--expires .record-stamp__row-value {
+	color: var(--Foreground);
+}
+
+.record-stamp__verify {
+	margin: var(--space-tight) 0 0;
+	font-size: var(--type-caption);
+}
+
+.record-stamp__verify a {
+	color: var(--Accent);
+	text-decoration: none;
+}
+
+.record-stamp__verify a:hover,
+.record-stamp__verify a:focus-visible {
+	text-decoration: underline;
+}

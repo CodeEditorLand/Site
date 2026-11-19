@@ -353,3 +353,90 @@
 		grid-template-areas: "marker title note";
 	}
 }
+
+// ─── THE NARRATIVE FAMILY: THE ARCHIVE'S STATES, ITS WINDOW, ITS TOMBSTONE ─
+// An archive with no entries used to print its header and stop, which is a page
+// with a hole under a heading. It now prints the counted zero and the composed
+// absence: what would be filed here, why it is not, and what to do.
+//
+// `window` is the too-much state - the first N rows and the count it did not
+// print, on the foot - and `state: "gone"` on an entry prints a tombstone row
+// instead of an anchor, so a record whose target is gone stays a record.
+.record-archive__absent {
+	@include hairline(top);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	padding-block-start: var(--space-reading);
+}
+
+.record-archive__absent-head {
+	@include mono-meta;
+	@include track(var(--track-rule));
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+	margin: 0;
+	color: var(--MuteForeground);
+}
+
+.record-archive__absent-state--ink {
+	color: var(--Foreground);
+}
+
+.record-archive__absent-state--quiet {
+	color: var(--MuteForeground);
+}
+
+.record-archive__absent-line {
+	max-inline-size: 62ch;
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+}
+
+.record-archive__foot {
+	@include hairline(top);
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight) var(--space-group);
+	margin: 0;
+	padding-block-start: var(--space-tight);
+}
+
+.record-archive__window {
+	@include mono-meta;
+	@include track(var(--track-rule));
+}
+
+.record-archive__window-key,
+.record-archive__window-of {
+	color: var(--MuteForeground);
+}
+
+.record-archive__note-line {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--MuteForeground);
+}
+
+.record-archive__gone {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 0.15rem;
+	padding: var(--space-tight) var(--space-reading);
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	color: var(--MuteForeground);
+}
+
+.record-archive__gone-mark {
+	color: var(--MuteForeground);
+	margin-inline-end: var(--space-tight);
+}
+
+.record-archive__gone-route {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--MuteForeground);
+	overflow-wrap: anywhere;
+}

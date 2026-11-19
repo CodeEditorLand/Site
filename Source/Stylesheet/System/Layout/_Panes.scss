@@ -237,3 +237,91 @@
 .ShellPanes__drawer-body {
 	padding-block: var(--space-reading) var(--space-group);
 }
+
+/* ─── A PANE'S OWN ADVERSE ARMS ──────────────────────────────────────────── */
+// A pane whose instrument has not arrived states it under the same head, in the
+// same grammar, at the pane's own measure - and the seam stays drawn, so a pair
+// with one absent half is still one instrument divided rather than a pane and a
+// hole. The skeleton prints the schema; the bars are static, `aria-hidden`, and
+// never a shimmer, because the site has no gradient to shimmer with.
+.ShellPanes__absent {
+	display: grid;
+	gap: var(--space-tight);
+}
+
+.ShellPanes__status {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	display: flex;
+	align-items: baseline;
+	gap: 0.45em;
+	margin: 0;
+	color: var(--Foreground);
+}
+
+.ShellPanes__status--quiet {
+	color: var(--MuteForeground);
+}
+
+.ShellPanes__status-key {
+	color: var(--MuteForeground);
+}
+
+.ShellPanes__sentence {
+	margin: 0;
+	max-inline-size: var(--MeasureOpening);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.ShellPanes__skeleton {
+	display: grid;
+	gap: 0;
+}
+
+.ShellPanes__skeleton-row {
+	display: grid;
+	grid-template-columns: 6.5rem minmax(0, 1fr);
+	gap: var(--space-tight);
+	align-items: center;
+	margin: 0;
+	padding-block: 0.35rem;
+
+	@include hairline(bottom);
+}
+
+.ShellPanes__skeleton-key {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--MuteForeground);
+}
+
+.ShellPanes__bar {
+	display: block;
+	inline-size: var(--bar, 50%);
+	block-size: 0.5rem;
+	background: var(--Mute);
+	border: 1px solid var(--Border);
+}
+
+/* ─── DENSE: A PAIR INSIDE A CARD ────────────────────────────────────────── */
+// The heads take the tight step and the notes lose one step of air. The gutter,
+// the two heads and the drawer stay: a dense pair is the same instrument in less
+// room, which is the only version of it that can live inside a card.
+.ShellPanes--dense .ShellPanes__head {
+	margin-block-end: calc(var(--space-tight) / 2);
+	padding-block-end: calc(var(--space-tight) / 2);
+}
+
+.ShellPanes--dense .ShellPanes__note {
+	margin-block-end: var(--space-tight);
+}
+
+.ShellPanes--dense .ShellPanes__drawer {
+	margin-block-start: var(--space-reading);
+}

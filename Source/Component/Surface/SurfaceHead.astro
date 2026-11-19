@@ -31,6 +31,7 @@
  * inside it. No script and no hydration: the head is static.
  */
 import RecordLedger from "../Record/RecordLedger.astro";
+import SurfaceLife from "./SurfaceLife.astro";
 import SurfaceStatusLine from "./SurfaceStatusLine.astro";
 
 import type { LedgerRow } from "../Record/Type.js";
@@ -56,6 +57,22 @@ interface Props {
 	rows?: readonly LedgerRow[];
 
 	/**
+	 * The surface's lifecycle: `LIVE`, `BETA`, `PLANNED`, `RETIRED`,
+	 * `UNAVAILABLE`. Printed by `SurfaceLife` between the status line and the
+	 * facts, so a surface states how far along it is in the one vocabulary the
+	 * site owns - never in a page's own adjective ("Coming Soon", "Feature
+	 * Gated", "Beta"). Omitted, the head prints no lifecycle, which is the
+	 * honest answer for a page that has never declared one.
+	 */
+	life?: string;
+
+	/**
+	 * One line of provenance under the lifecycle scale - the source the word
+	 * was read from (`SOURCE: /STATUS`). Ignored without `life`.
+	 */
+	lifeNote?: string;
+
+	/**
 	 * Print the `h1` at XL instead of L.
 	 *
 	 * One page in the family spends its one XL on the `h1` (the portal, whose
@@ -75,6 +92,8 @@ const {
 	states = [],
 	declarations = [],
 	rows = [],
+	life,
+	lifeNote,
 	display = false,
 	class: ClassName,
 } = Astro.props;
@@ -103,6 +122,8 @@ const {
 		<slot />
 
 		<SurfaceStatusLine states={states} declarations={declarations} />
+
+		{life ? <SurfaceLife term={life} note={lifeNote} /> : null}
 
 		{rows.length ? (
 			<RecordLedger class="surface-head__facts" rows={rows} columns={2} />

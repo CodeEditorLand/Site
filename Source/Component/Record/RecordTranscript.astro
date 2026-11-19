@@ -196,12 +196,32 @@ const Id = `transcript-${transcript.index.toLowerCase().replace(/[^a-z0-9]+/g, "
 							? Turn.state.toUpperCase()
 							: (Turn.stamp ?? "")}
 					</span>
+					{Turn.state && (Turn.cause || Turn.next) ? (
+						<p class="record-transcript__turn-fail">
+							{Turn.cause ? (
+								<span class="record-transcript__turn-fail-row">
+									<span class="record-transcript__turn-fail-key">
+										CAUSE:
+									</span>
+									{Turn.cause}
+								</span>
+							) : null}
+							{Turn.next ? (
+								<span class="record-transcript__turn-fail-row">
+									<span class="record-transcript__turn-fail-key">
+										NEXT:
+									</span>
+									{Turn.next}
+								</span>
+							) : null}
+						</p>
+					) : null}
 				</li>
 			))}
 		</ol>
 	)}
 
-	{transcript.window !== undefined || transcript.note ? (
+	{transcript.window !== undefined || transcript.note || transcript.retry ? (
 		<p class="record-transcript__foot">
 			{transcript.window !== undefined ? (
 				<span class="record-transcript__window">
@@ -213,6 +233,15 @@ const Id = `transcript-${transcript.index.toLowerCase().replace(/[^a-z0-9]+/g, "
 			) : null}
 			{transcript.note ? (
 				<span class="record-transcript__note">{transcript.note}</span>
+			) : null}
+			{transcript.retry ? (
+				<span class="record-transcript__retry">
+					<a href={transcript.retry.href}>
+						<span aria-hidden="true">→</span>
+						{"\u2001"}
+						{transcript.retry.label}
+					</a>
+				</span>
 			) : null}
 		</p>
 	) : null}

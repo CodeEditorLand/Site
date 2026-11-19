@@ -353,3 +353,40 @@
 	line-height: 1;
 	color: var(--MuteForeground);
 }
+
+// ─── THE NARRATIVE FAMILY: THE MEASURE FIGURE'S TOTAL, ITS ABSENCE'S NEXT ──
+// Three bars that sum to nine sections read as three claims until the sum is
+// printed. The total sits under the bars on the divider's rule, at the same
+// register as a bar's head, so it is the figure the bars add up to rather than a
+// fourth bar.
+.record-inset__total {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-tight);
+	margin: 0;
+	padding-block-start: var(--space-tight);
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.record-inset__total-label {
+	@include mono-meta;
+	@include track(var(--track-rule));
+	color: var(--MuteForeground);
+}
+
+.record-inset__total-value {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--Foreground);
+}
+
+.record-inset__absent-next {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--MuteForeground);
+}
+
+.record-inset__absent-key {
+	color: var(--MuteForeground);
+}

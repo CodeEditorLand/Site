@@ -198,3 +198,129 @@
 .ShellRail__foot-arrow {
 	color: var(--Mark);
 }
+
+/* ─── GROUPS: A RAIL OF SECTIONS ─────────────────────────────────────────── */
+// A group is a sub-register: its own label and its own count, at the register
+// line's step but one rank quieter than the rail's own head, because the head
+// names the whole rail and a group names a part of it. The rows under it keep
+// their reserved mark column, so a grouped rail's labels still line up across
+// every group - which is the only reason to group a register instead of
+// stacking two rails.
+.ShellRail__group-head {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	display: flex;
+	align-items: baseline;
+	gap: 0.35em;
+	margin: 0;
+	padding-block: var(--space-tight) calc(var(--space-tight) / 2);
+	padding-inline: var(--space-tight);
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+.ShellRail--grouped .ShellRail__group-head:not(:first-of-type) {
+	margin-block-start: var(--space-tight);
+	@include hairline(top);
+}
+
+.ShellRail__group-mark {
+	color: var(--Mark);
+}
+
+.ShellRail__group-label {
+	color: var(--Foreground);
+}
+
+.ShellRail__group-sep {
+	color: var(--MuteForeground);
+}
+
+.ShellRail__group-count {
+	color: var(--Foreground);
+}
+
+/* ─── THE RAIL'S ADVERSE ARMS ────────────────────────────────────────────── */
+// A rail whose destinations have not been read prints the same three things
+// every other block in the family prints: the word, the reason and the shape of
+// what is coming. The bars are static and `aria-hidden`; the STATUS row is the
+// announcement.
+.ShellRail__absent {
+	display: grid;
+	gap: var(--space-tight);
+	padding: var(--space-tight);
+	@include hairline(bottom);
+}
+
+.ShellRail__status {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	display: flex;
+	align-items: baseline;
+	gap: 0.45em;
+	margin: 0;
+	color: var(--Foreground);
+}
+
+.ShellRail__status--quiet {
+	color: var(--MuteForeground);
+}
+
+.ShellRail__status-key {
+	color: var(--MuteForeground);
+}
+
+.ShellRail__sentence {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.ShellRail__skeleton {
+	display: grid;
+	gap: 0;
+}
+
+.ShellRail__skeleton-row {
+	display: grid;
+	grid-template-columns: 5.5rem minmax(0, 1fr);
+	gap: var(--space-tight);
+	align-items: center;
+	margin: 0;
+	padding-block: 0.35rem;
+}
+
+.ShellRail__skeleton-key {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--MuteForeground);
+}
+
+.ShellRail__bar {
+	display: block;
+	inline-size: var(--bar, 50%);
+	block-size: 0.5rem;
+	background: var(--Mute);
+	border: 1px solid var(--Border);
+}
+
+/* ─── DENSE: THE RAIL INSIDE A CARD, A PANE OR A DRAWER ──────────────────── */
+// The same rows at the tight step. The mark column, the notes and the meta all
+// stay: a dense rail is a rail in less air, never a rail with less in it.
+.ShellRail--dense .ShellRail__head {
+	padding-block: calc(var(--space-tight) / 2);
+}
+
+.ShellRail--dense .ShellRail__row {
+	padding-block: 0.3rem;
+}
+
+.ShellRail--dense .ShellRail__foot {
+	padding-block: calc(var(--space-tight) / 2);
+}

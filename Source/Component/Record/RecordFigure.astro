@@ -67,6 +67,8 @@
 import { FieldRecordEvidence } from "../Brand/FieldRecordEvidence";
 import { Tone } from "../Surface/State.js";
 
+import Mark from "../Mark/Mark.astro";
+
 import type { Figure } from "./Type.js";
 
 /** The image arm: `src` and `alt` are one indivisible pair. */
@@ -103,6 +105,9 @@ const {
 	position,
 	captionPlacement = "below",
 	state,
+	folio,
+	open = false,
+	next,
 	class: Class,
 } = Astro.props;
 
@@ -140,6 +145,7 @@ const Absent = state !== undefined;
 		"record-figure",
 		Channel && "record-figure--channel",
 		Absent && "record-figure--absent",
+		open && "record-figure--open",
 		Class,
 	]}
 >
@@ -157,6 +163,12 @@ const Absent = state !== undefined;
 				<span class="record-figure__absent-key">STATUS:</span>
 				{state.toUpperCase()}
 			</span>
+			{next ? (
+				<span class="record-figure__absent-next">
+					<span class="record-figure__absent-key">NEXT:</span>
+					{next}
+				</span>
+			) : null}
 		</div>
 	) : Image ? (
 		<div class="record-figure__media">
@@ -177,10 +189,56 @@ const Absent = state !== undefined;
 		class:list={[
 			"record-figure__caption",
 			Channel && "record-figure__caption--channel",
+			open && "record-figure__caption--open",
 		]}
 	>
-		{Channel ? (
+		{open ? (
+			<details class="record-figure__apparatus">
+				<summary class="record-figure__summary">
+					{folio ? (
+						<span class="record-figure__folio">{folio}</span>
+					) : null}
+					{Channel ? (
+						<span class="record-figure__row">
+							<span class="record-figure__key">FIGURE:</span>
+							<span class="record-figure__caption-text">
+								{caption}
+							</span>
+						</span>
+					) : (
+						<span class="record-figure__caption-text">
+							{caption}
+						</span>
+					)}
+					<Mark kind="fold" />
+				</summary>
+
+				<div class="record-figure__apparatus-body">
+					<span class="record-figure__row">
+						<span class="record-figure__key">SOURCE:</span>
+						<span class="record-figure__provenance">
+							{provenance ?? "UNAVAILABLE"}
+						</span>
+					</span>
+					{Image ? (
+						<p class="record-figure__source-link">
+							<a
+								href={Image.src}
+								target="_blank"
+								rel="noreferrer"
+							>
+								<span aria-hidden="true">→</span>
+								{"\u2001"}OPEN THE SOURCE
+							</a>
+						</p>
+					) : null}
+				</div>
+			</details>
+		) : Channel ? (
 			<>
+				{folio ? (
+					<span class="record-figure__folio">{folio}</span>
+				) : null}
 				<span class="record-figure__row">
 					<span class="record-figure__key">FIGURE:</span>
 					<span class="record-figure__caption-text">{caption}</span>
@@ -194,6 +252,9 @@ const Absent = state !== undefined;
 			</>
 		) : (
 			<>
+				{folio ? (
+					<span class="record-figure__folio">{folio}</span>
+				) : null}
 				<span class="record-figure__caption-text">{caption}</span>
 				{provenance && (
 					<span class="record-figure__provenance">{provenance}</span>

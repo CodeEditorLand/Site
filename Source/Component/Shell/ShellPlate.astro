@@ -37,6 +37,8 @@
  */
 import { Tone } from "../Surface/State.js";
 
+import Mark from "../Mark/Mark.astro";
+
 interface Props {
 	/** `# PLATE / 01` - the plate's marker, printed at the channel's head. */
 	index: string;
@@ -80,6 +82,31 @@ interface Props {
 	bleed?: "container" | "viewport";
 
 	/**
+	 * The absence arm: a plate whose evidence is not there.
+	 *
+	 * A plate with no `media`, no `trace` and no slot used to print its frame as
+	 * an empty white field - a figure that is a hole, which reads as a page that
+	 * failed rather than a plate with a fact to state. This arm prints the three
+	 * things every absence on the site prints (`Design-Brief.md` §7): what would
+	 * be here, why it is not, and the way forward. It is printed INSIDE the
+	 * plate's own frame, at the plate's own height, so the composition holds -
+	 * a plate does not become a card because its evidence is missing.
+	 */
+	absence?: {
+		/** One of §1.5's eight words; the tone is looked up, never chosen. */
+		readonly status?: string;
+		/** What the plate would show. */
+		readonly wouldBe: string;
+		/** Why it does not - the cause, not an apology. */
+		readonly whyNot: string;
+		/** The one way forward. */
+		readonly next?: {
+			readonly label: string;
+			readonly href: string;
+		};
+	};
+
+	/**
 	 * The plate's height, as a CSS length. A plate has a height of its own - a
 	 * figure that is as tall as its content is a figure that disappears when its
 	 * content is short.
@@ -98,6 +125,7 @@ const {
 	proposition,
 	media,
 	trace,
+	absence,
 	bleed = "container",
 	height,
 	class: ClassName,
@@ -105,6 +133,10 @@ const {
 
 const Resolved = state ? Tone(state) : undefined;
 const HasSlot = Astro.slots.has("default");
+
+/** The absence's word and tone, from the one vocabulary. */
+const AbsenceWord = absence?.status ?? "UNAVAILABLE";
+const AbsenceTone = Tone(AbsenceWord) ?? "ink";
 ---
 
 <figure
@@ -137,6 +169,41 @@ const HasSlot = Astro.slots.has("default");
 				/>
 			) : HasSlot ? (
 				<slot />
+			) : absence ? (
+				<div class="ShellPlate__absence" data-state={AbsenceWord}>
+					<p
+						class:list={[
+							"ShellPlate__absence-status",
+							`ShellPlate__absence-status--${AbsenceTone}`,
+						]}
+					>
+						<Mark kind="square" tone={AbsenceTone} />
+						<span class="ShellPlate__absence-key">STATUS:</span>
+						{AbsenceWord}
+					</p>
+
+					<dl class="ShellPlate__absence-rows">
+						<div class="ShellPlate__absence-row">
+							<dt class="ShellPlate__absence-row-key">WOULD BE HERE:</dt>
+							<dd class="ShellPlate__absence-row-value">{absence.wouldBe}</dd>
+						</div>
+						<div class="ShellPlate__absence-row">
+							<dt class="ShellPlate__absence-row-key">WHY NOT:</dt>
+							<dd class="ShellPlate__absence-row-value">{absence.whyNot}</dd>
+						</div>
+						{absence.next ? (
+							<div class="ShellPlate__absence-row">
+								<dt class="ShellPlate__absence-row-key">NEXT:</dt>
+								<dd class="ShellPlate__absence-row-value">
+									<a class="ShellPlate__absence-action" href={absence.next.href}>
+										{absence.next.label}
+										<Mark kind="arrow" />
+									</a>
+								</dd>
+							</div>
+						) : null}
+					</dl>
+				</div>
 			) : null}
 		</div>
 

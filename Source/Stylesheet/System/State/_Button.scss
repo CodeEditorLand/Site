@@ -1,0 +1,229 @@
+@use "../Mixin" as *;
+
+// ─── THE JELLY HOST ─────────────────────────────────────────────────────────
+//
+// `jelly-button` and `jelly-icon-button` are custom elements with a shadow root:
+// a `<canvas>` at `z-index: 0` paints the body and the slotted label sits above
+// it at `z-index: 1` (`Vendor/JellyUI/src/styles/base.css`). The host itself
+// carries no fill, which makes it the one box a document stylesheet can paint
+// UNDER the jelly without reaching into the vendored shadow tree.
+//
+// ─── THE FIELD BELONGED TO THE WRAPPER, AND ONLY BY ACCIDENT ───────────────
+//
+// The site had this state. It did not have it on the button.
+//
+// `State/_Row.scss`, `State/_Card.scss` and `State/_Link.scss` each enrol a list
+// of class names, and `.home-platform__anchor` is on all three. A pointer over
+// one of those anchors paints `--state-field` behind whatever is inside it, so
+// the platform download action - an ink capsule in an enrolled anchor - showed a
+// creme plate with the jelly on top, and the owner read that plate as the Jelly
+// button's own state.
+//
+// It was the anchor's. The hero action sits in `<a class="inline-block">` - a
+// Tailwind utility, in no registry - so the same control, with the same inline
+// `--jelly-color-background-accent: var(--Foreground)` /
+// `--jelly-color-foreground-on-accent: var(--Background)` pair and the same
+// radius and height, on the same white surface, showed nothing at all. Two
+// identical buttons, two different states, and the difference was a class name
+// a page author happened to reach for. `inline-block`, `block` and `flex` are
+// exactly the wrappers people reach for, so the accidental case was the common
+// one - and the header's action, the release card's action and the auth shell's
+// sign-in were all on the wrong side of it.
+//
+// The correction is to enrol the CONTROL. A Jelly host paints its own field on
+// hover and its own press on press. It cannot depend on a wrapper's class,
+// because it does not consult one.
+//
+// ─── WHY THE HOST'S OWN BACKGROUND, AND NOT A PSEUDO-ELEMENT ───────────────
+//
+// The canvas is at `z-index: 0` inside the shadow root and the label at
+// `z-index: 1`; the host's own background is painted below both. So a
+// `background-color` on the host is a field the jelly paints OVER - which is
+// the effect the owner named ("a slight background displayed on it, and the
+// jelly flows on top"). An `::after` overlay would sit above the canvas and
+// cover the jelly it is supposed to sit under; a `::before` would need a
+// negative `z-index` and a stacking context of its own to stay beneath it. The
+// background is the one layer that is already in the right order, so it is the
+// one used.
+//
+// The vendor makes the same assumption in the other direction: its
+// `data-jelly-flat` fast path (`base.css`) paints the surface fill on
+// `:host { background: ... }` and hides the canvas, because the host's
+// background is the layer beneath the body. This file uses that layer for the
+// state instead of for the fill.
+//
+// The geometry is the vendor's, and it is why a field reads at all: the painted
+// body is inset from the host box (`shape()` in each component - 4px for
+// `jelly-button`'s capsule, 3px for `jelly-icon-button`'s square), so the host's
+// field is visible as a plate marginally larger than the jelly on every side. A
+// control with a TRANSPARENT fill (`--jelly-fill: transparent`, the locale
+// trigger) shows the whole field, because there is no body to cover it.
+//
+// ─── THE TWO STEPS, AND THE TOKENS THEY ARE ────────────────────────────────
+//
+//   hover     `--state-field`        the attention wash - the ladder's hover
+//   pressed   `--state-field-press`  one step deeper, and the 1px travel
+//
+// `State/_Token.scss` names the hover field `--state-field`. There is no
+// `--state-field-hover` in the ladder and this file does not add one: a second
+// name for one value is how a vocabulary grows a synonym and then a drift, and
+// the token file's own argument ("a fifth field would be a fifth meaning") is
+// the argument against the alias too.
+//
+// ─── THE FIELD IS A BACKGROUND, NEVER AN INK ───────────────────────────────
+//
+// Nothing here writes `color`, `--jelly-label` or `--jelly-fill`. A control on
+// an ink fill keeps `--jelly-color-foreground-on-accent` (the creme label); a
+// control on a transparent one keeps `--CardForeground`. A hover that lightened
+// the label so the field would read would trade the label's legibility for the
+// state's, and the label is the action's name.
+//
+// ─── IMMEDIATE, BECAUSE IT IS CSS ──────────────────────────────────────────
+//
+// The field lands on `:hover`, which the engine resolves on `pointerenter`,
+// before it paints the frame. It does not wait for the element's physics loop,
+// for a wake out of the parked state, or for a `requestAnimationFrame`: a
+// control that is still parked - a Jelly host that was hidden when it was built,
+// the copy affordance's `display: none` cycle - shows its field the instant the
+// pointer arrives, whether or not its membrane has woken. That is the half of
+// this state the canvas cannot give, and it is why the field is not painted by
+// the vendor's hover loop.
+//
+// There is no transition on it, for the same reason. A field that fades in is a
+// field that is late, and `State/_Index.scss` puts motion under `_Motion.scss`'s
+// budget rather than the state layer's.
+
+// ─── THE ONE OWNER ─────────────────────────────────────────────────────────
+//
+// `State/_Row.scss`, `State/_Card.scss` and `State/_Link.scss` paint a field on
+// an enrolled anchor. Where that anchor's body IS a Jelly control the host now
+// paints the same pixels, so two declarations would own one box. Today both
+// fields are opaque and the same value, which hides the fault; the first field
+// that gains an alpha, or moves to a different step, turns the wrapper into a
+// darker rectangle than the control it wraps. The press stacks worse than the
+// hover: the wrapper travels 1px AND the host travels 1px, so the control would
+// drop 2px under the pointer.
+//
+// So the field has exactly one owner, and it is the host. The registry rules
+// read this predicate and stand down on a wrapper whose body is a Jelly
+// control. The wrapper keeps everything else it states - the cursor, the focus
+// ring, the block link's destination treatment - because those are the
+// wrapper's own and the control does not draw them.
+//
+// REMOVAL, NOT A `transparent` OVERRIDE. An override is a second declaration
+// fighting the first one at a higher specificity; that is two owners again, and
+// the next card to change the field has to find both. The predicate goes into
+// the rules that paint, so there is nothing to override.
+//
+// The predicate reads "a direct child is a Jelly control". Every wrapper on the
+// site that holds one holds exactly one (`.home-platform__anchor`,
+// `.home-release__anchor`, `.FieldRecordActionButton`, the auth shell's
+// `inline-block` anchors, the hero's `inline-block`), and a wrapper that also
+// held a label would be a row with a control inside it - a case the registry
+// should answer for itself rather than this file guess at.
+//
+// The two `:not(:has())` arms rather than one `:has()` with a list, so the
+// selector stays inside the subset every engine (and the lightningcss pass in
+// the build) has supported longest.
+
+$NotJellyBody: ":not(:has(> jelly-button)):not(:has(> jelly-icon-button))";
+
+// ─── HOVER: THE FIELD, ON THE HOST ─────────────────────────────────────────
+//
+// `:defined` is not decoration. Before the custom element upgrades, `_Base.scss`
+// paints the un-upgraded host as an ink rectangle (`background: var(--Foreground)`)
+// so a slow script never flashes a naked label. Without `:defined` this rule
+// outranks that fallback and a hovered pre-hydration button would turn creme
+// under the pointer - a control that changes colour before it exists. The field
+// is a state of the upgraded control, so it says so.
+//
+// `:not([disabled])` / `:not([aria-disabled="true"])` are the same guard
+// `State/_Control.scss` puts on every other control: a control whose authority
+// has been withdrawn does not answer the pointer. A `[disabled]` host is already
+// `pointer-events: none`, but the guard is stated rather than relied on, because
+// the cursor is not the contract.
+
+jelly-button:defined:not([disabled]):not([aria-disabled="true"]):hover,
+jelly-icon-button:defined:not([disabled]):not([aria-disabled="true"]):hover {
+	background-color: var(--state-field);
+}
+
+// ─── PRESSED: THE FIELD ONE STEP DEEPER, AND 1PX ───────────────────────────
+//
+// The same press `State/_Control.scss` states for every other control: the box
+// travels `--state-press-travel` and the field deepens one step. It is restated
+// here rather than inherited because the hero's, the platform's and the release
+// card's Jelly buttons carry no `data-slot="button"` (they are the raw element,
+// not the kit adapter), so `$Control` never reached them - and the 1px they did
+// get came from `.home-platform__anchor`'s card press, which this card takes
+// away. Without this rule the platform action would lose its travel and the hero
+// action would never have had one.
+//
+// A kit Jelly button carries `data-slot="button"` and `State/_Control.scss`
+// states the same travel at a higher specificity; the two declarations agree, so
+// the duplicate is inert. The travel is the one geometry a state may move, and it
+// is the half of the press that survives greyscale.
+//
+// `:not([aria-busy="true"])` is `_Control.scss`'s law restated at the host: a busy
+// control keeps its fill and loses its press, because a control that still
+// answers the pointer is a control that lies about having heard the first one.
+
+jelly-button:defined:not([disabled]):not([aria-disabled="true"]):not(
+		[aria-busy="true"]
+	):active,
+jelly-icon-button:defined:not([disabled]):not([aria-disabled="true"]):not(
+		[aria-busy="true"]
+	):active {
+	transform: translateY(var(--state-press-travel));
+
+	background-color: var(--state-field-press);
+}
+
+// ─── A WRAPPER THAT ONLY CARRIES A CONTROL PAINTS NO LINE ──────────────────
+//
+// The sitewide prose underline in `_Global.scss` reaches every anchor whose class
+// does not opt out, and `inline-block` is not an opt-out. So the hero's action
+// anchor and the auth shell's carry the prose `text-decoration` declaration and
+// the platform action's anchor does not (it sets `text-decoration: none` in
+// `Home/_Platform.scss`) - the same wrapper-class lottery, one material over. An
+// anchor whose body is a control is the control's wrapper, not a prose link, so
+// it paints no line.
+//
+// The declaration is what this removes; whether a browser draws a pixel under an
+// atomic inline child is not something this card measured (it ran no browser),
+// and it does not need to: two anchors that hold the same control must not state
+// two different things about being a link.
+//
+// `:where()` keeps this at zero specificity: a component that states its own
+// decoration still wins, which is the law `_Global.scss` states for the whole
+// underline.
+
+:where(a:has(> jelly-button)),
+:where(a:has(> jelly-icon-button)) {
+	text-decoration: none;
+}
+
+// ─── WHAT IS DELIBERATELY ABSENT: `jelly-badge` ────────────────────────────
+//
+// The card that built this file named `jelly-badge` beside the two controls. It
+// does not get a state, and the reason is that a badge is not a control.
+//
+// `State/_Index.scss` names four materials a state may change - INK, RULE,
+// FIELD, MARK - and a badge IS the mark material, not a target that wears one:
+// it is the `✓`/`◎`/`#` half of the vocabulary, a glyph in a reserved column,
+// and a glyph has no press to give and no pointer to answer. `:active` cannot
+// match it either: `:active` reaches the element being activated and its
+// ANCESTORS, never a descendant, so `jelly-badge:active` is a rule that can
+// never fire.
+//
+// A hover field on one would not be inert, it would be wrong. Hovering a badge
+// inside a card means the pointer is over the badge, and the badge would paint
+// its own `--Mute` rectangle inside the card's own field - invisible when the two
+// values agree and a stray rectangle around a chip when they do not (the
+// protocol badges carry `--OSMacOSMute`, `--SpineIPCMute`, the rose and graphite
+// pairs). A state that draws a box around a word because the pointer crossed it
+// is the "badge with no fact behind it" that `DESIGN-COMPLETE.md` §0.3 asks a
+// card to name and remove.
+//
+// So: `jelly-button` and `jelly-icon-button` are controls and take the field.
+// `jelly-badge` is a mark and takes none.

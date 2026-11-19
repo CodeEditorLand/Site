@@ -34,7 +34,7 @@ import type { RegisterState } from "./Type.js";
 import {
 	RegisterCountText,
 	RegisterSeparatorText,
-	RegisterText,
+	RegisterSpokenText,
 	type Register,
 } from "./RegisterLine.js";
 
@@ -75,12 +75,17 @@ const Count = RegisterCountText(register, state);
  * prohibits naming the `paragraph` role, so the attribute was dropped by every
  * screen reader and the run-together announcement survived. The fix that works
  * is the standard one - the printed run is `aria-hidden` and a visually hidden
- * span carries the line the way `RegisterLine.ts` composes it (mark, name,
- * separator, figure, unit), so the announcement and the printed line are the
- * same statement. The hidden span is `.register-line__spoken` in
+ * span carries the line, so the announcement and the printed line are the same
+ * statement. The hidden span is `.register-line__spoken` in
  * `Type/_Register.scss`, which is where the line's other five parts are set.
+ *
+ * The hidden span carries `RegisterSpokenText`, not `RegisterText`: the printed
+ * line's `#` and `/` are punctuation, and a screen reader reads them as the
+ * characters ("number sign", "slash") rather than as structure. The spoken form
+ * is the same two facts in the order a person would say them - the name, then
+ * the figure - with a comma where the eye gets a mark and a slash.
  */
-const Spoken = RegisterText(register, state);
+const Spoken = RegisterSpokenText(register, state);
 ---
 
 <p class:list={[Class]} data-state={state}>

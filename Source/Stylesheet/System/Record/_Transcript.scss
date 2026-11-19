@@ -291,3 +291,49 @@ html[data-clipboard="ready"] .record-transcript__copy {
 	line-height: 1;
 	color: var(--MuteForeground);
 }
+
+// ─── THE NARRATIVE FAMILY: A FAILED TURN'S CAUSE AND NEXT STEP ─────────────
+// A turn that failed prints its state word in the stamp column and its cause and
+// next step in a row of their own under the line, spanning the grid: a failure
+// that only said `INTERRUPTED` would be a red word where an explanation belongs.
+// The session's recovery is one destination, so it prints once on the foot.
+//
+// The row is AUTO-PLACED rather than named: the turn's grid template has two
+// named rows and an item with `grid-column: 1 / -1` lands in the next implicit
+// one. Naming a third area instead would add an empty track - and its row gap -
+// to every turn that did not fail, which is most of them.
+.record-transcript__turn-fail {
+	grid-column: 1 / -1;
+	display: flex;
+	flex-direction: column;
+	gap: 0.15rem;
+	margin: var(--space-tight) 0 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--Foreground);
+}
+
+.record-transcript__turn-fail-row {
+	display: block;
+}
+
+.record-transcript__turn-fail-key {
+	@include mono-meta;
+	@include track(var(--track-rule));
+	margin-inline-end: var(--space-tight);
+	color: var(--MuteForeground);
+}
+
+.record-transcript__retry {
+	font-size: var(--type-caption);
+}
+
+.record-transcript__retry a {
+	color: var(--Accent);
+	text-decoration: none;
+}
+
+.record-transcript__retry a:hover,
+.record-transcript__retry a:focus-visible {
+	text-decoration: underline;
+}

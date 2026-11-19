@@ -43,14 +43,38 @@ interface Props {
 	/** The states, in the order the page states them. */
 	states: readonly State[];
 
+	/**
+	 * How many columns the register prints at a wide container. `1` (the
+	 * default) is the ledger's own column - key left, word right, one row each.
+	 * `2` reads a set of eight words as a set, which is what a legend needs and
+	 * what a head's two states never do. The rows keep their order: the columns
+	 * fill left to right, so the reading order is the array's.
+	 */
+	columns?: 1 | 2;
+
+	/** Print the rows at the tight step, for a register inside a card. */
+	dense?: boolean;
+
 	/** Extra classes from the page. */
 	class?: string;
 }
 
-const { states, class: ClassName } = Astro.props;
+const {
+	states,
+	columns = 1,
+	dense = false,
+	class: ClassName,
+} = Astro.props;
 ---
 
-<ul class:list={["surface__states", ClassName]}>
+<ul
+	class:list={[
+		"surface__states",
+		columns === 2 && "surface__states--two",
+		dense && "surface__states--dense",
+		ClassName,
+	]}
+>
 	{states.map((Row) => (
 		<li class="surface__state-row">
 			<span class="surface__state-key">{Row.key}:</span>

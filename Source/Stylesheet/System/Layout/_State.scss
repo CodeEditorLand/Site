@@ -297,3 +297,29 @@
 		gap: 0.15rem;
 	}
 }
+
+/* ─── THE DENSE STEP ─────────────────────────────────────────────────────── */
+// A state inside a card or a pane: the same rows, the same key column at a
+// narrower measure, and one step less air. Nothing is dropped - the note, the
+// facts and the action all stay - because an adverse state is the one place a
+// reader needs every field it prints.
+.ShellState--dense {
+	gap: var(--space-tight);
+	padding: var(--space-reading);
+}
+
+.ShellState--dense .ShellState__row,
+.ShellState--dense .ShellState__skeleton-row,
+.ShellState--dense .ShellState__fact {
+	grid-template-columns: 7.5rem minmax(0, 1fr);
+	padding-block: 0.3rem;
+}
+
+@container state (max-width: 24rem) {
+	.ShellState--dense .ShellState__row,
+	.ShellState--dense .ShellState__skeleton-row,
+	.ShellState--dense .ShellState__fact {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0.15rem;
+	}
+}

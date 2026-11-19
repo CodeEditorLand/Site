@@ -937,7 +937,7 @@ export const Rows: readonly Row[] = [
 			),
 
 			print: Built(
-				"`RegisterText` composes the whole line as one string - for a document title, an `aria-label` or a generated page - which is exactly what a printed register needs.",
+				"`RegisterText` composes the whole line as one string and `RegisterSpokenText` composes the same statement for the ear - for a document title, an `aria-label` or a generated page - which is exactly what a printed register needs.",
 			),
 
 			reducedmotion: NotApplicable(
@@ -1057,7 +1057,7 @@ export const Improvements: readonly Improvement[] = [
 
 		found: "A build's three flags were three rows of the same rank as its target and its licence, so a ledger of six facts read as a ledger of nine. The detail existed; it had no rank.",
 
-		built: "`LedgerRow.open` prints the row as a `<details>` whose summary is the value, with the disclosed facts as the same row grammar one level in - and through `RecordLedgerValue`, the renderer the row's own value uses, so a link, a literal or a state word cannot print two ways on either level. No script: the browser's disclosure is the behaviour and the mark layer's fold is its sign.",
+		built: "`LedgerRow.open` prints the row as a `<details>` whose summary is the value, with the disclosed facts as the same row grammar one level in - and through `LedgerValue`, the renderer the row's own value uses, so a link, a literal or a state word cannot print two ways on either level. No script: the browser's disclosure is the behaviour and the mark layer's fold is its sign.",
 	},
 
 	{
@@ -1167,7 +1167,7 @@ export const Improvements: readonly Improvement[] = [
 
 		found: "The line's five parts were printed but never announced: the mark and the separator are `aria-hidden`, so a screen reader ran the label into the figure and read `WHAT CHANGES08`. And the too-much state - a set longer than the page - had no register at all: `RecordPlateSet` printed `SHOWING: 12 OF 240` in its own foot, outside the shape.",
 
-		built: "`Register.astro` prints two runs: the five parts, and a visually hidden line carrying `RegisterText(...)` so the announcement and the printed line are the same statement - the earlier `aria-label` on the `<p>` was dropped by every screen reader, because ARIA prohibits naming the `paragraph` role; and `RegisterWindow(label, showing, total)` is the too-much state as a register, in the grammar every other count uses.",
+		built: "`Register.astro` prints two runs: the five parts, and a visually hidden line carrying `RegisterSpokenText(...)` - the name, then the figure, with a comma where the eye gets a mark and a slash, because a screen reader says punctuation as characters. The earlier `aria-label` on the `<p>` was dropped by every screen reader, since ARIA prohibits naming the `paragraph` role; and `RegisterWindow(label, showing, total)` is the too-much state as a register, in the grammar every other count uses.",
 	},
 ];
 
@@ -1207,7 +1207,7 @@ export const Observations: readonly Observation[] = [
 
 		found: "Every block in this family can say where its content came from except the one that prints facts. `RecordInstrument` requires a `provenance` on every measure, `RecordTrace` requires `source`, `RecordMatrix` takes a `caption` and `RecordPlateSet` takes a `source`; `RecordLedger` offers `note` (a qualifier about the value) and `asOf` (the value's age) and nothing for a source. The pressure is visible where the block is used: `/STATUS` carries its scope ledger's provenance in the band caption - \"Every row was read from the module named in its band's footnote\" - because there is nowhere inside the block to put it.",
 
-		owner: "A `LedgerRow.source` field, not a block-level `source` prop: a ledger assembled from three modules has three sources, and one line under the block would attribute all of them to one. That is a change to the row's contract, and it would print under every fact in the forty-nine ledgers this tree mounts - a decision for the card that owns the tree's facts, not for the one that built the row's states.",
+		owner: "A `LedgerRow.source` field, not a block-level `source` prop: a ledger assembled from three modules has three sources, and one line under the block would attribute all of them to one. That is a change to the row's contract, and it would print under every fact in the twenty-six files that mount a ledger - a decision for the card that owns the tree's facts, not for the one that built the row's states.",
 	},
 ];
 

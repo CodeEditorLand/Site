@@ -14,8 +14,26 @@
  * heading a region emits, and it is deliberately S with tracking rather than a
  * fourth size: a region label on an instrument, not a chapter of a document.
  *
+ * ─── THE ADVERSE ARMS (added by the frame card) ───────────────────────────
+ * A region whose record has not arrived used to render its head and then
+ * nothing - a heading with a hole under it, which reads as a page that failed to
+ * load rather than a region with a fact to state. `state` gives the region the
+ * two arms it was missing, in the record grammar and without a second block:
+ *
+ *   state="empty"    `◎ UNAVAILABLE` + the caller's sentence (`empty`)
+ *   state="loading"  the keys the region will print, their values barred
+ *
+ * Both keep the index, the `h2` and the standfirst, because the head is what
+ * names the thing that is not there. `dense` is the register reading of a
+ * region inside a card or a pane, where the chapter interval would be a page
+ * movement inside an artifact.
+ *
  * No script and no hydration: a region is static.
  */
+import { Tone } from "./State.js";
+
+import Mark from "../Mark/Mark.astro";
+
 interface Props {
 	/** `# 04` - the region's marker, printed verbatim. */
 	index: string;
@@ -29,17 +47,59 @@ interface Props {
 	/** One sentence under the heading, when the region needs context. */
 	standfirst?: string;
 
+	/**
+	 * The region's state. `rest` prints the slot; `empty` and `loading` print
+	 * the composed absence instead, under the same head.
+	 */
+	state?: "rest" | "empty" | "loading";
+
+	/**
+	 * What the region would hold when it has a record - the `empty` arm's one
+	 * sentence, and the `loading` arm's `READING:` line.
+	 */
+	empty?: string;
+
+	/**
+	 * The keys the region will print, for the `loading` arm. The values are
+	 * unknown; the schema is not, which is the whole point of a skeleton drawn
+	 * in the record grammar rather than a spinner.
+	 */
+	keys?: readonly string[];
+
+	/** Print the region at the tight step, for a region inside a card or a pane. */
+	dense?: boolean;
+
 	/** Extra classes from the page. */
 	class?: string;
 }
 
-const { index, id, title, standfirst, class: ClassName } = Astro.props;
+const {
+	index,
+	id,
+	title,
+	standfirst,
+	state = "rest",
+	empty,
+	keys = [],
+	dense = false,
+	class: ClassName,
+} = Astro.props;
+
+const Absent = state !== "rest";
+const Resolved = Tone(state === "loading" ? "LOADING" : "UNAVAILABLE") ?? "ink";
+const Statement = empty ?? "UNAVAILABLE";
 ---
 
 <section
-	class:list={["surface-region", ClassName]}
+	class:list={[
+		"surface-region",
+		dense && "surface-region--dense",
+		Absent && `surface-region--${state}`,
+		ClassName,
+	]}
 	id={id}
 	data-region
+	data-state={state}
 	aria-labelledby={`${id}-title`}
 >
 	<div class="surface-region__head">
@@ -49,5 +109,34 @@ const { index, id, title, standfirst, class: ClassName } = Astro.props;
 		</h2>
 	</div>
 	{standfirst ? <p class="surface-region__standfirst">{standfirst}</p> : null}
-	<slot />
+
+	{Absent ? (
+		<div class="surface-region__absent" data-state={state}>
+			<p class:list={["surface-region__status", `surface-region__status--${Resolved}`]}>
+				<Mark kind="square" tone={Resolved} />
+				<span class="surface-region__status-key">STATUS:</span>
+				{state === "loading" ? "LOADING" : "UNAVAILABLE"}
+			</p>
+
+			{state === "loading" ? (
+				<div class="surface-region__skeleton" aria-hidden="true">
+					{(keys.length > 0 ? keys : ["RECORD", "ROUTE", "STATE"]).map(
+						(Key, Index) => (
+							<p class="surface-region__skeleton-row">
+								<span class="surface-region__skeleton-key">{Key}:</span>
+								<span
+									class="surface-region__bar"
+									style={`--bar:${[64, 42, 78, 55, 36, 70][Index % 6]}%`}
+								/>
+							</p>
+						),
+					)}
+				</div>
+			) : (
+				<p class="surface-region__sentence">{Statement}</p>
+			)}
+		</div>
+	) : (
+		<slot />
+	)}
 </section>

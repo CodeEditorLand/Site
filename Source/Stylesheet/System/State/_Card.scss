@@ -1,4 +1,5 @@
 @use "../Mixin" as *;
+@use "Button" as *;
 
 // ─── THE CARD ───────────────────────────────────────────────────────────────
 //
@@ -126,8 +127,18 @@ $Card: "a:is(.doc-card__link, .doc-tile, .blog-index__link, .contact-hub__card, 
 }
 
 // ─── PRESSED ────────────────────────────────────────────────────────────────
+//
+// The travel is on the link, not on the card's frame, so the card's own box is
+// never moved - and the field is the press step.
+//
+// `#{$NotJellyBody}` (`State/_Button.scss`) removes both from a card whose body
+// is a Jelly control. `.home-platform__anchor` is in this registry, and before
+// the host had a press of its own that anchor was the only thing giving the
+// platform download button a 1px drop and a press field. Now the control gives
+// them to itself, and a card that kept them would travel twice (2px) and stack
+// two fields on one box.
 
-#{$Card}:active {
+#{$Card}#{$NotJellyBody}:active {
 	transform: translateY(var(--state-press-travel));
 
 	background-color: var(--state-field-press);

@@ -1,4 +1,5 @@
 @use "../Mixin" as *;
+@use "Button" as *;
 
 // ─── THE ROW ────────────────────────────────────────────────────────────────
 //
@@ -84,8 +85,13 @@ $Row: ':is(.record-archive__link, .record-entry__link, .record-band__index-item,
 // the ones this rule is for. `:where()` keeps it at zero specificity, so a row
 // that has its own hover - the archive's sliding title, the ledger's travelling
 // value, the item grammar's wash - keeps it and this rule never fires there.
+//
+// `#{$NotJellyBody}` (`State/_Button.scss`) stands this rule down on a row whose
+// body is a Jelly control: `.home-platform__anchor` is a row AND an anchor a page
+// author wrapped a button in, and the host paints that field itself now. One
+// owner, and it is the control.
 
-:where(#{$Row}):hover {
+:where(#{$Row}#{$NotJellyBody}):hover {
 	background-color: var(--state-field);
 }
 
@@ -100,8 +106,12 @@ $Row: ':is(.record-archive__link, .record-entry__link, .record-band__index-item,
 // No travel. A control travels because a control is an object the reader presses;
 // a row is a line in a list, and a list whose lines jump 1px under the pointer is
 // a list that flickers. The press is the field, and the field is enough.
+//
+// A row whose body is a Jelly control is the exception to the first sentence and
+// the reason is in `State/_Button.scss`: there the CONTROL is the object, it
+// travels 1px of its own, and the row must not paint a second field under it.
 
-:where(#{$Row}):active {
+:where(#{$Row}#{$NotJellyBody}):active {
 	background-color: var(--state-field-press);
 }
 

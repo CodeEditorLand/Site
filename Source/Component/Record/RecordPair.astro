@@ -55,6 +55,10 @@
  */
 import type { Pair, PairPod } from "./Type.js";
 
+import { Tone } from "../Surface/State.js";
+
+import Mark from "../Mark/Mark.astro";
+
 interface Props {
 	/** The two pods and the caption they share. */
 	pair: Pair;
@@ -115,6 +119,14 @@ const BodyOf = (Side: "left" | "right", Pod: PairPod) => {
 
 const Left = BodyOf("left", pair.left);
 const Right = BodyOf("right", pair.right);
+
+/**
+ * A pod's state word's tone, from the one table that decides tones. A pod's
+ * state is the side's own fact - one side of a comparison can be unavailable
+ * while the other is not - so it never changes the pair's frame.
+ */
+const ToneOf = (Pod: PairPod) =>
+	Pod.state ? (Tone(Pod.state.toUpperCase()) ?? "ink") : "ink";
 ---
 
 <div class:list={["record-pair", `record-pair--${surface}`, Class]}>
@@ -135,6 +147,20 @@ const Right = BodyOf("right", pair.right);
 				>
 					{pair.left.label}
 				</LabelTag>
+				{pair.left.state ? (
+					<span
+						class="record-pair__state"
+						data-tone={ToneOf(pair.left)}
+					>
+						<Mark
+							kind="square"
+							tone={ToneOf(pair.left)}
+							size="attested"
+						/>
+						<span class="record-pair__state-key">STATUS:</span>
+						{pair.left.state.toUpperCase()}
+					</span>
+				) : null}
 			</div>
 			<div class="record-pair__body">
 				{Left.HasSlot ? (
@@ -143,11 +169,40 @@ const Right = BodyOf("right", pair.right);
 					Paragraphs(pair.left.body ?? "").map((Paragraph) => (
 						<p>{Paragraph}</p>
 					))
+				) : pair.left.empty ? (
+					<p class="record-pair__empty">
+						<span class="record-pair__empty-mark" aria-hidden="true">
+							&#9678;
+						</span>
+						{pair.left.empty}
+					</p>
+				) : null}
+				{pair.left.note ? (
+					<p class="record-pair__note">
+						<span class="record-pair__note-key">SOURCE:</span>
+						{pair.left.note}
+					</p>
 				) : null}
 			</div>
 		</div>
 
-		<div class="record-pair__gutter" aria-hidden="true"></div>
+		<div
+			class:list={[
+				"record-pair__gutter",
+				pair.relation && "record-pair__gutter--relation",
+			]}
+			aria-hidden={pair.relation ? undefined : "true"}
+		>
+			{pair.relation ? (
+				<span class="record-pair__relation">
+					<span class="record-pair__relation-mark" aria-hidden="true">
+						&#8627;
+					</span>
+					{"\u2001"}
+					{pair.relation}
+				</span>
+			) : null}
+		</div>
 
 		<div
 			class:list={[
@@ -167,6 +222,20 @@ const Right = BodyOf("right", pair.right);
 				>
 					{pair.right.label}
 				</LabelTag>
+				{pair.right.state ? (
+					<span
+						class="record-pair__state"
+						data-tone={ToneOf(pair.right)}
+					>
+						<Mark
+							kind="square"
+							tone={ToneOf(pair.right)}
+							size="attested"
+						/>
+						<span class="record-pair__state-key">STATUS:</span>
+						{pair.right.state.toUpperCase()}
+					</span>
+				) : null}
 			</div>
 			<div class="record-pair__body">
 				{Right.HasSlot ? (
@@ -175,6 +244,19 @@ const Right = BodyOf("right", pair.right);
 					Paragraphs(pair.right.body ?? "").map((Paragraph) => (
 						<p>{Paragraph}</p>
 					))
+				) : pair.right.empty ? (
+					<p class="record-pair__empty">
+						<span class="record-pair__empty-mark" aria-hidden="true">
+							&#9678;
+						</span>
+						{pair.right.empty}
+					</p>
+				) : null}
+				{pair.right.note ? (
+					<p class="record-pair__note">
+						<span class="record-pair__note-key">SOURCE:</span>
+						{pair.right.note}
+					</p>
 				) : null}
 			</div>
 		</div>

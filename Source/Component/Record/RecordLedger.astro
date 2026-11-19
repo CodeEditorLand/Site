@@ -20,7 +20,7 @@
  * and each row's `note`/`lead` change only that row's own markup.
  *
  * ─── THE ROW DOES MORE THAN ONE THING NOW ─────────────────────────────────
- * The rows are printed by `RecordLedgerRow.astro`, which owns the row's grammar
+ * The rows are printed by `LedgerRow.astro`, which owns the row's grammar
  * so the row and the row-that-opens cannot print the same fact two ways. Three
  * row-level shapes were added by the record family's state matrix, and each one
  * came from a combination the site never met:
@@ -45,7 +45,7 @@
  */
 import Register from "./Register.astro";
 
-import RecordLedgerRow from "./RecordLedgerRow.astro";
+import LedgerRowView from "./LedgerRow.astro";
 
 import type { LedgerRow, LedgerDensity, RegisterState } from "./Type.js";
 
@@ -210,7 +210,7 @@ const SkeletonRows: readonly LedgerRow[] =
 							</dd>
 						</div>
 					))
-				: rows.map((Row) => <RecordLedgerRow row={Row} />)}
+				: rows.map((Row) => <LedgerRowView row={Row} />)}
 		</dl>
 	)}
 </div>

@@ -36,12 +36,41 @@ const {
 	chips,
 	body,
 	href,
+	state,
+	empty,
+	facts,
+	note,
+	dense,
 	class: ClassName,
 	surface = "card",
 } = Astro.props;
+
+/**
+ * The entry's state, and whether it replaces the body.
+ *
+ * `archived` is not an absence - a retired record still has its claim - so it
+ * prints the body and a state row above it. `empty` and `loading` are the two
+ * that have nothing to print, and both keep the index, the name and the chips:
+ * the record is still filed, and the list still knows where it sits.
+ */
+const State = state ?? "rest";
+const Absent = State === "empty" || State === "loading";
+
+/** The absence's sentence. A caller that wrote nothing gets the vocabulary's word. */
+const Absence = empty ?? "UNAVAILABLE";
 ---
 
-<article class:list={["record-entry", `record-entry--${surface}`, ClassName]}>
+<article
+	class:list={[
+		"record-entry",
+		`record-entry--${surface}`,
+		dense && "record-entry--dense",
+		Absent && "record-entry--absent",
+		State === "archived" && "record-entry--archived",
+		ClassName,
+	]}
+	data-state={State}
+>
 	<p class="record-entry__index">{index}</p>
 	{glyph ? (
 		<span class="record-entry__glyph" aria-hidden="true">
@@ -68,5 +97,41 @@ const {
 			))}
 		</ul>
 	) : null}
-	<p class="record-entry__body">{body}</p>
+	{State !== "rest" ? (
+		<p
+			class:list={[
+				"record-entry__state",
+				`record-entry__state--${Absent ? "ink" : "quiet"}`,
+			]}
+		>
+			<span class="record-entry__state-key">STATUS:</span>
+			{State.toUpperCase()}
+		</p>
+	) : null}
+	{Absent ? (
+		<p class="record-entry__absent">
+			<span class="record-entry__absent-mark" aria-hidden="true">
+				&#9678;
+			</span>
+			{Absence}
+		</p>
+	) : (
+		<p class="record-entry__body">{body}</p>
+	)}
+	{facts && facts.length > 0 ? (
+		<dl class="record-entry__facts">
+			{facts.map((Fact) => (
+				<div class="record-entry__fact">
+					<dt class="record-entry__fact-key">{Fact.key}</dt>
+					<dd class="record-entry__fact-value">{Fact.value}</dd>
+				</div>
+			))}
+		</dl>
+	) : null}
+	{note ? (
+		<p class="record-entry__note">
+			<span class="record-entry__note-key">SOURCE:</span>
+			{note}
+		</p>
+	) : null}
 </article>

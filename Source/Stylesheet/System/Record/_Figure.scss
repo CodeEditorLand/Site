@@ -188,3 +188,78 @@
 	@include track(var(--track-row));
 	margin: 0;
 }
+
+// ─── THE NARRATIVE FAMILY: THE FIGURE THAT OPENS, AND ITS FOLIO ────────────
+// `open` turns the caption into a disclosure: the summary is the caption itself,
+// so shutting it loses nothing, and the open arm prints the figure's apparatus -
+// its folio, its provenance as a labelled row, and the link that opens the
+// source at full size. The caption's measure cap is lifted while it is open,
+// which is the arm for the caption longer than the image.
+.record-figure__folio {
+	@include mono-meta;
+	@include track(var(--track-rule));
+	color: var(--MuteForeground);
+}
+
+.record-figure__apparatus {
+	min-inline-size: 0;
+}
+
+.record-figure__summary {
+	cursor: pointer;
+	list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+}
+
+.record-figure__summary::-webkit-details-marker {
+	display: none;
+}
+
+.record-figure__summary .mark {
+	flex: 0 0 auto;
+}
+
+.record-figure__apparatus[open] .record-figure__summary .mark {
+	transform: rotate(90deg);
+}
+
+.record-figure__apparatus-body {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	margin-block-start: var(--space-tight);
+	padding-block-start: var(--space-tight);
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.record-figure__source-link {
+	margin: 0;
+	font-size: var(--type-caption);
+}
+
+.record-figure__source-link a {
+	color: var(--Accent);
+	text-decoration: none;
+}
+
+.record-figure__source-link a:hover,
+.record-figure__source-link a:focus-visible {
+	text-decoration: underline;
+}
+
+.record-figure--open .record-figure__caption-text {
+	max-inline-size: 88ch;
+}
+
+.record-figure__absent-next {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--MuteForeground);
+}
+
+.record-figure__absent-key {
+	color: var(--MuteForeground);
+}

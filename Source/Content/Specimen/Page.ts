@@ -327,6 +327,51 @@ export const Bands = {
 			"Not one of these blocks ships a line of JavaScript. The ledger's disclosure is a `<details>`, the matrix is a `<table>`, the rail is an `<ol>` and the register is a `<p>` - so the band that prints every state they have costs the page nothing to mount, which is itself the claim.",
 	},
 
+	Narrative: {
+		kicker: "/THE NARRATIVE",
+
+		interval: "break",
+
+		heading: "The narrative, and the states that reveal its frame",
+
+		standfirst:
+			"Fifteen components against nineteen conditions: the matrix with a reason printed in full for every cell that cannot exist, the twenty-three behaviours the exploration produced with the cell that produced each, the four things this card found and did not fix, and then the family mounted live - a band with a head and no body, an entry with a name and no claim, a stage with one step and a stage with nine, a run that stopped at its third step, a figure with no image and a figure whose caption is longer than its image, a well whose command overflows and a well of two hundred lines, a transcript with a failed turn, a pair with one empty pod, an archive with one entry and an archive with none, and a failure with no recovery path.",
+
+		footnote:
+			"Three of the behaviours the brief named by hand are props of the block itself and not wrappers around it: `RecordStage.current` is the run's position, `RecordWell.wrap` is the declaration that a well's lines are read rather than typed, and `RecordFigure.open` is the caption's own disclosure. A behaviour in a wrapper would be a second artifact, and the containment law does not allow a leaf to hold one.",
+	},
+
+	/**
+	 * The frame family's band.
+	 *
+	 * The sixth band about a family rather than a part, and the first whose subject
+	 * is not what the document SAYS but what it sits in: the page shell, the rail,
+	 * the panes, the drawer, the plate, the edge and the vocabulary a surface
+	 * states itself in. Nothing here is content, and everything here decides whether
+	 * content can be read at all - which is why its matrix carries the compositions
+	 * the brief named by hand (no rail, two rails, a shell inside a shell, a plate
+	 * with no image, a pane pair at 640px) as COLUMNS rather than as prose.
+	 *
+	 * It follows `/THE NARRATIVE` for the reason that one follows `/THE RECORD`:
+	 * a family's states are the product. This family's states are the ones a reader
+	 * never notices when they work - the rail that stays put, the seam that
+	 * rotates, the paper that centres in what the rail leaves - and notices at once
+	 * when they do not.
+	 */
+	Frame: {
+		kicker: "/THE FRAME",
+
+		interval: "turn",
+
+		heading: "The frame, and every composition it has to survive",
+
+		standfirst:
+			"Twenty components against twenty-two conditions: the matrix with a reason printed in full for every cell that cannot exist, the eleven behaviours the exploration produced, the four things this card found and did not fix, and then the frame mounted live - a page with no rail and a page with two, a shell inside a card, a pane pair at 640px, a plate with no image, a rail of one row and a rail of twenty-six, a rail of sections, a pane whose half has not arrived, the lifecycle vocabulary at work, and a region that states what is missing instead of printing a heading over a hole.",
+
+		footnote:
+			"The frame's one law is that nothing here is a card: a shell holds tracks, a track holds bands, a band holds records, and a card is a record's surface. The composition the brief asked for by name - a card that contains a page - is the one place that law is inverted, and it is printed here as `FRAME_03`, re-composing at the card's own width because the shell is a query container and not a viewport rule.",
+	},
+
 	Material: {
 		kicker: "/THE MATERIAL",
 

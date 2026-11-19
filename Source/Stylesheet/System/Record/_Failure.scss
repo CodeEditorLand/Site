@@ -162,3 +162,72 @@
 .record-failure__source-key {
 	@include track(var(--track-row));
 }
+
+// ─── THE NARRATIVE FAMILY: THE DEAD END, THE WAY BACK, THE FOLDED DETAIL ───
+// A failure with no recovery path is a fact, not a blank: the NEXT row keeps its
+// key and prints `UNAVAILABLE` in the value's place, and the block marks itself
+// `--dead-end` so the row is visibly the absence of a next step rather than a
+// next step that was forgotten.
+//
+// `recovery` is the destination the sentence names, printed under it as the
+// block's one link. `detail` folds: the three fields stay the three fields, and
+// the log line or the reproduction lives one level in.
+.record-failure--dead-end .record-failure__field--next {
+	border-block-start-color: var(--Border);
+}
+
+.record-failure__value--absent {
+	color: var(--MuteForeground);
+}
+
+.record-failure__recovery {
+	display: block;
+	margin-block-start: var(--space-tight);
+	font-size: var(--type-caption);
+}
+
+.record-failure__recovery a {
+	color: var(--Accent);
+	text-decoration: none;
+}
+
+.record-failure__recovery a:hover,
+.record-failure__recovery a:focus-visible {
+	text-decoration: underline;
+}
+
+.record-failure__detail {
+	margin-block-start: var(--space-tight);
+}
+
+.record-failure__detail-summary {
+	@include mono-meta;
+	@include track(var(--track-rule));
+	cursor: pointer;
+	list-style: none;
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+	color: var(--MuteForeground);
+}
+
+.record-failure__detail-summary::-webkit-details-marker {
+	display: none;
+}
+
+.record-failure__detail[open] .record-failure__detail-summary .mark {
+	transform: rotate(90deg);
+}
+
+.record-failure__detail-key {
+	color: var(--MuteForeground);
+}
+
+.record-failure__detail-body {
+	max-inline-size: 62ch;
+	margin: var(--space-tight) 0 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+	overflow-wrap: anywhere;
+}

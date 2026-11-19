@@ -148,6 +148,26 @@ const HasFoot = Astro.slots.has("foot");
  */
 const GivesKey = Spec.key === "record" ? "DECLARES:" : "GIVES:";
 const GivesValue = Spec.key === "record" ? "NOTHING" : Spec.gives;
+
+/**
+ * The tracks this shell actually gave, as one register value.
+ *
+ * The declaration's `GIVES:` prints what the LANGUAGE offers; this prints what
+ * the page took, counted from the slots that are present - `RAIL␁PAPER␁MARGIN`,
+ * `PAPER␁MARGIN`, `RAIL␁PAPER`. The two are not the same fact: a reading page
+ * with no rail is still a reading page, and the strip said `GIVES: RAIL MEASURE
+ * MARGIN` over a page that had one of the three. Printed only when a side track
+ * is present, because `PAPER` alone is not news.
+ */
+const Tracks = [
+	HasRail ? "RAIL" : null,
+	"PAPER",
+	HasMargin ? "MARGIN" : null,
+]
+	.filter((Track): Track is string => Track !== null)
+	.join("\u2001");
+
+const HasSideTracks = HasRail || HasMargin;
 ---
 
 <div
@@ -177,6 +197,13 @@ const GivesValue = Spec.key === "record" ? "NOTHING" : Spec.gives;
 				<div class="PageShell__fact">
 					<dt class="PageShell__key">FOR:</dt>
 					<dd class="PageShell__label">{label}</dd>
+				</div>
+			) : null}
+
+			{HasSideTracks ? (
+				<div class="PageShell__fact PageShell__fact--tracks">
+					<dt class="PageShell__key">TRACKS:</dt>
+					<dd class="PageShell__tracks PageShell__tracks--given">{Tracks}</dd>
 				</div>
 			) : null}
 		</dl>

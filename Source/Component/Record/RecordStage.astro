@@ -35,9 +35,31 @@
 // because the caller's numbering is itself a fact (a `01`-prefixed rail and an
 // `A`-prefixed one are two different processes).
 //
-// No script and no client directive: the stage is a list, not a stepper. There
-// is nothing to click through, so there is nothing to hydrate.
+// ─── THE STAGE CAN ADVANCE ────────────────────────────────────────────────
+// A rail of steps that says nothing about where the run is today is a diagram of
+// a process, not a record of one. Two additions make it a record without turning
+// the block into a stepper (there is still nothing to click):
+//
+// - `current` names the step the run is at, by its INDEX as the caller wrote it.
+//   That step prints `aria-current="step"`, takes the attested square and the
+//   heavier rule; the steps before it are done and the ones after are pending,
+//   and a reader sees the run's position in one glance.
+// - a step's own `state` prints the vocabulary's word in the step's register,
+//   for the run that stopped (`INTERRUPTED`) or the step that is being prepared
+//   (`PREPARING`). It is the same eight words as everywhere else.
+//
+// A step's `detail` is disclosed, not printed: the line becomes a `<details>`
+// summary and the paragraph lives one level in. A stage that needs a paragraph
+// per step is not a stage - but a stage whose steps each have one deserves to
+// keep them, closed, findable, and out of the rail's reading rhythm.
+//
+// No script and no client directive: the stage is a list, and the browser owns
+// the one disclosure it prints.
 import type { Stage } from "./Type.js";
+
+import { Tone } from "../Surface/State.js";
+
+import Mark from "../Mark/Mark.astro";
 
 interface Props {
 	/** The steps, in order. Order is the content: nothing here sorts. */
@@ -55,16 +77,88 @@ interface Props {
 	 * of numbered instruments, two across on wide screens.
 	 */
 	variant?: "rail" | "plates";
+
+	/**
+	 * The step the run is at, named by its own index (`"03"`). That step prints
+	 * `aria-current="step"` and the attested mark, and the rail reads as a
+	 * position rather than as a diagram. Absent, no step is current - a stage
+	 * that is not a run is a process, and a process has no position.
+	 */
+	current?: string;
+
+	/**
+	 * The stage's own state, when there are no steps to print: `empty` (the
+	 * process is not documented yet) or `loading` (it is being read). The frame
+	 * prints the composed absence in the record grammar rather than an empty
+	 * `<ol>`.
+	 */
+	state?: "rest" | "empty" | "loading";
+
+	/** What the stage says when it has no steps. */
+	empty?: string;
 }
 
-const { stages, orientation, variant = "rail" } = Astro.props;
+const { stages, orientation, variant = "rail", current, state, empty } =
+	Astro.props;
+
+/** The stage's state, and whether it replaces the list. */
+const State = state ?? "rest";
+const Absent = State !== "rest" || stages.length === 0;
+
+/** What the absence prints: the caller's sentence, or the vocabulary's word. */
+const Absence = empty ?? "UNAVAILABLE";
+
+/** The absence's tone, from the one table that decides tones. */
+const AbsenceTone = State === "loading" ? "quiet" : "ink";
+
+/**
+ * Whether a step is the run's position. Compared on the index the caller wrote,
+ * never on the step's position in the array - the caller's numbering is the fact.
+ */
+const IsCurrent = (stage: Stage): boolean =>
+	current !== undefined && stage.index === current;
+
+/** A step's state word's tone, from the same table. Never chosen here. */
+const ToneOf = (stage: Stage) =>
+	stage.state ? (Tone(stage.state.toUpperCase()) ?? "ink") : "ink";
 ---
 
-{variant === "plates" ? (
+{Absent ? (
+	<div class="record-stage__absent" role="status" data-state={State}>
+		<p class="record-stage__absent-head">
+			<span class="record-stage__absent-mark" aria-hidden="true">
+				&#9678;
+			</span>
+			<span class="record-stage__absent-key">STATUS:</span>
+			<span
+				class:list={[
+					"record-stage__absent-state",
+					`record-stage__absent-state--${AbsenceTone}`,
+				]}
+			>
+				{State === "rest" ? "EMPTY" : State.toUpperCase()}
+			</span>
+		</p>
+		<p class="record-stage__absent-line">{Absence}</p>
+	</div>
+) : variant === "plates" ? (
 	<ol class="record-stage record-stage--plates">
 		{stages.map((stage) => (
-			<li class="record-stage__plate">
-				<span class="record-stage__plate-index">{stage.index}</span>
+			<li
+				class:list={[
+					"record-stage__plate",
+					IsCurrent(stage) && "record-stage__plate--current",
+					stage.state && "record-stage__plate--state",
+				]}
+				aria-current={IsCurrent(stage) ? "step" : undefined}
+				data-state={stage.state?.toUpperCase()}
+			>
+				<span class="record-stage__plate-index">
+					{IsCurrent(stage) ? (
+						<Mark kind="square" size="attested" tone={ToneOf(stage)} />
+					) : null}
+					{stage.index}
+				</span>
 				<div class="record-stage__plate-body">
 					{stage.href ? (
 						<a class="record-stage__plate-label" href={stage.href}>
@@ -75,7 +169,28 @@ const { stages, orientation, variant = "rail" } = Astro.props;
 							{stage.label}
 						</span>
 					)}
-					<span class="record-stage__plate-line">{stage.line}</span>
+					{stage.state ? (
+						<span
+							class:list={[
+								"record-stage__state",
+								`record-stage__state--${ToneOf(stage)}`,
+							]}
+						>
+							<span class="record-stage__state-key">STATUS:</span>
+							{stage.state.toUpperCase()}
+						</span>
+					) : null}
+					{stage.detail ? (
+						<details class="record-stage__detail">
+							<summary class="record-stage__plate-line record-stage__summary">
+								{stage.line}
+								<Mark kind="fold" />
+							</summary>
+							<p class="record-stage__detail-body">{stage.detail}</p>
+						</details>
+					) : (
+						<span class="record-stage__plate-line">{stage.line}</span>
+					)}
 				</div>
 			</li>
 		))}
@@ -83,8 +198,21 @@ const { stages, orientation, variant = "rail" } = Astro.props;
 ) : (
 	<ol class={`record-stage record-stage--${orientation ?? "row"}`}>
 		{stages.map((stage) => (
-			<li class="record-stage__item">
-				<span class="record-stage__index">{stage.index}</span>
+			<li
+				class:list={[
+					"record-stage__item",
+					IsCurrent(stage) && "record-stage__item--current",
+					stage.state && "record-stage__item--state",
+				]}
+				aria-current={IsCurrent(stage) ? "step" : undefined}
+				data-state={stage.state?.toUpperCase()}
+			>
+				<span class="record-stage__index">
+					{IsCurrent(stage) ? (
+						<Mark kind="square" size="attested" tone={ToneOf(stage)} />
+					) : null}
+					{stage.index}
+				</span>
 				{stage.href ? (
 					<a class="record-stage__label" href={stage.href}>
 						{stage.label}
@@ -92,7 +220,28 @@ const { stages, orientation, variant = "rail" } = Astro.props;
 				) : (
 					<span class="record-stage__label">{stage.label}</span>
 				)}
-				<span class="record-stage__line">{stage.line}</span>
+				{stage.state ? (
+					<span
+						class:list={[
+							"record-stage__state",
+							`record-stage__state--${ToneOf(stage)}`,
+						]}
+					>
+						<span class="record-stage__state-key">STATUS:</span>
+						{stage.state.toUpperCase()}
+					</span>
+				) : null}
+				{stage.detail ? (
+					<details class="record-stage__detail">
+						<summary class="record-stage__line record-stage__summary">
+							{stage.line}
+							<Mark kind="fold" />
+						</summary>
+						<p class="record-stage__detail-body">{stage.detail}</p>
+					</details>
+				) : (
+					<span class="record-stage__line">{stage.line}</span>
+				)}
 			</li>
 		))}
 	</ol>

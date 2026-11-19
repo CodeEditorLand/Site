@@ -210,3 +210,30 @@ export const RegisterText = (
 	`# ${register.label}${RegisterSeparatorText(register)}${RegisterCountText(register, state)}${
 		register.unit === undefined ? "" : ` ${register.unit}`
 	}`;
+
+/**
+ * The whole line as it is SPOKEN: the same statement, punctuated for the ear.
+ *
+ * The printed line is `# WHAT CHANGES / 08`, and both the `#` and the `/` are
+ * punctuation - the mark says "this is an index entry" and the separator says
+ * "the figure follows". A screen reader does not read punctuation as structure;
+ * it reads the characters, so handing it `RegisterText` produces "number sign
+ * what changes slash zero eight", which is neither the printed line nor a
+ * sentence. The spoken form states the same two facts in the order a person
+ * would say them - the name, then the figure - with a comma where the eye gets
+ * a mark and a slash.
+ *
+ * It is the announcement `Register.astro` prints into its visually hidden run,
+ * and it is here rather than in the renderer because composing the line is this
+ * module's whole job: two renderers that each spelled the line out could
+ * disagree, and one of them would be the one a reader who cannot see the page
+ * gets.
+ */
+export const RegisterSpokenText = (
+	register: Register,
+
+	state: RegisterState = "rest",
+): string =>
+	`${register.label}, ${RegisterCountText(register, state)}${
+		register.unit === undefined ? "" : ` ${register.unit}`
+	}`;

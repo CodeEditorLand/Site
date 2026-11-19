@@ -51,6 +51,14 @@
  *   /THE DISPLAY nineteen components, every state they are read in: the matrix,
  *              the verdict on the two components no page mounts, the figure each
  *              condition earns, and every state printed live
+ *   /THE RECORD the ledger family: the matrix, the improvements it produced, the
+ *              observations it did not fix, and every state printed live
+ *   /THE NARRATIVE the narrative family: the matrix with a reason for every cell
+ *              that cannot exist, the behaviours the exploration produced, and
+ *              sixty-two rows - a band with no body, a stage with one step and a
+ *              stage with nine, a figure with no image, a well that wraps, a
+ *              transcript with a failed turn, a pair with one empty pod, an
+ *              archive with one entry and a failure with no way out
  *   /THE MATERIAL the six things the document is printed with
  *   /THE REGISTER what the sheet counted, and the file it counted from
  *
@@ -97,6 +105,10 @@ import SpecimenDisplay from "../Component/Specimen/SpecimenDisplay";
 import SpecimenDisplayMatrix from "../Component/Specimen/SpecimenDisplayMatrix.astro";
 import SpecimenField from "../Component/Specimen/SpecimenField";
 import SpecimenFieldMatrix from "../Component/Specimen/SpecimenFieldMatrix.astro";
+import SpecimenFrame from "../Component/Specimen/SpecimenFrame.astro";
+import SpecimenFrameMatrix from "../Component/Specimen/SpecimenFrameMatrix.astro";
+import SpecimenNarrative from "../Component/Specimen/SpecimenNarrative.astro";
+import SpecimenNarrativeMatrix from "../Component/Specimen/SpecimenNarrativeMatrix.astro";
 import SpecimenOverlay from "../Component/Specimen/SpecimenOverlay";
 import SpecimenOverlayMatrix from "../Component/Specimen/SpecimenOverlayMatrix.astro";
 import SpecimenPlate from "../Component/Specimen/SpecimenPlate.astro";
@@ -128,6 +140,8 @@ import { States, Vocabulary } from "../Content/Specimen/States.js";
 import { Specimens as OverlaySpecimens } from "../Content/Specimen/Overlay.js";
 import { Specimens as DisplaySpecimens } from "../Content/Specimen/Display.js";
 import { Specimens as RecordSpecimens } from "../Content/Specimen/Record.js";
+import { Specimens as NarrativeSpecimens } from "../Content/Specimen/Narrative.js";
+import { Specimens as FrameSpecimens } from "../Content/Specimen/Frame.js";
 import { Measurements } from "../Content/More/Compare.js";
 import { GetI18n } from "../Library/I18n/Server";
 import { Totals } from "../Library/Index/Register.js";
@@ -135,7 +149,7 @@ import Base from "../Layout/Base.astro";
 
 const MetaTitle = "Specimen | Code Editor Land";
 
-const MetaDescription = `The document's own parts, printed: twelve components at 1:1 with their contracts, three stated absences, the nine adverse states composed, the input family's state matrix with its live rows, the overlay family's matrix, dismissal contract and ${OverlaySpecimens.length} live overlays, the display family's matrix, its two verdicts and ${DisplaySpecimens.length} live specimens, the record ledger family's matrix, its twelve improvements and ${RecordSpecimens.length} live rows, and the six things the site is printed with.`;
+const MetaDescription = `The document's own parts, printed: twelve components at 1:1 with their contracts, three stated absences, the nine adverse states composed, the input family's state matrix with its live rows, the overlay family's matrix, dismissal contract and ${OverlaySpecimens.length} live overlays, the display family's matrix, its two verdicts and ${DisplaySpecimens.length} live specimens, the record ledger family's matrix, its twelve improvements and ${RecordSpecimens.length} live rows, the record narrative family's matrix, its twenty-three improvements and ${NarrativeSpecimens.length} live rows, the frame family's matrix, its eleven improvements and ${FrameSpecimens.length} live compositions, and the six things the site is printed with.`;
 
 /* ─── THE PARTS, BY DISPOSITION ────────────────────────────────────────── */
 
@@ -623,6 +637,83 @@ const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/SPECIMEN" }];
 				families' bands do not need one - a fact that has lost its
 				adverse state is a fact that lies, and a lie is the one defect
 				this family cannot survive.
+			</p>
+		</RecordBand>
+
+		{/* ─── THE NARRATIVE ─────────────────────────────────────────── */}
+		{/* The fifth family band, and the one whose subject is what the document
+		    is TOLD: the band that opens a subject, the stage that explains an
+		    order, the figure that shows evidence, the well that hands over a
+		    command, the transcript that records a session, the failure that
+		    explains a dead end. The matrix, the improvements and the
+		    observations are static Astro - two hundred and eighty-five cells and
+		    twenty-three arguments with nothing to hydrate - and so are the rows:
+		    this family ships no JavaScript of its own, because the only
+		    interactive things it prints are `<details>` disclosures and the copy
+		    control two of its blocks already wire. */}
+		<RecordBand band={{ ...Bands.Narrative, id: "narrative" }}>
+			<SpecimenNarrativeMatrix />
+
+			<SpecimenNarrative />
+
+			<p class="specimen-page__note">
+				The matrix, the improvements and the rows read one file:
+				Content/Specimen/Narrative.ts states every cell's disposition,
+				every behaviour the exploration produced with the condition that
+				produced it, the four observations this card did not fix, and
+				every row's state. A condition added there appears on the
+				matrix's figures, in the columns' own list and in the rows'
+				order with no second edit - the same rule /THE FIELD, /THE
+				OVERLAY, /THE DISPLAY and /THE RECORD follow.
+				{` `}This band is the fifth about a family rather than a part,
+				and the first whose subject is a SENTENCE: a ledger is checked, a
+				display is read, an overlay is dismissed, and a narrative block is
+				the thing a reader is told. That is why its improvements section
+				carries the three behaviours the brief named by hand - a stage
+				that can advance, a well that can wrap long lines, a figure that
+				can open - and why each of them is a prop of the block itself
+				rather than a wrapper around it.
+				{` `}{NarrativeSpecimens.length} rows, {` `}four groups, and not
+				one of them is a screenshot: every state is mounted live, because
+				a picture of a state cannot be composed with.
+			</p>
+		</RecordBand>
+
+		{/* ─── THE FRAME ─────────────────────────────────────────────── */}
+		{/* The sixth family band, and the first whose subject is the frame
+		    rather than the content: the shell that decides whether a page can
+		    be read at all. The matrix, the improvements and the observations
+		    are static Astro - four hundred and forty cells and fifteen
+		    arguments with nothing to hydrate - and so are the rows: this
+		    family ships no JavaScript, because a shell is a grid, a rail a
+		    list, a seam a 1px track and a plate a figure. The only
+		    interactive things any row prints are `<details>` disclosures and
+		    the print button, and the browser owns both. */}
+		<RecordBand band={{ ...Bands.Frame, id: "frame" }}>
+			<SpecimenFrameMatrix />
+
+			<SpecimenFrame />
+
+			<p class="specimen-page__note">
+				The matrix, the improvements and the rows read one file:
+				Content/Specimen/Frame.ts states every cell's disposition,
+				every behaviour the exploration produced with the condition that
+				produced it, the four observations this card did not fix, and
+				every row's arm. A condition added there appears on the
+				matrix's figures, in the columns' own list and in the rows'
+				order with no second edit - the same rule /THE FIELD, /THE
+				OVERLAY, /THE DISPLAY, /THE RECORD and /THE NARRATIVE follow.
+				{` `}This band is the sixth about a family rather than a part,
+				and the first whose subject is not what the document says but
+				what it sits in. That is why its five compositions are columns
+				of the matrix and not a paragraph: a page with no rail, a page
+				with two, a shell inside a shell, a pane pair at 640px and a
+				plate with no image are not states a component can be in - they
+				are the frame's own worst combinations, and a frame that
+				survives them is a frame whose design is real.
+				{` `}{FrameSpecimens.length} rows, seven groups, and not one of
+				them is a screenshot: every composition is mounted live,
+				because a picture of a shell cannot be re-composed with.
 			</p>
 		</RecordBand>
 

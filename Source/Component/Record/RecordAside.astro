@@ -87,14 +87,57 @@ if ([HasSlot, Rows, Prose].filter(Boolean).length > 1) {
 }
 
 /** An aside with no body at all is not drawn: an empty frame is worse than none. */
-const HasBody = HasSlot || Rows || Prose || (aside.empty ?? "") !== "";
+const HasBody =
+	HasSlot ||
+	Rows ||
+	Prose ||
+	(aside.empty ?? "") !== "" ||
+	aside.state === "loading";
+
+/** The aside's own state: `loading` prints the summary and a skeleton body. */
+const State = aside.state ?? "rest";
+
+/**
+ * What the summary counts, in the containment brackets.
+ *
+ * A disclosure whose summary says how much is behind it is a disclosure a reader
+ * can decide about without opening - which is the only thing a folded section
+ * owes a reader. The count is derived from what the aside HOLDS (its rows when
+ * the body is a set, its paragraphs when it is prose) and never from the page's
+ * set: a caller that knows the real extent (`this prints four of nine`) passes
+ * its own string, and the block prints that instead.
+ */
+const Count =
+	aside.count ??
+	(Rows
+		? String((aside.rows ?? []).length)
+		: Prose
+			? String(Paragraphs(aside.body ?? "").length)
+			: undefined);
 ---
 
 {HasBody ? (
-	<details class:list={["record-aside", Class]} open={aside.open}>
+	<details
+		class:list={[
+			"record-aside",
+			State === "loading" && "record-aside--loading",
+			Class,
+		]}
+		open={aside.open}
+		data-state={State}
+	>
 		<summary class="record-aside__summary">
 			<span class="record-aside__index"># {aside.index}</span>
 			<span class="record-aside__label">/ {aside.label}</span>
+			{Count !== undefined ? (
+				<span class="record-aside__count">〈{Count}〉</span>
+			) : null}
+			{State === "loading" ? (
+				<span class="record-aside__state">
+					<span class="record-aside__state-key">STATUS:</span>
+					LOADING
+				</span>
+			) : null}
 			<Mark kind="fold" />
 		</summary>
 
@@ -106,7 +149,13 @@ const HasBody = HasSlot || Rows || Prose || (aside.empty ?? "") !== "";
 				</p>
 			) : null}
 
-			{HasSlot ? (
+			{State === "loading" ? (
+				<div class="record-aside__skeleton" aria-hidden="true">
+					<span class="record-aside__skeleton-bar" />
+					<span class="record-aside__skeleton-bar" />
+					<span class="record-aside__skeleton-bar" />
+				</div>
+			) : HasSlot ? (
 				<slot />
 			) : Rows ? (
 				<RecordLedger rows={aside.rows ?? []} />

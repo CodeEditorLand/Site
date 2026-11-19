@@ -35,8 +35,23 @@
  * head, its body gets the column). Same heads, same marks, same counts, same
  * drawer - only the axis of the seam changes.
  *
+ * ─── THE PANE'S OWN ADVERSE ARMS (added by the frame card) ────────────────
+ * A pane whose instrument has not arrived used to print its head and then an
+ * empty body, which reads as a pane that failed rather than a pane with a fact
+ * to state. Each pane now carries the two arms every block in the family has:
+ *
+ *   state="empty"    `◎ UNAVAILABLE` + the pane's own sentence (`empty`)
+ *   state="loading"  the keys the pane will print, their values barred
+ *
+ * Both keep the mark, the label and the meta, because the head is what names
+ * the thing that is not there - and the seam between the panes stays drawn, so
+ * a pair with one absent half is still one instrument divided rather than a
+ * pane and a hole.
+ *
  * No script and no hydration.
  */
+import Mark from "../Mark/Mark.astro";
+
 interface Pane {
 	/** `# PANE_01` - the pane's marker, printed verbatim. */
 	readonly mark: string;
@@ -49,6 +64,18 @@ interface Pane {
 
 	/** One sentence under the pane's head, when the pane needs its scope stated. */
 	readonly note?: string;
+
+	/**
+	 * The pane's state. `rest` prints its slot; `empty` and `loading` print the
+	 * composed absence instead, under the same head.
+	 */
+	readonly state?: "rest" | "empty" | "loading";
+
+	/** The `empty` arm's one sentence: what the pane would hold, and why it does not. */
+	readonly empty?: string;
+
+	/** The `loading` arm's keys. The values are unknown; the schema is not. */
+	readonly keys?: readonly string[];
 }
 
 interface Props {
@@ -84,6 +111,9 @@ interface Props {
 		readonly open?: boolean;
 	};
 
+	/** Print the pane heads at the tight step, for a pair inside a card. */
+	dense?: boolean;
+
 	/** Extra classes from the page. */
 	class?: string;
 }
@@ -94,12 +124,34 @@ const {
 	ratio = "5/7",
 	layout = "panes",
 	drawer,
+	dense = false,
 	class: ClassName,
 } = Astro.props;
 
-import Mark from "../Mark/Mark.astro";
-
 const HasDrawer = Astro.slots.has("drawer");
+const HasPrimary = Astro.slots.has("primary");
+const HasSecondary = Astro.slots.has("secondary");
+
+/**
+ * The state a pane prints.
+ *
+ * The pane's own `state` wins; a pane with no slot and no state is `empty`,
+ * because an empty body under a pane head is the exact defect this arm exists
+ * to remove - and a pane that says nothing is a pane that failed.
+ */
+const StateOf = (Pane: Pane, HasSlot: boolean): "rest" | "empty" | "loading" =>
+	Pane.state ?? (HasSlot ? "rest" : "empty");
+
+/** The status word a pane's absent arm prints. */
+const WordOf = (State: "rest" | "empty" | "loading"): string =>
+	State === "loading" ? "LOADING" : "UNAVAILABLE";
+
+/** The tone the pane's absent arm prints: loading is quiet, absent is ink. */
+const ToneOf = (State: "rest" | "empty" | "loading"): "quiet" | "ink" =>
+	State === "loading" ? "quiet" : "ink";
+
+const PrimaryState = StateOf(primary, HasPrimary);
+const SecondaryState = StateOf(secondary, HasSecondary);
 ---
 
 <div
@@ -108,11 +160,15 @@ const HasDrawer = Astro.slots.has("drawer");
 		layout === "stack"
 			? "ShellPanes--stack"
 			: `ShellPanes--${ratio.replace("/", "-")}`,
+		dense ? "ShellPanes--dense" : null,
 		ClassName,
 	]}
 >
 	<div class="ShellPanes__grid">
-		<section class="ShellPanes__pane ShellPanes__pane--primary">
+		<section
+			class="ShellPanes__pane ShellPanes__pane--primary"
+			data-state={PrimaryState}
+		>
 			<header class="ShellPanes__head">
 				<p class="ShellPanes__mark">{primary.mark}</p>
 				<p class="ShellPanes__label">{primary.label}</p>
@@ -124,13 +180,52 @@ const HasDrawer = Astro.slots.has("drawer");
 				<p class="ShellPanes__note">{primary.note}</p>
 			) : null}
 			<div class="ShellPanes__body">
-				<slot name="primary" />
+				{PrimaryState === "rest" ? (
+					<slot name="primary" />
+				) : (
+					<div class="ShellPanes__absent" data-state={PrimaryState}>
+						<p
+							class:list={[
+								"ShellPanes__status",
+								`ShellPanes__status--${ToneOf(PrimaryState)}`,
+							]}
+						>
+							<Mark kind="square" tone={ToneOf(PrimaryState)} />
+							<span class="ShellPanes__status-key">STATUS:</span>
+							{WordOf(PrimaryState)}
+						</p>
+
+						{PrimaryState === "loading" ? (
+							<div class="ShellPanes__skeleton" aria-hidden="true">
+								{(primary.keys?.length
+									? primary.keys
+									: ["RECORD", "ROUTE", "STATE"]
+								).map((Key, Index) => (
+									<p class="ShellPanes__skeleton-row">
+										<span class="ShellPanes__skeleton-key">{Key}:</span>
+										<span
+											class="ShellPanes__bar"
+											style={`--bar:${[64, 42, 78, 55, 36, 70][Index % 6]}%`}
+										/>
+									</p>
+								))}
+							</div>
+						) : (
+							<p class="ShellPanes__sentence">
+								{primary.empty ?? "UNAVAILABLE"}
+							</p>
+						)}
+					</div>
+				)}
 			</div>
 		</section>
 
 		<div class="ShellPanes__gutter" aria-hidden="true"></div>
 
-		<section class="ShellPanes__pane ShellPanes__pane--secondary">
+		<section
+			class="ShellPanes__pane ShellPanes__pane--secondary"
+			data-state={SecondaryState}
+		>
 			<header class="ShellPanes__head">
 				<p class="ShellPanes__mark">{secondary.mark}</p>
 				<p class="ShellPanes__label">{secondary.label}</p>
@@ -142,7 +237,43 @@ const HasDrawer = Astro.slots.has("drawer");
 				<p class="ShellPanes__note">{secondary.note}</p>
 			) : null}
 			<div class="ShellPanes__body">
-				<slot name="secondary" />
+				{SecondaryState === "rest" ? (
+					<slot name="secondary" />
+				) : (
+					<div class="ShellPanes__absent" data-state={SecondaryState}>
+						<p
+							class:list={[
+								"ShellPanes__status",
+								`ShellPanes__status--${ToneOf(SecondaryState)}`,
+							]}
+						>
+							<Mark kind="square" tone={ToneOf(SecondaryState)} />
+							<span class="ShellPanes__status-key">STATUS:</span>
+							{WordOf(SecondaryState)}
+						</p>
+
+						{SecondaryState === "loading" ? (
+							<div class="ShellPanes__skeleton" aria-hidden="true">
+								{(secondary.keys?.length
+									? secondary.keys
+									: ["RECORD", "ROUTE", "STATE"]
+								).map((Key, Index) => (
+									<p class="ShellPanes__skeleton-row">
+										<span class="ShellPanes__skeleton-key">{Key}:</span>
+										<span
+											class="ShellPanes__bar"
+											style={`--bar:${[64, 42, 78, 55, 36, 70][Index % 6]}%`}
+										/>
+									</p>
+								))}
+							</div>
+						) : (
+							<p class="ShellPanes__sentence">
+								{secondary.empty ?? "UNAVAILABLE"}
+							</p>
+						)}
+					</div>
+				)}
 			</div>
 		</section>
 	</div>

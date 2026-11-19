@@ -298,6 +298,20 @@ html[data-section="contents"] .HeaderSection[data-section="contents"] {
 	color: var(--Mark);
 }
 
+// The register's figure. The rail's line read `# INDEX:` over ten tabs and no
+// number; the count is `FrameSections.length`, printed here at the value's own
+// ink so the rail says how much of the document it is showing. It is hidden in
+// the column form (digits only there, where the tabs ARE the figure) and shown
+// in the drawer, which is a list and needs its extent stated.
+.FrameRailSep {
+	color: var(--MuteForeground);
+}
+
+.FrameRailCount {
+	color: var(--Foreground);
+	font-variant-numeric: tabular-nums;
+}
+
 .FrameRailTab {
 	position: relative;
 	display: flex;
@@ -401,6 +415,15 @@ html[data-section="contents"] .FrameRailTab[data-section="contents"] {
 	}
 
 	.FrameRailWord {
+		display: none;
+	}
+
+	// The register's figure belongs to the drawer's list form. In the column the
+	// tabs ARE the figure - ten digits down the margin - so the count would be a
+	// second statement of the same fact in a 2.25rem column that has no room for
+	// it.
+	.FrameRailSep,
+	.FrameRailCount {
 		display: none;
 	}
 

@@ -23,6 +23,19 @@
 // `tone` picks the surface: `paper` (white card), `canvas` (creme, the default)
 // or `flush` (the first band after the header, which drops its top rule).
 //
+// ─── THE BAND'S OWN ADVERSE STATE ─────────────────────────────────────────
+// A band whose subject is not written yet is still a band: `state` keeps the
+// kicker, the heading, the standfirst and the index strip - the reader has to
+// know WHAT is missing before being told that it is - and replaces the body with
+// the composed absence: `◎`, the vocabulary's word, the sentence in `empty`, and
+// the band's footnote underneath as the next step. The alternative, a band that
+// renders nothing, is a page with a hole where a chapter should be.
+//
+// `dense` is the band read as a section inside an artifact: the same anatomy at
+// the artifact's inset, with no chapter interval and a heading one tier down. It
+// exists because a hero's evidence section and a card's second subject both need
+// a heading, and neither may spend the page's air on one.
+//
 // No client-side script and no hydration directive: the block is static.
 import type { Band } from "./Type.js";
 
@@ -43,12 +56,35 @@ const tone = band.tone ?? "canvas";
  */
 const interval = tone === "bare" ? undefined : (band.interval ?? "beat");
 const chapter = interval === "turn" ? "record-band--chapter" : undefined;
+
+/** The band's state: `rest` prints its body, the other two print the absence. */
+const State = band.state ?? "rest";
+
+/**
+ * Whether the body is replaced. `empty` and `loading` are the two states a band
+ * can be in with no body, and both keep the head: the head is what names the
+ * thing that is not there.
+ */
+const Absent = State !== "rest";
+
+/** The absence's tone, from the same vocabulary the rest of the layer prints. */
+const AbsenceTone = State === "loading" ? "quiet" : "ink";
+
+/** What the band says it is missing. A caller that wrote nothing gets the word. */
+const Absence = band.empty ?? "UNAVAILABLE";
 ---
 
 <section
-	class:list={["record-band", `record-band--${tone}`, chapter]}
+	class:list={[
+		"record-band",
+		`record-band--${tone}`,
+		chapter,
+		band.dense && "record-band--dense",
+		Absent && "record-band--absent",
+	]}
 	id={band.id}
 	data-interval={interval}
+	data-state={State}
 >
 	<div class="record-band__inner">
 		<p class="record-band__kicker">{band.kicker}</p>
@@ -65,9 +101,29 @@ const chapter = interval === "turn" ? "record-band--chapter" : undefined;
 				))}
 			</nav>
 		) : null}
-		<div class="record-band__body">
-			<slot />
-		</div>
+		{Absent ? (
+			<div class="record-band__absent" role="status">
+				<p class="record-band__absent-head">
+					<span class="record-band__absent-mark" aria-hidden="true">
+						&#9678;
+					</span>
+					<span class="record-band__absent-key">STATUS:</span>
+					<span
+						class:list={[
+							"record-band__absent-state",
+							`record-band__absent-state--${AbsenceTone}`,
+						]}
+					>
+						{State.toUpperCase()}
+					</span>
+				</p>
+				<p class="record-band__absent-line">{Absence}</p>
+			</div>
+		) : (
+			<div class="record-band__body">
+				<slot />
+			</div>
+		)}
 		{band.footnote ? (
 			<p class="record-band__footnote">{band.footnote}</p>
 		) : null}

@@ -279,3 +279,94 @@
 	line-height: var(--type-caption-line);
 	color: var(--MuteForeground);
 }
+
+// ─── THE NARRATIVE FAMILY: THE RELATION, A POD'S STATE, A POD'S ABSENCE ────
+// The relation is printed in the gutter the pair already draws: vertically on
+// wide screens, as a row between the stacked pods on narrow ones. It is what
+// makes two columns one artifact - the caption says what the pair means at the
+// foot, the relation says how the two sides bear on each other where the reader
+// is looking.
+//
+// A pod's state is the side's own fact, so it prints in the pod's bar and never
+// changes the pair's frame; a pod with no body prints the composed absence and
+// keeps its title bar, because a comparison with one side missing has to say
+// WHICH side is missing.
+.record-pair__state {
+	@include mono-meta;
+	@include track(var(--track-rule));
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.35rem;
+	margin-inline-start: auto;
+}
+
+.record-pair__state[data-tone="ink"] {
+	color: var(--Foreground);
+}
+
+.record-pair__state[data-tone="specimen"] {
+	color: var(--Accent);
+}
+
+.record-pair__state[data-tone="quiet"] {
+	color: var(--MuteForeground);
+}
+
+.record-pair__state-key {
+	color: var(--MuteForeground);
+}
+
+.record-pair__empty {
+	display: flex;
+	gap: var(--space-tight);
+	align-items: baseline;
+	margin: 0;
+	max-inline-size: 62ch;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+}
+
+.record-pair__empty-mark {
+	color: var(--MuteForeground);
+}
+
+.record-pair__note {
+	@include mono-meta;
+	@include track(var(--track-row));
+	margin: var(--space-tight) 0 0;
+	color: var(--MuteForeground);
+	overflow-wrap: anywhere;
+}
+
+.record-pair__note-key {
+	color: var(--MuteForeground);
+}
+
+.record-pair__gutter--relation {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.record-pair__relation {
+	@include mono-meta;
+	@include track(var(--track-row));
+	display: block;
+	padding: var(--space-tight) 0;
+	color: var(--MuteForeground);
+	writing-mode: vertical-rl;
+	text-orientation: mixed;
+	white-space: nowrap;
+}
+
+.record-pair__relation-mark {
+	color: var(--MuteForeground);
+}
+
+// On narrow screens the gutter rotates and the relation reads as a row between
+// the stacked pods, in the same register.
+@media (max-width: 767px) {
+	.record-pair__relation {
+		writing-mode: horizontal-tb;
+	}
+}

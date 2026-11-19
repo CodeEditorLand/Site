@@ -1,0 +1,705 @@
+// SpecimenNarrative - the record narrative family's plate: the state matrix, its
+// notes, the improvements the exploration produced, the observations it did not
+// fix, the conditions' own figures, and the sixty-two live rows.
+//
+// Publishes:
+//   .narrative-matrix-sheet              the state matrix, as one figure
+//   .narrative-matrix-sheet__scroll      the frame the table scrolls in
+//   .narrative-matrix-sheet__table       fifteen rows, nineteen columns
+//   .narrative-matrix-sheet__corner      the head's leading cell
+//   .narrative-matrix-sheet__head        one condition's head
+//   .narrative-matrix-sheet__head--group the first head of a new group
+//   .narrative-matrix-sheet__name        the component's name and file, pinned to the edge
+//   .narrative-matrix-sheet__cell        one cell
+//   .narrative-matrix-sheet__built       the word a built cell prints
+//   .narrative-matrix-sheet__na          a cell that cannot exist, with its note's mark
+//   .narrative-matrix-sheet__notes       the footnotes
+//   .narrative-matrix-sheet__note        one footnote: mark, where, why
+//   .narrative-matrix-sheet__caption     what the matrix asks of a reader
+//   .narrative-matrix-sheet__register    the figures, as a ledger
+//   .narrative-matrix-sheet__improvements what the exploration changed, and where
+//   .narrative-matrix-sheet__improvement one behaviour: found, built
+//   .narrative-matrix-sheet__observations what the card did not fix, and whose it is
+//   .narrative-matrix-sheet__observation one observation: found, owner
+//   .narrative-matrix-sheet__columns     how many of the parts hold each condition
+//   .specimen-narrative                  the live rows
+//   .specimen-narrative__group           one group of rows
+//   .specimen-narrative__row             one labelled row: spec, stage
+//   .specimen-narrative__spec            the row's name, part and sentence
+//   .specimen-narrative__stage           the box the specimen is printed in
+//   .specimen-narrative__stage--card     the box that stands in for a Jelly surface
+//   .specimen-narrative__prose           the sentence a band's body holds
+//
+// ─── WHY THIS IS THE RECORD PLATE'S SHAPE AND NOT ITS FILE ────────────────
+// The matrix is one instrument and the sheet prints it for every family: a pinned
+// name column, a scrolling body, footnotes with marks, a register under it. What
+// changes per family is the FIGURES and the two sections under the table - the
+// record family's improvements argue trust, and this family's argue a narrative
+// block's frame. So the partial carries its own names, and the shared shape is
+// repeated rather than borrowed: a class that belongs to another family's partial
+// is a class no one can move without breaking a surface they were not reading.
+//
+// ─── NINETEEN COLUMNS DO NOT FIT, AND MUST NOT ────────────────────────────
+// The table scrolls inside `.narrative-matrix-sheet__scroll` and the component's
+// name is pinned to the leading edge. Compressing nineteen conditions into a page
+// would mean either dropping conditions or printing them below the type floor,
+// and both are the same answer: the matrix stops being readable.
+//
+// ─── THE ROWS ARE NOT AN ISLAND ───────────────────────────────────────────
+// Every row on this plate is static Astro, because this family ships no
+// JavaScript beyond the copy wiring two of its blocks already mount: a band is a
+// `<section>`, a stage an `<ol>`, a well a `<figure>`, a transcript a list. The
+// only interactive things any of them prints are `<details>` disclosures, and the
+// browser owns those.
+
+@use "../../Mixin" as *;
+
+/* ─── THE MATRIX ─────────────────────────────────────────────────────────── */
+
+.narrative-matrix-sheet {
+	margin: 0 0 var(--space-group);
+
+	min-inline-size: 0;
+}
+
+.narrative-matrix-sheet__scroll {
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+
+	min-inline-size: 0;
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	background: var(--Card);
+}
+
+.narrative-matrix-sheet__table {
+	inline-size: 100%;
+	min-inline-size: 74rem;
+
+	border-collapse: collapse;
+
+	font-family: var(--FontMono);
+}
+
+// ─── The head ──────────────────────────────────────────────────────────────
+
+.narrative-matrix-sheet__corner,
+.narrative-matrix-sheet__name {
+	position: sticky;
+	inset-inline-start: 0;
+	z-index: 1;
+
+	background: var(--Card);
+
+	text-align: start;
+}
+
+.narrative-matrix-sheet__corner {
+	padding: var(--space-tight) var(--space-reading);
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+	border-inline-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.narrative-matrix-sheet__corner-label {
+	display: block;
+
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.narrative-matrix-sheet__corner-ask {
+	display: block;
+
+	margin-block-start: 0.125rem;
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+}
+
+.narrative-matrix-sheet__head {
+	padding: var(--space-tight) var(--space-tight)
+		calc(var(--space-tight) * 0.75);
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	vertical-align: bottom;
+
+	text-align: start;
+}
+
+// A group's first head carries the weight the group boundary deserves: a divider,
+// not a hairline. Three questions - what the component is doing, what it is asked to
+// hold, where it is put - and the head says where each begins.
+.narrative-matrix-sheet__head--group {
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.narrative-matrix-sheet__head-label {
+	display: block;
+
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+	white-space: nowrap;
+}
+
+.narrative-matrix-sheet__head-ask {
+	display: block;
+
+	margin-block-start: 0.125rem;
+
+	font-size: var(--type-caption);
+	line-height: 1.3;
+
+	color: var(--MuteForeground);
+
+	white-space: normal;
+	min-inline-size: 5.5rem;
+}
+
+// ─── The rows ──────────────────────────────────────────────────────────────
+
+.narrative-matrix-sheet__name {
+	padding: var(--space-tight) var(--space-reading);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	border-inline-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+
+	vertical-align: baseline;
+}
+
+.narrative-matrix-sheet__name-text {
+	display: block;
+
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+	white-space: nowrap;
+}
+
+// The file under the name: the matrix is a sheet about a tree, and a reader who
+// wants to read the block rather than the cell needs to know where it lives.
+.narrative-matrix-sheet__name-file {
+	display: block;
+
+	margin-block-start: 0.125rem;
+
+	font-size: var(--type-caption);
+	line-height: 1.3;
+
+	color: var(--MuteForeground);
+
+	overflow-wrap: anywhere;
+}
+
+.narrative-matrix-sheet__name-count {
+	display: block;
+
+	margin-block-start: 0.125rem;
+
+	font-size: var(--type-caption);
+	line-height: 1.3;
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+.narrative-matrix-sheet__cell {
+	padding: var(--space-tight);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	vertical-align: baseline;
+}
+
+.narrative-matrix-sheet__cell--group {
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+// A built cell is the texture of the matrix: the word at the meta register in the
+// quiet ink, so the eye reads the shape of the exceptions before it reads any one
+// cell. It is not a green tick - a matrix of a hundred and sixteen ticks is a matrix
+// of no information.
+.narrative-matrix-sheet__built {
+	@include mono-meta;
+
+	color: var(--MuteForeground);
+	white-space: nowrap;
+
+	// A built cell with a note carries a dotted underline, because the note is worth
+	// reading and a title attribute that nothing points at is a note nobody meets.
+	&[title] {
+		text-decoration: underline dotted var(--Border);
+		text-underline-offset: 3px;
+		cursor: help;
+	}
+}
+
+// A cell that cannot exist is the ink, because it is the one a reader came for.
+.narrative-matrix-sheet__na {
+	@include mono-meta;
+
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.25rem;
+
+	color: var(--Foreground);
+	white-space: nowrap;
+}
+
+.narrative-matrix-sheet__note-mark {
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+// ─── The notes ─────────────────────────────────────────────────────────────
+
+.narrative-matrix-sheet__notes {
+	margin-block-start: var(--space-reading);
+
+	max-inline-size: var(--Measure);
+}
+
+.narrative-matrix-sheet__notes-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0 0 var(--space-tight);
+}
+
+.narrative-matrix-sheet__notes-label {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.narrative-matrix-sheet__notes-count {
+	@include mono-meta;
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+.narrative-matrix-sheet__notes-list {
+	display: flex;
+	flex-direction: column;
+
+	margin: 0;
+	padding: 0;
+
+	list-style: none;
+}
+
+.narrative-matrix-sheet__note {
+	display: grid;
+	grid-template-columns: 3rem minmax(8rem, 11rem) minmax(0, 1fr);
+	gap: var(--space-tight);
+
+	padding-block: var(--space-tight);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+}
+
+.narrative-matrix-sheet__note-where {
+	@include mono-meta;
+
+	color: var(--Foreground);
+
+	overflow-wrap: anywhere;
+}
+
+.narrative-matrix-sheet__note-reason {
+	color: var(--MuteForeground);
+
+	text-wrap: pretty;
+}
+
+// ─── The caption and the register ──────────────────────────────────────────
+
+.narrative-matrix-sheet__caption {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
+
+	margin-block-start: var(--space-reading);
+
+	max-inline-size: var(--Measure);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+}
+
+.narrative-matrix-sheet__caption-key {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.narrative-matrix-sheet__caption-value--code {
+	font-size: var(--type-caption);
+}
+
+.narrative-matrix-sheet__caption-source {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
+
+	flex: 1 1 100%;
+}
+
+.narrative-matrix-sheet__register {
+	margin-block-start: var(--space-group);
+
+	max-inline-size: var(--Measure);
+}
+
+/* ─── THE IMPROVEMENTS ───────────────────────────────────────────────────── */
+
+.narrative-matrix-sheet__improvements {
+	margin-block-start: var(--space-chapter);
+
+	min-inline-size: 0;
+}
+
+// A behaviour is a record like every other: `# LEDGER / ROW THAT OPENS`, then the
+// finding, then what the block does about it. `FOUND:` and `BUILT:` are the two
+// compact labels, and they are the grammar's own.
+.narrative-matrix-sheet__improvement,
+.narrative-matrix-sheet__observation {
+	display: flex;
+	flex-direction: column;
+	gap: 0.375rem;
+
+	padding-block: var(--space-reading);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	max-inline-size: var(--Measure);
+}
+
+.narrative-matrix-sheet__improvement-head,
+.narrative-matrix-sheet__observation-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+}
+
+.narrative-matrix-sheet__improvement-mark {
+	color: var(--MuteForeground);
+}
+
+.narrative-matrix-sheet__improvement-name {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.narrative-matrix-sheet__improvement-rule {
+	color: var(--MuteForeground);
+}
+
+.narrative-matrix-sheet__improvement-from {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.narrative-matrix-sheet__improvement-found,
+.narrative-matrix-sheet__improvement-built {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+
+	text-wrap: pretty;
+}
+
+.narrative-matrix-sheet__improvement-key {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+/* ─── THE OBSERVATIONS ───────────────────────────────────────────────────── */
+
+.narrative-matrix-sheet__observations {
+	margin-block-start: var(--space-chapter);
+
+	min-inline-size: 0;
+}
+
+/* ─── THE COLUMNS' OWN FIGURES ───────────────────────────────────────────── */
+
+.narrative-matrix-sheet__columns {
+	margin-block-start: var(--space-chapter);
+
+	min-inline-size: 0;
+}
+
+.narrative-matrix-sheet__column-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+	gap: 0;
+
+	margin: 0;
+	padding: 0;
+
+	list-style: none;
+
+	max-inline-size: var(--Measure);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.narrative-matrix-sheet__column {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-tight);
+
+	padding: var(--space-tight) 0;
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.narrative-matrix-sheet__column-label {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.narrative-matrix-sheet__column-count {
+	@include mono-meta;
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+// A condition every part holds is the matrix's texture; a condition only some parts
+// hold is the one a reader should see, so it is the ink.
+.narrative-matrix-sheet__column[data-disposition="partial"]
+	.narrative-matrix-sheet__column-count {
+	color: var(--Foreground);
+}
+
+/* ─── THE LIVE ROWS ──────────────────────────────────────────────────────── */
+
+.specimen-narrative {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-chapter);
+
+	min-inline-size: 0;
+
+	margin-block-start: var(--space-chapter);
+}
+
+.specimen-narrative__group {
+	min-inline-size: 0;
+}
+
+.specimen-narrative__group-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0;
+}
+
+.specimen-narrative__group-kicker {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.specimen-narrative__group-count {
+	@include mono-meta;
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+.specimen-narrative__group-note {
+	margin: var(--space-tight) 0 0;
+
+	max-inline-size: var(--Measure);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+
+	text-wrap: pretty;
+}
+
+.specimen-narrative__rows {
+	display: flex;
+	flex-direction: column;
+
+	margin-block-start: var(--space-group);
+
+	min-inline-size: 0;
+}
+
+.specimen-narrative__row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-reading);
+
+	padding-block: var(--space-group);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	min-inline-size: 0;
+
+	@include bp(900px) {
+		grid-template-columns: 15rem minmax(0, 1fr);
+		gap: var(--space-group);
+		align-items: start;
+	}
+}
+
+.specimen-narrative__spec {
+	display: flex;
+	flex-direction: column;
+	gap: 0.375rem;
+
+	min-inline-size: 0;
+}
+
+.specimen-narrative__mark {
+	display: flex;
+	align-items: baseline;
+	gap: 0.25rem;
+
+	margin: 0;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+.specimen-narrative__mark-hash {
+	color: var(--MuteForeground);
+}
+
+.specimen-narrative__state {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-heading);
+	font-weight: 500;
+	line-height: var(--type-heading-line);
+	letter-spacing: var(--track-join);
+
+	color: var(--Foreground);
+
+	text-wrap: balance;
+}
+
+.specimen-narrative__part {
+	margin: 0;
+
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.specimen-narrative__when {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+
+	text-wrap: pretty;
+}
+
+// ─── The stage ────────────────────────────────────────────────────────────
+
+.specimen-narrative__stage {
+	min-inline-size: 0;
+
+	max-inline-size: 44rem;
+}
+
+// A narrow stage is a real column, not a squeezed band: the ledger's key moves
+// above its value there and the matrix's label pins, which is the behaviour the
+// NARROW row exists to print.
+.specimen-narrative__stage--narrow {
+	max-inline-size: 16rem;
+}
+
+.specimen-narrative__stage--wide {
+	max-inline-size: 60rem;
+}
+
+.specimen-narrative__stage--band {
+	max-inline-size: none;
+}
+
+// ─── The stage that stands in for a Jelly surface ─────────────────────────
+// Two rows print a block at the reading it only has INSIDE a card: the dense band
+// and the dense entry. The box is the specimen sheet's own - a white field and one
+// hairline - and not a `jelly-card`: the sheet composes a surface to show one, it
+// does not mount the design system to demonstrate that the design system exists.
+.specimen-narrative__stage--card {
+	max-inline-size: none;
+	padding: var(--space-reading);
+	background: var(--Card);
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+// ─── The prose a band's body holds ────────────────────────────────────────
+// A band's body is a slot, so the row prints the document's own sentence in it:
+// one paragraph at the reading measure, which is what a band's body is for.
+.specimen-narrative__prose {
+	max-inline-size: 62ch;
+	margin: 0 0 var(--space-tight);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+}

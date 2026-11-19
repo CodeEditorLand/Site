@@ -239,3 +239,73 @@
 .record-band__footnote {
 	margin-block-start: var(--space-group);
 }
+
+// ─── THE NARRATIVE FAMILY: THE BAND'S ADVERSE STATE AND ITS DENSE SECTION ──
+// A band with no body keeps its head - the head is what names the thing that is
+// not there - and prints the absence in the record grammar: the fallback mark,
+// the vocabulary's word, and the sentence the caller wrote. The footnote stays
+// where it was, so the band's own `SOURCE:` line is still the last thing read.
+//
+// `--dense` is the band as a section INSIDE an artifact: the heading steps to
+// the heading tier and the body opens at the tight step, because a band inside a
+// card is structure and the card already owns the air around it.
+.record-band--absent {
+	padding-block-end: var(--space-reading);
+}
+
+.record-band__absent {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	margin-block-start: var(--space-reading);
+	padding-block-start: var(--space-reading);
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.record-band__absent-head {
+	@include mono-meta;
+	@include track(var(--track-rule));
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+	margin: 0;
+	color: var(--MuteForeground);
+}
+
+.record-band__absent-mark {
+	color: var(--MuteForeground);
+}
+
+.record-band__absent-state--ink {
+	color: var(--Foreground);
+}
+
+.record-band__absent-state--quiet {
+	color: var(--MuteForeground);
+}
+
+.record-band__absent-line {
+	max-inline-size: 62ch;
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--Foreground);
+}
+
+.record-band--dense .record-band__heading {
+	font-size: var(--type-heading);
+	line-height: var(--type-heading-line);
+	letter-spacing: var(--track-set);
+}
+
+.record-band--dense .record-band__standfirst {
+	max-inline-size: 62ch;
+}
+
+.record-band--dense .record-band__body {
+	margin-block-start: var(--space-tight);
+}
+
+.record-band--dense .record-band__kicker {
+	margin-block-end: var(--space-tight);
+}

@@ -1,12 +1,12 @@
 ---
 /**
- * RecordLedgerRow - one fact, printed the way the ledger prints it.
+ * LedgerRow - one fact, printed the way the ledger prints it.
  *
  * ─── THIS IS NOT A BLOCK ──────────────────────────────────────────────────
  * It is the ledger's row, in its own file so that the row and the row that
  * OPENS cannot print the same fact two different ways. `RecordLedger` maps its
  * `rows` through this file, and the facts inside a disclosure print through
- * `RecordLedgerValue` - the same renderer this row's own value uses - so the
+ * `LedgerValue` - the same renderer this row's own value uses - so the
  * disclosure is the same grammar one level in, not a second shape.
  * It is not exported to pages and it answers no information type of its own:
  * the block is `RecordLedger`, and this is its row.
@@ -39,30 +39,27 @@
  */
 import Mark from "../Mark/Mark.astro";
 
-import RecordLedgerValue from "./RecordLedgerValue.astro";
+import LedgerValue from "./LedgerValue.astro";
 
 import type { LedgerRow } from "./Type.js";
 
 interface Props {
-	/** The fact. */
-	row: LedgerRow;
-
 	/**
-	 * A fact inside another row's disclosure. It takes the same grammar and the
-	 * nested rhythm, and it does not open again: a disclosure inside a
-	 * disclosure is a tree, and a ledger is a list. One level is the whole of
-	 * the shape.
+	 * The fact. A fact inside another row's disclosure is printed by the row
+	 * that opens, through `LedgerValue` - the same value renderer this row uses -
+	 * so a nested fact takes the same grammar without this file recursing into
+	 * itself. One level is the whole of the shape: a disclosure inside a
+	 * disclosure is a tree, and a ledger is a list.
 	 */
-	nested?: boolean;
+	row: LedgerRow;
 }
 
-const { row: Row, nested = false } = Astro.props;
+const { row: Row } = Astro.props;
 ---
 
 <div
 	class:list={[
 		"record-ledger__row",
-		nested && "record-ledger__row--nested",
 		Row.lead && "record-ledger__row--lead",
 		Row.total && "record-ledger__row--total",
 		Row.open !== undefined && "record-ledger__row--open",
@@ -97,7 +94,7 @@ const { row: Row, nested = false } = Astro.props;
 						<div class="record-ledger__row record-ledger__row--nested">
 							<dt class="record-ledger__key">{Child.key}</dt>
 							<dd class="record-ledger__value">
-								<RecordLedgerValue row={Child} />
+								<LedgerValue row={Child} />
 
 								{Child.note ? (
 									<span class="record-ledger__note">
@@ -120,7 +117,7 @@ const { row: Row, nested = false } = Astro.props;
 				</dl>
 			</details>
 		) : (
-			<RecordLedgerValue row={Row} />
+			<LedgerValue row={Row} />
 		)}
 
 		{Row.note ? <span class="record-ledger__note">{Row.note}</span> : null}

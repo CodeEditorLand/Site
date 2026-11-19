@@ -79,16 +79,26 @@ const StateTone = note.state
 		) : null}
 	</p>
 
-	{note.state ? (
-		<p
-			class:list={[
-				"record-margin__state",
-				`record-margin__state--${StateTone}`,
-			]}
-		>
-			<Mark kind="square" tone={StateTone} />
-			<span class="record-margin__state-key">STATUS:</span>
-			{note.state.toUpperCase()}
+	{note.state || note.asOf ? (
+		<p class="record-margin__register">
+			{note.state ? (
+				<span
+					class:list={[
+						"record-margin__state",
+						`record-margin__state--${StateTone}`,
+					]}
+				>
+					<Mark kind="square" tone={StateTone} />
+					<span class="record-margin__state-key">STATUS:</span>
+					{note.state.toUpperCase()}
+				</span>
+			) : null}
+			{note.asOf ? (
+				<span class="record-margin__asof">
+					<span class="record-margin__asof-key">AS OF:</span>
+					{note.asOf}
+				</span>
+			) : null}
 		</p>
 	) : null}
 

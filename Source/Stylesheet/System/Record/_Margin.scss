@@ -200,3 +200,24 @@
 .record-margin__source--absent {
 	color: var(--Foreground);
 }
+
+// ─── THE NARRATIVE FAMILY: THE NOTE'S REGISTER, ITS STATE AND ITS DATE ─────
+// A note is a dated annotation, so its state word and its `AS OF:` date print on
+// one row above the claim: the two facts that decide how much the note is worth
+// arrive before the note itself.
+.record-margin__register {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight) var(--space-group);
+	margin: 0 0 var(--space-tight);
+}
+
+.record-margin__asof {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--MuteForeground);
+}
+
+.record-margin__asof-key {
+	color: var(--MuteForeground);
+}

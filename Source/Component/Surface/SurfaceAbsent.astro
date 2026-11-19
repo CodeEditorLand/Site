@@ -42,20 +42,49 @@ interface Props {
 		readonly href: string;
 	};
 
+	/**
+	 * The retry, when the cause is a failure that can be attempted again.
+	 *
+	 * `next` is the way forward; `retry` is the same action tried again, and the
+	 * two are not the same fact - a reader whose request failed is owed both the
+	 * command and the alternative. Printed as its own `RETRY:` row, under
+	 * `NEXT:`, so the absence states a failure rather than only a direction.
+	 */
+	retry?: {
+		readonly label: string;
+		readonly href: string;
+	};
+
 	/** One line of provenance under the rows, when the cause has a source. */
 	note?: string;
+
+	/** Print the rows at the tight step, for an absence inside a card or a pane. */
+	dense?: boolean;
 
 	/** Extra classes from the page. */
 	class?: string;
 }
 
-const { status, wouldBe, whyNot, next, note, class: ClassName } = Astro.props;
+const {
+	status,
+	wouldBe,
+	whyNot,
+	next,
+	retry,
+	note,
+	dense = false,
+	class: ClassName,
+} = Astro.props;
 
 const Resolved = Tone(status) ?? "ink";
 ---
 
 <aside
-	class:list={["surface-absent", ClassName]}
+	class:list={[
+		"surface-absent",
+		dense && "surface-absent--dense",
+		ClassName,
+	]}
 	aria-label={`${status}: ${wouldBe}`}
 >
 	<p
@@ -87,6 +116,17 @@ const Resolved = Tone(status) ?? "ink";
 				</a>
 			</dd>
 		</div>
+		{retry ? (
+			<div class="surface-absent__row">
+				<dt class="surface-absent__key">RETRY:</dt>
+				<dd class="surface-absent__value">
+					<a class="surface-absent__action" href={retry.href}>
+						{retry.label}
+						<Mark kind="arrow" />
+					</a>
+				</dd>
+			</div>
+		) : null}
 	</dl>
 
 	{note ? <p class="surface-absent__note">{note}</p> : null}

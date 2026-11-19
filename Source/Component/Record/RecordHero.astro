@@ -62,6 +62,8 @@ import { FieldRecordSeal } from "../Brand/FieldRecordSeal";
 import { FieldRecordStatus } from "../Brand/FieldRecordStatus";
 import { RouteText, StampText } from "../Brand/SemanticLedger";
 
+import { Tone } from "../Surface/State.js";
+
 import RecordLedger from "./RecordLedger.astro";
 
 import type { Hero } from "./Type.js";
@@ -189,7 +191,35 @@ const SEAL = "m";
 
 		{HasEvidence && (
 			<div class="record-hero__evidence">
-				{evidence ? (
+				{evidence?.state ? (
+					<div class="record-hero__tombstone">
+						<span
+							class="record-hero__tombstone-mark"
+							aria-hidden="true"
+						>
+							&#9678;
+						</span>
+						<span
+							class:list={[
+								"record-hero__tombstone-state",
+								`record-hero__tombstone-state--${Tone(evidence.state.toUpperCase()) ?? "ink"}`,
+							]}
+						>
+							<span class="record-hero__tombstone-key">
+								STATUS:
+							</span>
+							{evidence.state.toUpperCase()}
+						</span>
+						{evidence.next ? (
+							<span class="record-hero__tombstone-next">
+								<span class="record-hero__tombstone-key">
+									NEXT:
+								</span>
+								{evidence.next}
+							</span>
+						) : null}
+					</div>
+				) : evidence?.src && evidence.alt ? (
 					<FieldRecordEvidence
 						src={evidence.src}
 						alt={evidence.alt}

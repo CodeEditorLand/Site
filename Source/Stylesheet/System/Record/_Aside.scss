@@ -135,3 +135,51 @@
 .record-aside__source-key {
 	color: var(--MuteForeground);
 }
+
+// ─── THE NARRATIVE FAMILY: THE SUMMARY'S COUNT, THE ASIDE THAT IS LOADING ──
+// A disclosure whose summary says how much is behind it is a disclosure a reader
+// can decide about without opening. The count prints in the containment brackets
+// at the bar's far end, in the same register as the index, and the fold mark
+// stays at the line's end so the reader's thumb finds it in the same place.
+//
+// `--loading` prints the summary with its state word and the body as three
+// hairlines at the aside's own measure: the shape of the disclosure is visible
+// before its content is, and there is no spinner anywhere in this layer.
+.record-aside__count {
+	@include mono-meta;
+	@include track(var(--track-rule));
+	margin-inline-start: auto;
+	color: var(--MuteForeground);
+}
+
+.record-aside__state {
+	@include mono-meta;
+	@include track(var(--track-rule));
+	color: var(--MuteForeground);
+}
+
+.record-aside__state-key {
+	color: var(--MuteForeground);
+	margin-inline-end: var(--space-tight);
+}
+
+.record-aside__skeleton {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	padding-block: var(--space-tight);
+}
+
+.record-aside__skeleton-bar {
+	display: block;
+	block-size: 1px;
+	background: var(--Divider);
+}
+
+.record-aside__skeleton-bar:nth-child(2) {
+	inline-size: 72%;
+}
+
+.record-aside__skeleton-bar:nth-child(3) {
+	inline-size: 48%;
+}

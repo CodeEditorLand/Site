@@ -115,7 +115,7 @@ const Id = `stamp-${stamp.index.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 		<p class="record-stamp__route">{stamp.route}</p>
 	) : null}
 
-	{stamp.rows.length > 0 ? (
+	{stamp.rows.length > 0 || stamp.expires ? (
 		<dl class="record-stamp__rows">
 			{stamp.rows.map((Row) => (
 				<div class="record-stamp__row">
@@ -130,6 +130,14 @@ const Id = `stamp-${stamp.index.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 					</dd>
 				</div>
 			))}
+			{stamp.expires ? (
+				<div class="record-stamp__row record-stamp__row--expires">
+					<dt class="record-stamp__row-key">EXPIRES:</dt>
+					<dd class="record-stamp__row-value">
+						{stamp.expires}
+					</dd>
+				</div>
+			) : null}
 		</dl>
 	) : null}
 
@@ -137,6 +145,16 @@ const Id = `stamp-${stamp.index.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 		<span class="record-stamp__authority-key">AUTHORITY:</span>
 		{stamp.authority}
 	</p>
+
+	{stamp.verify && !Withdrawn ? (
+		<p class="record-stamp__verify">
+			<a href={stamp.verify.href}>
+				<span aria-hidden="true">→</span>
+				{"\u2001"}
+				{stamp.verify.label}
+			</a>
+		</p>
+	) : null}
 
 	{stamp.note ? <p class="record-stamp__note">{stamp.note}</p> : null}
 </aside>

@@ -64,8 +64,14 @@ interface Props {
 
 const { set, class: Class } = Astro.props;
 
-/** The set's state; `rest` prints the cells. */
-const State = set.state ?? "rest";
+/**
+ * The set's state; `rest` prints the cells. A set handed no plate at all is
+ * `empty` whether or not the caller said so - the four other blocks in this
+ * family infer the same way from their own length, and a head reading `00
+ * PLATES` over an empty field is a frame over nothing. An explicit state always
+ * wins, so `loading` with no cells yet stays a skeleton.
+ */
+const State = set.state ?? (set.plates.length === 0 ? "empty" : "rest");
 
 /** How many across: three is a field, two is a pair of pairs. */
 const Columns = set.columns ?? 3;
@@ -81,6 +87,17 @@ const Count = set.window?.total ?? String(set.plates.length);
 
 /** The unit the head prints beside the count. */
 const Unit = set.plates.length === 1 ? "PLATE" : "PLATES";
+
+/**
+ * What an empty set says. The caller's sentence when it has one, and a composed
+ * one when it does not: the head still prints its index and its count, so a set
+ * that printed the mark alone would be a figure with a mark and no statement -
+ * the one thing an empty state must not be. `RecordMatrix`, `RecordCompare` and
+ * `RecordTrace` compose the same way, for the same reason.
+ */
+const EmptyText =
+	set.empty ??
+	"No plate is filed for this set yet. The head still prints its index and its count, because the set exists and its captures do not - and a capture that is absent states its own reason in the cell rather than leaving a frame empty.";
 
 const Id = `plates-${set.index.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 ---
@@ -113,7 +130,7 @@ const Id = `plates-${set.index.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 			<span class="record-plate-set__empty-mark" aria-hidden="true">
 				&#9678;
 			</span>
-			{set.empty}
+			{EmptyText}
 		</p>
 	) : (
 		<ol class="record-plate-set__field">

@@ -298,3 +298,64 @@
 		padding-block-start: 0;
 	}
 }
+
+// ─── THE NARRATIVE FAMILY: THE PLATE THAT OPENS, ITS TOMBSTONE'S NEXT STEP ─
+// `open` folds the channel's apparatus under its claim: the summary keeps the
+// `FIGURE:` row, and the reading, the manifest's facts, the source and the link
+// to the capture print one level in. The frame keeps its ratio either way - the
+// plate is the evidence and the apparatus is what folds.
+//
+// A tombstone with no `next` prints `NEXT: UNAVAILABLE` rather than nothing: a
+// plate that says it is missing and does not say what to do about it is a dead
+// end, and a dead end is not an adverse state.
+.record-plate__apparatus {
+	min-inline-size: 0;
+}
+
+.record-plate__summary {
+	cursor: pointer;
+	list-style: none;
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+}
+
+.record-plate__summary::-webkit-details-marker {
+	display: none;
+}
+
+.record-plate__summary .mark {
+	flex: 0 0 auto;
+}
+
+.record-plate__apparatus[open] .record-plate__summary .mark {
+	transform: rotate(90deg);
+}
+
+.record-plate__apparatus-body {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+	margin-block-start: var(--space-tight);
+	padding-block-start: var(--space-tight);
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.record-plate__capture-link {
+	margin: 0;
+	font-size: var(--type-caption);
+}
+
+.record-plate__capture-link a {
+	color: var(--Accent);
+	text-decoration: none;
+}
+
+.record-plate__capture-link a:hover,
+.record-plate__capture-link a:focus-visible {
+	text-decoration: underline;
+}
+
+.record-plate__tombstone-next--absent {
+	color: var(--MuteForeground);
+}

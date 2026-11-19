@@ -160,3 +160,96 @@ html[data-clipboard="ready"] .record-well__copy {
 .record-well__source-key {
 	color: var(--MuteForeground);
 }
+
+// ─── THE NARRATIVE FAMILY: THE WRAP ARM, THE WINDOW, THE WELL WITH NO BODY ─
+// A command keeps its shape; a CONFIG or an OUTPUT block does not have one to
+// keep. `--wrap` is the caller saying which: the body goes `pre-wrap` with a
+// hanging indent, so a long value prints in full inside the frame and no reader
+// has to scroll a recess sideways to find the end of a line.
+.record-well--wrap .record-well__body {
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+	overflow-x: hidden;
+}
+
+.record-well--wrap .record-well__line {
+	white-space: pre-wrap;
+	padding-inline-start: 2ch;
+	text-indent: -2ch;
+}
+
+// The foot: the window's count, the caller's note and the provenance, in one
+// band under the body. It is `--Mute` like the body, so it reads as part of the
+// well rather than as a caption laid on top of it.
+.record-well__foot {
+	@include hairline(top);
+	background: var(--Mute);
+}
+
+.record-well__foot > * {
+	margin: 0;
+	padding: var(--space-tight) var(--space-reading);
+}
+
+.record-well__foot > * + * {
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.record-well__window {
+	@include mono-meta;
+	@include track(var(--track-rule));
+}
+
+.record-well__window-key,
+.record-well__window-of {
+	color: var(--MuteForeground);
+}
+
+.record-well__note {
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	overflow-wrap: anywhere;
+}
+
+// The foot's own hairline is the one rule above it, so the source row drops its
+// own rule when it is the foot's first child - and keeps the between-rows rule
+// when a window or a note sits above it.
+.record-well__foot > .record-well__source:first-child {
+	border-block-start: 0;
+}
+
+// The body the well does not have: the bar keeps its label, so the reader knows
+// which command is missing, and the recess prints the absence instead of a hole.
+.record-well__absent {
+	@include mono-meta;
+	@include track(var(--track-row));
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+	margin: 0;
+	padding: var(--space-reading);
+	background: var(--Mute);
+}
+
+.record-well__absent-mark,
+.record-well__absent-key {
+	color: var(--MuteForeground);
+}
+
+.record-well__absent-state--ink {
+	color: var(--Foreground);
+}
+
+.record-well__absent-state--quiet {
+	color: var(--MuteForeground);
+}
+
+.record-well__absent-line {
+	flex: 1 1 100%;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-set);
+	text-transform: none;
+	color: var(--Foreground);
+}

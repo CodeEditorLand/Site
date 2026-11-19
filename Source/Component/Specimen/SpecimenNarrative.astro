@@ -1,0 +1,844 @@
+---
+/**
+ * SpecimenNarrative - the record narrative family, printed live.
+ *
+ * ─── WHY THIS STAGE IS NOT AN ISLAND ─────────────────────────────────────
+ * The display family's rows are a React island because half of them measure a
+ * container or draw a month. This family ships no JavaScript of its own: a band
+ * is a `<section>`, a stage an `<ol>`, a figure a `<figure>`, a well a `<pre>`, a
+ * transcript a list, a failure a `<dl>`. The only interactive things it prints
+ * are `<details>` disclosures and the copy control two of its blocks already
+ * wire through `WireWells`. So the stage is static Astro, and the band on the
+ * specimen sheet costs the page nothing - which is itself a claim about the
+ * family, printed by how it is mounted.
+ *
+ * ─── THE RENDERER DECIDES NOTHING ────────────────────────────────────────
+ * A row states what it is, which part it exercises, when that state is right and
+ * the props its specimen needs; this file builds the data and mounts the block.
+ * That split is why the matrix and the rows cannot drift: both read
+ * `Content/Specimen/Narrative.ts`, and a state added there appears on both with
+ * no second edit.
+ *
+ * ─── THE DATA IS THE SITE'S OWN ──────────────────────────────────────────
+ * Every fact, figure and path below is the kind of thing this document states: a
+ * target, a licence, a stage of the build, a turn of a session, a capture's
+ * manifest, a failure's three fields. A specimen printed with lorem ipsum would
+ * prove that the block can hold text; a specimen printed with the document's own
+ * facts proves that the block can hold THIS document.
+ */
+import {
+	Groups,
+	InGroup,
+	type Specimen,
+} from "../../Content/Specimen/Narrative.js";
+
+import RecordArchive from "../Record/RecordArchive.astro";
+import RecordAside from "../Record/RecordAside.astro";
+import RecordBand from "../Record/RecordBand.astro";
+import RecordEntry from "../Record/RecordEntry.astro";
+import RecordFailure from "../Record/RecordFailure.astro";
+import RecordFigure from "../Record/RecordFigure.astro";
+import RecordHero from "../Record/RecordHero.astro";
+import RecordInset from "../Record/RecordInset.astro";
+import RecordLedger from "../Record/RecordLedger.astro";
+import RecordMargin from "../Record/RecordMargin.astro";
+import RecordPair from "../Record/RecordPair.astro";
+import RecordPlate from "../Record/RecordPlate.astro";
+import RecordStage from "../Record/RecordStage.astro";
+import RecordStamp from "../Record/RecordStamp.astro";
+import RecordTranscript from "../Record/RecordTranscript.astro";
+import RecordWell from "../Record/RecordWell.astro";
+
+import type {
+	Archive,
+	Aside,
+	Band,
+	Entry as EntryRecord,
+	Failure,
+	Figure,
+	Hero,
+	Inset,
+	MarginNote,
+	Pair,
+	Plate,
+	Stamp,
+	Stage,
+	Transcript,
+	Well,
+} from "../Record/Type.js";
+
+/* ─── THE DOCUMENT'S OWN PROSE ───────────────────────────────────────────── */
+
+/** One sentence the site states about itself, used wherever a body is needed. */
+const Prose =
+	"The editor runs natively on macOS, Windows and Linux: Rust and Tauri underneath, the VS Code extension API on top, and no Chromium in the process tree.";
+
+/** A second sentence, for the blocks that hold two. */
+const ProseSecond =
+	"Extensions are unmodified: the marketplace's packages load as they are, and nothing in the editor has to be rebuilt to carry them.";
+
+/* ─── THE BAND ───────────────────────────────────────────────────────────── */
+
+const BandOf = (Row: Specimen): Band => ({
+	kicker: Row.label ?? "/THE SUBSTITUTION",
+	heading:
+		Row.state_name === "DENSE"
+			? "The section, inside the card"
+			: "The substitution, and what it costs",
+	standfirst:
+		"One subject per band: a claim the chapter makes in one sentence, at most two lines.",
+	footnote: "SOURCE: /DOC/BUILD-PIPELINE\u2001READ AT THIS COMMIT",
+	/**
+	 * The band is printed on a white insert unless the row is already inside the
+	 * card stage: the sheet composes one band inside another to print the block at
+	 * 1:1, and a `paper` tone is what keeps the inner one a box rather than a
+	 * second chapter rule inside the outer band's body.
+	 */
+	...(Row.width === "card" ? {} : { tone: "paper" as const }),
+	...(Row.dense === true ? { dense: true } : {}),
+	...(Row.state === "empty" || Row.state === "loading"
+		? { state: Row.state }
+		: {}),
+	...(Row.empty === undefined ? {} : { empty: Row.empty }),
+});
+
+/* ─── THE ENTRY ──────────────────────────────────────────────────────────── */
+
+/** The eight elements, as records - the site's own set. */
+const ElementNames = [
+	"LAND",
+	"MOUNTAIN",
+	"COCOON",
+	"WIND",
+	"SKY",
+	"AIR",
+	"ECHO",
+	"GROVE",
+] as const;
+
+/** The facts an entry prints when it is read as a row of them. */
+const EntryFacts = [
+	{ key: "TARGET:", value: "MACOS\u2001AARCH64" },
+	{ key: "LICENSE:", value: "CC0\u2001PUBLIC DOMAIN" },
+	{ key: "STATUS:", value: "ACTIVE" },
+];
+
+const EntryOf = (Row: Specimen): EntryRecord => {
+	const Name = Row.label ?? "LAND";
+
+	return {
+		index: `# ${Name}_01`,
+		name: Name,
+		glyph: "↳",
+		chips: ["RUST", "TAURI", "CC0"],
+		body: `${Name.charAt(0)}${Name.slice(1).toLowerCase()}: ${Prose}`,
+		href: "/Doc",
+		...(Row.state === undefined
+			? {}
+			: { state: Row.state as Entry["state"] }),
+		...(Row.empty === undefined ? {} : { empty: Row.empty }),
+		...(Row.variant === "facts" ? { facts: EntryFacts } : {}),
+		note: "Component/Record/Type.ts\u2001THE ELEMENT RECORD",
+		...(Row.dense === true ? { dense: true } : {}),
+		...(Row.surface === undefined
+			? {}
+			: { surface: Row.surface as "card" | "bare" }),
+	};
+};
+
+/* ─── THE STAGE ──────────────────────────────────────────────────────────── */
+
+/** The build's own stages, as the pipeline documents them. */
+const Pipeline = [
+	{ label: "SOURCE", line: "the tree at the commit this page was built from" },
+	{ label: "VERIFY", line: "the checksums, against the registry" },
+	{ label: "PREPARE", line: "the Tauri bundle, per target" },
+	{ label: "SIGN", line: "the artifact, once a key exists" },
+	{ label: "PUBLISH", line: "to the channel the release names" },
+	{ label: "ANNOUNCE", line: "the record, with its figures" },
+	{ label: "ARCHIVE", line: "the edition, under its stamp" },
+	{ label: "AUDIT", line: "the run, against its own transcript" },
+	{ label: "RETIRE", line: "the previous edition, when it expires" },
+];
+
+const StageOf = (Row: Specimen): Stage[] => {
+	const Count = Row.rows ?? 4;
+
+	return Array.from({ length: Count }, (_, Index) => {
+		const Step = Pipeline[Index % Pipeline.length]!;
+
+		/**
+		 * The run's own facts, where the row is about a run: the step the run is
+		 * at is `ACTIVE`, the steps before it are `VERIFIED`, and the step the
+		 * run stopped on is `INTERRUPTED` with everything after it `PREPARING`.
+		 */
+		const Position = Row.current === undefined
+			? undefined
+			: Number(Row.current);
+
+		const Index_ = Index + 1;
+
+		const State =
+			Row.state === "interrupted"
+				? Index_ === 3
+					? ("interrupted" as const)
+					: Index_ < 3
+						? ("verified" as const)
+						: ("preparing" as const)
+				: Position === undefined
+					? undefined
+					: Index_ < Position
+						? ("verified" as const)
+						: Index_ === Position
+							? ("active" as const)
+							: ("preparing" as const);
+
+		return {
+			index: String(Index_).padStart(2, "0"),
+			label: Step.label,
+			line: Step.line,
+			href: "/Doc/Build-Pipeline",
+			...(State === undefined ? {} : { state: State }),
+			...(Row.variant === "detail"
+				? {
+						detail: `${Step.label} is the stage that ${Step.line}. It runs once per target, in the order the pipeline prints, and it writes its own transcript so the run can be checked afterwards.`,
+					}
+				: {}),
+		};
+	});
+};
+
+/* ─── THE FIGURE ─────────────────────────────────────────────────────────── */
+
+const LongCaption =
+	"The workbench at first paint, before any document is open: the tree on the left, the editor's own field in the centre, and the panel that will carry the terminal, the problems and the extensions. The capture was taken on the reference machine at the commit this page was built from, at the default window size, with no theme installed - so what it shows is the editor as it ships and not as it can be dressed. The three marks in the corner are the render's own, not an overlay: the plate is a flash observation and the flash is part of what it records.";
+
+const FigureOf = (Row: Specimen): Figure => {
+	if (Row.variant === "nofigure") {
+		return {
+			caption:
+				"The figure's evidence is its sentence: three stages, in order, each one a fact the pipeline prints about itself.",
+			provenance: "Source/Function/Build/Index.ts\u2001THE STAGE LIST",
+			folio: "〈FIGURE 02〉",
+		};
+	}
+
+	if (Row.variant === "long") {
+		return {
+			caption: LongCaption,
+			provenance: "Public/Evidence/Land/Workbench-01.png\u2001FLASH OBSERVATION",
+			folio: "〈FIGURE 03〉",
+			src: "/Evidence/Land/NightGlass-01.png",
+			alt: "Rain-speckled glass reflecting a green light at night",
+		};
+	}
+
+	if (Row.variant === "open") {
+		return {
+			caption: LongCaption,
+			provenance: "Public/Evidence/Land/Workbench-01.png\u2001FLASH OBSERVATION",
+			folio: "〈FIGURE 04〉",
+			open: true,
+			src: "/Evidence/Land/NightGlass-01.png",
+			alt: "Rain-speckled glass reflecting a green light at night",
+		};
+	}
+
+	if (Row.state === "unavailable") {
+		return {
+			caption:
+				"The workbench at first paint. The capture is filed in the element's manifest and is not in this build.",
+			provenance: "Public/Evidence/manifest.yaml\u2001STATUS: PLACEHOLDER",
+			folio: "〈FIGURE 05〉",
+			state: "unavailable",
+			next: "READ THE ELEMENT'S MANIFEST, WHICH NAMES THE SUBJECT AND THE MODE",
+		};
+	}
+
+	return {
+		caption:
+			"Rain on glass at night, lit from behind: the element's own plate, and the one capture of the fifteen the manifests name that is in the build.",
+		provenance: "Public/Evidence/Land/NightGlass-01.png\u2001FLASH OBSERVATION",
+		folio: "〈FIGURE 01〉",
+		src: "/Evidence/Land/NightGlass-01.png",
+		alt: "Rain-speckled glass reflecting a green light at night",
+	};
+};
+
+/* ─── THE PLATE ──────────────────────────────────────────────────────────── */
+
+const PlateFacts = [
+	{ key: "MODE", value: "FLASH OBSERVATION" },
+	{ key: "CROP", value: "21 / 9, CENTRE" },
+	{ key: "USAGE", value: "/DOC, /DOWNLOAD" },
+];
+
+const PlateOf = (Row: Specimen): Plate => ({
+	index: "PLATE_01",
+	label: "THE WORKBENCH",
+	subject: "The editor at first paint, with no document open.",
+	caption:
+		"Read the tree first, then the field, then the panel: the three regions the interface is made of, in the order a reader meets them.",
+	facts: PlateFacts,
+	source: "Public/Evidence/Land/manifest.yaml",
+	asOf: "2026-11-14",
+	...(Row.variant === "open" ? { open: true } : {}),
+	...(Row.state === "unavailable"
+		? {
+				state: "unavailable" as const,
+				next: "READ THE MANIFEST, WHICH NAMES THE SUBJECT AND THE MODE",
+			}
+		: {
+				src: "/Evidence/Land/NightGlass-01.png",
+				alt: "Rain-speckled glass reflecting a green light at night",
+			}),
+});
+
+/* ─── THE WELL ───────────────────────────────────────────────────────────── */
+
+/** A config block with one line that will not fit any column. */
+const LongConfig = [
+	"{",
+	'  "target": "macos-aarch64",',
+	'  "features": ["telemetry", "updater", "signing"],',
+	'  "identifier": "land.editor.desktop.application.bundle.for.macos.aarch64.with.the.default.entitlements.and.no.sandbox.profile",',
+	'  "window": { "width": 1440, "height": 900 },',
+	"}",
+];
+
+/** A command's output, twelve lines of it, of which four print. */
+const BuildOutput = Array.from(
+	{ length: 12 },
+	(_, Index) =>
+		`stage ${String(Index + 1).padStart(2, "0")} / 12\u2001${Pipeline[Index % Pipeline.length]!.label.toLowerCase()}\u2001ok`,
+);
+
+const WellOf = (Row: Specimen): Well => {
+	if (Row.state === "empty") {
+		return {
+			label: "INSTALL",
+			language: "bash",
+			lines: [],
+			state: "empty",
+			empty: Row.empty,
+			source: "/Doc/Install",
+		};
+	}
+
+	if (Row.variant === "wrap") {
+		return {
+			label: "CONFIG",
+			language: "json",
+			lines: LongConfig,
+			wrap: true,
+			note: "THE CONFIG IS READ, NOT TYPED: THE WELL WRAPS IT SO THE LONGEST VALUE PRINTS IN FULL.",
+			source: "tauri.conf.json",
+		};
+	}
+
+	if (Row.variant === "window") {
+		return {
+			label: "OUTPUT",
+			language: "text",
+			lines: BuildOutput,
+			window: { showing: 4, total: "240" },
+			note: "THE COPY PAYLOAD IS EVERY LINE THE BLOCK HOLDS; THE PAGE PRINTS THE FIRST FOUR AND NAMES THE REST.",
+			source: "the build's own log, at this commit",
+		};
+	}
+
+	return {
+		label: "INSTALL",
+		language: "bash",
+		lines: [
+			"$ git clone https://github.com/CodeEditorLand/Site",
+			"$ cd Site && dum install",
+			"$ dum Run\u2001# http://localhost:9999/",
+		],
+		source: "/Doc/Install",
+	};
+};
+
+/* ─── THE TRANSCRIPT ─────────────────────────────────────────────────────── */
+
+const Turns = [
+	{ mark: "→", speaker: "READER", line: "dum Run", stamp: "00:00" },
+	{
+		mark: "↳",
+		speaker: "BUILD",
+		line: "reading Source/Content/Record/Land.ts",
+		stamp: "00:01",
+	},
+	{
+		mark: "↳",
+		speaker: "BUILD",
+		line: "stage 01 / 12 source\u2001ok",
+		stamp: "00:04",
+	},
+	{
+		mark: "→",
+		speaker: "READER",
+		line: "open /Doc/Build-Pipeline",
+		stamp: "00:06",
+	},
+	{
+		mark: "↳",
+		speaker: "BUILD",
+		line: "route resolved: 26 routes in the register",
+		stamp: "00:07",
+	},
+	{
+		mark: "#",
+		speaker: "DESK",
+		line: "the session is recorded from the first command",
+		stamp: "00:09",
+	},
+];
+
+const TranscriptOf = (Row: Specimen): Transcript => {
+	const Count = Row.rows ?? Turns.length;
+
+	const Printed = Array.from({ length: Count }, (_, Index) => {
+		const Turn = Turns[Index % Turns.length]!;
+
+		return Row.state === "failed" && Index === 3
+			? {
+					...Turn,
+					mark: "◎",
+					speaker: "BUILD",
+					line: "stage 04 / 12 sign\u2001failed",
+					state: "interrupted" as const,
+					cause: "no signing key is configured for this target",
+					next: "SET LAND_SIGNING_KEY, OR BUILD WITH SIGNING DISABLED",
+				}
+			: Turn;
+	});
+
+	return {
+		index: "TRANSCRIPT_01",
+		label: "BUILD",
+		turns: Printed,
+		source: "/Doc/Build-Pipeline\u2001THE RUN AT THIS COMMIT",
+		asOf: "2026-11-19",
+		...(Row.state === "loading"
+			? { state: "loading" as const }
+			: Row.state === "empty" || Count === 0
+				? { state: "empty" as const, empty: Row.empty }
+				: {}),
+		...(Row.variant === "window"
+			? { window: { showing: Count, total: "240" } }
+			: {}),
+		...(Row.state === "failed"
+			? {
+					retry: {
+						label: "RE-RUN THE BUILD",
+						href: "/Doc/Build-Pipeline",
+					},
+					note: "THE SESSION STOPS AT THE FIRST FAILED STAGE AND DOES NOT RETRY ITSELF.",
+				}
+			: {}),
+	};
+};
+
+/* ─── THE PAIR ───────────────────────────────────────────────────────────── */
+
+const PairOf = (Row: Specimen): Pair => ({
+	left: {
+		label: "/FROM SOURCE",
+		body: "Clone the tree, install the workspace, run the dev server. The build you read is the build you ran, and every fact on the page came out of it.",
+		subject: true,
+		note: "/Doc/Install",
+	},
+	right:
+		Row.state === "empty"
+			? {
+					label: "/FROM THE RELEASE",
+					empty: Row.empty,
+					state: "unavailable",
+					note: "Public/Release/manifest.yaml",
+				}
+			: {
+					label: "/FROM THE RELEASE",
+					body: "Download the signed artifact for your target. No artifact exists yet: signing is planned and the manifest says so.",
+					state: "preparing",
+					note: "Public/Release/manifest.yaml",
+				},
+	...(Row.variant === "relation"
+		? { relation: "BOTH READ THE SAME TREE AT THE SAME COMMIT" }
+		: {}),
+	caption:
+		"The two ways to get the editor, read against each other: one exists today, and one is a plan with a manifest.",
+});
+
+/* ─── THE HERO ───────────────────────────────────────────────────────────── */
+
+const HeroFacts = [
+	{ key: "TARGET:", value: "MACOS\u2001WINDOWS\u2001LINUX" },
+	{ key: "LICENSE:", value: "CC0\u2001PUBLIC DOMAIN" },
+	{ key: "SIGNAL:", value: "ACTIVE" },
+	{ key: "SOURCE:", value: "/DOC/BUILD-PIPELINE", code: true },
+];
+
+const HeroOf = (Row: Specimen): Hero => ({
+	index: "# LAND_01",
+	claim: "〈RUST + TAURI〉",
+	route: "/CHANNEL:PUBLIC",
+	status: { state: "active", tone: "specimen" },
+	metadata: HeroFacts,
+	relation: "LAND:",
+	proposition: "READ THE BUILD PIPELINE",
+	seal: "Land",
+	action: { label: "READ THE DOCUMENT", href: "/Doc" },
+	...(Row.variant === "nofigure"
+		? {}
+		: Row.state === "unavailable"
+			? {
+					evidence: {
+						state: "unavailable" as const,
+						next: "READ THE ELEMENT'S MANIFEST",
+					},
+				}
+			: {
+					evidence: {
+						src: "/Evidence/Land/NightGlass-01.png",
+						alt: "Rain-speckled glass reflecting a green light at night",
+					},
+				}),
+});
+
+/* ─── THE ARCHIVE ────────────────────────────────────────────────────────── */
+
+/** The doc tree's own rows, as an archive of records. */
+const DocRows = [
+	{ title: "Build Pipeline", note: "the three stages, and the artifact each one produces", marker: "/DOC" },
+	{ title: "Install", note: "from source, on the three targets", marker: "/DOC" },
+	{ title: "Extensions", note: "the unmodified VS Code API", marker: "/DOC" },
+	{ title: "Protocols", note: "gRPC, IPC, TCP and WASM, and when each is used", marker: "/DOC" },
+	{ title: "Verify", note: "the checksums, and what they are checksums of", marker: "/DOC" },
+	{ title: "License", note: "CC0, and what it permits", marker: "/DOC" },
+	{ title: "Glossary", note: "the document's twenty terms", marker: "/MORE" },
+	{ title: "Compare", note: "the editor against the alternatives", marker: "/MORE" },
+	{ title: "Status", note: "what is built and what is not", marker: "/MORE" },
+	{ title: "Changelog", note: "every edition, with its date", marker: "/MORE" },
+	{ title: "Contributing", note: "how a change is proposed", marker: "/MORE" },
+	{ title: "Privacy", note: "what is collected, which is nothing", marker: "/LEGAL" },
+];
+
+const ArchiveOf = (Row: Specimen): Archive => {
+	const Count = Row.rows ?? 6;
+
+	const Entries = Array.from({ length: Count }, (_, Index) => {
+		const Doc = DocRows[Index % DocRows.length]!;
+
+		return {
+			title: Doc.title,
+			href: "/Doc",
+			note: Doc.note,
+			marker: Doc.marker,
+			group: Index < 4 ? "/THE BUILD" : "/THE RECORD",
+			...(Row.variant === "gone" && Index === 2
+				? { state: "gone" as const }
+				: {}),
+		};
+	});
+
+	return {
+		index: "ARCHIVE_01",
+		heading: "The document, filed",
+		count:
+			Row.variant === "window"
+				? "240 ENTRIES"
+				: `${Count} ${Count === 1 ? "ENTRY" : "ENTRIES"}`,
+		entries: Entries,
+		...(Row.state === "empty" || Count === 0
+			? { state: "empty" as const, empty: Row.empty }
+			: {}),
+		...(Row.variant === "window"
+			? { window: { showing: Count, total: "240" } }
+			: {}),
+		note: "READ FROM THE DOC COLLECTION AT BUILD TIME\u2001AS OF THIS COMMIT",
+	};
+};
+
+/* ─── THE ASIDE ──────────────────────────────────────────────────────────── */
+
+const AsideRows = [
+	{ key: "ELECTRON:", value: "NOT USED" },
+	{ key: "CHROMIUM:", value: "NOT BUNDLED" },
+	{ key: "NODE:", value: "NOT IN THE PROCESS TREE" },
+	{ key: "EXTENSIONS:", value: "UNMODIFIED" },
+	{ key: "TELEMETRY:", value: "FEATURE GATED" },
+];
+
+const AsideOf = (Row: Specimen): Aside => ({
+	index: "ASIDE_01",
+	label: "WHAT THIS DOES NOT COVER",
+	line: "↳ THE FOUR THINGS A READER ASSUMES AND THIS PAGE DOES NOT PROMISE",
+	rows: AsideRows,
+	source: "/Doc/Build-Pipeline\u2001SECTION 4",
+	...(Row.variant === "open" ? { open: true } : {}),
+	...(Row.state === "loading" ? { state: "loading" as const } : {}),
+	...(Row.variant === "count" ? { count: "04 OF 09" } : {}),
+});
+
+/* ─── THE MARGIN ─────────────────────────────────────────────────────────── */
+
+const MarginOf = (Row: Specimen): MarginNote => ({
+	index: "NOTE_01",
+	label: "THE DATE",
+	body: "Every figure on this page was counted at the commit the page was built from, and the commit is printed in the footer record.",
+	source:
+		Row.variant === "nosource"
+			? undefined
+			: "Content/Register/Routes.ts\u2001COUNTED AT BUILD",
+	asOf: "2026-11-19",
+	state: Row.variant === "nosource" ? "unavailable" : undefined,
+	...(Row.variant === "gone"
+		? {
+				link: {
+					label: "THE REGISTER",
+					href: "/Contents",
+					state: "gone" as const,
+				},
+			}
+		: { link: { label: "THE REGISTER", href: "/Contents" } }),
+});
+
+/* ─── THE INSET ──────────────────────────────────────────────────────────── */
+
+const Bars = [
+	{ label: "SECTIONS", value: "09", share: 0.9 },
+	{ label: "WORDS", value: "1,240", share: 0.62 },
+	{ label: "MINUTES", value: "6", share: 0.3 },
+];
+
+const InsetOf = (Row: Specimen): Inset => {
+	const Figure =
+		Row.variant === "bars" || Row.variant === "total"
+			? {
+					caption: "The shape of the chapter this note hangs beside.",
+					source: "Content/Doc/Build-Pipeline.ts",
+					asOf: "2026-11-19",
+					bars: Bars,
+					...(Row.variant === "total"
+						? {
+								total: {
+									label: "TOTAL SECTIONS",
+									value: "09",
+									share: 1,
+								},
+							}
+						: {}),
+				}
+			: Row.variant === "absent"
+				? {
+						caption: "The measure of the chapter, taken at this commit.",
+						source: "Content/Doc/Build-Pipeline.ts",
+						state: "unavailable" as const,
+						next: "READ THE CHAPTER, WHICH PRINTS ITS OWN COUNT",
+					}
+				: undefined;
+
+	return {
+		index: "INSET_01",
+		label: "THE SHAPE",
+		body: "The chapter is nine sections and six minutes: short enough to read before deciding, long enough to carry the three stages it describes.",
+		source: "Content/Doc/Build-Pipeline.ts",
+		state: "verified",
+		...(Figure === undefined ? {} : { figure: Figure }),
+		link: { label: "READ THE CHAPTER", href: "/Doc/Build-Pipeline" },
+	};
+};
+
+/* ─── THE STAMP ──────────────────────────────────────────────────────────── */
+
+const StampOf = (Row: Specimen): Stamp => ({
+	index: "STAMP_01",
+	label: "EDITION",
+	mark: "〈EDITION 01〉",
+	route: "/CHANNEL:PUBLIC",
+	rows: [
+		{ key: "ISSUED:", value: "2026-11-19" },
+		{ key: "HOLDING:", value: "CC0\u2001PUBLIC DOMAIN" },
+		{ key: "REACHES:", value: "MACOS\u2001WINDOWS\u2001LINUX" },
+	],
+	authority: "VERIFY: /VERIFY\u2001AGAINST THE CHECKSUMS IN THE MANIFEST",
+	state: "verified",
+	note: "THE MARK COVERS THE TREE, NOT THE RELEASE ARTIFACTS: NOTHING IS DOWNLOADABLE YET.",
+	...(Row.state === "revoked"
+		? {
+				revoked:
+					"THE EDITION WAS SUPERSEDED BY EDITION 02 ON 2026-11-19",
+				state: "archived" as const,
+			}
+		: {}),
+	...(Row.variant === "expires"
+		? {
+				expires: "2027-11-19",
+				verify: { label: "VERIFY THE MARK", href: "/Verify" },
+			}
+		: {}),
+});
+
+/* ─── THE FAILURE ────────────────────────────────────────────────────────── */
+
+const FailureOf = (Row: Specimen): Failure => ({
+	index: "FAILURE_01",
+	name: "BLANK WORKBENCH",
+	symptom:
+		"The window opens, the tree is empty, and no document is loaded: the editor is running and has nothing to show.",
+	cause:
+		"The workspace was opened at a path the editor cannot read, so the tree resolved to nothing and the last document's handle was stale.",
+	next:
+		Row.variant === "deadend"
+			? "UNAVAILABLE"
+			: "OPEN THE WORKSPACE FROM ITS ROOT, NOT FROM A PARENT DIRECTORY",
+	state: "interrupted",
+	source: "/Doc/Troubleshooting\u2001SECTION 2",
+	...(Row.variant === "deadend" ? {} : {}),
+	...(Row.variant === "recovery"
+		? {
+				recovery: {
+					label: "RE-OPEN THE WORKSPACE",
+					href: "/Doc/Troubleshooting",
+				},
+				detail:
+					"The failure reproduces when the editor is started from a shell whose working directory is the repository's parent: the tree walks up, finds no package manifest, and stops. Starting from the root, or passing the path explicitly, resolves it. The log line is `workspace: resolve -> none` at the moment the window is created.",
+			}
+		: {}),
+});
+
+/* ─── THE STAGE'S BOX ────────────────────────────────────────────────────── */
+
+/** The stage's own width, from the row. */
+const SkinClass = (Row: Specimen): string => {
+	const Width = Row.width ?? "band";
+
+	return `specimen-narrative__stage specimen-narrative__stage--${Width}`;
+};
+---
+
+<div class="specimen-narrative">
+	{Groups.map((Group) => (
+		<section class="specimen-narrative__group" key={Group.key}>
+			<p class="specimen-narrative__group-head">
+				<span class="specimen-narrative__group-kicker">
+					{Group.label}
+				</span>
+				<span class="specimen-narrative__group-count">
+					{InGroup(Group.key).length}
+				</span>
+			</p>
+
+			<p class="specimen-narrative__group-note">{Group.note}</p>
+
+			<div class="specimen-narrative__rows">
+				{InGroup(Group.key).map((Entry) => (
+					<article
+						class="specimen-narrative__row"
+						id={`narrative-${Entry.mark}`}
+					>
+						<header class="specimen-narrative__spec">
+							<p class="specimen-narrative__mark">
+								<span
+									class="specimen-narrative__mark-hash"
+									aria-hidden="true"
+								>
+									#
+								</span>
+								{Entry.mark}
+							</p>
+
+							<h3 class="specimen-narrative__state">
+								{Entry.state_name}
+							</h3>
+
+							<p class="specimen-narrative__part">
+								{Entry.component}
+							</p>
+
+							<p class="specimen-narrative__when">
+								{Entry.when}
+							</p>
+						</header>
+
+						<div
+							class={SkinClass(Entry)}
+							data-skin={Entry.width ?? "band"}
+						>
+							{Entry.kind === "band" ? (
+								<RecordBand band={BandOf(Entry)}>
+									<p class="specimen-narrative__prose">
+										{Prose}
+									</p>
+									<RecordLedger
+										rows={[
+											{
+												key: "STAGES:",
+												value: "03",
+												note: "source, verify, prepare",
+											},
+											{
+												key: "TARGET:",
+												value: "MACOS\u2001AARCH64",
+											},
+										]}
+									/>
+								</RecordBand>
+							) : Entry.kind === "entry" ? (
+								<RecordEntry {...EntryOf(Entry)} />
+							) : Entry.kind === "stage" ? (
+								<RecordStage
+									stages={StageOf(Entry)}
+									variant={
+										Entry.variant === "plates"
+											? "plates"
+											: "rail"
+									}
+									orientation={
+										Entry.rows === 9 ? "stack" : "row"
+									}
+									current={Entry.current}
+									state={
+										Entry.rows === 0
+											? "empty"
+											: undefined
+									}
+									empty={Entry.empty}
+								/>
+							) : Entry.kind === "figure" ? (
+								<RecordFigure {...FigureOf(Entry)} />
+							) : Entry.kind === "plate" ? (
+								<RecordPlate plate={PlateOf(Entry)} />
+							) : Entry.kind === "well" ? (
+								<RecordWell {...WellOf(Entry)} />
+							) : Entry.kind === "transcript" ? (
+								<RecordTranscript
+									transcript={TranscriptOf(Entry)}
+								/>
+							) : Entry.kind === "pair" ? (
+								<RecordPair pair={PairOf(Entry)} />
+							) : Entry.kind === "hero" ? (
+								<RecordHero {...HeroOf(Entry)} />
+							) : Entry.kind === "archive" ? (
+								<RecordArchive {...ArchiveOf(Entry)} />
+							) : Entry.kind === "aside" ? (
+								<RecordAside aside={AsideOf(Entry)} />
+							) : Entry.kind === "margin" ? (
+								<RecordMargin note={MarginOf(Entry)} />
+							) : Entry.kind === "inset" ? (
+								<RecordInset inset={InsetOf(Entry)} />
+							) : Entry.kind === "stamp" ? (
+								<RecordStamp stamp={StampOf(Entry)} />
+							) : Entry.kind === "failure" ? (
+								<RecordFailure
+									failure={FailureOf(Entry)}
+								/>
+							) : null}
+						</div>
+					</article>
+				))}
+			</div>
+		</section>
+	))}
+</div>

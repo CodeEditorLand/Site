@@ -1,0 +1,122 @@
+---
+/**
+ * SurfaceLife - one surface's lifecycle, in the site's one vocabulary of five.
+ *
+ * ─── WHY THIS BLOCK EXISTS ────────────────────────────────────────────────
+ * `State.ts` prints what a surface is DOING. It cannot print how far along the
+ * surface is, and every page answered that second question in its own adjective:
+ * "Coming Soon" on the portal, "Feature Gated" on the download masthead,
+ * "Disabled" in the dashboard, "Beta" in an article. Five adjectives for one
+ * fact means two pages cannot be compared and no page can be counted - which is
+ * the defect this block removes. The five words are `LIVE`, `BETA`, `PLANNED`,
+ * `RETIRED`, `UNAVAILABLE`, and the table behind them is `State.ts`'s `Life`.
+ *
+ * ─── THE ANATOMY ──────────────────────────────────────────────────────────
+ * A register head, the surface's own word, and the scale it sits on:
+ *
+ *   # LIFECYCLE␁BETA
+ *   LIFECYCLE: ▪ BETA
+ *   LIVE   BETA   PLANNED   RETIRED   UNAVAILABLE        ← the five, in order
+ *   ↳ Open to every reader, and the behaviour may still change under them.
+ *
+ * The five print in every state, because a vocabulary a reader cannot see the
+ * edges of is not a vocabulary - and the word in force is marked by the same
+ * state square the register uses, at 500, so the position survives greyscale.
+ * The gloss under the scale is the definition of the word in force: it is what
+ * turns "PLANNED" from an adjective into a fact a reader can act on.
+ *
+ * ─── THE ADVERSE ARMS ARE THE VOCABULARY ──────────────────────────────────
+ * A surface whose lifecycle the build cannot state prints `UNAVAILABLE` - the
+ * fifth word, not a blank and not a guess. A caller that hands in an adjective
+ * (`Coming Soon`) gets `UNAVAILABLE` and the block says so in its `note`: an
+ * adjective is not a word from the table, and the block will not print one as
+ * if it were.
+ *
+ * No script and no hydration: a lifecycle is printed.
+ */
+import { Life, LifeOf, LifeTerms } from "./State.js";
+
+import Mark from "../Mark/Mark.astro";
+
+interface Props {
+	/**
+	 * The lifecycle word: `LIVE`, `BETA`, `PLANNED`, `RETIRED`, `UNAVAILABLE`.
+	 * A word outside the five prints `UNAVAILABLE` - never the caller's
+	 * adjective, because the point of the block is that the vocabulary is closed.
+	 */
+	term: string;
+
+	/** One line of provenance under the scale, when the word has a source. */
+	note?: string;
+
+	/** Print the scale without the gloss - for a head that already carries one. */
+	dense?: boolean;
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const { term, note, dense = false, class: ClassName } = Astro.props;
+
+const Resolved = LifeOf(term);
+
+const Word = Resolved ?? Life.UNAVAILABLE;
+
+/** The row the register head prints: the word in force, and its index. */
+const Position = String(LifeTerms.indexOf(Word.term) + 1).padStart(2, "0");
+---
+
+<section
+	class:list={[
+		"surface__life",
+		dense && "surface__life--dense",
+		ClassName,
+	]}
+	aria-label={`LIFECYCLE: ${Word.term}`}
+>
+	<p class="surface__life-register">
+		<span class="surface__life-mark" aria-hidden="true">#</span>
+		<span class="surface__life-word">LIFECYCLE</span>
+		<span class="surface__life-sep" aria-hidden="true">{"\u2001/\u2001"}</span>
+		<span class="surface__life-index">{Position}</span>
+		<span class="surface__life-sep" aria-hidden="true">{"\u2001/\u2001"}</span>
+		<span class="surface__life-total">{String(LifeTerms.length).padStart(2, "0")}</span>
+	</p>
+
+	<p class:list={["surface__life-status", `surface__life-status--${Word.tone}`]}>
+		<Mark kind="square" tone={Word.tone} size={Word.tone === "specimen" ? "attested" : "rest"} />
+		<span class="surface__life-key">LIFECYCLE:</span>
+		<span class="surface__life-term">{Word.term}</span>
+	</p>
+
+	<ol class="surface__life-scale">
+		{LifeTerms.map((Term) => (
+			<li
+				class:list={[
+					"surface__life-step",
+					Term === Word.term && "surface__life-step--inforce",
+					`surface__life-step--${Life[Term].tone}`,
+				]}
+				aria-current={Term === Word.term ? "true" : undefined}
+			>
+				<span class="surface__life-step-mark" aria-hidden="true">
+					{Term === Word.term ? "▪" : "·"}
+				</span>
+				<span class="surface__life-step-word">{Term}</span>
+			</li>
+		))}
+	</ol>
+
+	{!dense ? <p class="surface__life-gloss">↳ {Word.gloss}</p> : null}
+
+	{Resolved === undefined ? (
+		<p class="surface__life-note">
+			<strong class="surface__life-note-key">NOTE:</strong>
+			{` `}The word handed in was not one of the five, so the block prints the
+			honest one. `PLANNED` is the word "Coming Soon" was reaching for;
+			`RETIRED` is the one "Disabled" was.
+		</p>
+	) : null}
+
+	{note ? <p class="surface__life-note">{note}</p> : null}
+</section>

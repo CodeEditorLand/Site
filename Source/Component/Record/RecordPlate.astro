@@ -50,6 +50,8 @@
 import { FieldRecordEvidence } from "../Brand/FieldRecordEvidence";
 import { Tone } from "../Surface/State.js";
 
+import Mark from "../Mark/Mark.astro";
+
 import type { Plate } from "./Type.js";
 
 /** The image arm: `src` and `alt` are one indivisible pair. */
@@ -124,7 +126,12 @@ const Id = `plate-${plate.index.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 						<span class="record-plate__tombstone-key">NEXT:</span>
 						{plate.next}
 					</span>
-				) : null}
+				) : (
+					<span class="record-plate__tombstone-next record-plate__tombstone-next--absent">
+						<span class="record-plate__tombstone-key">NEXT:</span>
+						UNAVAILABLE
+					</span>
+				)}
 			</div>
 		) : Image ? (
 			<FieldRecordEvidence
@@ -140,7 +147,7 @@ const Id = `plate-${plate.index.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 		) : null}
 	</div>
 
-	<figcaption class="record-plate__channel">
+	<figcaption class:list={["record-plate__channel", plate.open && "record-plate__channel--open"]}>
 		<p class="record-plate__head">
 			<span class="record-plate__index"># {plate.index}</span>
 			{plate.label ? (
@@ -154,34 +161,94 @@ const Id = `plate-${plate.index.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 			) : null}
 		</p>
 
-		<p class="record-plate__row">
-			<span class="record-plate__key">FIGURE:</span>
-			<span class="record-plate__subject">
-				<span class="record-plate__arrow" aria-hidden="true">
-					&#8627;
-				</span>
-				{plate.subject}
-			</span>
-		</p>
+		{plate.open ? (
+			<details class="record-plate__apparatus">
+				<summary class="record-plate__row record-plate__summary">
+					<span class="record-plate__key">FIGURE:</span>
+					<span class="record-plate__subject">
+						<span class="record-plate__arrow" aria-hidden="true">
+							&#8627;
+						</span>
+						{plate.subject}
+					</span>
+					<Mark kind="fold" />
+				</summary>
 
-		{plate.caption ? (
-			<p class="record-plate__caption">{plate.caption}</p>
-		) : null}
+				<div class="record-plate__apparatus-body">
+					{plate.caption ? (
+						<p class="record-plate__caption">{plate.caption}</p>
+					) : null}
 
-		{plate.facts && plate.facts.length > 0 ? (
-			<dl class="record-plate__facts">
-				{plate.facts.map((Fact) => (
-					<div class="record-plate__fact">
-						<dt class="record-plate__fact-key">{Fact.key}:</dt>
-						<dd class="record-plate__fact-value">{Fact.value}</dd>
-					</div>
-				))}
-			</dl>
-		) : null}
+					{plate.facts && plate.facts.length > 0 ? (
+						<dl class="record-plate__facts">
+							{plate.facts.map((Fact) => (
+								<div class="record-plate__fact">
+									<dt class="record-plate__fact-key">
+										{Fact.key}:
+									</dt>
+									<dd class="record-plate__fact-value">
+										{Fact.value}
+									</dd>
+								</div>
+							))}
+						</dl>
+					) : null}
 
-		<p class="record-plate__source">
-			<span class="record-plate__source-key">SOURCE:</span>
-			{plate.source}
-		</p>
+					<p class="record-plate__source">
+						<span class="record-plate__source-key">SOURCE:</span>
+						{plate.source}
+					</p>
+
+					{Image ? (
+						<p class="record-plate__capture-link">
+							<a
+								href={Image.src}
+								target="_blank"
+								rel="noreferrer"
+							>
+								<span aria-hidden="true">→</span>
+								{"\u2001"}OPEN THE CAPTURE
+							</a>
+						</p>
+					) : null}
+				</div>
+			</details>
+		) : (
+			<>
+				<p class="record-plate__row">
+					<span class="record-plate__key">FIGURE:</span>
+					<span class="record-plate__subject">
+						<span class="record-plate__arrow" aria-hidden="true">
+							&#8627;
+						</span>
+						{plate.subject}
+					</span>
+				</p>
+
+				{plate.caption ? (
+					<p class="record-plate__caption">{plate.caption}</p>
+				) : null}
+
+				{plate.facts && plate.facts.length > 0 ? (
+					<dl class="record-plate__facts">
+						{plate.facts.map((Fact) => (
+							<div class="record-plate__fact">
+								<dt class="record-plate__fact-key">
+									{Fact.key}:
+								</dt>
+								<dd class="record-plate__fact-value">
+									{Fact.value}
+								</dd>
+							</div>
+						))}
+					</dl>
+				) : null}
+
+				<p class="record-plate__source">
+					<span class="record-plate__source-key">SOURCE:</span>
+					{plate.source}
+				</p>
+			</>
+		)}
 	</figcaption>
 </figure>

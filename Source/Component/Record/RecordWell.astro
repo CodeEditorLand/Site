@@ -29,6 +29,26 @@
  * `data-copy-payload` rather than `data-copy`: `WireCopyButtons()` claims every
  * `jelly-icon-button[data-copy]` sitewide and would resolve its source as this
  * button's previous sibling - the title bar's label, not the command.
+ *
+ * ─── THE OVERFLOW THE BLOCK LEARNED TO OWN ────────────────────────────────
+ * A well printed `white-space: pre` and scrolled sideways, because a command
+ * that reflowed would be a command the reader cannot paste. The exploration
+ * found the other half of that truth: a well also carries CONFIG and OUTPUT,
+ * where the long line is a VALUE and not something anyone types, and a reader
+ * scrolling 300 characters sideways to find the end of a JSON string is a
+ * reader who has lost the line. So `wrap` is the caller's declaration that the
+ * lines are read rather than typed - the body goes `pre-wrap` with a hanging
+ * indent and every character still prints. The default is unchanged: a command
+ * keeps its shape.
+ *
+ * ─── AND THE THREE STATES IT DID NOT HAVE ─────────────────────────────────
+ * `window` is the too-much state: print the first N lines and name the rest on
+ * the foot (`SHOWING: 12 OF 240`), while the copy payload stays whole - the
+ * reader who copies gets the file. `state` with `empty` is the state a well
+ * never had: the command is not documented yet, and the bar prints its label so
+ * the reader knows which command is missing. `note` is the one line a well could
+ * not say - what the command assumes, which shell it wants - and it prints in
+ * the well's own foot rather than as a paragraph beside it.
  */
 import type { Well } from "./Type.js";
 
@@ -43,6 +63,11 @@ const {
 	lines,
 	copy = true,
 	source,
+	wrap = false,
+	window: Window,
+	state,
+	empty,
+	note,
 	class: Class,
 } = Astro.props;
 
@@ -53,14 +78,34 @@ const Prompt = /^\$ /;
 const Annotation = /\s+(?:#|\/\/).*$/;
 
 /**
+ * The well's own state, and whether it replaces the body. A well with no lines
+ * is empty whatever the caller says - a recess with nothing in it is a hole.
+ */
+const State = state ?? (lines.length === 0 ? "empty" : "rest");
+const Absent = State !== "rest";
+
+/** What the absence prints: the caller's sentence, or the vocabulary's word. */
+const Absence = empty ?? "UNAVAILABLE";
+
+/** The absence's tone, from the same vocabulary the layer prints. */
+const AbsenceTone = State === "loading" ? "quiet" : "ink";
+
+/**
+ * The lines actually printed: the window's `showing` when the caller declared
+ * one. The copy payload is built from every line regardless - the reader who
+ * copies gets the whole command, the reader who reads gets the part that fits.
+ */
+const Shown = Window === undefined ? lines : lines.slice(0, Window.showing);
+
+/**
  * One entry per printed line. The newline is carried inside the entry rather
  * than between the spans because `.record-well__line` is a block: it already
  * breaks the line, and whitespace between two block boxes inside a `<pre>`
  * prints as a blank line. Keeping the newline in the text makes the `<pre>` text
  * content equal the printed lines joined by "\n"; the last line carries none.
  */
-const Printed = lines.map((Line, Index) =>
-	Index === lines.length - 1
+const Printed = Shown.map((Line, Index) =>
+	Index === Shown.length - 1
 		? Line.replace(Prompt, "")
 		: `${Line.replace(Prompt, "")}\n`,
 );
@@ -72,13 +117,24 @@ const Payload = lines
 
 /** The control's accessible name; the wiring swaps it for "Copied" on copy. */
 const CopyLabel = `Copy ${label} to the clipboard`;
+
+/** Whether the foot prints anything at all: a window, a note, or a source. */
+const HasFoot = Window !== undefined || note !== undefined || source !== undefined;
 ---
 
-<figure class:list={["record-well", Class]}>
+<figure
+	class:list={[
+		"record-well",
+		wrap && "record-well--wrap",
+		Absent && "record-well--absent",
+		Class,
+	]}
+	data-state={State}
+>
 	<figcaption class="record-well__bar">
 		<span class="record-well__label">{label}</span>
 		{language && <span class="record-well__lang">{language}</span>}
-		{copy && (
+		{copy && !Absent && (
 			<jelly-icon-button
 				class="record-well__copy"
 				data-record-well-copy
@@ -109,12 +165,43 @@ const CopyLabel = `Copy ${label} to the clipboard`;
 			</jelly-icon-button>
 		)}
 	</figcaption>
-	<pre class="record-well__body"><code>{Printed.map((Line) => <span class="record-well__line">{Line}</span>)}</code></pre>
-	{source && (
-		<p class="record-well__source">
-			<span class="record-well__source-key">SOURCE:</span>
-			{source}
+	{Absent ? (
+		<p class="record-well__absent" role="status">
+			<span class="record-well__absent-mark" aria-hidden="true">
+				&#9678;
+			</span>
+			<span class="record-well__absent-key">STATUS:</span>
+			<span
+				class:list={[
+					"record-well__absent-state",
+					`record-well__absent-state--${AbsenceTone}`,
+				]}
+			>
+				{State.toUpperCase()}
+			</span>
+			<span class="record-well__absent-line">{Absence}</span>
 		</p>
+	) : (
+		<pre class="record-well__body"><code>{Printed.map((Line) => <span class="record-well__line">{Line}</span>)}</code></pre>
+	)}
+	{HasFoot && (
+		<div class="record-well__foot">
+			{Window !== undefined && (
+				<p class="record-well__window">
+					<span class="record-well__window-key">SHOWING:</span>
+					{Window.showing}
+					<span class="record-well__window-of">OF</span>
+					{Window.total}
+				</p>
+			)}
+			{note && <p class="record-well__note">{note}</p>}
+			{source && (
+				<p class="record-well__source">
+					<span class="record-well__source-key">SOURCE:</span>
+					{source}
+				</p>
+			)}
+		</div>
 	)}
 </figure>
 

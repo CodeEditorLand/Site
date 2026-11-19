@@ -128,6 +128,12 @@ interface Props {
 	 */
 	surface?: "box" | "bare";
 
+	/**
+	 * Print the rows at the tight step, for a state inside a card or a pane.
+	 * The key column narrows with it; the type never does.
+	 */
+	dense?: boolean;
+
 	/** Extra classes from the page. */
 	class?: string;
 }
@@ -149,6 +155,7 @@ const {
 	age,
 	keys = [],
 	surface = "box",
+	dense = false,
 	class: ClassName,
 } = Astro.props;
 
@@ -205,6 +212,7 @@ const IsLoading = kind === "loading";
 		"ShellState",
 		`ShellState--${kind}`,
 		surface === "bare" ? "ShellState--bare" : null,
+		dense ? "ShellState--dense" : null,
 		ClassName,
 	]}
 	data-state={kind}

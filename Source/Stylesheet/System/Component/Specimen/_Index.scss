@@ -1,15 +1,17 @@
 // The specimen sheet's stylesheet loader.
 //
-// Eight partials, one question each: the sheet (`Sheet`), the plate (`Plate`), the
+// Nine partials, one question each: the sheet (`Sheet`), the plate (`Plate`), the
 // material strip (`Material`), the input family's matrix and live rows (`Field`),
 // the overlay family's matrix, contract and live rows (`Overlay`), the display
 // family's matrix, verdicts and live rows (`Display`), the record ledger family's
-// matrix, improvements, observations and live rows (`Record`) and the page's own
-// composition (`Page`). Loaded from `System/Component/_Index.scss` beside the other
-// page surfaces, because a specimen sheet is a page surface and not a new layer.
+// matrix, improvements, observations and live rows (`Record`), the record
+// narrative family's matrix, improvements, observations and live rows
+// (`Narrative`) and the page's own composition (`Page`). Loaded from
+// `System/Component/_Index.scss` beside the other page surfaces, because a
+// specimen sheet is a page surface and not a new layer.
 //
-// Order matters once: `Page` writes the band rhythm the other seven are composed
-// inside, so it loads first - the same rule `More/_Index.scss` follows. The four
+// Order matters once: `Page` writes the band rhythm the other eight are composed
+// inside, so it loads first - the same rule `More/_Index.scss` follows. The five
 // family partials load after it because their rows are composed on that rhythm, and
 // last because their matrices are the sheet's widest objects: a partial that scrolls
 // must not have its frame rewritten by a later rule.
@@ -21,3 +23,5 @@
 @use "Overlay";
 @use "Display";
 @use "Record";
+@use "Narrative";
+@use "Frame";

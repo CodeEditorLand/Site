@@ -221,3 +221,101 @@
 	inline-size: 100vw;
 	margin-inline: calc(50% - 50vw);
 }
+
+/* ─── THE ABSENCE ARM ────────────────────────────────────────────────────── */
+// A plate whose evidence is not there states it inside its own frame, at its own
+// height: the three rows every absence on the site prints (what would be here,
+// why it is not, the way forward), in the record's `KEY:` grammar. The frame
+// stays a plate - a figure does not become a card because its evidence is
+// missing, and an empty white field is the one thing a plate may never be.
+.ShellPlate__absence {
+	display: grid;
+	justify-items: start;
+	gap: var(--space-reading);
+	inline-size: 100%;
+	max-inline-size: 100%;
+	padding: var(--space-chapter) var(--space-group);
+	text-align: start;
+}
+
+.ShellPlate__absence-status {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	display: flex;
+	align-items: baseline;
+	gap: 0.45em;
+	margin: 0;
+	color: var(--Foreground);
+}
+
+.ShellPlate__absence-status--specimen {
+	color: var(--state-ink-attested);
+}
+
+.ShellPlate__absence-status--quiet {
+	color: var(--MuteForeground);
+}
+
+.ShellPlate__absence-key {
+	color: var(--MuteForeground);
+}
+
+.ShellPlate__absence-rows {
+	display: grid;
+	inline-size: 100%;
+	max-inline-size: var(--MeasureOpening);
+	margin: 0;
+	padding: 0;
+}
+
+.ShellPlate__absence-row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 0.15rem;
+	padding-block: var(--space-tight);
+
+	@include hairline(top);
+}
+
+.ShellPlate__absence-row:first-child {
+	border-top: 0;
+	padding-block-start: 0;
+}
+
+.ShellPlate__absence-row-key {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--MuteForeground);
+}
+
+.ShellPlate__absence-row-value {
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.ShellPlate__absence-action {
+	color: var(--Foreground);
+	text-decoration: none;
+	border-bottom: 1px solid var(--Divider);
+}
+
+.ShellPlate__absence-action:hover {
+	border-bottom-color: var(--Primary);
+}
+
+@container plate (min-width: 34rem) {
+	.ShellPlate__absence-row {
+		grid-template-columns: min(var(--optical-key-column), 40%) minmax(
+				0,
+				1fr
+			);
+		gap: var(--space-reading);
+		align-items: baseline;
+	}
+}

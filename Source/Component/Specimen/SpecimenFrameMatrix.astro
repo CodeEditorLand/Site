@@ -1,0 +1,337 @@
+---
+/**
+ * SpecimenFrameMatrix - the frame family's state matrix, printed.
+ *
+ * ─── WHAT A MATRIX IS FOR, AGAIN ─────────────────────────────────────────
+ * Twenty components against twenty-two conditions is four hundred and forty
+ * cells, and the honest thing to do with four hundred and forty cells is to print
+ * them and let a reader scan. Prose would say "and the frame survives the adverse
+ * states"; a matrix says which ones, on which part, and - in the notes - why the
+ * rest cannot exist.
+ *
+ * ─── THE NOTES ARE THE ARTIFACT'S OTHER HALF ─────────────────────────────
+ * A cell that cannot exist carries a reason, and a reason is a sentence: it will
+ * not fit in a six-rem column, and a truncated reason is a reason that has been
+ * tidied into an excuse. So the cell prints `N/A` and the reason's mark in the
+ * containment brackets - `N/A 〈04〉` - and the notes below print all of them in
+ * full, numbered, in the order they are met reading across and down.
+ *
+ * ─── THE IMPROVEMENTS ARE PART OF THE MATRIX ─────────────────────────────
+ * The brief asks for "the improvements that came out of the exploration", and an
+ * improvement with no cell behind it is a preference. Each entry names the
+ * condition that revealed it, what the exploration found, and what the block does
+ * about it now - so a reader can go from a cell in the matrix to the behaviour it
+ * caused, and a later card can see why the behaviour is there.
+ *
+ * ─── EVERY FIGURE IS DERIVED ─────────────────────────────────────────────
+ * `BuiltOf(Row)` under each name, the note count in the notes' head, the register
+ * under the table, and the figures in the caption are all counted from the tables
+ * in `Content/Specimen/Frame.ts`. A cell added there changes every figure here.
+ */
+import {
+	BuiltCount,
+	BuiltIn,
+	BuiltOf,
+	CellCount,
+	Columns,
+	Improvements,
+	MatrixCell,
+	MatrixRegister,
+	Observations,
+	ReasonCount,
+	Rows,
+} from "../../Content/Specimen/Frame.js";
+
+import RecordLedger from "../Record/RecordLedger.astro";
+
+import { RegisterOf } from "../Record/RegisterLine.js";
+
+/** Every cell that cannot exist, numbered - the matrix's footnotes. */
+const Notes = Rows.flatMap((Row) =>
+	Columns.filter(
+		(Column) => MatrixCell(Row, Column).disposition === "na",
+	).map((Column) => ({ Row, Column, Cell: MatrixCell(Row, Column) })),
+).map((Note, Index) => ({ ...Note, mark: String(Index + 1).padStart(2, "0") }));
+
+/** The footnote a cell points at. */
+const NoteMark = (RowName: string, Key: string): string | undefined =>
+	Notes.find((Note) => Note.Row.name === RowName && Note.Column.key === Key)
+		?.mark;
+
+/**
+ * Whether a column opens a new group.
+ *
+ * The matrix prints a heavier rule where a condition becomes a shape, where a
+ * shape becomes a composition and where a composition becomes a context, because
+ * those are four different questions and a reader scanning the head should see
+ * where one set ends.
+ */
+const OpensGroup = (Index: number): boolean =>
+	Index > 0 && Columns[Index]!.group !== Columns[Index - 1]!.group;
+
+/** The figures, and the register that counts them. */
+const Figures = MatrixRegister();
+
+const Matrix = RegisterOf("THE MATRIX", Figures);
+---
+
+<figure class="frame-matrix-sheet" id="frame-matrix">
+	<div class="frame-matrix-sheet__scroll">
+		<table class="frame-matrix-sheet__table">
+			<thead>
+				<tr class="frame-matrix-sheet__head-row">
+					<th class="frame-matrix-sheet__corner" scope="col">
+						<span class="frame-matrix-sheet__corner-label">
+							COMPONENT
+						</span>
+						<span class="frame-matrix-sheet__corner-ask">
+							{Columns.length} CONDITIONS
+						</span>
+					</th>
+
+					{Columns.map((Column, Index) => (
+						<th
+							class:list={[
+								"frame-matrix-sheet__head",
+								OpensGroup(Index) && "frame-matrix-sheet__head--group",
+							]}
+							scope="col"
+						>
+							<span class="frame-matrix-sheet__head-label">
+								{Column.label}
+							</span>
+							<span class="frame-matrix-sheet__head-ask">
+								{Column.ask}
+							</span>
+						</th>
+					))}
+				</tr>
+			</thead>
+
+			<tbody>
+				{Rows.map((Row) => (
+					<tr class="frame-matrix-sheet__row">
+						<th class="frame-matrix-sheet__name" scope="row">
+							<span class="frame-matrix-sheet__name-text">
+								{Row.name}
+							</span>
+							<span class="frame-matrix-sheet__name-file">
+								{Row.file}
+							</span>
+							<span class="frame-matrix-sheet__name-count">
+								{BuiltOf(Row)} / {Columns.length}
+							</span>
+						</th>
+
+						{Columns.map((Column, Index) => {
+							const Cell = MatrixCell(Row, Column);
+
+							return (
+								<td
+									class:list={[
+										"frame-matrix-sheet__cell",
+										OpensGroup(Index) &&
+											"frame-matrix-sheet__cell--group",
+									]}
+									data-disposition={Cell.disposition}
+								>
+									{Cell.disposition === "built" ? (
+										<span
+											class="frame-matrix-sheet__built"
+											title={Cell.note ?? undefined}
+										>
+											BUILT
+										</span>
+									) : (
+										<span class="frame-matrix-sheet__na">
+											N/A
+											<span class="frame-matrix-sheet__note-mark">
+												〈
+												{NoteMark(Row.name, Column.key)}
+												〉
+											</span>
+										</span>
+									)}
+								</td>
+							);
+						})}
+					</tr>
+				))}
+			</tbody>
+		</table>
+	</div>
+
+	<div class="frame-matrix-sheet__notes">
+		<p class="frame-matrix-sheet__notes-head">
+			<span class="frame-matrix-sheet__notes-label">NOTES:</span>
+			<span class="frame-matrix-sheet__notes-count">
+				{Notes.length} CELLS THAT CANNOT EXIST
+			</span>
+		</p>
+
+		<ol class="frame-matrix-sheet__notes-list">
+			{Notes.map((Note) => (
+				<li
+					class="frame-matrix-sheet__note"
+					id={`frame-note-${Note.mark}`}
+				>
+					<span class="frame-matrix-sheet__note-mark">
+						〈{Note.mark}〉
+					</span>
+					<span class="frame-matrix-sheet__note-where">
+						{Note.Row.name} / {Note.Column.label}
+					</span>
+					<span class="frame-matrix-sheet__note-reason">
+						{Note.Cell.reason}
+					</span>
+				</li>
+			))}
+		</ol>
+	</div>
+
+	<figcaption class="frame-matrix-sheet__caption">
+		<span class="frame-matrix-sheet__caption-key">READ:</span>
+		<span class="frame-matrix-sheet__caption-value">
+			A cell is `BUILT` when the family renders that combination and `N/A`
+			when it cannot exist - and a cell that cannot exist carries its
+			reason in the notes above rather than a truncated one in the cell.
+			{BuiltCount} of {CellCount} cells are built; {ReasonCount} are
+			reasons. A built cell may carry a note saying which construction
+			built it, because "built" on the PLATE row and "built" on the RAIL
+			row are not the same construction.
+		</span>
+		<span class="frame-matrix-sheet__caption-source">
+			<span class="frame-matrix-sheet__caption-key">SOURCE:</span>
+			<span
+				class="frame-matrix-sheet__caption-value frame-matrix-sheet__caption-value--code"
+			>
+				SOURCE/CONTENT/SPECIMEN/FRAME.TS
+			</span>
+		</span>
+	</figcaption>
+
+	<div class="frame-matrix-sheet__register">
+		<RecordLedger rows={Figures} columns={2} register={Matrix} />
+	</div>
+
+	{/* ─── THE IMPROVEMENTS ────────────────────────────────────────── */}
+	<div class="frame-matrix-sheet__improvements">
+		<p class="frame-matrix-sheet__notes-head">
+			<span class="frame-matrix-sheet__notes-label">
+				IMPROVEMENTS:
+			</span>
+			<span class="frame-matrix-sheet__notes-count">
+				{Improvements.length} BEHAVIOURS THE MATRIX REVEALED
+			</span>
+		</p>
+
+		{Improvements.map((Improvement) => (
+			<article class="frame-matrix-sheet__improvement">
+				<header class="frame-matrix-sheet__improvement-head">
+					<span
+						class="frame-matrix-sheet__improvement-mark"
+						aria-hidden="true"
+					>
+						#
+					</span>
+					<span class="frame-matrix-sheet__improvement-name">
+						{Improvement.component}
+					</span>
+					<span
+						class="frame-matrix-sheet__improvement-rule"
+						aria-hidden="true"
+					>
+						/
+					</span>
+					<span class="frame-matrix-sheet__improvement-from">
+						{Improvement.from}
+					</span>
+				</header>
+
+				<p class="frame-matrix-sheet__improvement-found">
+					<span class="frame-matrix-sheet__improvement-key">
+						FOUND:
+					</span>{" "}
+					{Improvement.found}
+				</p>
+
+				<p class="frame-matrix-sheet__improvement-built">
+					<span class="frame-matrix-sheet__improvement-key">
+						BUILT:
+					</span>{" "}
+					{Improvement.built}
+				</p>
+			</article>
+		))}
+	</div>
+
+	{/* ─── THE OBSERVATIONS ────────────────────────────────────────── */}
+	<div class="frame-matrix-sheet__observations">
+		<p class="frame-matrix-sheet__notes-head">
+			<span class="frame-matrix-sheet__notes-label">OBSERVED:</span>
+			<span class="frame-matrix-sheet__notes-count">
+				{Observations.length} THINGS THIS CARD DID NOT FIX
+			</span>
+		</p>
+
+		{Observations.map((Observation) => (
+			<article class="frame-matrix-sheet__observation">
+				<header class="frame-matrix-sheet__observation-head">
+					<span
+						class="frame-matrix-sheet__improvement-mark"
+						aria-hidden="true"
+					>
+						#
+					</span>
+					<span class="frame-matrix-sheet__improvement-name">
+						{Observation.component}
+					</span>
+				</header>
+
+				<p class="frame-matrix-sheet__improvement-found">
+					<span class="frame-matrix-sheet__improvement-key">
+						FOUND:
+					</span>{" "}
+					{Observation.found}
+				</p>
+
+				<p class="frame-matrix-sheet__improvement-built">
+					<span class="frame-matrix-sheet__improvement-key">
+						OWNER:
+					</span>{" "}
+					{Observation.owner}
+				</p>
+			</article>
+		))}
+	</div>
+
+	{/* ─── THE COLUMNS' OWN FIGURES ────────────────────────────────── */}
+	<div class="frame-matrix-sheet__columns">
+		<p class="frame-matrix-sheet__notes-head">
+			<span class="frame-matrix-sheet__notes-label">
+				BY CONDITION:
+			</span>
+			<span class="frame-matrix-sheet__notes-count">
+				HOW MANY OF THE {Rows.length} PARTS HOLD EACH ONE
+			</span>
+		</p>
+
+		<ul class="frame-matrix-sheet__column-list">
+			{Columns.map((Column) => (
+				<li
+					class="frame-matrix-sheet__column"
+					data-disposition={
+						BuiltIn(Column) === Rows.length ? "built" : "partial"
+					}
+				>
+					<span class="frame-matrix-sheet__column-label">
+						{Column.label}
+					</span>
+					<span class="frame-matrix-sheet__column-count">
+						{BuiltIn(Column)} / {Rows.length}
+					</span>
+				</li>
+			))}
+		</ul>
+	</div>
+</figure>

@@ -725,3 +725,281 @@
 		display: none;
 	}
 }
+
+/* ─── THE LIFECYCLE REGISTER ─────────────────────────────────────────────── */
+// One surface's maturity, in the site's one vocabulary of five (`State.ts`,
+// `Life`). It sits under the status line and above the facts, because it is a
+// fact about the surface rather than a state of it: a head answers "what is it
+// doing" with STATUS and "how far along is it" with LIFECYCLE, and a page that
+// answered the second in its own adjective ("Coming Soon") was answering a
+// question the document had no word for.
+//
+// The scale prints all five in order, and the one in force is marked by the same
+// state square the register uses plus 500 - so the position survives greyscale,
+// and a reader can see what comes next and what has already happened.
+.surface__life {
+	display: grid;
+	gap: var(--space-tight);
+	margin-block-start: var(--space-reading);
+	padding-block-start: var(--space-tight);
+	border-block-start: 1px solid var(--Border);
+}
+
+.surface__life-register {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	display: flex;
+	align-items: baseline;
+	gap: 0.35em;
+	margin: 0;
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+.surface__life-mark {
+	color: var(--Mark);
+}
+
+.surface__life-word,
+.surface__life-total {
+	color: var(--Foreground);
+}
+
+.surface__life-sep {
+	color: var(--MuteForeground);
+}
+
+.surface__life-status {
+	display: flex;
+	align-items: baseline;
+	gap: 0.45em;
+	margin: 0;
+	font-family: var(--FontMono);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--Foreground);
+}
+
+.surface__life-status--specimen {
+	color: var(--state-ink-attested);
+}
+
+.surface__life-status--quiet {
+	color: var(--MuteForeground);
+}
+
+.surface__life-key {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--MuteForeground);
+}
+
+.surface__life-term {
+	font-weight: 500;
+}
+
+.surface__life-scale {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight) var(--space-reading);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.surface__life-step {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	display: flex;
+	align-items: baseline;
+	gap: 0.35em;
+	color: var(--MuteForeground);
+}
+
+.surface__life-step--quiet {
+	color: var(--MuteForeground);
+}
+
+.surface__life-step--ink {
+	color: var(--MuteForeground);
+}
+
+.surface__life-step--specimen {
+	color: var(--MuteForeground);
+}
+
+// The word in force: full ink at 500, and its mark at the step's own tone. The
+// accent is not spent here - a lifecycle position is not a route, a link, a
+// focus or a seal, which are the four things the accent authenticates.
+.surface__life-step--inforce {
+	color: var(--Foreground);
+	font-weight: 500;
+}
+
+.surface__life-step--inforce.surface__life-step--specimen {
+	color: var(--state-ink-attested);
+}
+
+.surface__life-step-mark {
+	color: var(--Mark);
+}
+
+.surface__life-step--inforce .surface__life-step-mark {
+	color: currentColor;
+}
+
+.surface__life-gloss {
+	margin: 0;
+	max-inline-size: var(--MeasureOpening);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.surface__life-note {
+	@include mono-meta;
+
+	margin: 0;
+	max-inline-size: var(--MeasureOpening);
+	color: var(--MuteForeground);
+}
+
+.surface__life-note-key {
+	font-weight: 400;
+	color: var(--Foreground);
+}
+
+.surface__life--dense {
+	margin-block-start: var(--space-tight);
+	gap: calc(var(--space-tight) / 2);
+}
+
+/* ─── THE REGISTER'S TWO COLUMNS AND ITS DENSE STEP ──────────────────────── */
+// A register of eight words is a set, and a set reads across. The two-column
+// form is a container query on the register's own box, because a register in a
+// margin is narrow at every viewport - the same reason `ShellState` queries
+// itself.
+.surface__states--two {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+}
+
+@include bp(640px) {
+	.surface__states--two {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		column-gap: var(--space-group);
+	}
+
+	// The rows fill left to right, so the second column's first row must not
+	// draw a rule under nothing.
+	.surface__states--two .surface__state-row:nth-child(2) {
+		border-top: 0;
+	}
+}
+
+.surface__states--dense .surface__state-row {
+	padding-block: calc(var(--space-tight) / 2);
+}
+
+/* ─── A REGION'S ADVERSE ARMS ────────────────────────────────────────────── */
+// The region keeps its index, its `h2` and its standfirst and states what is
+// missing under them: a heading with a hole under it reads as a page that failed
+// to load, and a region that says `STATUS: UNAVAILABLE` reads as a record that is
+// not there. The skeleton prints the schema - the keys are known before the
+// values are - and the bars are static, because the site has no gradient and no
+// shimmer and a pulse explains nothing.
+.surface-region__absent {
+	display: grid;
+	gap: var(--space-tight);
+}
+
+.surface-region__status {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	display: flex;
+	align-items: baseline;
+	gap: 0.45em;
+	margin: 0;
+	color: var(--Foreground);
+}
+
+.surface-region__status--quiet {
+	color: var(--MuteForeground);
+}
+
+.surface-region__status-key {
+	color: var(--MuteForeground);
+}
+
+.surface-region__sentence {
+	margin: 0;
+	max-inline-size: var(--MeasureOpening);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.surface-region__skeleton {
+	display: grid;
+	gap: 0;
+	max-inline-size: 34rem;
+}
+
+.surface-region__skeleton-row {
+	display: grid;
+	grid-template-columns: 9.5rem minmax(0, 1fr);
+	gap: var(--space-tight);
+	align-items: center;
+	margin: 0;
+	padding-block: 0.4rem;
+	border-block-start: 1px solid var(--Border);
+}
+
+.surface-region__skeleton-row:first-child {
+	border-block-start: 0;
+}
+
+.surface-region__skeleton-key {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--MuteForeground);
+}
+
+.surface-region__bar {
+	display: block;
+	inline-size: var(--bar, 50%);
+	block-size: 0.55rem;
+	background: var(--Mute);
+	border: 1px solid var(--Border);
+}
+
+// The dense region: the tight step, for a region inside a card, a pane or an
+// absence. The head's distance is what changes - never the type.
+.surface-region--dense {
+	padding-block: var(--space-tight);
+}
+
+.surface-region--dense .surface-region__head {
+	margin-block-end: var(--space-tight);
+}
+
+.surface-region--dense .surface-region__standfirst {
+	margin-block-end: var(--space-tight);
+}
+
+/* ─── AN ABSENCE AT THE TIGHT STEP ───────────────────────────────────────── */
+.surface-absent--dense {
+	gap: var(--space-tight);
+	padding: var(--space-reading);
+}
+
+.surface-absent--dense .surface-absent__row {
+	padding-block: calc(var(--space-tight) / 2);
+}

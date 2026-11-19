@@ -3,7 +3,7 @@
 // ─── THE LAW ──────────────────────────────────────────────────────────────
 // `Register.astro` prints a register as two runs:
 //
-//   <span class="register-line__spoken"># WORKING / 06 WORDS</span>
+//   <span class="register-line__spoken">WORKING, 06 WORDS</span>
 //   <span class="register-line__printed" aria-hidden="true">
 //     <span class="register-line__mark">#</span>{" "}
 //     <span class="register-line__label">WORKING</span>
@@ -12,12 +12,14 @@
 //     <span class="register-line__unit"> WORDS</span>
 //   </span>
 //
-// The printed run is the five parts; the spoken run is the same statement as one
-// string, visually hidden. Two runs, because the eye reads punctuation and the
+// The printed run is the five parts; the spoken run is the same statement,
+// punctuated for the ear. Two runs, because the eye reads punctuation and the
 // ear does not: with only the printed run a screen reader read `WHAT CHANGES06`,
 // and `aria-label` on the `<p>` could not fix it (ARIA prohibits naming the
 // `paragraph` role, so the attribute was dropped). `__spoken` is the fix, and it
-// is the only rule here that removes anything from the page.
+// is the only rule here that removes anything from the page. The comma is
+// `RegisterSpokenText`'s, not this layer's: the mark and the slash are
+// punctuation and a screen reader says the characters instead of the structure.
 //
 // The line is the grammar's smallest complete statement: a mark, a name, a
 // separator and a figure, with an optional unit bound to the figure. It appears

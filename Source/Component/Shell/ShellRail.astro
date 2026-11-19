@@ -29,6 +29,29 @@
  * is short enough to print, and a disclosure that hides the only navigation on a
  * phone is a worse answer than a list.
  *
+ * ─── GROUPS: A RAIL OF SECTIONS (added by the frame card) ─────────────────
+ * A manual's rail is not one list, it is parts of a list: `/DOCUMENTATION` has
+ * five sections and each has its own rows. Every page that needed that shape
+ * built a second rail beside this one, which is how five rails became seven.
+ * `groups` is that shape inside the primitive - a sub-register line per group
+ * (its label and its own count, counted from its rows) and the group's rows
+ * under it, in one `<ol>`. `items` stays the flat form; a caller passes one or
+ * the other, and the head's count is still the caller's own figure because the
+ * rail does not count what it was not given.
+ *
+ * ─── THE ADVERSE ARMS (added by the frame card) ───────────────────────────
+ * A rail whose destinations have not been read used to print its head and then
+ * an empty `<ol>` - a register line over nothing. `state` gives it the two arms
+ * every other block in the family has:
+ *
+ *   state="empty"    `◎ UNAVAILABLE` + the caller's sentence, inside the rail
+ *   state="loading"  the row keys, their values barred - the schema, not a spinner
+ *
+ * ─── DENSE ────────────────────────────────────────────────────────────────
+ * `dense` is the rail inside a card, a pane or a drawer: the same rows at the
+ * tight step, with the notes still printed. Never a smaller type - the step is
+ * padding, not size.
+ *
  * ─── WHAT IT DOES NOT DO ──────────────────────────────────────────────────
  * - It does not scroll-spy. The current row is printed by the page, from the same
  *   data the content is built from - the site's rule since the frame: position is
@@ -60,6 +83,18 @@ interface RailItem {
 	readonly note?: string;
 }
 
+/** One group of a grouped rail: a sub-register line and its rows. */
+interface RailGroup {
+	/** The group's own label, printed at the register line: `THE MANUAL`. */
+	readonly label: string;
+
+	/** The group's mark column, when it carries one: `§`, `/`, `03`. */
+	readonly mark?: string;
+
+	/** The group's rows, in reading order. */
+	readonly items: readonly RailItem[];
+}
+
 interface Props {
 	/** The rail's accessible name and its printed register word: `ON THIS PAGE`. */
 	label: string;
@@ -71,8 +106,14 @@ interface Props {
 	 */
 	count: string | number;
 
-	/** The rows, in reading order. */
-	items: readonly RailItem[];
+	/** The rows, in reading order. The flat form. */
+	items?: readonly RailItem[];
+
+	/**
+	 * The grouped form: a rail of sections, each with its own register line and
+	 * its own rows. `items` is not read when `groups` is given.
+	 */
+	groups?: readonly RailGroup[];
 
 	/** The rail's closing row: a destination the rail itself does not list. */
 	foot?: {
@@ -87,8 +128,23 @@ interface Props {
 	 */
 	current?: "location" | "page";
 
+	/**
+	 * The rail's state. `rest` prints its rows; `empty` and `loading` print the
+	 * composed absence inside the rail, under the same register line.
+	 */
+	state?: "rest" | "empty" | "loading";
+
+	/** The `empty` arm's one sentence: what the rail would list, and why it does not. */
+	empty?: string;
+
+	/** The `loading` arm's keys. The values are unknown; the schema is not. */
+	keys?: readonly string[];
+
 	/** Stick the rail under the running head at the wide container. Default true. */
 	sticky?: boolean;
+
+	/** Print the rows at the tight step, for a rail inside a card, pane or drawer. */
+	dense?: boolean;
 
 	/** Extra classes from the page. */
 	class?: string;
@@ -97,89 +153,164 @@ interface Props {
 const {
 	label,
 	count,
-	items,
+	items = [],
+	groups,
 	foot,
 	current = "location",
+	state = "rest",
+	empty,
+	keys = [],
 	sticky = true,
+	dense = false,
 	class: ClassName,
 } = Astro.props;
 
 import Mark from "../Mark/Mark.astro";
 
 const Count = count === undefined ? null : String(count);
+
+const Absent = state !== "rest";
+
+/** The groups the rail prints: the grouped form, or the flat one as one group. */
+const Sections: readonly RailGroup[] =
+	groups !== undefined && groups.length > 0
+		? groups
+		: [{ label, items }];
+
+/** Whether any group carries a label of its own (the flat form does not). */
+const Grouped = groups !== undefined && groups.length > 0;
 ---
 
 <nav
-	class:list={["ShellRail", sticky ? "ShellRail--sticky" : null, ClassName]}
+	class:list={[
+		"ShellRail",
+		sticky ? "ShellRail--sticky" : null,
+		dense ? "ShellRail--dense" : null,
+		Grouped ? "ShellRail--grouped" : null,
+		ClassName,
+	]}
 	aria-label={label}
+	data-state={state}
 >
 	<p class="ShellRail__head">
-		<span class="ShellRail__mark" aria-hidden="true">
-			#
-		</span>
+		<span class="ShellRail__mark" aria-hidden="true">#</span>
 		<span class="ShellRail__label">{label}</span>
 		{Count !== null ? (
 			<>
-				<span class="ShellRail__sep" aria-hidden="true">
-					{"\u2001"}
-				</span>
+				<span class="ShellRail__sep" aria-hidden="true">{"\u2001"}</span>
 				<span class="ShellRail__count">{Count}</span>
 			</>
 		) : null}
 	</p>
 
-	<ol class="ShellRail__list">
-		{items.map((Item) => (
-			<li class="ShellRail__item">
-				{Item.href ? (
-					<a
-						class="ShellRail__row"
-						href={Item.href}
-						aria-current={Item.current ? current : undefined}
-					>
-						<span class="ShellRail__row-mark" aria-hidden="true">
-							{Item.mark ?? ""}
-						</span>
-						<span class="ShellRail__row-body">
-							<span class="ShellRail__row-label">
-								{Item.label}
-							</span>
-							{Item.note ? (
-								<span class="ShellRail__row-note">
-									{Item.note}
+	{Absent ? (
+		<div class="ShellRail__absent" data-state={state}>
+			<p class:list={["ShellRail__status", `ShellRail__status--${state === "loading" ? "quiet" : "ink"}`]}>
+				<Mark kind="square" tone={state === "loading" ? "quiet" : "ink"} />
+				<span class="ShellRail__status-key">STATUS:</span>
+				{state === "loading" ? "LOADING" : "UNAVAILABLE"}
+			</p>
+
+			{state === "loading" ? (
+				<div class="ShellRail__skeleton" aria-hidden="true">
+					{(keys.length > 0 ? keys : ["ROUTE", "PART", "SHEET"]).map(
+						(Key, Index) => (
+							<p class="ShellRail__skeleton-row">
+								<span class="ShellRail__skeleton-key">{Key}:</span>
+								<span
+									class="ShellRail__bar"
+									style={`--bar:${[64, 42, 78, 55, 36, 70][Index % 6]}%`}
+								/>
+							</p>
+						),
+					)}
+				</div>
+			) : (
+				<p class="ShellRail__sentence">{empty ?? "UNAVAILABLE"}</p>
+			)}
+		</div>
+	) : (
+		<>
+			{Sections.map((Section, SectionIndex) => (
+				<>
+					{Grouped ? (
+						<p class="ShellRail__group-head">
+							{Section.mark ? (
+								<span class="ShellRail__group-mark" aria-hidden="true">
+									{Section.mark}
 								</span>
 							) : null}
-						</span>
-						{Item.meta ? (
-							<span class="ShellRail__row-meta">{Item.meta}</span>
-						) : null}
-					</a>
-				) : (
-					<span
-						class="ShellRail__row ShellRail__row--statement"
-						aria-current={Item.current ? current : undefined}
-					>
-						<span class="ShellRail__row-mark" aria-hidden="true">
-							{Item.mark ?? ""}
-						</span>
-						<span class="ShellRail__row-body">
-							<span class="ShellRail__row-label">
-								{Item.label}
+							<span class="ShellRail__group-label">{Section.label}</span>
+							<span class="ShellRail__group-sep" aria-hidden="true">
+								{"\u2001"}
 							</span>
-							{Item.note ? (
-								<span class="ShellRail__row-note">
-									{Item.note}
-								</span>
-							) : null}
-						</span>
-						{Item.meta ? (
-							<span class="ShellRail__row-meta">{Item.meta}</span>
-						) : null}
-					</span>
-				)}
-			</li>
-		))}
-	</ol>
+							<span class="ShellRail__group-count">
+								{String(Section.items.length).padStart(2, "0")}
+							</span>
+						</p>
+					) : null}
+
+					<ol
+						class="ShellRail__list"
+						aria-label={Grouped ? Section.label : undefined}
+						start={Grouped ? undefined : 1}
+						key={`${Section.label}-${SectionIndex}`}
+					>
+						{Section.items.map((Item) => (
+							<li class="ShellRail__item">
+								{Item.href ? (
+									<a
+										class="ShellRail__row"
+										href={Item.href}
+										aria-current={Item.current ? current : undefined}
+									>
+										<span class="ShellRail__row-mark" aria-hidden="true">
+											{Item.mark ?? ""}
+										</span>
+										<span class="ShellRail__row-body">
+											<span class="ShellRail__row-label">
+												{Item.label}
+											</span>
+											{Item.note ? (
+												<span class="ShellRail__row-note">
+													{Item.note}
+												</span>
+											) : null}
+										</span>
+										{Item.meta ? (
+											<span class="ShellRail__row-meta">{Item.meta}</span>
+										) : null}
+									</a>
+								) : (
+									<span
+										class="ShellRail__row ShellRail__row--statement"
+										aria-current={Item.current ? current : undefined}
+									>
+										<span class="ShellRail__row-mark" aria-hidden="true">
+											{Item.mark ?? ""}
+										</span>
+										<span class="ShellRail__row-body">
+											<span class="ShellRail__row-label">
+												{Item.label}
+											</span>
+											{Item.note ? (
+												<span class="ShellRail__row-note">
+													{Item.note}
+												</span>
+											) : null}
+										</span>
+										{Item.meta ? (
+											<span class="ShellRail__row-meta">{Item.meta}</span>
+										) : null}
+									</span>
+								)}
+							</li>
+						))}
+					</ol>
+				</>
+			))}
+		</>
+	)}
 
 	{foot ? (
 		<p class="ShellRail__foot">

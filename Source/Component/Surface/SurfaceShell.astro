@@ -47,6 +47,16 @@ interface Props {
 	/** The status facts, in the order they are read. */
 	rows?: readonly LedgerRow[];
 
+	/**
+	 * The surface's lifecycle - `LIVE`, `BETA`, `PLANNED`, `RETIRED`,
+	 * `UNAVAILABLE`. Printed by `SurfaceHead` in the one vocabulary the site
+	 * owns; see `Surface/State.ts`'s `Life`.
+	 */
+	life?: string;
+
+	/** Provenance for the lifecycle word. Ignored without `life`. */
+	lifeNote?: string;
+
 	/** Extra classes from the page. */
 	class?: string;
 }
@@ -58,6 +68,8 @@ const {
 	states = [],
 	declarations = [],
 	rows = [],
+	life,
+	lifeNote,
 	class: ClassName,
 } = Astro.props;
 ---
@@ -70,6 +82,8 @@ const {
 		states={states}
 		declarations={declarations}
 		rows={rows}
+		life={life}
+		lifeNote={lifeNote}
 	/>
 	<slot />
 </div>

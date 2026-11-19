@@ -35,6 +35,8 @@
  */
 import { Tone } from "../Surface/State.js";
 
+import Mark from "../Mark/Mark.astro";
+
 import type { Failure } from "./Type.js";
 
 interface Props {
@@ -44,12 +46,29 @@ interface Props {
 
 const { failure } = Astro.props;
 
-const { index, name, symptom, cause, next, state, source } = failure;
+const { index, name, symptom, cause, next, state, source, recovery, detail } =
+	failure;
 
 const ToneOf = Tone(state) ?? "ink";
+
+/**
+ * Whether the failure has no way out.
+ *
+ * The brief names this case by hand - "a failure with no recovery path" - and a
+ * block that printed an empty NEXT row would be saying the reader's next step is
+ * a blank. A documented dead end is a FACT about the condition, so the block
+ * marks it (`record-failure--dead-end`), prints the vocabulary's word in the
+ * value's place and keeps the row: the three fields are the block, and a failure
+ * with two fields is a symptom with no answer.
+ */
+const DeadEnd = next.trim() === "" || next.trim().toUpperCase() === "UNAVAILABLE";
 ---
 
-<div class="record-failure" data-tone={ToneOf} role="group">
+<div
+	class:list={["record-failure", DeadEnd && "record-failure--dead-end"]}
+	data-tone={ToneOf}
+	role="group"
+>
 	<p class="record-failure__marker">
 		<span class="record-failure__hash" aria-hidden="true">
 			#
@@ -64,7 +83,7 @@ const ToneOf = Tone(state) ?? "ink";
 	<p class="record-failure__status">
 		<span class="record-failure__status-key">STATUS:</span>
 		<span class="record-failure__status-value" data-tone={ToneOf}>
-			{state}
+			{state.toUpperCase()}
 		</span>
 	</p>
 
@@ -79,9 +98,36 @@ const ToneOf = Tone(state) ?? "ink";
 		</div>
 		<div class="record-failure__field record-failure__field--next">
 			<dt class="record-failure__key">NEXT:</dt>
-			<dd class="record-failure__value">{next}</dd>
+			<dd
+				class:list={[
+					"record-failure__value",
+					DeadEnd && "record-failure__value--absent",
+				]}
+			>
+				{DeadEnd ? "UNAVAILABLE" : next}
+				{recovery ? (
+					<span class="record-failure__recovery">
+						<a href={recovery.href}>
+							<span aria-hidden="true">→</span>
+							{"\u2001"}
+							{recovery.label}
+						</a>
+					</span>
+				) : null}
+			</dd>
 		</div>
 	</dl>
+
+	{detail ? (
+		<details class="record-failure__detail">
+			<summary class="record-failure__detail-summary">
+				<span class="record-failure__detail-key">DETAIL:</span>
+				WHAT THIS FAILURE REPRODUCES
+				<Mark kind="fold" />
+			</summary>
+			<p class="record-failure__detail-body">{detail}</p>
+		</details>
+	) : null}
 
 	<p class="record-failure__source">
 		<span class="record-failure__source-key">SOURCE:</span>

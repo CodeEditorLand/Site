@@ -317,3 +317,53 @@
 	max-width: none;
 	padding-block: var(--space-tight) 0;
 }
+
+// ─── THE NARRATIVE FAMILY: THE EVIDENCE PANEL WHEN THE CAPTURE IS ABSENT ───
+// The hero's pair is the artifact, so an absent capture must not collapse the
+// evidence column: the panel keeps its place, its hairline gutter and its
+// measure, and prints the tombstone in the record grammar. A hero that fell back
+// to one column would be a different artifact from the one the page is built on.
+.record-hero__tombstone {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: var(--space-group);
+	block-size: 100%;
+	min-block-size: 14rem;
+	padding: var(--space-reading);
+	background: var(--Card);
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.record-hero__tombstone-mark {
+	font-size: var(--type-sub);
+	color: var(--MuteForeground);
+}
+
+.record-hero__tombstone-state,
+.record-hero__tombstone-next {
+	@include mono-meta;
+	@include track(var(--track-rule));
+	display: block;
+}
+
+.record-hero__tombstone-key {
+	color: var(--MuteForeground);
+	margin-inline-end: var(--space-tight);
+}
+
+.record-hero__tombstone-state--ink {
+	color: var(--Foreground);
+}
+
+.record-hero__tombstone-state--specimen {
+	color: var(--Accent);
+}
+
+.record-hero__tombstone-state--quiet {
+	color: var(--MuteForeground);
+}
+
+.record-hero__tombstone-next {
+	color: var(--MuteForeground);
+}

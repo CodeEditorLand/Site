@@ -187,3 +187,118 @@
 	line-height: var(--type-body-line);
 	color: var(--Foreground);
 }
+
+// ─── THE NARRATIVE FAMILY: THE ENTRY'S STATES, ITS FACTS, ITS DENSE READING ─
+// Three additions, all of them the exploration's: an entry that has a name and
+// no claim (`empty`, `loading`), an entry that carries facts as well as prose,
+// and the register reading of the same record (`--dense`).
+//
+// The state row and the facts span the grid's two columns: the entry's anatomy
+// is `index | glyph` over a full-width name, chips and body, and a fact that sat
+// in one column would read as a chip.
+.record-entry__state,
+.record-entry__absent,
+.record-entry__facts,
+.record-entry__note {
+	grid-column: 1 / -1;
+	margin: 0;
+}
+
+.record-entry__state {
+	@include mono-meta;
+	@include track(var(--track-rule));
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+}
+
+.record-entry__state--ink {
+	color: var(--Foreground);
+}
+
+.record-entry__state--quiet {
+	color: var(--MuteForeground);
+}
+
+.record-entry__state-key {
+	color: var(--MuteForeground);
+}
+
+.record-entry__absent {
+	display: flex;
+	gap: var(--space-tight);
+	align-items: baseline;
+	max-inline-size: 62ch;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+}
+
+.record-entry__absent-mark {
+	color: var(--MuteForeground);
+}
+
+.record-entry__facts {
+	display: grid;
+	gap: 0;
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.record-entry__fact {
+	display: grid;
+	grid-template-columns: minmax(7rem, 12ch) minmax(0, 1fr);
+	gap: var(--space-tight);
+	padding-block: 0.25rem;
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.record-entry__fact-key {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--MuteForeground);
+}
+
+.record-entry__fact-value {
+	margin: 0;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	overflow-wrap: anywhere;
+}
+
+.record-entry__note {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--MuteForeground);
+	overflow-wrap: anywhere;
+}
+
+.record-entry__note-key {
+	color: var(--MuteForeground);
+}
+
+// The dense reading: the marker and the name on one line, the chips beside them,
+// the body under. It is the same record in a register rather than on a card -
+// never a smaller type, because the type floor is the identity.
+.record-entry--dense {
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	grid-template-areas:
+		"index name glyph"
+		"chips chips chips"
+		"body body body";
+	row-gap: var(--space-tight);
+	padding: var(--space-tight) 0;
+	border: 0;
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	background: transparent;
+}
+
+.record-entry--dense .record-entry__name {
+	font-size: var(--type-body);
+}
+
+.record-entry--dense .record-entry__body {
+	max-inline-size: 72ch;
+}
+
+.record-entry--archived .record-entry__name {
+	color: var(--MuteForeground);
+}

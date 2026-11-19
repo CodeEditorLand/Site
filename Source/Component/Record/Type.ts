@@ -134,6 +134,35 @@ export interface Band {
 	 * card is structure, and the card owns the inset.
 	 */
 	interval?: Interval;
+
+	/**
+	 * The band's own state, when the band has a head and no body: `empty` (the
+	 * subject is not written yet) or `loading` (it is being read). The head still
+	 * prints - a band that vanished would take its heading with it, and a heading
+	 * is how a reader knows what is missing - and the body is replaced by the
+	 * composed absence in the record grammar (`◎`, the state word, the sentence
+	 * in `empty`, and the footnote's own `NEXT:` line).
+	 *
+	 * The state is the BAND's, not the page's: a chapter whose set is empty is a
+	 * chapter, and the page around it is not in an adverse state.
+	 */
+	state?: "rest" | "empty" | "loading";
+
+	/**
+	 * What the band says when `state` is `empty` or `loading`: what would be here
+	 * and why it is not. Required by the two adverse states, absent otherwise -
+	 * a band in its resting state has a body and needs no excuse.
+	 */
+	empty?: string;
+
+	/**
+	 * The dense arm: the band as a section INSIDE an artifact rather than a
+	 * chapter of a page. It prints the head at the heading tier one step down,
+	 * the body at the frame's own inset, and no chapter interval - so a hero's
+	 * evidence section, or a card's second subject, opens without spending the
+	 * page's air on a heading that is not a chapter.
+	 */
+	dense?: boolean;
 }
 
 /**
@@ -158,6 +187,56 @@ export interface Entry {
 
 	/** Where the whole entry leads, when it leads anywhere. */
 	href?: string;
+
+	/**
+	 * The entry's own state, when it is not simply present: `loading` (the record
+	 * is being read and its body is not here yet), `empty` (the set has this slot
+	 * and no record in it), `archived` (the record is retired and keeps its name).
+	 * The index, name and chips still print - a record that lost its name to a
+	 * state would be a blank in a list of records - and the body is replaced by
+	 * the composed absence in the entry's own grammar.
+	 */
+	state?: "rest" | "loading" | "empty" | "archived";
+
+	/**
+	 * What the entry says when `state` is `empty` or `loading`. Absent, the
+	 * block prints its own sentence rather than a blank body: an entry in a list
+	 * with nothing under its name is read as a record with no claim.
+	 */
+	empty?: string;
+
+	/**
+	 * The record's facts, when the entry is read as a row of them rather than as
+	 * a paragraph: `TARGET:`, `LICENSE:`, `STATUS:`. They print under the body as
+	 * the entry's own `<dl>` - not as a `RecordLedger`, because a leaf may not
+	 * hold a block (§4.2) - at the same key/value grammar, so an entry that
+	 * carries facts is still one record and not a card.
+	 */
+	facts?: readonly EntryFact[];
+
+	/**
+	 * One line under everything: where the record is filed, the commit it was
+	 * read at, the note that qualifies it. It prints at caption weight with its
+	 * own `SOURCE:` key, because the entry has no other place to say it.
+	 */
+	note?: string;
+
+	/**
+	 * The dense arm: the entry read as a register row - the index and the name on
+	 * one line, the chips beside them, the body at the caption measure and the
+	 * facts in one column. Right inside an archive's group or a card's list,
+	 * where ten entries are read as a set rather than one at a time.
+	 */
+	dense?: boolean;
+}
+
+/** One fact an entry prints under its claim, when the record carries them. */
+export interface EntryFact {
+	/** The `:` label, printed verbatim (`TARGET:`). */
+	readonly key: string;
+
+	/** The value, printed at the entry's own weight. */
+	readonly value: string;
 }
 
 /**
@@ -201,6 +280,14 @@ export interface ArchiveEntry {
 	 * a field the data does not have.
 	 */
 	group?: string;
+
+	/**
+	 * The row's state, when the record it points at is not there: `gone` prints
+	 * the row as a tombstone - `◎`, the title, and the route it used to have -
+	 * instead of an anchor. The archive's own adverse state, and the one the
+	 * brief names: a record whose target is gone is a record, not a dead link.
+	 */
+	state?: "ok" | "gone";
 }
 
 /**
@@ -235,6 +322,31 @@ export interface Archive {
 	 * cannot drift from the rows under it.
 	 */
 	count?: string;
+
+	/**
+	 * The archive's own state: `empty` (no record is filed yet - the header
+	 * prints the counted zero and the composed absence under it, because an
+	 * archive that renders a heading over nothing is a page with a hole in it)
+	 * or `loading` (the set is being read).
+	 */
+	state?: "rest" | "empty" | "loading";
+
+	/** What the archive says in its `empty` or `loading` state. */
+	empty?: string;
+
+	/**
+	 * The too-much state: the first N rows, and the count it did not print. A
+	 * blog index of two hundred entries prints the newest twelve and says
+	 * `SHOWING: 12 OF 240` on its foot, so the page stays a page and the archive
+	 * stays honest about its extent.
+	 */
+	window?: { readonly showing: number; readonly total: string };
+
+	/**
+	 * The archive's foot: what the index is, where it was built from, when it was
+	 * last filed. One line at caption weight under the last row.
+	 */
+	note?: string;
 }
 
 /**
@@ -578,6 +690,25 @@ export interface Failure {
 
 	/** Where the failure is documented. */
 	source: string;
+
+	/**
+	 * The way back, when there is one: `→ TRY THE BLANK WORKBENCH AGAIN`. `next`
+	 * is the sentence a reader is given; `recovery` is the destination that
+	 * sentence names, and it prints as the block's one link. A failure with no
+	 * recovery path is legal - and then the block says `NEXT: UNAVAILABLE` rather
+	 * than printing a `next` that leads nowhere, because a documented dead end is
+	 * a fact and a dead link is a lie.
+	 */
+	recovery?: { readonly label: string; readonly href: string };
+
+	/**
+	 * The long explanation, disclosed rather than printed: the log line, the
+	 * trace, the conditions under which it reproduces. The three fields stay the
+	 * three fields and the detail folds under them, so a failure can carry its
+	 * evidence without becoming a stack trace on the page. No script: the
+	 * browser's disclosure is the behaviour.
+	 */
+	detail?: string;
 }
 
 /** One column of a matrix: its header label, its ink, its alignment. */
@@ -614,6 +745,24 @@ export interface Stage {
 
 	/** Where the step leads, when it leads anywhere. */
 	href?: string;
+
+	/**
+	 * The step's own state, when the run is not at its rest: `VERIFIED` (this
+	 * step is done), `ACTIVE` (the run is here), `PREPARING` (not reached yet),
+	 * `INTERRUPTED` (the run stopped at this step). The word prints in the step's
+	 * own register, so a rail can be read as a run's progress without a second
+	 * block - and the vocabulary stays the site's eight words, never a new one.
+	 */
+	state?: FieldRecordStatusState;
+
+	/**
+	 * The step's detail, disclosed rather than printed: a `<details>` whose
+	 * summary is the step's line. A stage is a rail of one-line steps, so the
+	 * paragraph a step may need lives one level in - present, findable by the
+	 * browser's own in-page search, and closed until it is asked for. No script:
+	 * the browser owns the disclosure.
+	 */
+	detail?: string;
 }
 
 /**
@@ -644,6 +793,46 @@ export interface Well {
 	 * weight, so the reader can check the command against its source.
 	 */
 	source?: string;
+
+	/**
+	 * Soft-wrap the body instead of scrolling it sideways.
+	 *
+	 * The well's default is `white-space: pre` because a command that reflowed
+	 * would be a command the reader cannot paste. But a well also carries CONFIG
+	 * and OUTPUT, where a long line is a value and not a command: `wrap` turns
+	 * the body into `pre-wrap` with a hanging indent, so a 300-character JSON
+	 * string stays inside the frame and every character still prints. The choice
+	 * is the caller's because only the caller knows whether the lines are typed
+	 * or read.
+	 */
+	wrap?: boolean;
+
+	/**
+	 * The too-much state: a command that prints its first N lines and names the
+	 * rest. A well of two hundred lines is a log; a page that rendered all of it
+	 * has stopped showing a command. The foot prints `SHOWING: N OF M` in the
+	 * register grammar, and the copy payload stays the whole body - the reader
+	 * who copies gets the file, the reader who reads gets the part that matters.
+	 */
+	window?: { readonly showing: number; readonly total: string };
+
+	/**
+	 * The well's own state, when there is no body to print: `empty` (the command
+	 * is not documented yet) or `loading` (it is being read). The bar still
+	 * prints its label, so the reader knows what is missing, and the body prints
+	 * the composed absence rather than an empty recess.
+	 */
+	state?: "rest" | "empty" | "loading";
+
+	/** What the well says when `state` is `empty` or `loading`. */
+	empty?: string;
+
+	/**
+	 * One line under the body and above the source: what the command assumes,
+	 * which shell it wants, what it does not do. It is a note about the command,
+	 * printed in the well's own foot rather than as a paragraph beside it.
+	 */
+	note?: string;
 }
 
 /** One pod of a pair: a title bar and a body. */
@@ -667,6 +856,30 @@ export interface PairPod {
 	 * the label.
 	 */
 	subject?: boolean;
+
+	/**
+	 * The pod's composed absence, when the side has nothing to show: `empty`
+	 * prints `◎` and the sentence in the pod's own body, and the pod keeps its
+	 * title bar. That is the whole point - a comparison with one side missing is
+	 * still a comparison, and the reader has to see WHICH side is missing.
+	 */
+	empty?: string;
+
+	/**
+	 * The pod's own state, when one side is not simply present: `UNAVAILABLE`
+	 * (this side cannot be read), `LOADING` (it has not arrived), `ARCHIVED` (it
+	 * is retired). The word prints in the pod's bar in its vocabulary tone, and
+	 * the body still prints - a pod that is waiting still has something to say.
+	 */
+	state?: FieldRecordStatusState;
+
+	/**
+	 * One line under the pod's body: the side's own source, the qualifier that
+	 * belongs to this side and not to the pair. Printed at caption weight inside
+	 * the pod, because a pair's caption is about both and cannot carry one
+	 * side's provenance.
+	 */
+	note?: string;
 }
 
 /**
@@ -690,6 +903,17 @@ export interface Pair {
 	 * A pair never prints an `h1`.
 	 */
 	heading?: "h2" | "h3" | "h4";
+
+	/**
+	 * The relation the two pods declare, printed in the gutter between them:
+	 * `↳ BOTH REQUIRE A SIGNED BUILD`. A pair is one artifact with two columns,
+	 * and the thing that makes it one artifact rather than two is the statement
+	 * about how they relate - today the caption makes it at the foot, and this
+	 * makes it where the comparison happens. On wide screens it runs vertically
+	 * in the 1px gutter's channel; on narrow it prints as a row between the
+	 * stacked pods.
+	 */
+	relation?: string;
 }
 
 /**
@@ -732,6 +956,35 @@ export interface Figure {
 
 	/** The image's alternative text. Set with `src`, never alone. */
 	alt?: string;
+
+	/**
+	 * The figure's folio, when the page numbers its evidence: `〈FIGURE 02〉`.
+	 * The block still never derives one - the caption is not numbered here
+	 * because only the page knows the order its figures appear in - but a page
+	 * that does know can hand its number in, and the figure prints it in the
+	 * containment brackets above the caption.
+	 */
+	folio?: string;
+
+	/**
+	 * The figure opens: its caption becomes a `<details>` - the summary is the
+	 * caption itself, so nothing is lost when it is shut - and the open arm
+	 * prints the figure's apparatus: the folio, the provenance as labelled rows,
+	 * and `→ OPEN THE SOURCE` when there is a `src` to open at full size. The
+	 * caption's measure cap is lifted while it is open, which is the arm for the
+	 * caption longer than the image.
+	 *
+	 * A lightbox would be the one glass surface on this site; a disclosure is
+	 * what the browser already knows how to open, find in the page and print.
+	 */
+	open?: boolean;
+
+	/**
+	 * The next step, printed only in the tombstone: what a reader can do while
+	 * the evidence is not there. A tombstone with no next step is a dead end,
+	 * and a dead end is not an adverse state - it is the absence of a design.
+	 */
+	next?: string;
 }
 
 /** The hero's status line: the state word, its ink, and the copy it prints. */
@@ -764,17 +1017,29 @@ export interface HeroStatus {
  * picture and no alternative text is a decoration, so the two are set together.
  */
 export interface HeroEvidence {
-	/** The image. */
-	src: string;
+	/** The image. Required unless `state` says the capture is not there. */
+	src?: string;
 
 	/** Its alternative text - what the picture is evidence of. */
-	alt: string;
+	alt?: string;
 
 	/**
 	 * The primitive's own `object-position`, e.g. `"right"` when the subject
 	 * of the photograph sits off-centre. Defaults to `center`.
 	 */
 	position?: string;
+
+	/**
+	 * The evidence panel's own state, when the capture is not in the build:
+	 * `UNAVAILABLE`, `LOADING`, `INTERRUPTED`, `ARCHIVED`. The panel keeps its
+	 * place and its hairline gutter and prints the tombstone in the record
+	 * grammar - because a hero whose evidence vanished must not collapse into a
+	 * one-column record: the pair IS the artifact.
+	 */
+	state?: FieldRecordStatusState;
+
+	/** The tombstone's next step: what a reader can do while the plate is absent. */
+	next?: string;
 }
 
 /** The artifact's one action: what it says, where it leads, which arm prints it. */
@@ -927,6 +1192,14 @@ export interface MarginNote {
 	 * a note that is waiting still has something to say.
 	 */
 	state?: FieldRecordStatusState;
+
+	/**
+	 * When the note's claim was true. A note is a dated annotation - "the figures
+	 * were taken at this commit" - and a note that does not print its date is a
+	 * claim with no age, which the brief's stale state forbids. It prints as an
+	 * `AS OF:` row beside the state, in the same vocabulary.
+	 */
+	asOf?: string;
 }
 
 /**
@@ -970,6 +1243,24 @@ export interface Aside {
 	 * aside renders nothing at all - never a closed frame over nothing.
 	 */
 	empty?: string;
+
+	/**
+	 * The aside's own state, when its body has not arrived: `loading` prints the
+	 * summary with `STATUS: LOADING` and the body as a skeleton at the aside's
+	 * own measure, so a folded section being read still shows its shape. `rest`
+	 * is the default and prints nothing extra.
+	 */
+	state?: "rest" | "loading";
+
+	/**
+	 * What the summary counts, printed in the containment brackets at the bar's
+	 * far end: `〈04〉`. Absent, the block counts what it holds - the rows when
+	 * the body is a set, the paragraphs when it is prose - because a disclosure
+	 * whose summary says how much is behind it is a disclosure a reader can
+	 * decide about without opening. A caller that knows the set's real extent
+	 * (the aside prints four of nine) passes its own string.
+	 */
+	count?: string;
 }
 
 /**
@@ -1184,6 +1475,15 @@ export interface Plate {
 	 * cropping it into the default.
 	 */
 	ratio?: string;
+
+	/**
+	 * The plate opens: its channel becomes a `<details>` - the summary is the
+	 * claim and the facts, so the manifest is not lost when it is shut - and the
+	 * open arm prints the reading in full plus `→ OPEN THE CAPTURE` when there is
+	 * a `src`. The frame keeps its ratio either way: the plate is the evidence,
+	 * and the apparatus is what folds.
+	 */
+	open?: boolean;
 }
 
 /**
@@ -1230,6 +1530,21 @@ export interface Stamp {
 
 	/** The mark was withdrawn: the reason. Prints the tombstone instead of the route. */
 	revoked?: string;
+
+	/**
+	 * When the mark's window closes. A stamp is issued for a period - an edition,
+	 * a term, a release - and a mark that does not print its expiry is a mark
+	 * with no boundary. It prints as an `EXPIRES:` row beside the other rows.
+	 */
+	expires?: string;
+
+	/**
+	 * Where the mark can be checked: `→ VERIFY`. The authority line says what
+	 * makes the mark true; this says where the reader can confirm it, and it is
+	 * the stamp's one action. It prints as a link under the authority, never as a
+	 * button - a stamp is not a call to action.
+	 */
+	verify?: { readonly label: string; readonly href: string };
 }
 
 /** One bar of an inset's measure figure: a label, its printed value, its share. */
@@ -1272,6 +1587,20 @@ export interface InsetFigure {
 	 * extent of a page - and it is the reason the inset is not a margin note.
 	 */
 	bars?: readonly InsetBar[];
+
+	/**
+	 * The measure figure's total, printed under its bars on the divider's rule:
+	 * `TOTAL 09`. Three bars that sum to nine sections read as three claims until
+	 * the sum is printed, and a sum the block derived would be arithmetic the page
+	 * did not do - so it is the caller's, in the caller's own words.
+	 */
+	total?: InsetBar;
+
+	/**
+	 * The next step, printed only when the figure's state says it is absent: what
+	 * a reader can do while the capture or the measurement is not there.
+	 */
+	next?: string;
 
 	/** When the figure's figures were taken. */
 	asOf?: string;
@@ -1342,6 +1671,20 @@ export interface Turn {
 
 	/** The turn's state, when it failed or never arrived. */
 	state?: FieldRecordStatusState;
+
+	/**
+	 * Why the turn failed, printed under its line when `state` is set. A failed
+	 * turn with no cause is a red word; the cause is what makes the transcript a
+	 * record of a session rather than a log with a hole in it.
+	 */
+	cause?: string;
+
+	/**
+	 * What a reader can do about a failed turn, printed under the cause. The
+	 * transcript is a session, not a form, so this is a line of instruction
+	 * (`NEXT:`) rather than a control - the block's one action is the copy.
+	 */
+	next?: string;
 }
 
 /**
@@ -1396,6 +1739,14 @@ export interface Transcript {
 
 	/** Show the copy control in the bar. Defaults to `true`. */
 	copy?: boolean;
+
+	/**
+	 * The session's way back, when a turn failed: `→ RE-RUN THE BUILD`. A failed
+	 * turn prints its own cause and next step, but the session's recovery is one
+	 * destination and belongs on the foot, once - not repeated under every turn
+	 * that stopped at the same place.
+	 */
+	retry?: { readonly label: string; readonly href: string };
 }
 
 /** One figure in a plate-set: a numbered cell of the set. */

@@ -52,7 +52,42 @@ type Props = Archive & {
 	readonly class?: string;
 };
 
-const { entries, index, heading, count, class: Class } = Astro.props;
+const {
+	entries,
+	index,
+	heading,
+	count,
+	state,
+	empty,
+	window: Window,
+	note,
+	class: Class,
+} = Astro.props;
+
+/**
+ * The rows actually printed: the window's `showing` when the caller declared
+ * one. The count in the header is the SET's count, so a windowed archive prints
+ * the whole extent above and the printed part on its foot - two figures that
+ * cannot be confused, because each names what it counts.
+ */
+const Printed =
+	Window === undefined ? entries : entries.slice(0, Window.showing);
+
+/**
+ * The archive's own state. A set with no entries is empty whether or not the
+ * caller says so - an archive that prints a heading and a `0` over nothing is a
+ * page with a hole in it, which is exactly what this block used to do.
+ */
+const State = state ?? (entries.length === 0 ? "empty" : "rest");
+
+/** Whether the rows are replaced by the composed absence. */
+const Absent = State !== "rest";
+
+/** What the absence prints: the caller's sentence, or the vocabulary's word. */
+const Absence = empty ?? "UNAVAILABLE";
+
+/** The absence's tone, from the same vocabulary the layer prints. */
+const AbsenceTone = State === "loading" ? "quiet" : "ink";
 
 /**
  * One run of the list: the entries that share a `group` label, plus that label.
@@ -87,7 +122,7 @@ const RunsOf = (Items: readonly ArchiveEntry[]): readonly Run[] =>
 			: [...Runs, { label: Entry.group, entries: [Entry] }];
 	}, []);
 
-const Runs = RunsOf(entries);
+const Runs = RunsOf(Printed);
 
 /**
  * Whether the archive has a marker column at all. It is a decision of the
@@ -95,7 +130,7 @@ const Runs = RunsOf(entries);
  * nothing - still reserves the column, so the titles below a marker-less entry
  * stay in the same column as the ones above it.
  */
-const Marked = entries.some((Entry) => Entry.marker !== undefined);
+const Marked = Printed.some((Entry) => Entry.marker !== undefined);
 
 /**
  * The header's count: the page's own string when it passes one (`52 ENTRIES`),
@@ -129,7 +164,25 @@ const Marker = index?.replace(/^#\s*/, "");
 		<p class="record-archive__count">{Count}</p>
 	</header>
 
-	{entries.length > 0 ? (
+	{Absent ? (
+		<div class="record-archive__absent" role="status" data-state={State}>
+			<p class="record-archive__absent-head">
+				<span class="record-archive__absent-mark" aria-hidden="true">
+					&#9678;
+				</span>
+				<span class="record-archive__absent-key">STATUS:</span>
+				<span
+					class:list={[
+						"record-archive__absent-state",
+						`record-archive__absent-state--${AbsenceTone}`,
+					]}
+				>
+					{State.toUpperCase()}
+				</span>
+			</p>
+			<p class="record-archive__absent-line">{Absence}</p>
+		</div>
+	) : Printed.length > 0 ? (
 		<div class="record-archive__body">
 			{Runs.map((Run) => (
 				<div class="record-archive__run">
@@ -139,29 +192,71 @@ const Marker = index?.replace(/^#\s*/, "");
 					<ul class="record-archive__list">
 						{Run.entries.map((Entry) => (
 							<li class="record-archive__row">
-								<a
-									class="record-archive__link"
-									href={Entry.href}
-								>
-									{Entry.marker ? (
-										<span class="record-archive__marker">
-											{Entry.marker}
+								{Entry.state === "gone" ? (
+									<span class="record-archive__gone">
+										<span
+											class="record-archive__gone-mark"
+											aria-hidden="true"
+										>
+											&#9678;
 										</span>
-									) : null}
-									<span class="record-archive__title">
-										{Entry.title}
+										{Entry.marker ? (
+											<span class="record-archive__marker">
+												{Entry.marker}
+											</span>
+										) : null}
+										<span class="record-archive__title">
+											{Entry.title}
+										</span>
+										{Entry.note ? (
+											<span class="record-archive__note">
+												{Entry.note}
+											</span>
+										) : null}
+										<span class="record-archive__gone-route">
+											TARGET GONE:
+											{Entry.href}
+										</span>
 									</span>
-									{Entry.note ? (
-										<span class="record-archive__note">
-											{Entry.note}
+								) : (
+									<a
+										class="record-archive__link"
+										href={Entry.href}
+									>
+										{Entry.marker ? (
+											<span class="record-archive__marker">
+												{Entry.marker}
+											</span>
+										) : null}
+										<span class="record-archive__title">
+											{Entry.title}
 										</span>
-									) : null}
-								</a>
+										{Entry.note ? (
+											<span class="record-archive__note">
+												{Entry.note}
+											</span>
+										) : null}
+									</a>
+								)}
 							</li>
 						))}
 					</ul>
 				</div>
 			))}
 		</div>
+	) : null}
+
+	{Window !== undefined || note ? (
+		<p class="record-archive__foot">
+			{Window !== undefined ? (
+				<span class="record-archive__window">
+					<span class="record-archive__window-key">SHOWING:</span>
+					{Window.showing}
+					<span class="record-archive__window-of">OF</span>
+					{Window.total}
+				</span>
+			) : null}
+			{note ? <span class="record-archive__note-line">{note}</span> : null}
+		</p>
 	) : null}
 </section>

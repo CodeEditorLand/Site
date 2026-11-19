@@ -1,4 +1,5 @@
 @use "../Mixin" as *;
+@use "Button" as *;
 
 // ─── THE LINK ───────────────────────────────────────────────────────────────
 //
@@ -109,7 +110,11 @@
 
 $Route: ":is(.record-archive__link, .record-entry__link, .record-ledger__link, .record-band__index-item, .record-trace__link, .status-board__link, .lexicon-entry__link, .onward__link, .trail__link, .doc-sidebar__link, .doc-contents__link, .doc-layer__link, .trust-contents__link, .surface-regions__link, .ShellRail__row, .ShellRail__foot-link, .Fold__Row, .detail-leader__row, .detail-see__row, .doc-crate, .surface-links__item, .home-platform__anchor, .properties-filed__link, .contact-sale__route, .doc-layout__rust)";
 
-#{$Route}:active {
+// `#{$NotJellyBody}` (`State/_Button.scss`) is the exception: `.home-platform__anchor`
+// is on this list, and it holds a Jelly control. The press field there belongs to
+// the host, which paints it under its own canvas - so the route link stands down
+// rather than stacking a second field on the same box.
+#{$Route}#{$NotJellyBody}:active {
 	background-color: var(--state-field-press);
 }
 

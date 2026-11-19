@@ -24,7 +24,12 @@
 // Nothing here reads the path, so the index is correct before hydration and
 // stays correct when the drawer opens.
 
-import { FrameClosing, FrameLabel, FrameSections } from "./Data.js";
+import {
+	FrameClosing,
+	FrameExtent,
+	FrameLabel,
+	FrameSections,
+} from "./Data.js";
 
 import type { HeaderTranslate } from "../Header/Type.js";
 
@@ -49,6 +54,19 @@ const Rail = ({ Translate }: RailProps) => (
 			<span className="FrameRailWord">
 				{Translate("index.field", { defaultValue: "INDEX:" })}
 			</span>
+
+			{/*
+			 * The register's figure. A register line without its count is the
+			 * defect `RegisterLine.ts` exists to remove, and this one carried
+			 * `# INDEX:` over ten tabs and no number - the reader could not tell
+			 * how much of the document the rail was showing. The extent is
+			 * `FrameSections.length`, so the figure cannot outlive the tabs.
+			 */}
+			<span className="FrameRailSep" aria-hidden="true">
+				{"\u2001"}
+			</span>
+
+			<span className="FrameRailCount">{FrameExtent}</span>
 		</p>
 
 		{FrameSections.map((Section) => {
