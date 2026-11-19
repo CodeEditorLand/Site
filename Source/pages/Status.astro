@@ -58,6 +58,7 @@ import Trail from "../Component/Route/Trail.astro";
 import PageShell from "../Component/Shell/PageShell.astro";
 import ShellState from "../Component/Shell/ShellState.astro";
 import SurfaceHead from "../Component/Surface/SurfaceHead.astro";
+import SurfaceLife from "../Component/Surface/SurfaceLife.astro";
 import Base from "../Layout/Base.astro";
 
 import {
@@ -68,6 +69,7 @@ import {
 	Publication,
 	Reading,
 	Stages,
+	Surfaces,
 	TotalRows,
 	Vocabulary,
 } from "../Content/More/Status.js";
@@ -208,6 +210,29 @@ const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/STATUS" }];
 
 		<RecordBand band={Bands.Vocabulary}>
 			<RecordLedger rows={Vocabulary} columns={2} />
+		</RecordBand>
+
+		{/* The second vocabulary, on the page that counts the first: five routes,
+		    one word each, printed by the same block each surface mounts. The
+		    whole scale prints for every one of them - a word whose edges a
+		    reader cannot see is not a vocabulary - and the word in force is the
+		    marked step, so the five read across as a comparison rather than as
+		    five claims. The sentence that decided each word is on the surface's
+		    own head, where the page's facts are. */}
+		<RecordBand band={Bands.Surfaces}>
+			<div
+				class="PageShell__row"
+				style="--row-tracks:5;--row-floor:11rem"
+			>
+				{Surfaces.map((Surface) => (
+					<div>
+						<p class="font-mono type-meta uppercase tracking-rule text-[var(--Mark)]">
+							{Surface.route}
+						</p>
+						<SurfaceLife dense term={Surface.term} />
+					</div>
+				))}
+			</div>
 		</RecordBand>
 
 		<RecordBand band={Bands.Figures}>

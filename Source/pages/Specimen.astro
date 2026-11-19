@@ -202,7 +202,7 @@ import {
 	Verdicts,
 } from "../Content/Specimen/Composition.js";
 import { Measurements } from "../Content/More/Compare.js";
-import { GetI18n } from "../Library/I18n/Server";
+import { GetI18n, LoadServerNamespace } from "../Library/I18n/Server";
 import { Totals } from "../Library/Index/Register.js";
 import Base from "../Layout/Base.astro";
 
@@ -323,6 +323,15 @@ const TierColumns = [
  * that no other page prints - the homepage's features band prints the six
  * *elements* as records - which is why the part stands on a plate.
  */
+
+/* The specimen sheet prints the document's own parts, so it reads the copy the
+   parts read: `home:features.item.*` for the properties grid and the bands' own
+   `home:` headings. Declared before the first `GetI18n()` - `Client.ts` has
+   already initialised the shared instance. `download:` is NOT declared: the
+   sheet reaches `Download/Data.ts` through the component graph but prints none
+   of its sentences (proved by mutating the file and finding no sentinel). */
+LoadServerNamespace("home");
+
 const Properties = ItemsOf(GetI18n());
 
 /* ─── THE SHEET'S OWN FACTS ────────────────────────────────────────────── */

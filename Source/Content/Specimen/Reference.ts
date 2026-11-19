@@ -974,9 +974,9 @@ export const Contract: readonly {
 	{
 		law: "A BLOCK RENDERS PROPS ONLY",
 
-		means: "No `<script>`, no `client:*`, no DOM access, no `any`. Interaction state is CSS, and the no-JavaScript fallback is the state itself.",
+		means: "No script element, no `client:*`, no DOM access, no `any`. Interaction state is CSS, and the no-JavaScript fallback is the state itself.",
 
-		check: "Search the file for `client:`, `<script`, `document.` and `window.` - a block that has one is an island and belongs in `Component/` with a hydration directive the page chose.",
+		check: "Search the file for `client:`, a script element, `document.` and `window.` - a block that has one is an island and belongs in `Component/` with a hydration directive the page chose.",
 
 		source: "§4.2",
 	},

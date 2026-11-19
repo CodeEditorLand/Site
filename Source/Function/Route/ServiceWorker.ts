@@ -959,13 +959,24 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 					// before the routing fix); caching that as the asset
 					// permanently breaks the diagram. Guard on content
 					// type so HTML fallbacks are never stored.
+					//
+					// `font/` belongs in the guard beside `image/`, and
+					// for one reason of its own: the site ships its
+					// typeface (`Public/Font/IBM-Plex-Mono/` - see
+					// `_Token.scss` at `--FontMono`). A face that is
+					// fetched and then not stored is re-requested on
+					// every visit and is absent offline, which puts the
+					// page straight back into the fallback state that
+					// costs it the weight-500 mark. `/Font/` was already
+					// routed here; only this guard kept it out of the
+					// cache.
 					const Type =
 						NetworkResponse?.headers?.get("content-type") ?? "";
 
 					if (
 						NetworkResponse &&
 						NetworkResponse.ok &&
-						Type.startsWith("image/")
+						(Type.startsWith("image/") || Type.startsWith("font/"))
 					) {
 						await Cache.put(Request, NetworkResponse.clone());
 					}

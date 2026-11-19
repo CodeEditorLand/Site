@@ -89,6 +89,79 @@ import FrMeta from "./Locale/Fr/Meta.json";
 
 import FrVerify from "./Locale/Fr/Verify.json";
 
+/** The English bundle of each namespace, by the name the lookup uses. */
+const EnglishBundle = {
+	blog: EnBlog,
+
+	common: EnCommon,
+
+	doc: EnDoc,
+
+	home: EnHome,
+
+	download: EnDownload,
+
+	account: EnAccount,
+
+	verify: EnVerify,
+
+	header: EnHeader,
+
+	footer: EnFooter,
+
+	meta: EnMeta,
+} as const;
+
+type Namespace = keyof typeof EnglishBundle;
+
+/** The four namespaces every page's chrome reads; they are always present. */
+const CoreNamespaceList: readonly Namespace[] = [
+	"common",
+	"header",
+	"footer",
+	"meta",
+];
+
+/**
+ * Register a page-specific namespace's English bundle on the shared instance.
+ *
+ * `Client.ts` initialises this same `i18next` instance at import time - it is in
+ * every page's module graph through `Footer` -> `LocaleSwitcher` - so by the
+ * time a route's frontmatter calls `GetI18n()` the instance is already
+ * initialised and `GetI18n()`'s own `init` never runs. That init is where the
+ * page-specific bundles are declared, so a `home:`, `download:`, `account:` or
+ * `verify:` key resolved in a namespace with no resource bundle and fell
+ * through to the caller's `defaultValue` - silently, on every prerendered
+ * route.
+ *
+ * A route that reads a page-specific namespace declares it here, before the
+ * first `GetI18n()` call, and its keys then resolve from
+ * `Locale/En/<Namespace>.json`; the `defaultValue` becomes the missing-key arm
+ * rather than the copy. The four core namespaces need no declaration.
+ *
+ * The declaration is per route and not automatic for every namespace: a page
+ * that never reads `home:` should not pay for `Home.json` in its server
+ * render, and making every namespace live at once would move the homepage and
+ * the download page onto copy that has not been read against their defaults.
+ */
+export function LoadServerNamespace(...NamespaceList: Namespace[]): void {
+	for (const Namespace of NamespaceList) {
+		if (!i18n.hasResourceBundle("en", Namespace)) {
+			i18n.addResourceBundle(
+				"en",
+
+				Namespace,
+
+				EnglishBundle[Namespace],
+
+				true,
+
+				true,
+			);
+		}
+	}
+}
+
 /**
  * Server-side i18n for Astro prerendered pages.
  * Always returns English - locale switching happens client-side
@@ -169,6 +242,15 @@ export function GetI18n() {
 			interpolation: { escapeValue: false },
 		});
 	}
+
+	/*
+	 * The instance may have been initialised by `Client.ts` first, and its own
+	 * resource load is asynchronous - so the four core bundles are declared
+	 * here too, which makes the chrome deterministic on the very first render
+	 * instead of depending on which microtask won. Adding a bundle that is
+	 * already present is a no-op.
+	 */
+	LoadServerNamespace(...CoreNamespaceList);
 
 	return i18n.getFixedT("en");
 }

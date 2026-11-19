@@ -5,7 +5,8 @@
  *
  * The page is one artifact, opened by the keeper masthead:
  *
- *   1. masthead        the page's one h1, its answer in one sentence, eight marks
+ *   1. masthead        the page's one h1, its answer in one sentence, the
+ *                      lifecycle register (`LIFECYCLE: PLANNED`), eight marks
  *   2. `#release-manifest` - the `# RELEASE_01` record: its head (index, seal,
  *                      claim, channel, state, and the release's own ledger), then
  *                      the seven regions the artifact continues into, then the
@@ -87,8 +88,15 @@ import {
 	VerificationWell,
 } from "../Component/Dynamic/Download/Data";
 import { Header } from "../Component/Layout/Header";
+import { SurfaceLives } from "../Content/Surface/Life.js";
 import Base from "../Layout/Base.astro";
-import { GetI18n } from "../Library/I18n/Server";
+import { GetI18n, LoadServerNamespace } from "../Library/I18n/Server";
+
+/* The whole record reads `download:` - the masthead, the six regions, the
+   manifest, the ladder, the install well and the previous-releases plate.
+   Declared before `GetI18n()` because `Client.ts` has already initialised the
+   shared instance on this route. */
+LoadServerNamespace("download");
 
 const T = GetI18n();
 
@@ -116,6 +124,8 @@ const MetaDescription = T("meta.downloads.description", {
 				"Nothing here is downloadable yet. Land builds from source on macOS, Windows and Linux; public installers, signing and verification artifacts are still in preparation.",
 		})}
 		marks={Marks}
+		life={SurfaceLives.DOWNLOAD.term}
+		lifeNote={SurfaceLives.DOWNLOAD.source}
 	/>
 
 	<Record record={Manifest(T)} release={ReleaseFacts(T)}>

@@ -16,6 +16,8 @@
  *
  * ─── THE FOUR PARTS ───────────────────────────────────────────────────────
  *   head    `# VERIFY_01` + the page's `h1` + the proposition + the status line
+ *           + `LIFECYCLE: LIVE` (the surface answers, so it says so in the one
+ *           vocabulary rather than leaving the reader to infer it)
  *   rail    `# CHECK / 06` - the scope: record, route, source, window, producer
  *   main    the matrix (five states x three questions), the card, the well
  *   foot    the three ways the check fails, as a register of states
@@ -47,9 +49,16 @@ import PageShell from "../Component/Shell/PageShell.astro";
 import ShellState from "../Component/Shell/ShellState.astro";
 import SurfaceHead from "../Component/Surface/SurfaceHead.astro";
 import { Row } from "../Component/Surface/State";
+import { SurfaceLives } from "../Content/Surface/Life.js";
 import { VerifyAudit } from "../Content/Layout/Verify.js";
 import Base from "../Layout/Base.astro";
-import { GetI18n } from "../Library/I18n/Server";
+import { GetI18n, LoadServerNamespace } from "../Library/I18n/Server";
+
+/* The card's states and the frame read `Verify.json`, so the namespace is
+   declared before the translator is resolved. The island
+   (`DynamicEmailVerification`) shares this i18next instance, so its
+   `useTranslation("verify")` lookups see the same bundle. */
+LoadServerNamespace("verify");
 
 const T = GetI18n();
 
@@ -137,9 +146,9 @@ const TrailItems = [
 const MetaTitle = T("meta.verify.title", {
 	defaultValue: "Verify Email - Code Editor Land",
 });
-const MetaDescription = T("verify.pending.description", {
+const MetaDescription = T("verify:pending.description", {
 	defaultValue:
-		"A verification link has been sent to your email address.\nPlease check your inbox and click the link to activate your account.\nThe link is valid for 24 hours.\nIf the email is not received within a few minutes, check the spam or promotions folder.\nFor security, do not share the verification link with anyone.",
+		"A link was sent to the address on the account. It opens for 24 hours and works once.\n\nIf nothing arrives in a few minutes, the spam folder is the next place to look.\n\nThe link is a credential: anyone who opens it verifies the address.",
 });
 ---
 
@@ -156,6 +165,8 @@ const MetaDescription = T("verify.pending.description", {
 			proposition={Frame.sentence}
 			states={States}
 			declarations={Declarations}
+			life={SurfaceLives.VERIFY.term}
+			lifeNote={SurfaceLives.VERIFY.source}
 			rows={[
 				{ key: "RECORD:", value: "EMAIL ADDRESS" },
 				{ key: "WINDOW:", value: "24 HOURS" },
@@ -178,7 +189,14 @@ const MetaDescription = T("verify.pending.description", {
 		/>
 
 		<div class="PageShell__instrument">
+			{/* `client:load`, not a static render: the card's three states are
+			    a state machine that only exists in the browser - the token is
+			    read from `window.location.search` and the exchange runs in an
+			    effect, neither of which a prerendered page can do. Without
+			    the directive the route printed the pending arm forever and
+			    the verifying arm (and its sentence) was unreachable. */}
 			<VerifyPage
+				client:load
 				Content={Verify}
 				Route={Route}
 				Token={Token || undefined}

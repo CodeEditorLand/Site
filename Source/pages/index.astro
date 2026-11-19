@@ -46,7 +46,13 @@ import RecordLedger from "../Component/Record/RecordLedger.astro";
 import RecordStage from "../Component/Record/RecordStage.astro";
 import { Header } from "../Component/Layout/Header";
 import Base from "../Layout/Base.astro";
-import { GetI18n } from "../Library/I18n/Server";
+import { GetI18n, LoadServerNamespace } from "../Library/I18n/Server";
+
+/* The hero and the five bands read `home:`, the download band reads
+   `download:title` and `download:subtitle`. Declared before `GetI18n()`: the
+   shared instance is already initialised by `Client.ts` on this route, so the
+   bundles have to be registered here or every key falls back to its default. */
+LoadServerNamespace("home", "download");
 
 const T = GetI18n();
 

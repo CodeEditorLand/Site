@@ -178,7 +178,17 @@
 
 	--mark-fold: "›";
 
-	/* the grammar's fallback (U+25CE) - the mark for a thing that is not here */
+	/* the grammar's fallback (U+25CE) - the mark for a thing that is not here,
+	   and the one mark on the site that may never be blank. Plex Mono has no
+	   bullseye, and no geometric-shapes block at all, so this character used
+	   to be drawn by the visitor's substitute - a face, a weight and an
+	   advance the system did not control. It is drawn by the site's own
+	   symbol face now, `Land Symbol` (`Type/_Face.scss`,
+	   `Maintain/Script/BuildLandSymbol.py`): the advance every other
+	   character in the face has (600/1000 = 1ch), the face's x-height, and a
+	   104-unit stroke between the face's vertical stem and its bar. If that
+	   file fails to load, the mark still prints in the substitute, as it did
+	   before - so the failure path costs the drawing and never the fact. */
 	--mark-fallback: "◎";
 
 	/* the fold turns by this much when it opens, and by nothing else */

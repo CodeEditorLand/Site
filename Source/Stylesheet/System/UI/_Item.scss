@@ -36,6 +36,15 @@
 //               grammar, the doc sidebar, the doc contents, the doc layer, the
 //               clause rail and the surface region rail.
 //
+// The weight is the one mark of the four a stylesheet cannot draw by itself, and
+// it is the one that was missing: the face that draws 500 is shipped in
+// `Public/Font/IBM-Plex-Mono/` - 400 and 500, preloaded in `Base.astro` - rather
+// than named in a stack and hoped for, because on a machine whose mono offers
+// only 400 and 700 CSS font matching resolves a request for 500 DOWNWARD and the
+// mark vanishes while the row still looks perfectly correct. The argument is at
+// `--FontMono` in `System/_Token.scss`. What it means here is that the fourth
+// mark is a guarantee, not a request.
+//
 // ─── DISABLED IS NOT DIMMED ─────────────────────────────────────────────────
 //
 // The kit writes `data-[disabled]:opacity-50`, which is the exact failure

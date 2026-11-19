@@ -14,7 +14,7 @@
  * The two bands a rebuild added here (`CodeEditorLand Portal Roadmap`, `What
  * you can do from here`) are gone: they were additions, and the four tier
  * bands are the page (`DESIGN-COMPLETE.md` §3.9). Nothing else was removed -
- * the 23 feature rows keep their name *and* their one-sentence description.
+ * the 23 feature rows keep their name *and* the clause that qualifies it.
  *
  * ─── THE RULES THIS FILE KEEPS ────────────────────────────────────────────
  * - **One `h1`, bare.** The page title is not a runtime stamp, so the `〈 〉`
@@ -25,13 +25,23 @@
  *   names print as `〈 CLOUD PLAN 〉` … `〈 ENTERPRISE PLAN 〉`, as the baseline
  *   printed them (Appendix B).
  * - **Features are record rows, not headings.** A feature is a marker, a name
- *   and the sentence that qualifies it - never an `h3`, so the page's heading
- *   sequence stays `h1` + four `h2` and the 28 headed chips the rebuild
- *   introduced do not come back.
+ *   and the clause that qualifies the name - never an `h3`, so the page's
+ *   heading sequence stays `h1` + four `h2` and the 28 headed chips the rebuild
+ *   introduced do not come back. The clause is a qualifier, not a sentence:
+ *   most rows end in `, planned` because the work has not shipped, and the rows
+ *   whose fact needs a verb carry one. The row is read as name + qualification,
+ *   which is why the description is printed in the same line rather than under
+ *   a heading of its own.
  * - **States print through the register.** `STATUS:` is card 6's
  *   `SurfaceState`, on one of §1.5's eight words with the tone the table
  *   gives it; `PLAN: PLANNED` is a declaration beside it, because `PLANNED`
  *   is not a state.
+ * - **The surface's maturity is declared, not implied.** The page's own word
+ *   for "how far along is this" is `LIFECYCLE: PLANNED`, read from
+ *   `Content/Surface/Life.ts` and printed by `SurfaceLife` between the status
+ *   line and the facts. It does not replace the tier badges: a badge is a fact
+ *   about one claim (`Online`, `Planned`), a lifecycle is a fact about the
+ *   whole surface, and the two compose.
  * - **U+2001 is the only separator.** No middle dot anywhere on the page.
  */
 import FieldRecordAction from "../Component/Brand/FieldRecordAction.astro";
@@ -42,9 +52,15 @@ import { Header } from "../Component/Layout/Header";
 import SurfaceBadge from "../Component/Surface/SurfaceBadge.astro";
 import SurfaceHead from "../Component/Surface/SurfaceHead.astro";
 import SurfaceStatusLine from "../Component/Surface/SurfaceStatusLine.astro";
+import { SurfaceLives } from "../Content/Surface/Life.js";
 import { PortalPage } from "../Content/Surface/Portal.js";
 import Base from "../Layout/Base.astro";
-import { GetI18n } from "../Library/I18n/Server";
+import { GetI18n, LoadServerNamespace } from "../Library/I18n/Server";
+
+/* The rows read `Account.json`'s `portal` table, so the namespace is declared
+   before the translator is resolved. Without it the page-specific bundle is
+   absent from the server render and every row prints its `Fallback`. */
+LoadServerNamespace("account");
 
 const T = GetI18n();
 
@@ -117,6 +133,8 @@ const Plan = [{ key: "PLAN", value: "PLANNED" }];
 							display
 							states={Page.states}
 							declarations={Declarations}
+							life={SurfaceLives.PORTAL.term}
+							lifeNote={SurfaceLives.PORTAL.source}
 							rows={Facts}
 						>
 							<FieldRecordSeal
@@ -268,10 +286,10 @@ const Plan = [{ key: "PLAN", value: "PLANNED" }];
 						</div>
 
 						{/* A feature is one record of the tier's set: a marker, a
-							    name and the one sentence that qualifies it. It is a
-							    row, not an `h3` - the rebuild turned each of these into
-							    a headed chip, which cost the sentence and added 28
-							    headings to a page that had none. */}
+							    name and the clause that qualifies it. It is a
+							    row, not an `h3` - the rebuild turned each of these
+							    into a headed chip, which cost the clause and added
+							    28 headings to a page that had none. */}
 						<div class="PortalTierDivider" aria-hidden="true"></div>
 						<div>
 							<p class="font-mono type-meta text-muted-foreground tracking-rule uppercase">

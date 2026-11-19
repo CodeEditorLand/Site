@@ -34,6 +34,14 @@ import type { default as VerificationState } from "./Type/State/Verification.js"
  * how bad the news is. A state printed only as prose has lost its state.
  * (The file's fifth key, `auth.expiredStatus`, is the failure route's -
  * `pages/Verify.astro` prints it when the provider says the link expired.)
+ *
+ * **Every key is namespace-qualified.** `useTranslation("verify")` binds the
+ * hook's default namespace, but `T("verify:...")` states the namespace at the
+ * call site as well, so a lookup cannot be redirected by a different default
+ * and a reader can see which file a sentence comes from. `Verify.json` is the
+ * copy; each `defaultValue` here is the missing-key arm and repeats the file's
+ * sentence verbatim, so a missing key degrades to the same words instead of to
+ * an older draft of them.
  */
 const DynamicEmailVerification = ({
 	Content,
@@ -77,7 +85,7 @@ const DynamicEmailVerification = ({
 				SetState("error");
 
 				SetErrorMessage(
-					T("errorGeneric", {
+					T("verify:errorGeneric", {
 						defaultValue:
 							"The check did not complete: the provider returned no answer for this token. Requesting a new link is the next step.",
 					}),
@@ -144,7 +152,7 @@ const DynamicEmailVerification = ({
 			setTimeout(() => SetResendSuccess(false), 5000);
 		} catch {
 			SetErrorMessage(
-				T("resendFailed", {
+				T("verify:resendFailed", {
 					defaultValue:
 						"The resend did not go out: the provider rejected the request. The existing link still works until it expires.",
 				}),
@@ -154,7 +162,7 @@ const DynamicEmailVerification = ({
 
 	const RenderPending = () => (
 		<AuthReport
-			State={T("auth.pendingStatus", {
+			State={T("verify:auth.pendingStatus", {
 				defaultValue: StateLabel.Preparing,
 			})}
 			Title={Content.Pending.Title}
@@ -164,8 +172,10 @@ const DynamicEmailVerification = ({
 			<div className="space-y-4">
 				<DynamicInput
 					Content={{
-						Label: T("emailLabel", { defaultValue: "Email" }),
-						Placeholder: T("emailPlaceholder", {
+						Label: T("verify:emailLabel", {
+							defaultValue: "Email",
+						}),
+						Placeholder: T("verify:emailPlaceholder", {
 							defaultValue: "Enter your email address",
 						}),
 						Type: "email",
@@ -180,7 +190,7 @@ const DynamicEmailVerification = ({
 						...Content.Pending.ResendButton,
 						Text:
 							ResendCooldown > 0
-								? T("resendCooldown", {
+								? T("verify:resendCooldown", {
 										defaultValue: "Resend in {{seconds}}s",
 										seconds: ResendCooldown,
 									})
@@ -196,8 +206,8 @@ const DynamicEmailVerification = ({
 				{ResendSuccess && (
 					<p className="auth-shell__note" role="status">
 						{Content.Pending.ResendSuccessMessage ||
-							T("resendSuccess", {
-								defaultValue: "Verification email resent!",
+							T("verify:resendSuccess", {
+								defaultValue: "Verification email resent.",
 							})}
 					</p>
 				)}
@@ -213,32 +223,36 @@ const DynamicEmailVerification = ({
 
 	const RenderVerifying = () => (
 		<AuthReport
-			State={T("auth.verifyingStatus", {
+			State={T("verify:auth.verifyingStatus", {
 				defaultValue: StateLabel.Loading,
 			})}
 			Title={
 				Content.Verifying?.Title ||
-				T("verifying.title", { defaultValue: "Verifying your email" })
+				T("verify:verifying.title", {
+					defaultValue: "Verifying your email",
+				})
 			}
 			Sentence={
 				Content.Verifying?.Description ||
-				T("verifying.description", {
+				T("verify:verifying.description", {
 					defaultValue:
-						"Please wait while we verify your email address...",
+						"Checking the email address with the provider.",
 				})
 			}
 			Glyph="loading"
 			Role="status"
 		>
 			<a href="/" className="auth-shell__alternate">
-				{T("backToEditor", { defaultValue: "Back to the editor" })}
+				{T("verify:backToEditor", {
+					defaultValue: "Back to the editor",
+				})}
 			</a>
 		</AuthReport>
 	);
 
 	const RenderSuccess = () => (
 		<AuthReport
-			State={T("auth.verifiedStatus", {
+			State={T("verify:auth.verifiedStatus", {
 				defaultValue: StateLabel.Verified,
 			})}
 			Title={Content.Success.Title}
@@ -259,7 +273,7 @@ const DynamicEmailVerification = ({
 
 	const RenderError = () => (
 		<AuthReport
-			State={T("auth.failedStatus", {
+			State={T("verify:auth.failedStatus", {
 				defaultValue: StateLabel.Interrupted,
 			})}
 			Title={Content.Error.Title}

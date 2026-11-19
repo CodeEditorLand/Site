@@ -1,0 +1,188 @@
+// ─── THE FACE ───────────────────────────────────────────────────────────────
+//
+// IBM Plex Mono, shipped with the site: two files, two weights, one origin -
+// and a third file for the three marks the face does not carry (see THE MARKS
+// THE FACE DOES NOT CARRY, at the end of this partial).
+// The decision to ship it - and the three alternatives that were rejected - is
+// written at `--FontMono` in `System/_Token.scss`, because the stack is what
+// makes the promise and the token is where the promise is read. This file is
+// only the mechanism.
+//
+// ─── WHY A PARTIAL AND NOT A BLOCK IN `_Token.scss` ────────────────────────
+// `_Token.scss` is a list of custom properties; `@font-face` is a rule, not a
+// property. Sass does not refuse the nesting - it HOISTS the face out of the
+// `:root` block and emits it after it - so declaring it there would compile and
+// would make the source lie about its own output: a reader would see the face
+// between two `:root` blocks in `_Token.scss` and the compiled sheet would have
+// it somewhere else entirely. A face is the type layer's business, so it lives
+// in the type layer, beside the partials that set type and the preload in
+// `Base.astro` that fetches it. It still loads with the token block (see
+// `System.scss`), so the promise and its mechanism are read as one thing.
+//
+// ─── TWO FILES, AND WHY NOT THREE ───────────────────────────────────────────
+// The system declares `font-weight` in exactly two values: 400 (19 declarations
+// - mostly resets that put a quiet state back at body weight: a row at rest, a
+// band's prose, a motion state's resting label, print's link) and 500 (161
+// declarations - the weight ceiling, which is every label, every register, every
+// heading, every `strong`, and the fourth mark of the current-item vocabulary).
+// Nothing on the site asks for 600, 700 or anything above: `_Base.scss` caps
+// `strong`/`b`/`th` at 500, the prose layer caps the markdown equivalents, and
+// the identity says weight never exceeds 500. So a third file would be a file no
+// rule may ask for - and the 500 is not decoration, it is the only weight
+// distinction the design system owns.
+//
+// ─── COMPLETE, NOT SUBSETTED ────────────────────────────────────────────────
+// Each file carries the face's whole charset - 1,125 glyphs over 983 codepoints:
+// latin, latin-ext and cyrillic (the face ships no Greek), plus the arrows and
+// box-drawing it does have - so there is no `unicode-range` here and no
+// per-subset request to get wrong. That is not generosity, it is the site's own
+// requirement, and the five locales it publishes are exactly what the three
+// scripts cover:
+//
+//   U+2001 EM QUAD     the grammar's only separator (`Type/_Register.scss`)
+//   U+2192 →  U+21B3 ↳  the record grammar's direction and relation marks
+//   U+2713 ✓            the current value in a list
+//   U+00DF ß  U+00F1 ñ  the German and Spanish locales (latin-1)
+//   U+0153 œ            the French locale (latin-ext)
+//   U+0430 а            the Bulgarian locale - a different script, not an accent
+//
+// A latin-only subset drops the quad and the arrows, which are the grammar; a
+// cyrillic subset split from it would mean a Bulgarian page downloading two
+// files to set one line. One file per weight is 45,640 bytes (400) and 46,724
+// (500) - 92 KB for the pair, less than one evidence image, and it is the type
+// the entire site is made of.
+//
+// ─── `url()` ONLY, NO `local()` ─────────────────────────────────────────────
+// A `local("IBM Plex Mono")` first in `src` would spare a visitor who already
+// has the face the download. It is refused on purpose: the design system
+// computes with this face's metrics - `ch` measures, the 0.6em advance, the
+// 0.516 x-height - and a face read out of the visitor's font directory is a
+// build nobody on this project has seen. One shipped file means one rendering,
+// one place for a bug in it, and one place to fix it. The fallback stack below
+// the family in `--FontMono` still covers the case where this file cannot be
+// fetched at all; a locally installed Plex does not need covering, it needs
+// ignoring.
+//
+// ─── LICENSE ────────────────────────────────────────────────────────────────
+// `license.txt` beside the files is the SIL Open Font License 1.1, which is the
+// licence the face ships under. The files are unmodified, so the Reserved Font
+// Name "Plex" stays - the OFL requires a *modified* version to be renamed, and
+// renaming an unmodified one would only break the trace back to upstream.
+
+@font-face {
+	font-family: "IBM Plex Mono";
+	font-style: normal;
+	font-weight: 400;
+
+	/* `swap`, not `optional`: the argument is at `--FontMono` in `_Token.scss`.
+	   In one line - this site's measures are computed from the face's 0.6em
+	   advance, so a page that declines the face for its whole lifetime does not
+	   avoid a reflow, it commits to a wrong measure. `Base.astro` preloads both
+	   files, so the swap has almost always already happened before first paint. */
+	font-display: swap;
+
+	src: url("/Font/IBM-Plex-Mono/IBMPlexMono-Regular.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "IBM Plex Mono";
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+	src: url("/Font/IBM-Plex-Mono/IBMPlexMono-Medium.woff2") format("woff2");
+}
+
+// ─── THE MARKS THE FACE DOES NOT CARRY ─────────────────────────────────────
+//
+// Two of the grammar's marks are not in IBM Plex Mono, and they are not
+// decoration: each is the only mark the record has for what it says.
+//
+//   U+25CE ◎        the fallback - `Library/Index/Register.ts` (`Fallback`),
+//                   drawn as `content: "◎"` in `State/_Link.scss` (the "gone"
+//                   state), named at `--mark-fallback` in `Mark/_Token.scss`.
+//                   Printed in 133 files.
+//   U+3008 〈  U+3009 〉  containment - the stamp the OpenGraph runs and the
+//                   folio print (`Function/OpenGraph/Run.ts`,
+//                   `Content/Artifact/Stamp.ts`, `Print/_Link.scss`,
+//                   `Print/_Colophon.scss`, the runtime stamps). Printed in
+//                   89 files.
+//
+// Measured against the shipped Medium file with fontTools: 983 codepoints,
+// 1,125 glyphs, and neither mark among them. Nor is any substitute for them
+// inside the face - the whole U+25A0-25FF block is absent, so there is no ○,
+// no ● and no ◉ to re-cut ◎ onto, and every bracket pair is absent too
+// (U+2329/232A, U+3008/3009, U+27E8/27E9). The only guillemets Plex Mono has
+// are `‹ ›` (U+2039/203A) and `« »` (U+00AB/BB) - and `‹ ›` is already the
+// FOLD mark (`--mark-fold: "›"`), so re-cutting containment onto it would
+// collapse two marks of the grammar into one glyph, while `« »` is a quotation
+// mark: a stamp set in it would read as a quotation, not as a containment.
+// That is the simplification this system refuses; both marks stay as drawn.
+//
+// So they get their own face, cut to the face's own grid.
+// `Maintain/Script/BuildLandSymbol.py` draws it and prints the numbers below;
+// `Public/Font/Land-Symbol/` carries the file (1,444 bytes) and its OFL.
+//
+// ─── DRAWN, NOT SUBSETTED FROM ANOTHER FOUNDRY ────────────────────────────
+// A subset of a face that does have these glyphs would be quicker, and it
+// would put a second designer's drawing into a system whose whole premise is
+// one face: its stroke weight, optical centre and advance would all have to be
+// corrected back to Plex's anyway. Drawing them makes the marks exact:
+//
+//   advance 600/1000  1ch - a mark can never move the row it sits in
+//   x-height 516      the ratio `font-size-adjust` already holds the page to
+//   cap height 698    the register a capital is set in
+//   stroke 104/1000   measured off the face: the vertical stem of `l`/`i`/`I`
+//                     is 109-112, the em dash's bar is 94, and a ring and a
+//                     diagonal belong between the two
+//
+// It also keeps the licence simple. A MODIFIED Plex must drop the Reserved
+// Font Name "Plex" (OFL 1.1 §3), so the two shipped Plex files stay unmodified
+// and their trace back to upstream stays true. That is also why these three
+// glyphs are a SECOND face rather than three glyphs appended to the two Plex
+// files: one family name over two drawings would be a file that says it is
+// Plex and is not.
+//
+// ─── THE RANGE IS THE MECHANISM ────────────────────────────────────────────
+// `unicode-range` declares exactly what this face may serve: the two marks,
+// plus U+2329/U+232A, the deprecated codepoints Unicode normalises to
+// U+3008/U+3009 (they are canonically equivalent, and a font that drew one and
+// not the other could render one character two ways). Every other character on
+// the page is outside the range, so this face cannot be selected for it -
+// `ch` still resolves from the first available font, which is still Plex
+// Mono's 0.6em `0`.
+//
+// Two blocks, one file: the system declares `font-weight` in exactly two
+// values, 400 and 500 (see the note at `--FontMono`), and one drawing serves
+// both, so the file is declared once per weight and fetched once. The mark is
+// set at the 500 stroke at 400 too, rather than a synthesised thinner one: a
+// second drawing would be a second file for a mark that never appears alone on
+// a line, and at 13px the difference between an 80-unit and a 104-unit ring is
+// a third of a pixel.
+//
+// ─── THE FALLBACK STATE ────────────────────────────────────────────────────
+// If this file cannot be fetched, `◎` and `〈 〉` fall to the system's
+// substitute exactly as they did before this card existed: the same
+// characters, in a face, weight and advance the system does not control.
+// Nothing else on the page moves - the range keeps this face out of every
+// other character - so a failed request costs the two marks and not a measure.
+// What changes is which path that is: it is now the failure path, not the
+// ordinary visit. The mark still prints either way, because `◎` is the one
+// thing here that may never be blank.
+
+@font-face {
+	font-family: "Land Symbol";
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	unicode-range: U+2329-232A, U+25CE, U+3008-3009;
+	src: url("/Font/Land-Symbol/LandSymbol-Medium.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Land Symbol";
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+	unicode-range: U+2329-232A, U+25CE, U+3008-3009;
+	src: url("/Font/Land-Symbol/LandSymbol-Medium.woff2") format("woff2");
+}

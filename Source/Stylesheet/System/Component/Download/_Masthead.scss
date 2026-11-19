@@ -7,6 +7,7 @@
 //   .download-masthead__glyph     the product glyph beside the h1
 //   .download-masthead__title     the page's only h1, at display weight
 //   .download-masthead__sentence  the release status in one line
+//   .download-masthead__life      the surface's lifecycle register (`SurfaceLife`)
 //   .download-masthead__marks     the mark strip
 //   .download-masthead__mark      a mark's trailing logo (the status dot is `Mark`'s)
 //
@@ -66,6 +67,19 @@
 	color: var(--MuteForeground);
 	text-wrap: pretty;
 	inline-size: 100%;
+}
+
+// ─── The lifecycle register ───────────────────────────────────────────────
+// The surface's maturity, stated above the claims rather than in place of
+// them: the marks say what each claim about the release is (`Signing
+// Planned`), the register says how far along the surface itself is
+// (`LIFECYCLE: PLANNED`). It takes its own line - the sentence and the marks
+// both do - and keeps the sentence's measure, so the five-step scale reads as
+// one line instead of stretching across the band.
+
+.download-masthead__life {
+	inline-size: 100%;
+	max-inline-size: 62ch;
 }
 
 // ─── The mark strip ───────────────────────────────────────────────────────

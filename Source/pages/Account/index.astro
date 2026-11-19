@@ -11,6 +11,8 @@
  *
  * ─── THE FOUR PARTS ───────────────────────────────────────────────────────
  *   head    `# ACCOUNT_01` + the page's `h1` + the proposition + declarations
+ *           + `LIFECYCLE: LIVE` (the workspace answers, so it says how far
+ *           along it is in the one vocabulary)
  *   rail    the seven destinations: the account's five routes, the dashboard,
  *           the portal - with the current row marked
  *   panes   `# PROFILE_01` (the island, the instrument) beside `# ACCESS_01`
@@ -39,6 +41,7 @@ import ShellRail from "../../Component/Shell/ShellRail.astro";
 import ShellState from "../../Component/Shell/ShellState.astro";
 import SurfaceHead from "../../Component/Surface/SurfaceHead.astro";
 import { AccountWorkspace } from "../../Content/Layout/Account.js";
+import { SurfaceLives } from "../../Content/Surface/Life.js";
 import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
 
@@ -102,6 +105,8 @@ const Workspace = AccountWorkspace(T);
 			title={Frame.heading}
 			proposition={Frame.sentence}
 			declarations={Declarations}
+			life={SurfaceLives.ACCOUNT.term}
+			lifeNote={SurfaceLives.ACCOUNT.source}
 			rows={[
 				{ key: "RECORD:", value: "PROFILE" },
 				{ key: "SESSION:", value: "AUTH0" },

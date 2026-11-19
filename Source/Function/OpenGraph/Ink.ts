@@ -74,7 +74,12 @@ export const RULE_OPACITY = 0.08;
 /**
  * `--FontMono` as an SVG attribute value. The token spells its families in
  * double quotes; the SVG attribute is double-quoted, so each family is
- * re-quoted with single quotes here. Same list, same order.
+ * re-quoted with single quotes here. Same list, same order, minus
+ * "Land Symbol" - the site's second face, which carries only U+25CE and
+ * U+3008/U+3009 - because an SVG served as an image loads no webfont at all.
+ * The card is set in the platform's mono, so naming a face the renderer
+ * cannot fetch would only pretend the stamp is drawn in the site's own
+ * brackets.
  */
 export const FONT =
 	"'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, Consolas, monospace";

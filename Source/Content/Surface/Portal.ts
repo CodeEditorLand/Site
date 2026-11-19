@@ -17,6 +17,13 @@
  *   (`CLOUD_01`, `/Account/SignIn?connection=cloud`, `PREPARING`), so a tier's
  *   marker and its destination cannot drift apart.
  *
+ * A third rule is about where a sentence comes from. Every key here is written
+ * `account:portal...`: the rows live inside `Locale/En/Account.json`, which is
+ * loaded as the `account` namespace, and `GetI18n()` resolves against
+ * `defaultNS: "common"` - so an unqualified `account.portal...` is looked up as
+ * `Common.account.portal...`, misses, and prints the row's `Fallback`. The
+ * fallbacks are the missing-key arm; with the prefix the copy is the file's.
+ *
  * The separators are U+2001 (EM QUAD), the field-record glyph the rest of the
  * site prints. They are written as escapes so no editor can silently fold them
  * into a middle dot, which `DESIGN.md` §1.5 forbids.
@@ -44,7 +51,15 @@ const Quad = "\u2001";
  */
 const State = (Key: string, Word: string): StateRow => Row(Key, Word);
 
-/** One feature row: a name, and the one sentence that qualifies it. */
+/**
+ * One feature row: a marker, a name, and the clause that qualifies the name.
+ *
+ * The third column is a qualifier rather than a full sentence. Most rows end in
+ * `, planned` because the work has not shipped, and a row whose fact needs a
+ * verb carries one (`Local editor operation should not require a cloud login`).
+ * The column is written to be read as the name's qualification, not as a
+ * standalone sentence, and `Portal.astro` prints the three parts in that order.
+ */
 export interface PortalFeature {
 	/**
 	 * `01` - the feature's position in its tier's own list, zero-padded. A
@@ -57,7 +72,7 @@ export interface PortalFeature {
 	/** `Sync` - printed uppercase by the row's own class. */
 	readonly name: string;
 
-	/** `Workspace sync across devices, planned`. */
+	/** `Workspace sync across devices, planned` - the qualifier clause. */
 	readonly description: string;
 }
 
@@ -246,7 +261,7 @@ const Features = (
 	Rows.map((Row, Position) => ({
 		marker: String(Position + 1).padStart(2, "0"),
 		name: Row.Heading,
-		description: T(`account.portal.${Tier}.feature.${Row.Key}`, {
+		description: T(`account:portal.${Tier}.feature.${Row.Key}`, {
 			defaultValue: Row.Fallback,
 		}),
 	}));
@@ -260,7 +275,7 @@ const Capabilities = (
 	Rows: readonly PortalCapabilityCopy[],
 ): readonly string[] =>
 	Rows.map((Row) =>
-		T(`account.portal.${Tier}.capability.${Row.Key}`, {
+		T(`account:portal.${Tier}.capability.${Row.Key}`, {
 			defaultValue: Row.Fallback,
 		}),
 	);
@@ -306,7 +321,7 @@ const HeroStatus = "PREPARING";
 export const PortalPage = (T: TFunction): PortalSurface => {
 	const Cloud = Tier({
 		Identifier: "Cloud",
-		Title: T("account.portal.cloud.title", { defaultValue: "Cloud Plan" }),
+		Title: T("account:portal.cloud.title", { defaultValue: "Cloud Plan" }),
 		Badge: "Online",
 		Protocol: "HTTPS / TLS 1.3",
 		Features: Features(T, "cloud", [
@@ -373,7 +388,7 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 
 	const Provider = Tier({
 		Identifier: "Provider",
-		Title: T("account.portal.provider.title", {
+		Title: T("account:portal.provider.title", {
 			defaultValue: "Provider Plan",
 		}),
 		Badge: "OAuth 2.0",
@@ -444,7 +459,7 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 
 	const LocalFirst = Tier({
 		Identifier: "LocalFirst",
-		Title: T("account.portal.localfirst.title", {
+		Title: T("account:portal.localfirst.title", {
 			defaultValue: "Local-First",
 		}),
 		Badge: "Local-First",
@@ -531,7 +546,7 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 
 	const Enterprise = Tier({
 		Identifier: "Enterprise",
-		Title: T("account.portal.enterprise.title", {
+		Title: T("account:portal.enterprise.title", {
 			defaultValue: "Enterprise Plan",
 		}),
 		Badge: "Planned",

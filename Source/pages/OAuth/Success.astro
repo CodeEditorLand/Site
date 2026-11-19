@@ -15,7 +15,11 @@ import SurfaceState from "../../Component/Surface/SurfaceState.astro";
 import Auth0ClientIdentifier from "../../Function/Configuration/Auth0ClientIdentifier.js";
 import Auth0Domain from "../../Function/Configuration/Auth0Domain.js";
 import Base from "../../Layout/Base.astro";
-import { GetI18n } from "../../Library/I18n/Server";
+import { GetI18n, LoadServerNamespace } from "../../Library/I18n/Server";
+
+/* The signed-in arm's word is `Account.json`'s own
+   `auth.oauthSuccess.signedInStatus`; the four core bundles do not carry it. */
+LoadServerNamespace("account");
 
 const T = GetI18n();
 

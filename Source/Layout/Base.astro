@@ -177,30 +177,50 @@ const LayoutSpec = LanguageOf(RawPath);
 		/>
 		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
 		<meta name="theme-color" content="#F2EDE3" />
-		<!-- Fonts: preconnect to Google Fonts origins, then preload the CSS
-		 stylesheet as a high-priority fetch. IBM Plex Mono for the Daylight Field Record design system. -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<!-- Fonts: the site's own two files, preloaded. The `@font-face` rules are
+		 in `Stylesheet/System/Type/_Face.scss` and the decision to ship the face
+		 rather than name a fallback is written at `--FontMono` in `_Token.scss`;
+		 this is only the fetch, and it has no third-party origin to preconnect to.
+
+		 BOTH weights, not just the body: 500 is the system's weight ceiling - every
+		 label, every register, every heading, the header nav and the fourth mark of
+		 the current-item vocabulary - so a page that preloaded only the 400 would
+		 paint its first screen at one weight and then change the weight of the text
+		 the reader is already reading.
+
+		 `crossorigin` is required even though the file is same-origin: a font fetch
+		 is a CORS request, and a preload without it does not match the face's own
+		 fetch - the browser downloads the file twice and discards the preload. -->
 		<link
 			rel="preload"
-			as="style"
+			as="font"
+			type="font/woff2"
 			crossorigin="anonymous"
-			href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=optional"
+			href="/Font/IBM-Plex-Mono/IBMPlexMono-Regular.woff2"
 		/>
 		<link
-			rel="stylesheet"
+			rel="preload"
+			as="font"
+			type="font/woff2"
 			crossorigin="anonymous"
-			href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=optional"
-			media="print"
-			onload="this.media='all'"
+			href="/Font/IBM-Plex-Mono/IBMPlexMono-Medium.woff2"
 		/>
-		<noscript>
-			<link
-				rel="stylesheet"
-				crossorigin="anonymous"
-				href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=optional"
-			/>
-		</noscript>
+		{/*
+			The marks Plex Mono does not carry - `◎` and `〈 〉` - are drawn by
+			`Land Symbol` (`Stylesheet/System/Type/_Face.scss`, the last block):
+			1,444 bytes for the three glyphs, preloaded for the same reason the
+			face is. Every route prints at least one of them - the footer's
+			folio is `〈NN〉`, so even a page with no stamp of its own carries
+			the pair - and a preloaded 1.4 KB file is in place before first
+			paint, which is what keeps the marks from swapping under the reader.
+		*/}
+		<link
+			rel="preload"
+			as="font"
+			type="font/woff2"
+			crossorigin="anonymous"
+			href="/Font/Land-Symbol/LandSymbol-Medium.woff2"
+		/>
 		<style is:inline>
 			/* Mermaid diagrams render ink-on-white via the Base.css token
 			   overrides (var(--CardForeground) / var(--Card)) - no invert

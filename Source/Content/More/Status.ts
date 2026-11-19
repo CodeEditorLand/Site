@@ -77,6 +77,8 @@ import { Wind } from "../Record/Wind.js";
 
 import { Worker } from "../Record/Worker.js";
 
+import { SurfaceLives, SurfaceNames } from "../Surface/Life.js";
+
 import type { FieldRecord } from "../Record/FieldRecord.js";
 
 import type {
@@ -317,6 +319,17 @@ export const Board: readonly BoardColumn[] = [
 
 /** Every row, for the instrument's total. */
 export const TotalRows = AllRows.length;
+
+/**
+ * The app surfaces, in the order the board reads them.
+ *
+ * This is not a second table: it is `Content/Surface/Life.ts` read in the
+ * board's order, the same way the rows above are `Content/Record/*.ts` read in
+ * the board's order. The five routes state their own lifecycle from that table,
+ * and this page prints the set - which is what makes the word on a surface
+ * auditable rather than a claim the reader has to take on trust.
+ */
+export const Surfaces = SurfaceNames.map((Name) => SurfaceLives[Name]);
 
 /**
  * The publication axis.
@@ -685,6 +698,21 @@ export const Bands = {
 			"The tone column is the word's ink, not a second classification: `SPECIMEN` is the attested state - the record's own ink and the state square at half again the size - `QUIET` is the muted ink, `INK` is the foreground. A word outside the eight prints in ink and is not a state.",
 
 		tone: "paper",
+	} satisfies Band,
+
+	Surfaces: {
+		kicker: "/THE SURFACES",
+
+		interval: "beat",
+
+		heading: "How far along each app surface is",
+
+		standfirst:
+			"Five routes, one word each from a second, smaller vocabulary: `LIVE`, `BETA`, `PLANNED`, `RETIRED`, `UNAVAILABLE`. `STATUS:` still says what a surface is doing; `LIFECYCLE:` says how far along it is - and the surface's own head prints the sentence that decided the word.",
+
+		footnote: `SOURCE: SOURCE/CONTENT/SURFACE/LIFE.TS${Quad}THE SAME TABLE EVERY SURFACE READS, SO A SURFACE AND THIS BAND CANNOT DISAGREE`,
+
+		tone: "canvas",
 	} satisfies Band,
 
 	Figures: {

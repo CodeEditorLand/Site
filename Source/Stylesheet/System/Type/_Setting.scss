@@ -102,10 +102,12 @@
 //
 // Two arms are this layer's own:
 //
-//   NO WEBFONT   `display=optional` may decline the face entirely. The page then
-//                sets in Menlo or SF Mono at a different x-height, and the meta
-//                tier is where that shows first. `font-size-adjust` holds the
-//                x-height, so the tier survives the fallback (`_Figure`).
+//   NO WEBFONT   the face is shipped and preloaded (`Type/_Face.scss`), so this
+//                is a failure state now rather than the usual one - a blocked
+//                request, fonts disabled, a print engine. The page then sets in
+//                Menlo or SF Mono at a different x-height, and the meta tier is
+//                where that shows first. `font-size-adjust` holds the x-height,
+//                so the tier survives the fallback (`_Figure`).
 //   ON PAPER    a printed page has no hover, no viewport and no scroll. Nothing
 //                here reads a media query except the hyphenation limit, which is
 //                a property of the column and not of the screen.

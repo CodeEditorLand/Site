@@ -1,5 +1,14 @@
 @use "System/Tailwind";
 @use "System/Token";
+// The face loads with the token block, immediately after it, because the two are
+// one promise read in two places: `_Token.scss` names the family in `--FontMono`
+// and `Type/_Face.scss` declares it. It is a separate partial because a face is a
+// rule and `_Token.scss` is a list of custom properties - Sass would hoist an
+// `@font-face` out of the `:root` block and emit it somewhere the source does not
+// show. The argument for shipping the face rather than naming a fallback is
+// written at `--FontMono`; nothing here is a second decision.
+@use "System/Type/Face";
+
 // The mark layer's tokens load with the token block: a mark's size, ink, gap and
 // column are read by partials in every layer above (the state square by the
 // Record layer, the crosshair by the Component layer, the bullet by the prose),

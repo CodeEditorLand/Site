@@ -32,6 +32,14 @@
  * if it were.
  *
  * No script and no hydration: a lifecycle is printed.
+ *
+ * ─── WHY IT IS A GROUP, NOT A SECTION ────────────────────────────────────
+ * A `<section>` carrying an `aria-label` becomes a `region` landmark, and a
+ * head that prints one register per surface would file a landmark for a
+ * five-word row. On `/Status`, which prints the whole set, five of them would
+ * be five landmarks with duplicated names. `role="group"` names the register
+ * for a screen reader without claiming a place in the document's outline - the
+ * register belongs to the head it sits in, not beside it.
  */
 import { Life, LifeOf, LifeTerms } from "./State.js";
 
@@ -65,12 +73,13 @@ const Word = Resolved ?? Life.UNAVAILABLE;
 const Position = String(LifeTerms.indexOf(Word.term) + 1).padStart(2, "0");
 ---
 
-<section
+<div
 	class:list={[
 		"surface__life",
 		dense && "surface__life--dense",
 		ClassName,
 	]}
+	role="group"
 	aria-label={`LIFECYCLE: ${Word.term}`}
 >
 	<p class="surface__life-register">
@@ -118,4 +127,4 @@ const Position = String(LifeTerms.indexOf(Word.term) + 1).padStart(2, "0");
 	) : null}
 
 	{note ? <p class="surface__life-note">{note}</p> : null}
-</section>
+</div>

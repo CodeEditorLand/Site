@@ -13,10 +13,18 @@ import SurfaceRegion from "../Component/Surface/SurfaceRegion.astro";
 import { RichText } from "../Component/UI/RichText";
 import { Row } from "../Component/Surface/State";
 import { DashboardPage } from "../Content/Surface/Dashboard.js";
+import { SurfaceLives } from "../Content/Surface/Life.js";
 import Base from "../Layout/Base.astro";
-import { GetI18n } from "../Library/I18n/Server";
+import { GetI18n, LoadServerNamespace } from "../Library/I18n/Server";
 
 import type { MatrixColumn } from "../Component/Record/Type.js";
+
+/* The user panel is a React island and reads its arms from `account:` - the
+   session report's five states, the signed-out arm and the action footnote.
+   `Client.ts` has already initialised the shared instance by the time this
+   route renders, so the bundle has to be declared here or the island's
+   server-rendered arm prints its `defaultValue` instead of the file. */
+LoadServerNamespace("account");
 
 const T = GetI18n();
 
@@ -147,14 +155,18 @@ const MatrixRows = [
 
 	<!-- The instrument head: `# DASHBOARD_02`, the page's only `h1`, one
 	 sentence, the four claims the page has always carried, then the status line
-	 with its declarations. Nothing is stated twice and nothing is stated below
-	 the fold that belongs here. -->
+	 with its declarations. The lifecycle is the surface's, not a row's: the
+	 page is open and still moving (`BETA`), and the words its rows print -
+	 `Disabled`, `Coming Soon`, `Not Connected` - stay badge labels, because a
+	 badge is a fact about one row and a lifecycle is a fact about the surface. -->
 	<SurfaceHead
 		index="# DASHBOARD_02"
 		title={Page.title}
 		proposition={Page.standfirst}
 		states={States}
 		declarations={Declarations}
+		life={SurfaceLives.DASHBOARD.term}
+		lifeNote={SurfaceLives.DASHBOARD.source}
 	>
 		<div class="surface-head__marks">
 			{Page.badges.map((Badge) => (

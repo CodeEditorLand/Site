@@ -16,6 +16,25 @@
  *   rows are the register's own totals, passed in rather than restated, so a
  *   stamp cannot drift from the table it marks.
  *
+ * ─── THE CONTAINMENT MARK ─────────────────────────────────────────────────
+ * Both marks are written U+3008 … U+3009 - the angle brackets, not the
+ * parentheses and not the single guillemets (`U+2039/U+203A`, which are the
+ * FOLD mark, `--mark-fold`). IBM Plex Mono carries neither bracket, so the
+ * pair used to be drawn by the visitor's substitute, at a face, weight and
+ * advance the system did not control: in a `ch`-measured line a substitute
+ * bracket can be wider than one character and move the row it sits in.
+ *
+ * It is drawn by the site's own symbol face now (`Type/_Face.scss`, the
+ * "Land Symbol" blocks), declared for exactly these codepoints and listed in
+ * `--FontMono` after the face, so a stamp is set in the face's own advance
+ * (600/1000) and weight (500) rather than the browser's substitute. If that
+ * file cannot be fetched the brackets fall back to the substitute and the
+ * stamp still reads - the mark is never dropped to make a gap go away.
+ *
+ * U+2329/U+232A are the deprecated canonical equivalents of these two; the
+ * face maps them to the same outlines, and the tree prints U+3008/U+3009 in
+ * 89 files. These escapes are the pair the grammar names - do not "fix" them.
+ *
  * ─── WHAT A STAMP MAY NOT DO ──────────────────────────────────────────────
  * It may not claim more than the site can verify. Neither mark says "signed",
  * "certified" or "official": the release's says `PREPARING` and prints

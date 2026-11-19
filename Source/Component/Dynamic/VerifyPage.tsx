@@ -6,6 +6,8 @@ import { useTranslation } from "react-i18next";
 
 import { AuthAPI as AuthAPIClass } from "../../Library/API/Authentication";
 
+import { LoadNamespace } from "../../Library/I18n/Client";
+
 import { AuthReport } from "../Auth/Report";
 
 import { DynamicButton } from "./DynamicButton";
@@ -45,6 +47,16 @@ const VerifyPage = ({
 	const Navigate = OnNavigate || NavigateToPath;
 
 	const [UserEmail, SetUserEmail] = useState<string>("");
+
+	/*
+	 * The browser's translator starts with the four core namespaces only, so
+	 * `verify:` would miss in the browser exactly as it missed on the server.
+	 * Load the bundle the route reads; until it lands the component prints the
+	 * `defaultValue`s, which repeat `Verify.json` verbatim.
+	 */
+	useEffect(() => {
+		void LoadNamespace("verify");
+	}, []);
 
 	// Extract email from localStorage if available
 	useEffect(() => {

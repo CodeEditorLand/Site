@@ -24,9 +24,11 @@
 //      assumed. It does not always: see below.
 //
 // ─── THE PAGE'S OPTICAL SIZE IS THE FACE'S X-HEIGHT ───────────────────────
-// `Base.astro` loads IBM Plex Mono with `display=optional`, which is the honest
-// choice for a page that must not reflow - and it means the fallback chain is a
-// real state, not a theoretical one. That chain is not one optical size:
+// `Base.astro` preloads the site's own two files and `Type/_Face.scss` declares
+// them, so the primary face is the ordinary state now, not the lucky one. The
+// fallback chain is still a real state and not a theoretical one - a blocked
+// origin, a browser with fonts disabled, a print engine - and it is not one
+// optical size:
 //
 //   IBM Plex Mono    x/em 0.516   (upm 1000, sxHeight 516)
 //   Menlo            x/em ~0.519
@@ -35,13 +37,19 @@
 //
 // At 16px the spread is 0.54px of x-height and nobody sees it. At the 13px floor
 // it is 0.44px - a third of the difference between a label and a caption at that
-// size - and it arrives exactly when the page is being read on a slow connection,
-// which is when a reader is most likely to think the site is badly made.
+// size - and it arrives exactly when the face could not be fetched, which is
+// when a reader is most likely to think the site is badly made.
 //
 // `font-size-adjust` holds the x-height to the face's own ratio, so the meta tier
 // is 13px of label in every face in the chain. It is declared on `html` rather
 // than per role because it is a property of the PAGE's setting, not of a role: a
 // page that adjusts one tier and not the next has two optical scales.
+//
+// It used to be doing more work than this. While the face was fetched from a
+// third-party stylesheet with `display=optional`, this declaration was holding
+// together pages whose primary face usually did not arrive at all. Now it is
+// what makes a failure state cost the reader nothing but the weight mark - the
+// same declaration, on much shorter odds.
 //
 // ─── AND THE VALUE THAT WAS THERE WAS NOT A RATIO OF ANY FACE ─────────────
 // `_Global.scss` declared `font-size-adjust: 0.48` on `html`, with the note that

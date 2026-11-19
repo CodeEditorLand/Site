@@ -1,0 +1,19 @@
+import { t as __exportAll } from "./rolldown-runtime_D8jQpDG7.mjs";
+import { d as renderComponent, y as renderTemplate } from "./jsx-runtime_Cm1SQqpF.mjs";
+import { t as createComponent } from "./astro-component_CwlruS7b.mjs";
+import "./Map_ChnMuG2V.mjs";
+import { t as $$ContactShell } from "./ContactShell_DsM48wP0.mjs";
+// Source/pages/Contact/Legal.astro
+var Legal_exports = /* @__PURE__ */ __exportAll({
+	default: () => $$Legal,
+	file: () => $$file,
+	url: () => $$url
+});
+var $$Legal = createComponent(($$result, $$props, $$slots) => {
+	return renderTemplate`${renderComponent($$result, "ContactShell", $$ContactShell, { "code": "LEGAL" })}`;
+}, "/Volumes/CORSAIR/Developer/macOS/Application/CodeEditorLand/WebSite/Source/pages/Contact/Legal.astro", void 0);
+var $$file = "/Volumes/CORSAIR/Developer/macOS/Application/CodeEditorLand/WebSite/Source/pages/Contact/Legal.astro";
+var $$url = "/Contact/Legal";
+// \0virtual:astro:page:Source/pages/Contact/Legal@_@astro
+var page = () => Legal_exports;
+export { page };

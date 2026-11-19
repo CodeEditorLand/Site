@@ -149,35 +149,51 @@ export const AccountContent = (T: Translate): AccountContentShape => ({
 	Footer: {},
 });
 
-/** The three verify states, shared by /Verify in both entry modes. */
+/**
+ * The verify card's four states, shared by /Verify in both entry modes.
+ *
+ * The keys carry the `verify:` prefix because `GetI18n()` resolves against
+ * `defaultNS: "common"`: an unprefixed `verify.pending.title` is looked up as
+ * `Common.verify.pending.title`, which does not exist, so the call fell
+ * through to its `defaultValue` and `Verify.json` was never read. The prefix
+ * makes the file the copy and the default the missing-key arm.
+ */
 export const VerifyContent = (T: Translate): VerifyContentShape => ({
 	Verification: {
 		Pending: {
-			Title: T("verify.pending.title", {
+			Title: T("verify:pending.title", {
 				defaultValue: "Check The Inbox",
 			}),
-			Description: T("verify.pending.description", {
+			Description: T("verify:pending.description", {
 				defaultValue:
 					"A link was sent to the address on the account. It opens for 24 hours and works once.\n\nIf nothing arrives in a few minutes, the spam folder is the next place to look.\n\nThe link is a credential: anyone who opens it verifies the address.",
 			}),
 			ResendButton: {
-				Text: T("verify.pending.resendButton", {
+				Text: T("verify:pending.resendButton", {
 					defaultValue: "Send A New Link",
 				}),
 				Variant: "default",
 				FullWidth: true,
 			},
 		},
+		Verifying: {
+			Title: T("verify:verifying.title", {
+				defaultValue: "Verifying your email",
+			}),
+			Description: T("verify:verifying.description", {
+				defaultValue: "Checking the email address with the provider.",
+			}),
+		},
 		Success: {
-			Title: T("verify.success.title", {
+			Title: T("verify:success.title", {
 				defaultValue: "Email Verified",
 			}),
-			Description: T("verify.success.description", {
+			Description: T("verify:success.description", {
 				defaultValue:
 					"The address on the account is verified. Signing in is the last step before the workspace opens.",
 			}),
 			ContinueButton: {
-				Text: T("verify.success.continueButton", {
+				Text: T("verify:success.continueButton", {
 					defaultValue: "BACK TO LAND",
 				}),
 				Variant: "default",
@@ -185,15 +201,15 @@ export const VerifyContent = (T: Translate): VerifyContentShape => ({
 			},
 		},
 		Error: {
-			Title: T("verify.error.title", {
+			Title: T("verify:error.title", {
 				defaultValue: "Verification Interrupted",
 			}),
-			Description: T("verify.error.description", {
+			Description: T("verify:error.description", {
 				defaultValue:
 					"The link carried no token the provider recognises, or the token's window has closed. A new link is the only way forward.",
 			}),
 			BackToSignInButton: {
-				Text: T("verify.error.backToSignInButton", {
+				Text: T("verify:error.backToSignInButton", {
 					defaultValue: "SIGN IN",
 				}),
 				Variant: "default",

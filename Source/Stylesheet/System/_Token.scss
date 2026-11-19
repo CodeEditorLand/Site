@@ -892,13 +892,101 @@
 		 Single mono family. Labels uppercase and tracked, prose set as
 		 prose. Three scales only. No sans-serif display face.
 		 ───────────────────────────────────────────────────────────── */
+
+		/* THE FACE IS SHIPPED, NOT NAMED - and this stack is now a fallback
+		 * rather than a plan. The two files are `Type/_Face.scss`; the argument
+		 * for them is here, because this is where the promise is read.
+		 *
+		 * ─── WHAT WAS WRONG ───────────────────────────────────────────────
+		 * `font-weight: 500` is not one rule on this site, it is the whole
+		 * weight ceiling: 161 declarations - every label, every register line,
+		 * every heading, `strong`/`b`/`th`, the badge, the button, and the
+		 * FOURTH MARK of the current-item vocabulary (`UI/_Item.scss`: the
+		 * attribute, the ink, the weight, and a 2px accent rule). The site used
+		 * to load the face from a third-party stylesheet, non-blocking, with
+		 * `display=optional` - so the `@font-face` rules themselves arrived
+		 * after the optional period had already expired, and the browser set
+		 * the page in the fallback. On a stack with only 400 and 700, CSS font
+		 * matching resolves a request for 500 DOWNWARD, to 400: the mark is
+		 * not drawn differently, it is not drawn at all. Nothing in the page
+		 * said so, and the reader had no way to know a signal was missing.
+		 *
+		 * ─── WHY NOT NAME THE FALLBACK HONESTLY ───────────────────────────
+		 * Dropping weight from the vocabulary and calling the convention three
+		 * marks would be true and would fix nothing. The missing mark is the
+		 * smallest part of the damage: with 500 resolving to 400, a page has
+		 * ONE weight, so every heading, label and register on it sits at body
+		 * weight and the hierarchy the three tiers exist to build is gone.
+		 * Honest naming would document a flat page instead of setting one - and
+		 * it would delete a mark to make a defect disappear, which this system
+		 * does not do.
+		 *
+		 * ─── WHY NOT RESERVE THE WEIGHT'S WIDTH ───────────────────────────
+		 * A `letter-spacing` or a fixed advance would stop a label from shifting
+		 * when it becomes current, and it would pay for the shift while leaving
+		 * the cause: the site does not measure in pixels, it measures in `ch`.
+		 * `--Measure` is a clamp from 72ch to 88ch, `--optical-space` is 1ch, a
+		 * folio's length is computed in em quads, a card's floor is its title's
+		 * `ch` plus its inset - and every one of those is exact only because this
+		 * face advances 0.6em (verified against the shipped file: unitsPerEm
+		 * 1000, advance of `0` = 600). The faces in this stack do not agree with
+		 * each other on either number - `Type/_Figure.scss` already lists four
+		 * different x/em values for four of them - so reserving one weight's
+		 * width would leave every measure on the page still computed from a
+		 * face that is not there.
+		 *
+		 * ─── THE DECISION ─────────────────────────────────────────────────
+		 * Ship the face. `Public/Font/IBM-Plex-Mono/` carries 400 and 500 -
+		 * exactly the two weights the system declares and no more - under the
+		 * OFL, and `Base.astro` preloads both. 92 KB for the pair, on the
+		 * critical path but not blocking render: the fonts ARE this site's
+		 * first paint. That buys three things at once, and they are the reason
+		 * this is one decision rather than three: the 500 mark is drawn on
+		 * every machine, every `ch` on the site is the 0.6em it was computed
+		 * at, and `--optical-x-height: 0.516` stops compensating for a face
+		 * that never arrived and becomes the ratio of the face in use.
+		 *
+		 * ─── `swap`, WHICH REVERSES AN EARLIER CHOICE ─────────────────────
+		 * The third-party loader used `display=optional` so a page would not
+		 * reflow. That reasoning does not survive the measures: a page whose
+		 * `ch` values are metric-derived does not avoid a reflow by declining
+		 * the face, it commits to a wrong measure for the whole page view and
+		 * never corrects it. `swap` converges - and because both files are
+		 * same-origin and preloaded, the swap is almost always already done
+		 * before first paint. `font-size-adjust` holds the x-height across it,
+		 * so what a reader can see in the worst case is a line's width settling,
+		 * not its type changing size.
+		 *
+		 * ─── WHAT THIS STACK MEANS NOW ────────────────────────────────────
+		 * A failure path, not the normal one. It covers a request that could not
+		 * be made (a blocked origin, a browser with fonts disabled, a print
+		 * engine), and in that state the page still reads at the right x-height
+		 * - it loses the weight mark and nothing else. What it no longer covers
+		 * is the ordinary visit, which is the defect this block records.
+		 *
+		 * ─── THE SECOND FAMILY, AND WHY IT IS SECOND ─────────────────────
+		 * "Land Symbol" is not a second typeface. It is the three marks Plex
+		 * Mono does not carry - `◎`, `〈`, `〉` - drawn to this face's own
+		 * advance, x-height and weight (`Type/_Face.scss`, the last block).
+		 * It is listed AFTER the face and it declares a `unicode-range`, so it
+		 * is only ever asked for those codepoints: a browser reaches it when
+		 * the family in front of it has no glyph for the character, which is
+		 * exactly the case it exists for. Listed FIRST it would be the stack's
+		 * first available font and every `ch` on the page would be computed
+		 * from a three-glyph file; listed here it cannot be, because its range
+		 * does not contain `0`.
+		 *
+		 * Both tokens are the same face on purpose: `--FontSans` exists because
+		 * Tailwind and the kit name both, not because the site has two. */
 		--FontSans:
-			"IBM Plex Mono", "JetBrains Mono", "Fira Code", ui-monospace,
-			"SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+			"IBM Plex Mono", "Land Symbol", "JetBrains Mono", "Fira Code",
+			ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas,
+			monospace;
 
 		--FontMono:
-			"IBM Plex Mono", "JetBrains Mono", "Fira Code", ui-monospace,
-			"SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+			"IBM Plex Mono", "Land Symbol", "JetBrains Mono", "Fira Code",
+			ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas,
+			monospace;
 
 		/* The documented tiers, and there are three: the no-XS decision
 		   (`DesignSystem.md` §5) leaves S, L and XL, and nothing on the site
@@ -1173,8 +1261,8 @@
 	 *
 	 * The link rules carried 0.22em, which puts the top of a 1px line 0.008em
 	 * above the bottom of a `g` in Plex - and 0.016em INSIDE the descender of
-	 * Menlo and SF Mono, the faces the page actually renders in whenever the
-	 * webfont has not loaded (`display=optional`). That is the line sitting on
+	 * Menlo and SF Mono, the faces the page falls back to when the shipped face
+	 * cannot be fetched. That is the line sitting on
 	 * the glyphs, and it is also why `text-decoration-skip-ink` keeps cutting
 	 * it - a rule drawn through descenders is drawn in fragments.
 	 * 0.3em is the deepest fallback descender plus 0.064em of air: 0.8px at the
@@ -1235,12 +1323,12 @@
 	 * IBM Plex Mono 2.3: unitsPerEm 1000, sxHeight 516, so x/em is 0.516. The
 	 * fallback chain is not the same optical size at the same `font-size` -
 	 * JetBrains Mono is 0.550, SF Mono ~0.53, Menlo ~0.519 - so a 13px label is
-	 * up to 6.6% larger before the webfont arrives, and 6.6% of 13px is 0.86px of
-	 * x-height: a third of the difference between a label and a caption, which
-	 * at this size is the whole difference. `font-size-adjust` reads this and
-	 * holds the x-height constant across the chain, so the meta tier is 13px of
-	 * label in every face and the page does not change size under the reader
-	 * when `display=optional` declines to load the webfont.
+	 * up to 6.6% larger before the shipped face arrives, and 6.6% of 13px is
+	 * 0.86px of x-height: a third of the difference between a label and a
+	 * caption, which at this size is the whole difference. `font-size-adjust`
+	 * reads this and holds the x-height constant across the chain, so the meta
+	 * tier is 13px of label in every face and the page does not change size
+	 * under the reader in the failure state where the face cannot be fetched.
 	 */
 	--optical-x-height: 0.516;
 
