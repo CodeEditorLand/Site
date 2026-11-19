@@ -33,44 +33,59 @@ import { cn } from "./Utility";
 /**
  * One context menu.
  *
- * ─── THE DOOR IS A REGION, AND RADIX DOES NOT LET IT BE CONTROLLED ────────
+ * ─── THE DOOR IS A REGION, AND THE ROOT IS CONTROLLED SO THE GUARD CAN CLOSE ─
  *
- * `ContextMenu.Root` opens on a right-click and exposes only `onOpenChange` -
- * there is no `open` prop to hand it, because the gesture is the state. So the
- * family's guard mirrors the state instead of owning it: the value the
- * primitive holds is still the primitive's, and this component only reads it.
- * The door is the trigger *region* - the element the pointer was over - which
- * is exactly what a removed-trigger rule should watch, because a region that
+ * `ContextMenu.Root` opens on a right-click, and its open state is *also* a prop
+ * (`open` / `onOpenChange`) - Radix reads the gesture into the same state a
+ * caller can hand in. The family therefore owns the mirror: the primitive is
+ * given `open`, the gesture still opens it through `onOpenChange`, and the
+ * removed-trigger guard's `Close` is a real close rather than a flag written
+ * next to an open menu.
+ *
+ * That distinction is the whole of this file's behaviour. A guard whose `Close`
+ * only flipped a local boolean would print `TRIGGER REMOVED` on the matrix and
+ * leave the menu floating over the hole where the region was - the failure the
+ * row exists to prove absent.
+ *
+ * The door is the trigger *region* - the element the pointer was over - which is
+ * exactly what a removed-trigger rule should watch, because a region that
  * unmounts under an open menu is the same failure as a button that unmounts.
  */
 function ContextMenu({
+	open,
+	defaultOpen,
 	onOpenChange,
 	...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Root>) {
-	const [Open, SetOpen] = React.useState(false);
+	const [Mirrored, SetMirrored] = React.useState<boolean>(
+		defaultOpen ?? false,
+	);
+
+	const IsOpen = open ?? Mirrored;
 
 	const Element = React.useRef<HTMLElement | null>(null);
 
 	const Close = React.useCallback(() => {
-		SetOpen(false);
+		SetMirrored(false);
 
 		onOpenChange?.(false);
 	}, [onOpenChange]);
 
-	UseTriggerGuard(Open, Element, Close);
+	UseTriggerGuard(IsOpen, Element, Close);
 
 	const Door: Door = React.useMemo(
-		() => ({ Element, Open, Close }),
+		() => ({ Element, Open: IsOpen, Close }),
 
-		[Open, Close],
+		[IsOpen, Close],
 	);
 
 	return (
 		<DoorContext.Provider value={Door}>
 			<ContextMenuPrimitive.Root
 				data-slot="context-menu"
+				open={IsOpen}
 				onOpenChange={(Next) => {
-					SetOpen(Next);
+					SetMirrored(Next);
 
 					onOpenChange?.(Next);
 				}}
@@ -168,12 +183,16 @@ function ContextMenuSubContent({
 
 function ContextMenuContent({
 	className,
+	dense = false,
 	head,
 	empty,
 	foot,
 	children,
 	...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Content> & {
+	/** The tight rhythm - `data-density="dense"`, read by the row grammar. */
+	dense?: boolean;
+
 	/** The register line the slip opens with - `# RECORD / 04`. */
 	head?: SlipHead | undefined;
 
@@ -187,6 +206,7 @@ function ContextMenuContent({
 		<ContextMenuPrimitive.Portal>
 			<ContextMenuPrimitive.Content
 				data-slot="context-menu-content"
+				data-density={dense ? "dense" : undefined}
 				aria-label={head?.Name}
 				className={cn("Slip", className)}
 				{...props}
@@ -196,6 +216,7 @@ function ContextMenuContent({
 				{empty === undefined ? null : (
 					<SlipEmpty
 						Mark={empty.Mark ?? "NO RECORD"}
+
 						Line={empty.Line}
 					/>
 				)}

@@ -48,6 +48,16 @@ function Menubar({
 }: React.ComponentProps<typeof MenubarPrimitive.Root>) {
 	const [Mirrored, SetMirrored] = React.useState<string>(defaultValue ?? "");
 
+	/**
+	 * The bar is controlled, always.
+	 *
+	 * `value` may be handed in by a caller, and the bar mirrors it when it is
+	 * not - but the primitive is given the resolved value either way. Without
+	 * that, the removed-trigger rule below could set the mirror to `""` and the
+	 * bar would go on showing an open menu: a guard that writes a flag beside a
+	 * surface it cannot close. Radix's menubar reads `value` as the open menu's
+	 * name, so `""` is the closed bar.
+	 */
 	const IsOpen = value ?? Mirrored;
 
 	const Close = React.useCallback(() => {
@@ -66,29 +76,48 @@ function Menubar({
 	 * the trigger that owns it has left the tree, close. The selector is Radix's
 	 * own attribute (`data-state="open"`), not a site class, so this reads the
 	 * primitive's contract rather than inventing a second one.
+	 *
+	 * The check is deferred by one frame. A menubar's most ordinary mutation is
+	 * the *swap* - `FILE` closing and `EDIT` opening in the same commit - and a
+	 * synchronous read can land between the two writes and see no open trigger
+	 * at all. Reading on the next frame reads the settled tree, so the rule fires
+	 * on a trigger that is really gone and never on one that is being replaced.
 	 */
 	React.useEffect(() => {
 		if (!IsOpen || typeof MutationObserver === "undefined") return;
 
-		const Observer = new MutationObserver(() => {
+		let Frame = 0;
+
+		const Settled = () => {
+			Frame = 0;
+
 			const Open = document.querySelector(
 				'[data-slot="menubar-trigger"][data-state="open"]',
 			);
 
 			if (Open === null) Close();
+		};
+
+		const Observer = new MutationObserver(() => {
+			if (Frame !== 0) return;
+
+			Frame = requestAnimationFrame(Settled);
 		});
 
 		Observer.observe(document.body, { childList: true, subtree: true });
 
-		return () => Observer.disconnect();
+		return () => {
+			Observer.disconnect();
+
+			if (Frame !== 0) cancelAnimationFrame(Frame);
+		};
 	}, [IsOpen, Close]);
 
 	return (
 		<MenubarPrimitive.Root
 			data-slot="menubar"
 			className={cn("Menubar", className)}
-			value={value}
-			defaultValue={defaultValue}
+			value={IsOpen}
 			onValueChange={(Next) => {
 				SetMirrored(Next);
 
@@ -164,11 +193,15 @@ function MenubarContent({
 	align = "start",
 	alignOffset = -4,
 	sideOffset = 8,
+	dense = false,
 	head,
 	empty,
 	children,
 	...props
 }: React.ComponentProps<typeof MenubarPrimitive.Content> & {
+	/** The tight rhythm - `data-density="dense"`, read by the row grammar. */
+	dense?: boolean;
+
 	/** The register line the menu opens with - `# FILE / 07`. */
 	head?: SlipHead | undefined;
 
@@ -179,6 +212,7 @@ function MenubarContent({
 		<MenubarPortal>
 			<MenubarPrimitive.Content
 				data-slot="menubar-content"
+				data-density={dense ? "dense" : undefined}
 				align={align}
 				alignOffset={alignOffset}
 				sideOffset={sideOffset}
@@ -193,6 +227,7 @@ function MenubarContent({
 				{empty === undefined ? null : (
 					<SlipEmpty
 						Mark={empty.Mark ?? "NO RECORD"}
+
 						Line={empty.Line}
 					/>
 				)}

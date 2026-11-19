@@ -34,11 +34,23 @@ import { cn } from "./Utility";
 
 function Command({
 	className,
+	dense = false,
 	...props
-}: React.ComponentProps<typeof CommandPrimitive>) {
+}: React.ComponentProps<typeof CommandPrimitive> & {
+	/**
+	 * The tight rhythm - `data-density="dense"`, read by the row grammar.
+	 *
+	 * The palette is the family's densest list by nature: a route index read by
+	 * scanning rather than a five-row menu read by picking. `dense` states that
+	 * in the one vocabulary the whole family uses, so a dense menu and a dense
+	 * palette are the same stride rather than two opinions about tightness.
+	 */
+	dense?: boolean;
+}) {
 	return (
 		<CommandPrimitive
 			data-slot="command"
+			data-density={dense ? "dense" : undefined}
 			className={cn("Palette__Command", className)}
 			{...props}
 		/>

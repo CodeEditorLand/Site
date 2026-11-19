@@ -65,64 +65,91 @@ export interface Column {
 export const Columns: readonly Column[] = [
 	{
 		key: "rest",
+
 		label: "REST",
+
 		ask: "closed, trigger readable",
+
 		group: "state",
 	},
 
 	{
 		key: "hover",
+
 		label: "HOVER",
+
 		ask: "the pointer is on the door",
+
 		group: "state",
 	},
 
 	{
 		key: "focus",
+
 		label: "FOCUS",
+
 		ask: "the keyboard is on the door",
+
 		group: "state",
 	},
 
 	{
 		key: "disabled",
+
 		label: "DISABLED",
+
 		ask: "the door cannot open",
+
 		group: "state",
 	},
 
 	{
 		key: "current",
+
 		label: "CURRENT",
+
 		ask: "a row is the value in force",
+
 		group: "state",
 	},
 
 	{
 		key: "loading",
+
 		label: "LOADING",
+
 		ask: "the rows have not arrived",
+
 		group: "state",
 	},
 
 	{
 		key: "empty",
+
 		label: "EMPTY",
+
 		ask: "there is nothing to hold",
+
 		group: "state",
 	},
 
 	{
 		key: "error",
+
 		label: "ERROR",
+
 		ask: "the action was cut off",
+
 		group: "state",
 	},
 
 	{
 		key: "partial",
+
 		label: "PARTIAL",
+
 		ask: "some rows, some unknown",
+
 		group: "state",
 	},
 
@@ -130,15 +157,21 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "many",
+
 		label: "MANY ITEMS",
+
 		ask: "two hundred, not six",
+
 		group: "shape",
 	},
 
 	{
 		key: "long",
+
 		label: "LONG TEXT",
+
 		ask: "a label that will not fit",
+
 		group: "shape",
 	},
 
@@ -146,50 +179,71 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "submenu",
+
 		label: "SUBMENU ×3",
+
 		ask: "three levels of relation",
+
 		group: "shape",
 	},
 
 	{
 		key: "tall",
+
 		label: "TALLER THAN THE VIEWPORT",
+
 		ask: "the panel outgrows the screen",
+
 		group: "shape",
 	},
 
 	{
 		key: "edge",
+
 		label: "NEAR THE RIGHT EDGE",
+
 		ask: "no room to open sideways",
+
 		group: "context",
 	},
 
 	{
 		key: "card",
+
 		label: "INSIDE A CARD",
+
 		ask: "anchored in a white insert",
+
 		group: "context",
 	},
 
 	{
 		key: "narrow",
+
 		label: "NARROW COLUMN",
+
 		ask: "a 16rem column",
+
 		group: "context",
 	},
 
 	{
 		key: "wide",
+
 		label: "WIDE BAND",
+
 		ask: "the band's own width",
+
 		group: "context",
 	},
 
 	{
 		key: "orphan",
+
 		label: "TRIGGER REMOVED",
+
 		ask: "the door leaves while open",
+
 		group: "context",
 	},
 ];
@@ -578,6 +632,7 @@ export type OverlayKind =
 	| "dialog-loading"
 	| "dialog-error"
 	| "dialog-empty"
+	| "dialog-partial"
 	| "dialog-tall"
 	| "dialog-narrow"
 	| "dialog-full"
@@ -587,6 +642,7 @@ export type OverlayKind =
 	| "popover-loading"
 	| "popover-error"
 	| "popover-edge"
+	| "popover-card"
 	| "hover"
 	| "hover-long"
 	| "tip"
@@ -599,6 +655,7 @@ export type OverlayKind =
 	| "menu-sub"
 	| "menu-empty"
 	| "menu-many"
+	| "menu-dense"
 	| "menu-orphan"
 	| "menubar"
 	| "menubar-sub"
@@ -655,13 +712,17 @@ export const Groups: readonly { key: string; label: string; note: string }[] = [
 ];
 
 /**
- * The thirty-one live rows.
+ * The live rows.
  *
  * Ordered so that the family is read the way it is met: the panels first (each
  * in its ordinary state, then its adverse ones), then the small surfaces, then
  * the lists - which end on the palette, because the palette is the same
  * instrument as the menu above it and the sheet's argument is that a reader
  * should be able to see it.
+ *
+ * The marks are the row's index in reading order, not in the order the array
+ * happens to be written, so a row added to the middle of a group is renumbered
+ * rather than appended as a gap.
  */
 export const Specimens: readonly Specimen[] = [
 	{
@@ -723,6 +784,20 @@ export const Specimens: readonly Specimen[] = [
 	{
 		mark: "05",
 
+		state: "PARTIAL",
+
+		component: "DIALOG",
+
+		when: "Right when some of the record has been read and some cannot be: the unknown rows say UNAVAILABLE in their own cell, never a zero and never a blank.",
+
+		kind: "dialog-partial",
+
+		door: "OPEN: HALF THE ROWS",
+	},
+
+	{
+		mark: "06",
+
 		state: "TALLER THAN THE VIEWPORT",
 
 		component: "DIALOG",
@@ -735,7 +810,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "06",
+		mark: "07",
 
 		state: "NARROW COLUMN",
 
@@ -749,7 +824,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "07",
+		mark: "08",
 
 		state: "WIDE BAND",
 
@@ -763,7 +838,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "08",
+		mark: "09",
 
 		state: "AN EDGE",
 
@@ -777,7 +852,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "09",
+		mark: "10",
 
 		state: "THROWN AWAY",
 
@@ -791,7 +866,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "10",
+		mark: "11",
 
 		state: "READY",
 
@@ -805,7 +880,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "11",
+		mark: "12",
 
 		state: "LOADING",
 
@@ -819,7 +894,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "12",
+		mark: "13",
 
 		state: "ERROR",
 
@@ -833,7 +908,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "13",
+		mark: "14",
 
 		state: "NEAR THE RIGHT EDGE",
 
@@ -847,7 +922,21 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "14",
+		mark: "15",
+
+		state: "INSIDE A CARD",
+
+		component: "POPOVER",
+
+		when: "Right when the control lives on a white insert: the slip arrives over the card it belongs to and the card keeps its own frame.",
+
+		kind: "popover-card",
+
+		door: "OPEN: FROM THE INSERT",
+	},
+
+	{
+		mark: "16",
 
 		state: "READY",
 
@@ -861,7 +950,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "15",
+		mark: "17",
 
 		state: "LONG TEXT",
 
@@ -875,7 +964,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "16",
+		mark: "18",
 
 		state: "A CAP",
 
@@ -889,7 +978,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "17",
+		mark: "19",
 
 		state: "A STACK OF CAPS",
 
@@ -903,7 +992,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "18",
+		mark: "20",
 
 		state: "A SLIP",
 
@@ -917,7 +1006,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "19",
+		mark: "21",
 
 		state: "UNAVAILABLE",
 
@@ -931,7 +1020,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "20",
+		mark: "22",
 
 		state: "READY",
 
@@ -945,7 +1034,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "21",
+		mark: "23",
 
 		state: "EMPTY",
 
@@ -959,7 +1048,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "22",
+		mark: "24",
 
 		state: "READY",
 
@@ -973,7 +1062,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "23",
+		mark: "25",
 
 		state: "SUBMENU ×3",
 
@@ -987,7 +1076,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "24",
+		mark: "26",
 
 		state: "EMPTY",
 
@@ -1001,7 +1090,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "25",
+		mark: "27",
 
 		state: "MANY ITEMS",
 
@@ -1015,7 +1104,21 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "26",
+		mark: "28",
+
+		state: "DENSE",
+
+		component: "DROPDOWNMENU",
+
+		when: "Right for a set the reader scans rather than picks: forty rows at a 1.5rem stride, the type and the mark column unmoved.",
+
+		kind: "menu-dense",
+
+		door: "OPEN: FORTY ROWS, TIGHT",
+	},
+
+	{
+		mark: "29",
 
 		state: "TRIGGER REMOVED",
 
@@ -1029,7 +1132,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "27",
+		mark: "30",
 
 		state: "READY",
 
@@ -1041,7 +1144,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "28",
+		mark: "31",
 
 		state: "SUBMENU",
 
@@ -1053,7 +1156,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "29",
+		mark: "32",
 
 		state: "READY",
 
@@ -1067,7 +1170,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "30",
+		mark: "33",
 
 		state: "LOADING",
 
@@ -1081,7 +1184,7 @@ export const Specimens: readonly Specimen[] = [
 	},
 
 	{
-		mark: "31",
+		mark: "34",
 
 		state: "EMPTY",
 
@@ -1106,6 +1209,7 @@ export const GroupOf = (Kind: OverlayKind): string => {
 		case "dialog-loading":
 		case "dialog-error":
 		case "dialog-empty":
+		case "dialog-partial":
 		case "dialog-tall":
 		case "dialog-narrow":
 		case "dialog-full":
@@ -1115,6 +1219,7 @@ export const GroupOf = (Kind: OverlayKind): string => {
 		case "popover-loading":
 		case "popover-error":
 		case "popover-edge":
+		case "popover-card":
 			return "panel";
 
 		case "hover":

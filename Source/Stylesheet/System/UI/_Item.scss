@@ -96,6 +96,23 @@ $Item: ':is([data-slot="dropdown-menu-item"], [data-slot="dropdown-menu-checkbox
 	}
 }
 
+// ─── density ────────────────────────────────────────────────────────────────
+//
+// The slip's `data-density="dense"` is read here, on the row, because the row is
+// where the rhythm lives. 2rem and a 6px inset become 1.5rem and a 2px one: the
+// pointer still has a 24px target, the label still sits at 13px, and a set of
+// forty rows loses 20rem of scroll - which is the difference between a menu the
+// reader scrolls twice and one they read once.
+//
+// The mark column is NOT tightened. It is the x the labels align to, and an
+// alignment that moved with the density would be a second alignment.
+
+[data-density="dense"] #{$Item} {
+	min-block-size: 1.5rem;
+
+	padding-block: 0.125rem;
+}
+
 // ─── the mark cell ──────────────────────────────────────────────────────────
 
 #{$Item}[data-mark]::before {

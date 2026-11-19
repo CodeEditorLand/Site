@@ -46,6 +46,8 @@
  *   /THE STATES nine conditions, composed, each naming where it happens
  *   /THE FIELD one family, every state: the matrix with a reason for every cell
  *              that cannot exist, then the ten components printed live
+ *   /THE OVERLAY one surface, ten components, every way out: the matrix, the
+ *              five-rule dismissal contract, and every state printed live
  *   /THE MATERIAL the six things the document is printed with
  *   /THE REGISTER what the sheet counted, and the file it counted from
  *
@@ -116,6 +118,7 @@ import {
 	Register,
 } from "../Content/Specimen/Page.js";
 import { States, Vocabulary } from "../Content/Specimen/States.js";
+import { Specimens as OverlaySpecimens } from "../Content/Specimen/Overlay.js";
 import { Measurements } from "../Content/More/Compare.js";
 import { GetI18n } from "../Library/I18n/Server";
 import { Totals } from "../Library/Index/Register.js";
@@ -124,7 +127,7 @@ import Base from "../Layout/Base.astro";
 const MetaTitle = "Specimen | Code Editor Land";
 
 const MetaDescription =
-	"The document's own parts, printed: twelve components at 1:1 with their contracts, three stated absences, the nine adverse states composed, the input family's state matrix with its live rows, and the six things the site is printed with.";
+	`The document's own parts, printed: twelve components at 1:1 with their contracts, three stated absences, the nine adverse states composed, the input family's state matrix with its live rows, the overlay family's matrix, dismissal contract and ${OverlaySpecimens.length} live overlays, and the six things the site is printed with.`;
 
 /* ─── THE PARTS, BY DISPOSITION ────────────────────────────────────────── */
 
@@ -530,8 +533,8 @@ const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/SPECIMEN" }];
 		{/* The second family band, and the one whose subject is behaviour rather
 		    than shape. The matrix and the dismissal contract are static Astro -
 		    two hundred cells and five rules with nothing to hydrate - and the
-		    rows are one island: `client:visible`, because the family is
-		    thirty-one live overlays and an overlay that mounts off-screen is an
+		    rows are one island: `client:visible`, because the family is a
+		    band of live overlays and an overlay that mounts off-screen is an
 		    overlay nobody opened. */}
 		<RecordBand band={{ ...Bands.Overlay, id: "overlay" }}>
 			<SpecimenOverlayMatrix />

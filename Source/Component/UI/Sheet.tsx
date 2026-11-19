@@ -33,13 +33,15 @@ import { cn } from "./Utility";
  * one control that opens beside the page the one control that did not look like
  * it belonged to the page.
  *
- * ─── A SHEET IS AS TALL AS ITS SIDE, NOT AS TALL AS THE VIEWPORT ───────────
+ * ─── A SHEET IS AS TALL AS ITS EDGE ───────────────────────────────────────
  *
- * The kit writes `inset-y-0 h-full` for a left or right sheet, so the panel is
- * always the full height even when it holds two rows. A slip is as tall as its
- * content and as tall as the viewport at most; the body scrolls and the head
- * and foot stay. Top and bottom sheets are the same rule rotated: `auto` height
- * bounded by `80vh`, with the body scrolling inside it.
+ * The kit writes `inset-y-0 h-full` for a left or right sheet and `h-auto` for a
+ * top or bottom one, and then gives neither an internal scroll - so a long sheet
+ * overflows its own frame. The family's rule is the edge's: a side sheet is the
+ * height of the viewport (it is a column beside the page) and a top or bottom
+ * sheet is the height of its content, bounded at 80dvh (it is a bar across the
+ * page). In both cases the head and the foot pin and `.Slip__Body` is the only
+ * region that scrolls.
  *
  * ─── WHY THE HEAD IS NOT OPTIONAL IN PRACTICE ─────────────────────────────
  *

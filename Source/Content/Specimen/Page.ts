@@ -247,9 +247,9 @@ export const Bands = {
 	 *
 	 * The band's own argument is in three artifacts: a matrix of two hundred
 	 * cells with a reason for every one that cannot exist, the five-rule
-	 * dismissal contract every slip in the family holds, and thirty-one live
-	 * rows. A reader who opens all thirty-one has seen every state the site
-	 * never showed before this card.
+	 * dismissal contract every slip in the family holds, and the live rows -
+	 * one per state, and every one of them a real primitive. A reader who opens
+	 * them all has seen every state the site never showed before this card.
 	 */
 	Overlay: {
 		kicker: "/THE OVERLAY",
@@ -267,6 +267,7 @@ export const Bands = {
 
 	Material: {
 		kicker: "/THE MATERIAL",
+
 		interval: "beat",
 
 		heading: "What the sheet is printed with",

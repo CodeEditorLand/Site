@@ -1,0 +1,1 @@
+import{t}from"./RichText.tZkJovkx.js";export{t as RichText,t as default};

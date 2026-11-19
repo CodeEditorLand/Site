@@ -75,7 +75,10 @@ const SizeClass: Record<DialogSize, string> = {
 
 	lg: "Slip--lg",
 
-	full: "Slip--full",
+	// `full` is a width, not a floor: `[data-size="full"]` sets `inline-size` to
+	// the viewport minus the page gutter, and a `min-inline-size` here would
+	// override it upward at 360px and push the panel off both edges.
+	full: "",
 };
 
 function Dialog({

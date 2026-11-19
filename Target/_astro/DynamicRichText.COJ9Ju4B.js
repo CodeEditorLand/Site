@@ -1,0 +1,1 @@
+import{t as r}from"./RichText.tZkJovkx.js";import{pn as t}from"./Vendor/React.CnUHAPRt.js";var a=t(),o=t=>(0,a.jsx)(r,{...t});export{o as DynamicRichText,o as default};

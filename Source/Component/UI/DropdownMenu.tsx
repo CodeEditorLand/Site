@@ -109,12 +109,23 @@ function DropdownMenuTrigger({
 function DropdownMenuContent({
 	className,
 	sideOffset = 4,
+	dense = false,
 	head,
 	empty,
 	foot,
 	children,
 	...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Content> & {
+	/**
+	 * The tight rhythm - `data-density="dense"`, read by the row grammar.
+	 *
+	 * For a set the reader *scans* rather than picks: forty locales, a page
+	 * index, the two hundred rows of a register. It moves the row floor from
+	 * 2rem to 1.5rem and leaves the type, the mark column and the hairline
+	 * alone, so a dense menu is the same instrument at a shorter stride.
+	 */
+	dense?: boolean;
+
 	/** The register line the slip opens with. Omitted only by a slip with no rows. */
 	head?: SlipHead | undefined;
 
@@ -128,6 +139,7 @@ function DropdownMenuContent({
 		<DropdownMenuPrimitive.Portal>
 			<DropdownMenuPrimitive.Content
 				data-slot="dropdown-menu-content"
+				data-density={dense ? "dense" : undefined}
 				sideOffset={sideOffset}
 				aria-label={head?.Name}
 				className={cn("Slip", className)}
@@ -138,6 +150,7 @@ function DropdownMenuContent({
 				{empty === undefined ? null : (
 					<SlipEmpty
 						Mark={empty.Mark ?? "NO RECORD"}
+
 						Line={empty.Line}
 					/>
 				)}

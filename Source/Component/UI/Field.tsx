@@ -285,6 +285,7 @@ export const Field = ({
 	 */
 	const DescribedBy = [
 		Hint ? `${Id}-hint` : null,
+
 		Error ? `${Id}-error` : null,
 	]
 		.filter(Boolean)
@@ -392,6 +393,7 @@ export const Field = ({
 						<p
 							className="Field__Error"
 							id={`${Id}-error`}
+
 							role="alert"
 						>
 							{Error}

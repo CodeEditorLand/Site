@@ -1,0 +1,1 @@
+import{t}from"./LocaleSwitcher.BlOj8y1q.js";export{t as LocaleSwitcher,t as default};

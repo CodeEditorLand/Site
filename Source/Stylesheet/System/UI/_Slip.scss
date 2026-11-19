@@ -162,6 +162,39 @@ $Slip: ':is([data-slot="dropdown-menu-content"], [data-slot="dropdown-menu-sub-c
 	font-variant-numeric: tabular-nums;
 }
 
+// ─── DENSITY: the tight rhythm, stated once for every slip ──────────────────
+//
+// A slip's rows are 2rem tall at rest - the height a pointer needs to hit a row
+// and the height a label needs to breathe. That is the right rhythm for a menu
+// of five and the wrong one for a menu of forty: at two hundred rows the reader
+// is scanning, and the scan is what the rhythm should serve.
+//
+// `data-density="dense"` is the slip's own switch, and it is on the SURFACE
+// rather than on each row because density is a property of the set, not of a
+// row - a menu half-tight and half-loose would be a menu with two rhythms and no
+// reason for either. It moves the padding and the row floor and nothing else:
+// the type stays at `--type-meta` (the site's floor, 13px), the mark column
+// stays 1.25rem, the hairline stays 1px. Density is spacing, never size - a
+// dense slip that shrank its type would be a slip that stopped being legible to
+// fit more of itself on screen.
+//
+// The head and the foot tighten with the rows. A dense list under a loose
+// register line is a slip wearing two jackets, and the head is the one line a
+// reader uses to know how many rows they are scanning.
+
+[data-density="dense"] .Slip__Head,
+[data-density="dense"] .Slip__Foot {
+	padding-block: 0.125rem;
+}
+
+[data-density="dense"] .Slip__Group {
+	padding: var(--space-tight) var(--space-reading) 0.125rem;
+}
+
+[data-density="dense"] .Slip__Empty {
+	padding-block: var(--space-reading);
+}
+
 // ─── GROUP HEADINGS ─────────────────────────────────────────────────────────
 //
 // A slip with registers (the palette) prints a heading per register. It is a
@@ -708,9 +741,10 @@ $Slip: ':is([data-slot="dropdown-menu-content"], [data-slot="dropdown-menu-sub-c
 	min-inline-size: 28rem;
 }
 
-.Slip--full {
-	min-inline-size: min(100%, 72rem);
-}
+// `full` has no class on purpose: it is a width rather than a floor, and a
+// `min-inline-size` for it would override the dialog's own `inline-size` upward
+// at 360px and push the panel off both edges. The dialog's `[data-size="full"]`
+// is where the width lives.
 
 // ─── THE DIALOG ARM ─────────────────────────────────────────────────────────
 //
@@ -776,8 +810,9 @@ $Slip: ':is([data-slot="dropdown-menu-content"], [data-slot="dropdown-menu-sub-c
 //
 // The slip anchored to an edge. One border, on the edge that faces the page -
 // the other three are the viewport, and a frame drawn against the viewport is a
-// frame around nothing. Height is the content's, bounded by the viewport, so a
-// sheet that holds two rows is not a sheet the height of the screen.
+// frame around nothing. A side sheet is the height of the viewport because it is
+// a column beside the page; a top or bottom sheet is the height of its content,
+// bounded at 80dvh, because it is a bar across the page.
 
 .Slip--sheet {
 	position: fixed;

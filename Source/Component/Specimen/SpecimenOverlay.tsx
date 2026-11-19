@@ -70,7 +70,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../UI/Popover";
 
 import { Sheet, SheetContent, SheetTrigger } from "../UI/Sheet";
 
-import { Chord, SlipEmpty, SlipNote } from "../UI/Slip";
+import { Chord, SlipNote } from "../UI/Slip";
 
 /**
  * SpecimenOverlay - the overlay family, printed live: the matrix's rows, the
@@ -84,10 +84,10 @@ import { Chord, SlipEmpty, SlipNote } from "../UI/Slip";
  * mounts the real primitive, and the reader opens it, dismisses it, opens it
  * again from a different scroll position, and watches what happens.
  *
- * ─── ONE ISLAND, NOT THIRTY ──────────────────────────────────────────────
- * Thirty-one rows mounted as thirty-one islands would be thirty-one hydration
- * roots on one page. The page mounts this component once with `client:visible`,
- * and every row is its child - so the family's whole specimen costs one island.
+ * ─── ONE ISLAND, NOT THIRTY-FOUR ─────────────────────────────────────────
+ * Every row mounted as its own island would be that many hydration roots on one
+ * page. The page mounts this component once with `client:visible`, and every row
+ * is its child - so the family's whole specimen costs one island.
  *
  * ─── THE RENDERER DECIDES NOTHING ────────────────────────────────────────
  * `Content/Specimen/Overlay.ts` states what each row is, which part it
@@ -137,6 +137,29 @@ const Tall = Array.from({ length: 60 }, (_, Index) => ({
 	Key: `ROW_${String(Index + 1).padStart(2, "0")}:`,
 	Value: Index % 7 === 0 ? "UNAVAILABLE" : `VALUE\u2001${Index + 1}`,
 }));
+
+/**
+ * Six rows, two of them unknown - the `PARTIAL` arm.
+ *
+ * The brief's §7 draws a hard line between `partial` and `empty`, and it is the
+ * line this row prints: a fact that has not arrived is `◎ UNAVAILABLE` in its own
+ * cell, with the rest of the record still readable around it. A zero in that cell
+ * would be a different and false statement, and a blank one would be a row the
+ * reader has to interpret.
+ */
+const Partial = [
+	{ Key: "STATUS:", Value: "VERIFIED" },
+
+	{ Key: "LICENSE:", Value: "CC0" },
+
+	{ Key: "TARGET:", Value: "MACOS\u2001WINDOWS\u2001LINUX" },
+
+	{ Key: "CHANNEL:", Value: "PUBLIC" },
+
+	{ Key: "CHECKSUM:", Value: "\u25CE\u2001UNAVAILABLE" },
+
+	{ Key: "SIGNING:", Value: "\u25CE\u2001UNAVAILABLE" },
+] as const;
 
 /* ─── SMALL PARTS ────────────────────────────────────────────────────────── */
 
@@ -208,8 +231,8 @@ const PanelBody = () => (
 /**
  * One row's specimen.
  *
- * Every arm is the real component. The switch exists because thirty-one arms
- * are thirty-one prop sets, not because any of them is simulated.
+ * Every arm is the real component. The switch exists because every row is its
+ * own prop set, not because any of them is simulated.
  */
 const Stage = ({ Row }: { Row: Specimen }) => {
 	/* The orphan arm's own state: the door unmounts while the menu is open. */
@@ -314,6 +337,37 @@ const Stage = ({ Row }: { Row: Specimen }) => {
 							Line: "NOTHING HAS BEEN FILED UNDER THIS MARK",
 						}}
 					/>
+				</Dialog>
+			);
+
+		case "dialog-partial":
+			return (
+				<Dialog>
+					<DialogTrigger asChild>
+						<Door Label={Row.door ?? "OPEN"} />
+					</DialogTrigger>
+
+					<DialogContent
+						head={{ Name: "RECORD", Count: Partial.length }}
+						foot={[{ Chord: "ESC", Label: "CLOSE" }]}
+					>
+						<DialogHeader>
+							<DialogTitle>Four of six rows</DialogTitle>
+							<DialogDescription>
+								Two facts have not been read. They say so in
+								their own cell, and the four that have been
+								read stay legible around them.
+							</DialogDescription>
+						</DialogHeader>
+
+						<Ledger Rows={Partial} />
+
+						<SlipNote>
+							`UNAVAILABLE` is the record&apos;s answer, not its
+							absence: a zero here would be a claim the sheet
+							cannot make.
+						</SlipNote>
+					</DialogContent>
 				</Dialog>
 			);
 
@@ -547,7 +601,38 @@ const Stage = ({ Row }: { Row: Specimen }) => {
 				</div>
 			);
 
-		/* ─── THE HOVER CARD ────────────────────────────────────────────── */
+		/* ─── A POPOVER ON A CARD, AND THE HOVER CARD ───────────────────── */
+
+		case "popover-card":
+			return (
+				<div className="specimen-overlay__insert">
+					<p className="specimen-overlay__insert-label">
+						<span aria-hidden="true">/</span>
+						WHITE INSERT
+					</p>
+
+					<p className="specimen-overlay__insert-note">
+						A control that lives on a card opens its slip over
+						that card. The slip is not a second card: it is the
+						same white insert, framed by the hairline that tells
+						it apart from the page.
+					</p>
+
+					<Popover>
+						<PopoverTrigger asChild>
+							<Door Label={Row.door ?? "OPEN"} />
+						</PopoverTrigger>
+
+						<PopoverContent
+							head={{ Name: "FIGURE", Count: 1 }}
+							note="The popover's own frame sits on the card's, one hairline apart."
+							foot={[{ Chord: "ESC", Label: "CLOSE" }]}
+						>
+							<Ledger Rows={Facts.slice(0, 2)} />
+						</PopoverContent>
+					</Popover>
+				</div>
+			);
 
 		case "hover":
 			return (
@@ -842,6 +927,33 @@ const Stage = ({ Row }: { Row: Specimen }) => {
 				</DropdownMenu>
 			);
 
+		case "menu-dense":
+			return (
+				<DropdownMenu modal={false}>
+					<DropdownMenuTrigger asChild>
+						<Door Label={Row.door ?? "OPEN"} />
+					</DropdownMenuTrigger>
+
+					<DropdownMenuContent
+						dense
+						head={{ Name: "RECORD", Count: Many.length }}
+						foot={[{ Chord: "↑↓", Label: "MOVE" }]}
+					>
+						{Many.map((RowValue) => (
+							<DropdownMenuItem
+								key={RowValue.Label}
+
+								mark={RowValue.Mark}
+
+								meta={RowValue.Meta}
+							>
+								{RowValue.Label}
+							</DropdownMenuItem>
+						))}
+					</DropdownMenuContent>
+				</DropdownMenu>
+			);
+
 		case "menu-orphan":
 			return (
 				<div className="specimen-overlay__orphan">
@@ -986,12 +1098,10 @@ const Stage = ({ Row }: { Row: Specimen }) => {
 
 							<CommandList>
 								{Empty ? (
-									<CommandEmpty>
-										<SlipEmpty
-											Mark="NO RECORD"
-											Line="TRY A PART, A SECTION, A RECORD, OR A WORD"
-										/>
-									</CommandEmpty>
+									<CommandEmpty
+										Mark="NO RECORD"
+										Line="TRY A PART, A SECTION, A RECORD, OR A WORD"
+									/>
 								) : null}
 
 								{Loading ? (
