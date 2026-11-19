@@ -20,7 +20,7 @@ Prettier's blank-line policy, measured against this repo's prettier.config.js:
   before a comment or JSDoc block            (the whole expression is printed as
                                              one unit and its blanks dropped)
 
-Two consequences, both learned by measuring the tree:
+Three consequences, all learned by measuring the tree:
 
   - `{` is not a trigger. Prettier strips the leading blank of every brace pair,
     so "blank line after {" could only ever be undone by the next pass. The old

@@ -24,8 +24,10 @@
 // MAY NOT HOLD      a nested set, a figure, a well.
 // NARROW            the rail rotates: the line runs down the left edge and the
 //                   stops stack along it, each keeping its tick and its state.
-// WIDE (>=768)      one line across the measure, a column per stop, a 7px tick
+// WIDE (>=61.5rem)  one line across the measure, a column per stop, a 7px tick
 //                   at each column's head - filled when reached, hollow when not.
+//                   The condition is the rail's OWN box - 984px, five stops - and
+//                   not the window (see THE QUERY CONTAINER).
 // DENSE             none. More than six stops needs a Matrix; the rail refuses to
 //                   become a table rather than compressing into one.
 //
@@ -46,7 +48,42 @@
 
 @use "../Mixin" as *;
 
+// ─── THE QUERY CONTAINER: 984px OF THE RAIL'S OWN BOX ─────────────────────
+// The rail chooses between one line and the rotation from its own width, not the
+// window's. `@include bp()` is a viewport media query (`System/_Mixin.scss`), so
+// a 1280 window printed five stops into a 415.4px pane on `/Compare` and gave
+// each one 83.1px - and `STATUS: UNAVAILABLE` alone is 168px. A rail is an axis
+// at whatever width it is given, so the block declares its own container.
+//
+// The floor is the widest line a stop prints, and it is per stop:
+//
+//   the state's mark   4px (`--mark-square` = `--mark-size-2`)
+//   its flex gap       8px (`--space-tight`)
+//   `STATUS: UNAVAILABLE`
+//                      19 glyphs at the 13px mono, 7.8px advance plus 1.04px of
+//                      `--track-row` (0.08em) = 168px
+//   the stop's padding 16px of its own inline-end (`--space-reading`)
+//   ──────────────────
+//                      4 + 8 + 168 + 16 = 196px a stop
+//   five stops         5 × 196 = 980px
+//
+// 61.5rem = 984px: the first quarter-rem above the floor that leaves slack, and
+// the narrow arm keeps the rotation the block already had.
+//
+// The brief filed this card with "~150px a stop = ~750px". 150px is the state's
+// 19 glyphs at 7.8px with no tracking, no mark and no stop padding; at 750px a
+// stop is 150px and its 134px of content cannot hold the 148px word it was
+// measured from, which is why the number here is 984 and not 750.
+//
+// ONE THRESHOLD FOR EVERY COUNT. `--CompareStops` is set per rail, and a
+// container condition cannot read it, so the number is the five-stop rail's -
+// the widest the site prints (`/Compare`, `/Status`, `/Download`). A rail of
+// three stops would fit at 588px and now rotates until 984: that is the safe
+// direction, because the rotation is a designed layout and a squeezed stop is
+// not.
 .record-compare {
+	container: compare / inline-size;
+
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-reading);
@@ -211,8 +248,10 @@
 // ─── NARROW ───────────────────────────────────────────────────────────────
 // The rail rotates: one column, the line down the left edge, the stops stacked
 // along it. The tick moves to the line's own axis and keeps its filled/hollow
-// state, so a stacked rail still reads as one order rather than as a list.
-@media (max-width: 767.98px) {
+// state, so a stacked rail still reads as one order rather than as a list. The
+// condition is the rail's own box, so the same rail rotates in a thin pane at a
+// wide window and prints across a wide band at the same window.
+@container compare (max-width: 61.99rem) {
 	.record-compare__rail {
 		grid-template-columns: minmax(0, 1fr);
 	}
@@ -310,7 +349,7 @@
 }
 
 // On the rotated rail the interval is vertical, and it reaches up instead.
-@media (max-width: 767.98px) {
+@container compare (max-width: 61.99rem) {
 	.record-compare__stop--equal::before {
 		inset-block-start: auto;
 		inset-block-end: 100%;

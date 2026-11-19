@@ -97,17 +97,18 @@
 	padding-block-end: 0.125rem;
 }
 
-// The trace inside a card is read in the card's measure: the path takes the
-// line and the note goes under it, at every viewport. The wide reading belongs
-// to the band, where the trace has 7 columns of the page rather than 4 of a
-// card.
-.home-element .record-trace__step {
-	grid-template-columns: 2ch 1ch minmax(0, 1fr);
-}
-
-.home-element .record-trace__note {
-	grid-column: 3 / -1;
-}
+// The trace inside a card reads at the card's own width, and the card no longer
+// has to say so: `RecordTrace` declares a `trace` container and switches at
+// 580px of it (`Record/_Trace.scss`). A four-to-seven-column card is 416-572px at
+// a 1280 window, under the threshold, so its trace keeps the stacked form - the
+// path on the line and the note under it. The eight-column card (`wind`) is
+// 656px and takes the wide form, which is what a 656px box can hold: a 42-glyph
+// path plus its note column.
+//
+// This used to be two rules here, pinning the block's narrow row at every
+// viewport, because the block itself decided from the window and a card at 1280
+// was told it had 1280px to spend. A page that has to re-declare a block's own
+// layout is the defect the container query removes.
 
 // The four plates. A plate is a record whose evidence is printed in full, and it
 // says so with a 2px rule over its working - the same border-weight mark the

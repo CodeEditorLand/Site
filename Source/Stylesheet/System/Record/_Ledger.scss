@@ -53,10 +53,11 @@
 // NARROW            the key moves above its value: one fact per line, key at meta
 //                   weight, value under it. A long path wraps inside the value
 //                   column instead of pushing the key off the line.
-// WIDE (>=640)      the key takes `min(--optical-key-column, 40%)` - 28ch, the
+// WIDE (>=26.25rem) the key takes `min(--optical-key-column, 40%)` - 28ch, the
 //                   character measure the rest of the block is set on - and the
 //                   value takes the rest, so fifty ledgers down a page share one
-//                   value column.
+//                   value column. The condition is the ledger's OWN box - 420px -
+//                   and not the window (see THE QUERY CONTAINER).
 // DENSE             `columns` is the layout axis - two facts side by side, never
 //                   a smaller type. `density="register"` is the reading axis:
 //                   the same facts as a table, two columns with a hairline
@@ -78,7 +79,45 @@
 
 @use "../Mixin" as *;
 
+// ─── THE QUERY CONTAINER: 420px OF THE LEDGER'S OWN BOX ───────────────────
+// The row's two layouts are chosen from the ledger's own width, not the window's.
+// `@include bp()` is a viewport media query (`System/_Mixin.scss`), so a 1280
+// window printed the key beside the value inside a 287.6px column and gave the
+// key 115px and the value 157px - where `NOT CONNECTED` (124.8px at the body
+// tier) only just fits and the two 13px notes take a second line each. A ledger
+// is a set of facts at whatever width it is given, so the block declares its own
+// container.
+//
+// 420px is the wide row's floor, and the arithmetic is the row's own:
+//
+//   the key column  28ch (`--optical-key-column`) at the 13px meta tier, where
+//                   `ch` is 7.8px = 218.4px
+//   the row gap     `--space-reading` = 16px
+//   a value         19ch at the 16px body tier, where `ch` is 9.6px = 185.6px
+//   ─────────────
+//                   218.4 + 16 + 185.6 = 420px
+//
+// `min(28ch, 40%)` divides that 420px differently at the threshold - the 40% cap
+// binds until the ledger is 546px, so the key takes 168px and the value 236px
+// (24.6ch, 4.5 characters more value than the floor asks for). That is the
+// block's own decision about which side yields, and it is why 420 is the number
+// rather than 546: the row is right as soon as the value has a readable column,
+// not only once the key reaches its full 28ch.
+//
+// 26.25rem = 420px exactly, so the threshold and the arithmetic are one number.
+// It is in rem and not `ch` because a `ch` in a `@container` condition resolves
+// against this root's inherited 16px tier (9.6px a ch), not the 13px the key is
+// set at: a `ch` threshold would price the key at 28 × 9.6 = 268.8px and hold
+// the wide row back by 50px.
+//
+// A MULTI-COLUMN LEDGER IS NOT THIS BOX. `--2`/`--3` split the shell into halves
+// or thirds below, so a row there is a fraction of the width this query measures:
+// two columns need 872px of shell before each row clears 420. The column count is
+// the page's declaration (`columns`), so it stays a viewport step; the row
+// anatomy is the block's, and it is what moves here.
 .record-ledger {
+	container: ledger / inline-size;
+
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
 	column-gap: var(--space-group);
@@ -179,6 +218,9 @@
 
 // The column count is a wide-screen decision. Below 1024px every ledger is one
 // column: two facts side by side in a phone-width band read as a wrapped mess.
+// It stays a viewport step on purpose - the count is the page's own declaration
+// (`columns`), not the block's reading of its box, and the row anatomy below is
+// the part that is the block's (see THE QUERY CONTAINER).
 @include bp(1024px) {
 	.record-ledger--2 {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -189,8 +231,8 @@
 	}
 }
 
-// A row is a key above its value until there is width for the two to sit
-// side by side (see the 640px block below).
+// A row is a key above its value until the ledger has the width for the two to
+// sit side by side - 420px of its own box, the arithmetic in THE QUERY CONTAINER.
 .record-ledger__row {
 	@include hairline(top);
 	display: flex;
@@ -262,7 +304,10 @@
 // a character and two ledgers in different containers cannot share a grid.
 // `28ch` is the same column on the character grid the rest of the block is set
 // on.
-@include bp(640px) {
+//
+// The condition is the ledger's own 420px, so a ledger in a thin column at a wide
+// window stacks and the same ledger in a band at a narrow window prints beside.
+@container ledger (min-width: 26.25rem) {
 	.record-ledger__row {
 		flex-direction: row;
 		align-items: baseline;
@@ -515,7 +560,9 @@
 	color: var(--MuteForeground);
 }
 
-@include bp(640px) {
+// The opened facts sit one level in, in the same box as their parent row, so the
+// same 420px decides them.
+@container ledger (min-width: 26.25rem) {
 	.record-ledger__row--nested {
 		flex-direction: row;
 		align-items: baseline;

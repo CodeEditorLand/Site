@@ -208,7 +208,16 @@
 // in a row. Scoped through the strip's own class *and* the block's, because
 // `Record/_Index.scss` loads after this partial and `.record-ledger`'s own
 // `display: grid` would otherwise win on equal specificity.
+//
+// The block is a query container (`container: ledger / inline-size`,
+// `Record/_Ledger.scss`), and a size container cannot be sized by its contents -
+// so as a flex item of this strip with an `auto` basis it would measure 0 and
+// print nothing. The strip re-composes the block into one inline row anyway, so
+// it turns the containment off here: the block is content-sized as it was, and
+// the query it would answer is the page's layout in this state, not the block's.
 .home-feature__specimen .record-ledger {
+	container-type: normal;
+
 	display: flex;
 	flex-wrap: wrap;
 	column-gap: clamp(1.5rem, 3vw, 3rem);

@@ -20,10 +20,11 @@
  *                   a column of facts (that is a Matrix) and not a step in an
  *                   order (that is a Stage).
  * MAY NOT HOLD      a nested set, a figure, a well. A rail is one line.
- * WIDE (>=768)      one line across the measure; each stop is a column whose top
+ * WIDE (>=61.5rem)  one line across the measure; each stop is a column whose top
  *                   edge is the rail, with a 6px tick (`--mark-tick-stop`) at its
  *                   head - filled when the position is reached, hollow when it is
- *                   not.
+ *                   not. The width is the rail's own container (`compare`), not
+ *                   the window's: five stops need 196px each.
  * NARROW            the rail rotates: the line runs down the left edge and the
  *                   stops stack along it, each keeping its tick and its state.
  *                   The axis's two ends print above the stack, so the direction

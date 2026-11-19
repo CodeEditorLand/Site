@@ -304,7 +304,14 @@
 		scroll-snap-type: none;
 	}
 
+	/* The bar lays the block out as one inline row, and the bar is what scrolls:
+	   the segment is as wide as the facts it prints, which is a content size. A
+	   query container cannot be sized by its contents (`Record/_Ledger.scss`
+	   declares `ledger`), so the containment is turned off in this state - the
+	   rows below are the page's, and the block's own query is moot here. */
 	.blog-article__margin .record-ledger {
+		container-type: normal;
+
 		display: flex;
 		flex-direction: row;
 		gap: var(--space-group);

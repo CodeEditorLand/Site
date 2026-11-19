@@ -23,9 +23,10 @@
 // NARROW            the note moves under the path, indented past the index column;
 //                   a long path wraps inside its own line and never pushes the
 //                   note off the row.
-// WIDE (>=768)      the path takes the left measure and the note a
+// WIDE (>=36.25rem) the path takes the left measure and the note a
 //                   `minmax(14ch, 20ch)` column at the right, so fifteen traces
-//                   down a page align on the note.
+//                   down a page align on the note. The condition is the trace's
+//                   OWN box - 580px - not the window (see THE QUERY CONTAINER).
 // DENSE             none, by design. A trace is a reading: compressing it produces
 //                   a list of links, and a list of links is not evidence.
 //
@@ -40,7 +41,36 @@
 
 @use "../Mixin" as *;
 
+// ─── THE QUERY CONTAINER: 580px OF THE TRACE'S OWN BOX ────────────────────
+// The trace's two layouts are decided by the trace's own width, not the
+// window's. `@include bp()` is a viewport media query (`System/_Mixin.scss`),
+// so a 1280 window printed the wide rule inside the 287.6px pane the block had
+// on `/Compare`: the 20ch note column was taken out of the path's measure first
+// and a 42-glyph path was left 42.8px, five characters to a line. A trace is a
+// reading at whatever width it is given, so the block declares its own
+// container and the row asks that.
+//
+// 580px is the width the wide rule needs, and it is the row's own arithmetic:
+//
+//   path column    42 glyphs at the 13px mono (`--type-caption`, 7.8px a
+//                  glyph) = 327.6px - `Source/Content/blog/VSCodeCompatibility.md`
+//                  is the longest path the site prints
+//   note column    `minmax(14ch, 20ch)` resolves against the row's font size,
+//                  which is the 16px root tier (9.6px a `ch`): 20ch = 192px
+//   index + arrow  2ch + 1ch at that same 16px tier = 19.2 + 9.6 = 28.8px
+//   three gaps     3 × `--space-tight` (8px) = 24px
+//   ─────────────
+//                  327.6 + 192 + 28.8 + 24 = 572.4px
+//
+// 36.25rem = 580px: one glyph of slack at 13px, and the first quarter-rem above
+// the floor. The threshold is in rem and NOT in `ch` on purpose. A `ch` in a
+// `@container` condition resolves against the queried element's own font, and on
+// this root that is the inherited 16px tier (9.6px a ch), not the 13px the path
+// is set at: a `ch` threshold would price 42 glyphs at 403px and open the wide
+// rule 170px before the path can hold its own line.
 .record-trace {
+	container: trace / inline-size;
+
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-tight);
@@ -125,9 +155,9 @@
 	border-block-end-color: var(--Primary);
 }
 
-// The note sits under the path below 768 and in its own column above it. It is
-// the third grid column at every width; at narrow the path and the note stack by
-// spanning both remaining tracks.
+// The note sits under the path below the threshold and in its own column above
+// it. It is the third grid column at every width; at narrow the path and the note
+// stack by spanning both remaining tracks.
 .record-trace__note {
 	grid-column: 3 / -1;
 	display: block;
@@ -142,7 +172,9 @@
 	margin-inline-end: 0.4ch;
 }
 
-@include bp(768px) {
+// The wide row, at the block's own 580px. Both layouts are the ones that were
+// already written; only the condition moved from the window to the box.
+@container trace (min-width: 36.25rem) {
 	.record-trace__step {
 		grid-template-columns: 2ch 1ch minmax(0, 1fr) minmax(14ch, 20ch);
 	}
@@ -204,7 +236,7 @@
 	grid-column: 3 / -1;
 }
 
-@include bp(768px) {
+@container trace (min-width: 36.25rem) {
 	.record-trace__step--skeleton .record-trace__note {
 		grid-column: 4 / -1;
 	}
