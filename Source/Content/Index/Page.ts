@@ -433,14 +433,19 @@ export const RecordRows = (
  * `Missing` is what the build emits and the registry does not declare; the names
  * are the argument, so they are named.
  *
- * Two figures, because the registry answers two questions: how many routes it
- * declares (`Declared`), and how many of those take the full PascalCase variant
- * set (`Canonical`). The old sentence called all of them canonical and read the
- * figure from `Map.ts`, which had stopped holding the list - so on a build where
- * the two agreed it printed `0 declared` and forty-one names, which is the one
- * thing this footnote must never do: report drift that is not there. Both
- * figures now come from `Registry` in the generator, and the sentence says what
- * each one counts.
+ * Three figures, because the registry and the build answer three questions: how
+ * many routes it declares (`Declared`), how many of those take the full
+ * PascalCase variant set (`Canonical`), and how many the registry lists that this
+ * build does not serve (`Lab` - `/Specimen`, which `dum Run` serves and the
+ * production output does not). A footnote that compared `Declared` against
+ * `Built` without that third figure would say "the two agree" while printing 43
+ * and 42, which is the one thing it must never do: report a difference as an
+ * agreement.
+ *
+ * The old sentence called every route canonical and read its figure from
+ * `Map.ts`, which had stopped holding the list - so on a build where the two
+ * agreed it printed `0 declared` and forty-one names. Both figures now come from
+ * `Registry` in the generator, and the sentence says what each one counts.
  */
 export const RegistryFootnote = (
 	Declared: number,
@@ -450,10 +455,19 @@ export const RegistryFootnote = (
 	Built: number,
 
 	Missing: readonly string[],
-): string =>
-	Missing.length === 0
-		? `\`Function/Route/Registry.ts\` declares ${Declared} routes, ${Canonical} of them canonical - the hand-listed paths that take the full variant set - and the build emits ${Built}. The two agree, which is the only state this footnote has nothing to report.`
-		: `\`Function/Route/Registry.ts\` declares ${Declared} routes, ${Canonical} of them canonical; the build emits ${Built}. The ${Missing.length} it does not declare are ${Missing.join(", ")} - the redirect layer derives its variants from that set, so this page reports the drift rather than repairing it.`;
+
+	Lab: number,
+): string => {
+	if (Missing.length > 0)
+		return `\`Function/Route/Registry.ts\` declares ${Declared} routes, ${Canonical} of them canonical; the build emits ${Built}. The ${Missing.length} it does not declare are ${Missing.join(", ")} - the redirect layer derives its variants from that set, so this page reports the drift rather than repairing it.`;
+
+	const Head = `\`Function/Route/Registry.ts\` declares ${Declared} routes, ${Canonical} of them canonical - the hand-listed paths that take the full variant set.`;
+
+	if (Lab === 0)
+		return `${Head} The build emits ${Built}. The two agree, which is the only state this footnote has nothing to report.`;
+
+	return `${Head} The build emits ${Built}: ${Lab === 1 ? "one of them is a lab surface" : `${Lab} of them are lab surfaces`}, served by \`dum Run\` and absent from the production output. Nothing the build emits is undeclared.`;
+};
 
 /**
  * The index's own doors, before the build decides which of them it serves.

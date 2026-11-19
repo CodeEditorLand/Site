@@ -100,6 +100,11 @@ const ProcessRegister = RegisterOf("PROCESS", ContactProcess, {
 	mode="functional"
 >
 	<div class="contact-hub">
+		{/* The register's empty arm: the same band, the same grammar, and the one
+		    thing an empty page owes a reader - what would be here, why it is not,
+		    and where to go instead. It is a state and not a paragraph because the
+		    page is a register: a register with no rows is a condition, and the
+		    site prints conditions as records. */}
 		{RegisterEntries.length > 0 ? (
 			<div class="contact-hub__grid">
 				{RegisterEntries.map((Entry) => (
@@ -125,11 +130,6 @@ const ProcessRegister = RegisterOf("PROCESS", ContactProcess, {
 				))}
 			</div>
 		) : (
-			/* The register's empty arm: the same band, the same grammar, and the
-			   one thing an empty page owes a reader - what would be here, why it
-			   is not, and where to go instead. It is a state and not a paragraph
-			   because the page is a register: a register with no rows is a
-			   condition, and the site prints conditions as records. */
 			<ShellState
 				kind="empty"
 				index="REGISTER / 00"

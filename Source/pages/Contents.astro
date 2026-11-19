@@ -106,6 +106,7 @@ import {
 	Totals,
 } from "../Library/Index/Register.js";
 import { JellyUIVersion } from "../Variable/JellyUIVersion.js";
+import { Served } from "../Function/Configuration/Lab.mjs";
 
 /** The date of this reading: the day the page was rendered. */
 const AsOf = new Date().toISOString().slice(0, 10);
@@ -348,6 +349,17 @@ const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/CONTENTS" }];
 const Built = Routes.length;
 
 /**
+ * The routes the registry lists that this build does not serve.
+ *
+ * `/Specimen` is the one: it is a lab surface, present in `dum Run` and removed
+ * from the production output by `Function/Configuration/Lab.mjs`. The footnote
+ * needs the figure because a registry of 43 and a build of 42 is a *fact about
+ * the lab switch*, not drift - and a footnote that called it an agreement would
+ * be printing two numbers and one sentence that disagree.
+ */
+const Lab = Registry.Declared.filter((Path) => !Served(Path)).length;
+
+/**
  * The bands' anchors, and the page's own contents.
  *
  * The ids are a table rather than a string at each band, so the fold and the
@@ -527,6 +539,7 @@ const FormFacets = FormColumns.map((Column, Index) => ({
 				Registry.Canonical,
 				Built,
 				Registry.Missing,
+				Lab,
 			),
 		}}
 	>
