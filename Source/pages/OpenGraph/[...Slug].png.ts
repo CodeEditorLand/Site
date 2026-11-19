@@ -1,12 +1,36 @@
 /**
- * OpenGraph SVG image endpoint.
+ * OpenGraph card image endpoint.
  *
- * Generates per-page social sharing images at /OpenGraph/{Slug}.svg.
+ * Generates per-page social sharing images at /OpenGraph/{Slug}.png.
  * Static pages resolve from PageMetadata; Blog/Doc entries resolve
  * from Astro content collections at build time via getStaticPaths.
+ *
+ * The image is a PNG. `og:image` is read by a platform's scraper, not by a
+ * browser, and no major platform renders SVG - so the drawing is composed as
+ * SVG (the two generators, `Function/OpenGraph.ts` and
+ * `pages/OpenGraph.png.ts`, both emit one) and `Rasterise` draws it with the
+ * site's own faces. See `Function/OpenGraph/Raster.ts`.
  */
 
 import type { APIRoute, GetStaticPaths } from "astro";
+
+import { Rasterise } from "../../Function/OpenGraph/Raster.js";
+
+/**
+ * One card, drawn and delivered.
+ *
+ * `Slug` names the route the drawing belongs to and is used only to name a
+ * failure: an uncovered character or a stale face stops the build and says
+ * which card printed it.
+ */
+const Card = (Svg: string, Slug: string): Response =>
+	new Response(Rasterise(Svg, `OpenGraph/${Slug}.png`), {
+		status: 200,
+		headers: {
+			"Content-Type": "image/png",
+			"Cache-Control": "public, max-age=86400",
+		},
+	});
 
 export const GET: APIRoute = async ({ params }) => {
 	const Slug = params.Slug ?? "";
@@ -54,13 +78,7 @@ export const GET: APIRoute = async ({ params }) => {
 			},
 		);
 
-		return new Response(Svg, {
-			status: 200,
-			headers: {
-				"Content-Type": "image/svg+xml",
-				"Cache-Control": "public, max-age=86400",
-			},
-		});
+		return Card(Svg, Slug);
 	}
 
 	// Try Blog content collection
@@ -89,13 +107,7 @@ export const GET: APIRoute = async ({ params }) => {
 					},
 				);
 
-				return new Response(Svg, {
-					status: 200,
-					headers: {
-						"Content-Type": "image/svg+xml",
-						"Cache-Control": "public, max-age=86400",
-					},
-				});
+				return Card(Svg, Slug);
 			}
 		} catch {
 			// Collection may not exist yet - fall through to fallback
@@ -128,13 +140,7 @@ export const GET: APIRoute = async ({ params }) => {
 					},
 				);
 
-				return new Response(Svg, {
-					status: 200,
-					headers: {
-						"Content-Type": "image/svg+xml",
-						"Cache-Control": "public, max-age=86400",
-					},
-				});
+				return Card(Svg, Slug);
 			}
 		} catch {
 			// Collection may not exist yet - fall through to fallback
@@ -154,13 +160,7 @@ export const GET: APIRoute = async ({ params }) => {
 		{ Slug },
 	);
 
-	return new Response(Svg, {
-		status: 200,
-		headers: {
-			"Content-Type": "image/svg+xml",
-			"Cache-Control": "public, max-age=86400",
-		},
-	});
+	return Card(Svg, Slug);
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -173,7 +173,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	// production (`Function/Configuration/Lab.mjs`).
 	const { Served } = await import("../../Function/Configuration/Lab.mjs");
 
-	// Static pages - skip the home slug ("") which is served by /OpenGraph.svg.ts
+	// Static pages - skip the home slug ("") which is served by /OpenGraph.png.ts
 	const StaticPath = Object.keys(PageMetadata)
 		.filter((Slug) => Slug !== "" && Served(`/${Slug}`))
 		.map((Slug) => ({ params: { Slug } }));

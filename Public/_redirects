@@ -1636,7 +1636,7 @@
 /Mermaid/*                /Mermaid/:splat           200
 /OpenGraph/*              /OpenGraph/:splat         200
 /Vendor/*                 /Vendor/:splat            200
-/OpenGraph.svg            /OpenGraph.svg            200
+/OpenGraph.png            /OpenGraph.png            200
 /RouteMap.json            /RouteMap.json            200
 /Worker.js                /Worker.js                200
 /sitemap-index.xml        /sitemap-index.xml        200

@@ -3,7 +3,7 @@
  *
  * Produces a 1200×675 (16:9) SVG string for og:image / twitter:image social
  * sharing cards on every non-home page. Mirrors the field-record artifact card
- * used by the home endpoint (`Source/pages/OpenGraph.svg.ts`):
+ * used by the home endpoint (`Source/pages/OpenGraph.png.ts`):
  *
  *   creme field (#f2ede3) → white card (#ffffff) carrying the record grammar:
  *   `# INDEX`, `〈stamp〉`, `/route`, `TITLE:`, `↳relation`,

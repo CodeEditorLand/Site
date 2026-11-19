@@ -96,7 +96,7 @@ const CanonicalURL = ClaimsPath(CanonicalPath)
 /**
  * The OpenGraph card a route advertises.
  *
- * The card endpoints (`pages/OpenGraph.svg.ts`, `pages/OpenGraph/[...Slug].svg.ts`)
+ * The card endpoints (`pages/OpenGraph.png.ts`, `pages/OpenGraph/[...Slug].png.ts`)
  * build one image per registered slug, per blog entry and per doc entry. A route
  * whose slug is not one of those would advertise an image the build never emits,
  * so the frame asks the metadata register whether the route has its own card and
@@ -120,11 +120,11 @@ const HasOwnCard =
 
 const DefaultOpenGraphImage = HasOwnCard
 	? OpenGraphSlug
-		? `/OpenGraph/${OpenGraphSlug}.svg`
-		: "/OpenGraph.svg"
+		? `/OpenGraph/${OpenGraphSlug}.png`
+		: "/OpenGraph.png"
 	: SectionSlug && SectionSlug in PageMetadata
-		? `/OpenGraph/${SectionSlug}.svg`
-		: "/OpenGraph.svg";
+		? `/OpenGraph/${SectionSlug}.png`
+		: "/OpenGraph.png";
 
 const ResolvedImage = Image ?? DefaultOpenGraphImage;
 

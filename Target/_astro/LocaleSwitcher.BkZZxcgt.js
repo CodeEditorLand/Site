@@ -1,1 +1,0 @@
-import{t}from"./LocaleSwitcher.dFA4Nxvw.js";export{t as LocaleSwitcher,t as default};

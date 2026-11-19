@@ -302,7 +302,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 			];
 
 			const AssetFile = [
-				"/OpenGraph.svg",
+				"/OpenGraph.png",
 				"/RouteMap.json",
 				"/Worker.js",
 				"/sitemap-index.xml",

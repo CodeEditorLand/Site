@@ -1,0 +1,1 @@
+import{Ln as t}from"./Vendor/React.CfMc_8Ia.js";var a=t();function s({src:t,alt:s="",width:r,height:e,className:i,...c}){return(0,a.jsx)("img",{src:t,alt:s,width:r,height:e,className:i,...c})}export{s as t};

@@ -1,9 +1,9 @@
 /**
- * Home page OpenGraph SVG endpoint.
+ * Home page OpenGraph card endpoint.
  *
- * Serves /OpenGraph.svg - the og:image for the root page.
+ * Serves /OpenGraph.png - the og:image for the root page.
  * Renders a field-record artifact card using the Land record.
- * All other pages use /OpenGraph/[Slug].svg via the [...Slug].svg.ts endpoint.
+ * All other pages use /OpenGraph/[Slug].png via the [...Slug].png.ts endpoint.
  *
  * The card is the same artifact the site prints: creme field, white card, the
  * record grammar (`# INDEX`, `〈stamp〉`, `/route`, `TITLE:`, `↳relation`,
@@ -12,6 +12,12 @@
  * `Source/Stylesheet/System/_Token.scss` - and the runs from
  * `../Function/OpenGraph/Run.js`, so this endpoint and the per-page one cannot
  * render the same card in two different palettes.
+ *
+ * The response is a PNG, not the SVG this file composes: `og:image` is read by
+ * a platform's scraper and no major platform renders SVG. `Rasterise` draws the
+ * SVG above with the site's own faces and returns the bytes - see
+ * `../Function/OpenGraph/Raster.js` for why the face has to be handed over and
+ * why no system font is reachable.
  */
 
 import type { APIRoute } from "astro";
@@ -47,6 +53,8 @@ import {
 	StampRun,
 	WrapText,
 } from "../Function/OpenGraph/Run.js";
+
+import { Rasterise } from "../Function/OpenGraph/Raster.js";
 
 /**
  * Generates a field-record artifact SVG at 1200×675 (16:9).
@@ -242,10 +250,10 @@ export const GET: APIRoute = async () => {
 
 	const Svg = GenerateFieldRecordSvg(Land);
 
-	return new Response(Svg, {
+	return new Response(Rasterise(Svg, "OpenGraph.png"), {
 		status: 200,
 		headers: {
-			"Content-Type": "image/svg+xml",
+			"Content-Type": "image/png",
 			"Cache-Control": "public, max-age=86400",
 		},
 	});

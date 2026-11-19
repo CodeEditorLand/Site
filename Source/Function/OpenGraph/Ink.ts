@@ -4,8 +4,8 @@
  * A share image is a file, not a page: no stylesheet reaches it, so
  * `var(--Foreground)` cannot resolve and every colour has to be a literal hex.
  * This module is the ONE place those literals live, which is what keeps the
- * two OG endpoints - `Source/pages/OpenGraph.svg.ts` (homepage) and
- * `Source/pages/OpenGraph/[...Slug].svg.ts` (every other page) - from drifting
+ * two OG endpoints - `Source/pages/OpenGraph.png.ts` (homepage) and
+ * `Source/pages/OpenGraph/[...Slug].png.ts` (every other page) - from drifting
  * apart. Both import from here; neither writes a colour of its own.
  *
  * The values are copied from `Source/Stylesheet/System/_Token.scss`. That file
@@ -72,17 +72,30 @@ export const RULE_OPACITY = 0.08;
 /* ── Type ────────────────────────────────────────────────────────── */
 
 /**
- * `--FontMono` as an SVG attribute value. The token spells its families in
- * double quotes; the SVG attribute is double-quoted, so each family is
- * re-quoted with single quotes here. Same list, same order, minus
- * "Land Symbol" - the site's second face, which carries only U+25CE and
- * U+3008/U+3009 - because an SVG served as an image loads no webfont at all.
- * The card is set in the platform's mono, so naming a face the renderer
- * cannot fetch would only pretend the stamp is drawn in the site's own
- * brackets.
+ * `--FontMono` as an SVG attribute value, reduced to what the card is actually
+ * drawn with: the site's own two faces, in the order the site declares them.
+ *
+ * The token spells its families in double quotes; the SVG attribute is
+ * double-quoted, so each family is re-quoted with single quotes here.
+ *
+ * The list used to carry the whole substitute chain (`JetBrains Mono`,
+ * `Fira Code`, `ui-monospace`, `SF Mono`, Menlo, Consolas, `monospace`) and to
+ * omit "Land Symbol", because an SVG served as an image loads no webfont at
+ * all - the chain was a wish list addressed to a renderer that had no fonts,
+ * and the card came out in the platform's substitute mono, at its weight and
+ * its advance, for every character.
+ *
+ * That premise is gone: the card is rasterised at build time by
+ * `./Raster.js`, which is handed `Maintain/Font/OpenGraph/*.ttf` - the shipped
+ * woff2 faces, cut to ttf for the rasteriser - and runs with
+ * `loadSystemFonts: false`. So this list is no longer a wish list, it is the
+ * renderer's complete inventory: IBM Plex Mono at 400 and 500, plus the
+ * three-glyph symbol face that carries U+25CE and U+3008/U+3009. Naming
+ * "Land Symbol" is now what makes the `〈 〉` stamp the site's own brackets
+ * instead of the platform's; naming anything else would name a face the
+ * renderer does not have.
  */
-export const FONT =
-	"'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, Consolas, monospace";
+export const FONT = "'IBM Plex Mono', 'Land Symbol'";
 
 /** `--TypeScaleS` (0.875rem) - the minimum. Nothing renders below 13px. */
 export const TYPE_S = 14;
