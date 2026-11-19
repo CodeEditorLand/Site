@@ -92,6 +92,14 @@ interface Props {
 	 * is dense, a short one is not.
 	 */
 	contentsDense?: boolean | "auto";
+
+	/**
+	 * The shell's own element id. `top` is the page's back-to-top target and is
+	 * what a documentation page expects; a page that mounts two shells (the
+	 * specimen sheet mounts three) passes its own, because an id is unique or it
+	 * is not an id.
+	 */
+	id?: string;
 }
 
 const {
@@ -101,6 +109,7 @@ const {
 	contents,
 	contentsFold = "auto",
 	contentsDense = "auto",
+	id = "top",
 } = Astro.props;
 
 /** The rows a half-rail head holds at the reading step, minus its label. */
@@ -156,7 +165,7 @@ const SidebarEmpty = T("sidebar.empty", {
 });
 ---
 
-<div class="doc-layout" id="top">
+<div class="doc-layout" id={id}>
 	<div class="doc-layout__shell">
 		<aside class="doc-layout__aside" aria-label="Documentation navigation">
 			<div class="doc-layout__sticky">

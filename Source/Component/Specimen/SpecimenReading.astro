@@ -1,0 +1,908 @@
+---
+/**
+ * SpecimenReading - the doc, reading and detail family, printed live.
+ *
+ * ─── WHY THIS STAGE IS NOT AN ISLAND ──────────────────────────────────────
+ * Almost nothing in this family ships JavaScript. A rail is an `<aside>` with a
+ * grid, a contents register is an `<ol>`, a card is an anchor, an article is a
+ * page's paper, an appendix is a badge strip or a tile grid, a foot is a rule
+ * with two registers. The two exceptions are the family's own and are mounted
+ * by the pages that need them: `Contents.ts` (the marking, one observer per
+ * page) and `RustViewer`'s tab bar (the switch, now scoped to its own root).
+ * The sheet mounts the second three times, which is exactly why the viewer's
+ * script had to stop addressing the whole document.
+ *
+ * ─── THE RENDERER DECIDES NOTHING ────────────────────────────────────────
+ * A row states what it is, which part it exercises, when that state is right and
+ * the arm it prints; this file builds the data and mounts the block. That split
+ * is why the matrix and the rows cannot drift: both read
+ * `Content/Specimen/Reading.ts`, and a state added there appears on both with no
+ * second edit.
+ *
+ * ─── THE DATA IS THE SITE'S OWN ──────────────────────────────────────────
+ * Every section, route, count and sentence below is the kind of thing this
+ * document states: a page of the manual, a clause of the licence, a crate of the
+ * workspace, a part of the record. A specimen printed with lorem ipsum would
+ * prove that the block can hold text; a specimen printed with the document's own
+ * facts proves that the block can hold THIS document.
+ *
+ * ─── THE STAGE IS A PLATE, NOT A VIEWPORT ────────────────────────────────
+ * The documentation shell pins its rail to `100dvh` and hides it below 1024px -
+ * both are page behaviours, and a plate that simulated them would be printing a
+ * browser. `_Reading.scss` therefore sets the rail static and bounded inside
+ * `.specimen-reading__stage`, and says so where it does it: the sheet shows the
+ * composition, and the composition is what the matrix is about.
+ */
+import {
+	Groups,
+	InGroup,
+	type Specimen,
+} from "../../Content/Specimen/Reading.js";
+
+import DocAppendix from "../Doc/DocAppendix.astro";
+import DocArticle from "../Doc/DocArticle.astro";
+import DocCard from "../Doc/DocCard.astro";
+import DocContents from "../Doc/DocContents.astro";
+import DocContentsList from "../Doc/DocContentsList.astro";
+import DocIndex from "../Doc/DocIndex.astro";
+import DocLayer from "../Doc/DocLayer.astro";
+import DocLayout from "../Doc/DocLayout.astro";
+import RustViewer from "../Doc/RustViewer.astro";
+import type { DocSection } from "../Doc/Type.js";
+import type { DocLink } from "../Doc/Type.js";
+import type { DocAppendix as Appendix } from "../Doc/Type.js";
+import type { DocStripItem, DocToc } from "../Doc/Type.js";
+import type { DocSection as SidebarSection } from "../Dynamic/Interface/Content/Page/Doc.js";
+import BandFoot from "../Detail/BandFoot.astro";
+import Folio from "../Detail/Folio.astro";
+import Leader from "../Detail/Leader.astro";
+import See from "../Detail/See.astro";
+import type { LeaderItem, SeeItem } from "../Detail/Type.js";
+import ReadingDocument from "../Reading/ReadingDocument.astro";
+import type { ReadingIndexItem } from "../Reading/Type.js";
+import type { LedgerRow } from "../Record/Type.js";
+import { RegisterOf } from "../Record/RegisterLine.js";
+
+/* ─── THE DOCUMENT'S OWN PROSE ───────────────────────────────────────────── */
+
+/** One sentence the site states about itself, used wherever a body is needed. */
+const Prose =
+	"The editor runs natively on macOS, Windows and Linux: Rust and Tauri underneath, the VS Code extension API on top, and no Chromium in the process tree.";
+
+/** A second sentence, for the blocks that hold two. */
+const ProseSecond =
+	"Extensions are unmodified: the marketplace's packages load as they are, and nothing in the editor has to be rebuilt to carry them.";
+
+/** A third, for the article bodies that need a third paragraph. */
+const ProseThird =
+	"The build is a pipeline of three stages - source, verify, prepare - and every stage writes what it read, so a claim in this document can be checked against the file it came from.";
+
+/* ─── THE CONTENTS ───────────────────────────────────────────────────────── */
+
+/** One section of a document, as the contents register files it. */
+const Toc = (Label: string, Position: number) => ({
+	Label,
+	Href: `#spec-read-${Position}`,
+});
+
+/** The twelve sections a resting documentation page has. */
+const TOC_LABELS = [
+	"What the editor is",
+	"The runtime, and what it does not own",
+	"The extension host",
+	"Unmodified extensions",
+	"The build pipeline",
+	"What a build reads",
+	"What a build writes",
+	"The compatibility surface",
+	"The filesystem footprint",
+	"Where the source lives",
+	"How to verify a claim",
+	"What is not built yet",
+];
+
+const TocItems = TOC_LABELS.map((Label, Position) => Toc(Label, Position + 1));
+
+const TOC: DocToc = { Label: "On this page", Items: TocItems };
+
+/**
+ * The same list with this row's own targets.
+ *
+ * The sheet mounts five articles, so an id may not be `spec-read-1` five times:
+ * each row's headings carry the row's mark and its contents point at them, which
+ * keeps every specimen a working jump list instead of a picture of one.
+ */
+const TocFor = (Mark: string): DocToc => ({
+	Label: TOC.Label,
+	Items: TOC.Items.map((Item, Position) => ({
+		Label: Item.Label,
+		Href: `#spec-read-${Position + 1}-${Mark}`,
+	})),
+});
+
+const TOC_ONE: DocToc = {
+	Label: "On this page",
+	Items: [Toc("What the editor is", 1)],
+};
+
+/** Ninety sections: the document the register folds itself for. */
+const TOC_MANY: DocToc = {
+	Label: "On this page",
+	Items: Array.from({ length: 90 }, (_, Index) =>
+		Toc(`SECTION ${String(Index + 1).padStart(2, "0")}`, Index + 1),
+	),
+};
+
+/** One heading wider than the rail. */
+const TOC_LONG: DocToc = {
+	Label: "On this page",
+	Items: [
+		{
+			Label:
+				"The runtime, its boundaries, and the parts of the platform it deliberately does not own",
+			Href: "#spec-read-1",
+		},
+		...TocItems.slice(1, 4),
+	],
+};
+
+/* ─── THE RAIL'S TREE ────────────────────────────────────────────────────── */
+
+/** Three sections of the manual, one of them grouped - the tree's real shape. */
+const SECTIONS: SidebarSection[] = [
+	{
+		Id: "foundations",
+		Label: "Foundations",
+		Children: [
+			{ Id: "what-it-is", Label: "What the editor is" },
+			{ Id: "runtime", Label: "The runtime" },
+			{ Id: "host", Label: "The extension host" },
+		],
+	},
+	{
+		Id: "deep-dive",
+		Label: "Deep Dive",
+		Children: [
+			{
+				Id: "elements",
+				Label: "Elements",
+				Children: [
+					{ Id: "land", Label: "Land" },
+					{ Id: "mountain", Label: "Mountain" },
+					{ Id: "cocoon", Label: "Cocoon" },
+				],
+			},
+			{ Id: "pipeline", Label: "The build pipeline" },
+		],
+	},
+	{
+		Id: "reference",
+		Label: "Reference",
+		Children: [
+			{ Id: "compat", Label: "Compatibility" },
+			{ Id: "footprint", Label: "Filesystem footprint" },
+		],
+	},
+];
+
+const SECTIONS_ONE: SidebarSection[] = [SECTIONS[0]!];
+
+/** Ninety leaves: the tree that scrolls in its own register. */
+const SECTIONS_MANY: SidebarSection[] = [
+	{
+		Id: "manual",
+		Label: "The Manual",
+		Children: Array.from({ length: 90 }, (_, Index) => ({
+			Id: `page-${Index + 1}`,
+			Label: `PAGE ${String(Index + 1).padStart(2, "0")}`,
+		})),
+	},
+];
+
+const SECTIONS_NONE: SidebarSection[] = [];
+
+/* ─── THE METADATA STRIP ─────────────────────────────────────────────────── */
+
+const STRIP: readonly DocStripItem[] = [
+	{ Label: "STATUS:", Value: "PUBLISHED" },
+	{ Label: "LAYER:", Value: "ELEMENTS" },
+	{ Label: "SOURCE:", Value: "CONTENT/DOC/WHAT-IT-IS.MD" },
+	{ Label: "COMPAT:", Value: "UNAVAILABLE", Tone: "quiet" },
+	{ Label: "UPDATED:", Value: "2026-11-18" },
+];
+
+const CRUMBS = [
+	{ label: "/DOCUMENTATION", href: "/Doc" },
+	{ label: "/DEEP DIVE", href: "/Doc#deep-dive" },
+	{ label: "What the editor is" },
+];
+
+/* ─── THE INDEX'S CARDS ──────────────────────────────────────────────────── */
+
+/** A page of the manual, as a card. */
+const Card = (Label: string, Note: string, Href: string): DocLink => ({
+	Id: Href.replace("/Doc/", ""),
+	Label,
+	Note,
+	Href,
+});
+
+const CARDS: readonly DocLink[] = [
+	Card(
+		"What the editor is",
+		"One native application: Rust and Tauri underneath, the VS Code API on top.",
+		"/Doc/what-it-is",
+	),
+	Card(
+		"The runtime",
+		"The process tree, the IPC it speaks, and the three targets it builds for.",
+		"/Doc/runtime",
+	),
+	Card(
+		"The extension host",
+		"The marketplace's packages, loaded unmodified, in a host that is not Chromium.",
+		"/Doc/host",
+	),
+];
+
+/** The same chapter with one page whose description the tree cannot fill. */
+const CARDS_ABSENT: readonly DocLink[] = [
+	CARDS[0]!,
+	{
+		Id: "runtime",
+		Label: "The runtime",
+		Href: "/Doc/runtime",
+	},
+	CARDS[2]!,
+];
+
+const CARDS_MANY: readonly DocLink[] = Array.from({ length: 16 }, (_, Index) =>
+	Card(
+		`PAGE ${String(Index + 1).padStart(2, "0")}`,
+		"One page of the manual, filed under its section, with its own sentence.",
+		`/Doc/page-${Index + 1}`,
+	),
+);
+
+const CHAPTER: DocSection = {
+	Id: "deep-dive",
+	Heading: "Deep Dive",
+	Rows: CARDS,
+};
+
+const CHAPTER_ABSENT: DocSection = {
+	Id: "deep-dive",
+	Heading: "Deep Dive",
+	Rows: CARDS_ABSENT,
+};
+
+const CHAPTER_MANY: DocSection = {
+	Id: "reference",
+	Heading: "Reference",
+	Rows: CARDS_MANY,
+};
+
+/* ─── THE APPENDICES ─────────────────────────────────────────────────────── */
+
+const ARCHITECTURE: Appendix = {
+	Id: "architecture",
+	Heading: "The Architecture",
+	Lede: "Fifteen elements, one per part of the machine: each has its own record, its own glyph and its own page.",
+	Kind: "architecture",
+	Rows: [
+		{
+			Id: "organisation",
+			Label: "The organisation on GitHub",
+			Href: "https://github.com/CodeEditorLand",
+			Blank: true,
+		},
+	],
+	Index: [
+		{ label: "Land", href: "/Doc/land" },
+		{ label: "Mountain", href: "/Doc/mountain" },
+		{ label: "Cocoon", href: "/Doc/cocoon" },
+		{ label: "Wind", href: "/Doc/wind" },
+		{ label: "Sky", href: "/Doc/sky" },
+		{ label: "Air", href: "/Doc/air" },
+		{ label: "Echo", href: "/Doc/echo" },
+		{ label: "Grove", href: "/Doc/grove" },
+	],
+};
+
+const STRIP_ABSENT: Appendix = { ...ARCHITECTURE, Index: [] };
+
+const BACKEND: Appendix = {
+	Id: "services",
+	Heading: "The Backend Services",
+	Lede: "Four workers behind the editor: each is its own service, and each is written in the same language as the core.",
+	Kind: "backend",
+	Rows: [
+		{
+			Id: "cocoon",
+			Label: "Cocoon",
+			Note: "the extension host's supervisor",
+			Href: "https://github.com/CodeEditorLand/Cocoon",
+			Blank: true,
+		},
+		{
+			Id: "mountain",
+			Label: "Mountain",
+			Note: "the language services",
+			Href: "https://github.com/CodeEditorLand/Mountain",
+			Blank: true,
+		},
+		{
+			Id: "wind",
+			Label: "Wind",
+			Note: "the filesystem and the workspace",
+			Href: "https://github.com/CodeEditorLand/Wind",
+			Blank: true,
+		},
+		{
+			Id: "echo",
+			Label: "Echo",
+			Note: "the telemetry the build does not send",
+			Href: "https://github.com/CodeEditorLand/Echo",
+			Blank: true,
+		},
+	],
+};
+
+const DEPLOYMENTS: Appendix = {
+	Id: "deployments",
+	Heading: "The Live Deployments",
+	Lede: "Twelve destinations where this document is published and read, each with its own build.",
+	Kind: "deployments",
+	Rows: Array.from({ length: 12 }, (_, Index) => ({
+		Id: `deployment-${Index + 1}`,
+		Label: `DEPLOYMENT ${String(Index + 1).padStart(2, "0")}`,
+		Note: "One build, one route, one owner.",
+		Href: `https://example.editor.land/${Index + 1}`,
+		Blank: true,
+	})),
+};
+
+/* ─── THE CRATES ─────────────────────────────────────────────────────────── */
+
+const Crate = (Label: string) => ({
+	Id: Label.toLowerCase(),
+	Label,
+	Url: `https://docs.editor.land/${Label.toLowerCase()}/`,
+});
+
+const CRATES = [
+	Crate("Land"),
+	Crate("Mountain"),
+	Crate("Cocoon"),
+	Crate("Wind"),
+];
+
+const CRATE_ONE = [CRATES[0]!];
+
+const CRATES_MANY = Array.from({ length: 9 }, (_, Index) =>
+	Crate(`Crate${Index + 1}`),
+);
+
+/* ─── THE DETAIL LAYER'S DATA ────────────────────────────────────────────── */
+
+const REFERENCES: readonly SeeItem[] = [
+	{
+		route: "/LICENSE",
+		href: "/License",
+		reason: "the whole tree is CC0, and the licence says what that permits",
+	},
+	{
+		route: "/CONTRIBUTING",
+		href: "/Contributing",
+		reason: "how a patch is written, signed and read before it lands",
+	},
+	{
+		route: "/DOWNLOAD",
+		href: "/Download",
+		reason: "the manifests, the checksums and what is not built yet",
+	},
+];
+
+/** Every reference passed without a reason: the block's resting refusal. */
+const BARE: readonly SeeItem[] = [
+	{ route: "/LICENSE", href: "/License", reason: "  " },
+	{ route: "/CONTRIBUTING", href: "/Contributing", reason: "" },
+];
+
+const CHAPTER_ENTRIES: readonly LeaderItem[] = [
+	{
+		label: "The Runtime",
+		href: "/Doc/runtime",
+		meta: "06",
+		note: "the process tree and what it does not own",
+	},
+	{ label: "The Extension Host", href: "/Doc/host", meta: "04" },
+	{ label: "The Build Pipeline", href: "/Doc/pipeline", meta: "03" },
+	{ label: "The Substitution", href: "/Doc/substitution", meta: "05" },
+	{ label: "Troubleshooting", href: "/Doc/troubleshooting", meta: "02" },
+	{ label: "The Compatibility Surface", href: "/Doc/compat", meta: "09" },
+	{ label: "The Filesystem Footprint", href: "/Doc/footprint", meta: "07" },
+	{ label: "The Back Matter", href: "/Doc/back-matter", meta: "04" },
+];
+
+const LEADER_ONE: readonly LeaderItem[] = [CHAPTER_ENTRIES[0]!];
+
+/** Thirty-eight entries: the register's too-much arm. */
+const LEADER_MANY: readonly LeaderItem[] = Array.from(
+	{ length: 38 },
+	(_, Index) => ({
+		label: `CHAPTER ${String(Index + 1).padStart(2, "0")}`,
+		href: `/Contents#chapter-${Index + 1}`,
+		meta: String((Index % 9) + 1).padStart(2, "0"),
+	}),
+);
+
+/** A register with one row whose figure is unknown. */
+const LEADER_UNAVAILABLE: readonly LeaderItem[] = [
+	CHAPTER_ENTRIES[0]!,
+	{ label: "The Checksums", href: "/Download", state: "unavailable" },
+	{ label: "The Edition", href: "/Download", meta: "01" },
+];
+
+const CHAPTER_REGISTER = RegisterOf("CHAPTERS", CHAPTER_ENTRIES);
+
+const MANY_REGISTER = RegisterOf("CHAPTERS", LEADER_MANY);
+
+/* ─── THE READING SURFACE'S DATA ─────────────────────────────────────────── */
+
+const FACTS: readonly LedgerRow[] = [
+	{ key: "EFFECTIVE:", value: "2026-11-18" },
+	{ key: "VERSION:", value: "1.0" },
+	{ key: "APPLIES TO:", value: "THE SOFTWARE AND ITS DOCUMENTATION" },
+	{ key: "LICENSE:", value: "CC0\u2001PUBLIC DOMAIN" },
+];
+
+const CLAUSES: readonly ReadingIndexItem[] = Array.from(
+	{ length: 26 },
+	(_, Index) => ({
+		number: String(Index + 1).padStart(2, "0"),
+		label: `Clause ${Index + 1}: ${["the software", "the warranty", "the mark", "attribution"][Index % 4]}`,
+		href: `#spec-clause-${Index + 1}`,
+	}),
+);
+
+/** The same clauses with this row's own targets - the sheet mounts five. */
+const ClausesFor = (Mark: string): readonly ReadingIndexItem[] =>
+	CLAUSES.map((Clause, Position) => ({
+		...Clause,
+		href: `#spec-clause-${Position + 1}-${Mark}`,
+	}));
+
+const ClauseOneFor = (Mark: string): readonly ReadingIndexItem[] => [
+	ClausesFor(Mark)[0]!,
+];
+
+/* ─── THE STAGE ──────────────────────────────────────────────────────────── */
+
+/** The stage's own width, from the row. */
+const SkinClass = (Row: Specimen): string => {
+	const Width = Row.width ?? "band";
+
+	return `specimen-reading__stage specimen-reading__stage--${Width}`;
+};
+---
+
+<div class="specimen-reading">
+	{Groups.map((Group) => (
+		<section class="specimen-reading__group">
+			<p class="specimen-reading__group-head">
+				<span class="specimen-reading__group-kicker">{Group.label}</span>
+				<span class="specimen-reading__group-count">
+					{InGroup(Group.key).length}
+				</span>
+			</p>
+
+			<p class="specimen-reading__group-note">{Group.note}</p>
+
+			<div class="specimen-reading__rows">
+				{InGroup(Group.key).map((Entry) => (
+					<article class="specimen-reading__row" id={`reading-${Entry.mark}`}>
+						<header class="specimen-reading__spec">
+							<p class="specimen-reading__mark">
+								<span class="specimen-reading__mark-hash" aria-hidden="true">
+									#
+								</span>
+								{Entry.mark}
+							</p>
+
+							<h3 class="specimen-reading__state">{Entry.state_name}</h3>
+
+							<p class="specimen-reading__part">{Entry.component}</p>
+
+							<p class="specimen-reading__when">{Entry.when}</p>
+						</header>
+
+						<div class={SkinClass(Entry)} data-skin={Entry.width ?? "band"}>
+							{Entry.kind === "article" ? (
+								<DocArticle
+									kicker="/Deep Dive"
+									title={
+										Entry.variant === "longheading"
+											? "The runtime, its boundaries, and the parts of the platform it deliberately does not own"
+											: "What the editor is"
+									}
+									standfirst={
+										Entry.variant === "nosummary"
+											? undefined
+											: "One native application, with the editor's API on top and no Chromium in the process tree."
+									}
+									strip={STRIP}
+									contents={TocFor(Entry.mark)}
+									crumbs={CRUMBS}
+									source="Source/Content/Doc/WhatItIs.md"
+									state={
+										Entry.variant === "empty"
+											? "empty"
+											: Entry.variant === "loading"
+												? "loading"
+												: "rest"
+									}
+									empty="This page's prose has not been set in this build: its source is in the documentation collection, and the setter has not run over it yet."
+								>
+									<h2 id={`spec-read-1-${Entry.mark}`}>What the editor is</h2>
+									<p>{Prose}</p>
+									<h2 id={`spec-read-2-${Entry.mark}`}>
+										The runtime, and what it does not own
+									</h2>
+									<p>{ProseSecond}</p>
+									<h2 id={`spec-read-3-${Entry.mark}`}>
+										The extension host
+									</h2>
+									<p>{ProseThird}</p>
+								</DocArticle>
+							) : Entry.kind === "layout" ? (
+								<DocLayout
+									sections={
+										Entry.variant === "notree"
+											? SECTIONS_NONE
+											: Entry.variant === "ninety"
+												? SECTIONS_MANY
+												: Entry.variant === "onesection"
+													? SECTIONS_ONE
+													: SECTIONS
+									}
+									contents={
+										Entry.variant === "ninety"
+											? TOC_MANY
+											: Entry.variant === "onesection"
+												? TOC_ONE
+												: TOC
+									}
+									activeId="runtime"
+									mobile={false}
+									id={`spec-read-layout-${Entry.mark}`}
+								>
+									<p class="specimen-reading__prose">{Prose}</p>
+									<p class="specimen-reading__prose">{ProseSecond}</p>
+								</DocLayout>
+							) : Entry.kind === "contents" ? (
+								<DocContents
+									toc={
+										Entry.variant === "one"
+											? TOC_ONE
+											: Entry.variant === "many"
+												? TOC_MANY
+												: Entry.variant === "long"
+													? TOC_LONG
+													: TOC
+									}
+									variant={
+										Entry.variant === "disclosure" ? "disclosure" : "rail"
+									}
+									collapsible={Entry.variant === "fold"}
+									dense={Entry.dense}
+								/>
+							) : Entry.kind === "contentslist" ? (
+								<DocContentsList
+									items={
+										Entry.variant === "many" ? TOC_MANY.Items : TOC.Items
+									}
+								/>
+							) : Entry.kind === "layer" ? (
+								<DocLayer
+									label="LAYER:"
+									heading="Deep Dive"
+									unit="PAGES"
+									unitOne="PAGE"
+									entries={
+										Entry.variant === "one"
+											? [
+													{
+														Id: "solo",
+														Label: "The Only Page Of This Layer",
+														Href: "/Doc/solo",
+													},
+												]
+											: Entry.variant === "long"
+												? [
+														{
+															Id: "long",
+															Label:
+																"The Runtime, Its Boundaries, And The Parts Of The Platform It Does Not Own",
+															Href: "/Doc/long",
+														},
+														{
+															Id: "runtime",
+															Label: "The Runtime",
+															Href: "/Doc/runtime",
+														},
+													]
+												: [
+														{
+															Id: "land",
+															Label: "Land",
+															Href: "/Doc/land",
+														},
+														{
+															Id: "mountain",
+															Label: "Mountain",
+															Href: "/Doc/mountain",
+														},
+														{
+															Id: "cocoon",
+															Label: "Cocoon",
+															Href: "/Doc/cocoon",
+														},
+														{
+															Id: "wind",
+															Label: "Wind",
+															Href: "/Doc/wind",
+														},
+														{
+															Id: "sky",
+															Label: "Sky",
+															Href: "/Doc/sky",
+														},
+														{
+															Id: "air",
+															Label: "Air",
+															Href: "/Doc/air",
+														},
+														{
+															Id: "echo",
+															Label: "Echo",
+															Href: "/Doc/echo",
+														},
+														{
+															Id: "grove",
+															Label: "Grove",
+															Href: "/Doc/grove",
+														},
+														{
+															Id: "pipeline",
+															Label: "The Build Pipeline",
+															Href: "/Doc/pipeline",
+														},
+														{
+															Id: "compat",
+															Label: "The Compatibility Surface",
+															Href: "/Doc/compat",
+														},
+														{
+															Id: "footprint",
+															Label: "The Filesystem Footprint",
+															Href: "/Doc/footprint",
+														},
+														{
+															Id: "back-matter",
+															Label: "The Back Matter",
+															Href: "/Doc/back-matter",
+														},
+														{
+															Id: "verify",
+															Label: "How To Verify A Claim",
+															Href: "/Doc/verify",
+														},
+														{
+															Id: "unbuilt",
+															Label: "What Is Not Built Yet",
+															Href: "/Doc/unbuilt",
+														},
+														{
+															Id: "glossary",
+															Label: "The Glossary",
+															Href: "/Doc/glossary",
+														},
+													]
+									}
+									activeId="land"
+								/>
+							) : Entry.kind === "index" ? (
+								<DocIndex
+									section={
+										Entry.variant === "absent"
+											? CHAPTER_ABSENT
+											: Entry.variant === "many"
+												? CHAPTER_MANY
+												: CHAPTER
+									}
+								/>
+							) : Entry.kind === "card" ? (
+								<ul class="specimen-reading__cards">
+									<DocCard
+										card={
+											Entry.variant === "absent"
+												? {
+														Id: "runtime",
+														Label: "The runtime",
+														Href: "/Doc/runtime",
+													}
+												: Entry.variant === "feature"
+													? {
+															Id: "start",
+															Label: "Where to Start",
+															Note: "Three pages: what the editor is, how it is built, and how to check the claim.",
+															Href: "/Doc#start",
+														}
+													: CARDS[0]!
+										}
+										level={Entry.variant === "feature" ? 2 : 3}
+									/>
+								</ul>
+							) : Entry.kind === "appendix" ? (
+								<DocAppendix
+									appendix={
+										Entry.variant === "stripabsent"
+											? STRIP_ABSENT
+											: Entry.variant === "backend"
+												? BACKEND
+												: Entry.variant === "deployments"
+													? DEPLOYMENTS
+													: ARCHITECTURE
+									}
+									state={Entry.variant === "empty" ? "empty" : "rest"}
+									empty="The destinations this panel lists have not been read in this build, so the panel states what would be here rather than printing an empty body."
+								/>
+							) : Entry.kind === "rust" ? (
+								<RustViewer
+									crates={
+										Entry.variant === "empty"
+											? []
+											: Entry.variant === "one"
+												? CRATE_ONE
+												: Entry.variant === "many"
+													? CRATES_MANY
+													: CRATES
+									}
+									label="Rust crate group"
+									title="Rust API Documentation"
+									id={`Specimen-${Entry.mark}`}
+								/>
+							) : Entry.kind === "foot" ? (
+								<BandFoot
+									index="03"
+									part="/DEEP DIVE"
+									see={
+										Entry.variant === "noxref"
+											? undefined
+											: Entry.variant === "loading"
+												? []
+												: REFERENCES
+									}
+									seeState={
+										Entry.variant === "loading" ? "loading" : "rest"
+									}
+									figure={{ value: "26", unit: "CLAUSES" }}
+									asOf="2026-11-18"
+									source="Source/Content/Index/Chapters.ts"
+									surface={Entry.variant === "card" ? "card" : "band"}
+								/>
+							) : Entry.kind === "folio" ? (
+								<Folio
+									index="03"
+									part={
+										Entry.variant === "part"
+											? "/DOC/DEEP-DIVE-FILESYSTEM-FOOTPRINT-USER-DOTFILE"
+											: "/LEGAL"
+									}
+									figure={{ value: "26", unit: "CLAUSES" }}
+									asOf="2026-11-18"
+									source={
+										Entry.variant === "source" || Entry.variant === "part"
+											? "Source/Content/Doc/DeepDive/FilesystemFootprint/UserDotfile.md"
+											: Entry.variant === "partial"
+												? undefined
+												: "Source/Content/Index/Chapters.ts"
+									}
+								/>
+							) : Entry.kind === "see" ? (
+								<See
+									items={Entry.variant === "bare" ? BARE : REFERENCES}
+									state={Entry.variant === "loading" ? "loading" : "rest"}
+								/>
+							) : Entry.kind === "reading" ? (
+								<ReadingDocument
+									kicker="/LEGAL"
+									heading="Terms of Use"
+									standfirst={
+										Entry.variant === "nosummary"
+											? undefined
+											: "The terms the software is offered under, and what they do and do not promise."
+									}
+									rows={FACTS}
+									index={
+										Entry.variant === "empty"
+											? ClauseOneFor(Entry.mark)
+											: Entry.variant === "loading"
+												? ClauseOneFor(Entry.mark)
+												: Entry.variant === "stack"
+													? ClausesFor(Entry.mark).slice(0, 6)
+													: ClausesFor(Entry.mark)
+									}
+									indexLabel="Clauses"
+									layout={Entry.variant === "rail" ? "rail" : "stack"}
+									ledgerSurface="standard"
+									ledgerColumns={2}
+									bodyClass="LegalCard"
+									state={
+										Entry.variant === "empty"
+											? "empty"
+											: Entry.variant === "loading"
+												? "loading"
+												: "rest"
+									}
+								>
+									<h2 id={`spec-clause-1-${Entry.mark}`}>
+										§01 The software is offered as it is
+									</h2>
+									<p>{Prose}</p>
+									<h2 id={`spec-clause-2-${Entry.mark}`}>
+										§02 No warranty is given or implied
+									</h2>
+									<p>{ProseSecond}</p>
+									<h2 id={`spec-clause-3-${Entry.mark}`}>
+										§03 The mark covers the tree
+									</h2>
+									<p>{ProseThird}</p>
+								</ReadingDocument>
+							) : Entry.kind === "leader" ? (
+								<Leader
+									items={
+										Entry.variant === "one"
+											? LEADER_ONE
+											: Entry.variant === "many"
+												? LEADER_MANY
+												: Entry.variant === "unavailable"
+													? LEADER_UNAVAILABLE
+													: Entry.variant === "empty"
+														? []
+														: Entry.variant === "loading"
+															? CHAPTER_ENTRIES
+															: CHAPTER_ENTRIES
+									}
+									register={
+										Entry.variant === "many"
+											? MANY_REGISTER
+											: Entry.variant === "empty"
+												? RegisterOf("CHAPTERS", [])
+												: CHAPTER_REGISTER
+									}
+									columns={Entry.variant === "many" ? 2 : 1}
+									state={
+										Entry.variant === "empty"
+											? "empty"
+											: Entry.variant === "loading"
+												? "loading"
+												: "rest"
+									}
+									empty="No chapter is filed for this set: the index is generated from the collection, and the collection has not been read."
+									limit={Entry.variant === "many" ? 6 : undefined}
+									more={
+										Entry.variant === "many"
+											? { label: "READ THE INDEX", href: "/Contents" }
+											: undefined
+									}
+								/>
+							) : null}
+						</div>
+					</article>
+				))}
+			</div>
+		</section>
+	))}
+</div>

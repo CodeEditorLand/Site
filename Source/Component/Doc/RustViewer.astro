@@ -45,6 +45,18 @@ interface Props {
 
 	/** The one line under the absence: why there is no crate, and what to do. */
 	emptyNote?: string;
+
+	/**
+	 * The viewer's own name, so two viewers on one page cannot collide.
+	 *
+	 * The frame's id used to be the literal `RustDocFrame`, and the script
+	 * addressed the tabs and the frame by `document.querySelectorAll` - which
+	 * is correct for a page with one viewer and wrong for a page with two (the
+	 * specimen sheet mounts three). The id is derived from this, and the script
+	 * is scoped to the viewer's own root, so each instance is its own
+	 * instrument.
+	 */
+	id?: string;
 }
 
 const {
@@ -53,10 +65,14 @@ const {
 	title,
 	empty = "No crate is filed for this group, so the frame has nothing to open.",
 	emptyNote = "The crates are read from the Rust workspace at build time; a group with none is a workspace that has not been generated yet.",
+	id = "RustDoc",
 } = Astro.props;
 
 /** The crate the frame opens on, or `undefined` if the page passed none. */
 const First = crates.at(0);
+
+/** The frame's element id: the viewer's own name, so instances never collide. */
+const FrameId = `${id}Frame`;
 ---
 
 {crates.length === 0 ? (
@@ -68,14 +84,14 @@ const First = crates.at(0);
 		</div>
 	</div>
 ) : (
-	<div class="doc-rust__viewer" data-state="loading">
+	<div class="doc-rust__viewer" data-state="loading" data-rust-viewer>
 		<div class="doc-rust__bar" role="tablist" aria-label={label}>
 			{crates.map((Crate, Index) => (
 				<button
 					type="button"
 					role="tab"
 					aria-selected={Index === 0 ? "true" : "false"}
-					aria-controls="RustDocFrame"
+					aria-controls={FrameId}
 					tabindex={Index === 0 ? 0 : -1}
 					data-id={Crate.Id}
 					data-rustdoc-url={Crate.Url}
@@ -99,7 +115,7 @@ const First = crates.at(0);
 		</p>
 
 		<iframe
-			id="RustDocFrame"
+			id={FrameId}
 			class="doc-rust__frame"
 			src={First?.Url}
 			title={title}
@@ -110,111 +126,132 @@ const First = crates.at(0);
 )}
 
 <script>
-	const Tabs = Array.from(
-		document.querySelectorAll<HTMLButtonElement>(".doc-rust__tab"),
-	);
-	const Frame = document.getElementById("RustDocFrame");
-
-	/** Move the active state to one tab: attribute first, ink follows the class. */
-	function SetActive(ActiveTab: HTMLButtonElement): void {
-		Tabs.forEach((Tab) => {
-			const IsActive = Tab === ActiveTab;
-
-			Tab.setAttribute("aria-selected", IsActive ? "true" : "false");
-			Tab.tabIndex = IsActive ? 0 : -1;
-			Tab.classList.toggle("doc-rust__tab--active", IsActive);
-		});
-	}
-
 	/**
-	 * The tab list's keyboard path.
+	 * One viewer's behaviour, scoped to its own root.
 	 *
-	 * `role="tablist"` is a promise the browser does not keep by itself: a
-	 * reader who tabs into the bar lands on one tab, and the pattern they are
-	 * owed is the arrows moving between tabs, Home and End going to the ends,
-	 * and focus following the selection. Without it the bar is three buttons in
-	 * a row that happen to be called tabs - and the panel below changes for a
-	 * reader who cannot see which one they are on.
+	 * `document.querySelectorAll(".doc-rust__tab")` was the whole page's tabs:
+	 * with two viewers mounted, one bar's click moved the other bar's ink and
+	 * every arrow key walked both lists. The root is the instrument, and the
+	 * instrument is what a script may touch.
 	 */
-	function Move(Tab: HTMLButtonElement, Step: 1 | -1): void {
-		const At = Tabs.indexOf(Tab);
+	const Wire = (Root: HTMLElement): void => {
+		const Tabs = Array.from(
+			Root.querySelectorAll<HTMLButtonElement>(".doc-rust__tab"),
+		);
 
-		if (At === -1) return;
+		const Frame = Root.querySelector<HTMLIFrameElement>(".doc-rust__frame");
 
-		const Next = Tabs[(At + Step + Tabs.length) % Tabs.length];
+		const State = Root.querySelector<HTMLElement>("[data-rust-state]");
 
-		if (!Next) return;
+		if (!Tabs.length) return;
 
-		Next.focus();
-		Next.click();
-	}
+		/** Move the active state to one tab: attribute first, ink follows the class. */
+		const SetActive = (ActiveTab: HTMLButtonElement): void => {
+			Tabs.forEach((Tab) => {
+				const IsActive = Tab === ActiveTab;
 
-	Tabs.forEach((Tab) => {
-		Tab.addEventListener("click", () => {
+				Tab.setAttribute("aria-selected", IsActive ? "true" : "false");
+				Tab.tabIndex = IsActive ? 0 : -1;
+				Tab.classList.toggle("doc-rust__tab--active", IsActive);
+			});
+		};
+
+		/**
+		 * The tab list's keyboard path.
+		 *
+		 * `role="tablist"` is a promise the browser does not keep by itself: a
+		 * reader who tabs into the bar lands on one tab, and the pattern they are
+		 * owed is the arrows moving between tabs, Home and End going to the ends,
+		 * and focus following the selection. Without it the bar is three buttons
+		 * in a row that happen to be called tabs.
+		 */
+		const Move = (Tab: HTMLButtonElement, Step: 1 | -1): void => {
+			const At = Tabs.indexOf(Tab);
+
+			if (At === -1) return;
+
+			const Next = Tabs[(At + Step + Tabs.length) % Tabs.length];
+
+			if (!Next) return;
+
+			Next.focus();
+			Next.click();
+		};
+
+		const Choose = (Tab: HTMLButtonElement): void => {
 			const Url = Tab.dataset["rustdocUrl"];
 			const Id = Tab.dataset["id"];
 
-			if (!Url || !(Frame instanceof HTMLIFrameElement)) return;
+			if (!Url || !Frame) return;
 
 			Frame.src = Url;
 
 			SetActive(Tab);
 
 			if (Id) history.replaceState(null, "", `#${Id}`);
-		});
+		};
 
-		Tab.addEventListener("keydown", (Event) => {
-			switch (Event.key) {
-				case "ArrowRight":
-				case "ArrowDown":
-					Event.preventDefault();
-					Move(Tab, 1);
-					break;
-				case "ArrowLeft":
-				case "ArrowUp":
-					Event.preventDefault();
-					Move(Tab, -1);
-					break;
-				case "Home":
-					Event.preventDefault();
-					Tabs[0]?.focus();
-					Tabs[0]?.click();
-					break;
-				case "End": {
-					Event.preventDefault();
-					const Last = Tabs.at(-1);
+		Tabs.forEach((Tab) => {
+			Tab.addEventListener("click", () => Choose(Tab));
 
-					Last?.focus();
-					Last?.click();
-					break;
+			Tab.addEventListener("keydown", (Event) => {
+				switch (Event.key) {
+					case "ArrowRight":
+					case "ArrowDown":
+						Event.preventDefault();
+						Move(Tab, 1);
+						break;
+					case "ArrowLeft":
+					case "ArrowUp":
+						Event.preventDefault();
+						Move(Tab, -1);
+						break;
+					case "Home":
+						Event.preventDefault();
+						Tabs[0]?.focus();
+						Tabs[0]?.click();
+						break;
+					case "End": {
+						Event.preventDefault();
+						const Last = Tabs.at(-1);
+
+						Last?.focus();
+						Last?.click();
+						break;
+					}
+					default:
+						break;
 				}
-				default:
-					break;
-			}
+			});
 		});
-	});
 
-	/* The frame's state line, and the viewer's own `data-state`: the pair says
-	   `loading` until rustdoc has arrived and `rest` after, so the block's
-	   stylesheet can paint the wait without a spinner. */
-	const Viewer = Frame?.closest<HTMLElement>(".doc-rust__viewer");
-	const State = document.querySelector<HTMLElement>("[data-rust-state]");
+		/* The frame's state line, and the viewer's own `data-state`: the pair says
+		   `loading` until rustdoc has arrived and `rest` after, so the block's
+		   stylesheet can paint the wait without a spinner. */
+		const Settle = (): void => {
+			Root.setAttribute("data-state", "rest");
+			State?.remove();
+		};
 
-	const Settle = (): void => {
-		Viewer?.setAttribute("data-state", "rest");
-		State?.remove();
+		Frame?.addEventListener("load", Settle);
+
+		/* Restore the active tab from the URL hash on load. Clicking the tab runs
+		   the same handler the reader would, so the frame, the attribute and the
+		   hash can never disagree. Only the first viewer whose bar holds the
+		   crate answers, so a page with three viewers restores one tab. */
+		const Hash = window.location.hash.slice(1);
+
+		if (Hash && Root.dataset["rustRestored"] === undefined) {
+			const Match = Tabs.find((Tab) => Tab.dataset["id"] === Hash);
+
+			if (Match) {
+				Root.dataset["rustRestored"] = "true";
+				Match.click();
+			}
+		}
 	};
 
-	Frame?.addEventListener("load", Settle);
-
-	// Restore the active tab from the URL hash on load. Clicking the tab runs the
-	// same handler the reader would, so the frame, the attribute and the hash can
-	// never disagree.
-	const Hash = window.location.hash.slice(1);
-
-	if (Hash) {
-		const Match = Tabs.find((Tab) => Tab.dataset["id"] === Hash);
-
-		Match?.click();
-	}
+	document
+		.querySelectorAll<HTMLElement>("[data-rust-viewer]")
+		.forEach((Root) => Wire(Root));
 </script>

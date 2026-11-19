@@ -1,0 +1,704 @@
+// SpecimenFrame - the surface, shell and layout family's plate: the state matrix,
+// its notes, the improvements the exploration produced, the observations it did
+// not fix, the conditions' own figures, and the fifty-odd live rows.
+//
+// Publishes:
+//   .reading-matrix-sheet               the state matrix, as one figure
+//   .reading-matrix-sheet__scroll       the frame the table scrolls in
+//   .reading-matrix-sheet__table        twenty rows, twenty-two columns
+//   .reading-matrix-sheet__corner       the head's leading cell
+//   .reading-matrix-sheet__head         one condition's head
+//   .reading-matrix-sheet__head--group  the first head of a new group
+//   .reading-matrix-sheet__name         the component's name and file, pinned
+//   .reading-matrix-sheet__cell         one cell
+//   .reading-matrix-sheet__built        the word a built cell prints
+//   .reading-matrix-sheet__na           a cell that cannot exist, with its note's mark
+//   .reading-matrix-sheet__notes        the footnotes
+//   .reading-matrix-sheet__note         one footnote: mark, where, why
+//   .reading-matrix-sheet__caption      what the matrix asks of a reader
+//   .reading-matrix-sheet__register     the figures, as a ledger
+//   .reading-matrix-sheet__improvements what the exploration changed, and where
+//   .reading-matrix-sheet__improvement  one behaviour: found, built
+//   .reading-matrix-sheet__observations what the card did not fix, and whose it is
+//   .reading-matrix-sheet__columns      how many of the parts hold each condition
+//   .specimen-reading                   the live rows
+//   .specimen-reading__group            one group of rows
+//   .specimen-reading__row              one labelled row: spec, stage
+//   .specimen-reading__stage            the box the specimen is printed in
+//   .specimen-reading__stage--card      the box that stands in for a Jelly surface
+//
+// ─── THE MATRIX IS ONE INSTRUMENT AND EVERY FAMILY PRINTS IT ──────────────
+// A pinned name column, a scrolling body, footnotes with marks, a register under
+// it. What changes per family is the FIGURES and the two sections under the table
+// - the record family argues trust, the narrative family argues a sentence, and
+// this one argues a frame. So the partial carries its own names, and the shared
+// shape is repeated rather than borrowed: a class that belongs to another
+// family's partial is a class no one can move without breaking a surface they
+// were not reading.
+//
+// ─── TWENTY-TWO COLUMNS DO NOT FIT, AND MUST NOT ──────────────────────────
+// The table scrolls inside `.reading-matrix-sheet__scroll` and the component's name
+// is pinned to the leading edge. Compressing twenty-two conditions into a page
+// would mean either dropping conditions or printing them below the type floor,
+// and both are the same answer: the matrix stops being readable.
+//
+// ─── THE ROWS ARE NOT AN ISLAND ───────────────────────────────────────────
+// Every row on this plate is static Astro, because this family ships no
+// JavaScript at all: a shell is a `<div>` with a grid, a rail a `<nav>`, a pane
+// pair two `<section>`s and a seam. The only interactive things the rows print
+// are `<details>` disclosures and the print button, and the browser owns both.
+
+@use "../../Mixin" as *;
+
+/* ─── THE MATRIX ─────────────────────────────────────────────────────────── */
+
+.reading-matrix-sheet {
+	margin: 0 0 var(--space-group);
+
+	min-inline-size: 0;
+}
+
+.reading-matrix-sheet__scroll {
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+
+	min-inline-size: 0;
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	background: var(--Card);
+}
+
+.reading-matrix-sheet__table {
+	inline-size: 100%;
+	min-inline-size: 96rem;
+
+	border-collapse: collapse;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+}
+
+.reading-matrix-sheet__head-row {
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.reading-matrix-sheet__corner {
+	position: sticky;
+	inset-inline-start: 0;
+	z-index: 2;
+
+	inline-size: 14rem;
+	padding: var(--space-tight);
+
+	background: var(--Card);
+	text-align: start;
+	vertical-align: bottom;
+
+	border-inline-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.reading-matrix-sheet__corner-label {
+	display: block;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.reading-matrix-sheet__corner-ask {
+	display: block;
+	margin-block-start: 0.25rem;
+
+	color: var(--MuteForeground);
+}
+
+.reading-matrix-sheet__head {
+	padding: var(--space-tight) 0.4rem;
+
+	text-align: start;
+	vertical-align: bottom;
+
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	min-inline-size: 4.4rem;
+}
+
+.reading-matrix-sheet__head--group {
+	border-inline-start: 2px solid var(--Divider);
+}
+
+.reading-matrix-sheet__head-label {
+	display: block;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.reading-matrix-sheet__head-ask {
+	display: block;
+	margin-block-start: 0.2rem;
+
+	font-size: var(--type-caption);
+	line-height: 1.3;
+
+	color: var(--MuteForeground);
+}
+
+.reading-matrix-sheet__row:not(:first-child) {
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.reading-matrix-sheet__name {
+	position: sticky;
+	inset-inline-start: 0;
+	z-index: 1;
+
+	padding: var(--space-tight);
+
+	background: var(--Card);
+	text-align: start;
+	vertical-align: top;
+
+	border-inline-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.reading-matrix-sheet__name-text {
+	display: block;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.reading-matrix-sheet__name-file {
+	display: block;
+	margin-block-start: 0.2rem;
+
+	font-size: var(--type-caption);
+	line-height: 1.3;
+
+	color: var(--MuteForeground);
+	overflow-wrap: anywhere;
+}
+
+.reading-matrix-sheet__name-count {
+	display: block;
+	margin-block-start: 0.3rem;
+
+	font-variant-numeric: tabular-nums;
+
+	color: var(--Foreground);
+}
+
+.reading-matrix-sheet__cell {
+	padding: 0.35rem 0.4rem;
+
+	vertical-align: top;
+
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.reading-matrix-sheet__cell--group {
+	border-inline-start: 2px solid var(--Divider);
+}
+
+.reading-matrix-sheet__cell[data-disposition="na"] {
+	background: color-mix(in srgb, var(--Mute) 45%, transparent);
+}
+
+.reading-matrix-sheet__built {
+	color: var(--MuteForeground);
+}
+
+.reading-matrix-sheet__na {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.2rem;
+
+	color: var(--MuteForeground);
+}
+
+.reading-matrix-sheet__note-mark {
+	color: var(--Mark);
+	font-variant-numeric: tabular-nums;
+}
+
+/* ─── THE NOTES ──────────────────────────────────────────────────────────── */
+
+.reading-matrix-sheet__notes,
+.reading-matrix-sheet__improvements,
+.reading-matrix-sheet__observations,
+.reading-matrix-sheet__columns {
+	margin-block-start: var(--space-group);
+}
+
+.reading-matrix-sheet__notes-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0 0 var(--space-tight);
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.reading-matrix-sheet__notes-label {
+	color: var(--Foreground);
+}
+
+.reading-matrix-sheet__notes-count {
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+.reading-matrix-sheet__notes-list {
+	display: grid;
+	gap: 0;
+
+	margin: 0;
+	padding: 0;
+
+	list-style: none;
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.reading-matrix-sheet__note {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 0.2rem;
+
+	padding-block: var(--space-tight);
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.reading-matrix-sheet__note .reading-matrix-sheet__note-mark {
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.reading-matrix-sheet__note-where {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.reading-matrix-sheet__note-reason {
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+	max-inline-size: var(--Measure);
+}
+
+@include bp(900px) {
+	.reading-matrix-sheet__note {
+		grid-template-columns: 4rem 14rem minmax(0, 1fr);
+		gap: var(--space-tight);
+		align-items: baseline;
+	}
+}
+
+/* ─── THE CAPTION ────────────────────────────────────────────────────────── */
+
+.reading-matrix-sheet__caption {
+	display: grid;
+	gap: var(--space-tight);
+
+	margin-block-start: var(--space-group);
+	padding-block-start: var(--space-tight);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.reading-matrix-sheet__caption-key {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--MuteForeground);
+}
+
+.reading-matrix-sheet__caption-value {
+	display: block;
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+	max-inline-size: var(--Measure);
+}
+
+.reading-matrix-sheet__caption-value--code {
+	overflow-wrap: anywhere;
+}
+
+.reading-matrix-sheet__caption-source {
+	display: block;
+}
+
+/* ─── THE REGISTER ───────────────────────────────────────────────────────── */
+
+.reading-matrix-sheet__register {
+	margin-block-start: var(--space-group);
+}
+
+/* ─── THE IMPROVEMENTS AND THE OBSERVATIONS ──────────────────────────────── */
+
+.reading-matrix-sheet__improvement,
+.reading-matrix-sheet__observation {
+	padding-block: var(--space-tight);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.reading-matrix-sheet__improvement-head,
+.reading-matrix-sheet__observation-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.4em;
+
+	margin-block-end: var(--space-tight);
+}
+
+.reading-matrix-sheet__improvement-mark {
+	color: var(--Mark);
+}
+
+.reading-matrix-sheet__improvement-name {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.reading-matrix-sheet__improvement-rule {
+	color: var(--MuteForeground);
+}
+
+.reading-matrix-sheet__improvement-from {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--MuteForeground);
+}
+
+.reading-matrix-sheet__improvement-found,
+.reading-matrix-sheet__improvement-built {
+	margin: 0;
+	max-inline-size: var(--Measure);
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.reading-matrix-sheet__improvement-built {
+	margin-block-start: 0.3rem;
+}
+
+.reading-matrix-sheet__improvement-key {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+/* ─── THE COLUMNS' OWN FIGURES ───────────────────────────────────────────── */
+
+.reading-matrix-sheet__column-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight) var(--space-group);
+
+	margin: 0;
+	padding: 0;
+
+	list-style: none;
+}
+
+.reading-matrix-sheet__column {
+	display: flex;
+	align-items: baseline;
+	gap: 0.35em;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.reading-matrix-sheet__column-label {
+	color: var(--MuteForeground);
+}
+
+.reading-matrix-sheet__column-count {
+	color: var(--Foreground);
+	font-variant-numeric: tabular-nums;
+}
+
+.reading-matrix-sheet__column[data-disposition="built"]
+	.reading-matrix-sheet__column-count {
+	color: var(--state-ink-attested);
+}
+
+/* ─── THE LIVE ROWS ──────────────────────────────────────────────────────── */
+
+.specimen-reading {
+	display: block;
+
+	min-inline-size: 0;
+}
+
+.specimen-reading__group + .specimen-reading__group {
+	margin-block-start: var(--space-chapter);
+}
+
+.specimen-reading__group-head {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+	padding-block-end: var(--space-tight);
+}
+
+.specimen-reading__group-count {
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+.specimen-reading__group-note {
+	margin: var(--space-tight) 0 0;
+
+	max-inline-size: var(--Measure);
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.specimen-reading__rows {
+	display: flex;
+	flex-direction: column;
+
+	margin-block-start: var(--space-group);
+
+	min-inline-size: 0;
+}
+
+.specimen-reading__row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-reading);
+
+	padding-block: var(--space-group);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	min-inline-size: 0;
+
+	@include bp(900px) {
+		grid-template-columns: 15rem minmax(0, 1fr);
+		gap: var(--space-group);
+		align-items: start;
+	}
+}
+
+.specimen-reading__spec {
+	display: flex;
+	flex-direction: column;
+	gap: 0.375rem;
+
+	min-inline-size: 0;
+}
+
+.specimen-reading__mark {
+	display: flex;
+	align-items: baseline;
+	gap: 0.25rem;
+
+	margin: 0;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+.specimen-reading__mark-hash {
+	color: var(--MuteForeground);
+}
+
+.specimen-reading__state {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-heading);
+	font-weight: 500;
+	line-height: var(--type-heading-line);
+	letter-spacing: var(--track-join);
+
+	color: var(--Foreground);
+
+	text-wrap: balance;
+}
+
+.specimen-reading__part {
+	margin: 0;
+
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.specimen-reading__when {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+
+	text-wrap: pretty;
+}
+
+/* ─── THE STAGE ──────────────────────────────────────────────────────────── */
+
+.specimen-reading__stage {
+	min-inline-size: 0;
+
+	max-inline-size: 44rem;
+}
+
+// A narrow stage is a real column, not a squeezed band: at 16rem the rail's meta
+// column, the panes' seam and the page shell's tracks all re-compose, which is
+// the behaviour the `AT 640` and `NARROW` rows exist to print.
+.specimen-reading__stage--narrow {
+	max-inline-size: 16rem;
+}
+
+.specimen-reading__stage--wide {
+	max-inline-size: 60rem;
+}
+
+.specimen-reading__stage--band {
+	max-inline-size: 44rem;
+}
+
+// The stage that stands in for a Jelly surface: the sheet composes a card to show
+// one, it does not mount the design system to demonstrate that the design system
+// exists.
+.specimen-reading__stage--card {
+	max-inline-size: 34rem;
+	padding: var(--space-reading);
+	background: var(--Card);
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+/* ─── THE STAGE'S OWN PARTS ──────────────────────────────────────────────── */
+
+.specimen-reading__prose {
+	margin: 0;
+	max-inline-size: var(--MeasureOpening);
+
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+.specimen-reading__prose + .specimen-reading__prose {
+	margin-block-start: var(--space-reading);
+}
+
+.specimen-reading__aside-key {
+	margin: 0 0 0.3rem;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--MuteForeground);
+}
+
+.specimen-reading__marks {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
+}
+
+.specimen-reading__head-marks {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
+}
+
+.specimen-reading__surface-body {
+	padding-block: var(--space-group);
+}
+
+.specimen-reading__plate-slot {
+	display: grid;
+	justify-items: start;
+	gap: var(--space-reading);
+
+	padding: var(--space-chapter) var(--space-group);
+	text-align: start;
+}
+
+.specimen-reading__plate-mark {
+	margin: 0;
+
+	color: var(--MuteForeground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-section);
+	line-height: 1;
+}
+
+.specimen-reading__plate-value {
+	margin: 0;
+
+	color: var(--Foreground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-section);
+	line-height: var(--type-section-line);
+	letter-spacing: var(--track-join);
+
+	text-wrap: balance;
+}
+
+.specimen-reading__plate-note {
+	margin: 0;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--MuteForeground);
+}
