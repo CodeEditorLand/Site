@@ -261,7 +261,7 @@ const Reason = {
 	noRow: "a modal panel has no persistent row to mark. `current` is the item grammar's state - the value in force in a set the reader is choosing from - and a dialog, a sheet, a drawer or a popover holds no set it chooses from.",
 
 	noDensity:
-		"a panel takes its density from the block inside it - `RecordLedger`, the `.Slip__Row` grammar, a `RecordWell`. A second density switch on the panel would be a second source of truth for one rhythm, and the first thing it would do is disagree with the block.",
+		"a panel takes its density from the block inside it - `RecordLedger`, the `.Slip__Row` grammar, a `RecordWell`. A second density switch on the panel would be a second source of truth for one rhythm, and the first thing it would do is disagree with the block. The slip's `data-density` is the *list* surfaces' switch - it tightens a row, and a panel has no rows of its own to tighten.",
 
 	noSubmenu:
 		"a panel holds content, not menu rows. A submenu three deep is a menu's problem - the slip's own `Trail` head states the path - and a panel that grew one would be a menu in a box.",

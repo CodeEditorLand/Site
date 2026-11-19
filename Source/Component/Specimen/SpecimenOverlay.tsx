@@ -147,7 +147,7 @@ const Tall = Array.from({ length: 60 }, (_, Index) => ({
  * would be a different and false statement, and a blank one would be a row the
  * reader has to interpret.
  */
-const Partial = [
+const PartialFacts = [
 	{ Key: "STATUS:", Value: "VERIFIED" },
 
 	{ Key: "LICENSE:", Value: "CC0" },
@@ -348,19 +348,19 @@ const Stage = ({ Row }: { Row: Specimen }) => {
 					</DialogTrigger>
 
 					<DialogContent
-						head={{ Name: "RECORD", Count: Partial.length }}
+						head={{ Name: "RECORD", Count: PartialFacts.length }}
 						foot={[{ Chord: "ESC", Label: "CLOSE" }]}
 					>
 						<DialogHeader>
 							<DialogTitle>Four of six rows</DialogTitle>
 							<DialogDescription>
 								Two facts have not been read. They say so in
-								their own cell, and the four that have been
-								read stay legible around them.
+								their own cell, and the four that have been read
+								stay legible around them.
 							</DialogDescription>
 						</DialogHeader>
 
-						<Ledger Rows={Partial} />
+						<Ledger Rows={PartialFacts} />
 
 						<SlipNote>
 							`UNAVAILABLE` is the record&apos;s answer, not its
@@ -612,10 +612,10 @@ const Stage = ({ Row }: { Row: Specimen }) => {
 					</p>
 
 					<p className="specimen-overlay__insert-note">
-						A control that lives on a card opens its slip over
-						that card. The slip is not a second card: it is the
-						same white insert, framed by the hairline that tells
-						it apart from the page.
+						A control that lives on a card opens its slip over that
+						card. The slip is not a second card: it is the same
+						white insert, framed by the hairline that tells it apart
+						from the page.
 					</p>
 
 					<Popover>

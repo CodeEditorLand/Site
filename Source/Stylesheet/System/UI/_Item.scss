@@ -178,8 +178,29 @@ $Item: ':is([data-slot="dropdown-menu-item"], [data-slot="dropdown-menu-checkbox
 	background: var(--Mute);
 }
 
+// ─── the keyboard's row ─────────────────────────────────────────────────────
+//
+// The palette is cmdk's, and cmdk marks its active row with `data-selected`
+// (`aria-selected` on the same element) rather than with Radix's
+// `data-highlighted`. Until this rule existed the grammar had a name for the
+// keyboard state and no selector that could reach it: `↑↓ MOVE` sat in the
+// palette's foot and moved a selection nothing drew, so the one control the site
+// calls software was the one control a keyboard reader could not see themselves
+// move in.
+//
+// It is the pointer's wash, not a second state: hover and keyboard land on the
+// same fill, and the mark goes ink in both. The row a reader is on is never
+// ambiguous between the two.
+
+#{$Item}[data-selected="true"],
+#{$Item}[aria-selected="true"] {
+	background: var(--Mute);
+}
+
 #{$Item}:hover[data-mark]::before,
 #{$Item}[data-highlighted][data-mark]::before,
+#{$Item}[data-selected="true"][data-mark]::before,
+#{$Item}[aria-selected="true"][data-mark]::before,
 #{$Item}[data-state="open"][data-mark]::before {
 	color: var(--Foreground);
 }

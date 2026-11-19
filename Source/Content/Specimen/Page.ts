@@ -259,10 +259,41 @@ export const Bands = {
 		heading: "The overlay, and every way out of it",
 
 		standfirst:
-			"Ten components on one surface, one item grammar and one dismissal contract. The matrix prints every condition against every component with a reason for each cell that cannot exist; the contract prints the five ways a slip is left; and the rows print the states the site had never shown - an empty menu, a disabled row that says why, a submenu three deep, a dialog taller than the viewport, a popover at the right edge.",
+			"Ten components on one surface, one item grammar and one dismissal contract. The matrix prints every condition against every component with a reason for each cell that cannot exist; the contract prints the five ways a slip is left; and the rows print the states the site had never shown - an empty menu, a disabled row that says why, a submenu three deep, a dialog taller than the viewport, a popover at the right edge, a record with rows it cannot read, a list at a shorter stride, and a slip opened over the card it belongs to.",
 
 		footnote:
 			"One surface is not one component. The ten are ten behaviours - a drag, a hover, a right-click, a chord - and the claim this band makes is narrower and harder: that a reader cannot tell which primitive they are in by looking at the frame, only by what it does.",
+	},
+
+	/**
+	 * The display family's band.
+	 *
+	 * The third band about a family rather than a part, and the one whose subject is
+	 * the document's reading weight: nineteen primitives that carry the page's facts
+	 * and are, for exactly that reason, the ones whose adverse states nobody notices
+	 * are missing. A table with no empty state does not look broken. A tab strip that
+	 * cannot overflow does not look broken. A skeleton that is a grey box does not
+	 * look broken - and all three are.
+	 *
+	 * It follows `/THE OVERLAY` for the reason that one follows `/THE FIELD`: a
+	 * family's states are the product, and this family's states are the ones a reader
+	 * meets while reading rather than while clicking. The band's argument is in four
+	 * artifacts: the matrix with a reason for every cell that cannot exist, the two
+	 * verdicts on the components the document does not mount, the conditions' own
+	 * figures, and the forty-four live rows.
+	 */
+	Display: {
+		kicker: "/THE DISPLAY",
+
+		interval: "break",
+
+		heading: "The display, and everything it is asked to hold",
+
+		standfirst:
+			"Nineteen components against twenty-one conditions: the matrix with a reason printed in full for every cell that cannot exist, the verdict on the two components no page mounts, the figure each condition earns, and then the family mounted live at every state it is best known by - a dense table, a strip with more tabs than fit, a disclosure with its panel open, a progress bar with a figure, a skeleton in the record grammar, and a month.",
+
+		footnote:
+			"Two cells cannot exist for the same reason in three different rows, and each one still carries its own sentence: a reason is a fact about that component, not a rule about the family. A cell that cannot exist is not a gap in the design - it is the design saying what it is not.",
 	},
 
 	Material: {

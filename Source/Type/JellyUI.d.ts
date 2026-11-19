@@ -1,5 +1,6 @@
 import type {
 	ButtonHTMLAttributes,
+	CSSProperties,
 	DetailedHTMLProps,
 	HTMLAttributes,
 } from "react";
@@ -9,7 +10,6 @@ import type {
 // registered client-side by the Jelly UI script tag in Source/Layout/Base.astro
 // - nothing here loads or bundles the library.
 declare global {
-
 	namespace JSX {
 		interface IntrinsicElements {
 			"jelly-theme": DetailedHTMLProps<
@@ -18,7 +18,6 @@ declare global {
 
 					accent?: string;
 				},
-
 				HTMLElement
 			>;
 
@@ -41,7 +40,6 @@ declare global {
 
 					label?: string;
 				},
-
 				HTMLElement
 			>;
 
@@ -62,216 +60,230 @@ declare global {
 
 					label?: string;
 				},
-
 				HTMLElement
 			>;
 
-				"jelly-badge": DetailedHTMLProps<
-					HTMLAttributes<HTMLElement> & {
-						variant?:
-							| "white"
-							| "rose"
-							| "amber"
-							| "azure"
-							| "mint"
-							| "platinum"
-							| "graphite";
+			"jelly-card": DetailedHTMLProps<
+				HTMLAttributes<HTMLElement> & {
+					variant?:
+						| "white"
+						| "rose"
+						| "amber"
+						| "azure"
+						| "mint"
+						| "platinum"
+						| "graphite";
 
-						size?: "sm" | "small" | "md" | "medium" | "lg" | "large";
+					shape?: "pill" | "square";
 
-						outline?: boolean;
+					/*
+					 * The card's own paint, as custom properties. `Card.tsx` sets
+					 * `--jelly-fill`, `--jelly-radius` and the three padding/type
+					 * properties so the insert is the site's white insert and not
+					 * Jelly's default palette - the same mechanism `jelly-badge`
+					 * already uses.
+					 */
+					style?: CSSProperties;
+				},
+				HTMLElement
+			>;
 
-						instant?: boolean;
+			"jelly-badge": DetailedHTMLProps<
+				HTMLAttributes<HTMLElement> & {
+					variant?:
+						| "white"
+						| "rose"
+						| "amber"
+						| "azure"
+						| "mint"
+						| "platinum"
+						| "graphite";
 
-						live?: boolean;
+					size?: "sm" | "small" | "md" | "medium" | "lg" | "large";
 
-						shape?: "pill" | "square";
-					},
+					outline?: boolean;
 
-					HTMLElement
-				>;
+					instant?: boolean;
 
-				"jelly-chip": DetailedHTMLProps<
-					HTMLAttributes<HTMLElement> & {
-						variant?:
-							| "white"
-							| "rose"
-							| "amber"
-							| "azure"
-							| "mint"
-							| "platinum"
-							| "graphite";
+					live?: boolean;
 
-						size?: "sm" | "small" | "md" | "medium" | "lg" | "large";
+					shape?: "pill" | "square";
+				},
+				HTMLElement
+			>;
 
-						selectable?: boolean;
+			"jelly-chip": DetailedHTMLProps<
+				HTMLAttributes<HTMLElement> & {
+					variant?:
+						| "white"
+						| "rose"
+						| "amber"
+						| "azure"
+						| "mint"
+						| "platinum"
+						| "graphite";
 
-						selected?: boolean;
+					size?: "sm" | "small" | "md" | "medium" | "lg" | "large";
 
-						removable?: boolean;
+					selectable?: boolean;
 
-						disabled?: boolean;
+					selected?: boolean;
 
-						shape?: "pill" | "square";
-					},
+					removable?: boolean;
 
-					HTMLElement
-				>;
+					disabled?: boolean;
 
-				"jelly-kbd": DetailedHTMLProps<
-					HTMLAttributes<HTMLElement> & {
-						key?: string;
+					shape?: "pill" | "square";
+				},
+				HTMLElement
+			>;
 
-						size?: "sm" | "small" | "md" | "medium" | "lg" | "large";
-					},
+			"jelly-kbd": DetailedHTMLProps<
+				HTMLAttributes<HTMLElement> & {
+					key?: string;
 
-					HTMLElement
-				>;
+					size?: "sm" | "small" | "md" | "medium" | "lg" | "large";
+				},
+				HTMLElement
+			>;
 
-				"jelly-checkbox": DetailedHTMLProps<
-					HTMLAttributes<HTMLElement> & {
-						checked?: boolean;
+			"jelly-checkbox": DetailedHTMLProps<
+				HTMLAttributes<HTMLElement> & {
+					checked?: boolean;
 
-						indeterminate?: boolean;
+					indeterminate?: boolean;
 
-						disabled?: boolean;
+					disabled?: boolean;
 
-						label?: string;
+					label?: string;
 
-						value?: string;
+					value?: string;
 
-						name?: string;
+					name?: string;
 
-						size?: "sm" | "small" | "md" | "medium" | "lg" | "large";
+					size?: "sm" | "small" | "md" | "medium" | "lg" | "large";
 
-						variant?:
-							| "white"
-							| "rose"
-							| "amber"
-							| "azure"
-							| "mint"
-							| "platinum"
-							| "graphite";
-					},
+					variant?:
+						| "white"
+						| "rose"
+						| "amber"
+						| "azure"
+						| "mint"
+						| "platinum"
+						| "graphite";
+				},
+				HTMLElement
+			>;
 
-					HTMLElement
-				>;
+			"jelly-radio": DetailedHTMLProps<
+				HTMLAttributes<HTMLElement> & {
+					checked?: boolean;
 
-				"jelly-radio": DetailedHTMLProps<
-					HTMLAttributes<HTMLElement> & {
-						checked?: boolean;
+					disabled?: boolean;
 
-						disabled?: boolean;
+					name?: string;
 
-						name?: string;
+					label?: string;
 
-						label?: string;
+					value?: string;
 
-						value?: string;
+					size?: "sm" | "small" | "md" | "medium" | "lg" | "large";
 
-						size?: "sm" | "small" | "md" | "medium" | "lg" | "large";
+					variant?:
+						| "white"
+						| "rose"
+						| "amber"
+						| "azure"
+						| "mint"
+						| "platinum"
+						| "graphite";
+				},
+				HTMLElement
+			>;
 
-						variant?:
-							| "white"
-							| "rose"
-							| "amber"
-							| "azure"
-							| "mint"
-							| "platinum"
-							| "graphite";
-					},
+			"jelly-switch": DetailedHTMLProps<
+				HTMLAttributes<HTMLElement> & {
+					checked?: boolean;
 
-					HTMLElement
-				>;
+					disabled?: boolean;
 
-				"jelly-switch": DetailedHTMLProps<
-					HTMLAttributes<HTMLElement> & {
-						checked?: boolean;
+					label?: string;
 
-						disabled?: boolean;
+					value?: string;
 
-						label?: string;
+					name?: string;
 
-						value?: string;
+					size?: "sm" | "small" | "md" | "medium" | "lg" | "large";
 
-						name?: string;
+					variant?:
+						| "white"
+						| "rose"
+						| "amber"
+						| "azure"
+						| "mint"
+						| "platinum"
+						| "graphite";
+				},
+				HTMLElement
+			>;
 
-						size?: "sm" | "small" | "md" | "medium" | "lg" | "large";
+			"jelly-slider": DetailedHTMLProps<
+				HTMLAttributes<HTMLElement> & {
+					value?: number;
 
-						variant?:
-							| "white"
-							| "rose"
-							| "amber"
-							| "azure"
-							| "mint"
-							| "platinum"
-							| "graphite";
-					},
+					min?: number;
 
-					HTMLElement
-				>;
+					max?: number;
 
-				"jelly-slider": DetailedHTMLProps<
-					HTMLAttributes<HTMLElement> & {
-						value?: number;
+					step?: number;
 
-						min?: number;
+					label?: string;
 
-						max?: number;
+					name?: string;
 
-						step?: number;
+					disabled?: boolean;
 
-						label?: string;
+					size?: "sm" | "small" | "md" | "medium" | "lg" | "large";
 
-						name?: string;
+					variant?:
+						| "white"
+						| "rose"
+						| "amber"
+						| "azure"
+						| "mint"
+						| "platinum"
+						| "graphite";
+				},
+				HTMLElement
+			>;
 
-						disabled?: boolean;
+			"jelly-segmented": DetailedHTMLProps<
+				HTMLAttributes<HTMLElement> & {
+					value?: string;
 
-						size?: "sm" | "small" | "md" | "medium" | "lg" | "large";
+					disabled?: boolean;
 
-						variant?:
-							| "white"
-							| "rose"
-							| "amber"
-							| "azure"
-							| "mint"
-							| "platinum"
-							| "graphite";
-					},
+					roles?: "radiogroup" | "tablist";
 
-					HTMLElement
-				>;
+					label?: string;
 
-				"jelly-segmented": DetailedHTMLProps<
-					HTMLAttributes<HTMLElement> & {
-						value?: string;
+					name?: string;
 
-						disabled?: boolean;
+					size?: "sm" | "small" | "md" | "medium" | "lg" | "large";
+				},
+				HTMLElement
+			>;
 
-						roles?: "radiogroup" | "tablist";
+			"jelly-tabs": DetailedHTMLProps<
+				HTMLAttributes<HTMLElement> & {
+					value?: string;
 
-						label?: string;
-
-						name?: string;
-
-						size?: "sm" | "small" | "md" | "medium" | "lg" | "large";
-					},
-
-					HTMLElement
-				>;
-
-				"jelly-tabs": DetailedHTMLProps<
-					HTMLAttributes<HTMLElement> & {
-						value?: string;
-
-						size?: "sm" | "small" | "md" | "medium" | "lg" | "large";
-					},
-
-					HTMLElement
-				>;
-			}
-			}
-			}
+					size?: "sm" | "small" | "md" | "medium" | "lg" | "large";
+				},
+				HTMLElement
+			>;
+		}
+	}
 }
 
 export {};

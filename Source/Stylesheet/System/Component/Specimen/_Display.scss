@@ -1,0 +1,681 @@
+// SpecimenDisplay - the display family's plate: the matrix, its notes, the verdicts,
+// the conditions' own figures, and the live rows.
+//
+// Publishes:
+//   .display-matrix                 the state matrix, as one figure
+//   .display-matrix__scroll         the frame the table scrolls in
+//   .display-matrix__table          nineteen rows, twenty-one columns
+//   .display-matrix__corner         the head's leading cell
+//   .display-matrix__head           one condition's head
+//   .display-matrix__head--group    the first head of a new group
+//   .display-matrix__name           the component's name, pinned to the edge
+//   .display-matrix__cell           one cell
+//   .display-matrix__built          the word a built cell prints
+//   .display-matrix__na             a cell that cannot exist, with its note's mark
+//   .display-matrix__notes          the footnotes
+//   .display-matrix__note           one footnote: mark, where, why
+//   .display-matrix__caption        what the matrix asks of a reader
+//   .display-matrix__register       the figures, as a ledger
+//   .display-matrix__verdicts       the two components argued rather than deleted
+//   .display-matrix__verdict        one verdict: the question and the answer
+//   .display-matrix__columns        how many of the parts hold each condition
+//   .specimen-display               the live rows
+//   .specimen-display__group        one group of rows
+//   .specimen-display__row          one labelled row: spec, stage
+//   .specimen-display__spec         the row's name, part and sentence
+//   .specimen-display__stage        the box the specimen is printed in
+//
+// ─── WHY THIS IS NOT THE INPUT FAMILY'S MATRIX, COPIED ────────────────────
+// The two matrices are the same instrument at the same scale, and they are not the
+// same artifact. The input matrix prints two dispositions and stops; this one also
+// prints the VERDICTS (a component argued rather than deleted), the COLUMN FIGURES
+// (how many of the nineteen parts hold each condition), and a built cell's note. So
+// the partial is its own file with its own names, and the only thing it shares with
+// `_Field.scss` is the shape a matrix has to have: a pinned name column, a scrolling
+// body, footnotes with marks, and a register under it.
+//
+// ─── TWENTY-ONE COLUMNS DO NOT FIT, AND MUST NOT ─────────────────────────
+// The table scrolls inside `.display-matrix__scroll` and the component's name is
+// pinned to the leading edge. Compressing twenty-one conditions into a page would
+// mean either dropping conditions or printing them below the type floor, and both
+// are the same answer: the matrix stops being readable.
+//
+// ─── THE VERDICT IS THE SHEET'S OWN ARGUMENT ─────────────────────────────
+// The task that built this family said: "Chart and Calendar may be unused - if so,
+// say whether they should exist at all rather than deleting them." A verdict is that
+// sentence, and it is printed as a record: `# CHART / KEEP`, the question, the answer,
+// and the surface that mounts it today. A component deleted in silence would be a
+// decision nobody could review; a component kept in silence would be a file waiting
+// for someone.
+@use "../../Mixin" as *;
+
+/* ─── THE MATRIX ─────────────────────────────────────────────────────────── */
+
+.display-matrix {
+	margin: 0 0 var(--space-group);
+
+	min-inline-size: 0;
+}
+
+.display-matrix__scroll {
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+
+	min-inline-size: 0;
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	background: var(--Card);
+}
+
+.display-matrix__table {
+	inline-size: 100%;
+	min-inline-size: 66rem;
+
+	border-collapse: collapse;
+
+	font-family: var(--FontMono);
+}
+
+// ─── The head ──────────────────────────────────────────────────────────────
+
+.display-matrix__corner,
+.display-matrix__name {
+	position: sticky;
+	inset-inline-start: 0;
+	z-index: 1;
+
+	background: var(--Card);
+
+	text-align: start;
+}
+
+.display-matrix__corner {
+	padding: var(--space-tight) var(--space-reading);
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+	border-inline-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.display-matrix__corner-label {
+	display: block;
+
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.display-matrix__corner-ask {
+	display: block;
+
+	margin-block-start: 0.125rem;
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+}
+
+.display-matrix__head {
+	padding: var(--space-tight) var(--space-tight)
+		calc(var(--space-tight) * 0.75);
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	vertical-align: bottom;
+
+	text-align: start;
+}
+
+// A group's first head carries the weight the group boundary deserves: a divider,
+// not a hairline. Three questions - what the component is doing, what it is asked to
+// hold, where it is put - and the head says where each begins.
+.display-matrix__head--group {
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.display-matrix__head-label {
+	display: block;
+
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+	white-space: nowrap;
+}
+
+.display-matrix__head-ask {
+	display: block;
+
+	margin-block-start: 0.125rem;
+
+	font-size: var(--type-caption);
+	line-height: 1.3;
+
+	color: var(--MuteForeground);
+
+	white-space: normal;
+	min-inline-size: 5.5rem;
+}
+
+// ─── The rows ──────────────────────────────────────────────────────────────
+
+.display-matrix__name {
+	padding: var(--space-tight) var(--space-reading);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	border-inline-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+
+	vertical-align: baseline;
+}
+
+.display-matrix__name-text {
+	display: block;
+
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+	white-space: nowrap;
+}
+
+.display-matrix__name-count {
+	display: block;
+
+	margin-block-start: 0.125rem;
+
+	font-size: var(--type-caption);
+	line-height: 1.3;
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+.display-matrix__cell {
+	padding: var(--space-tight);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	vertical-align: baseline;
+}
+
+.display-matrix__cell--group {
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+// A built cell is the texture of the matrix: the word at the meta register in the
+// quiet ink, so the eye reads the shape of the exceptions before it reads any one
+// cell. It is not a green tick - a matrix of three hundred ticks is a matrix of no
+// information.
+.display-matrix__built {
+	@include mono-meta;
+
+	color: var(--MuteForeground);
+	white-space: nowrap;
+
+	// A built cell with a note carries a dotted underline, because the note is worth
+	// reading and a title attribute that nothing points at is a note nobody meets.
+	&[title] {
+		text-decoration: underline dotted var(--Border);
+		text-underline-offset: 3px;
+		cursor: help;
+	}
+}
+
+// A cell that cannot exist is the ink, because it is the one a reader came for.
+.display-matrix__na {
+	@include mono-meta;
+
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.25rem;
+
+	color: var(--Foreground);
+	white-space: nowrap;
+}
+
+.display-matrix__note-mark {
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+// ─── The notes ─────────────────────────────────────────────────────────────
+
+.display-matrix__notes {
+	margin-block-start: var(--space-reading);
+
+	max-inline-size: var(--Measure);
+}
+
+.display-matrix__notes-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0 0 var(--space-tight);
+}
+
+.display-matrix__notes-label {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.display-matrix__notes-count {
+	@include mono-meta;
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+.display-matrix__notes-list {
+	display: flex;
+	flex-direction: column;
+
+	margin: 0;
+	padding: 0;
+
+	list-style: none;
+}
+
+.display-matrix__note {
+	display: grid;
+	grid-template-columns: 3rem minmax(8rem, 11rem) minmax(0, 1fr);
+	gap: var(--space-tight);
+
+	padding-block: var(--space-tight);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+}
+
+.display-matrix__note-where {
+	@include mono-meta;
+
+	color: var(--Foreground);
+
+	overflow-wrap: anywhere;
+}
+
+.display-matrix__note-reason {
+	color: var(--MuteForeground);
+
+	text-wrap: pretty;
+}
+
+// ─── The caption and the register ──────────────────────────────────────────
+
+.display-matrix__caption {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
+
+	margin-block-start: var(--space-reading);
+
+	max-inline-size: var(--Measure);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+}
+
+.display-matrix__caption-key {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.display-matrix__caption-value--code {
+	font-size: var(--type-caption);
+}
+
+.display-matrix__caption-source {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
+
+	flex: 1 1 100%;
+}
+
+.display-matrix__register {
+	margin-block-start: var(--space-group);
+
+	max-inline-size: var(--Measure);
+}
+
+/* ─── THE VERDICTS ───────────────────────────────────────────────────────── */
+
+.display-matrix__verdicts {
+	margin-block-start: var(--space-chapter);
+
+	min-inline-size: 0;
+}
+
+.display-matrix__verdict {
+	display: flex;
+	flex-direction: column;
+	gap: 0.375rem;
+
+	padding-block: var(--space-reading);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	max-inline-size: var(--Measure);
+}
+
+// The verdict's head is a register: `# CHART / KEEP` and the surface that mounts it.
+// A verdict that said "keep" without naming the mount would be an opinion; naming
+// `UNAVAILABLE` is the fact that makes it a decision.
+.display-matrix__verdict-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+}
+
+.display-matrix__verdict-mark {
+	color: var(--MuteForeground);
+}
+
+.display-matrix__verdict-name {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.display-matrix__verdict-rule {
+	color: var(--MuteForeground);
+}
+
+.display-matrix__verdict-word {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+// The attested tone keeps the shape and takes the ink (`State/_Token.scss` states
+// why), so a KEEP verdict is the ink and a RETIRE verdict is the quiet ink - not a
+// green tick and a red cross.
+.display-matrix__verdict[data-keep="false"] .display-matrix__verdict-word {
+	color: var(--MuteForeground);
+}
+
+.display-matrix__verdict-mounted {
+	@include mono-meta;
+
+	margin-inline-start: auto;
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+.display-matrix__verdict-question {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--Foreground);
+
+	text-wrap: pretty;
+}
+
+.display-matrix__verdict-answer {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+
+	text-wrap: pretty;
+}
+
+/* ─── THE COLUMNS' OWN FIGURES ───────────────────────────────────────────── */
+
+.display-matrix__columns {
+	margin-block-start: var(--space-chapter);
+
+	min-inline-size: 0;
+}
+
+.display-matrix__column-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+	gap: 0;
+
+	margin: 0;
+	padding: 0;
+
+	list-style: none;
+
+	max-inline-size: var(--Measure);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.display-matrix__column {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-tight);
+
+	padding: var(--space-tight) 0;
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.display-matrix__column-label {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.display-matrix__column-count {
+	@include mono-meta;
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+// A condition every part holds is the matrix's texture; a condition only some parts
+// hold is the one a reader should see, so it is the ink.
+.display-matrix__column[data-disposition="partial"]
+	.display-matrix__column-count {
+	color: var(--Foreground);
+}
+
+/* ─── THE LIVE ROWS ──────────────────────────────────────────────────────── */
+
+.specimen-display {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-chapter);
+
+	min-inline-size: 0;
+
+	margin-block-start: var(--space-chapter);
+}
+
+.specimen-display__group {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+
+	min-inline-size: 0;
+}
+
+.specimen-display__group-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0;
+
+	padding-block-end: var(--space-tight);
+
+	@include hairline(bottom);
+}
+
+.specimen-display__group-kicker {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+// The count is the group's own length, printed at the far end of its head - a band's
+// kicker counts nothing, but a group of rows is a set and says how big.
+.specimen-display__group-count {
+	@include mono-meta;
+
+	margin-inline-start: auto;
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+.specimen-display__group-note {
+	margin: 0 0 var(--space-reading);
+
+	max-inline-size: var(--Measure);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+
+	text-wrap: pretty;
+}
+
+.specimen-display__rows {
+	display: flex;
+	flex-direction: column;
+
+	min-inline-size: 0;
+}
+
+// One row: the spec, then the stage. The rule is above the row, so a run of rows is
+// a ruled ledger rather than a stack of cards.
+.specimen-display__row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-reading);
+
+	padding-block: var(--space-group);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	min-inline-size: 0;
+
+	@include bp(900px) {
+		grid-template-columns: 15rem minmax(0, 1fr);
+		gap: var(--space-group);
+		align-items: start;
+	}
+}
+
+.specimen-display__spec {
+	display: flex;
+	flex-direction: column;
+	gap: 0.375rem;
+
+	min-inline-size: 0;
+}
+
+.specimen-display__mark {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	margin: 0;
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+.specimen-display__mark-hash {
+	margin-inline-end: 0.25rem;
+
+	color: var(--Border);
+}
+
+.specimen-display__state {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	font-weight: 500;
+	letter-spacing: var(--track-join);
+
+	color: var(--Foreground);
+}
+
+.specimen-display__part {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	margin: 0;
+
+	color: var(--MuteForeground);
+}
+
+.specimen-display__when {
+	margin: var(--space-tight) 0 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+
+	text-wrap: pretty;
+}
+
+// The stage. `band` is the creme field with nothing around it - the specimen is
+// printed on the surface it will be printed on. `narrow` is a 16rem column, which is
+// where the table's pin and the tab strip's overflow earn their keep; `wide` is the
+// band's own width.
+.specimen-display__stage {
+	min-inline-size: 0;
+
+	max-inline-size: 40rem;
+}
+
+.specimen-display__stage--wide {
+	max-inline-size: none;
+}
+
+.specimen-display__stage--narrow {
+	max-inline-size: 17rem;
+}
+
+.specimen-display__stage--band {
+	max-inline-size: 40rem;
+}

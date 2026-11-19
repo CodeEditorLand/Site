@@ -435,6 +435,123 @@ function GetPayloadConfigFromPayload(
 		: config[key as keyof typeof config];
 }
 
+interface ChartFrameProps {
+	/** The set's name: `MEASUREMENTS` prints as `# MEASUREMENTS / 06`. */
+	label: string;
+
+	/** The set's own length. The caller's figure, never derived here. */
+	count: string | number;
+
+	/** The figure's caption: what it argues, in one sentence. */
+	caption?: string;
+
+	/** The state the figure reports. `empty` and `stale` are the two that matter. */
+	state?: "rest" | "loading" | "empty" | "stale" | "error" | "partial";
+
+	/** How tall the plot is. */
+	height?: string;
+
+	/** The chart itself. */
+	children: React.ReactNode;
+
+	/** Extra classes from the caller. */
+	className?: string;
+}
+
+/**
+ * ChartFrame - the document's frame around a figure.
+ *
+ * ─── WHY A CHART NEEDS A FRAME AT ALL ────────────────────────────────────
+ * A chart on this site is a claim, and a claim carries its register, its caption and
+ * its provenance. Without them the figure is a picture that could have come from
+ * anywhere; with them it is a plate from the same manual as every other plate. The
+ * frame prints `# MEASUREMENTS / 06` above the plot and the caption under it, and it
+ * carries the figure's state on `data-state` so the stylesheet can answer it.
+ *
+ * ─── THE STATES ──────────────────────────────────────────────────────────
+ *   loading   the axes are printed and the bars are not: the shape of the figure is
+ *             known before its values are, which is the skeleton's own argument.
+ *   empty     no data: `ChartEmpty` says what would be plotted and why it is not.
+ *   partial   some points are `UNAVAILABLE` - a gap in the series is a gap, never a
+ *             zero, because a zero is a measurement.
+ *   stale     the figure's as-of is older than the page: the frame says the age and
+ *             the values stay visible.
+ */
+function ChartFrame({
+	label,
+	count,
+	caption,
+	state,
+	height = "16rem",
+	children,
+	className,
+}: ChartFrameProps) {
+	return (
+		<figure
+			className={cn("ChartFrame", className)}
+			data-slot="chart-frame"
+			data-state={state}
+		>
+			<figcaption className="ChartFrame__Head">
+				<p className="DisplayRegister">
+					<span className="DisplayRegister__Mark" aria-hidden="true">
+						#
+					</span>
+					<span className="DisplayRegister__Label">{label}</span>
+					<span className="DisplayRegister__Rule" aria-hidden="true">
+						/
+					</span>
+					<span className="DisplayRegister__Value">{count}</span>
+				</p>
+			</figcaption>
+
+			<div className="ChartFrame__Body" style={{ height }}>
+				{children}
+			</div>
+
+			{caption === undefined ? null : (
+				<p className="ChartFrame__Caption">
+					<span aria-hidden="true">↳</span> {caption}
+				</p>
+			)}
+		</figure>
+	);
+}
+
+interface ChartEmptyProps {
+	/** What would be plotted. */
+	statement: string;
+
+	/** Why it is not. */
+	cause: string;
+
+	/** Extra classes from the caller. */
+	className?: string;
+}
+
+/**
+ * ChartEmpty - a figure with no data.
+ *
+ * A chart of nothing is a set of axes, which is a claim that the scale is known and
+ * the values are not. The empty arm says that in words instead of drawing it.
+ */
+function ChartEmpty({ statement, cause, className }: ChartEmptyProps) {
+	return (
+		<div className={cn("ChartEmpty", className)}>
+			<p className="DisplayRegister">
+				<span className="DisplayRegister__Mark" aria-hidden="true">
+					◎
+				</span>
+				<span className="DisplayRegister__Label">NO SERIES</span>
+			</p>
+
+			<p className="TableEmpty__Statement">{statement}</p>
+
+			<p className="TableEmpty__Cause">{cause}</p>
+		</div>
+	);
+}
+
 export {
 	ChartContainer,
 	ChartTooltip,
@@ -442,4 +559,6 @@ export {
 	ChartLegend,
 	ChartLegendContent,
 	ChartStyle,
+	ChartFrame,
+	ChartEmpty,
 };

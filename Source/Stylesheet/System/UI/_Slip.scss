@@ -144,12 +144,30 @@ $Slip: ':is([data-slot="dropdown-menu-content"], [data-slot="dropdown-menu-sub-c
 	color: var(--Mark);
 
 	font-variant-numeric: tabular-nums;
+
+	flex: none;
 }
 
 .Slip__Name {
 	color: var(--Foreground);
 
-	white-space: nowrap;
+	// ─── a name that will not fit ─────────────────────────────────────────
+	//
+	// The register's name is a `/` category and usually fits: `LOCALE`, `FIND`,
+	// `RECORD`. The matrix asks every slip what happens when it does not - a
+	// caller hands `COMPAT:VS CODE` to a 12rem slip, or a long record title -
+	// and there are only three answers. Truncating renames the slip to fit its
+	// own frame; clipping loses the tail with no mark that anything was lost;
+	// wrapping keeps every word and lets the line grow, and the head is sticky,
+	// so the growth costs a line of the slip rather than a line of the page.
+	//
+	// `anywhere` rather than `break-word` because the overflow is often one long
+	// token (`COMPAT:VSCODE`), which `break-word` will not break.
+	white-space: normal;
+
+	min-inline-size: 0;
+
+	overflow-wrap: anywhere;
 }
 
 .Slip__Rule {
@@ -160,6 +178,11 @@ $Slip: ':is([data-slot="dropdown-menu-content"], [data-slot="dropdown-menu-sub-c
 	color: var(--MuteForeground);
 
 	font-variant-numeric: tabular-nums;
+
+	// The figure never yields to the name. A slip whose count was pushed out of
+	// its own head by a long name would be a register without the number it
+	// exists to print.
+	flex: none;
 }
 
 // ─── DENSITY: the tight rhythm, stated once for every slip ──────────────────

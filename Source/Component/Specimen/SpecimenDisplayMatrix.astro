@@ -1,0 +1,281 @@
+---
+/**
+ * SpecimenDisplayMatrix - the display family's state matrix, printed.
+ *
+ * ─── WHAT A MATRIX IS FOR, AGAIN ─────────────────────────────────────────
+ * Nineteen components against twenty-one conditions is three hundred and
+ * ninety-nine cells, and the honest thing to do with three hundred and ninety-nine
+ * cells is to print them and let a reader scan. Prose would say "and it handles the
+ * adverse states"; a matrix says which ones, on which part, and - in the notes - why
+ * the rest cannot exist.
+ *
+ * ─── THE NOTES ARE THE ARTIFACT'S OTHER HALF ─────────────────────────────
+ * A cell that cannot exist carries a reason, and a reason is a sentence: it will not
+ * fit in a six-rem column, and a truncated reason is a reason that has been tidied
+ * into an excuse. So the cell prints `N/A` and the reason's mark in the containment
+ * brackets - `N/A 〈04〉` - and the notes below print all of them in full, numbered,
+ * in the order they are met reading across and down.
+ *
+ * ─── THE VERDICTS ARE PART OF THE MATRIX ─────────────────────────────────
+ * Two components the document does not mount - `Chart` and `Calendar` - are not
+ * hidden in a footnote. They are printed under the matrix as verdicts: the question
+ * each one answers, the argument for keeping it, and the surface that mounts it
+ * today (`UNAVAILABLE`). The task's instruction was to say whether they should exist
+ * rather than delete them; a verdict is that sentence, and it belongs on the sheet.
+ *
+ * ─── EVERY FIGURE IS DERIVED ─────────────────────────────────────────────
+ * `BuiltOf(Row)` under each name, the note count in the notes' head, the register
+ * under the table and the verdict count are all counted from the tables in
+ * `Content/Specimen/Display.ts`. A cell added there changes every figure here.
+ */
+import {
+	BuiltCount,
+	BuiltIn,
+	BuiltOf,
+	CellCount,
+	Columns,
+	MatrixCell,
+	MatrixRegister,
+	ReasonCount,
+	Rows,
+	Verdicts,
+} from "../../Content/Specimen/Display.js";
+
+import RecordLedger from "../Record/RecordLedger.astro";
+
+import { RegisterOf } from "../Record/RegisterLine.js";
+
+/** Every cell that cannot exist, numbered - the matrix's footnotes. */
+const Notes = Rows.flatMap((Row) =>
+	Columns.filter((Column) => MatrixCell(Row, Column).disposition === "na").map(
+		(Column) => ({ Row, Column, Cell: MatrixCell(Row, Column) }),
+	),
+).map((Note, Index) => ({ ...Note, mark: String(Index + 1).padStart(2, "0") }));
+
+/** The footnote a cell points at. */
+const NoteMark = (RowName: string, Key: string): string | undefined =>
+	Notes.find((Note) => Note.Row.name === RowName && Note.Column.key === Key)
+		?.mark;
+
+/**
+ * Whether a column opens a new group.
+ *
+ * The matrix prints a heavier rule where a condition becomes a shape and where a
+ * shape becomes a context, because those are three different questions and a reader
+ * scanning the head should see where one set ends.
+ */
+const OpensGroup = (Index: number): boolean =>
+	Index > 0 && Columns[Index]!.group !== Columns[Index - 1]!.group;
+
+/** The figures, and the register that counts them. */
+const Figures = MatrixRegister();
+
+const Matrix = RegisterOf("THE MATRIX", Figures);
+
+/** The verdicts' own count: how many components are argued rather than mounted. */
+const VerdictCount = Verdicts.length;
+---
+
+<figure class="display-matrix" id="display-matrix">
+	<div class="display-matrix__scroll">
+		<table class="display-matrix__table">
+			<thead>
+				<tr class="display-matrix__head-row">
+					<th class="display-matrix__corner" scope="col">
+						<span class="display-matrix__corner-label">COMPONENT</span>
+						<span class="display-matrix__corner-ask">
+							{Columns.length} CONDITIONS
+						</span>
+					</th>
+
+					{
+						Columns.map((Column, Index) => (
+							<th
+								class:list={[
+									"display-matrix__head",
+									OpensGroup(Index) && "display-matrix__head--group",
+								]}
+								scope="col"
+							>
+								<span class="display-matrix__head-label">
+									{Column.label}
+								</span>
+								<span class="display-matrix__head-ask">
+									{Column.ask}
+								</span>
+							</th>
+						))
+					}
+				</tr>
+			</thead>
+
+			<tbody>
+				{
+					Rows.map((Row) => (
+						<tr class="display-matrix__row">
+							<th class="display-matrix__name" scope="row">
+								<span class="display-matrix__name-text">
+									{Row.name}
+								</span>
+								<span class="display-matrix__name-count">
+									{BuiltOf(Row)} / {Columns.length}
+								</span>
+							</th>
+
+							{Columns.map((Column, Index) => {
+								const Cell = MatrixCell(Row, Column);
+
+								return (
+									<td
+										class:list={[
+											"display-matrix__cell",
+											OpensGroup(Index) &&
+												"display-matrix__cell--group",
+										]}
+										data-disposition={Cell.disposition}
+									>
+										{Cell.disposition === "built" ? (
+											<span
+												class="display-matrix__built"
+												title={Cell.note ?? undefined}
+											>
+												BUILT
+											</span>
+										) : (
+											<span class="display-matrix__na">
+												N/A
+												<span class="display-matrix__note-mark">
+													〈{NoteMark(Row.name, Column.key)}〉
+												</span>
+											</span>
+										)}
+									</td>
+								);
+							})}
+						</tr>
+					))
+				}
+			</tbody>
+		</table>
+	</div>
+
+	<div class="display-matrix__notes">
+		<p class="display-matrix__notes-head">
+			<span class="display-matrix__notes-label">NOTES:</span>
+			<span class="display-matrix__notes-count">
+				{Notes.length} CELLS THAT CANNOT EXIST
+			</span>
+		</p>
+
+		<ol class="display-matrix__notes-list">
+			{
+				Notes.map((Note) => (
+					<li class="display-matrix__note" id={`display-note-${Note.mark}`}>
+						<span class="display-matrix__note-mark">
+							〈{Note.mark}〉
+						</span>
+						<span class="display-matrix__note-where">
+							{Note.Row.name} / {Note.Column.label}
+						</span>
+						<span class="display-matrix__note-reason">
+							{Note.Cell.reason}
+						</span>
+					</li>
+				))
+			}
+		</ol>
+	</div>
+
+	<figcaption class="display-matrix__caption">
+		<span class="display-matrix__caption-key">READ:</span>
+		<span class="display-matrix__caption-value">
+			A cell is `BUILT` when the family renders that combination and `N/A`
+			when it cannot exist - and a cell that cannot exist carries its
+			reason in the notes above rather than a truncated one in the cell.
+			{BuiltCount} of {CellCount} cells are built; {ReasonCount} are
+			reasons. A built cell may carry a note saying which construction
+			built it, because "built" on the TABLE row and "built" on the
+			SONNER row are not the same construction.
+		</span>
+		<span class="display-matrix__caption-source">
+			<span class="display-matrix__caption-key">SOURCE:</span>
+			<span
+				class="display-matrix__caption-value display-matrix__caption-value--code"
+			>
+				SOURCE/CONTENT/SPECIMEN/DISPLAY.TS
+			</span>
+		</span>
+	</figcaption>
+
+	<div class="display-matrix__register">
+		<RecordLedger rows={Figures} columns={2} register={Matrix} />
+	</div>
+
+	{/* ─── THE VERDICTS ─────────────────────────────────────────────── */}
+	<div class="display-matrix__verdicts">
+		<p class="display-matrix__notes-head">
+			<span class="display-matrix__notes-label">VERDICTS:</span>
+			<span class="display-matrix__notes-count">
+				{VerdictCount} COMPONENTS ARGUED, NOT DELETED
+			</span>
+		</p>
+
+		{
+			Verdicts.map((Verdict) => (
+				<article
+					class="display-matrix__verdict"
+					data-keep={Verdict.keep ? "true" : "false"}
+				>
+					<header class="display-matrix__verdict-head">
+						<span class="display-matrix__verdict-mark" aria-hidden="true">
+							#
+						</span>
+						<span class="display-matrix__verdict-name">
+							{Verdict.component}
+						</span>
+						<span class="display-matrix__verdict-rule" aria-hidden="true">
+							/
+						</span>
+						<span class="display-matrix__verdict-word">
+							{Verdict.keep ? "KEEP" : "RETIRE"}
+						</span>
+						<span class="display-matrix__verdict-mounted">
+							MOUNTED: {Verdict.mounted}
+						</span>
+					</header>
+
+					<p class="display-matrix__verdict-question">
+						{Verdict.question}
+					</p>
+
+					<p class="display-matrix__verdict-answer">
+						{Verdict.answer}
+					</p>
+				</article>
+			))
+		}
+	</div>
+
+	{/* ─── THE COLUMNS' OWN FIGURES ─────────────────────────────────── */}
+	<div class="display-matrix__columns">
+		<p class="display-matrix__notes-head">
+			<span class="display-matrix__notes-label">BY CONDITION:</span>
+			<span class="display-matrix__notes-count">
+				HOW MANY OF THE {Rows.length} PARTS HOLD EACH ONE
+			</span>
+		</p>
+
+		<ul class="display-matrix__column-list">
+			{
+				Columns.map((Column) => (
+					<li class="display-matrix__column" data-disposition={BuiltIn(Column) === Rows.length ? "built" : "partial"}>
+						<span class="display-matrix__column-label">{Column.label}</span>
+						<span class="display-matrix__column-count">
+							{BuiltIn(Column)} / {Rows.length}
+						</span>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</figure>

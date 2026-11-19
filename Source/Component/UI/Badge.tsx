@@ -25,12 +25,48 @@ const BadgeVariants = cva(
 	},
 );
 
+/**
+ * Badge - one word, one ink pair, at the scale of a label.
+ *
+ * ─── WHAT THE FAMILY ADDED ───────────────────────────────────────────────
+ * The badge is a Jelly surface with a real ink pair (the tone map below) and that
+ * is a keeper. What it could not do was carry a SET:
+ *
+ *   count    `PROTOCOL: gRPC ␁03` - the badge's own figure, printed after U+2001
+ *            at the same register. A count inside a badge is a fact, not decoration:
+ *            it says how many things that ink is the ink of, and the caller derives
+ *            it from the array it counts.
+ *   mark     a dot, when the claim has no glyph of its own - the same mark
+ *            `DownloadMasthead` prints beside a claim without an icon.
+ *   size     `meta` (the register's 24px) or `standard` (30px). Two sizes, because
+ *            the site has two: a mark beside a field and a mark in a masthead.
+ *   group    `BadgeGroup` - a row of badges and the one that says how many are not
+ *            shown. The `+N` is derived, never passed.
+ *
+ * ─── THE INK IS THE IDENTITY ─────────────────────────────────────────────
+ * `grpc` is green because it IS gRPC, `tauri` is amber because it is Tauri. The
+ * colour is the claim's own, and the accent is not spent here - the accent
+ * authenticates a route, a link, a focus and a seal, and a badge is none of those.
+ */
+
 export interface BadgeProps
 	extends
 		React.HTMLAttributes<HTMLSpanElement>,
 		VariantProps<typeof BadgeVariants> {
 	/** A named ink pair: the badge paints as a Jelly surface, not an outline. */
 	tone?: BadgeTone;
+
+	/** The mark's size. `meta` is the register's 24px; `standard` is 30px. */
+	size?: "meta" | "standard";
+
+	/**
+	 * A leading mark, when the claim has no glyph: `dot` prints the site's 6px
+	 * square in the badge's own ink. A React node is printed verbatim (a glyph).
+	 */
+	mark?: "dot" | React.ReactNode;
+
+	/** The badge's own figure, printed after U+2001 at the same register. */
+	count?: string | number;
 }
 
 // Jelly variant mapping: our semantic names → Jelly's palette names.
@@ -197,7 +233,20 @@ const JellyBadgeTone: Record<
 export const BadgeTones = Object.keys(JellyBadgeTone) as BadgeTone[];
 
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
-	({ className, variant = "default", tone, children, ...props }, ref) => {
+	(
+		{
+			className,
+			variant = "default",
+			tone,
+			size,
+			mark,
+			count,
+			children,
+			...props
+		},
+
+		ref,
+	) => {
 		const jelly = JellyBadgeVariant[variant];
 
 		const ink = tone ? JellyBadgeTone[tone] : undefined;
@@ -207,6 +256,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 				ref={ref as unknown as React.Ref<HTMLElement>}
 				variant={ink ? ink.variant : jelly.variant}
 				shape="square"
+				size={size === "standard" ? "large" : undefined}
 				outline={!ink && variant === "outline" ? true : undefined}
 				className={className}
 				style={
@@ -216,7 +266,8 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 							? `var(${ink.label})`
 							: jelly.label,
 						"--jelly-badge-radius": "0",
-						"--jelly-badge-font-size": ink ? "13px" : "inherit",
+						"--jelly-badge-font-size":
+							ink || size === "meta" ? "13px" : "inherit",
 						"--jelly-color-border-default": ink
 							? `var(${ink.base})`
 							: variant === "outline"
@@ -226,7 +277,22 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 				}
 				{...props}
 			>
+				{mark === undefined ? null : (
+					<span
+						className="Badge__Mark"
+						data-kind={mark === "dot" ? "dot" : "glyph"}
+
+						aria-hidden={mark === "dot" ? "true" : undefined}
+					>
+						{mark === "dot" ? null : mark}
+					</span>
+				)}
+
 				{children}
+
+				{count === undefined ? null : (
+					<span className="Badge__Count">{count}</span>
+				)}
 			</jelly-badge>
 		);
 	},
@@ -234,4 +300,39 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 
 Badge.displayName = "Badge";
 
-export { BadgeVariants };
+interface BadgeGroupProps {
+	/** The badges, in the order they are read. */
+	items: readonly React.ReactNode[];
+
+	/** How many are shown before the `+N`. Default 4. */
+	max?: number;
+
+	/** Extra classes from the caller. */
+	className?: string;
+}
+
+/**
+ * BadgeGroup - a row of marks, and how many are not shown.
+ *
+ * The `+N` is the array's own arithmetic: `items.length - shown`. A caller that
+ * passed the figure would be a caller that could disagree with the set.
+ */
+function BadgeGroup({ items, max = 4, className }: BadgeGroupProps) {
+	const Shown = items.slice(0, max);
+
+	const Rest = items.length - Shown.length;
+
+	return (
+		<span className={cn("BadgeGroup", className)}>
+			{Shown.map((Item, Index) => (
+				<React.Fragment key={Index}>{Item}</React.Fragment>
+			))}
+
+			{Rest > 0 ? (
+				<span className="BadgeGroup__More">{`+${Rest}`}</span>
+			) : null}
+		</span>
+	);
+}
+
+export { BadgeVariants, BadgeGroup };

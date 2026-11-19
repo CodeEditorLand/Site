@@ -1,0 +1,2272 @@
+@use "../Mixin" as *;
+
+// ─── THE DISPLAY FAMILY ─────────────────────────────────────────────────────
+//
+// The nineteen primitives that carry the site's reading weight, and the surface
+// they wear. `Source/Component/UI/` ships them as untouched shadcn/Radix files -
+// correct behaviour, no surface - and every one of them publishes `data-slot` on
+// every part. That attribute is the kit's own stable contract, so the display
+// surface is applied HERE, keyed on it, exactly as `_Index.scss` states for the
+// five controls.
+//
+// ─── WHY THIS PARTIAL EXISTS AT ALL ───────────────────────────────────────
+//
+// The display family had a shape and no states. A table could not be dense, a
+// tab strip could not overflow, a disclosure snapped instead of opening, a
+// skeleton was a grey box with a pulse, a progress bar printed no figure, and a
+// badge could not carry its own count. The matrix on `/Specimen` is what made
+// those absences visible; this is the half of the answer that lives in the
+// component rather than in a wrapper.
+//
+// ─── FIVE RULES THIS PARTIAL KEEPS ────────────────────────────────────────
+//
+// 1. A state is an ATTRIBUTE, never a class the caller adds. `data-density`,
+//    `data-state`, `data-overflow`, `data-sticky` - the component writes them,
+//    the stylesheet reads them, and a caller that forgets them gets the resting
+//    rendering it had before this partial existed.
+// 2. Nothing below is a new colour. Every value is a `var(--...)`: the four
+//    state fields, the two state inks, the two state rules, the one ring, the
+//    two skeleton tokens, the ink, the mute, the accent and the destructive ink.
+//    A sixth colour would be a second identity.
+// 3. No radius, no shadow, no gradient. `--BorderRadius` is 0 sitewide and a
+//    display primitive is the last place to argue with it.
+// 4. Density is RHYTHM, never size. A dense table halves its row padding and
+//    changes nothing else - not the type, not the rules, not the head. A dense
+//    table is a tighter ledger, not a smaller one (`RecordMatrix` states the
+//    same rule for the block).
+// 5. Every interval is a token pair and every interval has a reduced-motion
+//    branch. `prefers-reduced-motion: reduce` keeps the end state and loses
+//    only the time it took to get there.
+//
+// ─── READ IN THIS ORDER ───────────────────────────────────────────────────
+//
+//   Table        the reading instrument: density, a pinned head, empty, one row
+//   Tabs         the one-of-N view, and the state where they do not fit
+//   Disclosure   accordion and collapsible: one open grammar, reduced motion
+//   Progress     how far a known job has got, printed as a figure
+//   Skeleton     the record grammar - a register line, keys, barred values
+//   Separator    one rule, and the label it can carry
+//   Avatar       one identity, its fallback, and the set it belongs to
+//   Alert        a state the reader must read before acting
+//   Breadcrumb   where the page sits, and how it collapses
+//   Pagination   which slice is printed, and how many there are
+//   ScrollArea   a window onto content taller than its frame
+//   Resizable    two panes and the seam a reader sets
+//   Carousel     one of a set, one at a time, by choice
+//   Chart        a figure that argues with numbers
+//   Calendar     a month, printed
+//   Sonner       a receipt for an action that has already happened
+//
+// The order is the reading order of the family, not the cascade: nothing below
+// restates another section's rule.
+
+/* ═══ TABLE ════════════════════════════════════════════════════════════════ */
+
+// ─── THE FRAME ─────────────────────────────────────────────────────────────
+//
+// The container is the scroll frame, so the pin has something to pin inside. A
+// table with no `sticky` prop is the table it always was: no height, no pin, the
+// same horizontal scroll the kit shipped.
+//
+// `data-sticky` is the only thing that gives the frame a height, because a
+// sticky head over a table that never scrolls is a head that is simply at the
+// top - and a fixed height on every table would be a claim about how many rows a
+// page has.
+
+[data-slot="table-container"] {
+	min-inline-size: 0;
+
+	// The frame is the table's edge. It is drawn here rather than on the table
+	// because the scroll moves the table and the edge must not.
+	&[data-bordered="true"] {
+		border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+		background: var(--Card);
+	}
+
+	&[data-sticky="true"] {
+		max-block-size: var(--Table-Height, 32rem);
+		overflow-y: auto;
+		overscroll-behavior-y: contain;
+	}
+}
+
+[data-slot="table"] {
+	border-collapse: collapse;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+}
+
+// ─── THE HEAD ──────────────────────────────────────────────────────────────
+//
+// The head is the table's register: the column names at the meta register in the
+// mute, over the one hairline that closes them. It is the same head the block
+// `RecordMatrix` draws, at the kit's scale, because a reader who has read one
+// matrix on this site has read them all.
+
+[data-slot="table-head"] {
+	padding: var(--space-tight) var(--space-reading);
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+
+	color: var(--state-ink-quiet);
+
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	font-weight: 500;
+
+	@include track(var(--track-name));
+
+	// A pinned head needs its own fill or the rows scroll through it.
+	background: var(--Card);
+}
+
+[data-slot="table-container"][data-sticky="true"] [data-slot="table-head"] {
+	position: sticky;
+	inset-block-start: 0;
+	z-index: 2;
+}
+
+// The first column pins too, and for the same reason the block states: a
+// five-column table in a narrow frame is read one row at a time, with the row's
+// name still attached to its cells.
+[data-slot="table-container"][data-pin-first="true"] {
+	[data-slot="table-head"]:first-child,
+	[data-slot="table-cell"]:first-child,
+	[data-slot="table-row"] > th:first-child {
+		position: sticky;
+		inset-inline-start: 0;
+		z-index: 1;
+
+		background: var(--Card);
+
+		border-inline-end: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	}
+}
+
+// ─── THE ROW ───────────────────────────────────────────────────────────────
+//
+// A row is ruled above, not below: a run of rows is one ledger, and a ledger's
+// rules belong to the rows that open them. The last row therefore needs no
+// special case - the table's own bottom edge closes it.
+
+[data-slot="table-row"] {
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	border-block-end: 0;
+}
+
+[data-slot="table-body"] > [data-slot="table-row"]:first-child {
+	border-block-start: 0;
+}
+
+// The chosen row. `data-state="selected"` is the kit's spelling and the one the
+// row already answers; the wash is the state layer's attention field, which is
+// the deeper creme and not a grey.
+[data-slot="table-row"][data-state="selected"] {
+	background: var(--state-field);
+}
+
+// A row that cannot be acted on stays on the page - a table that hides a row is
+// a table that lies about the set - and it loses its ink, not its size.
+[data-slot="table-row"][data-state="disabled"] {
+	color: var(--state-ink-quiet);
+
+	[data-slot="table-cell"],
+	[data-slot="table-head"] {
+		color: var(--state-ink-quiet);
+	}
+}
+
+[data-slot="table-row"][data-state="loading"] {
+	color: var(--state-ink-quiet);
+}
+
+[data-slot="table-row"][data-state="error"] {
+	// The one destructive ink in the family, and it is a rule rather than a fill:
+	// a row with a red background would be a badge pretending to be a fact.
+	border-inline-start: 2px solid var(--DestructFore);
+}
+
+[data-slot="table-cell"] {
+	padding: var(--space-tight) var(--space-reading);
+
+	vertical-align: baseline;
+
+	color: var(--CardForeground);
+
+	// A cell refuses to wrap by default - a table is read across, and a cell that
+	// wrapped would change the row's height for one value. `data-wrap="true"` is
+	// the opt-out for the long-text column.
+	white-space: nowrap;
+
+	&[data-wrap="true"] {
+		white-space: normal;
+		min-inline-size: 12rem;
+	}
+
+	// A figure column is right-aligned and tabular, so a column of numbers reads
+	// as a column of numbers rather than as a column of words.
+	&[data-numeric="true"] {
+		text-align: end;
+		font-variant-numeric: tabular-nums;
+	}
+
+	// The value the table does not have. It is a word, never an empty cell.
+	&[data-empty="true"] {
+		color: var(--state-ink-quiet);
+	}
+}
+
+// ─── DENSITY ───────────────────────────────────────────────────────────────
+//
+// `dense` halves the row rhythm. It touches the padding of a cell and the height
+// of a head, and nothing else - the type stays at the floor, the rules stay at
+// their ink, the head keeps its register. That is the whole definition, and it is
+// why a dense table is still readable at 13px.
+
+[data-slot="table-container"][data-density="dense"] {
+	[data-slot="table-head"] {
+		padding-block: calc(var(--space-tight) / 2);
+	}
+
+	[data-slot="table-cell"] {
+		padding-block: calc(var(--space-tight) / 2);
+	}
+}
+
+// ─── THE EMPTY AND ONE-ROW STATES ──────────────────────────────────────────
+//
+// An empty table keeps its head, because the head is the schema and the schema is
+// the one thing that is still true when there are no rows. The empty row says
+// what would be here, why it is not, and where to go - the same three rows every
+// absence on this site uses, compressed into one cell.
+
+[data-slot="table-empty"] > td {
+	padding: var(--space-group) var(--space-reading);
+
+	border-block-start: 0;
+
+	white-space: normal;
+}
+
+.TableEmpty {
+	display: flex;
+	flex-direction: column;
+	gap: 0.375rem;
+
+	max-inline-size: var(--Measure);
+}
+
+.TableEmpty__Head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0;
+}
+
+.TableEmpty__Mark {
+	color: var(--state-ink-quiet);
+}
+
+.TableEmpty__Word {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--state-ink);
+}
+
+.TableEmpty__Statement {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--Foreground);
+
+	text-wrap: pretty;
+}
+
+.TableEmpty__Cause {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--state-ink-quiet);
+
+	text-wrap: pretty;
+}
+
+.TableEmpty__Next {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	align-self: flex-start;
+
+	color: var(--state-ink);
+
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+// One row is a legal table and the one state where the head carries the whole
+// reading: the row is not a special case, so nothing is drawn for it. What the
+// state earns is the FOOT - the figure the table is a slice of - which is a
+// `TableCaption` with a register.
+
+[data-slot="table-caption"] {
+	padding-block-start: var(--space-tight);
+
+	color: var(--state-ink-quiet);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	text-align: start;
+
+	caption-side: bottom;
+}
+
+.TableRegister {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin-block-end: var(--space-tight);
+}
+
+.TableRegister__Mark {
+	color: var(--state-ink-quiet);
+}
+
+.TableRegister__Label {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--state-ink);
+}
+
+.TableRegister__Rule {
+	color: var(--state-ink-quiet);
+}
+
+.TableRegister__Count {
+	@include mono-meta;
+
+	color: var(--state-ink);
+
+	font-variant-numeric: tabular-nums;
+}
+
+.TableRegister__Note {
+	@include mono-meta;
+
+	color: var(--state-ink-quiet);
+}
+
+// ─── A TABLE ON PAPER ──────────────────────────────────────────────────────
+//
+// Paper has no scroll, so the pin is released and the frame prints every row.
+// The head repeats on each printed page because a table that breaks across a
+// page without its head is a page of unlabelled figures.
+
+@media print {
+	[data-slot="table-container"] {
+		max-block-size: none;
+		overflow: visible;
+
+		border: 0;
+	}
+
+	[data-slot="table-head"] {
+		position: static;
+	}
+
+	[data-slot="table"] thead {
+		display: table-header-group;
+	}
+}
+
+/* ═══ TABS ═════════════════════════════════════════════════════════════════ */
+
+// ─── THE TRACK ─────────────────────────────────────────────────────────────
+//
+// The tab strip is one track: a recessed creme band with the chosen tab pulled
+// out of it as a white sheet. `State/_Tab.scss` already draws the tab itself -
+// its rest, hover, press, chosen, focus and disabled states - so nothing here
+// restates a tab. What is added is the track, the overflow, and the panel.
+
+[data-slot="tabs-track"] {
+	position: relative;
+
+	display: flex;
+	align-items: stretch;
+
+	min-inline-size: 0;
+
+	// The overflow readout is positioned against the track, not the list, because
+	// the list scrolls and the readout must not.
+}
+
+[data-slot="tabs-list"] {
+	display: flex;
+	align-items: stretch;
+
+	min-inline-size: 0;
+
+	padding: 2px;
+
+	background: var(--Mute);
+
+	// Horizontal scroll, never wrap: a tab strip that wrapped would change the
+	// height of the band when the labels got longer, which is the one dimension a
+	// strip may not move in.
+	overflow-x: auto;
+	overflow-y: hidden;
+
+	scrollbar-width: none;
+	overscroll-behavior-x: contain;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+
+	// A tab takes its label's width; the strip's own scroll takes the rest.
+	[data-slot="tabs-trigger"] {
+		flex: 0 0 auto;
+	}
+}
+
+[data-slot="tabs-track"][data-overflow="wrap"] [data-slot="tabs-list"] {
+	flex-wrap: wrap;
+	overflow-x: visible;
+}
+
+// ─── THE OVERFLOW READOUT: THE STATE WHERE THE TABS DO NOT FIT ─────────────
+//
+// The count is measured, not guessed: `TabsList` counts the triggers whose right
+// edge is past the viewport and writes `data-count`. Zero hides the readout
+// entirely, because a strip that says `→ 0 MORE` is a strip that talks to itself.
+//
+// It sits at the trailing edge on the creme field with the strip's own wash
+// fading under it, so the reader can see that the strip continues and how much of
+// it is left. It is not a control - pressing it would be a second, invisible
+// scroller - and it is `aria-hidden`, because the count is a visual affordance
+// and the tabs themselves are all in the accessibility tree.
+
+[data-slot="tabs-overflow"] {
+	position: absolute;
+	inset-block: 0;
+	inset-inline-end: 0;
+
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+
+	padding-inline: var(--space-reading) var(--space-tight);
+
+	background: linear-gradient(to right, transparent, var(--Background) 40%);
+
+	color: var(--state-ink-quiet);
+
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+
+	@include track(var(--track-name));
+
+	pointer-events: none;
+
+	&[data-count="0"] {
+		display: none;
+	}
+}
+
+// ─── THE PANEL ─────────────────────────────────────────────────────────────
+//
+// A panel is content on the field: no frame, no fill, no padding of its own. The
+// band that holds the tabs owns the spacing, and a panel that drew a box would be
+// a card inside the band's card.
+
+[data-slot="tabs-content"] {
+	min-inline-size: 0;
+
+	padding-block-start: var(--space-reading);
+}
+
+// A panel that has not arrived yet says so in the family's busy grammar rather
+// than showing an empty box.
+[data-slot="tabs-content"][data-state="loading"] {
+	color: var(--state-ink-quiet);
+}
+
+// ─── PRINT ─────────────────────────────────────────────────────────────────
+//
+// A tab strip is a control. On paper every panel is printed, each under its own
+// name, because a printed page cannot ask the reader to click - and hiding three
+// of four panels would be printing one quarter of the document.
+
+@media print {
+	[data-slot="tabs-list"] {
+		display: none;
+	}
+
+	[data-slot="tabs-content"],
+	[data-slot="tabs-content"][hidden] {
+		display: block;
+
+		padding-block-start: var(--space-tight);
+	}
+
+	[data-slot="tabs-content"]::before {
+		content: attr(data-label);
+
+		display: block;
+
+		margin-block-end: var(--space-tight);
+
+		border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+
+		font-size: var(--type-meta);
+		line-height: var(--type-meta-line);
+
+		@include track(var(--track-row));
+
+		color: var(--state-ink);
+	}
+}
+
+/* ═══ DISCLOSURE ═══════════════════════════════════════════════════════════ */
+
+// ─── ONE OPEN GRAMMAR FOR TWO COMPONENTS ──────────────────────────────────
+//
+// An accordion is a stack of disclosures and a collapsible is one, so they share
+// one grammar: the trigger is a ruled row, the mark says which way the panel is
+// going, and the panel's height is the only thing that animates.
+//
+// `State/_Disclosure.scss` owns the trigger's states for `<details>` and for
+// `[aria-expanded]`; Radix writes `data-state` instead, so this partial is where
+// the kit's two primitives join that grammar. The three marks it reads -
+// `aria-expanded`, `[open]`, `data-state` - are the same state spelled three
+// ways, and each one is answered here rather than at the call site.
+
+[data-slot="accordion-item"] {
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	&:first-child {
+		border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	}
+}
+
+[data-slot="accordion-trigger"],
+[data-slot="collapsible-trigger"] {
+	padding-block: var(--space-tight);
+
+	color: var(--state-ink);
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	font-weight: 400;
+
+	@include track(var(--track-name));
+
+	cursor: pointer;
+
+	// The open trigger is a head, not a row - the same rule `_Disclosure.scss`
+	// states for a `<summary>`: the label goes to 500 and the mark to the ink.
+	&[data-state="open"] {
+		font-weight: 500;
+	}
+
+	&:hover {
+		background: var(--state-field);
+	}
+
+	&:focus-visible {
+		outline: var(--state-ring-width) solid var(--state-ring);
+		outline-offset: var(--state-ring-offset);
+	}
+
+	&[data-disabled] {
+		color: var(--state-ink-quiet);
+		cursor: not-allowed;
+	}
+}
+
+// The disclosure mark is drawn by the stylesheet, not by the caller: `→` while
+// the panel is closed, `↳` while it is open, which is the site's own grammar for
+// "leads on" and "is the content of". One glyph, one slot, both components.
+[data-slot="disclosure-mark"] {
+	display: inline-block;
+
+	margin-inline-start: var(--space-tight);
+
+	color: var(--state-ink-quiet);
+
+	@include motion-resolve;
+
+	[data-state="open"] > &,
+	[data-state="open"] & {
+		color: var(--state-ink);
+	}
+}
+
+[data-slot="disclosure-mark"]::before {
+	content: "→";
+}
+
+[data-state="open"] > [data-slot="disclosure-mark"]::before,
+[data-state="open"] [data-slot="disclosure-mark"]::before {
+	content: "↳";
+}
+
+// ─── THE PANEL'S HEIGHT, AND THE REDUCED-MOTION PATH ───────────────────────
+//
+// Radix publishes `--radix-accordion-content-height` and
+// `--radix-collapsible-content-height`, so the panel can animate from nothing to
+// its own height without a script measuring anything. The keyframes are declared
+// once and named for the family.
+//
+// `prefers-reduced-motion: reduce` removes the interval and keeps the end state:
+// the panel is simply there. That is the whole reduced-motion contract - the
+// state survives, the time does not - and it is stated here rather than left to a
+// global reset, because a global `animation: none` would also stop the site's
+// page-level reveal, which is not this partial's to stop.
+
+@keyframes display-disclose-open {
+	from {
+		block-size: 0;
+	}
+	to {
+		block-size: var(--display-disclose-height, auto);
+	}
+}
+
+@keyframes display-disclose-close {
+	from {
+		block-size: var(--display-disclose-height, auto);
+	}
+	to {
+		block-size: 0;
+	}
+}
+
+[data-slot="accordion-content"],
+[data-slot="collapsible-content"] {
+	overflow: hidden;
+}
+
+[data-slot="accordion-content"][data-state="open"] {
+	--display-disclose-height: var(--radix-accordion-content-height);
+
+	@include motion-enter;
+
+	animation: display-disclose-open var(--motion-enter-duration)
+		var(--motion-enter-easing);
+}
+
+[data-slot="collapsible-content"][data-state="open"] {
+	--display-disclose-height: var(--radix-collapsible-content-height);
+
+	@include motion-enter;
+
+	animation: display-disclose-open var(--motion-enter-duration)
+		var(--motion-enter-easing);
+}
+
+[data-slot="accordion-content"][data-state="closed"],
+[data-slot="collapsible-content"][data-state="closed"] {
+	animation: display-disclose-close var(--motion-enter-duration)
+		var(--motion-enter-easing);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	[data-slot="accordion-content"],
+	[data-slot="collapsible-content"] {
+		animation: none !important;
+		transition: none !important;
+	}
+
+	// The chevron that turns when the panel opens is a rotation, and a rotation is
+	// motion: it is removed, and the state is still legible from the mark and the
+	// weight.
+	[data-slot="accordion-trigger"] > svg {
+		transition: none !important;
+	}
+}
+
+// ─── THE EMPTY STACK ───────────────────────────────────────────────────────
+//
+// An accordion with no items is not an accordion; it is an absence, and it says
+// so in the family's grammar rather than rendering nothing at all.
+
+.DisplayAbsent {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	padding-block: var(--space-reading);
+
+	border-block: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.DisplayAbsent__Mark {
+	color: var(--state-ink-quiet);
+}
+
+.DisplayAbsent__Word {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--state-ink);
+}
+
+.DisplayAbsent__Statement {
+	flex: 1 1 16rem;
+
+	min-inline-size: 0;
+
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--state-ink-quiet);
+
+	text-wrap: pretty;
+}
+
+/* ═══ PROGRESS ═════════════════════════════════════════════════════════════ */
+
+// ─── A TRACK, A FILL, AND THE FIGURE ──────────────────────────────────────
+//
+// A progress bar that prints no figure asks the reader to estimate a length, and
+// a length is the one thing a reader cannot read off a bar at 13px. So the kit's
+// bar gains a register line: `# PREPARING / 07 OF 12` - the mark, the job's own
+// name, and the two figures the bar is a picture of.
+//
+// The bar itself is the site's rule at two inks: a track at the state rule, a
+// fill at the ink. Complete is the accent, because completion is the one thing in
+// this family that authenticates. Failed is the destructive ink and the bar stops
+// where it stopped - a failure that erased its progress would be a failure that
+// also deleted the work.
+
+[data-slot="progress"] {
+	block-size: 0.5rem;
+
+	background: color-mix(in srgb, var(--CardForeground) 12%, transparent);
+
+	// A bar is not a control: it takes no pointer and holds no focus.
+	pointer-events: none;
+}
+
+[data-slot="progress-indicator"] {
+	background: var(--CardForeground);
+
+	@include motion-trace;
+}
+
+[data-slot="progress-block"] {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+
+	min-inline-size: 0;
+}
+
+[data-slot="progress-block"][data-state="complete"]
+	[data-slot="progress-indicator"] {
+	background: var(--Accent);
+}
+
+[data-slot="progress-block"][data-state="failed"]
+	[data-slot="progress-indicator"] {
+	background: var(--DestructFore);
+}
+
+// An indeterminate bar is a bar whose length is not known: the fill is a stripe
+// at a third of the track, moving on the trace interval. Reduced motion parks it
+// at a third and leaves it there - the state is still "not known", and a frozen
+// stripe says that as well as a moving one.
+[data-slot="progress-block"][data-state="loading"]
+	[data-slot="progress-indicator"],
+[data-slot="progress-block"][data-state="partial"]
+	[data-slot="progress-indicator"] {
+	inline-size: 33%;
+	transform: none;
+	background: var(--state-ink-quiet);
+
+	animation: display-indeterminate var(--motion-interval-settle)
+		var(--motion-curve-line) infinite alternate;
+}
+
+@keyframes display-indeterminate {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(200%);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	[data-slot="progress-block"][data-state="loading"]
+		[data-slot="progress-indicator"] {
+		animation: none;
+		transform: none;
+	}
+}
+
+[data-slot="progress-block"][data-state="paused"]
+	[data-slot="progress-indicator"] {
+	background: var(--state-ink-quiet);
+}
+
+// ─── THE REGISTER LINE ─────────────────────────────────────────────────────
+
+.DisplayRegister {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0;
+}
+
+.DisplayRegister__Mark {
+	color: var(--state-ink-quiet);
+}
+
+.DisplayRegister__Label {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--state-ink);
+}
+
+.DisplayRegister__Rule {
+	color: var(--state-ink-quiet);
+}
+
+.DisplayRegister__Value {
+	@include mono-meta;
+
+	color: var(--state-ink);
+
+	font-variant-numeric: tabular-nums;
+}
+
+.DisplayRegister__Note {
+	@include mono-meta;
+
+	color: var(--state-ink-quiet);
+}
+
+/* ═══ SKELETON ═════════════════════════════════════════════════════════════ */
+
+// ─── THE RECORD GRAMMAR, IN THE KIT ───────────────────────────────────────
+//
+// `Component/Motion/MotionSkeleton.astro` already prints the loading arm as a
+// record: a register line, the keys the record will print, their values barred.
+// That is the site's skeleton, and it lives in an `.astro` block - so a React
+// island that needs to wait had to fall back on the kit's grey box.
+//
+// `SkeletonRecord` is the same anatomy as a React primitive, and it reads the
+// same two tokens (`--motion-skeleton-bar`, `--motion-skeleton-ink`) so a busy
+// button, a loading record and a waiting card are one object at three scales.
+// The grey `Skeleton` is untouched: it is mounted by two account surfaces that
+// want a shape, not a schema, and deleting their arm would be a regression.
+//
+// ─── NO PULSE ─────────────────────────────────────────────────────────────
+// A pulse is a loop, and a loop is motion without a state change. The bars are
+// static; what moves is the moment the record arrives, and that is `resolve`,
+// owned by whatever replaces the skeleton.
+
+.SkeletonRecord {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+
+	min-inline-size: 0;
+
+	padding-block: var(--space-reading);
+}
+
+.SkeletonRecord__Marker {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0;
+
+	color: var(--Foreground);
+}
+
+.SkeletonRecord__Rows {
+	display: flex;
+	flex-direction: column;
+
+	margin: 0;
+}
+
+.SkeletonRecord__Row {
+	display: grid;
+	grid-template-columns: minmax(7rem, 12rem) minmax(0, 1fr);
+	align-items: center;
+	gap: var(--space-tight);
+
+	padding-block: var(--space-tight);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.SkeletonRecord__Key {
+	margin: 0;
+
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--state-ink-quiet);
+}
+
+.SkeletonRecord__Value {
+	margin: 0;
+
+	min-inline-size: 0;
+}
+
+.SkeletonRecord__Bar {
+	display: block;
+
+	block-size: var(--motion-skeleton-bar);
+	inline-size: var(--bar, 48%);
+
+	background: var(--CardForeground);
+
+	opacity: var(--motion-skeleton-ink);
+}
+
+.SkeletonRecord__Wait {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--state-ink-quiet);
+
+	@include track(var(--track-name));
+}
+
+.SkeletonRecord__Age {
+	color: var(--state-ink);
+	font-variant-numeric: tabular-nums;
+}
+
+// ─── THE MATRIX SKELETON ──────────────────────────────────────────────────
+//
+// A waiting table prints its head, because the head is the schema, and bars in
+// the cells. That is the difference between a skeleton that says what and a grey
+// rectangle that says nothing.
+
+.SkeletonMatrix {
+	display: flex;
+	flex-direction: column;
+
+	min-inline-size: 0;
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	background: var(--Card);
+}
+
+.SkeletonMatrix__Head,
+.SkeletonMatrix__Row {
+	display: grid;
+	grid-template-columns: minmax(7rem, 1fr) repeat(
+			var(--columns, 3),
+			minmax(4rem, 1fr)
+		);
+
+	gap: var(--space-tight);
+
+	padding: var(--space-tight) var(--space-reading);
+}
+
+.SkeletonMatrix__Head {
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.SkeletonMatrix__Row {
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	&:first-of-type {
+		border-block-start: 0;
+	}
+}
+
+.SkeletonMatrix__Head > span {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--state-ink-quiet);
+	white-space: nowrap;
+}
+
+.SkeletonMatrix__Bar {
+	display: block;
+
+	block-size: var(--motion-skeleton-bar);
+	inline-size: var(--bar, 60%);
+
+	background: var(--CardForeground);
+
+	opacity: var(--motion-skeleton-ink);
+}
+
+// A skeleton is never printed: paper has no waiting.
+@media print {
+	.SkeletonRecord,
+	.SkeletonMatrix {
+		display: none;
+	}
+}
+
+/* ═══ SEPARATOR ════════════════════════════════════════════════════════════ */
+
+// ─── ONE RULE, AND THE LABEL IT CAN CARRY ─────────────────────────────────
+//
+// The kit's separator is a hairline and nothing else. The family needs two more
+// forms, and both are the same rule:
+//
+//   labelled   a rule with a register printed in it: `# SECTION / 04`
+//   spaced     a rule that takes the chapter rhythm instead of the row rhythm
+//
+// A labelled separator is the site's `:` label at a rule's scale - it names what
+// the rule separates rather than decorating the seam.
+
+[data-slot="separator-root"] {
+	background: var(--Border);
+}
+
+[data-slot="separator-root"][data-weight="strong"] {
+	background: var(--Divider);
+}
+
+[data-slot="separator-root"][data-spaced="true"] {
+	margin-block: var(--space-group);
+}
+
+.SeparatorLabel {
+	display: flex;
+	align-items: center;
+	gap: var(--space-tight);
+
+	min-inline-size: 0;
+
+	margin-block: var(--space-group);
+}
+
+.SeparatorLabel__Rule {
+	flex: 1 1 auto;
+
+	block-size: var(--BorderWidth);
+
+	background: var(--Divider);
+}
+
+.SeparatorLabel__Text {
+	flex: 0 0 auto;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--state-ink);
+}
+
+.SeparatorLabel__Note {
+	flex: 0 0 auto;
+
+	@include mono-meta;
+
+	color: var(--state-ink-quiet);
+
+	font-variant-numeric: tabular-nums;
+}
+
+/* ═══ AVATAR ═══════════════════════════════════════════════════════════════ */
+
+// ─── ONE IDENTITY AT THE SIZE OF A SEAL ───────────────────────────────────
+//
+// The site prints seals at 28px (`SpecimenLabel`, the field record) and a person
+// at 40px. Both are the same object: a square with the identity's mark in it. So
+// the avatar is square, flat, and its fallback is the record grammar's `◎` when
+// the identity is not known and two initials when it is.
+//
+// The image is `object-fit: cover` at a square crop, which is the identity's own
+// image rule (one crop, no radius).
+
+[data-slot="avatar"] {
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	background: var(--Mute);
+
+	&[data-size="seal"] {
+		inline-size: 1.75rem;
+		block-size: 1.75rem;
+	}
+
+	&[data-size="row"] {
+		inline-size: 2rem;
+		block-size: 2rem;
+	}
+
+	&[data-size="plate"] {
+		inline-size: 4rem;
+		block-size: 4rem;
+	}
+
+	// An identity that has been archived keeps its mark and loses its ink - the
+	// tombstone the brief asks for, at the size of a seal.
+	&[data-state="archived"] {
+		border-color: var(--state-rule);
+
+		img {
+			opacity: 0.4;
+			filter: grayscale(1);
+		}
+	}
+}
+
+[data-slot="avatar-image"] {
+	object-fit: cover;
+}
+
+[data-slot="avatar-fallback"] {
+	background: var(--Mute);
+
+	color: var(--state-ink);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+
+	@include track(var(--track-name));
+
+	&[data-empty="true"] {
+		color: var(--state-ink-quiet);
+	}
+}
+
+// ─── THE SET ──────────────────────────────────────────────────────────────
+//
+// A set of identities is a row that overlaps by a quarter and prints the count of
+// the ones it does not show. The overlap is a negative margin, not a stack of
+// shadows: the family has no shadows.
+
+.AvatarGroup {
+	display: flex;
+	align-items: center;
+
+	min-inline-size: 0;
+}
+
+.AvatarGroup__Item {
+	position: relative;
+
+	margin-inline-start: -0.5rem;
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--Card);
+
+	&:first-child {
+		margin-inline-start: 0;
+	}
+}
+
+.AvatarGroup__More {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	min-inline-size: 2rem;
+	block-size: 2rem;
+
+	margin-inline-start: -0.5rem;
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--Card);
+	background: var(--Mute);
+
+	color: var(--state-ink);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: 1;
+
+	font-variant-numeric: tabular-nums;
+}
+
+/* ═══ ALERT ════════════════════════════════════════════════════════════════ */
+
+// ─── A STATE THE READER MUST READ BEFORE ACTING ───────────────────────────
+//
+// An alert is not a card with a colour. It is a state statement: the square, the
+// vocabulary's word, the cause and the next step - the same four parts
+// `ShellState` prints, at the size of a paragraph inside a band.
+//
+// The tone is carried by the RULE at the leading edge and the word's ink, never by
+// a filled background: a page with a red box on it is a page shouting, and this
+// document does not shout.
+
+[data-slot="alert"] {
+	padding: var(--space-reading);
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	border-inline-start-width: 2px;
+	border-inline-start-color: var(--state-rule-strong);
+
+	background: var(--Card);
+
+	color: var(--CardForeground);
+}
+
+[data-slot="alert"][data-state="error"],
+[data-slot="alert"][data-state="failed"] {
+	border-inline-start-color: var(--DestructFore);
+}
+
+[data-slot="alert"][data-state="complete"],
+[data-slot="alert"][data-state="verified"] {
+	border-inline-start-color: var(--Accent);
+}
+
+[data-slot="alert"][data-state="loading"],
+[data-slot="alert"][data-state="preparing"] {
+	border-inline-start-color: var(--state-ink-quiet);
+}
+
+[data-slot="alert"][data-state="stale"],
+[data-slot="alert"][data-state="archived"] {
+	border-inline-start-color: var(--state-rule);
+}
+
+[data-slot="alert-title"] {
+	@include track(var(--track-name));
+
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	font-weight: 500;
+
+	color: var(--state-ink);
+
+	// A title is one line, and a title that needs two is a title that has become a
+	// sentence - the sentence belongs in the description.
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+[data-slot="alert-description"] {
+	max-inline-size: var(--Measure);
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--state-ink-quiet);
+
+	text-wrap: pretty;
+}
+
+// ─── THE ACTION ROW ───────────────────────────────────────────────────────
+//
+// The next step and the retry live on their own line, under a hairline, at the
+// meta register: the same `↳` / `→` grammar the matrix bar uses. An alert with an
+// action but no next step is an alert that complains.
+
+.AlertAction {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-reading);
+
+	margin-block-start: var(--space-tight);
+	padding-block-start: var(--space-tight);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.AlertAction__Next,
+.AlertAction__Retry {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--state-ink);
+
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.AlertAction__Retry {
+	color: var(--DestructFore);
+}
+
+/* ═══ BREADCRUMB ═══════════════════════════════════════════════════════════ */
+
+// ─── WHERE THE PAGE SITS ──────────────────────────────────────────────────
+//
+// The site's trail is `Component/Route/Trail.astro` and it is the printed form:
+// `/HOME → /DOC → /LAYER`. The kit's breadcrumb is the same statement with the
+// kit's markup, and it wears the trail's register rather than a web nav's - mono,
+// tracked, `/` before every place, `→` between them.
+//
+// The separator is drawn by the stylesheet, so the grammar cannot be lost at a
+// call site: `→` is the crumb separator, and the ellipsis that collapses a long
+// trail is `⋯` in the same register.
+
+[data-slot="breadcrumb-list"] {
+	flex-wrap: wrap;
+
+	gap: 0.375rem;
+
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+
+	@include track(var(--track-name));
+
+	color: var(--state-ink-quiet);
+}
+
+[data-slot="breadcrumb-item"] {
+	min-inline-size: 0;
+}
+
+[data-slot="breadcrumb-separator"] {
+	margin-inline: 0.125rem;
+
+	color: var(--state-ink-quiet);
+
+	// The glyph the grammar names, not a chevron: a trail is a progression and the
+	// progression mark is `→`.
+	svg {
+		display: none;
+	}
+
+	&::before {
+		content: "→";
+	}
+}
+
+[data-slot="breadcrumb-link"] {
+	color: var(--state-ink-quiet);
+
+	text-decoration: none;
+
+	&:hover {
+		color: var(--state-ink);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+
+	&:focus-visible {
+		outline: var(--state-ring-width) solid var(--state-ring);
+		outline-offset: var(--state-ring-offset);
+	}
+}
+
+// The current place is the page itself: ink, a 2px accent bar at its foot, which
+// is the site's active-route marker and a keeper.
+[data-slot="breadcrumb-page"] {
+	position: relative;
+
+	color: var(--state-ink);
+
+	&::after {
+		content: "";
+
+		position: absolute;
+		inset-block-end: -2px;
+		inset-inline: 0;
+
+		block-size: var(--state-current-width);
+
+		background: var(--Accent);
+	}
+}
+
+// A crumb whose route is gone is a tombstone: the place is named, the link is
+// not offered, and the mark says why.
+[data-slot="breadcrumb-link"][data-state="missing"] {
+	color: var(--state-ink-quiet);
+
+	text-decoration: line-through;
+	text-decoration-thickness: 1px;
+
+	pointer-events: none;
+}
+
+[data-slot="breadcrumb-ellipsis"] {
+	inline-size: auto;
+	block-size: auto;
+
+	color: var(--state-ink-quiet);
+}
+
+// ─── THE COLLAPSE ─────────────────────────────────────────────────────────
+//
+// A trail of nine places does not fit a 360px band. `BreadcrumbCollapse` prints
+// the first, the ellipsis and the last three, and the ellipsis is a real button
+// that opens the rest in a `title` - because a collapse that cannot be undone is
+// a trail that lost the middle of the document.
+
+.BreadcrumbCollapse__More {
+	padding: 0;
+	border: 0;
+	background: none;
+
+	color: var(--state-ink-quiet);
+
+	font: inherit;
+
+	cursor: pointer;
+
+	&:hover {
+		color: var(--state-ink);
+	}
+
+	&:focus-visible {
+		outline: var(--state-ring-width) solid var(--state-ring);
+		outline-offset: var(--state-ring-offset);
+	}
+}
+
+/* ═══ PAGINATION ═══════════════════════════════════════════════════════════ */
+
+// ─── WHICH SLICE IS PRINTED ───────────────────────────────────────────────
+//
+// The kit's pagination is a row of buttons. The family's is a register line plus
+// the row: `# PAGE / 03 OF 12` and then the pages. The figure is the point - a
+// reader who cannot see the total cannot tell whether they are near the end.
+//
+// A page number is a tab's cousin: it is one-of-N, and `State/_Tab.scss` already
+// draws the chosen cell as the pulled-out sheet. The pagination links are
+// `[data-slot="button"]`, which `State/_Control.scss` owns, so this section adds
+// the register and the disabled ends and restates neither.
+
+.PaginationStatus {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+
+	gap: var(--space-tight);
+
+	margin-block-end: var(--space-tight);
+}
+
+.PaginationStatus__Range {
+	@include mono-meta;
+
+	color: var(--state-ink-quiet);
+
+	font-variant-numeric: tabular-nums;
+}
+
+[data-slot="pagination-link"][aria-current="page"] {
+	font-weight: 500;
+
+	// The chosen page is the accent's one use in this family: it says where the
+	// reader is, which is what the accent authenticates.
+	box-shadow: inset 0 -2px 0 0 var(--Accent);
+}
+
+[data-slot="pagination-link"][aria-disabled="true"],
+[data-slot="pagination-link"][data-disabled="true"] {
+	color: var(--state-ink-quiet);
+
+	pointer-events: none;
+}
+
+[data-slot="pagination-ellipsis"] {
+	color: var(--state-ink-quiet);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+}
+
+// A pagination control on paper is a set of links to a page that is not printed:
+// the printed sheet prints all rows instead.
+@media print {
+	[data-slot="pagination"] {
+		display: none;
+	}
+}
+
+/* ═══ SCROLL AREA ══════════════════════════════════════════════════════════ */
+
+// ─── A WINDOW ONTO CONTENT TALLER THAN ITS FRAME ──────────────────────────
+//
+// The kit's scroll area is a viewport and a thumb. The family adds three things:
+// the frame's edge, a printed register (`# LEDGER / 24 ROWS`) so a reader knows
+// how much is behind the fold, and the print rule that opens the viewport - a
+// scroll that hides rows on paper is a document with missing rows.
+
+[data-slot="scroll-area"] {
+	min-inline-size: 0;
+}
+
+[data-slot="scroll-area-viewport"] {
+	// The ring is drawn inside the frame, because the viewport is clipped and an
+	// outside ring would be cut in half.
+	outline-offset: var(--state-ring-inset);
+}
+
+[data-slot="scroll-area-scrollbar"] {
+	padding: 1px;
+
+	background: transparent;
+}
+
+[data-slot="scroll-area-thumb"] {
+	background: var(--state-rule-strong);
+
+	// A thumb is a rule, not a pill.
+	border-radius: 0;
+}
+
+.ScrollAreaFrame {
+	display: flex;
+	flex-direction: column;
+
+	min-inline-size: 0;
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	background: var(--Card);
+}
+
+.ScrollAreaFrame__Head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-tight);
+
+	padding: var(--space-tight) var(--space-reading);
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.ScrollAreaFrame__Body {
+	min-inline-size: 0;
+}
+
+.ScrollAreaFrame__More {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--state-ink-quiet);
+}
+
+@media print {
+	[data-slot="scroll-area-viewport"] {
+		max-block-size: none !important;
+		overflow: visible !important;
+	}
+
+	[data-slot="scroll-area-scrollbar"] {
+		display: none;
+	}
+}
+
+/* ═══ RESIZABLE ════════════════════════════════════════════════════════════ */
+
+// ─── TWO PANES AND THE SEAM A READER SETS ─────────────────────────────────
+//
+// The seam is the site's hairline, widened by a hit area that is invisible. The
+// kit's handle already draws `w-px` and a 1px after-element; what is added is the
+// register the seam prints while it is held - the ratio - and the focus ring,
+// because the seam is a control and a keyboard must be able to set it.
+//
+// The ratio is the one fact a split pane has, and printing it only while dragging
+// is the whole difference between a divider and an instrument.
+
+[data-slot="resizable-handle"] {
+	background: var(--Border);
+
+	&:hover,
+	&:focus-visible {
+		background: var(--state-rule-strong);
+	}
+
+	&:focus-visible {
+		outline: var(--state-ring-width) solid var(--state-ring);
+		outline-offset: var(--state-ring-offset);
+	}
+
+	// The grip is a rule with two notches, not a rounded lozenge.
+	> div {
+		border: 0;
+		background: var(--Card);
+
+		color: var(--state-ink-quiet);
+	}
+}
+
+[data-slot="resizable-panel-group"] {
+	min-inline-size: 0;
+}
+
+.ResizableRatio {
+	@include mono-meta;
+
+	color: var(--state-ink-quiet);
+
+	font-variant-numeric: tabular-nums;
+}
+
+// The register sits above the panes and outside them, so it does not scroll or
+// resize with the seam it reports. The frame is a column and the group takes the
+// rest, which is why the group's own `h-full` lands on the height the caller gave
+// the frame rather than on the frame plus its register.
+.ResizableFrame {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+
+	block-size: 100%;
+	min-inline-size: 0;
+
+	> [data-slot="resizable-panel-group"] {
+		flex: 1 1 auto;
+		min-block-size: 0;
+	}
+}
+
+/* ═══ CAROUSEL ═════════════════════════════════════════════════════════════ */
+
+// ─── ONE OF A SET, ONE AT A TIME, BY CHOICE ───────────────────────────────
+//
+// The carousel's own state is its position, and a position that is not printed is
+// a position the reader has to infer. So the family adds a status line - `# SLIDE
+// / 02 OF 05` - and a dot row that is a rule with marks, not a row of pills.
+//
+// The dots are `aria-hidden`: the status line is the accessible statement, and a
+// row of five unlabelled buttons is five tab stops that say nothing.
+
+.CarouselStatus {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-tight);
+
+	margin-block-start: var(--space-tight);
+	padding-block-start: var(--space-tight);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.CarouselDots {
+	display: flex;
+	align-items: center;
+	gap: 0.375rem;
+}
+
+.CarouselDots__Dot {
+	inline-size: 0.5rem;
+	block-size: 0.5rem;
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--state-rule-strong);
+	background: transparent;
+
+	&[data-active="true"] {
+		background: var(--state-ink);
+		border-color: var(--state-ink);
+	}
+}
+
+// The slide's own edge: a carousel that shows part of the next slide is a
+// carousel that says there is more, and the peek is the cheapest way to say it.
+[data-slot="carousel-item"] {
+	min-inline-size: 0;
+}
+
+[data-slot="carousel"][data-peek="true"] [data-slot="carousel-item"] {
+	flex-basis: 88%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	[data-slot="carousel-content"] > div {
+		// Embla scrolls with a transform; reduced motion re-inits with a zero
+		// duration (`Carousel` does it in an effect), and this is the belt to that
+		// brace for the frames before the effect runs.
+		scroll-behavior: auto;
+	}
+}
+
+// A carousel on paper hides every slide but one: the sheet prints the set as a
+// matrix or a plate instead.
+@media print {
+	[data-slot="carousel"] {
+		[data-slot="carousel-content"] > div {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+			gap: var(--space-tight);
+		}
+
+		[data-slot="carousel-item"] {
+			flex-basis: auto;
+			padding-inline-start: 0;
+		}
+
+		[data-slot="carousel-previous"],
+		[data-slot="carousel-next"],
+		.CarouselStatus {
+			display: none;
+		}
+	}
+}
+
+/* ═══ CHART ════════════════════════════════════════════════════════════════ */
+
+// ─── A FIGURE THAT ARGUES WITH NUMBERS ────────────────────────────────────
+//
+// The site makes quantitative claims (register counts, the four connection tiers,
+// the measurements on `/Compare`) and it prints them as ledgers and matrices. A
+// chart is the third form: the same facts as a length. It exists for the one case
+// a ledger cannot make - a comparison where the SHAPE is the claim.
+//
+// The chart wears the document: no gradient, no shadow, no rounded bar, one ink
+// for the series and the accent for the one emphasised figure. The grid is a
+// hairline at 8% and the axis labels are the meta register.
+
+.ChartFrame {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+
+	min-inline-size: 0;
+}
+
+.ChartFrame__Head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-tight);
+
+	padding-block-end: var(--space-tight);
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.ChartFrame__Body {
+	min-inline-size: 0;
+}
+
+.ChartFrame__Caption {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
+
+	max-inline-size: var(--Measure);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--state-ink-quiet);
+
+	text-wrap: pretty;
+}
+
+[data-slot="chart"] {
+	// Recharts writes its own colours through CSS variables; these are the only
+	// two a series may take.
+	--chart-1: var(--CardForeground);
+	--chart-2: var(--Accent);
+	--chart-3: var(--state-ink-quiet);
+	--chart-4: var(--Divider);
+
+	.ChartFrame & .recharts-cartesian-grid line {
+		stroke: var(--Border);
+	}
+
+	.recharts-cartesian-axis-tick text {
+		fill: var(--state-ink-quiet);
+
+		font-family: var(--FontMono);
+		font-size: var(--type-meta);
+	}
+
+	.recharts-cartesian-axis-line,
+	.recharts-cartesian-axis-tick-line {
+		stroke: var(--Border);
+	}
+}
+
+// A figure with no data says so, in the same three rows an empty table uses.
+.ChartEmpty {
+	display: flex;
+	flex-direction: column;
+	gap: 0.375rem;
+
+	padding-block: var(--space-group);
+
+	max-inline-size: var(--Measure);
+}
+
+/* ═══ CALENDAR ═════════════════════════════════════════════════════════════ */
+
+// ─── A MONTH, PRINTED ─────────────────────────────────────────────────────
+//
+// The calendar is the family's one plate: a month is a matrix of days, and the
+// site already prints matrices. So the month wears the matrix's rules - a head row
+// of weekday names at the meta register, hairline cells, one ink - rather than the
+// kit's soft default.
+//
+// The verdict on whether it should exist is printed on `/Specimen`: it should, and
+// not for picking dates. The document has dated facts (release dates, the
+// measurements' as-of) and a month is the one form that shows a date's NEIGHBOURS,
+// which is what "as of" means.
+
+[data-slot="calendar"] {
+	padding: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--CardForeground);
+}
+
+.CalendarPlate {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+
+	min-inline-size: 0;
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	background: var(--Card);
+}
+
+.CalendarPlate__Head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-tight);
+
+	padding: var(--space-tight) var(--space-reading);
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.CalendarPlate__Body {
+	min-inline-size: 0;
+
+	padding: var(--space-tight);
+}
+
+.CalendarPlate__Empty {
+	padding: var(--space-reading);
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--state-ink-quiet);
+
+	text-wrap: pretty;
+}
+
+// ─── THE DAY CELL ─────────────────────────────────────────────────────────
+//
+// A day is a cell of the matrix: square, ruled, with the number at the meta
+// register. The chosen day is the pulled-out sheet; today is the accent's square
+// at the cell's leading edge; a day outside the window is quiet and refuses the
+// press; a day with a mark carries the mark under its number.
+
+[data-slot="calendar"] table {
+	border-collapse: collapse;
+	inline-size: 100%;
+}
+
+[data-slot="calendar"] th {
+	padding: 0.25rem;
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	font-weight: 400;
+
+	@include track(var(--track-name));
+
+	color: var(--state-ink-quiet);
+
+	text-align: center;
+}
+
+[data-slot="calendar"] td {
+	padding: 1px;
+
+	text-align: center;
+}
+
+[data-slot="calendar"] td button {
+	inline-size: 100%;
+	aspect-ratio: 1;
+
+	border: var(--BorderWidth) var(--BorderStyle) transparent;
+	background: transparent;
+
+	color: var(--CardForeground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+
+	font-variant-numeric: tabular-nums;
+
+	cursor: pointer;
+
+	&:hover {
+		background: var(--state-field);
+	}
+
+	&:focus-visible {
+		outline: var(--state-ring-width) solid var(--state-ring);
+		outline-offset: var(--state-ring-inset);
+	}
+
+	&[aria-selected="true"] {
+		background: var(--Card);
+
+		border-color: var(--state-rule-strong);
+
+		font-weight: 500;
+	}
+
+	&:disabled {
+		color: var(--state-ink-quiet);
+
+		cursor: not-allowed;
+	}
+}
+
+// The today mark: a 2px accent square at the cell's leading edge, which is the
+// site's current-position marker. A filled day would be a selection, and today is
+// not selected - it is simply the day the page is being read on.
+[data-slot="calendar"] .CalendarDay--today {
+	box-shadow: inset 2px 0 0 0 var(--Accent);
+}
+
+/* ═══ SONNER ═══════════════════════════════════════════════════════════════ */
+
+// ─── A RECEIPT FOR AN ACTION THAT HAS ALREADY HAPPENED ────────────────────
+//
+// A toast is the site's shortest record: the action's mark, the state word, the
+// one sentence, and - when there is one - the undo. It is a slip at the corner,
+// so it wears the slip's frame: a white insert, one `--Divider` edge, no shadow,
+// no radius. `_Slip.scss` owns the frame; this section owns the receipt's anatomy
+// and the family's one rule: a receipt that outlives its subject is a receipt that
+// lies, so it is dismissed when the action it describes is undone.
+//
+// Sonner draws its own DOM, so the anatomy is keyed on its classes (`[data-sonner-toast]`)
+// and the theme variables `Sonner.tsx` already sets.
+
+[data-sonner-toaster] {
+	font-family: var(--FontMono);
+}
+
+[data-sonner-toast] {
+	padding: var(--space-tight) var(--space-reading);
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+	border-radius: 0;
+
+	background: var(--Card);
+	color: var(--CardForeground);
+
+	box-shadow: none;
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+}
+
+[data-sonner-toast] [data-title] {
+	font-size: var(--type-caption);
+	font-weight: 500;
+
+	@include track(var(--track-name));
+}
+
+[data-sonner-toast] [data-description] {
+	color: var(--state-ink-quiet);
+
+	font-size: var(--type-caption);
+}
+
+[data-sonner-toast] [data-button] {
+	border: 0;
+	border-radius: 0;
+
+	background: none;
+	color: var(--state-ink);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+
+	@include track(var(--track-name));
+
+	text-decoration: underline;
+	text-underline-offset: 3px;
+
+	cursor: pointer;
+}
+
+[data-sonner-toast][data-type="error"] {
+	border-inline-start-width: 2px;
+	border-inline-start-color: var(--DestructFore);
+}
+
+[data-sonner-toast][data-type="success"] {
+	border-inline-start-width: 2px;
+	border-inline-start-color: var(--Accent);
+}
+
+// ─── THE STATIC RECEIPT ───────────────────────────────────────────────────
+//
+// The same anatomy, printed inline, so the state is visible without pressing
+// anything and a reader with JS off still sees what a receipt is.
+
+.SonnerReceipt {
+	display: flex;
+	flex-direction: column;
+	gap: 0.375rem;
+
+	max-inline-size: 26rem;
+
+	padding: var(--space-tight) var(--space-reading);
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+	border-inline-start-width: 2px;
+	border-inline-start-color: var(--state-rule-strong);
+
+	background: var(--Card);
+}
+
+.SonnerReceipt[data-type="error"] {
+	border-inline-start-color: var(--DestructFore);
+}
+
+.SonnerReceipt[data-type="success"] {
+	border-inline-start-color: var(--Accent);
+}
+
+.SonnerReceipt__Head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0;
+}
+
+.SonnerReceipt__Mark {
+	color: var(--state-ink-quiet);
+}
+
+.SonnerReceipt__Word {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--state-ink);
+}
+
+.SonnerReceipt__Line {
+	margin: 0;
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--state-ink-quiet);
+
+	text-wrap: pretty;
+}
+
+.SonnerReceipt__Action {
+	align-self: flex-start;
+
+	margin-block-start: 0.125rem;
+
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--state-ink);
+
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+@media print {
+	.SonnerReceipt,
+	[data-sonner-toaster] {
+		display: none;
+	}
+}
+
+/* ═══ BADGE ════════════════════════════════════════════════════════════════ */
+
+// ─── ONE WORD, ONE INK PAIR ───────────────────────────────────────────────
+//
+// The badge is a Jelly surface (`KEEPERS.md` "The Jelly surfaces") and its fill,
+// label and border are set by `Badge.tsx` from the tone map. Nothing here repaints
+// it. What is added is the two things a badge needs to carry a SET rather than a
+// word:
+//
+//   count     the badge's own figure, printed after U+2001 at the same register
+//   group     the row of badges, and the one that says how many are not shown
+//
+// A count inside a badge is not decoration: `PROTOCOL: gRPC ␁03` says how many
+// facts that protocol carries, and the figure is derived by the caller.
+
+.Badge__Count {
+	margin-inline-start: 0.375rem;
+
+	padding-inline-start: 0.375rem;
+
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) currentColor;
+
+	font-variant-numeric: tabular-nums;
+}
+
+.Badge__Mark {
+	margin-inline-end: 0.375rem;
+
+	// A dot, when the claim has no glyph - the same mark `DownloadMasthead` prints.
+	&[data-kind="dot"] {
+		display: inline-block;
+
+		inline-size: 0.375rem;
+		block-size: 0.375rem;
+
+		background: currentColor;
+	}
+}
+
+.BadgeGroup {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.375rem;
+
+	min-inline-size: 0;
+}
+
+.BadgeGroup__More {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--state-ink-quiet);
+
+	font-variant-numeric: tabular-nums;
+
+	white-space: nowrap;
+}
+
+/* ═══ CARD ═════════════════════════════════════════════════════════════════ */
+
+// ─── A WHITE INSERT ON THE FIELD ──────────────────────────────────────────
+//
+// `Card` is a `jelly-card` with the insert's fill and radius 0, and that is a
+// keeper surface. What is added is the card's own STATE - empty, loading, error,
+// stale - which is carried on the card so a card that failed does not have to
+// pretend to be a card that worked, and the register its header prints.
+//
+// The card is never a card inside a card (§1.3). That rule is not enforced here
+// because it cannot be: it is a composition rule, and the matrix's `IN A CARD`
+// cell states it.
+
+[data-slot="card"],
+jelly-card {
+	&[data-state="loading"] {
+		color: var(--state-ink-quiet);
+	}
+
+	&[data-state="stale"] {
+		// An old value stays visible and says how old it is; the card's edge is the
+		// only thing that changes, and it changes to the rule a stale fact earns.
+		border: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+	}
+
+	&[data-state="error"] {
+		border-inline-start: 2px solid var(--DestructFore);
+	}
+
+	&[data-state="empty"] {
+		// An empty card is still a card: the insert is the artifact's surface, and a
+		// missing body does not unmake the frame.
+		min-block-size: 8rem;
+	}
+}
+
+.CardRegister {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-tight);
+
+	padding-block-end: var(--space-tight);
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.CardState {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin-block-start: var(--space-tight);
+	padding-block-start: var(--space-tight);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.CardState__Word {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--state-ink);
+}
+
+.CardState__Line {
+	@include mono-meta;
+
+	color: var(--state-ink-quiet);
+
+	text-wrap: pretty;
+}
+
+/* ═══ THE PRINTED FAMILY ═══════════════════════════════════════════════════ */
+
+// One rule for the whole family: a control that only exists to be pressed is not
+// printed. The components that print something else instead (tabs print all
+// panels, the table prints every row, the scroll area opens) state it in their own
+// section above.
+@media print {
+	[data-slot="carousel-previous"],
+	[data-slot="carousel-next"],
+	[data-slot="tabs-list"],
+	[data-slot="pagination"],
+	.CarouselDots,
+	.CarouselStatus,
+	[data-sonner-toaster] {
+		display: none;
+	}
+}

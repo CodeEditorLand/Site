@@ -48,6 +48,9 @@
  *              that cannot exist, then the ten components printed live
  *   /THE OVERLAY one surface, ten components, every way out: the matrix, the
  *              five-rule dismissal contract, and every state printed live
+ *   /THE DISPLAY nineteen components, every state they are read in: the matrix,
+ *              the verdict on the two components no page mounts, the figure each
+ *              condition earns, and every state printed live
  *   /THE MATERIAL the six things the document is printed with
  *   /THE REGISTER what the sheet counted, and the file it counted from
  *
@@ -90,6 +93,8 @@ import { RegisterOf } from "../Component/Record/RegisterLine.js";
 import Trail from "../Component/Route/Trail.astro";
 import ShellState from "../Component/Shell/ShellState.astro";
 import SpecimenMaterial from "../Component/Specimen/SpecimenMaterial.astro";
+import SpecimenDisplay from "../Component/Specimen/SpecimenDisplay";
+import SpecimenDisplayMatrix from "../Component/Specimen/SpecimenDisplayMatrix.astro";
 import SpecimenField from "../Component/Specimen/SpecimenField";
 import SpecimenFieldMatrix from "../Component/Specimen/SpecimenFieldMatrix.astro";
 import SpecimenOverlay from "../Component/Specimen/SpecimenOverlay";
@@ -119,6 +124,7 @@ import {
 } from "../Content/Specimen/Page.js";
 import { States, Vocabulary } from "../Content/Specimen/States.js";
 import { Specimens as OverlaySpecimens } from "../Content/Specimen/Overlay.js";
+import { Specimens as DisplaySpecimens } from "../Content/Specimen/Display.js";
 import { Measurements } from "../Content/More/Compare.js";
 import { GetI18n } from "../Library/I18n/Server";
 import { Totals } from "../Library/Index/Register.js";
@@ -127,7 +133,7 @@ import Base from "../Layout/Base.astro";
 const MetaTitle = "Specimen | Code Editor Land";
 
 const MetaDescription =
-	`The document's own parts, printed: twelve components at 1:1 with their contracts, three stated absences, the nine adverse states composed, the input family's state matrix with its live rows, the overlay family's matrix, dismissal contract and ${OverlaySpecimens.length} live overlays, and the six things the site is printed with.`;
+	`The document's own parts, printed: twelve components at 1:1 with their contracts, three stated absences, the nine adverse states composed, the input family's state matrix with its live rows, the overlay family's matrix, dismissal contract and ${OverlaySpecimens.length} live overlays, the display family's matrix, its two verdicts and ${DisplaySpecimens.length} live specimens, and the six things the site is printed with.`;
 
 /* ─── THE PARTS, BY DISPOSITION ────────────────────────────────────────── */
 
@@ -553,6 +559,33 @@ const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/SPECIMEN" }];
 				the sheet indexes the twelve Dynamic parts, and a band whose
 				subject is the two seconds after a click cannot stand on a plate
 				holding one part at 1:1.
+			</p>
+		</RecordBand>
+
+		{/* ─── THE DISPLAY ───────────────────────────────────────────── */}
+		{/* The third family band, and the one whose subject is the reading weight.
+		    The matrix, the verdicts and the conditions' figures are static Astro -
+		    four hundred cells and two arguments with nothing to hydrate - and the
+		    rows are one island: `client:visible`, because the family is forty-four
+		    live specimens including a chart that measures its container and a
+		    calendar that draws a month. */}
+		<RecordBand band={{ ...Bands.Display, id: "display" }}>
+			<SpecimenDisplayMatrix />
+
+			<SpecimenDisplay client:visible />
+
+			<p class="specimen-page__note">
+				The matrix, the verdicts and the rows read one file:
+				Content/Specimen/Display.ts states every cell's disposition, both
+				verdicts and every row's state. A condition added there appears on
+				the matrix's figures, in the conditions' own list and in the rows'
+				order with no second edit - the same rule /THE FIELD and /THE
+				OVERLAY follow.
+				{` `}This band is the third about a family rather than a part, and
+				the first about the components the document only ever READS. That
+				is why it carries a verdict section the other two do not need:
+				Chart and Calendar are not mounted by any page, and a component
+				that is neither used nor argued is a file waiting for someone.
 			</p>
 		</RecordBand>
 

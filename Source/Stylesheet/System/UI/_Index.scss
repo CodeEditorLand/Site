@@ -19,6 +19,11 @@
 //   Matrix     the band above a matrix: facet, match, density, copy receipt
 //   Fold       a page's own contents, closed until asked for
 //   Copy       the copy affordance and its five states
+//   Display    the display family: nineteen primitives, their states, and the
+//              printed forms they were missing (table density and a pinned
+//              head, the tab strip's overflow, the disclosure's open grammar and
+//              its reduced-motion path, the skeleton's record grammar, the
+//              progress figure, the receipt, the month, the figure)
 //
 // The order is the cascade: the slip first (its frame and motion), the rows it
 // contains, then the two controls that are themselves surfaces, then the three
@@ -40,3 +45,11 @@
 @use "Matrix";
 @use "Fold";
 @use "Copy";
+
+// The display family loads last: it is the largest surface in the layer and it
+// owns the reading instruments (`Table`, `Tabs`, the disclosure pair, the
+// skeleton, the figure, the month). Every rule in it is scoped to a `data-slot`
+// the kit publishes, so it cannot reach the slip, the palette, the rail's filter
+// or the form field - and it must come after them, because a table inside a
+// popover is still a table and the popover's frame is not the table's.
+@use "Display";
