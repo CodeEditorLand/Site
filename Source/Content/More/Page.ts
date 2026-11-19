@@ -171,7 +171,7 @@ const Foot = (
 		index: `ONWARD / 0${Rows.length}`,
 		label: "/THE REST OF THE DOCUMENT",
 		statement:
-			"These three surfaces were built together and nothing linked to them yet, so each ends by handing over the other two and the pages a reader is most likely to want next.",
+			"These three surfaces were built together and nothing on the site linked to them yet, so each ends by handing over the other two and the pages a reader is most likely to want next.",
 		note: `SOURCE: SOURCE/CONTENT/MORE/PAGE.TS${Quad}THE SET IS THREE PAGES, NOT A SECTION`,
 		empty: "Nothing to hand over. Every destination this register would list is the page you are on, which cannot happen while the set has three pages.",
 	},

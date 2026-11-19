@@ -1,0 +1,167 @@
+// ─── PRINT INK - the palette, remapped for a medium with no creme ─────────
+//
+// Print is the one place the palette is not the palette. Not because paper
+// deserves a different identity, but because three of the identity's carriers
+// are properties of a lit screen:
+//
+//   THE FIELD     `#F2EDE3` is a surface a screen can paint. A printer asked
+//                 for it either refuses (background graphics off) or spends a
+//                 quarter of its toner dithering a beige that reads as a dirty
+//                 page. So the field prints as the paper it always claimed to
+//                 be: white. That is not a weakening of the identity - it is the
+//                 identity arriving at its own material.
+//
+//   THE INSERT    a white box on a white field is invisible. On screen the FILL
+//                 separates an information box from the field; on paper the fill
+//                 cannot, so the RULE does. Every white surface keeps its edge at
+//                 1px of ink, and the box survives the change of medium. The one
+//                 exception is a full-bleed `--paper` band: its edges are the
+//                 page's measure, and a side border there would be a frame
+//                 around the sheet, so it prints as a ruled band.
+//
+//   THE HAIRLINE  `--Border` is 8 % ink and `--Divider` is 20 %. At 8 % a laser
+//                 printer renders nothing at all; at 20 % it renders a grey that
+//                 reads as damage. The two tokens keep their two MEANINGS and
+//                 change their values: a separator prints at a fine grey that
+//                 survives toner, an edge prints at full ink. `Detail/_Rule.scss`
+//                 wrote the law - a hairline is a separator or an edge - and this
+//                 is the same law in a second medium.
+//
+// Everything else holds. The accent is dark enough to print and never carries a
+// fact alone. The per-element inks are only ever set as text through their
+// `*Fore` variants, which are dark by construction; their washes are backgrounds
+// and may or may not print, which is why no fact depends on one. Muted ink is
+// darkened to a value that stays legible on paper and still reads as visibly
+// quieter than ink - the two-ink hierarchy is the point, not the hex.
+
+@media print {
+	:root {
+		--Background: #ffffff;
+		--Foreground: #000000;
+
+		--Card: #ffffff;
+		--CardForeground: #000000;
+
+		--Popover: #ffffff;
+		--PopoverForeground: #000000;
+
+		--Secondary: #ffffff;
+		--SecondaryForeground: #000000;
+
+		/* The recessed surface's fill is dropped; its rule carries it. */
+		--Mute: #ffffff;
+
+		/* Muted ink on paper: #70685b prints as a mid-grey that is legible but
+		   thin on a cheap laser. #4a4a4a is 10.4:1 on white and still clearly
+		   a second ink - the hierarchy survives, the legibility improves. */
+		--MuteForeground: #4a4a4a;
+
+		--Primary: #000000;
+		--PrimaryForeground: #ffffff;
+
+		/* The separator and the edge, in print's two inks. */
+		--Border: #9a9a9a;
+		--Divider: #000000;
+
+		--Mark: #000000;
+
+		/* A matrix's pinned column painted `--MatrixFill`; on paper it is the
+		   sheet, and the seam it draws is the row's own rule. */
+		--MatrixFill: #ffffff;
+
+		--BorderWidth: 1px;
+		--BorderStyle: solid;
+		--BorderRadius: 0;
+	}
+
+	html,
+	body {
+		background: #ffffff !important;
+		color: var(--Foreground);
+	}
+
+	/* `_Global.scss` gives the document a 100 % height for the sticky frame.
+	   On paper that height is one page and anything taller opens a blank
+	   second one. */
+	html {
+		block-size: auto;
+		overflow: visible;
+	}
+
+	body {
+		min-block-size: 0;
+		overflow: visible;
+	}
+
+	/* Jelly's host paints the theme's background in the shadow tree; the sheet
+	   is the paper now, not a themed canvas. */
+	jelly-theme {
+		background: none !important;
+		color: var(--Foreground);
+	}
+
+	/* ─── THE INSERT KEEPS ITS BOX BY ITS RULE ────────────────────────────
+	 * Every white surface on the site: a Jelly card, the standard emphasis, a
+	 * `--paper` band, a well, a field record's data card. On screen the fill
+	 * separates them; on paper the edge does. */
+	jelly-card,
+	.emphasis-standard,
+	.record-well,
+	.FieldRecordDataCard,
+	.bg-card,
+	.bg-secondary,
+	.bg-popover {
+		background: #ffffff !important;
+		border: 1px solid #000000 !important;
+		box-shadow: none !important;
+		color: var(--CardForeground) !important;
+	}
+
+	.record-band--paper {
+		background: #ffffff !important;
+		border: 1px solid #000000 !important;
+		border-inline: 0 !important;
+		box-shadow: none !important;
+		color: var(--CardForeground) !important;
+	}
+
+	/* A card inside a paper band is a card inside a box: the inner frame is the
+	   one that must be visible, and two black rules 1px apart read as a seam.
+	   The band's own edges are enough for the outer box. */
+	.record-band--paper .record-well {
+		border-color: #000000 !important;
+	}
+
+	/* ─── THE ONE EXPRESSIVE FILL, THE ACTIONS, AND THE SEAL ───────────────
+	 * `_Emphasis.scss` allows one ink-inverted action per artifact, a
+	 * `jelly-button` carries its label in `--PrimaryForeground`, and the seal
+	 * is the document's one coloured device. All three are FILLS, and a browser
+	 * drops fills unless the reader asks for background graphics - which would
+	 * leave white label text on white paper, i.e. invisible. `exact` is
+	 * declared on those alone, so the actions and the seal survive the
+	 * printer's default while the field around them still prints as paper. */
+	.emphasis-expressive,
+	jelly-button,
+	[class*="Seal"] {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+
+	/* The accent is the one colour that authenticates rather than decorates. It
+	   is dark enough to print, and it is never the only carrier of the fact it
+	   marks - every accent in the site sits beside its word or its mark. */
+	.FooterRule {
+		opacity: 1;
+	}
+
+	/* ─── NO GRADIENTS, NO SHADOWS, NO FILTERS ON PAPER ────────────────────
+	 * The identity forbids all three on screen; a vendored surface can still
+	 * carry one, and a filter on paper is toner spent on nothing. */
+	*,
+	*::before,
+	*::after {
+		box-shadow: none !important;
+		text-shadow: none !important;
+		filter: none !important;
+	}
+}

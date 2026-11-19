@@ -1,0 +1,416 @@
+// Edge - the two page edges: the leaf above the page and the turn below it.
+//
+// Publishes:
+//   .EdgeLeaf                 the sheet's headnote: folio, route, facts, proposition
+//   .EdgeLeaf__row            one line: the folio, the route, the facts
+//   .EdgeLeaf__folio          `# SHEET 05␁OF 41`
+//   .EdgeLeaf__route          `/DOC/RUST` at the sub tier, in ink
+//   .EdgeLeaf__facts          the four facts as `KEY: value` pairs, U+2001 between
+//   .EdgeLeaf__proposition    the `↳` line: what this sheet is for
+//   .EdgeLeaf__note           the arm's own sentence (stale, too long, waiting)
+//   .EdgeTurn                 the catchword and the sheet's folio
+//   .EdgeTurn__row            the hand on the left, the folio on the right
+//   .EdgeTurn__next           `→ NEXT: /BLOG␁04␁BLOG`
+//   .EdgeTurn__proposition    the destination's own `↳` line
+//   .EdgeTurn__receipt        a failed progression: STATUS, RETRY, the door
+//   .EdgeTurn__folio          the Detail layer's `Folio`, at the page's scale
+//
+// ─── THE EDGES BELONG TO THE FRAME, NOT TO THE PAGE ───────────────────────
+// The middle of a page changes desks: a reading page widens to 120rem so its
+// plate can reach its full measure between two rails, an audit page stays at the
+// frame's 72rem, a plate page bleeds. The EDGES do not. Both are printed at
+// `--ContainerSixExtraLarge` with the frame's gutters, so every page's first line
+// and last line align with the header above and the footer below - whatever the
+// page does in between. That is what makes the seam continuous: a reader can put
+// two pages side by side and the leaves line up, because the frame printed both.
+//
+// The rules bleed to the paper (`margin-inline: calc(var(--Gutter) * -1)`) and
+// the content stays on the measure, which is the Detail layer's band-edge law
+// (`Detail/_Rule.scss`) applied one level up: a band's foot bleeds, and so does
+// the page's.
+//
+// ─── THE EDGES DRAW NO RULE ───────────────────────────────────────────────
+// The header closes on a hairline, so the leaf's first line already sits under a
+// rule; the footer opens on one, so the turn's last line already sits above a
+// rule. Between them, the page's own first band draws whatever boundary it
+// declares (`chapter-boundary` at the divider's 20 %, a shell declaration's
+// hairline, a masthead's own edge). An edge that added a rule of its own would
+// put two different inks 1px apart on every page that opens on a chapter - the
+// double-rule the Detail layer's `_Rule.scss` exists to prevent. So the edges are
+// separated by SPACE and they borrow the rules the frame already has, which is
+// also how a printed headnote works: it is not framed, it is set.
+//
+// ─── WHY CONTAINER QUERIES ────────────────────────────────────────────────
+// The edges are printed inside `<main>`, whose width is the viewport's, but the
+// composition is judged at the container's: the strip can be 1152px on a wide
+// page and 320px on a phone, and the same query answers both. `leaf` and `turn`
+// are two containers because the two edges re-compose at different widths - the
+// leaf's facts row is four short pairs, the turn's hand is a route and a sentence.
+@use "../../Mixin" as *;
+
+// The frame's measure, and the one place the edges' content is set.
+@mixin edge-measure {
+	max-inline-size: var(--ContainerSixExtraLarge);
+	margin-inline: auto;
+	padding-inline: var(--Gutter);
+}
+
+// ─── THE LEAF ─────────────────────────────────────────────────────────────
+
+.EdgeLeaf {
+	container: leaf / inline-size;
+	inline-size: 100%;
+	padding-block-start: var(--space-group);
+	padding-block-end: var(--space-group);
+	// NO RULE. The header already closes on a hairline (this is its first line's
+	// top edge) and the page's own first band draws its own boundary where it has
+	// one (a `chapter-boundary` at `--Divider`, a shell declaration's hairline).
+	// An edge that drew a third rule here would put two different inks 1px apart
+	// on every page that opens on a chapter - the exact double-rule the Detail
+	// layer's `_Rule.scss` exists to prevent. The edges draw nothing; they sit on
+	// the rules the frame already has.
+}
+
+.EdgeLeaf__row,
+.EdgeLeaf__proposition,
+.EdgeLeaf__note {
+	@include edge-measure;
+}
+
+.EdgeLeaf__row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	row-gap: var(--space-tight);
+	align-items: baseline;
+}
+
+@container leaf (min-width: 48rem) {
+	.EdgeLeaf__row {
+		// The folio holds its width, the route takes the slack, the facts sit at
+		// the row's end. `minmax(0, 1fr)` on the route is what lets a long route
+		// wrap instead of pushing the facts off the paper.
+		grid-template-columns: auto minmax(0, 1fr) auto;
+		column-gap: var(--space-group);
+	}
+}
+
+// `# SHEET 05␁OF 41` - the collation mark. The `#` is the grammar's furniture
+// and takes the mark ink; the ordinal is the figure and takes ink; the words
+// between them are labels and take mute.
+.EdgeLeaf__folio {
+	display: flex;
+	align-items: baseline;
+	gap: 0.5ch;
+	white-space: nowrap;
+
+	@include mono-meta;
+
+	letter-spacing: var(--track-row);
+}
+
+.EdgeLeaf__mark {
+	color: var(--Mark);
+}
+
+.EdgeLeaf__sheet,
+.EdgeLeaf__of {
+	color: var(--MuteForeground);
+}
+
+.EdgeLeaf__ordinal {
+	color: var(--Foreground);
+	font-variant-numeric: tabular-nums slashed-zero;
+	letter-spacing: var(--track-name);
+}
+
+// The sheet's route: the one thing on the line at the sub tier, because it is
+// the sheet's name. It wraps rather than truncates - a route is data, and half a
+// route is a wrong address.
+.EdgeLeaf__route {
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	color: var(--Foreground);
+	letter-spacing: var(--track-name);
+	overflow-wrap: anywhere;
+	min-inline-size: 0;
+}
+
+// The facts: `KEY: value` pairs, U+2001 between, wrapping at the paper's edge.
+// The separator is DRAWN (the folio's law) and not typed, so a template's
+// whitespace cannot turn one em quad into a 200px gap.
+.EdgeLeaf__facts {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	row-gap: var(--space-tight);
+	min-inline-size: 0;
+
+	@include mono-meta;
+
+	letter-spacing: var(--track-row);
+}
+
+.EdgeLeaf__fact {
+	display: flex;
+	align-items: baseline;
+	gap: 0.5ch;
+	min-inline-size: 0;
+}
+
+.EdgeLeaf__fact:not(:last-child)::after {
+	content: "\2001";
+	letter-spacing: 0;
+	white-space: nowrap;
+}
+
+.EdgeLeaf__key {
+	color: var(--MuteForeground);
+	white-space: nowrap;
+}
+
+.EdgeLeaf__value {
+	color: var(--Foreground);
+	margin: 0;
+	overflow-wrap: anywhere;
+}
+
+// A figure is a figure, never a word: the age is the one numeric fact on the
+// line and it is set in one column.
+.EdgeLeaf__value[data-figure] {
+	font-variant-numeric: tabular-nums slashed-zero;
+	white-space: nowrap;
+}
+
+// The stale arm prints its marker inside the date's own value (`AS OF: 2026-05-23
+// ◎ STALE`), so a sheet whose facts are old cannot be read as a sheet whose facts
+// are current. The marker takes the mark ink through the `◎` glyph itself, which
+// is why the value is not recoloured here: the grammar's mark already carries it.
+
+// The loading arm: the keys stay - they are the schema - and the values are
+// barred. The bars are static: the site has no gradient and a pulse explains
+// nothing. `aria-hidden` on the bar means a screen reader hears the state once.
+.EdgeLeaf__bar {
+	display: inline-block;
+	inline-size: 7ch;
+	block-size: 0.7em;
+	background: var(--Mute);
+	vertical-align: -0.05em;
+}
+
+// The `↳` line: the sheet's purpose, at the body tier, at the measure. It is the
+// one sentence on the edge and it hangs under the route it belongs to.
+.EdgeLeaf__proposition {
+	display: flex;
+	align-items: baseline;
+	gap: 1ch;
+	max-inline-size: var(--Measure);
+	margin-block-start: var(--space-reading);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.EdgeLeaf__proposition-mark {
+	color: var(--Mark);
+	flex: none;
+}
+
+.EdgeLeaf__proposition-text {
+	min-inline-size: 0;
+	overflow-wrap: anywhere;
+}
+
+// The arm's own sentence, under the proposition: one clause saying what the
+// reader is looking at when the strip could not say it in facts.
+.EdgeLeaf__note {
+	margin-block-start: var(--space-tight);
+	max-inline-size: var(--Measure);
+
+	@include mono-meta;
+
+	color: var(--MuteForeground);
+	letter-spacing: var(--track-row);
+	overflow-wrap: anywhere;
+}
+
+// The unfiled arm: the page has no place in the series, so its folio slot
+// carries the word rather than a figure, and nothing else about it pretends.
+.EdgeLeaf[data-state="unfiled"] .EdgeLeaf__ordinal {
+	letter-spacing: var(--track-row);
+}
+
+// The route wraps when it will not fit, and the note says so: a layout that
+// survives a long value and a page that acknowledges one are two different
+// things, and this is the second.
+.EdgeLeaf[data-state="too-long"] .EdgeLeaf__route {
+	text-wrap: wrap;
+}
+
+// ─── THE TURN ─────────────────────────────────────────────────────────────
+
+.EdgeTurn {
+	container: turn / inline-size;
+	inline-size: 100%;
+	// One group step above the last band, never a second chapter: the page has
+	// already closed on its own rhythm (`PageShell` carries a chapter's padding at
+	// its foot, a band carries its own), so the turn adds the step that makes the
+	// edge a boundary without doubling it. No rule - the footer's own hairline is
+	// the seam's closing edge.
+	margin-block-start: var(--space-group);
+	padding-block-end: var(--space-group);
+}
+
+.EdgeTurn__row {
+	@include edge-measure;
+
+	display: flex;
+	flex-direction: column;
+	row-gap: var(--space-reading);
+	align-items: flex-start;
+}
+
+@container turn (min-width: 56rem) {
+	.EdgeTurn__row {
+		flex-direction: row;
+		align-items: baseline;
+		justify-content: space-between;
+		column-gap: var(--space-group);
+	}
+
+	// The hand takes what the folio leaves; `min-inline-size: 0` lets a long
+	// destination wrap its own sentence rather than push the folio off the edge.
+	.EdgeTurn__hand {
+		flex: 1 1 auto;
+		min-inline-size: 0;
+	}
+}
+
+.EdgeTurn__hand {
+	min-inline-size: 0;
+}
+
+// The catchword: `→ NEXT: /BLOG␁04␁BLOG`, one line, at the sub tier for the
+// route because the route is the news.
+.EdgeTurn__next {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 1ch;
+
+	@include mono-meta;
+
+	letter-spacing: var(--track-row);
+}
+
+.EdgeTurn__mark {
+	color: var(--Mark);
+	flex: none;
+}
+
+.EdgeTurn__key {
+	color: var(--MuteForeground);
+	white-space: nowrap;
+}
+
+.EdgeTurn__route {
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	color: var(--Foreground);
+	letter-spacing: var(--track-name);
+	overflow-wrap: anywhere;
+	min-inline-size: 0;
+}
+
+.EdgeTurn__part {
+	color: var(--MuteForeground);
+	letter-spacing: var(--track-row);
+	white-space: nowrap;
+}
+
+// The last part's answer is not a route: it is the colophon, printed in the
+// grammar's own marker form so it cannot be mistaken for a destination.
+.EdgeTurn__end {
+	color: var(--Foreground);
+	letter-spacing: var(--track-row);
+	white-space: nowrap;
+}
+
+.EdgeTurn__was {
+	color: var(--Mark);
+	overflow-wrap: anywhere;
+}
+
+// The destination's own `↳` line: the same sentence its leaf will print, which
+// is the whole point of the seam.
+.EdgeTurn__proposition {
+	display: flex;
+	align-items: baseline;
+	gap: 1ch;
+	max-inline-size: var(--Measure);
+	margin-block-start: var(--space-tight);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.EdgeTurn__proposition-mark {
+	color: var(--Mark);
+	flex: none;
+}
+
+.EdgeTurn__proposition-text {
+	min-inline-size: 0;
+	overflow-wrap: anywhere;
+}
+
+// A failed progression states itself in the vocabulary: the word, the retry and
+// the door. Never a disabled control - the reader is owed a way forward.
+.EdgeTurn__receipt {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 1ch;
+	margin-block-start: var(--space-tight);
+
+	@include mono-meta;
+
+	color: var(--MuteForeground);
+	letter-spacing: var(--track-row);
+}
+
+.EdgeTurn__receipt-key {
+	white-space: nowrap;
+}
+
+.EdgeTurn__note {
+	margin-block-start: var(--space-tight);
+	max-inline-size: var(--Measure);
+
+	@include mono-meta;
+
+	color: var(--MuteForeground);
+	letter-spacing: var(--track-row);
+	overflow-wrap: anywhere;
+}
+
+// The folio yields last. Its floor is the widest facts row it prints - the
+// ordinal, the route, `41 SHEETS` and the as-of - so the hand above it keeps the
+// rest of the row without the folio ever taking a second line for one word.
+.EdgeTurn__folio {
+	flex: 0 1 auto;
+	min-inline-size: min(100%, 34rem);
+}
+
+// ─── PRINT ────────────────────────────────────────────────────────────────
+
+// A printed page keeps both edges: the leaf is the sheet's head and the turn is
+// its catchword, and a dossier that lost them on paper would lose the only two
+// lines that tell a reader where they are in it.
+@media print {
+	.EdgeLeaf,
+	.EdgeTurn {
+		break-inside: avoid;
+	}
+}

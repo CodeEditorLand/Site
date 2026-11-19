@@ -16,7 +16,7 @@
 		}
 	},
 	"page": {
-		"subtitle": "Source builds are active today. Public installers, signing and verification artifacts are in preparation.",
+		"subtitle": "Source builds are active today. Public installers, signing and verification artifacts are still in preparation.",
 		"title": "Download Land"
 	},
 	"state": {
@@ -39,17 +39,17 @@
 	"requirements": {
 		"kicker": "/REQUIREMENTS",
 		"heading": "What each platform needs before it builds.",
-		"footnote": "Minimum requirements, with the recommended figure in the panel beside it. Processor: native CPU speed (minimum); every monitor spanned (recommended).",
+		"footnote": "Minimum requirements, with the recommended figure in the panel beside it. The processor notes read as a pair: at the minimum your code runs at native CPU speed; at the recommended your work spans every monitor.",
 		"toolchain": "BUILD TOOLCHAIN (SOURCE)"
 	},
 	"previousReleases": {
-		"description": "No public releases yet. Older versions appear here when they ship.",
+		"description": "No public releases yet. Older versions appear here when they ship; until one does, the record prints EMPTY and keeps its address.",
 		"title": "Previous Releases",
 		"kicker": "/PREVIOUS RELEASES",
 		"heading": "Nothing to go back to yet.",
 		"state": "RECORD: EMPTY"
 	},
-	"subtitle": "Source builds are active today. Public installers, signing and verification artifacts are in preparation.",
+	"subtitle": "Source builds are active today. Public installers, signing and verification artifacts are still in preparation; until they ship, the build from source is the only install path, and the method band above names the six stages that build it.",
 	"systemRequirements": {
 		"minimum": "Minimum Requirements",
 		"recommended": "Recommended for the Best Experience",
@@ -85,14 +85,14 @@
 	"manifest": {
 		"title": "Release Manifest",
 		"heading": "Release Manifest",
-		"subtitle": "Source builds are active today. Public installers, signing and verification artifacts are in preparation.",
+		"subtitle": "Source builds are active today. Public installers, signing and verification artifacts are still in preparation.",
 		"kicker": "/RELEASE MANIFEST",
 		"headline": "RELEASE_01 lists three platforms and publishes no artifact.",
 		"footnote": "The manifest carries a release index, a channel and a per-platform status. It carries no version, no release date and no artifact size - those print UNAVAILABLE until a public installer publishes them.",
 		"empty": "No release is published. The manifest prints the fields it cannot fill as UNAVAILABLE; the source build is the only path that exists."
 	},
 	"transparency": {
-		"title": "Telemetry Is Compile-Gated.",
+		"title": "Telemetry Is Compile-Gated in Land.",
 		"subtitle": "Telemetry and tracing sit behind named Rust feature gates in the native layer. Nothing is emitted by default; each build profile explicitly lists which paths are compiled in.",
 		"kicker": "/TRANSPARENCY"
 	},

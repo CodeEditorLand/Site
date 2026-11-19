@@ -1,0 +1,213 @@
+// ─── PAGE BREAKS - a band is a subject, and a subject may cross a page ────
+//
+// The page is composed of bands, the band of blocks, the block of rows. Print
+// adds a fourth unit the screen does not have: the page. The rule is the same at
+// every scale, and it is the one a book uses:
+//
+//   a PAGE   breaks between BANDS
+//   a BAND   breaks between BLOCKS
+//   a BLOCK  does not break at all, unless it is a set (a matrix, a transcript,
+//            an archive), in which case it breaks between ROWS
+//   a ROW    never breaks
+//
+// A heading never sits at the foot of a page: the band's kicker and heading are
+// `break-after: avoid`, so the block that follows is pulled with them. A
+// band's footnote and foot never sit at the head of a page: they are
+// `break-before: avoid`. Widows and orphans are floored at three lines, because
+// a two-line remainder at the top of a page is a page that starts mid-sentence.
+//
+// ─── THE CHAPTER'S SPACE BECOMES A PAGE ──────────────────────────────────
+// On screen a chapter opens at `--space-chapter` (84px) under a boundary rule -
+// the largest distance the page has. On paper that distance is spent on the page
+// break instead: a chapter opens a new sheet, and 22mm of white above it on top
+// of the break would be space paid twice for one boundary. So the token steps
+// down to the group distance for print, and the break does the chapter's work.
+//
+// The first chapter band is exempt: it follows the leaf on the opening page, and
+// a break there would leave the sheet's headnote alone on a page of its own.
+
+@media print {
+	body {
+		orphans: 3;
+		widows: 3;
+	}
+
+	:root {
+		--space-chapter: var(--space-group);
+	}
+
+	/* ─── THE HEADING NEVER ENDS A PAGE ───────────────────────────────────
+	 *
+	 * Every band grammar on the site opens the same way - a kicker, a heading,
+	 * a standfirst - and each family names its parts with the same suffix
+	 * (`.record-band__heading`, `.home-band__heading`,
+	 * `.download-region__heading`). The suffix is the contract here: a band's
+	 * head is one object, and it never leaves its body behind on the next
+	 * page. */
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		break-after: avoid;
+		break-inside: avoid;
+	}
+
+	[class*="__kicker"],
+	[class*="__heading"],
+	[class*="__eyebrow"],
+	[class*="__standfirst"] {
+		break-after: avoid;
+	}
+
+	[class*="__standfirst"],
+	[class*="__index"],
+	[class*="__footnote"] {
+		break-inside: avoid;
+	}
+
+	[class*="__footnote"],
+	[class*="__foot"] {
+		break-before: avoid;
+		break-inside: avoid;
+	}
+
+	/* ─── THE BAND ────────────────────────────────────────────────────────
+	 *
+	 * The three page-level band grammars: the record's band, the homepage's
+	 * band and the Download page's region. A band is a subject, and a subject
+	 * may run past a page: it breaks at its blocks, never inside one. */
+	.record-band,
+	.home-band,
+	.download-region,
+	.doc-appendix,
+	.blog-index__archive {
+		break-inside: auto;
+	}
+
+	/* A chapter opens a sheet - except the first, which opens the document. */
+	.record-band--chapter {
+		break-before: page;
+	}
+
+	.record-band--chapter:first-of-type {
+		break-before: auto;
+	}
+
+	/* ─── THE TWO EDGES ───────────────────────────────────────────────────
+	 *
+	 * The leaf is the sheet's headnote and stays with the first movement; the
+	 * turn is the catchword and stays with the last. An edge alone on a page
+	 * is a page that says nothing. */
+	.EdgeLeaf {
+		break-after: avoid;
+		break-inside: avoid;
+	}
+
+	.EdgeTurn {
+		break-before: avoid;
+		break-inside: avoid;
+	}
+
+	/* ─── THE COLOPHON IS ITS OWN LEAF ────────────────────────────────────
+	 *
+	 * A colophon is the last page of a book, not the last paragraph of its last
+	 * chapter. It opens a sheet of its own - which also means every printed
+	 * sheet ends with its making on a page a reader can turn to. */
+	.Footer {
+		break-before: page;
+	}
+
+	/* ─── THE BLOCK IS INDIVISIBLE ────────────────────────────────────────
+	 *
+	 * Every leaf artifact the record layer knows. An engine that cannot fit one
+	 * on the remaining page moves it whole; one too tall to fit anywhere breaks
+	 * anyway, which is the correct behaviour and the reason the list is not
+	 * `!important`. */
+	.record-ledger,
+	.record-figure,
+	.record-plate,
+	.record-plate-set,
+	.record-stamp,
+	.record-compare,
+	.record-trace,
+	.record-failure,
+	.record-inset,
+	.record-margin,
+	.record-aside,
+	.record-pair,
+	.record-stage,
+	.record-entry,
+	.record-hero,
+	.record-instrument,
+	.record-well,
+	.ShellState,
+	.Leader,
+	.SpecimenPlate,
+	.SpecimenMaterial {
+		break-inside: avoid;
+	}
+
+	/* ─── THE SET BREAKS BETWEEN ITS ROWS ─────────────────────────────────
+	 *
+	 * A matrix, a transcript and an archive are longer than a page by design.
+	 * They may cross one, but only between rows, and the table's head repeats
+	 * on every page it touches (`_Table.scss`). */
+	.record-matrix,
+	.record-transcript,
+	.record-archive {
+		break-inside: auto;
+	}
+
+	.record-matrix__row,
+	.record-transcript__turn,
+	.record-ledger__row,
+	.record-archive__row,
+	.Leader__row,
+	.MotionExpand__Record {
+		break-inside: avoid;
+	}
+
+	/* ─── TABLES ────────────────────────────────────────────────────────── */
+	table {
+		break-inside: auto;
+	}
+
+	thead {
+		display: table-header-group;
+	}
+
+	tfoot {
+		display: table-footer-group;
+	}
+
+	tr {
+		break-inside: avoid;
+	}
+
+	/* ─── FIGURES AND WELLS ───────────────────────────────────────────────
+	 *
+	 * An image is never split; a well's frame may cross a page, but its title
+	 * bar stays with the first line and its SOURCE stays with the last. */
+	img,
+	svg,
+	figure,
+	picture {
+		break-inside: avoid;
+		max-inline-size: 100%;
+	}
+
+	.record-well__bar {
+		break-after: avoid;
+	}
+
+	.record-well__source {
+		break-before: avoid;
+	}
+
+	/* A fold's summary is its register line: it belongs to the list under it. */
+	details > summary {
+		break-after: avoid;
+	}
+}

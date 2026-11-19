@@ -11,10 +11,14 @@
  * 1. **A count is never written by hand.** Every figure the index prints -
  *    how many routes exist, which forms a route mounts, how many files read a
  *    data module - is computed here. A hand-kept index is a second place for
- *    the truth to drift, and this tree already demonstrates that drift: the
- *    hand-kept `CanonicalPath` registry carries eighteen paths and omits the
- *    home page, `/Visit`, `/404` and `/Doc/Rust`. `Registry.Missing` below is
- *    that drift, measured.
+ *    the truth to drift, and this tree already demonstrates that drift twice
+ *    over: the old hand-kept `CanonicalPath` list carried eighteen paths and
+ *    omitted the home page, `/Visit`, `/404` and `/Doc/Rust`; and when that
+ *    list moved into `Function/Route/Registry.ts`, this script kept reading the
+ *    file it used to live in and reported `0 declared, 41 missing` for months.
+ *    `Registry` below reads the registry the build actually uses, and
+ *    `Registry.Missing` is that drift, measured - which is why it now prints
+ *    nothing at all.
  * 2. **Every file names its source.** Each JSON destination carries a
  *    `_Generated` block naming this script, the tree it read, the transform and
  *    the rule for changing a fact (Aphrodite's `Generated/Facts` pattern).
@@ -470,12 +474,44 @@ const KindOf = (Relative: string): string => {
 	return "other";
 };
 
-/** A file the index counts but does not list as a module. */
+/**
+ * A file the index counts but does not list as a module.
+ *
+ * The bulk trees are the ones where one row per file would describe a
+ * generated artefact or a catalogue entry rather than a decision: the link index
+ * and the locale sets are written by tooling, the Mermaid bundle is vendored, a
+ * stylesheet partial is named by the layer that loads it, and a test's reader is
+ * the runner rather than the build.
+ *
+ * Two trees under `Component/` are libraries rather than surfaces, and they stay
+ * bulk for that reason alone:
+ *
+ *   `Component/UI/`               the vendored shadcn family. Thirty of its
+ *                                 primitives have no importer; a catalogue is
+ *                                 measured by what it offers, not by what the
+ *                                 site happened to mount.
+ *   `Component/Dynamic/Interface/` the content schemas - one type per property
+ *                                 of one page. They describe the shape of data
+ *                                 that has since moved into `Content/`, and a
+ *                                 schema with no reader is a schema the data
+ *                                 outgrew, not a surface waiting for a page.
+ *
+ * **The rest of `Component/` used to be on this list too, and it must not be.**
+ * Excluding it kept `Modules.json` small, and the cost was the one question the
+ * register exists to answer: a component nothing mounts. `DynamicHeader.tsx`,
+ * `DynamicFooter.tsx` and `DynamicVerificationInfo.tsx` sat in the tree for the
+ * whole programme, and `/Contents`' `/THE DECLARED` band - whose stated claim is
+ * that nothing is unaccounted for - could not see any of them, because the tree
+ * that holds every surface of the site had been declared bulk. A register that
+ * cannot name a readerless component is not a register of the site; it is a
+ * register of everything except the site.
+ */
 const IsBulk = (Relative: string) =>
 	Relative.startsWith("Library/LinkIndex/") ||
 	Relative.startsWith("Library/I18n/Locale/") ||
 	Relative.startsWith("Content/Mermaid/") ||
-	Relative.startsWith("Component/") ||
+	Relative.startsWith("Component/UI/") ||
+	Relative.startsWith("Component/Dynamic/Interface/") ||
 	Relative.startsWith("Stylesheet/") ||
 	Relative.startsWith("Test/");
 
@@ -507,27 +543,66 @@ const RouteRows = Files.filter((Relative) => Relative.startsWith("pages/"))
 	.sort((A, B) => A.Path.localeCompare(B.Path));
 
 /**
- * The hand-kept registry, read from `Function/Route/Map.ts` rather than
+ * The route registry, read from `Function/Route/Registry.ts` rather than
  * restated, so the drift the footnote prints is the drift the build has.
+ *
+ * It used to read `Function/Route/Map.ts` and pick out the hand-written array
+ * that lived there. That array is gone: `Map.ts` now derives `CanonicalPath`
+ * from the registry's `CanonicalRoute`, which is the whole point of the
+ * registry (one definition, two readers). The parser kept looking for the old
+ * shape, found nothing, and reported `0 declared, 41 missing` - so `/Contents`
+ * printed a footnote accusing the build of drift it did not have, and listing
+ * forty-one routes it had in fact declared. A generator that measures the wrong
+ * file is worse than no measurement, because its output is printed as a fact.
+ *
+ * The registry lists a collection once (`/Doc/[...Slug]`), and the build emits
+ * one template path for it (`/Doc/:Slug`), so the two are compared on the
+ * template: a route row and a registry row that describe the same built path
+ * are the same path.
  */
 const Registry = (() => {
-	const Map = Read("Function/Route/Map.ts");
+	const File = Read("Function/Route/Registry.ts");
 
-	const Declared = [...Map.matchAll(/^\s*"(\/[^"]*)",\s*$/gm)].map(
-		(Match) => Match[1],
-	);
+	/* Every `Path: "/…"` line, with the block that follows it up to the next
+	   one: `Canonical` and `Kind` are read from the entry's own body rather
+	   than from a second table. */
+	const At = [...File.matchAll(/^\s*Path: "([^"]+)",$/gm)];
 
-	const Unique = [...new Set(Declared)].sort();
+	const Rows = At.map((Match, Index) => {
+		const Start = Match.index ?? 0;
+
+		const End = At[Index + 1]?.index ?? File.length;
+
+		const Block = File.slice(Start, End);
+
+		return {
+			Path: Match[1] as string,
+
+			Canonical: /^\s*Canonical: true,$/m.test(Block),
+
+			Kind: /^\s*Kind: "([a-z]+)",$/m.exec(Block)?.[1] ?? "page",
+		};
+	});
+
+	/** `/Doc/[...Slug]` and `/Blog/[Slug]` are the build's `/Doc/:Slug`. */
+	const Template = (Path: string) => Path.replace(/\/\[[^\]]*\]$/, "/:Slug");
 
 	const Built = new Set(RouteRows.map((Row) => Row.Path));
 
+	const Declared = new Set(Rows.map((Row) => Template(Row.Path)));
+
 	return {
-		Declared: Unique,
-		Count: Unique.length,
-		Missing: [...Built]
-			.filter((Path) => !Unique.includes(Path) && !Path.includes(":"))
-			.sort(),
-		Extra: Unique.filter((Path) => !Built.has(Path)),
+		Declared: Rows.map((Row) => Row.Path),
+
+		Count: Rows.length,
+
+		Canonical: Rows.filter((Row) => Row.Canonical).length,
+
+		Collections: Rows.filter((Row) => Row.Kind === "collection").length,
+
+		Missing: [...Built].filter((Path) => !Declared.has(Path)).sort(),
+
+		Extra: [...Declared].filter((Path) => !Built.has(Path)).sort(),
 	};
 })();
 
@@ -675,10 +750,22 @@ const Totals = {
 		(Relative) =>
 			Relative.startsWith("Content/blog/") && Relative.endsWith(".md"),
 	),
+	/**
+	 * The fifteen element records - counted by what they say they are.
+	 *
+	 * The pattern alone (`Content/Record/<Name>.ts`, minus the type) counted
+	 * `Land.ts` too, and `Land.ts` is the product's own record: its
+	 * `Category` is `"Product"`, not `"Element"`. So the index printed
+	 * `ELEMENTS: 16` on a site whose wall, whose index, whose `/Specimen` and
+	 * whose `/Glossary` all say fifteen - a figure derived from a filename
+	 * pattern that had stopped meaning what the figure meant. The category is
+	 * the record's own declaration, so it is what decides.
+	 */
 	Elements: Count(
 		(Relative) =>
 			/^Content\/Record\/[A-Z][A-Za-z]+\.ts$/.test(Relative) &&
-			!Relative.endsWith("FieldRecord.ts"),
+			!Relative.endsWith("FieldRecord.ts") &&
+			/^\s*Category: "Element",$/m.test(Read(Relative)),
 	),
 	Blocks: Blocks.length,
 	Modules: ModuleRows.length,
@@ -714,7 +801,7 @@ const Write = (Name: string, Value: unknown) => {
 const Destinations = [
 	{
 		Name: "Routes.json",
-		From: "Source/pages/**, Source/Component/Record/**, Source/Function/Route/Map.ts",
+		From: "Source/pages/**, Source/Component/Record/**, Source/Function/Route/Registry.ts",
 		Read: "/Contents - `/THE ROUTES`, and the footnote that names the registry drift",
 	},
 	{
@@ -740,9 +827,9 @@ const Written = [
 			[
 				"Source/pages/**",
 				"Source/Component/Record/**",
-				"Source/Function/Route/Map.ts",
+				"Source/Function/Route/Registry.ts",
 			],
-			"One row per route Astro builds, the forms its tree mounts, and the drift between the built routes and the hand-kept registry.",
+			"One row per route Astro builds, the forms its tree mounts, and the drift between the built routes and the registry that declares them.",
 		),
 		Routes: RouteRows,
 		Registry,
@@ -804,7 +891,7 @@ ${Destinations.map((Destination) => `- \`Source/Generated/Facts/${Destination.Na
 
 | File           | Answers                                                                                       |
 | -------------- | --------------------------------------------------------------------------------------------- |
-| \`Routes.json\`  | which routes the build emits, what each one mounts, and where the hand-kept registry disagrees |
+| \`Routes.json\`  | which routes the build emits, what each one mounts, and whether the registry agrees |
 | \`Forms.json\`   | which of the Record blocks is mounted by which route                                        |
 | \`Modules.json\` | what every module outside the bulk trees carries, and who reads it                            |
 | \`Records.json\` | every record head the tree prints, and the routes a reader can reach it from                  |
@@ -837,7 +924,7 @@ console.log(
 
 		`  modules  ${Totals.Modules} (${Totals.Read} read, ${Totals.Declared} declared)`,
 
-		`  registry ${Registry.Count} declared, missing ${Registry.Missing.length}: ${Registry.Missing.join(" ")}`,
+		`  registry ${Registry.Count} declared (${Registry.Canonical} canonical, ${Registry.Collections} collections), missing ${Registry.Missing.length}${Registry.Missing.length ? `: ${Registry.Missing.join(" ")}` : ""}`,
 
 		`  records  ${RecordRows.length} heads, ${RecordRows.filter((Row) => Row.Routes.length > 0).length} reachable`,
 

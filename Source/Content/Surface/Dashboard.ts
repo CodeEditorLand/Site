@@ -46,7 +46,7 @@ export interface TelemetryPath {
 	/** `Disabled` + `Feature Gated`, or `Optional`, or `Active`. */
 	readonly badges: readonly DashboardBadge[];
 
-	/** `Feature-gated by build profile.` - the row's `h3`. */
+	/** `Absent from the binary. Not just disabled.` - the row's `h3`. */
 	readonly heading: string;
 
 	/** The sentence under it, with its terms badged. */
@@ -273,7 +273,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 
 		AccessSubtitle: T("common.dashboard.portal.subtitle", {
 			defaultValue:
-				"The current authentication method and available tiers.",
+				"The current authentication method and the tiers the account can reach.",
 		}),
 
 		Data: T("common.dashboard.privacy.heading", {
@@ -282,7 +282,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 
 		DataSubtitle: T("common.dashboard.privacy.subtitle", {
 			defaultValue:
-				"Exercise GDPR rights, request a data export, or delete the account. Requests go straight to the privacy team; each is answered within 30 days.",
+				"Exercise GDPR rights, request a data export, or delete the account. Requests go straight to our privacy team; each is answered within 30 days.",
 		}),
 
 		Build: T("common.dashboard.buildLog.heading", {
@@ -291,7 +291,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 
 		BuildSubtitle: T("common.dashboard.buildLog.subtitle", {
 			defaultValue:
-				"Active build variant and deployment mode. Available over a Local-First Air Daemon connection.",
+				"Active build variant and deployment mode.\n\nAvailable over a Local-First Air Daemon connection.",
 		}),
 
 		Telemetry: T("common.dashboard.telemetry.heading", {
@@ -304,7 +304,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 
 		EditorSubtitle: T("common.dashboard.editor.subtitle", {
 			defaultValue:
-				"Connect the website to a running Land editor.",
+				"Connect the website to a running Land editor instance.",
 		}),
 
 		EditorStatus: T("common.dashboard.editor.status", {
@@ -313,7 +313,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 
 		EditorDescription: T("common.dashboard.editor.description", {
 			defaultValue:
-				"The Air Daemon connects this dashboard to a running Land editor over WebSocket. Launch Land for real-time build logs, telemetry and configuration management.",
+				"The Air Daemon connects this dashboard to a running Land editor over WebSocket.\n\nLaunch Land for real-time build logs, telemetry and configuration management.",
 		}),
 
 		Settings: T("common.dashboard.settings.heading", {
@@ -351,7 +351,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 
 			line: T("common.dashboard.downloads.description", {
 				defaultValue:
-					"The latest Land build for the platform. Native on macOS, Windows and Linux.",
+					"The latest Land build for each platform. Native on macOS, Windows and Linux.",
 			}),
 		},
 
@@ -393,7 +393,8 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 					],
 
 					heading: T("common.dashboard.telemetry.production.title", {
-						defaultValue: "Feature-gated by build profile.",
+						defaultValue:
+							"Absent from the binary. Not just disabled.",
 					}),
 
 					text: T(
@@ -416,7 +417,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 
 					text: T("common.dashboard.telemetry.otel.description", {
 						defaultValue:
-							"OpenTelemetry tracing is available in source. It needs an explicit feature flag and a configured endpoint; trace data goes only to infrastructure you control.",
+							"Distributed traces for a deployment are opt-in: enable with `cargo build --features Telemetry`.\n\nLocal-only OTEL tracing, metrics and spans. No external transmission; all data stays on your infrastructure.",
 					}),
 				},
 
@@ -430,7 +431,7 @@ export const DashboardPage = (T: TFunction): DashboardSurface => {
 
 					text: T("common.dashboard.telemetry.effect.description", {
 						defaultValue:
-							"Cocoon has internal timing and service diagnostics for extension-host work; unless a transport is configured, that data is local process instrumentation.",
+							"Cocoon uses TelemetryService for internal RPC and bootstrap timing; the data is used for performance diagnostics only.\n\nAll of it stays local, and a TelemetryMock layer is available for zero-overhead testing.",
 					}),
 				},
 			],

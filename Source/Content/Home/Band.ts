@@ -124,7 +124,7 @@ export const HomeBands = (T: HomeTranslate): readonly BandHead[] => [
 
 		Standfirst: T("download:subtitle", {
 			defaultValue:
-				"Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
+				"Source builds are active today. Public installers, signing and verification artifacts are still in preparation; until they ship, the build from source is the only install path, and the method band above names the six stages that build it.",
 		}),
 	},
 ];

@@ -5,7 +5,7 @@ order: 5
 description:
     Land uses CC0 1.0 Universal - a public domain dedication with no attribution
     requirement, no conditions, and no patent clauses - because infrastructure
-    for developers should have zero legal friction to use, fork, or embed.
+    for developers should carry zero legal friction to use, fork, or embed.
 ---
 
 Most open-source licenses require something: preserve a copyright notice,

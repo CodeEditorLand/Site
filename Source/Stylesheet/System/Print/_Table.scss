@@ -1,0 +1,83 @@
+// ─── THE TABLE - a matrix is a ledger, and a ledger is read down a column ─
+//
+// The site's matrices are comparisons: a pinned label column, one column per
+// option, cells that refuse to wrap so a comparison reads across. On screen the
+// table scrolls sideways under a pinned label and the reader keeps their place.
+// On paper there is no scroll and no pin, and a cell that refuses to wrap pushes
+// the last column off the sheet - the one failure a printed table cannot recover
+// from, because the reader has no way to see what is missing.
+//
+// So the print table WRAPS. `table-layout: auto` lets the columns take the width
+// their content needs inside the measure; the label column stops being sticky
+// and becomes the left edge of every row; the cells wrap at the word and break
+// inside a token only when the token is longer than the column. The comparison
+// survives as a grid of ruled rows, which is what a printed comparison has always
+// been.
+//
+// The head repeats on every page the table touches (`_Break.scss` sets
+// `table-header-group`), and no row is split. A table may cross a page; a row may
+// not.
+//
+// ─── THE MATRIX BAND ─────────────────────────────────────────────────────
+// `MatrixControl` is a band of inputs over the table: a facet, a match field, a
+// density switch, a copy action, a register that counts the rows and a note that
+// states what was narrowed. On paper the inputs have no referent - there is
+// nothing to click - but the REGISTER and the NOTE are the two parts that say
+// what the reader is looking at. They print. A filtered table that printed
+// without its `NN OF NN` would be a table that quietly claimed to be the whole
+// set.
+
+@media print {
+	.record-matrix {
+		overflow: visible !important;
+		padding-block-end: 0;
+	}
+
+	/* The pin is a scroll behaviour; the fill was what kept the cells from
+	   reading through it. On paper neither exists: the label is a cell in its
+	   row, and the seam it drew would be a second rule beside the row's own. */
+	.record-matrix__label,
+	.record-matrix__corner {
+		position: static !important;
+
+		background: #ffffff !important;
+		border-inline-end: 0;
+	}
+
+	.record-matrix__table {
+		table-layout: auto;
+		inline-size: 100%;
+	}
+
+	.record-matrix__column,
+	.record-matrix__cell,
+	.record-matrix__label {
+		white-space: normal !important;
+		overflow-wrap: anywhere;
+	}
+
+	/* A caption belongs to its table: it never opens a page alone. */
+	.record-matrix__caption {
+		break-before: avoid;
+	}
+
+	/* The band's inputs are dropped; its register and its note print. The
+	   register line is the head of the table, so it stays with it. */
+	.MatrixControl__Tools {
+		display: none !important;
+	}
+
+	.MatrixControl__Bar {
+		break-after: avoid;
+	}
+
+	/* A prose table - a markdown document's own - takes the same law. */
+	table {
+		inline-size: 100%;
+	}
+
+	th,
+	td {
+		overflow-wrap: anywhere;
+	}
+}

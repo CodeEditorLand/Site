@@ -45,22 +45,29 @@
 // ─── The grid ─────────────────────────────────────────────────────────────
 // `grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4`: one column on a phone, two
 // from 768px, three from 1024px, on the tight 1rem gap the baseline uses.
+//
+// Every track is `minmax(0, 1fr)` rather than `1fr`. A bare `1fr` is
+// `minmax(auto, 1fr)`, so the track's floor is its content's longest
+// unbreakable token - and one route whose name is a long slug would widen its
+// column and push the third column out of the page. The `0` floor is the
+// `too long` arm: the cell stays the width the grid decided and the name wraps
+// inside it.
 
 .contact-hub__grid {
 	display: grid;
-	grid-template-columns: 1fr;
+	grid-template-columns: minmax(0, 1fr);
 	gap: 1rem;
 }
 
 @include bp(768px) {
 	.contact-hub__grid {
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 }
 
 @include bp(1024px) {
 	.contact-hub__grid {
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
 }
 
@@ -92,6 +99,7 @@
 	font-weight: 500;
 	@include track(var(--track-row));
 	color: color-mix(in srgb, var(--CardForeground) 70%, transparent);
+	overflow-wrap: anywhere;
 }
 
 // `font-medium mt-2`: the name sits one step under its slug, on the ladder -
@@ -100,6 +108,7 @@
 	margin: var(--space-tight) 0 0;
 	font-weight: 500;
 	color: var(--CardForeground);
+	overflow-wrap: anywhere;
 }
 
 // `mt-1 opacity-70`: the sentence is the registry's own subtitle.

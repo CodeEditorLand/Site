@@ -67,7 +67,7 @@
 		},
 		"title": "Reset Your Password",
 		"emailLabel": "Email",
-		"loading": "Sending...",
+		"loading": "Sending the link.",
 		"backToSignIn": "Back to Sign In",
 		"successToast": "Reset email sent",
 		"errorToast": "Could not send reset email. Please try again.",
@@ -97,7 +97,7 @@
 		},
 		"title": "Set a New Password",
 		"passwordHint": "Minimum 8 characters",
-		"loading": "Updating password...",
+		"loading": "Updating the password.",
 		"mismatch": "Passwords do not match",
 		"signInLink": "Sign in",
 		"checking": "Checking link...",
@@ -118,7 +118,7 @@
 		"emailLabel": "Email",
 		"passwordLabel": "Password",
 		"submit": "Sign In",
-		"loading": "Signing in...",
+		"loading": "Signing in.",
 		"or": "Or",
 		"noAccount": "No account yet?",
 		"successToast": "Signed in",
@@ -152,7 +152,7 @@
 		"emailLabel": "Email",
 		"passwordLabel": "Password",
 		"submit": "Create Account",
-		"loading": "Creating account...",
+		"loading": "Creating the account.",
 		"or": "Or",
 		"hasAccount": "Already have an account?",
 		"termsLink": "Terms of Service",
@@ -189,19 +189,19 @@
 			"passwordLabel": "Password",
 			"passwordPlaceholder": "Enter your password",
 			"feature": {
-				"sync": "Planned workspace sync across devices",
-				"backup": "Planned encrypted backup for selected configuration",
-				"team": "Planned shared team workspace support",
-				"extension": "Marketplace installation is planned after local extension paths stabilize",
-				"remote": "Remote development integration is planned"
+				"sync": "Workspace sync across devices, planned",
+				"backup": "Encrypted backup for selected configuration, planned",
+				"team": "Shared team workspace support, planned",
+				"extension": "Marketplace installation, planned once local extension paths stabilize",
+				"remote": "Remote development integration, planned"
 			},
 			"capability": {
 				"jwt": "JWT account tokens for hosted services, issued on sign-in",
 				"okta": "Okta SSO belongs to the enterprise plan",
 				"mfa": "MFA support depends on the configured identity provider",
-				"rbac": "Gateway RBAC is planned",
-				"audit": "Audit logging is planned",
-				"cert": "Developer certificate automation is planned"
+				"rbac": "Gateway RBAC, planned",
+				"audit": "Audit logging, planned",
+				"cert": "Developer certificate automation, planned"
 			}
 		},
 		"provider": {
@@ -212,19 +212,19 @@
 			"continueGitLab": "Continue with GitLab",
 			"oauthNote": "OAuth 2.0 \u2001 Profile + Email scope \u2001 PKCE code flow",
 			"feature": {
-				"github": "GitHub identity is planned as a low-friction sign-in option",
-				"sso": "Single sign-on across Land services is planned",
-				"repo": "Settings sync tied to provider identity is planned",
-				"team": "Organization and team membership sync is planned",
+				"github": "Identity, planned as a low-friction sign-in option",
+				"sso": "Single sign-on across Land services, planned",
+				"repo": "Settings sync tied to provider identity, planned",
+				"team": "Organization and team membership sync, planned",
 				"ci": "CI/CD integration belongs to later portal work"
 			},
 			"capability": {
 				"oauth": "OAuth 2.0 / PKCE support where provider flows are enabled",
-				"scope": "Minimal OAuth scopes - only what each provider integration requires",
+				"scope": "Minimal OAuth scopes: only what each provider integration requires",
 				"token": "Refresh token handling depends on provider configuration",
-				"webhook": "Webhook subscriptions are planned",
-				"org": "Organization-level access policies are planned",
-				"cert": "Developer certificate automation is planned"
+				"webhook": "Webhook subscriptions, planned",
+				"org": "Organization-level access policies, planned",
+				"cert": "Developer certificate automation, planned"
 			}
 		},
 		"localfirst": {
@@ -235,23 +235,23 @@
 			"connect": "Connect to Air Daemon",
 			"note": "Zero cloud dependency \u2001 Local session tokens \u2001 mTLS",
 			"feature": {
-				"daemon": "Browser-to-daemon loopback control is planned",
-				"build": "Launching builds from the website console is planned",
-				"deploy": "Deploying changes into a running editor is planned",
-				"configure": "Editor configuration management is planned",
+				"daemon": "Loopback control from the browser, planned",
+				"build": "Builds launched from the website console, planned",
+				"deploy": "Changes deployed into a running editor, planned",
+				"configure": "Editor configuration management, planned",
 				"parity": "Installed VS Code extensions run unmodified through the Cocoon path when their APIs are implemented",
 				"offline": "Local editor operation should not require a cloud login",
-				"bake": "Embedding portal surfaces into the editor is planned"
+				"bake": "Portal surfaces embedded into the editor, planned"
 			},
 			"capability": {
 				"jwt": "Local session tokens with short expiry, managed by the daemon",
 				"mtls": "mTLS mutual authentication is enabled by default for daemon connections",
-				"crdt": "CRDT state synchronization - planned for conflict-free offline edits",
-				"team": "Fully local team management is planned",
-				"cert": "Local certificate management is planned; daemon credential storage is active",
-				"ws": "WebSocket loopback connection is planned",
-				"rbac": "Local RBAC policies are planned",
-				"backup": "Encrypted local backup is planned"
+				"crdt": "CRDT state synchronization, planned for conflict-free offline edits",
+				"team": "Fully local team management, planned",
+				"cert": "Local certificate management, planned; daemon credential storage is active",
+				"ws": "WebSocket loopback connection, planned",
+				"rbac": "Local RBAC policies, planned",
+				"backup": "Encrypted local backup, planned"
 			}
 		},
 		"enterprise": {
@@ -270,22 +270,22 @@
 			"azureTenantPlaceholder": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 			"samlMetadataLabel": "SAML Metadata URL",
 			"samlMetadataPlaceholder": "https://your-idp.com/metadata.xml",
-			"note": "OpenID Connect Discovery \u2001+ SAML 2.0 Assertion \u2001+ SCIM provisioning is planned",
+			"note": "OpenID Connect Discovery \u2001+ SAML 2.0 Assertion \u2001+ SCIM provisioning, planned",
 			"feature": {
-				"okta": "Okta SSO integration is planned",
-				"azure": "Azure AD / Entra ID integration is planned",
-				"saml": "SAML 2.0 support is planned",
-				"scim": "SCIM provisioning is planned",
-				"group": "IdP group to Land role mapping is planned",
-				"audit": "Audit export is planned"
+				"okta": "SSO integration, planned",
+				"azure": "Entra ID integration, planned",
+				"saml": "SAML 2.0 support, planned",
+				"scim": "SCIM provisioning, planned",
+				"group": "IdP group to Land role mapping, planned",
+				"audit": "Audit export, planned"
 			},
 			"capability": {
 				"oidc": "OIDC discovery is handled by the configured identity provider",
 				"jit": "Just-in-time provisioning happens through the configured identity provider",
 				"mfa": "MFA enforcement depends on the configured IdP",
 				"session": "Session duration follows the configured tenant policy",
-				"ca": "Organization CA certificate management is planned",
-				"compliance": "Compliance documentation is planned"
+				"ca": "Organization CA certificate management, planned",
+				"compliance": "Compliance documentation, planned"
 			},
 			"orgIdLabel": "Auth0 Organization ID (optional)",
 			"orgIdPlaceholder": "org_xxxxxxxxxxxxxxxx"
@@ -312,22 +312,22 @@
 			}
 		}
 	},
-	"loading": "Loading...",
-	"error": "Authentication error",
+	"loading": "Reading.",
+	"error": "Sign-in interrupted.",
 	"tryAgain": "Try again",
 	"dashboard": "Go to Dashboard",
 	"logout": "Sign Out",
 	"emailNotVerified": "Email not verified. Check your inbox.",
-	"redirecting": "Redirecting to sign in...",
+	"redirecting": "Opening the sign-in page.",
 	"dashboardPage": {
 		"title": "Dashboard",
 		"welcome": "Welcome back",
 		"downloadsHeading": "Downloads",
 		"signOut": "Sign Out",
-		"loading": "Loading account...",
-		"error": "Could not load your account. Please refresh.",
+		"loading": "Reading the account.",
+		"error": "Could not load the account. Reload to ask again.",
 		"surface": {
-			"account": "Read from your Auth0 session in the browser. Signing in, signing out and data requests are unchanged.",
+			"account": "Read from the Auth0 session in the browser. Signing in, signing out and data requests are unchanged.",
 			"telemetry": "Three paths, one default: nothing leaves the process unless you build it in and point it somewhere.",
 			"settings": "Two settings are planned; the account page behind the third row is live.",
 			"partners": "The organisations that host and fund the work.",
@@ -335,7 +335,7 @@
 				"account": "Who is signed in is client-side state; the account band asks the identity provider for it."
 			},
 			"access": {
-				"footnote": "Every tier is described on the portal page; this rail only shows which route your session uses."
+				"footnote": "Every tier is described on the portal page; this rail shows only which route the session uses."
 			},
 			"start": {
 				"heading": "Downloads & Quick Links",
@@ -345,12 +345,12 @@
 				"contribute": "How to build Land from source and send a change back."
 			},
 			"state": {
-				"loading": "Reading your session from the identity provider. The account rows appear as soon as it answers.",
+				"loading": "Reading the session from the identity provider. The account rows appear when it answers.",
 				"error": "The identity provider did not answer, so no account rows can be shown. Reloading asks it again.",
-				"signedOut": "You are not signed in. Sign in to see your account.",
+				"signedOut": "Not signed in. Sign in to see the account.",
 				"noEmail": "No email on this account. The provider did not return one.",
 				"noDate": "Not recorded. The provider returned no update date for this account.",
-				"actions": "Manage opens your account page. Sign Out ends the Auth0 session and clears the local token."
+				"actions": "Manage opens the account page. Sign Out ends the Auth0 session and clears the local token."
 			},
 			"editor": {
 				"scan": "Opens this page in local mode and probes the Air Daemon on ws://localhost:7979 and ws://localhost:7878, three seconds per port.",

@@ -1,0 +1,214 @@
+---
+/**
+ * EdgeTurn - the last band: the catchword, and the sheet's folio.
+ *
+ * ─── WHAT IT IS ───────────────────────────────────────────────────────────
+ * A printed page ends on a catchword: the first word of the next page, set at the
+ * foot so the reader's eye is already on the next sheet before the hand moves.
+ * This is that gesture, at the document's scale:
+ *
+ *   → NEXT: /BLOG␁04␁BLOG␁↳ NOTES FROM THE BUILD, NEWEST FIRST      〈05〉 /DOC/RUST␁41 SHEETS␁AS OF: 2026-11-19
+ *
+ * The line at the left is the destination's own leaf line - the same route, the
+ * same part and the same `↳` sentence the next sheet will print when it opens. So
+ * the closing edge of one page and the opening edge of the next are ONE seam, and
+ * a reader can check it by turning the page. That is the whole composition: the
+ * site's pages stop ending and start handing over.
+ *
+ * ─── WHY THE PART, NOT THE NEXT SHEET ─────────────────────────────────────
+ * A catchword hands you the next CHAPTER, not the next page of a list. Every sheet
+ * of `/DOCUMENTATION` therefore closes on `/BLOG` - the entry of the part after it -
+ * and a reader who finishes the manual is handed the notes, not whichever article
+ * happens to sort next. The part is the unit of reading, and this edge reads it.
+ *
+ * ─── THE FOLIO IS THE DETAIL LAYER'S ──────────────────────────────────────
+ * The right end is `Folio`, the artifact a band's foot already prints: the
+ * ordinal, the route, the document's extent, the as-of. Composing with it rather
+ * than writing a second folio is the point - the page's foot and the band's foot
+ * are the same apparatus at two scales, and a reader who has seen one recognises
+ * the other.
+ *
+ * ─── THE ADVERSE ARMS ─────────────────────────────────────────────────────
+ *   index       an unfiled page has no next sheet, only the index   `◎ NO NEXT SHEET`
+ *   error       the progression failed                              `STATUS: INTERRUPTED` + `RETRY:`
+ *   record-end  the last part ends on the colophon below it         `# LAND / RECORD END`
+ *   empty       nothing comes after                                 `◎ NO NEXT SHEET` + why
+ *   missing     the destination has left the build                  `◎ TARGET GONE` + `WAS:`
+ *   too much    the destination part holds more sheets than a turn can name
+ *   too long    the destination's route will not fit                 it wraps, in full
+ *   loading     the keys stay and the values bar                     `WAITING ON: BUILD`
+ *
+ * The `record-end` arm is the last part's live state: `/ACCOUNT` closes by naming
+ * the colophon, because the colophon is what actually comes next.
+ *
+ * No script and no hydration: a catchword is printed.
+ */
+import Folio from "../../Detail/Folio.astro";
+
+import { EdgePage, EdgeBuildDate } from "../../../Content/Edge/Copy.js";
+import {
+	EdgeExtent,
+	EdgeNextOf,
+	EdgePlaceOf,
+	EdgeSheets,
+} from "../../../Content/Edge/Register.js";
+import { GetI18n } from "../../../Library/I18n/Server";
+
+interface Props {
+	/** The canonical path the build publishes - what the register is keyed on. */
+	canonical: string;
+
+	/**
+	 * Force one of the turn's composed arms. The frame never sets it: it exists so a
+	 * page that prints the edges as specimens can mount the arm it describes.
+	 * Omitted, the arm is derived from the register.
+	 */
+	state?: "rest" | "index" | "error" | "record-end" | "empty" | "missing" | "too-much" | "too-long" | "loading";
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const { canonical, state: ForcedState, class: Class } = Astro.props;
+
+const T = GetI18n();
+
+const Copy = EdgePage(T);
+
+const Place = EdgePlaceOf(canonical);
+
+const Next = EdgeNextOf(canonical);
+
+/** The sheet's own date, or the build's - the same answer the leaf printed. */
+const AsOf = Place?.Sheet.AsOf ?? EdgeBuildDate;
+
+/** How many sheets the destination part files: the figure a turn cannot always name. */
+const SheetsInNextPart = EdgeSheets.filter(
+	(Sheet) => Sheet.Part === Next.Part.Key,
+).length;
+
+/** A part this size is handed over as a part, not as a sheet. */
+const IsTooMuch = Next.Kind === "part" && SheetsInNextPart > 12;
+
+/** The arm this turn is printed in. A forced state wins; otherwise the facts decide. */
+const State =
+	ForcedState ??
+	(Next.Kind === "index"
+		? "error"
+		: Next.Kind === "record-end"
+			? "record-end"
+			: IsTooMuch
+				? "too-much"
+				: Next.Route.length > 32
+					? "too-long"
+					: "rest");
+
+/** The destination's route, as the grammar prints it. */
+const RouteText = Next.Route.toUpperCase();
+
+/** The destination's part, as `05␁CONTACT`. */
+const PartText = `${Next.Part.Index}\u2001${Next.Part.Label}`;
+
+/** The folio's ordinal: the sheet's, or the fallback mark. */
+const Ordinal = Place?.Ordinal ?? "◎";
+
+/** The folio's part: where THIS sheet sits - never the destination's route, which
+ *  is the hand's business. The cover sheet prints `/LAND` for the same reason the
+ *  leaf does: a folio's part is a label, and a lone slash beside `41 SHEETS` reads
+ *  as a separator. */
+const FolioPart =
+	Place === undefined
+		? Copy.turn.unfiledPart
+		: Place.Sheet.Path === "/"
+			? "/LAND"
+			: Place.Sheet.Path.toUpperCase();
+
+/** Whether the turn hands over a link, a record-end mark, or nothing. */
+const IsLink = State === "rest" || State === "too-much" || State === "too-long";
+---
+
+<div class:list={["EdgeTurn", Class]} data-state={State} data-kind={Next.Kind}>
+	<div class="EdgeTurn__row">
+		<div class="EdgeTurn__hand">
+			{
+				State === "record-end" ? (
+					<p class="EdgeTurn__next">
+						<span class="EdgeTurn__mark" aria-hidden="true">
+							→
+						</span>
+						<span class="EdgeTurn__key">{Copy.turn.next}</span>
+						<span class="EdgeTurn__end">{Copy.turn.recordEnd}</span>
+					</p>
+				) : State === "error" || State === "empty" || State === "missing" ? (
+					<p class="EdgeTurn__next">
+						<span class="EdgeTurn__mark" aria-hidden="true">
+							◎
+						</span>
+						<span class="EdgeTurn__key">
+							{State === "missing" ? Copy.turn.missing : Copy.turn.noNext}
+						</span>
+						{State === "missing" ? (
+							<span class="EdgeTurn__was">{`${Copy.turn.was}\u2001${RouteText}`}</span>
+						) : null}
+					</p>
+				) : (
+					<p class="EdgeTurn__next">
+						<span class="EdgeTurn__mark" aria-hidden="true">
+							→
+						</span>
+						<span class="EdgeTurn__key">{Copy.turn.next}</span>
+						{IsLink ? (
+							<a class="EdgeTurn__route" href={Next.Route}>
+								{RouteText}
+							</a>
+						) : (
+							<span class="EdgeTurn__route">{RouteText}</span>
+						)}
+						<span class="EdgeTurn__part">{PartText}</span>
+					</p>
+				)
+			}
+
+			<p class="EdgeTurn__proposition">
+				<span class="EdgeTurn__proposition-mark" aria-hidden="true">
+					↳
+				</span>
+				<span class="EdgeTurn__proposition-text">
+					{State === "missing" || State === "empty"
+						? Copy.turn.emptyNote
+						: Next.Proposition !== ""
+							? Next.Proposition
+							: Copy.turn.retryLabel}
+				</span>
+			</p>
+
+			{State === "error" ? (
+				<p class="EdgeTurn__receipt">
+					<span class="EdgeTurn__receipt-key">{`STATUS: ${Copy.turn.interrupted}`}</span>
+					<span class="EdgeTurn__receipt-key">{Copy.turn.retry}</span>
+					<a class="EdgeTurn__route" href="/Contents">
+						{Copy.turn.retryLabel}
+					</a>
+				</p>
+			) : null}
+
+			{State === "too-much" ? (
+				<p class="EdgeTurn__note">
+					{`${SheetsInNextPart}\u2001SHEETS IN THIS PART\u2001THE TURN HANDS OVER THE PART, NOT ONE SHEET`}
+				</p>
+			) : null}
+
+			{State === "loading" ? (
+				<p class="EdgeTurn__note">{`WAITING ON: ${Copy.leaf.waitingOn}`}</p>
+			) : null}
+		</div>
+
+		<Folio
+			class="EdgeTurn__folio"
+			index={Ordinal}
+			part={FolioPart}
+			figure={{ value: EdgeExtent, unit: "SHEETS" }}
+			asOf={AsOf}
+		/>
+	</div>
+</div>

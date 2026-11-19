@@ -1,0 +1,299 @@
+---
+/**
+ * EdgeLeaf - the first band: the sheet's headnote, printed by the frame.
+ *
+ * ─── WHAT IT IS ───────────────────────────────────────────────────────────
+ * Every page opens on the same printed record, and it says the four things a
+ * reader deciding whether to stay actually needs, none of which the page says
+ * about itself:
+ *
+ *   # SHEET 05␁OF 41      /DOC/RUST      PART: 03␁DOCUMENTATION␁AS OF: 2026-11-19
+ *                                         CIRCULATION: PUBLIC␁SOURCE: pages/Doc/Rust.astro
+ *   ↳ THE RUST CORE, ITS BOUNDARIES, AND WHAT IT DOES NOT OWN
+ *
+ * It is the collation mark of a dossier: the sheet's number in the document, its
+ * route, the part it belongs to, the day its facts were read, whether the build
+ * asks search engines to index it, and the file it was set from. A printed
+ * chapter opening carries the same five things above the drop - and a reader who
+ * has seen one page of this site recognises the edge of every other.
+ *
+ * ─── WHY THE FRAME PRINTS IT AND NOT THE PAGE ─────────────────────────────
+ * A page knows its own content and not its place. Only the frame knows what is
+ * before it and after it, so only the frame can number it - and a page that
+ * numbered itself would be a page that could disagree with the index. `Base.astro`
+ * mounts this once, above `<slot />`, so every route in the build opens the same
+ * way, including the ones that never wear a shell.
+ *
+ * ─── WHAT IT IS NOT ───────────────────────────────────────────────────────
+ * - It is not a band. No heading, no fill, no measure of its own: it is the
+ *   sheet's head, at the frame's width, above whatever the page's first movement
+ *   is. The homepage's opening pair and the Download masthead stay the first
+ *   artifacts of their pages, byte for byte; this sits above them the way a
+ *   running head sits above a drop head.
+ * - It is not a second running head. The header's strip says which PART the
+ *   reader is in and what the document's status is; this says which SHEET, when
+ *   it was read, and what it was set from. A page that printed the part twice in
+ *   28px would be printing one fact twice.
+ * - It is not the shell's declaration strip. `PageShell` declares the GRID a page
+ *   is composed on (`# LAYOUT / READING`); this declares the SHEET. A page may
+ *   carry both, because they answer different questions, and the two are set
+ *   differently on purpose: the declaration is a two-row block in the page's own
+ *   column, the leaf is one line at the frame's edge with its gloss hung under it.
+ *
+ * ─── THE ADVERSE ARMS ─────────────────────────────────────────────────────
+ * Nine conditions are the design's second half (`Design-Brief.md` §7). The leaf
+ * carries the ones an edge can actually meet, composed in the same strip rather
+ * than in a box beside it:
+ *
+ *   unfiled    the page is not a sheet of the document     `◎ NOT FILED`, `PART: ◎ NONE`
+ *   stale      the sheet's facts are older than the build  `◎ STALE` + `AGE: n DAYS`
+ *   partial    a fact this build cannot state              `UNAVAILABLE`, never `0`
+ *   denied     the build asks not to be indexed            `CIRCULATION: ◎ NOT INDEXED`
+ *   loading    no spinner: the keys stay, the values bar    `WAITING ON: BUILD`
+ *   too long   a route that will not fit                   the route wraps in full
+ *   too much   a document past two digits                  the ordinal widens, and says so
+ *
+ * `empty`, `error` and `missing` are the turn's, because they are conditions of
+ * what comes NEXT, not of what this sheet is.
+ *
+ * No script and no hydration: a headnote is printed.
+ */
+import { EdgePage, EdgeBuildDate, EdgeDaysBetween, EdgeStaleAfterDays } from "../../../Content/Edge/Copy.js";
+import {
+	EdgeExtent,
+	EdgePartOf,
+	EdgePlaceOf,
+	EdgePropositionOf,
+} from "../../../Content/Edge/Register.js";
+import type { FrameSection } from "../Frame/Data.js";
+import { GetI18n } from "../../../Library/I18n/Server";
+
+interface Props {
+	/** The path the reader asked for, printed when the page is unfiled. */
+	path: string;
+
+	/** The canonical path the build publishes - what the register is keyed on. */
+	canonical: string;
+
+	/** Whether the frame asks search engines not to index this page. */
+	noIndex?: boolean;
+
+	/**
+	 * The page's own description, used as the `↳` line only when the register has
+	 * no proposition for the sheet - a collection article, whose sentence is its
+	 * own excerpt. The register wins wherever it speaks.
+	 */
+	description?: string;
+
+	/** The part of the document, resolved by the frame. */
+	section: FrameSection;
+
+	/**
+	 * Force one of the leaf's composed arms. The frame never sets it: it exists so
+	 * a page that prints the edges as specimens (`/Specimen`) can mount the arm it
+	 * is describing. Omitted, the arm is derived from the facts.
+	 */
+	state?: "rest" | "unfiled" | "stale" | "loading" | "partial" | "too-long" | "too-much";
+
+	/** Extra classes from the page. */
+	class?: string;
+}
+
+const {
+	path,
+	canonical,
+	noIndex = false,
+	description,
+	section,
+	state: ForcedState,
+	class: Class,
+} = Astro.props;
+
+const T = GetI18n();
+
+const Copy = EdgePage(T);
+
+const Place = EdgePlaceOf(canonical);
+
+/**
+ * The part, from the register when the sheet is filed and from the frame when it
+ * is not.
+ *
+ * The register is the authority because it is the file that says where a sheet
+ * sits; the frame's answer is used only for an unfiled page, where it is `◎
+ * UNFILED` and the leaf prints `PART: ◎ NONE` anyway. (`/Specimen` is the case
+ * that made this matter: the frame files it under no part, the register files it
+ * with the index, and two answers to one question is the drift this site keeps
+ * paying for.)
+ */
+const Part = Place === undefined ? section : EdgePartOf(Place.Sheet);
+
+/** The sheet's own date, or the build's - never an invented one. */
+const AsOf = Place?.Sheet.AsOf ?? EdgeBuildDate;
+
+/** How old the sheet's date is, in whole days. */
+const Age = EdgeDaysBetween(AsOf, EdgeBuildDate);
+
+/** A sheet older than a quarter says so before the reader reads a word. */
+const IsStale = Place !== undefined && Place.Sheet.AsOf !== undefined && Age > EdgeStaleAfterDays;
+
+/**
+ * The route as the grammar prints it: `/DOC/RUST`, uppercase, leading slash.
+ *
+ * The cover sheet's route is `/`, and the edges print it as `/LAND`: the grammar's
+ * route form needs a name after the slash, and `LAND` is the document's own name
+ * for itself (`# LAND / RECORD END` in the footer). A lone slash at 18px reads as
+ * a separator, which is the one thing a route may not be mistaken for.
+ */
+const RouteText = (Place?.Sheet.Path === "/" ? "/LAND" : (Place?.Sheet.Path ?? path)).toUpperCase();
+
+/**
+ * The proposition: the register's, then the page's own description, then honest
+ * absence.
+ *
+ * A collection sheet (`/Doc/:Slug`, `/Blog/:Slug`) inverts the order: its row in
+ * the register names the FAMILY ("one chapter of the manual"), and the page's own
+ * description is the chapter's sentence. The register's line is the fallback
+ * there, because a leaf that gave 78 articles one sentence would be a caption.
+ */
+const RegisterProposition = Place ? EdgePropositionOf(Place.Sheet) : "";
+
+const OwnDescription = description?.trim() ?? "";
+
+const Proposition =
+	Place === undefined
+		? Copy.leaf.unfiledProposition
+		: Place.Sheet.Family !== undefined && OwnDescription !== ""
+			? OwnDescription
+			: RegisterProposition !== ""
+				? RegisterProposition
+				: OwnDescription !== ""
+					? OwnDescription
+					: Copy.leaf.unavailable;
+
+/** The arm this leaf is printed in. A forced state wins; otherwise the facts decide. */
+const State =
+	ForcedState ??
+	(Place === undefined
+		? "unfiled"
+		: IsStale
+			? "stale"
+			: RouteText.length > 48
+				? "too-long"
+				: "rest");
+
+/** Whether the ordinal has outgrown its two digits. */
+const IsTooMuch = Place !== undefined && EdgeExtent.length > 2;
+
+/** The ordinal slot, printed with the grammar's fallback when there is no place. */
+const Ordinal = State === "unfiled" ? Copy.leaf.unfiled : (Place?.Ordinal ?? Copy.leaf.unfiled);
+
+/** The extent slot: `OF 41`, or nothing when the page has no place in the series. */
+const Extent = State === "unfiled" ? "" : `${Copy.leaf.of}\u2001${EdgeExtent}`;
+
+/** The part's value: `03␁DOCUMENTATION`, or the fallback mark. */
+const PartValue =
+	State === "unfiled"
+		? Copy.leaf.noPart
+		: `${Part.Index}\u2001${Part.Label}`;
+
+/** The circulation fact: a published page, or one the build asks not to index. */
+const Circulation = noIndex ? Copy.leaf.circulationDenied : Copy.leaf.circulationPublic;
+
+/** The file the sheet was set from, or where an unfiled page came from. */
+const Source =
+	State === "unfiled"
+		? Copy.leaf.requestUrl
+		: (Place?.Sheet.Source ?? Copy.leaf.unavailable);
+
+/**
+ * The facts, in the order they are read. Each is its own row so the stylesheet can
+ * set a figure tabular and a path breakable without touching the words.
+ */
+type Fact = { readonly key: string; readonly value: string; readonly kind: string };
+
+const Facts: Fact[] = [
+	{ key: Copy.leaf.part, value: PartValue, kind: "part" },
+	{
+		key: Copy.leaf.asOf,
+		value:
+			IsStale && State !== "unfiled"
+				? `${AsOf}\u2001${Copy.leaf.stale}`
+				: AsOf,
+		kind: "as-of",
+	},
+	...(IsStale && State !== "unfiled"
+		? [{ key: Copy.leaf.age, value: `${Age}\u2001DAYS`, kind: "age" }]
+		: []),
+	{ key: Copy.leaf.circulation, value: Circulation, kind: "circulation" },
+	{ key: Copy.leaf.source, value: Source, kind: "source" },
+];
+---
+
+<div
+	class:list={["EdgeLeaf", Class]}
+	data-state={State}
+	data-part={Part.Key}
+	data-circulation={noIndex ? "denied" : "public"}
+>
+	<div class="EdgeLeaf__row">
+		<p class="EdgeLeaf__folio">
+			<span class="EdgeLeaf__mark" aria-hidden="true">#</span>
+			<span class="EdgeLeaf__sheet">{Copy.leaf.sheet}</span>
+			<span class="EdgeLeaf__ordinal">{Ordinal}</span>
+			{Extent !== "" ? <span class="EdgeLeaf__of">{Extent}</span> : null}
+		</p>
+
+		<p class="EdgeLeaf__route" data-route={RouteText}>{RouteText}</p>
+
+		<dl class="EdgeLeaf__facts">
+			{
+				Facts.map((Fact) => (
+					<div class="EdgeLeaf__fact" data-kind={Fact.kind}>
+						<dt class="EdgeLeaf__key">{Fact.key}</dt>
+						<dd class="EdgeLeaf__value" data-figure={Fact.kind === "age" ? "" : undefined}>
+							{State === "loading" ? (
+								<span class="EdgeLeaf__bar" aria-hidden="true" />
+							) : (
+								Fact.value
+							)}
+						</dd>
+					</div>
+				))
+			}
+		</dl>
+	</div>
+
+	<p class="EdgeLeaf__proposition">
+		<span class="EdgeLeaf__proposition-mark" aria-hidden="true">↳</span>
+		<span class="EdgeLeaf__proposition-text">{Proposition}</span>
+	</p>
+
+	{
+		State === "loading" ? (
+			<p class="EdgeLeaf__note">{`WAITING ON: ${Copy.leaf.waitingOn}`}</p>
+		) : null
+	}
+
+	{
+		State === "stale" ? <p class="EdgeLeaf__note">{Copy.leaf.staleNote}</p> : null
+	}
+
+	{
+		State === "too-long" ? (
+			<p class="EdgeLeaf__note">{Copy.leaf.tooLongNote}</p>
+		) : null
+	}
+
+	{
+		State === "too-much" || IsTooMuch ? (
+			<p class="EdgeLeaf__note">{Copy.leaf.tooMuchNote}</p>
+		) : null
+	}
+
+	{
+		State === "partial" ? (
+			<p class="EdgeLeaf__note">{`${Copy.leaf.source}\u2001${Copy.leaf.unavailable}`}</p>
+		) : null
+	}
+</div>

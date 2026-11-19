@@ -1,0 +1,131 @@
+---
+/**
+ * PrintRecord - the sheet's own print action, printed as a colophon row.
+ *
+ * ─── WHAT IT IS ───────────────────────────────────────────────────────────
+ * The site claims to be a dossier. A dossier is the kind of document that gets
+ * printed, marked up and handed to someone across a table. So the document has
+ * one control that says so, in the record's own grammar:
+ *
+ *   # PRINT_01   → PRINT THIS SHEET 〈⌘P〉
+ *                ↳ THE SHEET AS A DOCUMENT: CHROME DROPPED, LINK TARGETS PRINTED, THE RECORD WHOLE.
+ *
+ * The row is not a floating toolbar button. It lives in the footer, because the
+ * footer is the colophon and "how this copy left the record" is a colophon fact.
+ * Its `↳` line is the contract: what the printed page contains. A reader should
+ * be able to decide whether to spend paper before spending it.
+ *
+ * ─── WHY THE CONTROL IS HIDDEN UNTIL IT WORKS ─────────────────────────────
+ * A `<button>` with no handler is a dead control: it takes focus, announces
+ * itself as a button, and does nothing. So the markup ships it `hidden` and one
+ * inline line un-hides it only when `window.print` is a function. With
+ * JavaScript off the control is absent from layout and from the tab order, and
+ * the `<noscript>` line states the same action in the browser's own vocabulary -
+ * `⌘P` / `Ctrl+P` prints the sheet exactly the same way, because the print layer
+ * is a stylesheet, not a script.
+ *
+ * ─── THE ADVERSE ARMS ─────────────────────────────────────────────────────
+ *   no-js        the button is absent, the `<noscript>` line names the command
+ *   no-print     `window.print` missing: `◎ PRINT UNAVAILABLE` + `NEXT:` the
+ *                browser's own command, in the STATUS vocabulary
+ *   on paper     the control, its contract and its fallback are dropped and the
+ *                row prints as `PRINTED: ______` - the one fact paper can add
+ *                to a colophon, with a rule for the reader to date the copy
+ *
+ * No hydration, no island, no framework: one inline line, and the page is
+ * complete without it.
+ */
+
+interface Props {
+	/** Extra classes from the footer. */
+	class?: string;
+}
+
+const { class: Class } = Astro.props;
+
+/** The `↳` line: the print action's contract, in one sentence. */
+const Contract =
+	"THE SHEET AS A DOCUMENT: CHROME DROPPED, LINK TARGETS PRINTED, THE RECORD WHOLE.";
+
+/** The no-JavaScript arm: the same action in the browser's own vocabulary. */
+const Fallback =
+	"PRINT: THE BROWSER'S OWN COMMAND (⌘P / CTRL+P) PRINTS THIS SHEET THE SAME WAY.";
+
+/**
+ * The print-only line. U+2001 separates the two clauses, as everywhere in the
+ * grammar: the blank is for the copy's own date, and the sentence says why a
+ * printed copy can never be as fresh as the sheet it was made from.
+ */
+const Printed =
+	"A COPY IS ALWAYS OLDER THAN THE SHEET\u2001THE FOLIO BELOW STATES ITS AS-OF.";
+
+/** The error arm, in the STATUS vocabulary. */
+const Unavailable =
+	"◎ PRINT UNAVAILABLE\u2001NEXT: USE THE BROWSER'S OWN PRINT COMMAND.";
+---
+
+<div class:list={["FooterPrint", Class]}>
+	<p class="FooterPrint__register">
+		<span class="FooterPrint__mark" aria-hidden="true">#</span>
+		<span class="FooterPrint__index">PRINT_01</span>
+	</p>
+
+	<div class="FooterPrint__body">
+		<button class="FooterPrint__action" type="button" data-print-action hidden>
+			<span class="FooterPrint__arrow" aria-hidden="true">→</span>
+			<span class="FooterPrint__word">PRINT THIS SHEET</span>
+			<span class="FooterPrint__chord">〈⌘P〉</span>
+		</button>
+
+		<p class="FooterPrint__note">
+			<span class="FooterPrint__note-mark" aria-hidden="true">↳</span>
+			{Contract}
+		</p>
+
+		<noscript>
+			<p class="FooterPrint__fallback">{Fallback}</p>
+		</noscript>
+
+		<p class="FooterPrint__status" data-print-status hidden></p>
+
+		{/* The paper arm. On screen this row is the action; on paper it is the
+		    action's result, so the control goes and this line arrives. The
+		    line is `display: none` on screen - absent from the accessibility
+		    tree with it - and the blank alone is marked decorative, because
+		    the sentence beside it is a fact a printed copy carries. */}
+		<p class="FooterPrint__printed">
+			<span class="FooterPrint__printed-key">PRINTED:</span>
+			<span class="FooterPrint__blank" aria-hidden="true"></span>
+			<span class="FooterPrint__copy">
+				<span aria-hidden="true">↳</span>
+				{Printed}
+			</span>
+		</p>
+	</div>
+</div>
+
+<script is:inline>
+	(() => {
+		const Button = document.querySelector("[data-print-action]");
+		const Status = document.querySelector("[data-print-status]");
+
+		if (!(Button instanceof HTMLButtonElement)) return;
+
+		/*
+		 * The error arm first. A browser without `print` is rare, but a dead
+		 * control is not an acceptable fallback: the row states the condition
+		 * and the next step instead of leaving a button that answers nothing.
+		 */
+		if (typeof window.print !== "function") {
+			if (Status instanceof HTMLElement) {
+				Status.hidden = false;
+				Status.textContent =
+					"◎ PRINT UNAVAILABLE\u2001NEXT: USE THE BROWSER'S OWN PRINT COMMAND.";
+			}
+			return;
+		}
+
+		Button.hidden = false;
+		Button.addEventListener("click", () => window.print());
+	})();
+</script>

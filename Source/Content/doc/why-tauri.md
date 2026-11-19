@@ -24,8 +24,7 @@ process with a Rust backend.
 | Renderer processes per window | 3 (main, renderer, extension host) | 1 WebView                                                     |
 | Binary size baseline          | ~300 MB download                   | Significantly smaller                                         |
 
-The size advantage is structural. There is nothing to strip - Chromium is
-simply not included.
+The size advantage is structural: nothing to strip, Chromium is not included.
 
 ## Rust backend instead of Node.js main process
 

@@ -1,6 +1,6 @@
 {
 	"actions": {
-		"signIn": "Sign In to Your Account"
+		"signIn": "Sign In"
 	},
 	"brand": {
 		"name": "Code Editor Land",
@@ -35,7 +35,7 @@
 	},
 	"docs": {
 		"pageTitle": "Documentation",
-		"pageSubtitle": "Eighty-one pages in ten sections, from /START to the deep dives. Each page names the file it describes; the strip above it prints the layer, the order and the count.",
+		"pageSubtitle": "81 pages in 10 sections, from /START to the deep dives. Each page names the file it describes; the strip above it prints the layer, the order and the count.",
 		"gettingStarted": {
 			"title": "Get Started in Minutes",
 			"description": "The README walks you through installation, first build, and the fifteen-element architecture. No prior Rust or Tauri knowledge required."
@@ -99,7 +99,7 @@
 		"upcomingTopicsHeading": "Upcoming Topics"
 	},
 	"contact": {
-		"pageSubtitle": "Fourteen routes, one register: data requests, technical support, legal and enterprise. Each prints its five-letter code and the window it answers in; the four statutory routes name the article they answer under.",
+		"pageSubtitle": "14 routes, one register: data requests, technical support, legal and enterprise. Each prints its five-letter code and the window it answers in; the 7 statutory routes name the article they answer under.",
 		"pageTitle": "Contact"
 	},
 	"contributing": {
@@ -263,7 +263,7 @@
 		},
 		"downloads": {
 			"heading": "Downloads",
-			"description": "Get the latest Land build for your platform. Native on macOS, Windows, and Linux.",
+			"description": "The latest Land build for each platform. Native on macOS, Windows and Linux.",
 			"goButton": "Go to Downloads"
 		},
 		"quickLinks": {
@@ -277,11 +277,11 @@
 			"heading": "Settings",
 			"sync": {
 				"title": "Sync Settings",
-				"description": "Your editor preferences follow you across every device automatically."
+				"description": "Editor preferences follow the account across every device, automatically."
 			},
 			"extensionSync": {
 				"title": "Extension Sync",
-				"description": "Your installed extensions stay in sync across all machines."
+				"description": "Installed extensions stay in sync across all machines."
 			},
 			"account": {
 				"title": "Account",
@@ -297,16 +297,16 @@
 			},
 			"otel": {
 				"title": "Opt-in OpenTelemetry. Your infrastructure only.",
-				"description": "Need distributed traces for your deployment? Enable with: `cargo build --features Telemetry`.\n\nLocal-only OTEL tracing, metrics, and spans. No external transmission. All data stays on your infrastructure."
+				"description": "Distributed traces for a deployment are opt-in: enable with `cargo build --features Telemetry`.\n\nLocal-only OTEL tracing, metrics and spans. No external transmission; all data stays on your infrastructure."
 			},
 			"effect": {
 				"title": "Extension host timing. Stays in the process.",
-				"description": "Cocoon uses TelemetryService for internal RPC and bootstrap timing. The data is used for performance diagnostics only.\n\nAll data stays local. TelemetryMock layer available for zero-overhead testing."
+				"description": "Cocoon uses TelemetryService for internal RPC and bootstrap timing; the data is used for performance diagnostics only.\n\nAll of it stays local, and a TelemetryMock layer is available for zero-overhead testing."
 			}
 		},
 		"buildLog": {
 			"heading": "Build Configuration",
-			"subtitle": "Active build variant and deployment mode.\n\nAvailable via Local-First Air Daemon connection.",
+			"subtitle": "Active build variant and deployment mode.\n\nAvailable over a Local-First Air Daemon connection.",
 			"profile": {
 				"heading": "Active Profile"
 			},
@@ -319,13 +319,13 @@
 		},
 		"portal": {
 			"heading": "Authentication Tiers",
-			"subtitle": "Your current authentication method and available tiers."
+			"subtitle": "The current authentication method and the tiers the account can reach."
 		},
 		"editor": {
 			"heading": "Editor Connection",
-			"subtitle": "Connect the website to your running Land editor instance.",
+			"subtitle": "Connect the website to a running Land editor instance.",
 			"status": "Not Connected",
-			"description": "The Air Daemon connects this dashboard to a running Land editor via WebSocket.\n\nLaunch Land to enable real-time build logs, telemetry, and configuration management.",
+			"description": "The Air Daemon connects this dashboard to a running Land editor over WebSocket.\n\nLaunch Land for real-time build logs, telemetry and configuration management.",
 			"connect": "Connect via Portal",
 			"scanButton": "Scan for Daemon"
 		},
@@ -348,7 +348,7 @@
 		},
 		"privacy": {
 			"heading": "Privacy & Data Rights",
-			"subtitle": "Exercise your GDPR rights, request data exports, or delete your account. All requests are sent directly to our privacy team and handled within 30 days."
+			"subtitle": "Exercise GDPR rights, request a data export, or delete the account. Requests go straight to our privacy team; each is answered within 30 days."
 		}
 	},
 	"tryAgain": "Try again"

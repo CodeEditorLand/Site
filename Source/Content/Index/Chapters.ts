@@ -21,6 +21,8 @@
  * instruments, and only then to the front desk, the back matter and the traps.
  */
 
+import { ContactEntries } from "../../Library/Contact/Data.js";
+
 /** One division of the document. */
 export interface Chapter {
 	/** The chapter's name, uppercase, as the archive's group label prints it. */
@@ -74,8 +76,7 @@ export const Chapters: readonly Chapter[] = [
 	{
 		label: "THE FRONT DESK",
 
-		answers:
-			"Where a reader asks for something: the hub and its fourteen request routes.",
+		answers: `Where a reader asks for something: the hub and its ${ContactEntries.length} request routes.`,
 
 		prefixes: ["/Contact"],
 	},

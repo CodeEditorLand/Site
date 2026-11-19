@@ -38,6 +38,7 @@ import {
 	RegisterEntries,
 } from "../../Component/Contact/Register.js";
 import RecordStage from "../../Component/Record/RecordStage.astro";
+import ShellState from "../../Component/Shell/ShellState.astro";
 import {
 	RegisterOf,
 	RegisterText,
@@ -58,9 +59,19 @@ const MetaDescription = T("meta.contact.hub.description", {
 
 const Heading = T("common.contact.pageTitle", { defaultValue: "Contact" });
 
+/**
+ * The hub's standfirst, with both of its figures read from the register.
+ *
+ * `Fourteen routes` and `the four statutory routes` were typed. Both are
+ * countable from the entries the grid below prints, and a route added to
+ * `Library/Contact/Data.ts` would have left the sentence describing a page it no
+ * longer describes - so the numbers come from the list, the list comes from the
+ * registry, and the sentence cannot outlive the grid.
+ */
+const Statutory = RegisterEntries.filter((Entry) => Entry.basis).length;
+
 const Standfirst = T("common.contact.pageSubtitle", {
-	defaultValue:
-		"Fourteen routes, one register: data requests, technical support, legal and enterprise. Each prints its five-letter code and the window it answers in; the four statutory routes name the article they answer under.",
+	defaultValue: `${RegisterEntries.length} routes, one register: data requests, technical support, legal and enterprise. Each prints its five-letter code and the window it answers in; the ${Statutory} statutory routes name the article they answer under.`,
 });
 
 const BackToTop = T("common.button.backToTop", { defaultValue: "Back to top" });
@@ -89,29 +100,48 @@ const ProcessRegister = RegisterOf("PROCESS", ContactProcess, {
 	mode="functional"
 >
 	<div class="contact-hub">
-		<div class="contact-hub__grid">
-			{RegisterEntries.map((Entry) => (
-				<a class="contact-hub__card" href={Entry.href}>
-					<p class="contact-hub__slug">{Entry.slug}</p>
-					<h2 class="contact-hub__name">{Entry.title}</h2>
-					<p class="contact-hub__note">{Entry.subtitle}</p>
-					{Entry.basis || Entry.window ? (
-						<p class="contact-hub__foot">
-							{Entry.basis ? (
-								<span class="contact-hub__basis">
-									〈{Entry.basis}〉
-								</span>
-							) : null}
-							{Entry.window ? (
-								<span class="contact-hub__window">
-									SLA: {Entry.window}
-								</span>
-							) : null}
-						</p>
-					) : null}
-				</a>
-			))}
-		</div>
+		{RegisterEntries.length > 0 ? (
+			<div class="contact-hub__grid">
+				{RegisterEntries.map((Entry) => (
+					<a class="contact-hub__card" href={Entry.href}>
+						<p class="contact-hub__slug">{Entry.slug}</p>
+						<h2 class="contact-hub__name">{Entry.title}</h2>
+						<p class="contact-hub__note">{Entry.subtitle}</p>
+						{Entry.basis || Entry.window ? (
+							<p class="contact-hub__foot">
+								{Entry.basis ? (
+									<span class="contact-hub__basis">
+										〈{Entry.basis}〉
+									</span>
+								) : null}
+								{Entry.window ? (
+									<span class="contact-hub__window">
+										SLA: {Entry.window}
+									</span>
+								) : null}
+							</p>
+						) : null}
+					</a>
+				))}
+			</div>
+		) : (
+			/* The register's empty arm: the same band, the same grammar, and the
+			   one thing an empty page owes a reader - what would be here, why it
+			   is not, and where to go instead. It is a state and not a paragraph
+			   because the page is a register: a register with no rows is a
+			   condition, and the site prints conditions as records. */
+			<ShellState
+				kind="empty"
+				index="REGISTER / 00"
+				statement="The register is empty: no request route is filed, so there is no card to print."
+				cause="`Library/Contact/Data.ts` lists the routes the desk answers on, and this build carries none. Nothing failed - the hub has not been given a route yet, and the mailbox below is still read."
+				next={{
+					label: `WRITE TO ${ContactDirect.address}`,
+					href: `mailto:${ContactDirect.address}`,
+				}}
+				note="SOURCE: Library/Contact/Data.ts"
+			/>
+		)}
 
 		<section
 			class="contact-hub__process"

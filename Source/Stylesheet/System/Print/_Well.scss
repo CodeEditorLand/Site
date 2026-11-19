@@ -1,0 +1,73 @@
+// ─── THE WELL - a command is an object, and paper can still hold it ──────
+//
+// A well is the site's action artifact: a label bar, a monospaced body, an
+// optional SOURCE. On screen the body scrolls sideways so a long command keeps
+// its shape - the one overflow the block owns. On paper that overflow is a
+// trap: the part past the margin is not scrolled, it is simply absent, and a
+// command that lost its last argument is worse than a command that wrapped.
+//
+// So a well on paper WRAPS. `pre-wrap` keeps the indentation and the line
+// structure the author wrote, and breaks a line that cannot fit; `anywhere`
+// breaks inside a token only when the token is longer than the measure - which a
+// path, a hash and a URL always are. The cost is that a 120-character command
+// takes two printed lines instead of one; the alternative is a fact withheld.
+//
+// The well's three parts survive the change of medium: the bar keeps its label
+// and its language, the body keeps its code, the foot keeps its SOURCE. The copy
+// control goes - paper has no clipboard - and the frame stays at the ink edge
+// `_Ink.scss` gave it, so the well is still an object cut into the band rather
+// than a paragraph in monospace.
+//
+// Shiki's syntax tokens keep their inline colours. They are the one exception to
+// the monochrome rule, and they are not the site's palette: they are the
+// STRUCTURE of the code the reader came for, set in a light theme whose every
+// token is legible on white. Stripping them would print a wall of undifferentiated
+// ink; keeping them prints the code the way the page already shows it.
+
+@media print {
+	.record-well__copy,
+	.record-transcript__copy,
+	[data-record-transcript-copy] {
+		display: none !important;
+	}
+
+	.record-well {
+		overflow: visible !important;
+	}
+
+	.record-well__body,
+	.record-well__line,
+	pre,
+	code,
+	.astro-code,
+	.astro-code code {
+		white-space: pre-wrap !important;
+
+		overflow: visible !important;
+		overflow-wrap: anywhere;
+		word-break: normal;
+	}
+
+	.record-well__body,
+	.astro-code {
+		background: #ffffff !important;
+	}
+
+	/* A prose code fence is a well without the block's frame: it keeps its own
+	   light surface and gains the ink edge every other insert has on paper. */
+	.astro-code {
+		border: 1px solid #000000;
+	}
+
+	/* The language tag is a label, and a label never wraps: it is the one thing
+	   in the bar that may stay on one line. */
+	.record-well__lang {
+		white-space: nowrap !important;
+	}
+
+	/* A well's SOURCE is provenance and prints in full, including the path that
+	   does not fit. */
+	.record-well__source {
+		overflow-wrap: anywhere;
+	}
+}

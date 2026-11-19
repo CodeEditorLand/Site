@@ -298,3 +298,175 @@
 		padding-block: var(--space-chapter);
 	}
 }
+
+// ─── The colophon's setting ───────────────────────────────────────────────
+// A colophon is not a second facts ledger. The facts above it answer "what is
+// this record"; this answers "how was it made", and a printer's note is SET
+// differently from a specification: the keys hang in a column of their own, the
+// values align down one edge, and the last row is the line a reader carries away.
+// No new type step - the colophon may not go below the 13px floor to look like a
+// colophon, and it may not go above the facts' register to look important.
+//
+// The rules below change VALUES only (a gap, a tracking, one hairline), which is
+// the Detail layer's law applied inside a band: a colophon is a detail with a
+// shape, not a new block.
+
+.FooterColophonLedger .record-ledger__row {
+	column-gap: var(--space-reading);
+}
+
+.FooterColophonLedger .record-ledger__key {
+	letter-spacing: var(--track-row);
+	white-space: nowrap;
+}
+
+// A colophon's values are literals - a face, a hex, a date, a path - so they
+// break inside themselves rather than pushing the key column off the line.
+.FooterColophonLedger .record-ledger__value {
+	overflow-wrap: anywhere;
+}
+
+// The signature. `CITE AS` is not another fact of the making: it is the line a
+// reader copies into a document, so it is separated by a hairline and set across
+// the measure, key above value, at the block's own edge.
+.FooterColophonLedger > .record-ledger__row:last-child {
+	grid-template-columns: minmax(0, 1fr);
+	row-gap: 0.25rem;
+	margin-block-start: var(--space-tight);
+	padding-block-start: var(--space-tight);
+	border-block-start: 1px solid var(--Border);
+}
+
+// ─── The document's folio ─────────────────────────────────────────────────
+// The imprint row's first line, and the last thing the document prints: the
+// colophon's own place in the collation. It takes the row's whole width so the
+// imprint beneath it stays the short line it was, and it takes no rule of its
+// own - the row already opens and closes on a hairline.
+.FooterFolio {
+	flex: 1 0 100%;
+	padding-block-end: var(--space-tight);
+}
+
+// ─── The print row ────────────────────────────────────────────────────────
+// The colophon's one control. It is a record row, not a toolbar: the register
+// (`# PRINT_01`) opens it, the action is the `→` that follows, and the `↳` line
+// under them is the action's contract - what the printed sheet contains, stated
+// before the reader spends paper on it.
+//
+// The row sits between the record's opening and its facts at the same reading
+// distance as a ledger's rows, separated by the one hairline every other row in
+// the band uses. On paper it is the only row in the footer that GAINS a fact:
+// the control goes, and `PRINTED: ______` arrives with a rule to date the copy
+// (see `System/Print/_Colophon.scss`).
+//
+// The action is a `<button>`, not a link, because printing is an action and not
+// a destination; it ships `hidden` and the component's one inline line un-hides
+// it, so a reader without JavaScript sees the `<noscript>` sentence instead of a
+// control that answers nothing.
+
+.FooterPrint {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight) var(--space-reading);
+	padding-block-start: var(--space-reading);
+
+	@include hairline(top);
+}
+
+.FooterPrint__register {
+	@include mono-meta;
+	@include track(var(--track-row));
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+	flex: 0 0 auto;
+	margin: 0;
+}
+
+.FooterPrint__mark {
+	color: var(--Mark);
+}
+
+.FooterPrint__index {
+	color: var(--Foreground);
+}
+
+.FooterPrint__body {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight) var(--space-reading);
+
+	flex: 1 1 18rem;
+	min-inline-size: 0;
+}
+
+.FooterPrint__action {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.4ch;
+
+	margin: 0;
+	padding: 0;
+	border: 0;
+	border-block-end: 1px solid var(--Border);
+
+	appearance: none;
+
+	background: none;
+	color: var(--Foreground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-row);
+	text-transform: uppercase;
+
+	cursor: pointer;
+}
+
+// `hidden` is the absence until the component's line proves `window.print`
+// exists. Declared here because the flex display above would outrank it.
+.FooterPrint__action[hidden] {
+	display: none;
+}
+
+.FooterPrint__action:hover,
+.FooterPrint__action:focus-visible {
+	border-block-end-color: var(--Foreground);
+}
+
+.FooterPrint__action:focus-visible {
+	outline: 1px solid var(--Ring);
+	outline-offset: 2px;
+}
+
+.FooterPrint__chord {
+	color: var(--MuteForeground);
+}
+
+// The contract and the two fallbacks sit on their own line under the action, at
+// the meta role: they are the row's sentence, not its label.
+.FooterPrint__note,
+.FooterPrint__fallback,
+.FooterPrint__status {
+	flex: 1 1 100%;
+	margin: 0;
+
+	@include mono-meta;
+	@include track(var(--track-name));
+}
+
+.FooterPrint__note-mark {
+	color: var(--Mark);
+}
+
+.FooterPrint__status {
+	color: var(--Foreground);
+}
+
+// The paper arm. Absent on screen: a printed line has no business in a browser.
+.FooterPrint__printed {
+	display: none;
+}

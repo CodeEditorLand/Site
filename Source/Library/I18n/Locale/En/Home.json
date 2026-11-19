@@ -38,7 +38,7 @@
 	},
 	"hero": {
 		"badge": "No Electron No Chromium CC0",
-		"subtitle": "A native code editor with the soul of VS Code and none of its browser. Built on Rust and Tauri; compatible with the extensions already in use.",
+		"subtitle": "A native code editor with the soul of VS Code - and none of its browser. Built on Rust and Tauri; compatible with the extensions you already use.",
 		"title": "",
 		"titleHighlight": "Land",
 		"scene": {
@@ -113,7 +113,7 @@
 			"compat": "EXTENSIONS / UNMODIFIED",
 			"project": "LAND:",
 			"relation": "EDITOR WITHOUT CHROMIUM",
-			"standfirst": "A native code editor with the soul of VS Code and none of its browser. Built on Rust and Tauri; compatible with the extensions already in use."
+			"standfirst": "A native code editor with the soul of VS Code - and none of its browser. Built on Rust and Tauri; compatible with the extensions you already use."
 		},
 		"status": {
 			"copy": "STATUS: SOURCE ACTIVE",

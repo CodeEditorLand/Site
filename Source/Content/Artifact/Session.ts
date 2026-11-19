@@ -203,7 +203,7 @@ export const BuildSession: Transcript = {
 
 			speaker: "BUILD",
 
-			line: "Build.sh echoes the resolved tier set, finishes, and writes the artifacts under Element/Mountain/Target/. On macOS the debug bundle is re-signed during the same run; a signing failure appears here, not at launch.",
+			line: "Build.sh echoes the resolved tier set, finishes, then writes the artifacts under Element/Mountain/Target/. The run prints the profile it was given (`Profile: debug-electron-bundled`) before it starts, so the transcript and the artifacts can be matched to one configuration. On macOS the debug bundle is re-signed during the same run; a signing failure appears here, not at launch.",
 
 			stamp: "15",
 		},

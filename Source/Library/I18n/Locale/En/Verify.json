@@ -22,35 +22,35 @@
 	"success": {
 		"title": "Email Verified",
 		"description": "The address on the account is verified. Signing in is the last step before the workspace opens.",
-		"instruction": "You can now sign in to your account and start using Code Editor Land.",
+		"instruction": "You can now sign in to the account and start using Code Editor Land.",
 		"continue": "Continue to Sign In",
 		"continueButton": "BACK TO LAND"
 	},
 	"title": "Verify your email",
 	"description": "A verification link was sent to",
-	"instruction": "Click the link in the email to verify your account and start using Code Editor Land.",
+	"instruction": "Open the link in the email to verify the account and start using Code Editor Land.",
 	"didntReceive": "Didn't receive the email?",
-	"checkSpam": "Check your spam folder or",
+	"checkSpam": "Check the spam folder or",
 	"resendLink": "resend verification email",
 	"resendButton": "Resend Verification Email",
 	"backToSignIn": "Back to Sign In",
-	"resending": "Sending...",
-	"resent": "Verification email sent!",
+	"resending": "Sending the link.",
+	"resent": "Verification email sent.",
 	"verifying": {
 		"title": "Verifying your email",
-		"description": "Please wait while we verify your email address..."
+		"description": "Checking the email address with the provider."
 	},
 	"errorGeneric": "The check did not complete: the provider returned no answer for this token. Requesting a new link is the next step.",
 	"resendFailed": "The resend did not go out: the provider rejected the request. The existing link still works until it expires.",
 	"emailLabel": "Email",
 	"emailPlaceholder": "Enter your email address",
-	"resendSuccess": "Verification email resent!",
+	"resendSuccess": "Verification email resent.",
 	"resendCooldown": "Resend in {{seconds}}s",
 	"resend": {
 		"success": "Verification email sent successfully."
 	},
 	"token": {
 		"invalid": "This verification link is invalid.",
-		"expired": "This verification link has expired. Please request a new one."
+		"expired": "This verification link has expired. Request a new one."
 	}
 }

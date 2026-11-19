@@ -297,7 +297,7 @@ stock file unchanged is cheaper than maintaining an original Rust backend:
   `ICommandService`; [Cocoon](https://github.com/CodeEditorLand/Cocoon) mirrors through stock.
 - **Language features** - `extHostLanguageFeatures.ts` manages provider
   registries, merges results from multiple providers, caches. Rust rewrite would
-  be months; the gRPC path just proxies which is cheap.
+  be months; the gRPC path only proxies, which is cheap.
 - **Editor / document / selection** - `extHostDocuments.ts`,
   `extHostTextEditor.ts` - source-of-truth for dirty state, encoding, EOL,
   versions. Must live in the extension host where edits originate.

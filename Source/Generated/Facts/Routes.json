@@ -4,10 +4,10 @@
 		"From": [
 			"Source/pages/**",
 			"Source/Component/Record/**",
-			"Source/Function/Route/Map.ts"
+			"Source/Function/Route/Registry.ts"
 		],
 		"Transform": ["Facts"],
-		"Note": "One row per route Astro builds, the forms its tree mounts, and the drift between the built routes and the hand-kept registry.",
+		"Note": "One row per route Astro builds, the forms its tree mounts, and the drift between the built routes and the registry that declares them.",
 		"Rule": "Generated. Change the tree or the page, then run `node Source/Script/Register.ts` - never this file."
 	},
 	"Routes": [
@@ -29,7 +29,7 @@
 			"File": "pages/404.astro",
 			"Title": "404: No Record At This Address",
 			"Forms": ["RecordHero", "RecordLedger", "RecordFigure"],
-			"Lines": 206,
+			"Lines": 225,
 			"NoIndex": true
 		},
 		{
@@ -114,7 +114,7 @@
 			"File": "pages/Contact/index.astro",
 			"Title": "Contact | Code Editor Land",
 			"Forms": ["RecordStage", "RecordLedger"],
-			"Lines": 162,
+			"Lines": 192,
 			"NoIndex": false
 		},
 		{
@@ -278,7 +278,7 @@
 			"File": "pages/Contact/Sale.astro",
 			"Title": "Enterprise Inquiries | Code Editor Land",
 			"Forms": ["RecordLedger"],
-			"Lines": 345,
+			"Lines": 357,
 			"NoIndex": false
 		},
 		{
@@ -309,7 +309,7 @@
 				"RecordLedger",
 				"RecordStamp"
 			],
-			"Lines": 569,
+			"Lines": 574,
 			"NoIndex": false
 		},
 		{
@@ -317,7 +317,7 @@
 			"File": "pages/Contributing.astro",
 			"Title": "Contributing | Code Editor Land",
 			"Forms": ["RecordLedger"],
-			"Lines": 649,
+			"Lines": 673,
 			"NoIndex": false
 		},
 		{
@@ -339,7 +339,7 @@
 				"RecordLedger",
 				"RecordPlate"
 			],
-			"Lines": 186,
+			"Lines": 195,
 			"NoIndex": false
 		},
 		{
@@ -353,7 +353,7 @@
 				"RecordInset",
 				"RecordTranscript"
 			],
-			"Lines": 356,
+			"Lines": 359,
 			"NoIndex": false
 		},
 		{
@@ -413,7 +413,7 @@
 			"File": "pages/License.astro",
 			"Title": "License | Code Editor Land",
 			"Forms": ["RecordLedger", "RecordWell"],
-			"Lines": 437,
+			"Lines": 459,
 			"NoIndex": false
 		},
 		{
@@ -450,7 +450,7 @@
 			"File": "pages/Specimen.astro",
 			"Title": "Specimen | Code Editor Land",
 			"Forms": ["RecordBand", "RecordEntry", "RecordLedger"],
-			"Lines": 506,
+			"Lines": 522,
 			"NoIndex": false
 		},
 		{
@@ -487,19 +487,24 @@
 		}
 	],
 	"Registry": {
-		"Declared": [],
-		"Count": 0,
-		"Missing": [
+		"Declared": [
 			"/",
 			"/404",
-			"/Account",
-			"/Account/ForgotPassword",
-			"/Account/ResetPassword",
-			"/Account/SignIn",
-			"/Account/SignUp",
+			"/Download",
+			"/Doc",
+			"/Doc/[...Slug]",
+			"/Doc/Rust",
 			"/Blog",
-			"/Compare",
+			"/Blog/[Slug]",
+			"/Portal",
+			"/Dashboard",
+			"/Verify",
+			"/License",
+			"/Contributing",
+			"/Legal/Term",
+			"/Legal/Privacy",
 			"/Contact",
+			"/Contact/Sale",
 			"/Contact/Amend",
 			"/Contact/Claim",
 			"/Contact/Deals",
@@ -512,26 +517,25 @@
 			"/Contact/Pause",
 			"/Contact/Query",
 			"/Contact/Reach",
-			"/Contact/Sale",
 			"/Contact/Scout",
-			"/Contents",
-			"/Contributing",
-			"/Dashboard",
-			"/Doc",
-			"/Doc/Rust",
-			"/Download",
-			"/Glossary",
-			"/Legal/Privacy",
-			"/Legal/Term",
-			"/License",
-			"/Motion",
+			"/Account",
+			"/Account/SignIn",
+			"/Account/SignUp",
+			"/Account/ForgotPassword",
+			"/Account/ResetPassword",
 			"/OAuth/Success",
-			"/Portal",
+			"/Visit",
 			"/Specimen",
-			"/Status",
-			"/Verify",
-			"/Visit"
+			"/Motion",
+			"/Compare",
+			"/Contents",
+			"/Glossary",
+			"/Status"
 		],
+		"Count": 43,
+		"Canonical": 24,
+		"Collections": 2,
+		"Missing": [],
 		"Extra": []
 	}
 }

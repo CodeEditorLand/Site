@@ -2,7 +2,7 @@
 title: "Polyfills and Compatibility Shims"
 section: "Reference"
 order: 12
-description: "Every polyfill, shim, and compatibility layer that enables the VS Code workbench and extension host to function inside Land's Tauri WebView and Node.js sidecar architecture."
+description: "Every polyfill, shim and compatibility layer that enables the VS Code workbench and extension host to function inside Land's Tauri WebView and Node.js sidecar architecture."
 ---
 
 This document catalogues every polyfill, shim, and compatibility layer that

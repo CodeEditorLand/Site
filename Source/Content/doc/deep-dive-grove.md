@@ -5,8 +5,8 @@ section: "Deep Dive"
 order: 4
 description:
     "Deep dive into Grove, the native, sandboxed Rust/WASM extension host that
-    provides an environment for running VS Code extensions compiled to WebAssembly
-    or native Rust, complementing the Node.js-based Cocoon host."
+    provides an environment for running VS Code extensions compiled to
+    WebAssembly or native Rust, complementing the Node.js-based Cocoon host."
 ---
 
 # Grove - Deep Dive

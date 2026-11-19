@@ -61,7 +61,7 @@ CC0 eliminates that question entirely.
 
 ## The Architecture Decision
 
-A CC0 dedication is a deliberate architectural choice, not just a legal one. It
+A CC0 dedication is a deliberate architectural choice, not only a legal one. It
 shapes how the codebase is organized. When every component carries no
 restrictions, there is no need for licensing headers on every file, no license
 compliance tooling in CI, and no per-component license auditing. The build

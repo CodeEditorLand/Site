@@ -5,7 +5,7 @@ order: 0
 description:
     "What Land is, what FIDDEE is, what is working today, what is not yet
     complete, and the architectural philosophy behind replacing the VS Code
-    backend with Rust, Tauri, and Effect-TS."
+    backend with Rust, Tauri and Effect-TS."
 ---
 
 [Land](https://github.com/CodeEditorLand/Land) is an open-source code editor that replaces the Electron/Node.js backend of

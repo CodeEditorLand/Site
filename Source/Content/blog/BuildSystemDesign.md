@@ -2,8 +2,9 @@
 title: "Build System Design: Two-Stage Pipeline, Tier Gating, and Deterministic
     Builds"
 summary: "How Land's build system coordinates VS Code compilation, Rust backend
-    assembly, and TypeScript bundling through a tier-gated, profile-driven
-    pipeline."
+    assembly and TypeScript bundling through a tier-gated, profile-driven pipeline,
+    and what the two-stage ordering and the 18-file environment cascade must agree
+    on for a build to be deterministic."
 publishedAt: "2026-05-15"
 tags: ["Build System", "CI/CD", "Maintain", "Tier Gating"]
 author: "CodeEditorLand"

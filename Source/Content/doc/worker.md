@@ -5,8 +5,8 @@ order: 14
 description:
     "The Service Worker element for the Land editor. Implements multi-tier asset
     caching (network-first for app shell, cache-first for static assets) and a
-    two-phase CSS import interception protocol that lets the VS Code workbench
-    use standard import syntax inside the Tauri WebView."
+    two-phase CSS import interception protocol that lets the VS Code workbench use
+    standard import syntax inside the Tauri WebView."
 ---
 
 # Worker: Service Worker

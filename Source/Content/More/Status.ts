@@ -293,7 +293,7 @@ export const Board: readonly BoardColumn[] = [
 
 		note: "The record existed and does not now. A retired record keeps its address.",
 
-		empty: "No record has been retired. Nothing on this site has been withdrawn, and the column stays to say so: an empty column is a fact, and hiding it would make the other three unreadable.",
+		empty: "No record has been retired. Nothing on this site has been withdrawn, and the column stays to say so: an empty column is a fact about the site, and hiding it would make the other three unreadable.",
 
 		rows: RowsOf(["ARCHIVED"]),
 	},

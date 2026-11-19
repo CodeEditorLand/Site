@@ -522,7 +522,12 @@ const FormFacets = FormColumns.map((Column, Index) => ({
 		band={{
 			...Bands.Routes,
 			id: BandIds.Routes,
-			footnote: RegistryFootnote(Registry.Count, Built, Registry.Missing),
+			footnote: RegistryFootnote(
+				Registry.Count,
+				Registry.Canonical,
+				Built,
+				Registry.Missing,
+			),
 		}}
 	>
 		<RecordArchive entries={RouteEntries} index="ROUTES_01" />

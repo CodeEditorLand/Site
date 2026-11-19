@@ -1,0 +1,144 @@
+@use "../Mixin" as *;
+
+// ─── THE COLOPHON - the footer, reduced to the facts of its making ────────
+//
+// On screen the footer is a colophon with a route list under it: `# LAND /
+// RECORD END`, the FACTS and COLOPHON ledgers, then ROUTES / LEGAL / INDEX, then
+// the imprint. The route list is navigation - it is how a reader moves around a
+// SITE - and on paper it has neither a referent nor a target: the destinations
+// print, the clicking does not, and a page of route names at the foot of a
+// dossier is a sitemap stapled to a chapter.
+//
+// So the printed footer is the colophon proper: the record end, the two ledgers,
+// the folio, the imprint, and the print row. What it drops is the three nav rows,
+// the locale switcher, the `Back to top` control and the runtime badge - every
+// one of them an affordance for a surface that scrolls or a browser that can
+// change its mind about a language.
+//
+// ─── THE PRINT ROW ON PAPER ──────────────────────────────────────────────
+// The row is the only part of the footer that changes its shape rather than its
+// visibility. On screen it is an ACTION: `# PRINT_01`, `→ PRINT THIS SHEET
+// 〈⌘P〉`, and the `↳` line that states what the printed sheet contains. On paper
+// the action has already happened, so the control, its contract and its
+// no-JavaScript fallback are dropped and one line arrives in their place:
+//
+//   PRINTED: ______________  ↳ A COPY IS ALWAYS OLDER THAN THE SHEET␁THE FOLIO
+//                               BELOW STATES ITS AS-OF.
+//
+// The blank is a rule to write the date on, because the machine does not know
+// when the reader prints and will not invent one. That is the print layer's own
+// stale arm, and it is the only fact a printed page can add to a colophon.
+//
+// ─── THE COLOPHON IS A PAGE ──────────────────────────────────────────────
+// `_Break.scss` opens a sheet for it. The two ledgers return to the 7fr / 5fr
+// split they have on a wide screen - a printed page has the width for it even
+// when the viewport that produced it did not - so the colophon reads as the
+// composition it was designed as rather than as two stacked lists.
+
+@media print {
+	/* `System/_Base.scss` carries the legal documents' pre-programme print
+	   block, which hides every `footer`. That rule predates the colophon and
+	   would remove the record's closing leaf from every printed page. The
+	   colophon is not chrome: it is the document's last page. */
+	.Footer {
+		display: block !important;
+
+		background: #ffffff !important;
+		border-block-start: 1px solid #000000;
+	}
+
+	/* The colophon's opening rule is the one accent in the band. At 40 % it is a
+	   hairline a laser printer renders as nothing; on paper it prints at its own
+	   weight, because it authenticates the record end. */
+	.FooterRule {
+		opacity: 1;
+		background: var(--Accent);
+	}
+
+	/* ─── WHAT A COLOPHON DOES NOT CARRY ────────────────────────────────── */
+	.FooterRows,
+	.FooterRecordLocale,
+	.FooterTop,
+	.FooterTauri {
+		display: none !important;
+	}
+
+	/* ─── THE COLOPHON'S SETTING ────────────────────────────────────────── */
+	.FooterRecord {
+		padding-block: var(--space-group);
+		gap: var(--space-group);
+	}
+
+	.FooterBody {
+		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+		column-gap: var(--space-group);
+		row-gap: var(--space-group);
+	}
+
+	.FooterRecordHeader {
+		gap: var(--space-tight);
+	}
+
+	.FooterFolio {
+		break-inside: avoid;
+	}
+
+	.FooterBottom {
+		break-inside: avoid;
+	}
+
+	/* ─── THE PRINT ROW, AS THE COPY'S OWN FACT ─────────────────────────── */
+	.FooterPrint {
+		display: block;
+		margin-block-start: 0;
+		padding-block-start: var(--space-reading);
+
+		border-block-start-color: #000000;
+		break-inside: avoid;
+	}
+
+	.FooterPrint__register,
+	.FooterPrint__note,
+	.FooterPrint__fallback,
+	.FooterPrint__status {
+		display: none !important;
+	}
+
+	.FooterPrint__body {
+		display: block;
+	}
+
+	.FooterPrint__printed {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: var(--space-tight) var(--space-reading);
+
+		margin: 0;
+
+		@include mono-meta;
+		@include track(var(--track-row));
+
+		color: var(--Foreground);
+	}
+
+	.FooterPrint__printed-key {
+		color: var(--Foreground);
+	}
+
+	/* The rule the reader writes the copy's date on. */
+	.FooterPrint__blank {
+		display: inline-block;
+
+		inline-size: 14ch;
+		block-size: 1em;
+
+		border-block-end: 1px solid #000000;
+	}
+
+	.FooterPrint__copy {
+		@include track(var(--track-name));
+
+		color: var(--MuteForeground);
+	}
+}

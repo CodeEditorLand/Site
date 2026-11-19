@@ -1,0 +1,217 @@
+// ─── THE PAGE - what a sheet is when it leaves the window ─────────────────
+//
+// A printed page is not a viewport. It has a fixed width, a margin it cannot
+// scroll past, and a height that ends. Everything the screen does with a scroll
+// or a pin has to become something a page can do, and everything the screen
+// shows because a pointer is near has to become something a page can show
+// without one.
+//
+// THE MARGINS. 16mm at the head, 14mm at the sides, 18mm at the foot. The side
+// margin is the narrowest the measure can take without the mono face losing its
+// 45-character line; the foot is deeper than the head because the browser's own
+// running foot (URL, date, page number) prints there, and that is the only page
+// number a CSS-printed sheet gets - `@page` margin boxes are not implemented in
+// the engines this site runs in, and a page number drawn by a stylesheet the
+// engine ignores would be a promise with nothing behind it. The sheet's own
+// numbering is the collation: `# SHEET 05␁OF 41` at the top and the folio at
+// the foot.
+
+@page {
+	margin: 16mm 14mm 18mm;
+}
+
+/* The first page opens on the leaf, not on a title page: it takes a slightly
+   shallower head margin so the collation mark sits high, the way a chapter
+   opening does. */
+@page :first {
+	margin-top: 12mm;
+}
+
+@media print {
+	/* ─── CHROME, AND WHY EACH PIECE IS CHROME ────────────────────────────
+	 *
+	 * A control is chrome when its referent does not exist on paper. These are
+	 * the site's controls and its ways through a scroll; every fact they carry
+	 * is printed again somewhere a page can read it (the leaf states the sheet
+	 * and its part, the footer's FACTS ledger states the status, the turn
+	 * states what comes next). */
+	header[role="banner"],
+	.Header,
+	.HeaderStrip,
+
+	/* the thumb index and the shell's rails: a way through a scroll */
+	.FrameRail,
+	.ShellRail,
+	.PageShell__rail,
+	[class*="__rail"],
+
+	/* the manual's own tree: a rail above the article below 1024px, a column
+	   above it. The article's headings and its layer (`DocLayer`, a details
+	   that prints open) are the document's structure on paper. */
+	.doc-sidebar,
+	.DocSidebar,
+
+	/* the second focus-revealed control, and the skip link's target list */
+	.Palette,
+	.PaletteTrigger,
+
+	/* the matrix band's inputs: the table they narrow still prints, and the
+	   band's register and note still say what was narrowed */
+	.MatrixControl__Tools,
+
+	/* the copy controls: paper has no clipboard */
+	.record-well__copy,
+	.record-transcript__copy,
+	[data-record-transcript-copy],
+
+	/* the field's depth cue: a fixed topographic canvas */
+	#Layout,
+	#TopoMap,
+
+	/* the trust documents' own duplicate contents: the document prints in
+	   full, so a second list of its sections is a second navigation */
+	.trust-contents,
+
+	/* the print action itself - the printed row replaces it */
+	.FooterPrint__action,
+	.FooterPrint__note,
+	.FooterPrint__fallback,
+	.FooterPrint__status {
+		display: none !important;
+	}
+
+	/* A hidden element stays hidden. This is the rule that keeps the print
+	   action's un-hydrated button, the header's closed panel and every
+	   `hidden` state panel out of the sheet. */
+	[hidden] {
+		display: none !important;
+	}
+
+	/* ─── THE SHELL UNFLEXES FOR THE PRINT PASS ───────────────────────────
+	 *
+	 * The frame is a column flex so the footer sits at the bottom of a short
+	 * page. A page break inside a flex container is unreliable, and the
+	 * colophon's `break-before: page` and every chapter's are the two breaks
+	 * this layer cannot do without. On paper the column has no bottom to push
+	 * against: the document is as long as it is, and block flow fragments
+	 * correctly. */
+	body,
+	jelly-theme {
+		display: block !important;
+	}
+
+	/* ─── NOTHING IS PINNED AND NOTHING SCROLLS ───────────────────────────
+	 *
+	 * `position: sticky` is a scroll behaviour, and a page does not scroll: an
+	 * element pinned for the length of a screen prints once, where it started,
+	 * with its reserved space still above it. `inset: auto` matters as much as
+	 * `static` - a sticky element's offsets stay in effect on a static box in
+	 * some engines. */
+	[class*="__pinned"],
+	[class*="__rail"],
+	[class*="__margin"],
+	.PageShell__margin,
+	.record-matrix__label,
+	.record-matrix__corner,
+	.DocSidebar {
+		position: static !important;
+		inset: auto !important;
+	}
+
+	/* A scroll container on paper clips at its edge and the clipped part is
+	   simply gone. Every one opens; `_State.scss` states this as the too-much
+	   arm and says why a printed list may not be windowed. */
+	.record-matrix,
+	.record-well,
+	.record-well__body,
+	.record-plate,
+	.record-plate__frame,
+	.Fold__List,
+	.ShellPanes__drawer-body,
+	[class*="__scroll"],
+	[class*="__window"] {
+		overflow: visible !important;
+		max-block-size: none !important;
+		max-height: none !important;
+	}
+
+	/* ─── NOTHING MOVES ───────────────────────────────────────────────────
+	 *
+	 * Motion explains a change of state, and a printed page has no states left
+	 * to change: the sheet is one frame of the document. Transitions and
+	 * animations are dropped, and so is the scroll's smoothness, because the
+	 * browser's print pass must lay the page out once and at rest. */
+	*,
+	*::before,
+	*::after {
+		animation: none !important;
+		transition: none !important;
+		scroll-behavior: auto !important;
+	}
+
+	/* ─── A DISCLOSURE PRINTS OPEN ────────────────────────────────────────
+	 *
+	 * `<details>` is the site's whole disclosure mechanism - the aside, the
+	 * page's contents, the drawer, the previous releases, the motion folds.
+	 * On screen a closed one is a promise; on paper a closed one is a blank,
+	 * and a blank in a dossier reads as "nothing was here". The engines this
+	 * site runs in hide the slot with `content-visibility`, so that is what is
+	 * turned back on; the older `display` mechanism is covered for the bodies
+	 * that are block-level anyway. */
+	details::details-content {
+		content-visibility: visible !important;
+		block-size: auto !important;
+	}
+
+	details > summary {
+		cursor: default;
+		list-style: none;
+	}
+
+	details > summary::-webkit-details-marker {
+		display: none;
+	}
+
+	/* A printed disclosure is open, so its control vocabulary is dropped: the
+	   OPEN / CLOSE word and the turning `›` describe an interaction paper does
+	   not have. The summary keeps its register line and its body follows it. */
+	.Fold__Word,
+	.Fold__Disclosure,
+	summary .MarkFold,
+	summary .record-aside__mark {
+		display: none !important;
+	}
+
+	/* ─── THE SCREEN'S LAZY RENDERING, TURNED OFF ─────────────────────────
+	 *
+	 * `_Global.scss` and `Doc/_Article.scss` skip layout for off-screen
+	 * sections with `content-visibility: auto`. The print pass is not a scroll:
+	 * a block it has never laid out can print as a blank with its reserved
+	 * height, which is the worst failure this layer can produce. Everything is
+	 * visible for the print pass. */
+	#features,
+	#pricing,
+	#testimonials,
+	#download,
+	.doc-article__body > * {
+		content-visibility: visible !important;
+		contain-intrinsic-block-size: auto !important;
+	}
+
+	/* The frame reserves a viewport for islands and 200px for the footer before
+	   hydration. On paper those reservations are blank pages. */
+	main > astro-island,
+	#Footer {
+		min-block-size: auto !important;
+		contain-intrinsic-block-size: auto !important;
+	}
+
+	/* The field's overflow clip exists so a full-bleed plate cannot widen the
+	   document. Paper has no horizontal scroll, so nothing may be clipped. */
+	html,
+	body,
+	.PageShell[data-layout="plate"] {
+		overflow: visible !important;
+		overflow-x: visible !important;
+	}
+}

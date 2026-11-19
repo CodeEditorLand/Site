@@ -3,6 +3,8 @@ import "@Stylesheet/System.scss";
 
 import Background from "../Background.astro";
 import Footer from "../Component/Layout/Footer.astro";
+import EdgeLeaf from "../Component/Layout/Edge/EdgeLeaf.astro";
+import EdgeTurn from "../Component/Layout/Edge/EdgeTurn.astro";
 import { FrameSectionOf } from "../Component/Layout/Frame/Data.js";
 import { LanguageOf } from "../Component/Shell/Language.js";
 import Palette from "../Component/UI/Palette/Palette.astro";
@@ -22,8 +24,9 @@ import { GetI18n } from "../Library/I18n/Server";
  *   <head>    the one canonical URL, the one title pattern, the one description,
  *             the OpenGraph card, the fonts, the icons and the two structured-
  *             data nodes (see `Component/Social/MetaTags.tsx`)
- *   <body>    the skip link, the palette trigger, the header slot, ONE `<main>`,
- *             the footer and the route scripts
+ *   <body>    the skip link, the palette trigger, the header slot, ONE `<main>`
+ *             (with the page's two edges around its content), the footer and the
+ *             route scripts
  *
  * A page renders its content in the default slot, which lands inside `<main>`.
  * A page that needs a full-bleed band gets it from a band inside `main`; there is
@@ -348,7 +351,24 @@ const LayoutSpec = LanguageOf(RawPath);
 						   `/Doc/deep-dive-mountain/`: removing it is what lets
 						   the doc rail hydrate on its own directive.
 					-->
+					{/*
+						THE TWO EDGES. Every page opens on the sheet's headnote and
+						closes on its catchword, printed here rather than by 43 page
+						entries, because only the frame knows what comes before and
+						after a sheet. The leaf states what this sheet is; the turn
+						hands the reader the next part's own opening line, so the
+						bottom of one page and the top of the next are one seam. See
+						`Component/Layout/Edge/EdgeLeaf.astro` and `EdgeTurn.astro`.
+					*/}
+					<EdgeLeaf
+						path={RawPath}
+						canonical={CanonicalPath}
+						noIndex={NoIndex}
+						description={Description}
+						section={FrameSection}
+					/>
 					<slot />
+					<EdgeTurn canonical={CanonicalPath} />
 				</main>
 			</AnalyticsProvider>
 			<div id="Footer" class="shrink">

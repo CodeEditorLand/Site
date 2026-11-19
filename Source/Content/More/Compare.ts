@@ -365,7 +365,7 @@ export const Carries: Comparison = {
 	],
 
 	caption:
-		"One of five carries over with a documented claim. The other four are not stated anywhere in this tree, and this rail prints that rather than a verdict: a comparison whose empty cells were filled with `yes` would be the only page with no source.",
+		"One of five carries over with a documented claim. The other four are not stated anywhere in this tree, and this rail prints that rather than a verdict: a comparison whose empty cells were filled with `yes` would be the only page on the site with no source.",
 };
 
 /**

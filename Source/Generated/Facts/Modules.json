@@ -26,6 +26,2423 @@
 			"Reached": true
 		},
 		{
+			"Path": "Component/Auth/AuthShell.astro",
+			"Kind": "component",
+			"Carries": "AuthShell - the one frame every account, OAuth and verify route renders.",
+			"Lines": 207,
+			"Readers": 5,
+			"ReadBy": [
+				"pages/Account/ForgotPassword.astro",
+				"pages/Account/ResetPassword.astro",
+				"pages/Account/SignIn.astro",
+				"pages/Account/SignUp.astro",
+				"pages/OAuth/Success.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Auth/Content.ts",
+			"Kind": "component",
+			"Carries": "The account and verify content tables, as data.",
+			"Lines": 210,
+			"Readers": 3,
+			"ReadBy": [
+				"pages/Account/ForgotPassword.astro",
+				"pages/Account/ResetPassword.astro",
+				"pages/Verify.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Auth/Data.ts",
+			"Kind": "component",
+			"Carries": "The eight frames, as data.",
+			"Lines": 173,
+			"Readers": 7,
+			"ReadBy": [
+				"pages/Account/ForgotPassword.astro",
+				"pages/Account/ResetPassword.astro",
+				"pages/Account/SignIn.astro",
+				"pages/Account/SignUp.astro",
+				"pages/Account/index.astro",
+				"pages/OAuth/Success.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Auth/Report.tsx",
+			"Kind": "component",
+			"Carries": "AuthReport - one state inside the auth card.",
+			"Lines": 159,
+			"Readers": 3,
+			"ReadBy": [
+				"Component/Dynamic/DynamicEmailVerification.tsx",
+				"Component/Dynamic/DynamicResetPassword.tsx",
+				"Component/Dynamic/VerifyPage.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Auth/Type.ts",
+			"Kind": "component",
+			"Carries": "The auth surface contract.",
+			"Lines": 79,
+			"Readers": 3,
+			"ReadBy": [
+				"Component/Auth/AuthShell.astro",
+				"Component/Auth/Content.ts",
+				"Component/Auth/Data.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Blog/BlogArticle.astro",
+			"Kind": "component",
+			"Carries": "BlogArticle - the reading surface an article is read on.",
+			"Lines": 283,
+			"Readers": 1,
+			"ReadBy": ["pages/Blog/[Slug].astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Blog/BlogIndex.astro",
+			"Kind": "component",
+			"Carries": "BlogIndex - the blog's archive page: a centred header, a full-bleed plate of the archive's extent, and the articles in a three-column grid.",
+			"Lines": 246,
+			"Readers": 1,
+			"ReadBy": ["pages/Blog.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Blog/Data.ts",
+			"Kind": "component",
+			"Carries": "Blog - the derivations the blog surface needs, in one module.",
+			"Lines": 336,
+			"Readers": 2,
+			"ReadBy": ["pages/Blog.astro", "pages/Blog/[Slug].astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Blog/Type.ts",
+			"Kind": "component",
+			"Carries": "Blog - the shapes the blog surface renders.",
+			"Lines": 85,
+			"Readers": 3,
+			"ReadBy": [
+				"Component/Blog/BlogArticle.astro",
+				"Component/Blog/BlogIndex.astro",
+				"Component/Blog/Data.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Brand/CornerMarks.astro",
+			"Kind": "component",
+			"Carries": "CornerMarks - picture-frame corner crosshairs for white card surfaces (C19).",
+			"Lines": 81,
+			"Readers": 1,
+			"ReadBy": ["Component/Brand/FieldRecordDataCard.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Brand/CornerMarks/Data.ts",
+			"Kind": "component",
+			"Carries": "Data - the corner-mark geometry, as values rather than as markup.",
+			"Lines": 205,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Brand/CornerMarks.astro",
+				"Component/Dynamic/DynamicHeroSection.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Brand/FieldRecord.astro",
+			"Kind": "component",
+			"Carries": "FieldRecord - canonical record-card template.",
+			"Lines": 138,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Brand/FieldRecord/Type.ts",
+			"Kind": "component",
+			"Carries": "Type - the published shape of the record-card template.",
+			"Lines": 27,
+			"Readers": 1,
+			"ReadBy": ["Component/Brand/FieldRecord.astro"],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Brand/FieldRecordAction.astro",
+			"Kind": "component",
+			"Carries": "FieldRecordAction - the one action a record card offers, in the two arms a field record uses: a mono route line (`/LABEL`) or a squish jelly button.",
+			"Lines": 55,
+			"Readers": 4,
+			"ReadBy": [
+				"Component/Brand/FieldRecord.astro",
+				"Component/Dynamic/Download/Install.astro",
+				"Component/Record/RecordHero.astro",
+				"pages/Portal.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Brand/FieldRecordAction/Data.ts",
+			"Kind": "component",
+			"Carries": "Data - the record action's two arms and the ink the button arm hands the jelly element.",
+			"Lines": 59,
+			"Readers": 1,
+			"ReadBy": ["Component/Brand/FieldRecordAction.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Brand/FieldRecordDataCard.astro",
+			"Kind": "component",
+			"Carries": "FieldRecordDataCard - the frame every field record is printed in: a white card, picture-frame corner marks at the card level, and one padded body.",
+			"Lines": 44,
+			"Readers": 3,
+			"ReadBy": [
+				"Component/Brand/FieldRecord.astro",
+				"Component/Record/RecordHero.astro",
+				"pages/Portal.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Brand/FieldRecordDataCard/Type.ts",
+			"Kind": "component",
+			"Carries": "Type - the published shape of a record data card.",
+			"Lines": 18,
+			"Readers": 1,
+			"ReadBy": ["Component/Brand/FieldRecordDataCard.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Brand/FieldRecordEvidence.tsx",
+			"Kind": "component",
+			"Carries": "Exports FieldRecordEvidenceProps.",
+			"Lines": 44,
+			"Readers": 7,
+			"ReadBy": [
+				"Component/Dynamic/DynamicHeroSection.tsx",
+				"Component/Record/RecordFigure.astro",
+				"Component/Record/RecordHero.astro",
+				"Component/Record/RecordInset.astro",
+				"Component/Record/RecordPlate.astro",
+				"Component/Record/RecordPlateSet.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Brand/FieldRecordIndex.astro",
+			"Kind": "component",
+			"Carries": "FieldRecordIndex - the record's own marker, printed as `# MARKER` at field weight: mono, uppercase, wide-tracked, in the card's foreground ink.",
+			"Lines": 31,
+			"Readers": 4,
+			"ReadBy": [
+				"Component/Brand/FieldRecord.astro",
+				"Component/Dynamic/Download/Record.astro",
+				"Component/Record/RecordArchive.astro",
+				"Component/Record/RecordHero.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Brand/FieldRecordIndex/Type.ts",
+			"Kind": "component",
+			"Carries": "Type - the published shape of a record index.",
+			"Lines": 19,
+			"Readers": 1,
+			"ReadBy": ["Component/Brand/FieldRecordIndex.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Brand/FieldRecordMetadata.astro",
+			"Kind": "component",
+			"Carries": "FieldRecordMetadata - the key/value run under a record's title block: `TARGET: Linux`, `LICENSE: CC0`, `SIGNAL: ABSENT`.",
+			"Lines": 42,
+			"Readers": 1,
+			"ReadBy": ["Component/Brand/FieldRecord.astro"],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Brand/FieldRecordMetadata/Type.ts",
+			"Kind": "component",
+			"Carries": "Type - the published shape of a record metadata list.",
+			"Lines": 35,
+			"Readers": 1,
+			"ReadBy": ["Component/Brand/FieldRecordMetadata.astro"],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Brand/FieldRecordSeal.tsx",
+			"Kind": "component",
+			"Carries": "Exports FieldRecordElement, FieldRecordSealProps, SealSize.",
+			"Lines": 417,
+			"Readers": 10,
+			"ReadBy": [
+				"Component/Brand/FieldRecord.astro",
+				"Component/Brand/SpecimenLabel.tsx",
+				"Component/Dynamic/Download/Record.astro",
+				"Component/Dynamic/DynamicHeroSection.tsx",
+				"Component/Home/ElementCard.astro",
+				"Component/Home/FeatureCard.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Brand/FieldRecordStatus.tsx",
+			"Kind": "component",
+			"Carries": "Exports FieldRecordStatusState, FieldRecordStatusTone, FieldRecordStatusProps.",
+			"Lines": 94,
+			"Readers": 8,
+			"ReadBy": [
+				"Component/Blog/BlogIndex.astro",
+				"Component/Brand/FieldRecord.astro",
+				"Component/Dynamic/Download/Install.astro",
+				"Component/Dynamic/Download/Record.astro",
+				"Component/Dynamic/DynamicHeroSection.tsx",
+				"Component/Record/RecordHero.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Brand/SemanticLedger.tsx",
+			"Kind": "component",
+			"Carries": "Exports StampTextProps, StampText, RouteTextProps, RouteText.",
+			"Lines": 179,
+			"Readers": 6,
+			"ReadBy": [
+				"Component/Brand/FieldRecord.astro",
+				"Component/Brand/SpecimenLabel.tsx",
+				"Component/Dynamic/Download/Install.astro",
+				"Component/Dynamic/Download/Record.astro",
+				"Component/Dynamic/DynamicHeroSection.tsx",
+				"Component/Record/RecordHero.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Brand/SpecimenLabel.tsx",
+			"Kind": "component",
+			"Carries": "Exports SpecimenLabelProps.",
+			"Lines": 183,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Contact/ContactBreadcrumb.astro",
+			"Kind": "component",
+			"Carries": "ContactBreadcrumb - the absorbed trail, kept as the bridge the Blog still uses.",
+			"Lines": 48,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Blog/BlogArticle.astro",
+				"Component/Blog/BlogIndex.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Contact/ContactPage.astro",
+			"Kind": "component",
+			"Carries": "ContactPage - the page chrome every Contact route shares.",
+			"Lines": 156,
+			"Readers": 3,
+			"ReadBy": [
+				"Component/Contact/ContactShell.astro",
+				"pages/Contact/Sale.astro",
+				"pages/Contact/index.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Contact/ContactShell.astro",
+			"Kind": "component",
+			"Carries": "ContactShell - one request route, in one file, composed as a record beside its form.",
+			"Lines": 185,
+			"Readers": 13,
+			"ReadBy": [
+				"pages/Contact/Amend.astro",
+				"pages/Contact/Claim.astro",
+				"pages/Contact/Deals.astro",
+				"pages/Contact/Erase.astro",
+				"pages/Contact/Guard.astro",
+				"pages/Contact/Hails.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Contact/Register.ts",
+			"Kind": "component",
+			"Carries": "Register - the hub's index as records, with the two facts a reader chooses by.",
+			"Lines": 118,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Contact/ContactShell.astro",
+				"pages/Contact/index.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Contact/Type.ts",
+			"Kind": "component",
+			"Carries": "Type - the Contact surface's own shapes.",
+			"Lines": 43,
+			"Readers": 1,
+			"ReadBy": ["Component/Contact/ContactPage.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dashboard/Data.ts",
+			"Kind": "component",
+			"Carries": "Data - the dashboard's privacy and data-rights directory, as data.",
+			"Lines": 147,
+			"Readers": 1,
+			"ReadBy": ["Component/Dashboard/PrivacyRequests.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dashboard/PrivacyRequests.astro",
+			"Kind": "component",
+			"Carries": "PrivacyRequests - the dashboard's data-rights directory: the six statutory rights, the four support channels, and the one entry that ends the account.",
+			"Lines": 129,
+			"Readers": 1,
+			"ReadBy": ["pages/Dashboard.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dashboard/Type.ts",
+			"Kind": "component",
+			"Carries": "Type - the shapes the dashboard's privacy directory renders.",
+			"Lines": 86,
+			"Readers": 1,
+			"ReadBy": ["Component/Dashboard/Data.ts"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Detail/BandFoot.astro",
+			"Kind": "component",
+			"Carries": "BandFoot - the band's colophon: one rule, the references, the folio.",
+			"Lines": 96,
+			"Readers": 7,
+			"ReadBy": [
+				"pages/Contents.astro",
+				"pages/Contributing.astro",
+				"pages/Download.astro",
+				"pages/Glossary.astro",
+				"pages/Legal/Privacy.astro",
+				"pages/Legal/Term.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Detail/Folio.astro",
+			"Kind": "component",
+			"Carries": "Folio - where in the document the reader has got to, and what is here.",
+			"Lines": 118,
+			"Readers": 3,
+			"ReadBy": [
+				"Component/Detail/BandFoot.astro",
+				"Component/Layout/Edge/EdgeTurn.astro",
+				"Component/Layout/Footer.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Detail/Leader.astro",
+			"Kind": "component",
+			"Carries": "Leader - the printed index entry: name, leader, figure, hanging note.",
+			"Lines": 212,
+			"Readers": 1,
+			"ReadBy": ["pages/Contents.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Detail/See.astro",
+			"Kind": "component",
+			"Carries": "See - the cross-reference: `↳ SEE`, then a route and why it is worth following.",
+			"Lines": 76,
+			"Readers": 1,
+			"ReadBy": ["Component/Detail/BandFoot.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Detail/Type.ts",
+			"Kind": "component",
+			"Carries": "The Detail layer's data shapes.",
+			"Lines": 65,
+			"Readers": 4,
+			"ReadBy": [
+				"Component/Detail/BandFoot.astro",
+				"Component/Detail/Folio.astro",
+				"Component/Detail/Leader.astro",
+				"Component/Detail/See.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Doc/Contents.ts",
+			"Kind": "component",
+			"Carries": "Contents - the page's own contents list, marked as the reader scrolls.",
+			"Lines": 161,
+			"Readers": 1,
+			"ReadBy": ["Component/Doc/DocContents.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Doc/DocAppendix.astro",
+			"Kind": "component",
+			"Carries": "DocAppendix - one of the three artifacts that close the documentation index.",
+			"Lines": 125,
+			"Readers": 1,
+			"ReadBy": ["pages/Doc.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Doc/DocArticle.astro",
+			"Kind": "component",
+			"Carries": "DocArticle - the reading shell every documentation surface shares: the page-level breadcrumb, then kicker, the page's only `h1`, standfirst, the metadata strip, then the body.",
+			"Lines": 245,
+			"Readers": 3,
+			"ReadBy": [
+				"pages/Doc.astro",
+				"pages/Doc/Rust.astro",
+				"pages/Doc/[...Slug].astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Doc/DocCard.astro",
+			"Kind": "component",
+			"Carries": "DocCard - one card of the documentation index: a title, the page's `description` under it, and the whole card as the way in.",
+			"Lines": 54,
+			"Readers": 1,
+			"ReadBy": ["pages/Doc.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Doc/DocContents.astro",
+			"Kind": "component",
+			"Carries": "DocContents - the page's own contents: the sections of this document, or the sections of this index, as a list of in-page anchors that marks where the reader is.",
+			"Lines": 94,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Doc/DocArticle.astro",
+				"Component/Doc/DocLayout.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Doc/DocContentsList.astro",
+			"Kind": "component",
+			"Carries": "DocContentsList - the rows of the page's own contents: one anchor per section, its position in the page as the marker column, its heading as the name.",
+			"Lines": 45,
+			"Readers": 1,
+			"ReadBy": ["Component/Doc/DocContents.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Doc/DocIndex.astro",
+			"Kind": "component",
+			"Carries": "DocIndex - one chapter of the documentation index: a `RecordBand` at `tone=\"bare\"` wrapping the chapter's card grid, and one `RecordEntry` per card inside the `jelly-card` that...",
+			"Lines": 113,
+			"Readers": 1,
+			"ReadBy": ["pages/Doc.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Doc/DocLayer.astro",
+			"Kind": "component",
+			"Carries": "DocLayer - the layer this page belongs to, as a map: every page in the same section, in the order the collection puts them, with the current page marked.",
+			"Lines": 95,
+			"Readers": 1,
+			"ReadBy": ["pages/Doc/[...Slug].astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Doc/DocLayout.astro",
+			"Kind": "component",
+			"Carries": "DocLayout - the documentation column: a sticky navigation rail beside the content column, and the same navigation collapsed into a panel above it on narrow viewports.",
+			"Lines": 156,
+			"Readers": 2,
+			"ReadBy": ["pages/Doc.astro", "pages/Doc/[...Slug].astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Doc/Rust/Data.ts",
+			"Kind": "component",
+			"Carries": "Data - the Rust API surface's crate list.",
+			"Lines": 113,
+			"Readers": 1,
+			"ReadBy": ["pages/Doc/Rust.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Doc/Rust/Type.ts",
+			"Kind": "component",
+			"Carries": "Type - the shapes the Rust API surface renders.",
+			"Lines": 26,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Doc/Rust/Data.ts",
+				"Component/Doc/RustViewer.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Doc/RustViewer.astro",
+			"Kind": "component",
+			"Carries": "RustViewer - the rustdoc frame and the crate switcher above it.",
+			"Lines": 115,
+			"Readers": 1,
+			"ReadBy": ["pages/Doc/Rust.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Doc/Type.ts",
+			"Kind": "component",
+			"Carries": "Type - the shapes the documentation surfaces render.",
+			"Lines": 187,
+			"Readers": 10,
+			"ReadBy": [
+				"Component/Doc/DocAppendix.astro",
+				"Component/Doc/DocArticle.astro",
+				"Component/Doc/DocCard.astro",
+				"Component/Doc/DocContents.astro",
+				"Component/Doc/DocContentsList.astro",
+				"Component/Doc/DocIndex.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Doc/Well.ts",
+			"Kind": "component",
+			"Carries": "Well - turn the document's fenced blocks into the site's own wells.",
+			"Lines": 456,
+			"Readers": 1,
+			"ReadBy": ["Component/Doc/DocArticle.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/AccountPage.tsx",
+			"Kind": "component",
+			"Carries": "AccountPage - orchestrates sign-in, sign-up, forgot-password, and reset-password views as a single-page flow.",
+			"Lines": 352,
+			"Readers": 2,
+			"ReadBy": [
+				"pages/Account/ForgotPassword.astro",
+				"pages/Account/ResetPassword.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/Architecture/Data.ts",
+			"Kind": "component",
+			"Carries": "Data - every label, family and derivation the architecture record prints.",
+			"Lines": 366,
+			"Readers": 1,
+			"ReadBy": ["Component/Dynamic/Roadmap/Data.ts"],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/Architecture/Type.ts",
+			"Kind": "component",
+			"Carries": "Type - the shapes the architecture record renders.",
+			"Lines": 57,
+			"Readers": 1,
+			"ReadBy": ["Component/Dynamic/Architecture/Data.ts"],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/Auth0Account.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 50,
+			"Readers": 2,
+			"ReadBy": [
+				"pages/Account/SignIn.astro",
+				"pages/Account/SignUp.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/Auth0AccountGate.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 338,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Dynamic/Auth0Account.tsx",
+				"Test/Component/Auth0AccountGate.test.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/Auth0CallbackHandler.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 127,
+			"Readers": 1,
+			"ReadBy": ["pages/OAuth/Success.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/Download/Data.ts",
+			"Kind": "component",
+			"Carries": "Data - every row, label and ordering the Download page renders.",
+			"Lines": 1316,
+			"Readers": 1,
+			"ReadBy": ["pages/Download.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/Download/Install.astro",
+			"Kind": "component",
+			"Carries": "Install - the only install path that exists today: the source build.",
+			"Lines": 111,
+			"Readers": 1,
+			"ReadBy": ["pages/Download.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/Download/PlatformMatrix.astro",
+			"Kind": "component",
+			"Carries": "PlatformMatrix - the record's platform ledger: three targets under the architecture and the four artifact fields a public release fills in.",
+			"Lines": 89,
+			"Readers": 2,
+			"ReadBy": [
+				"Test/Component/RecordGrammar.test.ts",
+				"pages/Download.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/Download/PreviousReleases.astro",
+			"Kind": "component",
+			"Carries": "PreviousReleases - the releases that came before this one, as a disclosure.",
+			"Lines": 76,
+			"Readers": 1,
+			"ReadBy": ["pages/Download.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/Download/Record.astro",
+			"Kind": "component",
+			"Carries": "Record - the Download page's one artifact: `# RELEASE_01`.",
+			"Lines": 111,
+			"Readers": 1,
+			"ReadBy": ["pages/Download.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/Download/Region.astro",
+			"Kind": "component",
+			"Carries": "Region - one region of the Download page's `# RELEASE_01` artifact.",
+			"Lines": 56,
+			"Readers": 1,
+			"ReadBy": ["pages/Download.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/Download/Requirements.astro",
+			"Kind": "component",
+			"Carries": "Requirements - what a build needs, and what the source build needs first.",
+			"Lines": 132,
+			"Readers": 2,
+			"ReadBy": [
+				"Test/Component/RecordGrammar.test.ts",
+				"pages/Download.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/Download/Type.ts",
+			"Kind": "component",
+			"Carries": "Type - the shapes the Download page hands to its record.",
+			"Lines": 278,
+			"Readers": 8,
+			"ReadBy": [
+				"Component/Dynamic/Download/Data.ts",
+				"Component/Dynamic/Download/Install.astro",
+				"Component/Dynamic/Download/PlatformMatrix.astro",
+				"Component/Dynamic/Download/PreviousReleases.astro",
+				"Component/Dynamic/Download/Record.astro",
+				"Component/Dynamic/Download/Region.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/Download/Verify.astro",
+			"Kind": "component",
+			"Carries": "Verify - the checksum and signature record.",
+			"Lines": 48,
+			"Readers": 1,
+			"ReadBy": ["pages/Download.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DownloadMasthead.astro",
+			"Kind": "component",
+			"Carries": "DownloadMasthead - the page's one level-one heading, the sentence that answers \"can I install this today\", and the eight marks the page has always carried.",
+			"Lines": 79,
+			"Readers": 1,
+			"ReadBy": ["pages/Download.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicAccountProfile.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 1099,
+			"Readers": 1,
+			"ReadBy": ["pages/Account/index.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicAuthHeader.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 44,
+			"Readers": 2,
+			"ReadBy": ["pages/Account/index.astro", "pages/Dashboard.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicAuthStatus.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 162,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Dynamic/DynamicAuthHeader.tsx",
+				"Test/Component/DynamicAuthStatus.test.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicBadge.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 79,
+			"Readers": 1,
+			"ReadBy": ["pages/Specimen.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicBlogCard.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 34,
+			"Readers": 2,
+			"ReadBy": [
+				"Test/Component/DynamicBlogCard.test.tsx",
+				"pages/Specimen.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicButton.tsx",
+			"Kind": "component",
+			"Carries": "Exports DynamicButtonProps.",
+			"Lines": 175,
+			"Readers": 10,
+			"ReadBy": [
+				"Component/Dynamic/Auth0AccountGate.tsx",
+				"Component/Dynamic/DynamicEmailVerification.tsx",
+				"Component/Dynamic/DynamicForgotPassword.tsx",
+				"Component/Dynamic/DynamicResetPassword.tsx",
+				"Component/Dynamic/DynamicSignIn.tsx",
+				"Component/Dynamic/DynamicSignUp.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicCard.tsx",
+			"Kind": "component",
+			"Carries": "Exports SimpleCard.",
+			"Lines": 121,
+			"Readers": 2,
+			"ReadBy": [
+				"Test/Component/DynamicCard.test.tsx",
+				"pages/Specimen.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicCheckbox.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 103,
+			"Readers": 1,
+			"ReadBy": ["Component/Dynamic/DynamicSignUp.tsx"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicContactForm.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 862,
+			"Readers": 1,
+			"ReadBy": ["Component/Contact/ContactShell.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicDashboardUser.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 657,
+			"Readers": 1,
+			"ReadBy": ["pages/Dashboard.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicDocSidebar.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 631,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Doc/DocLayout.astro",
+				"Test/Component/DocSidebarFilter.test.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicEmailVerification.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 297,
+			"Readers": 1,
+			"ReadBy": ["Component/Dynamic/VerifyPage.tsx"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicFooter.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 191,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/DynamicForgotPassword.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 167,
+			"Readers": 1,
+			"ReadBy": ["Component/Dynamic/AccountPage.tsx"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicHeader.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 90,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/DynamicHeroSection.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 655,
+			"Readers": 2,
+			"ReadBy": [
+				"Test/Component/DynamicHeroSection.test.tsx",
+				"pages/index.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicInput.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 113,
+			"Readers": 7,
+			"ReadBy": [
+				"Component/Dynamic/DynamicEmailVerification.tsx",
+				"Component/Dynamic/DynamicForgotPassword.tsx",
+				"Component/Dynamic/DynamicPortal.tsx",
+				"Component/Dynamic/DynamicResetPassword.tsx",
+				"Component/Dynamic/DynamicSignIn.tsx",
+				"Component/Dynamic/DynamicSignUp.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicLabel.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 37,
+			"Readers": 1,
+			"ReadBy": ["pages/Specimen.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicLocalFirstScan.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 380,
+			"Readers": 1,
+			"ReadBy": ["pages/Dashboard.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicPortal.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 1557,
+			"Readers": 1,
+			"ReadBy": ["Test/Component/DynamicPortal.test.tsx"],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/DynamicResetPassword.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 357,
+			"Readers": 1,
+			"ReadBy": ["Component/Dynamic/AccountPage.tsx"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicRichText.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 18,
+			"Readers": 1,
+			"ReadBy": ["pages/Specimen.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicSignIn.tsx",
+			"Kind": "component",
+			"Carries": "DynamicSignIn - the credential form for the Cloud tier.",
+			"Lines": 255,
+			"Readers": 1,
+			"ReadBy": ["Component/Dynamic/AccountPage.tsx"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicSignUp.tsx",
+			"Kind": "component",
+			"Carries": "DynamicSignUp - the account registration form for the Cloud tier.",
+			"Lines": 343,
+			"Readers": 1,
+			"ReadBy": ["Component/Dynamic/AccountPage.tsx"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicStateReport.tsx",
+			"Kind": "component",
+			"Carries": "Exports StateLabel, StateVocabulary, StateReportProps.",
+			"Lines": 132,
+			"Readers": 6,
+			"ReadBy": [
+				"Component/Dynamic/Auth0AccountGate.tsx",
+				"Component/Dynamic/DynamicAccountProfile.tsx",
+				"Component/Dynamic/DynamicDashboardUser.tsx",
+				"Component/Dynamic/DynamicEmailVerification.tsx",
+				"Component/Dynamic/DynamicForgotPassword.tsx",
+				"Component/Dynamic/DynamicResetPassword.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicTable.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 80,
+			"Readers": 1,
+			"ReadBy": ["pages/Specimen.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicTransparency.tsx",
+			"Kind": "component",
+			"Carries": "DynamicTransparency - build transparency section showing SBOM, dependency tree, and build reproducibility information.",
+			"Lines": 523,
+			"Readers": 1,
+			"ReadBy": ["pages/Download.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/DynamicVerificationInfo.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 242,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/Hero/Data.ts",
+			"Kind": "component",
+			"Carries": "Data - the homepage hero band, as data.",
+			"Lines": 279,
+			"Readers": 3,
+			"ReadBy": [
+				"Component/Dynamic/DynamicHeroSection.tsx",
+				"Component/Home/FeatureBand.astro",
+				"pages/index.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/Hero/Type.ts",
+			"Kind": "component",
+			"Carries": "Type - the shapes the homepage hero band hands to its own anatomy.",
+			"Lines": 179,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Dynamic/Hero/Data.ts",
+				"Component/Dynamic/Interface/Property/Hero.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/MermaidFallback.astro",
+			"Kind": "component",
+			"Carries": "Client-side Mermaid fallback renderer.",
+			"Lines": 127,
+			"Readers": 2,
+			"ReadBy": ["pages/Blog/[Slug].astro", "pages/Doc/[...Slug].astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/Password/Strength.ts",
+			"Kind": "component",
+			"Carries": "Password strength, as data.",
+			"Lines": 45,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Dynamic/DynamicResetPassword.tsx",
+				"Component/Dynamic/DynamicSignUp.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/Platform/Data.ts",
+			"Kind": "component",
+			"Carries": "Data - the columns, rows and source lines of the platform matrix.",
+			"Lines": 115,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/Platform/Type.ts",
+			"Kind": "component",
+			"Carries": "Type - the shape the platform matrix renders as.",
+			"Lines": 26,
+			"Readers": 1,
+			"ReadBy": ["Component/Dynamic/Platform/Data.ts"],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/Properties/Data.ts",
+			"Kind": "component",
+			"Carries": "Data - the six properties as records, and the band's own words.",
+			"Lines": 267,
+			"Readers": 5,
+			"ReadBy": [
+				"Component/Dynamic/DynamicHeroSection.tsx",
+				"Component/Dynamic/Properties/Grid.astro",
+				"Component/Home/FeatureBand.astro",
+				"Test/Component/PropertiesGrid.test.tsx",
+				"pages/Specimen.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/Properties/Grid.astro",
+			"Kind": "component",
+			"Carries": "Grid - the six properties as records: three claims, and the three the layer files against the pages that argue them.",
+			"Lines": 121,
+			"Readers": 2,
+			"ReadBy": [
+				"Test/Component/PropertiesGrid.test.tsx",
+				"pages/Specimen.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/Properties/Type.ts",
+			"Kind": "component",
+			"Carries": "Type - the shape a property renders as, and the shape the proof band splits it into.",
+			"Lines": 31,
+			"Readers": 3,
+			"ReadBy": [
+				"Component/Dynamic/Properties/Data.ts",
+				"Component/Dynamic/Properties/Grid.astro",
+				"Test/Component/PropertiesGrid.test.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/Roadmap/Data.ts",
+			"Kind": "component",
+			"Carries": "Data - every row, label and derivation the roadmap band prints.",
+			"Lines": 212,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/Roadmap/Type.ts",
+			"Kind": "component",
+			"Carries": "Type - the shapes a release phase renders as.",
+			"Lines": 56,
+			"Readers": 1,
+			"ReadBy": ["Component/Dynamic/Roadmap/Data.ts"],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/Type.ts",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 6,
+			"Readers": 3,
+			"ReadBy": [
+				"Test/Component/DynamicButton.test.tsx",
+				"Test/Component/DynamicCard.test.tsx",
+				"Test/Component/DynamicInput.test.tsx"
+			],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/Type/Route/Account.ts",
+			"Kind": "component",
+			"Carries": "Exports Type.",
+			"Lines": 4,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/Type/Route/Verify.ts",
+			"Kind": "component",
+			"Carries": "Exports Type.",
+			"Lines": 4,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/Type/State/Reset.ts",
+			"Kind": "component",
+			"Carries": "Exports Type.",
+			"Lines": 4,
+			"Readers": 1,
+			"ReadBy": ["Component/Dynamic/DynamicResetPassword.tsx"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/Type/State/Verification.ts",
+			"Kind": "component",
+			"Carries": "Exports Type.",
+			"Lines": 4,
+			"Readers": 1,
+			"ReadBy": ["Component/Dynamic/DynamicEmailVerification.tsx"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Dynamic/VerifyPage.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 193,
+			"Readers": 1,
+			"ReadBy": ["pages/Verify.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/ErrorBoundary.tsx",
+			"Kind": "component",
+			"Carries": "Exports ErrorBoundary.",
+			"Lines": 135,
+			"Readers": 1,
+			"ReadBy": ["Test/Component/ErrorBoundary.test.tsx"],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Home/ArchitectureBand.astro",
+			"Kind": "component",
+			"Carries": "ArchitectureBand - `#testimonials`: all fifteen element records, as a wall.",
+			"Lines": 31,
+			"Readers": 1,
+			"ReadBy": ["pages/index.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Home/Arrow.astro",
+			"Kind": "component",
+			"Carries": "Arrow - the external-link mark that follows a record's own name.",
+			"Lines": 26,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Home/ElementCard.astro",
+				"Component/Home/FeatureCard.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Home/Band.astro",
+			"Kind": "component",
+			"Carries": "Band - one page band's shell: its record head, and the body below.",
+			"Lines": 139,
+			"Readers": 5,
+			"ReadBy": [
+				"Component/Home/ArchitectureBand.astro",
+				"Component/Home/FeatureBand.astro",
+				"Component/Home/PlatformBand.astro",
+				"Component/Home/RoadmapBand.astro",
+				"Component/Home/WorkingBand.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Home/ElementCard.astro",
+			"Kind": "component",
+			"Carries": "ElementCard - one of the fifteen element records in the architecture band.",
+			"Lines": 178,
+			"Readers": 1,
+			"ReadBy": ["Component/Home/ArchitectureBand.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Home/FeatureBand.astro",
+			"Kind": "component",
+			"Carries": "FeatureBand - `# OBSERVATION_01`: the six element records that carry the claim.",
+			"Lines": 63,
+			"Readers": 2,
+			"ReadBy": [
+				"Test/Component/DynamicFeatures.test.tsx",
+				"pages/index.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Home/FeatureCard.astro",
+			"Kind": "component",
+			"Carries": "FeatureCard - one of the six records in the features band.",
+			"Lines": 71,
+			"Readers": 1,
+			"ReadBy": ["Component/Home/FeatureBand.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Home/PlatformBand.astro",
+			"Kind": "component",
+			"Carries": "PlatformBand - `# ACTION_01`: the three platform artefacts, as one manifest.",
+			"Lines": 36,
+			"Readers": 1,
+			"ReadBy": ["pages/index.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Home/PlatformCard.astro",
+			"Kind": "component",
+			"Carries": "PlatformCard - one artefact row of the download manifest.",
+			"Lines": 143,
+			"Readers": 1,
+			"ReadBy": ["Component/Home/PlatformBand.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Home/RecordAnatomy.astro",
+			"Kind": "component",
+			"Carries": "RecordAnatomy - the middle of every record card on the homepage.",
+			"Lines": 79,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Home/ElementCard.astro",
+				"Component/Home/FeatureCard.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Home/ReleaseCard.astro",
+			"Kind": "component",
+			"Carries": "ReleaseCard - one of the two release records in the roadmap manifest.",
+			"Lines": 151,
+			"Readers": 1,
+			"ReadBy": ["Component/Home/RoadmapBand.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Home/RoadmapBand.astro",
+			"Kind": "component",
+			"Carries": "RoadmapBand - `# CONDITIONS_01`: the two release records, as one manifest.",
+			"Lines": 49,
+			"Readers": 2,
+			"ReadBy": [
+				"Test/Component/DynamicPricing.test.tsx",
+				"pages/index.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Home/Tone.ts",
+			"Kind": "component",
+			"Carries": "Tone - the STATUS vocabulary's three tones, resolved from the value.",
+			"Lines": 35,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Home/PlatformCard.astro",
+				"Component/Home/RecordAnatomy.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Home/WorkingBand.astro",
+			"Kind": "component",
+			"Carries": "WorkingBand - `# METHOD_01`: how the claim on this page is checked.",
+			"Lines": 120,
+			"Readers": 1,
+			"ReadBy": ["pages/index.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Layout/Edge/EdgeLeaf.astro",
+			"Kind": "component",
+			"Carries": "EdgeLeaf - the first band: the sheet's headnote, printed by the frame.",
+			"Lines": 300,
+			"Readers": 1,
+			"ReadBy": ["Layout/Base.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Layout/Edge/EdgeTurn.astro",
+			"Kind": "component",
+			"Carries": "EdgeTurn - the last band: the catchword, and the sheet's folio.",
+			"Lines": 215,
+			"Readers": 1,
+			"ReadBy": ["Layout/Base.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Layout/Footer.astro",
+			"Kind": "component",
+			"Carries": "Footer - the record's closing band, read as a colophon.",
+			"Lines": 200,
+			"Readers": 1,
+			"ReadBy": ["Layout/Base.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Layout/Footer/Data.ts",
+			"Kind": "component",
+			"Carries": "Footer data - the record's closing facts, the destinations behind the linked ones, and the two link rows the footer has always carried.",
+			"Lines": 348,
+			"Readers": 1,
+			"ReadBy": ["Component/Layout/Footer.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Layout/Footer/Type.ts",
+			"Kind": "component",
+			"Carries": "Footer - the shapes its data module publishes.",
+			"Lines": 59,
+			"Readers": 1,
+			"ReadBy": ["Component/Layout/Footer/Data.ts"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Layout/Frame/Data.ts",
+			"Kind": "component",
+			"Carries": "Frame data - the dossier's ten parts, and the route-to-part lookup the frame is composed from.",
+			"Lines": 266,
+			"Readers": 8,
+			"ReadBy": [
+				"Component/Layout/Edge/EdgeLeaf.astro",
+				"Component/Layout/Footer/Data.ts",
+				"Component/Layout/Frame/Rail.tsx",
+				"Component/Layout/Frame/RunningHead.tsx",
+				"Component/UI/Palette/Data.ts",
+				"Content/Edge/Register.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Layout/Frame/Rail.tsx",
+			"Kind": "component",
+			"Carries": "FrameRail - the dossier's thumb index.",
+			"Lines": 104,
+			"Readers": 1,
+			"ReadBy": ["Component/Layout/Header.tsx"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Layout/Frame/RunningHead.tsx",
+			"Kind": "component",
+			"Carries": "RunningHead - the strip under the bar, read as a printed running head.",
+			"Lines": 126,
+			"Readers": 1,
+			"ReadBy": ["Component/Layout/Header.tsx"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Layout/Header.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 416,
+			"Readers": 31,
+			"ReadBy": [
+				"Component/Contact/ContactPage.astro",
+				"Component/Dynamic/DynamicAuthHeader.tsx",
+				"Component/Dynamic/DynamicHeader.tsx",
+				"Component/Dynamic/Interface/Content/Page/Account.ts",
+				"Component/Dynamic/Interface/Content/Page/Download.ts",
+				"Component/Dynamic/Interface/Content/Page/Home.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Layout/Header/Data.ts",
+			"Kind": "component",
+			"Carries": "Header data - the four destinations, the three actions and the status line, plus the two derivations the bar needs: translated labels and active state.",
+			"Lines": 227,
+			"Readers": 1,
+			"ReadBy": ["Component/Layout/Header.tsx"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Layout/Header/Type.ts",
+			"Kind": "component",
+			"Carries": "Header - the shapes its data module publishes.",
+			"Lines": 97,
+			"Readers": 6,
+			"ReadBy": [
+				"Component/Dynamic/DynamicHeader.tsx",
+				"Component/Layout/Frame/Data.ts",
+				"Component/Layout/Frame/Rail.tsx",
+				"Component/Layout/Frame/RunningHead.tsx",
+				"Component/Layout/Header.tsx",
+				"Component/Layout/Header/Data.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Layout/LocaleSwitcher.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 120,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Layout/Footer.astro",
+				"Component/Layout/Header.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Layout/Print/PrintRecord.astro",
+			"Kind": "component",
+			"Carries": "PrintRecord - the sheet's own print action, printed as a colophon row.",
+			"Lines": 132,
+			"Readers": 1,
+			"ReadBy": ["Component/Layout/Footer.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Mark/Mark.astro",
+			"Kind": "component",
+			"Carries": "Mark - the site's small set of signs, rendered once.",
+			"Lines": 156,
+			"Readers": 20,
+			"ReadBy": [
+				"Component/Auth/AuthShell.astro",
+				"Component/Detail/Leader.astro",
+				"Component/Dynamic/Download/PreviousReleases.astro",
+				"Component/Dynamic/DownloadMasthead.astro",
+				"Component/More/LexiconEntry.astro",
+				"Component/More/Onward.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Mark/SealNeutral.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 98,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Brand/FieldRecordSeal.tsx",
+				"Component/UI/SpecimenSeal.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Mark/Type.ts",
+			"Kind": "component",
+			"Carries": "Type - the mark set's vocabulary, as values.",
+			"Lines": 96,
+			"Readers": 1,
+			"ReadBy": ["Component/Mark/Mark.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/More/Lexicon.astro",
+			"Kind": "component",
+			"Carries": "Lexicon - one run of the glossary: a letter index, then the words filed under each letter.",
+			"Lines": 139,
+			"Readers": 1,
+			"ReadBy": ["pages/Glossary.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/More/LexiconEntry.astro",
+			"Kind": "component",
+			"Carries": "LexiconEntry - one word, defined: the term in the margin, the definition on the measure, and the citations under it.",
+			"Lines": 142,
+			"Readers": 1,
+			"ReadBy": ["Component/More/Lexicon.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/More/Onward.astro",
+			"Kind": "component",
+			"Carries": "Onward - the routing register: what the reader wanted, and where it is.",
+			"Lines": 94,
+			"Readers": 6,
+			"ReadBy": [
+				"pages/404.astro",
+				"pages/Compare.astro",
+				"pages/Contents.astro",
+				"pages/Glossary.astro",
+				"pages/Specimen.astro",
+				"pages/Status.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/More/QuietHead.astro",
+			"Kind": "component",
+			"Carries": "QuietHead - the opening of a reference document: a marker, a bare `h1`, one proposition, and the extent as a white facts strip.",
+			"Lines": 84,
+			"Readers": 2,
+			"ReadBy": ["pages/Glossary.astro", "pages/Motion.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/More/StatusBoard.astro",
+			"Kind": "component",
+			"Carries": "StatusBoard - a set of records partitioned by the state each one states.",
+			"Lines": 190,
+			"Readers": 1,
+			"ReadBy": ["pages/Status.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Motion/MotionExpand.astro",
+			"Kind": "component",
+			"Carries": "MotionExpand - a record that opens in place, revealing the facts its row was summarising.",
+			"Lines": 145,
+			"Readers": 1,
+			"ReadBy": ["pages/Motion.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Motion/MotionFold.astro",
+			"Kind": "component",
+			"Carries": "MotionFold - a disclosure with content behind it, opening like a fold.",
+			"Lines": 181,
+			"Readers": 1,
+			"ReadBy": ["pages/Motion.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Motion/MotionOrigin.astro",
+			"Kind": "component",
+			"Carries": "MotionOrigin - the server half of the origin specimen.",
+			"Lines": 15,
+			"Readers": 1,
+			"ReadBy": ["pages/Motion.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Motion/MotionOrigin.tsx",
+			"Kind": "component",
+			"Carries": "Exports MotionOrigin.",
+			"Lines": 84,
+			"Readers": 1,
+			"ReadBy": ["Component/Motion/MotionOrigin.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Motion/MotionSequence.astro",
+			"Kind": "component",
+			"Carries": "MotionSequence - a state change drawn: the states a record moves through, and the motion that carries it from one to the next.",
+			"Lines": 142,
+			"Readers": 1,
+			"ReadBy": ["pages/Motion.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Motion/MotionSkeleton.astro",
+			"Kind": "component",
+			"Carries": "MotionSkeleton - the loading arm, printed in the record grammar.",
+			"Lines": 94,
+			"Readers": 1,
+			"ReadBy": ["pages/Motion.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Motion/MotionSpecimen.astro",
+			"Kind": "component",
+			"Carries": "MotionSpecimen - one motion, stated on one side of a hairline and shown on the other.",
+			"Lines": 129,
+			"Readers": 1,
+			"ReadBy": ["pages/Motion.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Motion/Type.ts",
+			"Kind": "component",
+			"Carries": "Type - the shapes the motion layer's components render.",
+			"Lines": 183,
+			"Readers": 4,
+			"ReadBy": [
+				"Component/Motion/MotionExpand.astro",
+				"Component/Motion/MotionFold.astro",
+				"Component/Motion/MotionSequence.astro",
+				"Component/Motion/MotionSpecimen.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Provider/AnalyticsProvider.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 100,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Provider/PageviewTracker.tsx",
+				"Layout/Base.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Provider/Auth0Provider.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 50,
+			"Readers": 6,
+			"ReadBy": [
+				"Component/Dynamic/Auth0Account.tsx",
+				"Component/Dynamic/Auth0CallbackHandler.tsx",
+				"Component/Dynamic/DynamicAccountProfile.tsx",
+				"Component/Dynamic/DynamicAuthHeader.tsx",
+				"Component/Dynamic/DynamicContactForm.tsx",
+				"Component/Dynamic/DynamicDashboardUser.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Provider/PageviewTracker.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 98,
+			"Readers": 1,
+			"ReadBy": ["Layout/Base.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Reading/ReadingDocument.astro",
+			"Kind": "component",
+			"Carries": "ReadingDocument - the reading surface: the facts that date and scope a document, an index into it, and one measure to read it on.",
+			"Lines": 188,
+			"Readers": 4,
+			"ReadBy": [
+				"pages/Contributing.astro",
+				"pages/Legal/Privacy.astro",
+				"pages/Legal/Term.astro",
+				"pages/License.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Reading/Type.ts",
+			"Kind": "component",
+			"Carries": "Reading - the shapes the reading surface renders.",
+			"Lines": 35,
+			"Readers": 7,
+			"ReadBy": [
+				"Component/Reading/ReadingDocument.astro",
+				"Component/Trust/TrustContents.astro",
+				"Component/Trust/TrustContentsList.astro",
+				"Library/Document/Contributing/Data.ts",
+				"Library/Document/License/Data.ts",
+				"Library/Document/Privacy/Data.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordArchive.astro",
+			"Kind": "component",
+			"Carries": "RecordArchive - many records in one physical form: the archive index.",
+			"Lines": 168,
+			"Readers": 2,
+			"ReadBy": ["pages/Contents.astro", "pages/Doc.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordAside.astro",
+			"Kind": "component",
+			"Carries": "RecordAside - a folded aside: what the record keeps but does not lead with.",
+			"Lines": 132,
+			"Readers": 4,
+			"ReadBy": [
+				"Component/Blog/BlogArticle.astro",
+				"Component/Contact/ContactShell.astro",
+				"pages/Account/index.astro",
+				"pages/Download.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordBand.astro",
+			"Kind": "component",
+			"Carries": "RecordBand - the section grammar itself.",
+			"Lines": 81,
+			"Readers": 7,
+			"ReadBy": [
+				"Component/Doc/DocIndex.astro",
+				"pages/Compare.astro",
+				"pages/Contents.astro",
+				"pages/Glossary.astro",
+				"pages/Motion.astro",
+				"pages/Specimen.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordCompare.astro",
+			"Kind": "component",
+			"Carries": "RecordCompare - one axis, its stops, and where each thing sits on it.",
+			"Lines": 178,
+			"Readers": 3,
+			"ReadBy": [
+				"pages/Compare.astro",
+				"pages/Download.astro",
+				"pages/Status.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordEntry.astro",
+			"Kind": "component",
+			"Carries": "RecordEntry - one record in a set (element, edition, article, doc): index marker, optional glyph, name, chip row, one-paragraph body, optional link.",
+			"Lines": 72,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Doc/DocIndex.astro",
+				"Component/Dynamic/Properties/Grid.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordFailure.astro",
+			"Kind": "component",
+			"Carries": "RecordFailure - one documented way the thing breaks: its name, the state word, what the reader sees, why, and the next step.",
+			"Lines": 91,
+			"Readers": 1,
+			"ReadBy": ["Component/Home/WorkingBand.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordFigure.astro",
+			"Kind": "component",
+			"Carries": "RecordFigure - evidence, not illustration: a framed figure, a caption at caption weight, and the provenance line that says what the picture is evidence *of*.",
+			"Lines": 205,
+			"Readers": 3,
+			"ReadBy": [
+				"Component/Blog/BlogIndex.astro",
+				"Test/Component/RecordGrammar.test.ts",
+				"pages/404.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordHero.astro",
+			"Kind": "component",
+			"Carries": "RecordHero - the site's signature artifact as one block: the field record beside its evidence, one hairline between them, and the record's mandatory blank interval inside the card.",
+			"Lines": 206,
+			"Readers": 4,
+			"ReadBy": [
+				"Test/Component/RecordGrammar.test.ts",
+				"pages/404.astro",
+				"pages/Compare.astro",
+				"pages/Contents.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordInset.astro",
+			"Kind": "component",
+			"Carries": "RecordInset - a marginal note that can hold a figure.",
+			"Lines": 267,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Blog/BlogArticle.astro",
+				"pages/Doc/[...Slug].astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordInstrument.astro",
+			"Kind": "component",
+			"Carries": "RecordInstrument - a measured panel: figures with their sources.",
+			"Lines": 133,
+			"Readers": 4,
+			"ReadBy": [
+				"Component/Dynamic/Download/PlatformMatrix.astro",
+				"Test/Component/RecordGrammar.test.ts",
+				"pages/Contents.astro",
+				"pages/Status.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordLedger.astro",
+			"Kind": "component",
+			"Carries": "RecordLedger - the site's factual spine as rows: a mono key, an ink value, an optional qualifier under the value, and at most one row at display weight.",
+			"Lines": 254,
+			"Readers": 23,
+			"ReadBy": [
+				"Component/Blog/BlogArticle.astro",
+				"Component/Contact/ContactShell.astro",
+				"Component/Dynamic/Download/Record.astro",
+				"Component/Dynamic/Download/Requirements.astro",
+				"Component/Dynamic/Download/Verify.astro",
+				"Component/Home/ElementCard.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordMargin.astro",
+			"Kind": "component",
+			"Carries": "RecordMargin - one annotation, printed in the margin of the record it belongs to.",
+			"Lines": 132,
+			"Readers": 5,
+			"ReadBy": [
+				"Component/Blog/BlogArticle.astro",
+				"Component/Contact/ContactShell.astro",
+				"pages/Doc/[...Slug].astro",
+				"pages/Glossary.astro",
+				"pages/Motion.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordMatrix.astro",
+			"Kind": "component",
+			"Carries": "RecordMatrix - comparison across columns: a header row carrying one ink per column, hairline rows and an optional caption.",
+			"Lines": 200,
+			"Readers": 7,
+			"ReadBy": [
+				"Component/Dynamic/Download/PlatformMatrix.astro",
+				"Component/Dynamic/Download/PreviousReleases.astro",
+				"pages/Compare.astro",
+				"pages/Contents.astro",
+				"pages/Dashboard.astro",
+				"pages/Motion.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordPair.astro",
+			"Kind": "component",
+			"Carries": "RecordPair - two things read against each other.",
+			"Lines": 184,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Dynamic/Download/Requirements.astro",
+				"Test/Component/RecordGrammar.test.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordPlate.astro",
+			"Kind": "component",
+			"Carries": "RecordPlate - the evidence the record is about, at plate scale.",
+			"Lines": 188,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Doc/DocArticle.astro",
+				"pages/Download.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordPlateSet.astro",
+			"Kind": "component",
+			"Carries": "RecordPlateSet - many figures of one subject, read as a field.",
+			"Lines": 223,
+			"Readers": 2,
+			"ReadBy": ["pages/Contents.astro", "pages/Download.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordStage.astro",
+			"Kind": "component",
+			"Carries": "RecordStage - an ordered process: a rail of numbered steps, or a field of numbered plates.",
+			"Lines": 100,
+			"Readers": 5,
+			"ReadBy": [
+				"Component/Contact/ContactShell.astro",
+				"pages/Contact/index.astro",
+				"pages/Contents.astro",
+				"pages/Status.astro",
+				"pages/index.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordStamp.astro",
+			"Kind": "component",
+			"Carries": "RecordStamp - the mark that says this record is what it claims to be.",
+			"Lines": 143,
+			"Readers": 2,
+			"ReadBy": ["pages/Contents.astro", "pages/Download.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordTrace.astro",
+			"Kind": "component",
+			"Carries": "RecordTrace - the path a claim can be checked along: a numbered run of files, routes or commands, each with the one thing it carries, closed by the source the trace itself was r...",
+			"Lines": 104,
+			"Readers": 4,
+			"ReadBy": [
+				"Component/Home/ElementCard.astro",
+				"Component/Home/WorkingBand.astro",
+				"pages/Compare.astro",
+				"pages/Status.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordTranscript.astro",
+			"Kind": "component",
+			"Carries": "RecordTranscript - a session, printed as it happened.",
+			"Lines": 231,
+			"Readers": 2,
+			"ReadBy": ["pages/Doc/[...Slug].astro", "pages/Download.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RecordWell.astro",
+			"Kind": "component",
+			"Carries": "RecordWell - a command, config block or transcript: a recessed mono body in a hairline frame, under a title bar carrying the label and the copy control.",
+			"Lines": 126,
+			"Readers": 6,
+			"ReadBy": [
+				"Component/Dynamic/Download/Install.astro",
+				"Component/Dynamic/Download/Verify.astro",
+				"pages/Compare.astro",
+				"pages/License.astro",
+				"pages/Status.astro",
+				"pages/Verify.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/Register.astro",
+			"Kind": "component",
+			"Carries": "Register - the register line, printed once for every block that has one.",
+			"Lines": 75,
+			"Readers": 3,
+			"ReadBy": [
+				"Component/Blog/BlogIndex.astro",
+				"Component/Detail/Leader.astro",
+				"Component/Record/RecordLedger.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/RegisterLine.ts",
+			"Kind": "component",
+			"Carries": "RegisterLine - the one shape a register takes, and the one place its line is composed.",
+			"Lines": 180,
+			"Readers": 18,
+			"ReadBy": [
+				"Component/Blog/BlogArticle.astro",
+				"Component/Blog/BlogIndex.astro",
+				"Component/Contact/ContactShell.astro",
+				"Component/Detail/Leader.astro",
+				"Component/Home/ElementCard.astro",
+				"Component/Home/WorkingBand.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Record/Type.ts",
+			"Kind": "component",
+			"Carries": "Type - the data shapes the Record layer's ten blocks render.",
+			"Lines": 1353,
+			"Readers": 66,
+			"ReadBy": [
+				"Component/Blog/BlogArticle.astro",
+				"Component/Blog/Data.ts",
+				"Component/Contact/ContactShell.astro",
+				"Component/Detail/Leader.astro",
+				"Component/Doc/DocArticle.astro",
+				"Component/Doc/Type.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Route/Trail.astro",
+			"Kind": "component",
+			"Carries": "Trail - the site's one breadcrumb grammar.",
+			"Lines": 61,
+			"Readers": 16,
+			"ReadBy": [
+				"Component/Auth/AuthShell.astro",
+				"Component/Contact/ContactBreadcrumb.astro",
+				"Component/Contact/ContactPage.astro",
+				"pages/Account/index.astro",
+				"pages/Compare.astro",
+				"pages/Contents.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Route/Type.ts",
+			"Kind": "component",
+			"Carries": "The Route surface's contract.",
+			"Lines": 23,
+			"Readers": 5,
+			"ReadBy": [
+				"Component/Auth/AuthShell.astro",
+				"Component/Auth/Data.ts",
+				"Component/Contact/ContactBreadcrumb.astro",
+				"Component/Route/Trail.astro",
+				"Library/Contact/Data.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Shell/Language.ts",
+			"Kind": "component",
+			"Carries": "Language - the four composition languages, and the register that files a route under one of them.",
+			"Lines": 399,
+			"Readers": 3,
+			"ReadBy": [
+				"Component/Shell/PageShell.astro",
+				"Layout/Base.astro",
+				"pages/Contents.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Shell/PageShell.astro",
+			"Kind": "component",
+			"Carries": "PageShell - the shell every composed page wears, in one of four languages.",
+			"Lines": 234,
+			"Readers": 10,
+			"ReadBy": [
+				"pages/404.astro",
+				"pages/Account/index.astro",
+				"pages/Compare.astro",
+				"pages/Contact/Sale.astro",
+				"pages/Doc/Rust.astro",
+				"pages/Glossary.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Shell/ShellPanes.astro",
+			"Kind": "component",
+			"Carries": "ShellPanes - the workspace's panes: two instruments side by side with the site's hairline between them, and a drawer for what does not fit either.",
+			"Lines": 165,
+			"Readers": 3,
+			"ReadBy": [
+				"pages/Account/index.astro",
+				"pages/Compare.astro",
+				"pages/Doc/Rust.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Shell/ShellPlate.astro",
+			"Kind": "component",
+			"Carries": "ShellPlate - the plate language's one artifact: a full-bleed figure with a caption channel beside it.",
+			"Lines": 196,
+			"Readers": 2,
+			"ReadBy": ["pages/404.astro", "pages/OAuth/Success.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Shell/ShellRail.astro",
+			"Kind": "component",
+			"Carries": "ShellRail - the rail primitive: a register line and rows, in a track beside the page's main column.",
+			"Lines": 193,
+			"Readers": 6,
+			"ReadBy": [
+				"pages/Account/index.astro",
+				"pages/Compare.astro",
+				"pages/Contact/Sale.astro",
+				"pages/Doc/Rust.astro",
+				"pages/Glossary.astro",
+				"pages/Motion.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Shell/ShellState.astro",
+			"Kind": "component",
+			"Carries": "ShellState - the nine adverse states, composed in the record grammar.",
+			"Lines": 335,
+			"Readers": 11,
+			"ReadBy": [
+				"pages/404.astro",
+				"pages/Account/index.astro",
+				"pages/Compare.astro",
+				"pages/Contact/Sale.astro",
+				"pages/Contact/index.astro",
+				"pages/Doc/Rust.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Social/MetaTags.tsx",
+			"Kind": "component",
+			"Carries": "The document head - the one place a route's metadata is written.",
+			"Lines": 190,
+			"Readers": 1,
+			"ReadBy": ["Layout/Base.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Social/Title.ts",
+			"Kind": "component",
+			"Carries": "The site's one document-title pattern.",
+			"Lines": 70,
+			"Readers": 1,
+			"ReadBy": ["Component/Social/MetaTags.tsx"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Specimen/SpecimenMaterial.astro",
+			"Kind": "component",
+			"Carries": "SpecimenMaterial - the stock and the inks, printed as specimens.",
+			"Lines": 123,
+			"Readers": 1,
+			"ReadBy": ["pages/Specimen.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Specimen/SpecimenPlate.astro",
+			"Kind": "component",
+			"Carries": "SpecimenPlate - one part, printed at its own size, beside its contract.",
+			"Lines": 154,
+			"Readers": 1,
+			"ReadBy": ["pages/Specimen.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Specimen/SpecimenSheet.astro",
+			"Kind": "component",
+			"Carries": "SpecimenSheet - the contact sheet: every part as one cell, on one page.",
+			"Lines": 146,
+			"Readers": 1,
+			"ReadBy": ["pages/Specimen.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Surface/Badge.ts",
+			"Kind": "component",
+			"Carries": "Badge - the ink table for the dashboard's state words.",
+			"Lines": 101,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Surface/SurfaceBadge.astro",
+				"Content/Surface/Dashboard.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Surface/State.ts",
+			"Kind": "component",
+			"Carries": "State - the state register of every surface that states one.",
+			"Lines": 177,
+			"Readers": 27,
+			"ReadBy": [
+				"Component/Auth/AuthShell.astro",
+				"Component/Dynamic/DynamicStateReport.tsx",
+				"Component/More/LexiconEntry.astro",
+				"Component/More/StatusBoard.astro",
+				"Component/Record/RecordCompare.astro",
+				"Component/Record/RecordFailure.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Surface/StateBadge.tsx",
+			"Kind": "component",
+			"Carries": "StateBadge - one state word, as a Jelly badge, inside a React island.",
+			"Lines": 118,
+			"Readers": 4,
+			"ReadBy": [
+				"Component/Auth/Report.tsx",
+				"Component/Dynamic/DynamicForgotPassword.tsx",
+				"Component/Dynamic/DynamicResetPassword.tsx",
+				"Component/Dynamic/DynamicStateReport.tsx"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Surface/SurfaceAbsent.astro",
+			"Kind": "component",
+			"Carries": "SurfaceAbsent - the honest empty state of an app surface.",
+			"Lines": 94,
+			"Readers": 2,
+			"ReadBy": ["pages/Dashboard.astro", "pages/Specimen.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Surface/SurfaceBadge.astro",
+			"Kind": "component",
+			"Carries": "SurfaceBadge - one state word on a Jelly badge.",
+			"Lines": 58,
+			"Readers": 2,
+			"ReadBy": ["pages/Dashboard.astro", "pages/Portal.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Surface/SurfaceChips.astro",
+			"Kind": "component",
+			"Carries": "SurfaceChips - a record's state chips, as Jelly badges.",
+			"Lines": 80,
+			"Readers": 1,
+			"ReadBy": ["pages/Specimen.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Surface/SurfaceHead.astro",
+			"Kind": "component",
+			"Carries": "SurfaceHead - the instrument's nameplate, designed once for every app surface.",
+			"Lines": 112,
+			"Readers": 6,
+			"ReadBy": [
+				"Component/Surface/SurfaceShell.astro",
+				"pages/Account/index.astro",
+				"pages/Dashboard.astro",
+				"pages/Portal.astro",
+				"pages/Status.astro",
+				"pages/Verify.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Surface/SurfaceRegion.astro",
+			"Kind": "component",
+			"Carries": "SurfaceRegion - one region of an app surface's main column.",
+			"Lines": 54,
+			"Readers": 1,
+			"ReadBy": ["pages/Dashboard.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Surface/SurfaceShell.astro",
+			"Kind": "component",
+			"Carries": "SurfaceShell - the shell both app surfaces wear: the instrument head, then the page's own bands.",
+			"Lines": 76,
+			"Readers": 1,
+			"ReadBy": ["pages/Specimen.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Surface/SurfaceState.astro",
+			"Kind": "component",
+			"Carries": "SurfaceState - the state register of an app surface.",
+			"Lines": 69,
+			"Readers": 2,
+			"ReadBy": [
+				"Component/Surface/SurfaceStatusLine.astro",
+				"pages/OAuth/Success.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Surface/SurfaceStatusLine.astro",
+			"Kind": "component",
+			"Carries": "SurfaceStatusLine - the one row every app surface states its state in.",
+			"Lines": 60,
+			"Readers": 3,
+			"ReadBy": [
+				"Component/Auth/AuthShell.astro",
+				"Component/Surface/SurfaceHead.astro",
+				"pages/Portal.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Trust/Facts.ts",
+			"Kind": "component",
+			"Carries": "Facts - the three facts a legal document must answer before its first clause, and that no single document's own data carries: who maintains it, where to ask for help, and where...",
+			"Lines": 132,
+			"Readers": 4,
+			"ReadBy": [
+				"pages/Contributing.astro",
+				"pages/Legal/Privacy.astro",
+				"pages/Legal/Term.astro",
+				"pages/License.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Trust/TrustClause.astro",
+			"Kind": "component",
+			"Carries": "TrustClause - one clause of a legal document, and the fact that its number is a place you can link to.",
+			"Lines": 73,
+			"Readers": 4,
+			"ReadBy": [
+				"pages/Contributing.astro",
+				"pages/Legal/Privacy.astro",
+				"pages/Legal/Term.astro",
+				"pages/License.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Trust/TrustContents.astro",
+			"Kind": "component",
+			"Carries": "TrustContents - the clause rail: the document's own index, beside the text rather than above it, and marked as the reader moves.",
+			"Lines": 82,
+			"Readers": 1,
+			"ReadBy": ["Component/Reading/ReadingDocument.astro"],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Trust/TrustContents.ts",
+			"Kind": "component",
+			"Carries": "TrustContents - the clause rail's marking and its position figure.",
+			"Lines": 205,
+			"Readers": 4,
+			"ReadBy": [
+				"pages/Contributing.astro",
+				"pages/Legal/Privacy.astro",
+				"pages/Legal/Term.astro",
+				"pages/License.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Component/Trust/TrustContentsList.astro",
+			"Kind": "component",
+			"Carries": "TrustContentsList - the clause list itself: one row per clause, `§NN  name`.",
+			"Lines": 33,
+			"Readers": 1,
+			"ReadBy": ["Component/Trust/TrustContents.astro"],
+			"Reached": true
+		},
+		{
 			"Path": "content.config.ts",
 			"Kind": "other",
 			"Carries": "content.config.ts - the entry point Astro loads.",
@@ -84,6 +2501,34 @@
 			"Reached": true
 		},
 		{
+			"Path": "Content/Edge/Copy.ts",
+			"Kind": "content",
+			"Carries": "Edge copy - the words the two page edges print when the world is unkind.",
+			"Lines": 227,
+			"Readers": 4,
+			"ReadBy": [
+				"Component/Layout/Edge/EdgeLeaf.astro",
+				"Component/Layout/Edge/EdgeTurn.astro",
+				"Component/Layout/Footer.astro",
+				"Component/Layout/Footer/Data.ts"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Content/Edge/Register.ts",
+			"Kind": "content",
+			"Carries": "The Edge register - every sheet this document files, in the order it is read.",
+			"Lines": 735,
+			"Readers": 4,
+			"ReadBy": [
+				"Component/Layout/Edge/EdgeLeaf.astro",
+				"Component/Layout/Edge/EdgeTurn.astro",
+				"Component/Layout/Footer.astro",
+				"Component/Layout/Footer/Data.ts"
+			],
+			"Reached": true
+		},
+		{
 			"Path": "Content/Element/Working.ts",
 			"Kind": "content",
 			"Carries": "The working behind each element record - the facts a claim is checked against.",
@@ -109,7 +2554,7 @@
 			"Path": "Content/Home/Band.ts",
 			"Kind": "content",
 			"Carries": "The five bands' openings, in the order the page prints them.",
-			"Lines": 138,
+			"Lines": 142,
 			"Readers": 6,
 			"ReadBy": [
 				"Component/Home/ArchitectureBand.astro",
@@ -146,7 +2591,7 @@
 			"Path": "Content/Home/Roadmap.ts",
 			"Kind": "content",
 			"Carries": "The roadmap band: two release records, one card each.",
-			"Lines": 337,
+			"Lines": 347,
 			"Readers": 2,
 			"ReadBy": [
 				"Component/Home/RoadmapBand.astro",
@@ -192,7 +2637,7 @@
 			"Path": "Content/Index/Chapters.ts",
 			"Kind": "content",
 			"Carries": "Chapters - how the document is divided, for the index's route register.",
-			"Lines": 151,
+			"Lines": 152,
 			"Readers": 1,
 			"ReadBy": ["Library/Index/Register.ts"],
 			"Reached": true
@@ -201,7 +2646,7 @@
 			"Path": "Content/Index/Declared.ts",
 			"Kind": "content",
 			"Carries": "Declared - why a module nothing reads still exists.",
-			"Lines": 153,
+			"Lines": 232,
 			"Readers": 1,
 			"ReadBy": ["Library/Index/Register.ts"],
 			"Reached": true
@@ -219,7 +2664,7 @@
 			"Path": "Content/Index/Page.ts",
 			"Kind": "content",
 			"Carries": "Page - the index's copy, and nothing else.",
-			"Lines": 513,
+			"Lines": 552,
 			"Readers": 2,
 			"ReadBy": ["Content/Index/Rhythm.ts", "pages/Contents.astro"],
 			"Reached": true
@@ -228,7 +2673,7 @@
 			"Path": "Content/Index/Rhythm.ts",
 			"Kind": "content",
 			"Carries": "Rhythm - the document's own vertical system, printed.",
-			"Lines": 331,
+			"Lines": 451,
 			"Readers": 1,
 			"ReadBy": ["pages/Contents.astro"],
 			"Reached": true
@@ -291,7 +2736,7 @@
 			"Path": "Content/More/Compare.ts",
 			"Kind": "content",
 			"Carries": "Compare - Land against the editor it replaces, in the site's own words.",
-			"Lines": 608,
+			"Lines": 611,
 			"Readers": 3,
 			"ReadBy": [
 				"Content/Index/Rhythm.ts",
@@ -304,7 +2749,7 @@
 			"Path": "Content/More/Glossary.ts",
 			"Kind": "content",
 			"Carries": "Glossary - the document's own words, in three runs.",
-			"Lines": 876,
+			"Lines": 879,
 			"Readers": 5,
 			"ReadBy": [
 				"Component/More/Lexicon.astro",
@@ -335,7 +2780,7 @@
 			"Path": "Content/More/Status.ts",
 			"Kind": "content",
 			"Carries": "Status - the status board's data: every record the site files with a state, grouped by the state it states, and the facts the board is read against.",
-			"Lines": 720,
+			"Lines": 726,
 			"Readers": 3,
 			"ReadBy": [
 				"Component/More/StatusBoard.astro",
@@ -348,7 +2793,7 @@
 			"Path": "Content/Motion/Page.ts",
 			"Kind": "content",
 			"Carries": "Page - the motion register's copy: bands, facts, sequences, arms, refusals.",
-			"Lines": 984,
+			"Lines": 990,
 			"Readers": 2,
 			"ReadBy": ["Content/Index/Rhythm.ts", "pages/Motion.astro"],
 			"Reached": true
@@ -625,7 +3070,7 @@
 			"Path": "Content/Specimen/Page.ts",
 			"Kind": "content",
 			"Carries": "Page - the sheet's copy, and nothing else.",
-			"Lines": 345,
+			"Lines": 351,
 			"Readers": 3,
 			"ReadBy": [
 				"Component/Specimen/SpecimenMaterial.astro",
@@ -660,7 +3105,7 @@
 			"Path": "Content/Surface/Dashboard.ts",
 			"Kind": "content",
 			"Carries": "Dashboard - the dashboard page's content table.",
-			"Lines": 689,
+			"Lines": 690,
 			"Readers": 1,
 			"ReadBy": ["pages/Dashboard.astro"],
 			"Reached": true
@@ -669,7 +3114,7 @@
 			"Path": "Content/Surface/Portal.ts",
 			"Kind": "content",
 			"Carries": "Portal - the portal page's content table.",
-			"Lines": 674,
+			"Lines": 672,
 			"Readers": 1,
 			"ReadBy": ["pages/Portal.astro"],
 			"Reached": true
@@ -855,6 +3300,22 @@
 			"Lines": 4,
 			"Readers": 1,
 			"ReadBy": ["Function/Configuration/Parse/Number.ts"],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Configuration/Lab.mjs",
+			"Kind": "function",
+			"Carries": "Lab - the one switch that decides whether this build carries the site's exploratory surfaces.",
+			"Lines": 134,
+			"Readers": 10,
+			"ReadBy": [
+				"Component/Shell/Language.ts",
+				"Component/UI/Palette/Data.ts",
+				"Content/Index/Page.ts",
+				"Content/Index/Rhythm.ts",
+				"Function/Route/Lab.ts",
+				"Function/Route/LabOutput.mjs"
+			],
 			"Reached": true
 		},
 		{
@@ -1255,7 +3716,7 @@
 			"Path": "Function/OpenGraph/PageMetadata.ts",
 			"Kind": "function",
 			"Carries": "Static page metadata for OpenGraph image generation.",
-			"Lines": 478,
+			"Lines": 480,
 			"Readers": 2,
 			"ReadBy": ["Layout/Base.astro", "pages/OpenGraph/[...Slug].svg.ts"],
 			"Reached": true
@@ -1285,6 +3746,24 @@
 			"Lines": 12,
 			"Readers": 1,
 			"ReadBy": ["Function/Route/Map.ts"],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Route/Lab.ts",
+			"Kind": "function",
+			"Carries": "Lab - the build step that keeps the exploratory surfaces out of production.",
+			"Lines": 75,
+			"Readers": 1,
+			"ReadBy": ["astro.config.ts"],
+			"Reached": true
+		},
+		{
+			"Path": "Function/Route/LabOutput.mjs",
+			"Kind": "function",
+			"Carries": "LabOutput - remove the lab surfaces from a built site.",
+			"Lines": 110,
+			"Readers": 1,
+			"ReadBy": ["Function/Route/Lab.ts"],
 			"Reached": true
 		},
 		{
@@ -1343,7 +3822,7 @@
 			"Path": "Function/Route/Registry.ts",
 			"Kind": "function",
 			"Carries": "The route registry - the site's route set, in one file.",
-			"Lines": 867,
+			"Lines": 1024,
 			"Readers": 2,
 			"ReadBy": ["Function/Route/Map.ts", "Layout/Base.astro"],
 			"Reached": true
@@ -1461,10 +3940,9 @@
 			"Path": "Function/Theme/SemanticColor.ts",
 			"Kind": "function",
 			"Carries": "C17 semantic color system (Daylight Field Record).",
-			"Lines": 375,
-			"Readers": 3,
+			"Lines": 385,
+			"Readers": 2,
 			"ReadBy": [
-				"Component/Brand/FieldRecordStatus.tsx",
 				"Component/Brand/SemanticLedger.tsx",
 				"Component/Dynamic/Interface/Card/Jelly.ts"
 			],
@@ -1505,7 +3983,7 @@
 			"Path": "Generated/Facts/Modules.json",
 			"Kind": "other",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 2525,
+			"Lines": 5100,
 			"Readers": 1,
 			"ReadBy": ["Library/Index/Register.ts"],
 			"Reached": true
@@ -1523,7 +4001,7 @@
 			"Path": "Generated/Facts/Routes.json",
 			"Kind": "other",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 538,
+			"Lines": 542,
 			"Readers": 1,
 			"ReadBy": ["Library/Index/Register.ts"],
 			"Reached": true
@@ -1532,7 +4010,7 @@
 			"Path": "Layout/Base.astro",
 			"Kind": "layout",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 376,
+			"Lines": 396,
 			"Readers": 28,
 			"ReadBy": [
 				"Component/Contact/ContactPage.astro",
@@ -1595,15 +4073,32 @@
 		{
 			"Path": "Library/Contact/Data.ts",
 			"Kind": "library",
-			"Carries": "Data - the Contact hub's index, derived from the request registry.",
-			"Lines": 157,
-			"Readers": 5,
+			"Carries": "Data - the Contact hub's index, derived from the purpose table.",
+			"Lines": 159,
+			"Readers": 6,
 			"ReadBy": [
 				"Component/Contact/ContactPage.astro",
 				"Component/Contact/ContactShell.astro",
 				"Component/Contact/Register.ts",
+				"Content/Index/Chapters.ts",
 				"pages/Contact/Sale.astro",
 				"pages/Contact/index.astro"
+			],
+			"Reached": true
+		},
+		{
+			"Path": "Library/Contact/Purpose.ts",
+			"Kind": "library",
+			"Carries": "Purpose - what each Contact route is *for*, as data.",
+			"Lines": 431,
+			"Readers": 9,
+			"ReadBy": [
+				"Component/Dashboard/Data.ts",
+				"Component/Trust/Facts.ts",
+				"Content/Edge/Register.ts",
+				"Function/OpenGraph/PageMetadata.ts",
+				"Function/Route/Registry.ts",
+				"Library/Contact/Data.ts"
 			],
 			"Reached": true
 		},
@@ -1612,7 +4107,7 @@
 			"Kind": "library",
 			"Carries": "Exports IncomeCode, FormField, RequestConfig, Requests.",
 			"Lines": 1545,
-			"Readers": 7,
+			"Readers": 8,
 			"ReadBy": [
 				"Component/Contact/ContactShell.astro",
 				"Component/Contact/Register.ts",
@@ -1689,7 +4184,7 @@
 			"Kind": "library",
 			"Carries": "Exports GetI18n.",
 			"Lines": 175,
-			"Readers": 33,
+			"Readers": 35,
 			"ReadBy": [
 				"Component/Doc/DocIndex.astro",
 				"Component/Doc/DocLayout.astro",
@@ -1704,7 +4199,7 @@
 			"Path": "Library/Index/Register.ts",
 			"Kind": "library",
 			"Carries": "Register - the reader for the generated facts behind `/Contents`.",
-			"Lines": 298,
+			"Lines": 344,
 			"Readers": 4,
 			"ReadBy": [
 				"Component/UI/Palette/Data.ts",
@@ -1908,7 +4403,7 @@
 			"Path": "pages/404.astro",
 			"Kind": "route",
 			"Carries": "The 404: the canonical small record (`DesignSystem-Pages.md` §3), and the site's second plate page.",
-			"Lines": 206,
+			"Lines": 225,
 			"Readers": 1,
 			"ReadBy": ["Test/Page/NotFound.test.ts"],
 			"Reached": true
@@ -2043,7 +4538,7 @@
 			"Path": "pages/Contact/index.astro",
 			"Kind": "route",
 			"Carries": "The Contact hub - the desk's register: one index of request routes.",
-			"Lines": 162,
+			"Lines": 192,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2106,7 +4601,7 @@
 			"Path": "pages/Contact/Sale.astro",
 			"Kind": "route",
 			"Carries": "Enterprise inquiries - the sale route, read as a READING page.",
-			"Lines": 345,
+			"Lines": 357,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2124,7 +4619,7 @@
 			"Path": "pages/Contents.astro",
 			"Kind": "route",
 			"Carries": "Contents - the index.",
-			"Lines": 569,
+			"Lines": 574,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2133,7 +4628,7 @@
 			"Path": "pages/Contributing.astro",
 			"Kind": "route",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 649,
+			"Lines": 673,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2151,7 +4646,7 @@
 			"Path": "pages/Doc.astro",
 			"Kind": "route",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 186,
+			"Lines": 195,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2160,7 +4655,7 @@
 			"Path": "pages/Doc/[...Slug].astro",
 			"Kind": "route",
 			"Carries": "Exports getStaticPaths.",
-			"Lines": 356,
+			"Lines": 359,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2223,7 +4718,7 @@
 			"Path": "pages/License.astro",
 			"Kind": "route",
 			"Carries": "No leading comment and no exports.",
-			"Lines": 437,
+			"Lines": 459,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2259,7 +4754,7 @@
 			"Path": "pages/OpenGraph/[...Slug].svg.ts",
 			"Kind": "route",
 			"Carries": "OpenGraph SVG image endpoint.",
-			"Lines": 208,
+			"Lines": 213,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2277,7 +4772,7 @@
 			"Path": "pages/Specimen.astro",
 			"Kind": "route",
 			"Carries": "The specimen sheet: the document's own parts, printed.",
-			"Lines": 506,
+			"Lines": 522,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
@@ -2358,7 +4853,7 @@
 			"Path": "Script/Register.ts",
 			"Kind": "script",
 			"Carries": "Register - the index's generator.",
-			"Lines": 847,
+			"Lines": 934,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": false
@@ -2400,6 +4895,87 @@
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": true
+		},
+		{
+			"Path": "Component/Brand/FieldRecord.astro",
+			"Kind": "component",
+			"Carries": "FieldRecord - canonical record-card template.",
+			"Lines": 138,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Brand/SpecimenLabel.tsx",
+			"Kind": "component",
+			"Carries": "Exports SpecimenLabelProps.",
+			"Lines": 183,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/DynamicFooter.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 191,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/DynamicHeader.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 90,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/DynamicVerificationInfo.tsx",
+			"Kind": "component",
+			"Carries": "No leading comment and no exports.",
+			"Lines": 242,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/Platform/Data.ts",
+			"Kind": "component",
+			"Carries": "Data - the columns, rows and source lines of the platform matrix.",
+			"Lines": 115,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/Roadmap/Data.ts",
+			"Kind": "component",
+			"Carries": "Data - every row, label and derivation the roadmap band prints.",
+			"Lines": 212,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/Type/Route/Account.ts",
+			"Kind": "component",
+			"Carries": "Exports Type.",
+			"Lines": 4,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
+		},
+		{
+			"Path": "Component/Dynamic/Type/Route/Verify.ts",
+			"Kind": "component",
+			"Carries": "Exports Type.",
+			"Lines": 4,
+			"Readers": 0,
+			"ReadBy": [],
+			"Reached": false
 		},
 		{
 			"Path": "content.config.ts",
@@ -2504,21 +5080,21 @@
 			"Path": "Script/Register.ts",
 			"Kind": "script",
 			"Carries": "Register - the index's generator.",
-			"Lines": 847,
+			"Lines": 934,
 			"Readers": 0,
 			"ReadBy": [],
 			"Reached": false
 		}
 	],
 	"Totals": {
-		"Files": 2347,
+		"Files": 2378,
 		"Routes": 43,
 		"Documents": 81,
 		"Entries": 8,
-		"Elements": 16,
+		"Elements": 15,
 		"Blocks": 21,
-		"Modules": 227,
-		"Read": 168,
-		"Declared": 13
+		"Modules": 448,
+		"Read": 380,
+		"Declared": 22
 	}
 }

@@ -482,7 +482,7 @@ export const Parts: readonly Part[] = [
 			{
 				key: "PRINTS:",
 
-				value: "Each tier's protocol spine, its badge and its feature set. It is the only file in the tree that carries the four protocol lines, and no page printed them until this sheet.",
+				value: "Each tier's protocol spine, its badge and its feature set. It is the only file in the tree that carries all four tiers' protocol lines, three terms each, and no page printed them until this sheet.",
 			},
 
 			{

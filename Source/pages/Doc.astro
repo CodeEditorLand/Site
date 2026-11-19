@@ -99,9 +99,18 @@ const MetaDescription = T("meta.docs.description", {
 		"Browse the Code Editor Land documentation, architecture guides, and developer resources.",
 });
 
+/**
+ * The index's standfirst, and its two figures are the collection's own.
+ *
+ * `Eighty-one pages in ten sections` was typed, and it is the one sentence on
+ * the page that repeats the strip's two counts. A document that prints a figure
+ * in its opening sentence and the same figure in the strip above it has two
+ * places to drift; this one reads the collection and the sections the grid
+ * below actually prints, so a page added to `Source/Content/doc` renumbers the
+ * sentence and the strip in the same build.
+ */
 const PageStandfirst = T("common.docs.pageSubtitle", {
-	defaultValue:
-		"Eighty-one pages in ten sections, from /START to the deep dives. Each page names the file it describes; the strip above it prints the layer, the order and the count.",
+	defaultValue: `${DocEntries.length} pages in ${Index.Sections.length} sections, from /START to the deep dives. Each page names the file it describes; the strip above it prints the layer, the order and the count.`,
 });
 
 /**

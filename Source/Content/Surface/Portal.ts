@@ -57,7 +57,7 @@ export interface PortalFeature {
 	/** `Sync` - printed uppercase by the row's own class. */
 	readonly name: string;
 
-	/** `Planned workspace sync across devices`. */
+	/** `Workspace sync across devices, planned`. */
 	readonly description: string;
 }
 
@@ -313,19 +313,20 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 			{
 				Heading: "Sync",
 				Key: "sync",
-				Fallback: "Planned workspace sync across devices",
+				Fallback: "Workspace sync across devices, planned",
 			},
 
 			{
 				Heading: "Backup",
 				Key: "backup",
-				Fallback: "Planned encrypted backup for selected configuration",
+				Fallback:
+					"Encrypted backup for selected configuration, planned",
 			},
 
 			{
 				Heading: "Team",
 				Key: "team",
-				Fallback: "Planned shared team workspace support",
+				Fallback: "Shared team workspace support, planned",
 			},
 
 			{
@@ -381,8 +382,7 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 			{
 				Heading: "GitHub",
 				Key: "github",
-				Fallback:
-					"Identity, planned as a low-friction sign-in option",
+				Fallback: "Identity, planned as a low-friction sign-in option",
 			},
 
 			{
@@ -400,7 +400,7 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 			{
 				Heading: "Team",
 				Key: "team",
-				Fallback: "Organization and team membership sync is planned",
+				Fallback: "Organization and team membership sync, planned",
 			},
 
 			{
@@ -459,8 +459,7 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 			{
 				Heading: "Build",
 				Key: "build",
-				Fallback:
-					"Builds launched from the website console, planned",
+				Fallback: "Builds launched from the website console, planned",
 			},
 
 			{
@@ -492,8 +491,7 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 			{
 				Heading: "Embedded SaaS",
 				Key: "bake",
-				Fallback:
-					"Portal surfaces embedded into the editor, planned",
+				Fallback: "Portal surfaces embedded into the editor, planned",
 			},
 		]),
 		Capabilities: Capabilities(T, "localfirst", [
@@ -506,7 +504,7 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 			{
 				Key: "mtls",
 				Fallback:
-					"mTLS authentication is enabled by default for daemon connections",
+					"mTLS mutual authentication is enabled by default for daemon connections",
 			},
 
 			{
@@ -520,7 +518,7 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 			{
 				Key: "cert",
 				Fallback:
-					"Local certificate management, planned; daemon credential storage, active",
+					"Local certificate management, planned; daemon credential storage is active",
 			},
 
 			{ Key: "ws", Fallback: "WebSocket loopback connection, planned" },
@@ -579,13 +577,13 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 			{
 				Key: "oidc",
 				Fallback:
-					"OIDC discovery: handled by the configured identity provider",
+					"OIDC discovery is handled by the configured identity provider",
 			},
 
 			{
 				Key: "jit",
 				Fallback:
-					"Just-in-time provisioning through the configured identity provider",
+					"Just-in-time provisioning happens through the configured identity provider",
 			},
 
 			{

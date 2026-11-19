@@ -63,6 +63,25 @@
  * The blank interval between the facts and the title block is mandatory
  * (`DesignSystem.md` INVARIANT 06, `DESIGN.md` §2.7): it is what gives `LAND:`
  * the weight of a second headline. Delete it and the record loses its shape.
+ *
+ * ─── ITS TWO EDGES: THE ONE PAGE THAT ADMITS IT IS NOT A SHEET ────────────
+ * The frame prints a leaf above every page and a turn below it
+ * (`Component/Layout/Edge/`). This route is the one page in the build that is
+ * not in the collation, so its edges are the only ones that read differently -
+ * and they read that way because the REGISTER says so, not because this file
+ * asks for a special case:
+ *
+ *   leaf   `# SHEET ◎ NOT FILED` `PART: ◎ NONE` `CIRCULATION: ◎ NOT INDEXED`
+ *          `SOURCE: REQUEST URL`, and the `↳` line says this address is not in
+ *          the collation at all.
+ *   turn   no catchword, because a page that does not exist cannot hand over the
+ *          next chapter: `◎ NO NEXT SHEET`, `STATUS: INTERRUPTED`,
+ *          `RETRY: THE INDEX AT /CONTENTS`, and the folio reads `〈◎〉 /UNFILED`.
+ *
+ * Every other page opens on `# SHEET 05 / 41` and closes on the next part's own
+ * opening line. This one is where the series stops, which is exactly what a
+ * reader who mistyped an address needs to be told - in the same grammar, at the
+ * same two places, so it does not read as a different site's error page.
  */
 import { Header } from "../Component/Layout/Header";
 import Onward from "../Component/More/Onward.astro";

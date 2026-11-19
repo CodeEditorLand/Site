@@ -675,7 +675,7 @@ export const Lexicon: readonly LexiconRun[] = [
 
 		note: "The grammar's own nouns, defined as the layer defines them. Each `WHERE:` row is a page where the thing itself is printed, not described.",
 
-		empty: "The document uses no word it does not define. That is the state this run exists to reach, and it has never been true.",
+		empty: "The document uses no word it does not define. That is the state this run exists to reach, and it has never been true: the run prints the terms it carries rather than closing, so a noun the grammar layer does not define appears here as a row, not as silence.",
 
 		terms: GrammarTerms,
 	},
@@ -856,7 +856,7 @@ export const Bands = {
 		heading: "Five words this site used, and what replaced them",
 
 		standfirst:
-			"A manual that quietly stops using a word leaves every document that quotes it unreadable. These are the corrections, stated as corrections rather than hidden.",
+			"A manual that quietly stops using a word leaves every document that still quotes it unreadable. These are the corrections, stated as corrections rather than hidden.",
 
 		footnote: `SOURCE: THE COMMENTS IN THE MODULES THAT PRINTED THEM${Quad}RETIRED IS NOT A STATE: EACH WORD'S ENTRY STATES ARCHIVED`,
 

@@ -18,6 +18,16 @@ import type {
 
 import { FrameExtent } from "../Frame/Data.js";
 
+import { EdgeBuildDate } from "../../../Content/Edge/Copy.js";
+
+import { EdgeExtent } from "../../../Content/Edge/Register.js";
+
+/**
+ * The document's one separator, U+2001. A compact label joins its fields with
+ * it and nothing else - not a middot, not a slash, not a space.
+ */
+const Quad = "\u2001";
+
 /** An off-site destination: the reader leaves this site in a second tab. */
 const Offsite = (Label: string, Href: string): FooterLink => ({
 	Label,
@@ -109,7 +119,14 @@ export const FooterData = (
 
 		{
 			key: T("footer:record.status.key", { defaultValue: "STATUS" }),
+			// The vocabulary's word, not a description of the licence: the header's
+			// ribbon already reads `STATUS: ACTIVE`, and a footer that answered the
+			// same key with `PUBLIC SOURCE` was answering a different question under
+			// the same label. The licence fact is kept, as the row's note.
 			value: T("footer:record.status.value", {
+				defaultValue: "ACTIVE",
+			}),
+			note: T("footer:record.status.note", {
 				defaultValue: "PUBLIC SOURCE",
 			}),
 		},
@@ -124,9 +141,28 @@ export const FooterData = (
 		},
 
 		{
+			key: T("footer:colophon.setin.key", { defaultValue: "SET IN" }),
+			value: T("footer:colophon.setin.value", {
+				defaultValue: `13-72PX${Quad}WEIGHT 400-500`,
+			}),
+		},
+
+		{
 			key: T("footer:colophon.build.key", { defaultValue: "BUILD" }),
 			value: T("footer:colophon.build.value", {
-				defaultValue: "ASTRO\u2001STATIC",
+				defaultValue: `ASTRO${Quad}STATIC`,
+			}),
+		},
+
+		{
+			// The day this HTML was rendered - the same date the page edges print,
+			// read from one module, so the headnote and the colophon cannot disagree
+			// about when the document was set.
+			key: T("footer:colophon.impression.key", {
+				defaultValue: "IMPRESSION",
+			}),
+			value: T("footer:colophon.impression.value", {
+				defaultValue: EdgeBuildDate,
 			}),
 		},
 
@@ -145,9 +181,35 @@ export const FooterData = (
 		},
 
 		{
+			// The two rule inks the sheet is drawn with: the hairline that divides
+			// (`--Border`, 8 %) and the boundary that closes a chapter (`--Divider`,
+			// 20 %). A colophon states its stock and its ink; a rule is an ink.
+			key: T("footer:colophon.rule.key", { defaultValue: "RULE" }),
+			value: T("footer:colophon.rule.value", {
+				defaultValue: `8%${Quad}DIVIDER 20%`,
+			}),
+		},
+
+		{
 			key: T("footer:colophon.extent.key", { defaultValue: "EXTENT" }),
 			value: T("footer:colophon.extent.value", {
-				defaultValue: `${FrameExtent}\u2001SECTIONS`,
+				defaultValue: `${FrameExtent}${Quad}SECTIONS`,
+			}),
+		},
+
+		{
+			// The collation: how many sheets the document files, counted from the
+			// edge register's own list. The number at the top of every page
+			// (`# SHEET 05 / 41`) and the number here are the same list - and an
+			// empty register says so in the grammar's fallback rather than printing
+			// `00`, because a document with no sheets is a document that has not
+			// been collated, not one that was measured at zero.
+			key: T("footer:colophon.sheets.key", { defaultValue: "SHEETS" }),
+			value: T("footer:colophon.sheets.value", {
+				defaultValue:
+					EdgeExtent === "00"
+						? "\u25ce NO SHEETS FILED"
+						: `${EdgeExtent}${Quad}FILED`,
 			}),
 		},
 
@@ -155,6 +217,32 @@ export const FooterData = (
 			key: T("footer:colophon.edition.key", { defaultValue: "EDITION" }),
 			value: T("footer:colophon.edition.value", {
 				defaultValue: String(Year),
+			}),
+		},
+
+		{
+			// A colophon's errata names what is wrong with the impression. This one
+			// does not restate the list - it points at the page that keeps it, so the
+			// two cannot drift.
+			key: T("footer:colophon.errata.key", { defaultValue: "ERRATA" }),
+			value: T("footer:colophon.errata.value", {
+				defaultValue: `/STATUS${Quad}EVERY UNFINISHED RECORD`,
+			}),
+			links: [
+				{
+					text: T("footer:colophon.errata.value", {
+						defaultValue: `/STATUS${Quad}EVERY UNFINISHED RECORD`,
+					}),
+					href: "/Status",
+				},
+			],
+		},
+
+		{
+			// The signature line: how a reader cites the document they are holding.
+			key: T("footer:colophon.cite.key", { defaultValue: "CITE AS" }),
+			value: T("footer:colophon.cite.value", {
+				defaultValue: `CODEEDITORLAND${Quad}FIELD MANUAL${Quad}${Year}`,
 			}),
 		},
 	],

@@ -180,7 +180,7 @@ export const Bands = {
 		heading: "Eight divisions, in reading order",
 
 		standfirst:
-			"Each chapter names the job a reader arrives with. The figure at the end of its line is the number of addresses the build answers in that chapter, counted from the register the archive below files them from.",
+			"Each chapter names the job a reader arrives with. The figure at the end of its line is the number of addresses the build answers in that chapter, counted from the same register the archive below files them from.",
 	} satisfies Band,
 
 	Marks: {
@@ -261,7 +261,7 @@ export const Bands = {
 		heading: "Four ways to compose a page",
 
 		standfirst:
-			"A page is not a stack of bands. It is read, operated, audited or shown, and each of those is a different set of tracks.",
+			"A page is not a stack of bands. It is read, operated, audited or shown, and each of those is a different set of tracks: a reading page is given RAIL MEASURE MARGIN, a workspace page RAIL PANES DRAWER, an audit page LEDGER MATRIX WELLS, and a plate page PLATE CHANNEL HEAD.",
 
 		footnote: `SOURCE: SOURCE/COMPONENT/SHELL/LANGUAGE.TS${Quad}ROUTES COUNTED FROM THE SAME REGISTER`,
 	} satisfies Band,
@@ -300,7 +300,7 @@ export const Bands = {
 		heading: "Files that exist for a reason, and no page reads them",
 
 		standfirst:
-			"Nothing in this tree is unexplained. These are the modules with no reader - each one states what it carries, and what it is waiting for.",
+			"Nothing in this tree is unexplained. These are the modules with no reader - each one states what it carries, and what it is waiting for. Two libraries are measured as bulk and not listed: the vendored `Component/UI` kit and the `Component/Dynamic/Interface` schemas, because a catalogue is judged by what it offers rather than by what the site mounted.",
 
 		tone: "paper",
 	} satisfies Band,
@@ -426,23 +426,34 @@ export const RecordRows = (
 ];
 
 /**
- * The routes band's footnote: the drift, with both numbers.
+ * The routes band's footnote: the registry's own account of itself.
  *
- * The registry is hand-kept and the build is not, so the two disagree - and the
- * honest thing for an index to do with a disagreement is print it rather than
- * repair it silently. `Missing` is what the build emits and the registry does not
- * declare; the names are the argument, so they are named.
+ * The registry is hand-kept and the build is not, so the honest thing for an
+ * index to do with a disagreement is print it rather than repair it silently.
+ * `Missing` is what the build emits and the registry does not declare; the names
+ * are the argument, so they are named.
+ *
+ * Two figures, because the registry answers two questions: how many routes it
+ * declares (`Declared`), and how many of those take the full PascalCase variant
+ * set (`Canonical`). The old sentence called all of them canonical and read the
+ * figure from `Map.ts`, which had stopped holding the list - so on a build where
+ * the two agreed it printed `0 declared` and forty-one names, which is the one
+ * thing this footnote must never do: report drift that is not there. Both
+ * figures now come from `Registry` in the generator, and the sentence says what
+ * each one counts.
  */
 export const RegistryFootnote = (
 	Declared: number,
+
+	Canonical: number,
 
 	Built: number,
 
 	Missing: readonly string[],
 ): string =>
 	Missing.length === 0
-		? `\`Function/Route/Map.ts\` declares ${Declared} canonical paths and the build emits ${Built}: the two agree, which is the only state this footnote has nothing to report.`
-		: `\`Function/Route/Map.ts\` declares ${Declared} canonical paths by hand; the build emits ${Built}. The ${Missing.length} it does not declare are ${Missing.join(", ")} - the redirect layer derives its variants from that set, so this page reports the drift rather than repairing it.`;
+		? `\`Function/Route/Registry.ts\` declares ${Declared} routes, ${Canonical} of them canonical - the hand-listed paths that take the full variant set - and the build emits ${Built}. The two agree, which is the only state this footnote has nothing to report.`
+		: `\`Function/Route/Registry.ts\` declares ${Declared} routes, ${Canonical} of them canonical; the build emits ${Built}. The ${Missing.length} it does not declare are ${Missing.join(", ")} - the redirect layer derives its variants from that set, so this page reports the drift rather than repairing it.`;
 
 /**
  * The index's own doors, before the build decides which of them it serves.
@@ -452,8 +463,8 @@ export const RegistryFootnote = (
  * the registers that file its parts - and, in development, the specimen sheet,
  * which is this page's appendix and the only place the parts are printed rather
  * than counted. The sheet's row is first because it is the closest reading of
- * what the reader has just finished: the index says there are thirteen
- * information types and eleven forms; the sheet shows them.
+ * what the reader has just finished: the index counts the information types and
+ * their forms, and the sheet shows them.
  */
 const OnwardRows: readonly OnwardRow[] = [
 	{

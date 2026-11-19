@@ -6,7 +6,7 @@ description:
     "The build artifact management layer for Land that compiles VS Code platform
     source through a dual-compiler pipeline (ESBuild primary, Rest OXC optional),
     produces the @codeeditorland/output npm package, and is consumed by Cocoon,
-    Sky, and Wind."
+    Sky and Wind."
 ---
 
 # Output: Build Artifact Layer

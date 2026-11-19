@@ -329,7 +329,7 @@ export const Refusals: readonly LedgerRow[] = [
 
 		value: "NAME THE STATE CHANGE OR DO NOT WRITE THE RULE",
 
-		note: "A paragraph is not loading and a heading is not hovered. That is the whole test, and it is applied to every rule in the family.",
+		note: "A paragraph is not loading and a heading is not hovered. That is the whole test, applied to every rule in the family - and a rule that cannot name the state change it answers is a decoration, which is what the test exists to catch.",
 	},
 
 	{

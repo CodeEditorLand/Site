@@ -107,10 +107,12 @@ const T = GetI18n();
  * the page's position in its section - the number the sidebar already sorts by,
  * printed so a reader can see it.
  */
+const PageSource = `Source/Content/doc/${Entry.id}.md`;
+
 const PageStrip = BuildDocStrip(
 	{
 		Layer: Entry.data.section,
-		Source: `Source/Content/doc/${Entry.id}.md`,
+		Source: PageSource,
 		Extras: [
 			{
 				Label: T("strip.order", { ns: "doc", defaultValue: "ORDER:" }),
@@ -261,6 +263,7 @@ const PageExtent = PageInset({
 			]}
 			measure={false}
 			plate={PagePlate}
+			source={PageSource}
 		>
 			<jelly-card
 				class="doc-prose"

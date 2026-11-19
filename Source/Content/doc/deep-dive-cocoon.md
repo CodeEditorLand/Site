@@ -648,7 +648,7 @@ notification.
 ## Process Hardening Details
 
 `PatchProcess/` runs as the very first code in `Main.ts`, before AppLayer is
-constructed:
+constructed and before any other import has a side effect:
 
 ```typescript
 // PatchProcess must run before any other import side-effects

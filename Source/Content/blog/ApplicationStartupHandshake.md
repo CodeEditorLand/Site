@@ -3,7 +3,8 @@ title: "Application Startup Handshake: How Mountain, Cocoon, Sky, and Wind
     Bootstrap"
 summary:
     "The complete end-to-end process from launching the native binary to a fully
-    initialized editor with running extensions."
+    initialized editor with running extensions: every handshake between Mountain,
+    Cocoon, Sky and Wind, in the order they run."
 publishedAt: "2026-05-22"
 tags: ["Architecture", "Bootstrap", "Mountain", "Cocoon", "IPC"]
 author: "CodeEditorLand"

@@ -1,0 +1,185 @@
+// ─── THE NINE ARMS, ON PAPER ──────────────────────────────────────────────
+//
+// The brief's second design is the one for when the world is unkind. On screen
+// each arm is a composition in the record grammar; on paper each arm meets a
+// medium that can make it WORSE, and the print layer's job is to make sure it
+// does not:
+//
+//   a skeleton bar      prints as a solid bar, which reads as redaction
+//   a windowed list     prints the window, which reads as the whole set
+//   an ellipsis         prints as a cut, which reads as the whole string
+//   a scroll container  prints its visible edge and silently drops the rest
+//   a colour-only state prints as grey, which reads as no state at all
+//
+// Every rule below is one of those five failures being prevented. None of them
+// invents a state: the arms are composed in the markup, and the layer only
+// guarantees that paper can still read them.
+
+@media print {
+	/* ─── EMPTY ──────────────────────────────────────────────────────────
+	 *
+	 * An empty arm says what would be here, why it is not and what to do. It
+	 * is a sentence in the band, and it prints as one. The failure this rule
+	 * prevents is the opposite: an empty arm that a print stylesheet treats as
+	 * "nothing to print" and hides. A blank band claims the subject never
+	 * existed; the composed empty claims it has not been filled yet, which is
+	 * a different fact and the one the page means. */
+	.record-ledger__empty,
+	.Fold__Empty,
+	.record-aside__empty,
+	.record-plate__empty,
+	.record-compare__empty,
+	.ShellState {
+		break-inside: avoid;
+	}
+
+	/* ─── LOADING ────────────────────────────────────────────────────────
+	 *
+	 * No spinner on screen, and no solid bar on paper: a filled block where a
+	 * value belongs reads as a redaction, which is the one thing a skeleton is
+	 * not. The bar becomes the printer's own mark for "not yet set" - a dotted
+	 * rule - and the `WAITING ON:` line beside it still names what is being
+	 * waited for. The keys around it print, because a skeleton keeps its keys:
+	 * the schema is the part of the record that is already known. */
+	.StateBusy__Bar,
+	.detail-leader__bar,
+	.EdgeLeaf__bar,
+	.MotionSkeleton__Bar,
+	.record-ledger__bar,
+	.ShellState__bar {
+		background: none !important;
+		border: 0;
+		border-block-end: 1px dashed var(--Foreground);
+
+		block-size: auto;
+		min-block-size: 0.9em;
+	}
+
+	/* ─── PARTIAL ────────────────────────────────────────────────────────
+	 *
+	 * `UNAVAILABLE` is a word, never a zero, and the ink remap guarantees it
+	 * prints at a legible second ink. There is no rule to write here, and that
+	 * is the point: the partial arm is honest by construction, and the print
+	 * layer must not "help" it by inventing a figure or blanking the cell. */
+
+	/* ─── ERROR ──────────────────────────────────────────────────────────
+	 *
+	 * A failure prints its `STATUS:` word, its cause and its `NEXT:`, and the
+	 * leading rule that opens it is 2px of ink - at 1px it would vanish beside
+	 * the body's own hairlines, so it keeps its weight. Nothing is recoloured:
+	 * the state word is the carrier, and it survives a monochrome printer. */
+	.record-failure,
+	[data-state="error"],
+	.ShellState[data-tone="error"] {
+		break-inside: avoid;
+	}
+
+	/* ─── STALE ──────────────────────────────────────────────────────────
+	 *
+	 * A stale fact prints its `◎ STALE` and its `AGE:` beside the last known
+	 * value, exactly as on screen. Paper adds its own stale arm in the
+	 * colophon: a copy is always older than the sheet it was made from, so the
+	 * printed colophon carries `PRINTED: ______` and the folio carries the
+	 * as-of the facts were read at (`_Colophon.scss`). */
+	.EdgeLeaf[data-state="stale"] .EdgeLeaf__note,
+	.EdgeLeaf__note {
+		break-inside: avoid;
+	}
+
+	/* ─── TOO MUCH ───────────────────────────────────────────────────────
+	 *
+	 * The screen windows a long list and says `SHOWING 12 OF 16`. Paper has no
+	 * window: every scroll container opens, every 60vh fold prints whole, and
+	 * the count that says how many rows exist prints beside the rows that do.
+	 * A printed list that stopped at the window would claim to be the set. */
+	[class*="__scroll"],
+	[class*="__window"],
+	.Fold__List,
+	.record-matrix,
+	.ShellPanes__drawer-body,
+	.record-archive__list {
+		max-block-size: none !important;
+		overflow: visible !important;
+	}
+
+	/* ─── TOO LONG ───────────────────────────────────────────────────────
+	 *
+	 * An ellipsis is a fact withheld, and paper has the room to state it. Every
+	 * clipped name wraps; every value that breaks inside a word still does;
+	 * nothing is cut. The one thing that stays on one line is a code well's
+	 * language tag, because a tag is a label and a label is one word. */
+	.StateClip,
+	.Fold__Label,
+	.Fold__Meta,
+	.StateWrap,
+	h1,
+	h2,
+	h3,
+	h4,
+	.record-band__heading,
+	.EdgeLeaf__route,
+	.record-ledger__value,
+	.record-plate__caption,
+	td,
+	th,
+	dd,
+	dt {
+		text-overflow: clip !important;
+	}
+
+	.StateClip,
+	.Fold__Label,
+	.record-ledger__value,
+	td,
+	th,
+	dd,
+	dt {
+		white-space: normal !important;
+	}
+
+	.StateClip,
+	.StateWrap,
+	.Fold__Label,
+	.EdgeLeaf__route,
+	.record-ledger__value,
+	td,
+	th {
+		overflow-wrap: anywhere;
+		hyphens: auto;
+	}
+
+	/* ─── MISSING ────────────────────────────────────────────────────────
+	 *
+	 * A tombstone is a record whose target is gone: `WOULD BE HERE`, `WHY NOT`,
+	 * `NEXT`, `WAS:`. It prints as a record, because on paper the absence IS
+	 * the fact - a dropped row would leave the reader believing there was never
+	 * a target. */
+	[data-state="missing"],
+	.record-plate[data-state="missing"],
+	.record-inset[data-state="missing"] {
+		break-inside: avoid;
+	}
+
+	/* ─── DENIED ─────────────────────────────────────────────────────────
+	 *
+	 * A surface the reader may not see prints the sentence that says what it
+	 * is. The sheet's own denial is its leaf's `CIRCULATION:` line, which
+	 * prints with the rest of the collation. An auth-gated page prints its
+	 * denial record rather than a blank field. */
+	.EdgeLeaf[data-circulation="denied"]
+		.EdgeLeaf__fact[data-kind="circulation"] {
+		break-inside: avoid;
+	}
+
+	/* ─── A COLOUR IS NEVER THE ONLY CARRIER ─────────────────────────────
+	 *
+	 * The one place a fill is a FACT rather than an emphasis: an inset's
+	 * measure bar, whose length is the figure. If it prints as nothing the
+	 * comparison is lost, so it is forced to print - and its value is set
+	 * beside it, so the fact survives even a printer that refuses. */
+	.record-inset__bar-track,
+	.record-inset__bar-fill {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+}

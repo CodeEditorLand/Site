@@ -1,1 +1,0 @@
-import{t}from"./LocaleSwitcher.DOhGMU6C.js";export{t as LocaleSwitcher,t as default};

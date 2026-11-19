@@ -54,3 +54,13 @@
 // already wrote, and source order is the mechanism. A mark is the last thing set
 // on a line. See `System/Mark/_Index.scss` before moving this line.
 @use "System/Mark/Index" as Mark;
+// The print layer loads LAST of all, after the mark layer, because it is a
+// SECOND COMPOSITION of the same document rather than a filter over the screen
+// one: it remaps the palette's two inks for paper, drops the chrome whose
+// referent does not exist on a page, resolves every link to its target, turns
+// the scroll containers into page breaks and carries all nine adverse states
+// onto a medium that can make each of them worse. Media queries add no
+// specificity, so source order is the mechanism. See `System/Print/_Index.scss`
+// before moving this line - and note that the layer is inert on screen: every
+// rule in it is inside `@media print`.
+@use "System/Print/Index" as Print;

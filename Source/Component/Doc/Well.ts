@@ -15,7 +15,16 @@
  * *composes*: it wraps each `pre.astro-code` in that anatomy, so a command in an
  * article is the same object as a command in the Download masthead.
  *
- * Five rules, each of which is a way this could go wrong:
+ * Six rules, each of which is a way this could go wrong:
+ *
+ * - **Every well cites its block.** A fenced block is a claim - a command that
+ *   runs, a config that loads - and a claim with no source is the one thing this
+ *   site forbids. The shell declares the file it was set from on the body
+ *   (`data-doc-source`), and each well prints `SOURCE: <file> BLOCK NN OF NN`
+ *   under its body, in the same row `RecordWell` prints its own `source` in. The
+ *   ordinal counts wells, so the sequence a reader counts is the sequence the
+ *   page prints; a page that declares no file prints `◎ UNAVAILABLE` in that row
+ *   rather than an empty one.
  *
  * - **The wrapper is added, never swapped.** The `<pre>` element itself is moved,
  *   not rebuilt: its `<code>`, its token spans, its `tabindex` and its text are
@@ -253,8 +262,66 @@ const Floated = (Block: HTMLPreElement): HTMLElement | null => {
 	return Button && Shell.firstElementChild === Block ? Button : null;
 };
 
+/**
+ * The file the article was set from, as the shell declared it on the body
+ * (`DocArticle`'s `source` prop, written as `data-doc-source`).
+ *
+ * The browser cannot know which markdown file a `<pre>` came from, so the shell
+ * has to say. Empty means the page declared nothing - and a well that cannot
+ * cite its block says `◎ UNAVAILABLE` rather than printing an empty row.
+ */
+const SourceOf = (Block: HTMLPreElement): string =>
+	Block.closest<HTMLElement>("[data-doc-source]")?.dataset["docSource"]?.trim() ??
+	"";
+
+/**
+ * The block's own citation line: `SOURCE: <file> BLOCK 03 OF 12`.
+ *
+ * Two figures and one file, because a block is only checkable if the reader can
+ * find it again: the file locates the document, the ordinal locates the block
+ * inside it, and the count says how many there are - which is also the page's
+ * `too much` state, printed rather than felt. The ordinal counts wells, not
+ * `<pre>` elements: a Mermaid diagram keeps its own artifact and is never
+ * numbered, so a reader counting wells counts the same sequence the page
+ * prints.
+ *
+ * `◎ UNAVAILABLE` is the partial arm. It is written in the record grammar's
+ * fallback mark, not as an empty string, because a well with no provenance and a
+ * well whose provenance was lost look identical in the markup and must not look
+ * identical to the reader.
+ */
+const Provenance = (
+	Source: string,
+
+	Ordinal: number,
+
+	Total: number,
+): HTMLParagraphElement => {
+	const Line = document.createElement("p");
+
+	Line.className = "record-well__source";
+
+	const Key = document.createElement("span");
+
+	Key.className = "record-well__source-key";
+
+	Key.textContent = "SOURCE:";
+
+	const Where = Source || "◎ UNAVAILABLE";
+
+	Line.append(
+		Key,
+
+		document.createTextNode(
+			`${Where}\u2001BLOCK ${String(Ordinal).padStart(2, "0")} OF ${String(Total).padStart(2, "0")}`,
+		),
+	);
+
+	return Line;
+};
+
 /** One fenced block, as the well the rest of the site uses. */
-const Wrap = (Block: HTMLPreElement): void => {
+const Wrap = (Block: HTMLPreElement, Ordinal: number, Total: number): void => {
 	if (Block.closest(".record-well, .mermaid-diagram")) return;
 
 	const Language = (Block.dataset["language"] ?? "").toLowerCase();
@@ -344,7 +411,7 @@ const Wrap = (Block: HTMLPreElement): void => {
 	   and appending afterwards is what puts the block inside the figure. */
 	Host.replaceWith(Figure);
 
-	Figure.append(Bar, Block);
+	Figure.append(Bar, Block, Provenance(SourceOf(Block), Ordinal, Total));
 
 	/* The handshake with `Function/Utility/CopyCommand`: a block this module has
 	   served carries its control already, and must not be given a second one. */
@@ -364,11 +431,20 @@ export const WireDocument = async (): Promise<void> => {
 		document.querySelectorAll<HTMLPreElement>(
 			".doc-article__body pre.astro-code",
 		),
+	).filter(
+		/* A diagram is not a well: `MermaidFallback` owns it, and counting it here
+		   would put a number on a block that never prints one. */
+		(Block) =>
+			(Block.dataset["language"] ?? "").toLowerCase() !== "mermaid" &&
+			!Block.closest(".record-well, .mermaid-diagram"),
 	);
 
 	if (!Blocks.length) return;
 
-	for (const Block of Blocks) Wrap(Block);
+	/* The total is known before the first block is wrapped, so every well can
+	   print `BLOCK 03 OF 12` rather than discovering its place afterwards. */
+	for (const [Position, Block] of Blocks.entries())
+		Wrap(Block, Position + 1, Blocks.length);
 
 	const { WireWells } = await import("../../Library/Document/WireWells");
 

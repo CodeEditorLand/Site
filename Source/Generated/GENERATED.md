@@ -15,22 +15,22 @@ node Source/Script/Register.ts
 
 ## What lands here
 
-- `Source/Generated/Facts/Routes.json` <- `Source/pages/**, Source/Component/Record/**, Source/Function/Route/Map.ts` - read by /Contents - `/THE ROUTES`, and the footnote that names the registry drift
+- `Source/Generated/Facts/Routes.json` <- `Source/pages/**, Source/Component/Record/**, Source/Function/Route/Registry.ts` - read by /Contents - `/THE ROUTES`, and the footnote that names the registry drift
 - `Source/Generated/Facts/Forms.json` <- `Source/pages/**, Source/Component/Record/**` - read by /Contents - `/THE FORMS`, the `ROUTES` column of the matrix
 - `Source/Generated/Facts/Modules.json` <- `Source/**` - read by /Contents - `/THE REGISTER` (the extent) and `/THE DECLARED` (the modules with no reader)
 - `Source/Generated/Facts/Records.json` <- `Source/** - every quoted `# NAME_NN` head and the routes that reach it` - read by the command palette - the `RECORDS` register, so a reader can go to the page that prints a record
 
 ## What the numbers mean
 
-| File           | Answers                                                                                        |
-| -------------- | ---------------------------------------------------------------------------------------------- |
-| `Routes.json`  | which routes the build emits, what each one mounts, and where the hand-kept registry disagrees |
-| `Forms.json`   | which of the Record blocks is mounted by which route                                           |
-| `Modules.json` | what every module outside the bulk trees carries, and who reads it                             |
-| `Records.json` | every record head the tree prints, and the routes a reader can reach it from                   |
+| File           | Answers                                                                             |
+| -------------- | ----------------------------------------------------------------------------------- |
+| `Routes.json`  | which routes the build emits, what each one mounts, and whether the registry agrees |
+| `Forms.json`   | which of the Record blocks is mounted by which route                                |
+| `Modules.json` | what every module outside the bulk trees carries, and who reads it                  |
+| `Records.json` | every record head the tree prints, and the routes a reader can reach it from        |
 
-Measured at the last run: **43 routes**, **227 modules**,
-**168 read**, **13 declared with no reader**.
+Measured at the last run: **43 routes**, **448 modules**,
+**380 read**, **22 declared with no reader**.
 
 ## How a fact changes
 

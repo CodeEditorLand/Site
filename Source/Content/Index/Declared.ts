@@ -42,6 +42,85 @@ export const DeclaredModules: readonly DeclaredModule[] = [
 	},
 
 	{
+		path: "Component/Brand/FieldRecord.astro",
+
+		carries:
+			"The Daylight Field Record template: the record card assembled from its six parts in one file.",
+
+		reason: "It is the orchestrator, and the two compositions that could have used it build the card themselves: `DynamicHeroSection` renders the two-panel pair directly, and `/Portal` composes `FieldRecordDataCard` by hand. Kept as the template the parts were designed against, so the contract is written somewhere other than its call sites.",
+	},
+
+	{
+		path: "Component/Brand/SpecimenLabel.tsx",
+
+		carries:
+			"A record reduced to one label: seal, index, stamp, route and status in a single row.",
+
+		reason: "The React form of the record's own header. Every page that prints one composes it in the record layer instead - `RecordHero` on the index, `SurfaceHead` on the app surfaces, `RecordBand`'s index strip inside a band - so this is the shape the layer was designed from, and nothing mounts it.",
+	},
+
+	{
+		path: "Component/Dynamic/DynamicHeader.tsx",
+
+		carries:
+			"The legacy schema-driven header, reduced to an adapter over `Layout/Header`.",
+
+		reason: "An adapter nothing adapts: every route mounts `Component/Layout/Header` directly. Kept because it is the only written account of the header it replaced - its own bar, its own mobile panel, and a theme toggle on a site with exactly one theme.",
+	},
+
+	{
+		path: "Component/Dynamic/DynamicFooter.tsx",
+
+		carries:
+			"The schema-driven footer: an icon list, a social row and a copyright line.",
+
+		reason: "`Component/Layout/Footer.astro` is the footer every route mounts, and it prints the colophon where this printed an icon row. Kept whole, because it is the record of what the site's closing band was before the colophon.",
+	},
+
+	{
+		path: "Component/Dynamic/DynamicVerificationInfo.tsx",
+
+		carries:
+			"A verification panel: SHA-256 checksums and release signatures, with the copy control for each.",
+
+		reason: "It renders a checksum and a signature for a release, and the build has no published release to verify - `/Download`'s `/POSITION` rail prints `UNAVAILABLE` for CHECKSUM and SIGNATURE instead. Kept as the shape the panel takes on the day one is signed.",
+	},
+
+	{
+		path: "Component/Dynamic/Platform/Data.ts",
+
+		carries: "The columns, rows and source lines of the platform matrix.",
+
+		reason: "Superseded by `Content/Home/Platform.ts`, which `Component/Home/PlatformBand.astro` reads now that the band's copy lives in the content layer. The derivation it documents - a size and a checksum only when a file exists, a signature only when that file is signed - is the one the content module keeps.",
+	},
+
+	{
+		path: "Component/Dynamic/Roadmap/Data.ts",
+
+		carries: "Every row, label and derivation the roadmap band printed.",
+
+		reason: "Superseded by `Content/Home/Roadmap.ts` and `Content/Home/Band.ts`. Kept because its header is the argument for the band's shape - one offer in two states, a ledger per state rather than a matrix across editions - and that argument is written nowhere else.",
+	},
+
+	{
+		path: "Component/Dynamic/Type/Route/Account.ts",
+
+		carries:
+			"The four credential routes as one union: `signin | signup | forgot-password | reset-password`.",
+
+		reason: "A three-line type with no importer: `Component/Auth/Type.ts` declares the frame contract those routes read, and `Auth0Account`'s `Route` prop takes the literal at each call site. Kept because it is the only place the four are listed as one set.",
+	},
+
+	{
+		path: "Component/Dynamic/Type/Route/Verify.ts",
+
+		carries:
+			"The verify route's four arms as one union: `pending | verify | success | failure`.",
+
+		reason: "`/Verify` reads its arms from `Content/Layout/Verify.ts` and its interior from `Auth0AccountGate`, so this union has no importer. Kept as the enumeration the page's own register prints.",
+	},
+
+	{
 		path: "Background.tsx",
 
 		carries: "The React island that animates the canvas images.",
@@ -98,7 +177,7 @@ export const DeclaredModules: readonly DeclaredModule[] = [
 
 		carries: "`clsx` plus `tailwind-merge`: the class-string merger.",
 
-		reason: "Every class string in this tree is written whole, so nothing merges. The helper is the shape a component with conditional utilities would call, and it is here for that component rather than for one that exists.",
+		reason: "Every class string in this tree is written whole, so nothing merges. The helper is the shape a component with conditional utilities would call, and it is here for that component rather than for one that exists: a conditional utility is the one case `clsx` and `tailwind-merge` answer that a written class string cannot.",
 	},
 
 	{

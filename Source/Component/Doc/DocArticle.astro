@@ -115,6 +115,22 @@ interface Props {
 	 */
 	crumbs?: readonly { label: string; href?: string }[];
 
+	/**
+	 * The file the page was set from, declared on the body for the wells.
+	 *
+	 * A fenced block in an article is a claim about the software - a command
+	 * that runs, a config that loads, a signature that compiles - and until this
+	 * prop existed the well printed it with no citation at all: `Well.ts` wraps
+	 * every block in the site's well anatomy in the browser, and the browser
+	 * cannot know which markdown file the block came from. The shell knows, or
+	 * its caller does, so it is written on the body as `data-doc-source` and
+	 * each well prints `SOURCE: <file> BLOCK NN OF NN` under its body.
+	 *
+	 * Absent, the wells print `◎ UNAVAILABLE` in that row rather than nothing:
+	 * a page that cannot cite its blocks should say so, not look cited.
+	 */
+	source?: string;
+
 	/** Extra classes from the page, appended after the shell's own. */
 	class?: string;
 }
@@ -129,6 +145,7 @@ const {
 	measure = true,
 	plate,
 	crumbs,
+	source,
 	class: Class,
 } = Astro.props;
 ---
@@ -214,6 +231,7 @@ const {
 			"doc-article__body",
 			measure ? "doc-article__body--measure" : null,
 		]}
+		data-doc-source={source}
 	>
 		<slot />
 	</div>

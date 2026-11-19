@@ -4,11 +4,12 @@ navTitle: "Mountain"
 section: "Deep Dive"
 order: 7
 description:
-    "Technical foundation for implementing VSCode services as native Rust
+    "Technical foundation for implementing VS Code services as native Rust
     services within the Land project. Covers the concrete implementation layer
-    that brings VSCode service compatibility through native Rust implementations,
+    that brings VS Code service compatibility through native Rust implementations,
     Tauri integration, gRPC communication, process management, encryption, and
-    performance optimization."
+    performance optimization - one native implementation for every abstract
+    service trait the Common crate declares."
 ---
 
 # Mountain - Deep Dive

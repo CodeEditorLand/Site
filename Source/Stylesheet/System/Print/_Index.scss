@@ -1,0 +1,79 @@
+// The Print layer - the sheet, on paper.
+//
+// ─── WHY A LAYER FOR A SECOND MEDIUM ──────────────────────────────────────
+// Every layer below this one composes a screen. The Record blocks assume a
+// scroll, the Layout languages assume tracks that can be pinned, the Mark and
+// Motion layers assume a pointer, and the whole palette assumes a field that
+// can be painted creme. Paper has none of that: no scroll, no pinning, no
+// pointer, no field. A page that is merely *shrunk* for print is a page whose
+// composition has been dropped without being replaced - navigation down the
+// side, wells clipped at the margin, a grey wash where the field was.
+//
+// So print is not a filter over the screen stylesheet. It is a second
+// composition of the same artifacts, and it is the last mile of the identity:
+// the site claims to be a dossier, and a dossier is the kind of document that
+// gets printed, marked up and handed across a table.
+//
+// ─── WHAT A PRINTED SHEET CONTAINS ────────────────────────────────────────
+// The same document the screen shows, in the order it was set:
+//
+//   the leaf        `# SHEET 05␁OF 41  /DOC/RUST  PART: 03␁DOCUMENTATION`
+//                   and its `↳` proposition - the collation mark, printed at
+//                   the top of the first page exactly as it is on screen
+//   the page        every band, every record, every figure, in reading order,
+//                   at the page's own measure with the rails dropped
+//   the links       every link's target printed beside its text, in the
+//                   grammar's containment: `〈/Contents〉`, `〈https://…〉`
+//   the wells       code at the code role, wrapped rather than clipped, with
+//                   its label, its language and its SOURCE - the copy control
+//                   dropped, because paper cannot copy to a clipboard
+//   the tables      every row, with the header repeated on each page and no
+//                   row split across two
+//   the turn        the catchword: `→ NEXT: /BLOG␁04␁BLOG` and the folio
+//   the colophon    the record end, the facts, the making, the imprint - on a
+//                   page of its own, with `PRINTED: ______` for the copy's date
+//
+// ─── WHAT IT DROPS, AND WHY EACH ONE IS CHROME ────────────────────────────
+//   the header        the banner, the running head and the status ribbon. The
+//                     leaf already states the sheet, the part and the as-of;
+//                     the footer's FACTS ledger states the status. The header
+//                     would print the same facts twice on the first page and
+//                     not at all on the second.
+//   the rails         `.FrameRail`, `.ShellRail`, `.PageShell__rail`. A thumb
+//                     index is a way through a scroll; a printed sheet is
+//                     already collated by its leaf and its turn.
+//   the controls      the palette, the locale switcher, the matrix's facet and
+//                     density controls, the copy buttons, the print action
+//                     itself. None of them has a referent on paper.
+//   the field         `#Layout` / `#TopoMap`, the fixed topographic canvas. It
+//                     is a screen's depth cue and prints as a stain.
+//   the footer's nav  the ROUTES / LEGAL / INDEX rows. The colophon is facts
+//                     about the making, not a sitemap; the printed document's
+//                     navigation is the collation (leaf and turn), which is the
+//                     one form of it paper can actually follow.
+//
+// ─── WHY IT LOADS LAST ────────────────────────────────────────────────────
+// Every rule here either remaps a token the layers below declared or overrides
+// a composition decision they made for a screen. Media queries add no
+// specificity, so source order is the mechanism: the print layer is the last
+// `@use` in `System.scss`, after the State and Mark layers, and moving it up
+// silently returns a page to the screen's composition on paper.
+//
+// ─── THE LAW OF THIS LAYER ────────────────────────────────────────────────
+// It may not delete a treatment. It re-composes one for a medium that cannot
+// paint it: the field becomes the paper, the white insert becomes a rule, the
+// scroll becomes a page break, the hover becomes nothing. Every adverse state
+// the site composes on screen is carried onto paper in `_State.scss` - the
+// empty arm prints, the skeleton becomes a dotted rule, the windowed list opens,
+// the ellipsis is replaced by the whole string, the tombstone prints its `WAS:`.
+// A printed page that hides what the screen windowed would be a lie told by the
+// printer.
+
+@use "Ink";
+@use "Page";
+@use "Break";
+@use "Link";
+@use "Well";
+@use "Table";
+@use "State";
+@use "Colophon";

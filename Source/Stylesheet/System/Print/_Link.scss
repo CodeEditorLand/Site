@@ -1,0 +1,80 @@
+// ─── LINKS, RESOLVED - a printed link is its target ──────────────────────
+//
+// On screen a link is a word that goes somewhere. On paper the word stays and
+// the going does not, so a link that prints only its text is a fact with its
+// destination withheld. The print layer states the destination beside the word,
+// in the record grammar's own containment:
+//
+//   the manual            the manual 〈/Doc/introduction〉
+//   the source            the source 〈https://github.com/CodeEditorLand〉
+//   the desk              the desk 〈mailto:hello@editor.land〉
+//
+// `〈 〉` is the grammar's containment mark - the same one a route's part and a
+// stamp's edition print inside - so a resolved link reads as a reference in the
+// document's own hand rather than as a parenthetical bolted on by a printer.
+//
+// ─── WHAT IS NOT RESOLVED, AND WHY ───────────────────────────────────────
+// A target is suppressed when it would be noise:
+//
+//   `#anchor`      an in-page anchor has no page to go to: the fold's rows, the
+//                  band's index strip, `Back to top`. The text is the whole
+//                  fact.
+//   the route      a link whose TEXT is already its route (`→ /DOC/RUST` on the
+//                  turn, the footer's route list) would print `/DOC/RUST
+//                  〈/DOC/RUST〉` - the same fact twice, once in brackets.
+//   the index      a band's index strip prints `/MARKER` labels; the marker IS
+//                  the destination's name.
+//
+// The target prints at the meta size in muted ink, so a resolved link stays a
+// sentence and does not become a citation. It breaks inside a URL, because a
+// long path that overflows the measure is the too-long state and paper has no
+// horizontal scroll to hide it in.
+
+@media print {
+	a {
+		color: var(--Foreground);
+		text-decoration: none;
+	}
+
+	a[href]::after {
+		content: " 〈" attr(href) "〉";
+
+		color: var(--MuteForeground);
+
+		font-size: var(--type-meta);
+		font-weight: 400;
+		letter-spacing: 0;
+
+		overflow-wrap: anywhere;
+	}
+
+	/* ─── THE SUPPRESSIONS ──────────────────────────────────────────────── */
+	a[href^="#"]::after,
+	a[href=""]::after,
+	.EdgeTurn__route::after,
+	.FooterQuickLink::after,
+	.FooterLegalLink::after,
+	.FooterTop::after,
+	.record-band__index-item::after,
+	.Fold__Row::after,
+	.record-ledger__link[href^="#"]::after {
+		content: none;
+	}
+
+	/* ─── THE LEGAL DOCUMENTS ─────────────────────────────────────────────
+	 *
+	 * `System/_Base.scss` carries the legal documents' own pre-programme print
+	 * block, and its link rule prints ` (href)` in parentheses. That rule is
+	 * more specific than the one above and would print a second, different
+	 * target form inside the four legal pages. It is restated here in the
+	 * grammar's containment so one document does not resolve its links in two
+	 * hands. */
+	.LegalCard a[href^="http"]::after,
+	.LegalCard a[href^="mailto:"]::after {
+		content: " 〈" attr(href) "〉";
+
+		color: var(--MuteForeground);
+
+		font-size: var(--type-meta);
+	}
+}

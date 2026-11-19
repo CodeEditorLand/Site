@@ -1,6 +1,8 @@
 ---
 title: "Effect-TS Architecture in the Land Editor"
-summary: "How we use Effect-TS for typed error handling across the editor core."
+summary:
+    "How the editor core uses Effect-TS for typed error handling, and what a
+    `try/catch` boundary loses that a function signature keeps."
 publishedAt: "2026-04-01"
 tags: ["Architecture", "TypeScript", "Effect-TS"]
 author: "CodeEditorLand"

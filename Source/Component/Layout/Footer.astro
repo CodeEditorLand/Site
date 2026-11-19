@@ -30,9 +30,13 @@
  * design). `LocaleSwitcher` stays and still lists all five locales.
  */
 import { GetI18n } from "../../Library/I18n/Server";
+import { EdgeBuildDate } from "../../Content/Edge/Copy.js";
+import { EdgeExtent } from "../../Content/Edge/Register.js";
+import Folio from "../Detail/Folio.astro";
 import RecordLedger from "../Record/RecordLedger.astro";
 import { FooterData, FooterLinkAttributes } from "./Footer/Data.js";
 import { LocaleSwitcher } from "./LocaleSwitcher";
+import PrintRecord from "./Print/PrintRecord.astro";
 
 const T = GetI18n();
 
@@ -62,6 +66,13 @@ const Copyright = T("footer:bottomBar.copyright", {
 				<LocaleSwitcher client:idle />
 			</div>
 		</div>
+
+		{/* The colophon's print row. It sits between the record's opening and
+		    its facts because "how this copy left the record" is the first
+		    thing a colophon says after the record ends - and on paper it is
+		    the one row that gains a fact (the copy's own date) instead of
+		    losing its control. See `Print/PrintRecord.astro`. */}
+		<PrintRecord />
 
 		{/* The record's facts and the record's making, as two ledgers under one
 		    gutter - the same hairline division the hero pair uses. */}
@@ -145,6 +156,21 @@ const Copyright = T("footer:bottomBar.copyright", {
 		</div>
 
 		<div class="FooterBottom">
+			{/* The document's last line is its folio: where the colophon sits in
+			    the collation, on its own line above the imprint, inside the row's
+			    closing rules. It reads the same register the page edges read, so
+			    `# SHEET 05 / 41` at the top of a page and `41 SHEETS` here are one
+			    list and not two counts. */}
+			<div class="FooterFolio">
+				<Folio
+					index="↳"
+					part="/COLOPHON"
+					figure={{ value: EdgeExtent, unit: "SHEETS" }}
+					asOf={EdgeBuildDate}
+					source="Source/Content/Edge/Register.ts"
+				/>
+			</div>
+
 			<span class="FooterCopyright">{Copyright}</span>
 
 			<a class="FooterTop" href="#" aria-label="Back to top">
