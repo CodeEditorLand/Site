@@ -624,8 +624,8 @@ $Slip: ':is([data-slot="dropdown-menu-content"], [data-slot="dropdown-menu-sub-c
 	flex-direction: column;
 	gap: var(--space-tight);
 
-	margin: 0;
-	padding: var(--space-reading) var(--space-reading) 0;
+	margin: 0 0 var(--space-tight);
+	padding: 0;
 }
 
 .Slip__PanelFoot {
@@ -635,8 +635,8 @@ $Slip: ':is([data-slot="dropdown-menu-content"], [data-slot="dropdown-menu-sub-c
 	justify-content: flex-end;
 	gap: var(--space-tight);
 
-	margin: 0;
-	padding: 0 var(--space-reading) var(--space-reading);
+	margin: var(--space-reading) 0 0;
+	padding: 0;
 }
 
 .Slip__PanelTitle {

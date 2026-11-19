@@ -73,7 +73,7 @@ function HoverCardContent({
 	align = "center",
 	sideOffset = 4,
 	collisionPadding = 16,
-	size = "md",
+	size,
 	head,
 	note,
 	children,
@@ -85,7 +85,12 @@ function HoverCardContent({
 	/** The `↳` proposition under the head. */
 	note?: React.ReactNode;
 
-	size?: HoverCardSize;
+	/**
+	 * The card's width. Omitted by default, so the card is sized by its gloss and
+	 * capped at 24rem by `.Slip--hover` - the width a two-sentence definition
+	 * needs. A caller that wants a fixed measure states one.
+	 */
+	size?: HoverCardSize | undefined;
 }) {
 	return (
 		<HoverCardPrimitive.Portal data-slot="hover-card-portal">
@@ -100,7 +105,7 @@ function HoverCardContent({
 					"Slip",
 					"Slip--panel",
 					"Slip--hover",
-					SizeClass[size],
+					size === undefined ? undefined : SizeClass[size],
 					className,
 				)}
 				{...props}

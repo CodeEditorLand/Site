@@ -107,7 +107,7 @@ function PopoverContent({
 	sticky = "always",
 	avoidCollisions = true,
 	hideWhenDetached = true,
-	size = "md",
+	size,
 	head,
 	state = "ready",
 	note,
@@ -120,8 +120,12 @@ function PopoverContent({
 	/** The register line the slip opens with, when the panel names itself. */
 	head?: SlipHead | undefined;
 
-	/** The panel's width. */
-	size?: PopoverSize;
+	/**
+	 * The panel's width. Omitted by default, so a popover keeps the slip's own
+	 * 12rem floor and is sized by what it holds - which is the right default for
+	 * a gloss. A caller that needs a width states one.
+	 */
+	size?: PopoverSize | undefined;
 
 	/** The adverse arm. `ready` renders nothing above the body. */
 	state?: PopoverState;
@@ -179,7 +183,7 @@ function PopoverContent({
 				className={cn(
 					"Slip",
 					"Slip--panel",
-					SizeClass[size],
+					size === undefined ? undefined : SizeClass[size],
 					className,
 				)}
 				{...props}

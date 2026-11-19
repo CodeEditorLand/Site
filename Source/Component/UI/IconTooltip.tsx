@@ -172,7 +172,7 @@ const IconTooltip = ({
 					</TooltipTrigger>
 
 					<TooltipContent
-						className="Slip Slip--panel Slip--tip"
+						className="Slip Slip--panel Slip--tip [&>svg]:hidden"
 						sideOffset={6}
 					>
 						{Head === undefined ? null : (

@@ -30,7 +30,6 @@ import {
 
 import {
 	Dialog,
-	DialogBody,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
