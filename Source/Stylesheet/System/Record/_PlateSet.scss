@@ -20,6 +20,7 @@
 //                   .record-plate-set__frame           the 4:3 frame
 //                   .record-plate-set__frame--absent   the cell's tombstone bed
 //                   .record-plate-set__picture         the fitted capture
+//                   .record-plate-set__link            the frame as a door, when the cell names a target
 //                   .record-plate-set__subject         the cell's claim, after the `↳`
 //                   .record-plate-set__note            the cell's reason or next step
 //                   .record-plate-set__foot            the set's caption, window and source
@@ -194,6 +195,23 @@
 	display: block;
 	inline-size: 100%;
 	block-size: 100%;
+}
+
+// The frame as a door. `PlateCell.href` makes the whole 4:3 frame the anchor
+// rather than adding a "view" link beside it: the picture is the control, and a
+// set of figures with fifteen small links under it is a directory, not a field.
+// The frame is already the cell's own box, so the anchor fills it - and it takes
+// the state layer's one focus ring, inset, because the frame's `overflow: hidden`
+// would clip an outside ring.
+.record-plate-set__link {
+	display: block;
+	inline-size: 100%;
+	block-size: 100%;
+}
+
+.record-plate-set__link:focus-visible {
+	outline: var(--state-ring-width) solid var(--state-ring);
+	outline-offset: var(--state-ring-inset);
 }
 
 // The cell's absent mark sits where the capture would be centred, at the same

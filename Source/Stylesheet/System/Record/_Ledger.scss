@@ -14,6 +14,17 @@
 //                   .record-ledger--3           rows in three columns at 1024px and up
 //                   .record-ledger__row         one key/value pair
 //                   .record-ledger__row--lead   the one giant figure, at display weight
+//                   .record-ledger__row--total  the set's sum, under a heavier rule
+//                   .record-ledger__row--selected  the marked row of its set
+//                   .record-ledger__row--open   the row discloses more of itself
+//                   .record-ledger__row--nested a fact inside another row's disclosure
+//                   .record-ledger__disclosure  the `<details>` a row opens with
+//                   .record-ledger__summary     the row's value, as the disclosure's summary
+//                   .record-ledger__fold        the mark layer's fold, on the summary
+//                   .record-ledger__nested      the opened facts, one level in
+//                   .record-ledger__selected-mark  the attested square on a selected key
+//                   .record-ledger__state       a value that is a state word
+//                   .record-ledger__as-of       `AS OF:` - the fact's age
 //                   .record-ledger__key         mono key, e.g. TARGET, LICENSE, SIGNAL
 //                   .record-ledger__value       ink value
 //                   .record-ledger__code        a value that is a literal, in a `<code>` element
@@ -369,4 +380,174 @@
 	font-size: var(--type-body);
 	line-height: var(--type-body-line);
 	color: var(--MuteForeground);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// THE ROW'S THREE MORE SHAPES
+//
+// The record family's state matrix asked this block for combinations the site
+// never printed: a row that opens, a row that is the marked one, and a row that
+// is the set's total. All three are additions to the row grammar, and all three
+// print inside the row that already existed - none of them is a new block, and
+// a plain row renders exactly as it did.
+// ═══════════════════════════════════════════════════════════════════════════
+
+// ─── THE TOTAL ROW ────────────────────────────────────────────────────────
+// A total is a different rank of fact, not one more fact: the rule above it is
+// the divider's ink rather than the structural hairline, its key keeps the
+// register's tracking at the row's own size, and its value takes the sub role.
+// It is emphatic by rank, never by weight - the identity's ceiling is 500 and a
+// total that went bold would be a poster in a ledger.
+//
+// `grid-column: 1 / -1` because a sum spans the set it sums: in a two-column
+// register a total in one half would read as the total of that half.
+.record-ledger__row--total {
+	grid-column: 1 / -1;
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+	padding-block-start: var(--space-tight);
+}
+
+.record-ledger__row--total > .record-ledger__key {
+	color: var(--Foreground);
+}
+
+.record-ledger__row--total > .record-ledger__value {
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	letter-spacing: var(--track-join);
+}
+
+// ─── THE SELECTED ROW ─────────────────────────────────────────────────────
+// Selection is `aria-current` plus the attested square on the key - the same
+// two signals every other selected thing on the site carries - and one rule at
+// the row's leading edge so the eye can find it while scanning. The rule is the
+// divider's ink, not the accent: the accent authenticates an action, and a
+// ledger row is a fact that happens to be marked.
+.record-ledger__row--selected {
+	border-inline-start: 2px solid var(--Divider);
+	padding-inline-start: var(--space-tight);
+}
+
+.record-ledger__selected-mark {
+	margin-inline-end: var(--mark-gap);
+	color: var(--Foreground);
+}
+
+// ─── THE ROW THAT OPENS ───────────────────────────────────────────────────
+// The disclosure is the browser's own `<details>`: no script, no state to
+// hydrate, and it opens for a reader whose JavaScript never ran. The summary IS
+// the row's value - the closed row still states the fact - and the fold at its
+// end is the mark layer's, which already turns on `details[open]` and answers
+// `summary:hover` and `summary:focus-visible` in `Mark/_Arrow.scss`.
+//
+// `display: flex` on the summary is what keeps the value and the fold on one
+// line; the default `list-item` marker is removed because the fold is the
+// marker, and two disclosure signs on one row is one too many.
+.record-ledger__disclosure {
+	min-inline-size: 0;
+}
+
+.record-ledger__summary {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-tight);
+	min-inline-size: 0;
+	cursor: pointer;
+	list-style: none;
+}
+
+.record-ledger__summary::-webkit-details-marker {
+	display: none;
+}
+
+.record-ledger__summary-value {
+	min-inline-size: 0;
+	overflow-wrap: break-word;
+}
+
+.record-ledger__summary:focus-visible {
+	outline: var(--state-ring-width) solid var(--state-ring);
+	outline-offset: var(--state-ring-inset);
+}
+
+.record-ledger__fold {
+	flex: 0 0 auto;
+}
+
+// The opened facts: the same row grammar, one level in. They are indented by
+// the key column's optical edge so the nesting reads as a sub-list rather than
+// as a second ledger, and their rules are the divider's ink at the caption
+// weight - a nested fact is quieter than the fact it belongs to, and it is
+// still a fact.
+.record-ledger__nested {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	margin: 0;
+	padding: 0;
+	padding-inline-start: var(--space-reading);
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+	margin-block-start: var(--space-tight);
+}
+
+.record-ledger__row--nested {
+	padding-block: var(--space-tight);
+}
+
+.record-ledger__row--nested:first-child {
+	border-block-start: 0;
+}
+
+.record-ledger__row--nested > .record-ledger__key {
+	@include mono-meta;
+	@include track(var(--track-row));
+	color: var(--MuteForeground);
+}
+
+@include bp(640px) {
+	.record-ledger__row--nested {
+		flex-direction: row;
+		align-items: baseline;
+		gap: var(--space-reading);
+	}
+
+	.record-ledger__row--nested > .record-ledger__key {
+		flex: 0 0 auto;
+		inline-size: min(var(--optical-key-column), 40%);
+	}
+}
+
+// ─── THE STATE WORD AND THE AGE ───────────────────────────────────────────
+// A value that is a state word takes the vocabulary's ink and the mark layer's
+// square, in the same three tones every other state on the site uses. The word
+// itself is the caller's and prints verbatim: this rule tints and marks, it
+// never re-cases.
+//
+// A fact older than the page keeps its value and states its age beside it -
+// `AS OF: 2026-11-18` - at the caption weight, so a stale figure is still
+// readable and never silent about being old.
+.record-ledger__state {
+	display: inline-flex;
+	align-items: baseline;
+	gap: var(--mark-gap);
+}
+
+.record-ledger__state--specimen {
+	color: var(--Foreground);
+}
+
+.record-ledger__state--quiet {
+	color: var(--MuteForeground);
+}
+
+.record-ledger__as-of {
+	display: block;
+	margin-block-start: 0.125rem;
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	color: var(--MuteForeground);
+}
+
+.record-ledger__as-of-key {
+	@include track(var(--track-row));
 }

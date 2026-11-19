@@ -29,6 +29,12 @@
  *                   survives the rotation.
  * DENSE             none. A rail with more than six stops needs a Matrix; the
  *                   block does not compress, it refuses to be a table.
+ * ONE STOP          the stop takes the whole measure (`--single`) and the axis
+ *                   still prints: it is what the one position is a position ON.
+ * EQUAL STOPS       a stop marked `equal` carries the same value as the one
+ *                   before it, and the rail draws the interval between the two
+ *                   ticks in the rail's own ink - two positions at the same
+ *                   place read as one plateau, before the caption is read.
  *
  * WHY NOT A MATRIX. The matrix answers "what is true in each column" and has no
  * ends. The rail answers "how far along this one axis", and its ends are the
@@ -73,6 +79,14 @@ const Loading = compare.state === "loading";
 const Empty = !Loading && compare.stops.length === 0;
 
 /**
+ * A rail of one stop. The axis still prints - it is what the single position is
+ * a position ON - but there is no interval to draw, so the stop takes the whole
+ * measure instead of a third of it, and the rail says so with its own modifier
+ * rather than by printing a lone column in a three-column grid.
+ */
+const Single = !Loading && compare.stops.length === 1;
+
+/**
  * The stop's state tone, from the one table that decides tones. A word outside
  * the vocabulary prints in ink and is not a state, which is the same rule every
  * other register follows.
@@ -89,6 +103,7 @@ const Skeleton = [0, 1, 2];
 		"record-compare",
 		Loading && "record-compare--loading",
 		Empty && "record-compare--empty",
+		Single && "record-compare--single",
 		Class,
 	]}
 	role="group"
@@ -132,11 +147,14 @@ const Skeleton = [0, 1, 2];
 			class="record-compare__rail"
 			style={`--CompareStops:${compare.stops.length}`}
 		>
-			{compare.stops.map((Stop) => (
+			{compare.stops.map((Stop, Index) => (
 				<li
 					class:list={[
 						"record-compare__stop",
 						Stop.state && "record-compare__stop--unreached",
+						Stop.equal === true &&
+							Index > 0 &&
+							"record-compare__stop--equal",
 					]}
 				>
 					<span class="record-compare__tick" aria-hidden="true" />

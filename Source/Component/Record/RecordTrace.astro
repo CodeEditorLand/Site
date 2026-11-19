@@ -14,7 +14,7 @@
  * SLOT CONTRACT     steps[]    -> one step each: index, path, note, href?
  *                   label?     -> the `/LABEL` after the marker: `BUILD`
  *                   source     -> required; the page or file the trace is from
- *                   state?     -> `rest` (default) or `loading`
+ *                   state?     -> `rest` (default), `loading` or `empty`
  *                   empty?     -> the composed sentence for a trace with no steps
  * MAY HOLD          steps only.
  * MAY NOT HOLD      prose, a figure, a second trace.
@@ -58,13 +58,57 @@ const MarkerLine =
 	label === undefined
 		? `TRACE\u2001${Marker}`
 		: `TRACE / ${label}\u2001${Marker}`;
+
+/**
+ * A trace with no step at all. It is a state, not a length of zero: the two read
+ * differently, and only one of them is a provenance statement. A caller that
+ * hands no sentence still gets one, because a marker over nothing is a hole -
+ * the same rule `RecordCompare` follows for an empty rail.
+ */
+const Empty = state === "empty" || (state !== "loading" && steps.length === 0);
+
+const EmptyText =
+	empty ??
+	"No step is recorded on this trace. The marker still prints and the source below still names where the trace was read from, because a trace with nothing in it is still a claim about where the claim can be checked - and a reader who follows the source can see that it names none.";
+
+/**
+ * The loading trace's three steps: the index in ink, a hairline bar where the
+ * path will be, and a shorter bar in the note's column. The count in the marker
+ * stays `LOADING` rather than a figure, because the steps have not arrived.
+ */
+const Skeleton = [0, 1, 2];
 ---
 
 <div class="record-trace" data-state={state}>
 	<p class="record-trace__marker"># {MarkerLine}</p>
 
-	{state === "empty" || steps.length === 0 ? (
-		empty && <p class="record-trace__empty">{empty}</p>
+	{state === "loading" ? (
+		<ol class="record-trace__steps" aria-busy="true">
+			{Skeleton.map((Index) => (
+				<li class="record-trace__step record-trace__step--skeleton">
+					<span class="record-trace__index">
+						{String(Index + 1).padStart(2, "0")}
+					</span>
+					<span class="record-trace__arrow" aria-hidden="true">
+						→
+					</span>
+					<span class="record-trace__path">
+						<span
+							class="record-trace__bar record-trace__bar--path"
+							aria-hidden="true"
+						/>
+					</span>
+					<span class="record-trace__note">
+						<span
+							class="record-trace__bar record-trace__bar--note"
+							aria-hidden="true"
+						/>
+					</span>
+				</li>
+			))}
+		</ol>
+	) : Empty ? (
+		<p class="record-trace__empty">{EmptyText}</p>
 	) : (
 		<ol class="record-trace__steps">
 			{steps.map((Step) => (

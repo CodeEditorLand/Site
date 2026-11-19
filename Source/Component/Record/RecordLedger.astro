@@ -19,6 +19,22 @@
  * `surface` changes only whether the shell wears the `.emphasis-standard` tier,
  * and each row's `note`/`lead` change only that row's own markup.
  *
+ * ─── THE ROW DOES MORE THAN ONE THING NOW ─────────────────────────────────
+ * The rows are printed by `RecordLedgerRow.astro`, which owns the row's grammar
+ * so the row and the row-that-opens cannot print the same fact two ways. Three
+ * row-level shapes were added by the record family's state matrix, and each one
+ * came from a combination the site never met:
+ *
+ * - `selected` - the marked row of a set (`aria-current` + the attested square);
+ * - `total` - the set's sum, under a heavier rule and at the sub role;
+ * - `open` - the row discloses more of itself in a `<details>`, no script;
+ * - `state` + `asOf` - a value that is a state word (tinted and marked by the
+ *   vocabulary) and a fact older than the page (`AS OF:`), the PARTIAL and
+ *   STALE states as fields rather than as colours.
+ *
+ * None of them changes what a plain row prints, and every one of them is
+ * additive: a `LedgerRow` written before this wave renders exactly as it did.
+ *
  * ─── THE REGISTER IS NOT A STRING ─────────────────────────────────────────
  * A register line above the rows is a `Register` (`RegisterLine.ts`): a label
  * and a count, never a bare string. The shape makes the grammar un-droppable -
@@ -28,6 +44,8 @@
  * two are the same array twice.
  */
 import Register from "./Register.astro";
+
+import RecordLedgerRow from "./RecordLedgerRow.astro";
 
 import type { LedgerRow, LedgerDensity, RegisterState } from "./Type.js";
 
@@ -192,62 +210,8 @@ const SkeletonRows: readonly LedgerRow[] =
 								/>
 							</dd>
 						</div>
-					))
-				: rows.map((Row) => (
-						<div
-							class:list={[
-								"record-ledger__row",
-								Row.lead ? "record-ledger__row--lead" : null,
-							]}
-						>
-							<dt class="record-ledger__key">{Row.key}</dt>
-							<dd class="record-ledger__value">
-								{Row.links !== undefined &&
-								Row.links.length > 0 ? (
-									Row.links.map((Link, Index) => (
-										<>
-											{Index > 0 && (
-												<span class="record-ledger__separator">
-													{" / "}
-												</span>
-											)}
-											<a
-												class="record-ledger__link"
-												href={Link.href}
-												target={
-													Link.target === "blank"
-														? "_blank"
-														: undefined
-												}
-												rel={
-													Link.target === "blank"
-														? "noopener noreferrer"
-														: undefined
-												}
-											>
-												{Link.text}
-											</a>
-										</>
-									))
-								) : Row.code ? (
-									<code class="record-ledger__code">
-										{Row.value}
-									</code>
-								) : Row.strong ? (
-									<strong class="record-ledger__strong">
-										{Row.value}
-									</strong>
-								) : (
-									Row.value
-								)}
-								{Row.note && (
-									<span class="record-ledger__note">
-										{Row.note}
-									</span>
-								)}
-							</dd>
-						</div>
-					))}
+				))
+				: rows.map((Row) => <RecordLedgerRow row={Row} />)}
 		</dl>
 	)}
 </div>

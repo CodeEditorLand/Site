@@ -173,3 +173,35 @@
 .record-instrument__empty-mark {
 	color: var(--MuteForeground);
 }
+
+// ─── THE LOADING PANEL ────────────────────────────────────────────────────
+// The keys and the `SOURCE:` lines are the schema and print; the figure is the
+// one part that has not arrived, so it is the one part drawn as a bar. The bar
+// is the ledger's own (`0.5rem`, 8% ink), because the site has one way of
+// drawing a value that has not arrived.
+.record-instrument__bar {
+	display: block;
+	block-size: 0.5rem;
+	inline-size: 62%;
+	margin-block: 0.5rem;
+	background: color-mix(in srgb, var(--Foreground) 8%, transparent);
+}
+
+// ─── THE TOTAL MEASURE ────────────────────────────────────────────────────
+// A sum is a different rank of figure: the divider's ink above it, its key at
+// the register's weight, and its figure at the sub role. It spans the strip's
+// row, because a panel's total is the total of the panel and not of one column.
+.record-instrument__measure--total {
+	grid-column: 1 / -1;
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.record-instrument__measure--total .record-instrument__key {
+	color: var(--Foreground);
+}
+
+.record-instrument__measure--total .record-instrument__figure {
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	letter-spacing: var(--track-join);
+}

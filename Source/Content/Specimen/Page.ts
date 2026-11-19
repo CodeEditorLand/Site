@@ -145,7 +145,7 @@ export const Head = {
 	title: "The document's own parts",
 
 	proposition:
-		"Eleven parts, printed at 1:1 where they can stand on a plate and stated where they cannot. Each one carries its contract, its stylesheet and the surface that asks for it.",
+		"Twelve parts, printed at 1:1 where they can stand on a plate and stated where they cannot. Each one carries its contract, its stylesheet and the surface that asks for it.",
 } as const;
 
 /** The three bands' openings, in the order they are read. */
@@ -294,6 +294,37 @@ export const Bands = {
 
 		footnote:
 			"Two cells cannot exist for the same reason in three different rows, and each one still carries its own sentence: a reason is a fact about that component, not a rule about the family. A cell that cannot exist is not a gap in the design - it is the design saying what it is not.",
+	},
+
+	/**
+	 * The record ledger family's band.
+	 *
+	 * The fourth band about a family rather than a part, and the first whose subject
+	 * is what the document is BELIEVED for: a ledger is where a reader checks
+	 * whether the thing is real - its target, its licence, its figure and the source
+	 * that figure came from. The other three families are touched, dismissed and
+	 * read; this one is trusted, and a ledger that loses its partial state prints a
+	 * blank cell where a fact should be, which a reader reads as "none".
+	 *
+	 * It follows `/THE DISPLAY` for the reason that one follows `/THE OVERLAY`: a
+	 * family's states are the product. The band's argument is in four artifacts: the
+	 * matrix with a reason for every cell that cannot exist, the improvements the
+	 * exploration produced (each naming the condition that revealed it), the
+	 * observations this card did not fix and whose work they are, and the fifty-two
+	 * live rows.
+	 */
+	Record: {
+		kicker: "/THE RECORD",
+
+		interval: "turn",
+
+		heading: "The record, and the combinations it never met",
+
+		standfirst:
+			"Eight components against twenty-four conditions: the matrix with a reason printed in full for every cell that cannot exist, the twelve behaviours the exploration produced with the cell that produced each, the three things this card found and did not fix, and then the family mounted live - one row, twenty rows, a key longer than its value, a value of three lines, a matrix of one column, a matrix of twelve, a rail where the two sides are equal, a trace with no events, an instrument with a missing reading, and the row grammar doing three things it could not do before: opening, marking and totalling.",
+
+		footnote:
+			"Not one of these blocks ships a line of JavaScript. The ledger's disclosure is a `<details>`, the matrix is a `<table>`, the rail is an `<ol>` and the register is a `<p>` - so the band that prints every state they have costs the page nothing to mount, which is itself the claim.",
 	},
 
 	Material: {

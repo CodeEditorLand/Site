@@ -17,13 +17,14 @@
  * count, so no amount of care at the call site makes the grammar safe.
  *
  * `Register` is an object whose `count` is required: a register without a count
- * cannot be written down. The three constructors are the only sanctioned ways to
+ * cannot be written down. The four constructors are the only sanctioned ways to
  * build one, and each answers a different question:
  *
  *     RegisterOf("WHAT CHANGES", Rows)     the count is the rows' own length
  *     RegisterCount("BLOG", 8, { unit: "ENTRIES" })
  *                                          a count the block cannot hold itself
  *     RegisterUnavailable("CHECK")         the count cannot be known, and says so
+ *     RegisterWindow("PLATES", 12, 240)    the too-much state: `12 OF 240`
  *
  * ─── THE SENTENCE A FUTURE CARD SHOULD READ ───────────────────────────────
  * **A register is a `Register`, never a string.** If a block prints a register,
@@ -145,6 +146,38 @@ export const RegisterUnavailable = (
 ): Register => ({
 	label: label.trim(),
 	count: "UNAVAILABLE",
+	...options,
+});
+
+/**
+ * The register of a set that is too large to print: the count is the window and
+ * the set it was cut from - `12 OF 240`.
+ *
+ * This is the too-much state as a line rather than as a note, and it exists
+ * because the alternative was a second vocabulary: `RecordPlateSet` printed
+ * `SHOWING: 12 OF 240` in its own foot while every other block printed a
+ * register, so the one state that most needs its figure (a set longer than the
+ * page) was the one state whose figure did not travel in the register's shape.
+ * A window is still a count - it is the count of what the reader is holding plus
+ * the count of what exists - and it is stated in the register's own grammar.
+ *
+ * `total` is a string for the same reason `Register.count` is: a figure the
+ * block does not hold may arrive as text, and a total that cannot be known is
+ * `UNAVAILABLE` rather than a guess. Neither part is padded, because `12 OF
+ * 240` is a proportion and zero-padding the first half of a proportion invents
+ * a leading figure.
+ */
+export const RegisterWindow = (
+	label: string,
+
+	showing: number,
+
+	total: string | number,
+
+	options: RegisterOptions = {},
+): Register => ({
+	label: label.trim(),
+	count: `${showing} OF ${typeof total === "number" ? String(total) : total.trim()}`,
 	...options,
 });
 

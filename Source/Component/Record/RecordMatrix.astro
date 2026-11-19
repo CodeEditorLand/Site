@@ -14,6 +14,8 @@
  *                   caption?  -> the provenance line under the matrix
  *                   density?  -> `rest` (default) or `dense` (halved row rhythm
  *                                for a long comparison)
+ *                   state?    -> `rest` (default), `loading` or `empty`
+ *                   empty?    -> the composed sentence a matrix with no rows prints
  * MAY HOLD          nothing. Cells are values, not blocks.
  * MAY NOT HOLD      a block in a cell. A cell that needs a block needs a
  *                   different artifact.
@@ -44,8 +46,34 @@
  * two-value union, so it travels as a modifier class and the stylesheet owns
  * it.
  *
+ * ─── THE THREE STATES A TABLE IS ASKED FOR AND NEVER HAD ──────────────────
+ * The record family's matrix found this block printing a bare head over nothing
+ * in three different ways, and each one is now a shape rather than a hole:
+ *
+ * - `empty` - the head STAYS, because the head is the schema and the schema is
+ *   still true when there are no rows, and one cell spanning the table says what
+ *   would be here, why it is not and where to read it.
+ * - `loading` - the head stays and three skeleton rows print, each with its
+ *   label and a hairline bar in every cell: the columns are known before the
+ *   values are, so the skeleton is the comparison's own shape.
+ * - a cell whose value is a state word (`UNAVAILABLE`, `PREPARING`) now prints
+ *   the vocabulary's mark and takes its tone. A comparison whose one honest
+ *   answer is "not measured" used to read as a value that happened to be a word.
+ *
+ * ─── THE TOTAL ROW ────────────────────────────────────────────────────────
+ * `MatrixRow.total` marks the row that sums the column above it. It prints
+ * under the divider's ink rather than the structural hairline, at the sub role,
+ * and it is never computed here: a block derives nothing it was not given, so
+ * the caller passes the figure and the matrix prints the row that says what it
+ * is. A total row carries its cells like any other row - one per column, because
+ * a comparison's total is a total per column.
+ *
  * No script, no hydration: a printed table that happens to be markup.
  */
+import Mark from "../Mark/Mark.astro";
+
+import { Tone } from "../Surface/State.js";
+
 import type { MatrixColumn, MatrixDensity } from "./Type.js";
 
 /**
@@ -62,7 +90,17 @@ interface MatrixRow {
 
 	/** One value per column, in the order the columns are given. */
 	cells: readonly string[];
+
+	/**
+	 * The row is the set's total. It prints under the divider's ink at the sub
+	 * role, and with no cells it spans the whole table - one sum of the set
+	 * rather than one sum per column.
+	 */
+	total?: boolean;
 }
+
+/** The matrix's own state: the rows, or the shape of the rows. */
+type MatrixState = "rest" | "loading" | "empty";
 
 interface Props {
 	/** The columns: header label, optional ink token name, optional align. */
@@ -98,6 +136,23 @@ interface Props {
 	 * a smaller one.
 	 */
 	density?: MatrixDensity;
+
+	/**
+	 * `rest` prints the rows. `loading` keeps the head and prints three skeleton
+	 * rows - a hairline bar in every cell, because the columns are the schema and
+	 * are known before the values are. `empty` keeps the head and prints one
+	 * cell that says what would be here: an empty table that dropped its head
+	 * would have thrown away the only part of itself that was still true.
+	 */
+	state?: MatrixState;
+
+	/**
+	 * What the matrix says when it has no rows: what would be here, why it is
+	 * not, and what to do. Absent, an empty matrix prints the composed default -
+	 * never a head over a blank body, which is the one thing a comparison must
+	 * not print.
+	 */
+	empty?: string;
 }
 
 const {
@@ -107,6 +162,8 @@ const {
 	density = "rest",
 	class: Class,
 	id,
+	state = "rest",
+	empty,
 } = Astro.props;
 
 /** The shell's classes: the block's own, its density, then whatever the page adds. */
@@ -131,10 +188,16 @@ const valueAt = (row: MatrixRow, index: number): string =>
 	row.cells?.[index] ?? "";
 
 /**
- * The mark class a value earns. `yes` and `no` are the only two the stylesheet
- * names, and they are matched case-insensitively because the content tables
- * are written by hand. Every other value earns no modifier and prints
- * verbatim - a value is never translated into an icon.
+ * The mark class a value earns. `yes` and `no` are the two verdicts the
+ * stylesheet names by shape, and they are matched case-insensitively because the
+ * content tables are written by hand.
+ *
+ * A value that is one of the eight state words is not a verdict but a STATE, and
+ * it earns the vocabulary's tone plus the mark layer's square: `UNAVAILABLE` in
+ * a comparison is a measurement that could not be taken, and a reader must be
+ * able to see that it is a state and not a value that happens to read that way.
+ * Every other value earns no modifier and prints verbatim - a value is never
+ * translated into an icon.
  */
 const markOf = (value: string): string => {
 	const normalised = value.trim().toLowerCase();
@@ -142,8 +205,13 @@ const markOf = (value: string): string => {
 	if (normalised === "yes") return " record-matrix__cell--yes";
 	if (normalised === "no") return " record-matrix__cell--no";
 
-	return "";
+	const tone = Tone(value);
+
+	return tone === undefined ? "" : ` record-matrix__cell--state record-matrix__cell--${tone}`;
 };
+
+/** Whether a value is a state word, and therefore carries the mark's square. */
+const isState = (value: string): boolean => Tone(value) !== undefined;
 
 /** A header cell's classes: its own, plus the centre modifier when asked. */
 const columnClass = (column: MatrixColumn): string =>
@@ -156,10 +224,32 @@ const cellClass = (column: MatrixColumn, value: string): string =>
 	`record-matrix__cell${
 		column.align === "center" ? " record-matrix__cell--center" : ""
 	}${markOf(value)}`;
+
+/** The state word's tone, for the square that precedes it. */
+const stateTone = (value: string) => Tone(value) ?? "ink";
+
+/**
+ * The empty matrix's composed default. A caller that hands no sentence still
+ * gets a sentence: a head over a blank body is the one thing a comparison must
+ * not print, and a blank cell is an excuse rather than a fact.
+ */
+const EmptyText =
+	empty ??
+	"No row is recorded for this comparison yet. The head prints because the columns are still the schema - what is being compared is known before the values are - and the body states the absence rather than leaving a blank.";
+
+/** The skeleton's three rows: the shape of a comparison whose values have not arrived. */
+const Skeleton = [0, 1, 2];
+
+/** How many cells a body cell spans: the label column plus every value column. */
+const Span = columns.length + 1;
+
+const Busy = state === "loading";
+
+const Empty = state === "empty" || (!Busy && rows.length === 0);
 ---
 
 <div class={shellClass} id={id}>
-	<table class="record-matrix__table">
+	<table class="record-matrix__table" aria-busy={Busy ? "true" : undefined}>
 		{caption && <caption class="record-matrix__caption">{caption}</caption>}
 		<thead>
 			<tr class="record-matrix__head">
@@ -180,20 +270,76 @@ const cellClass = (column: MatrixColumn, value: string): string =>
 			</tr>
 		</thead>
 		<tbody>
-			{rows.map((row) => (
-				<tr class="record-matrix__row">
-					<th scope="row" class="record-matrix__label">
-						{row.label}
-					</th>
-					{columns.map((column, index) => {
-						const value = valueAt(row, index);
+			{Busy
+				? Skeleton.map((Index) => (
+						<tr class="record-matrix__row record-matrix__row--skeleton">
+							<th scope="row" class="record-matrix__label">
+								FACT_{String(Index + 1).padStart(2, "0")}
+							</th>
+							{columns.map((column) => (
+								<td class={cellClass(column, "")}>
+									<span
+										class="record-matrix__bar"
+										aria-hidden="true"
+									/>
+								</td>
+							))}
+						</tr>
+					))
+				: Empty
+					? (
+							<tr class="record-matrix__row record-matrix__row--empty">
+								<td class="record-matrix__empty" colspan={Span}>
+									<span
+										class="record-matrix__empty-mark"
+										aria-hidden="true"
+									>
+										◎
+									</span>{" "}
+									{EmptyText}
+								</td>
+							</tr>
+						)
+					: rows.map((row) => (
+							<tr
+								class:list={[
+									"record-matrix__row",
+									row.total &&
+										"record-matrix__row--total",
+								]}
+							>
+								<th scope="row" class="record-matrix__label">
+									{row.label}
+								</th>
+								{columns.map((column, index) => {
+									const value = valueAt(row, index);
 
-						return (
-							<td class={cellClass(column, value)}>{value}</td>
-						);
-					})}
-				</tr>
-			))}
+									return (
+										<td class={cellClass(column, value)}>
+											{isState(value) ? (
+												<span class="record-matrix__state">
+													<Mark
+														kind="square"
+														fill={
+															value
+																.trim()
+																.toLowerCase() ===
+															"loading"
+																? "loading"
+																: "unknown"
+														}
+														tone={stateTone(value)}
+													/>
+													{value}
+												</span>
+											) : (
+												value
+											)}
+										</td>
+									);
+								})}
+							</tr>
+						))}
 		</tbody>
 	</table>
 </div>

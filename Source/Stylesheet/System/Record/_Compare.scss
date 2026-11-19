@@ -256,3 +256,55 @@
 	block-size: 8px;
 	background: var(--Mute);
 }
+
+// ═══════════════════════════════════════════════════════════════════════════
+// TWO COMBINATIONS THE RAIL NEVER MET
+//
+// The family's state matrix found the rail with one stop on it (a set of one)
+// and with two stops carrying the SAME value (the "two sides are equal" case).
+// Neither is a new block and neither changes a three-stop rail.
+// ═══════════════════════════════════════════════════════════════════════════
+
+// ─── A RAIL OF ONE ────────────────────────────────────────────────────────
+// One position takes the whole measure. Left as a third of a three-column grid
+// it read as a stop that had lost its neighbours; given the full width it reads
+// as what it is - the only place on this axis that anything sits.
+.record-compare--single .record-compare__rail {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.record-compare--single .record-compare__stop {
+	padding-inline-end: 0;
+}
+
+// ─── THE EQUAL RUN ────────────────────────────────────────────────────────
+// `CompareStop.equal` is the caller's assertion that this stop carries the same
+// value as the one before it, and the rail draws the interval between their two
+// ticks in the rail's own ink instead of the hairline. Two things that sit at
+// the same place on the axis then read as one plateau: the ticks are still two
+// stations, and the line between them says the distance is zero.
+//
+// The bar is a pseudo-element that reaches BACK one column, because the interval
+// before a tick belongs to the stop on its right - the stop's own top rule runs
+// forward from its own tick, which is the interval to the NEXT station.
+.record-compare__stop--equal::before {
+	content: "";
+	position: absolute;
+	inset-block-start: 0;
+	inset-inline-end: 100%;
+	inline-size: 100%;
+	block-size: 1px;
+	background: var(--Foreground);
+}
+
+// On the rotated rail the interval is vertical, and it reaches up instead.
+@media (max-width: 767.98px) {
+	.record-compare__stop--equal::before {
+		inset-block-start: auto;
+		inset-block-end: 100%;
+		inset-inline-end: auto;
+		inset-inline-start: 0;
+		inline-size: 1px;
+		block-size: 100%;
+	}
+}

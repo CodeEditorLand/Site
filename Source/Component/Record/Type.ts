@@ -282,6 +282,17 @@ export interface Measure {
 	 * display role - the page's one XL is its claim, not a number.
 	 */
 	lead?: boolean;
+
+	/**
+	 * The measure is the panel's total: the sum the measures above it add up to.
+	 *
+	 * A total is a different rank of figure, so it prints under the panel's own
+	 * heavier rule, with its key at the register's weight and its figure at the
+	 * sub role. The panel does not compute it - a block derives nothing it was
+	 * not given - so the caller passes the figure and the panel prints the row
+	 * that says what it is.
+	 */
+	total?: boolean;
 }
 
 /**
@@ -312,6 +323,19 @@ export interface Instrument {
 	 * an empty frame.
 	 */
 	empty?: string;
+
+	/**
+	 * The panel's own state. `rest` prints the figures; `loading` prints the same
+	 * cells with their keys and their `SOURCE:` lines and a hairline bar where
+	 * each figure will be - a skeleton in the record grammar, never a spinner,
+	 * because the labels and the provenance are the schema and are known before
+	 * the numbers are. A panel whose figures arrive after paint still says how
+	 * many figures it is waiting for and where each one comes from.
+	 *
+	 * `empty` is the same statement as `measures: []` and is spelled as a state
+	 * so a caller that has not fetched yet does not have to say the absence twice.
+	 */
+	state?: "rest" | "loading" | "empty";
 }
 
 /** How a matrix sets its rows: the resting rhythm, or the dense one. */
@@ -358,6 +382,74 @@ export interface LedgerRow {
 	 * ledger weight. At most one row per ledger sets it.
 	 */
 	lead?: boolean;
+
+	/**
+	 * The value is not known, and says so in the vocabulary's own word.
+	 *
+	 * The fact is still a fact - it has a key and a place in the reading order -
+	 * but its value has not arrived or cannot be measured. The block prints the
+	 * state word in its tone with the mark layer's square beside it, in place of
+	 * `value`, which stays required so the plain reading of the row survives for
+	 * a renderer that cannot print a state (a printed page, a copied line, an
+	 * `aria-label`). `UNAVAILABLE` is the arm for a fact that cannot be known -
+	 * never `0`, never a blank `<dd>`.
+	 *
+	 * This is the brief's PARTIAL state as a row: a ledger with three known
+	 * facts and one unknown is not a broken ledger, it is a ledger telling the
+	 * truth about what it holds.
+	 */
+	state?: FieldRecordStatusState;
+
+	/**
+	 * When the value was taken, when it is older than the page (`2026-11-18`).
+	 *
+	 * A fact with an age prints `AS OF: <date>` after its value in the note
+	 * channel, so a reader can tell a stale figure from a fresh one without
+	 * leaving the row. It is the brief's OFFLINE / STALE state as a field rather
+	 * than as a colour: the value stays visible and the age is stated beside it.
+	 */
+	asOf?: string;
+
+	/**
+	 * The row opens: its value is a summary and these facts are what the summary
+	 * discloses.
+	 *
+	 * Progressive disclosure *inside* the block, not in a wrapper - the row is
+	 * still a row, its key is still the key, and the facts it opens are the same
+	 * ledger grammar one level in. It renders as a `<details>` inside the row's
+	 * `<dd>`, so it works with no JavaScript at all: the browser's own disclosure
+	 * is the behaviour, and the fold mark is the mark layer's.
+	 *
+	 * A row that opens is for a fact whose value is a name and whose detail is
+	 * three more facts - the build's three flags under one `BUILD:` row. It is
+	 * never a way to hide a fact the reader came for: the summary prints the
+	 * value, and a closed row still states it.
+	 */
+	open?: readonly LedgerRow[];
+
+	/**
+	 * The row is the marked one in its set - the selected fact of a ledger that
+	 * offers a choice (`DEFAULT:`, `ACTIVE:`, the row a reader picked).
+	 *
+	 * Selection is a state of the row, not of the reader's permission, so it
+	 * prints as `aria-current` plus the mark layer's attested square: the same
+	 * two signals every other selected thing on the site carries. It is not a
+	 * control - the ledger has no `<script>` - so a ledger that needs a picker
+	 * puts a real control in the row and states the selection here.
+	 */
+	selected?: boolean;
+
+	/**
+	 * The row is the set's total: the sum, the extent, the figure the rows above
+	 * add up to.
+	 *
+	 * A total is not one more fact - it is a different rank of fact - so it
+	 * prints under a heavier rule, with its key at the register's own weight and
+	 * its value at the sub role. The ledger does not compute it: a block derives
+	 * nothing it was not given, so the caller passes the figure it summed and the
+	 * block prints the row that says so.
+	 */
+	total?: boolean;
 }
 
 /** One destination inside a ledger row's value. */
@@ -432,10 +524,18 @@ export interface Trace {
 
 	/**
 	 * `rest` prints the steps; `loading` prints them as skeletons - the index in
-	 * ink, a hairline bar where the path would be. A trace that is being read
-	 * still shows how many steps it has.
+	 * ink, a hairline bar where the path would be, and the mark's own stand-in in
+	 * the note column. A trace that is being read still shows how many steps it
+	 * has, and still shows the source it is being read out of.
+	 *
+	 * `empty` is a trace whose source names no step at all. It is a state of its
+	 * own rather than a length of zero, because the two read differently: a trace
+	 * with no steps and no sentence is a hole, and a trace that says *why* it has
+	 * none is a provenance statement. The component checked `empty` before this
+	 * field existed, which meant a caller could not legally write the state the
+	 * block already understood.
 	 */
-	state?: "rest" | "loading";
+	state?: "rest" | "loading" | "empty";
 
 	/**
 	 * What the trace says when it has no steps: what would be here, why it is
@@ -900,6 +1000,23 @@ export interface CompareStop {
 
 	/** Where the stop leads, when it is a place rather than a position. */
 	href?: string;
+
+	/**
+	 * This stop carries the same value as the stop before it.
+	 *
+	 * The caller's assertion, not the block's deduction: a rail that compared two
+	 * values to decide they were equal would be deriving a fact it was not given.
+	 * The rail draws the interval between the two ticks as one continuous bar, so
+	 * a run of equal positions reads as a plateau - two things that sit at the
+	 * same place on this axis - instead of as two marks that happen to be
+	 * neighbours. That is the "the two sides are equal" case, and it is a shape
+	 * rather than a sentence: a reader sees the tie before reading the caption.
+	 *
+	 * The first stop cannot set it - there is nothing before it to be equal to -
+	 * and the block ignores it there rather than printing a bar into the axis's
+	 * own end.
+	 */
+	equal?: boolean;
 }
 
 /**
@@ -1304,6 +1421,18 @@ export interface PlateCell {
 	 * caption - the set does not have two grammars.
 	 */
 	note?: string;
+
+	/**
+	 * Where the full capture lives, when the cell's frame is a way to it.
+	 *
+	 * A set is scanned at one size; the capture at that size is a thumbnail of a
+	 * claim, and the reader who wants to check it needs the plate. The frame
+	 * becomes an anchor - the whole 4:3 frame, not a "view" link beside it - so
+	 * the picture is the control, and it takes the focus ring every other link on
+	 * the site takes. A cell with no `href` keeps its frame as a frame: a set of
+	 * figures is not a gallery of doors, and most of its cells lead nowhere.
+	 */
+	href?: string;
 }
 
 /**

@@ -11,7 +11,7 @@
  * RANK              set.
  * SLOT CONTRACT     set.index      -> `# PLATES_01`
  *                   set.label?     -> `/ ELEMENT EVIDENCE`
- *                   set.plates[]   -> index, subject, src+alt?, state?, note?
+ *                   set.plates[]   -> index, subject, src+alt?, state?, note?, href?
  *                   set.columns?   -> `2` or `3` across on wide screens
  *                   set.caption?   -> the one statement made about the set
  *                   set.source?    -> `SOURCE: ...` on the foot
@@ -164,11 +164,24 @@ const Id = `plates-${set.index.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 								/>
 							) : Cell.src !== undefined &&
 							  Cell.alt !== undefined ? (
-								<FieldRecordEvidence
-									src={Cell.src}
-									alt={Cell.alt}
-									className="record-plate-set__picture"
-								/>
+								Cell.href === undefined ? (
+									<FieldRecordEvidence
+										src={Cell.src}
+										alt={Cell.alt}
+										className="record-plate-set__picture"
+									/>
+								) : (
+									<a
+										class="record-plate-set__link"
+										href={Cell.href}
+									>
+										<FieldRecordEvidence
+											src={Cell.src}
+											alt={Cell.alt}
+											className="record-plate-set__picture"
+										/>
+									</a>
+								)
 							) : (
 								<span
 									class="record-plate-set__absent"

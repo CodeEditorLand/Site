@@ -18,6 +18,14 @@
 //                   .record-matrix__cell--center    a data cell centred under its header
 //                   .record-matrix__cell--yes       a positive mark
 //                   .record-matrix__cell--no        a negative mark
+//                   .record-matrix__cell--state     a cell that states a condition
+//                   .record-matrix__cell--specimen  ... in the vocabulary's attested tone
+//                   .record-matrix__cell--quiet     ... in the vocabulary's quiet tone
+//                   .record-matrix__row--total      the row that sums the column above it
+//                   .record-matrix__row--skeleton   a row whose values have not arrived
+//                   .record-matrix__row--empty      the one row a matrix with no rows prints
+//                   .record-matrix__empty           what it says: what, why, where
+//                   .record-matrix__bar             a value's stand-in, in the record grammar
 // MAY HOLD          nothing - cells are values.
 // NARROW            the label column pins to the left edge of the shell while
 //                   the columns scroll under it. See THE SEAM below.
@@ -181,4 +189,91 @@
 
 .record-matrix--dense .record-matrix__column {
 	padding-block: calc(var(--space-tight) / 2) calc(var(--space-tight) / 2);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// THE THREE STATES, AND THE TOTAL ROW
+//
+// A matrix was the one block on the site that could print a head over nothing:
+// `rows: []` gave a ruled header and an empty body, and a comparison that had
+// not arrived looked exactly like a comparison whose answer was nothing. These
+// four rules are the fix, and each one keeps the head - the head is the schema,
+// and the schema is still true when the values are not.
+// ═══════════════════════════════════════════════════════════════════════════
+
+// ─── THE EMPTY MATRIX ─────────────────────────────────────────────────────
+// One cell spanning the table, in the record grammar: `◎` and the composed
+// sentence. It takes the caption's measure and the body's ink - an absence is
+// stated, not greyed out - and it is never a zero: a comparison with no rows has
+// no figures at all.
+.record-matrix__row--empty {
+	border-block-end: 0;
+}
+
+.record-matrix__empty {
+	max-inline-size: 62ch;
+	padding-block: var(--space-reading);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+	color: var(--MuteForeground);
+	white-space: normal;
+}
+
+.record-matrix__empty-mark {
+	color: var(--MuteForeground);
+}
+
+// ─── THE LOADING MATRIX ───────────────────────────────────────────────────
+// The labels are the schema and stay in ink; every cell prints a hairline bar
+// where its value will be. The bar is the ledger's own (`0.5rem` tall, 8% ink),
+// so a skeleton in a matrix and a skeleton in a ledger are the same skeleton -
+// the site has one way of drawing a value that has not arrived, not two.
+.record-matrix__bar {
+	display: block;
+	block-size: 0.5rem;
+	inline-size: 62%;
+	margin-block: 0.3rem;
+	background: color-mix(in srgb, var(--Foreground) 8%, transparent);
+}
+
+.record-matrix__row--skeleton .record-matrix__label {
+	color: var(--MuteForeground);
+}
+
+// ─── A CELL THAT STATES A CONDITION ───────────────────────────────────────
+// `UNAVAILABLE` in a comparison is not a value; it is a measurement that could
+// not be taken. It takes the vocabulary's ink and the mark layer's square (which
+// the block prints), and it never takes the verdict marks: `yes` and `no` are
+// answers, and an answer that was not given is not a third answer.
+.record-matrix__cell--state {
+	white-space: nowrap;
+}
+
+.record-matrix__state {
+	display: inline-flex;
+	align-items: baseline;
+	gap: var(--mark-gap);
+}
+
+.record-matrix__cell--quiet {
+	color: var(--MuteForeground);
+}
+
+// ─── THE TOTAL ROW ────────────────────────────────────────────────────────
+// The divider's ink above it, the sub role in its cells: a total is a different
+// rank of figure, and it says so with the one thing the identity allows - the
+// rule's weight and the scale, never a bolder face.
+.record-matrix__row--total {
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+	border-block-end: 0;
+}
+
+.record-matrix__row--total .record-matrix__label {
+	color: var(--Foreground);
+}
+
+.record-matrix__row--total .record-matrix__cell {
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	letter-spacing: var(--track-join);
 }

@@ -18,6 +18,9 @@
  *                   measure.lead  -> the panel's one leading figure (section
  *                                 role; the rest take the sub role). Never the
  *                                 display role: the page's one XL is its claim.
+ *                   measure.total -> the panel's sum: the divider's rule and
+ *                                 the sub role, for the figure the others add up to
+ *                   state?      -> `rest` (default), `loading` or `empty`
  * MAY HOLD          nothing. A measure is four fields; a block inside one would
  *                   be a second claim under one label.
  * MAY NOT HOLD      any block. May not sit inside another instrument, and may
@@ -54,7 +57,8 @@ type Props = Instrument & {
 	readonly class?: string;
 };
 
-const { measures, label, caption, empty, class: Class } = Astro.props;
+const { measures, label, caption, empty, class: Class, state = "rest" } =
+	Astro.props;
 
 /**
  * A measure's figure: the state word when the figure is not known, otherwise the
@@ -62,12 +66,71 @@ const { measures, label, caption, empty, class: Class } = Astro.props;
  * ENTRIES` would read as a figure with a unit, which is exactly what it is not.
  */
 const HasFigure = (measure: Measure): boolean => measure.state === undefined;
+
+/**
+ * Whether the panel is waiting for its figures. A loading panel prints the same
+ * cells - the labels and the `SOURCE:` lines are the schema and are known before
+ * the numbers are - with a hairline bar where each figure will be. A panel
+ * handed no measures at all still prints three cells, because a skeleton with no
+ * shape would say nothing about what is coming.
+ */
+const Loading = state === "loading";
+
+/** The cells a loading panel prints: the ones it was handed, or three unnamed. */
+const Cells: readonly Measure[] =
+	measures.length > 0
+		? measures
+		: Array.from({ length: 3 }, (_, Index) => ({
+				label: `MEASURE_${String(Index + 1).padStart(2, "0")}`,
+				value: "",
+				provenance: "PENDING",
+			}));
+
+/** The panel's absence: an explicit `empty` state, or a set of no measures. */
+const Empty = !Loading && (state === "empty" || measures.length === 0);
 ---
 
-<section class:list={["record-instrument", Class]}>
+<section
+	class:list={["record-instrument", Class]}
+	data-state={state}
+	aria-busy={Loading ? "true" : undefined}
+>
 	{label ? <p class="record-instrument__label">{label}</p> : null}
 
-	{measures.length > 0 ? (
+	{Loading ? (
+		<div class="record-instrument__panel">
+			{Cells.map((measure) => (
+				<div
+					class:list={[
+						"record-instrument__measure",
+						"record-instrument__measure--skeleton",
+						measure.lead
+							? "record-instrument__measure--lead"
+							: null,
+					]}
+				>
+					<p class="record-instrument__key">{measure.label}:</p>
+
+					<p
+						class="record-instrument__figure"
+						data-figure="loading"
+					>
+						<span
+							class="record-instrument__bar"
+							aria-hidden="true"
+						/>
+					</p>
+
+					<p class="record-instrument__source">
+						<span class="record-instrument__source-key">
+							SOURCE:
+						</span>{" "}
+						{measure.provenance}
+					</p>
+				</div>
+			))}
+		</div>
+	) : !Empty ? (
 		<div class="record-instrument__panel">
 			{measures.map((measure) => (
 				<div
@@ -75,6 +138,9 @@ const HasFigure = (measure: Measure): boolean => measure.state === undefined;
 						"record-instrument__measure",
 						measure.lead
 							? "record-instrument__measure--lead"
+							: null,
+						measure.total
+							? "record-instrument__measure--total"
 							: null,
 					]}
 				>

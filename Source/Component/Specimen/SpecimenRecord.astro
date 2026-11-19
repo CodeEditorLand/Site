@@ -1,0 +1,1033 @@
+---
+/**
+ * SpecimenRecord - the record ledger family, printed live.
+ *
+ * ─── WHY THIS STAGE IS NOT AN ISLAND ─────────────────────────────────────
+ * The display family's rows are a React island because half of them measure a
+ * container, draw a month or open a menu. This family ships no JavaScript at all:
+ * a ledger is a `<dl>`, a matrix is a `<table>`, a rail is an `<ol>`, a trace is a
+ * list and a register is a `<p>`. The only interactive thing any of them prints is
+ * the `<details>` a ledger row opens with, and the browser owns that. So the stage
+ * is static Astro, and the band on the specimen sheet costs the page nothing -
+ * which is itself a claim about the family, printed by how it is mounted.
+ *
+ * ─── THE RENDERER DECIDES NOTHING ────────────────────────────────────────
+ * A row states what it is, which part it exercises, when that state is right and
+ * the props its specimen needs; this file builds the data and mounts the block.
+ * That split is why the matrix and the rows cannot drift: both read
+ * `Content/Specimen/Record.ts`, and a state added there appears on both with no
+ * second edit.
+ *
+ * ─── THE DATA IS THE SITE'S OWN ──────────────────────────────────────────
+ * Every fact, figure and path below is the kind of thing this document states:
+ * a target, a licence, a signal, a source, a step in a build, a measure of the
+ * tree. A specimen printed with lorem ipsum would prove that the block can hold
+ * text; a specimen printed with the document's own facts proves that the block
+ * can hold THIS document.
+ */
+import {
+	Groups,
+	InGroup,
+	type Specimen,
+} from "../../Content/Specimen/Record.js";
+
+import RecordCompare from "../Record/RecordCompare.astro";
+
+import RecordInstrument from "../Record/RecordInstrument.astro";
+
+import RecordLedger from "../Record/RecordLedger.astro";
+
+import RecordMatrix from "../Record/RecordMatrix.astro";
+
+import RecordPlateSet from "../Record/RecordPlateSet.astro";
+
+import RecordTrace from "../Record/RecordTrace.astro";
+
+import Register from "../Record/Register.astro";
+
+import {
+	RegisterCount,
+	RegisterOf,
+	RegisterUnavailable,
+	RegisterWindow,
+} from "../Record/RegisterLine.js";
+
+import type {
+	Comparison,
+	Instrument,
+	LedgerRow,
+	MatrixColumn,
+	PlateCell,
+	PlateSet,
+	RegisterState,
+	Trace,
+} from "../Record/Type.js";
+
+/* ─── THE LEDGER'S FACTS ─────────────────────────────────────────────────── */
+
+/**
+ * The document's own facts, as a pool the rows slice from.
+ *
+ * Twenty of them, because one of the rows is "twenty rows" and a specimen that
+ * invented a second list for the long case would be proving that the block can
+ * hold a DIFFERENT document.
+ */
+const FactPool: readonly LedgerRow[] = [
+	{ key: "TARGET:", value: "MACOS\u2001AARCH64" },
+
+	{ key: "LICENSE:", value: "CC0\u2001PUBLIC DOMAIN", note: "no attribution is required" },
+
+	{ key: "SIGNAL:", value: "ACTIVE" },
+
+	{ key: "SOURCE:", value: "/DOC/BUILD-PIPELINE", code: true },
+
+	{ key: "STATUS:", value: "PRE-RELEASE", note: "builds are from source" },
+
+	{ key: "CHANNEL:", value: "PUBLIC" },
+
+	{ key: "RUNTIME:", value: "TAURI\u2001WEBVIEW" },
+
+	{ key: "EDITOR:", value: "MOUNTAIN", code: true },
+
+	{ key: "EXTENSIONS:", value: "UNMODIFIED\u2001VS CODE API" },
+
+	{ key: "TELEMETRY:", value: "FEATURE GATED", note: "off until it is asked for" },
+
+	{ key: "SIGNING:", value: "PLANNED" },
+
+	{ key: "UPDATER:", value: "UNAVAILABLE" },
+
+	{ key: "PROTOCOL:", value: "gRPC\u2001IPC\u2001TCP\u2001WASM" },
+
+	{ key: "TRANSPORT:", value: "UNIX SOCKET", code: true },
+
+	{ key: "STORAGE:", value: "SQLITE", code: true },
+
+	{ key: "LOCALE:", value: "EN\u2001BG\u2001DE\u2001FR\u2001JA" },
+
+	{ key: "MEMORY:", value: "RUST\u2001OWNED" },
+
+	{ key: "STARTUP:", value: "0.4s", note: "cold, on the reference machine" },
+
+	{ key: "BINARY:", value: "18.2 MB" },
+
+	{ key: "CONFIG:", value: "TOML", code: true },
+];
+
+/** The five facts the ordinary ledger prints: one of each value arm. */
+const BaseFacts: readonly LedgerRow[] = FactPool.slice(0, 5);
+
+/** A key longer than any value it could carry, and the values that stay beside it. */
+const LongKeyFacts: readonly LedgerRow[] = [
+	{
+		key: "THE NAME THIS BUILD IS REGISTERED UNDER WITH THE PLATFORM:",
+		value: "LAND",
+	},
+
+	{ key: "LICENSE:", value: "CC0" },
+
+	{
+		key: "THE ONE FIELD A READER WILL SEARCH THIS RECORD FOR AND NEVER FIND:",
+		value: "UNAVAILABLE",
+		state: "unavailable",
+	},
+
+	{ key: "SIGNAL:", value: "ACTIVE" },
+];
+
+/** A value that wraps to three lines, with its key still beside it. */
+const LongValueFacts: readonly LedgerRow[] = [
+	{ key: "TARGET:", value: "MACOS\u2001AARCH64" },
+
+	{
+		key: "SOURCE:",
+		value: "SOURCE/DOC/BUILD-PIPELINE.MD, SECTION 4, 'THE THREE STAGES', READ AT THE COMMIT THIS PAGE WAS BUILT FROM - THE SECTION THAT NAMES EVERY STEP OF THE BUILD AND THE ARTIFACT EACH ONE PRODUCES, IN THE ORDER THE PIPELINE RUNS THEM.",
+		code: true,
+	},
+
+	{
+		key: "NOTE:",
+		value: "A value of three lines is the longest a fact may be before it is a paragraph: a ledger that carried a paragraph would be a record's prose, and prose has its own column.",
+		note: "the measure is 62ch",
+	},
+
+	{ key: "SIGNAL:", value: "ACTIVE" },
+];
+
+/** One fact unknown, one archived, one loading: the vocabulary's adverse arms in a row. */
+const PartialFacts: readonly LedgerRow[] = [
+	{ key: "TARGET:", value: "MACOS\u2001AARCH64" },
+
+	{
+		key: "CHECKSUM:",
+		value: "UNAVAILABLE",
+		state: "unavailable",
+		note: "no artifact exists to hash yet",
+	},
+
+	{ key: "UPDATER:", value: "ARCHIVED", state: "archived" },
+
+	{ key: "SIGNING:", value: "LOADING", state: "loading" },
+];
+
+/** Facts older than the page: the value stays, the age is stated. */
+const StaleFacts: readonly LedgerRow[] = [
+	{ key: "TARGET:", value: "MACOS\u2001AARCH64" },
+
+	{
+		key: "FEATURES:",
+		value: "148",
+		asOf: "2026-11-14",
+		note: "counted from the registry at that commit",
+	},
+
+	{
+		key: "EXTENSIONS:",
+		value: "212",
+		asOf: "2026-11-14",
+	},
+];
+
+/** A row that discloses three more facts, and the facts around it. */
+const OpenFacts: readonly LedgerRow[] = [
+	{ key: "TARGET:", value: "MACOS\u2001AARCH64" },
+
+	{
+		key: "BUILD:",
+
+		value: "THREE STAGES",
+
+		open: [
+			{ key: "STAGE_01:", value: "SOURCE → VERIFY" },
+
+			{ key: "STAGE_02:", value: "VERIFY → PREPARE" },
+
+			{
+				key: "STAGE_03:",
+				value: "PREPARE → ARTIFACT",
+				note: "signed in a later release",
+			},
+		],
+	},
+
+	{ key: "SIGNAL:", value: "ACTIVE" },
+
+	{ key: "SOURCE:", value: "/DOC/BUILD-PIPELINE", code: true },
+];
+
+/** One row marked in a set of four. */
+const SelectedFacts: readonly LedgerRow[] = [
+	{ key: "CHANNEL:", value: "PUBLIC" },
+
+	{ key: "CHANNEL:", value: "BETA", selected: true, note: "the one this record describes" },
+
+	{ key: "CHANNEL:", value: "NIGHTLY" },
+
+	{ key: "CHANNEL:", value: "ARCHIVED", state: "archived" },
+];
+
+/** Three facts and the figure they add up to. */
+const TotalFacts: readonly LedgerRow[] = [
+	{ key: "FEATURES:", value: "148" },
+
+	{ key: "EXTENSIONS:", value: "212" },
+
+	{ key: "ROUTES:", value: "26" },
+
+	{
+		key: "TOTAL:",
+		value: "386",
+		total: true,
+		note: "the three figures above, added",
+	},
+];
+
+/**
+ * The ledger's rows for one specimen.
+ *
+ * The variant decides the arm; the count slices the pool. A row that asks for
+ * more facts than the pool holds gets the pool, because a specimen that invented
+ * a twenty-first fact would be printing something the document does not say.
+ */
+const LedgerRows = (Row: Specimen): readonly LedgerRow[] => {
+	switch (Row.variant) {
+		case "longkey":
+			return LongKeyFacts;
+
+		case "longvalue":
+			return LongValueFacts;
+
+		case "unavailable":
+			return PartialFacts;
+
+		case "stale":
+			return StaleFacts;
+
+		case "open":
+			return OpenFacts;
+
+		case "selected":
+			return SelectedFacts;
+
+		case "total":
+			return TotalFacts;
+
+		default:
+			return FactPool.slice(0, Row.rows ?? BaseFacts.length);
+	}
+};
+
+/** The ledger's props for one specimen. */
+const LedgerProps = (Row: Specimen) => {
+	const Facts = LedgerRows(Row);
+
+	return {
+		rows: Facts,
+		...(Row.dense ? { density: "register" as const } : {}),
+		...(Row.surface === "standard"
+			? { surface: "standard" as const }
+			: {}),
+		...(Row.state === undefined
+			? {}
+			: { state: Row.state as RegisterState }),
+		...(Row.empty === undefined ? {} : { empty: Row.empty }),
+		...(Row.label === undefined ? {} : { register: RegisterOf(Row.label, Facts) }),
+	};
+};
+
+/* ─── THE MATRIX'S COLUMNS AND ROWS ──────────────────────────────────────── */
+
+/**
+ * The ink a column header carries, when the column names a protocol.
+ *
+ * A protocol's ink IS its identity - `--SpinegRPCFore` is green because the thing
+ * is gRPC - so the map is semantic rather than decorative, and a column that
+ * names no protocol takes the ink every unmarked column takes.
+ */
+const ColumnInk: Readonly<Record<string, string>> = {
+	GRPC: "SpinegRPCFore",
+
+	IPC: "SpineIPCFore",
+
+	TCP: "SpineTCPFore",
+
+	WASM: "SpineWASMFore",
+
+	MCP: "SpineIPCFore",
+
+	LSP: "SpineTCPFore",
+
+	DAP: "SpineWASMFore",
+
+	OTEL: "SpinegRPCFore",
+};
+
+/** The matrix's columns, from the labels the row names. */
+const MatrixColumns = (Row: Specimen): readonly MatrixColumn[] =>
+	(Row.columns ?? ["TIER", "PROTOCOL", "FEATURES"]).map((Label, Index) => ({
+		label: Label,
+		...(ColumnInk[Label.toUpperCase()] === undefined
+			? {}
+			: { ink: ColumnInk[Label.toUpperCase()]! }),
+		...(Index === 0 ? {} : { align: "center" as const }),
+	}));
+
+/** The comparison's ordinary rows: four tiers, one state across three columns. */
+const MatrixRows = (Row: Specimen) => {
+	const Columns = Row.columns ?? ["TIER", "PROTOCOL", "FEATURES"];
+
+	if (Row.state === "loading" || Row.state === "empty") {
+		return [];
+	}
+
+	if (Columns.length === 1) {
+		return [
+			{ label: "CLOUD", cells: ["ACTIVE"] },
+			{ label: "LOCAL", cells: ["ACTIVE"] },
+			{ label: "SIDECAR", cells: ["UNAVAILABLE"] },
+		];
+	}
+
+	if (Columns.length > 4) {
+		return [
+			{
+				label: "CLOUD",
+				cells: Columns.map(() => "YES"),
+			},
+			{
+				label: "LOCAL",
+				cells: Columns.map(() => "YES"),
+			},
+			{
+				label: "SIDECAR",
+				cells: Columns.map((_, Index) => (Index < 4 ? "YES" : "NO")),
+			},
+		];
+	}
+
+	if (Row.variant === "unavailable") {
+		return [
+			{ label: "CLOUD", cells: ["gRPC", "04", "UNAVAILABLE"] },
+			{ label: "LOCAL", cells: ["IPC", "06", "ACTIVE"] },
+			{ label: "SIDECAR", cells: ["TCP", "02", "UNAVAILABLE"] },
+		];
+	}
+
+	if (Row.variant === "total") {
+		return [
+			{ label: "CLOUD", cells: ["gRPC", "04"] },
+			{ label: "LOCAL", cells: ["IPC", "06"] },
+			{ label: "SIDECAR", cells: ["TCP", "02"] },
+			{ label: "TOTAL:", cells: ["", "12"], total: true },
+		];
+	}
+
+	return [
+		{ label: "CLOUD", cells: ["gRPC", "04", "YES"] },
+		{ label: "LOCAL", cells: ["IPC", "06", "YES"] },
+		{ label: "SIDECAR", cells: ["TCP", "02", "NO"] },
+		{ label: "BROWSER", cells: ["WASM", "03", "NO"] },
+	].slice(0, Row.rows ?? 4);
+};
+
+/** The matrix's props for one specimen. */
+const MatrixProps = (Row: Specimen) => ({
+	columns: MatrixColumns(Row),
+	rows: MatrixRows(Row),
+	...(Row.state === undefined
+		? {}
+		: { state: Row.state as "rest" | "loading" | "empty" }),
+	...(Row.empty === undefined ? {} : { empty: Row.empty }),
+	...(Row.dense ? { density: "dense" as const } : {}),
+	caption:
+		Row.state === "empty"
+			? undefined
+			: "SOURCE: CONTENT/SPECIMEN/RECORD.TS. The columns are the sheet's own comparison, printed to show the block's shape rather than a page's claim.",
+});
+
+/* ─── THE RAIL'S AXES ────────────────────────────────────────────────────── */
+
+/** The four authentication tiers, on one axis of who holds the identity. */
+const Tiers: readonly {
+	label: string;
+	value: string;
+	note?: string;
+	state?: "unavailable" | "active";
+	equal?: boolean;
+}[] = [
+	{ label: "LOCAL-FIRST", value: "THIS MACHINE" },
+
+	{ label: "SELF-HOSTED", value: "YOUR SERVER" },
+
+	{ label: "MANAGED", value: "OUR TENANT" },
+
+	{ label: "ENTERPRISE", value: "YOUR IDENTITY PROVIDER" },
+];
+
+/** The rail's data for one specimen. */
+const CompareProps = (Row: Specimen): { compare: Comparison } => {
+	const Base = {
+		from: "LOCAL-FIRST",
+		to: "ENTERPRISE",
+		label: Row.label,
+	};
+
+	if (Row.state === "loading") {
+		return { compare: { ...Base, stops: [], state: "loading" } };
+	}
+
+	if (Row.state === "empty" || Row.rows === 0) {
+		return {
+			compare: {
+				...Base,
+				stops: [],
+				empty: Row.empty,
+				caption:
+					"The rail prints its ends rather than a blank line: the order being asked about is itself a fact.",
+			},
+		};
+	}
+
+	if (Row.variant === "equal") {
+		return {
+			compare: {
+				from: "SOURCE",
+				to: "SIGNED ARTIFACT",
+				label: "/PARITY",
+				stops: [
+					{ label: "SOURCE", value: "BUILD FROM SOURCE" },
+					{
+						label: "REPRODUCIBLE",
+						value: "BUILD FROM SOURCE",
+						equal: true,
+					},
+					{
+						label: "SIGNED",
+						value: "BUILD FROM SOURCE",
+						equal: true,
+						state: "unavailable",
+					},
+				],
+				caption:
+					"Three positions, one value: the two reached stops sit at the same place on this axis, which the rail draws as one continuous interval rather than two marks that happen to be neighbours.",
+			},
+		};
+	}
+
+	if (Row.variant === "unreached") {
+		return {
+			compare: {
+				...Base,
+				label: "/POSITION",
+				stops: Tiers.map((Tier, Index) => ({
+					...Tier,
+					...(Index > 1 ? { state: "unavailable" as const } : {}),
+				})),
+				caption:
+					"Two tiers hold the identity today and two do not. The rail still shows all four positions, because the order is a fact and only the arrival is not.",
+			},
+		};
+	}
+
+	return {
+		compare: {
+			...Base,
+			stops: Tiers.slice(0, Row.rows ?? Tiers.length),
+			caption:
+				"Four positions on one axis of who holds the identity. A stop with a `state` prints the vocabulary's word and hollows its tick.",
+		},
+	};
+};
+
+/* ─── THE TRACE'S STEPS ──────────────────────────────────────────────────── */
+
+/** The build's steps, as the pipeline document names them. */
+const BuildSteps: readonly {
+	index: string;
+	path: string;
+	note: string;
+	href?: string;
+}[] = [
+	{
+		index: "01",
+		path: "Source/Function/Build/Source.ts",
+		note: "the source tree, read",
+	},
+
+	{
+		index: "02",
+		path: "Source/Function/Build/Verify.ts",
+		note: "the checks that must pass",
+	},
+
+	{
+		index: "03",
+		path: "Source/Function/Build/Prepare.ts",
+		note: "the artifact, assembled",
+	},
+
+	{
+		index: "04",
+		path: "Source/Function/Build/Sign.ts",
+		note: "the signature, in a later release",
+	},
+];
+
+/** The trace's data for one specimen. */
+const TraceProps = (Row: Specimen): { trace: Trace } => {
+	if (Row.state === "loading") {
+		return {
+			trace: {
+				steps: [],
+				label: Row.label,
+				source: "/DOC/BUILD-PIPELINE",
+				state: "loading",
+			},
+		};
+	}
+
+	if (Row.state === "empty" || Row.rows === 0) {
+		return {
+			trace: {
+				steps: [],
+				label: Row.label,
+				source: "/DOC/BUILD-PIPELINE",
+				state: "empty",
+			},
+		};
+	}
+
+	if (Row.variant === "longpath") {
+		return {
+			trace: {
+				label: "CHECK",
+				source: "/DOC/VERIFY",
+				steps: [
+					{
+						index: "01",
+						path: "Source/Component/Record/RecordLedgerRow.astro",
+						note: "the row that prints one fact, and the row that discloses",
+					},
+
+					{
+						index: "02",
+						path: "Source/Stylesheet/System/Record/_Ledger.scss",
+						note: "the row's three more shapes: total, selected, open - and the divider's ink that separates a total from the facts it sums",
+					},
+				],
+			},
+		};
+	}
+
+	const Count = Row.rows ?? BuildSteps.length;
+
+	if (Count > BuildSteps.length) {
+		return {
+			trace: {
+				label: Row.label,
+				source: "/DOC/BUILD-PIPELINE",
+				steps: Array.from({ length: Count }, (_, Index) => ({
+					index: String(Index + 1).padStart(2, "0"),
+					path: `Source/Function/Build/Stage${String(Index + 1).padStart(2, "0")}.ts`,
+					note:
+						Index % 3 === 0
+							? "a stage of the pipeline, read in order"
+							: "the next stage of the same run",
+				})),
+			},
+		};
+	}
+
+	return {
+		trace: {
+			label: Row.label,
+			source: "/DOC/BUILD-PIPELINE",
+			steps: BuildSteps.slice(0, Count),
+		},
+	};
+};
+
+/* ─── THE PANEL'S MEASURES ───────────────────────────────────────────────── */
+
+/** The tree's own measures, each with the file it was counted in. */
+const MeasurePool: readonly {
+	label: string;
+	value: string;
+	unit?: string;
+	provenance: string;
+	state?: "unavailable";
+	asOf?: string;
+}[] = [
+	{ label: "ROUTES", value: "26", provenance: "Content/Register/Routes.ts" },
+
+	{ label: "PARTS", value: "12", provenance: "Content/Specimen/Parts.ts" },
+
+	{
+		label: "BLOCKS",
+		value: "23",
+		provenance: "Component/Record/Type.ts",
+	},
+
+	{
+		label: "COMPONENTS",
+		value: "19",
+		provenance: "Content/Specimen/Display.ts",
+	},
+
+	{
+		label: "CONDITIONS",
+		value: "24",
+		provenance: "Content/Specimen/Record.ts",
+	},
+
+	{
+		label: "SPECIMENS",
+		value: "52",
+		provenance: "Content/Specimen/Record.ts",
+	},
+
+	{
+		label: "ELEMENTS",
+		value: "08",
+		provenance: "Content/Record/Land.ts",
+	},
+
+	{
+		label: "LEXICON",
+		value: "20",
+		provenance: "Content/More/Glossary.ts",
+	},
+
+	{
+		label: "MOTION",
+		value: "13",
+		provenance: "System/Motion/Index.scss",
+	},
+
+	{
+		label: "TOKENS",
+		value: "241",
+		provenance: "System/_Token.scss",
+	},
+
+	{
+		label: "EVIDENCE",
+		value: "01",
+		unit: "PLATE",
+		provenance: "Public/Evidence/manifest.yaml",
+	},
+
+	{
+		label: "FIGURES",
+		value: "06",
+		provenance: "Content/Specimen/Page.ts",
+	},
+];
+
+/** The panel's data for one specimen. */
+const InstrumentProps = (Row: Specimen): Instrument => {
+	if (Row.state === "loading") {
+		return {
+			measures: MeasurePool.slice(0, Row.rows ?? 3),
+			label: Row.label,
+			state: "loading",
+		};
+	}
+
+	if (Row.state === "empty" || Row.rows === 0) {
+		return {
+			measures: [],
+			label: Row.label,
+			empty: Row.empty,
+		};
+	}
+
+	if (Row.variant === "unavailable") {
+		return {
+			measures: [
+				MeasurePool[0]!,
+				{
+					label: "SIZE",
+					value: "UNAVAILABLE",
+					provenance: "Public/Release/manifest.yaml",
+					state: "unavailable",
+				},
+				MeasurePool[2]!,
+			],
+			label: Row.label,
+			caption:
+				"A figure that could not be measured prints the vocabulary's word in its place and drops its unit: `UNAVAILABLE ENTRIES` would read as a figure with a unit, which is exactly what it is not.",
+		};
+	}
+
+	if (Row.variant === "total") {
+		return {
+			measures: [
+				{ ...MeasurePool[0]!, lead: true },
+				MeasurePool[1]!,
+				MeasurePool[2]!,
+				{
+					label: "TOTAL",
+					value: "61",
+					unit: "PARTS",
+					provenance: "the three figures above, added",
+					total: true,
+				},
+			],
+			label: Row.label,
+			caption:
+				"A total is a rank of figure rather than one more figure: the divider's rule above it and the sub role, so the sum is never read as a measurement of the same kind.",
+		};
+	}
+
+	if (Row.variant === "stale") {
+		return {
+			measures: [
+				{
+					...MeasurePool[3]!,
+					asOf: "2026-11-14",
+				},
+				{
+					...MeasurePool[4]!,
+					asOf: "2026-11-14",
+				},
+			],
+			label: "/AS OF",
+			caption:
+				"Two figures taken at the same moment. The value stays visible and its age is stated beside it, so a stale number is never silent about being old.",
+		};
+	}
+
+	return {
+		measures: MeasurePool.slice(0, Row.rows ?? 3),
+		label: Row.label,
+		caption:
+			"Every figure names the file it was counted in. A panel with a figure and no source is a picture of a number.",
+	};
+};
+
+/* ─── THE FIELD'S PLATES ─────────────────────────────────────────────────── */
+
+/** The eight elements, each with the state its manifest gives it. */
+const ElementPlates: readonly PlateCell[] = [
+	{
+		index: "01",
+		subject: "RAIN-SPECKLED GLASS, REFLECTING A GREEN LIGHT",
+		src: "/Evidence/Land/NightGlass-01.png",
+		alt: "Rain-speckled glass reflecting a green light at night",
+		note: "mode: flash-observation",
+		href: "/Evidence/Land/NightGlass-01.png",
+	},
+
+	{
+		index: "02",
+		subject: "STONE STRATA, IN LOW LIGHT",
+		state: "unavailable",
+		note: "a manifest exists and carries no plate yet",
+	},
+
+	{
+		index: "03",
+		subject: "A COCOON, CUT OPEN",
+		state: "unavailable",
+		note: "a manifest exists and carries no plate yet",
+	},
+
+	{
+		index: "04",
+		subject: "WIND THROUGH GRASS",
+		state: "unavailable",
+		note: "a manifest exists and carries no plate yet",
+	},
+
+	{
+		index: "05",
+		subject: "A SKY WITH NO HORIZON",
+		state: "unavailable",
+		note: "a manifest exists and carries no plate yet",
+	},
+
+	{
+		index: "06",
+		subject: "AIR OVER A STILL SURFACE",
+		state: "unavailable",
+		note: "a manifest exists and carries no plate yet",
+	},
+
+	{
+		index: "07",
+		subject: "AN ECHO IN A CORRIDOR",
+		state: "unavailable",
+		note: "a manifest exists and carries no plate yet",
+	},
+
+	{
+		index: "08",
+		subject: "A GROVE, FROM ABOVE",
+		state: "unavailable",
+		note: "a manifest exists and carries no plate yet",
+	},
+];
+
+/** The set's data for one specimen. */
+const PlateSetProps = (Row: Specimen): { set: PlateSet } => {
+	const Count = Row.rows ?? 6;
+
+	if (Row.state === "empty" || Count === 0) {
+		return {
+			set: {
+				index: "PLATES_01",
+				label: Row.label,
+				plates: [],
+				state: "empty",
+				empty: "No capture is filed for this element yet: its manifest names the subject and the mode and carries no image, so the set prints what it would hold rather than eight empty frames.",
+				source: "Public/Evidence/manifest.yaml",
+			},
+		};
+	}
+
+	if (Row.variant === "window") {
+		return {
+			set: {
+				index: "PLATES_01",
+				label: Row.label,
+				plates: Array.from({ length: Count }, (_, Index) => ({
+					index: String(Index + 1).padStart(2, "0"),
+					subject: `ELEMENT CAPTURE ${String(Index + 1).padStart(2, "0")}`,
+					state: Index === 0 ? undefined : ("unavailable" as const),
+					...(Index === 0
+						? {
+								src: "/Evidence/Land/NightGlass-01.png",
+								alt: "Rain-speckled glass reflecting a green light at night",
+							}
+						: { note: "filed in the manifest, no plate in the build" }),
+				})),
+				window: { showing: Count, total: "240" },
+				caption:
+					"Twelve of the two hundred and forty captures this edition would carry: a page that rendered all of them would have stopped being a field and started being a directory.",
+				source: "Public/Evidence/manifest.yaml",
+			},
+		};
+	}
+
+	if (Row.variant === "absent") {
+		return {
+			set: {
+				index: "PLATES_01",
+				label: Row.label,
+				plates: ElementPlates.slice(0, Count).map((Plate, Index) =>
+					Index === 0
+						? Plate
+						: { ...Plate, state: "unavailable" as const },
+				),
+				caption:
+					"Seven of the eight elements have a manifest and no plate, and one has both. The set prints each cell's own state and reason in the same grammar, so it reads as one register of attempts rather than as a broken gallery.",
+				source: "Public/Evidence/manifest.yaml",
+			},
+		};
+	}
+
+	return {
+		set: {
+			index: "PLATES_01",
+			label: Row.label,
+			plates: ElementPlates.slice(0, Count),
+			caption:
+				"The eight elements of this document, at one size. A frame that is absent prints its state and its reason where the capture would be, because an absent plate is a fact about the build and not a gap in the page.",
+			source: "Public/Evidence/manifest.yaml",
+		},
+	};
+};
+
+/* ─── THE REGISTER'S LINE ────────────────────────────────────────────────── */
+
+/** The register's props for one specimen. */
+const RegisterProps = (Row: Specimen) => ({
+	register: RegisterCount(Row.label ?? "WHAT CHANGES", Row.count ?? "00", {
+		...(Row.unit === undefined ? {} : { unit: Row.unit }),
+		...(Row.separator === "quad"
+			? { separator: "quad" as const }
+			: {}),
+	}),
+	...(Row.state === undefined
+		? {}
+		: { state: Row.state as RegisterState }),
+	class: "specimen-record__register-line",
+});
+
+/* ─── THE STAGE ──────────────────────────────────────────────────────────── */
+
+/** The stage's own width, from the row. */
+const SkinClass = (Row: Specimen): string => {
+	const Width = Row.width ?? "band";
+
+	return `specimen-record__stage specimen-record__stage--${Width}`;
+};
+---
+
+<div class="specimen-record">
+	{
+		Groups.map((Group) => (
+			<section class="specimen-record__group" key={Group.key}>
+				<p class="specimen-record__group-head">
+					<span class="specimen-record__group-kicker">
+						{Group.label}
+					</span>
+					<span class="specimen-record__group-count">
+						{InGroup(Group.key).length}
+					</span>
+				</p>
+
+				<p class="specimen-record__group-note">{Group.note}</p>
+
+				<div class="specimen-record__rows">
+					{InGroup(Group.key).map((Entry) => (
+						<article
+							class="specimen-record__row"
+							id={`record-${Entry.mark}`}
+						>
+							<header class="specimen-record__spec">
+								<p class="specimen-record__mark">
+									<span
+										class="specimen-record__mark-hash"
+										aria-hidden="true"
+									>
+										#
+									</span>
+									{Entry.mark}
+								</p>
+
+								<h3 class="specimen-record__state">
+									{Entry.state_name}
+								</h3>
+
+								<p class="specimen-record__part">
+									{Entry.component}
+								</p>
+
+								<p class="specimen-record__when">
+									{Entry.when}
+								</p>
+							</header>
+
+							<div
+								class={SkinClass(Entry)}
+								data-skin={Entry.width ?? "band"}
+							>
+								{Entry.kind === "ledger" ? (
+									<RecordLedger {...LedgerProps(Entry)} />
+								) : Entry.kind === "matrix" ? (
+									<RecordMatrix {...MatrixProps(Entry)} />
+								) : Entry.kind === "compare" ? (
+									<RecordCompare {...CompareProps(Entry)} />
+								) : Entry.kind === "trace" ? (
+									<RecordTrace {...TraceProps(Entry)} />
+								) : Entry.kind === "instrument" ? (
+									<RecordInstrument
+										{...InstrumentProps(Entry)}
+									/>
+								) : Entry.kind === "plateset" ? (
+									<RecordPlateSet {...PlateSetProps(Entry)} />
+								) : Entry.kind === "register" ? (
+									<Register {...RegisterProps(Entry)} />
+								) : Entry.kind === "registerline" ? (
+									<div class="specimen-record__constructors">
+										<Register
+											register={RegisterOf(
+												"A SET THE BLOCK HOLDS",
+												[1, 2, 3, 4, 5, 6, 7, 8],
+											)}
+											class="specimen-record__register-line"
+										/>
+										<Register
+											register={RegisterCount(
+												"A COUNT IT DOES NOT",
+												26,
+												{ unit: "ROUTES" },
+											)}
+											class="specimen-record__register-line"
+										/>
+										<Register
+											register={RegisterUnavailable(
+												"A COUNT IT CANNOT KNOW",
+											)}
+											class="specimen-record__register-line"
+										/>
+										<Register
+											register={RegisterWindow(
+												"A WINDOW OF A LARGER SET",
+												12,
+												240,
+											)}
+											class="specimen-record__register-line"
+										/>
+									</div>
+								) : null}
+							</div>
+						</article>
+					))}
+				</div>
+			</section>
+		))
+	}
+</div>

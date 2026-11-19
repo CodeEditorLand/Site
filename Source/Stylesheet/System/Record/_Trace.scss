@@ -173,3 +173,37 @@
 	line-height: var(--type-body-line);
 	color: var(--MuteForeground);
 }
+
+// ─── THE LOADING TRACE ────────────────────────────────────────────────────
+// The type contract has always said a loading trace prints skeletons; until the
+// record family's state matrix the block only changed the marker to `LOADING`
+// and printed nothing under it, so a trace that was being read looked exactly
+// like a trace that had failed. The skeleton is the trace's own shape: the index
+// in ink (the steps' order is known), a hairline bar where the path will be, and
+// a shorter one in the note's column. Drawn, never animated - the site has no
+// pulse, and a pulsing bar is a spinner wearing a rectangle.
+.record-trace__bar {
+	display: block;
+	block-size: 0.5rem;
+	background: color-mix(in srgb, var(--Foreground) 8%, transparent);
+}
+
+.record-trace__bar--path {
+	inline-size: 62%;
+	margin-block: 0.35rem;
+}
+
+.record-trace__bar--note {
+	inline-size: 100%;
+	margin-block: 0.35rem;
+}
+
+.record-trace__step--skeleton .record-trace__note {
+	grid-column: 3 / -1;
+}
+
+@include bp(768px) {
+	.record-trace__step--skeleton .record-trace__note {
+		grid-column: 4 / -1;
+	}
+}
