@@ -1,27 +1,20 @@
 ---
 /**
- * ContactBreadcrumb - the absorbed trail, kept as the bridge the Blog still uses.
+ * ContactBreadcrumb - the Contact surface's trail adapter.
  *
- * This file was the trail as the Contact surface first built it: a sans strip
- * with its own `/` list item between the crumbs, reading `Home / Contact`. The
- * site had two trail grammars (this one and the plain `Home /` list on the legal
- * pages, the doc article and the account index) and `DESIGN.md` §9 Q3 settled on
- * the mono `/LABEL` form for all of them, published as `.trail` from
- * `System/Component/Route/_Trail.scss`.
+ * The site has one trail grammar: the mono `/LABEL` form `DESIGN.md` §9 Q3
+ * settled on, published as `.trail` from `System/Component/Route/_Trail.scss`
+ * and rendered by `Component/Route/Trail.astro`. This file renders that
+ * component and writes a caller's crumb labels into the grammar, so a caller
+ * that hands in `Home` gets `/HOME` and a caller that already writes `/HOME`
+ * gets `/HOME` back unchanged. The transform lives here rather than in `Trail`
+ * because `Trail` prints its label as written and never re-cases it.
  *
- * So the markup moved to `Component/Route/Trail.astro`, which is the survivor,
- * and this file now renders it. It is kept rather than deleted because a card
- * does not delete a component. The two Blog components that used to import it
- * (`Blog/BlogIndex.astro`, `Blog/BlogArticle.astro`) now import `Route/Trail`
- * directly and write their own crumbs through `Blog/Data.ts`'s `TrailOf`, so the
- * blog no longer reaches through a Contact-named adapter for the site's
- * breadcrumb. The transform stays here for any caller that has not moved:
- * a caller that hands in `Home` gets `/HOME`, and a caller that already writes
- * `/HOME` gets `/HOME` back unchanged. The transform lives here rather than in
- * `Trail` because `Trail` prints its label as written and never re-cases it.
- *
- * Nothing in this file's markup or transform changed when the blog moved - the
- * note is the only edit, and it records what the blog now does.
+ * It is kept rather than deleted because a card does not delete a component. No
+ * Blog component imports it any more - `Blog/BlogIndex.astro` and
+ * `Blog/BlogArticle.astro` import `Route/Trail` directly and write their own
+ * crumbs through `Blog/Data.ts`'s `TrailOf` - so the blog no longer reaches
+ * through a Contact-named adapter for the site's breadcrumb.
  */
 import Trail from "../Route/Trail.astro";
 import type { TrailItem } from "../Route/Type.js";
@@ -44,11 +37,10 @@ const Written = (Label: string): string =>
  * The crumbs, with their labels written into the grammar and every other field
  * carried through untouched.
  *
- * The bridge used to rebuild each item as `{ label, href }`, which silently
- * dropped any field `TrailItem` grows - a `current` marker, a title, a count.
- * A bridge that reconstructs a shape is a bridge that loses the next thing the
- * shape learns, so it spreads the crumb and overrides only the one field it is
- * here to write.
+ * The bridge spreads each crumb and overrides only the one field it is here to
+ * write. Rebuilding the item as `{ label, href }` would silently drop any field
+ * `TrailItem` grows - a `current` marker, a title, a count - and a bridge that
+ * reconstructs a shape is a bridge that loses the next thing the shape learns.
  */
 const Crumbs: readonly TrailItem[] = trail.map((Crumb) => ({
 	...Crumb,

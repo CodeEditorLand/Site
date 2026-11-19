@@ -4,7 +4,7 @@
  *
  * Five kinds, and the distinction is the row's mark and meta cell:
  *
- *   route   `/`  a part of the document (the ten the frame indexes)
+ *   route   `/`  a part of the document, or a page the frame files beside the ten
  *   page    `/`  a leaf of the manual, filed under its section
  *   record  `/`  a `# NAME_NN` head the tree prints, and the page that prints it
  *   term    `/`  a word from the lexicon, and the run it is filed under
@@ -18,7 +18,7 @@
  *
  * ─── WHY RECORDS AND TERMS ARE ROWS AND NOT SEARCH ────────────────────────
  *
- * The site prints 39 record heads and ~40 defined words, and until this register
+ * The site prints 40 record heads and 41 defined words, and until this register
  * existed neither was reachable from the one control a reader opens to look
  * something up. Both are `/` destinations - a record is a page, a term is an
  * anchor - so both obey the palette's one law: every row goes somewhere, no row
@@ -28,7 +28,7 @@
 export type PaletteKind = "route" | "page" | "record" | "term" | "action";
 
 export interface PaletteEntry {
-	/** Stable and unique. It is the row's cmdk value and its React key. */
+	/** Stable and unique: the row's React key, and the first half of its cmdk value. */
 	Id: string;
 
 	/** The row's words, as the site prints them. */
@@ -59,7 +59,7 @@ export interface PaletteRegisterGroup {
 }
 
 export interface PaletteRegister {
-	/** The document's ten parts, plus the manual's one route that is not a leaf. */
+	/** The document's ten parts, plus the five pages the frame files beside them. */
 	Routes: PaletteEntry[];
 
 	/** The `# NAME_NN` heads the tree prints, each with the page that prints it. */

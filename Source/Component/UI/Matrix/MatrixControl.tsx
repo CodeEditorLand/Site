@@ -31,8 +31,9 @@ import type { MatrixDensity, MatrixFacet, MatrixRow } from "./Type";
  * a second matrix rendered by this island - which would be two tables in the DOM
  * (one for a reader with JS, one without), two chances for them to disagree, and
  * a block that would have to learn to be a component. So the control reads the
- * table it was given, once, on mount: the row labels, the cells, the column
- * heads. Everything it can do afterwards is `hidden` on a `<tr>`.
+ * table it was given, once, on mount: the row labels and the cells. The columns
+ * come from the `Facets` prop, not from the head row. Everything it can do
+ * afterwards is `hidden` on a `<tr>`, plus one composed row for the void.
  *
  * The consequence is stated plainly: with JS off the control is still a bar with
  * its own register line and the table is complete - the bar's count reads the
@@ -44,8 +45,9 @@ import type { MatrixDensity, MatrixFacet, MatrixRow } from "./Type";
  * A matrix has N columns and each holds a handful of values; two selects - one
  * for the column, one for the value - would be two controls for one idea, and
  * the second would be empty until the first was answered. The slip lists the
- * values under the column they came from, in the kit's own groups, so the field
- * reads `FACET: FORM ␁ MATRIX` and a reader who has used a menu knows the shape.
+ * values under the column they came from, in the kit's own groups, and the
+ * field's value is the chosen column and the value it carries with `␁` between
+ * them, so a reader who has used a menu knows the shape.
  *
  * ─── DENSITY IS A ROOT ATTRIBUTE ──────────────────────────────────────────
  *
@@ -58,10 +60,12 @@ import type { MatrixDensity, MatrixFacet, MatrixRow } from "./Type";
  * ─── THE FOUR ADVERSE STATES ARE COMPOSED, NOT APOLOGISED FOR ─────────────
  *
  *   empty   `◎ NO ROW` - the table has no rows at all; says what would be here
- *   void    `◎ NO ROW MATCHES` - the reader's own filter; offers the clear and
- *           the handoff to the palette with the same words
- *   too much a page of 24 with `→ SHOW MORE` and `SHOWING 24 OF 38` in the
- *           register, so a list of two hundred still reads as a list
+ *   void    `◎ NO ROW MATCHES` - the reader's own filter; the table prints the
+ *           mark in a row of its own and the bar carries only the two ways out,
+ *           the clear and the handoff to the palette with the reader's words
+ *   too much a page of 24 with `→ SHOW MORE` and `24 OF 38` in the register,
+ *           plus `14 ROWS BEYOND THIS PAGE` in the note line, so a list of two
+ *           hundred still reads as a list
  *   denied  `◎ NOT REMEMBERED` - the browser refused storage, so the density
  *           holds for this visit and the bar says so rather than pretending
  *
@@ -284,8 +288,9 @@ const MatrixControl = ({
 		 * order when this effect runs - which is exactly what a view transition
 		 * needs. `Script/Motion/Sort.ts` wraps this mutation when the browser
 		 * supports it and refuses (returning false) when it does not, when the
-		 * reader asked for less motion, or on the mount pass - in every one of
-		 * those cases the rows are applied directly, in one frame.
+		 * reader asked for less motion, before the reader's first gesture, past
+		 * sixty named rows, or on the mount pass - in every one of those cases
+		 * the rows are applied directly, in one frame.
 		 *
 		 * Read through a local cast rather than an import: the bridge is installed
 		 * by `Script/Motion/Index.ts` and a control that shipped its own copy of

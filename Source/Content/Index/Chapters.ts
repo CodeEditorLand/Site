@@ -13,8 +13,9 @@
  *   `/Doc/Rust` and `/Doc/:Slug`, and would not claim a future `/Documentation`
  *   - which is why the matcher below compares whole segments.
  * - **The longest prefix wins.** `/Contact/Sale` is a front-desk page, not a
- *   back-matter one, because `/Contact` is longer than nothing it competes with;
- *   and `/Legal/Term` is back matter even though `/Legal` is also a route.
+ *   back-matter one, because `/Contact` is longer than the root it also matches;
+ *   and `/Legal/Term` is back matter on its `/Legal` prefix, which no other
+ *   chapter claims.
  *
  * The order of the list is the reading order of the index, not the alphabet:
  * a reader moves from the argument to the document to the edition to the
@@ -112,9 +113,10 @@ export const Chapters: readonly Chapter[] = [
 /**
  * The chapter a route belongs to.
  *
- * The root prefix is `/` and it is the shortest, so it is tested last: a route
- * matches the longest prefix that claims it, and only an unmatched route falls
- * through to the argument - which is where the home page itself lives.
+ * The root prefix is `/` and it claims the root alone, so it never competes with
+ * a longer prefix: a route matches the longest prefix that claims it, and only
+ * an unmatched route falls through to the argument - which is where the home page
+ * itself lives.
  */
 export const ChapterOf = (Path: string): Chapter => {
 	let Best: Chapter | null = null;

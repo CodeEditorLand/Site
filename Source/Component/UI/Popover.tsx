@@ -22,11 +22,12 @@ import { cn } from "./Utility";
 /**
  * Popover - a slip that holds content instead of rows.
  *
- * Same frame, same hairline, same arrival; the only difference is that it carries
- * prose, a figure or a form rather than a list, so it takes `Slip--panel` (the
- * slip's own inset) and no row grammar. A popover that opened as a differently
- * built box - a card, a tooltip, a rounded panel - would be the fourth surface in
- * a system that has one.
+ * Same frame, same hairline; the only difference is that it carries prose, a
+ * figure or a form rather than a list, so it takes `Slip--panel` (the slip's own
+ * inset) and no row grammar. Its arrival is the side's rather than the slip's,
+ * for the reason below. A popover that opened as a differently built box - a
+ * card, a tooltip, a rounded panel - would be the fourth surface in a system
+ * that has one.
  *
  * ─── THE ARRIVAL IS THE SIDE'S, NOT THE SLIP'S ────────────────────────────
  *
@@ -42,12 +43,13 @@ import { cn } from "./Utility";
  *
  * A popover near the right edge is the state the brief names and the tree never
  * showed. Radix's collision handling is the answer and it is configured here
- * rather than at each call site: `avoidCollisions`, `collisionPadding` at the
- * page's own gutter, `sticky="always"` so a slip that scrolls with its trigger
- * keeps the same relationship, and `hideWhenDetached` so a slip whose trigger
- * has left the viewport closes rather than floating over an empty page. A
- * caller that wants to override any of them still can - they are props, with
- * defaults that are the family's contract.
+ * rather than at each call site: `avoidCollisions`, `collisionPadding` at 16px -
+ * one reading space off the edge, the same measure the prose uses -
+ * `sticky="always"` so a slip that scrolls with its trigger keeps the same
+ * relationship, and `hideWhenDetached` so a slip whose trigger has left the
+ * viewport closes rather than floating over an empty page. A caller that wants
+ * to override any of them still can - the defaults are written before the
+ * spread, so the call site's prop wins.
  */
 
 /** The panel's three widths. `sm` is a footnote, `md` a figure, `lg` a form. */

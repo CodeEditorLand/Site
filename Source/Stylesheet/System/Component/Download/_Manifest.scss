@@ -4,12 +4,13 @@
 // The filename is the loader's, not the composition's: `Component/_Index.scss`
 // names `Download/Manifest`, and that file is outside this surface's ownership.
 // The partial inside it is the record's, and its published API is the record's
-// too - the band it used to paint is gone.
+// too - the record paints no band of its own, only the artifact.
 //
 // Publishes:
 //   .download-record              the artifact: chapter padding, creme field
 //   .download-record__inner       the one inner container, on the band gutters
 //   .download-record__head        the cover sheet: marker row, then the 7/5 grid
+//   .download-record__opening     the eyebrow, the claim and its route, stacked
 //   .download-record__marker      the index and the seal, at the head's top
 //   .download-record__index       the `# RELEASE_01` marker
 //   .download-record__head-grid   the claim beside the release's ledger
@@ -24,6 +25,7 @@
 //   .download-record__footnote    the first colophon line
 //   .download-record__source      the second colophon line
 //   .download-matrix              the platform ledger's shell
+//   .download-matrix__measured    the region's figures, above the table they count
 //
 // The rhythm: the artifact opens at the chapter distance, because the masthead
 // and the record are two artifacts at a page boundary. Everything inside the

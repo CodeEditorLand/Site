@@ -1,5 +1,5 @@
 /**
- * Occurrence-level context rules for the markdown pass (Phase 3g): keyed by
+ * Occurrence-level context rules for the markdown pass: keyed by
  * page key (.md basename, no extension) then term; each rule splits a term's
  * meaning by the ENCLOSING SENTENCE of each occurrence, so the same term can
  * link in one sentence and stay plain in another on the SAME page.
@@ -31,12 +31,11 @@
  *  - troubleshooting.Terminal: the page's "Terminal not opening" / "terminal
  *    pane" contexts are prose, not the VS Code Terminal API -> plain.
  *  - getting-started.Editor: an "Editor UI" sentence would unlink, but the
- *    reviewed page override (getting-started pins the Editor repo) wins -
- *    the precedence is exercised by the unit tests.
- *  - installation.shell: the canonical example shape from the brief (shell
- *    profile contexts plain, extension-host/VS Code contexts pinned). Dormant
- *    today: "shell" is not an index term (pure-lowercase noise never links),
- *    so no occurrence ever reaches these rules.
+ *    page override (getting-started pins the Editor repo) is consulted first
+ *    and wins - this rule is the worked example of that precedence.
+ *  - installation.shell: shell-profile contexts plain, extension-host/VS Code
+ *    contexts pinned. Dormant: "shell" is not an index term, so no occurrence
+ *    ever reaches these rules.
  */
 
 export interface LinkIndexContextRule {

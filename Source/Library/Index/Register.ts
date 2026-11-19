@@ -1,6 +1,10 @@
 /**
  * Register - the reader for the generated facts behind `/Contents`.
  *
+ * `/Contents` is the page this module serves; the other two readers are
+ * `/Specimen` (its `Totals`) and the palette (its `RecordHeads`, the RECORDS
+ * register). None of them read the fact files directly.
+ *
  * The index does not count anything itself. `Source/Script/Register.ts` walks the
  * tree and writes `Source/Generated/Facts/`, and this module is the one place
  * those files are read: it types them, resolves the few facts that live in a

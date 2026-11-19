@@ -1,10 +1,10 @@
 /**
  * I18n Client - browser-side i18next initialization with lazy namespace loading.
  *
- * Supports 5 locales (en, bg, de, fr, es) with 10 namespaces loaded on demand.
+ * Supports 5 locales (en, bg, de, fr, es) over 10 namespaces: the four core
+ * ones load eagerly on every page, the other six on demand.
  * Two-phase init: starts with lng:"en", then switches to detected locale
  * post-hydration to avoid SSR/client mismatch.
- *
  */
 import i18n from "i18next";
 

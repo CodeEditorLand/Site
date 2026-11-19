@@ -42,10 +42,10 @@
  * caller's sentence under them, so a cited clause that cannot be read is a
  * tombstone in the record grammar rather than a dead link.
  *
- * The accessible name also stopped re-parsing the number. It read
- * `Clause ${Number(number)}`, which printed "Clause NaN" for any number the
- * document writes as a word or a sub-clause (`07A`, `12.1`); it now prints the
- * number as the document wrote it.
+ * The accessible name prints the number as the document wrote it, never a parsed
+ * integer: `Clause §${number}` is right for `07`, for `07A` and for `12.1`, where
+ * `Clause ${Number(number)}` would print "Clause NaN" for any number written as a
+ * word or a sub-clause.
  */
 import Mark from "../Mark/Mark.astro";
 

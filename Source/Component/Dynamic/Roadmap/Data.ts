@@ -5,7 +5,7 @@
  * its body is a ledger per state rather than a matrix across editions: a matrix
  * would imply a choice the reader does not have, and its columns would have to
  * share a row axis the content does not give them (the two phases speak to
- * different capabilities). See the card's report for the verdict.
+ * different capabilities).
  *
  * Three tables live here:
  *
@@ -81,10 +81,10 @@ const Manifest: Record<
 /**
  * The label each capability sentence carries, per tier, in the content's order.
  *
- * The labels are the page's own: they were the left half of the manifest rows
- * this band used to print. Pairing them with `Tier.Feature` keeps both halves -
- * the label and the full sentence - instead of printing the condensed right
- * half and losing the sentence it was condensed from.
+ * The labels are the page's own: the left half of a manifest row. Pairing them
+ * with `Tier.Feature` keeps both halves - the label and the full sentence -
+ * rather than printing the condensed right half and losing the sentence it was
+ * condensed from.
  */
 const CapabilityLabels: Record<string, readonly string[]> = {
 	free: [

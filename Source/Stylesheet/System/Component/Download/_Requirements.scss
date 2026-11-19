@@ -4,7 +4,7 @@
 //   .download-requirements              the card grid: one column, two from 1024px
 //   .download-requirements__group       one panel: its label and its ledger
 //   .download-requirements__platform    the panel's own h4, under the region's h3
-//   .download-requirements__group--recommended  the panel the site recommends
+//   .download-requirements__pair         the minimum/recommended pair, across the grid
 //   .download-requirements__group--wide the card that is one fact, not one option
 //   .download-requirements__os          the supported-OS strip, full width
 //   .download-requirements__os-label    its heading
@@ -13,16 +13,11 @@
 //   .download-requirements__os-name     the OS floor inside the chip
 //   .download-requirements__os-note     the arch and installer under it
 //
-// Owned by P7, recovered from `3480853ac^` at K6 and then merged with the
-// treatment it replaced. The recovered partial drew one card per platform plus
-// a fourth for the toolchain; the form it superseded drew two panels - minimum
-// and recommended - with the recommended one marked `border-primary`, and closed
-// on a strip of one chip per supported OS. Both are the same subject, so the
-// merge keeps the recovered grid and card anatomy and adds the two things the
-// panels carried: the recommended panel's ink border, and the OS strip. Nothing
-// is dropped: the per-platform OS, arch and installer values moved into the
-// strip's chips, where they are read as one line each instead of as three
-// repeating ledgers.
+// Owned by P7. The region prints the two panels the reader compares - minimum
+// and recommended, the recommended one marked by `RecordPair` - a card per
+// platform for the source build, and closes on a strip of one chip per supported
+// OS. The per-platform OS, arch and installer values live in the strip's chips,
+// where they are read as one line each instead of as three repeating ledgers.
 //
 // The ledger anatomy belongs to RecordLedger and the frame belongs to the Jelly
 // element; this partial places the cards, names their headings and sets the box
@@ -60,10 +55,10 @@ jelly-card.download-requirements__group {
 // A platform name is data, so it is printed in the case it was written in:
 // `mono-meta` for the face and the size, then the ink and weight a card label
 // needs, and no `track()` - that mixin uppercases, and uppercasing `macOS` would
-// re-case a value. The ink is the card's own foreground, because the heading
-// sits on a white box and not on the creme field. The element is an `h4`: the
-// region's own heading is the `h3` above it, and the recovered `.astro` printed
-// the card heading at the region's level, which read as two claims of one rank.
+// re-case a value. The ink is the card's own foreground, because the heading sits
+// on a white box and not on the creme field. The element is an `h4`: the region's
+// own heading is the `h3` above it, and a card heading at the region's level
+// would read as two claims of one rank.
 .download-requirements__platform {
 	@include mono-meta;
 	margin: 0;
@@ -80,10 +75,10 @@ jelly-card.download-requirements__group {
 	grid-column: 1 / -1;
 }
 
-// The recommended mark now belongs to `RecordPair`: the subject pod carries a 2px
-// rule under its title and its label takes the full ink. The class this file used
-// to draw a 1px outline around the recommended card is gone with the card - the
-// treatment moved into the block, it was not dropped.
+// The recommended mark belongs to `RecordPair`: the subject pod carries a 2px
+// rule under its title and its label takes the full ink. This file draws no
+// outline of its own - the treatment lives in the block, so a second card
+// printing the pair cannot mark it differently.
 
 // The toolchain is not a third option beside two - it is what both of them need
 // before the source build runs - so its card takes the whole row.

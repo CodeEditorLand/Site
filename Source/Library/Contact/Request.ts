@@ -1513,7 +1513,8 @@ export const BuildEmailBody = (
 
 	Lines.push(`Response required within ${Config.ResponseDays} days.`);
 
-	// CRLF for SMTP compliance, \n fallback for mailto
+	// CRLF only: SMTP wants it, and BuildMailtoHref splits on the same
+	// sequence before encoding each line.
 	return Lines.join("\r\n");
 };
 

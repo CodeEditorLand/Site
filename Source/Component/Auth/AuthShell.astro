@@ -2,44 +2,38 @@
 /**
  * AuthShell - the one frame every account, OAuth and verify route renders.
  *
- * Anatomy, restored at K7 from `584d6a814` and merged with the card the
- * baseline prints: `/KICKER`, the surface name as the page's single `h1`, one
- * supporting sentence, the route's own card on the canvas, and one alternate
- * action as a plain hairline link. The route supplies the card's interior - the
- * fields and the states - so the surfaces cannot disagree about the measure, the
- * surface or the vertical rhythm.
+ * Anatomy: `/KICKER`, the surface name as the page's single `h1`, one supporting
+ * sentence, the route's own card on the canvas, and one alternate action as a
+ * plain hairline link. The route supplies the card's interior - the fields and
+ * the states - so the surfaces cannot disagree about the measure, the surface or
+ * the vertical rhythm.
  *
  * The frame is data (`AuthFrameFor` in `Auth/Data.ts`), never retyped here: a
  * kicker, a heading and an alternate action are the three things a route could
  * invent, and the contract in `Auth/Type.ts` is what stops it.
  *
- * **Why the frame came back.** `Auth0AccountGate`'s own docstring says "the page
- * frame (header, /KICKER, h1, supporting sentence, alternate action) belongs to
- * the route's `AuthShell` - this component renders inside that frame and owns no
- * page chrome", and `3480853ac` removed the frame while leaving that sentence
- * standing. The removal was argued only from the baseline's absence, which rule
- * A2 does not treat as an instruction. `DESIGN-COMPLETE.md` §6 X10 settles the
- * other half: one `h1` per page is identity (level 1), it outranks the baseline's
- * typographic silence, and it named Verify as the route still missing one.
+ * **The frame is the shell's, not the route's.** `Auth0AccountGate` renders
+ * inside it and owns no page chrome; one `h1` per page is identity (level 1), so
+ * the heading cannot be left to whichever interior happens to mount, and
+ * `DESIGN-COMPLETE.md` §6 X10 names Verify as the route that would otherwise be
+ * missing one.
  *
  * **What the frame does not change.** The card stays the baseline's - a single
- * `jelly-card` on the creme field, square, no shadow beyond `StaccatoShadowLift`,
- * the interior's own `p-6` blocks inside it - and `min-h-screen` keeps the
- * content column filling the viewport before the footer on the short states.
- * The opening distance moved from the route's `py-20` (5rem) onto `.auth-shell`
- * (the 5.25rem chapter token): a 4px difference between two steps of the same
- * scale, recorded in the partial, not a composition change.
+ * `jelly-card` on the creme field, square, the interior's own `p-6` blocks
+ * inside it - and `min-h-screen` keeps the content column filling the viewport
+ * before the footer on the short states. The opening distance is `.auth-shell`'s
+ * chapter token (5.25rem) rather than a route's `py-20`: a 4px difference between
+ * two steps of the same scale, recorded in the partial, not a composition change.
  *
  * `Measure` is the frame's one measure: `narrow` is the form's 28rem (the
  * baseline's `max-w-md`), `wide` is the account index's 64rem (the baseline's
  * `max-w-5xl`). The card fills it.
  *
- * **`Align` and the state register are what the matrix added.** Two things the
- * eight routes could not say before: a short interior had no way to sit in the
- * middle of the viewport it is the only thing in (`Align="center"`), and a
- * route that stated a state without opening a frame lost the state entirely -
- * the register was nested inside the frame's condition. Both are additive: the
- * default is the composition every route already renders.
+ * **`Align` and the state register are the frame's two placements.** A short
+ * interior can sit in the middle of the viewport it is the only thing in
+ * (`Align="center"`), and a route that states a state without opening a frame
+ * still prints it - the register is not nested inside the frame's condition.
+ * Both are additive: the default is the composition every route renders.
  *
  * `Frame.sentence` is optional on purpose. On the two password routes the card
  * prints the same sentence under its own title, and printing it twice would be
@@ -193,13 +187,11 @@ const Surface = {
 				)}
 
 				{/*
-				 * The state register sits OUTSIDE the frame's condition, and
-				 * that is the fix the matrix asked for: a route that states a
-				 * state but opens with no frame - a bare callback landing, a
-				 * route whose heading is its card's - had its `States` and
-				 * `Declarations` rendered inside `{Frame && …}` and therefore
-				 * printed nothing at all. A state the route handed in must print
-				 * whether or not the route has a heading above it.
+				 * The state register sits OUTSIDE the frame's condition: a state
+				 * the route hands in must print whether or not the route has a
+				 * heading above it. A bare callback landing, or a route whose
+				 * heading is its card's, still states its `States` and
+				 * `Declarations`.
 				 */}
 				{States.length || Declarations.length ? (
 					<div class="auth-shell__states">

@@ -24,10 +24,9 @@ import type { StateTerm } from "../Surface/State";
  *   terms - so a branch cannot invent a status string, and this file cannot
  *   drift from the table the register reads.
  * - The tone is never a prop. `StateBadge` reads it from the table by the word
- *   the label carries. The `Tone` prop this component used to take, with a
- *   fourth `strong` value for error branches, is gone: §1.5 gives INTERRUPTED
- *   `ink` like every other non-achievement, and a failure's urgency belongs to
- *   `Role="alert"`, not to a second colour.
+ *   the label carries. There is no `Tone` prop and no fourth `strong` value:
+ *   §1.5 gives INTERRUPTED `ink` like every other non-achievement, and a
+ *   failure's urgency belongs to `Role="alert"`, not to a second colour.
  * - A caller owns the sentence and the action, because only the caller knows
  *   what happened and what the reader can do next. This component owns the
  *   grammar.

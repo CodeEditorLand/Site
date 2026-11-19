@@ -20,7 +20,7 @@ import { CopiedInterval, CopyCopy, type CopyState } from "./Data";
  *
  * ─── THE HOOK OWNS THE CLIPBOARD CONTRACT ──────────────────────────────────
  *
- * `useCopyReceipt` is the one place the site's copy states are decided: it asks
+ * `useCopyReceipt` is the one place a copy receipt's states are decided: it asks
  * for the payload, writes it, and classifies the failure. `NotAllowedError` (and
  * a browser with no async clipboard at all) is `denied` - the permission is not
  * coming back this session, so the label stops offering a retry. Anything else

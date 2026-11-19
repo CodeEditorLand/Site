@@ -1,13 +1,14 @@
 /**
  * The code-mention pass for the CodeEditorLand site - the Aphrodite/Site
- * pattern adapted to the C15 link registry (Source/Library/Links.ts).
+ * pattern applied to the link registry (Source/Library/Links.ts).
  *
  * Given a prose string, whole-word mentions of the mapped terms resolve to
  * their registry URLs: the product "Land" (ExternalLinks.Repository), the
- * sixteen element names (ElementRepos), "PlayForm" (ExternalLinks.PlayForm),
- * "editor.land" (the repository's site), and the technical symbols in
- * TechnicalMentions (symbols that clearly denote a linkable project or
- * export - "Effect-TS", "ManagedRuntime", "LandWorkbenchRuntime").
+ * element names (ElementRepos), "PlayForm" (ExternalLinks.PlayForm),
+ * "editor.land" (also ExternalLinks.Repository - the older spelling of the
+ * same repository), and the technical symbols in TechnicalMentions (symbols
+ * that clearly denote a linkable project or export - "Effect-TS",
+ * "ManagedRuntime", "LandWorkbenchRuntime").
  *
  * The term source is the shared runtime index (Source/Library/LinkIndex.ts -
  * MentionMap + TechnicalMentions, registry-composed) and the compiled

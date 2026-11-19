@@ -18,10 +18,10 @@
  *   `SUPPORT` row's two routes are the ones the contact registry says answer
  *   support - `SCOUT` (Technical Support) and `HAILS` (General Inquiry) - read
  *   through `Library/Contact/Purpose.ts`, so the row cannot promise a
- *   conversation and land on a statutory request. It used to: the row named
- *   `/Contact/Reach` and `/Contact/Query`, which are the data-access request
- *   (GDPR Art. 15 + 20) and an objection to processing (Art. 21), and neither of
- *   them is where a reader with a problem should be sent.
+ *   conversation and land on a statutory request. A statutory route is the wrong
+ *   destination here: `/Contact/Reach` is the data-access request (GDPR Art. 15
+ *   + 20) and `/Contact/Query` an objection to processing (Art. 21), and neither
+ *   is where a reader with a problem should be sent.
  * - **No document is contradicted.** A row whose key the document already
  *   carries is not added again - the document's own value wins, so the Terms'
  *   `LICENSE` row stays exactly as it was written. Privacy, which carries no

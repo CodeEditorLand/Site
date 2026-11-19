@@ -8,14 +8,14 @@
  * the only axes a reader can narrow by, because a filter that offered a
  * grouping the table does not have would be a second, invisible table.
  *
- * `Key` is the column's index as a string, and it is what the island reads out
- * of the DOM - a column has no id in a printed table, and inventing one would
+ * `Key` is the column's index as a string, and the island indexes each row's
+ * cells by it - a column has no id in a printed table, and inventing one would
  * mean touching every matrix on the site to serve one control.
  *
  * ─── WHY DENSITY IS TWO VALUES AND NOT THREE ───────────────────────────────
  *
- * `compact` and `comfortable` are the two rhythms the Record layer already
- * names: `rest` (the reading rhythm) and `dense` (halved row padding, same
+ * `compact` and `comfortable` are the two rhythms the Record layer already has:
+ * its reading rhythm, and `record-matrix--dense` (halved row padding, same
  * type, same rules). A third step would be a size, and size is not a density -
  * the identity has one type ladder and the reader does not get to change it.
  */
@@ -42,9 +42,10 @@ export interface MatrixRow {
 	Cells: string[];
 }
 
-/** What the control's note line is currently saying, if anything. */
+/** The note line's vocabulary, in the order the control checks it. */
 export type MatrixNoteKind = "none" | "empty" | "void" | "more" | "storage";
 
+/** The note line's kind and its sentence; the control adds a mark and a next. */
 export interface MatrixNote {
 	Kind: MatrixNoteKind;
 

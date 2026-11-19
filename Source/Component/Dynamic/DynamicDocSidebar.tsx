@@ -106,13 +106,13 @@ interface DynamicDocSidebarProps {
  * does when a file filter finds nothing - and it is how the palette becomes
  * discoverable from the one place a lost reader actually is.
  *
- * The interaction that was here is unchanged: one collapsible per section, one
- * per group inside it, the section and group holding the current page opened on
+ * The interaction is the component's own: one collapsible per section, one per
+ * group inside it, the section and group holding the current page opened on
  * load and everything else collapsed, and a single disclosure panel above the
- * content below the rail's breakpoint. The styling contract is still the
- * component's own (`doc-sidebar__*`, owned by `Doc/_Sidebar.scss`); the control
- * states come from `Stylesheet/System/UI/_Rail.scss`, which is where the filter,
- * the counts and the row states live.
+ * content below the rail's breakpoint. The styling contract is the component's
+ * own (`doc-sidebar__*`, owned by `Doc/_Sidebar.scss`); the control states come
+ * from `Stylesheet/System/UI/_Rail.scss`, which is where the filter, the counts
+ * and the row states live.
  */
 const DynamicDocSidebar = ({
 	Sections,
@@ -123,10 +123,11 @@ const DynamicDocSidebar = ({
 	 * The tree is walked once, not once per render.
 	 *
 	 * `Sections` is deserialized once from the island's props, so these three
-	 * answers cannot change while the component is mounted - and before this
-	 * they were recomputed on every keystroke in the filter and every toggle:
-	 * ten sections, eighty-one leaves, three walks each. The rail is a control
-	 * a reader types into; the type-in path should not re-derive the manual.
+	 * answers cannot change while the component is mounted. Without the memo
+	 * they would be recomputed on every keystroke in the filter and every
+	 * toggle: ten sections, eighty-one leaves, three walks each. The rail is a
+	 * control a reader types into; the type-in path should not re-derive the
+	 * manual.
 	 */
 	const ActiveSectionId = useMemo(
 		() =>
@@ -294,14 +295,13 @@ const DynamicDocSidebar = ({
 		/**
 		 * Centre the current row - in a frame, and only when it moves.
 		 *
-		 * This used to run synchronously in the mount effect, which put a
-		 * `querySelector`, an ancestor walk that reads `getComputedStyle` at
-		 * every step, two `getBoundingClientRect` calls and a `scrollTop` write
-		 * inside the commit that hydration is already paying for - a forced
-		 * layout before the page's first idle moment, on every doc route. It is
-		 * one deferred frame now, the reads happen before the write so there is
-		 * one layout rather than two, and a row that is already where it belongs
-		 * costs no write at all.
+		 * Run synchronously in the mount effect, it would put a `querySelector`, an
+		 * ancestor walk that reads `getComputedStyle` at every step, two
+		 * `getBoundingClientRect` calls and a `scrollTop` write inside the commit
+		 * hydration is already paying for - a forced layout before the page's first
+		 * idle moment, on every doc route. It is one deferred frame, the reads
+		 * happen before the write so there is one layout rather than two, and a row
+		 * that is already where it belongs costs no write at all.
 		 */
 		const Frame = requestAnimationFrame(() => {
 			const Active = NavRef.current?.querySelector<HTMLElement>(

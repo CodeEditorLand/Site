@@ -8,14 +8,14 @@
  * buttons and the footer alternate.
  *
  * The strength meter reads its thresholds from `Password/Strength.ts` and its
- * colours from the shell partial's tone modifier classes - the previous
- * version wrote `#16a34a`, `#ca8a04` and `#e5e7eb` into a `style` attribute,
- * which is a literal colour on the one surface that is supposed to have none.
+ * colours from the shell partial's tone modifier classes - never a literal
+ * colour in a `style` attribute, on the one surface that is supposed to have
+ * none.
  *
- * Behaviour is unchanged: the same fields, the same validation predicates and
- * messages, the same submit gate, the same OAuth hand-off, the same footer
- * destination. The email and terms errors are now rendered (they were computed
- * and then dropped), so every failing branch says what failed in a sentence.
+ * Behaviour: the same fields, the same validation predicates and messages, the
+ * same submit gate, the same OAuth hand-off, the same footer destination. The
+ * email and terms errors are rendered, so every failing branch says what failed
+ * in a sentence.
  */
 import * as lucide from "lucide-react";
 

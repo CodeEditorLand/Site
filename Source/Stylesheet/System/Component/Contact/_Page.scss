@@ -26,10 +26,10 @@
 // The two measures are the baseline's: `max-w-5xl` (64rem) for the hub and the
 // request routes, `max-w-4xl` (56rem) for the sale page.
 //
-// The heading is the page's one `h1`, and it is set at the baseline's own scale
-// - `text-2xl` stepping to `text-3xl` at 640px - not at the design system's L
-// tier. The baseline wins that disagreement (`G5` §1); the L tier would set a
-// two-word index title at three times its recorded size.
+// The heading is the page's one `h1`, and it is set at the baseline's own scale -
+// `--type-section`, the section tier - not at the design system's L tier. The
+// baseline wins that disagreement (`G5` §1); the L tier would set a two-word
+// index title at three times its recorded size.
 //
 // The record head is the page's, not the form's: `ContactHead` prints
 // `# REACH  〈GDPR Art. 15 + 20〉  /CONTACT  SLA: 30d` once, above the heading,
@@ -82,9 +82,9 @@
 	margin-block-end: 3rem;
 }
 
-// `font-medium text-2xl sm:text-3xl tracking-tight`. The heading is not mono and
-// carries no display tracking: the page's loudest thing is the repetition of the
-// card slugs, never the title.
+// `--type-section`: the page's one `h1`, at the section tier rather than the L
+// tier. The heading is not mono and carries no display tracking: the page's
+// loudest thing is the repetition of the card slugs, never the title.
 .contact-page__heading {
 	margin: 0;
 	font-size: var(--type-section);

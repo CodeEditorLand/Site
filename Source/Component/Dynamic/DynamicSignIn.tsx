@@ -19,11 +19,10 @@
  * button does not submit on Enter - measured in Chromium 157 - so a Jelly
  * submit here would cost the keyboard path.
  *
- * Behaviour is unchanged: the same two fields, the same validation predicates
- * and messages, the same submit gate, the same OAuth hand-off and the same
- * footer destinations. What changed is that the validation result is now read
- * (it used to be discarded) and that every error is a full sentence in the
- * shell's error style.
+ * Behaviour: the same two fields, the same validation predicates and messages,
+ * the same submit gate, the same OAuth hand-off and the same footer
+ * destinations. The validation result is read, so every error prints as a full
+ * sentence in the shell's error style.
  */
 import * as lucide from "lucide-react";
 

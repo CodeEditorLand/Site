@@ -11,7 +11,7 @@
  * (`Source/Content/Record/*`) stays PascalCase and is not renamed here.
  */
 
-/** The eight surfaces the shell frames. */
+/** The seven surfaces the shell frames - eight routes, since Verify has two entry modes. */
 export type AuthSurface =
 	| "account"
 	| "signIn"

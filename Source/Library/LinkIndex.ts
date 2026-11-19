@@ -1,9 +1,9 @@
 /**
  * The runtime link index for the markdown pass - the full term -> URL map,
- * split (Phase 3f) into one granular file per unique composed URL under
- * ./LinkIndex/, NESTED by repo family with the directory tree MIRRORING the
- * composed URL path below the repo root (LinkIndex/<Repo>/<path-dirs>/<leaf>.ts,
- * ROOT.ts for a repo-root URL, External/<host>-<slug>.ts flat). Each fragment
+ * carried as one granular file per unique composed URL under ./LinkIndex/,
+ * NESTED by repo family with the directory tree MIRRORING the composed URL
+ * path below the repo root (LinkIndex/<Repo>/<path-dirs>/<leaf>.ts, ROOT.ts
+ * for a repo-root URL, External/<host>-<slug>.ts flat). Each fragment
  * exports LinkIndexData { url, pages, tags, terms }; this module merges ONLY
  * the terms maps back into LinkIndex and exposes the audit metadata as
  * LinkIndexMeta.
@@ -61,8 +61,9 @@ for (const Module of Object.values(UrlModules)) {
 
 /**
  * The full runtime index: every resolved term the markdown pass can link,
- * merged from the per-URL fragments (including the curated registry maps as
- * External specs, exactly as the pre-split index spread them).
+ * merged from the per-URL fragments. The curated registry maps
+ * (MentionMap/TechnicalMentions) are re-exported beside it, never merged in -
+ * the matcher reads them directly.
  */
 export const LinkIndex: Readonly<Record<string, LinkSpec>> = Merged;
 

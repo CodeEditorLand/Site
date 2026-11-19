@@ -123,8 +123,9 @@
 	opacity: 0.9;
 }
 
-// `text-xl font-medium mb-4`: the page's only `h2` - L, the ladder's tier for a
-// section head, which is what this is.
+// The page's only `h2`, so the ladder gives it the L tier - the tier for a
+// section head, which is what it is. Weight 500 and the reading step above the
+// body it opens.
 .contact-sale__heading {
 	margin: 0 0 var(--space-reading);
 	font-weight: 500;
@@ -158,10 +159,10 @@
 // `bg-card p-6`, and the surface that answers for its own width.
 //
 // The card is a container because its form is a question about ITS width, not the
-// page's: three of these once sat in a row of equal tracks at 13.07rem and the six
-// features wrapped to one phrase per line. The row that holds them is a capacity
-// line (`Layout/_Shell.scss`); the card is what decides whether it is a column or
-// a ledger row.
+// page's: in a row of equal tracks at 13.07rem the six features wrapped to one
+// phrase per line. The row that holds them is a capacity line
+// (`Layout/_Shell.scss`); the card is what decides whether it is a column or a
+// ledger row.
 //
 // The grid below is the row form's frame, declared at every width: with every child
 // spanning both tracks it IS a single column, so the narrow card keeps the block
@@ -268,8 +269,8 @@
 // (below), because a rule across the top of a card that is BESIDE its neighbour
 // would be a rule between two columns.
 //
-// The group step above the row is new, and it is the other half of "squished
-// together": `.contact-sale` is a block, so the letter's panel and this row were
+// The group step above the row is the other half of "squished together":
+// `.contact-sale` is a block, so the letter's panel and this row would be
 // siblings with nothing between them - two white surfaces, one above the other,
 // touching edge to edge. The ledger is its own object under the letter, and the
 // shell's own band rhythm (`--space-group`) is the step between two objects.
@@ -387,10 +388,10 @@
 // stay and so does the hover settle, which reads the attention vars, not the seed.
 //
 // `!important` is the only way to outrank the inline seed `Function/Noise/Staccato.ts`
-// writes. The shimmer needs no such restraint: `StaccatoBorderShimmer` has been a
-// documented no-op since the borderless redesign (`_Noise.scss`, §Border & Outline),
-// so it paints nothing on a card or on a row - the classes are kept because the
-// markup is the Jelly-era markup, not because they are doing anything.
+// writes. The shimmer needs no such restraint: `StaccatoBorderShimmer` is a
+// documented no-op (`_Noise.scss`, §Border & Outline), so it paints nothing on a
+// card or on a row - the classes stay because the markup is the Jelly-era markup,
+// not because they are doing anything.
 .contact-sale__card {
 	--StaccatoSeed: 0 !important;
 	--StaccatoSeedPhase: 0 !important;

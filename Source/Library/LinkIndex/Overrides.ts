@@ -1,13 +1,15 @@
 /**
- * Per-page overrides for the markdown pass (Phase 3c + 3g): keyed by
- * the .md basename (no extension) of the page being rendered. false ->
- * never link this term on this page; string -> pin this exact URL.
+ * Per-page overrides for the markdown pass: keyed by the .md basename (no
+ * extension) of the page being rendered. false -> never link this term on
+ * this page; string -> pin this exact URL.
+ *
  * Consulted by the remark plugin (Source/Function/Markdown/CodeMentions.ts)
- * via the vfile path after a term resolves through the matcher.
- * Phase 3g: regenerated COMPLETELY by derive_defaults.py from
- * LINK-CONTEXT-REVIEW.md (every change-to row -> pin, every remove row
- * -> false) plus the verdict-derived pins (majority -> global default,
- * minority -> override).
+ * via the vfile path, and it outranks every other resolution step: a page
+ * override decides before the context rules and before the global index.
+ *
+ * The table is a plain literal, so a correction is an edit here: a pin where
+ * the index would send the reader somewhere else on that page, and false
+ * where the term is prose rather than the symbol it names elsewhere.
  */
 
 export const LinkIndexOverrides: Record<

@@ -233,8 +233,8 @@ export interface RequirementsPanel {
  * One platform in the supported-OS strip.
  *
  * `note` is the line under the name: the architectures the platform builds for
- * and the installer formats it ships, as the recovered per-platform cards stated
- * them. It is one string because it is one sentence on the page.
+ * and the installer formats it ships. It is one string because it is one
+ * sentence on the page.
  */
 export interface SupportedOS {
 	/** The platform and the OS floor it needs, e.g. `macOS 10.15+`. */

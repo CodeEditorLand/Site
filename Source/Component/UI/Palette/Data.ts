@@ -32,17 +32,17 @@ import type {
  *
  * The part half is `FrameSections` - the same ten the running head prints and the
  * frame rail indexes. The palette's `ROUTES` register and the margin rail are the
- * same list, so `/03` means one thing everywhere. Three reference surfaces and
- * the document's own index are appended beside the ten for the same reason: the
- * site serves them, no part holds them, and a page that is in neither the parts
- * nor the manual is a page with no door.
+ * same list, so `/03` means one thing everywhere. Five pages are appended beside
+ * the ten for the same reason: the Rust API, the status board, the lexicon, the
+ * comparison and the index are served, no part holds them, and a page that is
+ * in neither the parts nor the manual is a page with no door.
  *
  * ─── WHY AN ACTION IS A ROW ─────────────────────────────────────────────────
  *
- * `COPY ADDRESS` is real: it uses the same clipboard contract as every copy
- * control on the site. Nothing else is listed. A palette of commands that do not
- * exist is a mockup with a search field on it, and the one honest action is worth
- * more than six plausible ones.
+ * `COPY ADDRESS` is real: clipboard, `COPIED` for 1800 ms - the contract the
+ * site's wired copy controls use. Nothing else is listed. A palette of commands
+ * that do not exist is a mockup with a search field on it, and the one honest
+ * action is worth more than six plausible ones.
  */
 export const BuildPaletteRegister = (
 	Sections: DocSection[],
@@ -207,7 +207,8 @@ export const BuildPaletteRegister = (
 };
 
 /**
- * The filter, re-exported from `Match.ts` so the island can reach it without
- * this module - which reads the tree - being pulled into the client bundle.
+ * The filter, re-exported from `Match.ts` for the server-side callers that
+ * already import this module. The island imports `Match.ts` itself, so neither
+ * the lexicon nor the record index is pulled into its bundle.
  */
 export { FilterEntries, MatchEntry } from "./Match.js";

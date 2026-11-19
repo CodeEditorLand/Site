@@ -1,8 +1,8 @@
 /**
- * The per-URL fragment shape (Phase 3d split): every generated file under
- * this directory (one per unique composed URL, nested by repo family)
- * exports a single LinkIndexFragment object. The aggregator merges ONLY the
- * terms maps into LinkIndex and exposes pages/tags as LinkIndexMeta.
+ * The per-URL fragment shape: every file under this directory (one per
+ * unique composed URL, nested by repo family) exports a single
+ * LinkIndexFragment object. The aggregator merges ONLY the terms maps into
+ * LinkIndex and exposes pages/tags as LinkIndexMeta.
  */
 import type { LinkSpec } from "../Links";
 
@@ -11,7 +11,7 @@ export interface LinkIndexFragment {
 	/** The composed URL every term in this fragment resolves to. */
 	url: string;
 
-	/** .md basenames (no extension) where this URL is linked, from LINK-CONTEXT-REVIEW.md. */
+	/** .md basenames (no extension) where this URL was reviewed as linked. */
 	pages: string[];
 
 	/** [repo family, kind (file|symbol|api|external), review verdict (keep|change|remove)?]. */

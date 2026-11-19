@@ -6,6 +6,7 @@
 //   .download-region__heading    the region's own h3, one level under the record's h2
 //   .download-region__standfirst one sentence under the heading, at S's ceiling
 //   .download-region__body       the region's content
+//   .download-region__apparatus  the evidence under the body, one group step down
 //   .download-region__footnote   provenance, caveat or source line closing it
 //
 // Owned by E3. A region is a part of one artifact, so it paints no boundary, no
@@ -13,10 +14,7 @@
 // regions at --space-group, the documented distance between two parts of one
 // subject (DESIGN.md §2.3, §4.1, §7 DR-9).
 //
-// Recovered verbatim from `3480853ac^` at K6 - it was deleted whole by
-// `3480853ac`, and its selectors are the anatomy the two restored content
-// regions below are built from. Its only live consumer today is
-// `Download/Region.astro`.
+// Its only live consumer is `Download/Region.astro`.
 
 @use "../../Mixin" as *;
 
@@ -24,10 +22,10 @@
 	display: flex;
 	flex-direction: column;
 	/* No `gap`: the region's rhythm belongs to its children, one mechanism and
-	   on the ladder. The gap was 8px under a head whose parts carried no margin,
-	   so the kicker-to-heading distance was a gap and the head-to-body distance
-	   was a margin - two mechanisms in one block, and a body that measured 24px
-	   (8 gap + 16 margin), a value on no step of the scale. */
+	   on the ladder. A gap under a head whose parts carry no margin makes the
+	   kicker-to-heading distance a gap and the head-to-body distance a margin -
+	   two mechanisms in one block, and a body that measures 24px (8 gap + 16
+	   margin), a value on no step of the scale. */
 	min-inline-size: 0;
 }
 
@@ -46,10 +44,8 @@
 // A region heading is an `h3`, so it is the S heading - 18px, 500, 1.25
 // (`_Type.scss`, THE ELEMENT LADDER) - and it is deliberately NOT `--type-sub`:
 // that token is the standfirst's alias and may never set a heading (§2.4, §9
-// Q4). It rendered at body size for a while, on the reading that a region head
-// is not a chapter head; body size is exactly what an `h3` may not be, because
-// the test a heading is judged by is that it is larger than the body it
-// introduces.
+// Q4). Body size is exactly what an `h3` may not be, because the test a heading
+// is judged by is that it is larger than the body it introduces.
 .download-region__heading {
 	margin: var(--space-tight) 0 0;
 	max-inline-size: var(--MeasureOpening);

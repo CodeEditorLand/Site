@@ -14,7 +14,7 @@
 // artifact, not a Contact detail (`DESIGN.md` §9 Q3). `Breadcrumb` is still
 // wired below: its rules are kept, and they are idle.
 //
-// `Shell` now publishes its own partial: the request routes are composed as a
+// `Shell` publishes its own partial: the request routes are composed as a
 // record beside their form, and that composition is the shell's.
 //
 // This file is the one line the shared `System/Component/_Index.scss` needs:

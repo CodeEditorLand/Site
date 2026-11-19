@@ -26,16 +26,14 @@ import type { default as VerificationState } from "./Type/State/Verification.js"
  * four-sentence paragraph, the labelled email field and the full-width resend
  * button.
  *
- * **The label is the vocabulary, and it was missing.** `Verify.json` carried
- * `auth.pendingStatus`, `auth.verifyingStatus`, `auth.verifiedStatus` and
- * `auth.failedStatus` - `STATUS: PREPARING`, `LOADING`, `VERIFIED`,
- * `INTERRUPTED` - and this component read none of them, so /Verify printed its
- * states as prose and never printed the word. Each branch now passes its own
- * locale key, so the words in that file are the words this route prints, and
- * their tones come from `State.ts` rather than from a branch's opinion about
- * how bad the news is. (The file's fifth key, `auth.expiredStatus`, is the
- * failure route's - `pages/Verify.astro` prints it when the provider says the
- * link expired.)
+ * **The label is the vocabulary.** `Verify.json` carries `auth.pendingStatus`,
+ * `auth.verifyingStatus`, `auth.verifiedStatus` and `auth.failedStatus` -
+ * `STATUS: PREPARING`, `LOADING`, `VERIFIED`, `INTERRUPTED` - and every branch
+ * passes its own key, so the words in that file are the words this route prints
+ * and their tones come from `State.ts` rather than from a branch's opinion about
+ * how bad the news is. A state printed only as prose has lost its state.
+ * (The file's fifth key, `auth.expiredStatus`, is the failure route's -
+ * `pages/Verify.astro` prints it when the provider says the link expired.)
  */
 const DynamicEmailVerification = ({
 	Content,

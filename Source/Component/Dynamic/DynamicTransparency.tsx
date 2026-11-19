@@ -8,18 +8,18 @@
  * **What it costs, and when.** The section is the download page's closing
  * disclosure: everything in it is below the manifest band, so nothing here is
  * needed at first paint. Its only client work is four copy-to-clipboard
- * buttons, and its `client:load` directive is the page's to change (the exact
- * one-line change is in the card-13 ledger, §4.1).
+ * buttons, and its `client:load` directive is the page's to change.
  *
- * Inside the island, two things are this file's: the icon import, which was a
- * namespace import of the whole icon set and is now eleven named ones, and the
- * noise engine, which is gated on the section approaching the viewport rather
- * than on mount. The gate is defensive rather than a saving - see the note on
- * the effect, which records that the ref it reads is attached to no element,
- * so the engine has never been fetched at all.
+ * Inside the island, two things are this file's: the icon import, ten named
+ * icons rather than a namespace import of the whole set, and the noise engine,
+ * which is gated on the section approaching the viewport rather than on mount.
+ * The gate is defensive rather than a saving - see the note on the effect, which
+ * records that the ref it reads is attached to no element, so the engine has
+ * never been fetched at all.
  *
  * The markup, the centred heading, the three sub-blocks and the
- * `Verify in source code` link are unchanged.
+ * `Verify in source code` link are this file's content and are printed as
+ * `Content` hands them over.
  */
 import {
 	Code,
@@ -73,7 +73,7 @@ const StatusColor: Record<string, string> = {
 	Recommended: "bg-blue-500",
 };
 
-// A badge is a Jelly surface with a real ink pair, not an outlined label.
+// A badge carries a real ink pair (`UI/Badge`'s tone map), not an outlined label.
 const StatusTone: Record<string, BadgeTone> = {
 	Active: "grpc",
 
@@ -189,15 +189,14 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 		 * viewport early, so the drift is already running by the time the
 		 * section is on screen.
 		 *
-		 * **This effect has never run, and this change does not make it run.**
+		 * **This effect never runs, and nothing here makes it run.**
 		 * `SectionReference` is attached to no element - the `<section>` below
-		 * carries no `ref` - so the guard returns on every mount, before and
-		 * after this card. Wiring it is one attribute, and it is deliberately
-		 * not added here: `Staccato` writes to `document.documentElement` from
-		 * its own `requestAnimationFrame` loop, so turning it on would *add* a
-		 * per-frame cost to `/Download` in a card whose subject is removing
-		 * one. The gate is kept because it is the only version of this effect
-		 * that is safe to wire; the finding is recorded in the ledger (§5.6).
+		 * carries no `ref` - so the guard returns on every mount. Wiring it is
+		 * one attribute, and it is deliberately absent: `Staccato` writes to
+		 * `document.documentElement` from its own `requestAnimationFrame` loop,
+		 * so turning it on would *add* a per-frame cost to `/Download` on a page
+		 * whose subject is removing one. The gate is kept because it is the only
+		 * version of this effect that is safe to wire.
 		 */
 		const ApplyNoise = async (): Promise<void> => {
 			const StaccatoModule =

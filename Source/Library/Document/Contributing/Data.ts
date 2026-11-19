@@ -7,12 +7,10 @@
  * `T` at render time; this module holds the keys and the English defaults, never
  * the i18n client, so a locale change is a JSON change and nothing here moves.
  *
- * The four steps are the baseline render's four steps, in its order, with its
- * own titles and its own two command blocks: fork and clone, set up the
- * environment, make the changes, open the pull request. A fifth step (Test) was
- * added during the programme and is not restored - its sentence already renders
- * in `Ways to Contribute` under Testing, so the sequence reads exactly as the
- * page always read.
+ * The four steps are the process, in order, with its own two command blocks:
+ * fork and clone, set up the environment, make the changes, open the pull
+ * request. There is no Test step: that sentence already renders in `Ways to
+ * Contribute` under Testing, and a fifth step would print it twice.
  */
 import type { ReadingIndexItem } from "../../../Component/Reading/Type.js";
 
@@ -58,7 +56,7 @@ export const Index: readonly ReadingIndexItem[] = [
 
 /** One step row plus the i18n key pair the page resolves it from. */
 export interface ProcessRow {
-	/** The step's number, printed as the baseline printed it: `1`-`4`. */
+	/** The step's number: `1`-`4`. */
 	readonly index: string;
 
 	/** The i18n key for the step's title. */

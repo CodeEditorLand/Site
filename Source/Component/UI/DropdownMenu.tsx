@@ -20,14 +20,21 @@ import { cn } from "./Utility";
  * DropdownMenu - the menu primitive, wearing the slip.
  *
  * Behaviour is Radix's and is not restated here: arrow keys, Home/End, typeahead,
- * Escape, outside-click, focus return to the trigger, the roving tabindex. What
- * this file decides is the *surface* and the *row grammar*, and it decides them
- * by handing the site's classes and two data attributes to the primitive:
+ * Escape, outside-click, focus return to the trigger, the roving tabindex. The
+ * family adds the door and nothing else - `UseSlipRoot` in the root, `UseDoorRef`
+ * on the trigger - so a menu whose trigger is removed closes rather than floats
+ * over the place a button used to be (`./Overlay`). What this file decides is the
+ * *surface* and the *row grammar*, and it decides them by handing the site's
+ * classes and four data attributes to the primitive:
  *
- *   `data-mark`  the row's leading glyph - `→` action, `/` route, `✓` current,
- *                `◎` unavailable. The stylesheet draws it in the reserved
- *                1.25rem column, so no caller can misalign a label.
+ *   `data-mark`  the row's leading glyph - `→` action, `/` route, `◎`
+ *                unavailable. The stylesheet draws it in the reserved 1.25rem
+ *                column, so no caller can misalign a label.
  *   `data-meta`  the row's trailing cell - a chord, a section, a STATUS word.
+ *   `data-reason` the STATUS word a disabled row owes the reader; it wins over
+ *                `data-meta`.
+ *   `data-current` the value in force - the stylesheet prints `✓` and the 2px
+ *                leading accent rule over whatever `data-mark` said.
  *
  * The attributes rather than spans are what let `asChild` keep working: an item
  * whose body is the caller's own `<a>` cannot have children injected into it, and
@@ -36,11 +43,11 @@ import { cn } from "./Utility";
  */
 
 /**
- * The register line a slip opens with: `# LOCALE / 05`.
+ * The root: Radix's open state, mirrored, plus the door the trigger fills.
  *
- * `SlipRegister` and the `SlipHead` shape live in `./Slip` with the rest of the
- * grammar's small parts, so the palette, the select and the menu print the same
- * line from one implementation.
+ * `UseSlipRoot` hands the primitive the same `open`/`onOpenChange` it was given
+ * and builds the `Door` this root provides; the trigger writes its element into
+ * it, and `UseTriggerGuard` closes the slip when that element leaves the tree.
  */
 
 function DropdownMenu({
@@ -96,15 +103,11 @@ function DropdownMenuTrigger({
  * The register line is written as a JSX child in the element body, and a body
  * child is a `createElement` argument of its own - React assigns it over the
  * `children` that `{...props}` carried (`react.development.js`: `if (1 ===
- * childrenLength) props.children = children;`). So a caller's rows, arriving
- * through the spread, were silently replaced by the one register line: the
- * locale slip opened on `# LOCALE / 05` and nothing else, and every other
- * dropdown on the site (the account menu included) did the same. `PopoverContent`
- * and `SelectContent` already destructure `children` for exactly this reason;
- * this one did not.
- *
- * Rendering it explicitly, after the head, is also the grammar's order: the
- * register line is the slip's first line and its rows follow it.
+ * childrenLength) props.children = children;`). A caller's rows arriving through
+ * the spread would be replaced by the one register line, and the slip would open
+ * on `# LOCALE / 05` and nothing else. Destructuring `children` and rendering it
+ * explicitly after the head is what keeps the rows, and it is also the grammar's
+ * order: the register line is the slip's first line and its rows follow it.
  */
 function DropdownMenuContent({
 	className,
@@ -194,12 +197,10 @@ function DropdownMenuItem({
 	/**
 	 * Why the row cannot be used, printed in the meta cell.
 	 *
-	 * `_Item.scss` states the rule and could not keep it: a disabled row takes
-	 * `◎` and keeps full legibility, and its meta cell is supposed to print the
-	 * reason from the STATUS vocabulary - but the reason had no prop, so a
-	 * disabled row either said nothing or said whatever the caller happened to
-	 * put in `meta`. One prop, one cell, and the reason is a fact the row
-	 * carries rather than a sentence in a comment.
+	 * `_Item.scss` gives a disabled row `◎` and keeps it fully legible, and
+	 * reserves its meta cell for the reason from the STATUS vocabulary. `reason`
+	 * is that cell's only honest source: `data-reason` overrides `data-meta`, so
+	 * a row that cannot be used prints why rather than its shortcut.
 	 */
 	reason?: string | undefined;
 
@@ -284,9 +285,9 @@ function DropdownMenuRadioItem({
 
 /**
  * A label *inside* a slip - a register divider, not a row. It is the site's
- * `Slip__Group`: 13px, tracked, muted, with a rule above it when another group
- * precedes it. The kit's `font-medium px-2 py-1.5` is a row's metrics applied to
- * something that is not a row.
+ * `Slip__Group`: 13px, tracked, muted, with a rule above it when a group or a
+ * row precedes it. A label is not a row, so it takes none of a row's metrics -
+ * no `2rem` floor, no hover wash, no reserved mark column.
  */
 function DropdownMenuLabel({
 	className,
@@ -320,8 +321,9 @@ function DropdownMenuSeparator({
 
 /**
  * The shortcut cell. A chord is printed in the grammar's containment mark -
- * `〈⌘K〉` - so it is the same object the palette's foot uses, and a reader learns
- * the notation once.
+ * `〈⌘K〉` - in the row's meta cell, which is where every trailing fact sits. The
+ * brackets are the literal's own mark; the `Chord` part in `./Slip` is the same
+ * notation for the foot, where the key is the subject rather than the note.
  */
 function DropdownMenuShortcut({
 	className,

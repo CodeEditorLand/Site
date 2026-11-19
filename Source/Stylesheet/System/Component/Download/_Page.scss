@@ -164,7 +164,7 @@
 // what the page owns about it: the record's column already pays the distance
 // between regions, and the island's `py-20` would be a chapter inside one.
 //
-// Three page-level rules follow, and each one makes the island keep the record's
+// Four page-level rules follow, and each one makes the island keep the record's
 // rhythm rather than print its own:
 //
 // 1. Its block gaps are the record's group distance. The island spaces its three
@@ -176,21 +176,21 @@
 // 3. Its badges do not breathe. A static row does not need a micro-scale to be
 //    read, so the badge holds one size and full ink.
 //
-//    This was four things until the dots lost their colour. The fourth was a
-//    repaint of the dots in the muted ink - `.download-transparency
-//    .StaccatoDot { background-color: var(--MuteForeground) }` - on the reading
-//    that the page's green belongs to the seal and to `STATUS: SOURCE ACTIVE`
-//    alone. The reading was wrong about what a dot is: its colour is not the
-//    page's decoration but the row's status, assigned by the row's own data
-//    (`Active` green, `Optional` yellow, `Recommended` blue, `Legacy` yellow,
-//    `Experimental` purple). A page may not repaint a status mark, and at
-//    `0,2,0` that rule outranked every `bg-*` utility in the markup, so the
-//    whole island printed one grey. The dots keep the ink their data assigns;
-//    the page's green remains the seal and the one `STATUS: SOURCE ACTIVE`,
-//    because those are the page's to spend and a status is not.
+//    A fourth rule would repaint the dots in the muted ink -
+//    `.download-transparency .StaccatoDot { background-color:
+//    var(--MuteForeground) }` - on the reading that the page's green belongs to
+//    the seal and to `STATUS: SOURCE ACTIVE` alone. That reading is wrong about
+//    what a dot is: its colour is not the page's decoration but the row's
+//    status, assigned by the row's own data (`Active` green, `Optional` yellow,
+//    `Recommended` blue, `Legacy` yellow, `Experimental` purple). A page may not
+//    repaint a status mark, and at `0,2,0` that rule would outrank every `bg-*`
+//    utility in the markup and print the whole island one grey. The dots keep
+//    the ink their data assigns; the page's green remains the seal and the one
+//    `STATUS: SOURCE ACTIVE`, because those are the page's to spend and a status
+//    is not.
 //
 // The island's markup, its words and its body are untouched. It is a component
-// this surface does not own; these are the three things the page hands it.
+// this surface does not own; these are the four things the page hands it.
 
 .download-transparency {
 	padding-block: 0;
@@ -211,9 +211,8 @@
 }
 
 // 4. Its three sub-headings are `h3`s, so they are the S heading - 18px, 500,
-//    1.25 - and the ladder sets them (`_Type.scss`, THE ELEMENT LADDER). This
-//    rule used to put them in the meta voice (13px, tracked, muted) on the
-//    reading that inside the record they are section labels. A label is not a
-//    heading: the test is that a heading is larger than the body it introduces,
-//    and 13px under a 16px paragraph is the demotion the ladder exists to undo.
-//    Their words are unchanged - only the tier.
+//    1.25 - and the ladder sets them (`_Type.scss`, THE ELEMENT LADDER). No rule
+//    here overrides them: a label is not a heading, and the test is that a
+//    heading is larger than the body it introduces - 13px under a 16px
+//    paragraph is the demotion the ladder exists to undo. Their words are
+//    unchanged; only the tier.

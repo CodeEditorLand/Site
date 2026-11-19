@@ -29,9 +29,11 @@ export interface StatusResponse {
 }
 
 /**
- * Status API adapter
- * Provides clean, type-safe interface for status/health check operations.
- * GetCachedStatus() caches in memory for 60 seconds - no localStorage.
+ * Status API adapter.
+ *
+ * GetCachedStatus() caches in memory for 60 seconds - no localStorage or
+ * sessionStorage. Every other method reads the worker directly and throws its
+ * error message rather than returning a stale check.
  */
 export class StatusAPI {
 	private Workers = GetWorkersClient();

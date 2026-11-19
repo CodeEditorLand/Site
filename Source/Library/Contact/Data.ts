@@ -9,12 +9,11 @@
  *
  * `SALE` is the one record that is a page rather than an income code, so it is
  * the one record whose words are carried here: the purpose table has no route
- * sentence for it beyond the page's own standfirst, and these two strings are
- * what the card has always printed. Its route still comes from the table.
+ * sentence for it beyond the page's own standfirst, so its title and subtitle
+ * are the two strings below. Its route still comes from the table.
  *
- * The order is alphabetical by slug, which is the order the baseline grid
- * printed: AMEND, CLAIM, DEALS, ERASE, GUARD, HAILS, LEAVE, LEGAL, LODGE, PAUSE,
- * QUERY, REACH, SCOUT, SALE.
+ * The order is alphabetical by slug: AMEND, CLAIM, DEALS, ERASE, GUARD, HAILS,
+ * LEAVE, LEGAL, LODGE, PAUSE, QUERY, REACH, SCOUT, SALE.
  */
 import type { IncomeCode } from "./Request.js";
 
@@ -24,8 +23,8 @@ import { ContactPurposeAt, ContactPurposeFor } from "./Purpose.js";
  * One crumb: a label and where it leads. The last crumb is the current page.
  *
  * The shape is the Route surface's (`Component/Route/Type.ts`) - a trail is a
- * Route Strip artifact, not a Contact detail - and it is re-exported under its
- * historical name so every Contact caller keeps its import.
+ * Route Strip artifact, not a Contact detail - and it is re-exported as
+ * `ContactTrailItem` so every Contact caller keeps its import.
  */
 export type { TrailItem as ContactTrailItem } from "../../Component/Route/Type.js";
 
@@ -60,9 +59,9 @@ export const ContactHubTrail: readonly TrailItem[] = [
 
 /**
  * The hub prints one sentence per card. A code whose route page carries a
- * longer standfirst keeps that longer copy on its own page; the baseline's hub
- * printed the shorter sentence, so it is carried here rather than inherited -
- * the grid stays even and nothing the route prints is lost.
+ * longer standfirst keeps that longer copy on its own page; the shorter
+ * sentence the grid prints for it is carried here rather than inherited - the
+ * grid stays even and nothing the route prints is lost.
  */
 const HubSubtitle: Partial<Record<IncomeCode, string>> = {
 	LODGE: "Lodge a formal complaint about how we have handled your personal data under GDPR Article 77.",
@@ -94,8 +93,8 @@ const EntryOf = (code: IncomeCode): ContactEntry => {
  *
  * It is not in the request registry - it is a page, not an income code - so
  * there is nothing to derive its title and subtitle from. They are carried here
- * verbatim, because the grid has always printed both and losing them would be
- * losing copy, not removing duplication.
+ * verbatim: the grid prints both, and dropping them would lose copy, not
+ * remove duplication.
  */
 const SaleEntry: ContactEntry = {
 	slug: "/SALE",

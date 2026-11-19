@@ -45,23 +45,28 @@ import type { PaletteEntry, PaletteRegister, PaletteScope } from "./Type";
  * ─── THE TWO REGISTERS ARE THE SITE'S OWN ───────────────────────────────────
  *
  * `ROUTES` is `FrameSections` - the ten parts the running head prints and the
- * margin rail indexes. The manual's groups are the same `DocSection[]` tree the
- * rail renders. One source each, so the palette and the furniture around it can
- * never disagree about what the site contains.
+ * margin rail indexes - plus the five pages the frame files beside them: the
+ * Rust API, the status board, the lexicon, the comparison and the index. The
+ * manual's groups are the same `DocSection[]` tree the rail renders. One source
+ * each, so the palette and the furniture around it can never disagree about
+ * what the site contains.
  *
  * ─── THE COUNT IS LIVE, AND IT IS PRINTED IN THE GRAMMAR ────────────────────
  *
- * `# FIND / 03`. The head of a slip prints its own record header; here the number
- * is what the current query and scope matched, in the grammar's two digits. A
- * palette that says "3 results" is a search field; a palette that says
- * `# FIND / 03` is this document's index.
+ * `# FIND / 03`. The head prints the record header a slip opens with, and the
+ * number is what the current query and scope matched, in the grammar's two
+ * digits. A palette that says "3 results" is a search field; a palette that
+ * says `# FIND / 03` is this document's index.
  *
  * ─── THE KEYBOARD PATH, STATED ──────────────────────────────────────────────
  *
- * `⌘K` / `Ctrl+K` opens and closes. `↑↓` move, `Home`/`End` jump, `Enter` opens,
- * `Esc` closes and returns focus to whatever opened it. Every one of those is
- * Radix Dialog's or cmdk's - the palette adds nothing to the model, and states it
- * in the foot so a reader who has never used it can use it.
+ * `⌘K` / `Ctrl+K` opens and closes, and that chord is this island's own
+ * document listener: the palette is one control on every page rather than a
+ * widget per surface. `↑↓` move, `Home`/`End` jump and `Enter` opens - cmdk's
+ * list. `Esc` closes through Radix Dialog, and returning focus to whatever
+ * opened the palette is this island's rule, because the door is a sibling
+ * button rather than a trigger. All of it is stated in the foot, so a reader
+ * who has never used it can.
  */
 
 const Scopes: readonly { Value: PaletteScope; Label: string }[] = [
@@ -188,8 +193,10 @@ const Palette = ({ Register, OnNavigate }: PaletteProps) => {
 		}, 0);
 	}, []);
 
-	// The chord is printed, not guessed at render: the first client render must
-	// match the server's, or hydration flips the cap in front of the reader.
+	// The chord is settled after mount, not during render: the server and the
+	// first client render both print `⌘K`, and this effect corrects it to
+	// `CTRL K` on a platform that is not Apple's. Deciding it in render would
+	// flip the cap during hydration.
 	React.useEffect(() => {
 		SetModifier(IsApple() ? "⌘K" : "CTRL K");
 	}, []);
@@ -248,7 +255,7 @@ const Palette = ({ Register, OnNavigate }: PaletteProps) => {
 
 	// ── the whole index, matched once ──────────────────────────────────────
 	//
-	// The four registers are filtered before the scope is applied, because the
+	// Every register is filtered before the scope is applied, because the
 	// scope's own adverse state needs to know what it excluded: a reader who has
 	// narrowed to `DOC`, typed a word, and found nothing has not found nothing -
 	// they have found nothing *here*. The control can say how many matches sit

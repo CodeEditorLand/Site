@@ -3,15 +3,13 @@
  *
  * ─── WHY THIS FILE EXISTS ─────────────────────────────────────────────────
  * The desk answers on fifteen routes and every one of them is a different
- * request. A link used to be chosen by slug alone: a page that wanted "talk to
- * us" picked the nearest `/Contact/...` and the label promised something the
- * form did not do. That is how a page sent readers who wanted to ask a question
- * to the subject-access form (REACH), and how the legal documents' own facts
- * strip listed `REACH` and `QUERY` under `SUPPORT:` when the registry says one
- * is a data export and the other is an objection to processing.
+ * request. A slug cannot say what a route is for: `/Contact/Reach` reads like
+ * "reach us" and is the subject-access request, `/Contact/Query` reads like a
+ * question and is an objection to processing. A link picked by the nearest
+ * `/Contact/...` path therefore promises something the form does not do.
  *
- * The slug cannot tell a caller what the route is for, so this module does. Each
- * route carries five facts a link needs and cannot guess:
+ * So the reason is data here, not an inference. Each route carries five facts a
+ * link needs and cannot guess:
  *
  *   Intent    a closed vocabulary word - *why* a reader is going (`talk`,
  *             `support`, `access`, ...). A page asks by intent, never by slug.

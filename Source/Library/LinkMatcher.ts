@@ -1,9 +1,9 @@
 /**
  * The compiled matcher cache for the link passes - the "cache inside
  * ./WebSite/". Built ONCE at module load: every term is sorted
- * longest-first and compiled into a single boundary-aware alternation regex
- * (the CodeMentions.ts pattern), so every subsequent render hits the
- * precompiled matcher and never re-scans the full index.
+ * longest-first and compiled into a single boundary-aware alternation regex,
+ * so every subsequent render hits the precompiled matcher and never re-scans
+ * the full index.
  *
  * Every LinkIndex spec is precomposed into its final URL string ONCE at
  * module load (the Urls cache below) via the composition rule
@@ -12,12 +12,12 @@
  * never a per-render composition.
  *
  * Two compiled matchers share this module:
- *  - MarkdownMatcher - the full LinkIndex (elements, technical symbols,
- *    Phase 2 file paths and symbols, extHost API names) used by the remark
- *    plugin (Source/Function/Markdown/CodeMentions.ts).
+ *  - MarkdownMatcher - the full LinkIndex (elements, file paths, symbols,
+ *    API names) used by the remark plugin
+ *    (Source/Function/Markdown/CodeMentions.ts).
  *  - ProseMatcher - the curated MentionMap + TechnicalMentions subset used
  *    by the hand-written prose pass (Source/Library/CodeMentions.ts), so
- *    the Contributing/Rust pages keep their exact current behavior.
+ *    the Contributing/Rust pages link exactly the curated terms.
  *
  * The protected brand compounds ("CodeEditorLand", "Code Editor Land") are
  * part of both compiled term lists: longest-first order consumes them whole

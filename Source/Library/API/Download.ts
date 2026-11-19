@@ -5,8 +5,8 @@ import type DownloadEvent from "../Interface/DownloadEvent.js";
 import { GetWorkersClient } from "../WorkerClient";
 
 /**
- * Downloads API adapter
- * Provides clean, type-safe interface for download operations
+ * Downloads API adapter - one method per download operation, each returning
+ * the unwrapped payload or throwing the worker's error message.
  */
 export class DownloadsAPI {
 	private Workers = GetWorkersClient();

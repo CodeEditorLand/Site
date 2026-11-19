@@ -9,14 +9,13 @@
  * The row is one anchor; the number is its own span so the wiring can read it
  * back and print the reader's position without re-deriving the number.
  *
- * ─── WHAT THE MATRIX ADDED ────────────────────────────────────────────────
- * The row printed `§{Item.number}` and `{Item.label}` unconditionally, so a
- * clause the document's index filed without a number printed a bare `§` and one
- * filed without a name printed an empty anchor - the two cells a screen reader
- * announces as nothing. Both now fall back to the vocabulary's own word,
- * `UNAVAILABLE`, and the number's glyph is printed only when there is a number
- * for it to mark. A list mounted with no rows states the caller's sentence when
- * it is given one, rather than printing an empty `<ol>`.
+ * ─── THE ROW'S TWO CELLS, WHEN THE INDEX GIVES NOTHING ────────────────────
+ * A clause the document's index files without a number or without a name prints
+ * the vocabulary's own word, `UNAVAILABLE`, in that cell - never a bare `§` and
+ * never an empty anchor, the two cells a screen reader announces as nothing. The
+ * number's glyph is printed only when there is a number for it to mark. A list
+ * mounted with no rows states the caller's sentence when it is given one, rather
+ * than printing an empty `<ol>`.
  */
 import type { ReadingIndexItem } from "../Reading/Type.js";
 

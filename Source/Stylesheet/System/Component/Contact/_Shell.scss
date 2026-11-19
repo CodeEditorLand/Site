@@ -6,6 +6,7 @@
 //   .contact-shell__record      the record column: facts, process, note, aside
 //   .contact-shell__gutter      the 1px `--Divider` between the record and the form
 //   .contact-shell__form        the form's column
+//   .contact-shell__status      the interrupted arm's status line, above the record
 //
 // THE SPLIT IS 4 / 1px / 8, the mirror of the blog article's 8 / 1px / 4. Both
 // pages use one language - a record beside its apparatus, divided by the site's
@@ -111,16 +112,16 @@
 		   there to this same breakpoint.
 
 		   A PINNED PLATE HAS FOUR LEGS, and this column's failure was the fill.
-		   The pin once stood here as two declarations - `position: sticky` and
-		   an inset - and the block renders as `surface="quiet"`, so no tier
-		   supplied a fill either: a sticky with no fill paints nothing over the
-		   row it passes, and the process under the facts read *through* the
-		   register line. That is the overlap the reader saw, and it is why the
-		   fix is a plate rather than a `z-index`: `--Background` fill, radius 0
-		   (nothing here sets one), `z-index: 1` over the stage's `position:
-		   relative` rows, this column as the containing block, and - in
-		   `_Ledger.scss` - a top edge on the header's own hairline so the text
-		   the plate covers cannot reappear in the band above it. */
+		   A pin written here as two declarations - `position: sticky` and an
+		   inset - and rendered as `surface="quiet"` gets no fill from any tier:
+		   a sticky with no fill paints nothing over the row it passes, and the
+		   process under the facts reads *through* the register line. That is the
+		   overlap a reader sees, and it is why the fix is a plate rather than a
+		   `z-index`: `--Background` fill, radius 0 (nothing here sets one),
+		   `z-index: 1` over the stage's `position: relative` rows, this column
+		   as the containing block, and - in `_Ledger.scss` - a top edge on the
+		   header's own hairline so the text the plate covers cannot reappear in
+		   the band above it. */
 		align-self: stretch;
 	}
 

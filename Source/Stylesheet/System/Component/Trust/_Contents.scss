@@ -16,6 +16,7 @@
 //   .trust-contents__name               the clause's own words
 //   .trust-contents__summary            the disclosure's summary row
 //   .trust-contents__toggle             the disclosure's arrow
+//   .trust-contents__empty              the register's one sentence, when the index is empty
 //
 // Three decisions:
 //
@@ -27,11 +28,10 @@
 // - The current row is marked the way the manual's rail marks a page: full ink,
 //   weight 500, and a 2px `--Accent` rule on the row's leading edge. Not a fill,
 //   not a pill - a rail row that needs a background to be found is a rail row
-//   that was never designed. The rule was `--Foreground` here, the one rail in
-//   the site whose mark was not the accent; a reader who crosses from the
-//   manual's rail to a legal document's should not have to learn a second
-//   "you are here". Same 2px, same accent, same shape - the ink carries the
-//   text, the rule carries the position.
+//   that was never designed. It is the accent here as on every rail in the site:
+//   a reader who crosses from the manual's rail to a legal document's should not
+//   have to learn a second "you are here". Same 2px, same accent, same shape -
+//   the ink carries the text, the rule carries the position.
 // - The position cell reserves its width and starts empty. Before the first
 //   clause is reached there is no clause to name, and a figure printed there
 //   would be a number the reader is not standing on; the reserved width is what

@@ -1,18 +1,13 @@
 /**
  * The account and verify content tables, as data.
  *
- * Both tables used to be retyped inline in each page, and `ForgotPassword`
- * and `ResetPassword` each carried a near-copy of all four account blocks
- * (about 110 lines twice). They live here once, so a label change lands in
- * one place and the two pages cannot drift apart.
+ * Both tables live here once rather than in each page, so a label change lands
+ * in one place and the pages cannot drift apart.
  *
- * ─── THE SENTENCES, AND WHY THEY WERE REWRITTEN ───────────────────────────
- * The keys and the structure came over unchanged from the pages; the *sentences*
- * did not, and this note used to say they had. They were product English -
- * "we'll send a secure reset link to your inbox", "Email verified!", "please
- * wait" - on the four surfaces where a reader is most likely to be stuck. The
- * site's voice is identify, direct, measure, classify, credit, so each of these
- * strings now says what happens, how long it lasts and what to do next:
+ * ─── THE SENTENCES SAY WHAT HAPPENS, HOW LONG IT LASTS, WHAT TO DO NEXT ───
+ * These are the four surfaces where a reader is most likely to be stuck, and
+ * the site's voice is identify, direct, measure, classify, credit - not product
+ * English. So each string states the fact and its limit rather than reassuring:
  *
  * - a reset link opens for one hour and works once (`Account.json`'s own window);
  * - a verification link opens for 24 hours and is a credential, so it is not
@@ -20,7 +15,7 @@
  * - a password that changes makes the old one stop working, which is the fact a
  *   reader actually wants after the success screen.
  *
- * No fact was dropped and no label was renamed. The labels stay labels.
+ * No fact is dropped and no label is renamed. The labels stay labels.
  */
 import type AccountContentShape from "../Dynamic/Interface/Content/Page/Account.js";
 

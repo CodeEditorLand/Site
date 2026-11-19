@@ -8,9 +8,10 @@
  * label changes to "Copied" for 1800 ms. That is a toast's timing, and a toast
  * is a thing that tells the reader something happened and then takes the
  * evidence away. The control built here states the outcome *where the control
- * is*, in the record grammar, and it keeps the state until the thing it copied
- * changes - so a reader who looks back a minute later still knows whether the
- * clipboard holds what they think it does.
+ * is*, in the record grammar, and it stands for 8000 ms - four and a half times
+ * the toast's hold - so a reader who looks back has a real chance of still
+ * knowing whether the clipboard holds what they think it does. A payload that
+ * changes under a standing receipt clears it at once, through `Reset`.
  *
  * ─── FIVE STATES, AND THE TWO THAT MATTER ──────────────────────────────────
  *
@@ -49,9 +50,11 @@ export const CopyCopy = {
 /**
  * How long a *copied* receipt stands before it returns to rest.
  *
- * The site's wired controls use 1800 ms; this control keeps the receipt until
- * its payload changes, so the timer exists only to stop a stale "copied" from
- * outliving the session's attention. A failure receipt is never timed out - a
- * reader who missed it would be left believing the copy worked.
+ * The site's wired controls use 1800 ms; this one holds 8000, because the
+ * receipt is a row inside a control the reader is still using and 1800 ms is
+ * gone before the eye comes back to it. `Reset` is the other half of the rule: a
+ * payload that changes under a standing receipt clears it immediately. A failure
+ * receipt is never timed out - a reader who missed it would be left believing
+ * the copy worked.
  */
 export const CopiedInterval = 8000;

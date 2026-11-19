@@ -2,12 +2,12 @@
 // ContactWorkspace - one request route, composed as a record beside its form.
 //
 // ─── THE COMPOSITION (the rail-and-record split) ─────────────────────────
-// The route used to be a page with a form on it. It is now a workspace: the
-// request's *record* in the left column and the *form* in the right, divided by
-// the site's 1px `--Divider`, in the mirror image of the blog article's margin
-// channel (there the piece is left and the apparatus right; here the apparatus is
-// left and the instrument - the form - right, because a form is what the reader
-// came to operate).
+// The route is a workspace, not a page with a form on it: the request's *record*
+// in the left column and the *form* in the right, divided by the site's 1px
+// `--Divider`, in the mirror image of the blog article's margin channel (there
+// the piece is left and the apparatus right; here the apparatus is left and the
+// instrument - the form - right, because a form is what the reader came to
+// operate).
 //
 // The record column carries four things, in reading order:
 //
@@ -29,26 +29,24 @@
 // reason the page was opened.
 //
 // ─── WHY THIS IS A BLOCK AND NOT A PAGE'S BODY ───────────────────────────
-// `ContactShell` used to hold this markup between its `<ContactPage>` tags, so
-// the composition could only exist inside a document: a specimen plate could not
-// print it, and a route that composes its own chrome could not reuse it. The
-// workspace is now a block; `ContactShell` composes it under the page.
+// The composition lives in a block, not between a document's tags: held inside
+// `ContactShell`'s `<ContactPage>`, it could only exist inside a document - a
+// specimen plate could not print it, and a route that composes its own chrome
+// could not reuse it. `ContactShell` composes this block under the page.
 //
-// ─── WHAT THE MATRIX ADDED ────────────────────────────────────────────────
-// Two states a request route could reach and could not state:
+// ─── THE TWO STATES THE WORKSPACE OWNS ────────────────────────────────────
+// Two states a request route can reach and must state:
 //
-// - **A send that failed.** The form reports its own failure inside itself, and
-//   the record column - the page's instrument - said nothing about it: a reader
-//   looking at the route's facts could not tell a route at rest from a route
-//   whose last send was interrupted. `state="interrupted"` prints the status
-//   line (`STATUS: INTERRUPTED` and the route's own declarations) at the top of
-//   the record column, so the failure is a state of the record rather than a
-//   sentence inside the form.
-// - **A form that is not the shipped one.** The workspace mounted
-//   `DynamicContactForm` unconditionally, so the one island was also the one
-//   thing a caller could not replace - a specimen plate, a route with a
-//   different instrument, a preview with no Auth0. The `form` slot is that seam:
-//   absent, the island mounts exactly as before.
+// - **A send that failed.** The form reports its own failure inside itself, so
+//   without a state on the record column a reader looking at the route's facts
+//   cannot tell a route at rest from one whose last send was interrupted.
+//   `state="interrupted"` prints the status line (`STATUS: INTERRUPTED` and the
+//   route's own declarations) at the top of the record column, so the failure is
+//   a state of the record rather than a sentence inside the form.
+// - **A form that is not the shipped one.** `DynamicContactForm` is the default,
+//   not the only instrument: the `form` slot is the seam a specimen plate, a
+//   route with a different form or a preview with no Auth0 uses. Absent, the
+//   island mounts exactly as before.
 import DynamicContactForm from "../Dynamic/DynamicContactForm";
 import RecordAside from "../Record/RecordAside.astro";
 import RecordLedger from "../Record/RecordLedger.astro";

@@ -10,11 +10,12 @@
 //   .download-releases__matrix   the empty (or populated) matrix under it
 //
 // The disclosure is one row when closed: a hairline above and below, the coded
-// label at the reading edge, and a `↳` at the far edge that turns to point down
-// when the record opens. That turn is the only motion on the page besides the
-// jelly elements' own press, and it explains a change of state - closed to open
-// - rather than decorating a static row. `motion-enter` writes the interval only;
-// reduced motion keeps the end state and loses the interval.
+// label at the reading edge, and the mark layer's arrow (`Mark/_Arrow.scss`) at
+// the far edge, which turns a quarter to point down when the record opens. That
+// turn is the only motion on the page besides the jelly elements' own press, and
+// it explains a change of state - closed to open - rather than decorating a
+// static row. `motion-enter` writes the interval only; reduced motion keeps the
+// end state and loses the interval.
 //
 // The open panel holds the sentence and the matrix. The matrix is a real table
 // with its header row and its caption even when it has no rows: the header is
@@ -52,7 +53,7 @@
 
 	// The control's two states: the ink answers the pointer, and the focus ring
 	// is the site's one ring token - 2px of the accent at the identity's offset.
-	// It was 1px, which is a rule's width and not a ring's.
+	// A 1px ring is a rule's width, not a ring's.
 	&:hover .download-releases__marker {
 		color: var(--Foreground);
 	}
@@ -77,9 +78,8 @@
 // opens. Transform only: the glyph is at its full size in both states, so the
 // row cannot reflow.
 // The marker is the mark layer's fold (`Mark/_Arrow.scss`): one glyph, one
-// quarter turn, opened by the `<details open>` above. The comment in this file's
-// head says `↳`, the markup printed `→`, and the rule rotated whatever arrived -
-// three descriptions of one mark and no two of them the same.
+// quarter turn, opened by the `<details open>` above. No rule here rotates an
+// arbitrary glyph, and no second description of the mark exists beside this one.
 .download-releases__marker {
 	margin-inline-start: auto;
 }

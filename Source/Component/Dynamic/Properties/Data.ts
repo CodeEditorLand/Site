@@ -14,11 +14,11 @@
  * (BRIDGE §8.6). A strip label is structure, not copy: it names what the strip
  * is, the way `/PROOF` names the band.
  *
- * Why the heading is `features.heading` rather than `features.title`: the old
- * title was "VS CODE. WITHOUT ELECTRON.", which is the hero's claim said a
- * second time, and a band heading that repeats the page's h1 is a heading that
- * does not say what its own band is. `features.title` is left in the locale
- * untouched - nothing here reads it, and no key is ever deleted.
+ * The heading is `features.heading`, not `features.title`: `VS CODE. WITHOUT
+ * ELECTRON.` is the hero's claim said a second time, and a band heading that
+ * repeats the page's h1 is a heading that does not say what its own band is.
+ * `features.title` stays in the locale, unread and undeleted - a key is never
+ * removed to tidy a module.
  *
  * **The three-claim budget.** `DesignSystem-Grammar.md` §8 gives this layer
  * three source-backed claims, one editor screenshot or architecture proof. The
@@ -29,11 +29,11 @@
  * only identity the content gives a property: the six are a set, not named
  * things, and `Id` is a translation key rather than a name a reader should see.
  *
- * `Kicker` and `Heading` are the *band's* opening, and the band that prints them
- * is `Home/FeatureBand` (another card's): it heads the section with the
- * baseline's own `VS CODE. WITHOUT ELECTRON.`, so the two exports here stay
- * unread and are kept rather than deleted - a key or a string is never removed
- * to tidy a module.
+ * `Kicker` and `Heading` are the *band's* opening, and the band that prints the
+ * section is `Home/FeatureBand`: it heads the section with the baseline's own
+ * `VS CODE. WITHOUT ELECTRON.` (`home:features.title`), so the two exports here
+ * stay unread and are kept rather than deleted - a string is never removed to
+ * tidy a module.
  */
 import type FeatureItem from "../Interface/Item/Feature.js";
 
@@ -217,7 +217,7 @@ export type Translate = (
  * The marker is the property's place in the set, zero-padded the way the
  * field-record grammar pads a marker. The claim and the paragraph are the
  * content's own sentences - no truncation, no summary - so the band cannot lose
- * the copy it was rebuilt to show.
+ * the copy it prints.
  */
 export const ItemsOf = (T: Translate): readonly PropertyEntry[] =>
 	PropertyIds.map((Id, Index) => ({
@@ -242,7 +242,7 @@ export const Empty =
  * The marker is the property's place in the set, zero-padded the way the
  * field-record grammar pads a marker. The claim and the paragraph are copied
  * across unchanged - no truncation, no summary - so the band cannot lose the
- * copy it was rebuilt to show.
+ * copy it prints.
  */
 export const EntriesOf = (
 	Items: readonly FeatureItem[],

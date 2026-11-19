@@ -15,12 +15,13 @@ export interface ThemeImageProps {
 /**
  * ThemeImage - Daylight Field Record (single theme).
  *
- * Every surface is light (creme canvas, white cards) - use the LIGHT
- * image variant (dark glyph).
+ * A plain <img>: no <picture>, no media query, no OS-based switching. Every
+ * surface is light (creme canvas, white cards), so the src is always the
+ * LIGHT variant - the dark glyph.
  *
  * Convention:
  *   Light: /Image/Foo.svg or /Asset/Foo.svg
- *   (/Dark/Image/ and /Asset/Dark/ are obsolete - 2026-10-14)
+ *   (/Dark/Image/ and /Asset/Dark/ must never be referenced)
  */
 export function ThemeImage({
 	src,

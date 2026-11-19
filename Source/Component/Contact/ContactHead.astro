@@ -5,12 +5,12 @@
  * sentence under it.
  *
  * ─── WHY THIS IS A BLOCK AND NOT A PAGE'S FIRST ELEVEN LINES ──────────────
- * `ContactPage` used to print this opening itself, between its `<Base>` and its
- * slot. That made the opening unprintable anywhere else: a specimen sheet could
- * not show it, a route could not re-compose it, and the one part of a Contact
- * page that carries the record grammar was locked inside the document layout.
- * The opening is now a block; `ContactPage` composes it under `Base`, and the
- * sheet prints it at 1:1 like any other part.
+ * The opening is a block, not markup inside `ContactPage` between its `<Base>`
+ * and its slot: as part of the document layout it would be unprintable anywhere
+ * else - a specimen sheet could not show it, a route could not re-compose it,
+ * and the one part of a Contact page that carries the record grammar would be
+ * locked inside the layout. `ContactPage` composes it under `Base`, and the sheet
+ * prints it at 1:1 like any other part.
  *
  * ─── THE OPENING, IN ORDER ────────────────────────────────────────────────
  * The trail is `Component/Route/Trail.astro` - the site's one breadcrumb
@@ -33,10 +33,10 @@
  * `max-w-5xl`, the sale page `max-w-4xl` - and the body that follows repeats it
  * so the two line up on the same left edge.
  *
- * ─── WHAT THE MATRIX ADDED ────────────────────────────────────────────────
- * A request route whose form never booted printed a trail, a record head and
+ * ─── THE ROUTE WITH NO INSTRUMENT ─────────────────────────────────────────
+ * A request route whose form never booted would print a trail, a record head and
  * then nothing at all: the page's `h1` lives inside the form island, so a route
- * whose island failed had no heading and no body - a blank page with a
+ * whose island failed has no heading and no body - a blank page with a
  * breadcrumb. `state="empty"` prints the absence under the record head, in the
  * grammar every other absent surface uses (`◎`, the sentence, `STATUS:
  * UNAVAILABLE`), so the route says what it is even when its instrument is not

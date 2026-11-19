@@ -22,16 +22,16 @@
 // The card is a link - `bg-card` on the creme canvas, no radius, no shadow - so
 // the repetition of the slash-codes down the left edge is the loudest thing on
 // the page. Its slug is the route it answers on, in the mono face at 70% ink;
-// its name is an `h2` at body size; its sentence is the registry's subtitle at
-// 70% opacity; and its foot is the one hairline on the card, closing the
-// sentence and printing the two facts a reader chooses by.
+// its name is an `h2`, so the ladder sets it at L - the card's one large thing;
+// its sentence is the registry's subtitle at 70% opacity; and its foot is the
+// one hairline on the card, closing the sentence and printing the two facts a
+// reader chooses by.
 //
-// The address is a link, not an action. It carried `.emphasis-expressive` when
-// it opened a band of its own; an ink-inverted postal address is a non-action
-// wearing the action style (`DESIGN.md` §5 A6, §7 DR-12), so it takes ink, an
-// underline on hover, and nothing else. It sits between the grid and the closing
-// rule as one line - never a heading, because the page's heading count is 1 `h1`
-// and 14 `h2`, and this block is neither.
+// The address is a link, not an action. An ink-inverted postal address is a
+// non-action wearing the action style (`DESIGN.md` §5 A6, §7 DR-12), so it takes
+// ink, an underline on hover, and nothing else. It sits between the grid and the
+// closing rule as one line - never a heading, because the page's heading count
+// is 1 `h1` and 14 `h2`, and this block is neither.
 
 @use "../../Mixin" as *;
 

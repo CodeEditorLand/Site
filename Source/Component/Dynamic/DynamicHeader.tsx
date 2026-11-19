@@ -12,17 +12,17 @@ import type {
 import type Property from "./Interface/Property/Header.js";
 
 /**
- * DynamicHeader - the legacy schema-driven header, reduced to an adapter.
+ * DynamicHeader - the legacy schema-driven header, as an adapter.
  *
- * This file used to be a second header: its own bar markup, its own mobile
- * panel, its own `ThemeToggle`, `bg-background` and `text-muted-foreground`
- * utilities. That made it a third header variant beside the two the design
- * system defines, and it carried a theme toggle on a site with exactly one
- * theme (`DESIGN.md` §1.1, `DesignSystem.md` §6.9).
+ * It is an adapter, not a header: `Layout/Header` owns the bar markup, the
+ * mobile panel and the two modes, and this file adapts the old schema to it. A
+ * header of its own would be a third variant beside the two the design system
+ * defines, and the one it used to draw carried a theme toggle on a site with
+ * exactly one theme (`DESIGN.md` §1.1, `DesignSystem.md` §6.9).
  *
- * It now renders `Layout/Header` and nothing else, so there is one bar, two
- * modes and one nav on the whole site. The legacy schema is adapted here rather
- * than in the bar, because the bar must not know that an old schema exists.
+ * It renders `Layout/Header` and nothing else, so there is one bar, two modes
+ * and one nav on the whole site. The legacy schema is adapted here rather than
+ * in the bar, because the bar must not know that an old schema exists.
  *
  * `Sticky` and `ShowMobileMenu` are dropped, not lost: the bar is always sticky
  * and always owns its own toggle - a caller could only ever turn those off by

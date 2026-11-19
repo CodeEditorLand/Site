@@ -5,12 +5,12 @@
 // header, a container, a breadcrumb and an `h1` with a standfirst. That is one
 // page opening, so it lives here once and the routes compose it.
 //
-// **The opening is `ContactHead`.** It used to be this file's own markup, which
-// meant the trail, the record head and the heading could only exist inside a
-// `<Base>` - a specimen sheet could not print them and no route could
-// re-compose them. The block is the opening; this file is the document around
-// it. Nothing about the composition changed: the same order, the same measures,
-// the same `opening` and `width` arms.
+// **The opening is `ContactHead`.** The trail, the record head and the heading
+// are a block, not markup inside this file: held in a `<Base>` here they could
+// only exist inside a document - a specimen sheet could not print them and no
+// route could re-compose them. The block is the opening; this file is the
+// document around it. The composition is the same: the same order, the same
+// measures, the same `opening` and `width` arms.
 //
 // What the shell does not own is anything below the opening: a request route
 // hands in its form, which prints its own `h1` (the request title, inside the

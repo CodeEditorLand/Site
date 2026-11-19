@@ -1,15 +1,15 @@
 /**
- * The five bands' openings, in the order the page prints them.
+ * The five bands below the hero's openings, in the order the page prints them.
  *
- * The order is the baseline's - hero, features, roadmap, architecture,
+ * The order is the composition's - features, roadmap, architecture, method,
  * download - and it is data rather than markup so the page cannot drift from it
  * by editing one section and not the others.
  *
- * Two headings are written as literals instead of being read from the locale
- * files: the features heading is printed in the baseline's own upper case, and
- * the roadmap's stamp is a two-line mono block whose terms are printed in three
- * different inks. Neither is a translation of a sentence - one is a fixed
- * display string and the other is a record stamp - so both live here.
+ * The method band's heading and two standfirsts (the roadmap's and the method's)
+ * are written as literals instead of being read from the locale files, and the
+ * roadmap's stamp is a two-line mono block whose terms are printed in three
+ * different inks. None is a sentence a locale owns: one is a fixed display
+ * string, two state a measured condition, and the stamp is a record.
  */
 import type { BandHead, HomeTranslate, StampLine } from "./Type.js";
 
@@ -17,9 +17,9 @@ import type { BandHead, HomeTranslate, StampLine } from "./Type.js";
  * The page's interval sequence, in reading order, by band id.
  *
  * The homepage is the page that taught this document its rhythm, so its sequence
- * is the reference the four-rung ladder was drawn from: wide, wide, tight, tight,
- * wide - which on a ladder with two rungs per register is turn, break, rest,
- * beat, turn. It lives here with the bands' openings rather than in the five
+ * is the reference the four-rung ladder was drawn from: wide, wide, tight, wide,
+ * tight - which on a ladder with two rungs per register is turn, break, rest,
+ * turn, beat. It lives here with the bands' openings rather than in the five
  * components, for the reason the openings live here: a page's sequence is one
  * fact, and five literals in five files is five places for it to drift.
  *
@@ -57,7 +57,7 @@ const RoadmapStamp: readonly StampLine[] = [
 	},
 ];
 
-/** The four bands below the hero, in the baseline's order. */
+/** The five bands below the hero, in the composition's order. */
 export const HomeBands = (T: HomeTranslate): readonly BandHead[] => [
 	{
 		ID: "features",

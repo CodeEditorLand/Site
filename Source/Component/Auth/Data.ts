@@ -1,5 +1,5 @@
 /**
- * The eight frames, as data.
+ * The seven frames, as data.
  *
  * A page composes `AuthFrameFor(Surface, T)` and hands the result to
  * `AuthShell.astro`; no page retypes a kicker, a heading or an alternate
@@ -11,12 +11,10 @@
  * the surface name as a sentence, because a reader under stress reads a
  * sentence faster than a noun.
  *
- * Restored at K7. `584d6a814` wrote this module and `3480853ac` removed it while
- * `Auth/Type.ts` kept `AuthFrame`, `AuthSurface` and `AuthAction`, and while
- * every `auth.*` key stayed in the locale file - so the contract, the copy and
- * the consumers were all still pointing at a frame that no longer existed. The
- * strings below are recovered from `git show 3480853ac^:Source/Component/Auth/Data.ts`
- * and are byte-identical to the ones the locale file carries.
+ * The module is the single home of the frames: `Auth/Type.ts` carries their
+ * contract (`AuthFrame`, `AuthSurface`, `AuthAction`) and every `auth.*` key in
+ * the locale file is their copy, so a frame cannot be added in one place and
+ * forgotten in the other.
  */
 import type { TrailItem } from "../Route/Type.js";
 

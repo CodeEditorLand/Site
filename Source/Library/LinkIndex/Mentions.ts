@@ -1,8 +1,7 @@
 /**
- * The curated registry maps for the prose pass (Phase 3d split: these
- * small registry-composed maps are not URL-keyed, so they live here rather
- * than in a per-URL fragment). Re-exported by the LinkIndex aggregator
- * so the consumers' import statements stay unchanged.
+ * The curated registry maps for the prose pass. They are not URL-keyed, so
+ * they live here rather than in a per-URL fragment. Re-exported by the
+ * LinkIndex aggregator so the consumers' import statements stay unchanged.
  */
 
 import { ElementRepos, ExternalLinks } from "../Links";

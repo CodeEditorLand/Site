@@ -34,8 +34,9 @@ const Quad = "\u2001";
  *
  * `VERSION` and `ISSUED` are `UNAVAILABLE` rather than a plausible number: no
  * public release exists, so there is no version to stamp and no date on which one
- * was issued. The two facts the record *does* hold - the channel and the targets
- * - are printed in full, because a stamp with nothing in it is a decoration.
+ * was issued. The three facts the record *does* hold - what is being held, the
+ * targets it reaches and the channel - are printed in full, because a stamp with
+ * nothing in it is a decoration.
  */
 export const ReleaseStamp: Stamp = {
 	index: "STAMP_01",

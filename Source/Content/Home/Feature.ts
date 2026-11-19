@@ -7,9 +7,9 @@
  * ledger - so the six cards are uniform by construction and no sentence is
  * authored here.
  *
- * The six are the six the baseline printed, in the baseline's order. The other
- * nine elements are not lost: they are the architecture band, one section down,
- * where all fifteen print.
+ * The six are the six the composition printed, in its own order. The other nine
+ * elements are not lost: they print in the architecture band two bands below this
+ * one, where all fifteen do.
  */
 import { Air } from "../Record/Air.js";
 

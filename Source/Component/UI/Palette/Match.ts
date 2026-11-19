@@ -6,9 +6,9 @@
  * `Data.ts` builds the register on the server: it reads `FrameSections`, the
  * lexicon and the generated record index. `Palette.tsx` is a client island and
  * needs the *filter* only - the register arrives as props. Importing both from
- * one module would pull the lexicon, fifteen element records and a JSON index
- * into the island's bundle to rank ninety rows, which is a cost the control
- * cannot see and the reader pays on every page.
+ * one module would pull the lexicon, the record index and the generated facts
+ * into the island's bundle to rank under two hundred rows, which is a cost the
+ * control cannot see and the reader pays on every page.
  *
  * So: one module with no imports but a type, and one module that reads the tree.
  *
@@ -16,10 +16,12 @@
  *
  * Case-insensitive, and it matches the label, the section and the slug - so
  * "telemetry", "Mountain" and "deep-dive-mountain" all reach the same page. The
- * score is what orders the rows: a label that starts with the query beats a label
- * that contains it, which beats a section that contains it, which beats a
- * subsequence. Without an order a fuzzy list is a bag, and the reader's eye has
- * to search the search.
+ * score is what orders the rows, and the ladder is explicit: an exact label
+ * (100), a label that starts with the query (80), a word inside the label that
+ * starts with it (70), a label that contains it (60), a section that starts with
+ * it (40), a section that contains it (30), a slug that contains it (20), and a
+ * subsequence anywhere in the three (10). Without an order a fuzzy list is a
+ * bag, and the reader's eye has to search the search.
  *
  * `0` means no match; anything above it is a rank, higher first.
  */
@@ -27,7 +29,7 @@ import type { PaletteEntry } from "./Type.js";
 
 export const MatchEntry = (Query: string, Entry: PaletteEntry): number => {
 	/**
-	 * The site prints every route with a leading `/` (`/DOCS`, `/CONTENTS`), so a
+	 * The site prints every route with a leading `/` (`/DOC`, `/CONTENTS`), so a
 	 * reader who types the grammar must not be told there is no such row: the
 	 * marker is the grammar, not part of the name. Strip it before matching, and
 	 * `/contents` ranks exactly as `contents` does.
@@ -67,7 +69,7 @@ export const MatchEntry = (Query: string, Entry: PaletteEntry): number => {
 
 /**
  * Every character of the needle, in order, somewhere in the haystack. Cheap, and
- * enough for a register of a hundred and sixty rows: it catches "fsfp" for
+ * enough for a register of under two hundred rows: it catches "fsfp" for
  * "Filesystem Footprint" without pulling a scoring library into the island.
  */
 const Subsequence = (Needle: string, Haystack: string): boolean => {

@@ -81,13 +81,12 @@ const RequiredMark = () => (
  * The form's own surface: the white information box on the creme field, square,
  * at the documented inset.
  *
- * HEAD wrapped the field block in a `StaccatoCard bg-card` div; the surface is
- * the same, but it is a `jelly-card` now (`DESIGN.md` §1.7, §6.5 - a card is a
- * Jelly element, not a `<div>` plus utilities). The five custom properties are
- * the ones `Doc.astro` and the release manifest pass, so every white box on the
- * site is one surface. `--jelly-card-font-size: inherit` keeps the card from
- * resetting type to Jelly's own default, so every role inside it stays on the
- * site's scale.
+ * The field block is a `jelly-card`, not a `StaccatoCard bg-card` div: a card is
+ * a Jelly element (`DESIGN.md` §1.7, §6.5), not a `<div>` plus utilities. The
+ * five custom properties are the ones `Doc.astro` and the release manifest pass,
+ * so every white box on the site is one surface. `--jelly-card-font-size:
+ * inherit` keeps the card from resetting type to Jelly's own default, so every
+ * role inside it stays on the site's scale.
  */
 const Surface = {
 	"--jelly-fill": "var(--Card)",
@@ -409,15 +408,13 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 					 * - and because the refusal moves the cursor to the first
 					 * field that needs a value, so the receipt is above the
 					 * field the reader lands on. A receipt printed under the
-					 * actions was the first attempt: it appears where the reader
-					 * pressed, and then the jump leaves it below the fold, which
-					 * makes it an artifact nobody reads.
+					 * actions would appear where the reader pressed, and then
+					 * the jump would leave it below the fold - an artifact
+					 * nobody reads.
 					 *
-					 * The artifact itself is `UI/FormSummary` now. It was sixteen
-					 * lines of markup here and a second block of classes in
-					 * `Contact/_Form.scss`; the words, the count, the ink and the
-					 * focus behaviour are unchanged, and what it gained is the
-					 * one thing the inline version could not have: the next step.
+					 * The artifact itself is `UI/FormSummary`: the words, the
+					 * count, the ink and the focus behaviour live in the block,
+					 * and the block also carries the next step.
 					 */}
 					<FormSummary
 						Rows={Interrupted.map((Field) => ({

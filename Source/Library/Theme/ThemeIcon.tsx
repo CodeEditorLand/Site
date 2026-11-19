@@ -14,7 +14,9 @@ export interface ThemeIconProps {
 
 /**
  * ThemeIcon - Daylight Field Record (single theme).
- * Renders the standard /Image/ variant directly.
+ *
+ * A plain <img>, like ThemeImage: the caller names the light-surface glyph
+ * (/Image/Foo.svg or /Asset/Foo.svg) and nothing switches it per OS.
  */
 export function ThemeIcon({
 	src,

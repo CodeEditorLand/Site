@@ -1,10 +1,11 @@
 /**
  * The hero's tech-stack strip: the eight technologies the editor is made of.
  *
- * The strip is `aria-hidden` in the render - it is a caption under the hero's
- * two panels rather than a navigation aid - so it carries a name and an ink per
- * tile and nothing else. `Icon` names a `lucide-react` glyph; the component
- * resolves the name, because a data module may not import a renderer.
+ * The grid is `aria-hidden` in the render - a legend under the hero's two panels
+ * rather than a navigation aid - so it carries a name and an ink per tile and
+ * nothing else, and the label above it prints the count. `Icon` names a
+ * `lucide-react` glyph; the component resolves the name, because a data module
+ * may not import a renderer.
  */
 import type { StackTile } from "./Type.js";
 
@@ -34,13 +35,10 @@ export const StackTiles: readonly StackTile[] = [
  * How many tiles one row holds: the largest count that divides the set without
  * leaving a short row, or the set itself when it is small enough to be one row.
  *
- * ─── WHY THE COUNT IS A DERIVATION AND NOT A STYLE ────────────────────────
- * The strip used to print two columns below a container query and four above it,
- * which is right for the eight tiles it was written for and wrong for any other
- * set: nine tiles in four columns leaves a row of one, and eight tiles in three
- * leaves a row of two. The composition family's matrix printed nine in a narrow
- * card and the hole was the first thing visible - a legend with a gap in it
- * reads as a legend that lost a tile.
+ * ─── WHY THE COUNT IS A DERIVATION AND NOT A STYLE ─────────────────────────
+ * A fixed column count is right for exactly the set it was written for: nine
+ * tiles in four columns leaves a row of one, and eight tiles in three leaves a
+ * row of two. A legend with a gap in it reads as a legend that lost a tile.
  *
  * So the count follows the SET, and the width only decides whether the set's own
  * count still fits (`_Stack.scss` holds the floor and the arithmetic). Four

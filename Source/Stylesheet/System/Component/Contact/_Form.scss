@@ -8,7 +8,7 @@
 //   .contact-form__standfirst       the registry's subtitle under it
 //   .contact-form__meta             the pair reference and the state word
 //   .contact-form__pair             the CODE-XXXXX reference
-//   .contact-form__tag              a counted fact chip (kept for the meta row)
+//   .contact-form__tag              a counted fact chip (unprinted by this form today)
 //   .contact-form__state            the form's state word (PREPARING/READY/INTERRUPTED)
 //   .contact-form__handler          who the request is sent to
 //   .contact-form__handler-value    that address, at full ink
@@ -56,8 +56,9 @@
 //   the only expressive element in the form. A destructive request keeps the
 //   tier and swaps its ink to `--Destruct`, so ERASE still reads as the request
 //   that cannot be undone.
-// - Focus is an outline in `--Primary` at the hairline width. No shadow, no ring
-//   offset, no colour that is not a token.
+// - Focus is an outline at the hairline width, in `--Primary`, offset 0 - this
+//   lane's local spelling of the site's focus ring. No shadow, no colour that is
+//   not a token.
 
 @use "../../Mixin" as *;
 
@@ -154,8 +155,8 @@
 }
 
 // The state's mark is the mark layer's square (`Mark/_Square.scss`), drawn as a
-// pseudo-element because the form's state line is a `<p>` the component owns.
-// It was a `2px x 0.9em` bar - the site's fifth spelling of one state mark.
+// pseudo-element because the form's state line is a `<p>` the component owns -
+// one state mark, not a bar of this lane's own.
 .contact-form__state::before {
 	content: "";
 	display: inline-block;
@@ -393,17 +394,15 @@
 //
 // The receipt that heads a refused form is `UI/FormSummary` and its rules are
 // `System/UI/_Input.scss` (`.FormSummary`, `.FormSummary__*`), where the block
-// is shared with every other form on the site. Its anatomy was written here
-// first and moved whole: the mute fill, the hairline, the 2px destructive
-// leading rule, the state word with its square, the counted chip, and the one
-// focusable line per field. Nothing about the receipt's rendering changed; what
-// changed is who owns it, and the fact that a second form can now print the
-// same refusal without rebuilding it.
+// is shared with every other form on the site. Its anatomy - the mute fill, the
+// hairline, the 2px destructive leading rule, the state word with its square,
+// the counted chip, and the one focusable line per field - belongs there, so a
+// second form can print the same refusal without rebuilding it.
 //
 // The two contact-only rules stay, because they are the lane's and not the
-// artifact's: `.contact-form__tag` (the chip's fill on this lane) and
-// `.contact-form__state` (the state word above the title, which is the form's
-// own status and not a refusal).
+// artifact's: `.contact-form__tag` (the chip's fill on this lane, which the form
+// does not print today) and `.contact-form__state` (the state word above the
+// title, which is the form's own status and not a refusal).
 
 // ─── The copied state: the receipt ────────────────────────────────────────
 //

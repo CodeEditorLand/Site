@@ -21,13 +21,12 @@ import type SimpleProperty from "./Interface/Property/Card/Simple.js";
  * padding, inherited type). This adapter only composes a header, a body and a
  * footer into it.
  *
- * The body's prose used to carry `StaccatoBreath`, the noise system's live
- * opacity hook, and the class outlived its engine: `_Noise.scss` reads its
- * channels from `Staccato.ts`, which is not in the tree, so the declaration
- * resolved to a constant `opacity: 0.9` under a `1.6s` opacity transition on
- * static prose - motion with no state to move between, and a second dimming on
- * top of the `opacity-70` the body already carries. A card's body is a sentence;
- * a sentence is not loading, and it is not being hovered.
+ * The body's prose carries no `StaccatoBreath`. The class is the noise system's
+ * live-opacity hook, and on static prose it resolves to a constant `opacity:
+ * 0.9` under a `1.6s` opacity transition - motion with no state to move between,
+ * and a second dimming on top of the `opacity-70` the body already carries. A
+ * card's body is a sentence; a sentence is not loading, and it is not being
+ * hovered.
  */
 const DynamicCard = ({ Sections, ClassName, OnClick, Style }: Property) => {
 	const {

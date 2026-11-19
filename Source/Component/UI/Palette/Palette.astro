@@ -2,16 +2,17 @@
 /**
  * Palette - the server half of the command palette.
  *
- * The register is built here, once, from the two lists the site already owns:
- * `FrameSections` (the ten parts the running head prints) and the doc collection
- * through `BuildDocSidebar` (the same tree the rail renders). Nothing about what
- * the site contains is decided in this file - it is a join of two existing
- * sources, serialised into the island's props.
+ * The register is built here, once, from the lists the site already owns:
+ * `FrameSections` (the ten parts the running head prints), the doc collection
+ * through `BuildDocSidebar` (the same tree the rail renders), the lexicon and
+ * the generated record heads. Nothing about what the site contains is decided
+ * in this file - it is a join of existing sources, serialised into the island's
+ * props.
  *
  * It is mounted from `Layout/Base.astro`, so every page carries the control, and
  * the island hydrates on idle: the trigger is in the server-rendered HTML and is
  * focusable immediately, and the chord starts answering a moment later. The
- * alternative - `client:load` on thirty-six pages - buys a few hundred
+ * alternative - `client:load` on forty-five pages - buys a few hundred
  * milliseconds on a key a reader has to know to press, and costs the palette's
  * budget on every page that will never open it.
  *

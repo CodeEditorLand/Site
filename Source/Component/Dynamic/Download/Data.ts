@@ -39,9 +39,9 @@ import type {
 } from "./Type.js";
 
 // ─── The masthead strip ───────────────────────────────────────────────────
-// Eight marks the page carried before this card, in the order it carried them.
-// `Source/pages/Download.astro` supplied the words; the fill and ink token names
-// are the ones that file resolved, moved here so the markup loops instead of
+// The masthead's eight marks, in the order the page prints them.
+// `Source/pages/Download.astro` supplies the words; the fill and ink token names
+// are the ones that file resolves, moved here so the markup loops instead of
 // repeating eight near-identical badges.
 
 export const Marks: readonly Mark[] = [
@@ -140,7 +140,7 @@ export const Marks: readonly Mark[] = [
 // makes, carried verbatim from `download:manifest.headline`. The state line is
 // §7's `NO PUBLIC ARTIFACTS` and the note under it is the plain-language
 // reading - the band's standfirst restated with every fact it carried, which is
-// why the band no longer prints a second long sentence above the same fields.
+// why the band prints no second long sentence above the same fields.
 
 export function Manifest(T: Translate): ManifestRecord {
 	return {
@@ -246,9 +246,11 @@ export function ReleaseFacts(T: Translate): readonly LedgerRow[] {
  * installer does.
  *
  * The status division is the record's own: the platform whose source build the
- * document walks through is `SOURCE ACTIVE` and prints its value in the accent
- * green; the other two are `RELEASE PREPARATION` and print in muted ink. Green
- * is spent once on this page, and this is where.
+ * document walks through is `SOURCE ACTIVE` at the specimen tone, and the other
+ * two are `PREPARING` at the quiet tone and print in muted ink. The specimen
+ * tone is a 6px square beside the word, never a hue: the page's green is spent
+ * on the seal, and a status value that wore it would leave the accent with
+ * nothing to authenticate.
  *
  * `run` is the command `Documentation/GitHub/Building.md` documents for that
  * platform under "Running the Application"; `absence` is the `↳` line for the
@@ -453,10 +455,10 @@ export function BuildSteps(T: Translate): readonly Well[] {
  * The verification record: what the first installer will publish, and how it
  * will be checked.
  *
- * The six rows are the `Verification()` table the download composition carried
- * before the page was rebuilt, recovered verbatim. Every artifact answers
- * "Available at first public release" - the honest state today, and a better
- * answer than an empty cell because it says when the value will exist.
+ * The six rows are the `Verification()` table the download composition carries,
+ * and every artifact answers "Available at first public release" - the honest
+ * state today, and a better answer than an empty cell because it says when the
+ * value will exist.
  *
  * The check itself is a template, not a command: the artifact's name is not
  * known until it is published, so the well prints the two checks with
@@ -981,15 +983,14 @@ export function Transparency(): TransparencyContent {
 }
 
 // ─── Requirements: what a build needs ─────────────────────────────────────
-// Recovered from `3480853ac^` and merged with the two-panel form it replaced.
-// The figures are the ones both forms carried and they agree: the minimum is the
-// row's value, the recommendation is the same fact stated larger, which is why
-// the recovered `.astro` travelled it as the row's `note` ("Recommended: 8 GB
-// RAM") and the `.tsx` as a second panel. Here it is both - one panel each, so
-// the reader compares two columns instead of reading a note under every row.
+// The figures are the ones both readings of the panel carry and they agree: the
+// minimum is the row's value, the recommendation is the same fact stated larger,
+// which is why the row carries it as a `note` ("Recommended: 8 GB RAM") and the
+// panel states it as a second column. Here it is both - one panel each, so the
+// reader compares two columns instead of reading a note under every row.
 //
 // The labels carry their colons: a compact label is `KEY:` in this grammar, and
-// the recovered rows printed bare words.
+// a bare word is not a label.
 
 export function Requirements(T: Translate): readonly RequirementsPanel[] {
 	return [
@@ -1040,9 +1041,9 @@ export function Requirements(T: Translate): readonly RequirementsPanel[] {
  * platform needs and, under it, the architectures and installer formats it
  * ships.
  *
- * These are the recovered per-platform cards' own values, moved from three
- * repeating ledgers into one line each. The installer phrases are the locale
- * keys the recovered component resolved (`card.platform.*`), not new copy.
+ * The values are the per-platform cards' own, stated once each instead of in
+ * three repeating ledgers. The installer phrases are the locale keys
+ * (`card.platform.*`), not new copy.
  */
 export function OperatingSystems(T: Translate): readonly SupportedOS[] {
 	/** The one separator a compact string may use. */

@@ -5,8 +5,8 @@ import type User from "../Interface/User.js";
 import { GetWorkersClient } from "../WorkerClient";
 
 /**
- * Authentication API adapter
- * Provides clean, type-safe interface for auth operations
+ * Authentication API adapter - one method per account and session operation,
+ * each returning the unwrapped payload or throwing the worker's error message.
  */
 export class AuthAPI {
 	private Workers = GetWorkersClient();

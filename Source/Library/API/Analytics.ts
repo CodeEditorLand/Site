@@ -8,9 +8,11 @@ const IsAnalyticsEnabled = (): boolean =>
 	typeof window !== "undefined" && !import.meta.env.DEV;
 
 /**
- * Analytics API adapter
- * Provides clean, type-safe interface for analytics operations.
- * All methods are no-ops during SSR and in development mode.
+ * Analytics API adapter.
+ *
+ * All methods are no-ops during SSR and in development mode: they return the
+ * empty shape of their own result, never a request. In the browser they return
+ * the unwrapped payload or throw the worker's error message.
  */
 export class AnalyticsAPI {
 	private Workers = GetWorkersClient();

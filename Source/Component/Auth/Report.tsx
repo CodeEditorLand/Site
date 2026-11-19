@@ -10,35 +10,33 @@
  * baseline has no page heading, and the route's `AuthShell` now supplies the
  * `h1`.
  *
- * **`State` is the state's word, and it is the reason this block changed.**
- * Verify's five states (`PREPARING`, `LOADING`, `VERIFIED`, `INTERRUPTED`,
- * `UNAVAILABLE`) were carried by `Verify.json` and printed by nobody: the card
- * named the state in prose and the vocabulary never appeared. A state that
- * prints only as a sentence has lost its state exactly as much as one that
- * prints as a bare colour, so the label is now a required field of a report
- * that has a state, and it prints through `StateBadge` - the register's tone
- * table, the register's 2px marker, one of §1.5's eight words.
+ * **`State` is the state's word, and it is what makes the report a state.** A
+ * state that prints only as a sentence has lost its state exactly as much as one
+ * that prints as a bare colour, so a report that has a state carries the label -
+ * a term from `State.ts`'s eight, printed through `StateBadge`: the register's
+ * tone table, the register's 2px marker, one of §1.5's words. The prop is
+ * optional because one form-shaped report is not a state of the machine
+ * (`DynamicResetPassword`'s valid arm renders the form itself).
  *
  * A branch is never a bare word: the label names the state, the title says
  * which state of *this* route it is, the sentence says what it means and
  * `children` holds the action. A state with no sentence is not representable
- * here on purpose - and neither is an action that is silently dropped: the
- * block used to destructure `Children` while every call site passed React
- * children, so the action of every report on this surface rendered nowhere.
+ * here on purpose - and neither is an action that is silently dropped: an
+ * action passed as React children must render, and `Action` exists so a report
+ * outside an island can print one too.
  *
- * **What the exploration added, and why each one is inside the block.** The
- * state matrix printed this block in twenty-four combinations and three of them
- * had no answer:
+ * **The three fields that complete the block.** Each one is inside the block
+ * because a report without it has no answer:
  *
- * - `Heading` - the title was an `h3` under a page that has an `h1`, so every
- *   report skipped a level. `2` is the default now; `3` exists for the one
- *   nesting case.
+ * - `Heading` - the title is an `h2` under the shell's `h1`. `2` is the default;
+ *   `3` exists for the one nesting case, where a report sits inside another
+ *   report's subject.
  * - `Facts` - a report could say what happened and not what it was made of. The
  *   window a link was open for, the cause the provider returned and the route a
  *   retry goes to print as `KEY: value` rows under the sentence.
- * - `Action` - the one thing a reader can click was only expressible as React
- *   children, so a state rendered outside an island (the specimen sheet, a
- *   link-shaped ending) could not print its action at all.
+ * - `Action` - the one thing a reader can click, expressible as data, so a
+ *   state rendered outside an island (the specimen sheet, a link-shaped ending)
+ *   can print its action at all.
  */
 import type { CSSProperties, ReactNode } from "react";
 
@@ -90,12 +88,11 @@ interface Props {
 	/**
 	 * The heading level of the state's title.
 	 *
-	 * `2` (the default) is the level the report was always meant to print: the
-	 * shell above it supplies the page's `h1`, so the state is one level under
-	 * the page. The block printed an `h3` because the baseline had no page
-	 * heading at all; once the frame returned, the `h3` skipped a level. `3` is
-	 * for the one place a report is nested inside another report's subject, and
-	 * it is the only reason the level is a prop rather than a constant.
+	 * `2` (the default) is the level the report prints: the shell above it
+	 * supplies the page's `h1`, so the state is one level under the page. An
+	 * `h3` here would skip a level. `3` is for the one place a report is nested
+	 * inside another report's subject, and it is the only reason the level is a
+	 * prop rather than a constant.
 	 */
 	Heading?: 2 | 3;
 
@@ -152,15 +149,14 @@ const AuthReport = ({
 				)}
 
 				{/* ─── THE LOADING GLYPH IS NOT A GLYPH ────────────────────────
-				    `Glyph === "loading"` rendered `Loader2` with `animate-spin` in
-				    the 48px tile. A spinner is a loop: it says "something is
-				    happening" for as long as it turns and nothing else, and the
-				    state's own word is already printed in the badge above it. A
-				    loading report draws the busy arm instead - two bars in the
-				    record grammar, the shape of the answer that has not arrived,
-				    from the skeleton layer's own two tokens. The tile's fill is
-				    kept so the card's anatomy does not change; only what stands
-				    inside it does. */}
+				    A spinner is a loop: it says "something is happening" for
+				    as long as it turns and nothing else, and the state's own
+				    word is already printed in the badge above it. A loading
+				    report draws the busy arm instead - two bars in the record
+				    grammar, the shape of the answer that has not arrived,
+				    from the skeleton layer's own two tokens. The tile's fill
+				    is kept so the card's anatomy does not change; only what
+				    stands inside it does. */}
 				{Glyph === "loading" ? (
 					<div
 						className="StateBusy StateBusy--stack flat mx-auto mb-4 w-40 justify-center bg-[color-mix(in_srgb,var(--Primary)_10%,transparent)] p-4"

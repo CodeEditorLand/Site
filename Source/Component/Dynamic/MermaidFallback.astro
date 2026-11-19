@@ -37,18 +37,19 @@
 	 *
 	 * Two changes, both about *when*:
 	 *
-	 * - The scan runs at idle, not at module evaluation. It used to walk the
-	 *   whole document while the page's islands were still hydrating.
+	 * - The scan runs at idle, not at module evaluation: a scan at module
+	 *   evaluation would walk the whole document while the page's islands are
+	 *   still hydrating.
 	 * - `querySelector` answers "is there anything at all?" first. It returns at
 	 *   the first match and allocates one element, where `querySelectorAll`
 	 *   allocates a NodeList for every page whether it has a diagram or not.
 	 *   Only a page that actually has a block pays for the full list.
 	 *
 	 * The dynamic import stays dynamic, and stays behind the gate: a static
-	 * `import mermaid from "mermaid"` made every documentation page evaluate the
-	 * whole mermaid graph (the elk layout alone is 1.5 MB) to discover it had
-	 * nothing to draw. Nothing is lost by waiting - a page that does keep a
-	 * client-side block still renders it, one dynamic import later.
+	 * `import mermaid from "mermaid"` would make every documentation page
+	 * evaluate the whole mermaid graph (the elk layout alone is 1.5 MB) to
+	 * discover it had nothing to draw. Nothing is lost by waiting - a page that
+	 * does keep a client-side block still renders it, one dynamic import later.
 	 */
 	const Render = async (): Promise<void> => {
 		if (!document.querySelector('pre > code[class*="language-mermaid"]'))

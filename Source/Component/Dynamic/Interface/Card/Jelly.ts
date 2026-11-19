@@ -2,13 +2,12 @@
  * Jelly surface mapping for the element card series (Under-the-Hood
  * masonry + Features grid).
  *
- * C17 semantic pass: the KNOWN elements get deterministic per-element
- * fills from the semantic map (Cocoon green, Echo yellow, service family
- * white, ...) instead of the old FNV-1a random distribution. Unknown ids
- * still fall back to the FNV-1a hash over the light palette - deterministic,
- * stable across renders and hydration, no flicker, no layout shift.
+ * C17 semantic pass: the KNOWN elements get deterministic per-element fills
+ * from the semantic map (Cocoon green, Echo yellow, service family white, ...),
+ * never a hash. An id the map does not know takes the neutral insert - the
+ * adverse state is printed, not painted (see "THE UNMAPPED ELEMENT" below).
  * Role-chip badge fills follow the keyword domain map (WORK-STEALING blue,
- * SCHEDULER orange, WASM purple, ...), hash as fallback.
+ * SCHEDULER orange, WASM purple, ...), and an unmatched domain claims none.
  */
 
 import type { CSSProperties } from "react";
@@ -161,24 +160,21 @@ const BADGE_FILL_RULES: ReadonlyArray<readonly [string, string]> = [
 ];
 
 /**
- * THE UNMAPPED ELEMENT - the ink surface's adverse state, and why the hash had
- * to go.
+ * THE UNMAPPED ELEMENT - the ink surface's adverse state.
  *
- * Both lookups below used to fall back to `Pick(Id, PALETTE)`: a hue chosen by
- * hashing the element's or the badge's name (FNV-1a). That is an invented
- * colour - no reader can decode it, two names that hash alike get one hue, and
- * it collides with the spine palette where a hue MEANS a protocol. It is the
- * exact defect this palette exists to prevent: "when a shade drifts, it looks
- * approximate". A card whose element the system does not know now takes the
+ * A hue chosen by hashing the element's or the badge's name (FNV-1a) is an
+ * invented colour: no reader can decode it, two names that hash alike get one
+ * hue, and it collides with the spine palette where a hue MEANS a protocol. It
+ * is the exact defect this palette exists to prevent: "when a shade drifts, it
+ * looks approximate". A card whose element the system does not know takes the
  * neutral insert (`--Card`, the white information box), and a badge whose
  * domain the rules do not match takes `--Mute` (the creme recess). Both are
  * honest: the surface says "this is a record, and this badge claims no domain"
  * instead of claiming one at random.
  *
- * The hash went with the colour it produced. It had exactly one consumer and
- * that consumer was the drift; a caller that needs a stable ORDER rather than a
- * stable colour sorts by name, which is legible, and the two predicates below
- * are how a caller prints the absence instead of painting it.
+ * A caller that needs a stable ORDER rather than a stable colour sorts by name,
+ * which is legible, and the two predicates below are how a caller prints the
+ * absence instead of painting it.
  */
 export const JellyCardFill = (Id: string): string =>
 	ElementFill(Id) ?? "var(--Card)";

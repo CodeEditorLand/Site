@@ -11,8 +11,9 @@
  *   is the first thing a stranger reads after the product name.
  * - A mark is data: label, variant, and the two token names the `jelly-badge`
  *   resolves. The badge's own custom properties are the web component's input,
- *   so they stay on the element; the dot and the logo beside the label are the
- *   masthead's own anatomy and are styled in its partial.
+ *   so they stay on the element. The trailing logo is the masthead's own class
+ *   (`download-masthead__mark`); the status dot is `Mark`'s block
+ *   (`kind="square"`, `size="badge"`), so a page cannot repaint it.
  *
  * No client-side script and no hydration directive: the block is static.
  */

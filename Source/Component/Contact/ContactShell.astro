@@ -2,7 +2,7 @@
 // ContactShell - one request route: its document chrome, its opening, and its
 // workspace.
 //
-// ─── WHAT THIS FILE IS NOW ───────────────────────────────────────────────
+// ─── WHAT THIS FILE IS ───────────────────────────────────────────────────
 // The route's three parts are three blocks, and this file is the composition
 // that joins them:
 //
@@ -10,10 +10,10 @@
 //   ContactHead       the opening: the trail and the route's record head
 //   ContactWorkspace  the composition: the record column beside the form
 //
-// Before this card the opening and the workspace were markup inside this file
-// and inside `ContactPage`, so neither could be printed or re-composed outside a
-// document. Nothing about the route changed: the same trail, the same record
-// head, the same 4/1px/8 split, the same form, the same order on a phone.
+// Each part is a block so it can be printed and re-composed outside a document;
+// this file holds no markup of its own. The route is unchanged by the split: the
+// same trail, the same record head, the same 4/1px/8 split, the same form, the
+// same order on a phone.
 //
 // ─── WHAT THE SHELL KEEPS ────────────────────────────────────────────────
 // The trail keeps the three destinations the routes already had: `/`, then

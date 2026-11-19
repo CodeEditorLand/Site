@@ -1,22 +1,25 @@
 /**
  * The matrix control's words.
  *
- * Every string the control prints lives here, for the same reason the site's
+ * Every sentence the control prints lives here, for the same reason the site's
  * page copy lives in `Content/`: a control whose sentences are scattered through
  * its markup cannot be read as one voice, and this control has more sentences
- * than most because most of it is a state.
+ * than most because most of it is a state. The grammar's marks (`#`, `/`, `✓`,
+ * `◎`, `→`) and the two composed count lines stay in the island, because a mark
+ * is not a sentence.
  *
  * ─── THE VOICE ─────────────────────────────────────────────────────────────
  *
  * Fragments. A label is a compact field label with its colon (`FACET:`,
- * `MATCH:`, `ROWS:`); a state is the STATUS vocabulary plus the next step; a
+ * `MATCH:`, `ROWS:`); a state is a `◎` word (`NO ROW`, `NO ROW MATCHES`,
+ * `NOT REMEMBERED`) or the STATUS word `UNAVAILABLE`, plus the next step; a
  * count is two digits in the grammar's own figure. Nothing here apologises and
  * nothing exclaims - a filter that found nothing says so and offers the way out.
  *
  * ─── U+2001 IS THE SEPARATOR ───────────────────────────────────────────────
  *
- * `NO ROW␁NO VALUE MATCHES` and never a middot. The separator is a constant so
- * no call site retypes it and no editor can quietly replace it.
+ * `NO ROW␁NO VALUE MATCHES` and never a middot. The character is exported as a
+ * name so it is reviewable in a diff, where a quad and a space look the same.
  */
 
 import type { MatrixDensity } from "./Type";
@@ -99,7 +102,7 @@ export const MatrixCopy = {
 	StorageLine:
 		"This browser refuses local storage, so the density holds for this visit only.",
 
-	/** The foot: the one keyboard fact this control has. */
+	/** The keyboard fact the facet list obeys, in the control's voice. */
 	FootHint: "ESC CLOSES THE LIST",
 } as const;
 
