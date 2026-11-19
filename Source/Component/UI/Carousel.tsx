@@ -400,6 +400,7 @@ function CarouselDots() {
 				<span
 					className="CarouselDots__Dot"
 					key={Position}
+
 					data-active={Position === index}
 				/>
 			))}

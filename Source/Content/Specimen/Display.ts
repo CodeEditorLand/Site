@@ -65,29 +65,41 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "focus",
+
 		label: "FOCUS",
+
 		ask: "the cursor is in it",
+
 		group: "condition",
 	},
 
 	{
 		key: "active",
+
 		label: "ACTIVE",
+
 		ask: "the chosen one",
+
 		group: "condition",
 	},
 
 	{
 		key: "disabled",
+
 		label: "DISABLED",
+
 		ask: "cannot be used",
+
 		group: "condition",
 	},
 
 	{
 		key: "loading",
+
 		label: "LOADING",
+
 		ask: "has not arrived",
+
 		group: "condition",
 	},
 
@@ -95,22 +107,31 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "partial",
+
 		label: "PARTIAL",
+
 		ask: "some facts unknown",
+
 		group: "condition",
 	},
 
 	{
 		key: "error",
+
 		label: "ERROR",
+
 		ask: "the action failed",
+
 		group: "condition",
 	},
 
 	{
 		key: "stale",
+
 		label: "STALE",
+
 		ask: "older than its as-of",
+
 		group: "condition",
 	},
 
@@ -118,8 +139,11 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "longtext",
+
 		label: "LONG TEXT",
+
 		ask: "will not fit",
+
 		group: "shape",
 	},
 
@@ -127,8 +151,11 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "manyitems",
+
 		label: "MANY ITEMS",
+
 		ask: "a set of two hundred",
+
 		group: "shape",
 	},
 
@@ -140,29 +167,41 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "incard",
+
 		label: "IN A CARD",
+
 		ask: "inside a white insert",
+
 		group: "context",
 	},
 
 	{
 		key: "inband",
+
 		label: "IN A BAND",
+
 		ask: "on the creme field",
+
 		group: "context",
 	},
 
 	{
 		key: "withaction",
+
 		label: "WITH ACTION",
+
 		ask: "a control beside it",
+
 		group: "context",
 	},
 
 	{
 		key: "noaction",
+
 		label: "NO ACTION",
+
 		ask: "nothing to press",
+
 		group: "context",
 	},
 
@@ -1076,9 +1115,6 @@ export interface DisplaySpec {
 	/** The columns of a table or a skeleton matrix. */
 	readonly columns?: readonly string[];
 
-	/** The column names a table's head prints. */
-	readonly items?: readonly string[];
-
 	/** The stage's own width. */
 	readonly width?: "narrow" | "wide" | "band";
 
@@ -1090,9 +1126,6 @@ export interface DisplaySpec {
 
 	/** The label of the specimen's one action, when it has one. */
 	readonly action?: string;
-
-	/** A mark a component prints in its leading column, when the row needs one. */
-	readonly glyph?: string;
 }
 
 /** One labelled row on the sheet: the state, the part, and when it is right. */

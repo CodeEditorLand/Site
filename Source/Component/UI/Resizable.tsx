@@ -89,9 +89,9 @@ function ResizablePanelGroup({
 				<span aria-hidden="true"> / </span>
 				{Sizes.length === 0
 					? "UNAVAILABLE"
-					: Sizes.map((Size) => String(Math.round(Size)).padStart(2, "0")).join(
-							"\u2001",
-						)}
+					: Sizes.map((Size) =>
+							String(Math.round(Size)).padStart(2, "0"),
+						).join("\u2001")}
 			</p>
 
 			{Group_}

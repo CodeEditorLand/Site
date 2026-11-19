@@ -140,49 +140,81 @@ const TableData = (
 	const Tiers: readonly Record<string, string>[] = [
 		{
 			TIER: "CLOUD",
+
 			PROTOCOL: "gRPC",
+
 			FEATURES: "04",
+
 			RELEASE: "0.4.1",
+
 			DATE: "2026-11-14",
+
 			CHANNEL: "PUBLIC",
+
 			STATUS: "ACTIVE",
+
 			ROUTE: "/Contents",
+
 			LAYER: "Chrome",
 		},
 
 		{
 			TIER: "PROVIDER",
+
 			PROTOCOL: "IPC",
+
 			FEATURES: "03",
+
 			RELEASE: "0.4.0",
+
 			DATE: "2026-10-02",
+
 			CHANNEL: "PUBLIC",
+
 			STATUS: "VERIFIED",
+
 			ROUTE: "/Doc",
+
 			LAYER: "Reading",
 		},
 
 		{
 			TIER: "LOCAL-FIRST",
+
 			PROTOCOL: "TCP",
+
 			FEATURES: "05",
+
 			RELEASE: "0.3.8",
+
 			DATE: "2026-08-21",
+
 			CHANNEL: "PRE-RELEASE",
+
 			STATUS: "PREPARING",
+
 			ROUTE: "/Download",
+
 			LAYER: "Manifest",
 		},
 
 		{
 			TIER: "ENTERPRISE",
+
 			PROTOCOL: "WASM",
+
 			FEATURES: "04",
+
 			RELEASE: "0.3.6",
+
 			DATE: "2026-07-09",
+
 			CHANNEL: "PUBLIC",
+
 			STATUS: "ARCHIVED",
+
 			ROUTE: "/Portal",
+
 			LAYER: "App",
 		},
 	];
@@ -240,7 +272,9 @@ const TableStage = ({ Row }: { Row: Specimen }) => {
 					register={
 						<TableRegister
 							label={Label}
+
 							count={Pad(Data.length)}
+
 							note={`${Columns.length} COLUMNS`}
 						/>
 					}
@@ -262,6 +296,7 @@ const TableStage = ({ Row }: { Row: Specimen }) => {
 					{Empty ? (
 						<TableEmpty
 							colSpan={Columns.length}
+
 							statement="A tier is filed here once a protocol is bound to it."
 							cause="No tier has been bound yet, so the set is empty rather than missing."
 							next={{

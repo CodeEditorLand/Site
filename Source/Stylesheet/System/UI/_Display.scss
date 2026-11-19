@@ -92,7 +92,12 @@
 
 [data-slot="table"] {
 	border-collapse: collapse;
+}
 
+// The frame's own type: the caption register at 13px, which is the floor and the
+// size a ledger is read at. Scoped to the framed table so a table that never asked
+// for a frame keeps the size it was rendered at.
+[data-slot="table-container"][data-bordered="true"] [data-slot="table"] {
 	font-family: var(--FontMono);
 	font-size: var(--type-caption);
 	line-height: var(--type-caption-line);
@@ -104,21 +109,35 @@
 // mute, over the one hairline that closes them. It is the same head the block
 // `RecordMatrix` draws, at the kit's scale, because a reader who has read one
 // matrix on this site has read them all.
+//
+// The rhythm and the type are the FRAME's, not the table's: a table that was
+// rendered without `bordered` keeps the padding and the size it had before this
+// partial existed. What is shared is the rule under the head and the ink.
 
 [data-slot="table-head"] {
-	padding: var(--space-tight) var(--space-reading);
-
 	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
 
 	color: var(--state-ink-quiet);
 
+	font-weight: 500;
+}
+
+[data-slot="table-container"][data-bordered="true"] [data-slot="table-head"] {
+	padding: var(--space-tight) var(--space-reading);
+
 	font-size: var(--type-meta);
 	line-height: var(--type-meta-line);
-	font-weight: 500;
+
+	vertical-align: bottom;
 
 	@include track(var(--track-name));
+}
 
-	// A pinned head needs its own fill or the rows scroll through it.
+// A head inside a framed table needs its own fill, because the frame is white and
+// the rows scroll under it. An unframed table keeps the head it always had - a
+// background it never asked for would be a white band across a creme page.
+[data-slot="table-container"][data-bordered="true"] [data-slot="table-head"],
+[data-slot="table-container"][data-sticky="true"] [data-slot="table-head"] {
 	background: var(--Card);
 }
 
@@ -147,17 +166,23 @@
 
 // ─── THE ROW ───────────────────────────────────────────────────────────────
 //
-// A row is ruled above, not below: a run of rows is one ledger, and a ledger's
-// rules belong to the rows that open them. The last row therefore needs no
-// special case - the table's own bottom edge closes it.
+// A row in a framed table is ruled ABOVE, not below: a run of rows is one ledger,
+// and a ledger's rules belong to the rows that open them. The frame's own bottom
+// edge closes the last row, so no last-row special case is needed.
+//
+// Scoped to the framed table on purpose. The kit's row already draws a rule under
+// itself, and a table that never asked for a frame keeps exactly that rule - the
+// ledger treatment is a frame's, not a table's.
 
-[data-slot="table-row"] {
-	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
-	border-block-end: 0;
-}
+[data-slot="table-container"][data-bordered="true"] {
+	[data-slot="table-row"] {
+		border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+		border-block-end: 0;
+	}
 
-[data-slot="table-body"] > [data-slot="table-row"]:first-child {
-	border-block-start: 0;
+	[data-slot="table-body"] > [data-slot="table-row"]:first-child {
+		border-block-start: 0;
+	}
 }
 
 // The chosen row. `data-state="selected"` is the kit's spelling and the one the
@@ -189,10 +214,6 @@
 }
 
 [data-slot="table-cell"] {
-	padding: var(--space-tight) var(--space-reading);
-
-	vertical-align: baseline;
-
 	color: var(--CardForeground);
 
 	// A cell refuses to wrap by default - a table is read across, and a cell that
@@ -216,6 +237,15 @@
 	&[data-empty="true"] {
 		color: var(--state-ink-quiet);
 	}
+}
+
+// The frame's cell rhythm: the row interval on the reading space, aligned to the
+// baseline so a cell holding a figure and a cell holding a sentence sit on the same
+// line. Scoped, like the head's, so an unframed table keeps the kit's `p-2`.
+[data-slot="table-container"][data-bordered="true"] [data-slot="table-cell"] {
+	padding: var(--space-tight) var(--space-reading);
+
+	vertical-align: baseline;
 }
 
 // ─── DENSITY ───────────────────────────────────────────────────────────────
