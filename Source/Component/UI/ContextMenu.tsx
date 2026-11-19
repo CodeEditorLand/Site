@@ -4,7 +4,15 @@ import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
 
 import * as React from "react";
 
-import { SlipRegister, type SlipHead } from "./Slip";
+import { DoorContext, UseDoorRef, UseTriggerGuard, type Door } from "./Overlay";
+
+import {
+	SlipEmpty,
+	SlipFoot,
+	SlipRegister,
+	type SlipFootItem,
+	type SlipHead,
+} from "./Slip";
 
 import { cn } from "./Utility";
 
@@ -22,17 +30,66 @@ import { cn } from "./Utility";
  * return. Nothing about it is restated here.
  */
 
+/**
+ * One context menu.
+ *
+ * ─── THE DOOR IS A REGION, AND RADIX DOES NOT LET IT BE CONTROLLED ────────
+ *
+ * `ContextMenu.Root` opens on a right-click and exposes only `onOpenChange` -
+ * there is no `open` prop to hand it, because the gesture is the state. So the
+ * family's guard mirrors the state instead of owning it: the value the
+ * primitive holds is still the primitive's, and this component only reads it.
+ * The door is the trigger *region* - the element the pointer was over - which
+ * is exactly what a removed-trigger rule should watch, because a region that
+ * unmounts under an open menu is the same failure as a button that unmounts.
+ */
 function ContextMenu({
+	onOpenChange,
 	...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Root>) {
-	return <ContextMenuPrimitive.Root data-slot="context-menu" {...props} />;
+	const [Open, SetOpen] = React.useState(false);
+
+	const Element = React.useRef<HTMLElement | null>(null);
+
+	const Close = React.useCallback(() => {
+		SetOpen(false);
+
+		onOpenChange?.(false);
+	}, [onOpenChange]);
+
+	UseTriggerGuard(Open, Element, Close);
+
+	const Door: Door = React.useMemo(
+		() => ({ Element, Open, Close }),
+
+		[Open, Close],
+	);
+
+	return (
+		<DoorContext.Provider value={Door}>
+			<ContextMenuPrimitive.Root
+				data-slot="context-menu"
+				onOpenChange={(Next) => {
+					SetOpen(Next);
+
+					onOpenChange?.(Next);
+				}}
+				{...props}
+			/>
+		</DoorContext.Provider>
+	);
 }
 
 function ContextMenuTrigger({
 	...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Trigger>) {
+	const Door = React.useContext(DoorContext);
+
+	const Ref = UseDoorRef(Door);
+
 	return (
 		<ContextMenuPrimitive.Trigger
+			ref={Ref}
 			data-slot="context-menu-trigger"
 			{...props}
 		/>
@@ -112,11 +169,19 @@ function ContextMenuSubContent({
 function ContextMenuContent({
 	className,
 	head,
+	empty,
+	foot,
 	children,
 	...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Content> & {
 	/** The register line the slip opens with - `# RECORD / 04`. */
 	head?: SlipHead | undefined;
+
+	/** The `empty` arm: a region with no actions says so instead of opening blank. */
+	empty?: { Mark?: string; Line: string } | undefined;
+
+	/** The keyboard path, when the menu states one. */
+	foot?: readonly SlipFootItem[] | undefined;
 }) {
 	return (
 		<ContextMenuPrimitive.Portal>
@@ -128,6 +193,13 @@ function ContextMenuContent({
 			>
 				{head ? <SlipRegister head={head} /> : null}
 				{children}
+				{empty === undefined ? null : (
+					<SlipEmpty
+						Mark={empty.Mark ?? "NO RECORD"}
+						Line={empty.Line}
+					/>
+				)}
+				{foot === undefined ? null : <SlipFoot Items={foot} />}
 			</ContextMenuPrimitive.Content>
 		</ContextMenuPrimitive.Portal>
 	);
@@ -139,6 +211,8 @@ function ContextMenuItem({
 	variant = "default",
 	mark = "→",
 	meta,
+	reason,
+	current,
 	...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Item> & {
 	inset?: boolean;
@@ -150,6 +224,12 @@ function ContextMenuItem({
 
 	/** The trailing cell - a chord, a count, a STATUS word. */
 	meta?: string | undefined;
+
+	/** Why the row cannot be used, printed in the meta cell. */
+	reason?: string | undefined;
+
+	/** This row is the value in force. */
+	current?: boolean;
 }) {
 	return (
 		<ContextMenuPrimitive.Item
@@ -158,6 +238,8 @@ function ContextMenuItem({
 			data-variant={variant}
 			data-mark={mark}
 			data-meta={meta}
+			data-reason={reason}
+			data-current={current ? "true" : undefined}
 			className={cn("Slip__Row", className)}
 			{...props}
 		/>

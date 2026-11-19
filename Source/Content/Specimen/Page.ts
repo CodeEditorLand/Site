@@ -206,9 +206,67 @@ export const Bands = {
 			"The vocabulary is fixed at eight words, and the legend above prints all eight. A ninth word would be a state the ink register has no tone for.",
 	},
 
+	/**
+	 * The input family's band.
+	 *
+	 * The one band on this sheet that is about a family rather than a part, and
+	 * the only one whose subject is a *set of states*: ten components against
+	 * twenty-three conditions, printed as a matrix with footnotes, and then the
+	 * same family printed live - twenty-nine rows, each naming a state and the
+	 * one line that says when it is right.
+	 *
+	 * It follows `/THE STATES` deliberately. That band says what a part has to
+	 * survive; this one takes the part a reader touches with their hands and
+	 * shows the survival, condition by condition. A field's states are the
+	 * product, and a sheet that printed the components without them would be
+	 * printing the happy one.
+	 */
+	Field: {
+		kicker: "/THE FIELD",
+
+		interval: "turn",
+
+		heading: "The field, and every state it has",
+
+		standfirst:
+			"Every condition the family has to hold, against every component that has to hold it: the matrix, with a reason printed in full for every cell that cannot exist, then the family mounted live at the state it is best known by. A field is the one part a reader touches with their hands, so its states are the product.",
+
+		footnote:
+			"A cell that cannot exist carries its reason in the notes rather than a truncated one in the cell, and a state that a printed sheet cannot produce - focus - is declared on the block, so it prints.",
+	},
+
+	/**
+	 * The overlay family's band.
+	 *
+	 * The second band about a family rather than a part, and the second whose
+	 * subject is a *set of states*. It follows `/THE FIELD` for the same reason
+	 * that one follows `/THE STATES`: a family's states are the product, and the
+	 * one thing a printed sheet cannot show is the two seconds after a click -
+	 * which is why the rows here are live and every one of them is a real
+	 * primitive.
+	 *
+	 * The band's own argument is in three artifacts: a matrix of two hundred
+	 * cells with a reason for every one that cannot exist, the five-rule
+	 * dismissal contract every slip in the family holds, and thirty-one live
+	 * rows. A reader who opens all thirty-one has seen every state the site
+	 * never showed before this card.
+	 */
+	Overlay: {
+		kicker: "/THE OVERLAY",
+
+		interval: "rest",
+
+		heading: "The overlay, and every way out of it",
+
+		standfirst:
+			"Ten components on one surface, one item grammar and one dismissal contract. The matrix prints every condition against every component with a reason for each cell that cannot exist; the contract prints the five ways a slip is left; and the rows print the states the site had never shown - an empty menu, a disabled row that says why, a submenu three deep, a dialog taller than the viewport, a popover at the right edge.",
+
+		footnote:
+			"One surface is not one component. The ten are ten behaviours - a drag, a hover, a right-click, a chord - and the claim this band makes is narrower and harder: that a reader cannot tell which primitive they are in by looking at the frame, only by what it does.",
+	},
+
 	Material: {
 		kicker: "/THE MATERIAL",
-
 		interval: "beat",
 
 		heading: "What the sheet is printed with",

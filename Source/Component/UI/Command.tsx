@@ -12,7 +12,7 @@ import {
 	DialogTitle,
 } from "./Dialog";
 
-import { SlipEmpty } from "./Slip";
+import { SlipEmpty, SlipFoot, SlipLoading, type SlipFootItem } from "./Slip";
 
 import { cn } from "./Utility";
 
@@ -178,6 +178,54 @@ function CommandShortcut({
 }
 
 /**
+ * The loading state, inside the list.
+ *
+ * cmdk owns selection and the list's scroll, so a loading body is drawn *in*
+ * the list rather than over it: the same three ruled rows every other slip
+ * holds open, at the same `2rem` pitch the results will land on, so the panel
+ * does not jump when the register arrives. The head above it counts `LOADING`
+ * (see `SlipHead.State`), which is the only honest thing a count can say while
+ * the set is still being read.
+ */
+function CommandLoading({
+	Rows = 3,
+	Line,
+	className,
+	...props
+}: React.ComponentProps<"div"> & {
+	Rows?: number;
+
+	Line?: string;
+}) {
+	return (
+		<div data-slot="command-loading" className={className} {...props}>
+			<SlipLoading
+				Rows={Rows}
+				{...(Line === undefined ? {} : { Line })}
+			/>
+		</div>
+	);
+}
+
+/** The foot, for a command surface that is not the palette. */
+function CommandFoot({
+	Items,
+	End,
+	className,
+	...props
+}: React.ComponentProps<"div"> & {
+	Items: readonly SlipFootItem[];
+
+	End?: React.ReactNode;
+}) {
+	return (
+		<div data-slot="command-foot" className={className} {...props}>
+			<SlipFoot Items={Items} {...(End === undefined ? {} : { End })} />
+		</div>
+	);
+}
+
+/**
  * The modal arm: a scrim and a slip. `SlipScrim` is the site's overlay - ink at
  * 12 %, no blur - and the panel is the palette's own size, not the dialog's
  * generic one, because a palette is a document index opened wide and a centred
@@ -199,7 +247,7 @@ function CommandDialog({
 				<DialogTitle>{title}</DialogTitle>
 				<DialogDescription>{description}</DialogDescription>
 			</DialogHeader>
-			<DialogContent className="Palette" close={false}>
+			<DialogContent className="Palette" close={false} bare>
 				<Command label={title} shouldFilter={false}>
 					{children}
 				</Command>
@@ -211,11 +259,13 @@ function CommandDialog({
 export {
 	Command,
 	CommandDialog,
-	CommandInput,
-	CommandList,
 	CommandEmpty,
+	CommandFoot,
 	CommandGroup,
+	CommandInput,
 	CommandItem,
-	CommandShortcut,
+	CommandList,
+	CommandLoading,
 	CommandSeparator,
+	CommandShortcut,
 };

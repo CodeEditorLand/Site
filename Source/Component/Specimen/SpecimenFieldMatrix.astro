@@ -1,0 +1,207 @@
+---
+/**
+ * SpecimenFieldMatrix - the input family's state matrix, printed.
+ *
+ * ─── WHAT A MATRIX IS FOR ─────────────────────────────────────────────────
+ * Ten components against twenty-three conditions is two hundred and thirty
+ * cells, and the honest thing to do with two hundred and thirty cells is to
+ * print them and let a reader scan. A prose description of the family would say
+ * "and it handles the adverse states"; a matrix says which ones, on which part,
+ * and - in the notes - why the rest cannot exist.
+ *
+ * ─── THE NOTES ARE THE ARTIFACT'S OTHER HALF ──────────────────────────────
+ * A cell that cannot exist carries a reason, and a reason is a sentence: it will
+ * not fit in a six-rem column, and a truncated reason is a reason that has been
+ * tidied into an excuse. So the cell prints `N/A` and the reason's mark in the
+ * containment brackets - `N/A 〈04〉` - and the notes below print all of them in
+ * full, numbered, in the order they are met reading across and down. A field
+ * manual's matrix has footnotes; this one does too, and for the same reason.
+ *
+ * ─── THE ROW NAME IS PINNED, THE MATRIX SCROLLS ───────────────────────────
+ * Twenty-three columns do not fit a page and must not be compressed to. The
+ * table scrolls inside its own frame and the component's name stays at the
+ * leading edge, which is the same device the plate's spec column uses: the
+ * thing you are reading stays put while the thing you are scanning moves.
+ *
+ * ─── EVERY FIGURE IS DERIVED ──────────────────────────────────────────────
+ * `BuiltOf(Row)` under each name, the note count in the notes' head, and the
+ * register under the table are all counted from the two tables in
+ * `Content/Specimen/Field.ts`. A cell added there changes every figure here.
+ */
+import {
+	BuiltOf,
+	CellCount,
+	BuiltCount,
+	Columns,
+	MatrixCell,
+	MatrixRegister,
+	ReasonCount,
+	Rows,
+} from "../../Content/Specimen/Field.js";
+
+import RecordLedger from "../Record/RecordLedger.astro";
+
+import { RegisterOf } from "../Record/RegisterLine.js";
+
+/** Every cell that cannot exist, numbered - the matrix's footnotes. */
+const Notes = Rows.flatMap((Row) =>
+	Columns.filter((Column) => MatrixCell(Row, Column).disposition === "na").map(
+		(Column) => ({ Row, Column, Cell: MatrixCell(Row, Column) }),
+	),
+).map((Note, Index) => ({ ...Note, mark: String(Index + 1).padStart(2, "0") }));
+
+/** The footnote a cell points at. */
+const NoteMark = (RowName: string, Key: string): string | undefined =>
+	Notes.find((Note) => Note.Row.name === RowName && Note.Column.key === Key)
+		?.mark;
+
+/**
+ * Whether a column opens a new group.
+ *
+ * The matrix prints a heavier rule where a condition becomes a shape and where a
+ * shape becomes a context, because those are three different questions and a
+ * reader scanning the head should see where one set ends.
+ */
+const OpensGroup = (Index: number): boolean =>
+	Index > 0 && Columns[Index]!.group !== Columns[Index - 1]!.group;
+
+/** The figures, and the register that counts them. */
+const Figures = MatrixRegister();
+
+const Matrix = RegisterOf("THE MATRIX", Figures);
+---
+
+<figure class="field-matrix" id="field-matrix">
+	<div class="field-matrix__scroll">
+		<table class="field-matrix__table">
+			<thead>
+				<tr class="field-matrix__head-row">
+					<th class="field-matrix__corner" scope="col">
+						<span class="field-matrix__corner-label">COMPONENT</span>
+						<span class="field-matrix__corner-ask">
+							{Columns.length} CONDITIONS
+						</span>
+					</th>
+
+					{
+						Columns.map((Column, Index) => (
+							<th
+								class:list={[
+									"field-matrix__head",
+									OpensGroup(Index) &&
+										"field-matrix__head--group",
+								]}
+								scope="col"
+							>
+								<span class="field-matrix__head-label">
+									{Column.label}
+								</span>
+								<span class="field-matrix__head-ask">
+									{Column.ask}
+								</span>
+							</th>
+						))
+					}
+				</tr>
+			</thead>
+
+			<tbody>
+				{
+					Rows.map((Row) => (
+						<tr class="field-matrix__row">
+							<th class="field-matrix__name" scope="row">
+								<span class="field-matrix__name-text">
+									{Row.name}
+								</span>
+								<span class="field-matrix__name-count">
+									{BuiltOf(Row)} / {Columns.length}
+								</span>
+							</th>
+
+							{Columns.map((Column, Index) => {
+								const Cell = MatrixCell(Row, Column);
+
+								return (
+									<td
+										class:list={[
+											"field-matrix__cell",
+											OpensGroup(Index) &&
+												"field-matrix__cell--group",
+										]}
+										data-disposition={Cell.disposition}
+									>
+										{Cell.disposition === "built" ? (
+											<span
+												class="field-matrix__built"
+												title={Cell.note ?? undefined}
+											>
+												BUILT
+											</span>
+										) : (
+											<span class="field-matrix__na">
+												N/A
+												<span class="field-matrix__note-mark">
+													〈{NoteMark(Row.name, Column.key)}〉
+												</span>
+											</span>
+										)}
+									</td>
+								);
+							})}
+						</tr>
+					))
+				}
+			</tbody>
+		</table>
+	</div>
+
+	<div class="field-matrix__notes">
+		<p class="field-matrix__notes-head">
+			<span class="field-matrix__notes-label">NOTES:</span>
+			<span class="field-matrix__notes-count">
+				{Notes.length} CELLS THAT CANNOT EXIST
+			</span>
+		</p>
+
+		<ol class="field-matrix__notes-list">
+			{
+				Notes.map((Note) => (
+					<li class="field-matrix__note" id={`field-note-${Note.mark}`}>
+						<span class="field-matrix__note-mark">
+							〈{Note.mark}〉
+						</span>
+						<span class="field-matrix__note-where">
+							{Note.Row.name} / {Note.Column.label}
+						</span>
+						<span class="field-matrix__note-reason">
+							{Note.Cell.reason}
+						</span>
+					</li>
+				))
+			}
+		</ol>
+	</div>
+
+	<figcaption class="field-matrix__caption">
+		<span class="field-matrix__caption-key">READ:</span>
+		<span class="field-matrix__caption-value">
+			A cell is `BUILT` when the family renders that combination and
+			`N/A` when it cannot exist - and a cell that cannot exist carries
+			its reason in the notes below rather than a truncated one in the
+			cell. {BuiltCount} of {CellCount} cells are built; {ReasonCount}
+			are reasons.
+		</span>
+		<span class="field-matrix__caption-source">
+			<span class="field-matrix__caption-key">SOURCE:</span>
+			<span
+				class="field-matrix__caption-value field-matrix__caption-value--code"
+			>
+				SOURCE/CONTENT/SPECIMEN/FIELD.TS
+			</span>
+		</span>
+	</figcaption>
+
+	<div class="field-matrix__register">
+		<RecordLedger rows={Figures} columns={2} register={Matrix} />
+	</div>
+</figure>

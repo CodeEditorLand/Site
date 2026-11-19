@@ -2,32 +2,120 @@
 
 import * as MenubarPrimitive from "@radix-ui/react-menubar";
 
-import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react";
-
 import * as React from "react";
+
+import { DoorContext, UseDoorRef } from "./Overlay";
+
+import { SlipEmpty, SlipRegister, type SlipHead } from "./Slip";
 
 import { cn } from "./Utility";
 
+/**
+ * Menubar - the application's own bar, wearing the slip.
+ *
+ * ─── THE ONE CONTROL THAT WAS STILL THE KIT ───────────────────────────────
+ *
+ * `MenubarContent` was `flat z-50 min-w-[12rem] overflow-hidden border
+ * bg-popover p-1 text-popover-foreground` - the kit's popover, which is not a
+ * surface this site has - and its rows were a Tailwind string with
+ * `focus:bg-accent` on them. Every other menu in the family had already been
+ * moved onto `.Slip` and `.Slip__Row`; the menubar had not, which meant the one
+ * place a reader meets a *bar of menus* - the place a desktop application is
+ * most recognisable - was the one place the document stopped being itself.
+ *
+ * It is the same instrument now. The bar is `.Menubar` (a ruled strip on the
+ * card fill, one hairline under it, no fill of its own), the trigger is
+ * `.Menubar__Trigger` with the row grammar's own hover wash and the accent rule
+ * when its menu is open, the content is `.Slip`, and every row is `.Slip__Row`
+ * with `data-mark` / `data-meta` exactly as a dropdown's rows are. Nothing about
+ * the behaviour is restated: Radix owns the arrow keys between menus, the
+ * typeahead, the Escape, the focus return.
+ *
+ * ─── WHY `head` IS ON THE CONTENT AND NOT ON THE BAR ──────────────────────
+ *
+ * The bar is a route strip; the menu is a slip. A slip opens with its register
+ * line, so `# FILE / 07` belongs to the panel that opens, not to the strip that
+ * holds the doors - the same split the header rail and the palette already
+ * make.
+ */
+
 function Menubar({
 	className,
+	value,
+	defaultValue,
+	onValueChange,
 	...props
 }: React.ComponentProps<typeof MenubarPrimitive.Root>) {
+	const [Mirrored, SetMirrored] = React.useState<string>(defaultValue ?? "");
+
+	const IsOpen = value ?? Mirrored;
+
+	const Close = React.useCallback(() => {
+		SetMirrored("");
+
+		onValueChange?.("");
+	}, [onValueChange]);
+
+	/**
+	 * The removed-trigger rule, at the bar's scale.
+	 *
+	 * A menubar's open state belongs to the *bar*, not to a menu - Radix
+	 * coordinates it across the triggers so moving from `FILE` to `EDIT` closes
+	 * one and opens the other - so the family's per-door guard cannot be used
+	 * here. The rule is the same one stated at the bar: while a menu is open, if
+	 * the trigger that owns it has left the tree, close. The selector is Radix's
+	 * own attribute (`data-state="open"`), not a site class, so this reads the
+	 * primitive's contract rather than inventing a second one.
+	 */
+	React.useEffect(() => {
+		if (!IsOpen || typeof MutationObserver === "undefined") return;
+
+		const Observer = new MutationObserver(() => {
+			const Open = document.querySelector(
+				'[data-slot="menubar-trigger"][data-state="open"]',
+			);
+
+			if (Open === null) Close();
+		});
+
+		Observer.observe(document.body, { childList: true, subtree: true });
+
+		return () => Observer.disconnect();
+	}, [IsOpen, Close]);
+
 	return (
 		<MenubarPrimitive.Root
 			data-slot="menubar"
-			className={cn(
-				"flat flex h-9 items-center gap-1 border bg-background p-1",
-				className,
-			)}
+			className={cn("Menubar", className)}
+			value={value}
+			defaultValue={defaultValue}
+			onValueChange={(Next) => {
+				SetMirrored(Next);
+
+				onValueChange?.(Next);
+			}}
 			{...props}
 		/>
 	);
 }
 
+/**
+ * One menu in the bar.
+ *
+ * It provides no door of its own: a menubar's open state is the bar's (see
+ * `Menubar` above), so the guard lives there and this stays a pass-through. A
+ * `DoorContext` of `null` is the honest value here - the slip has no single
+ * element it came through.
+ */
 function MenubarMenu({
+	children,
 	...props
 }: React.ComponentProps<typeof MenubarPrimitive.Menu>) {
-	return <MenubarPrimitive.Menu data-slot="menubar-menu" {...props} />;
+	return (
+		<MenubarPrimitive.Menu data-slot="menubar-menu" {...props}>
+			{children}
+		</MenubarPrimitive.Menu>
+	);
 }
 
 function MenubarGroup({
@@ -57,13 +145,15 @@ function MenubarTrigger({
 	className,
 	...props
 }: React.ComponentProps<typeof MenubarPrimitive.Trigger>) {
+	const Door = React.useContext(DoorContext);
+
+	const Ref = UseDoorRef(Door);
+
 	return (
 		<MenubarPrimitive.Trigger
+			ref={Ref}
 			data-slot="menubar-trigger"
-			className={cn(
-				"outline-hidden flat flex select-none items-center px-2 py-1 font-medium focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground",
-				className,
-			)}
+			className={cn("Menubar__Trigger", className)}
 			{...props}
 		/>
 	);
@@ -74,8 +164,17 @@ function MenubarContent({
 	align = "start",
 	alignOffset = -4,
 	sideOffset = 8,
+	head,
+	empty,
+	children,
 	...props
-}: React.ComponentProps<typeof MenubarPrimitive.Content>) {
+}: React.ComponentProps<typeof MenubarPrimitive.Content> & {
+	/** The register line the menu opens with - `# FILE / 07`. */
+	head?: SlipHead | undefined;
+
+	/** The `empty` arm: a menu with no rows says so instead of opening blank. */
+	empty?: { Mark?: string; Line: string } | undefined;
+}) {
 	return (
 		<MenubarPortal>
 			<MenubarPrimitive.Content
@@ -83,12 +182,21 @@ function MenubarContent({
 				align={align}
 				alignOffset={alignOffset}
 				sideOffset={sideOffset}
-				className={cn(
-					"data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-(--radix-menubar-content-transform-origin) flat z-50 min-w-[12rem] overflow-hidden border bg-popover p-1 text-popover-foreground",
-					className,
-				)}
+				aria-label={head?.Name}
+				className={cn("Slip", className)}
 				{...props}
-			/>
+			>
+				{head === undefined ? null : <SlipRegister head={head} />}
+
+				{children}
+
+				{empty === undefined ? null : (
+					<SlipEmpty
+						Mark={empty.Mark ?? "NO RECORD"}
+						Line={empty.Line}
+					/>
+				)}
+			</MenubarPrimitive.Content>
 		</MenubarPortal>
 	);
 }
@@ -97,21 +205,38 @@ function MenubarItem({
 	className,
 	inset,
 	variant = "default",
+	mark = "→",
+	meta,
+	reason,
+	current,
 	...props
 }: React.ComponentProps<typeof MenubarPrimitive.Item> & {
 	inset?: boolean;
 
 	variant?: "default" | "destructive";
+
+	/** The leading glyph. `→` acts, `/` navigates. */
+	mark?: string | undefined;
+
+	/** The trailing cell - a chord, a count, a STATUS word. */
+	meta?: string | undefined;
+
+	/** Why the row cannot be used, printed in the meta cell. */
+	reason?: string | undefined;
+
+	/** This row is the value in force. */
+	current?: boolean;
 }) {
 	return (
 		<MenubarPrimitive.Item
 			data-slot="menubar-item"
 			data-inset={inset}
 			data-variant={variant}
-			className={cn(
-				"outline-hidden flat relative flex cursor-default select-none items-center gap-2 px-2 py-1.5 focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[inset]:pl-8 data-[variant=destructive]:text-destructive data-[disabled]:opacity-50 data-[variant=destructive]:focus:bg-[color-mix(in_srgb,var(--Destruct)_10%,transparent)] data-[variant=destructive]:focus:text-destructive [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-popover-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 data-[variant=destructive]:[&_svg]:!text-destructive",
-				className,
-			)}
+			data-mark={mark}
+			data-meta={meta}
+			data-reason={reason}
+			data-current={current ? "true" : undefined}
+			className={cn("Slip__Row", className)}
 			{...props}
 		/>
 	);
@@ -121,23 +246,19 @@ function MenubarCheckboxItem({
 	className,
 	children,
 	checked,
+	meta,
 	...props
-}: React.ComponentProps<typeof MenubarPrimitive.CheckboxItem>) {
+}: React.ComponentProps<typeof MenubarPrimitive.CheckboxItem> & {
+	meta?: string | undefined;
+}) {
 	return (
 		<MenubarPrimitive.CheckboxItem
 			data-slot="menubar-checkbox-item"
-			className={cn(
-				"outline-hidden flat relative flex cursor-default select-none items-center gap-2 py-1.5 pl-8 pr-2 focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-				className,
-			)}
+			data-meta={meta}
+			className={cn("Slip__Row", className)}
 			checked={checked ?? false}
 			{...props}
 		>
-			<span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
-				<MenubarPrimitive.ItemIndicator>
-					<CheckIcon className="size-4" />
-				</MenubarPrimitive.ItemIndicator>
-			</span>
 			{children}
 		</MenubarPrimitive.CheckboxItem>
 	);
@@ -146,22 +267,18 @@ function MenubarCheckboxItem({
 function MenubarRadioItem({
 	className,
 	children,
+	meta,
 	...props
-}: React.ComponentProps<typeof MenubarPrimitive.RadioItem>) {
+}: React.ComponentProps<typeof MenubarPrimitive.RadioItem> & {
+	meta?: string | undefined;
+}) {
 	return (
 		<MenubarPrimitive.RadioItem
 			data-slot="menubar-radio-item"
-			className={cn(
-				"outline-hidden flat relative flex cursor-default select-none items-center gap-2 py-1.5 pl-8 pr-2 focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-				className,
-			)}
+			data-meta={meta}
+			className={cn("Slip__Row", className)}
 			{...props}
 		>
-			<span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
-				<MenubarPrimitive.ItemIndicator>
-					<CircleIcon className="size-2 fill-current" />
-				</MenubarPrimitive.ItemIndicator>
-			</span>
 			{children}
 		</MenubarPrimitive.RadioItem>
 	);
@@ -178,10 +295,7 @@ function MenubarLabel({
 		<MenubarPrimitive.Label
 			data-slot="menubar-label"
 			data-inset={inset}
-			className={cn(
-				"px-2 py-1.5 font-medium data-[inset]:pl-8",
-				className,
-			)}
+			className={cn("Slip__Group", className)}
 			{...props}
 		/>
 	);
@@ -194,25 +308,30 @@ function MenubarSeparator({
 	return (
 		<MenubarPrimitive.Separator
 			data-slot="menubar-separator"
-			className={cn("-mx-1 my-1 h-px bg-border", className)}
+			className={cn("Slip__Rule-H", className)}
 			{...props}
 		/>
 	);
 }
 
+/**
+ * The shortcut cell. A chord is printed in the grammar's containment mark -
+ * `〈⌘S〉` - so it is the same object the palette's foot and the dropdown's
+ * shortcut use, and a reader learns the notation once.
+ */
 function MenubarShortcut({
 	className,
+	children,
 	...props
 }: React.ComponentProps<"span">) {
 	return (
 		<span
 			data-slot="menubar-shortcut"
-			className={cn(
-				"ml-auto tracking-widest text-popover-foreground",
-				className,
-			)}
+			className={cn("Slip__Meta", className)}
 			{...props}
-		/>
+		>
+			〈{children}〉
+		</span>
 	);
 }
 
@@ -234,31 +353,34 @@ function MenubarSubTrigger({
 		<MenubarPrimitive.SubTrigger
 			data-slot="menubar-sub-trigger"
 			data-inset={inset}
-			className={cn(
-				"flat flex cursor-default select-none items-center px-2 py-1.5 outline-none focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[inset]:pl-8 data-[state=open]:text-accent-foreground",
-				className,
-			)}
+			data-meta="›"
+			className={cn("Slip__Row", className)}
 			{...props}
 		>
 			{children}
-			<ChevronRightIcon className="ml-auto h-4 w-4" />
 		</MenubarPrimitive.SubTrigger>
 	);
 }
 
 function MenubarSubContent({
 	className,
+	head,
+	children,
 	...props
-}: React.ComponentProps<typeof MenubarPrimitive.SubContent>) {
+}: React.ComponentProps<typeof MenubarPrimitive.SubContent> & {
+	/** The register line, carrying the path that got here - `# FILE ↳ NEW / 03`. */
+	head?: SlipHead | undefined;
+}) {
 	return (
 		<MenubarPrimitive.SubContent
 			data-slot="menubar-sub-content"
-			className={cn(
-				"data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-(--radix-menubar-content-transform-origin) flat z-50 min-w-[8rem] overflow-hidden border bg-popover p-1 text-popover-foreground",
-				className,
-			)}
+			aria-label={head?.Name}
+			className={cn("Slip", className)}
 			{...props}
-		/>
+		>
+			{head === undefined ? null : <SlipRegister head={head} />}
+			{children}
+		</MenubarPrimitive.SubContent>
 	);
 }
 

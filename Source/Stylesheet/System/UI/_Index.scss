@@ -27,6 +27,12 @@
 @use "Slip";
 @use "Item";
 @use "Field";
+// The input family loads after the slip's own field: `Field` draws the one
+// trigger the slip opens from, `Input` draws the form field - label, control,
+// addon, hint, counter, confirmation, action - and the receipt a refused form
+// heads itself with. Every rule in it is scoped to `.Field`/`.FormSummary`, so
+// it cannot reach the slip, the palette or the rail's filter.
+@use "Input";
 @use "Chord";
 @use "Segmented";
 @use "Palette";

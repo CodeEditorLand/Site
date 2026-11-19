@@ -17,6 +17,8 @@ import {
 
 import Auth0Provider from "../Provider/Auth0Provider.js";
 
+import { FormSummary } from "../UI/FormSummary";
+
 // ── Exported wrapper (Auth0 context) ──────────────────────────────────────
 
 export default ({
@@ -411,48 +413,21 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 					 * pressed, and then the jump leaves it below the fold, which
 					 * makes it an artifact nobody reads.
 					 *
-					 * Each line is a control that takes the cursor to its field,
-					 * and the whole block is one `role="alert"`, so the refusal
-					 * is announced once rather than once per field.
+					 * The artifact itself is `UI/FormSummary` now. It was sixteen
+					 * lines of markup here and a second block of classes in
+					 * `Contact/_Form.scss`; the words, the count, the ink and the
+					 * focus behaviour are unchanged, and what it gained is the
+					 * one thing the inline version could not have: the next step.
 					 */}
-					{Interrupted.length > 0 && (
-						<div className="contact-form__errors" role="alert">
-							<p className="contact-form__errors-head">
-								<span
-									className="contact-form__state"
-									data-state="INTERRUPTED"
-								>
-									INTERRUPTED
-								</span>
-								<span className="contact-form__tag">
-									{Interrupted.length}{" "}
-									{Interrupted.length === 1
-										? "FIELD"
-										: "FIELDS"}
-								</span>
-							</p>
-							<ul className="contact-form__errors-list">
-								{Interrupted.map((Field) => (
-									<li
-										key={Field.id}
-
-										className="contact-form__errors-item"
-									>
-										<button
-											type="button"
-											className="contact-form__errors-link"
-											onClick={() => Focus(Field.id)}
-										>
-											<span className="contact-form__errors-field">
-												{Field.label}
-											</span>{" "}
-											{Errors[Field.id]}
-										</button>
-									</li>
-								))}
-							</ul>
-						</div>
-					)}
+					<FormSummary
+						Rows={Interrupted.map((Field) => ({
+							Id: Field.id,
+							Field: Field.label,
+							Message: Errors[Field.id] ?? "",
+						}))}
+						OnSelect={Focus}
+						Note="Fill the fields above and the primary action arms itself. Nothing has been sent yet."
+					/>
 
 					<div className="contact-form__fields">
 						{Config.Fields.map((Field) => {

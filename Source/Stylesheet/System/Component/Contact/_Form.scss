@@ -8,7 +8,7 @@
 //   .contact-form__standfirst       the registry's subtitle under it
 //   .contact-form__meta             the pair reference and the state word
 //   .contact-form__pair             the CODE-XXXXX reference
-//   .contact-form__tag              a counted fact chip (the receipt's field count)
+//   .contact-form__tag              a counted fact chip (kept for the meta row)
 //   .contact-form__state            the form's state word (PREPARING/READY/INTERRUPTED)
 //   .contact-form__handler          who the request is sent to
 //   .contact-form__handler-value    that address, at full ink
@@ -35,11 +35,6 @@
 //   .contact-form__note             the pair reference explanation
 //   .contact-form__mono             a code inside running prose
 //   .contact-form__mono--strong     that code, at medium weight
-//   .contact-form__errors           the interrupted receipt, above the fields
-//   .contact-form__errors-head      `INTERRUPTED` and the field count
-//   .contact-form__errors-list      one line per interrupted field
-//   .contact-form__errors-link      that line, as a control that focuses its field
-//   .contact-form__errors-field     the field's name, at medium weight
 //   .contact-form__receipt          the copied receipt, under the actions
 //   .contact-form__receipt-word     `COPIED`
 //   .contact-form__receipt-ref      the pair reference that was copied
@@ -394,88 +389,21 @@
 	font-weight: 500;
 }
 
-// ─── The interrupted state: the receipt ───────────────────────────────────
+// ─── The interrupted state ────────────────────────────────────────────────
 //
-// A refusal is an artifact, not a colour: `INTERRUPTED`, the number of fields,
-// and one line per field that moves the cursor to it. It sits at the head of
-// the field block, above the first control, because an error a reader has to
-// hunt for is a decoration.
+// The receipt that heads a refused form is `UI/FormSummary` and its rules are
+// `System/UI/_Input.scss` (`.FormSummary`, `.FormSummary__*`), where the block
+// is shared with every other form on the site. Its anatomy was written here
+// first and moved whole: the mute fill, the hairline, the 2px destructive
+// leading rule, the state word with its square, the counted chip, and the one
+// focusable line per field. Nothing about the receipt's rendering changed; what
+// changed is who owns it, and the fact that a second form can now print the
+// same refusal without rebuilding it.
 //
-// The alarm is one 2px leading rule in `--Destruct` - the site's marker idiom,
-// the same weight the state word carries - and the words themselves stay in
-// ink: five red sentences is not an error state, it is a shout, and the field
-// under the control already carries the destructive ink for the one sentence
-// that belongs to it.
-
-.contact-form__errors {
-	padding: var(--space-reading);
-	margin-block-end: var(--space-group);
-
-	background: var(--Mute);
-
-	@include hairline;
-
-	border-inline-start: 2px solid var(--Destruct);
-}
-
-.contact-form__errors-head {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-	gap: var(--space-tight);
-
-	margin: 0;
-}
-
-.contact-form__errors-list {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-tight);
-
-	margin: var(--space-tight) 0 0;
-	padding: 0;
-
-	list-style: none;
-}
-
-.contact-form__errors-item {
-	margin: 0;
-}
-
-// The line is a control: a refusal that names a field and does not take the
-// reader there is a refusal the reader has to act on twice.
-.contact-form__errors-link {
-	display: block;
-	inline-size: 100%;
-	padding: 0;
-
-	background: none;
-	border: 0;
-
-	color: var(--Foreground);
-
-	font: inherit;
-	font-size: var(--type-caption);
-	line-height: var(--type-caption-line);
-	text-align: start;
-
-	cursor: pointer;
-}
-
-.contact-form__errors-link:hover,
-.contact-form__errors-link:focus-visible {
-	text-decoration: underline;
-	text-underline-offset: var(--optical-underline-offset);
-}
-
-.contact-form__errors-link:focus-visible {
-	outline: var(--BorderWidth) var(--BorderStyle) var(--Primary);
-	outline-offset: 2px;
-}
-
-.contact-form__errors-field {
-	font-weight: 500;
-}
+// The two contact-only rules stay, because they are the lane's and not the
+// artifact's: `.contact-form__tag` (the chip's fill on this lane) and
+// `.contact-form__state` (the state word above the title, which is the form's
+// own status and not a refusal).
 
 // ─── The copied state: the receipt ────────────────────────────────────────
 //

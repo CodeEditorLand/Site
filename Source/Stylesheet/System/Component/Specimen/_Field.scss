@@ -1,0 +1,531 @@
+// SpecimenField - the input family's plate: the matrix, its notes, and the rows.
+//
+// Publishes:
+//   .field-matrix                  the state matrix, as one figure
+//   .field-matrix__scroll          the frame the table scrolls in
+//   .field-matrix__table           ten rows, twenty-three columns
+//   .field-matrix__corner          the head's leading cell
+//   .field-matrix__head            one condition's head
+//   .field-matrix__head--group     the first head of a new group
+//   .field-matrix__head-label      the condition's name
+//   .field-matrix__head-ask        what the condition asks, under the name
+//   .field-matrix__name            the component's name, pinned to the edge
+//   .field-matrix__name-text       that name
+//   .field-matrix__name-count      how many of the row's cells are built
+//   .field-matrix__cell            one cell
+//   .field-matrix__built           the word a built cell prints
+//   .field-matrix__na              a cell that cannot exist, with its note's mark
+//   .field-matrix__note-mark       `〈04〉` - the containment of a footnote
+//   .field-matrix__notes           the footnotes
+//   .field-matrix__notes-head      how many there are
+//   .field-matrix__notes-list      the list
+//   .field-matrix__note            one footnote: mark, where, why
+//   .field-matrix__note-where      the cell it belongs to, `INPUT / ONE ITEM`
+//   .field-matrix__note-reason     the reason, in full
+//   .field-matrix__caption         what the matrix asks of a reader
+//   .field-matrix__register        the figures, as a ledger
+//   .specimen-field                the live rows
+//   .specimen-field__group         one group of rows
+//   .specimen-field__group-head    the group's kicker and its count
+//   .specimen-field__row           one labelled row: spec, stage
+//   .specimen-field__spec          the row's name, part and sentence
+//   .specimen-field__mark          the row's `# NN`
+//   .specimen-field__state         the condition's name
+//   .specimen-field__part          the component under test
+//   .specimen-field__when          when the state is right
+//   .specimen-field__stage         the box the specimen is printed in
+//   .specimen-field__stage--narrow a 16rem column
+//   .specimen-field__stage--wide   the full band
+//   .specimen-field__stage--card   the white insert
+//
+// ─── THE MATRIX IS A TABLE, NOT A GRID OF DIVS ────────────────────────────
+// Two hundred and thirty cells with a row head and a column head is a table,
+// and a table is the one element that tells a screen reader which row and which
+// column a cell belongs to. The grid-of-divs version of this artifact would be
+// the same picture with none of the structure, and a matrix nobody can navigate
+// is a matrix for the person who drew it.
+//
+// ─── TWENTY-THREE COLUMNS DO NOT FIT, AND MUST NOT ────────────────────────
+// The table scrolls inside `.field-matrix__scroll` and the component's name is
+// pinned to the leading edge. Compressing twenty-three conditions into a page
+// would mean either dropping conditions or printing them at a size below the
+// type floor, and both are the same answer: the matrix stops being readable. A
+// scroll is honest - it says the set is larger than the page, which it is.
+//
+// ─── THE ROW IS A SPECIMEN BESIDE ITS SPEC, LIKE A PLATE ──────────────────
+// A live row is a plate at a smaller scale: the name, the part, the sentence
+// that says when the state is right, and the specimen itself. The spec column is
+// 15rem and the stage takes the rest; below 900px the spec goes above the stage,
+// because a 15rem spec column on a 360px screen is two words per line.
+@use "../../Mixin" as *;
+
+/* ─── THE MATRIX ─────────────────────────────────────────────────────────── */
+
+.field-matrix {
+	margin: 0 0 var(--space-group);
+
+	min-inline-size: 0;
+}
+
+.field-matrix__scroll {
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+
+	min-inline-size: 0;
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	background: var(--Card);
+}
+
+.field-matrix__table {
+	inline-size: 100%;
+	min-inline-size: 72rem;
+
+	border-collapse: collapse;
+
+	font-family: var(--FontMono);
+}
+
+// ─── The head ──────────────────────────────────────────────────────────────
+
+.field-matrix__corner,
+.field-matrix__name {
+	position: sticky;
+	inset-inline-start: 0;
+	z-index: 1;
+
+	background: var(--Card);
+
+	text-align: start;
+}
+
+.field-matrix__corner {
+	padding: var(--space-tight) var(--space-reading);
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+	border-inline-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.field-matrix__corner-label {
+	display: block;
+
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.field-matrix__corner-ask {
+	display: block;
+
+	margin-block-start: 0.125rem;
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+}
+
+.field-matrix__head {
+	padding: var(--space-tight) var(--space-tight)
+		calc(var(--space-tight) * 0.75);
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	vertical-align: bottom;
+
+	text-align: start;
+}
+
+// A group's first head carries the weight the group boundary deserves: a
+// divider, not a hairline. Three questions - what the field is doing, what it is
+// asked to hold, where it is put - and the head says where each begins.
+.field-matrix__head--group {
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.field-matrix__head-label {
+	display: block;
+
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+	white-space: nowrap;
+}
+
+.field-matrix__head-ask {
+	display: block;
+
+	margin-block-start: 0.125rem;
+
+	font-size: var(--type-caption);
+	line-height: 1.3;
+
+	color: var(--MuteForeground);
+
+	white-space: normal;
+	min-inline-size: 5.5rem;
+}
+
+// ─── The rows ──────────────────────────────────────────────────────────────
+
+.field-matrix__name {
+	padding: var(--space-tight) var(--space-reading);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	border-inline-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+
+	vertical-align: baseline;
+}
+
+.field-matrix__name-text {
+	display: block;
+
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+	white-space: nowrap;
+}
+
+.field-matrix__name-count {
+	display: block;
+
+	margin-block-start: 0.125rem;
+
+	font-size: var(--type-caption);
+	line-height: 1.3;
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+.field-matrix__cell {
+	padding: var(--space-tight);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	vertical-align: baseline;
+}
+
+.field-matrix__cell--group {
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+// A built cell is the texture of the matrix: the word at the meta register in
+// the quiet ink, so the eye reads the shape of the exceptions before it reads
+// any one cell. It is not a green tick - a matrix of two hundred ticks is a
+// matrix of no information.
+.field-matrix__built {
+	@include mono-meta;
+
+	color: var(--MuteForeground);
+	white-space: nowrap;
+}
+
+// A cell that cannot exist is the ink, because it is the one a reader came for.
+.field-matrix__na {
+	@include mono-meta;
+
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.25rem;
+
+	color: var(--Foreground);
+	white-space: nowrap;
+}
+
+.field-matrix__note-mark {
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+// ─── The notes ─────────────────────────────────────────────────────────────
+
+.field-matrix__notes {
+	margin-block-start: var(--space-reading);
+
+	max-inline-size: var(--Measure);
+}
+
+.field-matrix__notes-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0 0 var(--space-tight);
+}
+
+.field-matrix__notes-label {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.field-matrix__notes-count {
+	@include mono-meta;
+
+	color: var(--MuteForeground);
+}
+
+.field-matrix__notes-list {
+	display: flex;
+	flex-direction: column;
+
+	margin: 0;
+	padding: 0;
+
+	list-style: none;
+}
+
+.field-matrix__note {
+	display: grid;
+	grid-template-columns: 3rem minmax(8rem, 11rem) minmax(0, 1fr);
+	gap: var(--space-tight);
+
+	padding-block: var(--space-tight);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+}
+
+.field-matrix__note-where {
+	@include mono-meta;
+
+	color: var(--Foreground);
+
+	overflow-wrap: anywhere;
+}
+
+.field-matrix__note-reason {
+	color: var(--MuteForeground);
+
+	text-wrap: pretty;
+}
+
+// ─── The caption and the register ──────────────────────────────────────────
+
+.field-matrix__caption {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
+
+	margin-block-start: var(--space-reading);
+
+	max-inline-size: var(--Measure);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+}
+
+.field-matrix__caption-key {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.field-matrix__caption-value--code {
+	font-size: var(--type-caption);
+}
+
+.field-matrix__caption-source {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight);
+
+	flex: 1 1 100%;
+}
+
+.field-matrix__register {
+	margin-block-start: var(--space-group);
+
+	max-inline-size: var(--Measure);
+}
+
+/* ─── THE LIVE ROWS ──────────────────────────────────────────────────────── */
+
+.specimen-field {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-chapter);
+
+	min-inline-size: 0;
+
+	margin-block-start: var(--space-chapter);
+}
+
+.specimen-field__group {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+
+	min-inline-size: 0;
+}
+
+.specimen-field__group-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0;
+
+	padding-block-end: var(--space-tight);
+
+	@include hairline(bottom);
+}
+
+.specimen-field__group-kicker {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+// The count is the group's own length, printed at the far end of its head - a
+// band's kicker counts nothing, but a group of rows is a set and says how big.
+.specimen-field__group-count {
+	@include mono-meta;
+
+	margin-inline-start: auto;
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+.specimen-field__group-note {
+	margin: 0 0 var(--space-reading);
+
+	max-inline-size: var(--Measure);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+
+	text-wrap: pretty;
+}
+
+.specimen-field__rows {
+	display: flex;
+	flex-direction: column;
+
+	min-inline-size: 0;
+}
+
+// One row: the spec, then the stage. The rule is above the row, so a run of rows
+// is a ruled ledger rather than a stack of cards.
+.specimen-field__row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-reading);
+
+	padding-block: var(--space-group);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	min-inline-size: 0;
+
+	@include bp(900px) {
+		grid-template-columns: 15rem minmax(0, 1fr);
+		gap: var(--space-group);
+		align-items: start;
+	}
+}
+
+.specimen-field__spec {
+	display: flex;
+	flex-direction: column;
+	gap: 0.375rem;
+
+	min-inline-size: 0;
+}
+
+.specimen-field__mark {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	margin: 0;
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+.specimen-field__mark-hash {
+	margin-inline-end: 0.25rem;
+
+	color: var(--Border);
+}
+
+.specimen-field__state {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	font-weight: 500;
+	letter-spacing: var(--track-join);
+
+	color: var(--Foreground);
+}
+
+.specimen-field__part {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	margin: 0;
+
+	color: var(--MuteForeground);
+}
+
+.specimen-field__when {
+	margin: var(--space-tight) 0 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+
+	text-wrap: pretty;
+}
+
+// The stage. `band` is the creme field with nothing around it - the specimen is
+// printed on the surface it will be printed on. `card` is a Jelly insert and the
+// field inside it drops its fill; `narrow` is a 16rem column, which is where the
+// field's own container query earns its keep; `wide` is the band's own width.
+.specimen-field__stage {
+	min-inline-size: 0;
+
+	max-inline-size: 34rem;
+}
+
+.specimen-field__stage--wide {
+	max-inline-size: none;
+}
+
+.specimen-field__stage--narrow {
+	max-inline-size: 16rem;
+}
+
+.specimen-field__stage--card {
+	max-inline-size: 34rem;
+}

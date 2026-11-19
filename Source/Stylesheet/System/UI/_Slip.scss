@@ -1,3 +1,5 @@
+@use "sass:list";
+
 @use "../Mixin" as *;
 
 // ─── THE SLIP ───────────────────────────────────────────────────────────────
@@ -35,7 +37,7 @@
 // to every member, keeps the specificity of the most specific one (0,1,0 here,
 // the same as a class), and stays one rule.
 
-$Slip: ':is([data-slot="dropdown-menu-content"], [data-slot="dropdown-menu-sub-content"], [data-slot="select-content"], [data-slot="context-menu-content"], [data-slot="context-menu-sub-content"], [data-slot="popover-content"], [data-slot="menubar-content"], [data-slot="hover-card-content"], .Slip)';
+$Slip: ':is([data-slot="dropdown-menu-content"], [data-slot="dropdown-menu-sub-content"], [data-slot="select-content"], [data-slot="context-menu-content"], [data-slot="context-menu-sub-content"], [data-slot="popover-content"], [data-slot="menubar-content"], [data-slot="menubar-sub-content"], [data-slot="hover-card-content"], .Slip)';
 
 @mixin slip-surface {
 	// `@include flat` writes radius 0 and `box-shadow: none` - the design
@@ -383,4 +385,805 @@ $Slip: ':is([data-slot="dropdown-menu-content"], [data-slot="dropdown-menu-sub-c
 .Slip__ScrollIcon {
 	inline-size: 0.875rem;
 	block-size: 0.875rem;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// THE FAMILY - one surface, ten components, five dismissals
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// Everything below is what the ten overlays needed once they were put on one
+// surface and asked the questions the site had never asked them: what a slip
+// looks like while its rows are arriving, what it looks like when the action it
+// opened for failed, what a submenu three deep says about its own depth, what a
+// dialog does when it is taller than the viewport, and which way a slip travels
+// when it opens on each of its four sides.
+//
+// The parts above are the surface. The parts below are the surface *behaving*.
+
+// ─── THE PATH ───────────────────────────────────────────────────────────────
+//
+// A submenu is the same box as its parent, so the only thing that can tell a
+// reader how deep they are is what the box prints. `↳` is the grammar's mark for
+// relation and `# FILE ↳ NEW / 03` is the same sentence a record's sub-line
+// prints - so depth is stated as a path, not drawn as an indent. The step is
+// muted (it is context) and the slip's own name stays ink (it is the subject).
+
+.Slip__TrailMark {
+	color: var(--MuteForeground);
+
+	white-space: nowrap;
+}
+
+.Slip__Trail {
+	color: var(--MuteForeground);
+
+	white-space: nowrap;
+
+	max-inline-size: 8rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+// ─── THE COUNT THAT CANNOT BE A FIGURE ──────────────────────────────────────
+//
+// `# FIND / LOADING`. The count's cell is two digits and a fixed width, and the
+// state word is longer than two digits - so it is set at the caption register
+// with the tracking the cell already has, and it never wraps the head onto a
+// second line. A head that grew a line while loading would move every row under
+// it, which is the one thing a loading state must not do.
+
+.Slip__Count--state {
+	font-size: var(--type-caption);
+	line-height: var(--type-meta-line);
+
+	letter-spacing: var(--track-row);
+	white-space: nowrap;
+}
+
+.Slip__Count--state[data-state="LOADING"] {
+	color: var(--Foreground);
+}
+
+.Slip__Count--state[data-state="INTERRUPTED"] {
+	color: var(--Foreground);
+}
+
+// ─── THE NOTE ───────────────────────────────────────────────────────────────
+//
+// A panel's `↳` proposition: the one line that says what the figure above it
+// is. It sits under the head, at the reading inset, on the meta measure - the
+// same indent the empty state's second line uses, because both are the slip
+// talking about itself.
+
+.Slip__Note {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0;
+	padding: var(--space-tight) var(--space-reading) 0;
+
+	max-inline-size: 46ch;
+
+	color: var(--Foreground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-name);
+
+	text-wrap: pretty;
+}
+
+.Slip__NoteMark {
+	color: var(--MuteForeground);
+}
+
+// ─── THE LOADING BODY ───────────────────────────────────────────────────────
+//
+// Three rows at the pitch the loaded rows will land on. The bar is `--Border`
+// (8 % ink) - a ruled interval, not a grey pill - and the mark column prints a
+// `#` at the mark's own ink, so the skeleton reads as *a register whose figures
+// have not arrived* rather than as a wireframe of a list.
+//
+// The bar's width is set inline per row (92 / 74 / 84 %), which is the one
+// thing that keeps three bars from looking like one block: a skeleton of equal
+// bars reads as a table, and a table is not what is loading.
+
+.Slip__Loading {
+	display: grid;
+	gap: var(--space-tight);
+
+	padding: var(--space-reading);
+
+	min-inline-size: 0;
+}
+
+.Slip__Skeleton {
+	display: flex;
+	align-items: center;
+	gap: var(--space-tight);
+
+	margin: 0;
+
+	min-block-size: 1.5rem;
+	min-inline-size: 0;
+}
+
+.Slip__SkeletonMark {
+	flex: 0 0 auto;
+
+	inline-size: 1.25rem;
+
+	color: var(--Border);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+}
+
+.Slip__SkeletonBar {
+	flex: 0 1 auto;
+
+	block-size: 0.4375rem;
+
+	background: var(--Border);
+
+	border-radius: 0;
+}
+
+.Slip__SkeletonMeta {
+	flex: 0 0 auto;
+
+	inline-size: 2.25rem;
+	block-size: 0.4375rem;
+
+	margin-inline-start: auto;
+
+	background: var(--Border);
+
+	border-radius: 0;
+}
+
+// ─── THE ERROR BODY ─────────────────────────────────────────────────────────
+//
+// The refusal, as a record with one bad line. `STATUS: INTERRUPTED` first,
+// because the vocabulary comes before the explanation; then the proposition;
+// then `CAUSE:` and `NEXT:` as field labels, at the ledger's indent and the
+// ledger's two columns. A slip that said "Something went wrong" would be a slip
+// that kept its reader at arm's length.
+
+.Slip__Error {
+	display: grid;
+	gap: var(--space-tight);
+
+	padding: var(--space-reading);
+
+	min-inline-size: 0;
+}
+
+.Slip__ErrorMark {
+	color: var(--Foreground);
+
+	font-weight: 500;
+}
+
+.Slip__ErrorRow {
+	display: grid;
+	grid-template-columns: 4.5rem minmax(0, 1fr);
+	gap: var(--space-tight);
+
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+}
+
+.Slip__ErrorKey {
+	color: var(--MuteForeground);
+
+	letter-spacing: var(--track-row);
+	white-space: nowrap;
+}
+
+.Slip__ErrorValue {
+	color: var(--Foreground);
+
+	overflow-wrap: anywhere;
+	text-wrap: pretty;
+}
+
+.Slip__Error .SlipAction {
+	margin-block-start: var(--space-tight);
+}
+
+// ─── THE PANEL'S THREE REGIONS ──────────────────────────────────────────────
+//
+// A panel that can be taller than the viewport is a flex column with one
+// scrolling region. The head is the slip's register line (sticky, already), the
+// foot is the keyboard path (sticky, already), and the body is the only element
+// allowed to move - so the title stays on screen while the middle scrolls,
+// which is the device the plate's pinned spec column uses at modal scale.
+
+.Slip__Body {
+	flex: 1 1 auto;
+
+	min-block-size: 0;
+	min-inline-size: 0;
+
+	padding: var(--space-reading);
+
+	overflow-x: hidden;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+}
+
+.Slip__PanelHead {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+
+	margin: 0;
+	padding: var(--space-reading) var(--space-reading) 0;
+}
+
+.Slip__PanelFoot {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: flex-end;
+	gap: var(--space-tight);
+
+	margin: 0;
+	padding: 0 var(--space-reading) var(--space-reading);
+}
+
+.Slip__PanelTitle {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	font-weight: 500;
+	letter-spacing: var(--track-join);
+
+	color: var(--Foreground);
+
+	text-wrap: balance;
+}
+
+.Slip__PanelNote {
+	margin: 0;
+
+	max-inline-size: 52ch;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+	letter-spacing: var(--track-name);
+
+	color: var(--MuteForeground);
+
+	text-wrap: pretty;
+}
+
+// ─── THE GRIP ───────────────────────────────────────────────────────────────
+//
+// The edge a drawer can be pulled by. It is a ruled cap in the row rhythm - a
+// 2rem hairline on the card fill, two hairlines thick - not the kit's 100px
+// muted pill, which reads as a phone affordance pasted onto paper. It sits
+// inside the slip's top edge and is `aria-hidden`: the drag is an extra door,
+// and Escape is the stated one.
+
+.Slip__Grip {
+	display: block;
+	flex: 0 0 auto;
+
+	inline-size: 2rem;
+	block-size: 0.1875rem;
+
+	margin: var(--space-tight) auto 0;
+
+	background: var(--Divider);
+
+	border-radius: 0;
+}
+
+// ─── SIZES ──────────────────────────────────────────────────────────────────
+//
+// One scale, read by every slip that has a width at all. The floor is the
+// slip's own `min-inline-size: 12rem`; these raise it, and `full` is bounded by
+// the viewport rather than by a rem so it cannot overflow at 360px.
+
+.Slip--sm {
+	min-inline-size: 16rem;
+}
+
+.Slip--md {
+	min-inline-size: 20rem;
+}
+
+.Slip--lg {
+	min-inline-size: 28rem;
+}
+
+.Slip--full {
+	min-inline-size: min(100%, 72rem);
+}
+
+// ─── THE DIALOG ARM ─────────────────────────────────────────────────────────
+//
+// The kit centred a dialog with `top-50%` + `translate-y-[-50%]` and gave it no
+// internal scroll, so a dialog taller than the viewport lost its own title off
+// the top edge. Three declarations fix it: a bounded block size, a flex column,
+// and a body that is the only thing that scrolls.
+//
+// The centring is `transform`, and the arrival animation is `translate` - two
+// different properties on purpose. A single `transform` would be overwritten by
+// the animation for the 120 ms it runs, and the panel would jump from the
+// centre to the top-left and back.
+
+.Slip--dialog {
+	position: fixed;
+	inset-block-start: 50%;
+	inset-inline-start: 50%;
+
+	transform: translate(-50%, -50%);
+
+	display: flex;
+	flex-direction: column;
+
+	inline-size: min(36rem, calc(100vw - 2rem));
+	max-inline-size: none;
+	max-block-size: min(90vh, 90dvh);
+
+	padding: 0;
+
+	gap: 0;
+
+	overflow: hidden;
+}
+
+.Slip--dialog[data-size="sm"] {
+	inline-size: min(24rem, calc(100vw - 2rem));
+}
+
+.Slip--dialog[data-size="md"] {
+	inline-size: min(36rem, calc(100vw - 2rem));
+}
+
+.Slip--dialog[data-size="lg"] {
+	inline-size: min(54rem, calc(100vw - 2rem));
+}
+
+.Slip--dialog[data-size="full"] {
+	inline-size: calc(100vw - 2rem);
+	max-block-size: calc(100dvh - 2rem);
+}
+
+// A dialog whose body is an arm rather than content still gets the arm's own
+// inset, so a loading panel is not a panel with a 16px gutter and a skeleton
+// with another one.
+
+.Slip--dialog[data-body-state="loading"] > .Slip__Loading,
+.Slip--dialog[data-body-state="error"] > .Slip__Error,
+.Slip--dialog[data-body-state="empty"] > .Slip__Empty {
+	padding-block: var(--space-group);
+}
+
+// ─── THE SHEET ARM ──────────────────────────────────────────────────────────
+//
+// The slip anchored to an edge. One border, on the edge that faces the page -
+// the other three are the viewport, and a frame drawn against the viewport is a
+// frame around nothing. Height is the content's, bounded by the viewport, so a
+// sheet that holds two rows is not a sheet the height of the screen.
+
+.Slip--sheet {
+	position: fixed;
+
+	display: flex;
+	flex-direction: column;
+
+	padding: 0;
+
+	max-block-size: none;
+
+	overflow: hidden;
+}
+
+.Slip--sheet[data-side="right"] {
+	inset-block: 0;
+	inset-inline-end: 0;
+
+	inline-size: min(26rem, 100vw);
+	max-block-size: 100dvh;
+
+	border-block: 0;
+	border-inline-end: 0;
+	border-inline-start: 1px solid var(--Divider);
+}
+
+.Slip--sheet[data-side="left"] {
+	inset-block: 0;
+	inset-inline-start: 0;
+
+	inline-size: min(26rem, 100vw);
+	max-block-size: 100dvh;
+
+	border-block: 0;
+	border-inline-start: 0;
+	border-inline-end: 1px solid var(--Divider);
+}
+
+.Slip--sheet[data-side="top"] {
+	inset-inline: 0;
+	inset-block-start: 0;
+
+	inline-size: 100%;
+	max-block-size: 80dvh;
+
+	border-inline: 0;
+	border-block-start: 0;
+	border-block-end: 1px solid var(--Divider);
+}
+
+.Slip--sheet[data-side="bottom"] {
+	inset-inline: 0;
+	inset-block-end: 0;
+
+	inline-size: 100%;
+	max-block-size: 80dvh;
+
+	border-inline: 0;
+	border-block-end: 0;
+	border-block-start: 1px solid var(--Divider);
+}
+
+// ─── THE DRAWER ARM ─────────────────────────────────────────────────────────
+//
+// vaul prints `data-vaul-drawer-direction`; the arm reads it rather than
+// restating a direction prop. Same frame rule as the sheet, same bounded height,
+// and the grip is drawn above the head so a bottom drawer states that it can be
+// thrown away.
+
+.Slip--drawer {
+	position: fixed;
+
+	display: flex;
+	flex-direction: column;
+
+	padding: 0;
+
+	max-block-size: none;
+
+	overflow: hidden;
+}
+
+.Slip--drawer[data-vaul-drawer-direction="bottom"] {
+	inset-inline: 0;
+	inset-block-end: 0;
+
+	max-block-size: 90dvh;
+
+	border-inline: 0;
+	border-block-end: 0;
+	border-block-start: 1px solid var(--Divider);
+}
+
+.Slip--drawer[data-vaul-drawer-direction="top"] {
+	inset-inline: 0;
+	inset-block-start: 0;
+
+	max-block-size: 90dvh;
+
+	border-inline: 0;
+	border-block-start: 0;
+	border-block-end: 1px solid var(--Divider);
+}
+
+.Slip--drawer[data-vaul-drawer-direction="right"] {
+	inset-block: 0;
+	inset-inline-end: 0;
+
+	inline-size: min(26rem, 100vw);
+	max-block-size: 100dvh;
+
+	border-block: 0;
+	border-inline-end: 0;
+	border-inline-start: 1px solid var(--Divider);
+}
+
+.Slip--drawer[data-vaul-drawer-direction="left"] {
+	inset-block: 0;
+	inset-inline-start: 0;
+
+	inline-size: min(26rem, 100vw);
+	max-block-size: 100dvh;
+
+	border-block: 0;
+	border-inline-start: 0;
+	border-inline-end: 1px solid var(--Divider);
+}
+
+// ─── THE HOVER ARM ──────────────────────────────────────────────────────────
+//
+// A hover card is read, not operated, so it takes a measure rather than a width:
+// 24rem at most, which is the width a two-sentence gloss needs and the width a
+// pointer can travel across in the close delay. It also caps its own height,
+// because a hover card that grew past the fold would be a hover card the reader
+// cannot leave by moving down.
+
+.Slip--hover {
+	max-inline-size: 24rem;
+	max-block-size: 22rem;
+
+	padding: var(--space-reading);
+
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+// ─── THE TIP ARM ────────────────────────────────────────────────────────────
+//
+// The detail arm of a tooltip: a slip, but the smallest one in the family. Its
+// floor is 14rem because below that a register line and a sentence share one
+// column badly, and its ceiling is 22rem because a tooltip wider than that is a
+// popover that has not admitted it.
+
+.Slip--tip {
+	min-inline-size: 14rem;
+	max-inline-size: 22rem;
+	max-block-size: 18rem;
+
+	padding: 0;
+
+	background: var(--Card);
+
+	z-index: 70;
+}
+
+.Slip--tip > .Slip__Note,
+.Slip--tip > .Slip__Body,
+.Slip--tip > p,
+.Slip--tip > ul,
+.Slip--tip > ol {
+	padding: var(--space-tight) var(--space-reading) var(--space-reading);
+}
+
+.Slip--tip > .Slip__Note {
+	padding-block-start: var(--space-tight);
+}
+
+.Slip__TipMark {
+	color: var(--MuteForeground);
+}
+
+// ─── THE ARRIVAL, BY SIDE ───────────────────────────────────────────────────
+//
+// The base slip rises 2px. That is right for a slip that opens *below* its
+// trigger and wrong in the other three directions: a panel that opens upward
+// and rises upward is a panel moving away from the control that opened it. So
+// the travel is the side's, and the panel states which side Radix chose in
+// `data-side`.
+//
+// A sheet and a drawer are the same rule at a larger distance: they arrive from
+// their own edge, because that is the only thing their motion has to explain.
+
+$SlipSides: (
+	"top": (
+		0,
+		2px,
+	),
+	"bottom": (
+		0,
+		-2px,
+	),
+	"left": (
+		2px,
+		0,
+	),
+	"right": (
+		-2px,
+		0,
+	),
+);
+
+@each $Side, $Travel in $SlipSides {
+	$X: list.nth($Travel, 1);
+	$Y: list.nth($Travel, 2);
+
+	#{$Slip}[data-side="#{$Side}"][data-state="open"] {
+		@media (prefers-reduced-motion: no-preference) {
+			animation-name: SlipArrive-#{$Side};
+		}
+	}
+
+	@keyframes SlipArrive-#{$Side} {
+		from {
+			opacity: 0;
+			translate: $X $Y;
+		}
+
+		to {
+			opacity: 1;
+			translate: 0 0;
+		}
+	}
+}
+
+// The sheets and drawers: the distance is the edge's, not 2px.
+@keyframes SlipArriveFromRight {
+	from {
+		opacity: 0;
+		translate: 24px 0;
+	}
+
+	to {
+		opacity: 1;
+		translate: 0 0;
+	}
+}
+
+@keyframes SlipArriveFromLeft {
+	from {
+		opacity: 0;
+		translate: -24px 0;
+	}
+
+	to {
+		opacity: 1;
+		translate: 0 0;
+	}
+}
+
+@keyframes SlipArriveFromTop {
+	from {
+		opacity: 0;
+		translate: 0 -24px;
+	}
+
+	to {
+		opacity: 1;
+		translate: 0 0;
+	}
+}
+
+@keyframes SlipArriveFromBottom {
+	from {
+		opacity: 0;
+		translate: 0 24px;
+	}
+
+	to {
+		opacity: 1;
+		translate: 0 0;
+	}
+}
+
+.Slip--sheet[data-side="right"][data-state="open"],
+.Slip--drawer[data-vaul-drawer-direction="right"][data-state="open"] {
+	@media (prefers-reduced-motion: no-preference) {
+		animation-name: SlipArriveFromRight;
+		animation-duration: 160ms;
+	}
+}
+
+.Slip--sheet[data-side="left"][data-state="open"],
+.Slip--drawer[data-vaul-drawer-direction="left"][data-state="open"] {
+	@media (prefers-reduced-motion: no-preference) {
+		animation-name: SlipArriveFromLeft;
+		animation-duration: 160ms;
+	}
+}
+
+.Slip--sheet[data-side="top"][data-state="open"],
+.Slip--drawer[data-vaul-drawer-direction="top"][data-state="open"] {
+	@media (prefers-reduced-motion: no-preference) {
+		animation-name: SlipArriveFromTop;
+		animation-duration: 160ms;
+	}
+}
+
+.Slip--sheet[data-side="bottom"][data-state="open"],
+.Slip--drawer[data-vaul-drawer-direction="bottom"][data-state="open"] {
+	@media (prefers-reduced-motion: no-preference) {
+		animation-name: SlipArriveFromBottom;
+		animation-duration: 160ms;
+	}
+}
+
+// ─── THE SCROLL LOCK, AND WHAT IT COSTS ─────────────────────────────────────
+//
+// Radix Dialog and vaul both lock the page and both mark `<html>` with
+// `data-scroll-locked`. The attribute is the family's single selector for the
+// compensation: when the lock lands the page loses its scrollbar and gains it
+// back on close, and a layout that is centred in the viewport shifts by half the
+// scrollbar's width in between. The padding is added while locked, not removed
+// while locked, because the shift is visible on the *arrival* of the lock.
+
+html[data-scroll-locked] body {
+	padding-inline-end: var(--SlipScrollbar, 0);
+}
+
+// ─── THE MENUBAR ────────────────────────────────────────────────────────────
+//
+// The bar of menus: a ruled strip on the card fill, one hairline under it, no
+// fill of its own. It is not a slip - it is the shelf the slips open from - so
+// it carries the record grammar's own metrics and nothing from `.Slip` except
+// the ink and the type role.
+//
+// The trigger's open state is the row grammar's hover wash plus the 2px accent
+// rule: the same three signals (`data-state`, ink, rule) the header's active
+// route and the item grammar's current row use, so "this menu is open" and "you
+// are here" are one statement in this document.
+
+.Menubar {
+	display: flex;
+	align-items: stretch;
+	gap: 0;
+
+	block-size: auto;
+	min-block-size: 2.25rem;
+
+	padding: 0;
+
+	background: var(--Card);
+
+	border: 0;
+	border-block-end: 1px solid var(--Divider);
+	border-radius: 0;
+	box-shadow: none;
+}
+
+.Menubar__Trigger {
+	display: inline-flex;
+	align-items: center;
+
+	padding: 0 var(--space-reading);
+
+	background: none;
+	border: 0;
+	border-block-end: 2px solid transparent;
+	border-radius: 0;
+
+	color: var(--Foreground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+	letter-spacing: var(--track-row);
+	text-transform: uppercase;
+
+	cursor: default;
+	user-select: none;
+
+	outline: none;
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition:
+			background-color 90ms linear,
+			border-color 90ms linear;
+	}
+}
+
+.Menubar__Trigger:hover {
+	background: var(--Mute);
+}
+
+.Menubar__Trigger[data-state="open"] {
+	background: var(--Mute);
+
+	border-block-end-color: var(--Accent);
+}
+
+.Menubar__Trigger:focus-visible {
+	outline: 2px solid var(--Accent);
+	outline-offset: -2px;
+}
+
+.Menubar__Trigger[data-disabled] {
+	color: var(--MuteForeground);
+
+	cursor: not-allowed;
 }

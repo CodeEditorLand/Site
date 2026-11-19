@@ -45,12 +45,12 @@
 // `:is()` and not a comma list, for the reason `UI/_Item.scss` states: a comma
 // list attaches a compound (`:active`, `:disabled`) to its last member only.
 
-$Control: ':is([data-slot="button"], .SlipAction, .Copy, .PaletteTrigger, .RailFilter__Clear, .doc-sidebar__handoff, .auth-shell__reveal, .auth-shell__alternate, .contact-form__action, .contact-form__errors-link, .auth-shell__submit, .StaccatoButton, .StaccatoHeroButton, .ShellState__action, .MotionOrigin__Trigger)';
+$Control: ':is([data-slot="button"], .SlipAction, .Copy, .PaletteTrigger, .RailFilter__Clear, .doc-sidebar__handoff, .auth-shell__reveal, .auth-shell__alternate, .contact-form__action, .FormSummary__Link, .auth-shell__submit, .StaccatoButton, .StaccatoHeroButton, .ShellState__action, .MotionOrigin__Trigger)';
 
 // The controls with no fill of their own: a row action, a receipt, a word. They
 // are the ones that need a field on hover, because ink alone has nothing to
 // darken - their label is already the full ink.
-$Bare: ":is(.SlipAction, .Copy, .PaletteTrigger, .RailFilter__Clear, .doc-sidebar__handoff, .auth-shell__reveal, .auth-shell__alternate, .contact-form__errors-link, .ShellState__action, .MotionOrigin__Trigger)";
+$Bare: ":is(.SlipAction, .Copy, .PaletteTrigger, .RailFilter__Clear, .doc-sidebar__handoff, .auth-shell__reveal, .auth-shell__alternate, .FormSummary__Link, .ShellState__action, .MotionOrigin__Trigger)";
 
 // ─── REST ───────────────────────────────────────────────────────────────────
 

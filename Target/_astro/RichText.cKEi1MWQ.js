@@ -1,0 +1,1 @@
+import{t}from"./RichText.CKzp_cPT.js";export{t as RichText,t as default};

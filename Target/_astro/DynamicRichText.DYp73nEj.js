@@ -1,0 +1,1 @@
+import{t}from"./RichText.CKzp_cPT.js";import{Rt as r}from"./Vendor/React.CWIYvx5e.js";var a=r(),o=r=>(0,a.jsx)(t,{...r});export{o as DynamicRichText,o as default};

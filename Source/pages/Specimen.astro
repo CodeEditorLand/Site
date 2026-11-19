@@ -44,6 +44,8 @@
  *   /THE PLATES seven parts live at 1:1, each with a pinned contract
  *   /THE ABSENCES three parts stated, each with what would be here and why not
  *   /THE STATES nine conditions, composed, each naming where it happens
+ *   /THE FIELD one family, every state: the matrix with a reason for every cell
+ *              that cannot exist, then the ten components printed live
  *   /THE MATERIAL the six things the document is printed with
  *   /THE REGISTER what the sheet counted, and the file it counted from
  *
@@ -86,6 +88,10 @@ import { RegisterOf } from "../Component/Record/RegisterLine.js";
 import Trail from "../Component/Route/Trail.astro";
 import ShellState from "../Component/Shell/ShellState.astro";
 import SpecimenMaterial from "../Component/Specimen/SpecimenMaterial.astro";
+import SpecimenField from "../Component/Specimen/SpecimenField";
+import SpecimenFieldMatrix from "../Component/Specimen/SpecimenFieldMatrix.astro";
+import SpecimenOverlay from "../Component/Specimen/SpecimenOverlay";
+import SpecimenOverlayMatrix from "../Component/Specimen/SpecimenOverlayMatrix.astro";
 import SpecimenPlate from "../Component/Specimen/SpecimenPlate.astro";
 import SpecimenSheet from "../Component/Specimen/SpecimenSheet.astro";
 import SurfaceAbsent from "../Component/Surface/SurfaceAbsent.astro";
@@ -118,7 +124,7 @@ import Base from "../Layout/Base.astro";
 const MetaTitle = "Specimen | Code Editor Land";
 
 const MetaDescription =
-	"The document's own parts, printed: twelve components at 1:1 with their contracts, three stated absences, the nine adverse states composed, and the six things the site is printed with.";
+	"The document's own parts, printed: twelve components at 1:1 with their contracts, three stated absences, the nine adverse states composed, the input family's state matrix with its live rows, and the six things the site is printed with.";
 
 /* ─── THE PARTS, BY DISPOSITION ────────────────────────────────────────── */
 
@@ -493,6 +499,58 @@ const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/SPECIMEN" }];
 					</div>
 				))}
 			</div>
+		</RecordBand>
+
+		{/* ─── THE FIELD ─────────────────────────────────────────────── */}
+		{/* The one band about a family rather than a part, and the only one whose
+		    subject is a set of states. The matrix is static Astro - two hundred
+		    cells of accounting with nothing to hydrate - and the rows are one
+		    island: `client:visible`, because the family is thirty live controls
+		    and a control that mounts off-screen is a control nobody typed in. */}
+		<RecordBand band={{ ...Bands.Field, id: "field" }}>
+			<SpecimenFieldMatrix />
+
+			<SpecimenField client:visible />
+
+			<p class="specimen-page__note">
+				The matrix and the rows read one file: Content/Specimen/Field.ts
+				states every cell's disposition, every row's state and the one
+				line that says when it is right. A state added there appears on
+				both - the matrix's figures and the rows' order - with no second
+				edit, which is the same rule the parts table above follows.
+				{` `}This band is not on /THE SHEET and that is a boundary rather
+				than a gap: the sheet indexes the twelve Dynamic parts, one cell
+				and one plate each, and this band is the first one about a family
+				of primitives - ten components whose subject is their states,
+				which a plate holding one part at 1:1 could not print.
+			</p>
+		</RecordBand>
+
+		{/* ─── THE OVERLAY ───────────────────────────────────────────── */}
+		{/* The second family band, and the one whose subject is behaviour rather
+		    than shape. The matrix and the dismissal contract are static Astro -
+		    two hundred cells and five rules with nothing to hydrate - and the
+		    rows are one island: `client:visible`, because the family is
+		    thirty-one live overlays and an overlay that mounts off-screen is an
+		    overlay nobody opened. */}
+		<RecordBand band={{ ...Bands.Overlay, id: "overlay" }}>
+			<SpecimenOverlayMatrix />
+
+			<SpecimenOverlay client:visible />
+
+			<p class="specimen-page__note">
+				The matrix, the contract and the rows read one file each:
+				Content/Specimen/Overlay.ts states every cell's disposition and
+				every row's state, and Component/UI/Overlay.tsx states the five
+				dismissals once for the whole family. A condition added to the
+				data appears on the matrix's figures and in the rows' order with
+				no second edit - the same rule /THE FIELD follows.
+				{` `}This band is the second about a family rather than a part,
+				and it is here rather than on /THE SHEET for the same boundary:
+				the sheet indexes the twelve Dynamic parts, and a band whose
+				subject is the two seconds after a click cannot stand on a plate
+				holding one part at 1:1.
+			</p>
 		</RecordBand>
 
 		{/* ─── THE MATERIAL ──────────────────────────────────────────── */}

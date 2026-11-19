@@ -157,10 +157,15 @@ function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
 		return null;
 	}
 
+	// A refusal is announced once, when it appears - and it appears only when
+	// there is a message to read, which is why the guard above is also the
+	// announcement's condition. Without the role the sentence is a red
+	// paragraph a screen reader never mentions.
 	return (
 		<p
 			data-slot="form-message"
 			id={formMessageId}
+			role={error ? "alert" : undefined}
 			className={cn("text-destructive", className)}
 			{...props}
 		>

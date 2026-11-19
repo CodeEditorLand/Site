@@ -1,0 +1,1005 @@
+@use "../Mixin" as *;
+
+// ─── THE INPUT FAMILY ───────────────────────────────────────────────────────
+//
+// `UI/_Field.scss` draws the one field the *slip* uses (a trigger that opens a
+// popover); `State/_Field.scss` owns what a control does when it is hovered,
+// focused, wrong, unavailable or read-only. Neither of them draws a **form**
+// field: the label, the control, the addon, the hint, the counter, the
+// confirmation and the action that belong to one value, as one instrument.
+// This partial does, and it is the only place the family's anatomy lives.
+//
+// ─── ONE BOX, SEGMENTS INSIDE IT ───────────────────────────────────────────
+// A field is ONE frame. A prefix, a suffix and an inline action are segments of
+// that frame separated by a hairline seam - never boxes standing beside a box.
+// The consequence is the whole design: the primitives inside `.Field__Control`
+// lose their own fill, frame and padding, and the box around them carries them.
+// A field therefore looks the same whether it holds a `<input>`, a `<textarea>`,
+// a Radix trigger or a six-slot code, which is what makes the family a family
+// rather than ten controls that happen to sit in a column.
+//
+// The neutralisation is scoped to `.Field .Field__Control > :is(input, …)`
+// (0,2,0) rather than a bare `[data-slot="input"]` (0,1,0), for two reasons: it
+// must not touch the account and verify surfaces that mount the same primitives
+// outside a field, and it must outrank `State/_Field.scss`'s state rules - which
+// load *later* than this layer and would otherwise paint a 2px inset rule and a
+// destructive wash on the input inside the box, one frame inside another.
+//
+// ─── THE JELLY PROPERTY SET IS THE SKIN ────────────────────────────────────
+// The vendored Jelly elements publish their geometry as custom properties:
+// `--jelly-input-padding-inline`, `--jelly-input-font-size`,
+// `--jelly-input-radius`, `--jelly-label-gap`, `--jelly-textarea-*`,
+// `--jelly-select-*`, `--jelly-otp-*`, `--jelly-checkbox-size`,
+// `--jelly-radio-size`, `--jelly-switch-*`, `--jelly-slider-track-height`,
+// `--jelly-label`, `--jelly-ring`. The field reads them, each with the site's
+// own fallback, so a container that already speaks Jelly re-proportions the
+// field without a lane class and without a second component:
+//
+//   .Field--on-card     --field-fill: transparent
+//   a drawer or a band  --jelly-input-padding-inline: 0.75rem
+//   a dense settings list  .Field--dense
+//
+// `--field-fill` is the one property the family owns rather than reads, and it
+// is deliberate. A field's fill cannot follow `--jelly-fill`: inside a
+// `jelly-card` that property is the card's own white, and a white field on a
+// white card is a card inside a card. On the creme field the box is white; on a
+// white insert it is transparent and the hairline alone distinguishes it - which
+// is exactly what `Contact/_Form.scss` decided for the site's one live form, now
+// stated once instead of once per form.
+//
+// ─── NO NEW COLOUR, NO NEW STATE WORD ──────────────────────────────────────
+// Every ink here is a token: `--state-*` for the states (rest, hover, focus,
+// invalid, disabled, read-only, busy), `--Destruct` only for a refusal, `--ink`
+// for a confirmation. `VALID` is *not* green: §1.6 spends the accent on
+// authentication, and a field that turned green would be the fifth green thing
+// on a page that may have one. A confirmed value is attested by a mark and a
+// sentence in ink - the state square the rest of the document already uses.
+//
+// ─── THE STATES A PRINTED SHEET CANNOT PRODUCE ─────────────────────────────
+// `:focus-visible` and `:hover` exist only in a live browser, so a specimen
+// sheet could not print them and a server-rendered field could not state them.
+// `.Field[data-state]` is the answer, and it is not a specimen trick: the
+// component sets it from its own props, so a field that is invalid on the
+// server prints invalid before any script runs. The ring, the error edge, the
+// wash and the skeleton are written ONCE and read by both the pseudo-class and
+// the attribute - the attribute is the declared form of the same state.
+//
+// ─── WHAT IS PUBLISHED ─────────────────────────────────────────────────────
+//   .Field                    the block: head, control, foot
+//   .Field__Head              the label row: label, meta, the head's one action
+//   .Field__Label             the field's name, at the meta register
+//   .Field__Required          the `*`, in the refusal's ink
+//   .Field__Meta              the field's own register: READ-ONLY, the counter
+//   .Field__Counter           `N / LIMIT`, derived from the control's value
+//   .Field__HeadAction        the one link that belongs to the name
+//   .Field__Row               the control row, when the field carries an action
+//   .Field__Control           the one box: addon, control, addon, action
+//   .Field__Addon             a prefix or suffix segment, with its seam
+//   .Field__Input             the control itself, inside the box
+//   .Field__Action            the one thing to do with the value
+//   .Field__Foot              the sentences under the box
+//   .Field__Hint              the format, before the reader gets it wrong
+//   .Field__Error             the refusal, in the one ink reserved for it
+//   .Field__Valid             the confirmation: a mark and a sentence, in ink
+//   .Field__Partial           the fact that did not arrive
+//   .Field__Skeleton          the loading arm, in the record grammar
+//   .Field__Bar               one barred rule of that skeleton
+//   .Field__Choice            one member of a set: the mark and its sentence
+//   .Field__ChoiceBody        that sentence, and its note
+//   .Field__ChoiceLabel       the sentence itself, at body weight
+//   .Field__ChoiceNote        the note under it, at the caption register
+//   .Field__SetCount          `3 OF 12 SELECTED`, counted from the set
+//   .Field--row               the control and its action on one line
+//   .Field--dense             the settings interval
+//   .Field--on-card           the field on a white insert: hairline only
+//   .FormSummary              the form's refusal, as an artifact
+//   .FormSummary__Head        `INTERRUPTED` and the count
+//   .FormSummary__Mark        the state word, with its square
+//   .FormSummary__Count       `3 FIELDS`, counted from the rows
+//   .FormSummary__List        one line per refused field
+//   .FormSummary__Row         that line's container
+//   .FormSummary__Link        the line as a control that focuses its field
+//   .FormSummary__Field       the field's name, at medium weight
+//   .FormSummary__Note        what to do next, under the list
+//
+// The cascade note: this file loads in the control layer, before every component
+// partial. It is written so nothing later needs to correct it - the box rules
+// carry (0,2,0) or more against the primitives, and the state rules are the
+// state layer's own tokens rather than values restated here.
+
+/* ─── THE BLOCK ──────────────────────────────────────────────────────────── */
+
+.Field {
+	// The skin. Every one of these is a Jelly property with the site's value as
+	// the fallback, so a container that speaks Jelly re-proportions the field.
+	--field-fill: var(--Card);
+	--field-ink: var(--jelly-label, var(--Foreground));
+	--field-quiet: var(--state-ink-quiet);
+	--field-rule: var(--Divider);
+	--field-radius: var(--jelly-input-radius, 0);
+	--field-pad-inline: var(--jelly-input-padding-inline, var(--space-reading));
+	--field-pad-block: calc(var(--space-tight) * 0.75);
+	--field-font: var(--jelly-input-font-size, var(--type-body));
+	--field-line: var(--type-body-line);
+	--field-gap: var(--jelly-label-gap, var(--space-tight));
+	--field-measure: 34rem;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--field-gap);
+
+	min-inline-size: 0;
+
+	// The container the row's own query is measured against: the field, not the
+	// page. A field in a drawer is narrow because the drawer is, and a media
+	// query would never know that.
+	container-type: inline-size;
+	container-name: field;
+
+	color: var(--field-ink);
+}
+
+// The field has a measure, and it is a property rather than a modifier: a band
+// that wants the full width sets `--field-measure: 100%`, a drawer sets
+// `16rem`, and the field keeps one rule. A control wider than the value it holds
+// is a control that lost its scale, so the default stops at 34rem inside
+// whatever band it is in.
+.Field--on-card {
+	--field-fill: transparent;
+}
+
+.Field--dense {
+	--field-gap: calc(var(--jelly-label-gap, var(--space-tight)) * 0.5);
+	--field-pad-block: calc(var(--space-tight) * 0.5);
+	--field-font: var(--jelly-input-font-size, var(--type-meta));
+	--field-line: var(--type-meta-line);
+}
+
+/* ─── THE HEAD ───────────────────────────────────────────────────────────── */
+
+.Field__Head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	min-inline-size: 0;
+}
+
+.Field__Label {
+	flex: 1 1 auto;
+
+	min-inline-size: 0;
+
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--field-ink);
+
+	// A label that will not fit breaks instead of overflowing. An address, a
+	// path or a field name carried from a config file is the long-text case, and
+	// a field's name is not a place to hyphenate.
+	overflow-wrap: anywhere;
+	text-wrap: pretty;
+
+	cursor: pointer;
+}
+
+.Field[data-state="disabled"] .Field__Label,
+.Field__Label[aria-disabled="true"] {
+	color: var(--field-quiet);
+
+	cursor: not-allowed;
+}
+
+// A label on a refused field takes the refusal's ink. The message under the box
+// says what is wrong; the label says which field is wrong, which is the fact a
+// reader scanning a form of twelve needs first.
+.Field[data-state="invalid"] .Field__Label {
+	color: var(--state-error-ink);
+}
+
+// The `*` is a glyph and nothing more: `aria-required` on the control is the
+// fact, and this is the mark a sighted reader scans for. It never carries the
+// word - the meta slot prints `REQUIRED` when the word is wanted.
+.Field__Required {
+	margin-inline-start: var(--space-tight);
+
+	color: var(--state-error-ink);
+}
+
+// The field's own register, at the far end of the label row: `REQUIRED`,
+// `READ-ONLY`, and the counter. It is the same device the record layer uses for
+// a ledger's key - a fact stated in the mute ink at the meta register - which is
+// why a field can say three things about itself without a sentence.
+.Field__Meta {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	flex: 0 0 auto;
+
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--field-quiet);
+}
+
+// The counter is the one figure a field prints about itself, and it is derived
+// from the control's own value - never from a prop beside it. It is quiet at
+// rest and takes ink when it matters: within the last tenth of the limit, or
+// past it.
+.Field__Counter {
+	font-variant-numeric: tabular-nums;
+
+	color: var(--field-quiet);
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition: color var(--motion-interval-quick) linear;
+	}
+}
+
+.Field__Counter[data-near="true"] {
+	color: var(--field-ink);
+}
+
+.Field__Counter[data-over="true"] {
+	color: var(--state-error-ink);
+}
+
+// The head's one action: `FORGOT?`, `PASTE`, `USE THE SESSION VALUE`. It belongs
+// to the name rather than to the value, so it sits on the label's line and never
+// competes with `.Field__Action`, which belongs to the value.
+.Field__HeadAction {
+	flex: 0 0 auto;
+
+	padding: 0;
+
+	background: none;
+	border: 0;
+
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--field-quiet);
+
+	text-decoration: underline;
+	text-decoration-color: var(--Border);
+	text-underline-offset: var(--optical-underline-offset);
+
+	cursor: pointer;
+}
+
+.Field__HeadAction:hover,
+.Field__HeadAction:focus-visible {
+	color: var(--field-ink);
+
+	text-decoration-color: currentColor;
+}
+
+/* ─── THE ROW, AND THE ONE BOX ───────────────────────────────────────────── */
+
+// A field that carries an action is a row: the box and the action share a line
+// while there is room, and the action goes under the box when there is not.
+// The query is on the field (`container-name: field`), so a field in a drawer
+// stacks at the drawer's width rather than at the viewport's.
+.Field__Row {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+
+	min-inline-size: 0;
+
+	max-inline-size: var(--field-measure);
+}
+
+@container field (min-width: 22rem) {
+	.Field--row .Field__Row {
+		flex-direction: row;
+		align-items: flex-start;
+	}
+
+	.Field--row .Field__Control {
+		flex: 1 1 auto;
+	}
+
+	.Field--row .Field__Action {
+		flex: 0 0 auto;
+	}
+}
+
+// THE BOX. One frame, one fill, one hairline - and everything the field holds
+// lives inside it.
+.Field__Control {
+	display: flex;
+	align-items: stretch;
+
+	min-inline-size: 0;
+	min-block-size: calc(
+		var(--field-font) * var(--field-line) + var(--field-pad-block) * 2
+	);
+
+	background: var(--field-fill);
+
+	// The seam between segments and the field's own edge are the same hairline:
+	// an addon is not a second box, so it cannot have a second weight.
+	border: var(--BorderWidth) var(--BorderStyle) var(--field-rule);
+	border-radius: var(--field-radius);
+
+	color: var(--field-ink);
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition:
+			background-color var(--motion-interval-quick) linear,
+			border-color var(--motion-interval-quick) linear;
+	}
+}
+
+.Field:not([data-state="disabled"]):not([data-state="readonly"])
+	.Field__Control:hover {
+	border-color: var(--state-rule-strong);
+}
+
+// FOCUS: the ring is drawn on the box, not on the input inside it, so the addon
+// and the action are inside the thing that is focused. `:has(:focus-visible)`
+// rather than `:focus-within`: a field must not ring because it was clicked.
+.Field__Control:has(:focus-visible),
+.Field[data-state="focus"] .Field__Control {
+	outline: var(--state-ring-width) solid var(--state-ring);
+	outline-offset: var(--state-ring-offset);
+}
+
+// INVALID: the frame takes the refusal's ink and a 2px leading rule, the same
+// weight the state layer draws on a bare primitive - stated here on the box
+// because the box is what the reader sees.
+.Field[data-state="invalid"] .Field__Control {
+	border-color: var(--state-error-ink);
+
+	background: var(--state-error-field);
+}
+
+.Field[data-state="invalid"] .Field__Control:not(:has(:focus-visible)) {
+	box-shadow: inset var(--state-current-width) 0 0 0 var(--state-error-ink);
+}
+
+// VALID: the frame does not celebrate. A confirmed value is attested by the
+// mark and the sentence in the foot; a frame that changed colour would be a
+// state that only exists as a colour.
+.Field[data-state="valid"] .Field__Control {
+	border-color: var(--state-rule-strong);
+}
+
+// DISABLED: the wash and the quiet ink, the frame kept, the height kept. The
+// state layer's argument, applied to the box.
+.Field[data-state="disabled"] .Field__Control {
+	background: var(--state-field);
+
+	border-color: var(--field-rule);
+
+	color: var(--field-quiet);
+
+	cursor: not-allowed;
+}
+
+// READ-ONLY: transparent, full ink, no ring - the value is a fact the reader may
+// quote, and a ring would advertise a place to type.
+.Field[data-state="readonly"] .Field__Control {
+	background: transparent;
+
+	border-color: var(--Border);
+}
+
+.Field[data-state="readonly"] .Field__Control:has(:focus-visible) {
+	outline: none;
+}
+
+// LOADING: the box holds its height and prints the skeleton inside it, so the
+// form does not jump when the value arrives.
+.Field[data-state="loading"] .Field__Control {
+	background: var(--state-field);
+
+	border-color: var(--Border);
+}
+
+/* ─── THE CONTROL INSIDE THE BOX ─────────────────────────────────────────── */
+
+// Every primitive the family can hold, stripped to the one thing a box needs
+// from it: the value, the caret, the type and the room to grow. The Tailwind
+// strings the primitives carry (`bg-mute`, `px-3`, `ring-offset-2`,
+// `disabled:opacity-50`) are the kit's surface and are not the site's; inside a
+// field the box is the surface.
+//
+// The selector is an explicit list, never `> *`: an addon and an action are
+// children of the same box, and a `> *` rule would strip the addon's own seam
+// and stretch it to fill the row. The family's segments are not controls.
+$FieldControl: ':is(input, textarea, select, [data-slot="input"], [data-slot="textarea"], [data-slot="select-trigger"], [data-slot="input-otp"], [data-slot="slider"])';
+
+.Field .Field__Control > #{$FieldControl} {
+	flex: 1 1 auto;
+
+	min-inline-size: 0;
+	inline-size: 100%;
+
+	margin: 0;
+	padding: var(--field-pad-block) var(--field-pad-inline);
+
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+
+	color: inherit;
+
+	font-family: var(--FontMono);
+	font-size: var(--field-font);
+	line-height: var(--field-line);
+	letter-spacing: var(--track-set);
+
+	text-align: start;
+
+	outline: none;
+}
+
+// The primitive's own disabled opacity is a label present in the DOM and gone
+// from the page. Inside a field the box states unavailability, and the value
+// stays readable.
+.Field .Field__Control > #{$FieldControl}:disabled,
+.Field .Field__Control > #{$FieldControl}[aria-disabled="true"] {
+	opacity: 1;
+
+	-webkit-text-fill-color: var(--field-quiet);
+
+	color: var(--field-quiet);
+
+	cursor: not-allowed;
+}
+
+.Field .Field__Control > #{$FieldControl}::placeholder {
+	color: var(--field-quiet);
+
+	opacity: 1;
+}
+
+// A textarea grows with its content inside a fixed measure: the field's height
+// is the value's height, and the box is what stops it becoming a page.
+.Field .Field__Control > textarea {
+	resize: vertical;
+
+	min-block-size: calc(var(--field-font) * var(--field-line) * 3);
+	max-block-size: 16rem;
+
+	overflow-y: auto;
+}
+
+// A select trigger inside a field is the same box, so it keeps only its own
+// disclosure mark. Its `SlipField` anatomy is the slip's; here the field's box
+// draws the frame and the trigger is a transparent line of text in it.
+.Field .Field__Control > [data-slot="select-trigger"] {
+	justify-content: space-between;
+
+	min-block-size: 0;
+
+	border: 0;
+
+	background: transparent;
+}
+
+.Field .Field__Control > [data-slot="select-trigger"]:hover {
+	background: transparent;
+}
+
+// The code's slots are segments of the same box: the group is the row, and the
+// slot is a cell inside it - the seams come from the box, not from ten borders.
+.Field .Field__Control > [data-slot="input-otp"] {
+	inline-size: auto;
+}
+
+// The code's cells are adjacent segments of one box, so the group's own 4px gap
+// is set to nothing: the seam is the separator, and a gap beside a seam is two
+// separations for one boundary.
+.Field .Field__Control [data-slot="input-otp-group"] {
+	gap: 0;
+}
+
+.Field .Field__Control [data-slot="input-otp-slot"] {
+	inline-size: 2rem;
+	block-size: calc(var(--field-font) * var(--field-line) * 1.5);
+
+	border: 0;
+	border-inline-end: var(--BorderWidth) var(--BorderStyle) var(--field-rule);
+
+	background: transparent;
+
+	font-size: var(--field-font);
+	font-variant-numeric: tabular-nums;
+
+	box-shadow: none;
+}
+
+.Field .Field__Control [data-slot="input-otp-slot"]:last-child {
+	border-inline-end: 0;
+}
+
+.Field .Field__Control [data-slot="input-otp-slot"][data-active="true"] {
+	background: var(--state-field);
+}
+
+/* ─── THE SEGMENTS ───────────────────────────────────────────────────────── */
+
+// An addon is a segment of the box: its own fill, one seam, the same type. It
+// never carries a border of its own, so the box's edge is the only edge.
+.Field__Addon {
+	display: flex;
+	align-items: center;
+
+	flex: 0 0 auto;
+
+	padding: var(--field-pad-block) var(--space-tight);
+
+	background: var(--state-field);
+
+	color: var(--field-quiet);
+
+	font-family: var(--FontMono);
+	font-size: var(--field-font);
+	line-height: var(--field-line);
+	letter-spacing: var(--track-set);
+
+	white-space: nowrap;
+}
+
+.Field__Addon--prefix {
+	border-inline-end: var(--BorderWidth) var(--BorderStyle) var(--field-rule);
+}
+
+.Field__Addon--suffix {
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--field-rule);
+}
+
+.Field[data-state="disabled"] .Field__Addon {
+	background: transparent;
+
+	color: var(--field-quiet);
+}
+
+// The action that belongs to the VALUE (`VERIFY`, `COPY`, `RESEND`): a segment
+// of the row, with the site's action surface and no emphasis tier. It is not
+// `.emphasis-expressive` - a field's action is never the one expressive thing on
+// an artifact, and the form's primary action is.
+.Field__Action {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	flex: 0 0 auto;
+
+	padding: var(--field-pad-block) var(--space-reading);
+
+	background: var(--state-field);
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--field-rule);
+
+	color: var(--field-ink);
+
+	font-family: var(--FontMono);
+	font-size: var(--field-font);
+	line-height: var(--field-line);
+	letter-spacing: var(--track-name);
+
+	white-space: nowrap;
+
+	cursor: pointer;
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition:
+			background-color var(--motion-interval-quick) linear,
+			border-color var(--motion-interval-quick) linear;
+	}
+}
+
+.Field__Action:hover {
+	border-color: var(--state-rule-strong);
+}
+
+.Field__Action:focus-visible {
+	outline: var(--state-ring-width) solid var(--state-ring);
+	outline-offset: var(--state-ring-offset);
+}
+
+.Field__Action:disabled,
+.Field__Action[aria-disabled="true"] {
+	color: var(--field-quiet);
+
+	cursor: not-allowed;
+}
+
+/* ─── THE FOOT ───────────────────────────────────────────────────────────── */
+
+.Field__Foot {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	min-inline-size: 0;
+
+	max-inline-size: var(--field-measure);
+}
+
+.Field__Hint,
+.Field__Error,
+.Field__Valid,
+.Field__Partial {
+	flex: 1 1 100%;
+
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	overflow-wrap: anywhere;
+	text-wrap: pretty;
+}
+
+.Field__Hint {
+	color: var(--field-quiet);
+}
+
+// An error is a sentence, not a mark: it says what is missing, in the one ink
+// the site reserves for it.
+.Field__Error {
+	color: var(--state-error-ink);
+}
+
+// The confirmation, attested rather than celebrated: the state square in ink,
+// then the sentence in ink. Nothing here is green, and the mark is what survives
+// a photocopy.
+.Field__Valid {
+	display: flex;
+	align-items: baseline;
+	gap: var(--mark-gap);
+
+	color: var(--field-ink);
+}
+
+.Field__Valid::before {
+	content: "";
+
+	flex: 0 0 auto;
+
+	inline-size: var(--mark-square-attested);
+	block-size: var(--mark-square-attested);
+
+	background: currentColor;
+
+	align-self: center;
+}
+
+// The fact that did not arrive, under the value that did: an honest
+// `UNAVAILABLE`, never a zero and never a blank.
+.Field__Partial {
+	color: var(--field-quiet);
+}
+
+// When a field is refused AND it carries a hint, the hint stays: the refusal is
+// what the reader must fix, and the format is what stops them fixing it wrong.
+// The relation mark is the site's `↳`, printed by the component.
+.Field__Hint--after {
+	color: var(--field-quiet);
+}
+
+/* ─── THE LOADING ARM ────────────────────────────────────────────────────── */
+
+// A spinner says something is happening. A skeleton says what. The field's
+// loading state prints the word and bars the answer, in the record grammar - and
+// it does not move, because motion that continues without a state change is
+// decoration.
+.Field__Skeleton {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+
+	flex: 1 1 auto;
+
+	min-inline-size: 0;
+
+	padding: var(--field-pad-block) var(--field-pad-inline);
+}
+
+.Field__SkeletonMark {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0;
+
+	color: var(--field-ink);
+}
+
+.Field__Bar {
+	display: block;
+
+	block-size: var(--state-busy-bar);
+	inline-size: var(--bar, 55%);
+
+	background: var(--Foreground);
+
+	opacity: var(--state-busy-ink);
+}
+
+.Field__Bar--short {
+	--bar: 30%;
+}
+
+/* ─── THE FORM'S REFUSAL, AS AN ARTIFACT ─────────────────────────────────── */
+
+// The receipt that heads a refused form. It was sixteen lines of markup inside
+// one form component and a second block of classes in one lane's partial; it is
+// a component now, because a refusal is an artifact of the document - the state
+// word, a counted set, and one control per member - and an artifact that exists
+// in one form is an artifact that will be rebuilt badly in the next one.
+//
+// The alarm is one 2px leading rule in `--Destruct` - the site's marker idiom,
+// the weight the state word already carries - and the words stay in ink. Five
+// red sentences is not an error state, it is a shout.
+.FormSummary {
+	display: flex;
+	flex-direction: column;
+
+	min-inline-size: 0;
+
+	// A receipt heads a block: this is the distance from the receipt to the
+	// first field it is about, and it is the artifact's own rule rather than the
+	// lane's, because every form that prints a refusal puts the fields under it.
+	margin-block-end: var(--space-group);
+	padding: var(--space-reading);
+
+	background: var(--Mute);
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	border-inline-start: 2px solid var(--state-error-ink);
+}
+
+.FormSummary__Head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0;
+}
+
+// The state word, in the fixed vocabulary, with the site's 4px square in front
+// of it. The square is the shape of a state and it is what survives greyscale;
+// the ink is full, because `INTERRUPTED` is a reporting tone.
+.FormSummary__Mark {
+	@include mono-meta;
+
+	display: inline-flex;
+	align-items: center;
+
+	margin: 0;
+
+	color: var(--state-ink);
+}
+
+.FormSummary__Mark::before {
+	content: "";
+
+	display: inline-block;
+
+	inline-size: var(--mark-square);
+	block-size: var(--mark-square);
+
+	margin-inline-end: var(--mark-gap);
+
+	background: currentColor;
+
+	vertical-align: var(--mark-raise);
+}
+
+// The counted chip: a figure the receipt derives from the rows it prints, so the
+// head cannot say `3 FIELDS` over a list of two.
+.FormSummary__Count {
+	@include mono-meta;
+
+	padding: 0.125rem 0.5rem;
+
+	background: var(--Card);
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	color: var(--state-ink);
+
+	font-variant-numeric: tabular-nums;
+}
+
+.FormSummary__List {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+
+	margin: var(--space-tight) 0 0;
+	padding: 0;
+
+	list-style: none;
+}
+
+.FormSummary__Row {
+	margin: 0;
+
+	min-inline-size: 0;
+}
+
+// The line is a control: a refusal that names a field and does not take the
+// reader there is a refusal the reader has to act on twice.
+.FormSummary__Link {
+	display: block;
+
+	inline-size: 100%;
+
+	padding: 0;
+
+	background: none;
+	border: 0;
+
+	color: var(--state-ink);
+
+	font: inherit;
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	text-align: start;
+
+	cursor: pointer;
+}
+
+.FormSummary__Link:hover,
+.FormSummary__Link:focus-visible {
+	text-decoration: underline;
+	text-underline-offset: var(--optical-underline-offset);
+}
+
+.FormSummary__Link:focus-visible {
+	outline: var(--BorderWidth) var(--BorderStyle) var(--Primary);
+	outline-offset: 2px;
+}
+
+.FormSummary__Field {
+	font-weight: 500;
+}
+
+// The next step, in the relation mark's voice: what to do once the fields are
+// filled, in one line rather than in a paragraph.
+.FormSummary__Note {
+	margin: var(--space-tight) 0 0;
+
+	@include mono-meta;
+
+	color: var(--state-ink-quiet);
+
+	overflow-wrap: anywhere;
+}
+
+/* ─── THE CHECKABLE ROWS ─────────────────────────────────────────────────── */
+
+// A checkbox, a radio and a switch are not fields with a frame; they are marks
+// with a box and a sentence. Inside a field they still read as a row: the mark,
+// then the label, then the description, on the tight interval.
+.Field__Choice {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--space-tight);
+
+	min-inline-size: 0;
+
+	padding-block: var(--space-tight);
+
+	cursor: default;
+}
+
+.Field__Choice + .Field__Choice {
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.Field--dense .Field__Choice {
+	padding-block: calc(var(--space-tight) * 0.5);
+}
+
+// The mark keeps the size the kit gives it and its place on the first line. It
+// is not wrapped in a `<label>`: a label that contains a button re-dispatches the
+// click to it, so a consent that is clicked once is toggled twice. The name is a
+// label pointing at the mark instead, which is the association the platform has
+// always had.
+.Field__Choice > [data-slot="checkbox"],
+.Field__Choice > [data-slot="radio-group-item"],
+.Field__Choice > [data-slot="switch"] {
+	flex: 0 0 auto;
+
+	margin-block-start: 0.15em;
+
+	cursor: pointer;
+}
+
+.Field__ChoiceBody {
+	display: flex;
+	flex-direction: column;
+	gap: calc(var(--space-tight) * 0.5);
+
+	min-inline-size: 0;
+}
+
+// A consent is a sentence, so it keeps body weight and sentence case; only a
+// field's own name sits at the meta register.
+.Field__ChoiceLabel {
+	display: block;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+
+	color: var(--field-ink);
+
+	overflow-wrap: anywhere;
+	text-wrap: pretty;
+
+	cursor: pointer;
+}
+
+.Field__ChoiceNote {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--field-quiet);
+}
+
+// The group's own head carries the selection count, because a set of twelve
+// states how much of itself is chosen before the reader counts the marks.
+.Field__SetCount {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--field-quiet);
+
+	font-variant-numeric: tabular-nums;
+}
+
+/* ─── THE SLIDER ─────────────────────────────────────────────────────────── */
+
+// The track is a rule, the range is ink, the thumb is a square - the site's
+// geometry, not the kit's rounded one. Height comes from Jelly's own property.
+// The readout is the field's counter, so the value and the limit are one figure
+// in the register rather than a second number beside the track.
+.Field .Field__Control [data-slot="slider-track"] {
+	block-size: var(--jelly-slider-track-height, 4px);
+
+	background: var(--state-field);
+
+	border-radius: 0;
+}
+
+.Field .Field__Control [data-slot="slider-range"] {
+	background: var(--Primary);
+
+	border-radius: 0;
+}
+
+.Field .Field__Control [data-slot="slider-thumb"] {
+	inline-size: 0.75rem;
+	block-size: 0.75rem;
+
+	background: var(--Card);
+
+	border: var(--state-current-width) solid var(--Primary);
+	border-radius: 0;
+}
+
+.Field .Field__Control [data-slot="slider-thumb"]:focus-visible {
+	outline: var(--state-ring-width) solid var(--state-ring);
+	outline-offset: 2px;
+}

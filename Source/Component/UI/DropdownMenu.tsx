@@ -4,7 +4,15 @@ import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 
 import * as React from "react";
 
-import { SlipRegister, type SlipHead } from "./Slip";
+import { DoorContext, UseDoorRef, UseSlipRoot } from "./Overlay";
+
+import {
+	SlipEmpty,
+	SlipFoot,
+	SlipRegister,
+	type SlipFootItem,
+	type SlipHead,
+} from "./Slip";
 
 import { cn } from "./Utility";
 
@@ -36,9 +44,23 @@ import { cn } from "./Utility";
  */
 
 function DropdownMenu({
+	open,
+	defaultOpen,
+	onOpenChange,
 	...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
-	return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />;
+	const Root = UseSlipRoot({ open, defaultOpen, onOpenChange });
+
+	return (
+		<DoorContext.Provider value={Root.Door}>
+			<DropdownMenuPrimitive.Root
+				data-slot="dropdown-menu"
+				open={Root.Open}
+				onOpenChange={Root.OnOpenChange}
+				{...props}
+			/>
+		</DoorContext.Provider>
+	);
 }
 
 function DropdownMenuPortal({
@@ -55,8 +77,13 @@ function DropdownMenuPortal({
 function DropdownMenuTrigger({
 	...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>) {
+	const Door = React.useContext(DoorContext);
+
+	const Ref = UseDoorRef(Door);
+
 	return (
 		<DropdownMenuPrimitive.Trigger
+			ref={Ref}
 			data-slot="dropdown-menu-trigger"
 			{...props}
 		/>
@@ -83,11 +110,19 @@ function DropdownMenuContent({
 	className,
 	sideOffset = 4,
 	head,
+	empty,
+	foot,
 	children,
 	...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Content> & {
 	/** The register line the slip opens with. Omitted only by a slip with no rows. */
 	head?: SlipHead | undefined;
+
+	/** The `empty` arm: a menu with no rows says so instead of opening blank. */
+	empty?: { Mark?: string; Line: string } | undefined;
+
+	/** The keyboard path, when the menu states one. */
+	foot?: readonly SlipFootItem[] | undefined;
 }) {
 	return (
 		<DropdownMenuPrimitive.Portal>
@@ -100,6 +135,13 @@ function DropdownMenuContent({
 			>
 				{head ? <SlipRegister head={head} /> : null}
 				{children}
+				{empty === undefined ? null : (
+					<SlipEmpty
+						Mark={empty.Mark ?? "NO RECORD"}
+						Line={empty.Line}
+					/>
+				)}
+				{foot === undefined ? null : <SlipFoot Items={foot} />}
 			</DropdownMenuPrimitive.Content>
 		</DropdownMenuPrimitive.Portal>
 	);
@@ -122,6 +164,7 @@ function DropdownMenuItem({
 	variant = "default",
 	mark = "→",
 	meta,
+	reason,
 	current,
 	...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Item> & {
@@ -134,6 +177,18 @@ function DropdownMenuItem({
 
 	/** The trailing cell - a chord, a count, a STATUS word. */
 	meta?: string | undefined;
+
+	/**
+	 * Why the row cannot be used, printed in the meta cell.
+	 *
+	 * `_Item.scss` states the rule and could not keep it: a disabled row takes
+	 * `◎` and keeps full legibility, and its meta cell is supposed to print the
+	 * reason from the STATUS vocabulary - but the reason had no prop, so a
+	 * disabled row either said nothing or said whatever the caller happened to
+	 * put in `meta`. One prop, one cell, and the reason is a fact the row
+	 * carries rather than a sentence in a comment.
+	 */
+	reason?: string | undefined;
 
 	/**
 	 * This row is the value in force - the locale the reader is on, the route they
@@ -150,6 +205,7 @@ function DropdownMenuItem({
 			data-variant={variant}
 			data-mark={mark}
 			data-meta={meta}
+			data-reason={reason}
 			data-current={current ? "true" : undefined}
 			className={cn("Slip__Row", className)}
 			{...props}
@@ -301,14 +357,23 @@ function DropdownMenuSubTrigger({
 
 function DropdownMenuSubContent({
 	className,
+	head,
+	children,
 	...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.SubContent>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.SubContent> & {
+	/** The register line, carrying the path that got here - `# LOCALE ↳ OTHER / 03`. */
+	head?: SlipHead | undefined;
+}) {
 	return (
 		<DropdownMenuPrimitive.SubContent
 			data-slot="dropdown-menu-sub-content"
+			aria-label={head?.Name}
 			className={cn("Slip", className)}
 			{...props}
-		/>
+		>
+			{head === undefined ? null : <SlipRegister head={head} />}
+			{children}
+		</DropdownMenuPrimitive.SubContent>
 	);
 }
 

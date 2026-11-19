@@ -62,6 +62,7 @@ $Item: ':is([data-slot="dropdown-menu-item"], [data-slot="dropdown-menu-checkbox
 	gap: var(--space-tight);
 
 	inline-size: 100%;
+	min-inline-size: 0;
 	min-block-size: 2rem;
 
 	// The mark column is reserved on every row, marked or not.
@@ -114,6 +115,32 @@ $Item: ':is([data-slot="dropdown-menu-item"], [data-slot="dropdown-menu-checkbox
 
 #{$Item}[data-meta]::after {
 	content: attr(data-meta);
+
+	margin-inline-start: auto;
+	padding-inline-start: var(--space-reading);
+
+	color: var(--MuteForeground);
+
+	letter-spacing: var(--track-row);
+	text-transform: uppercase;
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+}
+
+// ─── the reason cell ────────────────────────────────────────────────────────
+//
+// A disabled row's *why*. The state rule below takes the ink and the `◎`, and
+// until this rule existed the reason had nowhere to go: the meta cell is the
+// caller's, and a caller that set it would lose the cell on every other state.
+// So the reason is its own attribute, drawn in the meta cell's position, and it
+// wins over `data-meta` because a row that cannot be used owes the reader the
+// reason more than it owes them its shortcut.
+//
+// The reason is a STATUS word or a two-word cause (`UNAVAILABLE`, `NO RECIPIENT`),
+// never a sentence - a sentence in this cell would push the label off the row.
+
+#{$Item}[data-reason]::after {
+	content: attr(data-reason);
 
 	margin-inline-start: auto;
 	padding-inline-start: var(--space-reading);

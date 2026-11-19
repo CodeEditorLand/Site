@@ -271,8 +271,9 @@ const Floated = (Block: HTMLPreElement): HTMLElement | null => {
  * cite its block says `◎ UNAVAILABLE` rather than printing an empty row.
  */
 const SourceOf = (Block: HTMLPreElement): string =>
-	Block.closest<HTMLElement>("[data-doc-source]")?.dataset["docSource"]?.trim() ??
-	"";
+	Block.closest<HTMLElement>("[data-doc-source]")?.dataset[
+		"docSource"
+	]?.trim() ?? "";
 
 /**
  * The block's own citation line: `SOURCE: <file> BLOCK 03 OF 12`.

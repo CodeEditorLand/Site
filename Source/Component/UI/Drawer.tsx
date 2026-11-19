@@ -4,18 +4,85 @@ import * as React from "react";
 
 import { Drawer as DrawerPrimitive } from "vaul";
 
+import { DoorContext, UseDoorRef, UseDoorReturn, UseSlipRoot } from "./Overlay";
+
+import {
+	SlipEmpty,
+	SlipError,
+	SlipFoot,
+	SlipLoading,
+	SlipRegister,
+	type SlipFootItem,
+	type SlipHead,
+} from "./Slip";
+
 import { cn } from "./Utility";
 
+/**
+ * Drawer - the slip that can be thrown away.
+ *
+ * ─── WHAT A DRAWER ADDS TO A SHEET ────────────────────────────────────────
+ *
+ * One thing: the drag. vaul owns it - the pointer travel, the release
+ * threshold, the snap back - and nothing about it is restated here. Everything
+ * else is the family's, because a drawer that painted its own scrim and its own
+ * grip would be the one overlay whose dismissal looked different from every
+ * other overlay's dismissal.
+ *
+ * ─── THE GRIP IS A MARK, NOT A PILL ───────────────────────────────────────
+ *
+ * The kit's handle is a `h-2 w-[100px]` muted bar, which reads as a mobile
+ * affordance pasted onto a paper document. The site's grip is drawn by
+ * `_Slip.scss` as a ruled cap in the row rhythm - a hairline the width of the
+ * register line, on the card fill - so it says *this edge can be pulled* in the
+ * same material as the rule under the head. It is `aria-hidden`: the drag is an
+ * extra door, never the only one, and Escape and the close control are the
+ * stated ones.
+ *
+ * ─── THE DRAWER'S OWN ADVERSE STATE ───────────────────────────────────────
+ *
+ * A bottom drawer is the surface most likely to hold a list that has not
+ * loaded, because it is what a phone-width page opens to show one. `state`
+ * therefore prints the same three arms every other slip prints, and the head
+ * counts `LOADING` in the register's count cell rather than showing `00`.
+ */
+
+/** The adverse arm a drawer is in. `ready` is the ordinary case. */
+export type DrawerState = "ready" | "loading" | "empty" | "error";
+
 function Drawer({
+	open,
+	defaultOpen,
+	onOpenChange,
 	...props
 }: React.ComponentProps<typeof DrawerPrimitive.Root>) {
-	return <DrawerPrimitive.Root data-slot="drawer" {...props} />;
+	const Root = UseSlipRoot({ open, defaultOpen, onOpenChange });
+
+	return (
+		<DoorContext.Provider value={Root.Door}>
+			<DrawerPrimitive.Root
+				open={Root.Open}
+				onOpenChange={Root.OnOpenChange}
+				{...props}
+			/>
+		</DoorContext.Provider>
+	);
 }
 
 function DrawerTrigger({
 	...props
 }: React.ComponentProps<typeof DrawerPrimitive.Trigger>) {
-	return <DrawerPrimitive.Trigger data-slot="drawer-trigger" {...props} />;
+	const Door = React.useContext(DoorContext);
+
+	const Ref = UseDoorRef(Door);
+
+	return (
+		<DrawerPrimitive.Trigger
+			ref={Ref}
+			data-slot="drawer-trigger"
+			{...props}
+		/>
+	);
 }
 
 function DrawerPortal({
@@ -37,10 +104,7 @@ function DrawerOverlay({
 	return (
 		<DrawerPrimitive.Overlay
 			data-slot="drawer-overlay"
-			className={cn(
-				"data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50",
-				className,
-			)}
+			className={cn("SlipScrim", className)}
 			{...props}
 		/>
 	);
@@ -49,25 +113,121 @@ function DrawerOverlay({
 function DrawerContent({
 	className,
 	children,
+	close = true,
+	head,
+	state = "ready",
+	empty,
+	error,
+	foot,
+	bare = false,
 	...props
-}: React.ComponentProps<typeof DrawerPrimitive.Content>) {
+}: React.ComponentProps<typeof DrawerPrimitive.Content> & {
+	/** The X in the corner. A drawer that states its own dismissal does not need one. */
+	close?: boolean;
+
+	/** The register line the slip opens from - `# RECORD / 04`. */
+	head?: SlipHead | undefined;
+
+	/** The adverse arm. `ready` renders nothing above the body. */
+	state?: DrawerState;
+
+	empty?: { Mark?: string; Line: string } | undefined;
+
+	error?:
+		| {
+				Mark?: "INTERRUPTED" | "UNAVAILABLE";
+
+				Line: string;
+
+				Cause?: string;
+
+				Next?: string;
+
+				OnRetry?: () => void;
+
+				Retry?: string;
+		  }
+		| undefined;
+
+	foot?: readonly SlipFootItem[] | undefined;
+
+	/** Render children directly, without the scrolling body. */
+	bare?: boolean;
+}) {
+	const Return = UseDoorReturn();
+
+	const Head: SlipHead | undefined =
+		head === undefined
+			? undefined
+			: state === "loading"
+				? { ...head, State: "LOADING" }
+				: state === "error"
+					? { ...head, State: "INTERRUPTED" }
+					: head;
+
 	return (
 		<DrawerPortal data-slot="drawer-portal">
 			<DrawerOverlay />
+
 			<DrawerPrimitive.Content
 				data-slot="drawer-content"
-				className={cn(
-					"group/drawer-content fixed z-50 flex h-auto flex-col bg-background",
-					"data-[vaul-drawer-direction=top]:inset-x-0 data-[vaul-drawer-direction=top]:top-0 data-[vaul-drawer-direction=top]:mb-24 data-[vaul-drawer-direction=top]:max-h-[80vh] data-[vaul-drawer-direction=top]:rounded-none data-[vaul-drawer-direction=top]:border-b",
-					"data-[vaul-drawer-direction=bottom]:inset-x-0 data-[vaul-drawer-direction=bottom]:bottom-0 data-[vaul-drawer-direction=bottom]:mt-24 data-[vaul-drawer-direction=bottom]:max-h-[80vh] data-[vaul-drawer-direction=bottom]:rounded-none data-[vaul-drawer-direction=bottom]:border-t",
-					"data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:w-3/4 data-[vaul-drawer-direction=right]:border-l data-[vaul-drawer-direction=right]:sm:max-w-sm",
-					"data-[vaul-drawer-direction=left]:inset-y-0 data-[vaul-drawer-direction=left]:left-0 data-[vaul-drawer-direction=left]:w-3/4 data-[vaul-drawer-direction=left]:border-r data-[vaul-drawer-direction=left]:sm:max-w-sm",
-					className,
-				)}
+				data-body-state={state}
+				aria-label={Head?.Name}
+				onOpenAutoFocus={Return.OnOpenAutoFocus}
+				onCloseAutoFocus={Return.OnCloseAutoFocus}
+				className={cn("Slip", "Slip--panel", "Slip--drawer", className)}
 				{...props}
 			>
-				<div className="flat mx-auto mt-4 hidden h-2 w-[100px] shrink-0 bg-muted group-data-[vaul-drawer-direction=bottom]/drawer-content:block" />
-				{children}
+				{/*
+					The grip: the edge that can be pulled. It is drawn, not announced -
+					the drag is an extra door and Escape is the stated one.
+				*/}
+				<span className="Slip__Grip" aria-hidden="true" />
+
+				{Head === undefined ? null : <SlipRegister head={Head} />}
+
+				{state === "loading" ? <SlipLoading /> : null}
+
+				{state === "empty" ? (
+					<SlipEmpty
+						Mark={empty?.Mark ?? "NO RECORD"}
+
+						Line={empty?.Line ?? "NOTHING IS FILED HERE YET"}
+					/>
+				) : null}
+
+				{state === "error" ? (
+					<SlipError
+						Mark={error?.Mark ?? "INTERRUPTED"}
+
+						Line={error?.Line ?? "THE ACTION DID NOT COMPLETE"}
+
+						{...(error?.Cause === undefined
+							? {}
+							: { Cause: error.Cause })}
+
+						{...(error?.Next === undefined
+							? {}
+							: { Next: error.Next })}
+
+						OnRetry={error?.OnRetry}
+
+						{...(error?.Retry === undefined
+							? {}
+							: { Retry: error.Retry })}
+					/>
+				) : null}
+
+				{bare ? children : <div className="Slip__Body">{children}</div>}
+
+				{foot === undefined ? null : <SlipFoot Items={foot} />}
+
+				{close ? (
+					<DrawerPrimitive.Close className="SlipClose">
+						<span aria-hidden="true">×</span>
+						<span className="sr-only">Close</span>
+					</DrawerPrimitive.Close>
+				) : null}
 			</DrawerPrimitive.Content>
 		</DrawerPortal>
 	);
@@ -77,7 +237,7 @@ function DrawerHeader({ className, ...props }: React.ComponentProps<"div">) {
 	return (
 		<div
 			data-slot="drawer-header"
-			className={cn("flex flex-col gap-1.5 p-4", className)}
+			className={cn("Slip__PanelHead", className)}
 			{...props}
 		/>
 	);
@@ -87,7 +247,7 @@ function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
 	return (
 		<div
 			data-slot="drawer-footer"
-			className={cn("mt-auto flex flex-col gap-2 p-4", className)}
+			className={cn("Slip__PanelFoot", className)}
 			{...props}
 		/>
 	);
@@ -100,7 +260,7 @@ function DrawerTitle({
 	return (
 		<DrawerPrimitive.Title
 			data-slot="drawer-title"
-			className={cn("font-medium text-foreground", className)}
+			className={cn("Slip__PanelTitle", className)}
 			{...props}
 		/>
 	);
@@ -113,7 +273,7 @@ function DrawerDescription({
 	return (
 		<DrawerPrimitive.Description
 			data-slot="drawer-description"
-			className={cn("text-muted-foreground", className)}
+			className={cn("Slip__PanelNote", className)}
 			{...props}
 		/>
 	);

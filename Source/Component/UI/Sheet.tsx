@@ -6,16 +6,89 @@ import * as lucide from "lucide-react";
 
 import * as React from "react";
 
+import { DoorContext, UseDoorRef, UseDoorReturn, UseSlipRoot } from "./Overlay";
+
+import {
+	SlipEmpty,
+	SlipError,
+	SlipFoot,
+	SlipLoading,
+	SlipRegister,
+	type SlipFootItem,
+	type SlipHead,
+} from "./Slip";
+
 import { cn } from "./Utility";
 
-function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
-	return <SheetPrimitive.Root data-slot="sheet" {...props} />;
+/**
+ * Sheet - the slip that arrives from an edge.
+ *
+ * ─── THE SAME OBJECT, ENTERING SIDEWAYS ────────────────────────────────────
+ *
+ * A sheet is not a second kind of panel. It is the slip the whole family uses -
+ * `.Slip`, `--Divider` frame, radius 0, no shadow, 12 % ink scrim - and the
+ * only thing that differs is the side it is anchored to and the direction it
+ * travels from. That is why this file no longer paints `bg-background` over a
+ * `bg-black/50` scrim: those two declarations were the kit's, and they made the
+ * one control that opens beside the page the one control that did not look like
+ * it belonged to the page.
+ *
+ * ─── A SHEET IS AS TALL AS ITS SIDE, NOT AS TALL AS THE VIEWPORT ───────────
+ *
+ * The kit writes `inset-y-0 h-full` for a left or right sheet, so the panel is
+ * always the full height even when it holds two rows. A slip is as tall as its
+ * content and as tall as the viewport at most; the body scrolls and the head
+ * and foot stay. Top and bottom sheets are the same rule rotated: `auto` height
+ * bounded by `80vh`, with the body scrolling inside it.
+ *
+ * ─── WHY THE HEAD IS NOT OPTIONAL IN PRACTICE ─────────────────────────────
+ *
+ * A slip can never open as an unlabelled box (`_Slip.scss`), and an edge panel
+ * is the one overlay a reader meets without having clicked anything near its
+ * subject - so it is the one that most needs to say what it is. `head` is
+ * optional in the type because a sheet may legitimately carry its own
+ * `SheetTitle`; the specimen prints both, and the stylesheet keeps the two from
+ * colliding.
+ */
+
+export type SheetSide = "top" | "right" | "bottom" | "left";
+
+/** The adverse arm a sheet is in. `ready` is the ordinary case. */
+export type SheetState = "ready" | "loading" | "empty" | "error";
+
+function Sheet({
+	open,
+	defaultOpen,
+	onOpenChange,
+	...props
+}: React.ComponentProps<typeof SheetPrimitive.Root>) {
+	const Root = UseSlipRoot({ open, defaultOpen, onOpenChange });
+
+	return (
+		<DoorContext.Provider value={Root.Door}>
+			<SheetPrimitive.Root
+				open={Root.Open}
+				onOpenChange={Root.OnOpenChange}
+				{...props}
+			/>
+		</DoorContext.Provider>
+	);
 }
 
 function SheetTrigger({
 	...props
 }: React.ComponentProps<typeof SheetPrimitive.Trigger>) {
-	return <SheetPrimitive.Trigger data-slot="sheet-trigger" {...props} />;
+	const Door = React.useContext(DoorContext);
+
+	const Ref = UseDoorRef(Door);
+
+	return (
+		<SheetPrimitive.Trigger
+			ref={Ref}
+			data-slot="sheet-trigger"
+			{...props}
+		/>
+	);
 }
 
 function SheetClose({
@@ -37,10 +110,7 @@ function SheetOverlay({
 	return (
 		<SheetPrimitive.Overlay
 			data-slot="sheet-overlay"
-			className={cn(
-				"data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50",
-				className,
-			)}
+			className={cn("SlipScrim", className)}
 			{...props}
 		/>
 	);
@@ -50,34 +120,118 @@ function SheetContent({
 	className,
 	children,
 	side = "right",
+	close = true,
+	head,
+	state = "ready",
+	empty,
+	error,
+	foot,
+	bare = false,
 	...props
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
-	side?: "top" | "right" | "bottom" | "left";
+	side?: SheetSide;
+
+	/** The X in the corner. A sheet that states its own dismissal does not need one. */
+	close?: boolean;
+
+	/** The register line the slip opens with - `# CONTENTS / 11`. */
+	head?: SlipHead | undefined;
+
+	/** The adverse arm. `ready` renders nothing above the body. */
+	state?: SheetState;
+
+	empty?: { Mark?: string; Line: string } | undefined;
+
+	error?:
+		| {
+				Mark?: "INTERRUPTED" | "UNAVAILABLE";
+
+				Line: string;
+
+				Cause?: string;
+
+				Next?: string;
+
+				OnRetry?: () => void;
+
+				Retry?: string;
+		  }
+		| undefined;
+
+	foot?: readonly SlipFootItem[] | undefined;
+
+	/** Render children directly, without the scrolling body. */
+	bare?: boolean;
 }) {
+	const Return = UseDoorReturn();
+
+	const Head: SlipHead | undefined =
+		head === undefined
+			? undefined
+			: state === "loading"
+				? { ...head, State: "LOADING" }
+				: state === "error"
+					? { ...head, State: "INTERRUPTED" }
+					: head;
+
 	return (
 		<SheetPortal>
 			<SheetOverlay />
+
 			<SheetPrimitive.Content
 				data-slot="sheet-content"
-				className={cn(
-					"data-[state=open]:animate-in data-[state=closed]:animate-out fixed z-50 flex flex-col gap-4 bg-background transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500",
-					side === "right" &&
-						"data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm",
-					side === "left" &&
-						"data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm",
-					side === "top" &&
-						"data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top inset-x-0 top-0 h-auto border-b",
-					side === "bottom" &&
-						"data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom inset-x-0 bottom-0 h-auto border-t",
-					className,
-				)}
+				data-side={side}
+				data-body-state={state}
+				aria-label={Head?.Name}
+				onOpenAutoFocus={Return.OnOpenAutoFocus}
+				onCloseAutoFocus={Return.OnCloseAutoFocus}
+				className={cn("Slip", "Slip--panel", "Slip--sheet", className)}
 				{...props}
 			>
-				{children}
-				<SheetPrimitive.Close className="focus:outline-hidden absolute right-4 top-4 rounded-none opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
-					<lucide.X className="size-4" />
-					<span className="sr-only">Close</span>
-				</SheetPrimitive.Close>
+				{Head === undefined ? null : <SlipRegister head={Head} />}
+
+				{state === "loading" ? <SlipLoading /> : null}
+
+				{state === "empty" ? (
+					<SlipEmpty
+						Mark={empty?.Mark ?? "NO RECORD"}
+
+						Line={empty?.Line ?? "NOTHING IS FILED HERE YET"}
+					/>
+				) : null}
+
+				{state === "error" ? (
+					<SlipError
+						Mark={error?.Mark ?? "INTERRUPTED"}
+
+						Line={error?.Line ?? "THE ACTION DID NOT COMPLETE"}
+
+						{...(error?.Cause === undefined
+							? {}
+							: { Cause: error.Cause })}
+
+						{...(error?.Next === undefined
+							? {}
+							: { Next: error.Next })}
+
+						OnRetry={error?.OnRetry}
+
+						{...(error?.Retry === undefined
+							? {}
+							: { Retry: error.Retry })}
+					/>
+				) : null}
+
+				{bare ? children : <div className="Slip__Body">{children}</div>}
+
+				{foot === undefined ? null : <SlipFoot Items={foot} />}
+
+				{close ? (
+					<SheetPrimitive.Close className="SlipClose">
+						<lucide.X aria-hidden="true" />
+						<span className="sr-only">Close</span>
+					</SheetPrimitive.Close>
+				) : null}
 			</SheetPrimitive.Content>
 		</SheetPortal>
 	);
@@ -87,7 +241,7 @@ function SheetHeader({ className, ...props }: React.ComponentProps<"div">) {
 	return (
 		<div
 			data-slot="sheet-header"
-			className={cn("flex flex-col gap-1.5 p-4", className)}
+			className={cn("Slip__PanelHead", className)}
 			{...props}
 		/>
 	);
@@ -97,7 +251,7 @@ function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
 	return (
 		<div
 			data-slot="sheet-footer"
-			className={cn("mt-auto flex flex-col gap-2 p-4", className)}
+			className={cn("Slip__PanelFoot", className)}
 			{...props}
 		/>
 	);
@@ -110,7 +264,7 @@ function SheetTitle({
 	return (
 		<SheetPrimitive.Title
 			data-slot="sheet-title"
-			className={cn("font-medium text-foreground", className)}
+			className={cn("Slip__PanelTitle", className)}
 			{...props}
 		/>
 	);
@@ -123,7 +277,7 @@ function SheetDescription({
 	return (
 		<SheetPrimitive.Description
 			data-slot="sheet-description"
-			className={cn("text-muted-foreground", className)}
+			className={cn("Slip__PanelNote", className)}
 			{...props}
 		/>
 	);
@@ -138,4 +292,6 @@ export {
 	SheetFooter,
 	SheetTitle,
 	SheetDescription,
+	SheetPortal,
+	SheetOverlay,
 };

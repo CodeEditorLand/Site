@@ -1,0 +1,1 @@
+import{t}from"./LocaleSwitcher.CEcT8EHf.js";export{t as LocaleSwitcher,t as default};

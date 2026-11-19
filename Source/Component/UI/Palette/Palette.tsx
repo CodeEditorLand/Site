@@ -2,7 +2,13 @@
 
 import * as React from "react";
 
-import { Chord, Segmented, SlipEmpty } from "../Slip";
+import {
+	Chord,
+	Segmented,
+	SlipEmpty,
+	SlipFoot,
+	type SlipFootItem,
+} from "../Slip";
 
 import {
 	Command,
@@ -69,6 +75,19 @@ const Scopes: readonly { Value: PaletteScope; Label: string }[] = [
 const IsApple = () =>
 	typeof navigator !== "undefined" &&
 	/^Mac|iPhone|iPad/.test(navigator.platform ?? "");
+
+/**
+ * The foot's three chords, in the grammar's order: what moves, what opens, what
+ * closes. They are the family's `SlipFootItem`, so a menu that states its own
+ * keyboard path prints the identical line - one foot, one implementation.
+ */
+const FootItems: readonly SlipFootItem[] = [
+	{ Chord: "↑↓", Label: "MOVE" },
+
+	{ Chord: "ENTER", Label: "OPEN" },
+
+	{ Chord: "ESC", Label: "CLOSE" },
+];
 
 /** Two digits, as the grammar prints a count. */
 const Pad = (Value: number) => String(Value).padStart(2, "0");
@@ -316,7 +335,7 @@ const Palette = ({ Register, OnNavigate }: PaletteProps) => {
 			</button>
 
 			<Dialog open={Open} onOpenChange={OnOpenChange}>
-				<DialogContent className="Palette" close={false}>
+				<DialogContent className="Palette" close={false} bare>
 					<DialogTitle className="sr-only">Find a record</DialogTitle>
 					<DialogDescription className="sr-only">
 						The site&apos;s parts, the record heads its pages print,
@@ -471,23 +490,10 @@ const Palette = ({ Register, OnNavigate }: PaletteProps) => {
 							) : null}
 						</CommandList>
 
-						<div className="Slip__Foot">
-							<span className="Slip__FootItem">
-								<Chord>↑↓</Chord>
-								<span>MOVE</span>
-							</span>
-							<span className="Slip__FootItem">
-								<Chord>ENTER</Chord>
-								<span>OPEN</span>
-							</span>
-							<span className="Slip__FootItem">
-								<Chord>ESC</Chord>
-								<span>CLOSE</span>
-							</span>
-							<span className="Slip__FootItem Slip__FootEnd">
-								<Chord Ink>{Modifier}</Chord>
-							</span>
-						</div>
+						<SlipFoot
+							Items={FootItems}
+							End={<Chord Ink>{Modifier}</Chord>}
+						/>
 					</Command>
 				</DialogContent>
 			</Dialog>
