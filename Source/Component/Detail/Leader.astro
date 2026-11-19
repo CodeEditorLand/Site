@@ -39,7 +39,10 @@ import Mark from "../Mark/Mark.astro";
 
 import type { RegisterState } from "../Record/Type.js";
 
-import { Padded, type Register as RegisterShape } from "../Record/RegisterLine.js";
+import {
+	Padded,
+	type Register as RegisterShape,
+} from "../Record/RegisterLine.js";
 
 import type { LeaderItem } from "./Type.js";
 
@@ -123,7 +126,11 @@ const Bars = [64, 42, 78, 55, 36, 70];
 
 <div class:list={["detail-leader", Class]} data-state={state}>
 	{Line && (
-		<Register register={Line} state={state} class="detail-leader__register" />
+		<Register
+			register={Line}
+			state={state}
+			class="detail-leader__register"
+		/>
 	)}
 	{state === "empty" ? (
 		empty && <p class="detail-leader__empty">{empty}</p>

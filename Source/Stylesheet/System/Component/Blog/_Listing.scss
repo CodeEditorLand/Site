@@ -1,5 +1,6 @@
 // BlogIndex - the blog's archive page: a centred header, a full-bleed plate of
-// the archive's extent, and a three-column grid of article cards.
+// the archive's extent, and the articles led by the newest, then a capacity
+// line of cards.
 //
 // Publishes:
 //   .blog-index              the page shell - full width, so the plate can bleed
@@ -19,8 +20,9 @@
 //   .blog-index__register-unit   its unit, at caption weight
 //   .blog-index__archive-wrap    the grid's measure and the close
 //   .blog-index__archive     the section the grid sits in
-//   .blog-index__grid        the cards, one to three columns
-//   .blog-index__item        one grid cell
+//   .blog-index__grid        the cards, on the shell's capacity line
+//   .blog-index__item        one card's cell
+//   .blog-index__item--lead  the newest article's cell: the full measure
 //   .blog-index__link        the whole-card link
 //   .blog-index__card        the white card
 //   .blog-index__tags        the card's tag row
@@ -29,6 +31,7 @@
 //   .blog-index__summary     the article's summary
 //   .blog-index__foot        author / date / reading time, one row
 //   .blog-index__author      the author
+//   .blog-index__foot-stamp  the date and the reading time, kept together
 //   .blog-index__date        the publication date
 //   .blog-index__read        the reading-time label
 //   .blog-index__empty       the empty state, when the collection is bare
@@ -39,15 +42,24 @@
 // inherited it - which is why the page could never hold anything wider than its
 // own cards. The container is now three children: `__open`, `__plate` and
 // `__archive-wrap`. The first and third carry the 56rem measure and the gutter;
-// the plate carries neither, so its two hairlines run to the viewport edge. The
-// grid is unchanged - same columns, same gap, same card.
+// the plate carries neither, so its two hairlines run to the viewport edge.
 //
-// The measurements inside the grid are the baseline render's: a header capped at
-// `max-w-2xl` and dropped `mb-24` - the largest single margin in the baseline
-// markup - so the heading floats well clear of what follows, and a `1 / 2 / 3`
-// column grid at `gap-6` whose cards are white on the creme field. The card's
-// seed scatter is the site's own: `.StaccatoCard` rotates and offsets by the two
-// custom properties the component sets per position.
+// ─── THE ARCHIVE IS A LEAD AND A CAPACITY LINE, NOT A 3-UP GRID ──────────
+// The baseline's `1 / 2 / 3` columns at `gap-6` printed three equal 250.7px
+// tracks at 1024px - 202.7px of card content, 18.8ch of title at the heading
+// tier - and the five-badge card's tag row broke over four lines while a short
+// card opened a hole under its own foot. Equal tracks assume equal artifacts,
+// and these eight are not equal: one is a 102-character title carrying five
+// tags, another a three-word title carrying three.
+//
+// So the archive has two gears. The newest article takes the full measure as a
+// LEAD card at the L tier (`.blog-index__item--lead`, the first row of the
+// sorted list); the other seven sit in the shell's capacity line
+// (`Layout/_Shell.scss`, `.PageShell__row`), whose track count is decided by
+// what one card can hold rather than by the viewport. All eight keep their
+// tags, title, summary and foot, and every card keeps its `StaccatoCard` seed
+// scatter - `.StaccatoCard` rotates and offsets by the two custom properties
+// the component sets per position, and the lead's seed is 0, so it sits square.
 
 @use "../../Mixin" as *;
 
@@ -183,11 +195,56 @@
 }
 
 // ─── The grid ─────────────────────────────────────────────────────────────
+//
+// ─── THE TRACK COUNT IS A CAPACITY, NOT A VIEWPORT ────────────────────────
+// The row is the shell's capacity line, reused rather than restated
+// (`Layout/_Shell.scss`, `.PageShell__row`): a wrapping flex line whose items
+// cannot shrink below
+//
+//     min(100%, max(--row-floor, (100% - (n - 1) * gap) / n))
+//
+// where `--row-tracks` is the authored ceiling and `--row-floor` the width ONE
+// card needs. The arithmetic is the query - it reads the row's own inline size,
+// which is the box that has to hold the content - so no `@container` step can
+// disagree with what a card can hold. The gap is the row's own `--space-group`:
+// the rhythm scale's step between two objects, where the old `1.5rem` was a
+// literal no role owned.
+//
+// ─── THE FLOOR IS 24rem, AND IT IS MEASURED ───────────────────────────────
+// IBM Plex Mono advances 0.6em, so 1ch at the heading tier (18px) is 10.8px.
+// The title is capped at 32ch (`max-inline-size`, below): 345.6px. The card's
+// inset is `--space-reading` (16px) a side, so a card needs 377.6px - 23.6rem,
+// rounded up to 24rem. At 24rem the content box is 352px, and the widest
+// three-chip run this collection carries - `ARCHITECTURE` 117.8px, `EXTENSIONS`
+// 101.2px, `EFFECT-TS` 92.9px and two 0.5rem gaps = 327.9px - still prints on
+// one line, so the five-chip card's tag row takes two lines and never compresses
+// a chip. The widest single chip (`COMPATIBILITY`, 126.2px) is a third of the
+// box.
+//
+// ─── THREE IS THE CEILING; TWO IS WHAT THE MEASURE HOLDS ──────────────────
+// `--row-tracks: 3` keeps the keeper's three-across as the authored maximum
+// (`DESIGN-COMPLETE` §2.8 B3), but three tracks need 3 x 24 + 2 x 2 = 76rem of
+// row and this page's measure gives 51rem (816px). Even the widest container the
+// site owns - `--ContainerSixExtraLarge`, 72rem, 67rem of row after the gutters -
+// is 9rem short, so three never prints, and two is the widest honest grid: the
+// switch is 2 x 24 + 2 = 50rem of row (800px, a ~870px viewport), and one below
+// that. No breakpoint declares either count; the row measures itself.
+//
+// ─── EQUAL HEIGHTS OR NONE, AND IT IS NONE ────────────────────────────────
+// The row is `align-items: flex-start`, so a card closes on its own content and
+// a row is honestly ragged. The other option - stretch, with the summary clamped
+// to a fixed line count - was rejected because this collection's summaries run
+// from 75 to 264 characters: a three-line clamp would cut the longest card's
+// summary in half, and a clamp set to the longest would leave every other card
+// with a hole under its foot. A stretched box with a hole inside it is the
+// defect this ticket names; a short card that stays short is the fix.
 
 .blog-index__grid {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr);
-	gap: 1.5rem;
+	// The authored ceiling - three across, while three can hold.
+	--row-tracks: 3;
+
+	// One card's measured floor: a 32ch title and a three-chip tag line.
+	--row-floor: 24rem;
 
 	margin: 0;
 	padding: 0;
@@ -195,21 +252,20 @@
 	list-style: none;
 }
 
-@include bp(768px) {
-	.blog-index__grid {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
+// The lead takes the whole line, and it does it through the same mechanism: it
+// declares its own floor as the full measure, so the line breaks after it and no
+// rule outside the row has to know it is a lead. Its width is not a taste -
+// two tracks and the gap are 2 x 24.5 + 2 = 51rem, which is this page's measure
+// exactly, so the lead is the grid's own unit at double size.
+.blog-index__item--lead {
+	--row-floor: 100%;
 }
 
-@include bp(1024px) {
-	.blog-index__grid {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-	}
-}
-
+// The cell is a flex box so the card fills it. It carries no `min-inline-size`:
+// the row's floor IS the item's minimum, and a `0` here would be the one
+// declaration that could squeeze a card below what it needs.
 .blog-index__item {
 	display: flex;
-	min-inline-size: 0;
 }
 
 // The anchor wraps the card, so the whole card is one target and the title is
@@ -241,14 +297,22 @@
 	text-underline-offset: var(--optical-underline-offset);
 }
 
+// The card's inset is the reading role - the same 1rem `.doc-card__link` pays on
+// the documentation index - so a card at its 24rem floor is a card and not a
+// column with text in it. The lead pays the group inset instead: it is the
+// page's one larger card, and the step up is space before it is type.
 .blog-index__card {
 	display: flex;
 	flex-direction: column;
 	block-size: 100%;
 	box-sizing: border-box;
-	padding: 1.5rem;
+	padding: var(--space-reading);
 	background: var(--Card);
 	color: var(--CardForeground);
+}
+
+.blog-index__item--lead .blog-index__card {
+	padding: var(--space-group);
 }
 
 // ─── Inside the card ──────────────────────────────────────────────────────
@@ -256,20 +320,34 @@
 .blog-index__tags {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 0.5rem;
+	gap: var(--space-tight);
 
-	margin: 0 0 0.75rem;
+	margin: 0 0 var(--space-tight);
 	padding: 0;
 
 	list-style: none;
 }
 
+// One chip per list item, and the item cannot compress its chip: the automatic
+// minimum size of a flex item is its content's min-content size, and a
+// `jelly-badge`'s label is `white-space: nowrap` inside its own shadow tree
+// (`Vendor/JellyUI/src/components/badge/badge.css`). So the tag row never
+// squishes a chip - it wraps - and the article page's identical row
+// (`Blog/_Article.scss`) needs no second fix. What the row needed was a card
+// wide enough to print three chips on a line, which is the floor on the grid.
 .blog-index__tag {
 	display: flex;
 }
 
+// The title's measure is the number the floor is built from: 32ch at the heading
+// tier is 345.6px, and with the card's inset it is the 24rem track floor. It is
+// also a real bound - a card title that ran the full content box at the one-track
+// width would be a 71ch line, which is a headline no reader tracks. This
+// collection's titles run from 22 to 102 characters: at 33ch the median prints in
+// two lines and the longest takes three or four.
 .blog-index__title {
 	margin: 0 0 var(--space-tight);
+	max-inline-size: 32ch;
 	font-size: var(--type-heading);
 	font-weight: 500;
 	line-height: 1.25;
@@ -277,18 +355,35 @@
 	text-wrap: balance;
 }
 
+// 62ch is the caption/standfirst measure (`DESIGN.md` §2.7, and the article
+// page's own `--MeasureOpening`): it changes nothing at two tracks, where the
+// card is already 37ch, and it keeps the one-track card - the full 51rem - from
+// setting a 80ch sentence across the page.
 .blog-index__summary {
-	margin: 0 0 1rem;
+	margin: 0 0 var(--space-reading);
+	max-inline-size: 62ch;
 	color: var(--CardForeground);
 	white-space: pre-line;
 	text-wrap: pretty;
 }
 
-// The footer row is pushed to the card's floor so three cards in one row close
-// on one line, and its three facts are spread across it: the author at the
-// start, the reading time at the end, the date between them.
+// The footer row is pushed to the card's floor so a card closes on its own foot,
+// and its facts are spread across it: the author at the start, the date and the
+// reading time at the end.
+//
+// ─── THE DATE AND THE READ TIME ARE ONE OBJECT ────────────────────────────
+// They sit together in `__foot-stamp`, which never breaks between them, so the
+// only place this row can wrap is after the author. That is the whole rule: a
+// reading time that drops under its own date reads as two facts, and the pair is
+// one. The three strings are 301.6px of type at the S tier, so the row is one
+// line from a ~366px viewport up (every card the two-track grid prints, and every
+// card on any phone wider than that); below it - and 320px is the floor - the
+// author takes its own line and `2026-05-23  3 min read` stays together under it.
+// No rule can do better at 320px without truncating a fact, and truncating one
+// would be the worse defect.
 .blog-index__foot {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: baseline;
 	justify-content: space-between;
 	gap: var(--space-tight);
@@ -300,6 +395,14 @@
 	color: var(--CardForeground);
 }
 
+.blog-index__foot-stamp {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	white-space: nowrap;
+}
+
 .blog-index__date {
 	font-family: var(--FontMono);
 	font-variant-numeric: tabular-nums;
@@ -308,6 +411,58 @@
 
 .blog-index__read {
 	white-space: nowrap;
+}
+
+// ─── The lead's tier ──────────────────────────────────────────────────────
+//
+// The lead is not a bigger card: it is the same card at the L tier, and every
+// part of it steps up one rung rather than gaining anything. The title is an
+// `h2` in the markup (see `BlogIndex.astro`) where the other seven are `h3`, so
+// the type ladder's own assignment is L for the lead and S for the rest
+// (`System/_Type.scss`: `h1, h2` share the L tier, `h3` is the S heading). Both
+// are restated here as classes because the shared `.blog-index__title` declares
+// the card's S tier, and a class outranks the element rule in every layer.
+//
+// The leading is the one value the ladder's 1.05 does not fit: a title that runs
+// four or five lines needs more air than a one-word page title, which is why the
+// page's own `h1` takes 1.15 a few rules above.
+.blog-index__item--lead .blog-index__title {
+	margin-block-end: var(--space-reading);
+	max-inline-size: 30ch;
+	font-size: var(--type-section);
+	line-height: 1.1;
+	letter-spacing: var(--track-join);
+}
+
+// The lead's tag row steps its closing distance up with the title: 8px is the
+// row rhythm between a label and a value at the S tier, and a 52px title needs
+// the paragraph distance above it, not the label distance.
+.blog-index__item--lead .blog-index__tags {
+	margin-block-end: var(--space-reading);
+}
+
+// The summary at the standfirst tier, capped at the article page's own opening
+// measure - so a lead card and the article it opens set their standfirst to the
+// same width.
+.blog-index__item--lead .blog-index__summary {
+	max-inline-size: var(--MeasureOpening);
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+}
+
+// The foot at the body tier: on a 51rem card there is room for the three facts to
+// read as a line rather than as a caption, and the lead is the one card where
+// that is true.
+.blog-index__item--lead .blog-index__foot {
+	font-size: var(--type-body);
+}
+
+// The chips at the S tier's floor rather than the meta floor. The 13px default is
+// `_Global.scss`'s (`--jelly-badge-font-size: var(--type-meta)`), so this is the
+// one place the badge's own size is set per card - and it is set here, not in the
+// markup, so the chip stays one component with one size rule per context.
+.blog-index__item--lead .blog-index__tag jelly-badge {
+	--jelly-badge-font-size: var(--TypeScaleS);
 }
 
 // ─── The close and the empty state ────────────────────────────────────────

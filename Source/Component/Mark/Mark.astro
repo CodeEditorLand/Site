@@ -112,44 +112,37 @@ const Square =
 		: {};
 
 /** The one inline value a mark may carry: a protocol ink, on a square only. */
-const Ink =
-	kind === "square" && ink ? `--mark-ink-state:${ink}` : undefined;
+const Ink = kind === "square" && ink ? `--mark-ink-state:${ink}` : undefined;
 ---
 
-{
-	kind === "glyph" ? (
-		<img
-			class:list={[Kind, Class]}
-			src={src}
-			alt={alt}
-			width="14"
-			height="14"
-			aria-hidden={alt ? undefined : "true"}
-		/>
-	) : kind === "tick" ? (
-		<span
-			class:list={[Kind, Class]}
-			data-reached={String(reached)}
-			aria-hidden="true"
-		/>
-	) : kind === "fold" ? (
-		<span
-			class:list={[Kind, Class]}
-			data-open={String(open)}
-			aria-hidden="true"
-		/>
-	) : kind === "arrow" ? (
-		<span
-			class:list={[Kind, Class]}
-			data-place={place}
-			aria-hidden="true"
-		/>
-	) : (
-		<span
-			class:list={[Kind, Class]}
-			{...Square}
-			style={Ink}
-			aria-hidden="true"
-		/>
-	)
-}
+{kind === "glyph" ? (
+	<img
+		class:list={[Kind, Class]}
+		src={src}
+		alt={alt}
+		width="14"
+		height="14"
+		aria-hidden={alt ? undefined : "true"}
+	/>
+) : kind === "tick" ? (
+	<span
+		class:list={[Kind, Class]}
+		data-reached={String(reached)}
+		aria-hidden="true"
+	/>
+) : kind === "fold" ? (
+	<span
+		class:list={[Kind, Class]}
+		data-open={String(open)}
+		aria-hidden="true"
+	/>
+) : kind === "arrow" ? (
+	<span class:list={[Kind, Class]} data-place={place} aria-hidden="true" />
+) : (
+	<span
+		class:list={[Kind, Class]}
+		{...Square}
+		style={Ink}
+		aria-hidden="true"
+	/>
+)}

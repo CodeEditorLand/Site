@@ -12,8 +12,11 @@
 // One negative `margin-inline-end` per element, equal to that element's own
 // register (`--optical-edge-row`, -1.04px at 13px). The margin moves the box, so
 // the ink lands on the edge and the text does not otherwise move: the element is
-// `flex: 0 0 auto` or `justify-self: end` in every case, so taking a pixel off
-// its trailing margin takes a pixel off the space before it and nothing else.
+// `flex: 0 0 auto` or `justify-self: end` in every case, or - the leaf's
+// register - a grid cell whose text is `text-align: end`, where the margin takes
+// a pixel off the cell's trailing air and that pixel is the same one. Taking a
+// pixel off the trailing margin takes a pixel off the space before the ink and
+// nothing else.
 //
 // ─── WHY THIS ONE NEEDS NO PRINT ARM ──────────────────────────────────────
 // The hang is cancelled on paper because it reaches into the page's margin, and
@@ -31,6 +34,17 @@
 // ragged by design - it is a register, not a justified column.)
 .detail-folio__facts {
 	margin-inline-end: var(--optical-edge-row);
+}
+
+// The leaf's register: its values are right-aligned in the wide arm, so the
+// last value's ink is the leaf's right edge - the same edge the header's rule
+// and the footer's ledger end on. Below the register's stacking breakpoint the
+// value sits under its key, left-aligned, and this cancel has nothing to
+// correct.
+@container leaf (min-width: 24rem) {
+	.EdgeLeaf__value {
+		margin-inline-end: var(--optical-edge-row);
+	}
 }
 
 // The leader's figure: the dotted leader runs to it, so the figure's right edge

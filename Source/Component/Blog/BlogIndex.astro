@@ -26,11 +26,23 @@
  * (`STATUS: UNAVAILABLE`) instead of four zeroes: a zero is a claim, and an
  * empty archive is not zero entries of something.
  *
- * ─── THE GRID IS THE KEEPER ──────────────────────────────────────────────
- * Eight cards in `1 / 2 / 3` columns, each a whole-card link, the last row's
- * hole included. Nothing about the grid changed. The plate is added above it and
- * the header keeps its `mb-24`, so the first screen still shows the heading and
- * the top edge of the first row.
+ * ─── THE ARCHIVE: A LEAD, THEN A CAPACITY LINE ───────────────────────────
+ * Eight cards, each a whole-card link, on the shell's capacity line
+ * (`.PageShell__row`). Two things changed from the baseline's `1 / 2 / 3`
+ * columns, and both are in `Blog/_Listing.scss`:
+ *
+ *   the lead   `rows[0]` - the newest by `publishedAt` - takes the full measure
+ *              and the L tier. It is the first row of the sorted list, not a
+ *              pinned flag: the sort is untouched, and the lead is a composition
+ *              decision made on the order the sort already produced.
+ *   the row    the other seven cannot be narrower than one card's measured
+ *              floor (24rem), so the row prints two tracks where two fit and one
+ *              where they do not. It never prints three: three would need 76rem
+ *              of row and this page's measure gives 51rem.
+ *
+ * All eight keep their tags, title, summary and foot, and the seed scatter is
+ * unchanged. The plate is above both, and the header keeps its `mb-24`, so the
+ * first screen still shows the heading and the top edge of the lead.
  *
  * No script and no hydration directive: the index is static.
  */
@@ -59,7 +71,11 @@ interface Props {
 	/** One sentence under the `h1`. */
 	standfirst?: string;
 
-	/** Every article, already ordered newest first. */
+	/**
+	 * Every article, already ordered newest first (`Blog/Data.ts`, `BuildRows`).
+	 * The first row is the lead: the index leads with the newest article because
+	 * the sort already put it there, not because a flag pins it.
+	 */
 	rows: readonly BlogRow[];
 
 	/** Shown instead of the grid when the collection is empty. */
@@ -123,6 +139,11 @@ const PlateState: FieldRecordStatusState | undefined =
  * offset from one another, which its client engine applied per card. Two small
  * deterministic numbers reproduce that placement without shipping the engine,
  * and `nth` is stable between builds because it is the row's own position.
+ *
+ * Position 0 - the lead - resolves to `0 / 0`, which is the one card that sits
+ * square. That is not a special case in the CSS: a 51rem card rotated by half a
+ * degree lifts one corner 7px off the line, so the lead's seed is the identity's,
+ * not a second rule.
  */
 const Seed = (Position: number): string =>
 	`--StaccatoSeed:${Position % 3};--StaccatoSeedPhase:${Position % 2}`;
@@ -151,7 +172,10 @@ const Seed = (Position: number): string =>
 				state={PlateState}
 			>
 				<div class="blog-index__register">
-					<Register register={register} class="blog-index__register-label" />
+					<Register
+						register={register}
+						class="blog-index__register-label"
+					/>
 					<dl class="blog-index__register-rows">
 						{plateMeasures.map((Measure) => (
 							<div class="blog-index__register-row">
@@ -182,9 +206,23 @@ const Seed = (Position: number): string =>
 			</div>
 		) : (
 			<section class="blog-index__archive" aria-labelledby={HeadingID}>
-				<ul class="blog-index__grid">
+				{/*
+				 * The row is the shell's capacity line: `--row-tracks` is the authored
+				 * ceiling (three) and `--row-floor` one card's measured minimum, so the
+				 * track count follows what a card can hold. The lead's cell declares its
+				 * own floor as the full measure, which is how it takes the first line
+				 * without a second layout mechanism. See `Blog/_Listing.scss`.
+				 */}
+				<ul class="blog-index__grid PageShell__row">
 					{rows.map((Row, Position) => (
-						<li class="blog-index__item">
+						<li
+							class:list={[
+								"blog-index__item",
+								Position === 0
+									? "blog-index__item--lead"
+									: null,
+							]}
+						>
 							<a class="blog-index__link" href={Row.href}>
 								<article
 									class="blog-index__card StaccatoCard"
@@ -197,7 +235,7 @@ const Seed = (Position: number): string =>
 													<jelly-badge
 														variant="platinum"
 														shape="square"
-														style="--jelly-fill:transparent;--jelly-label:var(--CardForeground);--jelly-badge-radius:0;--jelly-badge-font-size:13px"
+														style="--jelly-fill:transparent;--jelly-label:var(--CardForeground);--jelly-badge-radius:0"
 													>
 														{Tag}
 													</jelly-badge>
@@ -206,9 +244,15 @@ const Seed = (Position: number): string =>
 										</ul>
 									) : null}
 
-									<h3 class="blog-index__title">
-										{Row.title}
-									</h3>
+									{Position === 0 ? (
+										<h2 class="blog-index__title">
+											{Row.title}
+										</h2>
+									) : (
+										<h3 class="blog-index__title">
+											{Row.title}
+										</h3>
+									)}
 									<p class="blog-index__summary">
 										{Row.summary}
 									</p>
@@ -217,14 +261,21 @@ const Seed = (Position: number): string =>
 										<span class="blog-index__author">
 											{Row.author}
 										</span>
-										<time
-											class="blog-index__date"
-											datetime={Row.date}
-										>
-											{Row.date}
-										</time>
-										<span class="blog-index__read">
-											{Row.readTime}
+										{/*
+										 * The date and the reading time are one stamp: the foot may
+										 * break after the author, never between these two, so a
+										 * reading time can never drop under its own date.
+										 */}
+										<span class="blog-index__foot-stamp">
+											<time
+												class="blog-index__date"
+												datetime={Row.date}
+											>
+												{Row.date}
+											</time>
+											<span class="blog-index__read">
+												{Row.readTime}
+											</span>
 										</span>
 									</p>
 								</article>

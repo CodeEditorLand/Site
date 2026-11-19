@@ -54,9 +54,12 @@ import {
 } from "../../Component/Layout/Frame/Data.js";
 
 // The document's one separator, U+2001, is never typed in this file: every string
-// here is a proposition or a path, and the separators between facts are drawn by
-// the stylesheet (`.EdgeLeaf__fact::after`), because a template's newline beside
-// an em quad becomes a 200px gap - a defect the clause rail already paid for once.
+// here is a proposition or a path. The leaf's facts are rows now, so the em quad
+// that used to be drawn BETWEEN two facts is gone with the inline run - the
+// separators that remain are inside a value (`05␁CONTACT`, `12␁DAYS`), where the
+// quad joins two halves of one fact rather than two facts, and it is typed by the
+// component that builds the value. A template's newline beside an em quad becomes
+// a 200px gap, which is the defect the clause rail already paid for once.
 
 /** One sheet of the document. */
 export interface EdgeSheet {

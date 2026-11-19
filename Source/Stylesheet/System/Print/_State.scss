@@ -105,9 +105,16 @@
 	/* ─── TOO LONG ───────────────────────────────────────────────────────
 	 *
 	 * An ellipsis is a fact withheld, and paper has the room to state it. Every
-	 * clipped name wraps; every value that breaks inside a word still does;
-	 * nothing is cut. The one thing that stays on one line is a code well's
-	 * language tag, because a tag is a label and a label is one word. */
+	 * clipped name wraps; nothing is cut. The one thing that stays on one line
+	 * is a code well's language tag, because a tag is a label and a label is
+	 * one word.
+	 *
+	 * This arm used to say "every value that breaks inside a word still does".
+	 * It does not, any more, and it should not: a route, a part's name, a date
+	 * and a state word are one object each, and a printed `/CONTAC` + `T` is
+	 * two facts where the sheet states one. The leaf's register opts out below
+	 * (`THE LEAF'S FACTS KEEP THEIR TOKENS`); every value that is prose still
+	 * wraps here, because prose is what a line break is for. */
 	.StateClip,
 	.Fold__Label,
 	.Fold__Meta,
@@ -140,12 +147,46 @@
 	.StateClip,
 	.StateWrap,
 	.Fold__Label,
-	.EdgeLeaf__route,
 	.record-ledger__value,
 	td,
 	th {
 		overflow-wrap: anywhere;
 		hyphens: auto;
+	}
+
+	/* ─── THE LEAF'S FACTS KEEP THEIR TOKENS ─────────────────────────────
+	 *
+	 * The `too long` arm above makes every `dd` and `dt` wrap on paper, which
+	 * is right for a sentence and wrong for a fact. The leaf's register is
+	 * four facts, and each is one object: a part's name (`05␁CONTACT`), a
+	 * state word (`PUBLIC`), a date (`2026-11-19`) and the source path. A
+	 * printed `/CONTAC` + `T` states two facts where the sheet states one, so
+	 * the register opts out of the generic wrap.
+	 *
+	 * The source is the exception inside the exception: a path breaks at its
+	 * own slashes, which the markup supplies as `<wbr>`, so it wraps (the row
+	 * grows taller) instead of splitting a segment. `break-word` is the
+	 * backstop for one segment wider than the page - it cannot fire while the
+	 * token fits. Paper and screen agree on all four. */
+	.EdgeLeaf__fact > .EdgeLeaf__value {
+		white-space: nowrap !important;
+		overflow-wrap: normal;
+		word-break: keep-all;
+		hyphens: none;
+	}
+
+	.EdgeLeaf__fact[data-kind="source"] > .EdgeLeaf__value {
+		white-space: normal !important;
+		overflow-wrap: break-word;
+	}
+
+	/* The sheet's route, on paper, breaks at its own slashes and nowhere else -
+	 * the same rule as the screen (`Component/Layout/_Edge.scss`), and the
+	 * reason it is not in the `anywhere` group above. */
+	.EdgeLeaf__route {
+		overflow-wrap: break-word;
+		word-break: keep-all;
+		hyphens: none;
 	}
 
 	/* ─── MISSING ────────────────────────────────────────────────────────

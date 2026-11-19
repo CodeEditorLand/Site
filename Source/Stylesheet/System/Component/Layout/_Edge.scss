@@ -2,10 +2,14 @@
 //
 // Publishes:
 //   .EdgeLeaf                 the sheet's headnote: folio, route, facts, proposition
-//   .EdgeLeaf__row            one line: the folio, the route, the facts
+//   .EdgeLeaf__row            the head beside the facts register
+//   .EdgeLeaf__head           the folio and the route, on one line
 //   .EdgeLeaf__folio          `# SHEET 05␁OF 41`
 //   .EdgeLeaf__route          `/DOC/RUST` at the sub tier, in ink
-//   .EdgeLeaf__facts          the four facts as `KEY: value` pairs, U+2001 between
+//   .EdgeLeaf__facts          the four facts as key/value rows, hairline between
+//   .EdgeLeaf__fact           one row: a key, a value, and its kind in `data-kind`
+//   .EdgeLeaf__key            the fact's name, in `--MuteForeground`
+//   .EdgeLeaf__value          the fact's value, right-aligned in ink
 //   .EdgeLeaf__proposition    the `↳` line: what this sheet is for
 //   .EdgeLeaf__note           the arm's own sentence (stale, too long, waiting)
 //   .EdgeTurn                 the catchword and the sheet's folio
@@ -45,7 +49,8 @@
 // composition is judged at the container's: the strip can be 1152px on a wide
 // page and 320px on a phone, and the same query answers both. `leaf` and `turn`
 // are two containers because the two edges re-compose at different widths - the
-// leaf's facts row is four short pairs, the turn's hand is a route and a sentence.
+// leaf's facts register is four key/value rows beside the sheet's route, the
+// turn's hand is a route and a sentence.
 @use "../../Mixin" as *;
 
 // The frame's measure, and the one place the edges' content is set.
@@ -81,16 +86,33 @@
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
 	row-gap: var(--space-tight);
+	align-items: start;
+}
+
+// The head is the one part of the leaf that is a sentence about the sheet: the
+// collation mark and the sheet's own route. It wraps between the two - never
+// inside either - and it holds the row's start while the facts register holds
+// the row's end.
+.EdgeLeaf__head {
+	display: flex;
+	flex-wrap: wrap;
 	align-items: baseline;
+	column-gap: var(--space-group);
+	row-gap: var(--space-tight);
+	min-inline-size: 0;
 }
 
 @container leaf (min-width: 48rem) {
 	.EdgeLeaf__row {
-		// The folio holds its width, the route takes the slack, the facts sit at
-		// the row's end. `minmax(0, 1fr)` on the route is what lets a long route
-		// wrap instead of pushing the facts off the paper.
-		grid-template-columns: auto minmax(0, 1fr) auto;
+		// The head takes the slack, the register keeps its own measure at the
+		// row's end. `min-content` is the register's floor - its key column
+		// plus its widest path segment (see the arithmetic under the facts) -
+		// so the head can never squeeze it into a break; a long route wraps its
+		// own path instead of starving the register, which is the defect this
+		// composition replaced.
+		grid-template-columns: minmax(0, 1fr) minmax(min-content, 22rem);
 		column-gap: var(--space-group);
+		align-items: baseline;
 	}
 }
 
@@ -126,41 +148,140 @@
 // The sheet's route: the one thing on the line at the sub tier, because it is
 // the sheet's name. It wraps rather than truncates - a route is data, and half a
 // route is a wrong address.
+//
+// It wraps at its OWN slashes and nowhere else: the template writes a `<wbr>`
+// after every `/`, so a long route takes a second line at a separator. The three
+// declarations below are what stop the line maker breaking the last word it can
+// reach, which is how `/CONTACT` printed as `/CONTAC` + `T`. `break-word` is the
+// last resort for a single segment wider than the paper - unlike `anywhere` it
+// cannot fire while the token still fits.
 .EdgeLeaf__route {
 	font-size: var(--type-sub);
 	line-height: var(--type-sub-line);
 	color: var(--Foreground);
 	letter-spacing: var(--track-name);
-	overflow-wrap: anywhere;
+	overflow-wrap: break-word;
+	word-break: keep-all;
+	hyphens: none;
 	min-inline-size: 0;
 }
 
-// The facts: `KEY: value` pairs, U+2001 between, wrapping at the paper's edge.
-// The separator is DRAWN (the folio's law) and not typed, so a template's
-// whitespace cannot turn one em quad into a 200px gap.
+// ─── THE FACTS ARE A REGISTER, NOT A RUN ──────────────────────────────────
+// The four facts were one inline run: `KEY: value` pairs with an em quad drawn
+// between them by a `::after`, and a run has no break control. When it met the
+// paper's edge the line maker broke the last word it could reach, which for
+// `05␁CONTACT` was `CONTAC` + `T`. Nothing about the token was wrong; the
+// composition was - a set of facts printed as a sentence cannot say where its
+// own lines end.
+//
+// They are a definition list, so they are printed as one: a key column on the
+// left in `--MuteForeground`, a value column on the right in ink, one row per
+// fact, and the site's one hairline between rows. It is the grammar
+// `RecordLedger` already prints (`Record/_Ledger.scss`) - a `<dl>` of key/value
+// rows, key in mute, value in ink, `--Border` between rows - and the two are
+// deliberately not one block. A ledger row's value is the BODY role, left-
+// aligned, and may carry a note, a state word and a disclosure under it; a
+// leaf's value is the META role, right-aligned, and bars itself when the sheet
+// is still loading. A ledger's key column is `min(28ch, 40%)` because fifty
+// ledgers down a page must share one value column; a leaf's four keys share
+// their own `max-content` because they are the only rows in the block. One
+// grammar, two registers - the shared thing is the row, and the block is the
+// composition that differs.
+//
+// The block draws NO rule above its first row and none below its last. The
+// header already closes on the hairline the leaf sits under, and the page's
+// first band draws its own boundary (see the head of this file). The rules
+// BETWEEN rows are what make four facts read as rows instead of as four
+// sentences.
 .EdgeLeaf__facts {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-	row-gap: var(--space-tight);
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	row-gap: 0;
+	margin: 0;
+	padding: 0;
 	min-inline-size: 0;
+
+	// The register keeps one measure at the row's end rather than running the
+	// paper's whole width: a key on the left edge and its value 1000px away is
+	// a table the reader has to walk to read. `margin-inline-start: auto` is
+	// what puts it on the right edge below 48rem, where the row is one column.
+	//
+	// 22rem (352px) leaves a 26ch value column. Two of the site's forty-one
+	// sources are longer than that - `pages/Account/ForgotPassword.astro` and
+	// `.../ResetPassword.astro` - and they wrap at their own slashes; the other
+	// thirty-nine print on one line. A wider register would buy those two rows
+	// one line each and cost the head its route at a 48rem leaf, which is the
+	// trade this composition refuses.
+	max-inline-size: 22rem;
+	margin-inline-start: auto;
 
 	@include mono-meta;
 
 	letter-spacing: var(--track-row);
 }
 
+// One fact: a key above its value until the paper can hold the two side by
+// side. The row is a SUBGRID of the register, so every key starts in the same
+// column - a per-row `auto` column would let `PART:` and `CIRCULATION:` start
+// their values at two different x positions, which is a ragged table, not a
+// register.
 .EdgeLeaf__fact {
-	display: flex;
-	align-items: baseline;
-	gap: 0.5ch;
+	display: grid;
+	grid-template-columns: subgrid;
+	grid-column: 1 / -1;
+	row-gap: 0.125rem;
 	min-inline-size: 0;
+	padding-block: var(--space-tight);
 }
 
-.EdgeLeaf__fact:not(:last-child)::after {
-	content: "\2001";
-	letter-spacing: 0;
-	white-space: nowrap;
+// The hairline between rows, and only between: the block's head is the header's
+// own rule and its foot is the page's next boundary.
+.EdgeLeaf__fact + .EdgeLeaf__fact {
+	border-block-start: 1px solid var(--Border);
+}
+
+// ─── THE STACKING BREAKPOINT, AND ITS ARITHMETIC ─────────────────────────
+// A row can print its key and its value on one line while the register holds
+// both columns. At the meta role (13px) the tracked advance is 8.84px per glyph
+// (0.6em + the row register's 0.08em), so:
+//
+//   the widest key        `CIRCULATION:`            12ch = 106.1px
+//   the column gap        `--space-reading`               =  16px
+//   the widest SEGMENT    `ForgotPassword.astro`    20ch = 176.8px
+//   ─────────────────────────────────────────────────────────────
+//   the register's floor                                 = 298.9px
+//
+// The floor is measured by the widest SEGMENT and not the widest value, because
+// a source path's own slashes are break points (`<wbr>`): the longest source on
+// the site is `pages/Account/ForgotPassword.astro`, 34ch = 300.6px, and it
+// wraps to `pages/Account/` + `ForgotPassword.astro` rather than making every
+// row 300px wide.
+//
+// The leaf's gutters are `--Gutter` (16px at a 320px window). A leaf of 24rem
+// (384px) holds 352px of measure at that gutter - 53.1px more than the
+// register's floor, and exactly the register's own 22rem cap. Below 24rem the
+// key and the value cannot share a line, so the row STACKS: key above value,
+// value left-aligned under it, and the value never gets narrower than the
+// paper. That is the `too long` arm met by composition - the row grows taller
+// instead of the path breaking.
+@container leaf (min-width: 24rem) {
+	.EdgeLeaf__facts {
+		grid-template-columns: max-content minmax(0, 1fr);
+		column-gap: var(--space-reading);
+	}
+
+	.EdgeLeaf__fact {
+		grid-template-columns: subgrid;
+		row-gap: 0;
+		align-items: baseline;
+	}
+
+	// Right-aligned in ink: the values are the register's second column, and
+	// their last glyph is the leaf's right edge - the same edge the header's
+	// rule and the footer's ledger end on.
+	.EdgeLeaf__value {
+		text-align: end;
+	}
 }
 
 .EdgeLeaf__key {
@@ -168,14 +289,42 @@
 	white-space: nowrap;
 }
 
+// A value is one object. These three declarations are what stop the browser
+// hyphenating a part's name or splitting a date; the per-kind rules below add
+// the ones a fact needs on top of them.
 .EdgeLeaf__value {
 	color: var(--Foreground);
 	margin: 0;
-	overflow-wrap: anywhere;
+	min-inline-size: 0;
+	overflow-wrap: normal;
+	word-break: keep-all;
+	hyphens: none;
 }
 
-// A figure is a figure, never a word: the age is the one numeric fact on the
-// line and it is set in one column.
+// An identifier, a state word and a date are one object each: `05␁CONTACT` is a
+// part, `PUBLIC` is a word, `2026-11-19` is a day, and the stale arm's
+// `2026-05-23␁◎ STALE` is one stamp. None of them takes a second line, and all
+// of them fit the narrowest register the site prints.
+.EdgeLeaf__fact[data-kind="part"] > .EdgeLeaf__value,
+.EdgeLeaf__fact[data-kind="circulation"] > .EdgeLeaf__value,
+.EdgeLeaf__fact[data-kind="as-of"] > .EdgeLeaf__value,
+.EdgeLeaf__fact[data-kind="age"] > .EdgeLeaf__value {
+	white-space: nowrap;
+}
+
+// A source is a path, and a path's own slashes are its break points: the
+// template writes a `<wbr>` after each one, so the value wraps - the row grows
+// taller - instead of splitting a segment. `break-word` is the backstop for one
+// segment wider than the register, and it cannot fire while a segment fits.
+// This is the `Detail/_Folio.scss` rule for the same reason, at the same
+// measure: a path is data, and data breaks where its author put the marks.
+.EdgeLeaf__fact[data-kind="source"] > .EdgeLeaf__value {
+	white-space: normal;
+	overflow-wrap: break-word;
+}
+
+// A figure is a figure, never a word: the age is the one numeric fact in the
+// register and it is set in one column.
 .EdgeLeaf__value[data-figure] {
 	font-variant-numeric: tabular-nums slashed-zero;
 	white-space: nowrap;

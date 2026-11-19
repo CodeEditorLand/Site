@@ -63,7 +63,16 @@ interface Props {
 	 * page that prints the edges as specimens can mount the arm it describes.
 	 * Omitted, the arm is derived from the register.
 	 */
-	state?: "rest" | "index" | "error" | "record-end" | "empty" | "missing" | "too-much" | "too-long" | "loading";
+	state?:
+		| "rest"
+		| "index"
+		| "error"
+		| "record-end"
+		| "empty"
+		| "missing"
+		| "too-much"
+		| "too-long"
+		| "loading";
 
 	/** Extra classes from the page. */
 	class?: string;
@@ -130,44 +139,46 @@ const IsLink = State === "rest" || State === "too-much" || State === "too-long";
 <div class:list={["EdgeTurn", Class]} data-state={State} data-kind={Next.Kind}>
 	<div class="EdgeTurn__row">
 		<div class="EdgeTurn__hand">
-			{
-				State === "record-end" ? (
-					<p class="EdgeTurn__next">
-						<span class="EdgeTurn__mark" aria-hidden="true">
-							→
-						</span>
-						<span class="EdgeTurn__key">{Copy.turn.next}</span>
-						<span class="EdgeTurn__end">{Copy.turn.recordEnd}</span>
-					</p>
-				) : State === "error" || State === "empty" || State === "missing" ? (
-					<p class="EdgeTurn__next">
-						<span class="EdgeTurn__mark" aria-hidden="true">
-							◎
-						</span>
-						<span class="EdgeTurn__key">
-							{State === "missing" ? Copy.turn.missing : Copy.turn.noNext}
-						</span>
-						{State === "missing" ? (
-							<span class="EdgeTurn__was">{`${Copy.turn.was}\u2001${RouteText}`}</span>
-						) : null}
-					</p>
-				) : (
-					<p class="EdgeTurn__next">
-						<span class="EdgeTurn__mark" aria-hidden="true">
-							→
-						</span>
-						<span class="EdgeTurn__key">{Copy.turn.next}</span>
-						{IsLink ? (
-							<a class="EdgeTurn__route" href={Next.Route}>
-								{RouteText}
-							</a>
-						) : (
-							<span class="EdgeTurn__route">{RouteText}</span>
-						)}
-						<span class="EdgeTurn__part">{PartText}</span>
-					</p>
-				)
-			}
+			{State === "record-end" ? (
+				<p class="EdgeTurn__next">
+					<span class="EdgeTurn__mark" aria-hidden="true">
+						→
+					</span>
+					<span class="EdgeTurn__key">{Copy.turn.next}</span>
+					<span class="EdgeTurn__end">{Copy.turn.recordEnd}</span>
+				</p>
+			) : State === "error" ||
+			  State === "empty" ||
+			  State === "missing" ? (
+				<p class="EdgeTurn__next">
+					<span class="EdgeTurn__mark" aria-hidden="true">
+						◎
+					</span>
+					<span class="EdgeTurn__key">
+						{State === "missing"
+							? Copy.turn.missing
+							: Copy.turn.noNext}
+					</span>
+					{State === "missing" ? (
+						<span class="EdgeTurn__was">{`${Copy.turn.was}\u2001${RouteText}`}</span>
+					) : null}
+				</p>
+			) : (
+				<p class="EdgeTurn__next">
+					<span class="EdgeTurn__mark" aria-hidden="true">
+						→
+					</span>
+					<span class="EdgeTurn__key">{Copy.turn.next}</span>
+					{IsLink ? (
+						<a class="EdgeTurn__route" href={Next.Route}>
+							{RouteText}
+						</a>
+					) : (
+						<span class="EdgeTurn__route">{RouteText}</span>
+					)}
+					<span class="EdgeTurn__part">{PartText}</span>
+				</p>
+			)}
 
 			<p class="EdgeTurn__proposition">
 				<span class="EdgeTurn__proposition-mark" aria-hidden="true">

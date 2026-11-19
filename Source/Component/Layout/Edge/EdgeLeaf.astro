@@ -7,8 +7,10 @@
  * reader deciding whether to stay actually needs, none of which the page says
  * about itself:
  *
- *   # SHEET 05␁OF 41      /DOC/RUST      PART: 03␁DOCUMENTATION␁AS OF: 2026-11-19
- *                                         CIRCULATION: PUBLIC␁SOURCE: pages/Doc/Rust.astro
+ *   # SHEET 05␁OF 41   /DOC/RUST          PART:            03␁DOCUMENTATION
+ *                                         CIRCULATION:               PUBLIC
+ *                                         SOURCE:      pages/Doc/Rust.astro
+ *                                         AS OF:                 2026-11-19
  *   ↳ THE RUST CORE, ITS BOUNDARIES, AND WHAT IT DOES NOT OWN
  *
  * It is the collation mark of a dossier: the sheet's number in the document, its
@@ -16,6 +18,28 @@
  * asks search engines to index it, and the file it was set from. A printed
  * chapter opening carries the same five things above the drop - and a reader who
  * has seen one page of this site recognises the edge of every other.
+ *
+ * ─── THE FACTS ARE ROWS, AND THE ROWS HAVE ONE ORDER ──────────────────────
+ * The facts were one inline run of `KEY: value` pairs. A run has no break
+ * control, so at the paper's edge the line maker broke the last word it could
+ * reach - `05␁CONTACT` printed as `CONTAC` + `T` - and the four facts read as a
+ * sentence that happened to contain colons. They are a definition list, and the
+ * stylesheet prints them as one: a key column, a right-aligned value column and
+ * a hairline between rows (`Component/Layout/_Edge.scss`).
+ *
+ * The order is DATA, declared here in `FactOrder`, and not in any page: a page
+ * supplies facts and the component decides their grammar, so all forty-one
+ * leaves of the site agree. It reads as a sentence about the sheet -
+ *
+ *   PART:          what this is          (the reader's first question)
+ *   CIRCULATION:   who may read it       (the second)
+ *   SOURCE:        where it came from    (provenance follows identity)
+ *   AS OF:         when it was read      (the stamp, LAST: it dates the set)
+ *   AGE:           how old that makes it (the stale arm's own line, under it)
+ *
+ * - which is the colophon rule: a date belongs at the end of what it dates, not
+ * in the middle. The date used to sit second, between the part and the two
+ * facts it dates.
  *
  * ─── WHY THE FRAME PRINTS IT AND NOT THE PAGE ─────────────────────────────
  * A page knows its own content and not its place. Only the frame knows what is
@@ -58,7 +82,12 @@
  *
  * No script and no hydration: a headnote is printed.
  */
-import { EdgePage, EdgeBuildDate, EdgeDaysBetween, EdgeStaleAfterDays } from "../../../Content/Edge/Copy.js";
+import {
+	EdgePage,
+	EdgeBuildDate,
+	EdgeDaysBetween,
+	EdgeStaleAfterDays,
+} from "../../../Content/Edge/Copy.js";
 import {
 	EdgeExtent,
 	EdgePartOf,
@@ -93,7 +122,14 @@ interface Props {
 	 * a page that prints the edges as specimens (`/Specimen`) can mount the arm it
 	 * is describing. Omitted, the arm is derived from the facts.
 	 */
-	state?: "rest" | "unfiled" | "stale" | "loading" | "partial" | "too-long" | "too-much";
+	state?:
+		| "rest"
+		| "unfiled"
+		| "stale"
+		| "loading"
+		| "partial"
+		| "too-long"
+		| "too-much";
 
 	/** Extra classes from the page. */
 	class?: string;
@@ -135,7 +171,10 @@ const AsOf = Place?.Sheet.AsOf ?? EdgeBuildDate;
 const Age = EdgeDaysBetween(AsOf, EdgeBuildDate);
 
 /** A sheet older than a quarter says so before the reader reads a word. */
-const IsStale = Place !== undefined && Place.Sheet.AsOf !== undefined && Age > EdgeStaleAfterDays;
+const IsStale =
+	Place !== undefined &&
+	Place.Sheet.AsOf !== undefined &&
+	Age > EdgeStaleAfterDays;
 
 /**
  * The route as the grammar prints it: `/DOC/RUST`, uppercase, leading slash.
@@ -145,7 +184,9 @@ const IsStale = Place !== undefined && Place.Sheet.AsOf !== undefined && Age > E
  * for itself (`# LAND / RECORD END` in the footer). A lone slash at 18px reads as
  * a separator, which is the one thing a route may not be mistaken for.
  */
-const RouteText = (Place?.Sheet.Path === "/" ? "/LAND" : (Place?.Sheet.Path ?? path)).toUpperCase();
+const RouteText = (
+	Place?.Sheet.Path === "/" ? "/LAND" : (Place?.Sheet.Path ?? path)
+).toUpperCase();
 
 /**
  * The proposition: the register's, then the page's own description, then honest
@@ -186,19 +227,22 @@ const State =
 const IsTooMuch = Place !== undefined && EdgeExtent.length > 2;
 
 /** The ordinal slot, printed with the grammar's fallback when there is no place. */
-const Ordinal = State === "unfiled" ? Copy.leaf.unfiled : (Place?.Ordinal ?? Copy.leaf.unfiled);
+const Ordinal =
+	State === "unfiled"
+		? Copy.leaf.unfiled
+		: (Place?.Ordinal ?? Copy.leaf.unfiled);
 
 /** The extent slot: `OF 41`, or nothing when the page has no place in the series. */
 const Extent = State === "unfiled" ? "" : `${Copy.leaf.of}\u2001${EdgeExtent}`;
 
 /** The part's value: `03␁DOCUMENTATION`, or the fallback mark. */
 const PartValue =
-	State === "unfiled"
-		? Copy.leaf.noPart
-		: `${Part.Index}\u2001${Part.Label}`;
+	State === "unfiled" ? Copy.leaf.noPart : `${Part.Index}\u2001${Part.Label}`;
 
 /** The circulation fact: a published page, or one the build asks not to index. */
-const Circulation = noIndex ? Copy.leaf.circulationDenied : Copy.leaf.circulationPublic;
+const Circulation = noIndex
+	? Copy.leaf.circulationDenied
+	: Copy.leaf.circulationPublic;
 
 /** The file the sheet was set from, or where an unfiled page came from. */
 const Source =
@@ -207,27 +251,59 @@ const Source =
 		: (Place?.Sheet.Source ?? Copy.leaf.unavailable);
 
 /**
- * The facts, in the order they are read. Each is its own row so the stylesheet can
- * set a figure tabular and a path breakable without touching the words.
+ * ─── THE CANONICAL ORDER, AND IT IS DATA ──────────────────────────────────
+ * The four facts are a sentence about the sheet, and the sentence has one
+ * order: what this is, who may read it, where it came from, and - last - when
+ * it was read. The date goes last because it dates the set above it, not the
+ * part beside it; it used to sit second, between identity and provenance.
+ *
+ * It is declared HERE and not in a page. A page supplies facts; the component
+ * decides their grammar, so no page can reintroduce a different order and the
+ * forty-one leaves of the site cannot disagree. `age` is the stale arm's own
+ * line and follows the date it ages - it is the only fact that is not always
+ * printed, and the sequence has to have a place for it whether it prints or
+ * not.
  */
-type Fact = { readonly key: string; readonly value: string; readonly kind: string };
+const FactOrder = ["part", "circulation", "source", "as-of", "age"] as const;
 
-const Facts: Fact[] = [
-	{ key: Copy.leaf.part, value: PartValue, kind: "part" },
-	{
-		key: Copy.leaf.asOf,
-		value:
-			IsStale && State !== "unfiled"
-				? `${AsOf}\u2001${Copy.leaf.stale}`
-				: AsOf,
-		kind: "as-of",
-	},
-	...(IsStale && State !== "unfiled"
-		? [{ key: Copy.leaf.age, value: `${Age}\u2001DAYS`, kind: "age" }]
-		: []),
-	{ key: Copy.leaf.circulation, value: Circulation, kind: "circulation" },
-	{ key: Copy.leaf.source, value: Source, kind: "source" },
-];
+/** One fact's kind: its slot in the register, and the key of its rule set. */
+type FactKind = (typeof FactOrder)[number];
+
+/**
+ * A fact is its own row so the stylesheet can set a figure tabular, a part's
+ * name unbreakable and a path breakable at its own slashes - without touching
+ * the words.
+ */
+type Fact = {
+	readonly key: string;
+	readonly value: string;
+	readonly kind: FactKind;
+};
+
+const Facts: readonly Fact[] = (
+	[
+		{ key: Copy.leaf.part, value: PartValue, kind: "part" },
+		{
+			key: Copy.leaf.asOf,
+			value:
+				IsStale && State !== "unfiled"
+					? `${AsOf}\u2001${Copy.leaf.stale}`
+					: AsOf,
+			kind: "as-of",
+		},
+		...(IsStale && State !== "unfiled"
+			? [
+					{
+						key: Copy.leaf.age,
+						value: `${Age}\u2001DAYS`,
+						kind: "age" as const,
+					},
+				]
+			: []),
+		{ key: Copy.leaf.circulation, value: Circulation, kind: "circulation" },
+		{ key: Copy.leaf.source, value: Source, kind: "source" },
+	] satisfies Fact[]
+).sort((A, B) => FactOrder.indexOf(A.kind) - FactOrder.indexOf(B.kind));
 ---
 
 <div
@@ -237,63 +313,91 @@ const Facts: Fact[] = [
 	data-circulation={noIndex ? "denied" : "public"}
 >
 	<div class="EdgeLeaf__row">
-		<p class="EdgeLeaf__folio">
-			<span class="EdgeLeaf__mark" aria-hidden="true">#</span>
-			<span class="EdgeLeaf__sheet">{Copy.leaf.sheet}</span>
-			<span class="EdgeLeaf__ordinal">{Ordinal}</span>
-			{Extent !== "" ? <span class="EdgeLeaf__of">{Extent}</span> : null}
-		</p>
+		<div class="EdgeLeaf__head">
+			<p class="EdgeLeaf__folio">
+				<span class="EdgeLeaf__mark" aria-hidden="true">
+					#
+				</span>
+				<span class="EdgeLeaf__sheet">{Copy.leaf.sheet}</span>
+				<span class="EdgeLeaf__ordinal">{Ordinal}</span>
+				{Extent !== "" ? (
+					<span class="EdgeLeaf__of">{Extent}</span>
+				) : null}
+			</p>
 
-		<p class="EdgeLeaf__route" data-route={RouteText}>{RouteText}</p>
+			{/*
+			 * The route breaks at its own slashes and nowhere else. A `<wbr>` is
+			 * zero-width, is not part of the copied text, and is the only place
+			 * the line maker may take a break inside the route - so a long
+			 * route wraps at a separator instead of splitting a segment
+			 * (`/CONTAC` + `T`).
+			 */}
+			<p class="EdgeLeaf__route" data-route={RouteText}>
+				{RouteText.split("/").map((Segment, Position, Segments) =>
+					Position < Segments.length - 1
+						? [Segment, "/", <wbr />]
+						: [Segment],
+				)}
+			</p>
+		</div>
 
 		<dl class="EdgeLeaf__facts">
-			{
-				Facts.map((Fact) => (
-					<div class="EdgeLeaf__fact" data-kind={Fact.kind}>
-						<dt class="EdgeLeaf__key">{Fact.key}</dt>
-						<dd class="EdgeLeaf__value" data-figure={Fact.kind === "age" ? "" : undefined}>
-							{State === "loading" ? (
-								<span class="EdgeLeaf__bar" aria-hidden="true" />
-							) : (
-								Fact.value
-							)}
-						</dd>
-					</div>
-				))
-			}
+			{Facts.map((Fact) => (
+				<div class="EdgeLeaf__fact" data-kind={Fact.kind}>
+					<dt class="EdgeLeaf__key">{Fact.key}</dt>
+					<dd
+						class="EdgeLeaf__value"
+						data-figure={Fact.kind === "age" ? "" : undefined}
+					>
+						{State === "loading" ? (
+							<span class="EdgeLeaf__bar" aria-hidden="true" />
+						) : Fact.kind === "source" ? (
+							/*
+							 * A source is a path, and a path's slashes are its own
+							 * break points - the `Detail/Folio` rule for the same
+							 * reason: a path is data, and data breaks where its
+							 * author put the marks.
+							 */
+							Fact.value
+								.split("/")
+								.map((Segment, Position, Segments) =>
+									Position < Segments.length - 1
+										? [Segment, "/", <wbr />]
+										: [Segment],
+								)
+						) : (
+							Fact.value
+						)}
+					</dd>
+				</div>
+			))}
 		</dl>
 	</div>
 
 	<p class="EdgeLeaf__proposition">
-		<span class="EdgeLeaf__proposition-mark" aria-hidden="true">↳</span>
+		<span class="EdgeLeaf__proposition-mark" aria-hidden="true">
+			↳
+		</span>
 		<span class="EdgeLeaf__proposition-text">{Proposition}</span>
 	</p>
 
-	{
-		State === "loading" ? (
-			<p class="EdgeLeaf__note">{`WAITING ON: ${Copy.leaf.waitingOn}`}</p>
-		) : null
-	}
+	{State === "loading" ? (
+		<p class="EdgeLeaf__note">{`WAITING ON: ${Copy.leaf.waitingOn}`}</p>
+	) : null}
 
-	{
-		State === "stale" ? <p class="EdgeLeaf__note">{Copy.leaf.staleNote}</p> : null
-	}
+	{State === "stale" ? (
+		<p class="EdgeLeaf__note">{Copy.leaf.staleNote}</p>
+	) : null}
 
-	{
-		State === "too-long" ? (
-			<p class="EdgeLeaf__note">{Copy.leaf.tooLongNote}</p>
-		) : null
-	}
+	{State === "too-long" ? (
+		<p class="EdgeLeaf__note">{Copy.leaf.tooLongNote}</p>
+	) : null}
 
-	{
-		State === "too-much" || IsTooMuch ? (
-			<p class="EdgeLeaf__note">{Copy.leaf.tooMuchNote}</p>
-		) : null
-	}
+	{State === "too-much" || IsTooMuch ? (
+		<p class="EdgeLeaf__note">{Copy.leaf.tooMuchNote}</p>
+	) : null}
 
-	{
-		State === "partial" ? (
-			<p class="EdgeLeaf__note">{`${Copy.leaf.source}\u2001${Copy.leaf.unavailable}`}</p>
-		) : null
-	}
+	{State === "partial" ? (
+		<p class="EdgeLeaf__note">{`${Copy.leaf.source}\u2001${Copy.leaf.unavailable}`}</p>
+	) : null}
 </div>

@@ -215,7 +215,9 @@ const Meta = [
 
 			<p class="blog-article__back">
 				<a href={backHref}>
-					{backLabel}{"\u2001"}<span aria-hidden="true">←</span>
+					{backLabel}
+					{"\u2001"}
+					<span aria-hidden="true">←</span>
 				</a>
 			</p>
 		</div>
@@ -234,10 +236,7 @@ const Meta = [
 			 * stacked without knowing the first one's height.
 			 */}
 			<div class="blog-article__pinned">
-				<RecordLedger
-					rows={summaryRows}
-					register={summaryRegister}
-				/>
+				<RecordLedger rows={summaryRows} register={summaryRegister} />
 
 				{toc ? (
 					<nav class="blog-article__register" aria-label={toc.label}>

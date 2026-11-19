@@ -2,17 +2,19 @@
 /**
  * The blog index: what exists, newest first.
  *
- * The page is the baseline render's composition: a breadcrumb, a centred header
- * carrying the page's one `h1` and one line under it, then the articles in a
- * three-column grid, then the way back to the top. Eight articles in a
- * three-across grid leave a hole in the last row; the baseline had that hole and
- * the page is restored with it, because the shape a reader recognises is the
- * grid rather than the ledger that replaced it.
+ * The page is a breadcrumb, a centred header carrying the page's one `h1` and
+ * one line under it, a full-bleed plate of the archive's extent, the archive
+ * itself, and the way back to the top. The archive leads with the newest
+ * article at the full measure and lays the other seven out on a capacity line
+ * that prints two tracks where two cards fit and one where they do not - see
+ * `Component/Blog/BlogIndex.astro` for the composition and
+ * `Stylesheet/System/Component/Blog/_Listing.scss` for the floor it is measured
+ * against.
  *
  * The page composes, it does not lay out. `Component/Blog/Data.ts` orders the
- * collection and derives the reading-time label; `BlogIndex` renders the header
- * and the grid; the partial under `Stylesheet/System/Component/Blog/` styles
- * both. What is left here is the copy and the trail.
+ * collection and derives the reading-time label; `BlogIndex` renders the header,
+ * the plate and the archive; the partial under `Stylesheet/System/Component/Blog/`
+ * styles both. What is left here is the copy and the trail.
  */
 import { getCollection } from "astro:content";
 
