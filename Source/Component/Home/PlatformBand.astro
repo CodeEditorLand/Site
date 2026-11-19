@@ -13,13 +13,44 @@
  * ink on its own name, and one action per row. Every string the three cards
  * printed is still printed - the marker, the name, the `〈 〉` architecture, the
  * channel, version, size, signing, the action and the status.
+ *
+ * ─── A MANIFEST IS A SET, AND ITS ADVERSE STATE IS A SET OF NONE ──────────
+ * The plate was written for exactly three artefacts and had no answer for the
+ * two sets a release actually produces: ONE - the day a build exists for a
+ * single platform, which is the shape every first release has - and NONE, the
+ * day nothing is downloadable, which the site's own masthead already states in
+ * words ("nothing is downloadable yet; builds are from source").
+ *
+ * One row already rendered correctly: the row's rule is `+ .home-platform`, so a
+ * plate of one has no divider in it. What was missing was the empty arm, and an
+ * empty arm on a white plate is not an empty plate - it is a plate with nothing
+ * on it, which reads as a build that lost its data rather than a project with
+ * nothing to ship.
+ *
+ * So the plate states the absence in the vocabulary, in the plate's own voice,
+ * and keeps the three facts a reader needs: that no artefact is filed, that
+ * builds are from source, and where the source is. `UNAVAILABLE` is the word for
+ * a fact that exists and is empty; the sentence under it is what makes it a fact
+ * rather than a hole with a word in it.
  */
 import { BandOf, HomeBands, Sequence } from "../../Content/Home/Band.js";
 import { PlatformCards } from "../../Content/Home/Platform.js";
 import { GetI18n } from "../../Library/I18n/Server";
 
+import type { PlatformCard as PlatformCardData } from "../../Content/Home/Type.js";
+
 import Band from "./Band.astro";
 import PlatformCard from "./PlatformCard.astro";
+
+interface Props {
+	/**
+	 * The artefacts the manifest files. Defaults to the page's three, so the
+	 * homepage passes nothing and the band renders as it always has.
+	 */
+	cards?: readonly PlatformCardData[];
+}
+
+const { cards = PlatformCards } = Astro.props;
 
 const T = GetI18n();
 
@@ -27,9 +58,28 @@ const Head = BandOf(HomeBands(T), "download");
 ---
 
 <Band head={Head} series="ACTION" rhythm={Sequence.download}>
-	<jelly-card class="home-platform__manifest">
-		{PlatformCards.map((Card) => (
-			<PlatformCard card={Card} />
-		))}
+	<jelly-card class="home-platform__manifest" data-count={cards.length}>
+		{cards.length === 0 ? (
+			<div class="home-platform__absent">
+				<p class="home-platform__absent-line">
+					<span class="home-platform__absent-key">ARTIFACTS:</span>
+					<span class="home-platform__absent-value">UNAVAILABLE</span>
+				</p>
+
+				<p class="home-platform__absent-note">
+					No artefact is filed for any platform, so the manifest has no
+					row to print. Nothing is downloadable yet: every build is
+					made from source, and the source is the record this page
+					points at.
+				</p>
+
+				<p class="home-platform__absent-line">
+					<span class="home-platform__absent-key">CHANNEL:</span>
+					<span class="home-platform__absent-value">SOURCE</span>
+				</p>
+			</div>
+		) : (
+			cards.map((Card) => <PlatformCard card={Card} />)
+		)}
 	</jelly-card>
 </Band>

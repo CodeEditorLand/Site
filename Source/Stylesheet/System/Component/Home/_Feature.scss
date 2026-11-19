@@ -3,6 +3,9 @@
 //
 // Publishes:
 //   .home-feature__grid             the matrix: one to three columns, one seam
+//   .home-feature__empty            the plate's empty arm - a set of none
+//   .home-feature__subset           a plate that files a selection, and its figure
+//   .home-feature__subset-ledger    `# RECORDS / 03` and `SELECTION: 03 OF 06`
 //   .home-feature__specimen         the filed observation strip below the matrix
 //   .home-feature__specimen-label   the strip's `SPECIMEN` label
 //   .home-feature__specimen-ledger  its three readings, on one line
@@ -31,6 +34,30 @@
 // the block's own anatomy. Its three rows read across one line, because a
 // specimen label is read as a label - `SPECIES: … TEMP: … WIND: …` - not as a
 // three-storey ledger under six records.
+//
+// ─── THE COLUMN COUNT IS THE SET'S ────────────────────────────────────────
+//
+// `repeat(3, …)` is a distribution that divides six and nothing else. The
+// composition family's matrix printed the band with three records, and the
+// layout answered with a 2 + 1 at every width below `lg` - a hole in the seam
+// where the missing fourth cell would have been, which reads as a plate that
+// lost a record rather than one that files three.
+//
+// So the band publishes the count it wants (`--feature-tracks`, from the set's
+// own length) and the remainder of that count against the columns the width can
+// hold. Two rules make a short last row a composition instead of a gap:
+//
+//   1. the third column exists only where three tracks fit - `lg` - and the
+//      count of tracks at `md` is two;
+//   2. when exactly one cell is left over, it spans the line
+//      (`[data-remainder="1"] > :last-child`). That is the site's LEAD rule,
+//      applied to the last cell of a plate: a lone record at two-thirds width
+//      is a cell with a hole beside it, and the same record across the full
+//      seam is the plate's closing row.
+//
+// The six-record set is unaffected: six divides three and two, so its remainder
+// is zero at every width and neither rule fires. The page's own matrix renders
+// exactly as it did.
 
 @use "../../Mixin" as *;
 
@@ -47,8 +74,94 @@
 	}
 
 	@include bp(1024px) {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
+		grid-template-columns: repeat(var(--feature-tracks, 3), minmax(0, 1fr));
 	}
+}
+
+/* The short last row, answered by the layout: one record across the seam. */
+@include bp(768px) {
+	.home-feature__grid[data-remainder="1"] > :last-child {
+		grid-column: 1 / -1;
+	}
+}
+
+/* ─── THE PLATE'S EMPTY ARM ─────────────────────────────────────────────── */
+//
+// A set of none is stated, not drawn: the band prints the vocabulary's word and
+// one sentence where the matrix would be. No grid with no cells - an empty grid
+// is a layout that has failed quietly, and the brief's empty rule is that the
+// surface says what would be here, why it is not, and what to do.
+.home-feature__empty {
+	max-inline-size: 72rem;
+	margin: 0 auto var(--space-group);
+
+	@include hairline(top);
+	padding-block-start: var(--space-tight);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+}
+
+.home-feature__empty-key {
+	color: var(--MuteForeground);
+}
+
+.home-feature__empty-value {
+	color: var(--Foreground);
+	letter-spacing: var(--track-row);
+}
+
+.home-feature__empty-note {
+	display: block;
+
+	margin-block-start: var(--space-tight);
+
+	max-inline-size: 68ch;
+
+	color: var(--MuteForeground);
+}
+
+/* ─── THE SELECTION'S FIGURE ────────────────────────────────────────────── */
+//
+// A plate that files three of six says so, under the grid, in the record's own
+// voice: the register line `# RECORDS / 03` and, beside it, `SELECTION: 03 OF 06`.
+// The line is `Register`'s - the block that owns a register's four parts - and the
+// row is the ledger's shape, because `RecordLedger` recomposes a register's count
+// from its own rows and a one-row ledger would have printed `# RECORDS / 01` over
+// a plate of three.
+.home-feature__subset {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	column-gap: clamp(1.5rem, 3vw, 3rem);
+	row-gap: var(--space-tight);
+
+	max-inline-size: 72rem;
+	margin-block-start: var(--space-group);
+	margin-inline: auto;
+	padding-block-start: var(--space-tight);
+
+	@include hairline(top);
+}
+
+.home-feature__subset-register {
+	margin: 0;
+
+	@include mono-meta;
+	@include track;
+}
+
+.home-feature__subset-row {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+}
+
+.home-feature__subset-key {
+	color: var(--MuteForeground);
 }
 
 .home-feature {

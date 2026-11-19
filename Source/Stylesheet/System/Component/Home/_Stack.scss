@@ -2,8 +2,9 @@
 //
 // Publishes:
 //   .hero-band__stack        the strip under the two panels
-//   .hero-band__stack-label  `TECH STACK`
-//   .hero-band__stack-grid   two to four columns of tiles
+//   .hero-band__stack-label  `TECH STACK` and the set's count
+//   .hero-band__stack-count  the count, at the separator
+//   .hero-band__stack-grid   the row - the capacity line, not a column count
 //   .hero-band__stack-tile   one bordered creme chip
 //   .hero-band__stack-inner  its icon and its name
 //   .hero-band__stack-icon   the tile's glyph, in the tile's own ink
@@ -33,16 +34,35 @@
 
 @use "../../Mixin" as *;
 
-// ─── THE ROW IS A CONTAINER QUESTION, NOT A VIEWPORT ONE ──────────────────
-// The strip is a sibling of the pair, not a child of the record card: it spans
-// the band, inset by the same `clamp(2rem, 5vw, 5rem)` the pair pays. So its
-// inline size is never the viewport's - the band less 2 x 5vw is 0.9 x the
-// viewport between 640 and 1600px (less the scrollbar), and the viewport minus
-// 160px above that - and a `@media` step is a guess at a box the query cannot
-// see. The row switches on the STRIP's own content box, `@container hero-stack`,
-// which is the width four tiles divide.
+// ─── THE ROW IS A CAPACITY LINE, NOT A COLUMN COUNT ───────────────────────
 //
-// The step is a measure, not a guess. One tile spends, inline:
+// The strip used to print `repeat(2, …)` below a container query and
+// `repeat(4, …)` above it - a rule written for the eight tiles it was built for
+// and wrong for any other set. The composition family's matrix printed the two
+// cases the rule could not answer: NINE tiles, where four columns leave a row of
+// one, and the same nine inside a NARROW CARD, where four columns leave a row of
+// one that is also overflowing.
+//
+// So the row is a wrapping flex line with three published numbers, and the count
+// per row falls out of the arithmetic instead of being asserted:
+//
+//   --stack-tracks   how many the SET wants in a row, derived from the tile
+//                    count (`Content/Home/Stack.ts:StackTracks`) - four divides
+//                    eight, three divides nine, one tile is one row
+//   --stack-floor    one tile's minimum, 12.9rem, measured below
+//   --stack-ceil     one tile's maximum: exactly one track of the wanted count,
+//                    so a tile can grow into its own column and never into the
+//                    next one
+//
+// A tile is `flex: 1 1 var(--stack-floor)` with `max-inline-size:
+// var(--stack-ceil)`. When the strip is wide enough for the wanted count, every
+// tile hits its ceiling and the row is exactly `--stack-tracks` wide. When it is
+// not, the floor wins, the row wraps earlier, and the count falls by one at a
+// time until one tile fits. A last row that is short stays short and its tiles
+// stay track-wide: a short row is a fact about the set, a stretched orphan is a
+// layout apologising for it.
+//
+// The floor is a measure, not a guess. One tile spends, inline:
 //
 //   border + padding      1px + 0.75rem, twice   = 26px
 //   icon/name gap         0.75rem                = 12px
@@ -53,25 +73,14 @@
 // The longest name the strip prints, `EFFECT-TS SERVICES`, measures 149px at
 // `--type-meta` (13px) with `--track-row` (0.08em); the eight measured widths
 // are 75 / 66 / 149 / 66 / 116 / 116 / 91 / 124. So a tile needs 207px for that
-// name to print whole, and four of them plus three 0.5rem gaps need
+// name to print whole - 12.9375rem, published as 12.9rem and read as a floor by
+// the flex line, which rounds it against the strip's own content box rather than
+// against the viewport.
 //
-//   4 x 207 + 3 x 8 = 852px = 53.25rem
-//
-// of strip. The query is 53.5rem (856px) - the exact fit plus 4px, so half a
-// pixel of grid rounding cannot ellipsize the one name that lands on the line.
-// Below it the row is two across: the state a phone already prints, and the only
-// other count that divides eight tiles without leaving a hole in the last row.
-// It is a column-count change, not a composition: the tiles, the icon, the fill
-// and the `--Divider` frame are the same in both states.
-//
-// Four across at `bp(640px)` was the old step, and at that viewport the strip is
-// 565px - 135px a tile, 77px for a name - so five of the eight ellipsized, the
-// longest cut from 149px to 77px, and the row did not clear its last ellipsis
-// until a ~960px viewport. The 13px name is not shrunk to make them fit; the row
-// is allowed one fewer column instead. Under 53.5rem the strip is two across,
-// which at 360px still ellipsizes the five long names (81px for a name) - that
-// is the design brief's `too long` state, and the floor at a phone's width, not
-// a column-count error.
+// Under 12.9rem the name ellipsizes. That is the design brief's `too long` state
+// and the floor at a phone's width, not a column-count error: the tile is the
+// smallest object the strip can draw, and a legend that shrank its own type to
+// fit would be a legend at 11px on a site whose floor is 13.
 .hero-band__stack {
 	container: hero-stack / inline-size;
 	padding-inline: clamp(2rem, 5vw, 5rem);
@@ -79,29 +88,52 @@
 }
 
 .hero-band__stack-label {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+
+	/* No gap: the separator between the label and its figure is U+2001, the
+	   site's only separator, and an em quad plus a flex gap is a double space. */
+	gap: 0;
+
+	margin: 0 0 0.625rem;
+
 	@include mono-meta;
 	@include track(var(--track-rule));
-	margin: 0 0 0.625rem;
+}
+
+/* The set's own count, beside its label: `TECH STACK␁08 TILES`. It is a figure
+   the strip can derive and no reader has to be told twice - the same rule the
+   page's registers follow, applied to a legend instead of a chapter. */
+.hero-band__stack-count {
+	color: var(--MuteForeground);
 }
 
 .hero-band__stack-grid {
-	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 0.5rem;
-}
+	--stack-floor: 12.9rem;
+	--stack-ceil: calc(
+		(100% - (var(--stack-tracks, 4) - 1) * 0.5rem) / var(--stack-tracks, 4)
+	);
 
-// 4 x 207px + 3 x 8px = 852px of strip; the query is that plus 4px. The
-// arithmetic is in this file's head.
-@container hero-stack (min-width: 53.5rem) {
-	.hero-band__stack-grid {
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-	}
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+
+	min-inline-size: 0;
 }
 
 .hero-band__stack-tile {
+	flex: 1 1 var(--stack-floor);
+
+	/* The ceiling is the wanted track, so a tile grows to its own column and
+	   stops. Without it, a short last row stretches its one tile across the
+	   whole strip - a 852px chip holding a 149px name. */
+	max-inline-size: var(--stack-ceil);
+	min-inline-size: min(100%, var(--stack-floor));
+
 	display: flex;
 	align-items: center;
-	block-size: 100%;
+
 	padding: 0.625rem 0.75rem;
 	background: var(--Background);
 	/* The tile's fill IS the card's fill, so this frame is the only thing that

@@ -52,6 +52,49 @@
 		color-mix(in srgb, var(--CardForeground) 20%, transparent);
 }
 
+/* ─── THE PLATE'S EMPTY ARM ─────────────────────────────────────────────── */
+//
+// A manifest with no artefact keeps the plate - the white surface is the
+// artifact's, and a band with no plate would read as a band that failed - and
+// states the absence in the vocabulary, at the row's own inset, so the plate of
+// none and the plate of three are the same object with different contents.
+//
+// Three facts, in the order a reader needs them: what is missing, why (builds are
+// from source), and what the channel is instead. `UNAVAILABLE` is the site's word
+// for a fact that exists and is empty; the sentence is what makes it a fact.
+.home-platform__absent {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+
+	padding: clamp(1.25rem, 2vw, 1.75rem) clamp(1.25rem, 2vw, 2rem);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-meta);
+	line-height: var(--type-meta-line);
+}
+
+.home-platform__absent-line {
+	margin: 0;
+}
+
+.home-platform__absent-key {
+	color: var(--MuteForeground);
+}
+
+.home-platform__absent-value {
+	color: var(--Foreground);
+	letter-spacing: var(--track-row);
+}
+
+.home-platform__absent-note {
+	margin: 0;
+
+	max-inline-size: 68ch;
+
+	color: var(--MuteForeground);
+}
+
 @include bp(768px) {
 	.home-platform {
 		grid-template-columns: minmax(0, 23rem) minmax(0, 1fr);

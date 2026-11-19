@@ -25,12 +25,28 @@
  * here on purpose - and neither is an action that is silently dropped: the
  * block used to destructure `Children` while every call site passed React
  * children, so the action of every report on this surface rendered nowhere.
+ *
+ * **What the exploration added, and why each one is inside the block.** The
+ * state matrix printed this block in twenty-four combinations and three of them
+ * had no answer:
+ *
+ * - `Heading` - the title was an `h3` under a page that has an `h1`, so every
+ *   report skipped a level. `2` is the default now; `3` exists for the one
+ *   nesting case.
+ * - `Facts` - a report could say what happened and not what it was made of. The
+ *   window a link was open for, the cause the provider returned and the route a
+ *   retry goes to print as `KEY: value` rows under the sentence.
+ * - `Action` - the one thing a reader can click was only expressible as React
+ *   children, so a state rendered outside an island (the specimen sheet, a
+ *   link-shaped ending) could not print its action at all.
  */
 import type { CSSProperties, ReactNode } from "react";
 
 import { CircleAlert, CircleCheck, Loader2, Mail } from "lucide-react";
 
 import { StateBadge } from "../Surface/StateBadge";
+
+import type { AuthAction, AuthFact } from "./Type.js";
 
 type Glyph = "alert" | "check" | "loading" | "mail";
 
@@ -71,6 +87,39 @@ interface Props {
 	/** The state's glyph. Omitted means no tile, like the reset form. */
 	Glyph?: Glyph;
 
+	/**
+	 * The heading level of the state's title.
+	 *
+	 * `2` (the default) is the level the report was always meant to print: the
+	 * shell above it supplies the page's `h1`, so the state is one level under
+	 * the page. The block printed an `h3` because the baseline had no page
+	 * heading at all; once the frame returned, the `h3` skipped a level. `3` is
+	 * for the one place a report is nested inside another report's subject, and
+	 * it is the only reason the level is a prop rather than a constant.
+	 */
+	Heading?: 2 | 3;
+
+	/**
+	 * The facts the state is made of: the window, the cause, the retry.
+	 *
+	 * A report's sentence says what happened; these print under it in the
+	 * record grammar (`KEY: value`), because the one thing a reader under stress
+	 * wants after the sentence is the fact they can check and the next thing to
+	 * do. Additive: a report that passes none renders exactly as it did.
+	 */
+	Facts?: readonly AuthFact[];
+
+	/**
+	 * The report's one action, as data.
+	 *
+	 * `children` remains the way a form-shaped report hands in its own buttons
+	 * (they carry handlers). A report that is only a state - every row of a
+	 * specimen sheet, a link-shaped ending - passes its action here, so the
+	 * block does not need a second wrapper to print the one thing a reader can
+	 * click. Rendered only when `children` is absent: one action per report.
+	 */
+	Action?: AuthAction;
+
 	/** `alert` for a failure the reader did not ask for. */
 	Role?: "alert" | "status";
 
@@ -83,10 +132,15 @@ const AuthReport = ({
 	Title,
 	Sentence,
 	Glyph,
+	Heading = 2,
+	Facts,
+	Action,
 	Role,
 	children,
 }: Props) => {
 	const Icon = Glyph ? Glyphs[Glyph] : null;
+
+	const HeadingTag = Heading === 3 ? "h3" : "h2";
 
 	return (
 		<>
@@ -132,14 +186,38 @@ const AuthReport = ({
 					</div>
 				) : null}
 
-				<h3 className="type-heading">{Title}</h3>
+				<HeadingTag className="type-heading">{Title}</HeadingTag>
 
 				<p className="text-sm text-card-foreground opacity-70">
 					{Sentence}
 				</p>
+
+				{/* ─── THE STATE'S FACTS ──────────────────────────────────────
+				    The sentence says what happened; these say what the reader
+				    can check and what happens next. They print in the record
+				    grammar every other fact on this surface uses, at the meta
+				    step, so a report is auditable without a second block. */}
+				{Facts && Facts.length > 0 ? (
+					<dl className="auth-shell__facts">
+						{Facts.map((Fact) => (
+							<div className="auth-shell__fact" key={Fact.key}>
+								<dt className="auth-shell__fact-key">
+									{Fact.key}
+								</dt>
+								<dd className="auth-shell__fact-value">
+									{Fact.code ? (
+										<code>{Fact.value}</code>
+									) : (
+										Fact.value
+									)}
+								</dd>
+							</div>
+						))}
+					</dl>
+				) : null}
 			</div>
 
-			{children && (
+			{children ? (
 				<div
 					className="space-y-6 p-6 pt-0"
 					role={Role ?? undefined}
@@ -148,7 +226,24 @@ const AuthReport = ({
 				>
 					{children}
 				</div>
-			)}
+			) : Action ? (
+				<div
+					className="space-y-6 p-6 pt-0"
+					role={Role ?? undefined}
+
+					aria-live="polite"
+				>
+					<a
+						className="auth-shell__primary auth-shell__report-action"
+						href={Action.href}
+					>
+						{Action.label}
+
+						<span aria-hidden="true">{"\u2001"}</span>
+						<span aria-hidden="true">&#8594;</span>
+					</a>
+				</div>
+			) : null}
 		</>
 	);
 };

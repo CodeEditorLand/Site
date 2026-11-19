@@ -83,6 +83,28 @@
 	text-wrap: balance;
 }
 
+// The run's extent: `26 WORDS`, under the heading and above the note. It is the
+// figure the head was missing - the alphabet strip was the only clue to how much
+// was filed - and it is set at the meta step in the mute, because it is a fact
+// about the run rather than a second title.
+.lexicon__count {
+	margin: 0;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+// A run mounted inside a band prints its count without a head of its own, so the
+// line is a direct child of the run and needs its own distance from the letter
+// strip. Inside a head the column's gap supplies it, and the head's own child
+// rule is the one that applies.
+.lexicon > .lexicon__count {
+	margin-block-end: var(--space-reading);
+}
+
 .lexicon__note {
 	font-size: var(--type-body);
 	line-height: var(--type-body-line);
@@ -348,6 +370,14 @@
 	   the same hierarchy `RecordLedger` prints one block away. */
 	color: var(--Foreground);
 	overflow-wrap: anywhere;
+}
+
+/* The one value that is not a fact: a source the tree does not carry. It takes
+   the quiet ink, because `UNAVAILABLE` is a state word and every state word on
+   the site is printed in its tone - an absent source in full ink read exactly
+   like a cited one. */
+.lexicon-entry__fact-value--unavailable {
+	color: var(--MuteForeground);
 }
 
 .lexicon-entry__link {

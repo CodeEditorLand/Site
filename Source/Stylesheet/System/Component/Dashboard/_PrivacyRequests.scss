@@ -66,3 +66,51 @@
 	margin: 0;
 	max-width: 62ch;
 }
+
+// ─── The block the component actually mounts ───────────────────────────────
+//
+// The `.requests*` classes above are the shape this partial was written for;
+// `PrivacyRequests.astro` composes its grids with the utilities it inherited
+// from the island it replaced. The two rules below are the block's own additions
+// and they name the block, so neither can be confused with the older set.
+//
+// The register is the counted line over each group: `# THE RIGHTS / 06`. It sits
+// above the group's heading, because a set states its extent before its name -
+// the same order a ledger prints its register before its rows.
+.privacy-requests__register {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0 0 var(--space-tight);
+}
+
+// A group whose registry returned no card: the composed sentence, at the
+// caption step, in the record grammar's own marks. It keeps the heading's
+// distance so the group still reads as a group with nothing in it rather than
+// as a gap between two sections.
+.privacy-requests__empty {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.4em;
+
+	margin: 0;
+	max-width: 62ch;
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.privacy-requests__empty-mark {
+	color: var(--MuteForeground);
+}
+
+.privacy-requests__empty-status {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}

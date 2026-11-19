@@ -5,46 +5,23 @@
 // header, a container, a breadcrumb and an `h1` with a standfirst. That is one
 // page opening, so it lives here once and the routes compose it.
 //
-// The shell's opening, in order: the trail, the route's record head, and - on
-// the two pages that have one - the page's `h1` and the sentence under it.
-//
-// The record head is the four facts that are the route's rather than the
-// visit's: `# REACH`, the statutory basis `〈GDPR Art. 15 + 20〉`, the route
-// `/CONTACT`, and the window `SLA: 30d`. The baseline printed them inside the
-// form's chip row; they are the same on every visit, so they belong to the page
-// and the form keeps what changes per visit - the pair reference and the state
-// word. A route with no statutory basis prints no bracket, because an empty
-// `〈 〉` is a claim the page cannot back.
+// **The opening is `ContactHead`.** It used to be this file's own markup, which
+// meant the trail, the record head and the heading could only exist inside a
+// `<Base>` - a specimen sheet could not print them and no route could
+// re-compose them. The block is the opening; this file is the document around
+// it. Nothing about the composition changed: the same order, the same measures,
+// the same `opening` and `width` arms.
 //
 // What the shell does not own is anything below the opening: a request route
 // hands in its form, which prints its own `h1` (the request title, inside the
 // form's own opening), the hub hands in its grid, the sale page its two panels.
-//
-// The trail is `Component/Route/Trail.astro` - the site's one breadcrumb
-// grammar (`DESIGN.md` §9 Q3), not a Contact detail. It prints each crumb as
-// `/LABEL`, so the page reads `/HOME  /CONTACT` above its heading.
-//
-// The shell prints the route's record head. The baseline renders no `# CODE` /
-// `〈 〉` / `/CONTACT` line on any contact page, so the card that added one had
-// to justify it; the justification is that the facts already existed as chips
-// inside the form, and a chip row that prints the same route fact on every
-// visit is a page fact wearing the form's clothes. The record head prints them
-// once, where the page's own facts go, and the form keeps the pair reference.
-//
-// `opening` is the one difference between the two shapes: a page opens with the
-// breadcrumb and its heading at `py-16`; a request route opens with the
-// breadcrumb alone, at `pt-6`, and its body starts immediately.
-//
-// `width` is the opening's measure - the hub and the request routes are
-// `max-w-5xl`, the sale page `max-w-4xl` - and the body that follows repeats it
-// so the two line up on the same left edge.
 //
 // `mode` is a pass-through to the site header, not a second layout.
 //
 // No script of its own: the header is the only island here.
 import Base from "../../Layout/Base.astro";
 import { Header } from "../Layout/Header";
-import Trail from "../Route/Trail.astro";
+import ContactHead from "./ContactHead.astro";
 import type { ContactTrailItem } from "../../Library/Contact/Data.js";
 import type { ContactRecord } from "./Type.js";
 
@@ -79,6 +56,16 @@ interface Props {
 	/** `page` opens with a heading; `trail` is the breadcrumb alone. */
 	opening?: "page" | "trail";
 
+	/**
+	 * `rest` prints the page. `empty` states the body's absence under the record
+	 * head: a request route whose form never mounted had no heading and no body,
+	 * and the page said nothing about it.
+	 */
+	state?: "rest" | "empty";
+
+	/** The sentence the empty arm prints. */
+	empty?: string;
+
 	/** The site header's presentation, passed through unchanged. */
 	mode?: "minimal" | "functional";
 }
@@ -92,6 +79,8 @@ const {
 	standfirst,
 	width = "wide",
 	opening = "page",
+	state = "rest",
+	empty,
 	mode,
 } = Astro.props;
 ---
@@ -105,50 +94,16 @@ const {
 	<Header client:load {...(mode ? { Mode: mode } : {})} slot="Header" />
 
 	<div class="contact-page">
-		<div
-			class:list={[
-				"contact-page__open",
-				`contact-page__open--${width}`,
-				`contact-page__open--${opening}`,
-			]}
-		>
-			<Trail trail={trail} />
-
-			{record && (
-				<p class="contact-page__record">
-					<span class="contact-page__record-code">
-						# {record.code}
-					</span>
-					{record.article ? (
-						<span class="contact-page__record-article">
-							〈{record.article}〉
-						</span>
-					) : null}
-					<span class="contact-page__record-route">
-						{record.route}
-					</span>
-					{record.window ? (
-						<span class="contact-page__record-window">
-							SLA: {record.window}d
-						</span>
-					) : null}
-					{record.count ? (
-						<span class="contact-page__record-count">
-							REGISTER: {record.count} ENTRIES
-						</span>
-					) : null}
-				</p>
-			)}
-
-			{heading && (
-				<header class="contact-page__header">
-					<h1 class="contact-page__heading">{heading}</h1>
-					{standfirst ? (
-						<p class="contact-page__standfirst">{standfirst}</p>
-					) : null}
-				</header>
-			)}
-		</div>
+		<ContactHead
+			trail={trail}
+			record={record}
+			heading={heading}
+			standfirst={standfirst}
+			width={width}
+			opening={opening}
+			state={state}
+			empty={empty}
+		/>
 
 		<slot />
 	</div>

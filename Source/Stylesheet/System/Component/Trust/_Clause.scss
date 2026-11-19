@@ -60,6 +60,61 @@
 	display: block;
 }
 
+// ─── The missing clause ───────────────────────────────────────────────────
+//
+// A clause the index names and the text does not carry: the heading keeps its
+// number, its anchor and its name, and the state prints under it in the record
+// grammar. The block is a tombstone, not a placeholder - it is as tall as a
+// clause's first paragraph and it states the one fact a citing reader needs:
+// the number resolves, the text is not here.
+//
+// The heading's own words stay at the clause role (`.reading-clause`), so a
+// missing clause still reads as a clause in the document's outline; only its
+// body is replaced by the statement.
+.trust-clause--missing {
+	margin-block-end: var(--space-tight);
+}
+
+.trust-clause__absent {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+
+	margin-block: 0 var(--space-group);
+	padding-inline-start: var(--space-reading);
+
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.trust-clause__absent-status {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.4em;
+
+	margin: 0;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.trust-clause__absent-key {
+	color: var(--MuteForeground);
+}
+
+.trust-clause__absent-sentence {
+	margin: 0;
+	max-inline-size: var(--Measure);
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
 // ─── Print ────────────────────────────────────────────────────────────────
 // On paper the number is a citation in the text, not a link: the site's print
 // rules underline every anchor inside the legal card, and a clause number that

@@ -28,27 +28,39 @@ export interface FieldRecordSealProps {
 	className?: string;
 
 	/**
-	 * The seal's size. Three steps, named by role (`Mark/_Token.scss`): `s` 32px
-	 * at the head of a card, `m` 48px at the head of a record, `l` 64px at the
-	 * head of a page. A number is still accepted and is mapped to the nearest
-	 * step, so a host that passed `36` gets `s` and the wall stops carrying two
-	 * sizes four pixels apart.
+	 * The seal's size. Five steps, named by role (`Mark/_Token.scss`): `xs`
+	 * 16px inside a chip or a ledger row, `s` 32px at the head of a card, `m`
+	 * 48px at the head of a record, `l` 64px at the head of a page, `xl` 240px
+	 * as the plate itself. A number is still accepted and is mapped to the
+	 * nearest step, so a host that passed `36` gets `s` and the wall stops
+	 * carrying two sizes four pixels apart.
 	 */
 	size?: SealSize | number;
 }
 
-/** The seal's three steps. */
-export type SealSize = "s" | "m" | "l";
+/** The seal's five steps. */
+export type SealSize = "xs" | "s" | "m" | "l" | "xl";
 
-/** A number on the ladder's old API is mapped to the step it was reaching for. */
+/**
+ * A number on the ladder's old API is mapped to the step it was reaching for.
+ *
+ * The boundaries are the steps' own midpoints, rounded to the sizes hosts
+ * actually pass: 16 / 32 / 48 / 64 / 240. A number below 24 was a mark that had
+ * been shrunk to fit a chip - the composition family found those drawing at a
+ * quarter of a pixel - so it maps to `xs`, where the stroke correction lives.
+ */
 const Step = (size: SealSize | number): SealSize => {
 	if (typeof size === "string") return size;
+
+	if (size <= 20) return "xs";
 
 	if (size <= 40) return "s";
 
 	if (size <= 56) return "m";
 
-	return "l";
+	if (size <= 96) return "l";
+
+	return "xl";
 };
 
 const SealPattern: React.FC<{ element: FieldRecordElement }> = ({

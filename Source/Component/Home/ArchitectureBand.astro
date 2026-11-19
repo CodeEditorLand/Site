@@ -11,14 +11,26 @@ import { ElementCards } from "../../Content/Home/Architecture.js";
 import { BandOf, HomeBands, Sequence } from "../../Content/Home/Band.js";
 import { GetI18n } from "../../Library/I18n/Server";
 
+import type { ElementCard as ElementCardData } from "../../Content/Home/Type.js";
+
 import Band from "./Band.astro";
 import ElementCard from "./ElementCard.astro";
+
+interface Props {
+	/**
+	 * The records the wall holds. Defaults to the fifteen the page files, so a
+	 * caller that wants the homepage's wall passes nothing. A shorter set is
+	 * still a wall: the spans are the cards' own, so three records make a ragged
+	 * row of three rather than a grid with twelve empty cells.
+	 */
+	cards?: readonly ElementCardData[];
+}
 
 const T = GetI18n();
 
 const Head = BandOf(HomeBands(T), "testimonials");
 
-const Cards = ElementCards(T);
+const Cards = Astro.props.cards ?? ElementCards(T);
 ---
 
 <Band head={Head} series="CLASSIFICATION" rhythm={Sequence.testimonials}>

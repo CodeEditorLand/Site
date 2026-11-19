@@ -15,11 +15,14 @@
 //
 // ─── THE LADDER IS THE LAW ─────────────────────────────────────────────────
 //
-// Eight steps, hard jumps, and NOTHING IN THE MARK SET IS A SIZE THAT IS NOT ON
-// THIS LADDER. A mark that needs a ninth size does not need a ninth size - it
+// Eleven steps, hard jumps, and NOTHING IN THE MARK SET IS A SIZE THAT IS NOT ON
+// THIS LADDER. A mark that needs a twelfth size does not need a twelfth size - it
 // needs to pick a step, and the card that adds one has to say which meaning the
 // step carries.
 //
+//   0  16px  a seal inside a chip or a row: the smallest size at which the
+//            form still reads as a seal (added with the composition family -
+//            a badge's mark, a ledger row's anchor, a manifest's per-row seal)
 //   1  2px   the hairline: a crosshair's stem, a rule that is a mark
 //   2  4px   the square at rest: a state that is known
 //   3  6px   the square attested, a badge's dot, an axis tick, a bullet's length
@@ -29,6 +32,21 @@
 //   7  32px  a seal at the head of a card
 //   8  48px  a seal at the head of a record
 //   9  64px  a seal at the head of a page
+//  10  240px a seal AS the plate: the mark at display size, where the roundel is
+//            the artifact rather than an anchor on one (added with the
+//            composition family - the specimen sheet's 1:1 seal study)
+//
+// ─── A SIZE STEP CARRIES A DRAWING RULE, NOT ONLY A BOX ───────────────────
+//
+// The seal's geometry is a 64-unit viewBox with two stroke weights (1 and 0.5),
+// and those weights are *user units*: they scale with the box. At 64px a unit is
+// a pixel and the pair reads as an engraving; at 32px the outer ring is half a
+// pixel and the inner ring a quarter, and at 16px the whole drawing is a smudge
+// with a green centre. So a step may carry a stroke correction, and the two new
+// steps do: `xs` and `s` are drawn at one weight so the form survives, `m` and
+// up are drawn as authored, and `xl` is the authored drawing scaled - at 240px a
+// unit is 3.75px and the pair of weights is the engraving again.
+// `Mark/_Seal.scss` holds the correction and says why at the rule.
 //
 // ─── ONE INK RULE, AND ITS THREE EXCEPTIONS ARE THE POINT ──────────────────
 //
@@ -60,6 +78,9 @@
 
 :root {
 	/* ─── the ladder ───────────────────────────────────────────────────── */
+	/* a seal inside a chip: the smallest size at which the form still reads */
+	--mark-size-0: 16px;
+
 	--mark-size-1: 2px;
 
 	--mark-size-2: 4px;
@@ -77,6 +98,10 @@
 	--mark-size-8: 48px;
 
 	--mark-size-9: 64px;
+
+	/* a seal AS the plate: the roundel at display size, where it is the
+	   artifact rather than an anchor on one */
+	--mark-size-10: 240px;
 
 	/* ─── the rules of a mark's own drawing ────────────────────────────── */
 	/* the one stroke a hollow mark is drawn with, and the crosshair's stem */

@@ -18,12 +18,27 @@ import { BandOf, HomeBands, Sequence } from "../../Content/Home/Band.js";
 import { ReleaseCards } from "../../Content/Home/Roadmap.js";
 import { GetI18n } from "../../Library/I18n/Server";
 
+import type { ReleaseCard as ReleaseCardData } from "../../Content/Home/Type.js";
+
 import Band from "./Band.astro";
 import ReleaseCard from "./ReleaseCard.astro";
+
+interface Props {
+	/**
+	 * The release states the plate holds. Defaults to the page's two. One state
+	 * is the arm a project with one release has: the plate takes the whole
+	 * measure and the gutter is not drawn, because it is drawn only between
+	 * states (`Index > 0`) - which is the composition the family's matrix
+	 * printed and found already correct.
+	 */
+	cards?: readonly ReleaseCardData[];
+}
 
 const T = GetI18n();
 
 const Head = BandOf(HomeBands(T), "pricing");
+
+const States = Astro.props.cards ?? ReleaseCards;
 ---
 
 <Band head={Head} series="CONDITIONS" rhythm={Sequence.pricing}>
@@ -35,7 +50,7 @@ const Head = BandOf(HomeBands(T), "pricing");
 		 * thing that makes the two states two columns.
 		 */}
 		<div class="home-manifest__grid">
-			{ReleaseCards.map((Card, Index) => (
+			{States.map((Card, Index) => (
 				<>
 					{Index > 0 && (
 						<div class="home-manifest__gutter" aria-hidden="true" />

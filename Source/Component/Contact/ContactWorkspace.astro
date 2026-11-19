@@ -1,0 +1,226 @@
+---
+// ContactWorkspace - one request route, composed as a record beside its form.
+//
+// ─── THE COMPOSITION (the rail-and-record split) ─────────────────────────
+// The route used to be a page with a form on it. It is now a workspace: the
+// request's *record* in the left column and the *form* in the right, divided by
+// the site's 1px `--Divider`, in the mirror image of the blog article's margin
+// channel (there the piece is left and the apparatus right; here the apparatus is
+// left and the instrument - the form - right, because a form is what the reader
+// came to operate).
+//
+// The record column carries four things, in reading order:
+//
+//   1. the request's facts (`RecordLedger`, pinned): its code, its statutory
+//      basis, its route, its window and the mailbox it reaches;
+//   2. the process (`RecordStage`, stacked): what happens after the reader sends;
+//   3. the margin note (`RecordMargin`): why this route's window is what it is;
+//   4. the folded aside (`RecordAside`): what this route does not do, with the
+//      route that does it.
+//
+// Nothing in the record column is the form's: the code, basis, route and window
+// are the route's (the same on every visit), and the form keeps what changes per
+// visit - the pair reference and the state word. One screen, one copy of each
+// fact, and the two columns cannot disagree because both read `Requests[code]`.
+//
+// Below 1024px the split is re-composed: the record column becomes a ruled
+// section *under* the form, so the reader meets the instrument first and the
+// apparatus second - which is the right order on a phone, where the form is the
+// reason the page was opened.
+//
+// ─── WHY THIS IS A BLOCK AND NOT A PAGE'S BODY ───────────────────────────
+// `ContactShell` used to hold this markup between its `<ContactPage>` tags, so
+// the composition could only exist inside a document: a specimen plate could not
+// print it, and a route that composes its own chrome could not reuse it. The
+// workspace is now a block; `ContactShell` composes it under the page.
+//
+// ─── WHAT THE MATRIX ADDED ────────────────────────────────────────────────
+// Two states a request route could reach and could not state:
+//
+// - **A send that failed.** The form reports its own failure inside itself, and
+//   the record column - the page's instrument - said nothing about it: a reader
+//   looking at the route's facts could not tell a route at rest from a route
+//   whose last send was interrupted. `state="interrupted"` prints the status
+//   line (`STATUS: INTERRUPTED` and the route's own declarations) at the top of
+//   the record column, so the failure is a state of the record rather than a
+//   sentence inside the form.
+// - **A form that is not the shipped one.** The workspace mounted
+//   `DynamicContactForm` unconditionally, so the one island was also the one
+//   thing a caller could not replace - a specimen plate, a route with a
+//   different instrument, a preview with no Auth0. The `form` slot is that seam:
+//   absent, the island mounts exactly as before.
+import DynamicContactForm from "../Dynamic/DynamicContactForm";
+import RecordAside from "../Record/RecordAside.astro";
+import RecordLedger from "../Record/RecordLedger.astro";
+import RecordMargin from "../Record/RecordMargin.astro";
+import RecordStage from "../Record/RecordStage.astro";
+import SurfaceStatusLine from "../Surface/SurfaceStatusLine.astro";
+import { RegisterOf } from "../Record/RegisterLine.js";
+import { Row, type Declaration } from "../Surface/State.js";
+import { ContactProcess } from "./Register.js";
+import { Requests, type IncomeCode } from "../../Library/Contact/Request.js";
+
+import type { Aside, LedgerRow, MarginNote, Stage } from "../Record/Type.js";
+
+interface Props {
+	/** The income code whose configuration this workspace renders. */
+	code: IncomeCode;
+
+	/**
+	 * `rest` is the route at rest. `interrupted` states that the form's last send
+	 * did not complete: the record column prints `STATUS: INTERRUPTED` and the
+	 * route's declarations, so the failure is auditable beside the form that
+	 * reports it.
+	 */
+	state?: "rest" | "interrupted";
+
+	/** Extra classes from the caller, appended after the block's own. */
+	class?: string;
+}
+
+const { code, state = "rest", class: Class } = Astro.props;
+
+const Config = Requests[code];
+
+const { Auth0Domain, Auth0ClientIdentifier } =
+	await import("../../Function/Configuration/Auth.js");
+
+/**
+ * The route's facts. Every row is the registry's own value: `BASIS:` prints
+ * `UNAVAILABLE` for a route with no statutory basis rather than printing nothing,
+ * because "this request is not filed under an article" is a fact a reader is
+ * entitled to and a blank row would hide it.
+ */
+const Record: readonly LedgerRow[] = [
+	{ key: "CODE:", value: Config.Code },
+	{ key: "BASIS:", value: Config.Article ?? "UNAVAILABLE" },
+	{ key: "ROUTE:", value: "/CONTACT", code: true },
+	{ key: "SLA:", value: `${Config.ResponseDays} DAYS` },
+	{ key: "MAILBOX:", value: Config.To, code: true },
+];
+
+/**
+ * What happens after the reader sends, in four steps.
+ *
+ * The steps are the desk's one process (`Register.ts`), read here with the
+ * route's own window in place of the generic sentence - so a 30-day route and a
+ * 7-day route describe the same process and cannot disagree about how long it
+ * takes. Nothing else about the process is restated.
+ */
+const Process: readonly Stage[] = ContactProcess.map((Step) =>
+	Step.index === "03"
+		? {
+				...Step,
+				line: `The answer arrives within ${Config.ResponseDays} days, at the address you gave.`,
+			}
+		: { ...Step },
+);
+
+/** The note in the margin: why this route's window is this route's. */
+const Note: MarginNote = {
+	index: "NOTE_01",
+	label: "THE WINDOW",
+	body: `The ${Config.ResponseDays}-day window belongs to this route, not to the desk: a different request answers in a different window, and the route's record prints its own.`,
+	source: "Source/Library/Contact/Request.ts",
+};
+
+/**
+ * The folded aside: what this route does not do.
+ *
+ * The three rows are the three things a reader most often assumes a request route
+ * does. Each names the route that does it, so the aside is a way forward rather
+ * than a refusal - and the erasure row is only printed when this route is not
+ * already the erasure route.
+ */
+const Aside: Aside = {
+	index: "ASIDE_01",
+	label: "WHAT THIS ROUTE DOES NOT DO",
+	line: "One route, one request.",
+	rows: [
+		{
+			key: "DELETE:",
+			value:
+				Config.Code === "ERASE"
+					? "This is the erasure route: it removes the record it can identify and answers with what was removed."
+					: "Not this route. Erasure is /CONTACT/ERASE, which answers in its own window.",
+		},
+		{
+			key: "EXPORT:",
+			value:
+				Config.Code === "REACH"
+					? "This is the export route: the copy is structured and machine-readable."
+					: "Not this route. A copy of your data is /CONTACT/REACH.",
+		},
+		{
+			key: "URGENT:",
+			value: "UNAVAILABLE - the desk has no priority channel. The window is the commitment, and it is printed above.",
+		},
+	],
+	source: "Source/Library/Contact/Request.ts",
+};
+
+/**
+ * The route's state, when it has one to state.
+ *
+ * At rest the record column prints the route's facts and nothing else, which is
+ * the composition the route already had. An interrupted send prints one row -
+ * `STATUS: INTERRUPTED` - through `SurfaceStatusLine`, with the three
+ * declarations that make it auditable: the route it happened on, the mailbox it
+ * was going to, and the window the route still owes the reader. The word is
+ * `State.ts`'s, so the route cannot state a tone of its own.
+ */
+const State = state === "interrupted" ? [Row("STATUS", "INTERRUPTED")] : [];
+
+const Declarations: readonly Declaration[] =
+	state === "interrupted"
+		? [
+				{ key: "ROUTE", value: `/CONTACT/${Config.Code}` },
+				{ key: "MAILBOX", value: Config.To },
+				{ key: "SLA", value: `${Config.ResponseDays} DAYS` },
+			]
+		: [];
+
+/** Whether the caller supplied its own instrument instead of the shipped form. */
+const OwnForm = Astro.slots.has("form");
+---
+
+<div class:list={["contact-shell", Class]}>
+	<div class="contact-shell__workspace">
+		<aside class="contact-shell__record" aria-label="Request record">
+			{State.length || Declarations.length ? (
+				<SurfaceStatusLine
+					states={State}
+					declarations={Declarations}
+					class="contact-shell__status"
+				/>
+			) : null}
+
+			<RecordLedger
+				rows={Record}
+				register={RegisterOf("REQUEST", Record)}
+				pinned={true}
+			/>
+
+			<RecordStage stages={Process} orientation="stack" />
+
+			<RecordMargin note={Note} />
+
+			<RecordAside aside={Aside} />
+		</aside>
+
+		<div class="contact-shell__gutter" aria-hidden="true"></div>
+
+		<div class="contact-shell__form">
+			{OwnForm ? (
+				<slot name="form" />
+			) : (
+				<DynamicContactForm
+					client:load
+					Config={Config}
+					Domain={Auth0Domain}
+					ClientIdentifier={Auth0ClientIdentifier}
+				/>
+			)}
+		</div>
+	</div>
+</div>

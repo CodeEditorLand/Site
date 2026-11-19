@@ -8,25 +8,51 @@
  *
  * The row is one anchor; the number is its own span so the wiring can read it
  * back and print the reader's position without re-deriving the number.
+ *
+ * ─── WHAT THE MATRIX ADDED ────────────────────────────────────────────────
+ * The row printed `§{Item.number}` and `{Item.label}` unconditionally, so a
+ * clause the document's index filed without a number printed a bare `§` and one
+ * filed without a name printed an empty anchor - the two cells a screen reader
+ * announces as nothing. Both now fall back to the vocabulary's own word,
+ * `UNAVAILABLE`, and the number's glyph is printed only when there is a number
+ * for it to mark. A list mounted with no rows states the caller's sentence when
+ * it is given one, rather than printing an empty `<ol>`.
  */
 import type { ReadingIndexItem } from "../Reading/Type.js";
 
 interface Props {
 	items: readonly ReadingIndexItem[];
+
+	/**
+	 * What the list says when it holds no row. Absent, an empty list renders an
+	 * empty `<ol>` - the shape the register above it already accounts for.
+	 */
+	empty?: string;
 }
 
-const { items } = Astro.props;
+const { items, empty } = Astro.props;
+
+/** The word a row prints where the document gave it nothing. */
+const Absent = "UNAVAILABLE";
 ---
 
-<ol class="trust-contents__list">
-	{items.map((Item) => (
-		<li class="trust-contents__item">
-			<a class="trust-contents__link" href={Item.href}>
-				<span class="trust-contents__number" data-trust-number>
-					&#167;{Item.number}
-				</span>
-				<span class="trust-contents__name">{Item.label}</span>
-			</a>
-		</li>
-	))}
-</ol>
+{items.length > 0 ? (
+	<ol class="trust-contents__list">
+		{items.map((Item) => (
+			<li class="trust-contents__item">
+				<a class="trust-contents__link" href={Item.href}>
+					<span class="trust-contents__number" data-trust-number>
+						{Item.number ? <>&#167;{Item.number}</> : Absent}
+					</span>
+					<span class="trust-contents__name">
+						{Item.label || Absent}
+					</span>
+				</a>
+			</li>
+		))}
+	</ol>
+) : empty ? (
+	<p class="trust-contents__empty">{empty}</p>
+) : (
+	<ol class="trust-contents__list" />
+)}

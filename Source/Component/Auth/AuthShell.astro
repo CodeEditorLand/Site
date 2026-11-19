@@ -34,6 +34,13 @@
  * baseline's `max-w-md`), `wide` is the account index's 64rem (the baseline's
  * `max-w-5xl`). The card fills it.
  *
+ * **`Align` and the state register are what the matrix added.** Two things the
+ * eight routes could not say before: a short interior had no way to sit in the
+ * middle of the viewport it is the only thing in (`Align="center"`), and a
+ * route that stated a state without opening a frame lost the state entirely -
+ * the register was nested inside the frame's condition. Both are additive: the
+ * default is the composition every route already renders.
+ *
  * `Frame.sentence` is optional on purpose. On the two password routes the card
  * prints the same sentence under its own title, and printing it twice would be
  * two copies of one fact rather than one frame - so those two routes hand in a
@@ -104,6 +111,19 @@ interface Props {
 	/** Centre the card's own text block (the reset route's loading state). */
 	Center?: boolean;
 
+	/**
+	 * Where the card sits in the viewport.
+	 *
+	 * `start` is the resting composition: the frame opens the page and the card
+	 * follows it, because the reader is at the top of a document. `center`
+	 * places a short interior - a loading arm, a signed-in ending, an expired
+	 * link - in the middle of the viewport it is the only thing in, instead of
+	 * leaving it stranded under a heading with half a screen of paper below it.
+	 * It is a placement, not a second composition: the frame, the card and the
+	 * alternate action are unchanged.
+	 */
+	Align?: "start" | "center";
+
 	/** Announce the interior's changes (the verify route's state machine). */
 	Live?: boolean;
 
@@ -128,6 +148,7 @@ const {
 	Measure = "narrow",
 	Frame,
 	Center = false,
+	Align = "start",
 	Live = false,
 	Bare = false,
 } = Astro.props;
@@ -148,10 +169,11 @@ const Surface = {
 	class:list={[
 		"auth-shell",
 		`auth-shell--${Measure}`,
+		`auth-shell--${Align}`,
 		"flex min-h-screen flex-col",
 	]}
 >
-	<div class="flex-1">
+	<div class="auth-shell__body flex-1">
 		<section aria-label={Label}>
 			<div class="auth-shell__inner">
 				{Crumbs ? <Trail trail={Crumbs} /> : null}
@@ -167,16 +189,26 @@ const Surface = {
 								{Frame.sentence}
 							</p>
 						) : null}
-						{States.length || Declarations.length ? (
-							<div class="auth-shell__states">
-								<SurfaceStatusLine
-									states={States}
-									declarations={Declarations}
-								/>
-							</div>
-						) : null}
 					</header>
 				)}
+
+				{/*
+				 * The state register sits OUTSIDE the frame's condition, and
+				 * that is the fix the matrix asked for: a route that states a
+				 * state but opens with no frame - a bare callback landing, a
+				 * route whose heading is its card's - had its `States` and
+				 * `Declarations` rendered inside `{Frame && …}` and therefore
+				 * printed nothing at all. A state the route handed in must print
+				 * whether or not the route has a heading above it.
+				 */}
+				{States.length || Declarations.length ? (
+					<div class="auth-shell__states">
+						<SurfaceStatusLine
+							states={States}
+							declarations={Declarations}
+						/>
+					</div>
+				) : null}
 
 				<div
 					class:list={[Center && "text-center"]}

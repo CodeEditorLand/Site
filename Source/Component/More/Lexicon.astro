@@ -41,6 +41,20 @@
  * from a run that was never built, and this page's whole claim is that it files
  * every word the document uses.
  *
+ * ─── WHAT THE MATRIX ADDED ────────────────────────────────────────────────
+ * Two things a run of one word and a run of ninety revealed:
+ *
+ * - **The head named the run and not its extent.** Every other counted line on
+ *   the site prints `# LABEL / NN`; the run's head printed `# RUN_01`, a heading
+ *   and a note, with no figure anywhere - while the alphabet strip beneath it
+ *   was the reader's only clue to how much was filed. The head now prints the
+ *   count, composed from `Run.terms.length` (never a prop, so it cannot outlive
+ *   the terms), with `unit` for the noun a caller wants (`WORDS`, `TERMS`).
+ * - **A run of one letter printed a one-link navigation.** The strip exists so a
+ *   reader can scan by letter; a strip with one letter is a nav that says "there
+ *   is only one", which the count already says. It prints only when the run uses
+ *   two or more letters, and the group's own letter heading is untouched.
+ *
  * No script and no hydration: a lexicon is printed.
  */
 import LexiconEntry from "./LexiconEntry.astro";
@@ -57,17 +71,29 @@ interface Props {
 	/** Whether the run prints its own head. `false` inside a band. */
 	head?: boolean;
 
+	/** The noun the count is of: `WORDS` (the default), `TERMS`, `ENTRIES`. */
+	unit?: string;
+
 	/** Extra classes from the page. */
 	class?: string;
 }
 
-const { run: Run, index, head = true, class: Class } = Astro.props;
+const {
+	run: Run,
+	index,
+	head = true,
+	unit = "WORDS",
+	class: Class,
+} = Astro.props;
 
 /** The letters this run actually uses, in alphabetical order. */
 const Letters = LettersOf(Run);
 
 /** The label without its leading slash: the band and the head both print it. */
 const Label = Run.label.replace(/^\//, "");
+
+/** Whether the run is long enough for a letter strip to be a navigation. */
+const Strippable = Letters.length > 1;
 ---
 
 {/*
@@ -88,22 +114,33 @@ const Label = Run.label.replace(/^\//, "");
 				</p>
 			) : null}
 			<h2 class="lexicon__heading">{Label}</h2>
+			<p class="lexicon__count">
+				{Run.terms.length} {unit}
+			</p>
 			<p class="lexicon__note">{Run.note}</p>
 		</header>
 	) : null}
 
 	{Run.terms.length > 0 ? (
 		<>
-			<nav class="lexicon__letters" aria-label={`${Label} letters`}>
-				{Letters.map((Letter) => (
-					<a
-						class="lexicon__letter-link"
-						href={`#letter-${Run.key}-${Letter.toLowerCase()}`}
-					>
-						{Letter}
-					</a>
-				))}
-			</nav>
+			{!head ? (
+				<p class="lexicon__count">
+					{Run.terms.length} {unit}
+				</p>
+			) : null}
+
+			{Strippable ? (
+				<nav class="lexicon__letters" aria-label={`${Label} letters`}>
+					{Letters.map((Letter) => (
+						<a
+							class="lexicon__letter-link"
+							href={`#letter-${Run.key}-${Letter.toLowerCase()}`}
+						>
+							{Letter}
+						</a>
+					))}
+				</nav>
+			) : null}
 
 			<div class="lexicon__groups">
 				{Letters.map((Letter) => {

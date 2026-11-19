@@ -23,7 +23,11 @@ import {
 	Zap,
 } from "lucide-react";
 
-import { StackLabel, StackTiles } from "../../Content/Home/Stack.js";
+import {
+	StackLabel,
+	StackTiles,
+	StackTracks,
+} from "../../Content/Home/Stack.js";
 
 import { HeroBandDefault } from "./Hero/Data.js";
 
@@ -350,13 +354,32 @@ const DynamicHeroSection = ({
 
 	const Routes = Entry.filter((Destination) => Destination !== Action);
 
+	/**
+	 * The strip's wanted column count, derived from the set it prints.
+	 *
+	 * `StackTracks` is the data module's, not this file's: the count is a fact
+	 * about the tiles, and a component that recomputed it would be the second
+	 * place the number lived. The partial reads it as a CEILING - `max-inline-
+	 * size` per tile - so the count the set wants is also the count the row can
+	 * never exceed, and the width only decides whether the set's own count still
+	 * fits.
+	 */
+	const Tracks = StackTracks(StackTiles);
+
+	/** Whether the record has an evidence plate to show at all. */
+	const HasPlate =
+		typeof Hero.plate.src === "string" && Hero.plate.src.trim().length > 0;
+
 	return (
 		<section
 			id="hero"
 			aria-labelledby="hero-marker hero-claim"
 			className={cn("hero-band", ClassName)}
 		>
-			<div className="hero-band__pair">
+			<div
+				className="hero-band__pair"
+				data-plate={HasPlate ? "rest" : "absent"}
+			>
 				{/* ══ PANEL 1 - THE FIELD RECORD ═════════════════════════════ */}
 				<div className="hero-band__record">
 					<jelly-card className="hero-band__card" style={CardInk}>
@@ -544,11 +567,23 @@ const DynamicHeroSection = ({
 
 				{/* ══ PANEL 2 - THE EVIDENCE ═════════════════════════════════ */}
 				<figure className="hero-band__evidence">
+					{/*
+					 * The plate's three arms travel as conditional spreads, not as
+					 * `undefined` props: this project compiles with
+					 * `exactOptionalPropertyTypes`, where `src={undefined}` is not
+					 * the same fact as omitting `src` - and omitting it is what
+					 * asks `FieldRecordEvidence` for its absent arm.
+					 */}
 					<FieldRecordEvidence
 						alt={Hero.plate.alt}
 						className="hero-band__plate"
 						position="right"
-						src={Hero.plate.src}
+						{...(Hero.plate.src === undefined
+							? {}
+							: { src: Hero.plate.src })}
+						{...(Hero.plate.state === undefined
+							? {}
+							: { state: Hero.plate.state })}
 					/>
 
 					<figcaption className="type-meta hero-band__caption">
@@ -593,10 +628,40 @@ const DynamicHeroSection = ({
 			</div>
 
 			{/* ══ THE TECH-STACK STRIP - THE PANEL'S LEGEND ══════════════════ */}
+			{/*
+			 * The strip is a legend, and a legend has a count: the set it
+			 * explains is a set, so the label prints how many tiles the
+			 * reader is looking at (`TECH STACK␁08 TILES`, U+2001 between
+			 * the two halves, the site's only separator).
+			 *
+			 * The row's column count is derived, not asserted:
+			 * `StackTracks` reads the tile count and the partial reads that
+			 * number as a ceiling. The strip used to be two columns below a
+			 * container query and four above it, which is right for exactly
+			 * the eight tiles it was written for - the composition family's
+			 * matrix printed nine in a narrow card and the layout answered
+			 * with a hole.
+			 */}
 			<div className="hero-band__stack">
-				<p className="hero-band__stack-label">{StackLabel}</p>
+				<p className="hero-band__stack-label">
+					<span>{StackLabel}</span>
+					<span aria-hidden="true">{"\u2001"}</span>
+					<span className="hero-band__stack-count">
+						{`${String(StackTiles.length).padStart(2, "0")} TILES`}
+					</span>
+				</p>
 
-				<div aria-hidden="true" className="hero-band__stack-grid">
+				<div
+					aria-hidden="true"
+					className="hero-band__stack-grid"
+					data-count={StackTiles.length}
+					data-tracks={Tracks}
+					style={
+						{
+							"--stack-tracks": String(Tracks),
+						} as CSSProperties
+					}
+				>
 					{StackTiles.map((Tile) => {
 						const Glyph =
 							StackGlyphs[

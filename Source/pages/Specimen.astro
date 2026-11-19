@@ -69,6 +69,25 @@
  *              summary, an index card with no description, a foot with no
  *              cross-references, a layer of one page, a viewer with no crate, a
  *              detail strip at 640px, and the seven adverse compositions
+ *   /THE COMPOSITION the marketing and composition layer: the matrix with a reason
+ *              for every cell that cannot exist, the verdict on all thirty-five
+ *              `Dynamic/*` parts (which are live, which only this sheet mounts,
+ *              which nothing imports, which duplicate a `Record/*` block), the ten
+ *              behaviours the exploration produced, and sixty-six rows - a hero
+ *              with no evidence image, a proof band of three records, nine tiles in
+ *              a narrow card, a seal at 16px and at 240px, a manifest of one and of
+ *              none, and the four parts that cannot be printed at all
+ *   /THE SMALL SURFACES the auth, account, trust, contact and small-route family:
+ *              the matrix with a reason for every cell that cannot exist, the
+ *              eighteen behaviours the exploration produced, the five observations
+ *              it did not fix, and forty-seven rows - the sign-in frame at rest and
+ *              while the exchange runs, a route with no frame, a closed link, a
+ *              denied reader, the four reports a credential route ends on, the
+ *              account directory full and empty and denied, a clause and a clause
+ *              the text does not carry, the rail and the disclosure, a request
+ *              route at rest and after a failed send, a board with an empty shelf,
+ *              a glossary run of one word and of ninety, and a routing register
+ *              that names the page it is printed on
  *   /THE MATERIAL the six things the document is printed with
  *   /THE REGISTER what the sheet counted, and the file it counted from
  *
@@ -153,8 +172,19 @@ import { Specimens as RecordSpecimens } from "../Content/Specimen/Record.js";
 import { Specimens as NarrativeSpecimens } from "../Content/Specimen/Narrative.js";
 import { Specimens as FrameSpecimens } from "../Content/Specimen/Frame.js";
 import { Specimens as ReadingSpecimens } from "../Content/Specimen/Reading.js";
+import { Specimens as SmallSpecimens } from "../Content/Specimen/Small.js";
 import SpecimenReading from "../Component/Specimen/SpecimenReading.astro";
 import SpecimenReadingMatrix from "../Component/Specimen/SpecimenReadingMatrix.astro";
+import SpecimenSmall from "../Component/Specimen/SpecimenSmall.astro";
+import SpecimenSmallMatrix from "../Component/Specimen/SpecimenSmallMatrix.astro";
+import SpecimenComposition from "../Component/Specimen/SpecimenComposition.astro";
+import SpecimenCompositionMatrix from "../Component/Specimen/SpecimenCompositionMatrix.astro";
+import {
+	SpecimenCount as CompositionSpecimenCount,
+	LabCount,
+	OrphanCount,
+	Verdicts,
+} from "../Content/Specimen/Composition.js";
 import { Measurements } from "../Content/More/Compare.js";
 import { GetI18n } from "../Library/I18n/Server";
 import { Totals } from "../Library/Index/Register.js";
@@ -162,7 +192,7 @@ import Base from "../Layout/Base.astro";
 
 const MetaTitle = "Specimen | Code Editor Land";
 
-const MetaDescription = `The document's own parts, printed: twelve components at 1:1 with their contracts, three stated absences, the nine adverse states composed, the input family's state matrix with its live rows, the overlay family's matrix, dismissal contract and ${OverlaySpecimens.length} live overlays, the display family's matrix, its two verdicts and ${DisplaySpecimens.length} live specimens, the record ledger family's matrix, its twelve improvements and ${RecordSpecimens.length} live rows, the record narrative family's matrix, its twenty-three improvements and ${NarrativeSpecimens.length} live rows, the frame family's matrix, its eleven improvements and ${FrameSpecimens.length} live compositions, the reading family's matrix, its eleven improvements and ${ReadingSpecimens.length} live rows, and the six things the site is printed with.`;
+const MetaDescription = `The document's own parts, printed: twelve components at 1:1 with their contracts, three stated absences, the nine adverse states composed, the input family's state matrix with its live rows, the overlay family's matrix, dismissal contract and ${OverlaySpecimens.length} live overlays, the display family's matrix, its two verdicts and ${DisplaySpecimens.length} live specimens, the record ledger family's matrix, its twelve improvements and ${RecordSpecimens.length} live rows, the record narrative family's matrix, its twenty-three improvements and ${NarrativeSpecimens.length} live rows, the frame family's matrix, its eleven improvements and ${FrameSpecimens.length} live compositions, the reading family's matrix, its eleven improvements and ${ReadingSpecimens.length} live rows, the composition family's matrix, its verdict on all ${Verdicts.length} Dynamic parts with ${LabCount} lab-only and ${OrphanCount} orphaned, its ten improvements and ${CompositionSpecimenCount} live compositions, the small-surface family's matrix, its eighteen improvements and ${SmallSpecimens.length} live rows across the credential, account, licence, request and reference blocks, and the six things the site is printed with.`;
 
 /* ─── THE PARTS, BY DISPOSITION ────────────────────────────────────────── */
 
@@ -768,6 +798,91 @@ const TrailItems = [{ label: "/HOME", href: "/" }, { label: "/SPECIMEN" }];
 				{` `}{ReadingSpecimens.length} rows, six groups, and not one of them
 				is a screenshot: every state is mounted live, because a picture of
 				a state cannot be composed with.
+			</p>
+		</RecordBand>
+
+		{/* ─── THE COMPOSITION ───────────────────────────────────────── */}
+		{/* The eighth family band, and the first whose subject is the
+		    MARKETING layer rather than a surface: the hero, the bands, the
+		    cards, the manifest, the marks and the thirty-five `Dynamic/*`
+		    adapters that were built to be the schema layer between content
+		    and surface. The matrix, the verdicts, the improvements and the
+		    observations are static Astro - one thousand three hundred and
+		    ninety-two cells and forty-five arguments with nothing to
+		    hydrate - and the rows are one island: `client:visible`,
+		    because the family mounts the hero, and a hero that hydrates
+		    off-screen is a hero nobody scrolled to. */}
+		<RecordBand band={{ ...Bands.Composition, id: "composition" }}>
+			<SpecimenCompositionMatrix />
+
+			<SpecimenComposition />
+
+			<p class="specimen-page__note">
+				The matrix, the verdicts and the rows read one file:
+				Content/Specimen/Composition.ts states every cell's
+				disposition, every part's verdict with the importers the tree
+				has at this commit, every behaviour the exploration produced,
+				the five observations this card did not fix, and every row's
+				arm. A condition added there appears on the matrix's figures,
+				in the columns' own list and in the rows' order with no second
+				edit - the same rule /THE FIELD, /THE OVERLAY, /THE DISPLAY,
+				/THE RECORD, /THE NARRATIVE, /THE FRAME and /THE READING
+				follow.
+				{` `}This band is the eighth about a family rather than a part,
+				and the first that has to argue a LAYER rather than a block:
+				of the {Verdicts.length} `Dynamic/*` parts, {LabCount} are
+				mounted only by this sheet and {OrphanCount} by nothing at
+				all. That is why its verdicts section exists where the other
+				seven families' bands do not need one - a part with no
+				importer is not a design defect, it is a decision the owner
+				has not made yet, and this sheet's job is to print the
+				evidence for the decision rather than to make it.
+				{` `}{CompositionSpecimenCount} rows, eight groups, and not one
+				of them is a screenshot: every composition is mounted live,
+				because a picture of a hero cannot be re-composed with.
+			</p>
+		</RecordBand>
+
+		{/* ─── THE SMALL SURFACES ────────────────────────────────────── */}
+		{/* The ninth family band, and the first whose subject is what the
+		    document does when the reader is LOCKED OUT: the credential
+		    routes, the account directory, the legal set's clause and its
+		    rail, the contact routes and the four reference blocks. The
+		    matrix, the improvements and the observations are static Astro -
+		    three hundred and eighty-four cells and twenty-three arguments with
+		    nothing to hydrate - and so are the rows, except `AuthReport`,
+		    which is a React component rendered server-side with no client
+		    directive because it has no state, no handler and no hook. The
+		    two islands the family owns - the contact form and the auth gate
+		    - are mounted by the routes that need them, and the workspace's
+		    `form` slot is what lets the plate print the composition without
+		    hydrating either. */}
+		<RecordBand band={{ ...Bands.Small, id: "small" }}>
+			<SpecimenSmallMatrix />
+
+			<SpecimenSmall />
+
+			<p class="specimen-page__note">
+				The matrix, the improvements and the rows read one file:
+				Content/Specimen/Small.ts states every cell's disposition,
+				every behaviour the exploration produced with the condition
+				that produced it, the five observations this card did not fix,
+				and every row's arm. A condition added there appears on the
+				matrix's figures, in the columns' own list and in the rows'
+				order with no second edit - the same rule /THE FIELD, /THE
+				OVERLAY, /THE DISPLAY, /THE RECORD, /THE NARRATIVE, /THE
+				FRAME, /THE READING and /THE COMPOSITION follow.
+				{` `}This band is the ninth about a family rather than a part,
+				and the first whose subject is the page a reader reaches when
+				they cannot get in. That is why its seven compositions are
+				columns of the matrix and not a paragraph - signed out,
+				signing in, signed in, expired, denied, a failed submit and a
+				missing clause are not states a block can be in; they are the
+				states these pages are READ in, and a small surface that
+				survives them is a small surface whose design frame is real.
+				{` `}{SmallSpecimens.length} rows, six groups, and not one of
+				them is a screenshot: every state is mounted live, because a
+				picture of a locked-out page cannot be re-composed with.
 			</p>
 		</RecordBand>
 

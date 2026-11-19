@@ -151,3 +151,13 @@
 		grid-column: 3;
 	}
 }
+
+// ─── The route's state ────────────────────────────────────────────────────
+//
+// The status line the interrupted arm prints at the top of the record column.
+// It sits above the pinned plate and keeps its own rule set; the only thing this
+// composition decides is that it takes the column's full width and does not
+// inherit the plate's pinning.
+.contact-shell__status {
+	margin-block-end: 0;
+}

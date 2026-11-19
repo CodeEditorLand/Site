@@ -32,7 +32,23 @@
  * balanced wrapping, the anchor offset) stays in one place; the `--cited`
  * marker is what tells that role's counter to stand down, because two
  * numbering mechanisms on one heading is a defect.
+ *
+ * ─── WHAT THE MATRIX ADDED ────────────────────────────────────────────────
+ * The legal set's worst state is a clause the document's index names and the
+ * text does not carry: a licence page with a missing clause. The block had no
+ * way to print it - a caller either omitted the heading (and the index's row
+ * pointed at nothing) or printed an empty one. `state="missing"` keeps the
+ * number, the anchor and the name, and prints `STATUS: UNAVAILABLE` and the
+ * caller's sentence under them, so a cited clause that cannot be read is a
+ * tombstone in the record grammar rather than a dead link.
+ *
+ * The accessible name also stopped re-parsing the number. It read
+ * `Clause ${Number(number)}`, which printed "Clause NaN" for any number the
+ * document writes as a word or a sub-clause (`07A`, `12.1`); it now prints the
+ * number as the document wrote it.
  */
+import Mark from "../Mark/Mark.astro";
+
 interface Props {
 	/** The clause's number as the document's index prints it: `07`. */
 	number: string;
@@ -40,11 +56,31 @@ interface Props {
 	/** The id the clause already carried, so every inbound anchor still lands. */
 	id: string;
 
+	/**
+	 * `rest` prints the clause. `missing` prints the same heading as a
+	 * tombstone: the number and the anchor stay, and the state says the text
+	 * this clause names is not in the document.
+	 */
+	state?: "rest" | "missing";
+
+	/**
+	 * The sentence the missing arm prints: what this clause is, why its text is
+	 * not here, and where to read it. Required in spirit when `state` is
+	 * `missing` - the state word alone is a fact without a cause.
+	 */
+	missing?: string;
+
 	/** Extra classes from the page - Contributing's first clause is `sr-only`. */
 	class?: string;
 }
 
-const { number, id, class: Class } = Astro.props;
+const {
+	number,
+	id,
+	state = "rest",
+	missing,
+	class: Class,
+} = Astro.props;
 ---
 
 <h2
@@ -52,6 +88,7 @@ const { number, id, class: Class } = Astro.props;
 		"reading-clause",
 		"reading-clause--cited",
 		"trust-clause",
+		state === "missing" && "trust-clause--missing",
 		Class,
 	]}
 	id={id}
@@ -59,7 +96,7 @@ const { number, id, class: Class } = Astro.props;
 	<a
 		class="trust-clause__cite"
 		href={`#${id}`}
-		aria-label={`Clause ${Number(number)}`}
+		aria-label={`Clause §${number}`}
 	>
 		<span class="trust-clause__mark" aria-hidden="true">
 			&#167;
@@ -70,3 +107,17 @@ const { number, id, class: Class } = Astro.props;
 		<slot />
 	</span>
 </h2>
+
+{state === "missing" ? (
+	<div class="trust-clause__absent">
+		<p class="trust-clause__absent-status">
+			<Mark kind="square" tone="quiet" fill="unknown" />
+			<span class="trust-clause__absent-key">STATUS:</span>
+			UNAVAILABLE
+		</p>
+		<p class="trust-clause__absent-sentence">
+			{missing ??
+				`The document's index names this clause, and the text this build carries does not include it. The number still resolves, so a citation to §${number} lands on this statement rather than on the next clause.`}
+		</p>
+	</div>
+) : null}

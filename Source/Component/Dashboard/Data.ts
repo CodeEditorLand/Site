@@ -83,6 +83,8 @@ export const Rights: RequestGrid<RightsCard> = {
 
 	intro: "As a resident of the EU/EEA or a user of our service, you hold the following rights. Each link opens a dedicated form page that pre-fills your account details and generates a properly formatted, income-coded request.",
 
+	empty: "No right is filed for this build. The six are read from the contact registry (`Library/Contact/Request.ts`) and the registry answered with none, so this grid states the absence rather than printing six empty cards.",
+
 	cards: [
 		Right("REACH"),
 
@@ -112,6 +114,8 @@ export const Support: RequestGrid<SupportCard> = {
 	label: "Support & Assistance",
 
 	intro: "Direct channels for general questions, technical issues, security reports, copyright claims, and legal enquiries. Each form pre-fills your details and generates a plain-text, income-coded email.",
+
+	empty: "No channel is filed for this build. The five are the contact registry's support entries, and the registry answered with none - so the desk's own addresses are the way to reach it, and this grid says so instead of printing five empty cards.",
 
 	cards: [
 		Channel("HAILS"),

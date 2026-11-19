@@ -198,6 +198,10 @@
 }
 
 .status-board__row-state {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.4em;
+
 	@include track(var(--track-name));
 
 	font-size: var(--type-meta);

@@ -404,6 +404,60 @@ export const Bands = {
 			"Three of the behaviours are the ones the brief named by hand, and each is a prop of the block itself: `DocContents.collapsible` is the fold, `DocLayout.contentsFold` decides it from the list's own length, and the folio's part breaks at its own separators. A behaviour in a wrapper would be a second artifact, and the containment law does not allow a leaf to hold one.",
 	},
 
+	/**
+	 * The marketing and composition layer - the densest family on the site.
+	 *
+	 * It follows `/THE READING` because it is the one band that has to argue a
+	 * LAYER as well as a set of blocks: the `Dynamic/*` parts were built to be
+	 * the schema layer between content and surface, and ten of the thirty-five
+	 * have no production importer. A sheet that printed the matrix and skipped
+	 * that would be a specimen sheet that measured the wrong thing.
+	 */
+	Composition: {
+		kicker: "/THE COMPOSITION",
+
+		interval: "turn",
+
+		heading:
+			"The marketing layer, and the thirty-five parts built to compose it",
+
+		standfirst:
+			"Fifty-eight components against twenty-four conditions: the matrix with a reason printed in full for every cell that cannot exist, the verdict on all thirty-five `Dynamic/*` parts with the importers the tree has at this commit, the ten behaviours the exploration produced with the cell that produced each, the five things this card found and did not fix, and then the family mounted live - a hero with no evidence image and one whose plate has not arrived, a proof band with three records, one and none, a legend of nine tiles in a narrow card, a seal at 16px and at 240px, a manifest of three artefacts, of one and of none, and the four parts that cannot be printed at all.",
+
+		footnote:
+			"The uncomfortable answer is printed rather than hidden: of the thirty-five parts, twenty-five are live, six are mounted only by this sheet, four by nothing at all, and thirteen re-implement a block that already exists. Nothing was deleted to write that table - a file with no importer is a decision the owner has not made yet, and the additive law does not authorise a worker to make it. The four compositions the brief named by hand are columns of the matrix, and each found a defect no page had yet revealed because no page had yet asked.",
+	},
+
+	/**
+	 * The small-surface family's band.
+	 *
+	 * The ninth band about a family rather than a part, and the first whose
+	 * subject is what the document does when the reader is LOCKED OUT: the eight
+	 * credential routes, the account directory, the legal set's clause and its
+	 * rail, the fifteen contact routes and the four reference blocks. A frame
+	 * fails by holding nothing and furniture fails by losing the reader; a small
+	 * surface fails by being abandoned - the page nobody designed a second state
+	 * for, reached at the one moment the reader cannot work around it.
+	 *
+	 * It follows `/THE COMPOSITION` because it is the last family on the sheet
+	 * and the smallest: the seven compositions the brief named by hand - signed
+	 * out, signing in, signed in, expired, denied, a failed submit, a missing
+	 * clause - are columns of its matrix rather than prose.
+	 */
+	Small: {
+		kicker: "/THE SMALL SURFACES",
+
+		interval: "turn",
+
+		heading: "The small surfaces, and every state they are abandoned in",
+
+		standfirst:
+			"Sixteen components against twenty-four conditions: the matrix with a reason printed in full for every cell that cannot exist, the eighteen behaviours the exploration produced with the cell that produced each, the five things this card found and did not fix, and then the family mounted live - the sign-in frame at rest and while the exchange runs, a route with no frame at all, a link that has closed, a reader who is denied, the four reports a credential route ends on, the account directory full and empty and denied, a clause and a clause the text does not carry, the rail and the disclosure, a request route at rest and after a failed send and in a narrow column, a board with an empty shelf and a glossary run of one word and of ninety, and a routing register that names the page it is printed on.",
+
+		footnote:
+			"The seven compositions the brief named by hand are columns of the matrix, not paragraphs: signed out, signing in, signed in, expired, denied, a failed submit and a missing clause. They are not hypothetical states - they are the seven ways these pages are read - and each one found a defect no page had asked about, because no page had ever been in that state with a reader watching. Nothing was deleted to fix them: a state that could not be printed was given an arm, and a sentence that was printed in the wrong ink was given its tone.",
+	},
+
 	Material: {
 		kicker: "/THE MATERIAL",
 

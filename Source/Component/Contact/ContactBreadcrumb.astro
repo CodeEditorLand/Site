@@ -38,9 +38,19 @@ const { trail, class: Class } = Astro.props;
 const Written = (Label: string): string =>
 	`/${Label.replace(/^\/+/, "").toUpperCase()}`;
 
+/**
+ * The crumbs, with their labels written into the grammar and every other field
+ * carried through untouched.
+ *
+ * The bridge used to rebuild each item as `{ label, href }`, which silently
+ * dropped any field `TrailItem` grows - a `current` marker, a title, a count.
+ * A bridge that reconstructs a shape is a bridge that loses the next thing the
+ * shape learns, so it spreads the crumb and overrides only the one field it is
+ * here to write.
+ */
 const Crumbs: readonly TrailItem[] = trail.map((Crumb) => ({
+	...Crumb,
 	label: Written(Crumb.label),
-	...(Crumb.href ? { href: Crumb.href } : {}),
 }));
 ---
 

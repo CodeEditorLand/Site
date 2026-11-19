@@ -43,6 +43,15 @@
  * not define is a word this page is paraphrasing, and the reader is owed the
  * difference between a citation and a summary.
  *
+ * ─── WHAT THE MATRIX ADDED ────────────────────────────────────────────────
+ * The absent source printed in the same ink as a cited one: `SOURCE: UNAVAILABLE`
+ * looked exactly like `SOURCE: Content/More/Glossary.ts`, so the one difference
+ * the sentence above exists to draw was invisible at a glance. The absent value
+ * now takes the `quiet` ink and a `--unavailable` class - the same tone
+ * `SurfaceState` gives an `UNAVAILABLE` word - and a cited source keeps full
+ * ink. Nothing moved, nothing was dropped: the row was already there, and now
+ * it reads as the partial state it is.
+ *
  * No script and no hydration: a definition is printed.
  */
 import { Tone } from "../Surface/State.js";
@@ -132,7 +141,14 @@ const StateTone = Entry.state
 			) : null}
 			<p class="lexicon-entry__fact">
 				<span class="lexicon-entry__fact-key">SOURCE:</span>
-				<span class="lexicon-entry__fact-value">
+				<span
+					class:list={[
+						"lexicon-entry__fact-value",
+						Entry.source
+							? "lexicon-entry__fact-value--cited"
+							: "lexicon-entry__fact-value--unavailable",
+					]}
+				>
 					{Entry.source ?? "UNAVAILABLE"}
 				</span>
 			</p>

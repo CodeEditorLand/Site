@@ -1,0 +1,834 @@
+// SpecimenSmall - the small-surface family's plate: the state matrix, its notes,
+// the improvements the exploration produced, the observations it did not fix, the
+// conditions' own figures, and the forty-seven live rows.
+//
+// Publishes:
+//   .small-matrix-sheet               the state matrix, as one figure
+//   .small-matrix-sheet__scroll       the frame the table scrolls in
+//   .small-matrix-sheet__table        sixteen rows, twenty-four columns
+//   .small-matrix-sheet__corner       the head's leading cell
+//   .small-matrix-sheet__head         one condition's head
+//   .small-matrix-sheet__head--group  the first head of a new group
+//   .small-matrix-sheet__name         the component's name and file, pinned
+//   .small-matrix-sheet__cell         one cell
+//   .small-matrix-sheet__built        the word a built cell prints
+//   .small-matrix-sheet__na           a cell that cannot exist, with its note's mark
+//   .small-matrix-sheet__notes        the footnotes
+//   .small-matrix-sheet__note         one footnote: mark, where, why
+//   .small-matrix-sheet__caption      what the matrix asks of a reader
+//   .small-matrix-sheet__register     the figures, as a ledger
+//   .small-matrix-sheet__improvements what the exploration changed, and where
+//   .small-matrix-sheet__improvement  one behaviour: found, built
+//   .small-matrix-sheet__observations what the card did not fix, and whose it is
+//   .small-matrix-sheet__columns      how many of the parts hold each condition
+//   .specimen-small                   the live rows
+//   .specimen-small__group            one group of rows
+//   .specimen-small__row              one labelled row: spec, stage
+//   .specimen-small__stage            the box the specimen is printed in
+//   .specimen-small__stage--card      the box that stands in for a Jelly surface
+//
+// ─── THE MATRIX IS ONE INSTRUMENT AND EVERY FAMILY PRINTS IT ──────────────
+// A pinned name column, a scrolling body, footnotes with marks, a register under
+// it. What changes per family is the FIGURES and the two sections under the table
+// - the record family argues trust, the narrative family argues a sentence, the
+// frame family argues a frame, the reading family argues furniture, and this one
+// argues the surfaces a reader meets when they are locked out. So the partial
+// carries its own names, and the shared shape is repeated rather than borrowed: a
+// class that belongs to another family's partial is a class no one can move
+// without breaking a surface they were not reading.
+//
+// ─── TWENTY-FOUR COLUMNS DO NOT FIT, AND MUST NOT ─────────────────────────
+// The table scrolls inside `.small-matrix-sheet__scroll` and the component's name
+// is pinned to the leading edge. Compressing twenty-four conditions into a page
+// would mean either dropping conditions or printing them below the type floor,
+// and both are the same answer: the matrix stops being readable.
+//
+// ─── THE ROWS ARE NOT AN ISLAND, AND THE STAGE IS A PLATE ────────────────
+// Every row on this plate is static Astro except `AuthReport`, which is a React
+// component rendered server-side with no client directive: it has no state, so
+// the plate gets its markup and the page ships nothing. The credential frame is
+// `100vh` on its pages and the record column's plate is pinned on a request
+// route; both are page behaviours, and a plate that simulated them would be
+// printing a browser. The overrides at the foot of this file set them static and
+// bounded, and say so where they do it.
+
+@use "../../Mixin" as *;
+
+/* ─── THE MATRIX ─────────────────────────────────────────────────────────── */
+
+.small-matrix-sheet {
+	margin: 0 0 var(--space-group);
+
+	min-inline-size: 0;
+}
+
+.small-matrix-sheet__scroll {
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+
+	min-inline-size: 0;
+
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	background: var(--Card);
+}
+
+.small-matrix-sheet__table {
+	inline-size: 100%;
+	min-inline-size: 96rem;
+
+	border-collapse: collapse;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+}
+
+.small-matrix-sheet__head-row {
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.small-matrix-sheet__corner {
+	position: sticky;
+	inset-inline-start: 0;
+	z-index: 2;
+
+	inline-size: 14rem;
+	padding: var(--space-tight);
+
+	background: var(--Card);
+	text-align: start;
+	vertical-align: bottom;
+
+	border-inline-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.small-matrix-sheet__corner-label {
+	display: block;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.small-matrix-sheet__corner-ask {
+	display: block;
+	margin-block-start: 0.25rem;
+
+	color: var(--MuteForeground);
+}
+
+.small-matrix-sheet__head {
+	padding: var(--space-tight) 0.4rem;
+
+	text-align: start;
+	vertical-align: bottom;
+
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	min-inline-size: 4.4rem;
+}
+
+.small-matrix-sheet__head--group {
+	border-inline-start: 2px solid var(--Divider);
+}
+
+.small-matrix-sheet__head-label {
+	display: block;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.small-matrix-sheet__head-ask {
+	display: block;
+	margin-block-start: 0.2rem;
+
+	font-size: var(--type-caption);
+	line-height: 1.3;
+
+	color: var(--MuteForeground);
+}
+
+.small-matrix-sheet__row:not(:first-child) {
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.small-matrix-sheet__name {
+	position: sticky;
+	inset-inline-start: 0;
+	z-index: 1;
+
+	padding: var(--space-tight);
+
+	background: var(--Card);
+	text-align: start;
+	vertical-align: top;
+
+	border-inline-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+}
+
+.small-matrix-sheet__name-text {
+	display: block;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.small-matrix-sheet__name-file {
+	display: block;
+	margin-block-start: 0.2rem;
+
+	font-size: var(--type-caption);
+	line-height: 1.3;
+
+	color: var(--MuteForeground);
+	overflow-wrap: anywhere;
+}
+
+.small-matrix-sheet__name-count {
+	display: block;
+	margin-block-start: 0.3rem;
+
+	font-variant-numeric: tabular-nums;
+
+	color: var(--Foreground);
+}
+
+.small-matrix-sheet__cell {
+	padding: 0.35rem 0.4rem;
+
+	vertical-align: top;
+
+	border-inline-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.small-matrix-sheet__cell--group {
+	border-inline-start: 2px solid var(--Divider);
+}
+
+.small-matrix-sheet__cell[data-disposition="na"] {
+	background: color-mix(in srgb, var(--Mute) 45%, transparent);
+}
+
+.small-matrix-sheet__built {
+	color: var(--MuteForeground);
+}
+
+.small-matrix-sheet__na {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.2rem;
+
+	color: var(--MuteForeground);
+}
+
+.small-matrix-sheet__note-mark {
+	color: var(--Mark);
+	font-variant-numeric: tabular-nums;
+}
+
+/* ─── THE NOTES ──────────────────────────────────────────────────────────── */
+
+.small-matrix-sheet__notes,
+.small-matrix-sheet__improvements,
+.small-matrix-sheet__observations,
+.small-matrix-sheet__columns {
+	margin-block-start: var(--space-group);
+}
+
+.small-matrix-sheet__notes-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0 0 var(--space-tight);
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.small-matrix-sheet__notes-label {
+	color: var(--Foreground);
+}
+
+.small-matrix-sheet__notes-count {
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+.small-matrix-sheet__notes-list {
+	display: grid;
+	gap: 0;
+
+	margin: 0;
+	padding: 0;
+
+	list-style: none;
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.small-matrix-sheet__note {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 0.2rem;
+
+	padding-block: var(--space-tight);
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.small-matrix-sheet__note .small-matrix-sheet__note-mark {
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.small-matrix-sheet__note-where {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.small-matrix-sheet__note-reason {
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+	max-inline-size: var(--Measure);
+}
+
+@include bp(900px) {
+	.small-matrix-sheet__note {
+		grid-template-columns: 4rem 14rem minmax(0, 1fr);
+		gap: var(--space-tight);
+		align-items: baseline;
+	}
+}
+
+/* ─── THE CAPTION ────────────────────────────────────────────────────────── */
+
+.small-matrix-sheet__caption {
+	display: grid;
+	gap: var(--space-tight);
+
+	margin-block-start: var(--space-group);
+	padding-block-start: var(--space-tight);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.small-matrix-sheet__caption-key {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--MuteForeground);
+}
+
+.small-matrix-sheet__caption-value {
+	display: block;
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+	max-inline-size: var(--Measure);
+}
+
+.small-matrix-sheet__caption-value--code {
+	overflow-wrap: anywhere;
+}
+
+.small-matrix-sheet__caption-source {
+	display: block;
+}
+
+/* ─── THE REGISTER ───────────────────────────────────────────────────────── */
+
+.small-matrix-sheet__register {
+	margin-block-start: var(--space-group);
+}
+
+/* ─── THE IMPROVEMENTS AND THE OBSERVATIONS ──────────────────────────────── */
+
+.small-matrix-sheet__improvement,
+.small-matrix-sheet__observation {
+	padding-block: var(--space-tight);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.small-matrix-sheet__improvement-head,
+.small-matrix-sheet__observation-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.4em;
+
+	margin-block-end: var(--space-tight);
+}
+
+.small-matrix-sheet__improvement-mark {
+	color: var(--Mark);
+}
+
+.small-matrix-sheet__improvement-name {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.small-matrix-sheet__improvement-rule {
+	color: var(--MuteForeground);
+}
+
+.small-matrix-sheet__improvement-from {
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--MuteForeground);
+}
+
+.small-matrix-sheet__improvement-found,
+.small-matrix-sheet__improvement-built {
+	margin: 0;
+	max-inline-size: var(--Measure);
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.small-matrix-sheet__improvement-built {
+	margin-block-start: 0.3rem;
+}
+
+.small-matrix-sheet__improvement-key {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+/* ─── THE COLUMNS' OWN FIGURES ───────────────────────────────────────────── */
+
+.small-matrix-sheet__column-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-tight) var(--space-group);
+
+	margin: 0;
+	padding: 0;
+
+	list-style: none;
+}
+
+.small-matrix-sheet__column {
+	display: flex;
+	align-items: baseline;
+	gap: 0.35em;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.small-matrix-sheet__column-label {
+	color: var(--MuteForeground);
+}
+
+.small-matrix-sheet__column-count {
+	color: var(--Foreground);
+	font-variant-numeric: tabular-nums;
+}
+
+.small-matrix-sheet__column[data-disposition="built"]
+	.small-matrix-sheet__column-count {
+	color: var(--state-ink-attested);
+}
+
+/* ─── THE LIVE ROWS ──────────────────────────────────────────────────────── */
+
+.specimen-small {
+	display: block;
+
+	min-inline-size: 0;
+}
+
+.specimen-small__group + .specimen-small__group {
+	margin-block-start: var(--space-chapter);
+}
+
+.specimen-small__group-head {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Divider);
+	padding-block-end: var(--space-tight);
+}
+
+.specimen-small__group-count {
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+.specimen-small__group-note {
+	margin: var(--space-tight) 0 0;
+
+	max-inline-size: var(--Measure);
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.specimen-small__rows {
+	display: flex;
+	flex-direction: column;
+
+	margin-block-start: var(--space-group);
+
+	min-inline-size: 0;
+}
+
+.specimen-small__row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-reading);
+
+	padding-block: var(--space-group);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+
+	min-inline-size: 0;
+
+	@include bp(900px) {
+		grid-template-columns: 15rem minmax(0, 1fr);
+		gap: var(--space-group);
+		align-items: start;
+	}
+}
+
+.specimen-small__spec {
+	display: flex;
+	flex-direction: column;
+	gap: 0.375rem;
+
+	min-inline-size: 0;
+}
+
+.specimen-small__mark {
+	display: flex;
+	align-items: baseline;
+	gap: 0.25rem;
+
+	margin: 0;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--MuteForeground);
+
+	font-variant-numeric: tabular-nums;
+}
+
+.specimen-small__mark-hash {
+	color: var(--MuteForeground);
+}
+
+.specimen-small__state {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-heading);
+	font-weight: 500;
+	line-height: var(--type-heading-line);
+	letter-spacing: var(--track-join);
+
+	color: var(--Foreground);
+
+	text-wrap: balance;
+}
+
+.specimen-small__part {
+	margin: 0;
+
+	@include mono-meta;
+	@include track(var(--track-name));
+
+	color: var(--Foreground);
+}
+
+.specimen-small__when {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+
+	text-wrap: pretty;
+}
+
+/* ─── THE STAGE ──────────────────────────────────────────────────────────── */
+
+.specimen-small__stage {
+	min-inline-size: 0;
+
+	max-inline-size: 44rem;
+}
+
+// A narrow stage is a real column, not a squeezed band: at 16rem the credential
+// card, the directory's grid and the workspace's split all re-compose, which is
+// the behaviour the `AT 640` and `NARROW` rows exist to print.
+.specimen-small__stage--narrow {
+	max-inline-size: 16rem;
+}
+
+.specimen-small__stage--wide {
+	max-inline-size: 60rem;
+}
+
+.specimen-small__stage--band {
+	max-inline-size: 44rem;
+}
+
+// The stage that stands in for a Jelly surface: the sheet composes a card to show
+// one, it does not mount the design system to demonstrate that the design system
+// exists.
+.specimen-small__stage--card {
+	max-inline-size: 34rem;
+	padding: var(--space-reading);
+	background: var(--Card);
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+/* ─── THE STAGE'S OWN PARTS ──────────────────────────────────────────────── */
+
+// The static form the credential frame holds on the plate. The real form is the
+// route's island and is not hydrated here; this is the shape of what it prints,
+// at the card's own inset, so the frame's composition can be read.
+.specimen-small__fields {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-reading);
+
+	padding: var(--space-group);
+}
+
+.specimen-small__field {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.4em;
+
+	margin: 0;
+}
+
+.specimen-small__label {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--MuteForeground);
+}
+
+.specimen-small__value {
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+
+	color: var(--Foreground);
+	overflow-wrap: anywhere;
+}
+
+.specimen-small__button {
+	align-self: flex-start;
+
+	padding: var(--space-tight) var(--space-group);
+
+	background: var(--Primary);
+	color: var(--PrimaryForeground);
+
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.specimen-small__hint {
+	margin: 0;
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.specimen-small__prose {
+	margin: var(--space-tight) 0 0;
+	max-inline-size: var(--Measure);
+
+	font-size: var(--type-body);
+	line-height: var(--type-body-line);
+
+	color: var(--Foreground);
+	text-wrap: pretty;
+}
+
+/* The document row: eight clauses, each with its paragraph, so the rail's eight
+   rows have eight anchors to land on. The stack is the document's own rhythm -
+   a clause opens on the chapter distance and its paragraph follows at the
+   reading step. */
+.specimen-small__document {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-chapter);
+}
+
+// The stand-in instrument the workspace's `form` slot mounts: a title, a
+// sentence, the pair reference the form would print and the action.
+.specimen-small__form {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-reading);
+
+	padding: var(--space-group);
+
+	background: var(--Card);
+	border: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.specimen-small__form-title {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-sub);
+	line-height: var(--type-sub-line);
+	font-weight: 500;
+
+	color: var(--Foreground);
+}
+
+.specimen-small__form-sentence {
+	margin: 0;
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+/* ─── THE PLATE IS NOT A VIEWPORT ────────────────────────────────────────── */
+
+/* The credential frame is `min-height: 100vh` on its eight routes - the content
+   column fills the viewport before the footer on the short states. Inside a
+   plate that minimum would print a screen of empty paper around a 12rem card, so
+   the stage sets it to zero and keeps the frame's own chapter padding: the
+   reader of the sheet sees the composition, and the viewport rule is the page's. */
+.specimen-small__stage .auth-shell {
+	min-height: 0;
+	min-block-size: 0;
+}
+
+/* The request workspace's record column is pinned above 1024px on the routes,
+   because the facts stay with the reader while the form scrolls. A plate is not a
+   scroll: the plate sets the plate static and keeps the column's own rhythm, so
+   the 4 / 1px / 8 split can be read at its real height. */
+.specimen-small__stage .record-ledger-block--pinned {
+	position: static;
+	inset-block-start: auto;
+}
+
+/* The clause rail is bounded to the viewport on a legal page and scrolls itself.
+   On the plate it is bounded to 26rem instead - the same 26 clauses, the same
+   scroll register, a height the sheet can hold. */
+.specimen-small__stage .trust-contents--rail {
+	position: static;
+
+	block-size: auto;
+	max-block-size: 26rem;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+}
+
+/* The page opening's gutters are the page's (`--Gutter`, a clamp of the
+   viewport); on a plate the stage is the container, so the opening's horizontal
+   gutter stands down and its measure is the stage's. The vertical rhythm - the
+   trail's distance to the record head, the heading's distance to the body - is
+   the page's and is unchanged. */
+.specimen-small__stage .contact-page__open {
+	padding-inline: 0;
+	max-width: none;
+	max-inline-size: none;
+}
+
+.specimen-small__stage .contact-shell__workspace {
+	padding-inline: 0;
+	max-width: none;
+	max-inline-size: none;
+}
+
+/* ─── THE NARROW STAGE DECLARES THE STACKED COMPOSITION ──────────────────── */
+
+/* The workspace re-composes on a VIEWPORT breakpoint (`bp(1024px)`), and a
+   16rem stage on a 1440px window would still receive the two-column split. The
+   stage therefore declares the composition the viewport would have given it -
+   the same three declarations the workspace's own stacked arm makes (one
+   column, the form first, the record under it, no gutter) - so the `AT 640` row
+   prints the composition its `when` line names rather than a squeezed wide one.
+   Nothing here touches the wide composition: the overrides are scoped to
+   `.specimen-small__stage--narrow`, a class only the sheet sets. */
+.specimen-small__stage--narrow .contact-shell__workspace {
+	grid-template-columns: minmax(0, 1fr);
+	row-gap: var(--space-chapter);
+}
+
+.specimen-small__stage--narrow .contact-shell__form {
+	order: 1;
+	grid-column: auto;
+}
+
+.specimen-small__stage--narrow .contact-shell__record {
+	order: 2;
+	grid-column: auto;
+	padding-block-start: var(--space-group);
+}
+
+.specimen-small__stage--narrow .contact-shell__gutter {
+	display: none;
+}
+
+/* The directory's grids are Tailwind's `md:`/`lg:` utilities, which are media
+   queries too. A narrow stage declares one column, which is the arm the grid
+   already has below its floor - the same rule as the workspace above, scoped to
+   the same class. */
+.specimen-small__stage--narrow .privacy-requests .grid {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+/* The stage's own query container, so the blocks inside it re-compose on the
+   plate's width instead of on the window's: a 60rem plate is the two-column
+   workspace, a 16rem one is the stacked form, and neither is the browser's. */
+.specimen-small__stage {
+	container-type: inline-size;
+}

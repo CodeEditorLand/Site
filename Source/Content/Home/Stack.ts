@@ -29,3 +29,35 @@ export const StackTiles: readonly StackTile[] = [
 
 	{ Name: "OPEN SOURCE CC0", Icon: "Zap", Ink: "var(--SpineTCP)" },
 ];
+
+/**
+ * How many tiles one row holds: the largest count that divides the set without
+ * leaving a short row, or the set itself when it is small enough to be one row.
+ *
+ * ─── WHY THE COUNT IS A DERIVATION AND NOT A STYLE ────────────────────────
+ * The strip used to print two columns below a container query and four above it,
+ * which is right for the eight tiles it was written for and wrong for any other
+ * set: nine tiles in four columns leaves a row of one, and eight tiles in three
+ * leaves a row of two. The composition family's matrix printed nine in a narrow
+ * card and the hole was the first thing visible - a legend with a gap in it
+ * reads as a legend that lost a tile.
+ *
+ * So the count follows the SET, and the width only decides whether the set's own
+ * count still fits (`_Stack.scss` holds the floor and the arithmetic). Four
+ * divides eight, three divides nine, and a set with no divisor at all - seven,
+ * five, a prime - takes four and prints its short last row honestly, because a
+ * short row is a fact about the set and a hole is a fact about the layout.
+ *
+ * The small sets come first: one tile is one row, not a quarter of one.
+ */
+export const StackTracks = (Tiles: readonly StackTile[]): number => {
+	if (Tiles.length <= 4) return Math.max(1, Tiles.length);
+
+	for (const Tracks of [4, 3, 2]) {
+		if (Tiles.length % Tracks === 0 && Tiles.length / Tracks <= 4) {
+			return Tracks;
+		}
+	}
+
+	return 4;
+};

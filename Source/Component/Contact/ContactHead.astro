@@ -1,0 +1,157 @@
+---
+/**
+ * ContactHead - the opening every Contact route shares: the trail, the route's
+ * record head, and - on the pages that have one - the page's `h1` and the
+ * sentence under it.
+ *
+ * ─── WHY THIS IS A BLOCK AND NOT A PAGE'S FIRST ELEVEN LINES ──────────────
+ * `ContactPage` used to print this opening itself, between its `<Base>` and its
+ * slot. That made the opening unprintable anywhere else: a specimen sheet could
+ * not show it, a route could not re-compose it, and the one part of a Contact
+ * page that carries the record grammar was locked inside the document layout.
+ * The opening is now a block; `ContactPage` composes it under `Base`, and the
+ * sheet prints it at 1:1 like any other part.
+ *
+ * ─── THE OPENING, IN ORDER ────────────────────────────────────────────────
+ * The trail is `Component/Route/Trail.astro` - the site's one breadcrumb
+ * grammar (`DESIGN.md` §9 Q3), not a Contact detail. It prints each crumb as
+ * `/LABEL`, so the page reads `/HOME  /CONTACT` above its heading.
+ *
+ * The record head is the four facts that are the route's rather than the
+ * visit's: `# REACH`, the statutory basis `〈GDPR Art. 15 + 20〉`, the route
+ * `/CONTACT`, and the window `SLA: 30d`. The baseline printed them inside the
+ * form's chip row; they are the same on every visit, so they belong to the page
+ * and the form keeps what changes per visit - the pair reference and the state
+ * word. A route with no statutory basis prints no bracket, because an empty
+ * `〈 〉` is a claim the page cannot back.
+ *
+ * `opening` is the one difference between the two shapes: a page opens with the
+ * breadcrumb and its heading at `py-16`; a request route opens with the
+ * breadcrumb alone, at `pt-6`, and its body starts immediately.
+ *
+ * `width` is the opening's measure - the hub and the request routes are
+ * `max-w-5xl`, the sale page `max-w-4xl` - and the body that follows repeats it
+ * so the two line up on the same left edge.
+ *
+ * ─── WHAT THE MATRIX ADDED ────────────────────────────────────────────────
+ * A request route whose form never booted printed a trail, a record head and
+ * then nothing at all: the page's `h1` lives inside the form island, so a route
+ * whose island failed had no heading and no body - a blank page with a
+ * breadcrumb. `state="empty"` prints the absence under the record head, in the
+ * grammar every other absent surface uses (`◎`, the sentence, `STATUS:
+ * UNAVAILABLE`), so the route says what it is even when its instrument is not
+ * there.
+ */
+import Trail from "../Route/Trail.astro";
+import type { ContactTrailItem } from "../../Library/Contact/Data.js";
+import type { ContactRecord } from "./Type.js";
+
+interface Props {
+	/** The breadcrumb trail, last crumb being this page. */
+	trail: readonly ContactTrailItem[];
+
+	/**
+	 * The route's record head: `# REACH  〈GDPR Art. 15 + 20〉  /CONTACT  SLA: 30d`.
+	 *
+	 * The four facts are the route's, not the form's - they are the same on every
+	 * visit - so they belong to the page. The form keeps what changes per visit:
+	 * the pair reference and the state word. One screen, one copy of each fact.
+	 */
+	record?: ContactRecord;
+
+	/** The page's only `h1`, when the page opens with one. */
+	heading?: string;
+
+	/** The sentence under the `h1`, when the page has one. */
+	standfirst?: string;
+
+	/** The opening's measure. `wide` is the hub and the request routes. */
+	width?: "wide" | "narrow";
+
+	/** `page` opens with a heading; `trail` is the breadcrumb alone. */
+	opening?: "page" | "trail";
+
+	/**
+	 * `rest` prints the opening. `empty` adds the absence under the record head:
+	 * the route exists and the instrument its body would carry did not arrive.
+	 */
+	state?: "rest" | "empty";
+
+	/** The sentence the empty arm prints. Required in spirit when `state` is `empty`. */
+	empty?: string;
+
+	/** Extra classes from the page, appended after the block's own. */
+	class?: string;
+}
+
+const {
+	trail,
+	record,
+	heading,
+	standfirst,
+	width = "wide",
+	opening = "page",
+	state = "rest",
+	empty,
+	class: Class,
+} = Astro.props;
+---
+
+<div
+	class:list={[
+		"contact-page__open",
+		`contact-page__open--${width}`,
+		`contact-page__open--${opening}`,
+		Class,
+	]}
+>
+	<Trail trail={trail} />
+
+	{record && (
+		<p class="contact-page__record">
+			<span class="contact-page__record-code">
+				# {record.code}
+			</span>
+			{record.article ? (
+				<span class="contact-page__record-article">
+					〈{record.article}〉
+				</span>
+			) : null}
+			<span class="contact-page__record-route">
+				{record.route}
+			</span>
+			{record.window ? (
+				<span class="contact-page__record-window">
+					SLA: {record.window}d
+				</span>
+			) : null}
+			{record.count ? (
+				<span class="contact-page__record-count">
+					REGISTER: {record.count} ENTRIES
+				</span>
+			) : null}
+		</p>
+	)}
+
+	{heading && (
+		<header class="contact-page__header">
+			<h1 class="contact-page__heading">{heading}</h1>
+			{standfirst ? (
+				<p class="contact-page__standfirst">{standfirst}</p>
+			) : null}
+		</header>
+	)}
+
+	{state === "empty" ? (
+		<p class="contact-page__absent">
+			<span class="contact-page__absent-mark" aria-hidden="true">
+				◎
+			</span>
+			<span class="contact-page__absent-sentence">
+				{empty ??
+					"This route's form has not been mounted in this build, so the instrument the page exists for is not here. The record above is the route's own and is unchanged."}
+			</span>
+			<span class="contact-page__absent-status">STATUS: UNAVAILABLE</span>
+		</p>
+	) : null}
+</div>

@@ -1,0 +1,126 @@
+// Evidence - the plate's two arms that have no photograph.
+//
+// Publishes:
+//   .FieldRecordPlate          the plate's frame when there is no image
+//   .FieldRecordPlate__mark    the grammar's `◎`, at the plate's measure
+//   .FieldRecordPlate__line    `PLATE: UNAVAILABLE` / `PLATE: LOADING`
+//   .FieldRecordPlate__key     the `PLATE:` half of that row
+//   .FieldRecordPlate__note    the description that would have been the alt
+//   .FieldRecordPlate__bars    the loading skeleton's three rules
+//   .FieldRecordPlate__bar     one of them
+//
+// ─── WHY THE BLOCK HAS A PARTIAL OF ITS OWN ───────────────────────────────
+// The rest arm paints nothing - an `<img>` with `object-fit: cover` and the
+// host's own box is the whole of it - so this file would have had no reason to
+// exist while a plate always had a photograph. It exists because the block
+// gained two compositions that DO paint: an absence and a skeleton. The Brand
+// family had no stylesheet before this; it has one for exactly the arm that is
+// more than an image.
+//
+// ─── THE ABSENCE IS AN INSET, NOT A HOLE ──────────────────────────────────
+// A plate that is not there keeps its box, its measure and its place in the
+// hero's pair - which is the point of drawing it at all: a pair whose right half
+// has collapsed is a composition that has lost its counterweight, and a reader
+// cannot tell a missing photograph from a missing design. So the frame is the
+// site's divider ink on the creme field: an object that is present and empty,
+// the same reading `--Divider` gives a stack tile and the hero's gutter.
+//
+// ─── AND THE WORDS ARE THE VOCABULARY'S ───────────────────────────────────
+// `UNAVAILABLE` is the word the site prints for a fact that exists and is empty,
+// `LOADING` for one that has not arrived. The `◎` is the mark layer's fallback
+// for a thing that is not here. Nothing in this file invents a word, an ink or a
+// motion: the skeleton does not shimmer, because a shimmer is motion that
+// explains nothing - the state is already printed in words two lines above it.
+
+@use "../../Mixin" as *;
+
+.FieldRecordPlate {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-tight);
+
+	/* The plate's own box: it fills whatever measure its host gives it, which in
+	   the hero is 51% of the pair and in a figure is the figure's width. */
+	block-size: 100%;
+	inline-size: 100%;
+	min-inline-size: 0;
+
+	padding: var(--space-group);
+
+	background: var(--Background);
+	border: 1px solid var(--Divider);
+
+	text-align: center;
+}
+
+/* The fallback mark, at the record tier: big enough to be the object in the
+   frame, small enough that the words under it are still the sentence. */
+.FieldRecordPlate__mark {
+	margin: 0;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-section);
+	line-height: 1;
+
+	color: var(--Mark);
+}
+
+.FieldRecordPlate__line {
+	margin: 0;
+
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
+}
+
+.FieldRecordPlate__key {
+	color: var(--MuteForeground);
+}
+
+/* The description the image would have carried. It is the one body sentence in
+   the frame, so it takes the body tier and a measure - a plate is 51% of a pair
+   and a line of 120 characters across it would be a wall. */
+.FieldRecordPlate__note {
+	margin: 0;
+
+	max-inline-size: 34ch;
+
+	font-family: var(--FontMono);
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+}
+
+/* ─── THE SKELETON IS THREE RULES ────────────────────────────────────────── */
+//
+// The brief: "no spinner where a skeleton would do; the skeleton is drawn in the
+// record grammar". Three rules at the ledger's row rhythm, the width stepping
+// down as a paragraph's lines do, in the divider ink - a plate's drawing is a
+// block of lines, so its absence is a block of lines.
+.FieldRecordPlate__bars {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-tight);
+
+	inline-size: min(100%, 34ch);
+
+	margin-block-start: var(--space-tight);
+}
+
+.FieldRecordPlate__bar {
+	block-size: var(--mark-hairline);
+
+	background: var(--Divider);
+}
+
+.FieldRecordPlate__bar:nth-child(2) {
+	inline-size: 84%;
+}
+
+.FieldRecordPlate__bar:nth-child(3) {
+	inline-size: 62%;
+}

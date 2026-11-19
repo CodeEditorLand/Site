@@ -47,11 +47,29 @@
  * column would make "nothing is retired" indistinguishable from "retirement is
  * not recorded", which is the one distinction a status board exists to make.
  *
+ * ─── WHAT THE MATRIX ADDED ────────────────────────────────────────────────
+ * Two things the board's twenty-four combinations found:
+ *
+ * - **A board with no columns printed an empty paragraph.** `empty` is optional
+ *   on the board itself, and the arm printed `<p>{empty}</p>` whether or not the
+ *   caller had a sentence - so the one state the block documents as "renders
+ *   nothing at all" rendered a `<section>` with an empty line in it. It now
+ *   renders the sentence when there is one and nothing when there is not.
+ * - **The row's state word was colour-only.** §1.5 requires a state to survive
+ *   greyscale, and every other register on the site prints the square before the
+ *   word (`SurfaceState`, `StateBadge`, `LexiconEntry`); the board's row was the
+ *   one place a reader had to see the ink to know the state. The row now carries
+ *   the mark its tone already implied.
+ *
  * No script and no hydration: a board is a printed page.
  */
 import { Tone } from "../Surface/State.js";
 
+import Mark from "../Mark/Mark.astro";
+
 import type { BoardColumn, BoardRow } from "../../Content/More/Status.js";
+
+import type { StatusTone } from "../../Content/Record/FieldRecord.js";
 
 interface Props {
 	/** The columns, in reading order. The block sorts nothing. */
@@ -74,7 +92,8 @@ interface Props {
 const { columns, caption, empty, class: Class } = Astro.props;
 
 /** The word's ink, from the one table that decides tones. */
-const ToneOf = (State: string): string => Tone(State.toUpperCase()) ?? "ink";
+const ToneOf = (State: string): StatusTone =>
+	Tone(State.toUpperCase()) ?? "ink";
 
 /** A row's index inside its column, for the row's own id. */
 const RowId = (Column: BoardColumn, Row: BoardRow, Index: number): string =>
@@ -141,6 +160,10 @@ const RowId = (Column: BoardColumn, Row: BoardRow, Index: number): string =>
 													`status-board__row-state--${ToneOf(Row.state)}`,
 												]}
 											>
+												<Mark
+													kind="square"
+													tone={ToneOf(Row.state)}
+												/>
 												{Row.state}
 											</span>
 										</a>
@@ -163,6 +186,10 @@ const RowId = (Column: BoardColumn, Row: BoardRow, Index: number): string =>
 													`status-board__row-state--${ToneOf(Row.state)}`,
 												]}
 											>
+												<Mark
+													kind="square"
+													tone={ToneOf(Row.state)}
+												/>
 												{Row.state}
 											</span>
 										</span>
@@ -181,9 +208,9 @@ const RowId = (Column: BoardColumn, Row: BoardRow, Index: number): string =>
 				</section>
 			))}
 		</div>
-	) : (
+	) : empty ? (
 		<p class="status-board__empty">{empty}</p>
-	)}
+	) : null}
 
 	{caption ? <p class="status-board__caption">{caption}</p> : null}
 </section>

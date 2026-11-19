@@ -1,0 +1,456 @@
+---
+/**
+ * SpecimenCompositionMatrix - the composition family's state matrix, printed.
+ *
+ * ─── WHAT A MATRIX IS FOR, AGAIN ─────────────────────────────────────────
+ * Fifty-eight components against twenty-four conditions is one thousand three
+ * hundred and ninety-two cells, and the honest thing to do with one thousand three
+ * hundred and ninety-two cells is to print them and let a reader scan. Prose would
+ * say "and the family survives the adverse states"; a matrix says which ones, on
+ * which part, and - in the notes - why the rest cannot exist.
+ *
+ * ─── THE NOTES ARE THE ARTIFACT'S OTHER HALF ─────────────────────────────
+ * A cell that cannot exist carries a reason, and a reason is a sentence: it will
+ * not fit in a six-rem column, and a truncated reason is a reason that has been
+ * tidied into an excuse. So the cell prints `N/A` and the reason's mark in the
+ * containment brackets - `N/A 〈04〉` - and the notes below print all of them in
+ * full, numbered, in the order they are met reading across and down.
+ *
+ * ─── THE IMPROVEMENTS ARE PART OF THE MATRIX ─────────────────────────────
+ * The brief asks for "the improvements that came out of the exploration", and an
+ * improvement with no cell behind it is a preference. Each entry names the
+ * condition that revealed it, what the exploration found, and what the block does
+ * about it now.
+ *
+ * ─── AND THE VERDICTS ARE THE PART NOBODY WANTS TO PRINT ─────────────────
+ * The brief's own sentence: "say which are live, which are orphaned, and which are
+ * duplicates of a `Record/*` block (the answer will be uncomfortable; report it
+ * rather than hiding it)". The verdicts section below is that report: thirty-five
+ * parts, each with its importers as the tree has them, its duplicate where it has
+ * one, and the decision the owner is being asked for. Nothing was deleted.
+ *
+ * ─── EVERY FIGURE IS DERIVED ─────────────────────────────────────────────
+ * `BuiltOf(Row)` under each name, the note count in the notes' head, the register
+ * under the table, the verdict counts and the figures in the caption are all
+ * counted from the tables in `Content/Specimen/Composition.ts`. A cell added
+ * there changes every figure here.
+ */
+import {
+	BuiltCount,
+	BuiltIn,
+	BuiltOf,
+	CellCount,
+	Columns,
+	DuplicateCount,
+	Improvements,
+	LabCount,
+	LiveCount,
+	MatrixCell,
+	MatrixRegister,
+	Observations,
+	OrphanCount,
+	ReasonCount,
+	Rows,
+	VerdictRegister,
+	Verdicts,
+} from "../../Content/Specimen/Composition.js";
+
+import RecordLedger from "../Record/RecordLedger.astro";
+
+import { RegisterOf } from "../Record/RegisterLine.js";
+
+/** Every cell that cannot exist, numbered - the matrix's footnotes. */
+const Notes = Rows.flatMap((Row) =>
+	Columns.filter(
+		(Column) => MatrixCell(Row, Column).disposition === "na",
+	).map((Column) => ({ Row, Column, Cell: MatrixCell(Row, Column) })),
+).map((Note, Index) => ({ ...Note, mark: String(Index + 1).padStart(2, "0") }));
+
+/** The footnote a cell points at. */
+const NoteMark = (RowName: string, Key: string): string | undefined =>
+	Notes.find((Note) => Note.Row.name === RowName && Note.Column.key === Key)
+		?.mark;
+
+/**
+ * Whether a column opens a new group.
+ *
+ * The matrix prints a heavier rule where a condition becomes a shape, where a
+ * shape becomes a composition and where a composition becomes a context, because
+ * those are four different questions and a reader scanning the head should see
+ * where one set ends.
+ */
+const OpensGroup = (Index: number): boolean =>
+	Index > 0 && Columns[Index]!.group !== Columns[Index - 1]!.group;
+
+/** The figures, and the register that counts them. */
+const Figures = MatrixRegister();
+
+const Matrix = RegisterOf("THE MATRIX", Figures);
+
+/** The verdicts' figures, and their register. */
+const VerdictFigures = VerdictRegister();
+
+const VerdictLine = RegisterOf("THE VERDICTS", VerdictFigures);
+
+/** How many importers one verdict names, in the sheet's grammar. */
+const ImporterText = (Names: readonly string[]): string =>
+	Names.length === 0 ? "NO IMPORTER" : Names.join("\u2001·\u2001");
+---
+
+<figure class="composition-matrix-sheet" id="composition-matrix">
+	<div class="composition-matrix-sheet__scroll">
+		<table class="composition-matrix-sheet__table">
+			<thead>
+				<tr class="composition-matrix-sheet__head-row">
+					<th class="composition-matrix-sheet__corner" scope="col">
+						<span class="composition-matrix-sheet__corner-label">
+							COMPONENT
+						</span>
+						<span class="composition-matrix-sheet__corner-ask">
+							{Columns.length} CONDITIONS
+						</span>
+					</th>
+
+					{Columns.map((Column, Index) => (
+						<th
+							class:list={[
+								"composition-matrix-sheet__head",
+								OpensGroup(Index) &&
+									"composition-matrix-sheet__head--group",
+							]}
+							scope="col"
+						>
+							<span class="composition-matrix-sheet__head-label">
+								{Column.label}
+							</span>
+							<span class="composition-matrix-sheet__head-ask">
+								{Column.ask}
+							</span>
+						</th>
+					))}
+				</tr>
+			</thead>
+
+			<tbody>
+				{Rows.map((Row) => (
+					<tr class="composition-matrix-sheet__row">
+						<th class="composition-matrix-sheet__name" scope="row">
+							<span class="composition-matrix-sheet__name-text">
+								{Row.name}
+							</span>
+							<span class="composition-matrix-sheet__name-file">
+								{Row.file}
+							</span>
+							<span class="composition-matrix-sheet__name-count">
+								{BuiltOf(Row)} / {Columns.length}
+							</span>
+						</th>
+
+						{Columns.map((Column, Index) => {
+							const Cell = MatrixCell(Row, Column);
+
+							return (
+								<td
+									class:list={[
+										"composition-matrix-sheet__cell",
+										OpensGroup(Index) &&
+											"composition-matrix-sheet__cell--group",
+									]}
+									data-disposition={Cell.disposition}
+								>
+									{Cell.disposition === "built" ? (
+										<span
+											class="composition-matrix-sheet__built"
+											title={Cell.note ?? undefined}
+										>
+											BUILT
+										</span>
+									) : (
+										<span class="composition-matrix-sheet__na">
+											N/A
+											<span class="composition-matrix-sheet__note-mark">
+												〈
+												{NoteMark(Row.name, Column.key)}
+												〉
+											</span>
+										</span>
+									)}
+								</td>
+							);
+						})}
+					</tr>
+				))}
+			</tbody>
+		</table>
+	</div>
+
+	<div class="composition-matrix-sheet__notes">
+		<p class="composition-matrix-sheet__notes-head">
+			<span class="composition-matrix-sheet__notes-label">NOTES:</span>
+			<span class="composition-matrix-sheet__notes-count">
+				{Notes.length} CELLS THAT CANNOT EXIST
+			</span>
+		</p>
+
+		<ol class="composition-matrix-sheet__notes-list">
+			{Notes.map((Note) => (
+				<li
+					class="composition-matrix-sheet__note"
+					id={`composition-note-${Note.mark}`}
+				>
+					<span class="composition-matrix-sheet__note-mark">
+						〈{Note.mark}〉
+					</span>
+					<span class="composition-matrix-sheet__note-where">
+						{Note.Row.name} / {Note.Column.label}
+					</span>
+					<span class="composition-matrix-sheet__note-reason">
+						{Note.Cell.reason}
+					</span>
+				</li>
+			))}
+		</ol>
+	</div>
+
+	<figcaption class="composition-matrix-sheet__caption">
+		<span class="composition-matrix-sheet__caption-key">READ:</span>
+		<span class="composition-matrix-sheet__caption-value">
+			A cell is `BUILT` when the family renders that combination and `N/A`
+			when it cannot exist - and a cell that cannot exist carries its
+			reason in the notes above rather than a truncated one in the cell.
+			{BuiltCount} of {CellCount} cells are built; {ReasonCount} are
+			reasons. A built cell may carry a note saying which construction
+			built it, because "built" on the BAND row and "built" on the SEAL
+			row are not the same construction.
+		</span>
+		<span class="composition-matrix-sheet__caption-source">
+			<span class="composition-matrix-sheet__caption-key">SOURCE:</span>
+			<span
+				class="composition-matrix-sheet__caption-value composition-matrix-sheet__caption-value--code"
+			>
+				SOURCE/CONTENT/SPECIMEN/COMPOSITION.TS
+			</span>
+		</span>
+	</figcaption>
+
+	<div class="composition-matrix-sheet__register">
+		<RecordLedger rows={Figures} columns={2} register={Matrix} />
+	</div>
+
+	{/* ─── THE VERDICTS ────────────────────────────────────────────── */}
+	<div class="composition-matrix-sheet__verdicts">
+		<p class="composition-matrix-sheet__notes-head">
+			<span class="composition-matrix-sheet__notes-label">VERDICTS:</span>
+			<span class="composition-matrix-sheet__notes-count">
+				{LabCount + OrphanCount} OF {Verdicts.length} PARTS HAVE NO
+				PRODUCTION IMPORTER
+			</span>
+		</p>
+
+		<p class="composition-matrix-sheet__verdict-lead">
+			The brief asked for this by name, and the answer is uncomfortable:
+			of the {Verdicts.length} `Dynamic/*` parts, {LiveCount} are mounted by
+			a page or a live block, {LabCount} only by this sheet, and{" "}
+			{OrphanCount} by nothing at all. {DuplicateCount} of them
+			re-implement a block that already exists. Every row below names the
+			importers as the tree has them at this commit, and the decision is
+			an ask rather than a proposal - nothing was deleted to write this
+			table, and a file with no importer is a decision the owner has not
+			made yet.
+		</p>
+
+		<ul class="composition-matrix-sheet__verdict-list">
+			{Verdicts.map((Verdict) => (
+				<li
+					class="composition-matrix-sheet__verdict"
+					data-state={Verdict.state}
+				>
+					<p class="composition-matrix-sheet__verdict-head">
+						<span
+							class="composition-matrix-sheet__verdict-mark"
+							aria-hidden="true"
+						>
+							#
+						</span>
+						<span class="composition-matrix-sheet__verdict-name">
+							{Verdict.name}
+						</span>
+						<span
+							class="composition-matrix-sheet__verdict-rule"
+							aria-hidden="true"
+						>
+							/
+						</span>
+						<span class="composition-matrix-sheet__verdict-state">
+							{Verdict.state.toUpperCase()}
+						</span>
+					</p>
+
+					<p class="composition-matrix-sheet__verdict-file">
+						{Verdict.file}
+					</p>
+
+					<p class="composition-matrix-sheet__verdict-line">
+						<span class="composition-matrix-sheet__verdict-key">
+							MOUNTED BY:
+						</span>{" "}
+						<span class="composition-matrix-sheet__verdict-importers">
+							{ImporterText(Verdict.mounted_by)}
+						</span>
+					</p>
+
+					{Verdict.duplicate && (
+						<p class="composition-matrix-sheet__verdict-line">
+							<span class="composition-matrix-sheet__verdict-key">
+								DUPLICATES:
+							</span>{" "}
+							<span class="composition-matrix-sheet__verdict-importers">
+								{Verdict.duplicate}
+							</span>
+						</p>
+					)}
+
+					<p class="composition-matrix-sheet__verdict-note">
+						{Verdict.note}
+					</p>
+
+					<p class="composition-matrix-sheet__verdict-decision">
+						<span class="composition-matrix-sheet__verdict-key">
+							DECISION:
+						</span>{" "}
+						{Verdict.decision}
+					</p>
+				</li>
+			))}
+		</ul>
+
+		<div class="composition-matrix-sheet__verdict-register">
+			<RecordLedger
+				rows={VerdictFigures}
+				columns={2}
+				register={VerdictLine}
+			/>
+		</div>
+	</div>
+
+	{/* ─── THE IMPROVEMENTS ────────────────────────────────────────── */}
+	<div class="composition-matrix-sheet__improvements">
+		<p class="composition-matrix-sheet__notes-head">
+			<span class="composition-matrix-sheet__notes-label">
+				IMPROVEMENTS:
+			</span>
+			<span class="composition-matrix-sheet__notes-count">
+				{Improvements.length} BEHAVIOURS THE MATRIX REVEALED
+			</span>
+		</p>
+
+		{Improvements.map((Improvement) => (
+			<article class="composition-matrix-sheet__improvement">
+				<header class="composition-matrix-sheet__improvement-head">
+					<span
+						class="composition-matrix-sheet__improvement-mark"
+						aria-hidden="true"
+					>
+						#
+					</span>
+					<span class="composition-matrix-sheet__improvement-name">
+						{Improvement.component}
+					</span>
+					<span
+						class="composition-matrix-sheet__improvement-rule"
+						aria-hidden="true"
+					>
+						/
+					</span>
+					<span class="composition-matrix-sheet__improvement-from">
+						{Improvement.from}
+					</span>
+				</header>
+
+				<p class="composition-matrix-sheet__improvement-found">
+					<span class="composition-matrix-sheet__improvement-key">
+						FOUND:
+					</span>{" "}
+					{Improvement.found}
+				</p>
+
+				<p class="composition-matrix-sheet__improvement-built">
+					<span class="composition-matrix-sheet__improvement-key">
+						BUILT:
+					</span>{" "}
+					{Improvement.built}
+				</p>
+			</article>
+		))}
+	</div>
+
+	{/* ─── THE OBSERVATIONS ────────────────────────────────────────── */}
+	<div class="composition-matrix-sheet__observations">
+		<p class="composition-matrix-sheet__notes-head">
+			<span class="composition-matrix-sheet__notes-label">OBSERVED:</span>
+			<span class="composition-matrix-sheet__notes-count">
+				{Observations.length} THINGS THIS CARD DID NOT FIX
+			</span>
+		</p>
+
+		{Observations.map((Observation) => (
+			<article class="composition-matrix-sheet__observation">
+				<header class="composition-matrix-sheet__observation-head">
+					<span
+						class="composition-matrix-sheet__improvement-mark"
+						aria-hidden="true"
+					>
+						#
+					</span>
+					<span class="composition-matrix-sheet__improvement-name">
+						{Observation.component}
+					</span>
+				</header>
+
+				<p class="composition-matrix-sheet__improvement-found">
+					<span class="composition-matrix-sheet__improvement-key">
+						FOUND:
+					</span>{" "}
+					{Observation.found}
+				</p>
+
+				<p class="composition-matrix-sheet__improvement-built">
+					<span class="composition-matrix-sheet__improvement-key">
+						OWNER:
+					</span>{" "}
+					{Observation.owner}
+				</p>
+			</article>
+		))}
+	</div>
+
+	{/* ─── THE COLUMNS' OWN FIGURES ────────────────────────────────── */}
+	<div class="composition-matrix-sheet__columns">
+		<p class="composition-matrix-sheet__notes-head">
+			<span class="composition-matrix-sheet__notes-label">
+				BY CONDITION:
+			</span>
+			<span class="composition-matrix-sheet__notes-count">
+				HOW MANY OF THE {Rows.length} PARTS HOLD EACH ONE
+			</span>
+		</p>
+
+		<ul class="composition-matrix-sheet__column-list">
+			{Columns.map((Column) => (
+				<li
+					class="composition-matrix-sheet__column"
+					data-disposition={
+						BuiltIn(Column) === Rows.length ? "built" : "partial"
+					}
+				>
+					<span class="composition-matrix-sheet__column-label">
+						{Column.label}
+					</span>
+					<span class="composition-matrix-sheet__column-count">
+						{BuiltIn(Column)} / {Rows.length}
+					</span>
+				</li>
+			))}
+		</ul>
+	</div>
+</figure>

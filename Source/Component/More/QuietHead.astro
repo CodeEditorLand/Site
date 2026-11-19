@@ -27,6 +27,14 @@
  * Two columns at 1024px and up, one below, and no fill of its own beyond the
  * standard tier.
  *
+ * ─── WHAT THE MATRIX ADDED ────────────────────────────────────────────────
+ * A document whose facts strip could not be read printed a heading, a
+ * proposition and an empty ledger frame: a page that states its extent and then
+ * shows a box with nothing in it. `empty` is forwarded to the ledger with
+ * `state="empty"`, so the strip prints the composed sentence instead of the
+ * frame - and the head still prints its marker, its title and its proposition,
+ * because those are the document's and they are still true.
+ *
  * No script and no hydration: a head is printed.
  */
 import RecordLedger from "../Record/RecordLedger.astro";
@@ -49,11 +57,25 @@ interface Props {
 	/** The facts that scope the document, in the order they are read. */
 	rows: readonly LedgerRow[];
 
+	/**
+	 * What the strip says when it holds no row: what would be here, why it is
+	 * not, and what to do. Absent, an empty strip renders no frame at all.
+	 */
+	empty?: string;
+
 	/** Extra classes from the page. */
 	class?: string;
 }
 
-const { index, label, title, proposition, rows, class: Class } = Astro.props;
+const {
+	index,
+	label,
+	title,
+	proposition,
+	rows,
+	empty,
+	class: Class,
+} = Astro.props;
 ---
 
 <header class:list={["quiet-head", Class]}>
@@ -78,6 +100,8 @@ const { index, label, title, proposition, rows, class: Class } = Astro.props;
 		rows={rows}
 		columns={2}
 		surface="standard"
+		state={rows.length > 0 ? "rest" : "empty"}
+		empty={empty}
 		class="quiet-head__facts"
 	/>
 </header>

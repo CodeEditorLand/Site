@@ -80,6 +80,14 @@ export interface RequestGrid<Card> {
 	/** One sentence: what the grid is for. */
 	readonly intro: string;
 
+	/**
+	 * What the grid says when it holds no card: what would be here, why it is
+	 * not, and what to do. Required, because a block that printed its heading
+	 * and its intro over an empty grid would be a label over a hole - and the
+	 * registry is the only place that can say which of the two causes it was.
+	 */
+	readonly empty: string;
+
 	/** The cards, in the order the grid prints them. */
 	readonly cards: readonly Card[];
 }

@@ -41,6 +41,21 @@
 	max-width: calc(var(--ContainerFiveExtraLarge) + var(--space-group) * 2);
 }
 
+/* ─── WHERE THE CARD SITS ───────────────────────────────────────────────── */
+
+/* The body is the frame's flex-1 track. At `start` it is a plain block and the
+   card follows the heading, which is right for a form the reader came to fill.
+   At `center` the track becomes a centred column, so a short interior - a
+   loading arm, a signed-in ending, an expired link - sits in the viewport it is
+   the only thing in instead of stranded under a heading with half a screen of
+   paper below it. Nothing about the frame, the card or the alternate action
+   changes: this is a placement. */
+.auth-shell--center .auth-shell__body {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
 .auth-shell__header {
 	display: flex;
 	flex-direction: column;
@@ -394,9 +409,15 @@
    dashboard shells print; the tone travels on the word, never on this class -
    a state printed as a colour the page chose is what `State.ts` exists to
    stop, so the two colour modifiers that used to sit here (`--success` and
-   `--failure`) are gone with the fourth tone they belonged to. */
+   `--failure`) are gone with the fourth tone they belonged to.
+
+   The register is a flex child of `.auth-shell__inner` now, so its distance
+   from the header is the column's gap and not a margin of its own: the margin
+   it carried while it lived inside the header would be a second gap, and a
+   frameless route - the one composition the margin was never about - would
+   open on 2rem of nothing. */
 .auth-shell__states {
-	margin-block-start: var(--space-group);
+	margin-block-start: 0;
 }
 
 .auth-shell__states .surface__states {
@@ -415,6 +436,64 @@
 	line-height: var(--type-body-line);
 	color: var(--MuteForeground);
 	text-wrap: pretty;
+}
+
+/* ─── THE REPORT'S FACTS ───────────────────────────────────────────────── */
+
+/* The rows a report states under its sentence: `WINDOW:`, `CAUSE:`, `RETRY:`.
+   The block is centred, so the list centres as a block and its rows align to
+   their own start edge - a key column that follows the text's centre would put
+   every value at a different x. `fit-content` keeps the list as wide as its
+   longest row rather than the card's whole measure. */
+.auth-shell__facts {
+	display: grid;
+	gap: 0.25rem;
+
+	inline-size: fit-content;
+	max-inline-size: 100%;
+	margin: 0.75rem auto 0;
+
+	text-align: start;
+}
+
+.auth-shell__fact {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.4em;
+}
+
+.auth-shell__fact-key {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--MuteForeground);
+}
+
+.auth-shell__fact-value {
+	margin: 0;
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--Foreground);
+	overflow-wrap: anywhere;
+}
+
+.auth-shell__fact-value code {
+	font-family: var(--FontMono);
+	font-size: inherit;
+}
+
+/* The one action a link-shaped report prints. It wears the primary tier's
+   properties (set above) and only needs the link's own reset: an anchor inside
+   prose is underlined by the sitewide rule, and this is a button. */
+.auth-shell__report-action {
+	text-decoration: none;
+}
+
+.auth-shell__report-action:hover {
+	text-decoration: none;
 }
 
 .auth-shell__note {

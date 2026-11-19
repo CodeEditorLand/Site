@@ -121,9 +121,17 @@ export interface Metadata {
 
 /** The evidence plate: what was observed, and the file it came out of. */
 export interface Plate {
-	readonly src: string;
+	/**
+	 * The photograph. Optional: a record whose evidence has not been shot passes
+	 * nothing, and `FieldRecordEvidence` prints the plate's absent arm - the
+	 * frame, the grammar's `◎`, `PLATE: UNAVAILABLE` and the description below -
+	 * rather than an `<img>` with an empty source. A required `src` could only
+	 * be satisfied with a broken one, and a broken glyph is not a state.
+	 */
+	readonly src?: string;
 
-	/** Required: an uncaptioned image is decoration, not evidence. */
+	/** Required: an uncaptioned image is decoration, not evidence. When there
+	 *  is no image this is the description of what the plate would have shown. */
 	readonly alt: string;
 
 	/** What the plate shows, at caption weight. */
@@ -131,6 +139,14 @@ export interface Plate {
 
 	/** The file it came from, at meta weight. */
 	readonly provenance: string;
+
+	/**
+	 * The plate's state, where the band knows it. Absent means "decide from
+	 * `src`": a source prints the photograph and no source prints the absence.
+	 * `loading` is the third arm - a band whose evidence is being prepared can
+	 * say so, and the plate prints the same frame with the drawing barred.
+	 */
+	readonly state?: "rest" | "loading" | "absent";
 }
 
 /** One destination the band opens. */

@@ -10,6 +10,8 @@
 //   .contact-page__header            the page's `h1` and its sentence, at `mb-12`
 //   .contact-page__heading           the page's only `h1`
 //   .contact-page__standfirst        the sentence under it
+//   .contact-page__record            the route's record head, one line
+//   .contact-page__absent            the body's absence: `◎`, the sentence, the word
 //
 // The trail itself is not this surface's: it is `Component/Route/Trail.astro`
 // with `System/Component/Route/_Trail.scss` (`.trail`), the site's one
@@ -29,9 +31,11 @@
 // tier. The baseline wins that disagreement (`G5` §1); the L tier would set a
 // two-word index title at three times its recorded size.
 //
-// There is no record header here. The baseline renders no `# CODE` / `〈 〉` /
-// `/CONTACT` line on any contact page, so the shell prints none; the facts those
-// three symbols carried are the form's own chip row.
+// The record head is the page's, not the form's: `ContactHead` prints
+// `# REACH  〈GDPR Art. 15 + 20〉  /CONTACT  SLA: 30d` once, above the heading,
+// and the form keeps what changes per visit. This partial owns the line's
+// grammar - the mono step, the U+2001 separators, the code's full ink and the
+// rest's muted one - and the opening's distance from it.
 
 @use "../../Mixin" as *;
 
@@ -144,4 +148,42 @@
    cell still reads as part of the record line. */
 .contact-page__record-window {
 	letter-spacing: var(--track-rule);
+}
+
+// ─── The absent body ──────────────────────────────────────────────────────
+//
+// A request route whose form never mounted: the opening prints the absence
+// under its record head, in the grammar every other absent surface uses. It is
+// the same three parts `SurfaceAbsent` prints - the mark, the sentence and the
+// state word - at the opening's own rhythm, because this is a page opening and
+// not a record's white box.
+.contact-page__absent {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.4em;
+
+	margin: 0 0 3rem;
+	max-width: var(--MeasureOpening);
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.contact-page__absent-mark {
+	color: var(--MuteForeground);
+}
+
+.contact-page__absent-sentence {
+	flex: 1 1 20rem;
+}
+
+.contact-page__absent-status {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	color: var(--Foreground);
 }

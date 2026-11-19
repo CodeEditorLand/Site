@@ -1,0 +1,635 @@
+---
+/**
+ * SpecimenSmall - the small-surface family, printed live.
+ *
+ * ─── WHY THIS STAGE IS NOT AN ISLAND ──────────────────────────────────────
+ * Almost nothing in this family ships JavaScript. A credential frame is a
+ * `<div>` with a grid, a report is a `<dl>`, a directory is a grid of anchors, a
+ * clause is an `h2`, a rail is an `<ol>`, a workspace is a two-column grid, a
+ * board is four shelves, a lexicon is a run of `<article>`s. The two islands the
+ * family has - the contact form and the auth gate - are mounted by the routes
+ * that need them, and the sheet does not mount either: the workspace takes a
+ * `form` slot, so the plate prints the composition without hydrating a real
+ * Auth0 form.
+ *
+ * `AuthReport` is a React component and is rendered SERVER-SIDE here, with no
+ * `client:*` directive: it has no state, no handler and no hook, so the sheet
+ * gets its markup and the page ships nothing. That is the same argument the
+ * dashboard's directory won when it stopped being an island.
+ *
+ * ─── THE RENDERER DECIDES NOTHING ────────────────────────────────────────
+ * A row states what it is, which part it exercises, when that state is right and
+ * the arm it prints; this file builds the data and mounts the block. That split
+ * is why the matrix and the rows cannot drift: both read
+ * `Content/Specimen/Small.ts`, and a state added there appears on both with no
+ * second edit.
+ *
+ * ─── THE DATA IS THE SITE'S OWN ──────────────────────────────────────────
+ * The clauses are the legal set's shape, the board is `Content/More/Status.ts`'s
+ * own four columns, the lexicon is `Content/More/Glossary.ts`'s first run, the
+ * register is `/Status`'s own copy and the request records are the contact
+ * registry's. A specimen printed with lorem ipsum would prove that the block can
+ * hold text; a specimen printed with the document's own facts proves that the
+ * block can hold THIS document.
+ *
+ * ─── THE STAGE IS A PLATE, NOT A VIEWPORT ────────────────────────────────
+ * The credential frame is `min-height: 100vh` on its pages, the workspace pins
+ * its record column above 1024px, and the rail marks its position from a scroll
+ * observer. All three are page behaviours, and a plate that simulated them would
+ * be printing a browser. `_Small.scss` sets the shell's minimum to zero, the
+ * record column static and the rail bounded inside `.specimen-small__stage`, and
+ * says so where it does it: the sheet shows the composition, and the composition
+ * is what the matrix is about.
+ */
+import {
+	Groups,
+	InGroup,
+	type Specimen,
+} from "../../Content/Specimen/Small.js";
+
+import AuthReport from "../Auth/Report";
+import AuthShell from "../Auth/AuthShell.astro";
+import ContactBreadcrumb from "../Contact/ContactBreadcrumb.astro";
+import ContactHead from "../Contact/ContactHead.astro";
+import ContactWorkspace from "../Contact/ContactWorkspace.astro";
+import PrivacyRequests from "../Dashboard/PrivacyRequests.astro";
+import { Rights, Support } from "../Dashboard/Data.js";
+import Lexicon from "../More/Lexicon.astro";
+import LexiconEntry from "../More/LexiconEntry.astro";
+import Onward from "../More/Onward.astro";
+import QuietHead from "../More/QuietHead.astro";
+import StatusBoard from "../More/StatusBoard.astro";
+import SurfaceAbsent from "../Surface/SurfaceAbsent.astro";
+import TrustClause from "../Trust/TrustClause.astro";
+import TrustContents from "../Trust/TrustContents.astro";
+import TrustContentsList from "../Trust/TrustContentsList.astro";
+import { Board } from "../../Content/More/Status.js";
+import {
+	Facts as GlossaryFacts,
+	Lexicon as LexiconRuns,
+	type LexiconRun,
+	type Term,
+} from "../../Content/More/Glossary.js";
+import { NotFoundOnward, NotFoundOnwardCopy } from "../../Content/More/Page.js";
+import { Row } from "../Surface/State.js";
+import type { AuthFrame } from "../Auth/Type.js";
+import type { ContactRecord } from "../Contact/Type.js";
+import type { ReadingIndexItem } from "../Reading/Type.js";
+import type { BoardColumn } from "../../Content/More/Status.js";
+
+/* ─── THE CREDENTIAL FRAMES ──────────────────────────────────────────────── */
+
+/** `/SIGN IN` - the resting route's frame, as `Auth/Data.ts` composes it. */
+const SIGN_IN: AuthFrame = {
+	kicker: "/SIGN IN",
+	heading: "Sign in",
+	sentence: "Sign in to your Land workspace.",
+	action: { label: "Create an account", href: "/Account/SignUp" },
+};
+
+/** `/RESET PASSWORD` - the frame the expired-link row prints. */
+const RESET: AuthFrame = {
+	kicker: "/RESET PASSWORD",
+	heading: "Set a new password",
+	sentence: "Enter your new password below.",
+	action: { label: "Back to sign in", href: "/Account/SignIn" },
+};
+
+/** `/VERIFY` - the frame the denied row prints. */
+const VERIFY: AuthFrame = {
+	kicker: "/VERIFY",
+	heading: "Verify your email",
+	sentence: "Email verification protects the account and the workspace it can reach.",
+	action: { label: "Back to sign in", href: "/Account/SignIn" },
+};
+
+/* ─── THE STATES, FROM THE ONE TABLE ─────────────────────────────────────── */
+
+const Loading = [Row("STATUS", "LOADING")];
+
+const Interrupted = [Row("STATUS", "INTERRUPTED")];
+
+const Unavailable = [Row("STATUS", "UNAVAILABLE")];
+
+/** The declarations an interrupted route can make its state auditable with. */
+const Declares = [
+	{ key: "ROUTE", value: "/ACCOUNT/RESETPASSWORD" },
+	{ key: "SOURCE", value: "AUTH0" },
+	{ key: "BUILT", value: "2026-11-19" },
+];
+
+/* ─── THE LEGAL SET'S CLAUSES ────────────────────────────────────────────── */
+
+/** The eight clauses the rail and the lists are printed from. */
+const CLAUSES: readonly ReadingIndexItem[] = [
+	{ number: "01", label: "The software is offered as it is", href: "#spec-clause-1" },
+	{ number: "02", label: "No warranty is given or implied", href: "#spec-clause-2" },
+	{ number: "03", label: "The mark covers the tree", href: "#spec-clause-3" },
+	{ number: "04", label: "Attribution is not required", href: "#spec-clause-4" },
+	{ number: "05", label: "The licence is perpetual", href: "#spec-clause-5" },
+	{ number: "06", label: "Patents are not granted", href: "#spec-clause-6" },
+	{ number: "07", label: "Fee changes", href: "#spec-clause-7" },
+	{ number: "08", label: "Governing law", href: "#spec-clause-8" },
+];
+
+/** The same list with one clause the index filed without a number or a name. */
+const CLAUSES_PARTIAL: readonly ReadingIndexItem[] = [
+	CLAUSES[0]!,
+	{ number: "", label: "", href: "#spec-clause-2" },
+	CLAUSES[2]!,
+];
+
+/** Twenty-six clauses: the register the rail scrolls for. */
+const CLAUSES_MANY: readonly ReadingIndexItem[] = Array.from(
+	{ length: 26 },
+	(_, Index) => ({
+		number: String(Index + 1).padStart(2, "0"),
+		label: `Clause ${Index + 1}: ${["the software", "the warranty", "the mark", "attribution"][Index % 4]}`,
+		href: `#spec-clause-${Index + 1}`,
+	}),
+);
+
+/* ─── THE REQUEST RECORDS ────────────────────────────────────────────────── */
+
+const REACH: ContactRecord = {
+	code: "REACH",
+	article: "GDPR Art. 15 + 20",
+	route: "/CONTACT",
+	window: 30,
+};
+
+const HUB: ContactRecord = {
+	code: "INDEX",
+	route: "/INDEX",
+	count: 14,
+};
+
+/* ─── THE PARTIAL GRIDS AND LISTS ────────────────────────────────────────── */
+
+/**
+ * The directory with one card in each grid, and the clause list with one row.
+ *
+ * Built here rather than inside the template because a template expression is
+ * markup, not a place for a type assertion: `Rights.cards[0]!` is TypeScript in
+ * a JSX attribute, and the plate should read as markup from top to bottom.
+ */
+const RIGHTS_ONE = { ...Rights, cards: Rights.cards.slice(0, 1) };
+
+const SUPPORT_ONE = { ...Support, cards: Support.cards.slice(0, 1) };
+
+const CLAUSE_ONE: readonly ReadingIndexItem[] = CLAUSES.slice(0, 1);
+
+/* ─── THE BOARD'S COLUMNS ────────────────────────────────────────────────── */
+
+/** One column, kept whole: the `ONE` row's board. */
+const BOARD_ONE: readonly BoardColumn[] = [Board[0]!];
+
+/** The retired shelf with its rows removed: the empty column, kept. */
+const BOARD_COLUMN_EMPTY: readonly BoardColumn[] = [
+	{ ...Board[2]!, rows: [] },
+];
+
+/* ─── THE LEXICON'S RUNS ─────────────────────────────────────────────────── */
+
+/** The first real run: fifteen element records, each with its citations. */
+const RUN: LexiconRun = LexiconRuns[0]!;
+
+/** A run of one word: the strip must not print for it. */
+const RUN_ONE: LexiconRun = {
+	key: "one",
+	label: "/THE SINGLE WORD",
+	note: "One word, filed under one letter: the run exists so the head's count and the strip's threshold can both be read.",
+	empty: "No word is filed.",
+	terms: [
+		{
+			term: "LAND",
+			definition:
+				"The editor itself: one native application, with the extension host and the workspace inside it.",
+			source: "Source/Content/More/Glossary.ts",
+		},
+	],
+};
+
+/** A run with no term at all. */
+const RUN_EMPTY: LexiconRun = {
+	key: "empty",
+	label: "/THE EMPTY RUN",
+	note: "A run the glossary has not been written for.",
+	empty: "No word is filed in this run: the glossary's data has a run and no term, so the run states the absence rather than closing.",
+	terms: [],
+};
+
+/** Ninety words: the run that makes the alphabet a navigation. */
+const RUN_MANY: LexiconRun = {
+	key: "many",
+	label: "/THE LONG RUN",
+	note: "Ninety words, filed under as many letters as they use.",
+	empty: "No word is filed.",
+	terms: Array.from({ length: 90 }, (_, Index) => ({
+		term: `TERM ${String(Index + 1).padStart(2, "0")}`,
+		definition:
+			"One word of the long run, defined in a sentence so the letter groups and the strip can be read at their real length.",
+		source: "Source/Content/More/Glossary.ts",
+	})),
+};
+
+/** The resting entry: the first real term of the first real run. */
+const TERM: Term = RUN.terms[0]!;
+
+/** The same word with no citation behind it. */
+const TERM_PARTIAL: Term = {
+	term: "CHROMIUM",
+	expansion: "the runtime this editor does not embed",
+	definition:
+		"A browser engine the editor does not ship. The word is retired here, and this entry is the one the tree does not cite.",
+};
+
+/* ─── THE STAGE ──────────────────────────────────────────────────────────── */
+
+/** The stage's own width, from the row. */
+const SkinClass = (Entry: Specimen): string => {
+	const Width = Entry.width ?? "band";
+
+	return `specimen-small__stage specimen-small__stage--${Width}`;
+};
+---
+
+<div class="specimen-small">
+	{Groups.map((Group) => (
+		<section class="specimen-small__group">
+			<p class="specimen-small__group-head">
+				<span class="specimen-small__group-kicker">{Group.label}</span>
+				<span class="specimen-small__group-count">
+					{InGroup(Group.key).length}
+				</span>
+			</p>
+
+			<p class="specimen-small__group-note">{Group.note}</p>
+
+			<div class="specimen-small__rows">
+				{InGroup(Group.key).map((Entry) => (
+					<article class="specimen-small__row" id={`small-${Entry.mark}`}>
+						<header class="specimen-small__spec">
+							<p class="specimen-small__mark">
+								<span class="specimen-small__mark-hash" aria-hidden="true">
+									#
+								</span>
+								{Entry.mark}
+							</p>
+
+							<h3 class="specimen-small__state">{Entry.state_name}</h3>
+
+							<p class="specimen-small__part">{Entry.component}</p>
+
+							<p class="specimen-small__when">{Entry.when}</p>
+						</header>
+
+						<div class={SkinClass(Entry)} data-skin={Entry.width ?? "band"}>
+							{Entry.kind === "authshell" ? (
+								<AuthShell
+									Label={Entry.variant === "denied" ? "Verify your email" : "Sign in"}
+									Frame={
+										Entry.variant === "expired"
+											? RESET
+											: Entry.variant === "denied"
+												? VERIFY
+												: Entry.variant === "frameless"
+													? undefined
+													: SIGN_IN
+									}
+									States={
+										Entry.variant === "signingin"
+											? Loading
+											: Entry.variant === "expired" || Entry.variant === "frameless"
+												? Interrupted
+												: Entry.variant === "denied"
+													? Unavailable
+													: []
+									}
+									Declarations={
+										Entry.variant === "expired" || Entry.variant === "frameless"
+											? Declares
+											: []
+									}
+									Align={Entry.variant === "signingin" ? "center" : "start"}
+								>
+									{Entry.variant === "signingin" ? (
+										<AuthReport
+											State="STATUS: LOADING"
+											Title="Reading the reset token"
+											Sentence="The token in the address is being checked against the provider. The form opens when it answers."
+											Glyph="loading"
+										/>
+									) : Entry.variant === "expired" ? (
+										<AuthReport
+											State="STATUS: INTERRUPTED"
+											Title="The link has closed"
+											Sentence="A reset link works once and closes after one hour. This one was already used, or its hour has passed."
+											Glyph="alert"
+											Role="alert"
+											Facts={[
+												{ key: "WINDOW:", value: "1 HOUR, ONCE" },
+												{ key: "ROUTE:", value: "/ACCOUNT/RESETPASSWORD", code: true },
+												{ key: "RETRY:", value: "/ACCOUNT/FORGOTPASSWORD", code: true },
+											]}
+											Action={{ label: "SEND A NEW LINK", href: "/Account/ForgotPassword" }}
+										/>
+									) : Entry.variant === "denied" ? (
+										<AuthReport
+											State="STATUS: UNAVAILABLE"
+											Title="This page is not open to you"
+											Sentence="Verification is the step that turns an address into an account. The address this browser is signed in with is not the one the link was issued to."
+											Glyph="mail"
+											Facts={[
+												{ key: "SURFACE:", value: "EMAIL VERIFICATION" },
+												{ key: "NEXT:", value: "/ACCOUNT/SIGNIN", code: true },
+											]}
+											Action={{ label: "SIGN IN", href: "/Account/SignIn" }}
+										/>
+									) : Entry.variant === "frameless" ? (
+										<AuthReport
+											State="STATUS: INTERRUPTED"
+											Title="The callback returned nothing"
+											Sentence="The provider sent the browser back without a code or a token, so there is no exchange to run. The state register above is the page's only statement."
+											Glyph="alert"
+											Role="alert"
+											Action={{ label: "BACK TO SIGN IN", href: "/Account/SignIn" }}
+										/>
+									) : (
+										<div class="specimen-small__fields">
+											<p class="specimen-small__field">
+												<span class="specimen-small__label">EMAIL ADDRESS:</span>
+												<span class="specimen-small__value">reader@editor.land</span>
+											</p>
+											<p class="specimen-small__field">
+												<span class="specimen-small__label">PASSWORD:</span>
+												<span class="specimen-small__value">••••••••••••</span>
+											</p>
+											<span class="specimen-small__button">SIGN IN&nbsp;→</span>
+											<p class="specimen-small__hint">
+												The form is the route's island; the plate prints the
+												frame's composition, not a browser.
+											</p>
+										</div>
+									)}
+								</AuthShell>
+							) : Entry.kind === "authreport" ? (
+								Entry.variant === "verified" ? (
+									<AuthReport
+										State="STATUS: VERIFIED"
+										Title="Email verified"
+										Sentence="The address on the account is verified. Signing in is the last step before the workspace opens."
+										Glyph="check"
+										Action={{ label: "BACK TO LAND", href: "/" }}
+									/>
+								) : Entry.variant === "loading" ? (
+									<AuthReport
+										State="STATUS: LOADING"
+										Title="Sending a new link"
+										Sentence="The provider is writing a new link to the address on the account. The old one is already closed."
+										Glyph="loading"
+									/>
+								) : Entry.variant === "long" ? (
+									<AuthReport
+										State="STATUS: INTERRUPTED"
+										Title="The provider refused the exchange"
+										Sentence="The identity provider returned an error instead of a session, and the error names a condition this route does not map: the state parameter it received does not match the one it issued, which happens when a second tab completes the same sign-in first."
+										Glyph="alert"
+										Role="alert"
+										Facts={[
+											{
+												key: "CAUSE:",
+												value:
+													"the state parameter did not match the one this browser issued",
+											},
+											{
+												key: "EXCHANGE:",
+												value: "/OAUTH/SUCCESS?ERROR=INVALID_STATE",
+												code: true,
+											},
+										]}
+										Action={{ label: "TRY AGAIN", href: "/Account/SignIn" }}
+									/>
+								) : (
+									<AuthReport
+										State="STATUS: INTERRUPTED"
+										Title="Verification interrupted"
+										Sentence="The link carried no token the provider recognises, or the token's window has closed. A new link is the only way forward."
+										Glyph="alert"
+										Role="alert"
+										Facts={[
+											{ key: "WINDOW:", value: "24 HOURS, ONCE" },
+											{ key: "CAUSE:", value: "TOKEN NOT RECOGNISED" },
+											{ key: "NEXT:", value: "/VERIFY", code: true },
+										]}
+										Action={{ label: "SEND A NEW LINK", href: "/Verify" }}
+									/>
+								)
+							) : Entry.kind === "privacy" ? (
+								<PrivacyRequests
+									rights={
+										Entry.variant === "empty"
+											? { ...Rights, cards: [] }
+											: Entry.variant === "one"
+												? RIGHTS_ONE
+												: Rights
+									}
+									support={
+										Entry.variant === "empty"
+											? { ...Support, cards: [] }
+											: Entry.variant === "one"
+												? SUPPORT_ONE
+												: Support
+									}
+									state={Entry.variant === "denied" ? "denied" : "rest"}
+								/>
+							) : Entry.kind === "clause" ? (
+								Entry.variant === "document" ? (
+									<div class="specimen-small__document">
+										{CLAUSES.map((Clause) => (
+											<>
+												<TrustClause
+													number={Clause.number}
+													id={Clause.href.slice(1)}
+												>
+													{Clause.label}
+												</TrustClause>
+												<p class="specimen-small__prose">
+													One clause of the document, at the clause
+													role: the number is the anchor, the name
+													is the heading's words, and the paragraph
+													is the document's own.
+												</p>
+											</>
+										))}
+									</div>
+								) : (
+									<>
+										<TrustClause
+											number={Entry.variant === "long" ? "07A" : "07"}
+											id={`spec-fee-${Entry.mark}`}
+											state={Entry.variant === "missing" ? "missing" : "rest"}
+											missing="The Terms' index files a clause on fee changes and the text this build carries ends at §06. The number is still the document's, so a citation to §07 lands here rather than on the next clause."
+										>
+											{Entry.variant === "long"
+												? "Fee Changes, And The Notice A Change Requires Before It Takes Effect"
+												: "Fee Changes"}
+										</TrustClause>
+										{Entry.variant === "missing" ? null : (
+											<p class="specimen-small__prose">
+												The software is offered without a fee. A future
+												edition may charge for a hosted service, and
+												this clause is where that change would be
+												stated - with the notice it requires.
+											</p>
+										)}
+									</>
+								)
+							) : Entry.kind === "contents" ? (
+								<TrustContents
+									items={
+										Entry.variant === "empty"
+											? []
+											: Entry.variant === "many"
+												? CLAUSES_MANY
+												: CLAUSES
+									}
+									label="Clauses"
+									variant={Entry.variant === "disclosure" ? "disclosure" : "rail"}
+									empty="The document's index holds no clause: the text has not been set in this build, and the count above is the index's own zero rather than a list that failed to render."
+								/>
+							) : Entry.kind === "contentslist" ? (
+								<TrustContentsList
+									items={
+										Entry.variant === "missing"
+											? CLAUSES_PARTIAL
+											: Entry.variant === "one"
+												? CLAUSE_ONE
+												: Entry.variant === "many"
+													? CLAUSES_MANY
+													: CLAUSES
+									}
+									empty="The list holds no clause."
+								/>
+							) : Entry.kind === "contactworkspace" ? (
+								<ContactWorkspace
+									code={Entry.variant === "partial" ? "SCOUT" : "REACH"}
+									state={Entry.variant === "interrupted" ? "interrupted" : "rest"}
+								>
+									<div slot="form" class="specimen-small__form">
+										<p class="specimen-small__form-title">
+											{Entry.variant === "partial"
+												? "Technical Support"
+												: "Data Access & Export"}
+										</p>
+										<p class="specimen-small__form-sentence">
+											The form is the route's island and the plate does not
+											hydrate it: the composition, the record column and the
+											split are what this row prints.
+										</p>
+										<p class="specimen-small__field">
+											<span class="specimen-small__label">PAIR REFERENCE:</span>
+											<span class="specimen-small__value">
+												REACH-2026-11-19-014
+											</span>
+										</p>
+										<span class="specimen-small__button">GENERATE THE REQUEST&nbsp;→</span>
+									</div>
+								</ContactWorkspace>
+							) : Entry.kind === "contacthead" ? (
+								<ContactHead
+									trail={
+										Entry.variant === "hub"
+											? [
+													{ label: "/HOME", href: "/" },
+													{ label: "/CONTACT" },
+												]
+											: [
+													{ label: "/HOME", href: "/" },
+													{ label: "/DASHBOARD", href: "/Dashboard" },
+													{ label: "/DATA ACCESS & EXPORT" },
+												]
+									}
+									record={Entry.variant === "hub" ? HUB : REACH}
+									heading={Entry.variant === "hub" ? "Contact" : undefined}
+									standfirst={
+										Entry.variant === "hub"
+											? "Fourteen routes, one desk: each form files one request, with its income code in the subject line."
+											: undefined
+									}
+									opening={Entry.variant === "hub" ? "page" : "trail"}
+									state={Entry.variant === "empty" ? "empty" : "rest"}
+									empty="The form this route files has not been mounted in this build, so the instrument the page exists for is not here. The record above is the route's own and is unchanged."
+								/>
+							) : Entry.kind === "breadcrumb" ? (
+								<ContactBreadcrumb
+									trail={[
+										{ label: "Home", href: "/" },
+										{ label: "Contact", href: "/Contact" },
+										{ label: "Data Access & Export" },
+									]}
+								/>
+							) : Entry.kind === "board" ? (
+								<StatusBoard
+									columns={
+										Entry.variant === "one"
+											? BOARD_ONE
+											: Entry.variant === "columnempty"
+												? BOARD_COLUMN_EMPTY
+												: Entry.variant === "empty"
+													? []
+													: Board
+									}
+									caption="SOURCE: SOURCE/CONTENT/MORE/STATUS.TS"
+									empty="No record is filed for this build. The board's four columns are read from the record registry, and the registry answered with none - so the board states the absence rather than printing four empty shelves."
+								/>
+							) : Entry.kind === "lexicon" ? (
+								<Lexicon
+									run={
+										Entry.variant === "one"
+											? RUN_ONE
+											: Entry.variant === "empty"
+												? RUN_EMPTY
+												: Entry.variant === "many"
+													? RUN_MANY
+													: RUN
+									}
+									index={Entry.variant === "one" ? "RUN_04" : "RUN_01"}
+									unit="WORDS"
+								/>
+							) : Entry.kind === "entry" ? (
+								<LexiconEntry
+									term={Entry.variant === "partial" ? TERM_PARTIAL : TERM}
+									run={Entry.variant === "partial" ? "retired" : RUN.key}
+								/>
+							) : Entry.kind === "quiethead" ? (
+								<QuietHead
+									index="LEXICON_01"
+									label="/THE DOCUMENT'S OWN WORDS"
+									title="The words this document uses"
+									proposition="Fifteen named parts, twenty nouns the grammar gives a job, and five words the site used and does not any more. Every definition cites the file it came from."
+									rows={Entry.variant === "empty" ? [] : GlossaryFacts}
+									empty="The facts that scope this document have not been read in this build, so the strip states the absence instead of printing an empty frame."
+								/>
+							) : Entry.kind === "onward" ? (
+								<Onward
+									rows={Entry.variant === "empty" ? [] : NotFoundOnward}
+									copy={NotFoundOnwardCopy}
+									current={Entry.variant === "current" ? "/Status" : undefined}
+								/>
+							) : (
+								<SurfaceAbsent
+									status="UNAVAILABLE"
+									wouldBe="The Contact page chrome and the request route shell, each with its trail, its record head and its body."
+									whyNot={Entry.when}
+									next={{ label: "READ THE WORKSPACE", href: "#small-SMALL_21" }}
+									note="SOURCE: SOURCE/COMPONENT/CONTACT/CONTACTPAGE.ASTRO"
+								/>
+							)}
+						</div>
+					</article>
+				))}
+			</div>
+		</section>
+	))}
+</div>

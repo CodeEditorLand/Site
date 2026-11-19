@@ -25,6 +25,18 @@
  *
  * Both registers carry `data-trust-contents`, so the wiring finds one behaviour
  * and which of the two is painted is the CSS's business, not the script's.
+ *
+ * ─── WHAT THE MATRIX ADDED ────────────────────────────────────────────────
+ * A document whose index is empty printed `CLAUSES 0` over an empty `<ol>`: a
+ * count with nothing under it, which reads as a list that failed to render
+ * rather than as a document with no clauses. `empty` prints the composed
+ * sentence instead - what would be here, why it is not - in both registers, and
+ * the count still prints, because the count is the one thing that must not
+ * disappear: `0` is a counted zero and it is the honest figure.
+ *
+ * The rail also stops printing a position cell it cannot fill before the first
+ * clause is reached - the cell is reserved in the stylesheet, so the row does
+ * not reflow when the figure arrives.
  */
 import TrustContentsList from "./TrustContentsList.astro";
 import type { ReadingIndexItem } from "../Reading/Type.js";
@@ -39,11 +51,27 @@ interface Props {
 	/** `rail` in the margin at >= 1024px; `disclosure` above the document below it. */
 	variant?: "rail" | "disclosure";
 
+	/**
+	 * What the register says when the document's index is empty: what would be
+	 * here, why it is not, and what to do. Absent, an empty index prints the
+	 * count over an empty list - which is the state this prop exists to replace.
+	 */
+	empty?: string;
+
 	/** Extra classes from the caller, appended after the block's own. */
 	class?: string;
 }
 
-const { items, label, variant = "rail", class: Class } = Astro.props;
+const {
+	items,
+	label,
+	variant = "rail",
+	empty,
+	class: Class,
+} = Astro.props;
+
+/** Whether the register has anything to list. */
+const Held = items.length > 0;
 ---
 
 {variant === "disclosure" ? (
@@ -58,7 +86,13 @@ const { items, label, variant = "rail", class: Class } = Astro.props;
 				&#8595;
 			</span>
 		</summary>
-		<TrustContentsList items={items} />
+		{Held ? (
+			<TrustContentsList items={items} />
+		) : empty ? (
+			<p class="trust-contents__empty">{empty}</p>
+		) : (
+			<TrustContentsList items={items} />
+		)}
 	</details>
 ) : (
 	<nav
@@ -76,6 +110,12 @@ const { items, label, variant = "rail", class: Class } = Astro.props;
 			 */}
 			<span class="trust-contents__position" data-trust-position />
 		</p>
-		<TrustContentsList items={items} />
+		{Held ? (
+			<TrustContentsList items={items} />
+		) : empty ? (
+			<p class="trust-contents__empty">{empty}</p>
+		) : (
+			<TrustContentsList items={items} />
+		)}
 	</nav>
 )}

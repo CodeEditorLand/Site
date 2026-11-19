@@ -23,6 +23,34 @@
  * It is a *block import*, not a class copy: the strip used to carry
  * `record-ledger` classes it never imported, which is why it drifted from the
  * block's own anatomy. A borrowed class is not a block.
+ *
+ * ─── THE BAND IS A SET, SO IT TAKES A SET ─────────────────────────────────
+ * The matrix was written for exactly six records: three columns from `lg` and
+ * two from `md` is a distribution that divides six and nothing else. The
+ * composition family's matrix printed the band with THREE - the proof band a
+ * page would print when it can only stand behind three claims - and the answer
+ * was a 2 + 1 grid with a hole in the seam where the sixth cell used to be. A
+ * plate with a gap in it does not read as a plate that files three; it reads as
+ * a plate that lost three.
+ *
+ * So the band takes `cards` (defaulting to the six the page files), derives its
+ * column count from the set it holds, and says so on the grid:
+ *
+ *   data-count      how many records the plate holds
+ *   data-tracks     how many columns the SET wants (`FeatureTracks`)
+ *   data-remainder  count % tracks - the short last row, if there is one
+ *
+ * A short last row is answered by the layout rather than by an empty cell: when
+ * the remainder is one, that record spans the line (`_Feature.scss`), which is
+ * the same rule the site's other rows use for a LEAD item. The six-record set has
+ * no remainder at any width, so the page's own matrix is unchanged to the pixel.
+ *
+ * ─── AND A SUBSET PRINTS ITS FIGURE ───────────────────────────────────────
+ * A plate holding three of six records must not look like a plate holding six:
+ * `RECORDS: 03 / 06` is printed under the grid whenever `cards` is a proper
+ * subset, as a `Register` built from the arrays themselves - so the figure
+ * cannot outlive the set it counts. The full six print no line, because a plate
+ * that states the obvious is a plate that doubts it.
  */
 import { BandOf, HomeBands, Sequence } from "../../Content/Home/Band.js";
 import { FeatureCards } from "../../Content/Home/Feature.js";
@@ -32,9 +60,30 @@ import { HeroBandFor } from "../Dynamic/Hero/Data.js";
 import { ObservationLabel } from "../Dynamic/Properties/Data.js";
 
 import RecordLedger from "../Record/RecordLedger.astro";
+import Register from "../Record/Register.astro";
+import { RegisterOf } from "../Record/RegisterLine.js";
+
+import type { CardRecord } from "../../Content/Home/Type.js";
 
 import Band from "./Band.astro";
 import FeatureCard from "./FeatureCard.astro";
+
+interface Props {
+	/**
+	 * The records the plate files. Defaults to the page's six, so a caller that
+	 * wants the band as the homepage prints it passes nothing.
+	 */
+	cards?: readonly CardRecord[];
+
+	/**
+	 * The whole set the plate is a selection from, where it is a selection.
+	 * Used only for the `RECORDS: 03 / 06` figure; the grid never renders a
+	 * record from it.
+	 */
+	of?: readonly CardRecord[];
+}
+
+const { cards = FeatureCards, of = FeatureCards } = Astro.props;
 
 const T = GetI18n();
 
@@ -42,14 +91,79 @@ const Head = BandOf(HomeBands(T), "features");
 
 /** The hero record's specimen observation: `SPECIES:` / `TEMP:` / `WIND:`. */
 const Observation = HeroBandFor(T).observation;
+
+/**
+ * How many columns the set wants.
+ *
+ * Three is the matrix's own count and the one the band was drawn for; two is the
+ * count that divides four; one is a set that is one. A set that divides neither
+ * takes three and prints a short last row, because a short row is a fact about
+ * the set.
+ */
+const Tracks = (Count: number): number => {
+	if (Count <= 1) return 1;
+
+	if (Count % 3 === 0) return 3;
+
+	if (Count % 2 === 0) return 2;
+
+	return 3;
+};
+
+const Tracks_ = Tracks(cards.length);
+
+const Remainder = Tracks_ === 0 ? 0 : cards.length % Tracks_;
+
+/** The subset's figure, or `undefined` when the plate is the whole set. */
+const Subset =
+	cards.length === 0 || cards.length === of.length
+		? undefined
+		: RegisterOf("RECORDS", cards);
 ---
 
 <Band head={Head} series="OBSERVATION" rhythm={Sequence.features}>
-	<div class="home-feature__grid">
-		{FeatureCards.map((Card) => (
-			<FeatureCard card={Card} />
-		))}
-	</div>
+	{cards.length === 0 ? (
+		<p class="home-feature__empty">
+			<span class="home-feature__empty-key">RECORDS:</span>{" "}
+			<span class="home-feature__empty-value">UNAVAILABLE</span>
+			<span class="home-feature__empty-note">
+				The plate files no record: the band was handed an empty set, and
+				an empty plate is stated rather than drawn as an empty grid.
+			</span>
+		</p>
+	) : (
+		<div
+			class="home-feature__grid"
+			data-count={cards.length}
+			data-remainder={Remainder}
+			data-tracks={Tracks_}
+			style={`--feature-tracks:${Tracks_}`}
+		>
+			{cards.map((Card) => (
+				<FeatureCard card={Card} />
+			))}
+		</div>
+	)}
+
+	{Subset && (
+		<div class="home-feature__subset">
+			{/*
+			 * The register line and the selection's figure are two facts and are
+			 * printed as two: `Register` is the only renderer of a register and
+			 * it takes the `Register` object, whose count is `cards.length` -
+			 * while `SELECTION:` states the set the plate was drawn from. They
+			 * are not one ledger, because `RecordLedger` recomposes a register's
+			 * count from its own rows, and a one-row ledger would have printed
+			 * `# RECORDS / 01` over a plate of three.
+			 */}
+			<Register register={Subset} class="home-feature__subset-register" />
+
+			<p class="home-feature__subset-row">
+				<span class="home-feature__subset-key">SELECTION:</span>{" "}
+				{`${String(cards.length).padStart(2, "0")} OF ${String(of.length).padStart(2, "0")}`}
+			</p>
+		</div>
+	)}
 
 	<div class="home-feature__specimen">
 		<p class="home-feature__specimen-label">{ObservationLabel}</p>

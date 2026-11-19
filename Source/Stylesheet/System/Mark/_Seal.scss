@@ -19,23 +19,53 @@
 // is the honest seal for "no device", and it is why the roundel needs no `◎`
 // fallback beside it.
 //
-// ─── THREE SIZES, AND THEY ARE THE LADDER'S ───────────────────────────────
+// ─── FIVE SIZES, AND THEY ARE THE LADDER'S ────────────────────────────────
 //
+// xs 16px  a seal inside a chip or a row (a badge, a ledger row's anchor)
 // s  32px  a seal at the head of a card (the element wall, a feature, a tier)
 // m  48px  a seal at the head of a record (a hero, a manifest)
 // l  64px  a seal at the head of a page (a page's field record)
+// xl 240px a seal AS the plate - the roundel at display size
 //
 // The site ran 32 / 36 / 48 / 64 - four sizes, two of them four pixels apart.
-// The ladder has three, and the one that was retired is the one that was four
-// pixels from a neighbour: a reader cannot see 36 against 32, but the wall can,
-// and four sizes is four decisions.
+// The ladder retired the one that was four pixels from a neighbour and gained
+// the two ends the composition family's exploration needed: a mark that has to
+// survive beside 13px type in a chip, and a mark that has to survive being the
+// largest object in a band. Five sizes is still five decisions, and each of the
+// five now names the thing it is for.
+//
+// ─── THE STROKE IS THE SIZE'S, NOT ONLY THE DRAWING'S ────────────────────
+//
+// The device is drawn with two user-unit weights (1 and 0.5). A user unit is
+// 1/64th of the box, so the weights only mean what they say at 64px: at 32px
+// they are 0.5px and 0.25px and at 16px they are 0.25px and 0.125px. The
+// composition family's matrix printed the 16px arm and the finding was blunt -
+// the drawing was a green smudge with a ring-shaped rumour around it, and the
+// two elements whose devices are a *line* rather than a disc (`Grove`'s trunk,
+// `Mountain`'s peaks) disappeared entirely.
+//
+// So `xs` and `s` are drawn at ONE weight: every stroked shape takes the same
+// 1px, the two-ring engraving becomes the form's single outline, and the seal
+// still reads as a seal because a seal is a roundel with a device in it, not a
+// roundel with two hairlines in it. `m`, `l` and `xl` are drawn as authored: at
+// 48px a unit is 0.75px and at 64px it is a pixel, so the pair of weights renders
+// as a hairline and a half-hairline - thin, but a line - and the engraving is the
+// point. The boundary is exact rather than approximate: the correction stops at
+// the step where a unit is a pixel's worth of ink.
+//
+// The correction is CSS and not a second drawing: eight elements times two
+// weight-sets would be sixteen drawings to keep in step, and the mark layer is
+// the one place the site refuses a second copy of a form.
 //
 // ─── ALIGNMENT ────────────────────────────────────────────────────────────
 //
 // A seal sits in its host's marker row, flush to the row's inline end, and it
 // never moves: it is not a control, it does not hover, and it does not animate.
 // `System/_Motion.scss` says the same thing in the motion layer - the seal is
-// where motion stops.
+// where motion stops. At `xl` the rule is unchanged: a plate-sized seal is
+// still not a control, so it is still `pointer-events: none` and still
+// `aria-hidden` - it authenticates the artifact it stands in, it is not a link
+// to anything.
 
 @use "../Mixin" as *;
 
@@ -52,6 +82,11 @@
 	user-select: none;
 }
 
+.MarkSeal[data-mark-size="xs"] {
+	inline-size: var(--mark-size-0);
+	block-size: var(--mark-size-0);
+}
+
 .MarkSeal[data-mark-size="s"] {
 	inline-size: var(--mark-size-7);
 	block-size: var(--mark-size-7);
@@ -65,6 +100,30 @@
 .MarkSeal[data-mark-size="l"] {
 	inline-size: var(--mark-size-9);
 	block-size: var(--mark-size-9);
+}
+
+.MarkSeal[data-mark-size="xl"] {
+	inline-size: var(--mark-size-10);
+	block-size: var(--mark-size-10);
+}
+
+/* ─── THE SMALL STEPS ARE DRAWN AT ONE WEIGHT ───────────────────────────── */
+//
+// `svg *[stroke]` and not `svg *`: only a shape that carries a stroke is a
+// stroked shape - a filled device (a disc, a dot) has no weight to correct, and
+// giving it one would paint an outline the drawing never had.
+//
+// 4 units at 16px is 1px and 2 units at 32px is 1px: the same pixel, at both
+// steps, because a mark's weight is a mark's weight and the box is what
+// changes. The selector is scoped to the two steps rather than written once
+// with a variable because the correction is exactly the difference between
+// "this drawing is a hairline" and "this drawing is a rumour".
+.MarkSeal[data-mark-size="xs"] svg *[stroke] {
+	stroke-width: 4;
+}
+
+.MarkSeal[data-mark-size="s"] svg *[stroke] {
+	stroke-width: 2;
 }
 
 /* The seal's own drawing: the SVG scales to its box, so the geometry is the

@@ -364,6 +364,7 @@ export const Rows: readonly Row[] = [
 
 			stale: NoAsOf(
 				"shell",
+
 				"the page's apparatus - a folio, a ledger row",
 			),
 
@@ -917,6 +918,7 @@ export const Rows: readonly Row[] = [
 
 			stale: NoAsOf(
 				"card",
+
 				"the page it leads to - its strip, its folio",
 			),
 
@@ -1002,6 +1004,7 @@ export const Rows: readonly Row[] = [
 
 			stale: NoAsOf(
 				"appendix panel",
+
 				"the page's folio or the record it reads",
 			),
 

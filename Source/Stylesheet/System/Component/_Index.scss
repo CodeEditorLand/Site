@@ -21,6 +21,7 @@
 // flat lines are components whose surface publishes no loader.
 @use "Dynamic/Hero";
 @use "Dynamic/Properties";
+@use "Brand/Evidence";
 @use "Home/Index" as HomeRules;
 @use "Download/Masthead";
 @use "Download/Manifest";

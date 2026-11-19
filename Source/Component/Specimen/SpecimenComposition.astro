@@ -1,0 +1,601 @@
+---
+/**
+ * SpecimenComposition - the home, brand and dynamic composition family, printed
+ * live.
+ *
+ * ─── WHY THIS STAGE IS NOT AN ISLAND ──────────────────────────────────────
+ * Most of this family ships no JavaScript. A band is a `<section>` with a grid, a
+ * card is a `<jelly-card>` with a record in it, a manifest is a plate of rows, a
+ * mark is an SVG. The hero is the one exception and it is the family's own: it is
+ * a React island because it carries the record's seal, its status and its evidence
+ * as components, and an `.astro` file cannot be imported from a `.tsx`. The sheet
+ * mounts it `client:visible` - a hero that hydrates off-screen is a hero nobody
+ * scrolled to.
+ *
+ * ─── THE RENDERER DECIDES NOTHING ────────────────────────────────────────
+ * A row states what it is, which part it exercises, when that state is right and
+ * the arm it prints; this file builds the data and mounts the block. That split is
+ * why the matrix and the rows cannot drift: both read
+ * `Content/Specimen/Composition.ts`, and a state added there appears on both with
+ * no second edit.
+ *
+ * ─── THE DATA IS THE SITE'S OWN ──────────────────────────────────────────
+ * Every record, platform, release, element and route below comes from the content
+ * modules the pages read. A specimen printed with lorem ipsum would prove that the
+ * block can hold text; a specimen printed with the document's own facts proves
+ * that the block can hold THIS document. Where a row needs an adverse value the
+ * site does not yet have - a hero with no plate, a manifest with no artefact - the
+ * row builds it from the same shapes the pages pass, so the absence is the real
+ * absence rather than a mock of one.
+ *
+ * ─── THE STAGE IS A PLATE, NOT A VIEWPORT ────────────────────────────────
+ * A hero pins its pair to `80dvh` and a doc panel hides below 1024px; both are
+ * page behaviours, and a plate that simulated them would be printing a browser.
+ * `_Composition.scss` bounds each stage and says so where it does it: the sheet
+ * shows the composition, and the composition is what the matrix is about.
+ */
+import {
+	Groups,
+	InGroup,
+	type Specimen,
+} from "../../Content/Specimen/Composition.js";
+
+import { ElementCards } from "../../Content/Home/Architecture.js";
+import { BandOf, HomeBands, Sequence } from "../../Content/Home/Band.js";
+import { FeatureCards } from "../../Content/Home/Feature.js";
+import { PlatformCards } from "../../Content/Home/Platform.js";
+import { ReleaseCards } from "../../Content/Home/Roadmap.js";
+import { GetI18n } from "../../Library/I18n/Server";
+
+import { DynamicHeroSection } from "../Dynamic/DynamicHeroSection";
+import { HeroBandFor } from "../Dynamic/Hero/Data.js";
+import { Marks } from "../Dynamic/Download/Data.js";
+import { DynamicBadge } from "../Dynamic/DynamicBadge";
+import { DynamicBlogCard } from "../Dynamic/DynamicBlogCard";
+import { DynamicCard } from "../Dynamic/DynamicCard";
+import { DynamicRichText } from "../Dynamic/DynamicRichText";
+import { DynamicStateReport, StateLabel } from "../Dynamic/DynamicStateReport";
+import { DynamicTable } from "../Dynamic/DynamicTable";
+import DownloadMasthead from "../Dynamic/DownloadMasthead.astro";
+
+import ArchitectureBand from "../Home/ArchitectureBand.astro";
+import Arrow from "../Home/Arrow.astro";
+import Band from "../Home/Band.astro";
+import ElementCard from "../Home/ElementCard.astro";
+import FeatureBand from "../Home/FeatureBand.astro";
+import FeatureCard from "../Home/FeatureCard.astro";
+import PlatformBand from "../Home/PlatformBand.astro";
+import PlatformCard from "../Home/PlatformCard.astro";
+import RecordAnatomy from "../Home/RecordAnatomy.astro";
+import ReleaseCard from "../Home/ReleaseCard.astro";
+import RoadmapBand from "../Home/RoadmapBand.astro";
+import WorkingBand from "../Home/WorkingBand.astro";
+
+import CornerMarks from "../Brand/CornerMarks.astro";
+import FieldRecord from "../Brand/FieldRecord.astro";
+import FieldRecordAction from "../Brand/FieldRecordAction.astro";
+import FieldRecordDataCard from "../Brand/FieldRecordDataCard.astro";
+import FieldRecordIndex from "../Brand/FieldRecordIndex.astro";
+import FieldRecordMetadata from "../Brand/FieldRecordMetadata.astro";
+import { FieldRecordEvidence } from "../Brand/FieldRecordEvidence";
+import { FieldRecordSeal } from "../Brand/FieldRecordSeal";
+import { FieldRecordStatus } from "../Brand/FieldRecordStatus";
+import { RouteText, StampText } from "../Brand/SemanticLedger";
+import { SpecimenLabel } from "../Brand/SpecimenLabel";
+
+import { Land } from "../../Content/Record/Land.js";
+import { Mountain } from "../../Content/Record/Mountain.js";
+import { Grove } from "../../Content/Record/Grove.js";
+
+import RecordLedger from "../Record/RecordLedger.astro";
+import RecordStage from "../Record/RecordStage.astro";
+import type { LedgerRow } from "../Record/Type.js";
+
+import SurfaceAbsent from "../Surface/SurfaceAbsent.astro";
+import type { CardRecord } from "../../Content/Home/Type.js";
+
+const T = GetI18n();
+
+/* ─── THE HERO ───────────────────────────────────────────────────────────── */
+
+/** The band the page's hero is built from. */
+const HeroBand = HeroBandFor(T);
+
+/** The hero's content surface: the one field the island reads. */
+const HeroContent = { PrimaryCTA: { Href: "/Download" } };
+
+/** The hero's facts, as the ledger the page mounts in the card. */
+const HeroFacts: readonly LedgerRow[] = HeroBand.facts.map((Fact) => ({
+	key: Fact.key,
+	value: Fact.value,
+}));
+
+/**
+ * A hero whose evidence has not been photographed.
+ *
+ * The band is the page's own, with one field changed: `plate.src` is absent. That
+ * is the whole of the adverse composition - the caption, the provenance and the
+ * alt are still the site's, so the plate states what it would have shown rather
+ * than inventing a placeholder.
+ */
+const HeroNoPlate = {
+	...HeroBand,
+	plate: {
+		alt: HeroBand.plate.alt,
+		caption: HeroBand.plate.caption,
+		provenance: HeroBand.plate.provenance,
+	},
+};
+
+/** A hero whose plate has not arrived: the same band, with the plate's state set. */
+const HeroLoading = {
+	...HeroBand,
+	plate: { ...HeroBand.plate, state: "loading" as const },
+};
+
+/** A hero with one destination: the primary action and no route line. */
+const HeroLone = {
+	...HeroBand,
+	entry: HeroBand.entry.filter((Destination) => Destination.primary),
+};
+
+/** A hero handed no entries at all. */
+const HeroNoAction = { ...HeroBand, entry: [] };
+
+/* ─── THE BANDS ──────────────────────────────────────────────────────────── */
+
+/** The three records a proof band can stand behind. */
+const FeatureThree: readonly CardRecord[] = FeatureCards.slice(0, 3);
+
+/** One record, for the plate of one. */
+const FeatureOne: readonly CardRecord[] = FeatureCards.slice(0, 1);
+
+/** The wall's first three records. */
+const ElementThree = ElementCards(T).slice(0, 3);
+
+/** The first release state alone. */
+const ReleaseOne = ReleaseCards.slice(0, 1);
+
+/** The first platform alone. */
+const PlatformOne = PlatformCards.slice(0, 1);
+
+/** The band heads, from the page's own module. */
+const Bands = HomeBands(T);
+
+/** The roadmap's head - the one band whose opening carries a stamp. */
+const StampHead = BandOf(Bands, "pricing");
+
+/* ─── THE MASTHEAD ───────────────────────────────────────────────────────── */
+
+const MastheadTitle = T("download:page.title", {
+	defaultValue: "Download Land",
+});
+
+const MastheadSentence = T("download:status.sentence", {
+	defaultValue:
+		"Nothing here is downloadable yet. Land builds from source on macOS, Windows and Linux; public installers, signing and verification artifacts are still in preparation.",
+});
+
+/* ─── THE CARDS ──────────────────────────────────────────────────────────── */
+
+/** The one feature record every card row prints, unless it wants another. */
+const Card = FeatureCards[0]!;
+
+/** The one element record. */
+const Element = ElementCards(T)[0]!;
+
+/** A feature record whose name is wider than its cell. */
+const LongCard: CardRecord = {
+	...Card,
+	Title: "EXTENSION HOST COMPATIBILITY SURFACE",
+};
+
+/** The record's six metadata pairs, for the run's own row. */
+const MetadataSix = [
+	{ label: "TARGET", value: "LINUX" },
+	{ label: "LICENSE", value: "CC0" },
+	{ label: "SIGNAL", value: "ABSENT" },
+	{ label: "SPECIES", value: "OBSERVED" },
+	{ label: "TEMP", value: "NOMINAL" },
+	{ label: "WIND", value: "STEADY" },
+];
+
+/* ─── THE LAB ────────────────────────────────────────────────────────────── */
+
+/** The four connection tiers, as the table's specimen. */
+const TierColumns = [
+	{ Header: "TIER", Key: "tier" },
+	{ Header: "PROTOCOL", Key: "protocol" },
+];
+
+/** A table with no rows: its head prints and its body does not. */
+const TierRows: Record<string, unknown>[] = [];
+
+/** The blog card's post, from the record the site files. */
+const Post = {
+	Slug: "the-runtime",
+	Title: "What the runtime is, and what it is not",
+	Summary:
+		"One native application, with the editor's API on top and no Chromium in the process tree.",
+	PublishedAt: "2026-10-14",
+	Tags: ["RUNTIME", "TAURI"],
+	Author: "Nikola R. Hristov",
+	ReadTime: 6,
+};
+
+/* ─── THE ADVERSE ────────────────────────────────────────────────────────── */
+
+/** The four parts that cannot be printed, and why. */
+const Absences: Record<string, {
+	status: string;
+	wouldBe: string;
+	whyNot: string;
+	next: { label: string; href: string };
+	note: string;
+}> = {
+	footer: {
+		status: "UNAVAILABLE",
+		wouldBe: "A second footer: the five facts, the social glyphs, the closing record.",
+		whyNot:
+			"Nothing imports it. Every page wears `Layout/Footer`, whose five facts are a `RecordLedger` and whose closing is the `/Contents` part - and two closing records is the one thing the record grammar cannot have.",
+		next: { label: "READ THE VERDICT", href: "#composition-matrix" },
+		note: "SOURCE/COMPONENT/DYNAMIC/DYNAMICFOOTER.TSX",
+	},
+	header: {
+		status: "UNAVAILABLE",
+		wouldBe: "The legacy schema-driven bar, with its own nav and its own action row.",
+		whyNot:
+			"Nothing imports it, and its whole body is a translation layer between an old schema and `Layout/Header`. A bar with two schemas is two bars.",
+		next: { label: "READ THE VERDICT", href: "#composition-matrix" },
+		note: "SOURCE/COMPONENT/DYNAMIC/DYNAMICHEADER.TSX",
+	},
+	portal: {
+		status: "UNAVAILABLE",
+		wouldBe: "The four connection tiers as a pricing surface, 1,556 lines.",
+		whyNot:
+			"Nothing imports it: `/Portal` composes the tiers itself from `Content/Surface/Portal.ts` and prints the four protocols as a table. This is the largest piece of dead code in the family.",
+		next: { label: "READ THE VERDICT", href: "#composition-matrix" },
+		note: "SOURCE/COMPONENT/DYNAMIC/DYNAMICPORTAL.TSX",
+	},
+	verification: {
+		status: "UNAVAILABLE",
+		wouldBe: "Checksums and signatures with a copy button.",
+		whyNot:
+			"Nothing imports it: `/Download` prints its checksums through `Download/Verify.astro`, which is live and already carries the copy control.",
+		next: { label: "READ THE VERDICT", href: "#composition-matrix" },
+		note: "SOURCE/COMPONENT/DYNAMIC/DYNAMICVERIFICATIONINFO.TSX",
+	},
+};
+
+/* ─── THE STAGE ──────────────────────────────────────────────────────────── */
+
+/** The stage's class, from the width a row asks for. */
+const SkinClass = (Entry: Specimen): string => {
+	const Width = Entry.width ?? "band";
+
+	return `specimen-composition__stage specimen-composition__stage--${Width}`;
+};
+---
+
+<div class="specimen-composition">
+	{Groups.map((Group) => (
+		<section class="specimen-composition__group">
+			<p class="specimen-composition__group-head">
+				<span class="specimen-composition__group-kicker">{Group.label}</span>
+				<span class="specimen-composition__group-count">
+					{InGroup(Group.key).length}
+				</span>
+			</p>
+
+			<p class="specimen-composition__group-note">{Group.note}</p>
+
+			<div class="specimen-composition__rows">
+				{InGroup(Group.key).map((Entry) => (
+					<article class="specimen-composition__row" id={`composition-${Entry.mark}`}>
+						<header class="specimen-composition__spec">
+							<p class="specimen-composition__mark">
+								<span class="specimen-composition__mark-hash" aria-hidden="true">
+									#
+								</span>
+								{Entry.mark}
+							</p>
+
+							<h3 class="specimen-composition__state">{Entry.state_name}</h3>
+
+							<p class="specimen-composition__part">{Entry.component}</p>
+
+							<p class="specimen-composition__when">{Entry.when}</p>
+						</header>
+
+						<div class={SkinClass(Entry)} data-skin={Entry.width ?? "band"}>
+							{Entry.kind === "hero" ? (
+								<DynamicHeroSection
+									client:visible
+									Band={
+										Entry.variant === "noplate"
+											? HeroNoPlate
+											: Entry.variant === "loading"
+												? HeroLoading
+												: Entry.variant === "lone"
+													? HeroLone
+													: Entry.variant === "noaction"
+														? HeroNoAction
+														: HeroBand
+									}
+									Content={HeroContent}
+								>
+									<RecordLedger
+										slot="ledger"
+										rows={HeroFacts}
+										class="hero-band__facts"
+									/>
+									<div slot="stage" class="hero-band__trace-stage">
+										<RecordStage
+											stages={HeroBand.steps}
+											orientation="row"
+										/>
+									</div>
+								</DynamicHeroSection>
+							) : Entry.kind === "masthead" ? (
+								<DownloadMasthead
+									title={MastheadTitle}
+									sentence={MastheadSentence}
+									marks={
+										Entry.variant === "long"
+											? Marks.map((Mark) => ({
+													...Mark,
+													label: `${Mark.label}\u2001·\u2001AND UNMODIFIED EXTENSIONS`,
+												}))
+											: Entry.variant === "empty"
+												? []
+												: Marks
+									}
+								/>
+							) : Entry.kind === "band" ? (
+								<Band
+									head={
+										Entry.variant === "second"
+											? { ...BandOf(Bands, "features"), ID: "specimen-second-index" }
+											: StampHead
+									}
+									index={Entry.variant === "second" ? "02" : "01"}
+									rhythm={Sequence.features}
+									series="OBSERVATION"
+								>
+									<p class="specimen-composition__band-body">
+										The band's body is the caller's: a grid, a manifest, a
+										wall or a sentence. What this row prints is the head
+										that opens every one of them.
+									</p>
+								</Band>
+							) : Entry.kind === "featureband" ? (
+								<FeatureBand
+									cards={
+										Entry.variant === "three"
+											? FeatureThree
+											: Entry.variant === "one"
+												? FeatureOne
+												: Entry.variant === "empty"
+													? []
+													: FeatureCards
+									}
+								/>
+							) : Entry.kind === "architecture" ? (
+								<ArchitectureBand
+									{...(Entry.variant === "three"
+										? { cards: ElementThree }
+										: {})}
+								/>
+							) : Entry.kind === "roadmap" ? (
+								<RoadmapBand
+									{...(Entry.variant === "one"
+										? { cards: ReleaseOne }
+										: {})}
+								/>
+							) : Entry.kind === "platform" ? (
+								<PlatformBand
+									cards={
+										Entry.variant === "one"
+											? PlatformOne
+											: Entry.variant === "empty"
+												? []
+												: PlatformCards
+									}
+								/>
+							) : Entry.kind === "working" ? (
+								<WorkingBand />
+							) : Entry.kind === "featurecard" ? (
+								<FeatureCard
+									card={Entry.variant === "long" ? LongCard : Card}
+								/>
+							) : Entry.kind === "elementcard" ? (
+								<ElementCard
+									card={
+										Entry.variant === "record"
+											? { ...Element, Depth: "record" }
+											: Entry.variant === "nochips"
+												? { ...Element, Chips: [] }
+												: Element
+									}
+								/>
+							) : Entry.kind === "releasecard" ? (
+								<ReleaseCard
+									card={
+										Entry.variant === "route"
+											? ReleaseCards[1] ?? ReleaseCards[0]!
+											: ReleaseCards[0]!
+									}
+								/>
+							) : Entry.kind === "platformcard" ? (
+								<PlatformCard card={PlatformCards[0]!} />
+							) : Entry.kind === "anatomy" ? (
+								<RecordAnatomy card={Card} />
+							) : Entry.kind === "datacard" ? (
+								<FieldRecordDataCard />
+							) : Entry.kind === "seal" ? (
+								<div class="specimen-composition__seal">
+									<FieldRecordSeal
+										element={
+											Entry.variant === "neutral" ? "Common" : "Land"
+										}
+										size={
+											Entry.variant === "neutral"
+												? "m"
+												: (Entry.variant as "xs" | "s" | "m" | "l" | "xl")
+										}
+									/>
+								</div>
+							) : Entry.kind === "corners" ? (
+								<div class="specimen-composition__corner-shell">
+									<CornerMarks />
+									<p class="specimen-composition__corner-text">
+										A white insert, with its frame.
+									</p>
+								</div>
+							) : Entry.kind === "status" ? (
+								<div class="specimen-composition__status">
+									<FieldRecordStatus
+										status={Entry.variant === "quiet" ? "preparing" : "active"}
+										tone={Entry.variant === "quiet" ? "quiet" : "specimen"}
+									/>
+								</div>
+							) : Entry.kind === "arrow" ? (
+								<p class="specimen-composition__arrow-row">
+									<span>LAND:</span>
+									<Arrow />
+								</p>
+							) : Entry.kind === "ledger" ? (
+								<div class="specimen-composition__inks">
+									<p>
+										<StampText Line={HeroBand.claim.runtime} />
+									</p>
+									<p>
+										<StampText Line={HeroBand.claim.engine} />
+									</p>
+									<p>
+										<RouteText Line={HeroBand.claim.route} />
+									</p>
+									<p class="specimen-composition__inks-note">
+										{HeroBand.claim.compat}
+									</p>
+								</div>
+							) : Entry.kind === "specimenlabel" ? (
+								<SpecimenLabel record={Land} />
+							) : Entry.kind === "fieldrecord" ? (
+								<FieldRecord
+									record={
+										Entry.variant === "noaction"
+											? Mountain
+											: Entry.variant === "partial"
+												? {
+														...Grove,
+														Status: {
+															Label: "STATUS",
+															Value: "UNAVAILABLE",
+															Tone: "quiet" as const,
+														},
+													}
+												: Land
+									}
+								/>
+							) : Entry.kind === "index" ? (
+								<div class="specimen-composition__index">
+									<FieldRecordIndex index={Entry.variant === "bare" ? "" : "LAND_01"} />
+								</div>
+							) : Entry.kind === "metadata" ? (
+								<FieldRecordMetadata rows={MetadataSix} />
+							) : Entry.kind === "action" ? (
+								<div class="specimen-composition__action">
+									<FieldRecordAction
+										label="READ THE RECORD"
+										href="/Doc"
+										variant={Entry.variant === "button" ? "button" : "record"}
+									/>
+								</div>
+							) : Entry.kind === "evidence" ? (
+								<FieldRecordEvidence
+									alt={HeroBand.plate.alt}
+									className="specimen-composition__plate"
+									{...(Entry.variant === undefined &&
+									HeroBand.plate.src !== undefined
+										? { src: HeroBand.plate.src }
+										: {})}
+									state={
+										Entry.variant === "loading"
+											? "loading"
+											: Entry.variant === "absent"
+												? "absent"
+												: "rest"
+									}
+								/>
+							) : Entry.kind === "badge" ? (
+								<div class="specimen-composition__badges">
+									<DynamicBadge
+										Content={{
+											Text: "PROTOCOL: gRPC",
+											ShowDot: true,
+											DotColor: "green",
+											Variant: "secondary",
+										}}
+									/>
+									<DynamicBadge
+										Content={{
+											Text: "PROTOCOL: IPC",
+											ShowDot: true,
+											DotColor: "blue",
+											Variant: "secondary",
+										}}
+									/>
+									<DynamicBadge
+										Content={{ Text: "LICENSE: CC0", Variant: "outline" }}
+									/>
+								</div>
+							) : Entry.kind === "card" ? (
+								<DynamicCard Sections={{}} />
+							) : Entry.kind === "blogcard" ? (
+								<DynamicBlogCard Post={Post} />
+							) : Entry.kind === "table" ? (
+								<DynamicTable
+									Content={{ Columns: TierColumns, Data: TierRows }}
+								/>
+							) : Entry.kind === "richtext" ? (
+								<DynamicRichText
+									client:visible
+									Text={
+										"A record states what it is before it states what it wants.\n\n`TARGET:` is a field label, and the second paragraph is the proposition."
+									}
+									ClassName="specimen-composition__prose"
+								/>
+							) : Entry.kind === "state" ? (
+								<div class="specimen-composition__report">
+									<DynamicStateReport
+										Label={
+											Entry.variant === "loading"
+												? StateLabel.Loading
+												: Entry.variant === "error"
+													? StateLabel.Interrupted
+													: StateLabel.Unavailable
+										}
+										Loading={Entry.variant === "loading"}
+										Role={Entry.variant === "error" ? "alert" : "status"}
+										Sentence={
+											Entry.variant === "loading"
+												? "The session is being read. Nothing has failed; nothing has arrived yet."
+												: Entry.variant === "error"
+													? "The provider did not answer. The cause is a refused connection, and the retry is the one action available."
+													: "This record holds nothing yet: no scan has been filed for this account, so there is no figure to print."
+										}
+									/>
+								</div>
+							) : Entry.kind === "absent" ? (
+								<SurfaceAbsent
+									{...Absences[Entry.variant ?? "footer"]!}
+								/>
+							) : null}
+						</div>
+					</article>
+				))}
+			</div>
+		</section>
+	))}
+</div>

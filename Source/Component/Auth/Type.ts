@@ -52,6 +52,27 @@ export interface AuthFrame {
 }
 
 /**
+ * One fact a report states beside its sentence.
+ *
+ * A state's sentence says what happened; the facts say what the reader can
+ * check and what happens next - the window a link was open for, the cause the
+ * provider returned, the route the retry goes to. They print in the record
+ * grammar (`KEY: value`), because that is the grammar every other fact on this
+ * surface is stated in, and a report that could only print prose was the one
+ * place on the auth surface where a fact had no shape.
+ */
+export interface AuthFact {
+	/** The label, colon included: `WINDOW:`, `CAUSE:`, `RETRY:`. */
+	readonly key: string;
+
+	/** The value, verbatim. */
+	readonly value: string;
+
+	/** Print the value in the mono face - a route, a command, an address. */
+	readonly code?: boolean;
+}
+
+/**
  * What happened, inside the frame. Used by every state that reports an
  * outcome: `SIGNED IN`, `EMAIL VERIFIED`, `LINK EXPIRED`.
  */

@@ -221,6 +221,30 @@
 	padding: 0 var(--space-reading) var(--space-reading);
 }
 
+// ─── The empty register ───────────────────────────────────────────────────
+//
+// A document whose index holds no clause: the count prints (`0` is a counted
+// zero, and it is the honest figure) and the sentence under it says what would
+// be here and why it is not. It takes the list's own padding so the register's
+// head and its statement sit on one left edge in both registers.
+.trust-contents__empty {
+	margin: 0;
+	padding: var(--space-tight) 0 0;
+
+	max-inline-size: var(--Measure);
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+	text-wrap: pretty;
+}
+
+.trust-contents--disclosure .trust-contents__empty {
+	padding-inline: var(--space-reading);
+	padding-block-end: var(--space-reading);
+}
+
 // ─── Print ────────────────────────────────────────────────────────────────
 // A rail is navigation, and a printed legal document is read as a document: the
 // clauses carry their own numbers, so the contents list is not needed on paper.

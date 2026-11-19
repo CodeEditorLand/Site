@@ -56,11 +56,25 @@ interface Props {
 	 */
 	series?: string;
 
+	/**
+	 * The band's own index in its series, printed as `# <SERIES>_<INDEX>`.
+	 *
+	 * Defaults to `01`, which is what every band on the page is: the homepage
+	 * prints one band per series. It is a prop because the grammar is
+	 * `# OBSERVATION_01` and a second band of the same series on one page - a
+	 * page that files its observations in two movements - would otherwise print
+	 * `# OBSERVATION_01` twice, which is two records claiming one index. The
+	 * number is written by the caller, zero-padded by the caller, because a
+	 * band's position in a series is a fact about the page and not about this
+	 * shell.
+	 */
+	index?: string;
+
 	/** The band's interval: `rest`, `beat`, `break` or `turn`. Defaults to `beat`. */
 	rhythm?: Rhythm;
 }
 
-const { head, series, rhythm = "beat" } = Astro.props;
+const { head, series, index = "01", rhythm = "beat" } = Astro.props;
 
 /** The alias map: a register name resolves to its nearest rung. */
 const IntervalOf: Record<Rhythm, string> = {
@@ -86,7 +100,7 @@ const HeadingID = `${head.ID}Heading`;
 		<div class="home-band__head">
 			<p class="home-band__kicker">
 				{series && (
-					<span class="home-band__marker">{`# ${series}_01`}</span>
+					<span class="home-band__marker">{`# ${series}_${index}`}</span>
 				)}
 				{series && (
 					<span class="home-band__route" aria-hidden="true">

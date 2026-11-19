@@ -326,6 +326,22 @@ const SpecimenOrder = [
 
 	"States",
 
+	"Field",
+
+	"Overlay",
+
+	"Display",
+
+	"Record",
+
+	"Narrative",
+
+	"Frame",
+
+	"Reading",
+
+	"Composition",
+
 	"Material",
 
 	"Register",

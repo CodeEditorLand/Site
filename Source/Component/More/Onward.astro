@@ -38,6 +38,15 @@
  * be able to state, because it is the state a site reaches when it is one page.
  * `empty` is a field of the copy, not an optional prop.
  *
+ * ─── WHAT THE MATRIX ADDED ────────────────────────────────────────────────
+ * A register printed on the page it routes to listed that page as a destination:
+ * "you are here, and here is the way here" - a link to the address the reader is
+ * already standing on. `current` names the one destination the reader is at; that
+ * row prints as a statement carrying `aria-current="page"`, in the same row
+ * grammar, with the arrow kept because the arrow is the grammar's and not the
+ * link's. Every other row is unchanged, and a register that passes no `current`
+ * renders exactly as it did.
+ *
  * No script and no hydration: a register is printed.
  */
 import type { OnwardCopy, OnwardRow } from "../../Content/More/Page.js";
@@ -51,11 +60,21 @@ interface Props {
 	/** The register's copy: its head, its sentence, its provenance, its empty arm. */
 	copy: OnwardCopy;
 
+	/**
+	 * The `href` of the destination the reader is already at. That row prints as
+	 * a statement with `aria-current="page"` instead of a link to itself.
+	 */
+	current?: string;
+
 	/** Extra classes from the page. */
 	class?: string;
 }
 
-const { rows, copy, class: Class } = Astro.props;
+const { rows, copy, current, class: Class } = Astro.props;
+
+/** Whether a row is the page the register is printed on. */
+const IsCurrent = (Row: OnwardRow): boolean =>
+	current !== undefined && Row.href === current;
 ---
 
 <nav class:list={["onward", Class]} aria-label={copy.label.replace(/^\//, "")}>
@@ -73,14 +92,26 @@ const { rows, copy, class: Class } = Astro.props;
 		<ol class="onward__rows">
 			{rows.map((Row) => (
 				<li class="onward__row">
-					<a class="onward__link" href={Row.href}>
-						<span class="onward__row-mark" aria-hidden="true">
-							{Row.mark}
+					{IsCurrent(Row) ? (
+						<span class="onward__link onward__link--current" aria-current="page">
+							<span class="onward__row-mark" aria-hidden="true">
+								{Row.mark}
+							</span>
+							<span class="onward__want">{Row.want}</span>
+							<Mark kind="arrow" class="onward__arrow" />
+							<span class="onward__where">{Row.where}</span>
+							<span class="onward__current">YOU ARE HERE</span>
 						</span>
-						<span class="onward__want">{Row.want}</span>
-						<Mark kind="arrow" class="onward__arrow" />
-						<span class="onward__where">{Row.where}</span>
-					</a>
+					) : (
+						<a class="onward__link" href={Row.href}>
+							<span class="onward__row-mark" aria-hidden="true">
+								{Row.mark}
+							</span>
+							<span class="onward__want">{Row.want}</span>
+							<Mark kind="arrow" class="onward__arrow" />
+							<span class="onward__where">{Row.where}</span>
+						</a>
+					)}
 					{Row.note ? <p class="onward__note">{Row.note}</p> : null}
 				</li>
 			))}

@@ -109,6 +109,27 @@
 	background: var(--Mute);
 }
 
+/* The row the reader is already on. It keeps the row grammar - mark, intent,
+   arrow, destination - and loses the two things that would lie about it: the
+   hover fill (nothing happens on click) and the underline. `YOU ARE HERE` is the
+   row's own statement, at the meta step in the mute, so the register says where
+   the reader stands without a second paragraph above it. */
+.onward__link--current {
+	cursor: default;
+}
+
+.onward__link--current:hover {
+	background: none;
+}
+
+.onward__current {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin-inline-start: auto;
+	color: var(--MuteForeground);
+}
+
 .onward__row-mark {
 	font-size: var(--type-meta);
 	line-height: var(--type-meta-line);
