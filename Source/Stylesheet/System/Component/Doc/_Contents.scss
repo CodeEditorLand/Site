@@ -6,6 +6,10 @@
 //   .doc-contents--rail            the pinned head of the sticky rail
 //   .doc-contents--disclosure      the CSS-only <details> below the breakpoint
 //   .doc-contents__label           "On this page", in the meta voice
+//   .doc-contents__label-text      the label's own words, so the count can sit beside them
+//   .doc-contents__count           the list's own length, two digits
+//   .doc-contents--fold            the rail register folded into a <details open>
+//   .doc-contents--dense           the tight step: the same rows in less air
 //   .doc-contents__summary         the disclosure's trigger row
 //   .doc-contents__nav             the list's frame inside the disclosure
 //   .doc-contents__list            the rows
@@ -57,11 +61,35 @@
 	@include mono-meta;
 	@include track;
 
+	display: flex;
+	align-items: baseline;
+	gap: 0;
+	flex-wrap: wrap;
+
 	/* The label is a snap point too, so the register's resting position is the top
 	   of the list and not its first row. */
 	scroll-snap-align: start;
 
 	margin: 0 0 var(--space-tight);
+}
+
+/* The count is the list's own length, drawn one U+2001 after the label. The
+   separator is the label's `::after` and not a sibling item, so a wrapped label
+   can never open a line with an em quad - the folio's law, applied to the one
+   other register on the site that wraps (Detail/_Folio.scss). */
+.doc-contents__count {
+	color: var(--MuteForeground);
+	font-variant-numeric: tabular-nums;
+}
+
+/* The count carries its own separator, drawn before it: the disclosure's
+   summary prints the label and the count as two spans, and the rail prints them
+   inside one `<p>`, so the mark has to belong to the figure rather than to the
+   label - and it must never be the first thing on a wrapped line. */
+.doc-contents__count::before {
+	content: "\2001";
+	letter-spacing: 0;
+	white-space: nowrap;
 }
 
 .doc-contents__list {
@@ -170,8 +198,8 @@
 
 	display: flex;
 	align-items: baseline;
-	justify-content: space-between;
-	gap: var(--space-tight);
+	justify-content: flex-start;
+	gap: 0;
 
 	padding: var(--space-tight) var(--space-reading);
 
@@ -186,6 +214,14 @@
 
 	.doc-contents__label {
 		margin: 0;
+	}
+
+	/* The marker is the row's right end, whatever sits between it and the
+	   label: `auto` on the mark is what keeps the label and its count a pair
+	   instead of three items spread across the row. */
+	.doc-contents__marker {
+		margin-inline-start: auto;
+		padding-inline-start: var(--space-tight);
 	}
 }
 
@@ -212,4 +248,37 @@
 
 .doc-contents--disclosure[open] .doc-contents__marker {
 	transform: rotate(90deg);
+}
+
+/* ─── THE FOLDED RAIL REGISTER ──────────────────────────────────────────── */
+
+/* The same register, one row. The head's hairline still closes it, so a folded
+   rail reads as a register that is closed rather than as a rail with no head. */
+.doc-contents--fold {
+	display: block;
+}
+
+.doc-contents--fold .doc-contents__summary {
+	padding: 0 0 var(--space-tight);
+}
+
+/* Inside the rail the list is the rail's own column: the disclosure's reading
+   inset and its top hairline belong to the card in the flow, not here. */
+.doc-contents--fold .doc-contents__nav {
+	padding: 0;
+	border-block-start: 0;
+}
+
+.doc-contents--fold[open] .doc-contents__marker {
+	transform: rotate(90deg);
+}
+
+/* ─── THE DENSE STEP ────────────────────────────────────────────────────── */
+
+/* Ninety sections at the reading step are four thousand pixels of rail; at this
+   step they are two thousand six hundred. The marker column, the reserved 2px
+   rule and the name's own wrapping are untouched - a dense register is a
+   register in less air, never a register with less in it. */
+.doc-contents--dense .doc-contents__link {
+	padding-block: calc(var(--space-tight) / 2);
 }

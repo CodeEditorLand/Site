@@ -72,6 +72,21 @@ const Pages = T("archive.pages", { defaultValue: "PAGES" });
 const Kicker = `/${section.Heading.toUpperCase()}\u2001${section.Rows.length}\u2001${Pages}`;
 
 /**
+ * What a card prints when its page carries no `description`.
+ *
+ * The card's body is the page's own sentence; a page that has none says so in
+ * the record grammar instead of leaving the slot empty, because a grid of cards
+ * is a set and a card two lines shorter than its neighbours reads as damage.
+ * `◎` is the grammar's mark for a fallback and `UNAVAILABLE` is the
+ * vocabulary's word for a fact the tree cannot fill - never a zero, never a
+ * blank cell.
+ */
+const Absent = `◎ ${T("index.note.absent", {
+	ns: "doc",
+	defaultValue: "DESCRIPTION: UNAVAILABLE",
+})}`;
+
+/**
  * The card's marker: its position in the chapter, two digits. The block prints
  * it verbatim, so the padding is the page's - a rail number is `01`, not `1`.
  */
@@ -100,7 +115,7 @@ const Marker = (Position: number): string =>
 								index={Marker(Position)}
 								name={Card.Label}
 								glyph={Card.Blank ? "↗" : "→"}
-								body={Card.Note ?? ""}
+								body={Card.Note ?? Absent}
 								surface="bare"
 							/>
 						</a>

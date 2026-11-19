@@ -1,1 +1,0 @@
-import{t}from"./LocaleSwitcher.Bq-LVf_X.js";export{t as LocaleSwitcher,t as default};

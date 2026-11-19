@@ -32,46 +32,87 @@ interface Props {
 
 	/** The frame's accessible name. */
 	title: string;
+
+	/**
+	 * What the viewer prints when the page passed no crate.
+	 *
+	 * An empty `crates` used to render an empty tab bar and an `<iframe>` with
+	 * no `src` - a frame around nothing, which is the one composition a reader
+	 * reads as broken rather than as absent. The viewer keeps its frame and
+	 * states the absence inside it, in the record grammar.
+	 */
+	empty?: string;
+
+	/** The one line under the absence: why there is no crate, and what to do. */
+	emptyNote?: string;
 }
 
-const { crates, label, title } = Astro.props;
+const {
+	crates,
+	label,
+	title,
+	empty = "No crate is filed for this group, so the frame has nothing to open.",
+	emptyNote = "The crates are read from the Rust workspace at build time; a group with none is a workspace that has not been generated yet.",
+} = Astro.props;
 
 /** The crate the frame opens on, or `undefined` if the page passed none. */
 const First = crates.at(0);
 ---
 
-<div class="doc-rust__viewer">
-	<div class="doc-rust__bar" role="tablist" aria-label={label}>
-		{crates.map((Crate, Index) => (
-			<button
-				type="button"
-				role="tab"
-				aria-selected={Index === 0 ? "true" : "false"}
-				aria-controls="RustDocFrame"
-				data-id={Crate.Id}
-				data-rustdoc-url={Crate.Url}
-				class:list={[
-					"doc-rust__tab",
-					Index === 0 ? "doc-rust__tab--active" : null,
-				]}
-			>
-				{Crate.Label}
-			</button>
-		))}
+{crates.length === 0 ? (
+	<div class="doc-rust__viewer doc-rust__viewer--absent" data-state="empty">
+		<div class="doc-rust__absent">
+			<p class="doc-rust__absent-mark" aria-hidden="true">◎</p>
+			<p class="doc-rust__absent-value">{empty}</p>
+			<p class="doc-rust__absent-note">{emptyNote}</p>
+		</div>
 	</div>
+) : (
+	<div class="doc-rust__viewer" data-state="loading">
+		<div class="doc-rust__bar" role="tablist" aria-label={label}>
+			{crates.map((Crate, Index) => (
+				<button
+					type="button"
+					role="tab"
+					aria-selected={Index === 0 ? "true" : "false"}
+					aria-controls="RustDocFrame"
+					tabindex={Index === 0 ? 0 : -1}
+					data-id={Crate.Id}
+					data-rustdoc-url={Crate.Url}
+					class:list={[
+						"doc-rust__tab",
+						Index === 0 ? "doc-rust__tab--active" : null,
+					]}
+				>
+					{Crate.Label}
+				</button>
+			))}
+		</div>
 
-	<iframe
-		id="RustDocFrame"
-		class="doc-rust__frame"
-		src={First?.Url}
-		title={title}
-		loading="lazy"
-		sandbox="allow-scripts allow-same-origin allow-popups allow-top-navigation-by-user-activation"
-	></iframe>
-</div>
+		{/* The frame's own state line. It prints `LOADING` until the frame has
+		    loaded, and the script removes it then; with JavaScript off it stays,
+		    because a viewer that cannot know whether rustdoc arrived should say
+		    so rather than imply it did. */}
+		<p class="doc-rust__state" data-rust-state>
+			<span class="doc-rust__state-key">STATUS:</span>
+			LOADING
+		</p>
+
+		<iframe
+			id="RustDocFrame"
+			class="doc-rust__frame"
+			src={First?.Url}
+			title={title}
+			loading="lazy"
+			sandbox="allow-scripts allow-same-origin allow-popups allow-top-navigation-by-user-activation"
+		></iframe>
+	</div>
+)}
 
 <script>
-	const Tabs = document.querySelectorAll<HTMLButtonElement>(".doc-rust__tab");
+	const Tabs = Array.from(
+		document.querySelectorAll<HTMLButtonElement>(".doc-rust__tab"),
+	);
 	const Frame = document.getElementById("RustDocFrame");
 
 	/** Move the active state to one tab: attribute first, ink follows the class. */
@@ -80,8 +121,32 @@ const First = crates.at(0);
 			const IsActive = Tab === ActiveTab;
 
 			Tab.setAttribute("aria-selected", IsActive ? "true" : "false");
+			Tab.tabIndex = IsActive ? 0 : -1;
 			Tab.classList.toggle("doc-rust__tab--active", IsActive);
 		});
+	}
+
+	/**
+	 * The tab list's keyboard path.
+	 *
+	 * `role="tablist"` is a promise the browser does not keep by itself: a
+	 * reader who tabs into the bar lands on one tab, and the pattern they are
+	 * owed is the arrows moving between tabs, Home and End going to the ends,
+	 * and focus following the selection. Without it the bar is three buttons in
+	 * a row that happen to be called tabs - and the panel below changes for a
+	 * reader who cannot see which one they are on.
+	 */
+	function Move(Tab: HTMLButtonElement, Step: 1 | -1): void {
+		const At = Tabs.indexOf(Tab);
+
+		if (At === -1) return;
+
+		const Next = Tabs[(At + Step + Tabs.length) % Tabs.length];
+
+		if (!Next) return;
+
+		Next.focus();
+		Next.click();
 	}
 
 	Tabs.forEach((Tab) => {
@@ -97,7 +162,50 @@ const First = crates.at(0);
 
 			if (Id) history.replaceState(null, "", `#${Id}`);
 		});
+
+		Tab.addEventListener("keydown", (Event) => {
+			switch (Event.key) {
+				case "ArrowRight":
+				case "ArrowDown":
+					Event.preventDefault();
+					Move(Tab, 1);
+					break;
+				case "ArrowLeft":
+				case "ArrowUp":
+					Event.preventDefault();
+					Move(Tab, -1);
+					break;
+				case "Home":
+					Event.preventDefault();
+					Tabs[0]?.focus();
+					Tabs[0]?.click();
+					break;
+				case "End": {
+					Event.preventDefault();
+					const Last = Tabs.at(-1);
+
+					Last?.focus();
+					Last?.click();
+					break;
+				}
+				default:
+					break;
+			}
+		});
 	});
+
+	/* The frame's state line, and the viewer's own `data-state`: the pair says
+	   `loading` until rustdoc has arrived and `rest` after, so the block's
+	   stylesheet can paint the wait without a spinner. */
+	const Viewer = Frame?.closest<HTMLElement>(".doc-rust__viewer");
+	const State = document.querySelector<HTMLElement>("[data-rust-state]");
+
+	const Settle = (): void => {
+		Viewer?.setAttribute("data-state", "rest");
+		State?.remove();
+	};
+
+	Frame?.addEventListener("load", Settle);
 
 	// Restore the active tab from the URL hash on load. Clicking the tab runs the
 	// same handler the reader would, so the frame, the attribute and the hash can
@@ -105,9 +213,7 @@ const First = crates.at(0);
 	const Hash = window.location.hash.slice(1);
 
 	if (Hash) {
-		const Match = Array.from(Tabs).find(
-			(Tab) => Tab.dataset["id"] === Hash,
-		);
+		const Match = Tabs.find((Tab) => Tab.dataset["id"] === Hash);
 
 		Match?.click();
 	}

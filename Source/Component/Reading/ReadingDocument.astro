@@ -97,6 +97,23 @@ interface Props {
 
 	/** Extra classes from the page, appended after the surface's own. */
 	class?: string;
+
+	/**
+	 * The document's own state. `rest` prints the body; `empty` and `loading`
+	 * print the document's absence inside the same paper.
+	 *
+	 * A legal document is the one surface where a blank card is unbearable: the
+	 * facts above it still say `EFFECTIVE:`, the index still lists clauses, and
+	 * the reader is owed the reason the text is not there. The two arms are the
+	 * site's own - `◎` and a sentence, or the keys with their values barred.
+	 */
+	state?: "rest" | "empty" | "loading";
+
+	/** The sentence an empty document prints. */
+	empty?: string;
+
+	/** The keys a loading document prints, barred. */
+	keys?: readonly string[];
 }
 
 const {
@@ -113,7 +130,13 @@ const {
 	measure = "prose",
 	bodyClass,
 	class: Class,
+	state = "rest",
+	empty,
+	keys,
 } = Astro.props;
+
+/** The keys a loading document shows when the page passed none. */
+const LoadingKeys = keys ?? ["CLAUSE", "HEADING", "EFFECTIVE"];
 ---
 
 <article
@@ -181,7 +204,36 @@ const {
 		</nav>
 	)}
 
-	<div class:list={["reading-document__body", "prose-flow", bodyClass]}>
-		<slot />
+	<div
+		class:list={["reading-document__body", "prose-flow", bodyClass]}
+		data-state={state}
+	>
+		{state === "empty" ? (
+			<div class="reading-document__absent" data-state="empty">
+				<p class="reading-document__absent-mark" aria-hidden="true">
+					◎
+				</p>
+				<p class="reading-document__absent-value">
+					{empty ??
+						"This document's text is not in this build: the facts and the index above are read from the record, and the clauses have not been set from their source."}
+				</p>
+				<p class="reading-document__absent-note">
+					STATUS:{"\u2001"}UNAVAILABLE
+				</p>
+			</div>
+		) : state === "loading" ? (
+			<dl class="reading-document__keys" aria-busy="true">
+				{LoadingKeys.map((Key) => (
+					<div class="reading-document__key">
+						<dt class="reading-document__key-label">{Key}:</dt>
+						<dd class="reading-document__key-value">
+							<span class="reading-document__bar" aria-hidden="true" />
+						</dd>
+					</div>
+				))}
+			</dl>
+		) : (
+			<slot />
+		)}
 	</div>
 </article>

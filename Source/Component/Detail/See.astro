@@ -35,6 +35,22 @@ interface Props {
 
 	/** Extra classes from the page. */
 	class?: string;
+
+	/**
+	 * `rest` prints the references; `loading` prints the register and the rows
+	 * the page asked for, with their values barred.
+	 *
+	 * The block's own law - a see-also with nothing to see is noise, so no
+	 * references renders nothing - is about a foot that has no references. A
+	 * foot whose references have not been READ is a different fact, and it is
+	 * the one that used to be invisible: the foot printed its folio and the
+	 * reader could not tell a band with no cross-references from a build that
+	 * never read them.
+	 */
+	state?: "rest" | "loading";
+
+	/** The keys a loading register prints, barred. */
+	keys?: readonly string[];
 }
 
 const {
@@ -42,7 +58,12 @@ const {
 	label = "SEE",
 	ariaLabel = "Cross-references",
 	class: Class,
+	state = "rest",
+	keys,
 } = Astro.props;
+
+/** The keys a loading register shows when the page passed none. */
+const LoadingKeys = keys ?? ["ROUTE", "REASON"];
 
 /**
  * A reference without a reason is not a reference. The block drops the row
@@ -52,7 +73,30 @@ const {
 const References = items.filter((Item) => Item.reason.trim().length > 0);
 ---
 
-{References.length > 0 && (
+{state === "loading" ? (
+	<nav
+		class:list={["detail-see", Class]}
+		aria-label={ariaLabel}
+		data-state="loading"
+		aria-busy="true"
+	>
+		<p class="detail-see__register">
+			<span class="detail-see__mark" aria-hidden="true">
+				↳
+			</span>
+			{label}
+		</p>
+
+		<ul class="detail-see__list">
+			{LoadingKeys.map((Key) => (
+				<li class="detail-see__row detail-see__row--loading">
+					<span class="detail-see__route">{Key}:</span>
+					<span class="detail-see__bar" aria-hidden="true" />
+				</li>
+			))}
+		</ul>
+	</nav>
+) : References.length > 0 ? (
 	<nav class:list={["detail-see", Class]} aria-label={ariaLabel}>
 		<p class="detail-see__register">
 			<span class="detail-see__mark" aria-hidden="true">
@@ -72,4 +116,4 @@ const References = items.filter((Item) => Item.reason.trim().length > 0);
 			))}
 		</ul>
 	</nav>
-)}
+) : null}

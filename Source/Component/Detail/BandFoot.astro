@@ -43,6 +43,16 @@ interface Props {
 	/** The `See` register's label. Defaults to `SEE`. */
 	seeLabel?: string;
 
+	/**
+	 * The `See` register's state, forwarded. `loading` is a foot whose
+	 * references were asked for and have not been read - a different fact from
+	 * a band with none, which is the foot's resting shape.
+	 */
+	seeState?: "rest" | "loading";
+
+	/** The keys a loading `See` register prints, barred. */
+	seeKeys?: readonly string[];
+
 	/** What the band holds, as a figure with its unit. */
 	figure?: DetailFigure;
 
@@ -67,6 +77,8 @@ const {
 	part,
 	see,
 	seeLabel,
+	seeState = "rest",
+	seeKeys,
 	figure,
 	count,
 	asOf,
@@ -78,9 +90,17 @@ const {
 
 <div class:list={["detail-foot", Class]} data-surface={surface}>
 	<div class="detail-foot__row">
-		{see && see.length > 0 && (
+		{seeState === "loading" ? (
+			<See
+				class="detail-foot__see"
+				items={see ?? []}
+				label={seeLabel}
+				state="loading"
+				keys={seeKeys}
+			/>
+		) : see && see.length > 0 ? (
 			<See class="detail-foot__see" items={see} label={seeLabel} />
-		)}
+		) : null}
 
 		<Folio
 			class="detail-foot__folio"

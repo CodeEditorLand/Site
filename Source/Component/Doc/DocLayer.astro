@@ -33,6 +33,16 @@ interface Props {
 	/** The word for one entry's unit, plural - `PAGES`. */
 	unit: string;
 
+	/**
+	 * The word for one entry's unit, singular - `PAGE`.
+	 *
+	 * A layer of one prints `01 PAGE`, not `1 PAGES`: the count is a figure and
+	 * its unit is read aloud with it, and the block may not pluralise a word it
+	 * was handed (it prints what the page wrote, never a derivation of it).
+	 * Absent, the plural is printed and the caller has chosen that.
+	 */
+	unitOne?: string;
+
 	/** The layer's pages, in the order they print. */
 	entries: readonly {
 		readonly Id: string;
@@ -44,11 +54,14 @@ interface Props {
 	activeId?: string;
 }
 
-const { label, heading, unit, entries, activeId } = Astro.props;
+const { label, heading, unit, unitOne, entries, activeId } = Astro.props;
 
 /** The row's position in the layer, two digits, as the record grammar writes it. */
 const Marker = (Position: number): string =>
 	String(Position + 1).padStart(2, "0");
+
+/** The unit that matches the count: the page's own word, singular when it is one. */
+const Unit = entries.length === 1 ? (unitOne ?? unit) : unit;
 ---
 
 {entries.length > 1 ? (
@@ -59,7 +72,7 @@ const Marker = (Position: number): string =>
 			<span class="doc-layer__count">
 				{entries.length}
 				{"\u2001"}
-				{unit}
+				{Unit}
 			</span>
 			<span class="doc-layer__marker" aria-hidden="true">
 				›
@@ -91,4 +104,19 @@ const Marker = (Position: number): string =>
 			</ol>
 		</div>
 	</details>
+) : entries.length === 1 ? (
+	/* A layer of one has nothing to open. It still states itself - the layer's
+	   name, its size and the page the reader is on - because the fact this block
+	   exists to give is "how big is the thing I just finished", and a layer that
+	   printed nothing was the one size a reader could not learn. No marker: there
+	   is no disclosure behind it. */
+	<p class="doc-layer doc-layer--solo">
+		<span class="doc-layer__label">{label}</span>
+		<span class="doc-layer__value">{heading}</span>
+		<span class="doc-layer__count">
+			{entries.length}
+			{"\u2001"}
+			{Unit}
+		</span>
+	</p>
 ) : null}

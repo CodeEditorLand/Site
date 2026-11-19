@@ -215,6 +215,92 @@
 	max-width: var(--Measure);
 }
 
+/* ─── THE PAPER'S OWN ABSENCE ────────────────────────────────────────────── */
+
+/* An article whose prose did not arrive keeps its paper: the shell's header,
+   strip and pager are still true, and the card is still the document. What
+   changes is that the card states the absence instead of printing white space -
+   `◎`, the page's own sentence and the vocabulary's word for a fact the build
+   cannot fill. */
+.doc-article__absent {
+	display: grid;
+	justify-items: start;
+	gap: var(--space-reading);
+
+	padding-block: var(--space-chapter);
+}
+
+.doc-article__absent-mark {
+	margin: 0;
+
+	color: var(--MuteForeground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-section);
+	line-height: 1;
+}
+
+.doc-article__absent-value {
+	margin: 0;
+	max-inline-size: var(--MeasureOpening);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-heading);
+	line-height: var(--type-heading-line);
+	letter-spacing: var(--track-join);
+
+	color: var(--Foreground);
+
+	text-wrap: balance;
+}
+
+.doc-article__absent-note {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0;
+}
+
+/* The loading paper: the keys are the schema and arrive first, so they print
+   with their values barred - the record grammar's skeleton, never a spinner. */
+.doc-article__keys {
+	display: grid;
+	gap: var(--space-reading);
+
+	margin: 0;
+	padding-block: var(--space-group);
+}
+
+.doc-article__key {
+	display: grid;
+	grid-template-columns: minmax(0, 12ch) minmax(0, 1fr);
+	gap: var(--space-tight);
+	align-items: baseline;
+}
+
+.doc-article__key-label {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0;
+}
+
+.doc-article__key-value {
+	margin: 0;
+	min-inline-size: 0;
+}
+
+.doc-article__bar {
+	display: block;
+
+	block-size: var(--space-tight);
+	inline-size: min(28ch, 60%);
+
+	background: color-mix(in srgb, var(--Mute) 70%, transparent);
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
 /* ─── THE PLATE ─────────────────────────────────────────────────────────── */
 
 /* The page's evidence, between the strip and the paper. It takes the chapter

@@ -17,6 +17,8 @@
 //   .reading-document__index-number   the §NN marker
 //   .reading-document__index-name     the heading's own words
 //   .reading-document__body           the document itself, on the measure
+//   .reading-document__absent         the document's empty arm: a mark and a sentence
+//   .reading-document__keys           the loading arm: keys with their values barred
 //   .reading-document__title          the document's own title, opening the body
 //   .reading-document__part           one part of a document that is not all text
 //   .reading-document__note           a quoted summary panel, held apart
@@ -152,6 +154,92 @@
 
 .reading-document--prose .reading-document__body {
 	max-width: var(--Measure);
+}
+
+/* ─── THE DOCUMENT'S OWN ABSENCE ─────────────────────────────────────────── */
+
+/* The facts above still date and scope the document and the index still lists
+   its clauses, so the paper keeps its shape: what the empty arm adds is the
+   reason the text is not there, in the record grammar. A legal document that
+   printed a blank card would be the one page on the site that lied by omission. */
+.reading-document__absent {
+	display: grid;
+	justify-items: start;
+	gap: var(--space-reading);
+
+	padding-block: var(--space-chapter);
+}
+
+.reading-document__absent-mark {
+	margin: 0;
+
+	color: var(--MuteForeground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-section);
+	line-height: 1;
+}
+
+.reading-document__absent-value {
+	margin: 0;
+	max-inline-size: var(--MeasureOpening);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-heading);
+	line-height: var(--type-heading-line);
+	letter-spacing: var(--track-join);
+
+	color: var(--Foreground);
+
+	text-wrap: balance;
+}
+
+.reading-document__absent-note {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0;
+}
+
+/* The loading arm: the keys are the schema, the bars are the values that have
+   not arrived. Never a spinner - a spinner says "wait", and the keys say what
+   for. */
+.reading-document__keys {
+	display: grid;
+	gap: var(--space-reading);
+
+	margin: 0;
+	padding-block: var(--space-group);
+}
+
+.reading-document__key {
+	display: grid;
+	grid-template-columns: minmax(0, 12ch) minmax(0, 1fr);
+	gap: var(--space-tight);
+	align-items: baseline;
+}
+
+.reading-document__key-label {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0;
+}
+
+.reading-document__key-value {
+	margin: 0;
+	min-inline-size: 0;
+}
+
+.reading-document__bar {
+	display: block;
+
+	block-size: var(--space-tight);
+	inline-size: min(28ch, 60%);
+
+	background: color-mix(in srgb, var(--Mute) 70%, transparent);
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Border);
 }
 
 /* The global sheet gives every p and heading a bottom margin. Inside a

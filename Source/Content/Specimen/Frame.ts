@@ -225,8 +225,11 @@ export const Columns: readonly Column[] = [
 
 	{
 		key: "print",
+
 		label: "ON PAPER",
+
 		ask: "the printed sheet",
+
 		group: "context",
 	},
 ];
@@ -872,6 +875,7 @@ export const Rows: readonly Row[] = [
 
 			many: NotASet(
 				"plate",
+
 				"one figure - a set of plates is a page of plates",
 			),
 
@@ -1055,6 +1059,7 @@ export const Rows: readonly Row[] = [
 
 			incard: NotInCard(
 				"headnote",
+
 				"the frame's edge, mounted once by `Base.astro` above every page's slot",
 			),
 
@@ -1120,6 +1125,7 @@ export const Rows: readonly Row[] = [
 
 			incard: NotInCard(
 				"catchword",
+
 				"the frame's edge, the last thing on the page",
 			),
 
@@ -1181,6 +1187,7 @@ export const Rows: readonly Row[] = [
 
 			incard: NotInCard(
 				"thumb index",
+
 				"fixed to the window's left edge above 1280px",
 			),
 
@@ -1230,6 +1237,7 @@ export const Rows: readonly Row[] = [
 
 			incard: NotInCard(
 				"running head",
+
 				"the header's own strip, fixed to the viewport",
 			),
 
@@ -1281,6 +1289,7 @@ export const Rows: readonly Row[] = [
 
 			incard: NotInCard(
 				"print row",
+
 				"a footer colophon fact, at the frame's foot",
 			),
 

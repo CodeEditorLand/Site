@@ -4,6 +4,7 @@
 // Publishes:
 //   .doc-layer            the <details> block, at chapter distance from the prose
 //   .doc-layer__summary   the closed row: label, layer, size, marker
+//   .doc-layer--solo      the same row when the layer holds one page, with no disclosure
 //   .doc-layer__label     "LAYER:", in the meta voice
 //   .doc-layer__value     the section's name
 //   .doc-layer__count     the layer's size
@@ -56,6 +57,18 @@
 	&::-webkit-details-marker {
 		display: none;
 	}
+}
+
+/* A layer of one: the same row, with nothing behind it. The row is the same
+   anatomy - label, value, count - and the only difference a reader should be
+   able to see is the absence of the glyph, because there is nothing to open. */
+.doc-layer--solo {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-tight);
+
+	margin: 0;
+	padding-block: var(--space-tight);
 }
 
 .doc-layer__label {

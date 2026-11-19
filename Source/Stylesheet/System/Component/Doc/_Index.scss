@@ -15,6 +15,8 @@
 //   .doc-appendix            one closing artifact
 //   .doc-appendix__panel     the one surface inside it
 //   .doc-appendix__lede      the sentence that opens the panel
+//   .doc-appendix__absent    the panel's empty arm: a mark and a sentence
+//   .doc-appendix__keys      the panel's loading arm: keys with their values barred
 //   .doc-appendix__foot      the rule and the link that close the architecture panel
 //   .doc-appendix__link      that link
 //   .doc-appendix__arrow     the decorative ↗ every external destination carries
@@ -297,6 +299,26 @@ jelly-card.doc-card__surface {
 	margin: var(--space-tight) 0 0;
 }
 
+/* The card whose page carries no description. It keeps the note's slot, its
+   size and its measure - what changes is the ink (the fallback is not copy, it
+   is a missing fact) and the mark that says so. A card that closed up would be
+   the only card in its grid without a second line, and a set whose rows are not
+   the same height reads as damage. */
+.doc-card__note--absent {
+	color: var(--MuteForeground);
+
+	/* A figure that is not known is set as a register, not as prose: the
+	   vocabulary's word in the tracked meta voice. */
+	@include mono-meta;
+	@include track(var(--track-row));
+}
+
+.doc-card__mark {
+	color: var(--Mark);
+
+	margin-inline-end: var(--optical-mark-gap);
+}
+
 /* The three ways in are the page's one larger card: their title is the card's
    `h2`, so it takes the ladder's L and the card takes the group inset. */
 .doc-card--feature .doc-card__link {
@@ -344,6 +366,64 @@ jelly-card.doc-card__surface {
 
 	margin-block-start: var(--space-reading);
 	padding-block-start: var(--space-reading);
+}
+
+/* The panel's two adverse arms. Both keep the panel, the heading and the lede:
+   an appendix is the index's last subject, and the subject is still stated when
+   its destinations are not - what changes is what sits under the sentence. */
+.doc-appendix__absent {
+	margin: 0;
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--CardForeground);
+
+	text-wrap: pretty;
+	max-inline-size: 62ch;
+}
+
+.doc-appendix__absent-mark {
+	color: var(--Mark);
+
+	margin-inline-end: var(--optical-mark-gap);
+}
+
+.doc-appendix__keys {
+	display: grid;
+	gap: var(--space-reading);
+
+	margin: 0;
+}
+
+.doc-appendix__key {
+	display: grid;
+	grid-template-columns: minmax(0, 12ch) minmax(0, 1fr);
+	gap: var(--space-tight);
+	align-items: baseline;
+}
+
+.doc-appendix__key-label {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0;
+}
+
+.doc-appendix__key-value {
+	margin: 0;
+	min-inline-size: 0;
+}
+
+.doc-appendix__bar {
+	display: block;
+
+	block-size: var(--space-tight);
+	inline-size: min(28ch, 60%);
+
+	background: color-mix(in srgb, var(--Mute) 70%, transparent);
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Border);
 }
 
 .doc-appendix__link {

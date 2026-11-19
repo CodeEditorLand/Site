@@ -1,0 +1,1 @@
+import{t}from"./LocaleSwitcher.DSpXtZSh.js";export{t as LocaleSwitcher,t as default};

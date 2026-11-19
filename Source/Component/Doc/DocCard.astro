@@ -16,6 +16,12 @@
  * - `2` - one of the three ways in, which has no section above it, so the card's
  *   own title is the level-two heading.
  *
+ * A page with no `description` still prints a note: `◎ DESCRIPTION: UNAVAILABLE`
+ * in the note's own slot, at the note's own size. A card that closed up by two
+ * lines would be a card that read as a failure rather than as a page whose
+ * description has not been written yet, and the grid is a set - the set's rows
+ * are the same height or the reader counts the difference as damage.
+ *
  * No script and no hydration directive: the card is static.
  */
 import type { DocLink } from "./Type.js";
@@ -26,9 +32,20 @@ interface Props {
 
 	/** The card's heading level: `2` above the sections, `3` inside one. */
 	level?: 2 | 3;
+
+	/**
+	 * What the card prints when the page has no `description`.
+	 *
+	 * Absent, the card says so in the record grammar rather than closing up:
+	 * a grid of cards is a set, and a card that is two lines shorter than its
+	 * neighbours reads as a card that failed to load, not as a page whose
+	 * description has not been written. `UNAVAILABLE` is the vocabulary's word
+	 * for a fact the tree cannot fill - never a zero, never a blank cell.
+	 */
+	absent?: string;
 }
 
-const { card, level = 3 } = Astro.props;
+const { card, level = 3, absent = "DESCRIPTION: UNAVAILABLE" } = Astro.props;
 ---
 
 <li class:list={["doc-card", level === 2 ? "doc-card--feature" : null]}>
@@ -47,7 +64,16 @@ const { card, level = 3 } = Astro.props;
 			) : (
 				<h3 class="doc-card__title">{card.Label}</h3>
 			)}
-			{card.Note ? <p class="doc-card__note">{card.Note}</p> : null}
+			{card.Note ? (
+				<p class="doc-card__note">{card.Note}</p>
+			) : (
+				<p class="doc-card__note doc-card__note--absent" data-state="empty">
+					<span class="doc-card__mark" aria-hidden="true">
+						◎
+					</span>
+					{absent}
+				</p>
+			)}
 		</a>
 	</jelly-card>
 </li>

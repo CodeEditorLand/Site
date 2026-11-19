@@ -27,29 +27,95 @@ import type { DocAppendix } from "./Type.js";
 interface Props {
 	/** The artifact to render. */
 	appendix: DocAppendix;
+
+	/**
+	 * The artifact's own state. `rest` prints its body; `empty` and `loading`
+	 * print the panel's absence under the same heading and lede.
+	 *
+	 * The three appendices are the index's last three subjects, and until this
+	 * prop existed a build that could not read one of them printed an `h2`, a
+	 * sentence and then nothing - a heading over a hole at the foot of the page
+	 * a reader scrolls to when they want the map. The absence is the panel's
+	 * own: the sentence stays, the mark says what is missing.
+	 */
+	state?: "rest" | "empty" | "loading";
+
+	/** The sentence an empty panel prints. */
+	empty?: string;
+
+	/** The keys a loading panel prints, barred. */
+	keys?: readonly string[];
 }
 
-const { appendix } = Astro.props;
+const {
+	appendix,
+	state = "rest",
+	empty,
+	keys,
+} = Astro.props;
 
 const Panel = appendix.Kind;
+
+/** The keys a loading panel shows when the page passed none. */
+const LoadingKeys = keys ?? ["DESTINATION", "ROUTE", "NOTE"];
+
+/**
+ * The architecture strip's own partial state: the fifteen elements are read
+ * from the record, and a build that read the panel and not its strip prints the
+ * sentence and the absence rather than an empty `<ul>` - an empty badge run
+ * under a lede about the elements reads as a strip that collapsed.
+ */
+const Badges = appendix.Index ?? [];
+
+const StripAbsent = state === "rest" && Panel === "architecture" && Badges.length === 0;
 ---
 
 <section class="doc-appendix" id={appendix.Id}>
 	<h2 class="doc-section__heading">{appendix.Heading}</h2>
-	<div class="doc-appendix__panel">
+	<div class="doc-appendix__panel" data-state={state}>
 		<p class="doc-appendix__lede">{appendix.Lede}</p>
 
-		{Panel === "architecture" ? (
-			<ul class="doc-badges">
-				{(appendix.Index ?? []).map((Entry) => (
-					<li class="doc-badges__item">
-						<a class="doc-badge" href={Entry.href}>
-							{Entry.label}
-						</a>
-					</li>
+		{state === "empty" ? (
+			<p class="doc-appendix__absent" data-state="empty">
+				<span class="doc-appendix__absent-mark" aria-hidden="true">
+					◎
+				</span>
+				{empty ??
+					"The destinations this panel lists have not been read in this build, so it states what would be here rather than printing an empty body."}
+			</p>
+		) : state === "loading" ? (
+			<dl class="doc-appendix__keys" aria-busy="true">
+				{LoadingKeys.map((Key) => (
+					<div class="doc-appendix__key">
+						<dt class="doc-appendix__key-label">{Key}:</dt>
+						<dd class="doc-appendix__key-value">
+							<span class="doc-appendix__bar" aria-hidden="true" />
+						</dd>
+					</div>
 				))}
-			</ul>
-		) : null}
+			</dl>
+		) : (
+			<>
+				{Panel === "architecture" ? (
+					StripAbsent ? (
+						<p class="doc-appendix__absent" data-state="empty">
+							<span class="doc-appendix__absent-mark" aria-hidden="true">
+								◎
+							</span>
+							STATUS:{"\u2001"}UNAVAILABLE
+						</p>
+					) : (
+						<ul class="doc-badges">
+							{Badges.map((Entry) => (
+								<li class="doc-badges__item">
+									<a class="doc-badge" href={Entry.href}>
+										{Entry.label}
+									</a>
+								</li>
+							))}
+						</ul>
+					)
+				) : null}
 
 		{Panel === "backend" ? (
 			<ul class="doc-services">
@@ -120,5 +186,7 @@ const Panel = appendix.Kind;
 				))}
 			</div>
 		) : null}
+			</>
+		)}
 	</div>
 </section>

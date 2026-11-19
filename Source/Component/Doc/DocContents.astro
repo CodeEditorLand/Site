@@ -47,25 +47,94 @@ interface Props {
 	/** Where the list sits. `rail` in the sticky rail, `disclosure` in the flow. */
 	variant?: "rail" | "disclosure";
 
+	/**
+	 * Fold the rail register into a `<details open>`.
+	 *
+	 * The rail's head is capped at half the rail (`Doc/_Layout.scss`), and a
+	 * document with ninety sections spends that cap on rows the reader can
+	 * scroll. Folded, the register is one row - its label, its count and the
+	 * way back in - and the tree underneath gets the rail's whole scroll.
+	 * Open by default, so the fold is a reader's choice and never a page's
+	 * decision to hide its own contents. CSS only: no script, no hydration,
+	 * and it prints open.
+	 */
+	collapsible?: boolean;
+
+	/**
+	 * The tight step. Ninety rows at the reading step are 4,000px of rail; at
+	 * the dense step they are 2,600px, and the row grammar - marker, name,
+	 * reserved rule - is unchanged. Nothing is dropped, only the air.
+	 */
+	dense?: boolean;
+
 	/** Extra classes from the caller, appended after the block's own. */
 	class?: string;
 }
 
-const { toc, variant = "rail", class: Class } = Astro.props;
+const {
+	toc,
+	variant = "rail",
+	collapsible = false,
+	dense = false,
+	class: Class,
+} = Astro.props;
 
 const Items = toc?.Items ?? [];
 
 const Label = toc?.Label ?? "";
+
+/**
+ * The count is the list's own length.
+ *
+ * A contents register is a register: `# ON THIS PAGE / 12` is what the site
+ * prints for every other counted line, and a rail that named the register and
+ * not its extent was the one place the grammar was missing. It is derived here
+ * and never passed in, so it cannot outlive the rows it counts - and it is
+ * printed in both registers, because the disclosure's summary needs it more
+ * than the rail does (closed, it is the only figure the reader has).
+ */
+const Count = String(Items.length).padStart(2, "0");
+
+const RootClass = (Base: string): string =>
+	[
+		"doc-contents",
+		Base,
+		collapsible ? "doc-contents--fold" : null,
+		dense ? "doc-contents--dense" : null,
+		Class,
+	]
+		.filter((Part): Part is string => Part !== null)
+		.join(" ");
 ---
 
 {Items.length > 0 ? (
 	variant === "disclosure" ? (
+		<details class={RootClass("doc-contents--disclosure")} data-doc-contents>
+			<summary class="doc-contents__summary">
+				<span class="doc-contents__label">{Label}</span>
+				<span class="doc-contents__count">{Count}</span>
+				<span class="doc-contents__marker" aria-hidden="true">
+					›
+				</span>
+			</summary>
+			<nav class="doc-contents__nav" aria-label={Label}>
+				<DocContentsList items={Items} />
+			</nav>
+		</details>
+	) : collapsible ? (
+		/* The rail's register, folded. Open by default: the fold exists so a
+		   reader can give the rail's scroll to the tree, not so a page can
+		   withhold its own contents. The summary carries the same label, the
+		   same count and the same `›` the disclosure carries, so one row means
+		   the same thing in both registers. */
 		<details
-			class:list={["doc-contents", "doc-contents--disclosure", Class]}
+			class={RootClass("doc-contents--rail")}
+			open
 			data-doc-contents
 		>
 			<summary class="doc-contents__summary">
 				<span class="doc-contents__label">{Label}</span>
+				<span class="doc-contents__count">{Count}</span>
 				<span class="doc-contents__marker" aria-hidden="true">
 					›
 				</span>
@@ -76,11 +145,14 @@ const Label = toc?.Label ?? "";
 		</details>
 	) : (
 		<nav
-			class:list={["doc-contents", "doc-contents--rail", Class]}
+			class={RootClass("doc-contents--rail")}
 			aria-label={Label}
 			data-doc-contents
 		>
-			<p class="doc-contents__label">{Label}</p>
+			<p class="doc-contents__label">
+				<span class="doc-contents__label-text">{Label}</span>
+				<span class="doc-contents__count">{Count}</span>
+			</p>
 			<DocContentsList items={Items} />
 		</nav>
 	)

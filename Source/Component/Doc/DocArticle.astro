@@ -133,6 +133,25 @@ interface Props {
 
 	/** Extra classes from the page, appended after the shell's own. */
 	class?: string;
+
+	/**
+	 * The paper's own state. `rest` prints the body; `empty` and `loading`
+	 * print the paper's absence in the record grammar instead.
+	 *
+	 * An article whose prose failed to render used to print its header, its
+	 * strip and then a white card with nothing in it - a page that reads as
+	 * broken, and the one composition a documentation surface cannot leave to
+	 * chance. `empty` prints the page's own sentence about what would be here;
+	 * `loading` prints the keys with their values barred, because the keys are
+	 * the schema and arrive first.
+	 */
+	state?: "rest" | "empty" | "loading";
+
+	/** The sentence an empty paper prints. Required by `state="empty"`. */
+	empty?: string;
+
+	/** The keys a loading paper prints, barred. */
+	keys?: readonly string[];
 }
 
 const {
@@ -147,7 +166,13 @@ const {
 	crumbs,
 	source,
 	class: Class,
+	state = "rest",
+	empty,
+	keys,
 } = Astro.props;
+
+/** The keys a loading paper shows when the page passed none. */
+const LoadingKeys = keys ?? ["SECTION", "HEADING", "BLOCK"];
 ---
 
 <article class:list={["doc-article", Class]}>
@@ -232,8 +257,35 @@ const {
 			measure ? "doc-article__body--measure" : null,
 		]}
 		data-doc-source={source}
+		data-state={state}
 	>
-		<slot />
+		{state === "empty" ? (
+			<div class="doc-article__absent" data-state="empty">
+				<p class="doc-article__absent-mark" aria-hidden="true">
+					◎
+				</p>
+				<p class="doc-article__absent-value">
+					{empty ??
+						"This page has no prose in this build: its source has not been set, so there is nothing to read here yet."}
+				</p>
+				<p class="doc-article__absent-note">
+					STATUS:{"\u2001"}UNAVAILABLE
+				</p>
+			</div>
+		) : state === "loading" ? (
+			<dl class="doc-article__keys" aria-busy="true">
+				{LoadingKeys.map((Key) => (
+					<div class="doc-article__key">
+						<dt class="doc-article__key-label">{Key}:</dt>
+						<dd class="doc-article__key-value">
+							<span class="doc-article__bar" aria-hidden="true" />
+						</dd>
+					</div>
+				))}
+			</dl>
+		) : (
+			<slot />
+		)}
 	</div>
 </article>
 

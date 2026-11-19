@@ -23,6 +23,8 @@
 //   .detail-see__row         one reference: route, then reason
 //   .detail-see__route       the `/ROUTE` (an anchor, always)
 //   .detail-see__reason      why it is worth following
+//   .detail-see__row--loading  a reference the build asked for and has not read
+//   .detail-see__bar         that row's value, barred
 //
 // ─── THE ROW IS A CONTAINER QUESTION, NOT A VIEWPORT ONE ──────────────────
 // The strip is printed at the foot of a band and inside a white card, beside a
@@ -132,6 +134,27 @@
 	line-height: var(--type-caption-line);
 	color: var(--MuteForeground);
 	text-wrap: pretty;
+}
+
+// ─── THE ROW THE BUILD HAS NOT READ ───────────────────────────────────────
+// The register is printed and its values are not: the key stands where the route
+// stands (in the route's own voice, at the route's own floor, so the two rows
+// are the same shape) and a bar stands where the reason would. A bar is a
+// skeleton in the record grammar - the names arrive before the values, and a
+// spinner would say "wait" without saying what for.
+.detail-see__row--loading .detail-see__route {
+	color: var(--MuteForeground);
+}
+
+.detail-see__bar {
+	display: block;
+
+	block-size: var(--space-tight);
+	inline-size: min(28ch, 60%);
+
+	background: color-mix(in srgb, var(--Mute) 70%, transparent);
+
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Border);
 }
 
 // ─── THE ROW, WHEN THE STRIP CAN HOLD IT ──────────────────────────────────

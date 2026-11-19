@@ -103,6 +103,64 @@ export const WireContents = (): void => {
 	/** The id currently marked, so a frame with the same answer writes nothing. */
 	let Marked: string | null = null;
 
+	/**
+	 * The scroll register a row sits in, if it sits in one.
+	 *
+	 * The rail's head is capped at half the rail and scrolls (`_Layout.scss`),
+	 * so on a document with ninety sections the marked row can be forty rows
+	 * below the register's edge - marked in the DOM and invisible to the
+	 * reader, which is the one failure a marking can have. The register is
+	 * found by walking up from the row to the first ancestor that actually
+	 * scrolls, so the same code serves the rail's head and the clause rail
+	 * without either block naming the other's class.
+	 *
+	 * `html` and `body` are refused: the flow register's list is inside a
+	 * `<details>` in the document, and revealing a row there would scroll the
+	 * PAGE, which is the reader's own business and not a marking's.
+	 */
+	const Register = (From: HTMLElement): HTMLElement | null => {
+		for (let Node = From.parentElement; Node; Node = Node.parentElement) {
+			if (Node === document.body || Node === document.documentElement) {
+				return null;
+			}
+
+			const Overflow = getComputedStyle(Node).overflowY;
+
+			if (
+				/(auto|scroll)/.test(Overflow) &&
+				Node.scrollHeight > Node.clientHeight + 1
+			) {
+				return Node;
+			}
+		}
+
+		return null;
+	};
+
+	/**
+	 * Keep the marked row inside its register.
+	 *
+	 * One write, and only when the row is outside the box: a reader scrolling
+	 * the page while a row is already visible costs nothing, and a reader
+	 * crossing into a section whose row is off the register's edge gets the
+	 * mark brought to them. Instant, not smooth - the mark is a position, and
+	 * motion is for a change of state a reader did not cause (`DESIGN.md`
+	 * §2.9); this one they did.
+	 */
+	const Reveal = (Link: HTMLAnchorElement): void => {
+		const Box = Register(Link);
+
+		if (!Box) return;
+
+		const Row = Link.getBoundingClientRect();
+
+		const Frame = Box.getBoundingClientRect();
+
+		if (Row.top >= Frame.top && Row.bottom <= Frame.bottom) return;
+
+		Link.scrollIntoView({ block: "nearest", inline: "nearest" });
+	};
+
 	const Paint = (Current: string | null): void => {
 		if (Current === Marked) return;
 
@@ -116,6 +174,8 @@ export const WireContents = (): void => {
 
 				if (IsCurrent) Link.setAttribute("aria-current", "location");
 				else Link.removeAttribute("aria-current");
+
+				if (IsCurrent) Reveal(Link);
 			}
 		}
 	};

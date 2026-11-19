@@ -76,9 +76,43 @@ interface Props {
 	 * that has no sections to list, and then the rail is the tree alone.
 	 */
 	contents?: DocToc | null;
+
+	/**
+	 * Fold the pinned contents register. `auto` - the default - folds it when
+	 * the list would take more than half the rail's head, which is the cap
+	 * `Doc/_Layout.scss` puts on the register: a document with ninety sections
+	 * spends the whole head on rows and leaves the tree a slit, so it folds
+	 * itself to one row and gives the scroll back. A page may force either
+	 * answer; nothing is hidden, because the fold is open by default.
+	 */
+	contentsFold?: boolean | "auto";
+
+	/**
+	 * The contents register's tight step. `auto` matches the fold: a long list
+	 * is dense, a short one is not.
+	 */
+	contentsDense?: boolean | "auto";
 }
 
-const { sections, activeId, mobile = true, contents } = Astro.props;
+const {
+	sections,
+	activeId,
+	mobile = true,
+	contents,
+	contentsFold = "auto",
+	contentsDense = "auto",
+} = Astro.props;
+
+/** The rows a half-rail head holds at the reading step, minus its label. */
+const FoldFloor = 24;
+
+const ContentsCount = contents?.Items.length ?? 0;
+
+const FoldContents =
+	contentsFold === "auto" ? ContentsCount > FoldFloor : contentsFold;
+
+const DenseContents =
+	contentsDense === "auto" ? ContentsCount > FoldFloor : contentsDense;
 
 /**
  * The margin channel.
@@ -105,6 +139,21 @@ const SidebarTitle = T("sidebar.title", {
 	ns: "doc",
 	defaultValue: "Documentation",
 });
+
+/**
+ * What the rail says when it has no tree.
+ *
+ * `sections` empty used to print the title and then nothing: a label over a
+ * hole, which reads as a build that failed rather than as a manual whose tree
+ * has not been read. The rail is the one navigation a documentation page has,
+ * so it states the absence in the record grammar - `◎` and a sentence - rather
+ * than leaving its register empty.
+ */
+const SidebarEmpty = T("sidebar.empty", {
+	ns: "doc",
+	defaultValue:
+		"The manual's tree has not been read in this build, so the rail lists no page.",
+});
 ---
 
 <div class="doc-layout" id="top">
@@ -113,17 +162,31 @@ const SidebarTitle = T("sidebar.title", {
 			<div class="doc-layout__sticky">
 				{contents && contents.Items.length > 0 ? (
 					<div class="doc-layout__head">
-						<DocContents toc={contents} variant="rail" />
+						<DocContents
+							toc={contents}
+							variant="rail"
+							collapsible={FoldContents}
+							dense={DenseContents}
+						/>
 					</div>
 				) : null}
 
 				<div class="doc-layout__tree">
 					<p class="doc-layout__title">{SidebarTitle}</p>
-					<DynamicDocSidebar
-						Sections={sections}
-						ActiveId={activeId}
-						client:media="(min-width:1024px)"
-					/>
+					{sections.length > 0 ? (
+						<DynamicDocSidebar
+							Sections={sections}
+							ActiveId={activeId}
+							client:media="(min-width:1024px)"
+						/>
+					) : (
+						<p class="doc-layout__absent" data-state="empty">
+							<span class="doc-layout__absent-mark" aria-hidden="true">
+								◎
+							</span>
+							{SidebarEmpty}
+						</p>
+					)}
 				</div>
 
 				<div class="doc-layout__foot">
@@ -136,13 +199,20 @@ const SidebarTitle = T("sidebar.title", {
 		</aside>
 
 		<div class="doc-layout__main">
-			{mobile ? (
+			{mobile && sections.length > 0 ? (
 				<DynamicDocSidebar
 					Sections={sections}
 					ActiveId={activeId}
 					Mobile={true}
 					client:media="(max-width:1023.98px)"
 				/>
+			) : mobile ? (
+				<p class="doc-layout__absent doc-layout__absent--panel" data-state="empty">
+					<span class="doc-layout__absent-mark" aria-hidden="true">
+						◎
+					</span>
+					{SidebarEmpty}
+				</p>
 			) : null}
 			<slot />
 		</div>

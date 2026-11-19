@@ -118,7 +118,15 @@
 .detail-folio__part {
 	margin-inline-start: var(--optical-mark-gap);
 	color: var(--Foreground);
-	white-space: nowrap;
+
+	/* A part is a route label, and a route can be long: the template puts a
+	   `<wbr>` after every `/`, so the first break the line maker takes is the
+	   part's own separator. `nowrap` here was the one place a folio could run
+	   past its band - a deep page's `/DOC/DEEP-DIVE-FILESYSTEM-FOOTPRINT` is
+	   wider than the card it closes - and `anywhere` is the backstop for one
+	   segment longer than the band. */
+	white-space: normal;
+	overflow-wrap: anywhere;
 }
 
 // A fact is one unbreakable group. A count, a figure and an as-of are figures -

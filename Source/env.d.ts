@@ -21,6 +21,10 @@ declare module "*.astro" {
 // Server-only vars (AUTH0_*, SITE_ENVIRONMENT, etc.) - available via
 // import.meta.env on the server only, never included in client bundles.
 interface ImportMetaEnv {
+	readonly PUBLIC_AUTH0_DOMAIN: string;
+
+	readonly PUBLIC_AUTH0_CLIENT_ID: string;
+
 	readonly PUBLIC_AUTH_WORKER_URL: string;
 
 	readonly PUBLIC_DOWNLOAD_WORKER_URL: string;

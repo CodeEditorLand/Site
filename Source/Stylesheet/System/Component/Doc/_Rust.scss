@@ -14,6 +14,8 @@
 //   .doc-rust__tab         one crate
 //   .doc-rust__tab--active  the crate the frame is showing
 //   .doc-rust__frame       the rustdoc iframe
+//   .doc-rust__state       the frame's own state line: `STATUS: LOADING`
+//   .doc-rust__absent      the viewer's empty arm, inside the same frame
 //   .doc-rust__back        the way back into the documentation
 //
 // ─── THE REGISTER IS A LEDGER, NOT A GRID OF TILES ────────────────────────
@@ -253,6 +255,79 @@
 	border: 0;
 
 	background: var(--Card);
+}
+
+/* The frame's state line, printed above it: `STATUS:` and the word, in the
+   register the whole site states itself in. It is removed by the script when
+   the frame has loaded, so what a reader sees while rustdoc is on its way is
+   the same anatomy the rest of the document uses for "not yet". */
+.doc-rust__state {
+	@include mono-meta;
+	@include track(var(--track-row));
+
+	margin: 0;
+	padding: var(--space-tight) var(--space-reading);
+
+	background: var(--Mute);
+
+	border-block-start: var(--BorderWidth) var(--BorderStyle) var(--Border);
+	border-block-end: var(--BorderWidth) var(--BorderStyle) var(--Border);
+}
+
+.doc-rust__state-key {
+	color: var(--MuteForeground);
+}
+
+/* The viewer's empty arm: the frame's own box, stating what would be here. A
+   frame around nothing reads as a page that broke; a frame that says why it is
+   empty is a composition. */
+.doc-rust__absent {
+	display: grid;
+	justify-items: start;
+	gap: var(--space-reading);
+
+	min-block-size: 18rem;
+	padding: var(--space-chapter) var(--space-group);
+
+	background: var(--Card);
+
+	@include hairline;
+}
+
+.doc-rust__absent-mark {
+	margin: 0;
+
+	color: var(--MuteForeground);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-section);
+	line-height: 1;
+}
+
+.doc-rust__absent-value {
+	margin: 0;
+	max-inline-size: var(--MeasureOpening);
+
+	font-family: var(--FontMono);
+	font-size: var(--type-heading);
+	line-height: var(--type-heading-line);
+	letter-spacing: var(--track-join);
+
+	color: var(--Foreground);
+
+	text-wrap: balance;
+}
+
+.doc-rust__absent-note {
+	margin: 0;
+	max-inline-size: var(--MeasureOpening);
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+
+	text-wrap: pretty;
 }
 
 .doc-rust__back {

@@ -1,8 +1,10 @@
 {
 	"sidebar.title": "Documentation",
+	"sidebar.empty": "The manual's tree has not been read in this build, so the rail lists no page.",
 	"article.toc": "On this page",
 	"index.page": "PAGE",
 	"index.pages": "PAGES",
+	"index.note.absent": "DESCRIPTION: UNAVAILABLE",
 	"index.start.heading": "Where to Start",
 	"strip.published": "STATUS: PUBLISHED",
 	"strip.status": "STATUS:",

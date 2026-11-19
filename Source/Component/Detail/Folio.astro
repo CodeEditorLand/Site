@@ -89,7 +89,21 @@ const Facts: Fact[] = [
 <p class:list={["detail-folio", Class]}>
 	<span class="detail-folio__place">
 		<span class="detail-folio__index">{`〈${index}〉`}</span>
-		<span class="detail-folio__part">{part}</span>
+		{/* The part is a route, and a route is a path: a folio on a deep page
+		    prints `/DOC/DEEP-DIVE-FILESYSTEM-FOOTPRINT`, which at 26 tracked
+		    glyphs is wider than the band it closes. It breaks at its own `/`
+		    separators - the same `<wbr>` the source carries, for the same
+		    reason - so the part wraps inside itself instead of running past the
+		    band's right edge. A short part has no break taken. */}
+		<span class="detail-folio__part">
+			{part
+				.split("/")
+				.map((Segment, Position, Segments) =>
+					Position < Segments.length - 1
+						? [Segment, "/", <wbr />]
+						: [Segment],
+				)}
+		</span>
 	</span>
 
 	{Facts.length > 0 && (

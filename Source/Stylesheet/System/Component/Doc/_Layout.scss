@@ -11,6 +11,8 @@
 //   .doc-layout__tree      the rail's scrolling register - the manual's tree
 //   .doc-layout__title     the tree's visible label
 //   .doc-layout__foot      the rail's closing block, opened by a hairline
+//   .doc-layout__absent    the rail's own empty arm: a mark and a sentence
+//   .doc-layout__absent--panel  the same arm as the narrow-viewport panel
 //   .doc-layout__rust      the one link that leaves the documentation tree
 //   .doc-layout__main      the content column
 //   .doc-layout__margin    the apparatus: a column, a bar, or a ruled section
@@ -390,6 +392,41 @@
 	@include mono-meta;
 
 	display: block;
+}
+
+/* The rail with no tree. It keeps the tree's slot - the head above it, the foot
+   below - so the rail still reads as a rail; what changes is that the register
+   states the absence instead of printing a label over nothing. */
+.doc-layout__absent {
+	margin: 0;
+
+	font-size: var(--type-caption);
+	line-height: var(--type-caption-line);
+
+	color: var(--MuteForeground);
+
+	text-wrap: pretty;
+}
+
+.doc-layout__absent-mark {
+	color: var(--Mark);
+
+	margin-inline-end: var(--optical-mark-gap);
+}
+
+/* The narrow-viewport panel: the same sentence, at the panel's own inset, above
+   the content it would have navigated. */
+.doc-layout__absent--panel {
+	margin-block-end: var(--space-group);
+	padding: var(--space-tight) var(--space-reading);
+
+	background: var(--Card);
+
+	@include hairline;
+
+	@include bp(1024px) {
+		display: none;
+	}
 }
 
 .doc-layout__main {
