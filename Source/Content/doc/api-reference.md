@@ -62,7 +62,7 @@ command maps to a registered `Rust` handler in `Mountain`.
 import { invoke } from "@tauri-apps/api/core";
 
 const content: Uint8Array = await invoke("read_file", {
-	path: "/Users/user/Documents/example.ts",
+	path: "~/Documents/example.ts",
 });
 ```
 

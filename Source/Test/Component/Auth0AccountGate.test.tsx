@@ -135,17 +135,17 @@ describe("Auth0AccountGate", () => {
 		Auth0State.IsAuthenticated = true;
 
 		Auth0State.User = {
-			name: "Nikola Petrov",
-			email: "nikola@editor.land",
+			name: "Example Person",
+			email: "account@editor.land",
 			picture: "https://example.com/avatar.png",
 			email_verified: true,
 		};
 
 		render(<Auth0AccountGate Route="signin" />);
 
-		const DisplayName = screen.getByText("Nikola Petrov");
+		const DisplayName = screen.getByText("Example Person");
 
-		const Email = screen.getByText("nikola@editor.land");
+		const Email = screen.getByText("account@editor.land");
 
 		const DashboardLink = screen.getByText("Go to Dashboard");
 

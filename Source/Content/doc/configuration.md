@@ -189,7 +189,7 @@ same key.
 | `Cap`       | `7`                                                | (same)              | PostHog | Global cap on Sky `$exception` captures per 10-second window                                                             | Sky telemetry service |
 | `Replay`    | `false`                                            | (same)              | PostHog | Session recording toggle                                                                                                 | Sky telemetry service |
 | `Ask`       | `false`                                            | (same)              | PostHog | PostHog surveys toggle                                                                                                   | Sky telemetry service |
-| `Brand`     | `nikola`                                           | _(empty)_           | PostHog | Distinct-ID seed (e.g., GitHub username). Empty = auto-generated per-process.                                            | Sky telemetry service |
+| `Brand`     | `<your-handle>`                                    | _(empty)_           | PostHog | Distinct-ID seed (e.g., GitHub username). Empty = auto-generated per-process.                                            | Sky telemetry service |
 | `Capture`   | `true`                                             | `false`             | PostHog | Master telemetry kill switch. `false` short-circuits BOTH PostHog and OTLP everywhere.                                   | Sky telemetry service |
 | `Trace`     | `all`                                              | _(empty)_           | PostHog | Span filter. Comma-separated list of element/tag names, or `all`. Examples: `all`, `mountain,cocoon,ipc,extension-host`. | Mountain runtime, Sky |
 
