@@ -50,9 +50,22 @@ export interface FooterContent {
 	readonly Index: readonly FooterLink[];
 }
 
-/** A translator that resolves one key with an English default. */
+/**
+ * A translator that resolves one key with an English default.
+ *
+ * `Variable` is the row's own figure, not its words: the extent's count, the
+ * collation's, the year and the build's date are derived in this module and
+ * passed through the lookup, so `Footer.json` can hold the sentence
+ * (`{{extent}}␁SECTIONS`) without holding a number that would go stale the
+ * moment a sheet or a part is added. `Footer.astro`'s `bottomBar.copyright`
+ * already interpolates its year the same way.
+ */
 export type FooterTranslate = (
 	Key: string,
 
-	Options: { readonly defaultValue: string },
+	Options: {
+		readonly defaultValue: string;
+
+		readonly [Variable: string]: unknown;
+	},
 ) => string;

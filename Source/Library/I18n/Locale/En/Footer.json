@@ -88,9 +88,17 @@
 			"key": "TYPE",
 			"value": "IBM PLEX MONO"
 		},
+		"setin": {
+			"key": "SET IN",
+			"value": "13-72PX\u2001WEIGHT 400-500"
+		},
 		"build": {
 			"key": "BUILD",
 			"value": "ASTRO\u2001STATIC"
+		},
+		"impression": {
+			"key": "IMPRESSION",
+			"value": "{{date}}"
 		},
 		"field": {
 			"key": "FIELD",
@@ -100,11 +108,30 @@
 			"key": "INK",
 			"value": "1C1C1E"
 		},
+		"rule": {
+			"key": "RULE",
+			"value": "8%\u2001DIVIDER 20%"
+		},
 		"extent": {
-			"key": "EXTENT"
+			"key": "EXTENT",
+			"value": "{{extent}}\u2001SECTIONS"
+		},
+		"sheets": {
+			"key": "SHEETS",
+			"value": "{{extent}}\u2001FILED",
+			"unfiled": "\u25ce NO SHEETS FILED"
 		},
 		"edition": {
-			"key": "EDITION"
+			"key": "EDITION",
+			"value": "{{year}}"
+		},
+		"errata": {
+			"key": "ERRATA",
+			"value": "/STATUS\u2001EVERY UNFINISHED RECORD"
+		},
+		"cite": {
+			"key": "CITE AS",
+			"value": "CODEEDITORLAND\u2001FIELD MANUAL\u2001{{year}}"
 		}
 	}
 }

@@ -36,11 +36,38 @@
 		"sentence": "Nothing here is downloadable yet. Land builds from source on macOS, Windows and Linux; public installers, signing and verification artifacts are still in preparation.",
 		"well": "BUILD FROM SOURCE"
 	},
+	"ladder": {
+		"kicker": "/POSITION",
+		"heading": "How far along the line from source to signed artifact.",
+		"standfirst": "One axis, five positions, and the state of each. A matrix compares what is true in each column; this line answers a different question - which of these things exists today.",
+		"footnote": "The order is the release's, not the page's: source, a build from it, an installer, its checksum, its signature. Positions that are not reached print the state vocabulary's word rather than a blank, so the rail says how far the release has come without claiming it has arrived."
+	},
+	"platforms": {
+		"kicker": "/PLATFORMS",
+		"heading": "What each platform's artifact state is today.",
+		"standfirst": "The release manifest's own fields, one row per target. The artifact columns are the ones a public release fills in; the architecture column is the one that differs today."
+	},
+	"evidence": {
+		"kicker": "/EVIDENCE",
+		"heading": "What the release has a picture of, and what it does not.",
+		"standfirst": "One verified capture, printed at plate scale, beside the three screens the manual documents in full and the capture the build carries for each: none.",
+		"footnote": "A plate is not a screenshot. The one capture in the build is a texture study of the Land element's material, and it is printed as evidence of the material rather than of the interface; the set beside it says the same thing cell by cell."
+	},
 	"requirements": {
 		"kicker": "/REQUIREMENTS",
 		"heading": "What each platform needs before it builds.",
 		"footnote": "Minimum requirements, with the recommended figure in the panel beside it. The processor notes read as a pair: at the minimum your code runs at native CPU speed; at the recommended your work spans every monitor.",
 		"toolchain": "BUILD TOOLCHAIN (SOURCE)"
+	},
+	"install": {
+		"kicker": "/INSTALL",
+		"heading": "The source build is the only install path today.",
+		"standfirst": "Two steps in the Land repository, then one command to run the app. Every line is copied from the repository's own building document.",
+		"footnote": "Commands are quoted from the Land repository's Documentation/GitHub/Building.md: Step 1, Step 2, and Running the Application. The well prints each line as the document writes it and copies it without the shell prompt or the trailing annotation.",
+		"step": {
+			"one": "STEP 01 / COMPILE VS CODE SOURCE",
+			"two": "STEP 02 / BUILD LAND APPLICATION"
+		}
 	},
 	"previousReleases": {
 		"description": "No public releases yet. Older versions appear here when they ship; until one does, the record prints EMPTY and keeps its address.",
@@ -63,6 +90,11 @@
 		"downloadButton": "View Verification Plan",
 		"title": "Verification Ships With Public Releases.",
 		"verifyButton": "Verify Download"
+	},
+	"verify": {
+		"kicker": "/VERIFY",
+		"standfirst": "There is no artifact to check yet. These are the fields the first installer will publish, and the check that will apply to it.",
+		"footnote": "The check is the standard one for the artifacts this record promises: the digest the installer publishes, and the PGP signature the masthead marks as planned. On Linux, sha256sum prints the same digest as shasum -a 256."
 	},
 	"labels": {
 		"version": "Version:",
@@ -97,6 +129,9 @@
 		"kicker": "/TRANSPARENCY"
 	},
 	"platform": {
+		"matrix": {
+			"caption": "INSTALLER, SIGNATURE, CHECKSUM and SIZE are this page's release manifest fields. UNAVAILABLE means no public value has been published."
+		},
 		"field": {
 			"arch": "ARCH:",
 			"signing": "SIGNING:",

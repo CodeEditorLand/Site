@@ -34,6 +34,7 @@
 	"resendLink": "resend verification email",
 	"resendButton": "Resend Verification Email",
 	"backToSignIn": "Back to Sign In",
+	"backToEditor": "Back to the editor",
 	"resending": "Sending the link.",
 	"resent": "Verification email sent.",
 	"verifying": {

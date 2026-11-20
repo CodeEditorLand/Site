@@ -28,6 +28,16 @@ import { EdgeExtent } from "../../../Content/Edge/Register.js";
  */
 const Quad = "\u2001";
 
+/**
+ * Whether the register filed no sheets at all.
+ *
+ * The collation's empty arm is a sentence of its own (`◎ NO SHEETS FILED`), not
+ * the filled arm with a zero in it, so the row has two leaves in `Footer.json` -
+ * `colophon.sheets.value` and `colophon.sheets.unfiled`. Which arm the reader
+ * gets is decided here; the words for it are not.
+ */
+const SheetsUnfiled = EdgeExtent === "00";
+
 /** An off-site destination: the reader leaves this site in a second tab. */
 const Offsite = (Label: string, Href: string): FooterLink => ({
 	Label,
@@ -162,6 +172,8 @@ export const FooterData = (
 				defaultValue: "IMPRESSION",
 			}),
 			value: T("footer:colophon.impression.value", {
+				date: EdgeBuildDate,
+
 				defaultValue: EdgeBuildDate,
 			}),
 		},
@@ -193,6 +205,8 @@ export const FooterData = (
 		{
 			key: T("footer:colophon.extent.key", { defaultValue: "EXTENT" }),
 			value: T("footer:colophon.extent.value", {
+				extent: FrameExtent,
+
 				defaultValue: `${FrameExtent}${Quad}SECTIONS`,
 			}),
 		},
@@ -205,17 +219,25 @@ export const FooterData = (
 			// `00`, because a document with no sheets is a document that has not
 			// been collated, not one that was measured at zero.
 			key: T("footer:colophon.sheets.key", { defaultValue: "SHEETS" }),
-			value: T("footer:colophon.sheets.value", {
-				defaultValue:
-					EdgeExtent === "00"
+			value: T(
+				SheetsUnfiled
+					? "footer:colophon.sheets.unfiled"
+					: "footer:colophon.sheets.value",
+				{
+					extent: EdgeExtent,
+
+					defaultValue: SheetsUnfiled
 						? "\u25ce NO SHEETS FILED"
 						: `${EdgeExtent}${Quad}FILED`,
-			}),
+				},
+			),
 		},
 
 		{
 			key: T("footer:colophon.edition.key", { defaultValue: "EDITION" }),
 			value: T("footer:colophon.edition.value", {
+				year: Year,
+
 				defaultValue: String(Year),
 			}),
 		},
@@ -242,6 +264,8 @@ export const FooterData = (
 			// The signature line: how a reader cites the document they are holding.
 			key: T("footer:colophon.cite.key", { defaultValue: "CITE AS" }),
 			value: T("footer:colophon.cite.value", {
+				year: Year,
+
 				defaultValue: `CODEEDITORLAND${Quad}FIELD MANUAL${Quad}${Year}`,
 			}),
 		},

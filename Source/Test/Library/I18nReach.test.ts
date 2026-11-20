@@ -12,15 +12,18 @@
  * locale file the sentinel is never returned, so a row cannot pass by printing
  * its fallback, which is written to match the file.
  *
- * Two halves, and neither is enough alone: the first proves a declared bundle
- * is readable end to end, the second proves each route declares the namespaces
- * it reads, before the first `GetI18n()` call. A live bundle that no route
- * declares is the original defect; a declaration whose file is missing a key
- * still prints the fallback.
+ * Three halves, and none is enough alone: the first proves a declared bundle is
+ * readable end to end, the second proves every key a page *asks* for is in the
+ * bundle that page names, and the third proves each route declares the
+ * namespaces it reads before the first `GetI18n()` call. A live bundle that no
+ * route declares is the original defect; a declaration whose file is missing a
+ * key still prints the fallback; and a call site in a bundle with no entry for
+ * it is the same defect one level down - the page prints a sentence no file
+ * holds, so no translator can see it and no edit to the file can change it.
  */
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 
-import { dirname, join } from "node:path";
+import { dirname, join, relative } from "node:path";
 
 import { fileURLToPath } from "node:url";
 
@@ -31,6 +34,8 @@ import "@/Library/I18n/Client.js";
 import Account from "@/Library/I18n/Locale/En/Account.json";
 
 import Download from "@/Library/I18n/Locale/En/Download.json";
+
+import Footer from "@/Library/I18n/Locale/En/Footer.json";
 
 import Home from "@/Library/I18n/Locale/En/Home.json";
 
@@ -113,6 +118,7 @@ const BundlePairList: ReadonlyArray<readonly [string, unknown]> = [
 	["download", Download],
 	["account", Account],
 	["verify", Verify],
+	["footer", Footer],
 ];
 
 /**
@@ -212,6 +218,95 @@ describe("a declared bundle is readable end to end", () => {
 		expect(
 			T("home:hero.claim.standfirst", { defaultValue: Sentinel }),
 		).toBe(Home.hero.claim.standfirst);
+	});
+});
+
+/**
+ * The bundle behind each namespace a `T("ns:key")` call site can name.
+ *
+ * Measured over `Source/` (this tree excluded): 205 call sites, and they name
+ * exactly these five namespaces. A call site in a namespace missing from this
+ * map is reported rather than skipped, so a sixth namespace cannot enter the
+ * source and leave the suite quietly resolving nothing.
+ */
+const CallSiteBundle: Readonly<Record<string, unknown>> = {
+	account: Account,
+	download: Download,
+	footer: Footer,
+	home: Home,
+	verify: Verify,
+};
+
+/** A `T("ns:key")` call whose first argument is a qualified literal. */
+const QualifiedCall = /(?<![\w$.])(?:T|t)\(\s*"([a-z]+):([^"]+)"/g;
+
+/** The string a dotted key addresses in a bundle, or `undefined`. */
+const ResolveKey = (Bundle: unknown, Key: string): string | undefined => {
+	let Node: unknown = Bundle;
+
+	for (const Part of Key.split(".")) {
+		if (!Node || typeof Node !== "object") return undefined;
+
+		Node = (Node as Record<string, unknown>)[Part];
+	}
+
+	return typeof Node === "string" ? Node : undefined;
+};
+
+/** Every source file under a directory, skipping this suite's own tree. */
+const SourceFileList = (Directory: string): string[] =>
+	readdirSync(Directory, { withFileTypes: true }).flatMap((Entry) => {
+		const Path = join(Directory, Entry.name);
+
+		if (Entry.isDirectory()) {
+			return Entry.name === "Test" ? [] : SourceFileList(Path);
+		}
+
+		return /\.(?:ts|tsx|astro|js|jsx)$/.test(Entry.name) ? [Path] : [];
+	});
+
+describe("every key a page prints is in the bundle it names", () => {
+	it("has no call site whose key the English bundle lacks", () => {
+		const SourceRoot = join(dirname(fileURLToPath(import.meta.url)), "../..");
+
+		const ProblemList: string[] = [];
+
+		for (const Path of SourceFileList(SourceRoot)) {
+			/* Prose is not a call: a docblock may name a key the route does not
+			   read (`verify:...` in `DynamicEmailVerification`'s head), so
+			   comments are stripped before the scan - the same way the route
+			   declaration test below compares positions. A block comment is
+			   blanked in place, keeping its newlines, so the line a failure
+			   names is the line the call site is on. */
+			const Code = readFileSync(Path, "utf8")
+				.replace(/\/\*[\s\S]*?\*\//g, (Comment) =>
+					Comment.replace(/[^\n]/g, " "),
+				)
+				.replace(/^[ 	]*\/\/.*$/gm, "");
+
+			for (const Match of Code.matchAll(QualifiedCall)) {
+				const Namespace = Match[1]!;
+				const Key = Match[2]!;
+				const Line = Code.slice(0, Match.index ?? 0).split("\n").length;
+				const Where = `${relative(SourceRoot, Path)}:${Line}`;
+
+				if (!(Namespace in CallSiteBundle)) {
+					ProblemList.push(
+						`${Where} ${Namespace}:${Key} - namespace this suite does not resolve`,
+					);
+
+					continue;
+				}
+
+				if (ResolveKey(CallSiteBundle[Namespace], Key) === undefined) {
+					ProblemList.push(
+						`${Where} ${Namespace}:${Key} - no such leaf in ${Namespace}.json`,
+					);
+				}
+			}
+		}
+
+		expect(ProblemList).toEqual([]);
 	});
 });
 
