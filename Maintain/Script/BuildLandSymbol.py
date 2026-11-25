@@ -70,17 +70,17 @@ from fontTools.ttLib import TTFont
 from fontTools.ttLib.woff2 import compress
 
 # ─── THE FACE'S OWN NUMBERS ─────────────────────────────────────────────────
-UPM = 1000          # Plex Mono's unitsPerEm
-ADVANCE = 600       # every glyph in the face advances 0.6em - 1ch, the site's unit
-X_HEIGHT = 516      # OS/2.sxHeight - the `--optical-x-height` the page adjusts to
-CAP_HEIGHT = 698    # OS/2.sCapHeight
-ASCENT = 1025       # hhea, copied from the face so a mark cannot grow a line box
+UPM = 1000  # Plex Mono's unitsPerEm
+ADVANCE = 600  # every glyph in the face advances 0.6em - 1ch, the site's unit
+X_HEIGHT = 516  # OS/2.sxHeight - the `--optical-x-height` the page adjusts to
+CAP_HEIGHT = 698  # OS/2.sCapHeight
+ASCENT = 1025  # hhea, copied from the face so a mark cannot grow a line box
 DESCENT = -275
 TYPO_ASCENT = 780
 TYPO_DESCENT = -220
 TYPO_GAP = 300
 
-STROKE = 104        # between the vertical stem (109) and the horizontal bar (94)
+STROKE = 104  # between the vertical stem (109) and the horizontal bar (94)
 
 # ─── THE BULLSEYE ───────────────────────────────────────────────────────────
 # Radii, outward-in: ring 88, gap 85, ring 62, hole 55. The gap is wider than
@@ -111,16 +111,16 @@ def Circle(pen, cx, cy, r, seg=32, ccw=True):
     if not ccw:
         arcs = [(end, ctrl, start) for (start, ctrl, end) in reversed(arcs)]
     pen.moveTo(arcs[0][0])
-    for (_start, ctrl, end) in arcs:
+    for _start, ctrl, end in arcs:
         pen.qCurveTo(ctrl, end)
     pen.closePath()
 
 
 def Bullseye(pen, cx, cy, r, stroke, gap, inner_stroke):
-    Circle(pen, cx, cy, r, ccw=True)                     # outer edge
-    Circle(pen, cx, cy, r - stroke, ccw=False)           # inner edge of the outer ring
+    Circle(pen, cx, cy, r, ccw=True)  # outer edge
+    Circle(pen, cx, cy, r - stroke, ccw=False)  # inner edge of the outer ring
     inner = r - stroke - gap
-    Circle(pen, cx, cy, inner, ccw=True)                 # outer edge of the inner ring
+    Circle(pen, cx, cy, inner, ccw=True)  # outer edge of the inner ring
     Circle(pen, cx, cy, inner - inner_stroke, ccw=False)  # the hole
     return inner - inner_stroke
 
@@ -165,7 +165,9 @@ def Glyphs():
     out["uni25CE"] = pen.glyph()
 
     pen = TTGlyphPen(None)
-    left = Chevron(pen, BRACKET["apex"], BRACKET["top"], BRACKET["bottom"], BRACKET["stroke"])
+    left = Chevron(
+        pen, BRACKET["apex"], BRACKET["top"], BRACKET["bottom"], BRACKET["stroke"]
+    )
     out["uni3008"] = pen.glyph()
 
     pen = TTGlyphPen(None)
@@ -178,8 +180,12 @@ def Glyphs():
     # A visible .notdef: the one thing this face must never draw is nothing.
     pen = TTGlyphPen(None)
     x0, y0, x1, y1, t = 100, 0, 500, 700, 56
-    for (a, b, c, d) in [(x0, y0, x1, y0 + t), (x1 - t, y0, x1, y1),
-                         (x1, y1 - t, x0, y1), (x0, y1, x0 + t, y0)]:
+    for a, b, c, d in [
+        (x0, y0, x1, y0 + t),
+        (x1 - t, y0, x1, y1),
+        (x1, y1 - t, x0, y1),
+        (x0, y1, x0 + t, y0),
+    ]:
         pen.moveTo((a, b))
         pen.lineTo((c, b))
         pen.lineTo((c, d))
@@ -196,14 +202,16 @@ def Build(path):
     order = [".notdef", "space", "uni25CE", "uni3008", "uni3009"]
     builder = FontBuilder(UPM, isTTF=True)
     builder.setupGlyphOrder(order)
-    builder.setupCharacterMap({
-        0x20: "space",
-        0x25CE: "uni25CE",
-        0x3008: "uni3008",
-        0x3009: "uni3009",
-        0x2329: "uni3008",   # deprecated canonical equivalent of U+3008
-        0x232A: "uni3009",   # deprecated canonical equivalent of U+3009
-    })
+    builder.setupCharacterMap(
+        {
+            0x20: "space",
+            0x25CE: "uni25CE",
+            0x3008: "uni3008",
+            0x3009: "uni3009",
+            0x2329: "uni3008",  # deprecated canonical equivalent of U+3008
+            0x232A: "uni3009",  # deprecated canonical equivalent of U+3009
+        }
+    )
     builder.setupGlyf({name: glyphs[name] for name in order})
     # ─── THE SIDE BEARING IS THE POSITION, NOT A DECORATION ─────────────────
     # `hmtx.lsb` must equal the outline's own `xMin`. The outline's coordinates
@@ -225,32 +233,43 @@ def Build(path):
         metrics[name] = (ADVANCE, glyph.xMin if glyph.numberOfContours else 0)
     builder.setupHorizontalMetrics(metrics)
     builder.setupHorizontalHeader(ascent=ASCENT, descent=DESCENT, lineGap=0)
-    builder.setupNameTable({
-        "familyName": "Land Symbol",
-        "styleName": "Medium",
-        "uniqueFontIdentifier": "Land Symbol Medium; 1.000; LAND",
-        "fullName": "Land Symbol Medium",
-        "psName": "LandSymbol-Medium",
-        "version": "Version 1.000",
-        "copyright": "Copyright 2026 CodeEditorLand. Drawn for this site to the metrics of IBM Plex Mono.",
-        "licenseDescription": "This Font Software is licensed under the SIL Open Font License, Version 1.1.",
-        "licenseInfoURL": "https://openfontlicense.org",
-        "manufacturer": "CodeEditorLand",
-        "designer": "CodeEditorLand",
-        "description": (
-            "Three marks of the record grammar that IBM Plex Mono does not carry: U+25CE "
-            "BULLSEYE and U+3008/U+3009 LEFT/RIGHT ANGLE BRACKET (with the deprecated "
-            "canonical equivalents U+2329/U+232A mapped to the same outlines). Drawn at the "
-            "face's own advance (600/1000), x-height (516), cap height (698) and stroke "
-            "weight (104/1000)."
-        ),
-    })
-    builder.setupOS2(version=4,
-                     sTypoAscender=TYPO_ASCENT, sTypoDescender=TYPO_DESCENT,
-                     sTypoLineGap=TYPO_GAP, usWinAscent=ASCENT, usWinDescent=-DESCENT,
-                     sxHeight=X_HEIGHT, sCapHeight=CAP_HEIGHT, usWeightClass=500,
-                     usWidthClass=5, achVendID="LAND", fsType=0,
-                     fsSelection=0b100000000)   # USE_TYPO_METRICS, as the face sets it
+    builder.setupNameTable(
+        {
+            "familyName": "Land Symbol",
+            "styleName": "Medium",
+            "uniqueFontIdentifier": "Land Symbol Medium; 1.000; LAND",
+            "fullName": "Land Symbol Medium",
+            "psName": "LandSymbol-Medium",
+            "version": "Version 1.000",
+            "copyright": "Copyright 2026 CodeEditorLand. Drawn for this site to the metrics of IBM Plex Mono.",
+            "licenseDescription": "This Font Software is licensed under the SIL Open Font License, Version 1.1.",
+            "licenseInfoURL": "https://openfontlicense.org",
+            "manufacturer": "CodeEditorLand",
+            "designer": "CodeEditorLand",
+            "description": (
+                "Three marks of the record grammar that IBM Plex Mono does not carry: U+25CE "
+                "BULLSEYE and U+3008/U+3009 LEFT/RIGHT ANGLE BRACKET (with the deprecated "
+                "canonical equivalents U+2329/U+232A mapped to the same outlines). Drawn at the "
+                "face's own advance (600/1000), x-height (516), cap height (698) and stroke "
+                "weight (104/1000)."
+            ),
+        }
+    )
+    builder.setupOS2(
+        version=4,
+        sTypoAscender=TYPO_ASCENT,
+        sTypoDescender=TYPO_DESCENT,
+        sTypoLineGap=TYPO_GAP,
+        usWinAscent=ASCENT,
+        usWinDescent=-DESCENT,
+        sxHeight=X_HEIGHT,
+        sCapHeight=CAP_HEIGHT,
+        usWeightClass=500,
+        usWidthClass=5,
+        achVendID="LAND",
+        fsType=0,
+        fsSelection=0b100000000,
+    )  # USE_TYPO_METRICS, as the face sets it
     builder.setupPost(keepGlyphNames=False)
     builder.font["head"].created = 0
     builder.font["head"].modified = 0
@@ -265,10 +284,16 @@ def Report(woff2, left, right):
     os2 = font["OS/2"]
     glyf = font["glyf"]
     print("wrote", woff2, os.path.getsize(woff2), "bytes")
-    print("codepoints", {f"U+{c:04X}": n for c, n in sorted(font.getBestCmap().items())})
+    print(
+        "codepoints", {f"U+{c:04X}": n for c, n in sorted(font.getBestCmap().items())}
+    )
     print("advances", {n: font["hmtx"][n][0] for n in font.getGlyphOrder()})
-    print("bracket ink  U+3008", tuple(round(v) for v in left),
-          "| U+3009", tuple(round(v) for v in right))
+    print(
+        "bracket ink  U+3008",
+        tuple(round(v) for v in left),
+        "| U+3009",
+        tuple(round(v) for v in right),
+    )
     # The one number a rasteriser uses to place the drawing must agree with the
     # drawing. A glyph whose lsb is not its xMin is moved by whoever draws it,
     # and the mark lands somewhere the stylesheet never asked for.
@@ -279,17 +304,35 @@ def Report(woff2, left, right):
         lsb = font["hmtx"][name][1]
         if glyph.numberOfContours:
             if lsb != glyph.xMin:
-                sys.exit(f"{name}: hmtx.lsb {lsb} != outline xMin {glyph.xMin} - "
-                         "the rasteriser would move this glyph")
+                sys.exit(
+                    f"{name}: hmtx.lsb {lsb} != outline xMin {glyph.xMin} - "
+                    "the rasteriser would move this glyph"
+                )
             bearings[name] = f"{lsb}..{lsb + (glyph.xMax - glyph.xMin)} of {ADVANCE}"
         else:
             bearings[name] = f"blank of {ADVANCE}"
     print("bearings  ", bearings)
-    print("vertical   hhea", font["hhea"].ascent, font["hhea"].descent, font["hhea"].lineGap,
-          "| typo", os2.sTypoAscender, os2.sTypoDescender, os2.sTypoLineGap,
-          "| win", os2.usWinAscent, os2.usWinDescent,
-          "| x-height", os2.sxHeight, "| cap", os2.sCapHeight,
-          "| weight", os2.usWeightClass, "| fsSelection", bin(os2.fsSelection))
+    print(
+        "vertical   hhea",
+        font["hhea"].ascent,
+        font["hhea"].descent,
+        font["hhea"].lineGap,
+        "| typo",
+        os2.sTypoAscender,
+        os2.sTypoDescender,
+        os2.sTypoLineGap,
+        "| win",
+        os2.usWinAscent,
+        os2.usWinDescent,
+        "| x-height",
+        os2.sxHeight,
+        "| cap",
+        os2.sCapHeight,
+        "| weight",
+        os2.usWeightClass,
+        "| fsSelection",
+        bin(os2.fsSelection),
+    )
 
 
 if __name__ == "__main__":

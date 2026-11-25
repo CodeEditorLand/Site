@@ -205,8 +205,7 @@ def main() -> int:
             for point in cmap
             if hmtx[cmap[point]][0] != ADVANCE
             and not (
-                hmtx[cmap[point]][0] == 0
-                and unicodedata.category(chr(point)) in ZERO
+                hmtx[cmap[point]][0] == 0 and unicodedata.category(chr(point)) in ZERO
             )
         ]
 
@@ -251,12 +250,11 @@ def main() -> int:
     # that the module stays a data file rather than a wall of brackets.
     pairs = [f"[0x{start:04X}, 0x{end:04X}]" for start, end in ranges(covered)]
     lines = [
-        "\t" + ", ".join(pairs[at : at + 8]) + ","
-        for at in range(0, len(pairs), 8)
+        "\t" + ", ".join(pairs[at : at + 8]) + "," for at in range(0, len(pairs), 8)
     ]
     dumped_ranges = "[\n" + "\n".join(lines) + "\n]"
 
-    body = f'''/**
+    body = f"""/**
  * The share card's faces, as its rasteriser sees them.
  *
  * GENERATED - do not edit. `Maintain/Script/BuildOpenGraphFont.py` writes this
@@ -303,7 +301,7 @@ export const SOURCE_FILES: Readonly<Record<string, string>> = {dumped_paths};
  * is a blank.
  */
 export const COVERED_RANGES: readonly (readonly [number, number])[] = {dumped_ranges};
-'''
+"""
 
     FACE_MODULE.write_text(body, encoding="utf-8")
 
