@@ -380,7 +380,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 
 										className="border-b border-[var(--Border)] last:border-b-0"
 									>
-										<td className="px-4 py-3 font-mono text-foreground">
+										<td className="px-4 py-3 align-middle whitespace-nowrap font-mono text-foreground">
 											{Item.Name}
 										</td>
 										<td className="whitespace-nowrap px-4 py-3 align-middle text-foreground">
