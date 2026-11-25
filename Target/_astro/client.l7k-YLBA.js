@@ -1,0 +1,1 @@
+import{t}from"./Vendor/React.BGQ0gg-k.js";export{t as default};

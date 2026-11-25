@@ -231,9 +231,13 @@ describe("a declared bundle is readable end to end", () => {
  */
 const CallSiteBundle: Readonly<Record<string, unknown>> = {
 	account: Account,
+
 	download: Download,
+
 	footer: Footer,
+
 	home: Home,
+
 	verify: Verify,
 };
 
@@ -267,7 +271,10 @@ const SourceFileList = (Directory: string): string[] =>
 
 describe("every key a page prints is in the bundle it names", () => {
 	it("has no call site whose key the English bundle lacks", () => {
-		const SourceRoot = join(dirname(fileURLToPath(import.meta.url)), "../..");
+		const SourceRoot = join(
+			dirname(fileURLToPath(import.meta.url)),
+			"../..",
+		);
 
 		const ProblemList: string[] = [];
 

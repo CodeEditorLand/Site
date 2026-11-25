@@ -1,0 +1,1 @@
+import{t}from"./RichText.Dwfrl557.js";export{t as RichText,t as default};

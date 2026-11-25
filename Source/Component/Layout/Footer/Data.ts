@@ -223,6 +223,7 @@ export const FooterData = (
 				SheetsUnfiled
 					? "footer:colophon.sheets.unfiled"
 					: "footer:colophon.sheets.value",
+
 				{
 					extent: EdgeExtent,
 
