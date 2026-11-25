@@ -48,6 +48,15 @@ the vertical metrics must be identical (hhea 1025/-275/0, typo 780/-220/300,
 win 1025/275, fsSelection bit 8) or the line box of any run containing a mark
 grows. Then `npx sass --no-source-map Source/Stylesheet/System.scss /tmp/x.css`
 and read the two `@font-face` blocks back out of the output.
+
+─── THE BEARING IS THE POSITION ────────────────────────────────────────────
+`hmtx.lsb` is not decoration: a rasteriser that finds it disagreeing with the
+outline's `xMin` translates the drawing so the ink starts at the lsb, and every
+mark then lands somewhere the stylesheet never asked for. So the build reads the
+bearing back off the outline and the report refuses a file where the two
+disagree. `〈` is placed 153..477 of its 600-unit advance and `〉` 123..447 - the
+same 123-unit inset inside both marks and the same 153 outside both, which is
+what makes the pair read as a container with the word centred between it.
 """
 
 import math
@@ -196,7 +205,25 @@ def Build(path):
         0x232A: "uni3009",   # deprecated canonical equivalent of U+3009
     })
     builder.setupGlyf({name: glyphs[name] for name in order})
-    builder.setupHorizontalMetrics({name: (ADVANCE, 0) for name in order})
+    # ─── THE SIDE BEARING IS THE POSITION, NOT A DECORATION ─────────────────
+    # `hmtx.lsb` must equal the outline's own `xMin`. The outline's coordinates
+    # are absolute, and a rasteriser that finds the two disagreeing translates
+    # the drawing so its ink starts at the lsb - FreeType does exactly this, and
+    # so does every browser on this platform. Writing 0 for every glyph did not
+    # mean "no bearing": it meant "shift each mark left by its own xMin", which
+    # set `〈` and `〉` flush against their advance box's left edge. The pair then
+    # had no air on the outside of the opening mark, none on the inside of the
+    # closing one, and a wide gap on the two remaining sides - lopsided at every
+    # size, in both the span-composed and the single-string renderers, because
+    # it was a metric rather than a rule. So the bearing is read back off the
+    # drawing it places.
+    glyf = builder.font["glyf"]
+    metrics = {}
+    for name in order:
+        glyph = glyf[name]
+        glyph.recalcBounds(glyf)
+        metrics[name] = (ADVANCE, glyph.xMin if glyph.numberOfContours else 0)
+    builder.setupHorizontalMetrics(metrics)
     builder.setupHorizontalHeader(ascent=ASCENT, descent=DESCENT, lineGap=0)
     builder.setupNameTable({
         "familyName": "Land Symbol",
@@ -236,11 +263,28 @@ def Build(path):
 def Report(woff2, left, right):
     font = TTFont(woff2)
     os2 = font["OS/2"]
+    glyf = font["glyf"]
     print("wrote", woff2, os.path.getsize(woff2), "bytes")
     print("codepoints", {f"U+{c:04X}": n for c, n in sorted(font.getBestCmap().items())})
     print("advances", {n: font["hmtx"][n][0] for n in font.getGlyphOrder()})
     print("bracket ink  U+3008", tuple(round(v) for v in left),
           "| U+3009", tuple(round(v) for v in right))
+    # The one number a rasteriser uses to place the drawing must agree with the
+    # drawing. A glyph whose lsb is not its xMin is moved by whoever draws it,
+    # and the mark lands somewhere the stylesheet never asked for.
+    bearings = {}
+    for name in font.getGlyphOrder():
+        glyph = glyf[name]
+        glyph.recalcBounds(glyf)
+        lsb = font["hmtx"][name][1]
+        if glyph.numberOfContours:
+            if lsb != glyph.xMin:
+                sys.exit(f"{name}: hmtx.lsb {lsb} != outline xMin {glyph.xMin} - "
+                         "the rasteriser would move this glyph")
+            bearings[name] = f"{lsb}..{lsb + (glyph.xMax - glyph.xMin)} of {ADVANCE}"
+        else:
+            bearings[name] = f"blank of {ADVANCE}"
+    print("bearings  ", bearings)
     print("vertical   hhea", font["hhea"].ascent, font["hhea"].descent, font["hhea"].lineGap,
           "| typo", os2.sTypoAscender, os2.sTypoDescender, os2.sTypoLineGap,
           "| win", os2.usWinAscent, os2.usWinDescent,
