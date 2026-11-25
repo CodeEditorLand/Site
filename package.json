@@ -117,7 +117,7 @@
 		"react-is": "19.3.1",
 		"react-hook-form": "7.92.0",
 		"react-i18next": "18.0.3",
-		"react-resizable-panels": "4.24.2",
+		"react-resizable-panels": "4.24.3",
 		"recharts": "3.11.1",
 		"sass": "1.108.2",
 		"simplex-noise": "4.0.3",

@@ -116,7 +116,11 @@ describe("RoadmapBand", () => {
 		// the site's route line.
 		expect(All("jelly-button")).toHaveLength(1);
 
-		expect(Text(One(".home-release__destination"))).toBe("/TRACK PROGRESS");
+		// The route line prints `/ LABEL`, with the one space every other route
+		// line on the site keeps after the slash (`/ HOST: MOUNTAIN`,
+		// `/ CHANNEL: PUBLIC`). The welded form this assertion used to expect was
+		// never what the block printed.
+		expect(Text(One(".home-release__destination"))).toBe("/ TRACK PROGRESS");
 
 		// Neither action may render in Jelly's default blue: the ink is the
 		// site's, and a bright accent that is in neither the palette nor the
