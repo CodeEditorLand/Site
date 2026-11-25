@@ -1,0 +1,52 @@
+---
+/**
+ * Containment - the grammar's `〈 〉` pair, rendered once.
+ *
+ * ─── WHAT IT IS ───────────────────────────────────────────────────────────
+ * The record grammar's containment mark: `〈TERM〉`. It says the term between
+ * the brackets is a runtime claim - a stamp, an architecture, a platform, a
+ * mode - and it is a PAIR, not two marks that happen to sit near each other.
+ * So it is one component: one ink on both brackets, one inset inside both, and
+ * the term centred between them.
+ *
+ * ─── THE AIR INSIDE IS A METRIC, NOT A SPACE ──────────────────────────────
+ * `〈` and `〉` are drawn in the site's own face (`Public/Font/Land-Symbol/`,
+ * `Maintain/Script/BuildLandSymbol.py`) at 153..477 and 123..447 of a 600-unit
+ * advance: 123 units of inset inside each mark and 153 outside each. The pair
+ * is therefore even by construction, and the only thing that can spoil it is a
+ * literal space.
+ *
+ * A whitespace-only line between two elements in an `.astro` template is NOT
+ * dropped the way JSX drops it: it survives as a text node and collapses to a
+ * real space. That is how the span-composed renderers came to print
+ * `〈 TERM〉` - air after the opening mark, none before the closing one - while
+ * the single-string renderers (`〈EDITION 01〉` in `Content/Artifact/Stamp.ts`,
+ * `〈MACOS〉` in `Download/Data.ts`) printed the same pair evenly. The three
+ * spans below are written on ONE line, with no whitespace between them, so the
+ * mark cannot pick up a space from its own source; a caller that composes the
+ * pair by hand is doing this component's job twice, and will get it wrong.
+ *
+ * ─── THE INK ──────────────────────────────────────────────────────────────
+ * The brackets take the mark layer's own ink (`Mark/_Containment.scss`); the
+ * term takes the block's, passed as `ink`, or inherits it. The brackets are
+ * `aria-hidden`: `〈NATIVE BACKEND〉` is read as "native backend", because the
+ * containment is drawn, not spoken.
+ */
+interface Props {
+	/** The contained term, printed verbatim. */
+	label: string;
+
+	/**
+	 * The term's ink, when the block prints it in one of its own
+	 * (`var(--SpineIPCFore)`, `var(--MuteForeground)`). Absent, it inherits.
+	 */
+	ink?: string;
+
+	/** Extra classes from the block, appended after the mark's own. */
+	class?: string;
+}
+
+const { label, ink, class: Class } = Astro.props;
+---
+
+<span class:list={["Containment", Class]}><span class="Containment__bracket" aria-hidden="true">〈</span><span class="Containment__label" style={ink ? `color:${ink}` : undefined}>{label}</span><span class="Containment__bracket" aria-hidden="true">〉</span></span>

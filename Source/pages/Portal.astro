@@ -4,7 +4,7 @@
  *
  * ─── THE COMPOSITION ──────────────────────────────────────────────────────
  *   one    the two-panel opening: the white data card (`# PORTAL_01`, the
- *          page's only `h1`, the `〈 FOUR MODES 〉` claim, the protocol line,
+ *          page's only `h1`, the `〈FOUR MODES〉` claim, the protocol line,
  *          the programme run, `STATUS: PREPARING`, the facts ledger) beside
  *          the evidence plate, one divider-ink gutter between them
  *   two    the four tier bands, on the creme field, outlined and unfilled -
@@ -19,10 +19,10 @@
  * ─── THE RULES THIS FILE KEEPS ────────────────────────────────────────────
  * - **One `h1`, bare.** The page title is not a runtime stamp, so the `〈 〉`
  *   around it are gone (§9 Q7); the `# PORTAL_01` marker is identity and
- *   stays. The claim under it, `〈 FOUR MODES 〉`, is a claim and keeps its
+ *   stays. The claim under it, `〈FOUR MODES〉`, is a claim and keeps its
  *   brackets (§1.5).
  * - **`h2` count is four, and each is a containment stamp.** The four plan
- *   names print as `〈 CLOUD PLAN 〉` … `〈 ENTERPRISE PLAN 〉`, as the baseline
+ *   names print as `〈CLOUD PLAN〉` … `〈ENTERPRISE PLAN〉`, as the baseline
  *   printed them (Appendix B).
  * - **Features are record rows, not headings.** A feature is a marker, a name
  *   and the clause that qualifies the name - never an `h3`, so the page's
@@ -49,6 +49,7 @@ import FieldRecordDataCard from "../Component/Brand/FieldRecordDataCard.astro";
 import { FieldRecordEvidence } from "../Component/Brand/FieldRecordEvidence";
 import { FieldRecordSeal } from "../Component/Brand/FieldRecordSeal";
 import { Header } from "../Component/Layout/Header";
+import Containment from "../Component/Mark/Containment.astro";
 import SurfaceBadge from "../Component/Surface/SurfaceBadge.astro";
 import SurfaceHead from "../Component/Surface/SurfaceHead.astro";
 import SurfaceStatusLine from "../Component/Surface/SurfaceStatusLine.astro";
@@ -144,31 +145,17 @@ const Plan = [{ key: "PLAN", value: "PLANNED" }];
 							/>
 
 							{/* A claim, not a title: `〈 〉` is allowed here (§9 Q7). It
-							    is the page's one claim at L, under the `h1` at XL. */}
+							    is the page's one claim at L, under the `h1` at XL.
+							    The pair is `Mark/Containment.astro` - the one renderer
+							    of the containment mark - so it cannot pick up a space
+							    from this template. */}
 							<p class="portal-head__claim">
-								<span style="color:var(--MuteForeground)">
-									〈
-								</span>
-								<span
-									style={`color:var(--${Page.subheadingInk})`}
-								>
-									{Page.subheading}
-								</span>
-								<span style="color:var(--MuteForeground)">
-									〉
-								</span>
+								<Containment label={Page.subheading} ink={`var(--${Page.subheadingInk})`} />
 							</p>
 
 							<p class="portal-head__protocol">
-								<span style="color:var(--MuteForeground)">
-									/
-								</span>
-								<span style="color:var(--SemanticSky)">
-									PROTOCOL
-								</span>
-								<span style="color:var(--CardForeground)">
-									:{Page.protocol}
-								</span>
+								<span style="color:var(--MuteForeground)">/</span>{" "}
+								<span style="color:var(--SemanticSky)">PROTOCOL</span><span style="color:var(--CardForeground)">: {Page.protocol}</span>
 							</p>
 							<p class="portal-head__program">
 								{Page.program.join("\u2001")}
@@ -238,30 +225,16 @@ const Plan = [{ key: "PLAN", value: "PLANNED" }];
 							<FieldRecordSeal element={Tier.seal} size="s" />
 						</div>
 
-						{/* The plan name is a containment stamp: `〈 CLOUD PLAN 〉`,
-							    as the baseline printed it (Appendix B). */}
+						{/* The plan name is a containment stamp: `〈CLOUD PLAN〉`,
+						    as the baseline printed it (Appendix B). One renderer,
+						    so the pair is even and no template space gets inside. */}
 						<div class="PortalTierRule mt-3 pt-3">
 							<h2 class="font-mono text-card-foreground font-medium uppercase tracking-row">
-								<span style="color:var(--MuteForeground)">
-									〈
-								</span>
-								<span style={`color:var(--${Tier.ink})`}>
-									{Tier.title}
-								</span>
-								<span style="color:var(--MuteForeground)">
-									〉
-								</span>
+								<Containment label={Tier.title} ink={`var(--${Tier.ink})`} />
 							</h2>
 							<p class="font-mono text-card-foreground type-meta uppercase tracking-rule mt-1">
-								<span style="color:var(--MuteForeground)">
-									/
-								</span>
-								<span style="color:var(--SemanticSky)">
-									PROTOCOL
-								</span>
-								<span style="color:var(--CardForeground)">
-									: {Tier.protocol}
-								</span>
+								<span style="color:var(--MuteForeground)">/</span>{" "}
+								<span style="color:var(--SemanticSky)">PROTOCOL</span><span style="color:var(--CardForeground)">: {Tier.protocol}</span>
 							</p>
 						</div>
 

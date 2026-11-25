@@ -13,10 +13,12 @@
  * and the element card prints its description after the ledger. Both are the
  * caller's content, so the block does not grow a prop per difference.
  *
- * The brackets are `aria-hidden`: `〈 NATIVE BACKEND 〉` is read as "native
+ * The brackets are `aria-hidden`: `〈NATIVE BACKEND〉` is read as "native
  * backend" - the containment is drawn, not spoken.
  */
 import type { CardRecord } from "../../Content/Home/Type.js";
+
+import Containment from "../Mark/Containment.astro";
 
 import { ToneOf } from "./Tone.js";
 
@@ -31,13 +33,7 @@ const { card } = Astro.props;
 	<div class="home-record__stamps">
 		{card.Stamp.map((Line) => (
 			<p class="home-record__stamp">
-				<span class="home-record__bracket" aria-hidden="true">
-					〈
-				</span>
-				<span class="home-record__stamp-text">{Line}</span>
-				<span class="home-record__bracket" aria-hidden="true">
-					〉
-				</span>
+				<Containment label={Line} ink="var(--MuteForeground)" />
 			</p>
 		))}
 	</div>
@@ -45,11 +41,8 @@ const { card } = Astro.props;
 
 <div class="home-record__route">
 	<p class="home-record__route-line">
-		<span class="home-record__slash" aria-hidden="true">
-			/
-		</span>
-		<span class="home-record__route-key">{card.Route.Key}</span>
-		<span class="home-record__route-value">:{card.Route.Value}</span>
+		<span class="home-record__slash" aria-hidden="true">/</span>{" "}
+		<span class="home-record__route-key">{card.Route.Key}</span><span class="home-record__route-value">: {card.Route.Value}</span>
 	</p>
 	<p class="home-record__service">{card.Service}</p>
 </div>

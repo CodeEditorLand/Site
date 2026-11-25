@@ -24,6 +24,9 @@
 //              `Mark/Mark.astro`
 //   FOLD       `›`, the disclosure that is shut, and the only mark that turns
 //              `Mark/Mark.astro`, `UI/Fold.astro`, `Record/RecordAside.astro`
+//   CONTAINMENT `〈TERM〉`, the pair that holds a runtime claim
+//              `Mark/Containment.astro` - the ONLY renderer of the pair, in the
+//              span-composed blocks and in the inline-string ones alike
 //
 // ─── THE FOUR LAWS ────────────────────────────────────────────────────────
 //
@@ -57,4 +60,5 @@
 @use "Glyph";
 @use "Seal";
 @use "Crosshair";
+@use "Containment";
 @use "Adverse";

@@ -8,8 +8,8 @@
  * §1.3 forbids, and two cards side by side were what made the release state read
  * as two offers rather than two states of one offer.
  *
- * The record is read as: a stamped header (`# RELEASE_01`, `〈 ACTIVE SOURCE 〉`,
- * `/ CHANNEL : PUBLIC`, `STATUS:`, `TARGET:`, `SIGNAL:`), the state's one action,
+ * The record is read as: a stamped header (`# RELEASE_01`, `〈ACTIVE SOURCE〉`,
+ * `/ CHANNEL: PUBLIC`, `STATUS:`, `TARGET:`, `SIGNAL:`), the state's one action,
  * the state's name, and then the two labelled lists it is read through.
  *
  * `Elements` is one row per element the release carries - its name as a badge
@@ -53,20 +53,16 @@ const ActionInk =
 		<div class="home-release__stamp">
 			<span class="home-release__index">{card.Index}</span>
 
+			{/* THE STAMP IS PRINTED WITHOUT WHITESPACE BETWEEN ITS SEGMENTS.
+			    The segments are the line: every space the line prints is in the
+			    data (`Content/Home/Roadmap.ts`), and none is the template's. A
+			    whitespace-only line between two elements survives as a text node
+			    and collapses to a real space, which is what turned the
+			    containment pair into `〈 ACTIVE SOURCE 〉` - air after the
+			    opening mark and none before the closing one - while the pair's
+			    own inset is drawn by the face. See `Mark/Containment.astro`. */}
 			{card.Stamp.map((Line) => (
-				<span class="home-release__stamp-line">
-					{Line.map((Span) => (
-						<span
-							style={
-								Span.Ink === undefined
-									? undefined
-									: `color:${Span.Ink}`
-							}
-						>
-							{Span.Text}
-						</span>
-					))}
-				</span>
+				<span class="home-release__stamp-line">{Line.map((Span) => (<span style={Span.Ink === undefined ? undefined : `color:${Span.Ink}`}>{Span.Text}</span>))}</span>
 			))}
 		</div>
 

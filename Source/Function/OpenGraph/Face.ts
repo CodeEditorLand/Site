@@ -32,7 +32,7 @@ export const FACE_SHA256: Readonly<Record<string, string>> = {
 		"073c6509382aaa36b2ce2199de611e8c4aea85927ba76c412b0c98efccc7ea27",
 
 	"LandSymbol-Medium.ttf":
-		"ac407f1559a2351d333dd8b713aed0936112936a0800e06fd796a9a07606d4c2",
+		"2a23051b3b1e6bd34ca11c11836e2436e841759a601a5d08ef83d932fea1e458",
 };
 
 /**
@@ -51,7 +51,7 @@ export const SOURCE_SHA256: Readonly<Record<string, string>> = {
 		"8c2c290cbd998fa1f647e4572aca6ebbd72589551b0f3f9f8bb8628fbb8219d5",
 
 	"LandSymbol-Medium.woff2":
-		"697d7c86817b36020848f63eb33415b521c8a0ad39caf2caf3b7899ae9fe769e",
+		"5d513bbf16db46a57aea0d59588e2dd3d3113a95917bf52f79f0b16804cb17fe",
 };
 
 /** Where each source face lives, relative to the site root. */

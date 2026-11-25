@@ -10,6 +10,14 @@
  * brackets, its keyword and its value in three different inks, and a string cannot
  * carry that. The manifest lines are single strings: each one is a complete
  * `KEY: VALUE` row and it prints as one.
+ *
+ * EVERY SPACE THE LINE PRINTS IS IN THE SEGMENT TEXT - `" CHANNEL"`, `": PUBLIC"`,
+ * `" ACTIVE"` - because `ReleaseCard.astro` prints the segments with no
+ * whitespace between them. A whitespace-only line between two elements in a
+ * template is not dropped the way JSX drops it: it survives as a text node and
+ * collapses to a real space, which put air on one side of the containment pair
+ * and none on the other. So the data spells the line out, and the template is
+ * only the inks.
  */
 import type { ReleaseCard } from "./Type.js";
 
@@ -65,7 +73,7 @@ export const ReleaseCards: readonly ReleaseCard[] = [
 			[
 				{ Text: "/", Ink: Ink.Bracket },
 
-				{ Text: "CHANNEL", Ink: Ink.Key },
+				{ Text: " CHANNEL", Ink: Ink.Key },
 
 				{ Text: ": PUBLIC", Ink: Ink.Label },
 			],
@@ -73,7 +81,7 @@ export const ReleaseCards: readonly ReleaseCard[] = [
 			[
 				{ Text: "STATUS:", Ink: Ink.Label },
 
-				{ Text: "ACTIVE", Ink: Ink.Value },
+				{ Text: " ACTIVE", Ink: Ink.Value },
 			],
 
 			[{ Text: "TARGET: NATIVE DESKTOP PATH" }],
@@ -215,7 +223,7 @@ export const ReleaseCards: readonly ReleaseCard[] = [
 			[
 				{ Text: "/", Ink: Ink.Bracket },
 
-				{ Text: "CHANNEL", Ink: Ink.Key },
+				{ Text: " CHANNEL", Ink: Ink.Key },
 
 				{ Text: ": PUBLIC", Ink: Ink.Label },
 			],
@@ -223,7 +231,7 @@ export const ReleaseCards: readonly ReleaseCard[] = [
 			[
 				{ Text: "STATUS:", Ink: Ink.Label },
 
-				{ Text: "LOADING", Ink: "var(--MuteForeground)" },
+				{ Text: " LOADING", Ink: "var(--MuteForeground)" },
 			],
 
 			[{ Text: "TARGET: V1.0" }],

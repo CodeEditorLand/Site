@@ -89,7 +89,7 @@ export interface RegisterRow extends RecordRow {
 /**
  * The record anatomy every card in the features and architecture bands prints.
  *
- * `Stamp` is the two containment lines (`〈 NATIVE BACKEND 〉`), `Route` is the
+ * `Stamp` is the two containment lines (`〈NATIVE BACKEND〉`), `Route` is the
  * `/ KEY :VALUE` line above `Service`, and `Metadata` is the four-row ledger
  * that closes the card before its prose.
  */

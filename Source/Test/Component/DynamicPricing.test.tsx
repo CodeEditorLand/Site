@@ -163,8 +163,10 @@ describe("RoadmapBand", () => {
 			"SIGNAL: NO CHROMIUM / NO ELECTRON / CC0",
 		);
 
-		// And the phase the state belongs to, in the containment stamp.
-		expect(ActiveStamp).toContain("〈 ACTIVE SOURCE 〉");
+		// And the phase the state belongs to, in the containment stamp. The pair
+		// carries no literal space: its inset inside `〈` and `〉` is drawn by the
+		// face (`Mark/Containment.astro`), so the printed text is tight.
+		expect(ActiveStamp).toContain("〈ACTIVE SOURCE〉");
 
 		const NextStamp = StampOf(Next);
 

@@ -1,0 +1,41 @@
+// ─── CONTAINMENT: THE PAIR, NOT TWO MARKS ─────────────────────────────────
+//
+// `〈TERM〉` is one mark of the grammar (`Mark/Containment.astro` is its only
+// renderer). This partial owns the two things a block must not decide for
+// itself: the ink of the brackets, and the fact that the pair adds no space of
+// its own.
+//
+// ─── WHY THERE IS NO MARGIN HERE ──────────────────────────────────────────
+// The inset inside the brackets is drawn, not styled. The face places `〈` at
+// 153..477 of its 600-unit advance and `〉` at 123..447, so each mark already
+// carries 123 units of air on its inside and 153 on its outside - equal on both
+// marks, and the term centred between them at every size. A `margin-inline` on
+// one side would be a second, hand-tuned inset fighting the drawn one: the
+// mark would then be even at one size and wrong at every other.
+//
+// The consequence is the one rule this layer does enforce: NO LITERAL SPACE
+// INSIDE THE PAIR. A space in the source collapses to ~0.6em and lands on
+// whichever side the markup happened to put it, which is exactly the lopsided
+// `〈 TERM〉` this mark was printing before the pair had one renderer.
+//
+// ─── THE INK ──────────────────────────────────────────────────────────────
+// The brackets are the mark layer's ink (`--MuteForeground`), never the term's:
+// the containment is a mark about the claim, and a mark about a line takes the
+// mark ink. The term keeps whatever the block gives it, so `〈ACTIVE SOURCE〉`
+// can print its claim in the protocol's own colour without the brackets
+// following it there.
+
+@use "../Mixin" as *;
+
+.Containment {
+	display: inline;
+}
+
+.Containment__bracket {
+	color: var(--MuteForeground);
+}
+
+.Containment__label {
+	/* no inset, no tracking of its own: the pair is set by the run it joins */
+	color: inherit;
+}

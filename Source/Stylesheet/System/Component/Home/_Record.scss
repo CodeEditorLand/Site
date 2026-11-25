@@ -8,14 +8,13 @@
 //   .home-record__seal         the 32px mark's box
 //   .home-record__figure       the engraved seal inside that box
 //   .home-record__stamps       the containment pair
-//   .home-record__stamp        one `〈 ... 〉` line
-//   .home-record__bracket      the bracket glyph
-//   .home-record__stamp-text   the contained term
-//   .home-record__route        the `/ KEY :VALUE` line over its service line
+//   .home-record__stamp        one `〈TERM〉` line - the pair itself is
+//                              `Mark/Containment.astro` and takes no class here
+//   .home-record__route        the `/ KEY: VALUE` line over its service line
 //   .home-record__route-line   that line
 //   .home-record__slash        the leading `/`
 //   .home-record__route-key    the keyword
-//   .home-record__route-value  `:VALUE`
+//   .home-record__route-value  `: VALUE`
 //   .home-record__service      the service line under the route
 //   .home-record__status       the status row
 //   .home-record__status-key   `STATUS:`
@@ -154,14 +153,6 @@
 	letter-spacing: var(--track-rule);
 	font-weight: 500;
 	color: var(--CardForeground);
-}
-
-.home-record__bracket {
-	color: var(--MuteForeground);
-}
-
-.home-record__stamp-text {
-	color: var(--MuteForeground);
 }
 
 .home-record__route {
