@@ -98,6 +98,21 @@ const StatusTone: Record<string, BadgeTone> = {
 	Verified: "accent",
 };
 
+// The tier is its OWN vocabulary. `Debug`, `Release` and `Build` are the three
+// build profiles, not statuses, so reading them through `StatusTone` matched
+// nothing and every tier word fell through to `quiet` - a `--Mute` body on a
+// creme field is the canvas itself, and its `--MuteForeground` label is the
+// bare text the column printed. The tier now has an ink of its own from the
+// same palette the statuses use: development is the amber channel, the release
+// is the shipped green, a bundler artifact is the build blue.
+const TierTone: Record<string, BadgeTone> = {
+	Debug: "tcp",
+
+	Release: "grpc",
+
+	Build: "ipc",
+};
+
 // A row of feature marks cycles the spine palette so it reads as a set of
 // distinct marks rather than the same outline repeated.
 const FeatureToneCycle: BadgeTone[] = [
@@ -368,10 +383,10 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 										<td className="px-4 py-3 font-mono text-foreground">
 											{Item.Name}
 										</td>
-										<td className="px-4 py-3 text-foreground">
+										<td className="whitespace-nowrap px-4 py-3 align-middle text-foreground">
 											<Badge
 												tone={
-													StatusTone[Item.Tier] ??
+													TierTone[Item.Tier] ??
 													"quiet"
 												}
 
@@ -386,7 +401,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 										<td className="px-4 py-3 text-foreground opacity-70">
 											{Item.Feature}
 										</td>
-										<td className="px-4 py-3 text-foreground">
+										<td className="whitespace-nowrap px-4 py-3 align-middle text-foreground">
 											<Badge className="StaccatoBadge">
 												{Item.Status}
 

@@ -124,19 +124,37 @@ jelly-card .RichTextCopyButton {
 	color: var(--Foreground);
 }
 
-/* Fallback: render jelly-badge as a visible pill before hydration completes.
-   Without this, the custom element renders as bare inherited text (gray
-   on the creme canvas) until the shadow-DOM styles upgrade it. */
+/* Fallback: the pill before the custom element upgrades.
+   ─────────────────────────────────────────────────────────────────────────
+   Every call site hands the badge its ink pair as the two custom properties the
+   shadow body paints with - `--jelly-fill` and `--jelly-label` - so the fallback
+   is the same pill painted from the same two properties. It used to paint a
+   fixed `--Secondary` white, which is a different badge from the one the
+   element becomes: the masthead's mint pill and the table's graphite pill both
+   flashed white, and a badge whose element never upgraded stayed white. The
+   body, the label, the hairline and the box now come from the badge's own
+   declarations, so the pill is the same object before and after the upgrade and
+   there is no fill or label left to lose. */
 jelly-badge:not(:defined) {
 	display: inline-flex;
 	align-items: center;
-	border: 1px solid transparent;
-	padding: 0.125rem 0.625rem;
-	font-size: var(--TypeScaleS);
+	box-sizing: border-box;
+	min-height: 24px;
+	border: 1px solid var(--jelly-color-border-default, transparent);
+	padding-inline: 0.5625rem;
+	padding-block: 0;
+	font-size: var(--jelly-badge-font-size, var(--TypeScaleS));
 	line-height: 1rem;
 	font-weight: 500;
-	background: var(--Secondary);
-	color: var(--SecondaryForeground);
+	background-color: var(--jelly-fill, var(--Secondary));
+	color: var(--jelly-label, var(--SecondaryForeground));
+}
+
+/* The shadow badge's `size="large"` step is 30px; the fallback takes the same
+   step so the pill does not jump when the element upgrades. */
+jelly-badge:not(:defined)[size="large"] {
+	min-height: 30px;
+	padding-inline: 0.75rem;
 }
 
 /* Jelly UI radius custom properties (shared by all components).
