@@ -192,7 +192,8 @@ function CalendarPlate({
 
 			{note === undefined ? null : (
 				<p className="CalendarPlate__Empty">
-					<span className="MarkRelation" aria-hidden="true" />{note}
+					<span className="MarkRelation" aria-hidden="true" />
+					{note}
 				</p>
 			)}
 		</div>

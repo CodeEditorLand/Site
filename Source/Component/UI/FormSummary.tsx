@@ -123,7 +123,12 @@ export const FormSummary = ({
 				))}
 			</ul>
 
-			{Note ? <p className="FormSummary__Note">{`↳${Note}`}</p> : null}
+			{Note ? (
+				<p className="FormSummary__Note">
+					<span className="MarkRelation" aria-hidden="true" />
+					{Note}
+				</p>
+			) : null}
 		</div>
 	);
 };

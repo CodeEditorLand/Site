@@ -69,7 +69,10 @@ const DocPath = (Name: string): string => `/Doc/${Name.toLowerCase()}`;
  * not a space this file typed: the key closes with the colon mark and the parts
  * are joined by the separator mark.
  */
-const Row = (Key: string, ...Parts: readonly string[]): readonly StampSpan[] => [
+const Row = (
+	Key: string,
+	...Parts: readonly string[]
+): readonly StampSpan[] => [
 	{ Text: Key },
 
 	{ Mark: "colon" },
@@ -289,13 +292,7 @@ export const ReleaseCards: readonly ReleaseCard[] = [
 				{ Text: "LOADING", Ink: "var(--MuteForeground)" },
 			],
 
-			[
-				{ Text: "TARGET" },
-
-				{ Mark: "colon" },
-
-				{ Text: "V1.0" },
-			],
+			[{ Text: "TARGET" }, { Mark: "colon" }, { Text: "V1.0" }],
 
 			[
 				{ Text: "SIGNAL" },

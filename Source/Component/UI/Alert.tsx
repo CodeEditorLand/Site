@@ -133,7 +133,8 @@ function AlertAction({ next, retry, className }: AlertActionProps) {
 		<div className={cn("AlertAction", className)}>
 			{next === undefined ? null : (
 				<a className="AlertAction__Next" href={next.href}>
-					<span className="MarkRelation" aria-hidden="true" />{next.label}
+					<span className="MarkRelation" aria-hidden="true" />
+					{next.label}
 				</a>
 			)}
 

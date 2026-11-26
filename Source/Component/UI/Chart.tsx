@@ -521,7 +521,8 @@ function ChartFrame({
 
 			{caption === undefined ? null : (
 				<p className="ChartFrame__Caption">
-					<span className="MarkRelation" aria-hidden="true" />{caption}
+					<span className="MarkRelation" aria-hidden="true" />
+					{caption}
 				</p>
 			)}
 		</figure>

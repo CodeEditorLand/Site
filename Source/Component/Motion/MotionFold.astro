@@ -124,9 +124,7 @@ const ClassOf = (Leaf: FoldLeaf): string =>
 			))}
 			{Waiting ? (
 				<li class="MotionFold__Leaf">
-					<span class="MotionFold__LeafIndex" aria-hidden="true">
-						↳
-					</span>
+					<span class="MotionFold__LeafIndex" aria-hidden="true"><span class="MarkRelation"></span></span>
 					<span class="MotionFold__Label MotionFold__Note">
 						WAITING ON: {Waiting}
 					</span>

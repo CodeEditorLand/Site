@@ -546,7 +546,10 @@ const MatrixControl = ({
 									SetFacet(All);
 								}}
 							>
-								<span className="MarkRelation" aria-hidden="true" />
+								<span
+									className="MarkRelation"
+									aria-hidden="true"
+								/>
 								{MatrixCopy.ClearLabel}
 							</button>
 

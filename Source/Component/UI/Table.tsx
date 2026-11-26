@@ -261,7 +261,8 @@ function TableEmpty({
 
 					{next === undefined ? null : (
 						<a className="TableEmpty__Next" href={next.href}>
-							<span className="MarkRelation" aria-hidden="true" />{next.label}
+							<span className="MarkRelation" aria-hidden="true" />
+							{next.label}
 						</a>
 					)}
 				</div>

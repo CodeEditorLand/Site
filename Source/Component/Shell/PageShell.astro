@@ -216,9 +216,7 @@ const HasSideTracks = HasRail || HasMargin;
 		<ol class="PageShell__declares">
 			{Spec.declares.map((Clause) => (
 				<li class="PageShell__clause">
-					<span class="PageShell__clause-mark" aria-hidden="true">
-						↳
-					</span>
+					<span class="PageShell__clause-mark" aria-hidden="true"><span class="MarkRelation"></span></span>
 					<span class="PageShell__clause-text">{Clause}</span>
 				</li>
 			))}

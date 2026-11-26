@@ -163,7 +163,8 @@ function SonnerReceipt({
 
 			{action === undefined ? null : (
 				<span className="SonnerReceipt__Action">
-					<span className="MarkRelation" aria-hidden="true" />{action}
+					<span className="MarkRelation" aria-hidden="true" />
+					{action}
 				</span>
 			)}
 		</div>

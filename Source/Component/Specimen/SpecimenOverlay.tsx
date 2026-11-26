@@ -1153,7 +1153,10 @@ const Stage = ({ Row }: { Row: Specimen }) => {
 											</p>
 										</div>
 										<p className="Slip__EmptyLine">
-											<span className="MarkRelation" aria-hidden="true" />
+											<span
+												className="MarkRelation"
+												aria-hidden="true"
+											/>
 											<span>
 												THE REGISTER IS BEING READ
 											</span>

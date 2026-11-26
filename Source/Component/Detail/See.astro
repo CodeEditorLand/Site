@@ -83,9 +83,7 @@ const References = items.filter((Item) => Item.reason.trim().length > 0);
 		aria-busy="true"
 	>
 		<p class="detail-see__register">
-			<span class="detail-see__mark" aria-hidden="true">
-				↳
-			</span>
+			<span class="detail-see__mark" aria-hidden="true"><span class="MarkRelation"></span></span>
 			{label}
 		</p>
 
@@ -101,9 +99,7 @@ const References = items.filter((Item) => Item.reason.trim().length > 0);
 ) : References.length > 0 ? (
 	<nav class:list={["detail-see", Class]} aria-label={ariaLabel}>
 		<p class="detail-see__register">
-			<span class="detail-see__mark" aria-hidden="true">
-				↳
-			</span>
+			<span class="detail-see__mark" aria-hidden="true"><span class="MarkRelation"></span></span>
 			{label}
 		</p>
 

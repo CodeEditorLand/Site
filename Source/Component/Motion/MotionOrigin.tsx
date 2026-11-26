@@ -73,10 +73,10 @@ export const MotionOrigin = () => (
 			</ul>
 
 			<p className="MotionOrigin__Note">
-				<span className="MarkRelation" aria-hidden="true" />This slip left the button
-				above by 8px, on the side the control printed. The distance is
-				the side's, never the pointer's, so it is the same at every
-				scroll position.
+				<span className="MarkRelation" aria-hidden="true" />
+				This slip left the button above by 8px, on the side the control
+				printed. The distance is the side's, never the pointer's, so it
+				is the same at every scroll position.
 			</p>
 		</PopoverContent>
 	</Popover>

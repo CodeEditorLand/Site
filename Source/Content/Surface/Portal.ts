@@ -679,7 +679,7 @@ export const PortalPage = (T: TFunction): PortalSurface => {
 			].join(Quad),
 		],
 
-		returnLabel: "↳RETURN TO INDEX",
+		returnLabel: "RETURN TO INDEX",
 
 		returnHref: "/",
 	};

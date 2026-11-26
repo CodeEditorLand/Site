@@ -427,7 +427,17 @@ export const Field = ({
 
 							id={`${Id}-hint`}
 						>
-							{Error ? `↳${Hint}` : Hint}
+							{Error ? (
+								<>
+									<span
+										className="MarkRelation"
+										aria-hidden="true"
+									/>
+									{Hint}
+								</>
+							) : (
+								Hint
+							)}
 						</p>
 					) : null}
 				</div>
@@ -565,7 +575,17 @@ export const FieldSet = ({
 
 							id={HintId}
 						>
-							{Error ? `↳${Hint}` : Hint}
+							{Error ? (
+								<>
+									<span
+										className="MarkRelation"
+										aria-hidden="true"
+									/>
+									{Hint}
+								</>
+							) : (
+								Hint
+							)}
 						</p>
 					) : null}
 				</div>

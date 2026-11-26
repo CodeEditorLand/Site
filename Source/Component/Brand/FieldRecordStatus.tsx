@@ -82,7 +82,8 @@ const FieldRecordStatus: React.FC<FieldRecordStatusProps> = ({
 			)}
 		>
 			<span style={{ color: "var(--CardForeground)" }}>
-				STATUS<span className="MarkColon" aria-hidden="true" />
+				STATUS
+				<span className="MarkColon" aria-hidden="true" />
 			</span>
 			<span style={{ color: ValueColor }}>
 				{IsAttested ? (

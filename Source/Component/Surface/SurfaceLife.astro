@@ -115,7 +115,7 @@ const Position = String(LifeTerms.indexOf(Word.term) + 1).padStart(2, "0");
 		))}
 	</ol>
 
-	{!dense ? <p class="surface__life-gloss">↳ {Word.gloss}</p> : null}
+	{!dense ? <p class="surface__life-gloss"><span class="MarkRelation" aria-hidden="true"></span>{Word.gloss}</p> : null}
 
 	{Resolved === undefined ? (
 		<p class="surface__life-note">

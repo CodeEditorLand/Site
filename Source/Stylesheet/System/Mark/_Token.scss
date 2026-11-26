@@ -159,6 +159,16 @@
 	   face is mono, so a character is the unit the line is already set in. */
 	--mark-gap: 0.5ch;
 
+	/* THE BEARING A DRAWN MARK DOES NOT HAVE. Every character in the face
+	   carries about 0.1em of air on each side of its ink inside its 0.6em
+	   advance, so a character mark's visible gap is `bearing + --mark-gap`. A
+	   box drawn by the stylesheet has no bearing at all, so it takes the same
+	   gap and reads tighter than the word beside it - which is what
+	   `STATUS: ▮ACTIVE` was, and why the state square looked welded to its
+	   word while the colon beside it looked spaced. A drawn mark adds this to
+	   `--mark-gap`; a character mark does not, because it already has it. */
+	--mark-bearing: 0.1em;
+
 	/* the column a row reserves for its mark, whether or not it prints one.
 	   A state change moves ink, never a label by a glyph. */
 	--mark-column: 1.25rem;

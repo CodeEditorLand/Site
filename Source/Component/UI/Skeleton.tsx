@@ -182,7 +182,8 @@ function SkeletonRecord({
 			</dl>
 
 			<p className="SkeletonRecord__Wait">
-				<span className="MarkRelation" aria-hidden="true" />WAITING ON: {waiting}
+				<span className="MarkRelation" aria-hidden="true" />
+				WAITING ON: {waiting}
 				{age === undefined ? null : (
 					<span className="SkeletonRecord__Age"> / {age}</span>
 				)}

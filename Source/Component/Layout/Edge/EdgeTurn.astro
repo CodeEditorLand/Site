@@ -181,9 +181,7 @@ const IsLink = State === "rest" || State === "too-much" || State === "too-long";
 			)}
 
 			<p class="EdgeTurn__proposition">
-				<span class="EdgeTurn__proposition-mark" aria-hidden="true">
-					↳
-				</span>
+				<span class="EdgeTurn__proposition-mark" aria-hidden="true"><span class="MarkRelation"></span></span>
 				<span class="EdgeTurn__proposition-text">
 					{State === "missing" || State === "empty"
 						? Copy.turn.emptyNote

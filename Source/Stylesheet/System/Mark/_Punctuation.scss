@@ -145,13 +145,19 @@
 // front of it is the colon's, and a square that added a second leading gap
 // would float between the key and the value instead of hanging off the value.
 //
+// The square is a DRAWN mark, so it takes the bearing a character would have
+// had (`--mark-bearing`, `Mark/_Token.scss`) on top of `--mark-gap`. Without it
+// the block reads welded to its word while the colon beside it reads spaced -
+// the colon has its own side bearing, the box has none - which is exactly the
+// `STATUS: ▮ACTIVE` the hero printed.
+//
 // It is declared here and not in `_Square.scss` because the square's DRAWING is
 // that partial's business and its SPACING is this one's - the same split the
 // colon, the slash and the relation follow.
 .MarkSquare[data-mark-inline="true"] {
 	margin-inline-start: 0;
 
-	margin-inline-end: var(--mark-gap);
+	margin-inline-end: calc(var(--mark-gap) + var(--mark-bearing));
 }
 
 // ─── THE SEPARATOR ────────────────────────────────────────────────────────

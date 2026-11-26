@@ -546,7 +546,8 @@ const DynamicDocSidebar = ({
 						<span>NO PAGE</span>
 					</p>
 					<p className="doc-sidebar__empty-line">
-						↳ NOTHING IN THE MANUAL MATCHES 〈{Query.trim()}〉
+						<span className="MarkRelation" aria-hidden="true" />
+						NOTHING IN THE MANUAL MATCHES 〈{Query.trim()}〉
 					</p>
 					<button
 						type="button"

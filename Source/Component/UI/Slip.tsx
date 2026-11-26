@@ -99,7 +99,9 @@ export const SlipRegister = ({
 
 		{(head.Trail ?? []).map((Step, Index) => (
 			<React.Fragment key={`${Step}-${Index}`}>
-				<span className="Slip__TrailMark">↳</span>
+				<span className="Slip__TrailMark">
+					<span class="MarkRelation"></span>
+				</span>
 				<span className="Slip__Trail">{Step}</span>
 			</React.Fragment>
 		))}
@@ -302,7 +304,7 @@ export const SlipNote = ({
 }) => (
 	<p className={cn("Slip__Note", className)}>
 		<span className="Slip__NoteMark" aria-hidden="true">
-			↳
+			<span class="MarkRelation"></span>
 		</span>
 		<span className="Slip__NoteBody">{children}</span>
 	</p>

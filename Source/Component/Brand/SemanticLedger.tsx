@@ -175,7 +175,8 @@ export interface StatusTextProps {
 export const StatusText: React.FC<StatusTextProps> = ({ value, className }) => (
 	<span className={className}>
 		<span style={{ color: "var(--CardForeground)" }}>
-			STATUS<span className="MarkColon" aria-hidden="true" />
+			STATUS
+			<span className="MarkColon" aria-hidden="true" />
 		</span>
 		<span style={{ color: "var(--CardForeground)" }}>{value}</span>
 	</span>
