@@ -197,7 +197,10 @@
 
 .home-platform__row {
 	display: flex;
-	gap: 0.5rem;
+	// No gap: the key's `:` is a mark and prints its own `--mark-gap`
+	// (`Mark/_Punctuation.scss`). A row gap here would be a second inset
+	// beside a mark that already has one.
+	gap: 0;
 }
 
 .home-platform__key {
@@ -212,7 +215,8 @@
 
 .home-platform__status {
 	display: flex;
-	gap: 0.375rem;
+	// No gap: the key's `:` is a mark and prints its own `--mark-gap`.
+	gap: 0;
 	font-weight: 500;
 }
 

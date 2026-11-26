@@ -78,7 +78,7 @@ export const PlatformCards: readonly PlatformCard[] = [
 
 		Action: { Label: "Download for macOS", Href: "/Download" },
 
-		Status: { Label: "STATUS:", Value: "PREPARING" },
+		Status: { Label: "STATUS", Value: "PREPARING" },
 	},
 
 	{
@@ -112,7 +112,7 @@ export const PlatformCards: readonly PlatformCard[] = [
 
 		Action: { Label: "Download for Windows", Href: "/Download" },
 
-		Status: { Label: "STATUS:", Value: "PREPARING" },
+		Status: { Label: "STATUS", Value: "PREPARING" },
 	},
 
 	{
@@ -146,6 +146,6 @@ export const PlatformCards: readonly PlatformCard[] = [
 
 		Action: { Label: "Download for Linux", Href: "/Download" },
 
-		Status: { Label: "STATUS:", Value: "PREPARING" },
+		Status: { Label: "STATUS", Value: "PREPARING" },
 	},
 ];

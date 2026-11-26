@@ -1,0 +1,66 @@
+---
+/**
+ * Route - the grammar's `/KEY: VALUE` line, composed once.
+ *
+ * ─── WHAT IT IS ───────────────────────────────────────────────────────────
+ * The record grammar's route mark: `/CHANNEL: PUBLIC`, `/COMPAT: VS CODE`,
+ * `/CONTENTS`. A route is a slash, a key, a colon and a value - two marks and
+ * two words - and it is a LINE, not four characters that happen to sit in one
+ * string. So it is one component, the way `Containment.astro` is one component
+ * for the `〈 〉` pair: a caller passes the route it holds and this file decides
+ * where the marks go.
+ *
+ * ─── THE AIR IS THE MARKS', NOT THIS FILE'S ───────────────────────────────
+ * `/` and `:` are `Mark/Mark.astro` kinds, and their gap is
+ * `Mark/_Punctuation.scss`'s `--mark-gap` on the side each mark belongs to:
+ * the slash opens the line (no air before, one gap after), the colon closes the
+ * key (no air before, one gap after). This template prints NO whitespace
+ * between the four parts - a whitespace-only line between two elements in an
+ * `.astro` template survives as a text node and collapses to a real space,
+ * which is exactly how the site came to print `/CHANNEL:PUBLIC` in one place
+ * and `/ CHANNEL : PUBLIC` in another.
+ *
+ * So the string a record stores can be written either way - `/CHANNEL:PUBLIC`
+ * as `Content/Artifact/Stamp.ts` holds it - and it prints the same, because the
+ * string is parsed into its two words and the marks are re-composed here.
+ *
+ * ─── THE INK ──────────────────────────────────────────────────────────────
+ * The slash takes the mark layer's muted ink (a route mark is a label about the
+ * line). The colon takes the KEY's ink, because the colon is the label's own
+ * punctuation (`DESIGN-COMPLETE.md` §1.5, "the colon is part of the label").
+ * The key and the value take the inks the block passes, or inherit.
+ */
+import Mark from "./Mark.astro";
+
+interface Props {
+	/** The route as the record holds it: `/KEY:VALUE`, or `/ROUTE`. */
+	line: string;
+
+	/** The key's ink, when the block prints the key in one of its own. */
+	keyInk?: string;
+
+	/** The value's ink. */
+	valueInk?: string;
+
+	/** Extra classes from the block, appended after the line's own. */
+	class?: string;
+}
+
+const { line, keyInk, valueInk, class: Class } = Astro.props;
+
+/** The line without its opening slash - the slash is a mark, not part of a word. */
+const Body = line.startsWith("/") ? line.slice(1) : line;
+
+/** The first colon splits the key from its value; a route without one has no value. */
+const Colon = Body.indexOf(":");
+
+const Key = Colon === -1 ? Body : Body.slice(0, Colon);
+
+const Value = Colon === -1 ? undefined : Body.slice(Colon + 1);
+
+const KeyStyle = keyInk === undefined ? undefined : `color:${keyInk}`;
+
+const ValueStyle = valueInk === undefined ? undefined : `color:${valueInk}`;
+---
+
+<span class:list={["Route", Class]}><Mark kind="slash" /><span class="Route__key" style={KeyStyle}>{Key}</span>{Value === undefined ? null : <><Mark kind="colon" style={KeyStyle} /><span class="Route__value" style={ValueStyle}>{Value}</span></>}</span>

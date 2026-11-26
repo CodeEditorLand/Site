@@ -19,15 +19,57 @@ export type HomeTranslate = (
 ) => string;
 
 /**
- * One span of a stamp line. `Ink` is a CSS colour; absent means the line's own
- * muted ink. A stamp prints its brackets, its keyword and its value in separate
- * inks, so a line is a list of spans rather than a string.
+ * One span of a stamp line: either a run of text in one ink, or a MARK.
+ *
+ * ─── WHY A MARK IS NOT TEXT ───────────────────────────────────────────────
+ * A stamp used to spell its punctuation into the string - `"/"`, `": PUBLIC"`,
+ * `" CHANNEL"` - and every space the line printed was therefore decided by
+ * whoever typed the string. The site then printed the same colon on the key in
+ * one card and on the value in another, and the same slash with a space in one
+ * line and against the word in the next.
+ *
+ * So the punctuation is a segment of its own, named by its role. A mark prints
+ * its glyph from the mark layer and takes its air from `--mark-gap`
+ * (`Mark/_Punctuation.scss`) - a content author cannot pass a space, because
+ * there is nowhere to put one. That is the whole point: the grammar's spacing
+ * is not copy.
+ *
+ * `Ink` still applies: the colon takes its KEY's ink (it is the label's own
+ * punctuation), so a caller that colours the key colours the colon with it.
+ * `Tone` applies to the `square` only, and is the state vocabulary's tone.
  */
-export interface StampSpan {
+export type StampMarkKind =
+	/** `:` - closes the key that precedes it. */
+	| "colon"
+	/** `/` - opens a route line. */
+	| "slash"
+	/** `/` - stands between two values in one field. */
+	| "separator"
+	/** `↳` - opens a proposition. */
+	| "relation"
+	/** The state square: the word it precedes is a state that was checked. */
+	| "square";
+
+/** A run of text in one ink. */
+export interface StampTextSpan {
 	readonly Text: string;
 
 	readonly Ink?: string;
 }
+
+/** A mark, by role. It prints no text: the mark layer draws the glyph. */
+export interface StampMarkSpan {
+	readonly Mark: StampMarkKind;
+
+	/** The ink the mark takes; the colon's is its key's. */
+	readonly Ink?: string;
+
+	/** A square's tone, from the state vocabulary. */
+	readonly Tone?: "ink" | "specimen" | "quiet";
+}
+
+/** One span of a stamp line. */
+export type StampSpan = StampTextSpan | StampMarkSpan;
 
 /** One line of a band's mono stamp under its heading. */
 export interface StampLine {
@@ -222,7 +264,12 @@ export interface ReleaseCard {
 
 	readonly Elements: readonly ReleaseElement[];
 
-	readonly Manifest: readonly string[];
+	/**
+	 * Six `KEY: VALUE` rows, as segments - the same grammar the stamp lines
+	 * print, so the colon and the `/` between two values take the mark layer's
+	 * gap instead of a space typed into a string.
+	 */
+	readonly Manifest: readonly (readonly StampSpan[])[];
 }
 
 /** One platform card of the download band. */

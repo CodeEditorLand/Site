@@ -78,7 +78,10 @@
 .record-stamp__state {
 	display: flex;
 	align-items: center;
-	gap: var(--space-tight);
+	/* No gap: the row is `STATUS` + the colon mark + the square + the word, and
+	   each of those two marks prints its own `--mark-gap`
+	   (`Mark/_Punctuation.scss`). A flex `gap` here would be a third inset. */
+	gap: 0;
 	margin-inline-start: auto;
 	@include mono-meta;
 	@include track(var(--track-row));
@@ -129,7 +132,8 @@
 	display: flex;
 	flex-wrap: wrap;
 	align-items: baseline;
-	gap: 0 var(--space-tight);
+	/* the fallback mark and the colon mark print their own `--mark-gap` */
+	gap: 0;
 	margin: 0;
 	@include mono-meta;
 	@include track(var(--track-row));
@@ -157,7 +161,11 @@
 .record-stamp__row {
 	display: grid;
 	grid-template-columns: minmax(0, 11ch) minmax(0, 1fr);
-	gap: var(--space-tight);
+	/* The key column sizes to its content up to 11ch, so the air after the
+	   colon is the colon's own `--mark-gap` - not a gutter. See
+	   `Mark/_Punctuation.scss`: a row that prints a mark does not print a gap
+	   beside it. */
+	column-gap: 0;
 	padding-block: var(--space-tight);
 	border-block-start: 1px solid var(--Border);
 }

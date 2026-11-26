@@ -110,14 +110,22 @@
 }
 
 // ─── MISSING / DENIED: THE FALLBACK IS THE GRAMMAR'S ──────────────────────
-// `◎` is printed by the block as text (it is a character mark, like `#`), and
-// its ink is the muted one. One declaration, so every block's fallback is the
-// same ink as every other character mark on the site.
+// `◎` is the grammar's fallback, and it is a mark of the mark layer - one ink
+// for every block's fallback, and one gap after it (`--mark-gap`).
+//
+// The glyph is drawn by `::before`, not by `content` on the element: an element
+// `content` replacement is a CSS-GCPM feature no engine implements uniformly,
+// and a mark that prints nothing in one browser is a record that lost a fact.
+// The `[data-mark-fallback]` arm is the same rule for a block that prints a
+// span of its own rather than `Mark/Mark.astro`.
 .MarkFallback,
 [data-mark-fallback]::before {
-	content: var(--mark-fallback);
-
 	color: var(--mark-ink);
 
 	margin-inline-end: var(--mark-gap);
+}
+
+.MarkFallback::before,
+[data-mark-fallback]::before {
+	content: var(--mark-fallback);
 }

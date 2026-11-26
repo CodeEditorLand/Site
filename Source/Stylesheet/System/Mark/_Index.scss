@@ -27,6 +27,16 @@
 //   CONTAINMENT `〈TERM〉`, the pair that holds a runtime claim
 //              `Mark/Containment.astro` - the ONLY renderer of the pair, in the
 //              span-composed blocks and in the inline-string ones alike
+//   COLON      `:`, the mark that closes a key - `TARGET:`
+//              `Mark/Mark.astro`, `Mark/_Punctuation.scss`
+//   SLASH      `/`, the mark that opens a route - `/CHANNEL: PUBLIC`
+//              `Mark/Mark.astro`, `Mark/_Punctuation.scss`
+//   RELATION   `↳`, the mark that opens a proposition - `↳EDITOR WITHOUT CHROMIUM`
+//              `Mark/Mark.astro`, `Mark/_Punctuation.scss`
+//
+// The last three are the grammar's punctuation and they share one partial and
+// one law: a mark prints `--mark-gap` on the side away from its word, and a
+// literal space beside it is the defect. `Mark/_Punctuation.scss` states it.
 //
 // ─── THE FOUR LAWS ────────────────────────────────────────────────────────
 //
@@ -61,4 +71,5 @@
 @use "Seal";
 @use "Crosshair";
 @use "Containment";
+@use "Punctuation";
 @use "Adverse";

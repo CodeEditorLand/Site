@@ -483,7 +483,7 @@ const DynamicHeroSection = ({
 							</p>
 
 							<p className="type-meta hero-band__relation">
-								<span aria-hidden="true">↳</span>
+								<span className="MarkRelation" aria-hidden="true" />
 								{Hero.claim.relation}
 							</p>
 

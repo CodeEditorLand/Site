@@ -149,7 +149,11 @@
 .home-release__destination {
 	display: inline-flex;
 	align-items: baseline;
-	gap: 0.125rem;
+	// No gap: the `/` is the mark layer's and prints its own `--mark-gap`
+	// (`Mark/_Punctuation.scss`). A `gap` here would be a second, hand-tuned
+	// inset beside a mark that already has one - the exact defect this card
+	// was fixed for.
+	gap: 0;
 	font-family: var(--FontMono);
 	font-size: var(--type-meta);
 	line-height: var(--type-meta-line);

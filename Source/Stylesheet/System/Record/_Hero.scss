@@ -211,10 +211,10 @@
 }
 
 // The `↳` is drawn, not spoken: the line is read as "return to index", and the
-// mark is the grammar's, so it is muted and `aria-hidden` in the markup.
-.record-hero__proposition-mark {
-	color: var(--MuteForeground);
-}
+// mark is the grammar's, so it is muted and `aria-hidden` in the markup. The
+// glyph and its gap are the mark layer's (`Mark/_Punctuation.scss`): there is no
+// rule here, because a block that colours or spaces a mark itself is a second
+// answer to a question the mark layer already answers.
 
 /*
  * THE BLANK INTERVAL. It grows to whatever height the card has left and never
@@ -352,7 +352,11 @@
 
 .record-hero__tombstone-key {
 	color: var(--MuteForeground);
-	margin-inline-end: var(--space-tight);
+
+	/* No margin: the key's `:` is a mark and prints its own `--mark-gap`
+	   (`Mark/_Punctuation.scss`). A hand-tuned margin here would be a second
+	   inset beside a mark that already has one. */
+	margin-inline-end: 0;
 }
 
 .record-hero__tombstone-state--ink {

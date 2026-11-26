@@ -28,7 +28,26 @@ export type MarkKind =
 	/** A device inside a badge, in the element's own ink. */
 	| "glyph"
 	/** `◎` - the grammar's fallback: the thing is not here. */
-	| "fallback";
+	| "fallback"
+	/**
+	 * `:` - the mark that closes a key. It takes the KEY's ink, not the mark
+	 * ink: the colon is the label's own punctuation, not a label about the
+	 * line. One `--mark-gap` after it, none before.
+	 */
+	| "colon"
+	/**
+	 * `/` - the mark that opens a route. Muted ink, one `--mark-gap` after it,
+	 * none before. `separator` is the same glyph standing BETWEEN two values,
+	 * and it is the one mark that takes a gap on each side.
+	 */
+	| "slash"
+	/** `/` - a separator between two values: `MACOS / WINDOWS / LINUX`. */
+	| "separator"
+	/**
+	 * `↳` - the mark that opens a proposition: `↳EDITOR WITHOUT CHROMIUM`.
+	 * Muted ink, one `--mark-gap` after it, none before.
+	 */
+	| "relation";
 
 /** The ladder. Nothing in the mark set is a size that is not one of these. */
 export type MarkSize = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8";
@@ -80,6 +99,14 @@ export const MarkClass: Readonly<Record<MarkKind, string>> = {
 	glyph: "MarkGlyph",
 
 	fallback: "MarkFallback",
+
+	colon: "MarkColon",
+
+	slash: "MarkSlash",
+
+	separator: "MarkSeparator",
+
+	relation: "MarkRelation",
 };
 
 /** What a square's `data-mark-size` says for each named size. */

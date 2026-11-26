@@ -103,9 +103,18 @@ export interface RouteTextProps {
 	className?: string;
 }
 
-const ROUTE_SHAPE = /^\/[A-Z0-9-]+:/;
+const ROUTE_SHAPE = /^\//;
 
-/** /KEYWORD:VALUE route row: gray slash, sky keyword, ink colon+value. */
+/**
+ * `/KEY:VALUE` route row: the mark layer's slash, the key in the route ink, the
+ * mark layer's colon, the value in ink.
+ *
+ * The marks print their own `--mark-gap` (`Mark/_Punctuation.scss`): the slash
+ * opens the line and the colon closes the key, so each takes one gap on one
+ * side. This renderer prints no space of its own - the old one printed the
+ * slash against the key (`/COMPAT: VS CODE`) while the roadmap printed it with
+ * a word space (`/ CHANNEL`), and that is the drift the mark layer removes.
+ */
 export const RouteText: React.FC<RouteTextProps> = ({ Line, className }) => {
 	if (!ROUTE_SHAPE.test(Line)) {
 		return (
@@ -115,18 +124,32 @@ export const RouteText: React.FC<RouteTextProps> = ({ Line, className }) => {
 		);
 	}
 
-	const ColonIndex = Line.indexOf(":");
+	const Body = Line.slice(1);
+
+	const ColonIndex = Body.indexOf(":");
+
+	if (ColonIndex === -1) {
+		return (
+			<span className={className}>
+				<span className="MarkSlash" aria-hidden="true" />
+				<span style={{ color: ROUTE_KEYWORD_INK }}>{Body}</span>
+			</span>
+		);
+	}
 
 	return (
 		<span className={className}>
-			<span aria-hidden="true" style={{ color: GLYPH_INK }}>
-				/
-			</span>
+			<span className="MarkSlash" aria-hidden="true" />
 			<span style={{ color: ROUTE_KEYWORD_INK }}>
-				{Line.slice(1, ColonIndex)}
+				{Body.slice(0, ColonIndex)}
 			</span>
+			<span
+				className="MarkColon"
+				style={{ color: ROUTE_KEYWORD_INK }}
+				aria-hidden="true"
+			/>
 			<span style={{ color: "var(--CardForeground)" }}>
-				{Line.slice(ColonIndex)}
+				{Body.slice(ColonIndex + 1)}
 			</span>
 		</span>
 	);
@@ -144,11 +167,17 @@ export interface StatusTextProps {
 /** STATUS: ink label + the value in the record's ink. The attested tone is a
  *  shape (the 6px square `FieldRecordStatus` prints), never the accent - see
  *  that primitive for the argument. `active` is kept so a caller that has the
- *  fact can state it, and it no longer changes the ink. */
+ *  fact can state it, and it no longer changes the ink.
+ *
+ *  The colon is the mark layer's (`Mark/_Punctuation.scss`) and prints the gap:
+ *  this renderer writes no space, so the row reads `STATUS: VALUE` at
+ *  `--mark-gap` like every other colon on the site. */
 export const StatusText: React.FC<StatusTextProps> = ({ value, className }) => (
 	<span className={className}>
-		<span style={{ color: "var(--CardForeground)" }}>STATUS:</span>
-		<span style={{ color: "var(--CardForeground)" }}> {value}</span>
+		<span style={{ color: "var(--CardForeground)" }}>
+			STATUS<span className="MarkColon" aria-hidden="true" />
+		</span>
+		<span style={{ color: "var(--CardForeground)" }}>{value}</span>
 	</span>
 );
 

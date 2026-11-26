@@ -17,6 +17,17 @@
  *   <Mark kind="fold" open={false} />             a disclosure, shut
  *   <Mark kind="glyph" src="/Image/Rust.svg" />   a device inside a badge
  *   <Mark kind="fallback" />                      the thing is not here
+ *   <Mark kind="colon" />                         the mark that closes a key
+ *   <Mark kind="slash" />                         the mark that opens a route
+ *   <Mark kind="relation" />                      the mark that opens a proposition
+ *   <Mark kind="separator" />                     a `/` between two values
+ *
+ * THE LAST FOUR ARE THE GRAMMAR'S PUNCTUATION and they exist for one reason: a
+ * character typed into a block's own string cannot carry a gap, so every block
+ * that typed a `:` or a `/` decided its spacing itself. These kinds print the
+ * glyph from a token (`Mark/_Token.scss`) and the gap from the mark layer
+ * (`Mark/_Punctuation.scss`), so a block passes a kind and gets the site's
+ * spacing - it cannot pass a space.
  *
  * ─── WHY ONE COMPONENT AND NOT SEVEN ──────────────────────────────────────
  * Seven components is seven chances to grow a seventh size. One component with
@@ -80,8 +91,25 @@ interface Props {
 	/** A tick's state: `false` prints it hollow. */
 	reached?: boolean;
 
+	/**
+	 * A square's placement: `true` when it stands in a RUN (`STATUS: ▮ACTIVE`,
+	 * a stamp line) rather than in a flex row of its own. A square in a run
+	 * takes one `--mark-gap` after itself; a square in a flex row takes none,
+	 * because the row's `gap` is already the air. One gap either way, and it is
+	 * `Mark/_Punctuation.scss` that owns it.
+	 */
+	inline?: boolean;
+
 	/** Extra classes from the host, appended after the mark's own. */
 	class?: string;
+
+	/**
+	 * An explicit ink for the mark's own glyph, as a CSS value. The one use is
+	 * a mark that belongs to a word in another ink - the colon takes its key's
+	 * - and it is a colour the CALLER already decided, never a spacing value:
+	 * the gap is the mark layer's and cannot be passed in here.
+	 */
+	style?: string;
 }
 
 const {
@@ -95,6 +123,8 @@ const {
 	open = false,
 	place = "trail",
 	reached = true,
+	inline = false,
+	style: Style,
 	class: Class,
 } = Astro.props;
 
@@ -108,11 +138,18 @@ const Square =
 				"data-mark-size": size,
 				"data-mark-fill": fill,
 				"data-mark-tone": tone,
+				...(inline ? { "data-mark-inline": "true" } : {}),
 			}
 		: {};
 
 /** The one inline value a mark may carry: a protocol ink, on a square only. */
 const Ink = kind === "square" && ink ? `--mark-ink-state:${ink}` : undefined;
+
+/**
+ * The mark's inline style: the square's ink variable, the caller's ink, or both.
+ * Neither is a spacing value - a mark's gap is the mark layer's, always.
+ */
+const Inline = [Ink, Style].filter(Boolean).join(";") || undefined;
 ---
 
 {kind === "glyph" ? (
@@ -142,7 +179,7 @@ const Ink = kind === "square" && ink ? `--mark-ink-state:${ink}` : undefined;
 	<span
 		class:list={[Kind, Class]}
 		{...Square}
-		style={Ink}
+		style={Inline}
 		aria-hidden="true"
 	/>
 )}

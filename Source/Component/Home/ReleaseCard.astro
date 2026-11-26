@@ -27,11 +27,24 @@
  */
 import type { ReleaseCard as ReleaseCardData } from "../../Content/Home/Type.js";
 
+import Mark from "../Mark/Mark.astro";
+
 interface Props {
 	card: ReleaseCardData;
 }
 
 const { card } = Astro.props;
+
+/**
+ * A segment's ink, as the one style it prints.
+ *
+ * The template below prints each segment with NO whitespace between them: a
+ * whitespace-only line between two elements in an `.astro` template survives as
+ * a text node and collapses to a real space, which is what put air on one side
+ * of the containment pair and none on the other. Every gap a stamp line prints
+ * is a mark's (`Mark/_Punctuation.scss`), so the template must contribute none.
+ */
+const InkStyle = (Ink?: string) => (Ink ? `color:${Ink}` : undefined);
 
 /**
  * Which state carries the ink action. The record's own marker is the only
@@ -54,15 +67,15 @@ const ActionInk =
 			<span class="home-release__index">{card.Index}</span>
 
 			{/* THE STAMP IS PRINTED WITHOUT WHITESPACE BETWEEN ITS SEGMENTS.
-			    The segments are the line: every space the line prints is in the
-			    data (`Content/Home/Roadmap.ts`), and none is the template's. A
-			    whitespace-only line between two elements survives as a text node
-			    and collapses to a real space, which is what turned the
-			    containment pair into `〈 ACTIVE SOURCE 〉` - air after the
-			    opening mark and none before the closing one - while the pair's
-			    own inset is drawn by the face. See `Mark/Containment.astro`. */}
+			    The segments are the line, and a mark contributes its own gap
+			    (`Mark/_Punctuation.scss`) - the template contributes none. A
+			    whitespace-only line between two elements survives as a text
+			    node and collapses to a real space, which is what turned the
+			    containment pair into `〈 ACTIVE SOURCE 〉` and what made the
+			    same colon print on two different sides in two cards. See
+			    `Mark/Containment.astro` and `Content/Home/Roadmap.ts`. */}
 			{card.Stamp.map((Line) => (
-				<span class="home-release__stamp-line">{Line.map((Span) => (<span style={Span.Ink === undefined ? undefined : `color:${Span.Ink}`}>{Span.Text}</span>))}</span>
+				<span class="home-release__stamp-line">{Line.map((Span) => ("Mark" in Span ? <Mark kind={Span.Mark} tone={Span.Tone} inline style={InkStyle(Span.Ink)} /> : <span style={InkStyle(Span.Ink)}>{Span.Text}</span>))}</span>
 			))}
 		</div>
 
@@ -85,8 +98,7 @@ const ActionInk =
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					<span aria-hidden="true">/</span>
-					{card.Action.Label}
+					<Mark kind="slash" />{card.Action.Label}
 				</a>
 			)}
 		</div>
@@ -138,9 +150,7 @@ const ActionInk =
 
 		<ul class="home-release__manifest">
 			{card.Manifest.map((Line) => (
-				<li class="home-release__manifest-row">
-					<span>{Line}</span>
-				</li>
+				<li class="home-release__manifest-row">{Line.map((Span) => ("Mark" in Span ? <Mark kind={Span.Mark} inline style={InkStyle(Span.Ink)} /> : <span style={InkStyle(Span.Ink)}>{Span.Text}</span>))}</li>
 			))}
 		</ul>
 	</div>

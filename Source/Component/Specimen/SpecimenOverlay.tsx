@@ -116,13 +116,13 @@ const Routes = [
 
 /** The rows a panel's body holds, at the ledger's rhythm. */
 const Facts = [
-	{ Key: "STATUS:", Value: "VERIFIED" },
+	{ Key: "STATUS", Value: "VERIFIED" },
 
-	{ Key: "LICENSE:", Value: "CC0" },
+	{ Key: "LICENSE", Value: "CC0" },
 
-	{ Key: "TARGET:", Value: "MACOS\u2001WINDOWS\u2001LINUX" },
+	{ Key: "TARGET", Value: "MACOS\u2001WINDOWS\u2001LINUX" },
 
-	{ Key: "CHANNEL:", Value: "PUBLIC" },
+	{ Key: "CHANNEL", Value: "PUBLIC" },
 ] as const;
 
 /** Forty rows - the "too much" arm, at a count a reader can feel. */
@@ -134,8 +134,9 @@ const Many = Array.from({ length: 40 }, (_, Index) => ({
 
 /** Sixty rows - the dialog that outgrows the viewport. */
 const Tall = Array.from({ length: 60 }, (_, Index) => ({
-	Key: `ROW_${String(Index + 1).padStart(2, "0")}:`,
+	Key: `ROW_${String(Index + 1).padStart(2, "0")}`,
 	Value: Index % 7 === 0 ? "UNAVAILABLE" : `VALUE\u2001${Index + 1}`,
+	Missing: Index % 7 === 0,
 }));
 
 /**
@@ -148,32 +149,48 @@ const Tall = Array.from({ length: 60 }, (_, Index) => ({
  * reader has to interpret.
  */
 const PartialFacts = [
-	{ Key: "STATUS:", Value: "VERIFIED" },
+	{ Key: "STATUS", Value: "VERIFIED" },
 
-	{ Key: "LICENSE:", Value: "CC0" },
+	{ Key: "LICENSE", Value: "CC0" },
 
-	{ Key: "TARGET:", Value: "MACOS\u2001WINDOWS\u2001LINUX" },
+	{ Key: "TARGET", Value: "MACOS\u2001WINDOWS\u2001LINUX" },
 
-	{ Key: "CHANNEL:", Value: "PUBLIC" },
+	{ Key: "CHANNEL", Value: "PUBLIC" },
 
-	{ Key: "CHECKSUM:", Value: "\u25CE\u2001UNAVAILABLE" },
+	{ Key: "CHECKSUM", Value: "UNAVAILABLE", Missing: true },
 
-	{ Key: "SIGNING:", Value: "\u25CE\u2001UNAVAILABLE" },
+	{ Key: "SIGNING", Value: "UNAVAILABLE", Missing: true },
 ] as const;
 
 /* ─── SMALL PARTS ────────────────────────────────────────────────────────── */
 
-/** A ledger: `KEY:` at the mute, the value at ink, on the row rhythm. */
+/**
+ * A ledger: `KEY:` at the mute, the value at ink, on the row rhythm.
+ *
+ * The colon and the fallback `◎` are the mark layer's (`Mark/_Punctuation.scss`,
+ * `Mark/_Adverse.scss`), so each prints its own `--mark-gap` and this component
+ * writes no space. A row whose fact is missing says so with `Missing` rather
+ * than with a character typed into its value - the value is the word, the mark
+ * is the statement about it.
+ */
 const Ledger = ({
 	Rows,
 }: {
-	Rows: readonly { Key: string; Value: string }[];
+	Rows: readonly { Key: string; Value: string; Missing?: boolean }[];
 }) => (
 	<dl className="specimen-overlay__ledger">
 		{Rows.map((Row) => (
 			<div className="specimen-overlay__ledger-row" key={Row.Key}>
-				<dt>{Row.Key}</dt>
-				<dd>{Row.Value}</dd>
+				<dt>
+					{Row.Key}
+					<span className="MarkColon" aria-hidden="true" />
+				</dt>
+				<dd>
+					{Row.Missing ? (
+						<span className="MarkFallback" aria-hidden="true" />
+					) : null}
+					{Row.Value}
+				</dd>
 			</div>
 		))}
 	</dl>
@@ -1136,7 +1153,7 @@ const Stage = ({ Row }: { Row: Specimen }) => {
 											</p>
 										</div>
 										<p className="Slip__EmptyLine">
-											<span aria-hidden="true">↳</span>
+											<span className="MarkRelation" aria-hidden="true" />
 											<span>
 												THE REGISTER IS BEING READ
 											</span>

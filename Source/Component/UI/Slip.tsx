@@ -149,7 +149,7 @@ export const SlipEmpty = ({
 			<span>{Mark}</span>
 		</p>
 		<p className="Slip__EmptyLine">
-			<span aria-hidden="true">↳</span>
+			<span className="MarkRelation" aria-hidden="true" />
 			<span>{Line}</span>
 		</p>
 		{children}
@@ -206,7 +206,7 @@ export const SlipLoading = ({
 		))}
 
 		<p className="Slip__EmptyLine">
-			<span aria-hidden="true">↳</span>
+			<span className="MarkRelation" aria-hidden="true" />
 			<span>{Line}</span>
 		</p>
 	</div>
@@ -258,7 +258,7 @@ export const SlipError = ({
 		</p>
 
 		<p className="Slip__EmptyLine">
-			<span aria-hidden="true">↳</span>
+			<span className="MarkRelation" aria-hidden="true" />
 			<span>{Line}</span>
 		</p>
 

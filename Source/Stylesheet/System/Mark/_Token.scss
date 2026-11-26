@@ -178,6 +178,27 @@
 
 	--mark-fold: "›";
 
+	/* ─── the grammar's punctuation, as marks ──────────────────────────── */
+	/* The record grammar's other three marks - the colon that closes a key,
+	   the slash that opens a route, the relation arrow under a title - are
+	   characters the blocks used to TYPE into their own strings. A typed
+	   character cannot carry a gap, so every block that typed one decided
+	   its spacing itself: a space here, nothing there, a `0.5rem` in a third
+	   place. They are tokens and spans now (`Mark/_Punctuation.scss`), so
+	   the glyph is one string and the air beside it is one number. */
+	--mark-colon: ":";
+
+	--mark-slash: "/";
+
+	--mark-relation: "↳";
+
+	/* the slash between two values in one field - `MACOS / WINDOWS / LINUX`.
+	   It is the same glyph as the route slash and a different role: a route
+	   slash OPENS a line and takes its gap on one side, a separator stands
+	   BETWEEN two words and takes one on each. Same glyph, same gap, two
+	   sides. */
+	--mark-separator: "/";
+
 	/* the grammar's fallback (U+25CE) - the mark for a thing that is not here,
 	   and the one mark on the site that may never be blank. Plex Mono has no
 	   bullseye, and no geometric-shapes block at all, so this character used

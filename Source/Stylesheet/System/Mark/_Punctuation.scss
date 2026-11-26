@@ -1,0 +1,174 @@
+// ─── THE GRAMMAR'S PUNCTUATION, AS MARKS ──────────────────────────────────
+//
+// `Type/_Punctuation.scss` HANGS a mark in the margin of prose. This partial is
+// the other half of the same idea, for the other kind of mark: the record
+// grammar's punctuation, which stands INSIDE a line and needs air on exactly one
+// side of it. Do not confuse the two - one is about where a mark sits relative
+// to a measure, this one is about how much air a mark prints beside its word.
+//
+// ─── THE LAW ──────────────────────────────────────────────────────────────
+// The grammar has six marks. Five of them were ordinary characters typed into
+// the block's own string, and a typed character cannot carry a gap - so every
+// block that typed one decided the spacing itself, and the site printed the
+// same mark five ways:
+//
+//   `PROTOCOL :HTTPS`        air before the colon, none after it
+//   `CHANNEL: PUBLIC`        one word space after it
+//   `CHANNEL:PUBLIC`         no air at all (a `route` string)
+//   `STATUS: ▮SOURCE`        a word space before the block, a `--mark-gap` after
+//   `◎␁UNAVAILABLE`          a U+2001 after the fallback, a word space elsewhere
+//   `/ CHANNEL` vs `/COMPAT` one word space, then none
+//
+// None of those is wrong on its own. The defect is that there were five of
+// them. So the rule, once, for the whole family:
+//
+//   EVERY MARK IS AN ELEMENT, AND EVERY MARK PRINTS `--mark-gap` (0.5ch) OF
+//   AIR ON THE SIDE AWAY FROM THE THING IT BELONGS TO. A LITERAL SPACE BESIDE A
+//   MARK IS THE DEFECT - in the markup and in the content string alike.
+//
+// `--mark-gap` is not a new number. It is the site's own ("half a character,
+// because a mark and its subject are one reading, not two" - `_Token.scss`), it
+// is what the arrow, the state square and the glyph already print, and it is
+// why the marks below are 0.5ch and not the 1ch of a word space: a word space
+// is the air between two words, and a mark is not a word.
+//
+// ─── PER MARK ─────────────────────────────────────────────────────────────
+//
+//   〈 〉  the pair. Air INSIDE is drawn by the face (123 units inside, 153
+//         outside of a 600-unit advance), so it takes no margin at all -
+//         `Mark/Containment.astro`, `Mark/_Containment.scss`. Untouched here.
+//
+//   :     the colon CLOSES ITS KEY. No air before it (it is the last glyph of
+//         the key), one `--mark-gap` after it. It takes the KEY's ink, not the
+//         muted mark ink: the colon is the label's own punctuation, not a mark
+//         about the line (`DESIGN-COMPLETE.md` §1.5, "the colon is part of the
+//         label"). That is why this is the one mark below whose colour is
+//         `inherit`.
+//
+//   /     the slash OPENS A LINE. No air before it, one `--mark-gap` after it.
+//         Muted ink: a route mark is a label about the line.
+//
+//   ↳     the relation OPENS A LINE. No air before it, one `--mark-gap` after.
+//         Muted ink. (`→` is the other direction mark and keeps its own
+//         partial, `Mark/_Arrow.scss`, with the same one-gap rule.)
+//
+//   ▮     the state square CLOSES ON ITS WORD. One `--mark-gap` after it, and
+//         NO margin before it - the air in front of the square is the colon's
+//         gap, because `STATUS: ▮ACTIVE` is a key, a colon and a value and the
+//         square hangs off the head of the value. Two marks, two gaps, one
+//         number: `STATUS:` [0.5ch] `▮` [0.5ch] `ACTIVE`.
+//
+//   /     the SEPARATOR between two values (`MACOS / WINDOWS / LINUX`) stands
+//         BETWEEN two words rather than at the head of one, so it takes one
+//         `--mark-gap` on each side. Same glyph as the route slash, same gap,
+//         two sides - because the role is different, not the spacing.
+//
+// ─── WHY THE GAP IS A MARGIN AND NOT A SPACE ──────────────────────────────
+// A margin is the mark's own property: it survives a different container, a
+// different font size and a different locale, and a content author cannot type
+// it away. A space in a string is the opposite of all four. That is the whole
+// reason the marks are spans - `Mark/Mark.astro` (Astro) and the mark classes
+// directly (React, where `className="MarkColon"` is the whole binding) both
+// print the same class, and the class prints the gap.
+//
+// ─── THE ONE PLACE THE ROW OWNS THE AIR ───────────────────────────────────
+// A row that lays a key and its value out as two boxes with a gutter of its own
+// prints the gutter, and the colon must not print a second one on top of it. So
+// the rows that do that - `.record-stamp__row`, `.home-platform__row`,
+// `.home-platform__status`, `.record-hero__relation` - set `column-gap: 0` and
+// let the colon's margin be the air. A register that aligns its keys in a FIXED
+// column (`record-ledger`'s 28ch, `specimen-overlay__ledger`'s 7rem) is a table,
+// not a run: its column is the air, its key keeps `KEY:` as text, and the mark
+// is not used there. A column is a layout; a gap is a mark.
+//
+// ─── THE ADVERSE STATES ───────────────────────────────────────────────────
+// TOO LONG   a mark never wraps away from its word: the gap is a margin, and a
+//            margin is not a break opportunity.
+// TOO MUCH   the gap is one number, so a line with four marks in it has four
+//            gaps and no accumulation.
+// EMPTY      a mark with no word after it prints the mark and its gap and
+//            nothing else - the block is responsible for not printing one.
+// MISSING    a mark that cannot be drawn (the token missing) prints nothing at
+//            all rather than an empty box, and the word keeps its place.
+// PARTIAL    `UNAVAILABLE` is a word, not a mark, and takes no gap of its own.
+
+@use "../Mixin" as *;
+
+// ─── THE THREE MARKS THAT OPEN OR CLOSE A RUN ─────────────────────────────
+// One shape: the glyph from its token, the gap after it, nothing before it.
+
+.MarkColon,
+.MarkSlash,
+.MarkRelation {
+	display: inline;
+
+	/* the mark is not read out: the words carry the meaning */
+	pointer-events: none;
+
+	margin-inline-start: 0;
+
+	margin-inline-end: var(--mark-gap);
+
+	/* a mark never leaves its word - the gap is a margin, and a margin does
+	   not open a break opportunity, but a run that is already wrapping must
+	   not be allowed to start a line with a bare mark either */
+	white-space: nowrap;
+}
+
+// The colon is the label's punctuation and takes the label's ink.
+.MarkColon {
+	color: inherit;
+}
+
+// A route mark and a relation mark are labels ABOUT the line, so they take the
+// mark ink - the same ink the arrow, the fold and the fallback take.
+.MarkSlash,
+.MarkRelation {
+	color: var(--mark-ink);
+}
+
+.MarkColon::before {
+	content: var(--mark-colon);
+}
+
+.MarkSlash::before {
+	content: var(--mark-slash);
+}
+
+.MarkRelation::before {
+	content: var(--mark-relation);
+}
+
+// ─── THE STATE SQUARE, AS A MARK IN A RUN ─────────────────────────────────
+// `MarkSquare` (`Mark/_Square.scss`) draws the box; this is the gap it prints
+// when it stands in a run rather than in a flex row. One side only: the air in
+// front of it is the colon's, and a square that added a second leading gap
+// would float between the key and the value instead of hanging off the value.
+//
+// It is declared here and not in `_Square.scss` because the square's DRAWING is
+// that partial's business and its SPACING is this one's - the same split the
+// colon, the slash and the relation follow.
+.MarkSquare[data-mark-inline="true"] {
+	margin-inline-start: 0;
+
+	margin-inline-end: var(--mark-gap);
+}
+
+// ─── THE SEPARATOR ────────────────────────────────────────────────────────
+// A `/` between two values. One gap each side, because it belongs to neither
+// word and to both.
+.MarkSeparator {
+	display: inline;
+
+	pointer-events: none;
+
+	color: var(--mark-ink);
+
+	margin-inline: var(--mark-gap);
+
+	white-space: nowrap;
+}
+
+.MarkSeparator::before {
+	content: var(--mark-separator);
+}

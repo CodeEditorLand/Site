@@ -134,13 +134,15 @@ const SpecimenLabel: React.FC<SpecimenLabelProps> = ({
 						</a>
 					) : (
 						<p className="font-mono text-lg font-medium uppercase leading-tight tracking-row text-card-foreground">
-							{record.Title}:
+							{record.Title}
+							<span className="MarkColon" aria-hidden="true" />
 						</p>
 					)}
 
 					{record.Relation ? (
 						<p className="mt-1.5 font-mono text-sm leading-relaxed text-card-foreground opacity-70">
-							↳{record.Relation}
+							<span className="MarkRelation" aria-hidden="true" />
+							{record.Relation}
 						</p>
 					) : null}
 				</div>

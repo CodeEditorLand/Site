@@ -692,7 +692,9 @@
 .specimen-overlay__ledger-row {
 	display: grid;
 	grid-template-columns: 7rem minmax(0, 1fr);
-	gap: var(--space-tight);
+	/* No gap: the key's `:` is a mark and prints its own `--mark-gap`
+	   (`Mark/_Punctuation.scss`). The `7rem` column is the alignment. */
+	column-gap: 0;
 
 	padding-block: 0.375rem;
 

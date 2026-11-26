@@ -170,7 +170,7 @@ const ClassOf = (Leaf: FoldLeaf): string =>
 							)}
 							{Leaf.note ? (
 								<span class="MotionFold__Note">
-									<span aria-hidden="true">↳</span>{" "}
+									<span class="MarkRelation" aria-hidden="true"></span>
 									{Leaf.note}
 								</span>
 							) : null}
@@ -189,7 +189,7 @@ const ClassOf = (Leaf: FoldLeaf): string =>
 				<b aria-hidden="true">◎</b> NO LEAF
 			</p>
 			<p class="MotionFold__EmptyLine">
-				<span aria-hidden="true">↳</span> {Empty}
+				<span class="MarkRelation" aria-hidden="true"></span>{Empty}
 			</p>
 		</div>
 	)}

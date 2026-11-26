@@ -8,18 +8,23 @@
  *
  * The stamp is a list of spans rather than a string because a stamp prints its
  * brackets, its keyword and its value in three different inks, and a string cannot
- * carry that. The manifest lines are single strings: each one is a complete
- * `KEY: VALUE` row and it prints as one.
+ * carry that.
  *
- * EVERY SPACE THE LINE PRINTS IS IN THE SEGMENT TEXT - `" CHANNEL"`, `": PUBLIC"`,
- * `" ACTIVE"` - because `ReleaseCard.astro` prints the segments with no
- * whitespace between them. A whitespace-only line between two elements in a
- * template is not dropped the way JSX drops it: it survives as a text node and
- * collapses to a real space, which put air on one side of the containment pair
- * and none on the other. So the data spells the line out, and the template is
- * only the inks.
+ * ─── THE PUNCTUATION IS A SEGMENT, NOT A SPACE ────────────────────────────
+ * A stamp line used to spell its marks into the text - `" CHANNEL"`,
+ * `": PUBLIC"`, `"/"` - so every space the line printed was decided by whoever
+ * typed that string. That is how the same colon came to hang off the key in one
+ * card and off the value in another, and the same slash came to float in one
+ * line and sit against the word in the next.
+ *
+ * A mark is now a segment of its own (`{ Mark: "colon" }`), printed by
+ * `Mark/Mark.astro` and spaced by `Mark/_Punctuation.scss` at `--mark-gap` on
+ * one side. So there is no space in this file to get wrong: the data says WHICH
+ * mark, and the mark layer says how much air it takes. `Manifest` is a list of
+ * segments for the same reason - its rows print the same colon and the same
+ * separator.
  */
-import type { ReleaseCard } from "./Type.js";
+import type { ReleaseCard, StampSpan } from "./Type.js";
 
 /** The stamp's four inks: the brackets and separators, the keyword, the field
  *  label, and the value. */
@@ -56,6 +61,26 @@ const ElementInk: Readonly<Record<string, string>> = {
 /** The element's documentation route: the site's own naming rule. */
 const DocPath = (Name: string): string => `/Doc/${Name.toLowerCase()}`;
 
+/**
+ * One manifest row: a key, its colon, and its value's parts.
+ *
+ * The row is `KEY: VALUE`, and a value may be a list (`MACOS / WINDOWS /
+ * LINUX`). Both marks are segments, so the row prints the mark layer's gap and
+ * not a space this file typed: the key closes with the colon mark and the parts
+ * are joined by the separator mark.
+ */
+const Row = (Key: string, ...Parts: readonly string[]): readonly StampSpan[] => [
+	{ Text: Key },
+
+	{ Mark: "colon" },
+
+	...Parts.flatMap((Part, Index): readonly StampSpan[] =>
+		Index === 0
+			? [{ Text: Part }]
+			: [{ Mark: "separator" }, { Text: Part }],
+	),
+];
+
 /** The two release cards, in the order the band prints them. */
 export const ReleaseCards: readonly ReleaseCard[] = [
 	{
@@ -71,22 +96,48 @@ export const ReleaseCards: readonly ReleaseCard[] = [
 			],
 
 			[
-				{ Text: "/", Ink: Ink.Bracket },
+				{ Mark: "slash" },
 
-				{ Text: " CHANNEL", Ink: Ink.Key },
+				{ Text: "CHANNEL", Ink: Ink.Key },
 
-				{ Text: ": PUBLIC", Ink: Ink.Label },
+				{ Mark: "colon", Ink: Ink.Key },
+
+				{ Text: "PUBLIC", Ink: Ink.Label },
 			],
 
 			[
-				{ Text: "STATUS:", Ink: Ink.Label },
+				{ Text: "STATUS", Ink: Ink.Label },
 
-				{ Text: " ACTIVE", Ink: Ink.Value },
+				{ Mark: "colon", Ink: Ink.Label },
+
+				{ Mark: "square", Tone: "specimen", Ink: Ink.Value },
+
+				{ Text: "ACTIVE", Ink: Ink.Value },
 			],
 
-			[{ Text: "TARGET: NATIVE DESKTOP PATH" }],
+			[
+				{ Text: "TARGET" },
 
-			[{ Text: "SIGNAL: NO CHROMIUM / NO ELECTRON / CC0" }],
+				{ Mark: "colon" },
+
+				{ Text: "NATIVE DESKTOP PATH" },
+			],
+
+			[
+				{ Text: "SIGNAL" },
+
+				{ Mark: "colon" },
+
+				{ Text: "NO CHROMIUM" },
+
+				{ Mark: "separator" },
+
+				{ Text: "NO ELECTRON" },
+
+				{ Mark: "separator" },
+
+				{ Text: "CC0" },
+			],
 		],
 
 		Action: {
@@ -194,17 +245,17 @@ export const ReleaseCards: readonly ReleaseCard[] = [
 		],
 
 		Manifest: [
-			"EXTENSIONS: UNMODIFIED / COCOON",
+			Row("EXTENSIONS", "UNMODIFIED", "COCOON"),
 
-			"WEBVIEW: OS NATIVE / TAURI",
+			Row("WEBVIEW", "OS NATIVE", "TAURI"),
 
-			"FIBERS: CANCELLABLE SERVICE WORK",
+			Row("FIBERS", "CANCELLABLE SERVICE WORK"),
 
-			"TELEMETRY: COMPILE-GATED / RUST",
+			Row("TELEMETRY", "COMPILE-GATED", "RUST"),
 
-			"LICENSE: CC0 / NO RESTRICTIONS",
+			Row("LICENSE", "CC0", "NO RESTRICTIONS"),
 
-			"TARGETS: MACOS / WINDOWS / LINUX",
+			Row("TARGETS", "MACOS", "WINDOWS", "LINUX"),
 		],
 	},
 
@@ -221,22 +272,42 @@ export const ReleaseCards: readonly ReleaseCard[] = [
 			],
 
 			[
-				{ Text: "/", Ink: Ink.Bracket },
+				{ Mark: "slash" },
 
-				{ Text: " CHANNEL", Ink: Ink.Key },
+				{ Text: "CHANNEL", Ink: Ink.Key },
 
-				{ Text: ": PUBLIC", Ink: Ink.Label },
+				{ Mark: "colon", Ink: Ink.Key },
+
+				{ Text: "PUBLIC", Ink: Ink.Label },
 			],
 
 			[
-				{ Text: "STATUS:", Ink: Ink.Label },
+				{ Text: "STATUS", Ink: Ink.Label },
 
-				{ Text: " LOADING", Ink: "var(--MuteForeground)" },
+				{ Mark: "colon", Ink: Ink.Label },
+
+				{ Text: "LOADING", Ink: "var(--MuteForeground)" },
 			],
 
-			[{ Text: "TARGET: V1.0" }],
+			[
+				{ Text: "TARGET" },
 
-			[{ Text: "SIGNAL: SIGNED INSTALLERS / VERIFIED DOWNLOADS" }],
+				{ Mark: "colon" },
+
+				{ Text: "V1.0" },
+			],
+
+			[
+				{ Text: "SIGNAL" },
+
+				{ Mark: "colon" },
+
+				{ Text: "SIGNED INSTALLERS" },
+
+				{ Mark: "separator" },
+
+				{ Text: "VERIFIED DOWNLOADS" },
+			],
 		],
 
 		Action: {
@@ -338,17 +409,17 @@ export const ReleaseCards: readonly ReleaseCard[] = [
 		],
 
 		Manifest: [
-			"MARKETPLACE: UNDER REVIEW",
+			Row("MARKETPLACE", "UNDER REVIEW"),
 
-			"COCOON: LONG-TAIL API COVERAGE",
+			Row("COCOON", "LONG-TAIL API COVERAGE"),
 
-			"VINE: TYPED IPC / EXPANDING",
+			Row("VINE", "TYPED IPC", "EXPANDING"),
 
-			"INSTALLERS: CROSS-PLATFORM / TAURI",
+			Row("INSTALLERS", "CROSS-PLATFORM", "TAURI"),
 
-			"ECHO: WORK-STEALING / TUNING",
+			Row("ECHO", "WORK-STEALING", "TUNING"),
 
-			"DISTRIBUTION: VERIFICATION PUBLISHING",
+			Row("DISTRIBUTION", "VERIFICATION PUBLISHING"),
 		],
 	},
 ];

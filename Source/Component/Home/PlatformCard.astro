@@ -27,6 +27,8 @@ import type { PlatformCard as PlatformCardData } from "../../Content/Home/Type.j
 
 import Containment from "../Mark/Containment.astro";
 
+import Mark from "../Mark/Mark.astro";
+
 import { ToneOf } from "./Tone.js";
 
 interface Props {
@@ -67,38 +69,45 @@ const ActionInk =
 	</div>
 
 	<div class="home-platform__facts">
+		{/*
+			THE ROUTE LINE, MARK BY MARK. The `/` opens the line and the `:`
+			closes the key; both are the mark layer's (`Mark/Mark.astro`),
+			so each prints `--mark-gap` on the side it belongs to and this
+			template prints no space of its own. The colon takes the KEY's
+			ink, because the colon is the label's punctuation and not a mark
+			about the line.
+		*/}
 		<p class="home-platform__route">
-			<span class="home-record__slash" aria-hidden="true">/</span>{" "}
-			<span class="home-record__route-key">CHANNEL</span><span class="home-record__route-value">: {card.Channel}</span>
+			<Mark kind="slash" /><span class="home-record__route-key">CHANNEL</span><Mark kind="colon" style="color:var(--SemanticSky)" /><span class="home-record__route-value">{card.Channel}</span>
 		</p>
 
 		<dl class="home-platform__ledger">
 			<div class="home-platform__row">
-				<dt class="home-platform__key">Version:</dt>
+				<dt class="home-platform__key">Version<Mark kind="colon" /></dt>
 				<dd class="home-platform__value">{card.Version}</dd>
 			</div>
 			<div class="home-platform__row">
-				<dt class="home-platform__key">Size:</dt>
+				<dt class="home-platform__key">Size<Mark kind="colon" /></dt>
 				<dd class="home-platform__value">{card.Size}</dd>
 			</div>
 			<div class="home-platform__row">
-				<dt class="home-platform__key">SIGNING:</dt>
+				<dt class="home-platform__key">SIGNING<Mark kind="colon" /></dt>
 				<dd class="home-platform__value">{card.Signing}</dd>
 			</div>
 			<div class="home-platform__row">
-				<dt class="home-platform__key">WEBVIEW:</dt>
+				<dt class="home-platform__key">WEBVIEW<Mark kind="colon" /></dt>
 				<dd class="home-platform__value">{card.Webview}</dd>
 			</div>
 			<div class="home-platform__row">
-				<dt class="home-platform__key">MINIMUM:</dt>
+				<dt class="home-platform__key">MINIMUM<Mark kind="colon" /></dt>
 				<dd class="home-platform__value">{card.Minimum}</dd>
 			</div>
 			<div class="home-platform__row">
-				<dt class="home-platform__key">CHECKSUM:</dt>
+				<dt class="home-platform__key">CHECKSUM<Mark kind="colon" /></dt>
 				<dd class="home-platform__value">{card.Checksum}</dd>
 			</div>
 			<div class="home-platform__row">
-				<dt class="home-platform__key">TOOLCHAIN:</dt>
+				<dt class="home-platform__key">TOOLCHAIN<Mark kind="colon" /></dt>
 				<dd class="home-platform__value">{card.Toolchain}</dd>
 			</div>
 		</dl>
@@ -110,19 +119,13 @@ const ActionInk =
 			word in it. It is a record line, not a caption: same size, muted ink,
 			and it rules off the ledger above it.
 		*/}
-		<p class="home-platform__note">
-			<span class="home-record__status-key">NOTE:</span>
-			{card.Note}
-		</p>
+		<p class="home-platform__note"><span class="home-record__status-key">NOTE<Mark kind="colon" /></span>{card.Note}</p>
 
 		<p class="home-platform__status">
-			<span class="home-record__status-key">{card.Status.Label}</span>
-			<span
+			<span class="home-record__status-key">{card.Status.Label}<Mark kind="colon" /></span><span
 				class="home-record__status-value"
 				data-tone={ToneOf(card.Status.Value)}
-			>
-				{card.Status.Value}
-			</span>
+			>{card.Status.Value}</span>
 		</p>
 
 		<div class="home-platform__action">

@@ -78,7 +78,7 @@ const Unknown = (Value: string): boolean => Value.trim() === "UNAVAILABLE";
 							{Record.name}
 						</span>
 						<span class="MotionExpand__GoneNote">
-							<span aria-hidden="true">↳</span> WAS:{" "}
+							<span class="MarkRelation" aria-hidden="true"></span>WAS:{" "}
 							{Record.missing}
 						</span>
 					</span>
@@ -128,9 +128,7 @@ const Unknown = (Value: string): boolean => Value.trim() === "UNAVAILABLE";
 											{Fact.value}
 											{Fact.note ? (
 												<span class="MotionExpand__Note">
-													<span aria-hidden="true">
-														↳
-													</span>{" "}
+													<span class="MarkRelation" aria-hidden="true"></span>
 													{Fact.note}
 												</span>
 											) : null}
@@ -152,7 +150,7 @@ const Unknown = (Value: string): boolean => Value.trim() === "UNAVAILABLE";
 				<b aria-hidden="true">◎</b> NO RECORD
 			</p>
 			<p class="MotionExpand__EmptyLine">
-				<span aria-hidden="true">↳</span> {Empty}
+				<span class="MarkRelation" aria-hidden="true"></span>{Empty}
 			</p>
 		</div>
 	)}

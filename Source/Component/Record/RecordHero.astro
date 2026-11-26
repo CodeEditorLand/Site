@@ -66,6 +66,8 @@ import { RouteText, StampText } from "../Brand/SemanticLedger";
 
 import { Tone } from "../Surface/State.js";
 
+import Mark from "../Mark/Mark.astro";
+
 import RecordLedger from "./RecordLedger.astro";
 
 import type { Hero } from "./Type.js";
@@ -166,13 +168,7 @@ const SEAL = "m";
 
 					{proposition && (
 						<p class="record-hero__proposition">
-							<span
-								class="record-hero__proposition-mark"
-								aria-hidden="true"
-							>
-								↳
-							</span>
-							{proposition}
+							<Mark kind="relation" />{proposition}
 						</p>
 					)}
 
@@ -208,14 +204,14 @@ const SEAL = "m";
 							]}
 						>
 							<span class="record-hero__tombstone-key">
-								STATUS:
+								STATUS<Mark kind="colon" />
 							</span>
 							{evidence.state.toUpperCase()}
 						</span>
 						{evidence.next ? (
 							<span class="record-hero__tombstone-next">
 								<span class="record-hero__tombstone-key">
-									NEXT:
+									NEXT<Mark kind="colon" />
 								</span>
 								{evidence.next}
 							</span>

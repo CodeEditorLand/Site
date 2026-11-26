@@ -43,6 +43,8 @@ import { FieldRecordStatus } from "./FieldRecordStatus.js";
 
 import { RouteText, StampText } from "./SemanticLedger.js";
 
+import Mark from "../Mark/Mark.astro";
+
 import type { FieldRecordStatusState } from "./FieldRecordStatus.js";
 
 import type { Props } from "./FieldRecord/Type.js";
@@ -102,12 +104,12 @@ const Frame = ["h-full", className, Class].filter(Boolean).join(" ");
 
 		<div>
 			<p class="text-field-l font-mono font-normal leading-[1.08] text-card-foreground">
-				{record.Title}:
+				{record.Title}<Mark kind="colon" />
 			</p>
 
 			{record.Relation ? (
 				<p class="text-field-s mt-3 font-mono font-normal leading-[1.1] text-card-foreground opacity-70">
-					↳{record.Relation}
+					<Mark kind="relation" />{record.Relation}
 				</p>
 			) : null}
 		</div>

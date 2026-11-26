@@ -50,6 +50,8 @@ import { FieldRecordEvidence } from "../Component/Brand/FieldRecordEvidence";
 import { FieldRecordSeal } from "../Component/Brand/FieldRecordSeal";
 import { Header } from "../Component/Layout/Header";
 import Containment from "../Component/Mark/Containment.astro";
+import Mark from "../Component/Mark/Mark.astro";
+import Route from "../Component/Mark/Route.astro";
 import SurfaceBadge from "../Component/Surface/SurfaceBadge.astro";
 import SurfaceHead from "../Component/Surface/SurfaceHead.astro";
 import SurfaceStatusLine from "../Component/Surface/SurfaceStatusLine.astro";
@@ -153,10 +155,10 @@ const Plan = [{ key: "PLAN", value: "PLANNED" }];
 								<Containment label={Page.subheading} ink={`var(--${Page.subheadingInk})`} />
 							</p>
 
-							<p class="portal-head__protocol">
-								<span style="color:var(--MuteForeground)">/</span>{" "}
-								<span style="color:var(--SemanticSky)">PROTOCOL</span><span style="color:var(--CardForeground)">: {Page.protocol}</span>
-							</p>
+							{/* The route line, composed once (`Mark/Route.astro`): the
+							    slash and the colon are marks and print their own gap,
+							    so this template writes no space at all. */}
+							<p class="portal-head__protocol"><Route line={`/PROTOCOL:${Page.protocol}`} keyInk="var(--SemanticSky)" valueInk="var(--CardForeground)" /></p>
 							<p class="portal-head__program">
 								{Page.program.join("\u2001")}
 							</p>
@@ -169,10 +171,10 @@ const Plan = [{ key: "PLAN", value: "PLANNED" }];
 
 						<div>
 							<p class="font-mono text-card-foreground font-normal text-field-l leading-[1.08]">
-								{Page.title}:
+								{Page.title}<Mark kind="colon" />
 							</p>
 							<p class="font-mono text-card-foreground font-normal leading-[1.1] opacity-70 text-field-s mt-3">
-								↳{Page.relation}
+								<Mark kind="relation" />{Page.relation}
 							</p>
 						</div>
 					</div>
@@ -232,10 +234,7 @@ const Plan = [{ key: "PLAN", value: "PLANNED" }];
 							<h2 class="font-mono text-card-foreground font-medium uppercase tracking-row">
 								<Containment label={Tier.title} ink={`var(--${Tier.ink})`} />
 							</h2>
-							<p class="font-mono text-card-foreground type-meta uppercase tracking-rule mt-1">
-								<span style="color:var(--MuteForeground)">/</span>{" "}
-								<span style="color:var(--SemanticSky)">PROTOCOL</span><span style="color:var(--CardForeground)">: {Tier.protocol}</span>
-							</p>
+							<p class="font-mono text-card-foreground type-meta uppercase tracking-rule mt-1"><Route line={`/PROTOCOL:${Tier.protocol}`} keyInk="var(--SemanticSky)" valueInk="var(--CardForeground)" /></p>
 						</div>
 
 						{/* The register, one scale down: `STATUS: PREPARING` from the
