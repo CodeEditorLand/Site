@@ -52,7 +52,15 @@ describe("the 404", () => {
 
 		expect(Text(".record-hero__mark")).toContain("ROUTE_404");
 
-		expect(Text(".record-hero__route")).toContain("/TRACE:/No/Such/Route");
+		// The route's slash and colon are the mark layer's (`Mark/Route.astro`),
+		// so the text carries the two words and the classes carry the marks.
+		expect(Text(".record-hero__route")).toContain("TRACE");
+
+		expect(Text(".record-hero__route")).toContain("/No/Such/Route");
+
+		expect(Page.querySelector(".record-hero__route .MarkSlash")).not.toBeNull();
+
+		expect(Page.querySelector(".record-hero__route .MarkColon")).not.toBeNull();
 
 		expect(Text(".record-hero__status")).toContain("INTERRUPTED");
 

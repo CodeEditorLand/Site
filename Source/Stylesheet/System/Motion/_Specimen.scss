@@ -99,7 +99,9 @@
 }
 
 .MotionSpecimen__ExplainsMark {
-	margin-inline-end: 0.375rem;
+	/* the `↳` is a `MarkRelation` and prints its own `--mark-gap`
+	   (`Mark/_Punctuation.scss`); a margin here would double it */
+	margin-inline-end: 0;
 
 	color: var(--MuteForeground);
 }

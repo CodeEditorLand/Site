@@ -79,9 +79,48 @@ const Cards = (): ParsedElement[] => All(".home-release");
 const Text = (Node: ParsedElement | null): string =>
 	(Node?.textContent ?? "").replace(/\s+/g, " ").trim();
 
+/**
+ * The glyph each mark prints, and the air it prints beside it.
+ *
+ * ─── WHY A TEST HAS TO PUT THE MARKS BACK ─────────────────────────────────
+ * The grammar's marks are `::before` content now (`Mark/_Punctuation.scss`), and
+ * their air is a CSS margin. Neither is in `textContent`, so a test that
+ * asserted on the text alone would pass with every colon, slash, separator and
+ * state square missing - which is precisely the drift the mark layer exists to
+ * stop. `Printed` substitutes each mark class with the glyph and the gap the
+ * stylesheet draws, so an assertion reads as the line prints.
+ *
+ * The gap is written as ONE space here even though the stylesheet prints
+ * `--mark-gap` (0.5ch): a test cannot measure a margin, and the thing worth
+ * asserting is that the mark is there, on the right side of the right word.
+ */
+const MarkGlyph: Readonly<Record<string, string>> = {
+	MarkColon: ": ",
+	MarkSlash: " / ",
+	MarkSeparator: " / ",
+	MarkRelation: "↳ ",
+	MarkFallback: "◎ ",
+	MarkSquare: "▮ ",
+};
+
+/** A node's text with the mark layer's glyphs put back in, as a reader sees it. */
+const Printed = (Node: ParsedElement | null): string => {
+	if (Node === null) return "";
+
+	const Clone = Node.cloneNode(true) as ParsedElement;
+
+	for (const [Class, Glyph] of Object.entries(MarkGlyph)) {
+		for (const Mark of Array.from(Clone.querySelectorAll(`.${Class}`))) {
+			Mark.replaceWith(Clone.ownerDocument.createTextNode(Glyph));
+		}
+	}
+
+	return (Clone.textContent ?? "").replace(/\s+/g, " ").trim();
+};
+
 /** The stamp lines a release record declares, in print order. */
 const StampOf = (Card: ParsedElement): string[] =>
-	All(".home-release__stamp-line", Card).map((Line) => Text(Line));
+	All(".home-release__stamp-line", Card).map((Line) => Printed(Line));
 
 describe("RoadmapBand", () => {
 	it("prints one release record per state of the one offer", () => {
@@ -116,11 +155,11 @@ describe("RoadmapBand", () => {
 		// the site's route line.
 		expect(All("jelly-button")).toHaveLength(1);
 
-		// The route line prints `/ LABEL`, with the one space every other route
-		// line on the site keeps after the slash (`/ HOST: MOUNTAIN`,
-		// `/ CHANNEL: PUBLIC`). The welded form this assertion used to expect was
-		// never what the block printed.
-		expect(Text(One(".home-release__destination"))).toBe(
+		// The route line prints `/ LABEL`: the slash is the mark layer's and
+		// prints `--mark-gap` after itself (`Mark/_Punctuation.scss`), so the
+		// template contributes no space and the assertion has to put the glyph
+		// back in to see it.
+		expect(Printed(One(".home-release__destination"))).toBe(
 			"/ TRACK PROGRESS",
 		);
 
@@ -161,7 +200,11 @@ describe("RoadmapBand", () => {
 
 		const ActiveStamp = StampOf(Active);
 
-		expect(ActiveStamp).toContain("STATUS: ACTIVE");
+		// The key, its colon and the attested state square, then the word. The
+		// colon and the square are marks and print `--mark-gap` on one side each
+		// (`Mark/_Punctuation.scss`), so the square sits between the key and the
+		// value with the same air on both sides.
+		expect(ActiveStamp).toContain("STATUS: ▮ ACTIVE");
 
 		expect(ActiveStamp).toContain("TARGET: NATIVE DESKTOP PATH");
 
@@ -176,6 +219,8 @@ describe("RoadmapBand", () => {
 
 		const NextStamp = StampOf(Next);
 
+		// `LOADING` is not an attested state, so it prints no square - the mark
+		// is a statement about the word and the word does not make it.
 		expect(NextStamp).toContain("STATUS: LOADING");
 
 		expect(NextStamp).toContain("TARGET: V1.0");
@@ -215,7 +260,7 @@ describe("RoadmapBand", () => {
 
 	it("prints each capability under the label the manifest gave it", () => {
 		const Manifest = All(".home-release__manifest-row", Cards()[0]).map(
-			(Row) => Text(Row),
+			(Row) => Printed(Row),
 		);
 
 		expect(Manifest).toHaveLength(6);

@@ -169,7 +169,9 @@
 }
 
 .record-trace__note-mark {
-	margin-inline-end: 0.4ch;
+	/* the `↳` is a `MarkRelation` and prints its own `--mark-gap`
+	   (`Mark/_Punctuation.scss`); a margin here would double it */
+	margin-inline-end: 0;
 }
 
 // The wide row, at the block's own 580px. Both layouts are the ones that were

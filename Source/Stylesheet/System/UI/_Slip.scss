@@ -331,7 +331,9 @@ $Slip: ':is([data-slot="dropdown-menu-content"], [data-slot="dropdown-menu-sub-c
 .Slip__EmptyLine {
 	display: flex;
 	align-items: baseline;
-	gap: var(--space-tight);
+	/* No gap: the `↳` is a `MarkRelation` and prints its own `--mark-gap`
+	   (`Mark/_Punctuation.scss`). */
+	gap: 0;
 
 	color: var(--Foreground);
 

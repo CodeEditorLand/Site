@@ -1800,7 +1800,9 @@
 .ChartFrame__Caption {
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--space-tight);
+	/* No gap: the `↳` is a `MarkRelation` and prints its own `--mark-gap`
+	   (`Mark/_Punctuation.scss`). */
+	gap: 0;
 
 	max-inline-size: var(--Measure);
 

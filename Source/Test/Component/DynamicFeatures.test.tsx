@@ -120,10 +120,21 @@ describe("FeatureBand", () => {
 			"RUST SERVICES",
 		);
 
-		// The four-row ledger, every key printed with its colon.
-		expect(
-			All(".home-record__key", Mountain).map((Key) => Text(Key)),
-		).toEqual(["ROLE:", "BOUNDARY:", "LOAD:", "PHASE:"]);
+		// The four-row ledger: every key closes with the mark layer's colon
+		// (`Mark/_Punctuation.scss`), so the key's text is the word and the
+		// colon is a mark - one per key, on the key's side of the pair.
+		const Keys = All(".home-record__key", Mountain);
+
+		expect(Keys.map((Key) => Text(Key))).toEqual([
+			"ROLE",
+			"BOUNDARY",
+			"LOAD",
+			"PHASE",
+		]);
+
+		expect(Keys.map((Key) => Key.querySelectorAll(".MarkColon").length)).toEqual(
+			[1, 1, 1, 1],
+		);
 
 		expect(
 			All(".home-record__value", Mountain).map((Value) => Text(Value)),

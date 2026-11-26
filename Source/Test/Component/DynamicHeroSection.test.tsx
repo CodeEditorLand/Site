@@ -47,11 +47,12 @@ describe("DynamicHeroSection", () => {
 		// `LAND:` is the subject, `↳EDITOR WITHOUT CHROMIUM` the proposition.
 		expect(screen.getByText("LAND:")).toBeInTheDocument();
 
-		// The `↳` is an aria-hidden glyph in its own span, so the relation's
-		// own text node is the assertion and the container carries the pair.
-		expect(screen.getByText("EDITOR WITHOUT CHROMIUM")).toBeInTheDocument();
+		// The `↳` is the mark layer's now (`Mark/_Punctuation.scss`): a span
+		// whose glyph is `::before` content, so it is not in the text. The
+		// assertion is the mark's presence and the relation's own words.
+		expect(container.querySelector(".hero-band__relation .MarkRelation")).not.toBeNull();
 
-		expect(container).toHaveTextContent("↳EDITOR WITHOUT CHROMIUM");
+		expect(container).toHaveTextContent("EDITOR WITHOUT CHROMIUM");
 	});
 
 	it("is the two-panel artifact: a framed record card beside the evidence", () => {
@@ -132,12 +133,31 @@ describe("DynamicHeroSection", () => {
 	});
 
 	it("states the release state without the qualifiers the manifest owns", () => {
-		render(<DynamicHeroSection Content={MinimalContent} />);
+		const { container } = render(
+			<DynamicHeroSection Content={MinimalContent} />,
+		);
 
-		// FieldRecordStatus splits the label and the value (C17).
-		expect(screen.getByText("STATUS:")).toBeInTheDocument();
+		// FieldRecordStatus splits the label and the value (C17), and the colon
+		// between them is the mark layer's (`Mark/_Punctuation.scss`) - a span
+		// whose glyph is `::before` content, so it is a class here and not a
+		// character in the text.
+		expect(screen.getByText("STATUS")).toBeInTheDocument();
+
+		expect(
+			container.querySelector(
+				".hero-band__status .MarkColon",
+			),
+		).not.toBeNull();
 
 		expect(screen.getByText("SOURCE ACTIVE")).toBeInTheDocument();
+
+		// The attested state carries the mark layer's square, and it is the same
+		// square every `STATUS:` row on the site prints.
+		expect(
+			container.querySelector(
+				".hero-band__status .MarkSquare[data-mark-inline='true']",
+			),
+		).not.toBeNull();
 
 		// What is still missing is the release layer's statement
 		// (`DynamicPricing`, the `# CONDITIONS_01` manifest).

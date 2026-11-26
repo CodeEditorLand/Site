@@ -483,9 +483,19 @@ describe("RecordHero", () => {
 
 		expect(Text(Page.querySelector("h1"))).toContain("NOT FOUND");
 
-		expect(Text(Page.querySelector(".record-hero__route"))).toContain(
-			"/TRACE:/nope",
-		);
+		// The route is `/TRACE:` and the path is its value. Both marks - the
+		// slash that opens the line and the colon that closes the key - are the
+		// mark layer's (`Mark/Route.astro`), so they are classes here and not
+		// characters in the text.
+		const RouteLine = Page.querySelector(".record-hero__route");
+
+		expect(Text(RouteLine)).toContain("TRACE");
+
+		expect(Text(RouteLine)).toContain("/nope");
+
+		expect(RouteLine?.querySelector(".MarkSlash")).not.toBeNull();
+
+		expect(RouteLine?.querySelector(".MarkColon")).not.toBeNull();
 
 		expect(Text(Page.querySelector(".record-hero__relation"))).toBe(
 			"LAND:",

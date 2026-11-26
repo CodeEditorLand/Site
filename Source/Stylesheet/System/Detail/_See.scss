@@ -81,11 +81,12 @@
 	color: var(--Foreground);
 }
 
-// The mark is the grammar's, drawn not spoken. Its gap is the site's mark gap,
-// so the `↳` sits half a character from `SEE` here exactly as the `〈03〉` sits
-// half a character from its part in the folio.
+// The mark is the grammar's, drawn not spoken. Its gap is the mark layer's now
+// (`Mark/_Punctuation.scss`): the `↳` is a `MarkRelation` span that prints
+// `--mark-gap` after itself, so this wrapper carries no margin of its own. Two
+// gaps here would be a word space beside a mark, which is the defect.
 .detail-see__mark {
-	margin-inline-end: var(--optical-mark-gap);
+	margin-inline-end: 0;
 	color: var(--MuteForeground);
 }
 
